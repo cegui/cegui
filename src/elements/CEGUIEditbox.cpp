@@ -643,44 +643,48 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 *************************************************************************/
 void Editbox::handleBackspace(void)
 {
-	String tmp(d_text);
-
-	if (getSelectionLength() != 0)
+	if (!isReadOnly())
 	{
-		tmp.erase(getSelectionStartIndex(), getSelectionLength());
+		String tmp(d_text);
 
-		if (isStringValid(tmp))
+		if (getSelectionLength() != 0)
 		{
-			// erase selection using mode that does not modify d_text (we just want to update state)
-			eraseSelectedText(false);
+			tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
-			// set text to the newly modified string
-			setText(tmp);
+			if (isStringValid(tmp))
+			{
+				// erase selection using mode that does not modify d_text (we just want to update state)
+				eraseSelectedText(false);
+
+				// set text to the newly modified string
+				setText(tmp);
+			}
+			else
+			{
+				// Trigger invalid modification attempted event.
+				WindowEventArgs args(this);
+				onInvalidEntryAttempted(args);
+			}
+
 		}
-		else
+		else if (getCaratIndex() > 0)
 		{
-			// Trigger invalid modification attempted event.
-			WindowEventArgs args(this);
-			onInvalidEntryAttempted(args);
-		}
+			tmp.erase(d_caratPos - 1, 1);
 
-	}
-	else if (getCaratIndex() > 0)
-	{
-		tmp.erase(d_caratPos - 1, 1);
+			if (isStringValid(tmp))
+			{
+				setCaratIndex(d_caratPos - 1);
 
-		if (isStringValid(tmp))
-		{
-			setCaratIndex(d_caratPos - 1);
+				// set text to the newly modified string
+				setText(tmp);
+			}
+			else
+			{
+				// Trigger invalid modification attempted event.
+				WindowEventArgs args(this);
+				onInvalidEntryAttempted(args);
+			}
 
-			// set text to the newly modified string
-			setText(tmp);
-		}
-		else
-		{
-			// Trigger invalid modification attempted event.
-			WindowEventArgs args(this);
-			onInvalidEntryAttempted(args);
 		}
 
 	}
@@ -693,42 +697,46 @@ void Editbox::handleBackspace(void)
 *************************************************************************/
 void Editbox::handleDelete(void)
 {
-	String tmp(d_text);
-
-	if (getSelectionLength() != 0)
+	if (!isReadOnly())
 	{
-		tmp.erase(getSelectionStartIndex(), getSelectionLength());
+		String tmp(d_text);
 
-		if (isStringValid(tmp))
+		if (getSelectionLength() != 0)
 		{
-			// erase selection using mode that does not modify d_text (we just want to update state)
-			eraseSelectedText(false);
+			tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
-			// set text to the newly modified string
-			setText(tmp);
+			if (isStringValid(tmp))
+			{
+				// erase selection using mode that does not modify d_text (we just want to update state)
+				eraseSelectedText(false);
+
+				// set text to the newly modified string
+				setText(tmp);
+			}
+			else
+			{
+				// Trigger invalid modification attempted event.
+				WindowEventArgs args(this);
+				onInvalidEntryAttempted(args);
+			}
+
 		}
-		else
+		else if (getCaratIndex() < tmp.length())
 		{
-			// Trigger invalid modification attempted event.
-			WindowEventArgs args(this);
-			onInvalidEntryAttempted(args);
-		}
+			tmp.erase(d_caratPos, 1);
 
-	}
-	else if (getCaratIndex() < tmp.length())
-	{
-		tmp.erase(d_caratPos, 1);
+			if (isStringValid(tmp))
+			{
+				// set text to the newly modified string
+				setText(tmp);
+			}
+			else
+			{
+				// Trigger invalid modification attempted event.
+				WindowEventArgs args(this);
+				onInvalidEntryAttempted(args);
+			}
 
-		if (isStringValid(tmp))
-		{
-			// set text to the newly modified string
-			setText(tmp);
-		}
-		else
-		{
-			// Trigger invalid modification attempted event.
-			WindowEventArgs args(this);
-			onInvalidEntryAttempted(args);
 		}
 
 	}

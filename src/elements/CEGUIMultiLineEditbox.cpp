@@ -893,19 +893,22 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 *************************************************************************/
 void MultiLineEditbox::handleBackspace(void)
 {
-	if (getSelectionLength() != 0)
+	if (!isReadOnly())
 	{
-		eraseSelectedText(!isReadOnly());
-	}
-	else if (d_caratPos > 0)
-	{
-		d_text.erase(d_caratPos - 1, 1);
-		setCaratIndex(d_caratPos - 1);
+		if (getSelectionLength() != 0)
+		{
+			eraseSelectedText();
+		}
+		else if (d_caratPos > 0)
+		{
+			d_text.erase(d_caratPos - 1, 1);
+			setCaratIndex(d_caratPos - 1);
 
-		WindowEventArgs args(this);
-		onTextChanged(args);
-	}
+			WindowEventArgs args(this);
+			onTextChanged(args);
+		}
 
+	}
 }
 
 
@@ -914,17 +917,21 @@ void MultiLineEditbox::handleBackspace(void)
 *************************************************************************/
 void MultiLineEditbox::handleDelete(void)
 {
-	if (getSelectionLength() != 0)
+	if (!isReadOnly())
 	{
-		eraseSelectedText(!isReadOnly());
-	}
-	else if (getCaratIndex() < d_text.length() - 1)
-	{
-		d_text.erase(d_caratPos, 1);
-		ensureCaratIsVisible();
+		if (getSelectionLength() != 0)
+		{
+			eraseSelectedText();
+		}
+		else if (getCaratIndex() < d_text.length() - 1)
+		{
+			d_text.erase(d_caratPos, 1);
+			ensureCaratIsVisible();
 
-		WindowEventArgs args(this);
-		onTextChanged(args);
+			WindowEventArgs args(this);
+			onTextChanged(args);
+		}
+
 	}
 
 }
