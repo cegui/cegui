@@ -92,6 +92,8 @@ const utf8	Combobox::EventListSelectionAccepted[]		= "ListSelectionAccepted";
 Combobox::Combobox(const String& type, const String& name) :
 	Window(type, name)
 {
+	d_singleClickOperation = false;
+
 	addComboboxEvents();
 	addComboboxProperties();
 }
@@ -121,7 +123,7 @@ void Combobox::initialise(void)
 	addChildWindow(d_button);
 
 	// internal event wiring
-	d_button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::Combobox::button_ClickHandler, this));
+	d_button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
 	d_droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
 	d_droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
 
@@ -773,7 +775,7 @@ void Combobox::onTextChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler function for button clicks.
 *************************************************************************/
-bool Combobox::button_ClickHandler(const EventArgs& e)
+bool Combobox::button_PressHandler(const EventArgs& e)
 {
 	showDropList();
 
@@ -901,6 +903,24 @@ void Combobox::onActivated(ActivationEventArgs& e)
 
 }
 
+
+/*************************************************************************
+	Return operation mode for the combo box
+*************************************************************************/
+bool Combobox::getSingleClickEnabled(void) const
+{
+	return d_singleClickOperation;
+}
+
+
+/*************************************************************************
+	Set the operation mode for the combo box.
+*************************************************************************/
+void Combobox::setSingleClickEnabled(bool setting)
+{
+	d_singleClickOperation = setting;
+	d_droplist->setAutoArmEnabled(setting);
+}
 
 
 //////////////////////////////////////////////////////////////////////////

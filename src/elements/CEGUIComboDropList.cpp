@@ -43,6 +43,9 @@ const utf8	ComboDropList::EventListSelectionAccepted[]		= "ListSelectionAccepted
 ComboDropList::ComboDropList(const String& type, const String& name) :
 	Listbox(type, name)
 {
+	d_autoArm = false;
+	d_armed = false;
+
 	addComboDropListEvents();
 	hide();
 }
@@ -94,35 +97,47 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 {
 	Listbox::onMouseMove(e);
 
-	// remove current selection
-	clearAllSelections_impl();
+	if (d_armed)
+	{
+		// remove current selection
+		clearAllSelections_impl();
+	}
 
 	// if mouse is within our area (but not our children)
 	if (isHit(e.position) && (getChildAtPosition(e.position) == NULL))
 	{
-		//
-		// Convert mouse position to absolute window pixels
-		//
-		Point localPos(screenToWindow(e.position));
-
-		if (getMetricsMode() == Relative)
+		// handle auto-arm
+		if (d_autoArm)
 		{
-			localPos = relativeToAbsolute(localPos);
+			d_armed = true;
 		}
 
-		// check for an item under the mouse
-		ListboxItem* selItem = getItemAtPoint(localPos);
-
-		// if an item is under mouse, select it
-		if (selItem != NULL)
+		if (d_armed)
 		{
-			setItemSelectState(selItem, true);
+			//
+			// Convert mouse position to absolute window pixels
+			//
+			Point localPos(screenToWindow(e.position));
+
+			if (getMetricsMode() == Relative)
+			{
+				localPos = relativeToAbsolute(localPos);
+			}
+
+			// check for an item under the mouse
+			ListboxItem* selItem = getItemAtPoint(localPos);
+
+			// if an item is under mouse, select it
+			if (selItem != NULL)
+			{
+				setItemSelectState(selItem, true);
+			}
+
 		}
 
 		e.handled = true;
 	}
 
-	e.handled = false;
 }
 
 
@@ -138,6 +153,10 @@ void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
 		if (!isHit(e.position))
 		{
 			releaseInput();
+		}
+		else
+		{
+			d_armed = true;
 		}
 
 		e.handled = true;
@@ -155,13 +174,22 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		releaseInput();
-
-		// if something was selected, confirm that selection.
-		if (getSelectedCount() > 0)
+		if (d_armed)
 		{
-			WindowEventArgs args(this);
-			onListSelectionAccepted(args);
+			releaseInput();
+
+			// if something was selected, confirm that selection.
+			if (getSelectedCount() > 0)
+			{
+				WindowEventArgs args(this);
+				onListSelectionAccepted(args);
+			}
+
+		}
+		// if we are not already armed, in response to a left button up event, we auto-arm.
+		else
+		{
+			d_armed = true;
 		}
 
 		e.handled = true;
@@ -176,6 +204,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 void ComboDropList::onCaptureLost(WindowEventArgs& e)
 {
 	Listbox::onCaptureLost(e);
+	d_armed = false;
 	hide();
 	e.handled = true;
 }

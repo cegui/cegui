@@ -65,6 +65,65 @@ public:
 	virtual void	initialise(void);
 
 
+	/*!
+	\brief
+		Set whether the drop-list is 'armed' for selection.
+
+	\note
+		This setting is not exclusively under client control; the ComboDropList will auto-arm in
+		response to certain left mouse button events.  This is also dependant upon the autoArm
+		setting of the ComboDropList.
+
+	\param setting
+		- true to arm the box; items will be highlighted and the next left button up event
+		will cause dismissal and possible item selection.
+
+		- false to disarm the box; items will not be highlighted or selected until the box is armed.
+
+	\return
+		Nothing.
+	*/
+	void	setArmed(bool setting)		{ d_armed = setting; }
+
+
+	/*!
+	\brief
+		Return the 'armed' state of the ComboDropList.
+
+	\return
+		- true if the box is armed; items will be highlighted and the next left button up event
+		will cause dismissal and possible item selection.
+
+		- false if the box is not armed; items will not be highlighted or selected until the box is armed.
+	*/
+	bool	isArmed(void) const		{ return d_armed; }
+
+
+	/*!
+	\brief
+		Set the mode of operation for the ComboDropList.
+
+	\param setting
+		- true if the ComboDropList auto-arms when the mouse enters the box.
+		- false if the user must click to arm the box.
+
+	\return
+		Nothing.
+	*/
+	void	setAutoArmEnabled(bool setting)		{ d_autoArm = setting; }
+
+
+	/*!
+	\brief
+		returns the mode of operation for the drop-list
+
+	\return
+		- true if the ComboDropList auto-arms when the mouse enters the box.
+		- false if the user must click to arm the box.
+	*/
+	bool	isAutoArmEnabled(void) const		{ return d_autoArm; }
+
+
 	/*************************************************************************
 		Constructor & Destructor
 	*************************************************************************/
@@ -108,6 +167,13 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
+
+
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	bool	d_autoArm;		//!< true if the box auto-arms when the mouse enters it.
+	bool	d_armed;		//!< true when item selection has been armed.
 };
 
 } // End of  CEGUI namespace section

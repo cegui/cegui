@@ -88,6 +88,17 @@ public:
 	virtual bool	isHit(const Point& position) const		{return false;}
 
 
+	/*!
+	\brief
+		returns the mode of operation for the combo box.
+
+	\return
+		- true if the user can show the list and select an item with a single mouse click.
+		- false if the user must click to show the list and then click again to select an item.
+	*/
+	bool	getSingleClickEnabled(void) const;
+
+
 	/*************************************************************************
 		Editbox Accessors
 	*************************************************************************/
@@ -410,6 +421,20 @@ public:
 		Nothing.
 	*/
 	void	hideDropList(void);
+
+
+	/*!
+	\brief
+		Set the mode of operation for the combo box.
+
+	\param setting
+		- true if the user should be able to show the list and select an item with a single mouse click.
+		- false if the user must click to show the list and then click again to select an item.
+
+	\return
+		Nothing.
+	*/
+	void	setSingleClickEnabled(bool setting);
 
 
 	/*************************************************************************
@@ -802,7 +827,7 @@ protected:
 	\brief
 		Handler function for button clicks.
 	*/
-	bool	button_ClickHandler(const EventArgs& e);
+	bool	button_PressHandler(const EventArgs& e);
 
 
 	/*!
@@ -979,6 +1004,7 @@ protected:
 	Editbox*		d_editbox;		//!< Editbox widget sub-component.
 	ComboDropList*	d_droplist;		//!< ComboDropList widget sub-component.	
 	PushButton*		d_button;		//!< PushButton widget sub-component.
+	bool			d_singleClickOperation;		//!< true if user can show and select from list in a single click.
 
 
 private:
