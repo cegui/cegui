@@ -723,6 +723,9 @@ void MultiColumnList::removeColumn(uint col_idx)
 
 		}
 
+		// remove header segment
+		d_header->removeColumn(col_idx);
+
 		// signal a change to the list contents
 		WindowEventArgs args(this);
 		onListContentsChanged(args);

@@ -792,6 +792,7 @@ protected:
 	void editbox_TextSelectionChangedHandler(const EventArgs& e);
 	void editbox_EditboxFullEventHandler(const EventArgs& e);
 	void editbox_TextAcceptedEventHandler(const EventArgs& e);
+	void editbox_TextChangedEventHandler(const EventArgs& e);
 	void listbox_ListContentsChangedHandler(const EventArgs& e);
 	void listbox_ListSelectionChangedHandler(const EventArgs& e);
 	void listbox_SortModeChangedHandler(const EventArgs& e);

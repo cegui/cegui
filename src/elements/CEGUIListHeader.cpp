@@ -548,6 +548,8 @@ void ListHeader::removeColumn(uint column)
 		// destroy the segment (done in derived class, since that's where it was created).
 		destroyListSegment(seg);
 
+		layoutSegments();
+
 		// Fire segment removed event.
 		WindowEventArgs args(this);
 		onSegmentRemoved(args);
@@ -672,7 +674,7 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	// setup segment;
 	newseg->setMetricsMode(Relative);
 	newseg->setSize(Size(width, 1.0f));
-	newseg->setMinimumSize(newseg->absoluteToRelative(Size(5.0f, 5.0f)));
+	newseg->setMinimumSize(absoluteToRelative(Size(5.0f, 0.0f)));
 	newseg->setText(text);
 	newseg->setID(id);
 

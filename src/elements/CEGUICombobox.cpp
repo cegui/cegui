@@ -116,6 +116,7 @@ void Combobox::initialise(void)
 	d_editbox->subscribeEvent(Editbox::TextSelectionChanged, boost::bind(&CEGUI::Combobox::editbox_TextSelectionChangedHandler, this, _1));
 	d_editbox->subscribeEvent(Editbox::EditboxFullEvent, boost::bind(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this, _1));
 	d_editbox->subscribeEvent(Editbox::TextAcceptedEvent, boost::bind(&CEGUI::Combobox::editbox_TextAcceptedEventHandler, this, _1));
+	d_editbox->subscribeEvent(Editbox::TextChangedEvent, boost::bind(&CEGUI::Combobox::editbox_TextChangedEventHandler, this, _1));
 	d_droplist->subscribeEvent(Listbox::ListContentsChanged, boost::bind(&CEGUI::Combobox::listbox_ListContentsChangedHandler, this, _1));
 	d_droplist->subscribeEvent(Listbox::SelectionChanged, boost::bind(&CEGUI::Combobox::listbox_ListSelectionChangedHandler, this, _1));
 	d_droplist->subscribeEvent(Listbox::SortModeChanged, boost::bind(&CEGUI::Combobox::listbox_SortModeChangedHandler, this, _1));
@@ -843,6 +844,13 @@ void Combobox::editbox_TextAcceptedEventHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onTextAcceptedEvent(args);
+}
+
+
+void Combobox::editbox_TextChangedEventHandler(const EventArgs& e)
+{
+	// set this windows text to match
+	setText(((const WindowEventArgs&)e).window->getText());
 }
 
 
