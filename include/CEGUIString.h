@@ -780,7 +780,7 @@ public:
 			len = d_cplength - idx;
 
 		if ((str_len == npos) || (str_idx + str_len > std_str.size()))
-			str_len = std_str.size() - str_idx;
+			str_len = (size_type)std_str.size() - str_idx;
 
 		int val = (len == 0) ? 0 : utf32_comp_char(&ptr()[idx], &std_str.c_str()[str_idx], (len < str_len) ? len : str_len);
 
@@ -1181,7 +1181,7 @@ public:
 			throw std::out_of_range("Index was out of range for std::string object");
 
 		if (str_num == npos)
-			str_num = std_str.size() - str_idx;
+			str_num = (size_type)std_str.size() - str_idx;
 
 		grow(str_num);
 		setlen(str_num);
@@ -1459,7 +1459,7 @@ public:
 			throw std::out_of_range("Index is out of range for std::string");
 
 		if (str_num == npos)
-			str_num = std_str.size() - str_idx;
+			str_num = (size_type)std_str.size() - str_idx;
 
 		size_type newsze = d_cplength + str_num;
 
@@ -1768,7 +1768,7 @@ public:
 			throw std::out_of_range("Index is out of range for std::string");
 
 		if (str_num == npos)
-			str_num = std_str.size() - str_idx;
+			str_num = (size_type)std_str.size() - str_idx;
 
 		size_type newsz = d_cplength + str_num;
 		grow(newsz);
@@ -2321,7 +2321,7 @@ public:
 			throw std::out_of_range("Index is out of range for std::string");
 
 		if (((str_idx + str_num) > std_str.size()) || (str_num == npos))
-			str_num = std_str.size() - str_idx;
+			str_num = (size_type)std_str.size() - str_idx;
 
 		if (((len + idx) > d_cplength) || (len == npos))
 			len = d_cplength - idx;
@@ -2813,7 +2813,7 @@ public:
 		// loop while search string could fit in to search area
 		while (d_cplength - idx >= sze)
 		{
-			if (0 == compare(idx, sze, std_str))
+			if (0 == compare(idx, (size_type)sze, std_str))
 				return idx;
 
 			++idx;
@@ -2860,7 +2860,7 @@ public:
 
 		do
 		{
-			if (0 == compare(idx, sze, std_str))
+			if (0 == compare(idx, (size_type)sze, std_str))
 				return idx;
 
 		} while (idx-- != 0);
@@ -4311,7 +4311,7 @@ private:
 	// return index of first occurrence of 'code_point' in std::string 'str', or npos if none
 	size_type find_codepoint(const std::string& str, utf32 code_point) const
 	{
-		size_type idx = 0, sze = str.size();
+		size_type idx = 0, sze = (size_type)str.size();
 
 		while (idx != sze)
 		{

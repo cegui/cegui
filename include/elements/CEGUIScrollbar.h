@@ -401,7 +401,7 @@ protected:
 		Overridden event handlers
 	*************************************************************************/
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onSized(EventArgs& e);
+	virtual void	onSized(WindowEventArgs& e);
 
 
 	/*************************************************************************

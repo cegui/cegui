@@ -247,7 +247,7 @@ void ButtonBase::onMouseButtonUp(MouseEventArgs& e)
 /*************************************************************************
 	Handler for when mouse capture is lost
 *************************************************************************/
-void ButtonBase::onCaptureLost(EventArgs& e)
+void ButtonBase::onCaptureLost(WindowEventArgs& e)
 {
 	// Default processing
 	Window::onCaptureLost(e);

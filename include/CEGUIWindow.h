@@ -244,7 +244,7 @@ public:
 	\return
 		uint value equal to the number of Window objects directly attached to this Window as children.
 	*/
-	uint	getChildCount(void) const		{return d_children.size();}
+	uint   getChildCount(void) const      {return (uint)d_children.size();}
 
 
 	/*!
@@ -1255,7 +1255,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setRestoreCaptue(bool setting);
+	void	setRestoreCapture(bool setting);
 
 
 	/*!
@@ -1670,50 +1670,412 @@ protected:
 	/*************************************************************************
 		Event trigger methods
 	*************************************************************************/
-	// no specific parameters passed
-	virtual void	onSized(EventArgs& e);
-	virtual void	onMoved(EventArgs& e);
-	virtual void	onTextChanged(EventArgs& e);
-	virtual void	onFontChanged(EventArgs& e);
-	virtual void	onAlphaChanged(EventArgs& e);
-	virtual void	onIDChanged(EventArgs& e);
-	virtual void	onShown(EventArgs& e);
-	virtual void	onHidden(EventArgs& e);
-	virtual void	onEnabled(EventArgs& e);
-	virtual void	onDisabled(EventArgs& e);
-	virtual void	onMetricsChanged(EventArgs& e);
-	virtual void	onClippingChanged(EventArgs& e);
-	virtual void	onParentDestroyChanged(EventArgs& e);
-	virtual void	onInheritsAlphaChanged(EventArgs& e);
-	virtual void	onAlwaysOnTopChanged(EventArgs& e);
-	virtual void	onCaptureGained(EventArgs& e);
-	virtual void	onCaptureLost(EventArgs& e);
-	virtual void	onRenderingStarted(EventArgs& e);
-	virtual void	onRenderingEnded(EventArgs& e);
-	virtual void	onZChanged(EventArgs& e);
-	virtual void	onDestructionStarted(EventArgs& e);
+	/*!
+	\brief
+		Handler called when the window's size changes.
 
-	// passed a WindowEventArgs
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onSized(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's position changes.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onMoved(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's text is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onTextChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's font is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onFontChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's alpha blend value is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onAlphaChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's client assigned ID is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onIDChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window is shown (made visible).
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onShown(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window is hidden.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onHidden(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window is enabled.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onEnabled(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window is disabled.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onDisabled(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's active metrics system is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onMetricsChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's setting for being clipped by it's parent is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onClippingChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's setting for being destroyed automatically be it's parent is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onParentDestroyChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's setting for inheriting alpha-blending is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onInheritsAlphaChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the window's always-on-top setting is changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onAlwaysOnTopChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when this window gains capture of mouse inputs.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onCaptureGained(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when this window loses capture of mouse inputs.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onCaptureLost(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when rendering for this window has started.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onRenderingStarted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when rendering for this window has ended.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onRenderingEnded(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the z-order position of this window has changed.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onZChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when this window's destruction sequence has begun.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that triggered the event.  For this
+		event the trigger window is always 'this'.
+	*/
+	virtual void	onDestructionStarted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when this window has become the active window.
+
+	\param e
+		WindowEventArgs class whose 'window' pointer field is set to the window that previously was active, or NULL for none.
+	*/
 	virtual void	onActivated(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when this window has lost input focus and has been deactivated.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that has now become active, or NULL for none.
+	*/
 	virtual void	onDeactivated(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when this window's parent window has been resized.  If this window is the root / GUI Sheet
+		window, this call will be made when the screen size changes.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set the the window that caused the event; this is typically either
+		this window's parent window, or NULL to indicate the screen size has changed.
+	*/
 	virtual void	onParentSized(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a child window is added to this window.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set to the window that has been added.
+	*/
 	virtual void	onChildAdded(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a child window is removed from this window.
+
+	\param e
+		WindowEventArgs object whose 'window' pointer field is set the window that has been removed.
+	*/
 	virtual void	onChildRemoved(WindowEventArgs& e);
 
-	// passed a MouseEventArgs
+
+	/*!
+	\brief
+		Handler called when the mouse cursor has entered this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseEnters(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the mouse cursor has left this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseLeaves(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the mouse cursor has been moved within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseMove(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the mouse wheel (z-axis) position changes within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseWheel(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a mouse button has been depressed within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a mouse button has been released within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a mouse button has been clicked (that is depressed and then released, within a specified time)
+		within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseClicked(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a mouse button has been double-clicked within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a mouse button has been triple-clicked within this window's area.
+
+	\param e
+		MouseEventArgs object.  All fields are valid.
+	*/
 	virtual void	onMouseTripleClicked(MouseEventArgs& e);
 
-	// passed a KeyEventArgs
+
+	/*!
+	\brief
+		Handler called when a key as been depressed while this window has input focus.
+
+	\param e
+		KeyEventArgs object whose 'scancode' field is set to the Key::Scan value representing the key that was pressed, and whose
+		'sysKeys' field represents the combination of SystemKey that were active when the event was generated.
+	*/
 	virtual void	onKeyDown(KeyEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a key as been released while this window has input focus.
+
+	\param e
+		KeyEventArgs object whose 'scancode' field is set to the Key::Scan value representing the key that was released, and whose
+		'sysKeys' field represents the combination of SystemKey that were active when the event was generated.  All other fields should be
+		considered as 'junk'.
+	*/
 	virtual void	onKeyUp(KeyEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when a character-key has been pressed while this window has input focus.
+
+	\param e
+		KeyEventArgs object whose 'codepoint' field is set to the Unicode code point (encoded as utf32) for the character typed, and whose
+		'sysKeys' field represents the combination of SystemKey that were active when the event was generated.  All other fields should be
+		considered as 'junk'.
+	*/
 	virtual void	onCharacter(KeyEventArgs& e);
 
 

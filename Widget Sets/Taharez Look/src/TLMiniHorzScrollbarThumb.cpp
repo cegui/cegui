@@ -143,7 +143,7 @@ void TLMiniHorzScrollbarThumb::drawDisabled(float z)
 /*************************************************************************
 	Handler for when size changes
 *************************************************************************/
-void TLMiniHorzScrollbarThumb::onSized(EventArgs& e)
+void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 {
 	// We want to keep this thumb's aspect the same, so when the size
 	// changes, we modify the width in relation to the height (since that is

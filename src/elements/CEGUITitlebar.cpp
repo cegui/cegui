@@ -165,7 +165,7 @@ void Titlebar::onMouseDoubleClicked(MouseEventArgs& e)
 /*************************************************************************
 	Handler for if the window loses capture of the mouse.
 *************************************************************************/
-void Titlebar::onCaptureLost(EventArgs& e)
+void Titlebar::onCaptureLost(WindowEventArgs& e)
 {
 	// Base class processing
 	Window::onCaptureLost(e);

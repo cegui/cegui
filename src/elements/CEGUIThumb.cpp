@@ -251,7 +251,7 @@ void Thumb::onMouseButtonDown(MouseEventArgs& e)
 /*************************************************************************
 	Handler for event triggered when we lose capture of mouse input
 *************************************************************************/
-void Thumb::onCaptureLost(EventArgs& e)
+void Thumb::onCaptureLost(WindowEventArgs& e)
 {
 	// default handling
 	PushButton::onCaptureLost(e);

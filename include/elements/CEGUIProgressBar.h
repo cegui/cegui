@@ -166,7 +166,7 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	float	d_progress;		//!< current progress (from 0 to 100)
+	float	d_progress;		//!< current progress (from 0.0f to 1.0f)
 	float	d_step;			//!< amount to 'step' progress by on a call to step()
 };
 

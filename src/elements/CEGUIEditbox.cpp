@@ -299,7 +299,7 @@ void Editbox::setMaxTextLength(ulong max_len)
 		if (d_text.length() > d_maxTextLen)
 		{
 			d_text.resize(d_maxTextLen);
-			onTextChanged(EventArgs());
+			onTextChanged(WindowEventArgs(this));
 
 			// see if new text is valid
 			if (!isTextValid())
@@ -346,7 +346,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 			d_text.erase(getSelectionStartIndex(), getSelectionLength());
 
 			// trigger notification that text has changed.
-			onTextChanged(EventArgs());
+			onTextChanged(WindowEventArgs(this));
 		}
 
 	}
@@ -477,7 +477,7 @@ void Editbox::onMouseMove(MouseEventArgs& e)
 /*************************************************************************
 	Handler for when input capture is lost
 *************************************************************************/
-void Editbox::onCaptureLost(EventArgs& e)
+void Editbox::onCaptureLost(WindowEventArgs& e)
 {
 	d_dragging = false;
 

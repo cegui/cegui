@@ -31,6 +31,8 @@
 #include "../Widget Sets/Taharez Look/include/TLButton.h"
 #include "CEGUIFont.h"
 
+#include <boost/bind.hpp>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -236,7 +238,7 @@ void TLFrameWindow::drawSelf(float z)
 /*************************************************************************
 	Handler called when window is sized
 *************************************************************************/
-void TLFrameWindow::onSized(EventArgs& e)
+void TLFrameWindow::onSized(WindowEventArgs& e)
 {
 	// MUST call base class handler no matter what.  This is now required 100%
 	FrameWindow::onSized(e);
@@ -287,7 +289,7 @@ void TLFrameWindow::onSized(EventArgs& e)
 /*************************************************************************
 	Handler for alpha value changes
 *************************************************************************/
-void TLFrameWindow::onAlphaChanged(EventArgs& e)
+void TLFrameWindow::onAlphaChanged(WindowEventArgs& e)
 {
 	FrameWindow::onAlphaChanged(e);
 
@@ -327,6 +329,48 @@ void TLFrameWindow::storeFrameSizes(void)
 Rect TLFrameWindow::getSizingRect(void) const
 {
 	return d_frame.getRect();
+}
+
+
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void TLFrameWindow::initialise(void)
+{
+	// Call base class to create component widgets and "do whatever"
+	FrameWindow::initialise();
+
+	// subscribe to enable/disable events on title bar since we need something a little more than that.
+	d_titlebar->subscribeEvent(Window::DisabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentDisabledHandler, this, _1));
+	d_titlebar->subscribeEvent(Window::EnabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentEnabledHandler, this, _1));
+
+	// subscribe to enable/disable events on close button since we need something a little more than that.
+	d_closeButton->subscribeEvent(Window::DisabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentDisabledHandler, this, _1));
+	d_closeButton->subscribeEvent(Window::EnabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentEnabledHandler, this, _1));
+}
+
+
+/*************************************************************************
+	handler used for when the title bar or close button are disabled.	
+*************************************************************************/
+void TLFrameWindow::componentDisabledHandler(const EventArgs& e)
+{
+	((WindowEventArgs&)e).window->hide();
+
+	// update for possible changed frame size and layout
+	onSized(WindowEventArgs(this));
+}
+
+
+/*************************************************************************
+	handler used for when the title bar or close button are enabled.
+*************************************************************************/
+void TLFrameWindow::componentEnabledHandler(const EventArgs& e)
+{
+	((WindowEventArgs&)e).window->show();
+
+	// update for possible changed frame size and layout
+	onSized(WindowEventArgs(this));
 }
 
 

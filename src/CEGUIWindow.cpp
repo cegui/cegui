@@ -144,7 +144,7 @@ bool Window::isDisabled(void) const
 {
 	bool parDisabled = (d_parent == NULL) ? false : d_parent->isDisabled();
 
-	return (!d_enabled) && parDisabled;
+	return (!d_enabled) || parDisabled;
 }
 
 
@@ -689,7 +689,7 @@ void Window::setAlwaysOnTop(bool setting)
 			onZChange_impl();
 		}
 
-		onAlwaysOnTopChanged(EventArgs());
+		onAlwaysOnTopChanged(WindowEventArgs(this));
 	}
 
 }
@@ -705,7 +705,7 @@ void Window::setEnabled(bool setting)
 	if (d_enabled != setting)
 	{
 		d_enabled = setting;
-		d_enabled ? onEnabled(EventArgs()) : onDisabled(EventArgs());
+		d_enabled ? onEnabled(WindowEventArgs(this)) : onDisabled(WindowEventArgs(this));
 	}
 
 }
@@ -720,7 +720,7 @@ void Window::setVisible(bool setting)
 	if (d_visible != setting)
 	{
 		d_visible = setting;
-		d_visible ? onShown(EventArgs()) : onHidden(EventArgs());
+		d_visible ? onShown(WindowEventArgs(this)) : onHidden(WindowEventArgs(this));
 	}
 
 }
@@ -745,7 +745,7 @@ void Window::setClippedByParent(bool setting)
 	if (d_clippedByParent != setting)
 	{
 		d_clippedByParent = setting;
-		onClippingChanged(EventArgs());
+		onClippingChanged(WindowEventArgs(this));
 	}
 
 }
@@ -757,7 +757,7 @@ void Window::setClippedByParent(bool setting)
 void Window::setText(const String& text)
 {
 	d_text = text;
-	onTextChanged(EventArgs());
+	onTextChanged(WindowEventArgs(this));
 }
 
 
@@ -804,7 +804,7 @@ void Window::setSize(const Size& size)
 		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
 	}
 
-	onSized(EventArgs());
+	onSized(WindowEventArgs(this));
 }
 
 
@@ -847,7 +847,7 @@ void Window::setPosition(const Point& position)
 		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
 	}
 
-	onMoved(EventArgs());
+	onMoved(WindowEventArgs(this));
 }
 
 
@@ -873,8 +873,8 @@ void Window::setAreaRect(const Rect& area)
 		d_rel_area = absoluteToRelative_impl(d_parent, area);
 	}
 
-	onMoved(EventArgs());
-	onSized(EventArgs());
+	onMoved(WindowEventArgs(this));
+	onSized(WindowEventArgs(this));
 }
 
 
@@ -884,7 +884,7 @@ void Window::setAreaRect(const Rect& area)
 void Window::setFont(const Font* font)
 {
 	d_font = font;
-	onFontChanged(EventArgs());
+	onFontChanged(WindowEventArgs(this));
 }
 
 
@@ -1094,14 +1094,14 @@ void Window::captureInput(void)
 
 	// inform any window which previously had capture that it doesn't anymore!
 	if ((current_capture != NULL) && (current_capture != this) && (!d_restoreOldCapture)) {
-		current_capture->onCaptureLost(EventArgs());
+		current_capture->onCaptureLost(WindowEventArgs(this));
 	}
 
 	if (d_restoreOldCapture) {
 		d_oldCapture = current_capture;
 	}
 
-	onCaptureGained(EventArgs());
+	onCaptureGained(WindowEventArgs(this));
 }
 
 
@@ -1131,7 +1131,7 @@ void Window::releaseInput(void)
 		d_captureWindow = NULL;
 	}
 
-	onCaptureLost(EventArgs());
+	onCaptureLost(WindowEventArgs(this));
 }
 
 
@@ -1139,7 +1139,7 @@ void Window::releaseInput(void)
 	Set whether this window will remember and restore the previous window
 	that had inputs captured.
 *************************************************************************/
-void Window::setRestoreCaptue(bool setting)
+void Window::setRestoreCapture(bool setting)
 {
 	d_restoreOldCapture = setting;
 
@@ -1147,7 +1147,7 @@ void Window::setRestoreCaptue(bool setting)
 
 	for (uint i = 0; i < child_count; ++i)
 	{
-		d_children[i]->setRestoreCaptue(setting);
+		d_children[i]->setRestoreCapture(setting);
 	}
 
 }
@@ -1159,7 +1159,7 @@ void Window::setRestoreCaptue(bool setting)
 void Window::setAlpha(float alpha)
 {
 	d_alpha = alpha;
-	onAlphaChanged(EventArgs());
+	onAlphaChanged(WindowEventArgs(this));
 }
 
 
@@ -1169,7 +1169,7 @@ void Window::setAlpha(float alpha)
 void Window::setInheritsAlpha(bool setting)
 {
 	d_inheritsAlpha = setting;
-	onInheritsAlphaChanged(EventArgs());
+	onInheritsAlphaChanged(WindowEventArgs(this));
 }
 
 
@@ -1683,17 +1683,15 @@ void Window::onZChange_impl(void)
 {
 	if (d_parent == NULL)
 	{
-		onZChanged(EventArgs());
+		onZChanged(WindowEventArgs(this));
 	}
 	else
 	{
-		EventArgs	nullArgs;
-
 		uint child_count = d_parent->getChildCount();
 
 		for (uint i = 0; i < child_count; ++i)
 		{
-			d_parent->d_children[i]->onZChanged(nullArgs);
+			d_parent->d_children[i]->onZChanged(WindowEventArgs(d_parent->d_children[i]));
 		}
 
 	}
@@ -1971,7 +1969,7 @@ void Window::setMinimumSize(const Size& sz)
 	// if size has changed, trigger notifications
 	if (old_sz != d_abs_area)
 	{
-		onSized(EventArgs());
+		onSized(WindowEventArgs(this));
 	}
 
 }
@@ -2000,7 +1998,7 @@ void Window::setMaximumSize(const Size& sz)
 	// if size has changed, trigger notifications
 	if (old_sz != d_abs_area)
 	{
-		onSized(EventArgs());
+		onSized(WindowEventArgs(this));
 	}
 
 }
@@ -2042,7 +2040,7 @@ void Window::setMouseCursor(const String& imageset, const String& image_name)
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 
-void Window::onSized(EventArgs& e)
+void Window::onSized(WindowEventArgs& e)
 {
 	// inform children their parent has been re-sized
 	uint child_count = getChildCount();
@@ -2058,28 +2056,28 @@ void Window::onSized(EventArgs& e)
 }
 
 
-void Window::onMoved(EventArgs& e)
+void Window::onMoved(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(MovedEvent, e);
 }
 
 
-void Window::onTextChanged(EventArgs& e)
+void Window::onTextChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(TextChangedEvent, e);
 }
 
 
-void Window::onFontChanged(EventArgs& e)
+void Window::onFontChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(FontChangedEvent, e);
 }
 
 
-void Window::onAlphaChanged(EventArgs& e)
+void Window::onAlphaChanged(WindowEventArgs& e)
 {
 	// scan child list and call this method for all children that inherit alpha
 	int child_count = getChildCount();
@@ -2098,80 +2096,80 @@ void Window::onAlphaChanged(EventArgs& e)
 }
 
 
-void Window::onIDChanged(EventArgs& e)
+void Window::onIDChanged(WindowEventArgs& e)
 {
 	fireEvent(IDChangedEvent, e);
 }
 
 
-void Window::onShown(EventArgs& e)
+void Window::onShown(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ShownEvent, e);
 }
 
 
-void Window::onHidden(EventArgs& e)
+void Window::onHidden(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(HiddenEvent, e);
 }
 
 
-void Window::onEnabled(EventArgs& e)
+void Window::onEnabled(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(EnabledEvent, e);
 }
 
 
-void Window::onDisabled(EventArgs& e)
+void Window::onDisabled(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(DisabledEvent, e);
 }
 
 
-void Window::onMetricsChanged(EventArgs& e)
+void Window::onMetricsChanged(WindowEventArgs& e)
 {
 	fireEvent(MetricsChangedEvent, e);
 }
 
 
-void Window::onClippingChanged(EventArgs& e)
+void Window::onClippingChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ClippingChangedEvent, e);
 }
 
 
-void Window::onParentDestroyChanged(EventArgs& e)
+void Window::onParentDestroyChanged(WindowEventArgs& e)
 {
 	fireEvent(ParentDestroyChangedEvent, e);
 }
 
 
-void Window::onInheritsAlphaChanged(EventArgs& e)
+void Window::onInheritsAlphaChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(InheritsAlphaChangedEvent, e);
 }
 
 
-void Window::onAlwaysOnTopChanged(EventArgs& e)
+void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(AlwaysOnTopChangedEvent, e);
 }
 
 
-void Window::onCaptureGained(EventArgs& e)
+void Window::onCaptureGained(WindowEventArgs& e)
 {
 	fireEvent(CaptureGainedEvent, e);
 }
 
 
-void Window::onCaptureLost(EventArgs& e)
+void Window::onCaptureLost(WindowEventArgs& e)
 {
 	// handle restore of previous capture window as required.
 	if (d_restoreOldCapture && (d_oldCapture != NULL)) {
@@ -2187,26 +2185,26 @@ void Window::onCaptureLost(EventArgs& e)
 }
 
 
-void Window::onRenderingStarted(EventArgs& e)
+void Window::onRenderingStarted(WindowEventArgs& e)
 {
 	fireEvent(RenderingStartedEvent, e);
 }
 
 
-void Window::onRenderingEnded(EventArgs& e)
+void Window::onRenderingEnded(WindowEventArgs& e)
 {
 	fireEvent(RenderingEndedEvent, e);
 }
 
 
-void Window::onZChanged(EventArgs& e)
+void Window::onZChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ZChangedEvent, e);
 }
 
 
-void Window::onDestructionStarted(EventArgs& e)
+void Window::onDestructionStarted(WindowEventArgs& e)
 {
 	fireEvent(DestructionStartedEvent, e);
 }
@@ -2249,15 +2247,19 @@ void Window::onParentSized(WindowEventArgs& e)
 		// Check new absolute size and limit to currently set max/min values.  This does not affect relative co-ordinates
 		// which must 'recover' after window is again sized so normal relativity can take over.
 		d_abs_area.constrainSize(d_maxSize, d_minSize);
+
+		// perform notifications
+		onMoved(WindowEventArgs(this));
+		onSized(WindowEventArgs(this));
+
+		// call for a redraw
+		requestRedraw();
 	}
 	else
 	{
 		d_rel_area = absoluteToRelative_impl(d_parent, d_abs_area);
 	}
 
-	onSized(EventArgs());
-
-	requestRedraw();
 	fireEvent(ParentSized, e);
 }
 

@@ -107,6 +107,19 @@ public:
 
 	/*!
 	\brief
+		Initialises the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
+
+
+	/*!
+	\brief
 		Return a Rect object that describes, unclipped, the inner rectangle for this window.  The inner rectangle is
 		typically an area that excludes some frame or other rendering that should not be touched by subsequent rendering.
 
@@ -120,8 +133,8 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual void	onSized(EventArgs& e);
-	virtual void	onAlphaChanged(EventArgs& e);
+	virtual void	onSized(WindowEventArgs& e);
+	virtual void	onAlphaChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -182,6 +195,20 @@ protected:
 		Return a Rect that describes, in window relative pixel co-ordinates, the outer edge of the sizing area for this window.
 	*/
 	virtual	Rect	getSizingRect(void) const;
+
+
+	/*!
+	\brief
+		handler used for when the title bar or close button are disabled.
+	*/
+	void	componentDisabledHandler(const EventArgs& e);
+
+
+	/*!
+	\brief
+		handler used for when the title bar or close button are enabled.
+	*/
+	void	componentEnabledHandler(const EventArgs& e);
 
 
 	/*************************************************************************

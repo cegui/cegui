@@ -225,7 +225,7 @@ void TLAlternateProgressBar::drawSelf(float z)
 /*************************************************************************
 	handler called when widget is sized
 *************************************************************************/
-void TLAlternateProgressBar::onSized(EventArgs& e)
+void TLAlternateProgressBar::onSized(WindowEventArgs& e)
 {
 	// default handling
 	ProgressBar::onSized(e);

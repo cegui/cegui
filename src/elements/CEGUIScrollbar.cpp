@@ -197,7 +197,7 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
 /*************************************************************************
 	Handler for when widget is re-sized
 *************************************************************************/
-void Scrollbar::onSized(EventArgs& e)
+void Scrollbar::onSized(WindowEventArgs& e)
 {
 	// base class processing
 	Window::onSized(e);

@@ -143,7 +143,7 @@ void TLMiniVertScrollbarThumb::drawDisabled(float z)
 /*************************************************************************
 	Handler for when size changes
 *************************************************************************/
-void TLMiniVertScrollbarThumb::onSized(EventArgs& e)
+void TLMiniVertScrollbarThumb::onSized(WindowEventArgs& e)
 {
 	// We want to keep this thumb's aspect the same, so when the size
 	// changes, we modify the height in relation to the width (since that is

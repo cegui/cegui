@@ -458,7 +458,7 @@ void TLButton::setCustomImageryAutoSized(bool setting)
 /*************************************************************************
 	Handler for when button size is changed
 *************************************************************************/
-void TLButton::onSized(EventArgs& e)
+void TLButton::onSized(WindowEventArgs& e)
 {
 	// default processing
 	PushButton::onSized(e);

@@ -106,7 +106,7 @@ protected:
 	\brief
 		handler called when widget is sized
 	*/
-	virtual void	onSized(EventArgs& e);
+	virtual void	onSized(WindowEventArgs& e);
 
 
 	/*************************************************************************

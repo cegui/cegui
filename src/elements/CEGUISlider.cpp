@@ -167,7 +167,7 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 /*************************************************************************
 	Handler for when the size of the slider widget changes.
 *************************************************************************/
-void Slider::onSized(EventArgs& e)
+void Slider::onSized(WindowEventArgs& e)
 {
 	// base class processing
 	Window::onSized(e);

@@ -124,7 +124,7 @@ public:
 	\return
 		uint value equal to the number of Image objects defined for the Imageset
 	*/
-	uint		getImageCount(void) const					{return d_images.size();}
+	uint      getImageCount(void) const               {return (uint)d_images.size();}
 
  
 	/*!

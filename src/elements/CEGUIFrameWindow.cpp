@@ -251,7 +251,7 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onMoved(EventArgs());
+	onMoved(WindowEventArgs(this));
 }
 
 
@@ -264,52 +264,64 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 {
 	Rect	frame(getSizingRect());
 
-	// return none if point is not inside the outer edge
-	if (!frame.isPointInRect(pt)) {
-		return SizingNone;
+	// we can only size if the frame is enabled and sizing is on
+	if (isSizingEnabled() && isFrameEnabled())
+	{
+		// point must be inside the outer edge
+		if (frame.isPointInRect(pt))
+		{
+			// adjust rect to get inner edge
+			frame.d_left	+= d_borderSize;
+			frame.d_top		+= d_borderSize;
+			frame.d_right	-= d_borderSize;
+			frame.d_bottom	-= d_borderSize;
+
+			// detect which edges we are on
+			bool top	= (pt.d_y < frame.d_top);
+			bool bottom = (pt.d_y >= frame.d_bottom);
+			bool left	= (pt.d_x < frame.d_left);
+			bool right	= (pt.d_x >= frame.d_right);
+
+			// return appropriate 'SizingLocation' value
+			if (top && left)
+			{
+				return SizingTopLeft;
+			}
+			else if (top && right)
+			{
+				return SizingTopRight;
+			}
+			else if (bottom && left)
+			{
+				return SizingBottomLeft;
+			}
+			else if (bottom && right)
+			{
+				return SizingBottomRight;
+			}
+			else if (top)
+			{
+				return SizingTop;
+			}
+			else if (bottom)
+			{
+				return SizingBottom;
+			}
+			else if (left)
+			{
+				return SizingLeft;
+			}
+			else if (right)
+			{
+				return SizingRight;
+			}
+
+		}
+
 	}
 
-	// adjust rect to get inner edge
-	frame.d_left	+= d_borderSize;
-	frame.d_top		+= d_borderSize;
-	frame.d_right	-= d_borderSize;
-	frame.d_bottom	-= d_borderSize;
-
-	// detect which edges we are on
-	bool top	= (pt.d_y < frame.d_top);
-	bool bottom = (pt.d_y >= frame.d_bottom);
-	bool left	= (pt.d_x < frame.d_left);
-	bool right	= (pt.d_x >= frame.d_right);
-
-	// return appropriate 'SizingLocation' value
-	if (top && left) {
-		return SizingTopLeft;
-	}
-	else if (top && right) {
-		return SizingTopRight;
-	}
-	else if (bottom && left) {
-		return SizingBottomLeft;
-	}
-	else if (bottom && right) {
-		return SizingBottomRight;
-	}
-	else if (top) {
-		return SizingTop;
-	}
-	else if (bottom) {
-		return SizingBottom;
-	}
-	else if (left) {
-		return SizingLeft;
-	}
-	else if (right) {
-		return SizingRight;
-	}
-	else {
-		return SizingNone;
-	}
-
+	// deafult: None.
+	return SizingNone;
 }
 
 
@@ -334,7 +346,8 @@ void FrameWindow::moveLeftEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onSized(EventArgs());
+	onMoved(WindowEventArgs(this));
+	onSized(WindowEventArgs(this));
 }
 
 
@@ -360,7 +373,7 @@ void FrameWindow::moveRightEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onSized(EventArgs());
+	onSized(WindowEventArgs(this));
 }
 
 
@@ -385,7 +398,8 @@ void FrameWindow::moveTopEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onSized(EventArgs());
+	onMoved(WindowEventArgs(this));
+	onSized(WindowEventArgs(this));
 }
 
 
@@ -411,7 +425,7 @@ void FrameWindow::moveBottomEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onSized(EventArgs());
+	onSized(WindowEventArgs(this));
 }
 
 
@@ -613,7 +627,7 @@ void FrameWindow::onMouseButtonUp(MouseEventArgs& e)
 /*************************************************************************
 	Handler for when mouse capture is lost
 *************************************************************************/
-void FrameWindow::onCaptureLost(EventArgs& e)
+void FrameWindow::onCaptureLost(WindowEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
 	Window::onCaptureLost(e);
@@ -628,7 +642,7 @@ void FrameWindow::onCaptureLost(EventArgs& e)
 /*************************************************************************
 	Handler for when frame window is re-sized
 *************************************************************************/
-void FrameWindow::onSized(EventArgs& e)
+void FrameWindow::onSized(WindowEventArgs& e)
 {
 	if (isRolledup())
 	{

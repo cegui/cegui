@@ -94,6 +94,8 @@ void ProgressBar::addProgressBarEvents(void)
 *************************************************************************/
 void ProgressBar::onProgressChanged(WindowEventArgs& e)
 {
+	requestRedraw();
+
 	fireEvent(ProgressChanged, e);
 }
 
