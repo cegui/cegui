@@ -143,7 +143,7 @@ void WLTitlebar::drawSelf(float z)
 	//
 	// Draw the title text
 	//
-	colours.setColours(CaptionColour);
+	colours.setColours(d_captionColour);
 	colours.setAlpha(alpha_comp);
 
 	Rect textClipper(clipper);
