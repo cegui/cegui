@@ -27,6 +27,12 @@
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
 #include "CEGUIFont.h"
+#include "CEGUIFontManager_implData.h"
+#include "CEGUIFont_implData.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,7 +50,9 @@ template<> FontManager* Singleton<FontManager>::ms_Singleton	= NULL;
 *************************************************************************/
 FontManager::FontManager(void)
 {
-	if (FT_Init_FreeType(&d_ftlib))
+	d_implData = new FontManagerImplData;
+
+	if (FT_Init_FreeType(&d_implData->d_ftlib))
 	{
 		throw GenericException((utf8*)"FontManager::FontManager - Failed to initialise the FreeType library.");
 	}
@@ -61,7 +69,8 @@ FontManager::~FontManager(void)
 	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of Font system ----");
 	destroyAllFonts();
 
-	FT_Done_FreeType(d_ftlib);
+	FT_Done_FreeType(d_implData->d_ftlib);
+	delete d_implData;
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::FontManager singleton destroyed.");
 }
@@ -72,7 +81,7 @@ FontManager::~FontManager(void)
 *************************************************************************/
 Font* FontManager::createFont(const String& filename)
 {
-	Font* temp = new Font(filename);
+	Font* temp = new Font(filename, new Font::FontImplData(d_implData->d_ftlib));
 
 	String name = temp->getName();
 
@@ -102,7 +111,7 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint s
 		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
 	}
 
-	Font* temp = new Font(name, fontname, size, flags);
+	Font* temp = new Font(name, fontname, size, flags, new Font::FontImplData(d_implData->d_ftlib));
 	d_fonts[name] = temp;
 
 	char strbuf[16];

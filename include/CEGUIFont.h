@@ -31,15 +31,13 @@
 #include "CEGUIRect.h"
 #include "CEGUIVector.h"
 #include "CEGUIColourRect.h"
-#include "CEGUIFontManager.h"
 
 #include <map>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-
 /*!
 \brief
 	Enumerated type that contains the valid flags that can be passed to createFont when creating a new font.
@@ -530,9 +528,12 @@ private:
 	/*************************************************************************
 		Friends so that only FontManager can create and destroy font objects
 	*************************************************************************/
-	friend	Font* FontManager::createFont(const String& filename);
-	friend	Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags);
-	friend	void FontManager::destroyFont(const String& name);
+	friend class FontManager;
+
+	/*************************************************************************
+		Private forward refs
+	*************************************************************************/
+	struct FontImplData;
 
 
 	/*************************************************************************
@@ -552,7 +553,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& filename);
+	Font(const String& filename, FontImplData* dat);
 
 
 	/*!
@@ -576,7 +577,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& name, const String& fontname, uint size, uint flags);
+	Font(const String& name, const String& fontname, uint size, uint flags, FontImplData* dat);
 
 
 	/*!
@@ -603,7 +604,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set);
+	Font(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set, FontImplData* dat);
 
 
 	/*!
@@ -633,7 +634,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point);
+	Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat);
 
 
 	/*!
@@ -853,8 +854,7 @@ private:
 	float	d_y_spacing;		//!< Height of font in pixels, a.k.a Line spacing.
 	int		d_max_bearingY;		//!< Maximum bearingY value (gives required spacing down to baseline).
 
-	// FreeType2 related
-	FT_Face		d_face;			//!< FreeType 2 Face structure
+	FontImplData*	d_impldat;	//!< Implementation data
 	uint		d_ptSize;		//!< Point size of font.
 	String		d_glyphset;		//!< set of glyphs for the dynamic font.
 

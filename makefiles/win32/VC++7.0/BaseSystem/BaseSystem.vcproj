@@ -339,10 +339,16 @@
 				RelativePath="..\..\..\..\include\CEGUIFont.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIFont_implData.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIFont_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIFontManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIFontManager_implData.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIForwardRefs.h">

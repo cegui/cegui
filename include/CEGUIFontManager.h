@@ -31,8 +31,6 @@
 #include "CEGUISingleton.h"
 #include <map>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -207,16 +205,6 @@ public:
 	void	notifyScreenResolution(const Size& size);
 
 
-	/*!
-	\brief
-		Return the FreeType library object which is used by the font system
-
-	\return
-		reference to the FT_Library used to read true-type fonts
-	*/
-	FT_Library&	getFreeTypeLibrary(void)		{return d_ftlib;}
-
-
 private:
 	/*************************************************************************
 		Implementation Data
@@ -224,7 +212,8 @@ private:
 	typedef	std::map<String, Font*>		FontRegistry;
 	FontRegistry		d_fonts;
 
-	FT_Library		d_ftlib;		//!< FreeType library;
+	struct FontManagerImplData;
+	FontManagerImplData*	d_implData;
 };
 
 } // End of  CEGUI namespace section

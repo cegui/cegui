@@ -33,6 +33,7 @@
 #include "CEGUILogger.h"
 #include "CEGUITextUtils.h"
 #include "CEGUIFont_xmlHandler.h"
+#include "CEGUIFont_implData.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -56,8 +57,9 @@ const char	Font::FontSchemaName[]				= "Font.xsd";
 /*************************************************************************
 	Constructs a new Font object from a font definition file
 *************************************************************************/
-Font::Font(const String& filename)
+Font::Font(const String& filename, FontImplData* dat)
 {
+	d_impldat = dat;
 	d_freetype = false;
 	d_glyph_images = NULL;
 
@@ -77,8 +79,9 @@ Font::Font(const String& filename)
 	'glyph-set' describes the set of code points to be available via
 	this font
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set)
+Font::Font(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set, FontImplData* dat)
 {
+	d_impldat = dat;
 	d_freetype = false;
 	d_glyph_images = NULL;
 
@@ -95,8 +98,9 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, co
 	[first_code_point, last_code_point] describes the range of code
 	points to be available via this font
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point)
+Font::Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat)
 {
+	d_impldat = dat;
 	d_freetype = false;
 	d_glyph_images = NULL;
 
@@ -119,8 +123,9 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, ut
 	Constructs a new Font object (via FreeType & a true-type font file)
 	The font file will provide support for 7-bit ASCII characters only
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, uint size, uint flags)
+Font::Font(const String& name, const String& fontname, uint size, uint flags, FontImplData* dat)
 {
+	d_impldat = dat;
 	d_freetype = false;
 	d_glyph_images = NULL;
 
@@ -145,6 +150,7 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags)
 Font::~Font(void)
 {
 	unload();
+	delete d_impldat;
 }
 
 
@@ -272,7 +278,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 {
 	uint	texSize = 32;			// start with a texture this size
 
-	uint	height = ((d_face->bbox.yMax - d_face->bbox.yMin) / d_face->units_per_EM) * (d_face->size->metrics.y_ppem) + InterGlyphPadSpace;
+	uint	height = ((d_impldat->fontFace->bbox.yMax - d_impldat->fontFace->bbox.yMin) / d_impldat->fontFace->units_per_EM) * (d_impldat->fontFace->size->metrics.y_ppem) + InterGlyphPadSpace;
 	uint	width;
 
 	uint	cur_x = 0;
@@ -283,13 +289,13 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
 		// load-up required glyph
-		if (FT_Load_Char(d_face, glyph_set[i], FT_LOAD_RENDER))
+		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER))
 		{
 			// skip errors
 			continue;
 		}
 
-		width = d_face->glyph->bitmap.width + InterGlyphPadSpace;
+		width = d_impldat->fontFace->glyph->bitmap.width + InterGlyphPadSpace;
 		cur_x += width;
 
 		// check for fit
@@ -325,20 +331,20 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 	Rect	rect;
 	Point	offset;
 
-	FT_GlyphSlot glyph = d_face->glyph;
+	FT_GlyphSlot glyph = d_impldat->fontFace->glyph;
 
 	d_max_bearingY = 0;
 
 	uint	glyph_set_length = glyph_set.length();
 	uint	cur_x = 0;
 	uint	cur_y = 0;
-	uint	height = ((d_face->bbox.yMax - d_face->bbox.yMin) / d_face->units_per_EM) * (d_face->size->metrics.y_ppem) + InterGlyphPadSpace;
+	uint	height = ((d_impldat->fontFace->bbox.yMax - d_impldat->fontFace->bbox.yMin) / d_impldat->fontFace->units_per_EM) * (d_impldat->fontFace->size->metrics.y_ppem) + InterGlyphPadSpace;
 	uint	width;
 
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
 		// load-up required glyph
-		if (FT_Load_Char(d_face, glyph_set[i], FT_LOAD_RENDER))
+		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER))
 		{
 			// skip errors
 			continue;
@@ -444,7 +450,7 @@ void Font::defineFontGlyphs(utf32 first_code_point, utf32 last_code_point)
 *************************************************************************/
 void Font::drawGlyphToBuffer(ulong* buffer, uint buf_width)
 {
-	FT_Bitmap* glyph_bitmap = &d_face->glyph->bitmap;
+	FT_Bitmap* glyph_bitmap = &d_impldat->fontFace->glyph->bitmap;
 
 	for (int i = 0; i < glyph_bitmap->rows; ++i)
 	{
@@ -557,10 +563,10 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 	String		errMsg;
 
 	// create face using input font
-	if (FT_New_Face(fman.getFreeTypeLibrary(), fontname.c_str(), 0, &d_face) == 0)
+	if (FT_New_Face(d_impldat->library, fontname.c_str(), 0, &d_impldat->fontFace) == 0)
 	{
 		// check that default Unicode character map is available
-		if (d_face->charmap != NULL)	
+		if (d_impldat->fontFace->charmap != NULL)	
 		{
 			try
 			{
@@ -575,7 +581,7 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 				ismgr.destroyImageset(d_glyph_images);
 				d_glyph_images = NULL;
 
-				FT_Done_Face(d_face);
+				FT_Done_Face(d_impldat->fontFace);
 				d_freetype = false;
 
 				// re-throw
@@ -586,7 +592,7 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 		// missing Unicode character map
 		else
 		{
-			FT_Done_Face(d_face);
+			FT_Done_Face(d_impldat->fontFace);
 			d_freetype = false;
 
 			errMsg = (utf8*)"Font::constructor_impl - The source font '" + fontname +"' does not have a Unicode charmap, and cannot be used.";
@@ -701,7 +707,7 @@ void Font::unload(void)
 	// cleanup FreeType face if this is a FreeType based font.
 	if (d_freetype)
 	{
-		FT_Done_Face(d_face);
+		FT_Done_Face(d_impldat->fontFace);
 		d_freetype = false;
 	}
 
@@ -881,7 +887,7 @@ void Font::updateFontScaling(void)
 
 
 /*************************************************************************
-	Set the size of the free-type font (via d_face which should already
+	Set the size of the free-type font (via d_impldat->fontFace which should already
 	be setup) and render the glyphs in d_glyphset.
 *************************************************************************/
 void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
@@ -894,9 +900,9 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 
 	d_ptSize = size;
 
-	if (FT_Set_Char_Size(d_face, 0, d_ptSize * 64, horzDpi, vertDpi) == 0)
+	if (FT_Set_Char_Size(d_impldat->fontFace, 0, d_ptSize * 64, horzDpi, vertDpi) == 0)
 	{
-		d_y_spacing = (float)(d_face->height / d_face->units_per_EM) * d_face->size->metrics.y_ppem;
+		d_y_spacing = (float)(d_impldat->fontFace->height / d_impldat->fontFace->units_per_EM) * d_impldat->fontFace->size->metrics.y_ppem;
 		defineFontGlyphs_impl();
 	}
 	// failed to set size for font
