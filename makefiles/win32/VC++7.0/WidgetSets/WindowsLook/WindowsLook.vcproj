@@ -125,7 +125,7 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx">
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLButton.cpp">
 			</File>
@@ -198,7 +198,7 @@
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd">
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLButton.h">
 			</File>
@@ -271,7 +271,7 @@
 		</Filter>
 		<Filter
 			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx">
 		</Filter>
 	</Files>
 	<Globals>
