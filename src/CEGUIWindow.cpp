@@ -987,9 +987,15 @@ void Window::removeChildWindow(uint ID)
 *************************************************************************/
 void Window::moveToFront()
 {
-	// if the window has no parent then we can have no siblings and have nothing more to do.
+	// if the window has no parent then we can have no siblings
 	if (d_parent == NULL)
 	{
+		// perform initial activation if required.
+		if (!isActive())
+		{
+			onActivated(WindowEventArgs(NULL));
+		}
+
 		return;
 	}
 
