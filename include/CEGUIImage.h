@@ -188,6 +188,37 @@ public:
 
 	/*!
 	\brief
+		Queue the image to be drawn. 
+		
+	\note
+		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
+		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
+		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
+		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+
+	\param position
+		Vector3 object containing the location where the Image is to be drawn
+
+	\param size
+		Size object describing the size that the Image is to be drawn at.
+
+	\param clip_rect
+		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+
+	\param colours
+		ColourRect object that describes the colour values to use for each corner of the Image.
+
+	\return
+		Nothing
+	*/
+	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const ColourRect& colours) const
+	{
+		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, colours);
+	}
+
+
+	/*!
+	\brief
 		Queue the image to be drawn.
 
 	\note
