@@ -3050,6 +3050,9 @@ public:
 	*/
 	size_type	find_first_of(const String& str, size_type idx = 0) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3083,6 +3086,9 @@ public:
 	*/
 	size_type	find_first_not_of(const String& str, size_type idx = 0) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3121,6 +3127,9 @@ public:
 	*/
 	size_type	find_first_of(const std::string& std_str, size_type idx = 0) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3158,6 +3167,9 @@ public:
 	*/
 	size_type	find_first_not_of(const std::string& std_str, size_type idx = 0) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3256,6 +3268,9 @@ public:
 	*/
 	size_type	find_first_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3304,6 +3319,9 @@ public:
 	*/
 	size_type	find_first_not_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3364,6 +3382,9 @@ public:
 	*/
 	size_type	find_first_not_of(utf32 code_point, size_type idx = 0) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (d_cplength < idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
@@ -3399,6 +3420,9 @@ public:
 	*/
 	size_type	find_last_of(const String& str, size_type idx = npos) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (idx == npos)
 			idx = d_cplength - 1;
 
@@ -3435,6 +3459,9 @@ public:
 	*/
 	size_type	find_last_not_of(const String& str, size_type idx = npos) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (idx == npos)
 			idx = d_cplength - 1;
 
@@ -3476,6 +3503,9 @@ public:
 	*/
 	size_type	find_last_of(const std::string& std_str, size_type idx = npos) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (idx == npos)
 			idx = d_cplength - 1;
 
@@ -3516,6 +3546,9 @@ public:
 	*/
 	size_type	find_last_not_of(const std::string& std_str, size_type idx = npos) const
 	{
+		if (d_cplength == 0)
+			return npos;
+
 		if (idx == npos)
 			idx = d_cplength - 1;
 

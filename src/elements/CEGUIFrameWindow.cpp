@@ -497,6 +497,12 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 	// default processing (this is now essential as it controls event firing).
 	Window::onMouseMove(e);
 
+	// if we are not the window containing the mouse, do NOT change the cursor
+	if (System::getSingleton().getWindowContainingMouse() != this)
+	{
+		return;
+	}
+
 	if (isSizingEnabled())
 	{
 		Point localMousePos(screenToWindow(e.position));

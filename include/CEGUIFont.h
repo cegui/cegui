@@ -487,6 +487,19 @@ public:
 	bool	isAutoScaled(void) const		{return d_autoScale;}
 
 
+	/*!
+	\brief
+		Return whether this Font can currently draw the specified code-point
+
+	\param cp
+		utf32 code point that is the subject of the query.
+
+	\return
+		true if the font contains a mapping for code point \a cp, false if it does not contain a mapping for \a cp.
+	*/
+	bool	isCodepointAvailable(utf32 cp) const		{return (d_cp_map.find(cp) != d_cp_map.end());}
+
+
 private:
 	/*************************************************************************
 		Implementation Constants

@@ -136,18 +136,6 @@ void TLTitlebar::drawSelf(float z)
 }
 
 
-/*************************************************************************
-	Handler for mouse move events.
-*************************************************************************/
-void TLTitlebar::onMouseMove(MouseEventArgs& e)
-{
-	Titlebar::onMouseMove(e);
-
-	// simply mark as handled to stop parent getting the message
-	e.handled = true;
-}
-
-
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 

@@ -405,6 +405,21 @@ void System::injectMouseButtonUp(MouseButton button)
 *************************************************************************/
 void System::injectKeyDown(uint key_code)
 {
+	if (d_activeSheet != NULL)
+	{
+		KeyEventArgs args;
+		args.scancode = (Key::Scan)key_code;
+
+		Window* dest = d_activeSheet->getActiveChild();
+
+		while ((dest != NULL) && (!args.handled))
+		{
+			dest->onKeyDown(args);
+			dest = dest->getParent();
+		}
+
+	}
+
 }
 
 
@@ -413,6 +428,21 @@ void System::injectKeyDown(uint key_code)
 *************************************************************************/
 void System::injectKeyUp(uint key_code)
 {
+	if (d_activeSheet != NULL)
+	{
+		KeyEventArgs args;
+		args.scancode = (Key::Scan)key_code;
+
+		Window* dest = d_activeSheet->getActiveChild();
+
+		while ((dest != NULL) && (!args.handled))
+		{
+			dest->onKeyUp(args);
+			dest = dest->getParent();
+		}
+
+	}
+
 }
 
 
@@ -421,6 +451,21 @@ void System::injectKeyUp(uint key_code)
 *************************************************************************/
 void System::injectChar(utf32 code_point)
 {
+	if (d_activeSheet != NULL)
+	{
+		KeyEventArgs args;
+		args.codepoint = code_point;
+
+		Window* dest = d_activeSheet->getActiveChild();
+
+		while ((dest != NULL) && (!args.handled))
+		{
+			dest->onCharacter(args);
+			dest = dest->getParent();
+		}
+		
+	}
+
 }
 
 

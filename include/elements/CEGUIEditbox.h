@@ -28,6 +28,8 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include <boost/regex.hpp>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -35,10 +37,366 @@ namespace CEGUI
 
 /*!
 \brief
-
+	Base class for an Editbox widget
 */
-class Editbox : public Window
+class CEGUIBASE_API Editbox : public Window
 {
+public:
+	/*************************************************************************
+		Event name constants
+	*************************************************************************/
+
+
+
+	/*************************************************************************
+		Accessor Functions
+	*************************************************************************/
+	/*!
+	\brief
+		return true if the Editbox has input focus.
+
+	\return
+		true if the Editbox has keyboard input focus, false if the Editbox does not have keyboard input focus.
+	*/
+	bool	hasInputFocus(void) const;
+
+
+	/*!
+	\brief
+		return true if the Editbox is read-only.
+
+	\return
+		true if the Editbox is read only and can't be edited by the user, false if the Editbox is not
+		read only and may be edited by the user.
+	*/
+	bool	isReadOnly(void) const		{return d_readOnly;}
+
+
+	/*!
+	\brief
+		return true if the text for the Editbox will be rendered masked.
+
+	\return
+		true if the Editbox text will be rendered masked using the currently set mask code point, false if the Editbox
+		text will be rendered as plain text.
+	*/
+	bool	isTextMasked(void) const	{return	d_maskText;}
+
+
+	/*!
+	\brief
+		return true if the Editbox text is valid given the currently set validation string.
+
+	\note
+		It is possible to programmatically set 'invalid' text for the Editbox by calling setText.  This has certain
+		implications since if invalid text is set, whatever the user types into the box will be rejected when the input
+		is validated.
+
+	\note
+		Validation is performed by means of a regular expression.  If the text matches the regex, the text is said to have passed
+		validation.  If the text does not match with the regex then the text fails validation.
+
+	\return
+		true if the current Editbox text passes validation, false if the text does not pass validation.
+	*/
+	bool	isTextValid(void) const;
+
+
+	/*!
+	\brief
+		return the currently set validation string
+
+	\note
+		Validation is performed by means of a regular expression.  If the text matches the regex, the text is said to have passed
+		validation.  If the text does not match with the regex then the text fails validation.
+
+	\return
+		String object containing the current validation regex data
+	*/
+	// TODO: Fix me.
+	const String&	getValidationString(void) const		{return d_text;}
+
+
+	/*!
+	\brief
+		return the current position of the carat.
+
+	\return
+		Index of the insert carat relative to the start of the text.
+	*/
+	ulong	getCaratIndex(void) const		{return d_caratPos;}
+
+
+	/*!
+	\brief
+		return the current selection start point.
+
+	\return
+		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
+		the position of the carat.
+	*/
+	ulong	getSelectionStartIndex(void) const;
+
+
+	/*!
+	\brief
+		return the current selection end point.
+
+	\return
+		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
+		the position of the carat.
+	*/
+	ulong	getSelectionEndIndex(void) const;
+
+	
+	/*!
+	\brief
+		return the length of the current selection (in code points / characters).
+
+	\return
+		Number of code points (or characters) contained within the currently defined selection.
+	*/
+	ulong	getSelectionLength(void) const;
+
+
+	/*!
+	\brief
+		return the utf32 code point used when rendering masked text.
+
+	\return
+		utf32 code point value representing the Unicode code point that will be rendered instead of the Editbox text
+		when rendering in masked mode.
+	*/
+	utf32	getMaskCodePoint(void) const		{return d_maskCodePoint;}
+
+
+	/*!
+	\brief
+		return the maximum text length set for this Editbox.
+
+	\return
+		The maximum number of code points (characters) that can be entered into this Editbox.
+
+	\note
+		Depending on the validation string set, the actual length of text that can be entered may be less than the value
+		returned here (it will never be more).
+	*/
+	ulong	getMaxTextLength(void) const		{return d_maxTextLen;}
+
+
+	/*************************************************************************
+		Manipulators
+	*************************************************************************/
+	/*!
+	\brief
+		Specify whether the Editbox is read-only.
+
+	\param setting
+		true if the Editbox is read only and can't be edited by the user, false if the Editbox is not
+		read only and may be edited by the user.
+
+	\return
+		Nothing.
+	*/
+	void	setReadOnly(bool setting);
+
+
+	/*!
+	\brief
+		Specify whether the text for the Editbox will be rendered masked.
+
+	\param setting
+		true if the Editbox text should be rendered masked using the currently set mask code point, false if the Editbox
+		text should be rendered as plain text.
+
+	\return
+		Nothing.
+	*/
+	void	setTextMasked(bool setting);
+
+
+	/*!
+	\brief
+		Set the text validation string.
+
+	\note
+		Validation is performed by means of a regular expression.  If the text matches the regex, the text is said to have passed
+		validation.  If the text does not match with the regex then the text fails validation.
+
+	\param validation_string
+		String object containing the validation regex data to be used.
+
+	\return
+		Nothing.
+	*/
+	void	setValidationString(const String& validation_string);
+
+
+	/*!
+	\brief
+		Set the current position of the carat.
+
+	\param carat_pos
+		New index for the insert carat relative to the start of the text.  If the value specified is greater than the
+		number of characters in the Editbox, the carat is positioned at the end of the text.
+
+	\return
+		Nothing.
+	*/
+	void	setCaratIndex(ulong carat_pos);
+
+
+	/*!
+	\brief
+		Define the current selection for the Editbox
+
+	\param start_pos
+		Index of the starting point for the selection.  If this value is greater than the number of characters in the Editbox, the
+		selection start will be set to the end of the text.
+
+	\param end_pos
+		Index of the ending point for the selection.  If this value is greater than the number of characters in the Editbox, the
+		selection start will be set to the end of the text.
+
+	\return
+		Nothing.
+	*/
+	void	setSelection(ulong start_pos, ulong end_pos);
+	
+
+	/*!
+	\brief
+		set the utf32 code point used when rendering masked text.
+
+	\param code_point
+		utf32 code point value representing the Unicode code point that should be rendered instead of the Editbox text
+		when rendering in masked mode.
+
+	\return
+		Nothing.
+	*/
+	void	setMaskCodePoint(utf32 code_point);
+
+
+	/*!
+	\brief
+		set the maximum text length for this Editbox.
+
+	\param max_len
+		The maximum number of code points (characters) that can be entered into this Editbox.
+
+	\note
+		Depending on the validation string set, the actual length of text that can be entered may be less than the value
+		set here (it will never be more).
+
+	\return
+		Nothing.
+	*/
+	void	setMaxTextLength(ulong max_len);
+
+
+protected:
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for Editbox class.
+	*/
+	Editbox(const String& type, const String& name);
+
+
+	/*!
+	\brief
+		Destructor for Editbox class.
+	*/
+	virtual ~Editbox(void);
+
+
+	/*************************************************************************
+		Implementation functions
+	*************************************************************************/
+	/*!
+	\brief
+		Return the text code point index that is rendered closest to screen position \a pt.
+
+	\param pt
+		Point object describing a position on the screen in pixels.
+
+	\return
+		Code point index into the text that is rendered closest to screen position \pt.
+	*/
+	virtual	ulong	getTextIndexFromPosition(const Point& pt) const		= 0;
+
+
+	/*!
+	\brief
+		Clear the current selection setting
+	*/
+	void	clearSelection(void);
+
+
+	/*!
+	\brief
+		Erase the currently selected text.
+
+	\param modify_text
+		when true, the actual text will be modified.  When false, everything is done except erasing the characters.
+	*/
+	void	eraseSelectedText(bool modify_text = true);
+
+
+	/*!
+	\brief
+		return true if the given string matches the validation regular expression.
+	*/
+	bool	isStringValid(const String& str) const;
+
+
+
+	/*!
+	\brief
+		Processing for backspace key
+	*/
+	void	handleBackspace(void);
+
+
+	/*************************************************************************
+		New event handlers
+	*************************************************************************/
+
+	/*************************************************************************
+		Overridden event handlers
+	*************************************************************************/
+	virtual	void	onMouseButtonDown(MouseEventArgs& e);
+	virtual void	onMouseButtonUp(MouseEventArgs& e);
+	virtual	void	onMouseDoubleClicked(MouseEventArgs& e);
+	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
+	virtual void	onMouseMove(MouseEventArgs& e);
+	virtual void	onCaptureLost(EventArgs& e);
+
+	virtual void	onCharacter(KeyEventArgs& e);
+	virtual void	onKeyDown(KeyEventArgs& e);
+
+
+	/*************************************************************************
+		Implementation data
+	*************************************************************************/
+	typedef	boost::basic_regex<utf32>	StringRegex;
+
+	bool	d_readOnly;			//!< True if the editbox is in read-only mode
+	bool	d_maskText;			//!< True if the editbox text should be rendered masked.
+	utf32	d_maskCodePoint;	//!< Code point to use when rendering masked text.
+	ulong	d_maxTextLen;		//!< Maximum number of characters for this Editbox.
+	ulong	d_caratPos;			//!< Position of the carat / insert-point.
+	ulong	d_selectionStart;	//!< Start of selection area.
+	ulong	d_selectionEnd;		//!< End of selection area.
+	boost::regex	d_validator;		//!< RegEx String used for validation of text.
+	bool	d_dragging;			//!< true when a selection is being dragged.
+	ulong	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
+
+	
+
 };
 
 } // End of  CEGUI namespace section

@@ -55,7 +55,7 @@ public:
 	static const utf8	LeftPushedImageName[];			//!< Name of the image to use for the left end of the button (pushed state).
 	static const utf8	MiddlePushedImageName[];		//!< Name of the image to use for the middle of the button (pushed state).
 	static const utf8	RightPushedImageName[];			//!< Name of the image to use for the right end of the button (pushed state).
-
+	static const utf8	MouseCursorImageName[];			//!< Name of the image to use for the mouse cursor.
 
 	/*************************************************************************
 		Construction and Destruction

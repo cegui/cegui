@@ -34,6 +34,7 @@
 #include "CEGUIEventSet.h"
 #include "CEGUIPropertySet.h"
 #include "CEGUISystem.h"
+#include "CEGUIInputEvent.h"
 #include <vector>
 
 // Start of CEGUI namespace section
@@ -53,62 +54,6 @@ enum CEGUIBASE_API MetricsMode
 	Relative,		//!< Metrics are specified as a decimal fraction of parent Window size.
 	Absolute,		//!< Metrics are specified as whole pixels.
 	Inherited,		//!< Metrics are inherited from parent.
-};
-
-
-/*!
-\brief
-	System key flag values
-*/
-enum CEGUIBASE_API SystemKey
-{
-	LeftMouse		= 0x01,			//!< The left mouse button.
-	RightMouse		= 0x02,			//!< The right mouse button.
-	Shift			= 0x04,			//!< Either shift key.
-	Control			= 0x08,			//!< Either control key.
-	MiddleMouse		= 0x10,			//!< The middle mouse button.
-	X1Mouse			= 0x20,			//!< The first 'extra' mouse button
-	X2Mouse			= 0x40,			//!< The second 'extra' mouse button.
-};
-
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to handlers triggered for events
-	concerning some Window object.
-*/
-class CEGUIBASE_API WindowEventArgs : public EventArgs
-{
-public:
-	WindowEventArgs(Window* wnd) : window(wnd) {}
-
-	Window*	window;		//!< pointer to a Window object of relevance to the event.
-};
-
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning mouse input.
-*/
-class CEGUIBASE_API MouseEventArgs : public EventArgs
-{
-public:
-	Point		position;		//!< holds current mouse position.
-	Vector2		moveDelta;		//!< holds variation of mouse position from last mouse input
-	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
-	SystemKey	sysKeys;		//!< current state of the system keys and mouse buttons.
-};
-
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning keyboard input.
-*/
-class CEGUIBASE_API KeyEventArgs : public EventArgs
-{
-public:
 };
 
 
@@ -1717,6 +1662,10 @@ protected:
 	friend	void System::injectMouseMove(int delta_x, int delta_y);
 	friend	void System::injectMouseButtonDown(MouseButton button);
 	friend	void System::injectMouseButtonUp(MouseButton button);
+	friend	void System::injectChar(utf32 code_point);
+	friend	void System::injectKeyDown(uint key_code);
+	friend	void System::injectKeyUp(uint key_code);
+
 
 	/*************************************************************************
 		Event trigger methods

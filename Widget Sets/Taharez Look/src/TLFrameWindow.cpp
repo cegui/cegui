@@ -54,7 +54,7 @@ const utf8	TLFrameWindow::CloseButtonHoverImageName[]		= "CloseButtonHover";
 const utf8	TLFrameWindow::CloseButtonPushedImageName[]		= "CloseButtonPressed";
 
 // cursor images
-const utf8	TLFrameWindow::NormalCursorImageName[]			= "MouseArrow";
+const utf8	TLFrameWindow::NormalCursorImageName[]			= "MouseTarget";
 const utf8	TLFrameWindow::NorthSouthCursorImageName[]		= "MouseNoSoCursor";
 const utf8	TLFrameWindow::EastWestCursorImageName[]		= "MouseEsWeCursor";
 const utf8	TLFrameWindow::NWestSEastCursorImageName[]		= "MouseNwSeCursor";

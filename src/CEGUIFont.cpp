@@ -31,6 +31,7 @@
 #include "CEGUIImageset.h"
 #include "CEGUITexture.h"
 #include "CEGUILogger.h"
+#include "CEGUITextUtils.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -485,7 +486,7 @@ uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, c
 	Rect	dest_area(draw_area);
 	float	wrap_width = draw_area.getWidth();
 
-	String  whitespace = (utf8*)" ";		// TODO: Replace with proper constant set of whitespace.
+	String  whitespace = TextUtils::DefaultWhitespace;
 	String	thisLine, thisWord;
 	uint	currpos = 0;
 
@@ -528,23 +529,8 @@ uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, c
 *************************************************************************/
 uint Font::getNextWord(const String& in_string, uint start_idx, String& out_string) const
 {
-	String  delimiters = (utf8*)" ";			// TODO: Replace with proper constant set of whitespace.
+	out_string = TextUtils::getNextWord(in_string, start_idx, TextUtils::DefaultWrapDelimiters);
 
-	String::size_type	word_start = in_string.find_first_not_of(delimiters, start_idx);
-
-	if (word_start == String::npos)
-	{
-		word_start = start_idx;
-	}
-
-	String::size_type	word_end = in_string.find_first_of(delimiters, word_start);
-
-	if (word_end == String::npos)
-	{
-		word_end = in_string.length();
-	}
-
-	out_string = in_string.substr(start_idx, (word_end - start_idx));
 	return out_string.length();
 }
 

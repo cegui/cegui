@@ -26,16 +26,17 @@
 #include "TLModule.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowFactoryManager.h"
-#include "../../Widget Sets/Taharez Look/include/TLFrameWindow.h"
-#include "../../Widget Sets/Taharez Look/include/TLTitlebar.h"
-#include "../../Widget Sets/Taharez Look/include/TLButton.h"
-#include "../../Widget Sets/Taharez Look/include/TLCloseButton.h"
-#include "../../Widget Sets/Taharez Look/include/TLCheckbox.h"
-#include "../../Widget Sets/Taharez Look/include/TLRadioButton.h"
-#include "../../Widget Sets/Taharez Look/include/TLSliderThumb.h"
-#include "../../Widget Sets/Taharez Look/include/TLSlider.h"
-#include "../../Widget Sets/Taharez Look/include/TLProgressBar.h"
-#include "../../Widget Sets/Taharez Look/include/TLAlternateProgressBar.h"
+#include "TLFrameWindow.h"
+#include "TLTitlebar.h"
+#include "TLButton.h"
+#include "TLCloseButton.h"
+#include "TLCheckbox.h"
+#include "TLRadioButton.h"
+#include "TLSliderThumb.h"
+#include "TLSlider.h"
+#include "TLProgressBar.h"
+#include "TLAlternateProgressBar.h"
+#include "TLEditbox.h"
 
 
 /*************************************************************************
@@ -93,6 +94,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez AltProgressBar")
 	{
 		WindowFactoryManager::getSingleton().addFactory(new TLAlternateProgressBarFactory());
+		return;
+	}
+	else if (type_name == "Taharez Editbox")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLEditboxFactory());
 		return;
 	}
 

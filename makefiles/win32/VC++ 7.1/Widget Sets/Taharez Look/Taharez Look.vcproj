@@ -140,6 +140,9 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLCloseButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLEditbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLFrameWindow.cpp">
 			</File>
 			<File
@@ -176,6 +179,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLCloseButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLEditbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLFrameWindow.h">

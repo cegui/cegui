@@ -57,5 +57,21 @@
 #include "CEGUIRenderableImage.h"
 
 // gui elements
+#include "elements/CEGUIButtonBase.h"
+#include "elements/CEGUIPushButton.h"
+#include "elements/CEGUICheckbox.h"
+#include "elements/CEGUIRadioButton.h"
+#include "elements/CEGUITitlebar.h"
+#include "elements/CEGUIFrameWindow.h"
+#include "elements/CEGUIProgressBar.h"
+#include "elements/CEGUIEditbox.h"
+#include "elements/CEGUIThumb.h"
+#include "elements/CEGUISlider.h"
+#include "elements/CEGUIScrollbar.h"
+#include "elements/CEGUIStatic.h"
+#include "elements/CEGUIListbox.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIListHeader.h"
+#include "elements/CEGUIMultiColumnList.h"
 
 #endif	// end of guard _CEGUI_h_

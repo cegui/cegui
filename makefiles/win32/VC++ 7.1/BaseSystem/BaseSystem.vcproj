@@ -258,6 +258,9 @@
 				RelativePath="..\..\..\..\src\CEGUITexture.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUITextUtils.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\elements\CEGUIThumb.cpp">
 			</File>
 			<File
@@ -341,6 +344,9 @@
 				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIInputEvent.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\elements\CEGUIListbox.h">
 			</File>
 			<File
@@ -414,6 +420,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUITexture.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\elements\CEGUIThumb.h">

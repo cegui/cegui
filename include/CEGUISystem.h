@@ -346,6 +346,16 @@ public:
 	void	setDefaultMouseCursor(const String& imageset, const String& image_name);
 
 
+	/*!
+	\brief
+		Return the Window object that the mouse is presently within
+
+	\return
+		Pointer to the Window object that currently contains the mouse cursor, or NULL if none.
+	*/
+	Window*	getWindowContainingMouse(void) const	{return d_wndWithMouse;}
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/

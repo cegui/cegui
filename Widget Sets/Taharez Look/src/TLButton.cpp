@@ -44,6 +44,7 @@ const utf8	TLButton::RightHighlightImageName[]		= "ButtonRightHighlight";
 const utf8	TLButton::LeftPushedImageName[]			= "ButtonLeftPushed";
 const utf8	TLButton::MiddlePushedImageName[]		= "ButtonMiddlePushed";
 const utf8	TLButton::RightPushedImageName[]		= "ButtonRightPushed";
+const utf8  TLButton::MouseCursorImageName[]		= "MouseArrow";
 
 
 /*************************************************************************
@@ -74,6 +75,8 @@ TLButton::TLButton(const String& type, const String& name) :
 	d_leftSectionPushed		= &iset->getImage(LeftPushedImageName);
 	d_middleSectionPushed	= &iset->getImage(MiddlePushedImageName);
 	d_rightSectionPushed	= &iset->getImage(RightPushedImageName);
+
+	setMouseCursor(&iset->getImage(MouseCursorImageName));
 }
 
 
@@ -200,7 +203,7 @@ void TLButton::drawNormal(float z)
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
 	{
-		// calculate widths for the title bar segments
+		// calculate widths for the button segments
 		float leftWidth		= d_leftSectionNormal->getWidth();
 		float rightWidth	= d_rightSectionNormal->getWidth();
 		float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
@@ -264,7 +267,7 @@ void TLButton::drawHover(float z)
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
 	{
-		// calculate widths for the title bar segments
+		// calculate widths for the button segments
 		float leftWidth		= d_leftSectionHover->getWidth();
 		float rightWidth	= d_rightSectionHover->getWidth();
 		float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
@@ -331,7 +334,7 @@ void TLButton::drawPushed(float z)
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
 	{
-		// calculate widths for the title bar segments
+		// calculate widths for the button segments
 		float leftWidth		= d_leftSectionPushed->getWidth();
 		float rightWidth	= d_rightSectionPushed->getWidth();
 		float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
@@ -395,7 +398,7 @@ void TLButton::drawDisabled(float z)
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
 	{
-		// calculate widths for the title bar segments
+		// calculate widths for the button segments
 		float leftWidth		= d_leftSectionNormal->getWidth();
 		float rightWidth	= d_rightSectionNormal->getWidth();
 		float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
