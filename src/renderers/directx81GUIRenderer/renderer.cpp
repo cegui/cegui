@@ -128,10 +128,10 @@ void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* t
 		quad.z				= z;
 		quad.texture		= ((DirectX81Texture*)tex)->getD3DTexture();
 		quad.texPosition	= texture_rect;
-		quad.topLeftCol		= colours.d_bottom_left.getARGB();
-		quad.topRightCol	= colours.d_bottom_right.getARGB();
-		quad.bottomLeftCol	= colours.d_top_left.getARGB();
-		quad.bottomRightCol	= colours.d_top_right.getARGB();
+		quad.topLeftCol		= colours.d_top_left.getARGB();
+		quad.topRightCol	= colours.d_top_right.getARGB();
+		quad.bottomLeftCol	= colours.d_bottom_left.getARGB();
+		quad.bottomRightCol	= colours.d_bottom_right.getARGB();
 
 		// offset destination to get correct texel to pixel mapping from Direct3D
 		quad.position.offset(Point(-0.5f, -0.5f));
