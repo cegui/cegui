@@ -56,7 +56,9 @@ Static::Static(const String& type, const String& name) :
 	Window(type, name),
 	d_frameEnabled(false),
 	d_frameCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-	d_backgroundCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+	d_backgroundEnabled(false),
+	d_backgroundCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+	d_background(NULL)
 {
 	addStaticProperties();
 }
