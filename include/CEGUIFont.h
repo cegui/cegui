@@ -571,6 +571,16 @@ public:
 	bool	isAntiAliased(void) const;
 
 
+	/*!
+	\brief
+		Return a String object that contains the code-points that the font is currently configured to render.
+
+	\return
+		Reference to a String object.
+	*/
+	const String& getAvailableGlyphs(void) const;
+
+
 private:
 	/*************************************************************************
 		Implementation Constants

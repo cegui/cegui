@@ -1160,4 +1160,14 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth) const
 	return widest;
 }
 
+
+/*************************************************************************
+	Return a String object that contains the code-points that the font
+	is currently configured to render.
+*************************************************************************/
+const String& Font::getAvailableGlyphs(void) const
+{
+	return d_glyphset;
+}
+
 } // End of  CEGUI namespace section
