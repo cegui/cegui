@@ -32,6 +32,7 @@
 #include "CEGUIColourRect.h"
 #include "CEGUIVector.h"
 #include "CEGUISize.h"
+#include "CEGUIRenderer.h"
 #include <map>
 
 

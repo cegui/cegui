@@ -35,16 +35,6 @@ namespace CEGUI
 {
 /*!
 \brief
-	Enumerated type that contains the valid diagonal-mode that specify how a quad is split into triangles when rendered with fx. a 3D API
-*/
-enum CEGUIBASE_API QuadSplitMode
-{
-	TopLeftToBottomRight,	//!< Diagonal goes from top-left to bottom-right
-	BottomLeftToTopRight,	//!< Diagonal goes from bottom-left to top-right
-};
-
-/*!
-\brief
 	Class that holds details of colours for the four corners of a rectangle.
 */
 class CEGUIBASE_API ColourRect

@@ -73,7 +73,8 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	Vector3 final_pos(position);
 	float	org_width = d_area.getWidth(), org_height = d_area.getHeight();
 	Size	final_size;
-	ColourRect final_colours;
+	ColourRect final_colours(d_colours);
+	bool calcColoursPerImage = !(d_useColoursPerImage || d_colours.isMonochromatic());
 	float leftfactor, rightfactor, topfactor, bottomfactor;
 
 	// calculate 'adjustments' required to accommodate corner pieces.
@@ -100,20 +101,15 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_size.d_width	= org_width - size_adj;
 		final_size.d_height	= d_top->getHeight();
 		final_pos.d_x		= position.d_x + coord_adj;
+		final_pos.d_y		= position.d_y;
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_top->getOffsetX()) / org_width;
+			rightfactor = leftfactor + final_size.d_width / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_top->getOffsetY()) / org_height;
+			bottomfactor = topfactor + final_size.d_height / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -145,18 +141,12 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_y		= position.d_y + org_height - final_size.d_height;
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_bottom->getOffsetX()) / org_width;
+			rightfactor = leftfactor + final_size.d_width / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_bottom->getOffsetY()) / org_height;
+			bottomfactor = topfactor + final_size.d_height / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -164,9 +154,6 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		d_bottom->draw(final_pos, final_size, clip_rect, final_colours);
 	}
 	
-	// reset x co-ordinate to input value
-	final_pos.d_x = position.d_x;
-
 	// draw left-edge, if required
 	if (d_left != NULL) {
 
@@ -188,20 +175,15 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_size.d_height	= org_height - size_adj;
 		final_size.d_width	= d_left->getWidth();
 		final_pos.d_y		= position.d_y + coord_adj;
+		final_pos.d_x		= position.d_x;
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_left->getOffsetX()) / org_width;
+			rightfactor = leftfactor + final_size.d_width / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_left->getOffsetY()) / org_height;
+			bottomfactor = topfactor + final_size.d_height / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -234,18 +216,12 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_x		= position.d_x + org_width - final_size.d_width;
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_right->getOffsetX()) / org_width;
+			rightfactor = leftfactor + final_size.d_width / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_right->getOffsetY()) / org_height;
+			bottomfactor = topfactor + final_size.d_height / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -257,18 +233,12 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	if (d_topleft != NULL) {
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = 0;
-			rightfactor = (d_topleft->getWidth()) / org_width;
-			topfactor = 0;
-			bottomfactor = (d_topleft->getHeight()) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = d_topleft->getOffsetX() / org_width;
+			rightfactor = leftfactor + d_topleft->getWidth() / org_width;
+			topfactor = d_topleft->getOffsetY() / org_height;
+			bottomfactor = topfactor + d_topleft->getHeight() / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -281,18 +251,12 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_y = position.d_y;
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + d_topright->getWidth() - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + d_topright->getHeight() - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_topright->getOffsetX()) / org_width;
+			rightfactor = leftfactor + d_topright->getWidth() / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_topright->getOffsetY()) / org_height;
+			bottomfactor = topfactor + d_topright->getHeight() / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -305,18 +269,12 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_y = position.d_y + org_height - d_bottomleft->getHeight();
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + d_bottomleft->getWidth() - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + d_bottomleft->getHeight() - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_bottomleft->getOffsetX()) / org_width;
+			rightfactor = leftfactor + d_bottomleft->getWidth() / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_bottomleft->getOffsetY()) / org_height;
+			bottomfactor = topfactor + d_bottomleft->getHeight() / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}
@@ -329,18 +287,12 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_y = position.d_y + org_height - d_bottomright->getHeight();
 
 		// calculate final colours that are to be used
-		if (d_useColoursPerImage)
+		if (calcColoursPerImage)
 		{
-			final_colours = d_colours;
-		}
-		else
-		{
-			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + d_bottomright->getWidth() - position.d_x) / org_width;
-			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + d_bottomright->getHeight() - position.d_y) / org_height;
-			if( rightfactor > 1 ) rightfactor = 1;
-			if( bottomfactor > 1 ) bottomfactor = 1;
+			leftfactor = (final_pos.d_x - position.d_x + d_bottomright->getOffsetX()) / org_width;
+			rightfactor = leftfactor + d_bottomright->getWidth() / org_width;
+			topfactor = (final_pos.d_y - position.d_y + d_bottomright->getOffsetY()) / org_height;
+			bottomfactor = topfactor + d_bottomright->getHeight() / org_height;
 
 			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 		}

@@ -161,6 +161,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 {
 	d_renderer		= renderer;
 	d_gui_redraw	= false;
+	d_defaultFont	= NULL;
 	d_wndWithMouse	= NULL;
 	d_activeSheet	= NULL;
 	d_sysKeys		= 0;
@@ -704,6 +705,32 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 			dest_window = dest_window->getParent();
 		}
 
+	}
+
+	return ma.handled;
+}
+
+
+/*************************************************************************
+	Method that injects that the mouse is leaves the application window
+*************************************************************************/
+bool System::injectMouseLeaves(void)
+{
+	MouseEventArgs ma(NULL);
+
+	// if there is no window that currently contains the mouse, then
+	// there is nowhere to send input
+	if (d_wndWithMouse != NULL)
+	{
+		ma.position = MouseCursor::getSingleton().getPosition();
+		ma.moveDelta = Vector2(0.0f, 0.0f);
+		ma.button = NoButton;
+		ma.sysKeys = d_sysKeys;
+		ma.wheelChange = 0;
+		ma.window = d_wndWithMouse;
+
+		d_wndWithMouse->onMouseLeaves(ma);
+		d_wndWithMouse = NULL;
 	}
 
 	return ma.handled;

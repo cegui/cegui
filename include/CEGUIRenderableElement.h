@@ -79,7 +79,7 @@ public:
 	\return
 		ColourRect object describing the colours to be used when rendering this RenderableElement.
 	*/
-	ColourRect	getColours(void) const						{return d_colours;}
+	const ColourRect&	getColours(void) const						{return d_colours;}
 
 
 	/*!
@@ -111,7 +111,7 @@ public:
 	\return
 		Rect object describing the pixel area (offset from some unknown location) of the frame.
 	*/
-	Rect	getRect(void) const				{return d_area;}
+	const Rect&	getRect(void) const				{return d_area;}
 
 
 	/*!
@@ -123,7 +123,7 @@ public:
 		- true if the RenderableElement colours will be applied locally to each sub-image drawn as part of this RenderableElement.
 		- false if the RenderableElement colours will be applied evenly across the face of the entire RenderableElement.
 	*/
-	bool	isColourRectPerImage(bool setting)		{return d_useColoursPerImage;}
+	bool	isColourRectPerImage(bool setting) const		{return d_useColoursPerImage;}
 
 
 	/*************************************************************************

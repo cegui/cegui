@@ -227,6 +227,16 @@ public:
 	*/
 	void	signalRedraw()		{d_gui_redraw = true;}
 
+	
+	/*!
+	\brief
+		Return a boolean value to indicate whether a full re-draw is requested next time renderGUI() is called.
+
+	\return
+		true if a re-draw has been requested
+	*/
+	bool	isRedrawRequested() const		{return d_gui_redraw;}
+
 
 	/*!
 	\brief
@@ -520,6 +530,17 @@ public:
 		- false if the input was not processed by the gui system.
 	*/
 	bool	injectMouseMove(float delta_x, float delta_y);
+
+
+	/*!
+	\brief
+		Method that injects that the mouse has left the application window
+
+	\return
+		- true if the generated mouse move event was handled.
+		- false if the generated mouse move event was not handled.
+	*/
+	bool	injectMouseLeaves(void);
 
 
 	/*!

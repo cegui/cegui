@@ -56,8 +56,6 @@ RenderableImage::~RenderableImage(void)
 *************************************************************************/
 void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) const
 {
-	ColourRect final_colours;
-
 	// do not draw anything if image is not set.
 	if (d_image == NULL)
 		return;
@@ -126,6 +124,8 @@ void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	}
 
 	Vector3 drawpos(0,baseY, position.d_z);
+	ColourRect final_colours(d_colours);
+	bool calcColoursPerImage = !(d_useColoursPerImage || d_colours.isMonochromatic());
 
 	// perform actual rendering
 	for (uint row = 0; row < vertTiles; ++row)
@@ -134,18 +134,12 @@ void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) 
 
 		for (uint col = 0; col < horzTiles; ++col)
 		{
-			if (d_useColoursPerImage)
+			if (calcColoursPerImage)
 			{
-				final_colours = d_colours;
-			}
-			else
-			{
-				float leftfactor = (drawpos.d_x - baseX) / d_area.getWidth();
-				float rightfactor = (drawpos.d_x + imgSize.d_width - baseX) / d_area.getWidth();
-				float topfactor = (drawpos.d_y - baseY) / d_area.getHeight();
-				float bottomfactor = (drawpos.d_y + imgSize.d_height - baseY) / d_area.getHeight();
-				if( rightfactor > 1 ) rightfactor = 1;
-				if( bottomfactor > 1 ) bottomfactor = 1;
+				float leftfactor = (drawpos.d_x - baseX + d_image->getOffsetX()) / d_area.getWidth();
+				float rightfactor = leftfactor + imgSize.d_width / d_area.getWidth();
+				float topfactor = (drawpos.d_y - baseY + d_image->getOffsetY()) / d_area.getHeight();
+				float bottomfactor = topfactor + imgSize.d_height / d_area.getHeight();
 
 				final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 			}

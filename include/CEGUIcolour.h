@@ -99,6 +99,36 @@ public:
         d_blue = blue;
     }
 
+	inline void set(float red, float green, float blue, float alpha = 1.0f)
+    {
+        d_argbValid = false;
+        d_alpha = alpha;
+        d_red = red;
+        d_green = green;
+        d_blue = blue;
+    }
+
+	inline void setRGB(float red, float green, float blue)
+    {
+        d_argbValid = false;
+        d_red = red;
+        d_green = green;
+        d_blue = blue;
+    }
+
+	inline void setRGB(const colour& val)
+    {
+        d_red = val.d_red;
+        d_green = val.d_green;
+        d_blue = val.d_blue;
+        if (d_argbValid)
+        {
+            d_argbValid = val.d_argbValid;
+            if (d_argbValid)
+                d_argb = (d_argb & 0xFF000000) | (val.d_argb & 0x00FFFFFF);
+        }
+    }
+
 	void	setHSL(float hue, float saturation, float luminance, float alpha = 1.0f);
 
 
@@ -187,6 +217,22 @@ public:
             d_blue  * val,
             d_alpha * val 
         );  
+    }
+
+	/*************************************************************************
+		Compare operators
+	*************************************************************************/
+	inline bool operator==(const colour& rhs) const
+    {
+        return d_red   == rhs.d_red   &&
+               d_green == rhs.d_green &&
+               d_blue  == rhs.d_blue  &&
+               d_alpha == rhs.d_alpha;
+    }
+
+	inline bool operator!=(const colour& rhs) const
+    {
+        return !(*this == rhs);
     }
 
 	//
