@@ -1043,14 +1043,17 @@ void Window::moveToFront()
 *************************************************************************/
 void Window::moveToBack()
 {
+	// if the window is active, de-activate it.
+	if (isActive())
+	{
+		onDeactivated(WindowEventArgs(NULL));
+	}
+
 	// if the window has no parent then we can have no siblings and have nothing more to do.
 	if (d_parent == NULL)
 	{
 		return;
 	}
-
-	// if the window is active, de-activate it.
-	onDeactivated(WindowEventArgs(NULL));
 
 	// move us behind all sibling windows with the same 'always-on-top' setting as we have.
 	Window* org_parent = d_parent;
@@ -2219,6 +2222,17 @@ void Window::onActivated(WindowEventArgs& e)
 
 void Window::onDeactivated(WindowEventArgs& e)
 {
+	// first de-activate all children
+	uint child_count = getChildCount();
+	for (uint i = 0; i < child_count; ++i)
+	{
+		if (d_children[i]->isActive())
+		{
+			d_children[i]->onDeactivated(e);
+		}
+
+	}
+
 	d_active = false;
 	requestRedraw();
 	fireEvent(DeactivatedEvent, e);
