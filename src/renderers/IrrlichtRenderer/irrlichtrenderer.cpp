@@ -23,13 +23,15 @@
 *************************************************************************/
 #include "renderers/IrrlichtRenderer/irrlichtrenderer.h"
 #include "IrrlichtEventPusher.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include <sstream>
 
 namespace CEGUI
 {
 /************************************************************************/
-	IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice* dev): Renderer(),device(dev)
+	IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice* dev, bool bWithIrrlichtResourceProvicer): Renderer(),device(dev)
 	{
+		this->bWithIrrlichtResourceProvicer=bWithIrrlichtResourceProvicer;
 		d_resourceProvider=0;
 		driver=device->getVideoDriver();
 		resolution=driver->getScreenSize(); // @todo use active viewport!!
@@ -44,9 +46,14 @@ namespace CEGUI
 		delete eventpusher;
 	};
 /************************************************************************/
-	void IrrlichtRenderer::addQuad(const Rect& dest_rect, 
-		float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+	void IrrlichtRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, 
+		const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 	{
+
+		/* 
+		irrlicht doesn't support for drawing mode selection 
+		so 'quad_split_mode' is neglected at the moment
+		*/
 
 		irr::u32 tex_height=tex->getHeight();
 		irr::u32 tex_width=tex->getWidth();
@@ -227,7 +234,16 @@ namespace CEGUI
 	ResourceProvider* IrrlichtRenderer::createResourceProvider(void)
 	{
 		if(d_resourceProvider==0)
-			d_resourceProvider = new IrrlichtResourceProvider(device->getFileSystem());
+		{
+			if(bWithIrrlichtResourceProvicer)
+			{
+				d_resourceProvider = new IrrlichtResourceProvider(device->getFileSystem());
+			}
+			else
+			{
+				d_resourceProvider = new DefaultResourceProvider();
+			}
+		}
 		return d_resourceProvider;
 	}
 

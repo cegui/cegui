@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "CEGUIExceptions.h"
 
-#include <xercesc/framework/MemBufInputSource.hpp>
+//#include <xercesc/framework/MemBufInputSource.hpp>
 
 #include <IReadFile.h>
 
@@ -45,33 +45,6 @@ namespace CEGUI
 	{
 		if(fsys!=0)fsys->drop();
 	}
-
-//	void IrrlichtResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
-//	{
-//
-//		if(!fsys->existFile(filename.c_str()))
-//		{
-//			String sMsg=(utf8*)"Scheme::Scheme - Filename supplied for Scheme loading must be valid";
-//			sMsg+=(utf8*)" ["+filename+(utf8*)"]";
-//			throw InvalidRequestException(sMsg);
-//		}
-//		else
-//		{
-//			irr::u8* input;
-//			irr::u32 input_size;
-//			irr::io::IReadFile* f=fsys->createAndOpenFile(filename.c_str());
-//			input_size=f->getSize();
-//			input= new irr::u8[input_size+1];
-//			input[input_size]=0;
-//			int read=f->read(input,input_size);
-//
-//			XERCES_CPP_NAMESPACE_USE
-//				InputSource* mInputSource = new MemBufInputSource(input, input_size, filename.c_str(), true);
-//
-//			//delete [] input; // error if the input buffer is deleted!!
-//			output.setData(mInputSource);
-//		}
-//	}
 
 	void IrrlichtResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
 	{

@@ -55,8 +55,17 @@ namespace CEGUI
 	{
 	public:
 
-		/*! constructor */
-		IrrlichtRenderer(irr::IrrlichtDevice* dev);
+		/*! constructor 
+		\brief create the irrlicht renderer
+
+		\param dev, 
+		pointer to irr::IrrlichtDevice value specifying the irrlicht device
+
+		\param bWithIrrlichtResourceProvicer
+		bool specifying wether to use an irrlicht- or defautresourceprovider (default)
+		*/
+
+		IrrlichtRenderer(irr::IrrlichtDevice* dev,bool bWithIrrlichtResourceProvicer=false);
 
 		/*!	destructor */
 		virtual ~IrrlichtRenderer();
@@ -93,10 +102,14 @@ namespace CEGUI
 		\param colours
 		ColourRect object describing the colour values that are to be applied when rendering.
 
+		\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
+
 		\return
 		Nothing
 		*/
-		virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+		virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, 
+			const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 
 		/*!
@@ -305,6 +318,8 @@ namespace CEGUI
 			bool bQueuingEnabled;
 			// is quad queue sorted
 			bool bSorted;
+			// enable irrlicht resource provider
+			bool bWithIrrlichtResourceProvicer;
 
 			// quad structure used for rendering the gui
 			struct RenderQuad
