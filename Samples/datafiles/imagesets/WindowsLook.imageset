@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<Imageset Name="WindowsLook" Imagefile="../datafiles/imagesets/WindowsLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+	<Image Name="Background" XPos="9" YPos="9" Width="2" Height="2" />
+	<Image Name="WindowFrameLeft" XPos="2" YPos="9" Width="4" Height="2" />
+	<Image Name="WindowFrameRight" XPos="14" YPos="9" Width="4" Height="2" />
+	<Image Name="WindowFrameTop" XPos="9" YPos="2" Width="2" Height="4" />
+	<Image Name="WindowFrameBottom" XPos="9" YPos="14" Width="2" Height="4" />
+	<Image Name="WindowFrameTopLeft" XPos="2" YPos="2" Width="4" Height="4" />
+	<Image Name="WindowFrameTopRight" XPos="14" YPos="2" Width="4" Height="4" />
+	<Image Name="WindowFrameBottomLeft" XPos="2" YPos="14" Width="4" Height="4" />
+	<Image Name="WindowFrameBottomRight" XPos="14" YPos="14" Width="4" Height="4" />
+	<Image Name="ButtonNormalLeft" XPos="20" YPos="9" Width="2" Height="2" />
+	<Image Name="ButtonNormalRight" XPos="34" YPos="9" Width="2" Height="2" />
+	<Image Name="ButtonNormalTop" XPos="27" YPos="2" Width="2" Height="2" />
+	<Image Name="ButtonNormalBottom" XPos="27" YPos="16" Width="2" Height="2" />
+	<Image Name="ButtonNormalTopLeft" XPos="20" YPos="2" Width="3" Height="3" />
+	<Image Name="ButtonNormalTopRight" XPos="33" YPos="2" Width="3" Height="3" />
+	<Image Name="ButtonNormalBottomLeft" XPos="20" YPos="15" Width="3" Height="3" />
+	<Image Name="ButtonNormalBottomRight" XPos="33" YPos="15" Width="3" Height="3" />
+	<Image Name="ButtonPushedLeft" XPos="38" YPos="9" Width="2" Height="2" />
+	<Image Name="ButtonPushedRight" XPos="52" YPos="9" Width="2" Height="2" />
+	<Image Name="ButtonPushedTop" XPos="45" YPos="2" Width="2" Height="2" />
+	<Image Name="ButtonPushedBottom" XPos="45" YPos="16" Width="2" Height="2" />
+	<Image Name="ButtonPushedTopLeft" XPos="38" YPos="2" Width="3" Height="3" />
+	<Image Name="ButtonPushedTopRight" XPos="51" YPos="2" Width="3" Height="3" />
+	<Image Name="ButtonPushedBottomLeft" XPos="38" YPos="15" Width="3" Height="3" />
+	<Image Name="ButtonPushedBottomRight" XPos="51" YPos="15" Width="3" Height="3" />
+	<Image Name="ButtonHoverLeft" XPos="56" YPos="9" Width="2" Height="2" />
+	<Image Name="ButtonHoverRight" XPos="70" YPos="9" Width="2" Height="2" />
+	<Image Name="ButtonHoverTop" XPos="63" YPos="2" Width="2" Height="2" />
+	<Image Name="ButtonHoverBottom" XPos="63" YPos="16" Width="2" Height="2" />
+	<Image Name="ButtonHoverTopLeft" XPos="56" YPos="2" Width="3" Height="3" />
+	<Image Name="ButtonHoverTopRight" XPos="69" YPos="2" Width="3" Height="3" />
+	<Image Name="ButtonHoverBottomLeft" XPos="56" YPos="15" Width="3" Height="3" />
+	<Image Name="ButtonHoverBottomRight" XPos="69" YPos="15" Width="3" Height="3" />
+	<Image Name="EditFrameLeft" XPos="74" YPos="9" Width="4" Height="2" />
+	<Image Name="EditFrameRight" XPos="86" YPos="9" Width="4" Height="2" />
+	<Image Name="EditFrameTop" XPos="81" YPos="2" Width="2" Height="4" />
+	<Image Name="EditFrameBottom" XPos="81" YPos="14" Width="2" Height="4" />
+	<Image Name="EditFrameTopLeft" XPos="74" YPos="2" Width="3" Height="3" />
+	<Image Name="EditFrameTopRight" XPos="87" YPos="2" Width="3" Height="3" />
+	<Image Name="EditFrameBottomLeft" XPos="74" YPos="15" Width="3" Height="3" />
+	<Image Name="EditFrameBottomRight" XPos="87" YPos="15" Width="3" Height="3" />
+	<Image Name="StaticFrameLeft" XPos="92" YPos="9" Width="2" Height="2" />
+	<Image Name="StaticFrameRight" XPos="106" YPos="9" Width="2" Height="2" />
+	<Image Name="StaticFrameTop" XPos="99" YPos="2" Width="2" Height="2" />
+	<Image Name="StaticFrameBottom" XPos="99" YPos="16" Width="2" Height="2" />
+	<Image Name="StaticFrameTopLeft" XPos="92" YPos="2" Width="3" Height="3" />
+	<Image Name="StaticFrameTopRight" XPos="105" YPos="2" Width="3" Height="3" />
+	<Image Name="StaticFrameBottomLeft" XPos="92" YPos="15" Width="3" Height="3" />
+	<Image Name="StaticFrameBottomRight" XPos="105" YPos="15" Width="3" Height="3" />
+	<Image Name="CloseButtonNormal" XPos="2" YPos="20" Width="13" Height="13" />
+	<Image Name="CloseButtonHover" XPos="2" YPos="35" Width="13" Height="13" />
+	<Image Name="CloseButtonPushed" XPos="2" YPos="50" Width="13" Height="13" />
+	<Image Name="TitlebarLeft" XPos="17" YPos="20" Width="7" Height="15" />
+	<Image Name="TitlebarMiddle" XPos="28" YPos="20" Width="6" Height="15" />
+	<Image Name="TitlebarRight" XPos="38" YPos="20" Width="7" Height="15" />
+	<Image Name="CheckboxNormal" XPos="17" YPos="37" Width="10" Height="10" />
+	<Image Name="CheckboxHover" XPos="17" YPos="49" Width="10" Height="10" />
+	<Image Name="CheckboxMark" XPos="17" YPos="61" Width="10" Height="10" />
+	<Image Name="RadioButtonNormal" XPos="29" YPos="37" Width="10" Height="10" />
+	<Image Name="RadioButtonHover" XPos="29" YPos="49" Width="10" Height="10" />
+	<Image Name="RadioButtonMark" XPos="29" YPos="61" Width="10" Height="10" />
+	<Image Name="SliderThumbNormal" XPos="47" YPos="20" Width="7" Height="10" />
+	<Image Name="SliderThumbHover" XPos="47" YPos="32" Width="7" Height="10" />
+	<Image Name="SliderTrackLeft" XPos="56" YPos="20" Width="3" Height="4" />
+	<Image Name="SlidertrackMiddle" XPos="63" YPos="20" Width="2" Height="4" />
+	<Image Name="SliderTrackRight" XPos="69" YPos="20" Width="3" Height="4" />
+	<Image Name="SliderTick" XPos="56" YPos="26" Width="1" Height="4" />
+	<Image Name="HeaderMainBrush" XPos="53" YPos="45" Width="2" Height="2" />
+	<Image Name="HeaderBottomEdge" XPos="53" YPos="50" Width="2" Height="4" />
+	<Image Name="HeaderSplitter" XPos="47" YPos="44" Width="3" Height="15" />
+	<Image Name="VertScrollbarGrip" XPos="41" YPos="68" Width="5" Height="8" />
+	<Image Name="HorzScrollbarGrip" XPos="41" YPos="61" Width="8" Height="5" />
+	<Image Name="LargeLeftArrow" XPos="2" YPos="65" Width="5" Height="9" />
+	<Image Name="LargeRightArrow" XPos="9" YPos="65" Width="5" Height="9" />
+	<Image Name="LargeUpArrow" XPos="2" YPos="76" Width="9" Height="5" />
+	<Image Name="LargeDownArrow" XPos="2" YPos="83" Width="9" Height="5" />
+	<Image Name="SmallLeftArrow" XPos="17" YPos="73" Width="5" Height="5" />
+	<Image Name="SmallRightArrow" XPos="24" YPos="73" Width="5" Height="5" />
+	<Image Name="SmallUpArrow" XPos="17" YPos="80" Width="5" Height="5" />
+	<Image Name="SmallDownArrow" XPos="24" YPos="80" Width="5" Height="5" />
+	<Image Name="EditBoxCarat" XPos="29" YPos="118" Width="2" Height="8" />
+	<Image Name="MouseArrow" XPos="2" YPos="90" Width="10" Height="19" XOffset="0" YOffset="0" />
+	<Image Name="MouseMoveCursor" XPos="14" YPos="90" Width="22" Height="22" XOffset="-10" YOffset="-10" />
+	<Image Name="MouseNoSoCursor" XPos="38" YPos="89" Width="11" Height="19" XOffset="-4" YOffset="-9" />
+	<Image Name="MouseEsWeCursor" XPos="2" YPos="116" Width="19" Height="8" XOffset="-9" YOffset="-4" />
+	<Image Name="MouseNeSwCursor" XPos="51" YPos="90" Width="15" Height="15" XOffset="-7" YOffset="-6" />
+	<Image Name="MouseNwSeCursor" XPos="68" YPos="90" Width="15" Height="15" XOffset="-6" YOffset="-7" />
+	<Image Name="MouseTextBar" XPos="73" YPos="107" Width="11" Height="20" XOffset="-5" YOffset="-10" />
+</Imageset>
