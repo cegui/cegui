@@ -27,8 +27,6 @@
 #include "CEGUIFont.h"
 #include "elements/CEGUIScrollbar.h"
 
-#include <boost/bind.hpp>
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -231,8 +229,8 @@ void StaticText::initialise(void)
 	layoutComponentWidgets();
 
 	// event subscription
-	d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
-	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
+	d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&StaticText::handleScrollbarChange, this));
+	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&StaticText::handleScrollbarChange, this));
 }
 
 

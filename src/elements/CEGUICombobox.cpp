@@ -29,8 +29,6 @@
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIListboxItem.h"
 
-#include <boost/bind.hpp>
-
 
 /*************************************************************************
 	General information.
@@ -123,26 +121,26 @@ void Combobox::initialise(void)
 	addChildWindow(d_button);
 
 	// internal event wiring
-	d_button->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::Combobox::button_ClickHandler, this, _1));
-	d_droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, boost::bind(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this, _1));
-	d_droplist->subscribeEvent(Window::EventHidden, boost::bind(&CEGUI::Combobox::droplist_HiddenHandler, this, _1));
+	d_button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::Combobox::button_ClickHandler, this));
+	d_droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
+	d_droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
 
 	// event forwarding setup
-	d_editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, boost::bind(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventValidationStringChanged, boost::bind(&CEGUI::Combobox::editbox_ValidationStringChangedHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventMaximumTextLengthChanged, boost::bind(&CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventTextInvalidated, boost::bind(&CEGUI::Combobox::editbox_TextInvalidatedEventHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventInvalidEntryAttempted, boost::bind(&CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventCaratMoved, boost::bind(&CEGUI::Combobox::editbox_CaratMovedHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventTextSelectionChanged, boost::bind(&CEGUI::Combobox::editbox_TextSelectionChangedHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventEditboxFull, boost::bind(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventTextAccepted, boost::bind(&CEGUI::Combobox::editbox_TextAcceptedEventHandler, this, _1));
-	d_editbox->subscribeEvent(Editbox::EventTextChanged, boost::bind(&CEGUI::Combobox::editbox_TextChangedEventHandler, this, _1));
-	d_droplist->subscribeEvent(Listbox::EventListContentsChanged, boost::bind(&CEGUI::Combobox::listbox_ListContentsChangedHandler, this, _1));
-	d_droplist->subscribeEvent(Listbox::EventSelectionChanged, boost::bind(&CEGUI::Combobox::listbox_ListSelectionChangedHandler, this, _1));
-	d_droplist->subscribeEvent(Listbox::EventSortModeChanged, boost::bind(&CEGUI::Combobox::listbox_SortModeChangedHandler, this, _1));
-	d_droplist->subscribeEvent(Listbox::EventVertScrollbarModeChanged, boost::bind(&CEGUI::Combobox::listbox_VertScrollModeChangedHandler, this, _1));
-	d_droplist->subscribeEvent(Listbox::EventHorzScrollbarModeChanged, boost::bind(&CEGUI::Combobox::listbox_HorzScrollModeChangedHandler, this, _1));
+	d_editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventValidationStringChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ValidationStringChangedHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventMaximumTextLengthChanged, Event::Subscriber(&CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventTextInvalidated, Event::Subscriber(&CEGUI::Combobox::editbox_TextInvalidatedEventHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventInvalidEntryAttempted, Event::Subscriber(&CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventCaratMoved, Event::Subscriber(&CEGUI::Combobox::editbox_CaratMovedHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventTextSelectionChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextSelectionChangedHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventEditboxFull, Event::Subscriber(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&CEGUI::Combobox::editbox_TextAcceptedEventHandler, this));
+	d_editbox->subscribeEvent(Editbox::EventTextChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextChangedEventHandler, this));
+	d_droplist->subscribeEvent(Listbox::EventListContentsChanged, Event::Subscriber(&CEGUI::Combobox::listbox_ListContentsChangedHandler, this));
+	d_droplist->subscribeEvent(Listbox::EventSelectionChanged, Event::Subscriber(&CEGUI::Combobox::listbox_ListSelectionChangedHandler, this));
+	d_droplist->subscribeEvent(Listbox::EventSortModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_SortModeChangedHandler, this));
+	d_droplist->subscribeEvent(Listbox::EventVertScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_VertScrollModeChangedHandler, this));
+	d_droplist->subscribeEvent(Listbox::EventHorzScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_HorzScrollModeChangedHandler, this));
 
 	// put components in their initial positions
 	layoutComponentWidgets();

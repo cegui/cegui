@@ -25,7 +25,6 @@
 *************************************************************************/
 #include "elements/CEGUISlider.h"
 #include "elements/CEGUIThumb.h"
-#include <boost/bind.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -79,9 +78,9 @@ void Slider::initialise(void)
 	addChildWindow(d_thumb);
 
 	// bind handler to thumb events
-	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, boost::bind(&CEGUI::Slider::handleThumbMoved, this, _1));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, boost::bind(&CEGUI::Slider::handleThumbTrackStarted, this, _1));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, boost::bind(&CEGUI::Slider::handleThumbTrackEnded, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Slider::handleThumbMoved, this));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Slider::handleThumbTrackStarted, this));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Slider::handleThumbTrackEnded, this));
 
 	layoutComponentWidgets();
 }

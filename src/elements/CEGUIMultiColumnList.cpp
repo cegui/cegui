@@ -31,7 +31,6 @@
 #include "CEGUILogger.h"
 
 #include <algorithm>
-#include <boost/bind.hpp>
 
 
 // Start of CEGUI namespace section
@@ -620,13 +619,13 @@ void MultiColumnList::initialise(void)
 	addChildWindow(d_header);
 
 	// subscribe some events
-	d_header->subscribeEvent(ListHeader::EventSegmentRenderOffsetChanged, boost::bind(&CEGUI::MultiColumnList::handleHeaderScroll, this, _1));
-	d_header->subscribeEvent(ListHeader::EventSegmentSequenceChanged, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegMove, this, _1));
-	d_header->subscribeEvent(ListHeader::EventSegmentSized, boost::bind(&CEGUI::MultiColumnList::handleColumnSizeChange, this, _1));
-	d_header->subscribeEvent(ListHeader::EventSortColumnChanged , boost::bind(&CEGUI::MultiColumnList::handleSortColumnChange, this, _1));
-	d_header->subscribeEvent(ListHeader::EventSortDirectionChanged, boost::bind(&CEGUI::MultiColumnList::handleSortDirectionChange, this, _1));
-	d_header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this, _1));
-	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&CEGUI::MultiColumnList::handleHorzScrollbar, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSegmentRenderOffsetChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderScroll, this));
+	d_header->subscribeEvent(ListHeader::EventSegmentSequenceChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegMove, this));
+	d_header->subscribeEvent(ListHeader::EventSegmentSized, Event::Subscriber(&CEGUI::MultiColumnList::handleColumnSizeChange, this));
+	d_header->subscribeEvent(ListHeader::EventSortColumnChanged , Event::Subscriber(&CEGUI::MultiColumnList::handleSortColumnChange, this));
+	d_header->subscribeEvent(ListHeader::EventSortDirectionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleSortDirectionChange, this));
+	d_header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this));
+	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHorzScrollbar, this));
 
 	// final initialisation now widget is complete
 	setSortDirection(ListHeaderSegment::None);

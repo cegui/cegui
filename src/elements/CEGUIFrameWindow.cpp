@@ -28,7 +28,6 @@
 #include "elements/CEGUIPushButton.h"
 #include "CEGUIMouseCursor.h"
 
-#include <boost/bind.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -110,7 +109,7 @@ void FrameWindow::initialise(void)
 		addChildWindow(d_closeButton);
 
 		// bind handler to close button 'Click' event
-		d_closeButton->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::FrameWindow::closeClickHandler, this, _1));
+		d_closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 	}
 
 	layoutComponentWidgets();

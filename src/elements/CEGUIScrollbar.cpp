@@ -25,13 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUIThumb.h"
-#include <boost/bind.hpp>
 
-
-/*************************************************************************
-	TODO:
-	Mouse wheel support
-*************************************************************************/
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -87,19 +81,19 @@ void Scrollbar::initialise(void)
 	// Set up thumb
 	d_thumb = createThumb();
 	addChildWindow(d_thumb);
-	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, boost::bind(&CEGUI::Scrollbar::handleThumbMoved, this, _1));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, boost::bind(&CEGUI::Scrollbar::handleThumbTrackStarted, this, _1));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, boost::bind(&CEGUI::Scrollbar::handleThumbTrackEnded, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved, this));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted, this));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded, this));
 
 	// set up Increase button
 	d_increase = createIncreaseButton();
 	addChildWindow(d_increase);
-	d_increase->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::Scrollbar::handleIncreaseClicked, this, _1));
+	d_increase->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
 
 	// set up Decrease button
 	d_decrease = createDecreaseButton();
 	addChildWindow(d_decrease);
-	d_decrease->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::Scrollbar::handleDecreaseClicked, this, _1));
+	d_decrease->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 
 	// do initial layout
 	layoutComponentWidgets();

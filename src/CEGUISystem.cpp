@@ -42,7 +42,6 @@
 #include "xercesc/sax2/DefaultHandler.hpp"
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
-#include <boost/bind.hpp>
 
 
 // Start of CEGUI namespace section
@@ -262,7 +261,7 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
 
 	// subscribe to hear about display mode changes
-	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, boost::bind(&CEGUI::System::handleDisplaySizeChange, this, _1));
+	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 
 	// load base scheme
 	if (!configSchemeName.empty())

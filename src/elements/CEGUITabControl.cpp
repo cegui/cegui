@@ -30,7 +30,6 @@
 #include "elements/CEGUIGUISheet.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
-#include <boost/bind.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -256,7 +255,7 @@ void TabControl::addTab(Window* wnd)
     requestRedraw();
     // Subscribe to text changed event so that we can resize as needed
     wnd->subscribeEvent(Window::EventTextChanged, 
-        boost::bind(&TabControl::handleContentWindowTextChanged, this, _1));
+        Event::Subscriber(&TabControl::handleContentWindowTextChanged, this));
 
 }
 /*************************************************************************
@@ -335,7 +334,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     d_tabButtonPane->addChildWindow(tb);
     // Subscribe to clicked event so that we can change tab
     tb->subscribeEvent(TabButton::EventClicked, 
-        boost::bind(&TabControl::handleTabButtonClicked, this, _1));
+        Event::Subscriber(&TabControl::handleTabButtonClicked, this));
 
 }
 /*************************************************************************

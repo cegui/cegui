@@ -29,8 +29,6 @@
 #include "WLTitlebar.h"
 #include "WLCloseButton.h"
 
-#include <boost/bind.hpp>
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -399,12 +397,12 @@ void WLFrameWindow::initialise(void)
 	FrameWindow::initialise();
 
 	// subscribe to enable/disable events on title bar since we need something a little more than that.
-	d_titlebar->subscribeEvent(Window::EventDisabled, boost::bind(&CEGUI::WLFrameWindow::componentDisabledHandler, this, _1));
-	d_titlebar->subscribeEvent(Window::EventEnabled, boost::bind(&CEGUI::WLFrameWindow::componentEnabledHandler, this, _1));
+	d_titlebar->subscribeEvent(Window::EventDisabled, Event::Subscriber(&CEGUI::WLFrameWindow::componentDisabledHandler, this));
+	d_titlebar->subscribeEvent(Window::EventEnabled, Event::Subscriber(&CEGUI::WLFrameWindow::componentEnabledHandler, this));
 
 	// subscribe to enable/disable events on close button since we need something a little more than that.
-	d_closeButton->subscribeEvent(Window::EventDisabled, boost::bind(&CEGUI::WLFrameWindow::componentDisabledHandler, this, _1));
-	d_closeButton->subscribeEvent(Window::EventEnabled, boost::bind(&CEGUI::WLFrameWindow::componentEnabledHandler, this, _1));
+	d_closeButton->subscribeEvent(Window::EventDisabled, Event::Subscriber(&CEGUI::WLFrameWindow::componentDisabledHandler, this));
+	d_closeButton->subscribeEvent(Window::EventEnabled, Event::Subscriber(&CEGUI::WLFrameWindow::componentEnabledHandler, this));
 }
 
 

@@ -27,7 +27,6 @@
 #include "CEGUIExceptions.h"
 
 #include <sstream>
-#include <boost/bind.hpp>
 
 
 // Start of CEGUI namespace section
@@ -714,11 +713,11 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	newseg->setID(id);
 
 	// subscribe events we listen to
-	newseg->subscribeEvent(ListHeaderSegment::EventSegmentSized, boost::bind(&CEGUI::ListHeader::segmentSizedHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::EventSegmentDragStop, boost::bind(&CEGUI::ListHeader::segmentMovedHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::EventSegmentClicked, boost::bind(&CEGUI::ListHeader::segmentClickedHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::EventSplitterDoubleClicked, boost::bind(&CEGUI::ListHeader::segmentDoubleClickHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::EventSegmentDragPositionChanged, boost::bind(&CEGUI::ListHeader::segmentDragHandler, this, _1));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentSized, Event::Subscriber(&CEGUI::ListHeader::segmentSizedHandler, this));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentDragStop, Event::Subscriber(&CEGUI::ListHeader::segmentMovedHandler, this));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentClicked, Event::Subscriber(&CEGUI::ListHeader::segmentClickedHandler, this));
+	newseg->subscribeEvent(ListHeaderSegment::EventSplitterDoubleClicked, Event::Subscriber(&CEGUI::ListHeader::segmentDoubleClickHandler, this));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentDragPositionChanged, Event::Subscriber(&CEGUI::ListHeader::segmentDragHandler, this));
 
 	return newseg;
 }
