@@ -562,6 +562,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 
 	ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
 	ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
+	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = 0;
 
 	// move the mouse cursor & update position in args.
