@@ -50,7 +50,7 @@ const int	OgreRenderer::VERTEXBUFFER_CAPACITY		= 4096;
 /*************************************************************************
 	Constructor
 *************************************************************************/
-OgreRenderer::OgreRenderer(Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads) :
+OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads) :
 	d_queue_id(queue_id),
 	d_post_queue(post_queue),
 	d_quadBuffSize(max_quads),
@@ -88,11 +88,10 @@ OgreRenderer::OgreRenderer(Ogre::RenderQueueGroupID queue_id, bool post_queue, u
 	d_render_op.useIndexes = false;
 
 	// Discover display settings and setup d_display_area
-	// TODO: Implement this properly.
 	d_display_area.d_left	= 0;
 	d_display_area.d_top	= 0;
-	d_display_area.d_right	= 800;
-	d_display_area.d_bottom	= 600;
+	d_display_area.d_right	= window->getWidth();
+	d_display_area.d_bottom	= window->getHeight();
 
 	// initialise quad buffer
 	d_quadBuffPos = 0;

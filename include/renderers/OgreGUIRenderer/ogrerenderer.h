@@ -102,7 +102,7 @@ public:
 	\param max_quads
 		Maximum number of quads that the Renderer will be able to render per frame.
 	*/
-	OgreRenderer(Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads);
+	OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads);
 
 
 	/*!

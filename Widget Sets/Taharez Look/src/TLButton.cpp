@@ -290,6 +290,9 @@ void TLButton::drawNormal(float z)
 	// render clients custom image if that is required.
 	if (d_useNormalImage)
 	{
+		ColourRect imgcols = d_normalImage.getColours();
+		imgcols.setAlpha(getEffectiveAlpha());
+		d_normalImage.setColours(imgcols);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_normalImage.draw(imgpos, clipper);
 	}
@@ -351,6 +354,9 @@ void TLButton::drawHover(float z)
 	// render clients custom image if that is required.
 	if (d_useHoverImage)
 	{
+		ColourRect imgcols = d_hoverImage.getColours();
+		imgcols.setAlpha(getEffectiveAlpha());
+		d_hoverImage.setColours(imgcols);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_hoverImage.draw(imgpos, clipper);
 	}
@@ -415,6 +421,9 @@ void TLButton::drawPushed(float z)
 	// render clients custom image if that is required.
 	if (d_usePushedImage)
 	{
+		ColourRect imgcols = d_pushedImage.getColours();
+		imgcols.setAlpha(getEffectiveAlpha());
+		d_pushedImage.setColours(imgcols);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_pushedImage.draw(imgpos, clipper);
 	}
