@@ -255,7 +255,7 @@ void System::setDefaultMouseCursor(const String& imageset, const String& image_n
 /*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
-void System::injectMouseMove(int delta_x, int delta_y)
+void System::injectMouseMove(float delta_x, float delta_y)
 {
 	MouseEventArgs ma;
 	MouseCursor& mouse = MouseCursor::getSingleton();

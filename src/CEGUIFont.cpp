@@ -907,4 +907,57 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 
 }
 
+
+/*************************************************************************
+	Return the number of lines the given text would be formatted to.	
+*************************************************************************/
+uint Font::getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt) const
+{
+	// handle simple non-wrapped cases.
+	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned))
+	{
+		return 1;
+	}
+
+	// handle wraping cases
+	uint	line_count = 0;
+	float	wrap_width = format_area.getWidth();
+
+	String  whitespace = TextUtils::DefaultWhitespace;
+	String	thisLine, thisWord;
+	uint	currpos = 0;
+
+	// get first word.
+	currpos += getNextWord(text, currpos, thisLine);
+
+	// while there are words left in the string...
+	while (String::npos != text.find_first_not_of(whitespace, currpos))
+	{
+		// get next word of the string...
+		currpos += getNextWord(text, currpos, thisWord);
+
+		// if the new word would make the string too long
+		if ((getTextExtent(thisLine) + getTextExtent(thisWord)) > wrap_width)
+		{
+			// too long, so that's another line of text
+			line_count++;
+
+			// remove whitespace from next word - it will form start of next line
+			thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
+
+			// reset for a new line.
+			thisLine.clear();
+		}
+
+		// add the next word to the line
+		thisLine += thisWord;
+	}
+
+	// plus one for final line
+	line_count++;
+
+	return line_count;
+}
+
+
 } // End of  CEGUI namespace section

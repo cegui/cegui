@@ -497,6 +497,28 @@ public:
 	bool	isCodepointAvailable(utf32 cp) const		{return (d_cp_map.find(cp) != d_cp_map.end());}
 
 
+	/*!
+	\brief
+		Return the number of lines the given text would be formatted to.
+
+		Since text formatting can result in multiple lines of text being output, it can be useful to know
+		how many lines would be output without actually rendering the text.
+
+	\param text
+		String object containing the text to be measured.
+
+	\param format_area
+		Rect object describing the area to be used when formatting the text depending upon the option specified in \a fmt.
+
+	\param fmt
+		One of the TextFormatting values specifying the text formatting required.
+
+	\return
+		The number of lines produced from the specified formatting
+	*/
+	uint	getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt) const;
+
+
 private:
 	/*************************************************************************
 		Implementation Constants

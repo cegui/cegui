@@ -1659,7 +1659,7 @@ protected:
 	/*************************************************************************
 		System object can trigger events directly
 	*************************************************************************/
-	friend	void System::injectMouseMove(int delta_x, int delta_y);
+	friend	void System::injectMouseMove(float delta_x, float delta_y);
 	friend	void System::injectMouseButtonDown(MouseButton button);
 	friend	void System::injectMouseButtonUp(MouseButton button);
 	friend	void System::injectChar(utf32 code_point);

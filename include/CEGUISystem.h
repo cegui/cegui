@@ -358,7 +358,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	injectMouseMove(int delta_x, int delta_y);
+	void	injectMouseMove(float delta_x, float delta_y);
 
 
 	/*!

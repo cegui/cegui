@@ -2086,7 +2086,7 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 	{
 		if (d_children[i]->inheritsAlpha())
 		{
-			d_children[i]->onAlphaChanged(e);
+			d_children[i]->onAlphaChanged(WindowEventArgs(d_children[i]));
 		}
 
 	}
