@@ -37,38 +37,38 @@ namespace CEGUI
 {
     void OgreResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
     {
-        Ogre::DataChunk input;
-        if( !Ogre::ArchiveManager::getSingleton()._findResourceData(
-            filename.c_str(), input ) )
-        {
-            throw InvalidRequestException((utf8*)
-                "Scheme::Scheme - Filename supplied for Scheme loading must be valid");
-        }
+        Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str());
+
+		if (input.isNull())
+		{
+			throw InvalidRequestException((utf8*)
+				"Scheme::Scheme - Filename supplied for Scheme loading must be valid");
+		}
 
         XERCES_CPP_NAMESPACE_USE
-        size_t buffsz = input.getSize();
+        size_t buffsz = input->size();
         unsigned char* mem = reinterpret_cast<unsigned char*>(XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
-        memcpy(mem, input.getPtr(), buffsz);
+        memcpy(mem, input.getPointer()->getAsString().c_str(), buffsz);
         InputSource* mInputSource = new MemBufInputSource(mem, buffsz, filename.c_str(), true);
-        input.clear();
+        input.setNull();
 
         output.setData(mInputSource);
     }
 
     void OgreResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
     {
-        Ogre::DataChunk input;
-        if( !Ogre::ArchiveManager::getSingleton()._findResourceData(
-            filename.c_str(), input ) )
-        {
+		Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str());
+
+		if (input.isNull())
+		{
             throw InvalidRequestException((utf8*)
                 "Scheme::Scheme - Filename supplied for Scheme loading must be valid");
         }
 
-        size_t buffsz = input.getSize();
+        size_t buffsz = input->size();
         unsigned char* mem = reinterpret_cast<unsigned char*>(XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
-        memcpy(mem, input.getPtr(), buffsz);
-        input.clear();
+        memcpy(mem, input.getPointer()->getAsString().c_str(), buffsz);
+        input.setNull();
 
         output.setData(mem);
         output.setSize(buffsz);

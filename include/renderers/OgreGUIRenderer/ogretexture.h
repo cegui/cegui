@@ -116,7 +116,7 @@ public:
 	\return
 		Pointer to the Ogre::Texture object currently being used by this Texture object
 	*/
-	Ogre::Texture*	getOgreTexture(void) const		{return d_ogre_texture;}
+	Ogre::TexturePtr	getOgreTexture(void) const		{return d_ogre_texture;}
 
 
 	/*!
@@ -161,7 +161,7 @@ private:
 	*************************************************************************/
 	static	ulong			d_texturenumber;	//!< Counter used to provide unique texture names.
 
-	Ogre::Texture*			d_ogre_texture;		//!< The 'real' texture.
+	Ogre::TexturePtr		d_ogre_texture;		//!< The 'real' texture.
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture

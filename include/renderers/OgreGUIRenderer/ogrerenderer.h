@@ -375,7 +375,7 @@ private:
 	*/
 	struct QuadInfo
 	{
-		Ogre::Texture*		texture;
+		Ogre::TexturePtr		texture;
 		Rect				position;
 		float				z;
 		Rect				texPosition;
@@ -427,7 +427,7 @@ private:
 	Ogre::Root*					d_ogre_root;		//!< pointer to the Ogre root object that we attach to
 	Ogre::RenderSystem*			d_render_sys;		//!< Pointer to the render system for Ogre.
 	Ogre::RenderQueueGroupID	d_queue_id;			//!< ID of the queue that we are hooked into
-	Ogre::Texture*				d_currTexture;		//!< currently set texture;
+	Ogre::TexturePtr			d_currTexture;		//!< currently set texture;
 	Ogre::RenderOperation		d_render_op;		//!< Ogre render operation we use to do our stuff.
 	Ogre::HardwareVertexBufferSharedPtr	d_buffer;	//!< vertex buffer to queue sprite rendering
 	Ogre::SceneManager*			d_sceneMngr;		//!< The scene manager we are hooked into.

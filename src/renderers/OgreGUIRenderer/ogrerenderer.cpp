@@ -144,7 +144,7 @@ void OgreRenderer::doRender(void)
 		initRenderStates();
 
 		// clear this in case we think it's untouched from last frame
-		d_currTexture = NULL;
+		d_currTexture.setNull();
 
 		bool locked = false;
 		QuadVertex*	buffmem;
@@ -514,7 +514,7 @@ ulong OgreRenderer::colourToOgre(const colour& col) const
 	Ogre::ColourValue cv(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha());
 
 	ulong final;
-	d_render_sys->convertColourValue(cv, &final);
+	d_render_sys->convertColourValue(cv, (Ogre::uint32 *)&final);
 
 	return final;
 }
@@ -579,7 +579,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 	// initialise the renderer fields
 	d_queueing		= true;
 	d_queue_id		= queue_id;
-	d_currTexture	= NULL;
+	d_currTexture.isNull();
 	d_post_queue	= post_queue;
 	d_sceneMngr		= NULL;
 	d_bufferPos		= 0;

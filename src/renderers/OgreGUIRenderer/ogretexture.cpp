@@ -44,7 +44,7 @@ ulong OgreTexture::d_texturenumber		= 0;
 OgreTexture::OgreTexture(Renderer* owner) :
 	Texture(owner)
 {
-	d_ogre_texture = NULL;
+	d_ogre_texture.setNull();
 	d_isLinked = false;
 }
 
@@ -75,9 +75,9 @@ void OgreTexture::loadFromFile(const String& filename)
 		TextureManager& textureManager = TextureManager::getSingleton();
 
 		// see if texture already exists
-		Ogre::Texture* ogreTexture = (Ogre::Texture*)textureManager.getByName(filename.c_str());
+		Ogre::TexturePtr ogreTexture = (Ogre::TexturePtr)textureManager.getByName(filename.c_str());
 
-		if (ogreTexture)
+		if (!ogreTexture.isNull())
 		{
 			// texture already exists, so create a 'linked' texture (ensures texture is not destroyed twice)
 			d_ogre_texture = ogreTexture;
@@ -86,7 +86,7 @@ void OgreTexture::loadFromFile(const String& filename)
 		// texture does not already exist, so load it in
 		else
 		{
-			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), TEX_TYPE_2D, 0, 1.0f, 1);
+			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), "General", TEX_TYPE_2D, 0, 1.0f);
 			d_isLinked = false;
 		}
 
@@ -97,7 +97,7 @@ void OgreTexture::loadFromFile(const String& filename)
 	}
 
 	// if we got a pointer cache some details
-	if (d_ogre_texture != NULL)
+	if (!d_ogre_texture.isNull())
 	{
 		d_width		= d_ogre_texture->getWidth();
 		d_height	= d_ogre_texture->getHeight();
@@ -124,13 +124,13 @@ void OgreTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffH
 
 	// wrap input buffer with an Ogre DataChunk
 	ulong bytesize = ((buffWidth * sizeof(ulong)) * buffHeight);
-	const DataChunk odc(const_cast<void*>(buffPtr), bytesize);
+	DataStreamPtr odc(new MemoryDataStream(const_cast<void*>(buffPtr), bytesize, false));
 
 	// try to create a Ogre::Texture from the input data
-	d_ogre_texture = TextureManager::getSingleton().loadRawData(getUniqueName(), odc, buffWidth, buffHeight, PF_A8R8G8B8, TEX_TYPE_2D, 0, 1.0f, 1);
+	d_ogre_texture = TextureManager::getSingleton().loadRawData(getUniqueName(), "General", odc, buffWidth, buffHeight, PF_A8R8G8B8, TEX_TYPE_2D, 0, 1.0f);
 
 	// if we got a pointer cache some details
-	if (d_ogre_texture != NULL)
+	if (!d_ogre_texture.isNull())
 	{
 		d_width		= d_ogre_texture->getWidth();
 		d_height	= d_ogre_texture->getHeight();
@@ -156,10 +156,10 @@ void OgreTexture::setOgreTextureSize(uint size)
 	freeOgreTexture();
 
 	// Try to create an empty texture of the given size
-	d_ogre_texture = TextureManager::getSingleton().createManual(getUniqueName(), TEX_TYPE_2D, size, size, 0, PF_A8R8G8B8, TU_DEFAULT);
+	d_ogre_texture = TextureManager::getSingleton().createManual(getUniqueName(), "General", TEX_TYPE_2D, size, size, 0, PF_A8R8G8B8, TU_DEFAULT);
 
 	// if we got a pointer cache some details
-	if (d_ogre_texture != NULL)
+	if (!d_ogre_texture.isNull())
 	{
 		d_width		= d_ogre_texture->getWidth();
 		d_height	= d_ogre_texture->getHeight();
@@ -179,11 +179,10 @@ void OgreTexture::setOgreTextureSize(uint size)
 *************************************************************************/
 void OgreTexture::freeOgreTexture(void)
 {
-	if ((d_ogre_texture != NULL) && !d_isLinked)
+	if ((!d_ogre_texture.isNull()) && !d_isLinked)
 	{
 		Ogre::TextureManager::getSingleton().unload(d_ogre_texture->getName());
-		d_ogre_texture->destroy();
-		d_ogre_texture = NULL;
+		d_ogre_texture.setNull();
 	}
 }
 
@@ -216,7 +215,7 @@ void OgreTexture::setOgreTexture(Ogre::Texture& texture)
 {
 	freeOgreTexture();
 
-	d_ogre_texture = &texture;
+	d_ogre_texture.bind(&texture);
 	d_width	 = d_ogre_texture->getWidth();
 	d_height = d_ogre_texture->getHeight();
 	d_isLinked = true;
