@@ -2036,7 +2036,7 @@ public:
 			throw std::out_of_range("Index is out of range foe CEGUI::String");
 
 		if (len == npos)
-			len = d_cplength;
+			len = d_cplength - idx;
 
 		size_type newsz = d_cplength - len;
 
