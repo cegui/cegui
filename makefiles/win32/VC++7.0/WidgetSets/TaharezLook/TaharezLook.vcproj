@@ -194,6 +194,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLRadioButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLScrollablePane.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLSlider.cpp">
 			</File>
 			<File
@@ -292,6 +295,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLRadioButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLScrollablePane.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLSlider.h">

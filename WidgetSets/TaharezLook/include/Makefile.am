@@ -1,33 +1,34 @@
 SUBDIRS = . 
-noinst_HEADERS = TLButton.h \
-                 TLVertScrollbarThumb.h \
-                 TLVertScrollbar.h \
-                 TLTitlebar.h \
-                 TLTabPane.h \
-                 TLTabControl.h \
-                 TLTabButton.h \
-                 TLStatic.h \
-                 TLSliderThumb.h \
-                 TLSlider.h \
-                 TLRadioButton.h \
-                 TLProgressBar.h \
-                 TLMultiLineEditbox.h \
-                 TLMultiColumnList.h \
-                 TLMiniVertScrollbarThumb.h \
-                 TLMiniVertScrollbar.h \
-                 TLMiniHorzScrollbarThumb.h \
-                 TLMiniHorzScrollbar.h \
-                 TLListHeaderSegment.h \
-                 TLListHeader.h \
-                 TLListbox.h \
-                 TLFrameWindow.h \
-                 TLEditbox.h \
-                 TLComboEditbox.h \
-                 TLComboDropList.h \
-                 TLCombobox.h \
-                 TLCloseButton.h \
+noinst_HEADERS = TLAlternateProgressBar.h \
+                 TLButton.h \
                  TLCheckbox.h \
-                 TLAlternateProgressBar.h \
+                 TLCloseButton.h \
+                 TLComboDropList.h \
+                 TLComboEditbox.h \
+                 TLCombobox.h \
+                 TLEditbox.h \
+                 TLFrameWindow.h \
+                 TLListHeader.h \
+                 TLListHeaderSegment.h \
+                 TLListbox.h \
+                 TLMiniHorzScrollbar.h \
+                 TLMiniHorzScrollbarThumb.h \
+                 TLMiniVertScrollbar.h \
+                 TLMiniVertScrollbarThumb.h \
                  TLModule.h \
-                 TLVUMeter.h \
-                 TLSpinner.h
+                 TLMultiColumnList.h \
+                 TLMultiLineEditbox.h \
+                 TLProgressBar.h \
+                 TLRadioButton.h \
+                 TLScrollablePane.h \
+                 TLSlider.h \
+                 TLSliderThumb.h \
+                 TLSpinner.h \
+                 TLStatic.h \
+                 TLTabButton.h \
+                 TLTabControl.h \
+                 TLTabPane.h \
+                 TLTitlebar.h \
+                 TLVertScrollbar.h \
+                 TLVertScrollbarThumb.h \
+                 TLVUMeter.h

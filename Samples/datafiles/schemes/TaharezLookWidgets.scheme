@@ -21,6 +21,7 @@
 		<WindowFactory Name="TaharezLook/MultiLineEditbox" />
 		<WindowFactory Name="TaharezLook/ProgressBar" />
 		<WindowFactory Name="TaharezLook/RadioButton" />
+		<WindowFactory Name="TaharezLook/ScrollablePane" />
 		<WindowFactory Name="TaharezLook/Slider" />
 		<WindowFactory Name="TaharezLook/SliderThumb" />
 		<WindowFactory Name="TaharezLook/Spinner" />

@@ -188,6 +188,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLRadioButton.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLScrollablePane.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLSlider.cpp
 # End Source File
 # Begin Source File
@@ -320,6 +324,9 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLRadioButton.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLScrollablePane.h
+# End Source File
+# Begin Source File
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSlider.h
 # End Source File
 # Begin Source File

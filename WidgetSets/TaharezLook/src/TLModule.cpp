@@ -57,6 +57,7 @@
 #include "TLTabPane.h"
 #include "TLVUMeter.h"
 #include "TLSpinner.h"
+#include "TLScrollablePane.h"
 
 
 /*************************************************************************
@@ -94,6 +95,7 @@ static CEGUI::TLTabButtonFactory	    s_TabButtonFactory;
 static CEGUI::TLTabPaneFactory	        s_TabPaneFactory;
 static CEGUI::TLVUMeterFactory			s_VUMeterFactory;
 static CEGUI::TLSpinnerFactory          s_SpinnerFactory;
+static CEGUI::TLScrollablePaneFactory   s_ScrollablePaneFactory;
 
 
 /*************************************************************************
@@ -261,6 +263,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
     else if (type_name == TLSpinner::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_SpinnerFactory);
+        return;
+    }
+    else if (type_name == TLScrollablePane::WidgetTypeName)
+    {
+        WindowFactoryManager::getSingleton().addFactory(&s_ScrollablePaneFactory);
         return;
     }
 
