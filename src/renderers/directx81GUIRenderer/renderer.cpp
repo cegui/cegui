@@ -71,6 +71,8 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 	D3DVIEWPORT8	vp;
 	if (FAILED(device->GetViewport(&vp)))
 	{
+		// release vertex buffer
+		d_buffer->Release();
 		throw std::exception("Unable to access required viewport information from Direct3DDevice8.");
 	}
 
@@ -83,6 +85,18 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 	d_quadBuffPos = 0;
 	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
 	d_quadList = new QuadInfo*[max_quads];
+
+	// get the maximum available texture size.
+	D3DCAPS8	devCaps;
+	if (FAILED(device->GetDeviceCaps(&devCaps)))
+	{
+		// release vertex buffer
+		d_buffer->Release();
+		throw std::exception("Unable to retrieve device capabilities from Direct3DDevice8.");
+	}
+
+	// set max texture size the the smaller of max width and max height.
+	d_maxTextureSize = std::min(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
 }
 
 
@@ -91,6 +105,7 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 *************************************************************************/
 DirectX81Renderer::~DirectX81Renderer(void)
 {
+	d_buffer->Release();
 	destroyAllTextures();
 	d_device->Release();
 }

@@ -186,7 +186,7 @@ public:
 	\return
 		Size of the maximum supported texture in pixels (textures are always assumed to be square)
 	*/
-	virtual	uint	getMaxTextureSize(void) const		{return 2048;}		// TODO: Change to proper value
+	virtual	uint	getMaxTextureSize(void) const		{return d_maxTextureSize;}
 
 
 	/*!
@@ -290,6 +290,8 @@ private:
 	bool					d_sorted;			//!< true when data in quad list is sorted.
 
 	std::list<DirectX81Texture*>	d_texturelist;		//!< List used to track textures.
+
+	uint	d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
 };
 
 } // End of  CEGUI namespace section

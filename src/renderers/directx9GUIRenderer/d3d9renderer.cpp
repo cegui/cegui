@@ -77,6 +77,8 @@ DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads) :
 	D3DVIEWPORT9	vp;
 	if (FAILED(device->GetViewport(&vp)))
 	{
+		// release allocated vertex buffer
+		d_buffer->Release();
 		throw std::exception("Unable to access required viewport information from Direct3DDevice9.");
 	}
 
@@ -89,6 +91,18 @@ DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads) :
 	d_quadBuffPos = 0;
 	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
 	d_quadList = new QuadInfo*[max_quads];
+
+	// get the maximum available texture size.
+	D3DCAPS9	devCaps;
+	if (FAILED(device->GetDeviceCaps(&devCaps)))
+	{
+		// release vertex buffer
+		d_buffer->Release();
+		throw std::exception("Unable to retrieve device capabilities from Direct3DDevice9.");
+	}
+
+	// set max texture size the the smaller of max width and max height.
+	d_maxTextureSize = std::min(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
 }
 
 
