@@ -27,6 +27,9 @@ libCEGUITaharezLook_la_SOURCES = TLAlternateProgressBar.cpp \
                                  TLSlider.cpp \
                                  TLSliderThumb.cpp \
                                  TLStatic.cpp \
+				 TLTabButton.cpp \
+				 TLTabControl.cpp \
+				 TLTabPane.cpp \
                                  TLTitlebar.cpp \
                                  TLVertScrollbar.cpp \
                                  TLVertScrollbarThumb.cpp

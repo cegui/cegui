@@ -85,6 +85,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIStaticProperties.cpp \
                       elements/CEGUIStaticText.cpp \
                       elements/CEGUIStaticTextProperties.cpp \
+		      elements/CEGUITabButton.cpp \
+		      elements/CEGUITabControl.cpp \
+		      elements/CEGUITabControlProperties.cpp \
                       elements/CEGUIThumb.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \

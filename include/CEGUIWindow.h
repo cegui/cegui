@@ -353,7 +353,7 @@ public:
 	\return
 		Pointer to the child window currently attached at index position \a idx
 	*/
-	Window*	getChildAtIdx(int idx) const		{return d_children[idx];}
+	Window*	getChildAtIdx(uint idx) const		{return d_children[idx];}
 
 
 	/*!
@@ -2473,7 +2473,7 @@ protected:
 	bool	d_inheritsAlpha;			//!< true if the Window inherits alpha from the parent Window
 	bool	d_restoreOldCapture;		//!< true if the Window restores capture to the previous window when it releases capture.
 
-private:
+protected:
 	/*************************************************************************
 		Properties for Window base class
 	*************************************************************************/
@@ -2530,25 +2530,25 @@ private:
 	\brief
 		Cleanup child windows
 	*/
-	void	cleanupChildren(void);
+	virtual void	cleanupChildren(void);
 
 	/*!
 	\brief
 		Add given window to child list at an appropriate position
 	*/
-	void	addChild_impl(Window* wnd);
+	virtual void	addChild_impl(Window* wnd);
 
 	/*!
 	\brief
 		Remove given window from child list
 	*/
-	void	removeChild_impl(Window* wnd);
+	virtual void	removeChild_impl(Window* wnd);
 
 	/*!
 	\brief
 		Notify 'this' and all siblings of a ZOrder change event
 	*/
-	void	onZChange_impl(void);
+	virtual void	onZChange_impl(void);
 
 
 	/*!

@@ -251,6 +251,18 @@ SOURCE=..\..\..\..\src\elements\CEGUIStaticTextProperties.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUITabButton.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUITabControl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUITabControlProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIThumb.cpp
 # End Source File
 # Begin Source File
@@ -608,6 +620,22 @@ SOURCE=..\..\..\..\include\elements\CEGUIStaticText.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUIStaticTextProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITabButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITabControl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITabControlProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITabPane.h
 # End Source File
 # Begin Source File
 

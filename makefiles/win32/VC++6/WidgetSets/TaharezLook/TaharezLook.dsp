@@ -192,6 +192,18 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLStatic.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTabButton.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTabControl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTabPane.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTitlebar.cpp
 # End Source File
 # Begin Source File
@@ -301,6 +313,18 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSliderThumb.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLStatic.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTabButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTabControl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTabPane.h
 # End Source File
 # Begin Source File
 

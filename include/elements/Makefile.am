@@ -40,6 +40,10 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIStaticProperties.h \
                      CEGUIStaticText.h \
                      CEGUIStaticTextProperties.h \
+		     CEGUITabButton.h \
+		     CEGUITabControl.h \
+		     CEGUITabControlProperties.h \
+		     CEGUITabPane.h \
                      CEGUIThumb.h \
                      CEGUIThumbProperties.h \
                      CEGUITitlebar.h \
