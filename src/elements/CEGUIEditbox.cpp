@@ -1023,4 +1023,25 @@ void Editbox::setInactiveSelectBrushColour(colour col)
 	requestRedraw();
 }
 
+
+/*************************************************************************
+	Handler for when text is changed programmatically
+*************************************************************************/
+void Editbox::onTextChanged(WindowEventArgs& e)
+{
+	// base class processing
+	Window::onTextChanged(e);
+
+	// clear selection
+	clearSelection();
+
+	// make sure carat is within the text
+	if (getCaratIndex() > d_text.length())
+	{
+		setCaratIndex(d_text.length());
+	}
+
+	e.handled = true;
+}
+
 } // End of  CEGUI namespace section
