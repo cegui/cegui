@@ -39,6 +39,10 @@
 #include "TLEditbox.h"
 #include "TLVertScrollbarThumb.h"
 #include "TLVertScrollbar.h"
+#include "TLMiniVertScrollbarThumb.h"
+#include "TLMiniVertScrollbar.h"
+#include "TLMiniHorzScrollbarThumb.h"
+#include "TLMiniHorzScrollbar.h"
 
 
 /*************************************************************************
@@ -111,6 +115,26 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez VertScrollbarThumb")
 	{
 		WindowFactoryManager::getSingleton().addFactory(new TLVertScrollbarThumbFactory());
+		return;
+	}
+	else if (type_name == "Taharez MiniVertScrollbar")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLMiniVertScrollbarFactory());
+		return;
+	}
+	else if (type_name == "Taharez MiniVertScrollbarThumb")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLMiniVertScrollbarThumbFactory());
+		return;
+	}
+	else if (type_name == "Taharez MiniHorzScrollbar")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLMiniHorzScrollbarFactory());
+		return;
+	}
+	else if (type_name == "Taharez MiniHorzScrollbarThumb")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLMiniHorzScrollbarThumbFactory());
 		return;
 	}
 

@@ -312,9 +312,6 @@ void TLButton::drawHover(float z)
 *************************************************************************/
 void TLButton::drawPushed(float z)
 {
-	// pushed rendering is an addition to hover / highlighted rendering
-	drawHover(z);
-
 	Rect clipper(getPixelRect());
 
 	// do nothing if the widget is totally clipped.

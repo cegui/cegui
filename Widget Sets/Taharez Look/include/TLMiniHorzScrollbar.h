@@ -26,10 +26,182 @@
 #ifndef _TLMiniHorzScrollbar_h_
 #define _TLMiniHorzScrollbar_h_
 
+#include "TLModule.h"
+#include "CEGUIWindowFactory.h"
+#include "elements/CEGUIScrollbar.h"
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*!
+\brief
+	Mini horizontal scroll-bar bar for the Taharez Gui Scheme.
+*/
+class TAHAREZLOOK_API TLMiniHorzScrollbar: public Scrollbar
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// Progress bar image names
+	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
+	static const utf8	ScrollbarBodyImageName[];		//!< Name of image to use for the main body of the scroll bar
+	static const utf8	LeftButtonNormalImageName[];	//!< Name of image to use for the left button in normal state.
+	static const utf8	LeftButtonHighlightImageName[];	//!< Name of image to use for the left button in highlighted state.
+	static const utf8	RightButtonNormalImageName[];	//!< Name of image to use for the right button in normal state.
+	static const utf8	RightButtonHighlightImageName[];//!< Name of image to use for the right button in the highlighted state.
 
+	// some layout stuff
+	static const float	ThumbPositionY;			//!< Relative Y co-ordinate for the thumb.
+	static const float	ThumbHeight;			//!< Relative height of the thumb.
+	static const float	BodyPositionY;			//!< Relative Y co-ordinate for the body imagery.
+	static const float	BodyHeight;				//!< Relative height for the body imagery.
+
+	// type names for the component widgets
+	static const utf8	ThumbWidgetType[];			//!< Type of widget to create for the scroll bar thumb;
+	static const utf8	IncreaseButtonWidgetType[];	//!< Type of widget to create for the increase button (down arrow).
+	static const utf8	DecreaseButtonWidgetType[];	//!< Type of widget to create for the decrease button (up arrow).
+
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for Taharez mini horizontal scroll bar widgets
+	*/
+	TLMiniHorzScrollbar(const String& type, const String& name);
+
+
+	/*!
+	\brief
+		Destructor for Taharez mini horizontal scroll bar widgets
+	*/
+	virtual ~TLMiniHorzScrollbar(void);
+
+
+protected:
+	/*************************************************************************
+		Implementation functions
+	*************************************************************************/
+	/*
+	\brief
+		create a PushButton based widget to use as the increase button for this scroll bar.
+	*/
+	virtual PushButton*	createIncreaseButton(void) const;
+
+
+	/*!
+	\brief
+		create a PushButton based widget to use as the decrease button for this scroll bar.
+	*/
+	virtual PushButton*	createDecreaseButton(void) const;
+
+
+	/*!
+	\brief
+		create a Thumb based widget to use as the thumb for this scroll bar.
+	*/
+	virtual Thumb*	createThumb(void) const;
+
+
+	/*!
+	\brief
+		layout the scroll bar component widgets
+	*/
+	virtual void	layoutComponentWidgets(void);
+
+
+	/*!
+	\brief
+		update the size and location of the thumb to properly represent the current state of the scroll bar
+	*/
+	virtual void	updateThumb(void);
+
+
+	/*!
+	\brief
+		return value that best represents current scroll bar position given the current location of the thumb.
+
+	\return
+		float value that, given the thumb widget position, best represents the current position for the scroll bar.
+	*/
+	virtual float	getValueFromThumb(void) const;
+
+
+	/*!
+	\brief
+		Given window location \a pt, return a value indicating what change should be 
+		made to the scroll bar.
+
+	\param pt
+		Point object describing a pixel position in window space.
+
+	\return
+		- -1 to indicate scroll bar position should be moved to a lower value.
+		-  0 to indicate scroll bar position should not be changed.
+		- +1 to indicate scroll bar position should be moved to a higher value.
+	*/
+	virtual float	getAdjustDirectionFromPoint(const Point& pt) const;
+
+
+	/*************************************************************************
+		Overridden Implementation Rendering Functions
+	*************************************************************************/
+	/*!
+	\brief
+		Perform rendering for this widget
+	*/
+	virtual void	drawSelf(float z);
+
+
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	const Image*	d_body;			//!< Image for body segment.
+};
+
+
+/*!
+\brief
+	Factory class for producing TLMiniHorzScrollbar objects
+*/
+class TAHAREZLOOK_API TLMiniHorzScrollbarFactory : public WindowFactory
+{
+public:
+	/*************************************************************************
+		Construction and Destruction
+	*************************************************************************/
+	TLMiniHorzScrollbarFactory(void) : WindowFactory((utf8*)"Taharez MiniHorzScrollbar") { }
+	~TLMiniHorzScrollbarFactory(void){}
+
+
+	/*!
+	\brief
+		Create a new Window object of whatever type this WindowFactory produces.
+
+	\param name
+		A unique name that is to be assigned to the newly created Window object
+
+	\return
+		Pointer to the new Window object.
+	*/
+	Window*	createWindow(const String& name);
+
+
+	/*!
+	\brief
+		Destroys the given Window object.
+
+	\param window
+		Pointer to the Window object to be destroyed.
+
+	\return
+		Nothing.
+	*/
+	virtual void	destroyWindow(Window* window)	 { if (window->getType() == d_type) delete window; }
+};
 
 } // End of  CEGUI namespace section
 

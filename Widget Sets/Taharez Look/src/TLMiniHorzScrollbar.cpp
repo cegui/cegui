@@ -23,12 +23,266 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#include "CEGUIImagesetManager.h"
+#include "CEGUIImageset.h"
+#include "CEGUIWindowManager.h"
 #include "TLMiniHorzScrollbar.h"
+#include "TLMiniHorzScrollbarThumb.h"
+#include "TLButton.h"
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Constants
+*************************************************************************/
+// Progress bar image names
+const utf8	TLMiniHorzScrollbar::ImagesetName[]						= "TaharezImagery";
+const utf8	TLMiniHorzScrollbar::ScrollbarBodyImageName[]			= "MiniHorzScrollBarSegment";
+const utf8	TLMiniHorzScrollbar::LeftButtonNormalImageName[]		= "MiniHorzScrollLeftNormal";
+const utf8	TLMiniHorzScrollbar::LeftButtonHighlightImageName[]		= "MiniHorzScrollLeftHover";
+const utf8	TLMiniHorzScrollbar::RightButtonNormalImageName[]		= "MiniHorzScrollRightNormal";
+const utf8	TLMiniHorzScrollbar::RightButtonHighlightImageName[]	= "MiniHorzScrollRightHover";
 
+// some layout stuff
+const float	TLMiniHorzScrollbar::ThumbPositionY	= 0.15f;
+const float	TLMiniHorzScrollbar::ThumbHeight	= 0.7f;				
+const float	TLMiniHorzScrollbar::BodyPositionY	= 0.3f;			
+const float	TLMiniHorzScrollbar::BodyHeight		= 0.4f;
+
+// type names for the component widgets
+const utf8	TLMiniHorzScrollbar::ThumbWidgetType[]			= "Taharez MiniHorzScrollbarThumb";
+const utf8	TLMiniHorzScrollbar::IncreaseButtonWidgetType[]	= "Taharez Button";
+const utf8	TLMiniHorzScrollbar::DecreaseButtonWidgetType[]	= "Taharez Button";
+
+
+/*************************************************************************
+	Constructor for Taharez mini horizontal scroll bar widgets
+*************************************************************************/
+TLMiniHorzScrollbar::TLMiniHorzScrollbar(const String& type, const String& name) :
+	Scrollbar(type, name)
+{
+	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+
+	// setup cache of image pointers
+	d_body = &iset->getImage(ScrollbarBodyImageName);
+}
+
+
+/*************************************************************************
+	Destructor for Taharez mini horizontal scroll bar widgets
+*************************************************************************/
+TLMiniHorzScrollbar::~TLMiniHorzScrollbar(void)
+{
+}
+
+
+/*************************************************************************
+	create a PushButton based widget to use as the increase button for
+	this scroll bar.
+*************************************************************************/
+PushButton* TLMiniHorzScrollbar::createIncreaseButton(void) const
+{
+	// create the widget
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+
+	// perform some initialisation
+	btn->setStandardImageryEnabled(false);
+	btn->setCustomImageryAutoSized(true);
+
+	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+	RenderableImage img;
+	img.setHorzFormatting(RenderableImage::HorzStretched);
+	img.setVertFormatting(RenderableImage::VertStretched);
+	img.setImage(&iset->getImage(RightButtonNormalImageName));
+	btn->setNormalImage(&img);
+	btn->setDisabledImage(&img);
+
+	img.setImage(&iset->getImage(RightButtonHighlightImageName));
+	btn->setHoverImage(&img);
+	btn->setPushedImage(&img);
+
+	return btn;
+}
+
+
+/*************************************************************************
+	create a PushButton based widget to use as the decrease button for
+	this scroll bar.
+*************************************************************************/
+PushButton* TLMiniHorzScrollbar::createDecreaseButton(void) const
+{
+	// create the widget
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+
+	// perform some initialisation
+	btn->setStandardImageryEnabled(false);
+	btn->setCustomImageryAutoSized(true);
+
+	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+	RenderableImage img;
+	img.setHorzFormatting(RenderableImage::HorzStretched);
+	img.setVertFormatting(RenderableImage::VertStretched);
+	img.setImage(&iset->getImage(LeftButtonNormalImageName));
+	btn->setNormalImage(&img);
+	btn->setDisabledImage(&img);
+
+	img.setImage(&iset->getImage(LeftButtonHighlightImageName));
+	btn->setHoverImage(&img);
+	btn->setPushedImage(&img);
+
+	return btn;
+}
+
+
+/*************************************************************************
+	create a Thumb based widget to use as the thumb for this scroll bar.
+*************************************************************************/
+Thumb* TLMiniHorzScrollbar::createThumb(void) const
+{
+	// create the widget
+	TLMiniHorzScrollbarThumb* thumb = (TLMiniHorzScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+
+	// perform some initialisation
+	thumb->setHorzFree(true);
+	thumb->setYPosition(ThumbPositionY);
+	thumb->setHeight(ThumbHeight);
+
+	return thumb;
+}
+
+
+/*************************************************************************
+	layout the scroll bar component widgets
+*************************************************************************/
+void TLMiniHorzScrollbar::layoutComponentWidgets(void)
+{
+	Size bsz;
+	bsz.d_width = bsz.d_height = d_abs_area.getHeight();
+
+	// install button sizes
+	d_increase->setSize(absoluteToRelative(bsz));
+	d_decrease->setSize(absoluteToRelative(bsz));
+
+	// position buttons
+	d_decrease->setPosition(Point(0.0f, 0.0f));
+	d_increase->setPosition(Point(absoluteToRelativeX(d_abs_area.getWidth() - bsz.d_width), 0.0f));
+
+	// this will configure thumb widget appropriately
+	updateThumb();
+}
+
+
+/*************************************************************************
+	update the size and location of the thumb to properly represent the
+	current state of the scroll bar
+*************************************************************************/
+void TLMiniHorzScrollbar::updateThumb(void)
+{
+	// calculate actual padding values to use.
+	float slideTrackXPadding = d_decrease->getAbsoluteWidth();
+
+	// calculate maximum extents for thumb positioning.
+	float posExtent		= d_documentSize - d_pageSize;
+	float slideExtent	= std::max(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
+
+	// Thumb does not change size with document length, we just need to update position and range
+	d_thumb->setHorzRange(absoluteToRelativeX(slideTrackXPadding), absoluteToRelativeX(slideTrackXPadding + slideExtent));
+	d_thumb->setXPosition(absoluteToRelativeX(slideTrackXPadding + (d_position * (slideExtent / posExtent))));
+}
+
+
+/*************************************************************************
+	return value that best represents current scroll bar position given
+	the current location of the thumb.
+*************************************************************************/
+float TLMiniHorzScrollbar::getValueFromThumb(void) const
+{
+	// calculate actual padding values to use.
+	float slideTrackXPadding = d_decrease->getAbsoluteWidth();
+
+	// calculate maximum extents for thumb positioning.
+	float posExtent		= d_documentSize - d_pageSize;
+	float slideExtent	= d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth();
+
+	return	(d_thumb->getAbsoluteXPosition() - slideTrackXPadding) / (slideExtent / posExtent);
+}
+
+
+/*************************************************************************
+	Given window location 'pt', return a value indicating what change
+	should be made to the scroll bar.
+*************************************************************************/
+float TLMiniHorzScrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+{
+	Rect absrect(d_thumb->getUnclippedPixelRect());
+
+	if (pt.d_x < absrect.d_left)
+	{
+		return -1.0f;
+	}
+	else if (pt.d_x > absrect.d_right)
+	{
+		return 1.0f;
+	}
+	else
+	{
+		return 0.0f;
+	}
+
+}
+
+
+/*************************************************************************
+	Perform rendering for this widget
+*************************************************************************/
+void TLMiniHorzScrollbar::drawSelf(float z)
+{
+	Rect clipper(getPixelRect());
+
+	// do nothing if the widget is totally clipped.
+	if (clipper.getWidth() == 0)
+	{
+		return;
+	}
+
+	// get the destination screen rect for this window
+	Rect absrect(getUnclippedPixelRect());
+
+	// calculate colours to use.
+	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
+	colour colval = alpha_comp | 0xFFFFFF;
+	ColourRect colours(colval, colval, colval, colval);
+
+	//
+	// Render bar body
+	//
+	float button_width = d_decrease->getAbsoluteWidth();
+
+	Vector3 pos(absrect.d_left + button_width, absrect.d_top + (absrect.getHeight() * BodyPositionY), z);
+	Size	sz(absrect.getWidth() - (button_width * 0.5f), absrect.getHeight() * BodyHeight);
+
+	d_body->draw(pos, sz, clipper, colours);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+
+	Factory Methods
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	Create, initialise and return a TLMiniHorzScrollbar
+*************************************************************************/
+Window* TLMiniHorzScrollbarFactory::createWindow(const String& name)
+{
+	TLMiniHorzScrollbar* wnd = new TLMiniHorzScrollbar(d_type, name);
+	wnd->initialise();
+
+	return wnd;
+}
 
 } // End of  CEGUI namespace section
