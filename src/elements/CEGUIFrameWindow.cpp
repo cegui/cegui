@@ -672,7 +672,7 @@ void FrameWindow::onParentSized(WindowEventArgs& e)
 {
 	// if we are rolled up we temporarily need to restore the original sizes so
 	// that the required calculations can occur when our parent is sized.
-	if (isRolledup())
+	if (isRolledup() && (getMetricsMode() == Relative))
 	{
 		d_rel_area.setSize(d_rel_openSize);
 		d_abs_area.setSize(d_abs_openSize);
