@@ -192,12 +192,12 @@ public:
 		String object holding the filename of the XML file to be processed.
 
 	\return
-		Nothing.
+		Pointer to the root Window object defined in the layout.
 
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	void	loadWindowLayout(const String& filename);
+	Window*	loadWindowLayout(const String& filename);
 
 
 private:

@@ -50,7 +50,7 @@ public:
 	\brief
 		Constructor for GUILayout_xmlHandler objects
 	*/
-	GUILayout_xmlHandler(void) {}
+	GUILayout_xmlHandler(void) : d_root(NULL) {}
 
 	/*!
 	\brief
@@ -86,6 +86,13 @@ public:
 	*/
 	void	cleanupLoadedWindows(void);
 
+
+	/*!
+	\brief
+		Return a pointer to the 'root' window created.
+	*/
+	Window*	getLayoutRootWindow(void) const;
+
 private:
 	/*************************************************************************
 		Implementation Constants
@@ -103,6 +110,7 @@ private:
 		Implementation Data
 	*************************************************************************/
 	typedef std::vector<Window*>	WindowStack;	
+	Window*	d_root;				//!< Will point to first window created.
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 };
 

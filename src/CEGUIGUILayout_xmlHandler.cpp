@@ -75,6 +75,10 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 			{
 				d_stack.back()->addChildWindow(wnd);
 			}
+			else
+			{
+				d_root = wnd;
+			}
 
 			// make this window the top of the stack
 			d_stack.push_back(wnd);
@@ -188,8 +192,16 @@ void GUILayout_xmlHandler::cleanupLoadedWindows(void)
 		d_stack.pop_back();
 	}
 
+	d_root = NULL;
 }
 
 
+/*************************************************************************
+	Return a pointer to the 'root' window created.
+*************************************************************************/
+Window* GUILayout_xmlHandler::getLayoutRootWindow(void) const
+{
+	return d_root;
+}
 
 } // End of  CEGUI namespace section
