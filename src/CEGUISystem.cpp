@@ -33,6 +33,7 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
 #include "CEGUIImageset.h"
+#include "CEGUIExceptions.h"
 #include "xercesc/util/PlatformUtils.hpp"
 #include "xercesc/util/Janitor.hpp"
 #include "xercesc/sax2/DefaultHandler.hpp"
@@ -64,7 +65,12 @@ System::System(Renderer* renderer) :
 	d_click_timeout(DefaultSingleClickTimeout),
 	d_dblclick_timeout(DefaultMultiClickTimeout),
 	d_dblclick_size(DefaultMultiClickAreaSize),
-	d_defaultMouseCursor(NULL)
+	d_defaultMouseCursor(NULL),
+	d_sysKeys(0),
+	d_lctrl(false),
+	d_rctrl(false),
+	d_lshift(false),
+	d_rshift(false)
 {
 	// first thing to do is create logger
 	new Logger((utf8*)"CEGUI.log");
@@ -293,11 +299,14 @@ void System::injectMouseMove(int delta_x, int delta_y)
 *************************************************************************/
 void System::injectMouseButtonDown(MouseButton button)
 {
+	// update system keys
+	d_sysKeys |= mouseButtonToSyskey(button);
+
 	MouseEventArgs ma;
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
-	// TODO: Add system keys to MouseEventArgs
+	ma.sysKeys = d_sysKeys;
 
 	Window* dest_window = getTargetWindow(ma.position);
 
@@ -369,11 +378,14 @@ void System::injectMouseButtonDown(MouseButton button)
 *************************************************************************/
 void System::injectMouseButtonUp(MouseButton button)
 {
+	// update system keys
+	d_sysKeys &= ~mouseButtonToSyskey(button);
+
 	MouseEventArgs ma;
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
-	// TODO: Add system keys to MouseEventArgs
+	ma.sysKeys = d_sysKeys;
 
 	Window* dest_window = getTargetWindow(ma.position);
 
@@ -405,10 +417,14 @@ void System::injectMouseButtonUp(MouseButton button)
 *************************************************************************/
 void System::injectKeyDown(uint key_code)
 {
+	// update system keys
+	d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
+
 	if (d_activeSheet != NULL)
 	{
 		KeyEventArgs args;
 		args.scancode = (Key::Scan)key_code;
+		args.sysKeys = d_sysKeys;
 
 		Window* dest = d_activeSheet->getActiveChild();
 
@@ -428,10 +444,14 @@ void System::injectKeyDown(uint key_code)
 *************************************************************************/
 void System::injectKeyUp(uint key_code)
 {
+	// update system keys
+	d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
+
 	if (d_activeSheet != NULL)
 	{
 		KeyEventArgs args;
 		args.scancode = (Key::Scan)key_code;
+		args.sysKeys = d_sysKeys;
 
 		Window* dest = d_activeSheet->getActiveChild();
 
@@ -455,6 +475,7 @@ void System::injectChar(utf32 code_point)
 	{
 		KeyEventArgs args;
 		args.codepoint = code_point;
+		args.sysKeys = d_sysKeys;
 
 		Window* dest = d_activeSheet->getActiveChild();
 
@@ -497,5 +518,83 @@ Window*	System::getTargetWindow(const Point& pt) const
 	return dest_window;
 }
 
+
+/*************************************************************************
+	Translate a MouseButton value into the corresponding SystemKey value	
+*************************************************************************/
+SystemKey System::mouseButtonToSyskey(MouseButton btn) const
+{
+	switch (btn)
+	{
+	case LeftButton:
+		return LeftMouse;
+
+	case RightButton:
+		return RightMouse;
+
+	case MiddleButton:
+		return MiddleMouse;
+
+	case X1Button:
+		return X1Mouse;
+
+	case X2Button:
+		return X2Mouse;
+
+	default:
+		throw InvalidRequestException((utf8*)"System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value.");
+	}
+}
+
+
+/*************************************************************************
+	Translate a Key::Scan value into the corresponding SystemKey value	
+*************************************************************************/
+SystemKey System::keyCodeToSyskey(Key::Scan key, bool direction)
+{
+	switch (key)
+	{
+	case Key::LeftShift:
+		d_lshift = direction;
+
+		if (!d_rshift)
+		{
+			return Shift;
+		}
+		break;
+
+	case Key::RightShift:
+		d_rshift = direction;
+
+		if (!d_lshift)
+		{
+			return Shift;
+		}
+		break;
+
+
+	case Key::LeftControl:
+		d_lctrl = direction;
+
+		if (!d_rctrl)
+		{
+			return Control;
+		}
+		break;
+
+	case Key::RightControl:
+		d_rctrl = direction;
+
+		if (!d_lctrl)
+		{
+			return Control;
+		}
+		break;
+
+	}
+
+	// if not a system key or overall state unchanged, return 0.
+	return (SystemKey)0;
+}
 
 } // End of  CEGUI namespace section

@@ -132,13 +132,6 @@ protected:
 	const Image*	d_carat;		//!< Image to use for the carat.
 	const Image*	d_selection;	//!< Image to use for selection highlight brush.
 
-	// colours
-	// TODO: Promote to base class
-	colour	d_normalTextColour;			//!< Text colour used normally.
-	colour	d_selectTextColour;			//!< Text colour used when text is highlighted
-	colour	d_selectBrushColour;		//!< Colour to apply to the selection brush.
-	colour	d_inactiveSelectBrushColour;	//!< Colour to apply to the selection brush when widget is inactive / read-only.
-
 	// rendering internal vars
 	float	d_lastTextOffset;		//!< x rendering offset used last time we drew the widget.
 };

@@ -387,7 +387,7 @@ void OgreRenderer::initRenderStates(void)
 
 	// initialise texture settings
 	d_render_sys->_setTextureCoordSet(0, 0);
-	d_render_sys->_setTextureUnitFiltering(0, FO_POINT, FO_POINT, FO_POINT);
+	d_render_sys->_setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
 	d_render_sys->_setTextureAddressingMode(0, TextureUnitState::TAM_CLAMP);
 	d_render_sys->_setTextureMatrix(0, Matrix4::IDENTITY);
 	d_render_sys->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0);

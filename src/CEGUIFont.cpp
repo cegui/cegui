@@ -46,6 +46,7 @@ namespace CEGUI
 	static data definitions
 *************************************************************************/
 const ulong Font::DefaultColour					= 0xFFFFFFFF;
+const uint	Font::InterGlyphPadSpace			= 2;
 
 // XML related strings
 const char	Font::FontSchemaName[]							= "Font.xsd";
@@ -306,7 +307,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 			continue;
 		}
 
-		width = d_face->glyph->bitmap.width;
+		width = d_face->glyph->bitmap.width + InterGlyphPadSpace;
 		cur_x += width;
 
 		// check for fit
@@ -361,8 +362,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 			continue;
 		}
 
-		//width = std::max((glyph->advance.x >> 6), glyph->bitmap.width);
-		width = glyph->bitmap.width;
+		width = glyph->bitmap.width + InterGlyphPadSpace;
 
 		// see if we need to wrap to next row
 		if (cur_x + width >= size)

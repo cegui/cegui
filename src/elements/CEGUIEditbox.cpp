@@ -31,10 +31,36 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	TODO:
+
+	Clipboard support
+	Undo support
+*************************************************************************/
+/*************************************************************************
+	Constants
+*************************************************************************/
+// default colours
+const ulong	Editbox::DefaultNormalTextColour			= 0x00FFFFFF;
+const ulong	Editbox::DefaultSelectedTextColour			= 0x00000000;
+const ulong	Editbox::DefaultNormalSelectionColour		= 0x006060FF;
+const ulong	Editbox::DefaultInactiveSelectionColour		= 0x00808080;
+
 
 /*************************************************************************
 	Event name constants
 *************************************************************************/
+const utf8	Editbox::ReadOnlyChanged[]				= "ReadOnlyChanged";
+const utf8	Editbox::MaskedRenderingModeChanged[]	= "MaskRenderChanged";
+const utf8	Editbox::MaskCodePointChanged[]			= "MaskCPChanged";
+const utf8	Editbox::ValidationStringChanged[]		= "ValidatorChanged";
+const utf8	Editbox::MaximumTextLengthChanged[]		= "MaxTextLenChanged";
+const utf8	Editbox::TextInvalidatedEvent[]			= "TextInvalidated";
+const utf8	Editbox::InvalidEntryAttempted[]		= "InvalidInputAttempt";
+const utf8	Editbox::CaratMoved[]					= "TextCaratMoved";
+const utf8	Editbox::TextSelectionChanged[]			= "TextSelectChanged";
+const utf8	Editbox::EditboxFullEvent[]				= "EditboxFull";
+const utf8	Editbox::TextAcceptedEvent[]			= "TextAccepted";
 
 
 /*************************************************************************
@@ -42,17 +68,23 @@ namespace CEGUI
 *************************************************************************/
 Editbox::Editbox(const String& type, const String& name) :
 	Window(type, name),
+	d_readOnly(false),
+	d_maskText(false),
+	d_maskCodePoint('*'),
+	d_maxTextLen(-1),		// TODO: Change to String::max_length() once that's a static
 	d_caratPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),
-	d_maskText(false),
-	d_readOnly(false),
-	d_maxTextLen(-1),		// TODO: Change to String::max_length() once that's a static
-	d_maskCodePoint('*'),
-	d_dragging(false)
+	d_dragging(false),
+	d_normalTextColour(DefaultNormalTextColour),
+	d_selectTextColour(DefaultSelectedTextColour),
+	d_selectBrushColour(DefaultNormalSelectionColour),
+	d_inactiveSelectBrushColour(DefaultInactiveSelectionColour)
 {
+	addEditboxEvents();
+
+	// default to accepting all characters
 	setValidationString((utf8*)".*");
-//	setValidationString((utf8*)"-?(\\d+[.]?\\d{0,2})?");
 }
 
 
@@ -120,9 +152,7 @@ void Editbox::setReadOnly(bool setting)
 	if (d_readOnly != setting)
 	{
 		d_readOnly = setting;
-		requestRedraw();
-
-		// TODO: Trigger "read only mode changed" event
+		onReadOnlyChanged(WindowEventArgs(this));
 	}
 
 }
@@ -137,9 +167,7 @@ void Editbox::setTextMasked(bool setting)
 	if (d_maskText != setting)
 	{
 		d_maskText = setting;
-		requestRedraw();
-
-		// TODO: Trigger "masked text mode changed" event
+		onMaskedRenderingModeChanged(WindowEventArgs(this));
 	}
 
 }
@@ -150,22 +178,26 @@ void Editbox::setTextMasked(bool setting)
 *************************************************************************/
 void Editbox::setValidationString(const String& validation_string)
 {
-//	if (d_validator != validation_string.c_str())
+	if (d_validationString != validation_string)
 	{
+		d_validationString = validation_string;
+
 		try
 		{
 			d_validator = validation_string.c_str();
 		}
 		catch (boost::bad_expression x)
 		{
-			throw InvalidRequestException((utf8*)"The Editbox named '" + getName() + "' has had a bad validation expression set.  Additional Information: " + x.what());
+			throw InvalidRequestException((utf8*)"The Editbox named '" + getName() + "' had the following bad validation expression set: '" + validation_string + "'.  Additional Information: " + x.what());
 		}
 
-		// TODO: Trigger validation string changed event
+		// notification
+		onValidationStringChanged(WindowEventArgs(this));
 
 		if (!isTextValid())
 		{
-			// TODO: Trigger Text is invalid event.
+			// also notify if text is now invalid.
+			onTextInvalidatedEvent(WindowEventArgs(this));
 		}
 
 	}
@@ -188,9 +220,9 @@ void Editbox::setCaratIndex(ulong carat_pos)
 	if (d_caratPos != carat_pos)
 	{
 		d_caratPos = carat_pos;
-		requestRedraw();
 
-		// TODO: Trigger "carat moved" event
+		// Trigger "carat moved" event
+		onCaratMoved(WindowEventArgs(this));
 	}
 
 }
@@ -228,9 +260,8 @@ void Editbox::setSelection(ulong start_pos, ulong end_pos)
 		d_selectionStart = start_pos;
 		d_selectionEnd	 = end_pos;
 
-		requestRedraw();
-
-		// TODO: Trigger "selection changed" event
+		// Trigger "selection changed" event
+		onTextSelectionChanged(WindowEventArgs(this));
 	}
 
 }
@@ -245,13 +276,8 @@ void Editbox::setMaskCodePoint(utf32 code_point)
 	{
 		d_maskCodePoint = code_point;
 
-		// if we are in masked mode, trigger a GUI redraw.
-		if (isTextMasked())
-		{
-			requestRedraw();
-		}
-
-		// TODO: Trigger "mask code point changed" event
+		// Trigger "mask code point changed" event
+		onMaskCodePointChanged(WindowEventArgs(this));
 	}
 
 }
@@ -265,7 +291,9 @@ void Editbox::setMaxTextLength(ulong max_len)
 	if (d_maxTextLen != max_len)
 	{
 		d_maxTextLen = max_len;
-		// TODO: Trigger max length changed event
+		
+		// Trigger max length changed event
+		onMaximumTextLengthChanged(WindowEventArgs(this));
 
 		// trim string
 		if (d_text.length() > d_maxTextLen)
@@ -276,7 +304,8 @@ void Editbox::setMaxTextLength(ulong max_len)
 			// see if new text is valid
 			if (!isTextValid())
 			{
-				// TODO: Trigger Text is invalid event.
+				// Trigger Text is invalid event.
+				onTextInvalidatedEvent(WindowEventArgs(this));
 			}
 
 		}
@@ -488,19 +517,18 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
 				// advance carat;
 				d_caratPos++;
-
-				// do redraw
-				requestRedraw();
 			}
 			else
 			{
-				// TODO: Trigger invalid modification attempted event.
+				// Trigger invalid modification attempted event.
+				onInvalidEntryAttempted(WindowEventArgs(this));
 			}
 
 		}
 		else
 		{
-			// TODO: Trigger text box full event
+			// Trigger text box full event
+			onEditboxFullEvent(WindowEventArgs(this));
 		}
 
 	}
@@ -523,7 +551,6 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 		{
 		case Key::LeftShift:
 		case Key::RightShift:
-
 			if (getSelectionLength() == 0)
 			{
 				d_dragAnchorIdx = getCaratIndex();
@@ -533,10 +560,66 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 		case Key::Backspace:
 			handleBackspace();
 			break;
+
+		case Key::Delete:
+			handleDelete();
+			break;
+
+		case Key::Tab:
+		case Key::Return:
+		case Key::NumpadEnter:
+			// Fire 'input accepted' event
+			onTextAcceptedEvent(WindowEventArgs(this));
+			break;
+
+		case Key::ArrowLeft:
+			if (e.sysKeys & Control)
+			{
+				handleWordLeft(e.sysKeys);
+			}
+			else
+			{
+				handleCharLeft(e.sysKeys);
+			}
+			break;
+
+		case Key::ArrowRight:
+			if (e.sysKeys & Control)
+			{
+				handleWordRight(e.sysKeys);
+			}
+			else
+			{
+				handleCharRight(e.sysKeys);
+			}
+			break;
+
+		case Key::Home:
+			handleHome(e.sysKeys);
+			break;
+
+		case Key::End:
+			handleEnd(e.sysKeys);
+			break;
 		}
 
+		e.handled = true;
 	}
 
+}
+
+
+/*************************************************************************
+	Handler for when we are deactivated
+*************************************************************************/
+void Editbox::onDeactivated(WindowEventArgs& e)
+{
+	// base processing
+	Window::onDeactivated(e);
+	e.handled;
+
+	// text accepted.
+	onTextAcceptedEvent(WindowEventArgs(this));
 }
 
 
@@ -558,13 +641,11 @@ void Editbox::handleBackspace(void)
 
 			// set text to the newly modified string
 			setText(tmp);
-
-			// do redraw
-			requestRedraw();
 		}
 		else
 		{
-			// TODO: Trigger invalid modification attempted event.
+			// Trigger invalid modification attempted event.
+			onInvalidEntryAttempted(WindowEventArgs(this));
 		}
 
 	}
@@ -578,18 +659,368 @@ void Editbox::handleBackspace(void)
 
 			// set text to the newly modified string
 			setText(tmp);
-
-			// do redraw
-			requestRedraw();
 		}
 		else
 		{
-			// TODO: Trigger invalid modification attempted event.
+			// Trigger invalid modification attempted event.
+			onInvalidEntryAttempted(WindowEventArgs(this));
 		}
 
 	}
 
 }
 
+
+/*************************************************************************
+	Processing for Delete key	
+*************************************************************************/
+void Editbox::handleDelete(void)
+{
+	String tmp(d_text);
+
+	if (getSelectionLength() != 0)
+	{
+		tmp.erase(getSelectionStartIndex(), getSelectionLength());
+
+		if (isStringValid(tmp))
+		{
+			// erase selection using mode that does not modify d_text (we just want to update state)
+			eraseSelectedText(false);
+
+			// set text to the newly modified string
+			setText(tmp);
+		}
+		else
+		{
+			// Trigger invalid modification attempted event.
+			onInvalidEntryAttempted(WindowEventArgs(this));
+		}
+
+	}
+	else if (getCaratIndex() < tmp.length())
+	{
+		tmp.erase(d_caratPos, 1);
+
+		if (isStringValid(tmp))
+		{
+			// set text to the newly modified string
+			setText(tmp);
+		}
+		else
+		{
+			// Trigger invalid modification attempted event.
+			onInvalidEntryAttempted(WindowEventArgs(this));
+		}
+
+	}
+
+}
+
+
+/*************************************************************************
+	Move the carat one character to the left.
+*************************************************************************/
+void Editbox::handleCharLeft(uint sysKeys)
+{
+	if (d_caratPos > 0)
+	{
+		setCaratIndex(d_caratPos - 1);
+	}
+
+	if (sysKeys & Shift)
+	{
+		setSelection(d_caratPos, d_dragAnchorIdx);	
+	}
+	else
+	{
+		clearSelection();
+	}
+
+}
+
+
+/*************************************************************************
+	Move the carat one word to the left
+*************************************************************************/
+void Editbox::handleWordLeft(uint sysKeys)
+{
+	if (d_caratPos > 0)
+	{
+		setCaratIndex(TextUtils::getWordStartIdx(d_text, getCaratIndex()));
+	}
+
+	if (sysKeys & Shift)
+	{
+		setSelection(d_caratPos, d_dragAnchorIdx);	
+	}
+	else
+	{
+		clearSelection();
+	}
+
+}
+
+
+/*************************************************************************
+	Move the carat one character to the right.
+*************************************************************************/
+void Editbox::handleCharRight(uint sysKeys)
+{
+	if (d_caratPos < d_text.length())
+	{
+		setCaratIndex(d_caratPos + 1);
+	}
+
+	if (sysKeys & Shift)
+	{
+		setSelection(d_caratPos, d_dragAnchorIdx);	
+	}
+	else
+	{
+		clearSelection();
+	}
+
+}
+
+
+/*************************************************************************
+	Move the carat one word to the right
+*************************************************************************/
+void Editbox::handleWordRight(uint sysKeys)
+{
+	if (d_caratPos < d_text.length())
+	{
+		setCaratIndex(TextUtils::getNextWordStartIdx(d_text, getCaratIndex()));
+	}
+
+	if (sysKeys & Shift)
+	{
+		setSelection(d_caratPos, d_dragAnchorIdx);	
+	}
+	else
+	{
+		clearSelection();
+	}
+
+}
+
+
+/*************************************************************************
+	Move the carat to the start of the text
+*************************************************************************/
+void Editbox::handleHome(uint sysKeys)
+{
+	if (d_caratPos > 0)
+	{
+		setCaratIndex(0);
+	}
+
+	if (sysKeys & Shift)
+	{
+		setSelection(d_caratPos, d_dragAnchorIdx);	
+	}
+	else
+	{
+		clearSelection();
+	}
+
+}
+
+
+/*************************************************************************
+	Move the carat to the end of the text.	
+*************************************************************************/
+void Editbox::handleEnd(uint sysKeys)
+{
+	if (d_caratPos < d_text.length())
+	{
+		setCaratIndex(d_text.length());
+	}
+
+	if (sysKeys & Shift)
+	{
+		setSelection(d_caratPos, d_dragAnchorIdx);	
+	}
+	else
+	{
+		clearSelection();
+	}
+
+}
+
+
+/*************************************************************************
+	Add edit box specific events
+*************************************************************************/
+void Editbox::addEditboxEvents(void)
+{
+	addEvent(ReadOnlyChanged);				addEvent(MaskedRenderingModeChanged);
+	addEvent(MaskCodePointChanged);			addEvent(ValidationStringChanged);
+	addEvent(MaximumTextLengthChanged);		addEvent(TextInvalidatedEvent);
+	addEvent(InvalidEntryAttempted);		addEvent(CaratMoved);
+	addEvent(TextSelectionChanged);			addEvent(EditboxFullEvent);
+	addEvent(TextAcceptedEvent);
+}
+
+
+/*************************************************************************
+	Event fired internally when the read only state of the Editbox has
+	been changed
+*************************************************************************/
+void Editbox::onReadOnlyChanged(WindowEventArgs& e)
+{
+	requestRedraw();
+	fireEvent(ReadOnlyChanged, e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the masked rendering mode (password mode)
+	has been changed
+*************************************************************************/
+void Editbox::onMaskedRenderingModeChanged(WindowEventArgs& e)
+{
+	requestRedraw();
+	fireEvent(MaskedRenderingModeChanged , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the code point to use for masked
+	rendering has been changed.
+*************************************************************************/
+void Editbox::onMaskCodePointChanged(WindowEventArgs& e)
+{
+	// if we are in masked mode, trigger a GUI redraw.
+	if (isTextMasked())
+	{
+		requestRedraw();
+	}
+
+	fireEvent(MaskCodePointChanged , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the validation string is changed.	
+*************************************************************************/
+void Editbox::onValidationStringChanged(WindowEventArgs& e)
+{
+	fireEvent(ValidationStringChanged , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the maximum text length for the edit box
+	is changed.	
+*************************************************************************/
+void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
+{
+	fireEvent(MaximumTextLengthChanged , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when something has caused the current text to
+	now fail validation	
+*************************************************************************/
+void Editbox::onTextInvalidatedEvent(WindowEventArgs& e)
+{
+	fireEvent(TextInvalidatedEvent , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the user attempted to make a change to
+	the edit box that would have caused it to fail validation.
+*************************************************************************/
+void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
+{
+	fireEvent(InvalidEntryAttempted , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the carat (insert point) position changes.	
+*************************************************************************/
+void Editbox::onCaratMoved(WindowEventArgs& e)
+{
+	requestRedraw();
+	fireEvent(CaratMoved , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the current text selection changes.	
+*************************************************************************/
+void Editbox::onTextSelectionChanged(WindowEventArgs& e)
+{
+	requestRedraw();
+	fireEvent(TextSelectionChanged , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the edit box text has reached the set
+	maximum length.	
+*************************************************************************/
+void Editbox::onEditboxFullEvent(WindowEventArgs& e)
+{
+	fireEvent(EditboxFullEvent , e);
+}
+
+
+/*************************************************************************
+	Event fired internally when the user accepts the edit box text by
+	pressing Return, Enter, or Tab.	
+*************************************************************************/
+void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
+{
+	fireEvent(TextAcceptedEvent , e);
+}
+
+
+/*************************************************************************
+	Set the colour to be used for rendering Editbox text in the normal,
+	unselected state.	
+*************************************************************************/
+void Editbox::setNormalTextColour(colour col)
+{
+	d_normalTextColour = col;
+	requestRedraw();
+}
+
+
+/*************************************************************************
+	Set the colour to be used for rendering the Editbox text when within
+	the selected region.
+*************************************************************************/
+void Editbox::setSelectedTextColour(colour col)
+{
+	d_selectTextColour = col;
+	requestRedraw();
+}
+
+
+/*************************************************************************
+	Set the colour to be used for rendering the Editbox selection highlight
+	when the Editbox is active.
+*************************************************************************/
+void Editbox::setNormalSelectBrushColour(colour col)
+{
+	d_selectBrushColour = col;
+	requestRedraw();
+}
+
+
+/*************************************************************************
+	Set the colour to be used for rendering the Editbox selection highlight
+	when the Editbox is inactive.
+*************************************************************************/
+void Editbox::setInactiveSelectBrushColour(colour col)
+{
+	d_inactiveSelectBrushColour = col;
+	requestRedraw();
+}
 
 } // End of  CEGUI namespace section

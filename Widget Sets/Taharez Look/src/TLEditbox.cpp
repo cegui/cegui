@@ -69,13 +69,6 @@ TLEditbox::TLEditbox(const String& type, const String& name) :
 	d_selection	= &iset->getImage(SelectionBrushImageName);
 
 	setMouseCursor(&iset->getImage(MouseCursorImageName));
-
-	// setup defaults
-	// TODO: Move to base class
-	d_normalTextColour	= 0x00FFFFFF;
-	d_selectTextColour	= 0x00000000;
-	d_selectBrushColour	= 0x007F7FFF;
-	d_inactiveSelectBrushColour = 0x00808080;
 }
 
 

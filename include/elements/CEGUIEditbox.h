@@ -43,9 +43,29 @@ class CEGUIBASE_API Editbox : public Window
 {
 public:
 	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// default colours
+	static const ulong	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
+	static const ulong	DefaultSelectedTextColour;			//!< Colour applied to selected text.
+	static const ulong	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
+	static const ulong	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
+
+
+	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-
+	static const utf8	ReadOnlyChanged[];					//!< The read-only mode for the edit box has been changed.
+	static const utf8	MaskedRenderingModeChanged[];		//!< The masked rendering mode (password mode) has been changed.
+	static const utf8	MaskCodePointChanged[];				//!< The code point (character) to use for masked text has been changed.
+	static const utf8	ValidationStringChanged[];			//!< The validation string has been changed.
+	static const utf8	MaximumTextLengthChanged[];			//!< The maximum allowable string length has been changed.
+	static const utf8	TextInvalidatedEvent[];				//!< Some operation has made the current text invalid with regards to the validation string.
+	static const utf8	InvalidEntryAttempted[];			//!< The user attempted to modify the text in a way that would have made it invalid.
+	static const utf8	CaratMoved[];						//!< The text carat (insert point) has changed.
+	static const utf8	TextSelectionChanged[];				//!< The current text selection has changed.
+	static const utf8	EditboxFullEvent[];					//!< The number of characters in the edit box has reached the current maximum.
+	static const utf8	TextAcceptedEvent[];				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
 
 
 	/*************************************************************************
@@ -113,8 +133,7 @@ public:
 	\return
 		String object containing the current validation regex data
 	*/
-	// TODO: Fix me.
-	const String&	getValidationString(void) const		{return d_text;}
+	const String&	getValidationString(void) const		{return d_validationString;}
 
 
 	/*!
@@ -182,6 +201,50 @@ public:
 		returned here (it will never be more).
 	*/
 	ulong	getMaxTextLength(void) const		{return d_maxTextLen;}
+
+
+	/*!
+	\brief
+		return the currently set colour to be used for rendering Editbox text in the
+		normal, unselected state.
+
+	\return
+		colour value describing the ARGB colour that is currently set.
+	*/
+	colour	getNormalTextColour(void) const				{return d_normalTextColour;}
+
+
+	/*!
+	\brief
+		return the currently set colour to be used for rendering the Editbox text when within the
+		selected region.
+
+	\return
+		colour value describing the ARGB colour that is currently set.
+	*/
+	colour	getSelectedTextColour(void) const			{return d_selectTextColour;}
+
+
+	/*!
+	\brief
+		return the currently set colour to be used for rendering the Editbox selection highlight
+		when the Editbox is active.
+
+	\return
+		colour value describing the ARGB colour that is currently set.
+	*/
+	colour	getNormalSelectBrushColour(void) const		{return d_selectBrushColour;}
+
+
+	/*!
+	\brief
+		return the currently set colour to be used for rendering the Editbox selection highlight
+		when the Editbox is inactive.
+
+	\return
+		colour value describing the ARGB colour that is currently set.
+	*/
+	colour	getInactiveSelectBrushColour(void) const	{return d_inactiveSelectBrushColour;}
 
 
 	/*************************************************************************
@@ -295,6 +358,58 @@ public:
 	void	setMaxTextLength(ulong max_len);
 
 
+	/*!
+	\brief
+		Set the colour to be used for rendering Editbox text in the normal, unselected state.
+
+	\param col
+		colour value describing the ARGB colour that is to be used.
+
+	\return
+		Nothing.
+	*/
+	void	setNormalTextColour(colour col);
+
+
+	/*!
+	\brief
+		Set the colour to be used for rendering the Editbox text when within the
+		selected region.
+
+	\return
+		colour value describing the ARGB colour that is currently set.
+	*/
+	void	setSelectedTextColour(colour col);
+
+
+	/*!
+	\brief
+		Set the colour to be used for rendering the Editbox selection highlight
+		when the Editbox is active.
+
+	\param col
+		colour value describing the ARGB colour that is to be used.
+
+	\return
+		Nothing.
+	*/
+	void	setNormalSelectBrushColour(colour col);
+
+
+	/*!
+	\brief
+		Set the colour to be used for rendering the Editbox selection highlight
+		when the Editbox is inactive.
+
+	\param col
+		colour value describing the ARGB colour that is to be used.
+
+	\return
+		Nothing.
+	*/
+	void	setInactiveSelectBrushColour(colour col);
+
+
 protected:
 	/*************************************************************************
 		Construction / Destruction
@@ -316,6 +431,13 @@ protected:
 	/*************************************************************************
 		Implementation functions
 	*************************************************************************/
+	/*!
+	\brief
+		Add edit box specific events
+	*/
+	void	addEditboxEvents(void);
+
+
 	/*!
 	\brief
 		Return the text code point index that is rendered closest to screen position \a pt.
@@ -361,10 +483,139 @@ protected:
 	void	handleBackspace(void);
 
 
+	/*!
+	\brief
+		Processing for Delete key
+	*/
+	void	handleDelete(void);
+
+
+	/*!
+	\brief
+		Processing to move carat one character left
+	*/
+	void	handleCharLeft(uint sysKeys);
+
+
+	/*!
+	\brief
+		Processing to move carat one word left
+	*/
+	void	handleWordLeft(uint sysKeys);
+
+
+	/*!
+	\brief
+		Processing to move carat one character right
+	*/
+	void	handleCharRight(uint sysKeys);
+
+
+	/*!
+	\brief
+		Processing to move carat one word right
+	*/
+	void	handleWordRight(uint sysKeys);
+
+
+	/*!
+	\brief
+		Processing to move carat to the start of the text.
+	*/
+	void	handleHome(uint sysKeys);
+
+
+	/*!
+	\brief
+		Processing to move carat to the end of the text
+	*/
+	void	handleEnd(uint sysKeys);
+
+
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
+	/*!
+	\brief
+		Event fired internally when the read only state of the Editbox has been changed
+	*/
+	virtual	void	onReadOnlyChanged(WindowEventArgs& e);
 
+
+	/*!
+	\brief
+		Event fired internally when the masked rendering mode (password mode) has been changed
+	*/
+	virtual	void	onMaskedRenderingModeChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the code point to use for masked rendering has been changed.
+	*/
+	virtual	void	onMaskCodePointChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the validation string is changed.
+	*/
+	virtual	void	onValidationStringChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the maximum text length for the edit box is changed.
+	*/
+	virtual	void	onMaximumTextLengthChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when something has caused the current text to now fail validation
+
+		This can be caused by changing the validation string or setting a maximum length that causes the
+		current text to be truncated.
+	*/
+	virtual	void	onTextInvalidatedEvent(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the user attempted to make a change to the edit box that would
+		have caused it to fail validation.
+	*/
+	virtual	void	onInvalidEntryAttempted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the carat (insert point) position changes.
+	*/
+	virtual	void	onCaratMoved(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the current text selection changes.
+	*/
+	virtual	void	onTextSelectionChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the edit box text has reached the set maximum length.
+	*/
+	virtual	void	onEditboxFullEvent(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event fired internally when the user accepts the edit box text by pressing Return, Enter, or Tab.
+	*/
+	virtual	void	onTextAcceptedEvent(WindowEventArgs& e);
+
+	
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
@@ -374,16 +625,13 @@ protected:
 	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
 	virtual void	onMouseMove(MouseEventArgs& e);
 	virtual void	onCaptureLost(EventArgs& e);
-
 	virtual void	onCharacter(KeyEventArgs& e);
 	virtual void	onKeyDown(KeyEventArgs& e);
-
+	virtual void	onDeactivated(WindowEventArgs& e);
 
 	/*************************************************************************
 		Implementation data
 	*************************************************************************/
-	typedef	boost::basic_regex<utf32>	StringRegex;
-
 	bool	d_readOnly;			//!< True if the editbox is in read-only mode
 	bool	d_maskText;			//!< True if the editbox text should be rendered masked.
 	utf32	d_maskCodePoint;	//!< Code point to use when rendering masked text.
@@ -391,12 +639,16 @@ protected:
 	ulong	d_caratPos;			//!< Position of the carat / insert-point.
 	ulong	d_selectionStart;	//!< Start of selection area.
 	ulong	d_selectionEnd;		//!< End of selection area.
+	String	d_validationString;	//!< Copy of validation reg-ex string.
 	boost::regex	d_validator;		//!< RegEx String used for validation of text.
 	bool	d_dragging;			//!< true when a selection is being dragged.
 	ulong	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
-	
-
+	// basic rendering colours
+	colour	d_normalTextColour;				//!< Text colour used normally.
+	colour	d_selectTextColour;				//!< Text colour used when text is highlighted
+	colour	d_selectBrushColour;			//!< Colour to apply to the selection brush.
+	colour	d_inactiveSelectBrushColour;	//!< Colour to apply to the selection brush when widget is inactive / read-only.
 };
 
 } // End of  CEGUI namespace section

@@ -189,6 +189,23 @@ struct CEGUIBASE_API Key
 
 };
 
+
+/*!
+/brief
+	Enumeration of mouse buttons
+*/
+enum MouseButton
+{
+	LeftButton,
+	RightButton,
+	MiddleButton,
+	X1Button,
+	X2Button,
+	// TODO:  This should be a #define for compiler compatibility reasons.
+	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
+};
+
+
 /*!
 \brief
 	System key flag values
@@ -230,7 +247,7 @@ public:
 	Point		position;		//!< holds current mouse position.
 	Vector2		moveDelta;		//!< holds variation of mouse position from last mouse input
 	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
-	SystemKey	sysKeys;		//!< current state of the system keys and mouse buttons.
+	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
 };
 
 
@@ -242,9 +259,9 @@ public:
 class CEGUIBASE_API KeyEventArgs : public EventArgs
 {
 public:
-	utf32		codepoint;		//!< utf32 codepoint for the key (only used for Character inputs.
+	utf32		codepoint;		//!< utf32 codepoint for the key (only used for Character inputs).
 	Key::Scan	scancode;		//!< Scan code of key that caused event (only used for key up & down inputs.
-	SystemKey	sysKeys;		//!< current state of the system keys and mouse buttons.
+	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
 };
 
 

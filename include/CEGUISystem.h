@@ -31,27 +31,13 @@
 #include "CEGUISingleton.h"
 #include "CEGUIRenderer.h"
 #include "CEGUIMouseCursor.h"
+#include "CEGUIInputEvent.h"
 
 #include <boost/timer.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-/brief
-	Enumeration of mouse buttons
-*/
-enum MouseButton
-{
-	LeftButton,
-	RightButton,
-	MiddleButton,
-	X1Button,
-	X2Button,
-	// TODO:  This should be a #define for compiler compatibility reasons.
-	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
-};
-
 
 /*!
 \brief
@@ -456,6 +442,36 @@ private:
 	Window*	getTargetWindow(const Point& pt) const;
 
 
+	/*!
+	\brief
+		Translate a MouseButton value into the corresponding SystemKey value
+
+	\param btn
+		MouseButton value describing the value to be converted
+
+	\return
+		SystemKey value that corresponds to the same button as \a btn
+	*/
+	SystemKey	mouseButtonToSyskey(MouseButton btn) const;
+
+
+	/*!
+	\brief
+		Translate a Key::Scan value into the corresponding SystemKey value.
+		
+		This takes key direction into account, since we map two keys onto one value.
+
+	\param key
+		Key::Scan value describing the value to be converted
+
+	\param direction
+		true if the key is being pressed, false if the key is being released.
+
+	\return
+		SystemKey value that corresponds to the same key as \a key, or 0 if key was not a system key.
+	*/
+	SystemKey	keyCodeToSyskey(Key::Scan key, bool direction);
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -465,6 +481,12 @@ private:
 
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
 	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
+
+	uint		d_sysKeys;			//!< Current set of system keys pressed (in mk1 these were passed in, here we track these ourself).
+	bool		d_lshift;			//!< Tracks state of left shift.
+	bool		d_rshift;			//!< Tracks state of right shift.
+	bool		d_lctrl;			//!< Tracks state of left control.
+	bool		d_rctrl;			//!< Tracks state of right control.
 
 	double		d_click_timeout;	//!< Timeout value, in seconds, used to generate a single-click (button down then up)
 	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).

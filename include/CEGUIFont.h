@@ -505,6 +505,7 @@ private:
 		Implementation Constants
 	*************************************************************************/
 	static const char	FontSchemaName[];			//!< Filename of the XML schema used for validating Font files.
+	static const uint	InterGlyphPadSpace;			//!< Pad space between glyphs.
 
 
 	/*************************************************************************
