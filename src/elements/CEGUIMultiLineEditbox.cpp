@@ -1397,7 +1397,7 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 	// base class processing
 	Window::onKeyDown(e);
 
-	if (hasInputFocus())
+	if (hasInputFocus() && !isReadOnly())
 	{
 		WindowEventArgs args(this);
 		switch (e.scancode)

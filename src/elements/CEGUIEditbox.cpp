@@ -536,7 +536,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
 	Window::onCharacter(e);
 
 	// only need to take notice if we have focus
-	if (hasInputFocus() && getFont()->isCodepointAvailable(e.codepoint))
+	if (hasInputFocus() && getFont()->isCodepointAvailable(e.codepoint) && !isReadOnly())
 	{
 		// backup current text
 		String tmp(d_text);
@@ -587,7 +587,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 	// base class processing
 	Window::onKeyDown(e);
 
-	if (hasInputFocus())
+	if (hasInputFocus() && !isReadOnly())
 	{
 		WindowEventArgs args(this);
 		switch (e.scancode)
