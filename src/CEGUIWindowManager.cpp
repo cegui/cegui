@@ -256,6 +256,11 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 
 		throw FileIOException(message);
 	}
+	catch(const CEGUI::Exception&)
+	{
+		delete parser;
+		throw;
+	}
 	catch(...)
 	{
 		delete parser;
