@@ -24,23 +24,27 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUIScriptModule.h"
+#include "CEGUISystem.h"
+#include "CEGUILogger.h"
+#include "CEGUIString.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Constructor for ScriptModule base class
-*************************************************************************/
-ScriptModule::ScriptModule(void)
-{
-}
 
-
-/*************************************************************************
-	Destructor for ScriptModule base class.
-*************************************************************************/
-ScriptModule::~ScriptModule(void)
+void ScriptFunctor::operator()(const EventArgs& e)
 {
+	ScriptModule* scriptModule = System::getSingleton().getScriptingModule();
+
+	if (scriptModule)
+	{
+		scriptModule->executeScriptedEventHandler(scriptFunctionName, e);
+	}
+	else
+	{
+		Logger::getSingleton().logEvent((utf8*)"Scripted event handler '" + scriptFunctionName + "' could not be called as no ScriptModule is available.", Errors);
+	}
 }
 
 } // End of  CEGUI namespace section

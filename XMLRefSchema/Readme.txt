@@ -159,20 +159,11 @@ GUILayout attributes
 Parent		- Specifies the name of an existing window that this gui layout should be attached to (optional).
 
 
-LayoutImport Element
-====================
-The LayoutImport element is used to reference (import) a layout file into another.  The root window of the imported layout is attached to the Window where the import occurrs.
-The LayoutImport element has attributes but no sub-elements.
-
-LayoutImport attributes
------------------------
-Filename	- Specifies the filename of the layout XML file to be imported.
-
-
 Window Element
 ==============
 The Window element is used to specify a new window object to be created.
-The Window element has attributes as described below and may contain any number of nested Window elements, any number of Property elements, and any number of LayoutImport elements.
+The Window element has attributes as described below and may contain any number of nested Window elements, any number of Property elements,
+any number of LayoutImport elements, and any number of Event elements.
 
 Window attributes
 -----------------
@@ -190,3 +181,23 @@ Property attributes
 Name		- The name of the property to be set.  If no such property exists for the target window, an exception may be thrown.  (required).
 Value		- The value to be assigned to the property.  This must be in a format expected by the property or an exception may be thrown.  (required).
 
+
+LayoutImport Element
+====================
+The LayoutImport element is used to reference (import) a layout file into another.  The root window of the imported layout is attached to the Window where the import occurrs.
+The LayoutImport element has attributes but no sub-elements.
+
+LayoutImport attributes
+-----------------------
+Filename	- Specifies the filename of the layout XML file to be imported.
+
+
+Event Element
+=============
+The Event element is used to create bindings between Gui elements and script functions.
+The Event element has attributes but no sub-elements.
+
+Event attributes
+----------------
+Name		- Specifies the name of the target event.
+Function	- Specifies the name of the script function that is to be bound to the event.

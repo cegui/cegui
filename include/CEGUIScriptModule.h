@@ -27,6 +27,8 @@
 #define _CEGUIScriptModule_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -46,14 +48,14 @@ public:
 	\brief
 		Constructor for ScriptModule base class
 	*/
-	ScriptModule(void);
+	ScriptModule(void) {}
 
 
 	/*!
 	\brief
 		Destructor for ScriptModule base class.
 	*/
-	virtual ~ScriptModule(void);
+	virtual ~ScriptModule(void) {}
 
 
 	/*************************************************************************
@@ -99,6 +101,21 @@ public:
 		Nothing.
 	*/
 	virtual	void	executeScriptedEventHandler(const String& handler_name, const EventArgs& e)		= 0;
+};
+
+
+/*!
+\brief
+	Functor class used for binding named script functions to events
+*/
+class ScriptFunctor
+{
+public:
+	ScriptFunctor(const String functionName) : scriptFunctionName(functionName) {}
+	void	operator()(const EventArgs& e);
+
+private:
+	const String	scriptFunctionName;
 };
 
 } // End of  CEGUI namespace section

@@ -27,6 +27,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIXmlHandlerHelper.h"
+#include "CEGUIScriptModule.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -49,7 +50,9 @@ const char	GUILayout_xmlHandler::PropertyValueAttribute[]	= "Value";
 const char	GUILayout_xmlHandler::LayoutParentAttribute[]	= "Parent";
 const char	GUILayout_xmlHandler::LayoutImportFilenameAttribute[]	= "Filename";
 const char	GUILayout_xmlHandler::LayoutImportPrefixAttribute[]		= "Prefix";
-
+const char	GUILayout_xmlHandler::EventElement[]			= "Event";
+const char	GUILayout_xmlHandler::EventNameAttribute[]		= "Name";
+const char	GUILayout_xmlHandler::EventFunctionAttribute[]	= "Function";
 
 
 void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
@@ -153,6 +156,26 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		if ((subLayout != NULL) && (!d_stack.empty()))
 		{
 			d_stack.back()->addChildWindow(subLayout);
+		}
+
+	}
+	// handle event subscription element
+	else if (element == EventElement)
+	{
+		String eventName(XmlHandlerHelper::getAttributeValueAsString(attrs, EventNameAttribute));
+		String functionName(XmlHandlerHelper::getAttributeValueAsString(attrs, EventFunctionAttribute));
+
+		// attempt to subscribe property on window
+		try
+		{
+			if (!d_stack.empty())
+			{
+                d_stack.back()->subscribeEvent(eventName, ScriptFunctor(functionName));
+			}
+		}
+		catch (Exception exc)
+		{
+			// Don't do anything here, but the error will have been logged.
 		}
 
 	}
