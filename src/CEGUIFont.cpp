@@ -1058,4 +1058,103 @@ void Font::setAntiAliased(bool setting)
 }
 
 
+/*************************************************************************
+	Return the horizontal pixel extent given text would be formatted to.	
+*************************************************************************/
+float Font::getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt) const
+{
+	float lineWidth;
+	float widest = 0;
+
+	uint lineStart = 0, lineEnd = 0;
+	String	currLine;
+
+	while (lineEnd < text.length())
+	{
+		if ((lineEnd = text.find_first_of('\n', lineStart)) == String::npos)
+		{
+			lineEnd = text.length();
+		}
+
+		currLine = text.substr(lineStart, lineEnd - lineStart);
+		lineStart = lineEnd + 1;	// +1 to skip \n char
+
+		switch(fmt)
+		{
+		case Centred:
+		case RightAligned:
+		case LeftAligned:
+			lineWidth = getTextExtent(currLine);
+			break;
+
+		case WordWrapLeftAligned:
+		case WordWrapRightAligned:
+		case WordWrapCentred:
+			lineWidth = getWrappedTextExtent(currLine, format_area.getWidth());
+			break;
+
+		default:
+			throw InvalidRequestException((utf8*)"Font::getFormattedTextExtent - Unknown or unsupported TextFormatting value specified.");
+		}
+
+		if (lineWidth > widest)
+		{
+			widest = lineWidth;
+		}
+
+	}
+
+	return widest;
+}
+
+
+/*************************************************************************
+	returns extent of widest line of wrapped text.
+*************************************************************************/
+float Font::getWrappedTextExtent(const String& text, float wrapWidth) const
+{
+	String  whitespace = TextUtils::DefaultWhitespace;
+	String	thisWord;
+	uint	currpos;
+	float	lineWidth, wordWidth;
+	float	widest = 0;
+
+	// get first word.
+	currpos = getNextWord(text, 0, thisWord);
+	lineWidth = getTextExtent(thisWord);
+
+	// while there are words left in the string...
+	while (String::npos != text.find_first_not_of(whitespace, currpos)) {
+		// get next word of the string...
+		currpos += getNextWord(text, currpos, thisWord);
+		wordWidth = getTextExtent(thisWord);
+
+		// if the new word would make the string too long
+		if ((lineWidth + wordWidth) > wrapWidth) {
+			
+			if (lineWidth > widest)
+			{
+				widest = lineWidth;
+			}
+
+			// remove whitespace from next word - it will form start of next line
+			thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
+			wordWidth = getTextExtent(thisWord);
+
+			// reset for a new line.
+			lineWidth = 0;
+		}
+
+		// add the next word to the line
+		lineWidth += wordWidth;
+	}
+
+	if (lineWidth > widest)
+	{
+		widest = lineWidth;
+	}
+
+	return widest;
+}
+
 } // End of  CEGUI namespace section

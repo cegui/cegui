@@ -129,9 +129,48 @@ public:
 	VertFormatting	getVerticalFormatting(void) const		{return	d_vertFormatting;}
 
 
+	/*!
+	\brief
+		Return whether the vertical scroll bar is set to be shown if needed.
+
+	\return
+		- true if the vertical scroll bar will be shown if needed (top or bottom aligned formatting only).
+		- false if the vertical scroll bar will never be shown (default behaviour).
+	*/
+	bool	isVerticalScrollbarEnabled(void) const;
+
+
+	/*!
+	\brief
+		Return whether the horizontal scroll bar is set to be shown if needed.
+
+	\return
+		- true if the horizontal scroll bar will be shown if needed (non-word wrapped, left or right aligned formatting only).
+		- false if the horizontal scroll bar will never be shown (default behaviour).
+	*/
+	bool	isHorizontalScrollbarEnabled(void) const;
+
+
+	// overridden (again) so scroll bars are not clipped when they are active
+	virtual Rect	getUnclippedInnerRect(void) const;
+
+
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
+	/*!
+	\brief
+		Initialise the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
+
+
 	/*!
 	\brief
 		Sets the colours to be applied when rendering the text.
@@ -222,6 +261,28 @@ public:
 	void	setHorizontalFormatting(HorzFormatting h_fmt);
 
 
+	/*!
+	\brief
+		Set whether the vertical scroll bar will be shown if needed.
+
+	\param setting
+		- true if the vertical scroll bar should be shown if needed (top or bottom aligned formatting only).
+		- false if the vertical scroll bar should never be shown (default behaviour).
+	*/
+	void	setVerticalScrollbarEnabled(bool setting);
+
+
+	/*!
+	\brief
+		Set whether the horizontal scroll bar will be shown if needed.
+
+	\param setting
+		- true if the horizontal scroll bar should be shown if needed (non-word wrapped, left or right aligned formatting only).
+		- false if the horizontal scroll bar should never be shown (default behaviour).
+	*/
+	void	setHorizontalScrollbarEnabled(bool setting);
+
+
 protected:
 	/*************************************************************************
 		Overridden from base class
@@ -240,16 +301,84 @@ protected:
 
 
 	/*************************************************************************
+		Overridden events
+	*************************************************************************/
+	virtual void	onTextChanged(WindowEventArgs& e);
+	virtual void	onSized(WindowEventArgs& e);
+	virtual	void	onFontChanged(WindowEventArgs& e);
+	virtual void	onMouseWheel(MouseEventArgs& e);
+
+
+	/*************************************************************************
 		Implementation methods
 	*************************************************************************/
+	/*!
+	\brief
+		Return a Rect object describing, in un-clipped pixels, the window relative area
+		that the text should be rendered in to.
+
+	\return
+		Rect object describing the area of the Window to be used for rendering text.
+	*/
+	virtual	Rect	getTextRenderArea(void) const;
+
+
+	/*!
+	\brief
+		Setup size and position for the component widgets attached to this StaticText
+
+	\return
+		Nothing.
+	*/
+	virtual void	layoutComponentWidgets();
+
+
+	/*!
+	\brief
+		display required integrated scroll bars according to current state of the edit box and update their values.
+	*/
+	void	configureScrollbars(void);
+
+
+	/*************************************************************************
+		Implementation Methods (abstract)
+	*************************************************************************/
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling vertically.
+	*/
+	virtual Scrollbar*	createVertScrollbar(void) const		= 0;
+ 
+
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling horizontally.
+	*/
+	virtual Scrollbar*	createHorzScrollbar(void) const		= 0;
+
+
+	/*************************************************************************
+		Event subscribers
+	*************************************************************************/
+	void	handleScrollbarChange(const EventArgs& e);
+
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	HorzFormatting	d_horzFormatting;
-	VertFormatting	d_vertFormatting;
-	ColourRect		d_textCols;
-
+	HorzFormatting	d_horzFormatting;		//!< Horizontal formatting to be applied to the text.
+	VertFormatting	d_vertFormatting;		//!< Vertical formatting to be applied to the text.
+	ColourRect		d_textCols;				//!< Colours used when rendering the text.
+	Scrollbar*		d_vertScrollbar;		//!< Widget used as vertical scrollbar;
+	Scrollbar*		d_horzScrollbar;		//!< Widget used as horizontal scrollbar;
+	bool			d_enableVertScrollbar;	//!< true if vertical scroll bar is enabled.
+	bool			d_enableHorzScrollbar;	//!< true if horizontal scroll bar is enabled.
 
 private:
 	/*************************************************************************
@@ -258,6 +387,8 @@ private:
 	static StaticTextProperties::TextColours	d_textColoursProperty;
 	static StaticTextProperties::VertFormatting	d_vertFormattingProperty;
 	static StaticTextProperties::HorzFormatting	d_horzFormattingProperty;
+	static StaticTextProperties::VertScrollbar	d_vertScrollbarProperty;
+	static StaticTextProperties::HorzScrollbar	d_horzScrollbarProperty;
 
 
 	/*************************************************************************

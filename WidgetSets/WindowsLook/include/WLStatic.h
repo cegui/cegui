@@ -53,6 +53,11 @@ public:
 	// type name for this widget
 	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
 
+	// component widget type names
+	static const utf8*	HorzScrollbarTypeName;		//!< Type name of widget to be created as horizontal scroll bar.
+	static const utf8*	VertScrollbarTypeName;		//!< Type name of widget to be created as vertical scroll bar.
+
+
 	/*************************************************************************
 		Construction / Destruction
 	*************************************************************************/
@@ -74,8 +79,31 @@ public:
 		Destructor for WLStaticText objects.
 	*/
 	virtual ~WLStaticText(void) {}
-};
 
+
+protected:
+	/*************************************************************************
+		Implementation Methods (abstract)
+	*************************************************************************/
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling vertically.
+	*/
+	virtual Scrollbar*	createVertScrollbar(void) const;
+ 
+
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling horizontally.
+	*/
+	virtual Scrollbar*	createHorzScrollbar(void) const;
+};
 
 
 /*!

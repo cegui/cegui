@@ -28,7 +28,7 @@
 
 #include "TLModule.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUIStatic.h"
+#include "elements/CEGUIStaticText.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -39,6 +39,69 @@ namespace CEGUI
 	Routine to do some common initialisation of static widgets
 */
 static void initTaharezStatic(Static* s);
+
+
+/*!
+\brief
+	StaticText class for the TaharezLook Gui Scheme
+*/
+class TAHAREZLOOK_API TLStaticText : public StaticText
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// component widget type names
+	static const utf8	HorzScrollbarTypeName[];	//!< Type name of widget to be created as horizontal scroll bar.
+	static const utf8	VertScrollbarTypeName[];	//!< Type name of widget to be created as vertical scroll bar.
+
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for TaharezLook StaticText objects.
+
+	\param type
+		String object that specifies a type for this window, usually provided by a factory class.
+
+	\param name
+		String object that specifies a unique name that will be used to identify the new Window object
+	*/
+	TLStaticText(const String& type, const String& name) : StaticText(type, name) {}
+
+
+	/*!
+	\brief
+		Destructor for WLStaticText objects.
+	*/
+	virtual ~TLStaticText(void) {}
+
+
+protected:
+	/*************************************************************************
+		Implementation Methods (abstract)
+	*************************************************************************/
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling vertically.
+	*/
+	virtual Scrollbar*	createVertScrollbar(void) const;
+ 
+
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling horizontally.
+	*/
+	virtual Scrollbar*	createHorzScrollbar(void) const;
+};
 
 
 /*!

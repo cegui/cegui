@@ -112,6 +112,50 @@ public:
 	void	set(void* receiver, const String& value);
 };
 
+
+/*!
+\brief
+	Property to access the setting for enabling the vertical scroll bar.
+
+	\par Usage:
+		- Name: VertScrollbar
+		- Format: "[text]"
+
+		\par Where [Text] is:
+		- "True" to indicate the scroll bar is enabled and will be shown when needed.
+		- "False" to indicate the scroll bar is disabled and will never be shown
+*/
+class VertScrollbar : public Property
+{
+public:
+	VertScrollbar() : Property((utf8*)"VertScrollbar", (utf8*)"Property to get/set the setting for the vertical scroll bar.  Value is either \"True\" or \"False\".") {}
+
+	String	get(const void* receiver) const;
+	void	set(void* receiver, const String& value);
+};
+
+
+/*!
+\brief
+	Property to access the setting for enabling the horizontal scroll bar.
+
+	\par Usage:
+		- Name: HorzScrollbar
+		- Format: "[text]"
+
+		\par Where [Text] is:
+		- "True" to indicate the scroll bar is enabled and will be shown when needed.
+		- "False" to indicate the scroll bar is disabled and will never be shown
+*/
+class HorzScrollbar : public Property
+{
+public:
+	HorzScrollbar() : Property((utf8*)"HorzScrollbar", (utf8*)"Property to get/set the setting for the horizontal scroll bar.  Value is either \"True\" or \"False\".") {}
+
+	String	get(const void* receiver) const;
+	void	set(void* receiver, const String& value);
+};
+
 } // End of  StaticTextProperties namespace section
 
 } // End of  CEGUI namespace section

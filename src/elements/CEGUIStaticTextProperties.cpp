@@ -150,6 +150,29 @@ void	VertFormatting::set(void* receiver, const String& value)
 	static_cast<StaticText*>(receiver)->setVerticalFormatting(fmt);
 }
 
+
+String	VertScrollbar::get(const void* receiver) const
+{
+	return PropertyHelper::boolToString(static_cast<const StaticText*>(receiver)->isVerticalScrollbarEnabled());
+}
+
+
+void	VertScrollbar::set(void* receiver, const String& value)
+{
+	static_cast<StaticText*>(receiver)->setVerticalScrollbarEnabled(PropertyHelper::stringToBool(value));
+}
+
+String	HorzScrollbar::get(const void* receiver) const
+{
+	return PropertyHelper::boolToString(static_cast<const StaticText*>(receiver)->isHorizontalScrollbarEnabled());
+}
+
+
+void	HorzScrollbar::set(void* receiver, const String& value)
+{
+	static_cast<StaticText*>(receiver)->setHorizontalScrollbarEnabled(PropertyHelper::stringToBool(value));
+}
+
 } // End of  StaticTextProperties namespace section
 
 } // End of  CEGUI namespace section
