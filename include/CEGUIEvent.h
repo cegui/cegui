@@ -148,7 +148,7 @@ private:
 		Implementation Data
 	*************************************************************************/
 	Signal	d_sig;				//!< boost::signal that implements the signal/slot functionality
-	String	d_name;				//!< Name of this event
+	const String	d_name;		//!< Name of this event
 };
 
 } // End of  CEGUI namespace section

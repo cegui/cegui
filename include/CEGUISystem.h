@@ -96,11 +96,45 @@ public:
 	static	System*	getSingletonPtr(void)			{return Singleton<System>::getSingletonPtr();}
 
 
+	/*!
+	\brief
+		Return a pointer to the default Font for the GUI system
+
+	\return
+		Pointer to a Font object that is the default font in the system.
+	*/
+	Font*	getDefaultFont(void) const				{return d_defaultFont;}
+
+
+	/*!
+	\brief
+		Causes a full re-draw next time renderGUI() is called
+
+	\return
+		Nothing
+	*/
+	void	signalRedraw()		{d_gui_redraw = true;}
+
+
+	/*!
+	\brief
+		Render the GUI
+
+		Depending upon the internal state, this may either re-use rendering from last time, or trigger a full re-draw from all elements.
+
+	\return
+		Nothing
+	*/
+	void	renderGUI(void);
+
+
 private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	Renderer*	d_renderer;		//!< Holds the pointer to the Renderer object given to us in the constructor
+	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
+	Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
+	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
 };
 
 } // End of  CEGUI namespace section

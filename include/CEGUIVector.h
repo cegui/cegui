@@ -44,6 +44,53 @@ public:
 	Vector2(float x, float y) : d_x(x), d_y(y) {}
 	~Vector2(void) {}
 
+	Vector2& operator*=(const Vector2& vec)
+	{
+		d_x *= vec.d_x;
+		d_y *= vec.d_y;
+
+		return *this;
+	}
+
+	Vector2& operator/=(const Vector2& vec)
+	{
+		d_x /= vec.d_x;
+		d_y /= vec.d_y;
+
+		return *this;
+	}
+
+	Vector2& operator+=(const Vector2& vec)
+	{
+		d_x += vec.d_x;
+		d_y += vec.d_y;
+
+		return *this;
+	}
+
+	Vector2& operator-=(const Vector2& vec)
+	{
+		d_x -= vec.d_x;
+		d_y -= vec.d_y;
+
+		return *this;
+	}
+
+	Vector2	operator+(const Vector2& vec)
+	{
+		return Vector2(d_x + vec.d_x, d_y + vec.d_y);
+	}
+
+	Vector2	operator-(const Vector2& vec)
+	{
+		return Vector2(d_x - vec.d_x, d_y - vec.d_y);
+	}
+
+	Vector2	operator*(const Vector2& vec)
+	{
+		return Vector2(d_x * vec.d_x, d_y * vec.d_y);
+	}
+
 	float d_x, d_y;
 };
 

@@ -38,6 +38,13 @@ namespace CEGUI
 const utf8	Renderer::ModeChangedEvent[]		= "DisplayModeChanged";
 
 
+/*************************************************************************
+	Implementation constants
+*************************************************************************/
+const float	Renderer::GuiZInitialValue		= 0.0f;
+const float	Renderer::GuiZElementStep		= 0.001f;		// this is enough for 1000 Windows.
+const float	Renderer::GuiZLayerStep			= 0.0001f;		// provides space for 10 layers per Window.
+
 
 /*************************************************************************
 	Constructor

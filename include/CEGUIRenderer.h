@@ -180,12 +180,114 @@ public:
 	virtual void		destroyAllTextures(void) = 0;
 
 
+	/*!
+	\brief
+		Return the current width of the display in pixels
+
+	\return
+		float value equal to the current width of the display in pixels.
+	*/
+	virtual float	getWidth(void) const	= 0;
+
+
+	/*!
+	\brief
+		Return the current height of the display in pixels
+
+	\return
+		float value equal to the current height of the display in pixels.
+	*/
+	virtual float	getHeight(void) const	= 0;
+
+
+	/*!
+	\brief
+		Return the size of the display in pixels
+
+	\return
+		Size object describing the dimensions of the current display.
+	*/
+	virtual Size	getSize(void) const		= 0;
+
+
+	/*!
+	\brief
+		Return a Rect describing the screen
+
+	\return
+		A Rect object that describes the screen area.  Typically, the top-left values are always 0, and the size of the area described is
+		equal to the screen resolution.
+	*/
+	virtual Rect	getRect(void) const		= 0;
+
+
+	/*************************************************************************
+		Basic stuff we provide in base class
+	*************************************************************************/
+	/*!
+	\brief
+		Reset the z co-ordinate for rendering.
+	
+	\return
+		Nothing
+	*/
+	void	resetZValue(void)				{d_current_z = GuiZInitialValue;}
+
+
+	/*!
+	\brief
+		Update the z co-ordinate for the next major UI element (window).
+
+	\return
+		Nothing
+	*/
+	void	advanceZValue(void)				{d_current_z += GuiZElementStep;}
+
+
+	/*!
+	\brief
+		return the current Z value to use (equates to layer 0 for this UI element).
+
+	\return
+		float value that specifies the z co-ordinate to be used for layer 0 on the current GUI element.
+	*/
+	float	getCurrentZ(void) const			{return d_current_z;}
+
+
+	/*!
+	\brief
+		return the z co-ordinate to use for the requested layer on the current GUI element.
+
+	\param layer
+		Specifies the layer to return the Z co-ordinate for.  Each GUI element can use up to 10 layers, so valid inputs are 0 to 9 inclusive.
+		If you specify an invalid value for \a layer, results are undefined.
+
+	\return
+		float value that specifies the Z co-ordinate for layer \a layer on the current GUI element.
+	*/
+	float	getZLayer(uint layer) const		{return d_current_z + ((float)layer * GuiZLayerStep);}
+
+
 protected:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	Renderer(void);
 	virtual ~Renderer(void);
+
+private:
+	/*************************************************************************
+		Implementation constants
+	*************************************************************************/
+	static const float	GuiZInitialValue;		//!< Initial value to use for 'z' each frame.
+	static const float	GuiZElementStep;		//!< Value to step 'z' for each GUI element.
+	static const float	GuiZLayerStep;			//!< Value to step 'z' for each GUI layer.
+
+
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	float	d_current_z;		//!< The current z co-ordinate value.
 };
 
 } // End of  CEGUI namespace section

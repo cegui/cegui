@@ -80,4 +80,33 @@ Rect& Rect::offset(const Point& pt)
 }
 
 
+/*************************************************************************
+	Check if a given point is within the Rect
+*************************************************************************/
+bool Rect::isPointInRect(const Point& pt) const
+{
+	if ((d_left > pt.d_x) ||
+		(d_right <= pt.d_x) ||
+		(d_top > pt.d_y) ||
+		(d_bottom <= pt.d_y))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+/*************************************************************************
+	Set location of rect retaining current size.
+*************************************************************************/
+void Rect::setPosition(const Point& pt)
+{
+	Size sz(getSize());
+
+	d_left = pt.d_x;
+	d_top  = pt.d_y;
+	setSize(sz);
+}
+
+
 } // End of  CEGUI namespace section

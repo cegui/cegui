@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIVector.h"
+#include "CEGUISize.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -58,6 +59,12 @@ public:
 
 	/*!
 	\brief
+		Return top-left postion of Rect as a Point
+	*/
+	Point	getPosition(void) const		{return Point(d_left, d_top);}
+
+	/*!
+	\brief
 		return width of Rect area
 	*/
 	float	getWidth(void) const		{return d_right - d_left;}
@@ -68,6 +75,21 @@ public:
 		return height of Rect area
 	*/
 	float	getHeight(void) const		{return d_bottom - d_top;}
+
+
+	/*!
+	\brief
+		return the size of the Rect area
+	*/
+	Size	getSize(void) const			{return Size(getWidth(), getHeight());}
+
+
+	/*!
+	\brief
+		set the position of the Rect (leaves size in tact)
+	*/
+	void	setPosition(const Point& pt);
+
 
 	/*!
 	\brief
@@ -80,6 +102,14 @@ public:
 		set the height of the Rect object
 	*/
 	void	setHeight(float height)		{d_bottom = d_top + height;}
+
+
+	/*!
+	\brief
+		set the size of the Rect area
+	*/
+	void	setSize(const Size& sze)	{setWidth(sze.d_width); setHeight(sze.d_height);}
+
 
 	/*!
 	\brief
@@ -103,6 +133,19 @@ public:
 		this Rect after the offset is performed
 	*/
 	Rect&	offset(const Point& pt);
+
+
+	/*!
+	\brief
+		Return true if the given Point falls within this Rect
+
+	\param pt
+		Point object describing the position to test.
+
+	\return
+		true if position \a pt is within this Rect's area, else false
+	*/
+	bool	isPointInRect(const Point& pt) const;
 
 
 	/*************************************************************************

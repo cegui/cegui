@@ -117,4 +117,20 @@ System::~System(void)
 	delete Logger::getSingletonPtr();
 }
 
+
+/*************************************************************************
+	Render the GUI for this frame
+*************************************************************************/
+void System::renderGUI(void)
+{
+	if (d_gui_redraw)
+	{
+		d_renderer->clearRenderList();
+
+		// TODO: Trigger re-draw of current GUI sheet.
+	}
+
+	d_renderer->doRender();
+}
+
 } // End of  CEGUI namespace section
