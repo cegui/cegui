@@ -140,7 +140,10 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Group grou
 *************************************************************************/
 void EventSet::fireEvent(const String& name, EventArgs& args, const String& eventNamespace)
 {
-	EventMap::iterator pos = d_events.find(name);
+    // handle global events
+    GlobalEventSet::getSingleton().fireEvent(name, args, eventNamespace);
+
+    EventMap::iterator pos = d_events.find(name);
 
 	if (pos == d_events.end())
 	{
@@ -153,8 +156,6 @@ void EventSet::fireEvent(const String& name, EventArgs& args, const String& even
 		(*pos->second)(args);
 	}
 
-	// handle global events
-	GlobalEventSet::getSingleton().fireEvent(name, args, eventNamespace);
 }
 
 
