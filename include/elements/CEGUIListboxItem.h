@@ -291,6 +291,41 @@ public:
 
 	/*!
 	\brief
+		Set the colours used for selection highlighting.
+
+	\param top_left_colour
+		Colour (as ARGB value) to be applied to the top-left corner of the selection area.
+
+	\param top_right_colour
+		Colour (as ARGB value) to be applied to the top-right corner of the selection area.
+
+	\param bottom_left_colour
+		Colour (as ARGB value) to be applied to the bottom-left corner of the selection area.
+
+	\param bottom_right_colour
+		Colour (as ARGB value) to be applied to the bottom-right corner of the selection area.
+
+	\return 
+		Nothing.
+	*/
+	void	setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+
+
+	/*!
+	\brief
+		Set the colours used for selection highlighting.
+
+	\param col
+		colour value to be used when rendering.
+
+	\return
+		Nothing.
+	*/
+	void	setSelectionColours(colour col)		{setSelectionColours(col, col, col, col);}
+
+
+	/*!
+	\brief
 		Set the selection highlighting brush image.
 
 	\param image

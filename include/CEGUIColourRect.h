@@ -42,9 +42,16 @@ class CEGUIBASE_API ColourRect
 public:
 	/*!
 	\brief
+		Constructor for ColourRect objects (via single colour).  Also handles default construction.
+	*/
+	ColourRect(colour col = 0xFF000000);
+
+
+	/*!
+	\brief
 		Constructor for ColourRect objects
 	*/
-	ColourRect(colour top_left = 0xFF000000, colour top_right = 0xFF000000, colour bottom_left = 0xFF000000, colour bottom_right = 0xFF000000);
+	ColourRect(colour top_left, colour top_right, colour bottom_left, colour bottom_right);
 
 
 	/*!

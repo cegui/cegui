@@ -88,4 +88,16 @@ colour ListboxItem::calculateModulatedAlphaColour(colour col, float alpha) const
 	return ((col & 0x00FFFFFF) | (((colour)(((float)(col >> 24)) * alpha)) << 24));
 }
 
+
+/*************************************************************************
+	Set the colours used for selection highlighting.	
+*************************************************************************/
+void ListboxItem::setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+{
+	d_selectCols.d_top_left		= top_left_colour;
+	d_selectCols.d_top_right	= top_right_colour;
+	d_selectCols.d_bottom_left	= bottom_left_colour;
+	d_selectCols.d_bottom_right	= bottom_right_colour;
+}
+
 } // End of  CEGUI namespace section

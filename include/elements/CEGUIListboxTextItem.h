@@ -129,6 +129,41 @@ public:
 	void	setTextColours(const ColourRect& cols)			{d_textCols = cols;}
 
 
+	/*!
+	\brief
+		Set the colours used for text rendering.
+
+	\param top_left_colour
+		Colour (as ARGB value) to be applied to the top-left corner of each text glyph rendered.
+
+	\param top_right_colour
+		Colour (as ARGB value) to be applied to the top-right corner of each text glyph rendered.
+
+	\param bottom_left_colour
+		Colour (as ARGB value) to be applied to the bottom-left corner of each text glyph rendered.
+
+	\param bottom_right_colour
+		Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
+
+	\return 
+		Nothing.
+	*/
+	void	setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+
+
+	/*!
+	\brief
+		Set the colours used for text rendering.
+
+	\param col
+		colour value to be used when rendering.
+
+	\return
+		Nothing.
+	*/
+	void	setTextColours(colour col)		{setTextColours(col, col, col, col);}
+
+
 	/*************************************************************************
 		Required implementations of pure virtuals from the base class.
 	*************************************************************************/

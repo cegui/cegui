@@ -119,4 +119,17 @@ void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& cli
 
 }
 
+
+/*************************************************************************
+	Set the colours used for text rendering.	
+*************************************************************************/
+void ListboxTextItem::setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+{
+	d_textCols.d_top_left		= top_left_colour;
+	d_textCols.d_top_right		= top_right_colour;
+	d_textCols.d_bottom_left	= bottom_left_colour;
+	d_textCols.d_bottom_right	= bottom_right_colour;
+}
+
+
 } // End of  CEGUI namespace section

@@ -31,11 +31,24 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-ColourRect::ColourRect(colour top_left /* = 0xFF000000 */, colour top_right /* = 0xFF000000 */, colour bottom_left /* = 0xFF000000 */, colour bottom_right /* = 0xFF000000 */) :
+ColourRect::ColourRect(colour top_left, colour top_right, colour bottom_left, colour bottom_right) :
 	d_top_left(top_left),
 	d_top_right(top_right),
 	d_bottom_left(bottom_left),
 	d_bottom_right(bottom_right)
+{
+}
+
+
+/*************************************************************************
+	Constructor for ColourRect objects (via single colour).
+	Also handles default construction.	
+*************************************************************************/
+ColourRect::ColourRect(colour col) :
+	d_top_left(col),
+	d_top_right(col),
+	d_bottom_left(col),
+	d_bottom_right(col)
 {
 }
 
