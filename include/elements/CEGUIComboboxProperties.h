@@ -57,8 +57,8 @@ class ReadOnly : public Property
 public:
 	ReadOnly() : Property((utf8*)"ReadOnly", (utf8*)"Property to get/set the read-only setting for the Editbox.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -78,8 +78,8 @@ class ValidationString : public Property
 public:
 	ValidationString() : Property((utf8*)"ValidationString", (utf8*)"Property to get/set the validation string Editbox.  Value is a text string.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -99,8 +99,8 @@ class CaratIndex : public Property
 public:
 	CaratIndex() : Property((utf8*)"CaratIndex", (utf8*)"Property to get/set the current carat index.  Value is \"[uint]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -120,8 +120,8 @@ class EditSelectionStart : public Property
 public:
 	EditSelectionStart() : Property((utf8*)"EditSelectionStart", (utf8*)"Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -141,8 +141,8 @@ class EditSelectionLength : public Property
 public:
 	EditSelectionLength() : Property((utf8*)"EditSelectionLength", (utf8*)"Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -162,8 +162,8 @@ class MaxEditTextLength : public Property
 public:
 	MaxEditTextLength() : Property((utf8*)"MaxEditTextLength", (utf8*)"Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -183,8 +183,8 @@ class NormalEditTextColour : public Property
 public:
 	NormalEditTextColour() : Property((utf8*)"NormalEditTextColour", (utf8*)"Property to get/set the normal, unselected, text colour used for rendering text.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -204,8 +204,8 @@ class SelectedEditTextColour : public Property
 public:
 	SelectedEditTextColour() : Property((utf8*)"SelectedEditTextColour", (utf8*)"Property to get/set the colour used for rendering text within the selection area.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -225,8 +225,8 @@ class ActiveEditSelectionColour : public Property
 public:
 	ActiveEditSelectionColour() : Property((utf8*)"ActiveEditSelectionColour", (utf8*)"Property to get/set the colour used for rendering the selection highlight when the edit box is active.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -246,8 +246,8 @@ class InactiveEditSelectionColour : public Property
 public:
 	InactiveEditSelectionColour() : Property((utf8*)"InactiveEditSelectionColour", (utf8*)"Property to get/set the colour used for rendering the selection highlight when the edit box is inactive.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -268,8 +268,8 @@ class SortList : public Property
 public:
 	SortList() : Property((utf8*)"SortList", (utf8*)"Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -290,8 +290,8 @@ class ForceVertScrollbar : public Property
 public:
 	ForceVertScrollbar() : Property((utf8*)"ForceVertScrollbar", (utf8*)"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -312,8 +312,8 @@ class ForceHorzScrollbar : public Property
 public:
 	ForceHorzScrollbar() : Property((utf8*)"ForceHorzScrollbar", (utf8*)"Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -334,8 +334,8 @@ class SingleClickMode : public Property
 public:
 	SingleClickMode() : Property((utf8*)"SingleClickMode", (utf8*)"Property to get/set the 'single click mode' setting for the combo box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

@@ -54,8 +54,8 @@ class TabHeight : public Property
 public:
 	TabHeight() : Property((utf8*)"TabHeight", (utf8*)"Property to get/set the height of the tabs.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -72,8 +72,8 @@ class AbsoluteTabHeight : public Property
 public:
     AbsoluteTabHeight() : Property((utf8*)"AbsoluteTabHeight", (utf8*)"Property to get/set the absolute height of the tabs.") {}
 
-    String	get(const void* receiver) const;
-    void	set(void* receiver, const String& value);
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -90,8 +90,8 @@ class RelativeTabHeight : public Property
 public:
     RelativeTabHeight() : Property((utf8*)"RelativeTabHeight", (utf8*)"Property to get/set the relative height of the tabs.") {}
 
-    String	get(const void* receiver) const;
-    void	set(void* receiver, const String& value);
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -108,8 +108,8 @@ class TabTextPadding : public Property
 public:
     TabTextPadding() : Property((utf8*)"TabTextPadding", (utf8*)"Property to get/set the padding either side of the tab buttons.") {}
 
-    String	get(const void* receiver) const;
-    void	set(void* receiver, const String& value);
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -126,8 +126,8 @@ class AbsoluteTabTextPadding : public Property
 public:
     AbsoluteTabTextPadding() : Property((utf8*)"AbsoluteTabTextPadding", (utf8*)"Property to get/set the absolute padding either side of the tab buttons.") {}
 
-    String	get(const void* receiver) const;
-    void	set(void* receiver, const String& value);
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -144,8 +144,8 @@ class RelativeTabTextPadding : public Property
 public:
     RelativeTabTextPadding() : Property((utf8*)"RelativeTabTextPadding", (utf8*)"Property to get/set the relative padding either side of the tab buttons.") {}
 
-    String	get(const void* receiver) const;
-    void	set(void* receiver, const String& value);
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

@@ -35,49 +35,49 @@ namespace CEGUI
 // Start of ComboboxProperties namespace section
 namespace ComboboxProperties
 {
-String	ReadOnly::get(const void* receiver) const
+String	ReadOnly::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->isReadOnly());
 }
 
 
-void	ReadOnly::set(void* receiver, const String& value)
+void	ReadOnly::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setReadOnly(PropertyHelper::stringToBool(value));
 }
 
 
-String	ValidationString::get(const void* receiver) const
+String	ValidationString::get(const PropertyReceiver* receiver) const
 {
 	return static_cast<const Combobox*>(receiver)->getValidationString();
 }
 
 
-void	ValidationString::set(void* receiver, const String& value)
+void	ValidationString::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setValidationString(value);
 }
 
 
-String	CaratIndex::get(const void* receiver) const
+String	CaratIndex::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getCaratIndex());
 }
 
 
-void	CaratIndex::set(void* receiver, const String& value)
+void	CaratIndex::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setCaratIndex(PropertyHelper::stringToUint(value));
 }
 
 
-String	EditSelectionStart::get(const void* receiver) const
+String	EditSelectionStart::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getSelectionStartIndex());
 }
 
 
-void	EditSelectionStart::set(void* receiver, const String& value)
+void	EditSelectionStart::set(PropertyReceiver* receiver, const String& value)
 {
 	Combobox* eb = static_cast<Combobox*>(receiver);
 	uint selStart = PropertyHelper::stringToUint(value);
@@ -85,13 +85,13 @@ void	EditSelectionStart::set(void* receiver, const String& value)
 }
 
 
-String	EditSelectionLength::get(const void* receiver) const
+String	EditSelectionLength::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getSelectionLength());
 }
 
 
-void	EditSelectionLength::set(void* receiver, const String& value)
+void	EditSelectionLength::set(PropertyReceiver* receiver, const String& value)
 {
 	Combobox* eb = static_cast<Combobox*>(receiver);
 	uint selLen = PropertyHelper::stringToUint(value);
@@ -99,109 +99,109 @@ void	EditSelectionLength::set(void* receiver, const String& value)
 }
 
 
-String	MaxEditTextLength::get(const void* receiver) const
+String	MaxEditTextLength::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getMaxTextLength());
 }
 
 
-void	MaxEditTextLength::set(void* receiver, const String& value)
+void	MaxEditTextLength::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setMaxTextLength(PropertyHelper::stringToUint(value));
 }
 
 
-String	NormalEditTextColour::get(const void* receiver) const
+String	NormalEditTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getNormalTextColour());
 }
 
 
-void	NormalEditTextColour::set(void* receiver, const String& value)
+void	NormalEditTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String	SelectedEditTextColour::get(const void* receiver) const
+String	SelectedEditTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getSelectedTextColour());
 }
 
 
-void	SelectedEditTextColour::set(void* receiver, const String& value)
+void	SelectedEditTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setSelectedTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String	ActiveEditSelectionColour::get(const void* receiver) const
+String	ActiveEditSelectionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getNormalSelectBrushColour());
 }
 
 
-void	ActiveEditSelectionColour::set(void* receiver, const String& value)
+void	ActiveEditSelectionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setNormalSelectBrushColour(PropertyHelper::stringToColour(value));
 }
 
 
-String	InactiveEditSelectionColour::get(const void* receiver) const
+String	InactiveEditSelectionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getInactiveSelectBrushColour());
 }
 
 
-void	InactiveEditSelectionColour::set(void* receiver, const String& value)
+void	InactiveEditSelectionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setInactiveSelectBrushColour(PropertyHelper::stringToColour(value));
 }
 
 
-String	SortList::get(const void* receiver) const
+String	SortList::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->isSortEnabled());
 }
 
 
-void	SortList::set(void* receiver, const String& value)
+void	SortList::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setSortingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	ForceVertScrollbar::get(const void* receiver) const
+String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 
-void	ForceVertScrollbar::set(void* receiver, const String& value)
+void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
 }
 
 
-String	ForceHorzScrollbar::get(const void* receiver) const
+String	ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->isHorzScrollbarAlwaysShown());
 }
 
 
-void	ForceHorzScrollbar::set(void* receiver, const String& value)
+void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
 }
 
 
-String	SingleClickMode::get(const void* receiver) const
+String	SingleClickMode::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->getSingleClickEnabled());
 }
 
 
-void	SingleClickMode::set(void* receiver, const String& value)
+void	SingleClickMode::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Combobox*>(receiver)->setSingleClickEnabled(PropertyHelper::stringToBool(value));
 }

@@ -35,25 +35,25 @@ namespace CEGUI
 // Start of ProgressBarProperties namespace section
 namespace ProgressBarProperties
 {
-String CurrentProgress::get(const void* receiver) const
+String CurrentProgress::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const ProgressBar*>(receiver)->getProgress());
 }
 
 
-void CurrentProgress::set(void* receiver, const String& value)
+void CurrentProgress::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ProgressBar*>(receiver)->setProgress(PropertyHelper::stringToFloat(value));
 }
 
 
-String StepSize::get(const void* receiver) const
+String StepSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const ProgressBar*>(receiver)->getStep());
 }
 
 
-void StepSize::set(void* receiver, const String& value)
+void StepSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ProgressBar*>(receiver)->setStepSize(PropertyHelper::stringToFloat(value));
 }

@@ -37,49 +37,49 @@ namespace CEGUI
 // Start of MultiLineEditboxProperties namespace section
 namespace MultiLineEditboxProperties
 {
-String ReadOnly::get(const void* receiver) const
+String ReadOnly::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiLineEditbox*>(receiver)->isReadOnly());
 }
 
 
-void ReadOnly::set(void* receiver, const String& value)
+void ReadOnly::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setReadOnly(PropertyHelper::stringToBool(value));
 }
 
 
-String WordWrap::get(const void* receiver) const
+String WordWrap::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiLineEditbox*>(receiver)->isWordWrapped());
 }
 
 
-void WordWrap::set(void* receiver, const String& value)
+void WordWrap::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setWordWrapping(PropertyHelper::stringToBool(value));
 }
 
 
-String CaratIndex::get(const void* receiver) const
+String CaratIndex::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getCaratIndex());
 }
 
 
-void CaratIndex::set(void* receiver, const String& value)
+void CaratIndex::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setCaratIndex(PropertyHelper::stringToUint(value));
 }
 
 
-String SelectionStart::get(const void* receiver) const
+String SelectionStart::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getSelectionStartIndex());
 }
 
 
-void SelectionStart::set(void* receiver, const String& value)
+void SelectionStart::set(PropertyReceiver* receiver, const String& value)
 {
 	MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(receiver);
 	uint selStart = PropertyHelper::stringToUint(value);
@@ -87,13 +87,13 @@ void SelectionStart::set(void* receiver, const String& value)
 }
 
 
-String SelectionLength::get(const void* receiver) const
+String SelectionLength::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getSelectionLength());
 }
 
 
-void SelectionLength::set(void* receiver, const String& value)
+void SelectionLength::set(PropertyReceiver* receiver, const String& value)
 {
 	MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(receiver);
 	uint selLen = PropertyHelper::stringToUint(value);
@@ -101,61 +101,61 @@ void SelectionLength::set(void* receiver, const String& value)
 }
 
 
-String MaxTextLength::get(const void* receiver) const
+String MaxTextLength::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getMaxTextLength());
 }
 
 
-void MaxTextLength::set(void* receiver, const String& value)
+void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setMaxTextLength(PropertyHelper::stringToUint(value));
 }
 
 
-String NormalTextColour::get(const void* receiver) const
+String NormalTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getNormalTextColour());
 }
 
 
-void NormalTextColour::set(void* receiver, const String& value)
+void NormalTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String SelectedTextColour::get(const void* receiver) const
+String SelectedTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getSelectedTextColour());
 }
 
 
-void SelectedTextColour::set(void* receiver, const String& value)
+void SelectedTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setSelectedTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String ActiveSelectionColour::get(const void* receiver) const
+String ActiveSelectionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getNormalSelectBrushColour());
 }
 
 
-void ActiveSelectionColour::set(void* receiver, const String& value)
+void ActiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setNormalSelectBrushColour(PropertyHelper::stringToColour(value));
 }
 
 
-String InactiveSelectionColour::get(const void* receiver) const
+String InactiveSelectionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getInactiveSelectBrushColour());
 }
 
 
-void InactiveSelectionColour::set(void* receiver, const String& value)
+void InactiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiLineEditbox*>(receiver)->setInactiveSelectBrushColour(PropertyHelper::stringToColour(value));
 }

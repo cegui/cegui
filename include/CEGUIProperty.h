@@ -34,6 +34,19 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+/*!
+\brief
+	Dummy base class to ensure correct casting of receivers.
+*/
+class CEGUIBASE_API PropertyReceiver
+{
+public:
+	PropertyReceiver() {}
+	virtual ~PropertyReceiver() {}
+};
+
+
 /*!
 \brief
 	An abstract class that defines the interface to access object properties by name.
@@ -94,7 +107,7 @@ public:
 	\return
 		String object containing a textual representation of the current value of the Property
 	*/
-	virtual String	get(const void* receiver) const = 0;
+	virtual String	get(const PropertyReceiver* receiver) const = 0;
 
 
 	/*!
@@ -112,7 +125,7 @@ public:
 
 	\exception InvalidRequestException	Thrown when the Property was unable to interpret the content of \a value.
 	*/
-	virtual void	set(void* receiver, const String& value) = 0;
+	virtual void	set(PropertyReceiver* receiver, const String& value) = 0;
 
 
 protected:

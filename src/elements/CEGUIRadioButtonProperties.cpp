@@ -34,25 +34,25 @@ namespace CEGUI
 // Start of RadioButtonProperties namespace section
 namespace RadioButtonProperties
 {
-String Selected::get(const void* receiver) const
+String Selected::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const RadioButton*>(receiver)->isSelected());
 }
 
 
-void Selected::set(void* receiver, const String& value)
+void Selected::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<RadioButton*>(receiver)->setSelected(PropertyHelper::stringToBool(value));
 }
 
 
-String GroupID::get(const void* receiver) const
+String GroupID::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const RadioButton*>(receiver)->getGroupID());
 }
 
 
-void GroupID::set(void* receiver, const String& value)
+void GroupID::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<RadioButton*>(receiver)->setGroupID(PropertyHelper::stringToUint(value));
 }

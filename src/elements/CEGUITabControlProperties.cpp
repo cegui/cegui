@@ -35,72 +35,72 @@ namespace CEGUI
 // Start of TabControlProperties namespace section
 namespace TabControlProperties
 {
-String	AbsoluteTabHeight::get(const void* receiver) const
+String	AbsoluteTabHeight::get(const PropertyReceiver* receiver) const
 {
     return PropertyHelper::floatToString(static_cast<const TabControl*>(receiver)->getAbsoluteTabHeight());
 }
 
 
-void	AbsoluteTabHeight::set(void* receiver, const String& value)
+void	AbsoluteTabHeight::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<TabControl*>(receiver)->setAbsoluteTabHeight(PropertyHelper::stringToFloat(value));
 }
 
-String	RelativeTabHeight::get(const void* receiver) const
+String	RelativeTabHeight::get(const PropertyReceiver* receiver) const
 {
     return PropertyHelper::floatToString(static_cast<const TabControl*>(receiver)->getRelativeTabHeight());
 }
 
 
-void	RelativeTabHeight::set(void* receiver, const String& value)
+void	RelativeTabHeight::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<TabControl*>(receiver)->setRelativeTabHeight(PropertyHelper::stringToFloat(value));
 }
 
 
-String	TabHeight::get(const void* receiver) const
+String	TabHeight::get(const PropertyReceiver* receiver) const
 {
     return PropertyHelper::floatToString(static_cast<const TabControl*>(receiver)->getTabHeight());
 }
 
 
-void	TabHeight::set(void* receiver, const String& value)
+void	TabHeight::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<TabControl*>(receiver)->setTabHeight(PropertyHelper::stringToFloat(value));
 }
 
 
 
-String	AbsoluteTabTextPadding::get(const void* receiver) const
+String	AbsoluteTabTextPadding::get(const PropertyReceiver* receiver) const
 {
     return PropertyHelper::floatToString(static_cast<const TabControl*>(receiver)->getAbsoluteTabTextPadding());
 }
 
 
-void	AbsoluteTabTextPadding::set(void* receiver, const String& value)
+void	AbsoluteTabTextPadding::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<TabControl*>(receiver)->setAbsoluteTabTextPadding(PropertyHelper::stringToFloat(value));
 }
 
-String	RelativeTabTextPadding::get(const void* receiver) const
+String	RelativeTabTextPadding::get(const PropertyReceiver* receiver) const
 {
     return PropertyHelper::floatToString(static_cast<const TabControl*>(receiver)->getRelativeTabTextPadding());
 }
 
 
-void	RelativeTabTextPadding::set(void* receiver, const String& value)
+void	RelativeTabTextPadding::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<TabControl*>(receiver)->setRelativeTabTextPadding(PropertyHelper::stringToFloat(value));
 }
 
 
-String	TabTextPadding::get(const void* receiver) const
+String	TabTextPadding::get(const PropertyReceiver* receiver) const
 {
     return PropertyHelper::floatToString(static_cast<const TabControl*>(receiver)->getTabTextPadding());
 }
 
 
-void	TabTextPadding::set(void* receiver, const String& value)
+void	TabTextPadding::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<TabControl*>(receiver)->setTabTextPadding(PropertyHelper::stringToFloat(value));
 }

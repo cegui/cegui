@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIIteratorBase.h"
+#include "CEGUIProperty.h"
 #include <map>
 
 
@@ -44,7 +45,7 @@ namespace CEGUI
 \brief
 	Class that contains a collection of Property objects.
 */
-class CEGUIBASE_API PropertySet
+class CEGUIBASE_API PropertySet : public PropertyReceiver
 {
 public:
 	/*!

@@ -38,13 +38,13 @@ namespace CEGUI
 // Start of CheckboxProperties namespace section
 namespace CheckboxProperties
 {
-	String Selected::get(const void* receiver) const
+	String Selected::get(const PropertyReceiver* receiver) const
 	{
 		return PropertyHelper::boolToString(static_cast<const Checkbox*>(receiver)->isSelected());
 	}
 
 
-	void Selected::set(void* receiver, const String& value)
+	void Selected::set(PropertyReceiver* receiver, const String& value)
 	{
 		static_cast<Checkbox*>(receiver)->setSelected(PropertyHelper::stringToBool(value));
 	}

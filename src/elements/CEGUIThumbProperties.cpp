@@ -35,43 +35,43 @@ namespace CEGUI
 // Start of ThumbProperties namespace section
 namespace ThumbProperties
 {
-String	HotTracked::get(const void* receiver) const
+String	HotTracked::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Thumb*>(receiver)->isHotTracked());
 }
 
 
-void	HotTracked::set(void* receiver, const String& value)
+void	HotTracked::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Thumb*>(receiver)->setHotTracked(PropertyHelper::stringToBool(value));
 }
 
 
-String	VertFree::get(const void* receiver) const
+String	VertFree::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Thumb*>(receiver)->isVertFree());
 }
 
 
-void	VertFree::set(void* receiver, const String& value)
+void	VertFree::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Thumb*>(receiver)->setVertFree(PropertyHelper::stringToBool(value));
 }
 
 
-String	HorzFree::get(const void* receiver) const
+String	HorzFree::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Thumb*>(receiver)->isHorzFree());
 }
 
 
-void	HorzFree::set(void* receiver, const String& value)
+void	HorzFree::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Thumb*>(receiver)->setHorzFree(PropertyHelper::stringToBool(value));
 }
 
 
-String	VertRange::get(const void* receiver) const
+String	VertRange::get(const PropertyReceiver* receiver) const
 {
 	using namespace std;
 	char buff[64];
@@ -83,7 +83,7 @@ String	VertRange::get(const void* receiver) const
 }
 
 
-void	VertRange::set(void* receiver, const String& value)
+void	VertRange::set(PropertyReceiver* receiver, const String& value)
 {
 	using namespace std;
 
@@ -94,7 +94,7 @@ void	VertRange::set(void* receiver, const String& value)
 }
 
 
-String	HorzRange::get(const void* receiver) const
+String	HorzRange::get(const PropertyReceiver* receiver) const
 {
 	using namespace std;
 
@@ -106,7 +106,7 @@ String	HorzRange::get(const void* receiver) const
 }
 
 
-void	HorzRange::set(void* receiver, const String& value)
+void	HorzRange::set(PropertyReceiver* receiver, const String& value)
 {
 	using namespace std;
 

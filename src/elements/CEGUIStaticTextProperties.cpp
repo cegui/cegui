@@ -35,19 +35,19 @@ namespace CEGUI
 // Start of StaticTextProperties namespace section
 namespace StaticTextProperties
 {
-String	TextColours::get(const void* receiver) const
+String	TextColours::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourRectToString(static_cast<const StaticText*>(receiver)->getTextColours());
 }
 
 
-void	TextColours::set(void* receiver, const String& value)
+void	TextColours::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<StaticText*>(receiver)->setTextColours(PropertyHelper::stringToColourRect(value));
 }
 
 
-String	HorzFormatting::get(const void* receiver) const
+String	HorzFormatting::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const StaticText*>(receiver)->getHorizontalFormatting())
 	{
@@ -78,7 +78,7 @@ String	HorzFormatting::get(const void* receiver) const
 }
 
 
-void	HorzFormatting::set(void* receiver, const String& value)
+void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticText::HorzFormatting fmt;
 
@@ -111,7 +111,7 @@ void	HorzFormatting::set(void* receiver, const String& value)
 }
 
 
-String	VertFormatting::get(const void* receiver) const
+String	VertFormatting::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const StaticText*>(receiver)->getVerticalFormatting())
 	{
@@ -130,7 +130,7 @@ String	VertFormatting::get(const void* receiver) const
 }
 
 
-void	VertFormatting::set(void* receiver, const String& value)
+void	VertFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticText::VertFormatting fmt;
 
@@ -151,24 +151,24 @@ void	VertFormatting::set(void* receiver, const String& value)
 }
 
 
-String	VertScrollbar::get(const void* receiver) const
+String	VertScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const StaticText*>(receiver)->isVerticalScrollbarEnabled());
 }
 
 
-void	VertScrollbar::set(void* receiver, const String& value)
+void	VertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<StaticText*>(receiver)->setVerticalScrollbarEnabled(PropertyHelper::stringToBool(value));
 }
 
-String	HorzScrollbar::get(const void* receiver) const
+String	HorzScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const StaticText*>(receiver)->isHorizontalScrollbarEnabled());
 }
 
 
-void	HorzScrollbar::set(void* receiver, const String& value)
+void	HorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<StaticText*>(receiver)->setHorizontalScrollbarEnabled(PropertyHelper::stringToBool(value));
 }

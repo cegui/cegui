@@ -35,61 +35,61 @@ namespace CEGUI
 // Start of ScrollbarProperties namespace section
 namespace ScrollbarProperties
 {
-String	DocumentSize::get(const void* receiver) const
+String	DocumentSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Scrollbar*>(receiver)->getDocumentSize());
 }
 
 
-void	DocumentSize::set(void* receiver, const String& value)
+void	DocumentSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Scrollbar*>(receiver)->setDocumentSize(PropertyHelper::stringToFloat(value));
 }
 
 
-String	PageSize::get(const void* receiver) const
+String	PageSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Scrollbar*>(receiver)->getPageSize());
 }
 
 
-void	PageSize::set(void* receiver, const String& value)
+void	PageSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Scrollbar*>(receiver)->setPageSize(PropertyHelper::stringToFloat(value));
 }
 
 
-String	StepSize::get(const void* receiver) const
+String	StepSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Scrollbar*>(receiver)->getStepSize());
 }
 
 
-void	StepSize::set(void* receiver, const String& value)
+void	StepSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Scrollbar*>(receiver)->setStepSize(PropertyHelper::stringToFloat(value));
 }
 
 
-String	OverlapSize::get(const void* receiver) const
+String	OverlapSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Scrollbar*>(receiver)->getOverlapSize());
 }
 
 
-void	OverlapSize::set(void* receiver, const String& value)
+void	OverlapSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Scrollbar*>(receiver)->setOverlapSize(PropertyHelper::stringToFloat(value));
 }
 
 
-String	ScrollPosition::get(const void* receiver) const
+String	ScrollPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Scrollbar*>(receiver)->getScrollPosition());
 }
 
 
-void	ScrollPosition::set(void* receiver, const String& value)
+void	ScrollPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Scrollbar*>(receiver)->setScrollPosition(PropertyHelper::stringToFloat(value));
 }

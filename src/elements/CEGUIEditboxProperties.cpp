@@ -39,73 +39,73 @@ namespace CEGUI
 namespace EditboxProperties
 {
 
-String ReadOnly::get(const void* receiver) const
+String ReadOnly::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Editbox*>(receiver)->isReadOnly());
 }
 
 
-void ReadOnly::set(void* receiver, const String& value)
+void ReadOnly::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setReadOnly(PropertyHelper::stringToBool(value));
 }
 
 
-String MaskText::get(const void* receiver) const
+String MaskText::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Editbox*>(receiver)->isTextMasked());
 }
 
 
-void MaskText::set(void* receiver, const String& value)
+void MaskText::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setTextMasked(PropertyHelper::stringToBool(value));
 }
 
 
-String MaskCodepoint::get(const void* receiver) const
+String MaskCodepoint::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getMaskCodePoint());
 }
 
 
-void MaskCodepoint::set(void* receiver, const String& value)
+void MaskCodepoint::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setMaskCodePoint(PropertyHelper::stringToUint(value));
 }
 
 
-String ValidationString::get(const void* receiver) const
+String ValidationString::get(const PropertyReceiver* receiver) const
 {
 	return static_cast<const Editbox*>(receiver)->getValidationString();
 }
 
 
-void ValidationString::set(void* receiver, const String& value)
+void ValidationString::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setValidationString(value);
 }
 
 
-String CaratIndex::get(const void* receiver) const
+String CaratIndex::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getCaratIndex());
 }
 
 
-void CaratIndex::set(void* receiver, const String& value)
+void CaratIndex::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setCaratIndex(PropertyHelper::stringToUint(value));
 }
 
 
-String SelectionStart::get(const void* receiver) const
+String SelectionStart::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getSelectionStartIndex());
 }
 
 
-void SelectionStart::set(void* receiver, const String& value)
+void SelectionStart::set(PropertyReceiver* receiver, const String& value)
 {
 	Editbox* eb = static_cast<Editbox*>(receiver);
 	uint selStart = PropertyHelper::stringToUint(value);
@@ -113,13 +113,13 @@ void SelectionStart::set(void* receiver, const String& value)
 }
 
 
-String SelectionLength::get(const void* receiver) const
+String SelectionLength::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getSelectionLength());
 }
 
 
-void SelectionLength::set(void* receiver, const String& value)
+void SelectionLength::set(PropertyReceiver* receiver, const String& value)
 {
 	Editbox* eb = static_cast<Editbox*>(receiver);
 	uint selLen = PropertyHelper::stringToUint(value);
@@ -127,61 +127,61 @@ void SelectionLength::set(void* receiver, const String& value)
 }
 
 
-String MaxTextLength::get(const void* receiver) const
+String MaxTextLength::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getMaxTextLength());
 }
 
 
-void MaxTextLength::set(void* receiver, const String& value)
+void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setMaxTextLength(PropertyHelper::stringToUint(value));
 }
 
 
-String NormalTextColour::get(const void* receiver) const
+String NormalTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getNormalTextColour());
 }
 
 
-void NormalTextColour::set(void* receiver, const String& value)
+void NormalTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String SelectedTextColour::get(const void* receiver) const
+String SelectedTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getSelectedTextColour());
 }
 
 
-void SelectedTextColour::set(void* receiver, const String& value)
+void SelectedTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setSelectedTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String ActiveSelectionColour::get(const void* receiver) const
+String ActiveSelectionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getNormalSelectBrushColour());
 }
 
 
-void ActiveSelectionColour::set(void* receiver, const String& value)
+void ActiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setNormalSelectBrushColour(PropertyHelper::stringToColour(value));
 }
 
 
-String InactiveSelectionColour::get(const void* receiver) const
+String InactiveSelectionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getInactiveSelectBrushColour());
 }
 
 
-void InactiveSelectionColour::set(void* receiver, const String& value)
+void InactiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Editbox*>(receiver)->setInactiveSelectBrushColour(PropertyHelper::stringToColour(value));
 }

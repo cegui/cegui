@@ -56,8 +56,8 @@ class DocumentSize : public Property
 public:
 	DocumentSize() : Property((utf8*)"DocumentSize", (utf8*)"Property to get/set the document size for the Scrollbar.  Value is a float.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -77,8 +77,8 @@ class PageSize : public Property
 public:
 	PageSize() : Property((utf8*)"PageSize", (utf8*)"Property to get/set the page size for the Scrollbar.  Value is a float.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -98,8 +98,8 @@ class StepSize : public Property
 public:
 	StepSize() : Property((utf8*)"StepSize", (utf8*)"Property to get/set the step size for the Scrollbar.  Value is a float.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -119,8 +119,8 @@ class OverlapSize : public Property
 public:
 	OverlapSize() : Property((utf8*)"OverlapSize", (utf8*)"Property to get/set the overlap size for the Scrollbar.  Value is a float.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -139,8 +139,8 @@ class ScrollPosition : public Property
 public:
 	ScrollPosition() : Property((utf8*)"ScrollPosition", (utf8*)"Property to get/set the scroll position of the Scrollbar.  Value is a float.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 } // End of  ScrollbarProperties namespace section

@@ -35,157 +35,157 @@ namespace CEGUI
 // Start of StaticProperties namespace section
 namespace StaticProperties
 {
-String	FrameEnabled::get(const void* receiver) const
+String	FrameEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Static*>(receiver)->isFrameEnabled());
 }
 
 
-void	FrameEnabled::set(void* receiver, const String& value)
+void	FrameEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setFrameEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	BackgroundEnabled::get(const void* receiver) const
+String	BackgroundEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Static*>(receiver)->isBackgroundEnabled());
 }
 
 
-void	BackgroundEnabled::set(void* receiver, const String& value)
+void	BackgroundEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setBackgroundEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	FrameColours::get(const void* receiver) const
+String	FrameColours::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourRectToString(static_cast<const Static*>(receiver)->getFrameColours());
 }
 
 
-void	FrameColours::set(void* receiver, const String& value)
+void	FrameColours::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setFrameColours(PropertyHelper::stringToColourRect(value));
 }
 
 
-String	BackgroundColours::get(const void* receiver) const
+String	BackgroundColours::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourRectToString(static_cast<const Static*>(receiver)->getBackgroundColours());
 }
 
 
-void	BackgroundColours::set(void* receiver, const String& value)
+void	BackgroundColours::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setBackgroundColours(PropertyHelper::stringToColourRect(value));
 }
 
 
-String	BackgroundImage::get(const void* receiver) const
+String	BackgroundImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getBackgroundImage());
 }
 
 
-void	BackgroundImage::set(void* receiver, const String& value)
+void	BackgroundImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setBackgroundImage(PropertyHelper::stringToImage(value));
 }
 
 
-String	TopLeftFrameImage::get(const void* receiver) const
+String	TopLeftFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(TopLeftCorner));
 }
 
 
-void	TopLeftFrameImage::set(void* receiver, const String& value)
+void	TopLeftFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(TopLeftCorner, PropertyHelper::stringToImage(value));
 }
 
 
-String	TopRightFrameImage::get(const void* receiver) const
+String	TopRightFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(TopRightCorner));
 }
 
 
-void	TopRightFrameImage::set(void* receiver, const String& value)
+void	TopRightFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(TopRightCorner, PropertyHelper::stringToImage(value));
 }
 
 
-String	BottomLeftFrameImage::get(const void* receiver) const
+String	BottomLeftFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(BottomLeftCorner));
 }
 
 
-void	BottomLeftFrameImage::set(void* receiver, const String& value)
+void	BottomLeftFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(BottomLeftCorner, PropertyHelper::stringToImage(value));
 }
 
 
-String	BottomRightFrameImage::get(const void* receiver) const
+String	BottomRightFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(BottomRightCorner));
 }
 
 
-void	BottomRightFrameImage::set(void* receiver, const String& value)
+void	BottomRightFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(BottomRightCorner, PropertyHelper::stringToImage(value));
 }
 
 
-String	LeftFrameImage::get(const void* receiver) const
+String	LeftFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(LeftEdge));
 }
 
 
-void	LeftFrameImage::set(void* receiver, const String& value)
+void	LeftFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(LeftEdge, PropertyHelper::stringToImage(value));
 }
 
 
-String	RightFrameImage::get(const void* receiver) const
+String	RightFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(RightEdge));
 }
 
 
-void	RightFrameImage::set(void* receiver, const String& value)
+void	RightFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(RightEdge, PropertyHelper::stringToImage(value));
 }
 
 
-String	TopFrameImage::get(const void* receiver) const
+String	TopFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(TopEdge));
 }
 
 
-void	TopFrameImage::set(void* receiver, const String& value)
+void	TopFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(TopEdge, PropertyHelper::stringToImage(value));
 }
 
 
-String	BottomFrameImage::get(const void* receiver) const
+String	BottomFrameImage::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const Static*>(receiver)->getImageForFrameLocation(BottomEdge));
 }
 
 
-void	BottomFrameImage::set(void* receiver, const String& value)
+void	BottomFrameImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Static*>(receiver)->setImageForFrameLocation(BottomEdge, PropertyHelper::stringToImage(value));
 }

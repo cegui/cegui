@@ -57,8 +57,8 @@ class NormalTextColour : public Property
 public:
 	NormalTextColour() : Property((utf8*)"NormalTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for normal state.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -80,8 +80,8 @@ class HoverTextColour : public Property
 public:
 	HoverTextColour() : Property((utf8*)"HoverTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for hover/highlight state.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -103,8 +103,8 @@ class PushedTextColour : public Property
 public:
 	PushedTextColour() : Property((utf8*)"PushedTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for pushed state.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -126,8 +126,8 @@ class DisabledTextColour : public Property
 public:
 	DisabledTextColour() : Property((utf8*)"DisabledTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for disabled state.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

@@ -56,8 +56,8 @@ class FrameEnabled : public Property
 public:
 	FrameEnabled() : Property((utf8*)"FrameEnabled", (utf8*)"Property to get/set the state of the frame enabled setting for the Static widget.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -78,8 +78,8 @@ class BackgroundEnabled : public Property
 public:
 	BackgroundEnabled() : Property((utf8*)"BackgroundEnabled", (utf8*)"Property to get/set the state of the frame background setting for the Static widget.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -102,8 +102,8 @@ class FrameColours : public Property
 public:
 	FrameColours() : Property((utf8*)"FrameColours", (utf8*)"Property to get/set the frame colours for the Static widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -126,8 +126,8 @@ class BackgroundColours : public Property
 public:
 	BackgroundColours() : Property((utf8*)"BackgroundColours", (utf8*)"Property to get/set the background colours for the Static widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -148,8 +148,8 @@ class BackgroundImage : public Property
 public:
 	BackgroundImage() : Property((utf8*)"BackgroundImage", (utf8*)"Property to get/set the background image for the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -170,8 +170,8 @@ class TopLeftFrameImage : public Property
 public:
 	TopLeftFrameImage() : Property((utf8*)"TopLeftFrameImage", (utf8*)"Property to get/set the top-left image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -192,8 +192,8 @@ class TopRightFrameImage : public Property
 public:
 	TopRightFrameImage() : Property((utf8*)"TopRightFrameImage", (utf8*)"Property to get/set the top-right image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -214,8 +214,8 @@ class BottomLeftFrameImage : public Property
 public:
 	BottomLeftFrameImage() : Property((utf8*)"BottomLeftFrameImage", (utf8*)"Property to get/set the bottom-left image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -236,8 +236,8 @@ class BottomRightFrameImage : public Property
 public:
 	BottomRightFrameImage() : Property((utf8*)"BottomRightFrameImage", (utf8*)"Property to get/set the bottom-right image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -258,8 +258,8 @@ class LeftFrameImage : public Property
 public:
 	LeftFrameImage() : Property((utf8*)"LeftFrameImage", (utf8*)"Property to get/set the left edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -280,8 +280,8 @@ class RightFrameImage : public Property
 public:
 	RightFrameImage() : Property((utf8*)"RightFrameImage", (utf8*)"Property to get/set the right edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -302,8 +302,8 @@ class TopFrameImage : public Property
 public:
 	TopFrameImage() : Property((utf8*)"TopFrameImage", (utf8*)"Property to get/set the top edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -324,8 +324,8 @@ class BottomFrameImage : public Property
 public:
 	BottomFrameImage() : Property((utf8*)"BottomFrameImage", (utf8*)"Property to get/set the bottom edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

@@ -35,55 +35,55 @@ namespace CEGUI
 // Start of ListHeaderProperties namespace section
 namespace ListHeaderProperties
 {
-String	SortSettingEnabled::get(const void* receiver) const
+String	SortSettingEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const ListHeader*>(receiver)->isSortingEnabled());
 }
 
 
-void	SortSettingEnabled::set(void* receiver, const String& value)
+void	SortSettingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeader*>(receiver)->setSortingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	ColumnsSizable::get(const void* receiver) const
+String	ColumnsSizable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const ListHeader*>(receiver)->isColumnSizingEnabled());
 }
 
 
-void	ColumnsSizable::set(void* receiver, const String& value)
+void	ColumnsSizable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeader*>(receiver)->setColumnSizingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	ColumnsMovable::get(const void* receiver) const
+String	ColumnsMovable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const ListHeader*>(receiver)->isColumnDraggingEnabled());
 }
 
 
-void	ColumnsMovable::set(void* receiver, const String& value)
+void	ColumnsMovable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeader*>(receiver)->setColumnDraggingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	SortColumnID::get(const void* receiver) const
+String	SortColumnID::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const ListHeader*>(receiver)->getSortSegment().getID());
 }
 
 
-void	SortColumnID::set(void* receiver, const String& value)
+void	SortColumnID::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeader*>(receiver)->setSortColumnFromID(PropertyHelper::stringToUint(value));
 }
 
 
-String	SortDirection::get(const void* receiver) const
+String	SortDirection::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const ListHeader*>(receiver)->getSortDirection())
 	{
@@ -103,7 +103,7 @@ String	SortDirection::get(const void* receiver) const
 }
 
 
-void	SortDirection::set(void* receiver, const String& value)
+void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 {
 	ListHeaderSegment::SortDirection dir;
 

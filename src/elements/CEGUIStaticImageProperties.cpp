@@ -35,31 +35,31 @@ namespace CEGUI
 // Start of StaticImageProperties namespace section
 namespace StaticImageProperties
 {
-String	Image::get(const void* receiver) const
+String	Image::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::imageToString(static_cast<const StaticImage*>(receiver)->getImage());
 }
 
 
-void	Image::set(void* receiver, const String& value)
+void	Image::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<StaticImage*>(receiver)->setImage(PropertyHelper::stringToImage(value));
 }
 
 
-String	ImageColours::get(const void* receiver) const
+String	ImageColours::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourRectToString(static_cast<const StaticImage*>(receiver)->getImageColours());
 }
 
 
-void	ImageColours::set(void* receiver, const String& value)
+void	ImageColours::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<StaticImage*>(receiver)->setImageColours(PropertyHelper::stringToColourRect(value));
 }
 
 
-String	VertFormatting::get(const void* receiver) const
+String	VertFormatting::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const StaticImage*>(receiver)->getVerticalFormatting())
 	{
@@ -87,7 +87,7 @@ String	VertFormatting::get(const void* receiver) const
 }
 
 
-void	VertFormatting::set(void* receiver, const String& value)
+void	VertFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticImage::VertFormatting fmt;
 
@@ -116,7 +116,7 @@ void	VertFormatting::set(void* receiver, const String& value)
 }
 
 
-String	HorzFormatting::get(const void* receiver) const
+String	HorzFormatting::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const StaticImage*>(receiver)->getHorizontalFormatting())
 	{
@@ -144,7 +144,7 @@ String	HorzFormatting::get(const void* receiver) const
 }
 
 
-void	HorzFormatting::set(void* receiver, const String& value)
+void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticImage::HorzFormatting fmt;
 

@@ -57,8 +57,8 @@ class ColumnsSizable : public Property
 public:
 	ColumnsSizable() : Property((utf8*)"ColumnsSizable", (utf8*)"Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -79,8 +79,8 @@ class ColumnsMovable : public Property
 public:
 	ColumnsMovable() : Property((utf8*)"ColumnsMovable", (utf8*)"Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -101,8 +101,8 @@ class SortSettingEnabled : public Property
 public:
 	SortSettingEnabled() : Property((utf8*)"SortSettingEnabled", (utf8*)"Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -124,8 +124,8 @@ class SortDirection : public Property
 public:
 	SortDirection() : Property((utf8*)"SortDirection", (utf8*)"Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -145,8 +145,8 @@ class SortColumnID : public Property
 public:
 	SortColumnID() : Property((utf8*)"SortColumnID", (utf8*)"Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 } // End of  ListHeaderProperties namespace section

@@ -38,49 +38,49 @@ namespace CEGUI
 namespace ButtonBaseProperties
 {
 
-String NormalTextColour::get(const void* receiver) const
+String NormalTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const ButtonBase*>(receiver)->getNormalTextColour());
 }
 
 
-void NormalTextColour::set(void* receiver, const String& value)
+void NormalTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ButtonBase*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String	HoverTextColour::get(const void* receiver) const
+String	HoverTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const ButtonBase*>(receiver)->getHoverTextColour());
 }
 
 
-void	HoverTextColour::set(void* receiver, const String& value)
+void	HoverTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ButtonBase*>(receiver)->setHoverTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String	PushedTextColour::get(const void* receiver) const
+String	PushedTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const ButtonBase*>(receiver)->getPushedTextColour());
 }
 
 
-void	PushedTextColour::set(void* receiver, const String& value)
+void	PushedTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ButtonBase*>(receiver)->setPushedTextColour(PropertyHelper::stringToColour(value));
 }
 
 
-String DisabledTextColour::get(const void* receiver) const
+String DisabledTextColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const ButtonBase*>(receiver)->getDisabledTextColour());
 }
 
 
-void DisabledTextColour::set(void* receiver, const String& value)
+void DisabledTextColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ButtonBase*>(receiver)->setDisabledTextColour(PropertyHelper::stringToColour(value));
 }

@@ -35,56 +35,56 @@ namespace CEGUI
 // Start of MultiColumnListProperties namespace section
 namespace MultiColumnListProperties
 {
-String	ColumnsSizable::get(const void* receiver) const
+String	ColumnsSizable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isUserColumnSizingEnabled());
 }
 
 
-void	ColumnsSizable::set(void* receiver, const String& value)
+void	ColumnsSizable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setUserColumnSizingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	ColumnsMovable::get(const void* receiver) const
+String	ColumnsMovable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isUserColumnDraggingEnabled());
 }
 
 
-void	ColumnsMovable::set(void* receiver, const String& value)
+void	ColumnsMovable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setUserColumnDraggingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	SortSettingEnabled::get(const void* receiver) const
+String	SortSettingEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isUserSortControlEnabled());
 }
 
 
-void	SortSettingEnabled::set(void* receiver, const String& value)
+void	SortSettingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setUserSortControlEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	SortColumnID::get(const void* receiver) const
+String	SortColumnID::get(const PropertyReceiver* receiver) const
 {
 	const MultiColumnList* mcl = static_cast<const MultiColumnList*>(receiver);
 	return PropertyHelper::uintToString(mcl->getColumnID(mcl->getSortColumn()));
 }
 
 
-void	SortColumnID::set(void* receiver, const String& value)
+void	SortColumnID::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setSortColumnByID(PropertyHelper::stringToUint(value));
 }
 
 
-String	SortDirection::get(const void* receiver) const
+String	SortDirection::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const MultiColumnList*>(receiver)->getSortDirection())
 	{
@@ -104,7 +104,7 @@ String	SortDirection::get(const void* receiver) const
 }
 
 
-void	SortDirection::set(void* receiver, const String& value)
+void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 {
 	ListHeaderSegment::SortDirection dir;
 
@@ -125,55 +125,55 @@ void	SortDirection::set(void* receiver, const String& value)
 }
 
 
-String	NominatedSelectionColumnID::get(const void* receiver) const
+String	NominatedSelectionColumnID::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const MultiColumnList*>(receiver)->getNominatedSelectionColumnID());
 }
 
 
-void	NominatedSelectionColumnID::set(void* receiver, const String& value)
+void	NominatedSelectionColumnID::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setNominatedSelectionColumn(PropertyHelper::stringToUint(value));
 }
 
 
-String	NominatedSelectionRow::get(const void* receiver) const
+String	NominatedSelectionRow::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const MultiColumnList*>(receiver)->getNominatedSelectionRow());
 }
 
 
-void	NominatedSelectionRow::set(void* receiver, const String& value)
+void	NominatedSelectionRow::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setNominatedSelectionRow(PropertyHelper::stringToUint(value));
 }
 
 
-String	ForceVertScrollbar::get(const void* receiver) const
+String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 
-void	ForceVertScrollbar::set(void* receiver, const String& value)
+void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
 }
 
 
-String	ForceHorzScrollbar::get(const void* receiver) const
+String	ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const MultiColumnList*>(receiver)->isHorzScrollbarAlwaysShown());
 }
 
 
-void	ForceHorzScrollbar::set(void* receiver, const String& value)
+void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<MultiColumnList*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
 }
 
 
-String	SelectionMode::get(const void* receiver) const
+String	SelectionMode::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const MultiColumnList*>(receiver)->getSelectionMode())
 	{
@@ -220,7 +220,7 @@ String	SelectionMode::get(const void* receiver) const
 }
 
 
-void	SelectionMode::set(void* receiver, const String& value)
+void	SelectionMode::set(PropertyReceiver* receiver, const String& value)
 {
 	MultiColumnList::SelectionMode mode;
 

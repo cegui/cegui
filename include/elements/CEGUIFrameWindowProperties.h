@@ -57,8 +57,8 @@ class SizingEnabled : public Property
 public:
 	SizingEnabled() : Property((utf8*)"SizingEnabled", (utf8*)"Property to get/set the state of the sizable setting for the FrameWindow.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -79,8 +79,8 @@ class FrameEnabled : public Property
 public:
 	FrameEnabled() : Property((utf8*)"FrameEnabled", (utf8*)"Property to get/set the setting for whether the window frame will be displayed.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -101,8 +101,8 @@ class TitlebarEnabled : public Property
 public:
 	TitlebarEnabled() : Property((utf8*)"TitlebarEnabled", (utf8*)"Property to get/set the setting for whether the window title-bar will be enabled (or displayed depending upon choice of final widget type).  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -123,8 +123,8 @@ class CloseButtonEnabled : public Property
 public:
 	CloseButtonEnabled() : Property((utf8*)"CloseButtonEnabled", (utf8*)"Property to get/set the setting for whether the window close button will be enabled (or displayed depending upon choice of final widget type).  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -145,8 +145,8 @@ class RollUpEnabled : public Property
 public:
 	RollUpEnabled() : Property((utf8*)"RollUpEnabled", (utf8*)"Property to get/set the setting for whether the user is able to roll-up / shade the window.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -167,8 +167,8 @@ class RollUpState : public Property
 public:
 	RollUpState() : Property((utf8*)"RollUpState", (utf8*)"Property to get/set the roll-up / shade state of the window.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -189,8 +189,8 @@ class DragMovingEnabled : public Property
 public:
 	DragMovingEnabled() : Property((utf8*)"DragMovingEnabled", (utf8*)"Property to get/set the setting for whether the user may drag the window around by its title bar.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -210,8 +210,8 @@ class SizingBorderThickness : public Property
 public:
 	SizingBorderThickness() : Property((utf8*)"SizingBorderThickness", (utf8*)"Property to get/set the setting for the sizing border thickness.  Value is a float specifying the border thickness in pixels.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -231,8 +231,8 @@ class TitlebarFont : public Property
 public:
 	TitlebarFont() : Property((utf8*)"TitlebarFont", (utf8*)"Property to get/set the Font set for the windows title bar.  Value is the name of the font to use (must be loaded already).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -251,8 +251,8 @@ class CaptionColour : public Property
 public:
 	CaptionColour() : Property((utf8*)"CaptionColour", (utf8*)"Property to get/set the colour used for rendering the caption text.  Value is \"aarrggbb\" (hex).") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 } // End of  FrameWindowProperties namespace section

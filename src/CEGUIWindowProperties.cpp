@@ -38,7 +38,7 @@ namespace CEGUI
 namespace WindowProperties
 {
 
-String RelativeMinSize::get(const void* receiver) const
+String RelativeMinSize::get(const PropertyReceiver* receiver) const
 {
 	CEGUI::Size msz(static_cast<const Window*>(receiver)->getMinimumSize());
 
@@ -54,7 +54,7 @@ String RelativeMinSize::get(const void* receiver) const
 }
 
 
-void RelativeMinSize::set(void* receiver, const String& value)
+void RelativeMinSize::set(PropertyReceiver* receiver, const String& value)
 {
 	CEGUI::Size msz(PropertyHelper::stringToSize(value));
 
@@ -70,7 +70,7 @@ void RelativeMinSize::set(void* receiver, const String& value)
 }
 
 
-String RelativeMaxSize::get(const void* receiver) const
+String RelativeMaxSize::get(const PropertyReceiver* receiver) const
 {
 	CEGUI::Size msz(static_cast<const Window*>(receiver)->getMaximumSize());
 
@@ -86,7 +86,7 @@ String RelativeMaxSize::get(const void* receiver) const
 }
 
 
-void RelativeMaxSize::set(void* receiver, const String& value)
+void RelativeMaxSize::set(PropertyReceiver* receiver, const String& value)
 {
 	CEGUI::Size msz(PropertyHelper::stringToSize(value));
 
@@ -102,7 +102,7 @@ void RelativeMaxSize::set(void* receiver, const String& value)
 }
 
 
-String AbsoluteMinSize::get(const void* receiver) const
+String AbsoluteMinSize::get(const PropertyReceiver* receiver) const
 {
 	CEGUI::Size msz(static_cast<const Window*>(receiver)->getMinimumSize());
 
@@ -118,7 +118,7 @@ String AbsoluteMinSize::get(const void* receiver) const
 }
 
 
-void AbsoluteMinSize::set(void* receiver, const String& value)
+void AbsoluteMinSize::set(PropertyReceiver* receiver, const String& value)
 {
 	CEGUI::Size msz(PropertyHelper::stringToSize(value));
 
@@ -134,7 +134,7 @@ void AbsoluteMinSize::set(void* receiver, const String& value)
 }
 
 
-String AbsoluteMaxSize::get(const void* receiver) const
+String AbsoluteMaxSize::get(const PropertyReceiver* receiver) const
 {
 	CEGUI::Size msz(static_cast<const Window*>(receiver)->getMaximumSize());
 
@@ -150,7 +150,7 @@ String AbsoluteMaxSize::get(const void* receiver) const
 }
 
 
-void AbsoluteMaxSize::set(void* receiver, const String& value)
+void AbsoluteMaxSize::set(PropertyReceiver* receiver, const String& value)
 {
 	CEGUI::Size msz(PropertyHelper::stringToSize(value));
 
@@ -166,43 +166,43 @@ void AbsoluteMaxSize::set(void* receiver, const String& value)
 }
 
 
-String MetricsMode::get(const void* receiver) const
+String MetricsMode::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::metricsModeToString(static_cast<const Window*>(receiver)->getMetricsMode());
 }
 
 
-void MetricsMode::set(void* receiver, const String& value)
+void MetricsMode::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setMetricsMode(PropertyHelper::stringToMetricsMode(value));
 }
 
 
-String ID::get(const void* receiver) const
+String ID::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::uintToString(static_cast<const Window*>(receiver)->getID());
 }
 
 
-void ID::set(void* receiver, const String& value)
+void ID::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setID(PropertyHelper::stringToUint(value));
 }
 
 
-String Alpha::get(const void* receiver) const
+String Alpha::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAlpha());
 }
 
 
-void Alpha::set(void* receiver, const String& value)
+void Alpha::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setAlpha(PropertyHelper::stringToFloat(value));
 }
 
 
-String Font::get(const void* receiver) const
+String Font::get(const PropertyReceiver* receiver) const
 {
 	const CEGUI::Font* fnt = static_cast<const Window*>(receiver)->getFont();
 
@@ -218,7 +218,7 @@ String Font::get(const void* receiver) const
 }
 
 
-void Font::set(void* receiver, const String& value)
+void Font::set(PropertyReceiver* receiver, const String& value)
 {
 	try
 	{
@@ -229,19 +229,19 @@ void Font::set(void* receiver, const String& value)
 }
 
 
-String Text::get(const void* receiver) const
+String Text::get(const PropertyReceiver* receiver) const
 {
 	return static_cast<const Window*>(receiver)->getText();
 }
 
 
-void Text::set(void* receiver, const String& value)
+void Text::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setText(value);
 }
 
 
-String MouseCursorImage::get(const void* receiver) const
+String MouseCursorImage::get(const PropertyReceiver* receiver) const
 {
 	const Image* img = static_cast<const Window*>(receiver)->getMouseCursor();
 
@@ -257,355 +257,355 @@ String MouseCursorImage::get(const void* receiver) const
 }
 
 
-void MouseCursorImage::set(void* receiver, const String& value)
+void MouseCursorImage::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper::stringToImage(value));
 }
 
 
-String ClippedByParent::get(const void* receiver) const
+String ClippedByParent::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isClippedByParent());
 }
 
 
-void ClippedByParent::set(void* receiver, const String& value)
+void ClippedByParent::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setClippedByParent(PropertyHelper::stringToBool(value));
 }
 
 
-String InheritsAlpha::get(const void* receiver) const
+String InheritsAlpha::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->inheritsAlpha());
 }
 
 
-void InheritsAlpha::set(void* receiver, const String& value)
+void InheritsAlpha::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setInheritsAlpha(PropertyHelper::stringToBool(value));
 }
 
 
-String AlwaysOnTop::get(const void* receiver) const
+String AlwaysOnTop::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isAlwaysOnTop());
 }
 
 
-void AlwaysOnTop::set(void* receiver, const String& value)
+void AlwaysOnTop::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setAlwaysOnTop(PropertyHelper::stringToBool(value));
 }
 
 
-String Disabled::get(const void* receiver) const
+String Disabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isDisabled());
 }
 
 
-void Disabled::set(void* receiver, const String& value)
+void Disabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setEnabled(!PropertyHelper::stringToBool(value));
 }
 
 
-String Visible::get(const void* receiver) const
+String Visible::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isVisible());
 }
 
 
-void Visible::set(void* receiver, const String& value)
+void Visible::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setVisible(PropertyHelper::stringToBool(value));
 }
 
 
-String RestoreOldCapture::get(const void* receiver) const
+String RestoreOldCapture::get(const PropertyReceiver* receiver) const
 {
 	return	PropertyHelper::boolToString(static_cast<const Window*>(receiver)->restoresOldCapture());
 }
 
 
-void RestoreOldCapture::set(void* receiver, const String& value)
+void RestoreOldCapture::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setRestoreCapture(PropertyHelper::stringToBool(value));
 }
 
 
-String DestroyedByParent::get(const void* receiver) const
+String DestroyedByParent::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isDestroyedByParent());
 }
 
 
-void DestroyedByParent::set(void* receiver, const String& value)
+void DestroyedByParent::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setDestroyedByParent(PropertyHelper::stringToBool(value));
 }
 
 
-String Width::get(const void* receiver) const
+String Width::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getWidth());
 }
 
 
-void Width::set(void* receiver, const String& value)
+void Width::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setWidth(PropertyHelper::stringToFloat(value));
 }
 
 
-String RelativeWidth::get(const void* receiver) const
+String RelativeWidth::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getRelativeWidth());
 }
 
 
-void RelativeWidth::set(void* receiver, const String& value)
+void RelativeWidth::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setWidth(Relative, PropertyHelper::stringToFloat(value));
 }
 
 
-String AbsoluteWidth::get(const void* receiver) const
+String AbsoluteWidth::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAbsoluteWidth());
 }
 
 
-void AbsoluteWidth::set(void* receiver, const String& value)
+void AbsoluteWidth::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setWidth(Absolute, PropertyHelper::stringToFloat(value));
 }
 
 
-String Height::get(const void* receiver) const
+String Height::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getHeight());
 }
 
 
-void Height::set(void* receiver, const String& value)
+void Height::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setHeight(PropertyHelper::stringToFloat(value));
 }
 
 
-String RelativeHeight::get(const void* receiver) const
+String RelativeHeight::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getRelativeHeight());
 }
 
 
-void RelativeHeight::set(void* receiver, const String& value)
+void RelativeHeight::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setHeight(Relative, PropertyHelper::stringToFloat(value));
 }
 
 
-String AbsoluteHeight::get(const void* receiver) const
+String AbsoluteHeight::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAbsoluteHeight());
 }
 
 
-void AbsoluteHeight::set(void* receiver, const String& value)
+void AbsoluteHeight::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setHeight(Absolute, PropertyHelper::stringToFloat(value));
 }
 
 
-String Size::get(const void* receiver) const
+String Size::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::sizeToString(static_cast<const Window*>(receiver)->getSize());
 }
 
 
-void Size::set(void* receiver, const String& value)
+void Size::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setSize(PropertyHelper::stringToSize(value));
 }
 
 
-String RelativeSize::get(const void* receiver) const
+String RelativeSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::sizeToString(static_cast<const Window*>(receiver)->getRelativeSize());
 }
 
 
-void RelativeSize::set(void* receiver, const String& value)
+void RelativeSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setSize(Relative, PropertyHelper::stringToSize(value));
 }
 
 
-String AbsoluteSize::get(const void* receiver) const
+String AbsoluteSize::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::sizeToString(static_cast<const Window*>(receiver)->getAbsoluteSize());
 }
 
 
-void AbsoluteSize::set(void* receiver, const String& value)
+void AbsoluteSize::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setSize(Absolute, PropertyHelper::stringToSize(value));
 }
 
 
-String XPosition::get(const void* receiver) const
+String XPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getXPosition());
 }
 
 
-void XPosition::set(void* receiver, const String& value)
+void XPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setXPosition(PropertyHelper::stringToFloat(value));
 }
 
 
-String RelativeXPosition::get(const void* receiver) const
+String RelativeXPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getRelativeXPosition());
 }
 
 
-void RelativeXPosition::set(void* receiver, const String& value)
+void RelativeXPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setXPosition(Relative, PropertyHelper::stringToFloat(value));
 }
 
 
-String AbsoluteXPosition::get(const void* receiver) const
+String AbsoluteXPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAbsoluteXPosition());
 }
 
 
-void AbsoluteXPosition::set(void* receiver, const String& value)
+void AbsoluteXPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setXPosition(Absolute, PropertyHelper::stringToFloat(value));
 }
 
 
-String YPosition::get(const void* receiver) const
+String YPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getYPosition());
 }
 
 
-void YPosition::set(void* receiver, const String& value)
+void YPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setYPosition(PropertyHelper::stringToFloat(value));
 }
 
 
-String RelativeYPosition::get(const void* receiver) const
+String RelativeYPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getRelativeYPosition());
 }
 
 
-void RelativeYPosition::set(void* receiver, const String& value)
+void RelativeYPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setYPosition(Relative, PropertyHelper::stringToFloat(value));
 }
 
 
-String AbsoluteYPosition::get(const void* receiver) const
+String AbsoluteYPosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAbsoluteYPosition());
 }
 
 
-void AbsoluteYPosition::set(void* receiver, const String& value)
+void AbsoluteYPosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setYPosition(Absolute, PropertyHelper::stringToFloat(value));
 }
 
 
-String Position::get(const void* receiver) const
+String Position::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::pointToString(static_cast<const Window*>(receiver)->getPosition());
 }
 
 
-void Position::set(void* receiver, const String& value)
+void Position::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setPosition(PropertyHelper::stringToPoint(value));
 }
 
 
-String RelativePosition::get(const void* receiver) const
+String RelativePosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::pointToString(static_cast<const Window*>(receiver)->getRelativePosition());
 }
 
 
-void RelativePosition::set(void* receiver, const String& value)
+void RelativePosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setPosition(Relative, PropertyHelper::stringToPoint(value));
 }
 
 
-String AbsolutePosition::get(const void* receiver) const
+String AbsolutePosition::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::pointToString(static_cast<const Window*>(receiver)->getAbsolutePosition());
 }
 
 
-void AbsolutePosition::set(void* receiver, const String& value)
+void AbsolutePosition::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setPosition(Absolute, PropertyHelper::stringToPoint(value));
 }
 
 
-String Rect::get(const void* receiver) const
+String Rect::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::rectToString(static_cast<const Window*>(receiver)->getRect());
 }
 
 
-void Rect::set(void* receiver, const String& value)
+void Rect::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setAreaRect(PropertyHelper::stringToRect(value));
 }
 
 
-String RelativeRect::get(const void* receiver) const
+String RelativeRect::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::rectToString(static_cast<const Window*>(receiver)->getRelativeRect());
 }
 
 
-void RelativeRect::set(void* receiver, const String& value)
+void RelativeRect::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setRect(Relative, PropertyHelper::stringToRect(value));
 }
 
 
-String AbsoluteRect::get(const void* receiver) const
+String AbsoluteRect::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::rectToString(static_cast<const Window*>(receiver)->getAbsoluteRect());
 }
 
 
-void AbsoluteRect::set(void* receiver, const String& value)
+void AbsoluteRect::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setRect(Absolute, PropertyHelper::stringToRect(value));
 }
 
 
-String ZOrderChangeEnabled::get(const void* receiver) const
+String ZOrderChangeEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isZOrderingEnabled());
 }
 
 
-void ZOrderChangeEnabled::set(void* receiver, const String& value)
+void ZOrderChangeEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setZOrderingEnabled(PropertyHelper::stringToBool(value));
 }

@@ -48,8 +48,8 @@ class NormalImage : public Property
 public:
    NormalImage() : Property((utf8*)"NormalImage", (utf8*)"Property to get/set the normal image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-   String   get(const void* receiver) const;
-   void   set(void* receiver, const String& value);
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -66,8 +66,8 @@ class PushedImage : public Property
 public:
    PushedImage() : Property((utf8*)"PushedImage", (utf8*)"Property to get/set the pushed image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-   String   get(const void* receiver) const;
-   void   set(void* receiver, const String& value);
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -84,8 +84,8 @@ class HoverImage : public Property
 public:
    HoverImage() : Property((utf8*)"HoverImage", (utf8*)"Property to get/set the hover image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-   String   get(const void* receiver) const;
-   void   set(void* receiver, const String& value);
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -102,8 +102,8 @@ class UseStandardImagery : public Property
 public:
    UseStandardImagery() : Property((utf8*)"UseStandardImagery", (utf8*)"Property to get/set whether to use the standard imagery for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-   String   get(const void* receiver) const;
-   void   set(void* receiver, const String& value);
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -123,8 +123,8 @@ class TextXOffset : public Property
 public:
    TextXOffset() : Property((utf8*)"TextXOffset", (utf8*)"Property to get/set a relative x offset for the button's text") {}
 
-   String get(const void* receiver) const;
-   void set(void* receiver, const String& value);
+   String get(const PropertyReceiver* receiver) const;
+   void set(PropertyReceiver* receiver, const String& value);
 };
 
 }

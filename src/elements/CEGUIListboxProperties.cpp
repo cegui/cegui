@@ -35,49 +35,49 @@ namespace CEGUI
 // Start of ListboxProperties namespace section
 namespace ListboxProperties
 {
-String	Sort::get(const void* receiver) const
+String	Sort::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isSortEnabled());
 }
 
 
-void	Sort::set(void* receiver, const String& value)
+void	Sort::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Listbox*>(receiver)->setSortingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	MultiSelect::get(const void* receiver) const
+String	MultiSelect::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isMultiselectEnabled());
 }
 
 
-void	MultiSelect::set(void* receiver, const String& value)
+void	MultiSelect::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Listbox*>(receiver)->setMultiselectEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	ForceVertScrollbar::get(const void* receiver) const
+String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 
-void	ForceVertScrollbar::set(void* receiver, const String& value)
+void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Listbox*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
 }
 
 
-String	ForceHorzScrollbar::get(const void* receiver) const
+String	ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isHorzScrollbarAlwaysShown());
 }
 
 
-void	ForceHorzScrollbar::set(void* receiver, const String& value)
+void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Listbox*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
 }

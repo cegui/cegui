@@ -57,8 +57,8 @@ class Sort : public Property
 public:
 	Sort() : Property((utf8*)"Sort", (utf8*)"Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -79,8 +79,8 @@ class MultiSelect : public Property
 public:
 	MultiSelect() : Property((utf8*)"MultiSelect", (utf8*)"Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -101,8 +101,8 @@ class ForceVertScrollbar : public Property
 public:
 	ForceVertScrollbar() : Property((utf8*)"ForceVertScrollbar", (utf8*)"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -123,8 +123,8 @@ class ForceHorzScrollbar : public Property
 public:
 	ForceHorzScrollbar() : Property((utf8*)"ForceHorzScrollbar", (utf8*)"Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 } // End of  ListboxProperties namespace section

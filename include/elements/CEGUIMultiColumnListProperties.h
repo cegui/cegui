@@ -57,8 +57,8 @@ class ColumnsSizable : public Property
 public:
 	ColumnsSizable() : Property((utf8*)"ColumnsSizable", (utf8*)"Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -79,8 +79,8 @@ class ColumnsMovable : public Property
 public:
 	ColumnsMovable() : Property((utf8*)"ColumnsMovable", (utf8*)"Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -101,8 +101,8 @@ class SortSettingEnabled : public Property
 public:
 	SortSettingEnabled() : Property((utf8*)"SortSettingEnabled", (utf8*)"Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -124,8 +124,8 @@ class SortDirection : public Property
 public:
 	SortDirection() : Property((utf8*)"SortDirection", (utf8*)"Property to get/set the sort direction setting of the list.  Value is the text of one of the SortDirection enumerated value names.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -145,8 +145,8 @@ class SortColumnID : public Property
 public:
 	SortColumnID() : Property((utf8*)"SortColumnID", (utf8*)"Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -166,8 +166,8 @@ class NominatedSelectionColumnID : public Property
 public:
 	NominatedSelectionColumnID() : Property((utf8*)"NominatedSelectionColumnID", (utf8*)"Property to get/set the nominated selection column (via ID).  Value is an unsigned integer number.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -187,8 +187,8 @@ class NominatedSelectionRow : public Property
 public:
 	NominatedSelectionRow() : Property((utf8*)"NominatedSelectionRow", (utf8*)"Property to get/set the nominated selection row.  Value is an unsigned integer number.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -209,8 +209,8 @@ class ForceVertScrollbar : public Property
 public:
 	ForceVertScrollbar() : Property((utf8*)"ForceVertScrollbar", (utf8*)"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -231,8 +231,8 @@ class ForceHorzScrollbar : public Property
 public:
 	ForceHorzScrollbar() : Property((utf8*)"ForceHorzScrollbar", (utf8*)"Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -261,8 +261,8 @@ class SelectionMode : public Property
 public:
 	SelectionMode() : Property((utf8*)"SelectionMode", (utf8*)"Property to get/set the selection mode setting of the list.  Value is the text of one of the SelectionMode enumerated value names.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

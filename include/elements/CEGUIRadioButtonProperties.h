@@ -57,8 +57,8 @@ class Selected : public Property
 public:
 	Selected() : Property((utf8*)"Selected", (utf8*)"Property to get/set the selected state of the RadioButton.  Value is either \"True\" or \"False\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -78,8 +78,8 @@ class GroupID : public Property
 public:
 	GroupID() : Property((utf8*)"GroupID", (utf8*)"Property to get/set the radio button group ID.  Value is an unsigned integer number.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

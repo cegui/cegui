@@ -56,8 +56,8 @@ class CurrentProgress : public Property
 public:
 	CurrentProgress() : Property((utf8*)"CurrentProgress", (utf8*)"Property to get/set the current progress of the progress bar.  Value is a float  value between 0.0 and 1.0 specifying the progress.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -77,8 +77,8 @@ class StepSize : public Property
 public:
 	StepSize() : Property((utf8*)"StepSize", (utf8*)"Property to get/set the step size setting for the progress bar.  Value is a float value.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

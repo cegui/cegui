@@ -35,43 +35,43 @@ namespace CEGUI
 // Start of ListHeaderSegmentProperties namespace section
 namespace ListHeaderSegmentProperties
 {
-String	Sizable::get(const void* receiver) const
+String	Sizable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const ListHeaderSegment*>(receiver)->isSizingEnabled());
 }
 
 
-void	Sizable::set(void* receiver, const String& value)
+void	Sizable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeaderSegment*>(receiver)->setSizingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	Clickable::get(const void* receiver) const
+String	Clickable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const ListHeaderSegment*>(receiver)->isClickable());
 }
 
 
-void	Clickable::set(void* receiver, const String& value)
+void	Clickable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeaderSegment*>(receiver)->setClickable(PropertyHelper::stringToBool(value));
 }
 
 
-String	Dragable::get(const void* receiver) const
+String	Dragable::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const ListHeaderSegment*>(receiver)->isDragMovingEnabled());
 }
 
 
-void	Dragable::set(void* receiver, const String& value)
+void	Dragable::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<ListHeaderSegment*>(receiver)->setDragMovingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	SortDirection::get(const void* receiver) const
+String	SortDirection::get(const PropertyReceiver* receiver) const
 {
 	switch(static_cast<const ListHeaderSegment*>(receiver)->getSortDirection())
 	{
@@ -91,7 +91,7 @@ String	SortDirection::get(const void* receiver) const
 }
 
 
-void	SortDirection::set(void* receiver, const String& value)
+void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 {
 	ListHeaderSegment::SortDirection dir;
 

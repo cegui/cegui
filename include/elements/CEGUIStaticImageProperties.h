@@ -57,8 +57,8 @@ class Image : public Property
 public:
 	Image() : Property((utf8*)"Image", (utf8*)"Property to get/set the image for the StaticImage widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -81,8 +81,8 @@ class ImageColours : public Property
 public:
 	ImageColours() : Property((utf8*)"ImageColours", (utf8*)"Property to get/set the text colours for the StaticImage widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -106,8 +106,8 @@ class HorzFormatting : public Property
 public:
 	HorzFormatting() : Property((utf8*)"HorzFormatting", (utf8*)"Property to get/set the horizontal formatting mode.  Value is one of the HorzFormatting strings.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 
@@ -131,8 +131,8 @@ class VertFormatting : public Property
 public:
 	VertFormatting() : Property((utf8*)"VertFormatting", (utf8*)"Property to get/set the vertical formatting mode.  Value is one of the VertFormatting strings.") {}
 
-	String	get(const void* receiver) const;
-	void	set(void* receiver, const String& value);
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
 };
 
 

@@ -37,85 +37,85 @@ namespace CEGUI
 // Start of FrameWindowProperties namespace section
 namespace FrameWindowProperties
 {
-String	SizingEnabled::get(const void* receiver) const
+String	SizingEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isSizingEnabled());
 }
 
 
-void	SizingEnabled::set(void* receiver, const String& value)
+void	SizingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setSizingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	FrameEnabled::get(const void* receiver) const
+String	FrameEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isFrameEnabled());
 }
 
 
-void	FrameEnabled::set(void* receiver, const String& value)
+void	FrameEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setFrameEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	TitlebarEnabled::get(const void* receiver) const
+String	TitlebarEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isTitleBarEnabled());
 }
 
 
-void	TitlebarEnabled::set(void* receiver, const String& value)
+void	TitlebarEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setTitleBarEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	CloseButtonEnabled::get(const void* receiver) const
+String	CloseButtonEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isCloseButtonEnabled());
 }
 
 
-void	CloseButtonEnabled::set(void* receiver, const String& value)
+void	CloseButtonEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setCloseButtonEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	DragMovingEnabled::get(const void* receiver) const
+String	DragMovingEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isDragMovingEnabled());
 }
 
 
-void	DragMovingEnabled::set(void* receiver, const String& value)
+void	DragMovingEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setDragMovingEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	RollUpEnabled::get(const void* receiver) const
+String	RollUpEnabled::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isRollupEnabled());
 }
 
 
-void	RollUpEnabled::set(void* receiver, const String& value)
+void	RollUpEnabled::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setRollupEnabled(PropertyHelper::stringToBool(value));
 }
 
 
-String	RollUpState::get(const void* receiver) const
+String	RollUpState::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const FrameWindow*>(receiver)->isRolledup());
 }
 
 
-void	RollUpState::set(void* receiver, const String& value)
+void	RollUpState::set(PropertyReceiver* receiver, const String& value)
 {
 	bool reqState = PropertyHelper::stringToBool(value);
 
@@ -127,35 +127,35 @@ void	RollUpState::set(void* receiver, const String& value)
 }
 
 
-String	SizingBorderThickness::get(const void* receiver) const
+String	SizingBorderThickness::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const FrameWindow*>(receiver)->getSizingBorderThickness());
 }
 
 
-void	SizingBorderThickness::set(void* receiver, const String& value)
+void	SizingBorderThickness::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setSizingBorderThickness(PropertyHelper::stringToFloat(value));
 }
 
 
-String	TitlebarFont::get(const void* receiver) const
+String	TitlebarFont::get(const PropertyReceiver* receiver) const
 {
 	return static_cast<const FrameWindow*>(receiver)->getTitlebarFont()->getName();	
 }
 
 
-void	TitlebarFont::set(void* receiver, const String& value)
+void	TitlebarFont::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setTitlebarFont(value);
 }
 
-String CaptionColour::get(const void* receiver) const
+String CaptionColour::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::colourToString(static_cast<const FrameWindow*>(receiver)->getCaptionColour());
 }
 
-void CaptionColour::set(void* receiver, const String& value)
+void CaptionColour::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<FrameWindow*>(receiver)->setCaptionColour(PropertyHelper::stringToColour(value));
 }
