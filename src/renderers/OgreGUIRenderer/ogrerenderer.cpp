@@ -148,120 +148,123 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 *************************************************************************/
 void OgreRenderer::doRender(void)
 {
-	sortQuads();
-	initRenderStates();
-
-	// clear this in case we think it's untouched from last frame
-	d_currTexture = NULL;
-
-	bool locked = false;
-	QuadVertex*	buffmem;
-	QuadInfo*	quad;
-
-	// iterate over each quad in the list
-	for (int i = 0; i < d_quadBuffPos; ++i)
+	if (d_render_sys->_getViewport()->getOverlaysEnabled())
 	{
-		quad = d_quadList[i];
+		sortQuads();
+		initRenderStates();
 
-		// flush & set texture if needed
-		if (d_currTexture != quad->texture)
+		// clear this in case we think it's untouched from last frame
+		d_currTexture = NULL;
+
+		bool locked = false;
+		QuadVertex*	buffmem;
+		QuadInfo*	quad;
+
+		// iterate over each quad in the list
+		for (int i = 0; i < d_quadBuffPos; ++i)
 		{
-			if (locked)
+			quad = d_quadList[i];
+
+			// flush & set texture if needed
+			if (d_currTexture != quad->texture)
 			{
-				d_buffer->unlock();
-				locked = false;
+				if (locked)
+				{
+					d_buffer->unlock();
+					locked = false;
+				}
+
+				// render any remaining quads for current texture
+				renderVBuffer();
+
+				// set new texture
+				d_render_sys->_setTexture(0, true, quad->texture->getName());
+				d_currTexture = quad->texture;
 			}
 
-			// render any remaining quads for current texture
-			renderVBuffer();
-
-			// set new texture
-			d_render_sys->_setTexture(0, true, quad->texture->getName());
-			d_currTexture = quad->texture;
-		}
-
-		// lock the vertex buffer if it is not already locked
-		if (!locked)
-		{
-			buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
-			locked = true;
-		}
-
-		// setup Vertex 1...
-		(&buffmem[0])->x	= quad->position.d_left;
-		(&buffmem[0])->y	= quad->position.d_bottom;
-		(&buffmem[0])->z	= quad->z;
-		(&buffmem[0])->diffuse = (quad->colours.d_top_left);
-		(&buffmem[0])->tu1	= quad->texPosition.d_left;
-		(&buffmem[0])->tv1	= quad->texPosition.d_bottom;
-
-		// setup Vertex 2...
-		(&buffmem[1])->x	= quad->position.d_right;
-		(&buffmem[1])->y	= quad->position.d_bottom;
-		(&buffmem[1])->z	= quad->z;
-		(&buffmem[1])->diffuse = (quad->colours.d_top_right);
-		(&buffmem[1])->tu1	= quad->texPosition.d_right;
-		(&buffmem[1])->tv1	= quad->texPosition.d_bottom;
-
-		// setup Vertex 3...
-		(&buffmem[2])->x	= quad->position.d_left;
-		(&buffmem[2])->y	= quad->position.d_top;
-		(&buffmem[2])->z	= quad->z;
-		(&buffmem[2])->diffuse = (quad->colours.d_bottom_left);
-		(&buffmem[2])->tu1	= quad->texPosition.d_left;
-		(&buffmem[2])->tv1	= quad->texPosition.d_top;
-
-		// setup Vertex 4...
-		(&buffmem[3])->x	= quad->position.d_right;
-		(&buffmem[3])->y	= quad->position.d_bottom;
-		(&buffmem[3])->z	= quad->z;
-		(&buffmem[3])->diffuse = (quad->colours.d_top_right);
-		(&buffmem[3])->tu1	= quad->texPosition.d_right;
-		(&buffmem[3])->tv1	= quad->texPosition.d_bottom;
-
-		// setup Vertex 5...
-		(&buffmem[4])->x	= quad->position.d_right;
-		(&buffmem[4])->y	= quad->position.d_top;
-		(&buffmem[4])->z	= quad->z;
-		(&buffmem[4])->diffuse = (quad->colours.d_bottom_right);
-		(&buffmem[4])->tu1	= quad->texPosition.d_right;
-		(&buffmem[4])->tv1	= quad->texPosition.d_top;
-
-		// setup Vertex 6...
-		(&buffmem[5])->x	= quad->position.d_left;
-		(&buffmem[5])->y	= quad->position.d_top;
-		(&buffmem[5])->z	= quad->z;
-		(&buffmem[5])->diffuse = (quad->colours.d_bottom_left);
-		(&buffmem[5])->tu1	= quad->texPosition.d_left;
-		(&buffmem[5])->tv1	= quad->texPosition.d_top;
-
-		// update position within buffer for next time
-		d_bufferPos += VERTEX_PER_QUAD;
-		buffmem		+= VERTEX_PER_QUAD;
-
-		// if there is not enough room in the buffer for another sprite, render what we have
-		if (d_bufferPos >= (VERTEXBUFFER_CAPACITY - VERTEX_PER_QUAD))
-		{
-			if (locked)
+			// lock the vertex buffer if it is not already locked
+			if (!locked)
 			{
-				d_buffer->unlock();
-				locked = false;
+				buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
+				locked = true;
 			}
 
-			renderVBuffer();
+			// setup Vertex 1...
+			(&buffmem[0])->x	= quad->position.d_left;
+			(&buffmem[0])->y	= quad->position.d_bottom;
+			(&buffmem[0])->z	= quad->z;
+			(&buffmem[0])->diffuse = (quad->colours.d_top_left);
+			(&buffmem[0])->tu1	= quad->texPosition.d_left;
+			(&buffmem[0])->tv1	= quad->texPosition.d_bottom;
+
+			// setup Vertex 2...
+			(&buffmem[1])->x	= quad->position.d_right;
+			(&buffmem[1])->y	= quad->position.d_bottom;
+			(&buffmem[1])->z	= quad->z;
+			(&buffmem[1])->diffuse = (quad->colours.d_top_right);
+			(&buffmem[1])->tu1	= quad->texPosition.d_right;
+			(&buffmem[1])->tv1	= quad->texPosition.d_bottom;
+
+			// setup Vertex 3...
+			(&buffmem[2])->x	= quad->position.d_left;
+			(&buffmem[2])->y	= quad->position.d_top;
+			(&buffmem[2])->z	= quad->z;
+			(&buffmem[2])->diffuse = (quad->colours.d_bottom_left);
+			(&buffmem[2])->tu1	= quad->texPosition.d_left;
+			(&buffmem[2])->tv1	= quad->texPosition.d_top;
+
+			// setup Vertex 4...
+			(&buffmem[3])->x	= quad->position.d_right;
+			(&buffmem[3])->y	= quad->position.d_bottom;
+			(&buffmem[3])->z	= quad->z;
+			(&buffmem[3])->diffuse = (quad->colours.d_top_right);
+			(&buffmem[3])->tu1	= quad->texPosition.d_right;
+			(&buffmem[3])->tv1	= quad->texPosition.d_bottom;
+
+			// setup Vertex 5...
+			(&buffmem[4])->x	= quad->position.d_right;
+			(&buffmem[4])->y	= quad->position.d_top;
+			(&buffmem[4])->z	= quad->z;
+			(&buffmem[4])->diffuse = (quad->colours.d_bottom_right);
+			(&buffmem[4])->tu1	= quad->texPosition.d_right;
+			(&buffmem[4])->tv1	= quad->texPosition.d_top;
+
+			// setup Vertex 6...
+			(&buffmem[5])->x	= quad->position.d_left;
+			(&buffmem[5])->y	= quad->position.d_top;
+			(&buffmem[5])->z	= quad->z;
+			(&buffmem[5])->diffuse = (quad->colours.d_bottom_left);
+			(&buffmem[5])->tu1	= quad->texPosition.d_left;
+			(&buffmem[5])->tv1	= quad->texPosition.d_top;
+
+			// update position within buffer for next time
+			d_bufferPos += VERTEX_PER_QUAD;
+			buffmem		+= VERTEX_PER_QUAD;
+
+			// if there is not enough room in the buffer for another sprite, render what we have
+			if (d_bufferPos >= (VERTEXBUFFER_CAPACITY - VERTEX_PER_QUAD))
+			{
+				if (locked)
+				{
+					d_buffer->unlock();
+					locked = false;
+				}
+
+				renderVBuffer();
+			}
+
 		}
 
-	}
+		// ensure we leave the buffer in the unlocked state
+		if (locked)
+		{
+			d_buffer->unlock();
+			locked = false;
+		}
 
-	// ensure we leave the buffer in the unlocked state
-	if (locked)
-	{
-		d_buffer->unlock();
-		locked = false;
+		// send any remaining data to be rendered.
+		renderVBuffer();
 	}
-
-	// send any remaining data to be rendered.
-	renderVBuffer();
 }
 
 
@@ -412,90 +415,93 @@ void OgreRenderer::sortQuads(void)
 *************************************************************************/
 void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
 {
-	z = -1 + z;
+	if (d_render_sys->_getViewport()->getOverlaysEnabled())
+	{
+		z = -1 + z;
 
-	Rect final_rect;
+		Rect final_rect;
 
-	// set quad position, flipping y co-ordinates, and applying appropriate texel origin offset
-	final_rect.d_left	= dest_rect.d_left;
-	final_rect.d_right	= dest_rect.d_right;
-	final_rect.d_top	= d_display_area.getHeight() - dest_rect.d_top;
-	final_rect.d_bottom	= d_display_area.getHeight() - dest_rect.d_bottom;
-	final_rect.offset(d_texelOffset);
+		// set quad position, flipping y co-ordinates, and applying appropriate texel origin offset
+		final_rect.d_left	= dest_rect.d_left;
+		final_rect.d_right	= dest_rect.d_right;
+		final_rect.d_top	= d_display_area.getHeight() - dest_rect.d_top;
+		final_rect.d_bottom	= d_display_area.getHeight() - dest_rect.d_bottom;
+		final_rect.offset(d_texelOffset);
 
-	// convert quad co-ordinates for a -1 to 1 co-ordinate system.
-	final_rect.d_left	/= (d_display_area.getWidth() * 0.5f);
-	final_rect.d_right	/= (d_display_area.getWidth() * 0.5f);
-	final_rect.d_top	/= (d_display_area.getHeight() * 0.5f);
-	final_rect.d_bottom	/= (d_display_area.getHeight() * 0.5f);
-	final_rect.offset(Point(-1.0f, -1.0f));
+		// convert quad co-ordinates for a -1 to 1 co-ordinate system.
+		final_rect.d_left	/= (d_display_area.getWidth() * 0.5f);
+		final_rect.d_right	/= (d_display_area.getWidth() * 0.5f);
+		final_rect.d_top	/= (d_display_area.getHeight() * 0.5f);
+		final_rect.d_bottom	/= (d_display_area.getHeight() * 0.5f);
+		final_rect.offset(Point(-1.0f, -1.0f));
 
-	// convert colours for ogre, note that top / bottom are switched.
-	ColourRect final_colours;
-	final_colours.d_top_left	 = colourToOgre(colours.d_bottom_left);
-	final_colours.d_top_right	 = colourToOgre(colours.d_bottom_right);
-	final_colours.d_bottom_left	 = colourToOgre(colours.d_top_left);
-	final_colours.d_bottom_right = colourToOgre(colours.d_top_right);
+		// convert colours for ogre, note that top / bottom are switched.
+		ColourRect final_colours;
+		final_colours.d_top_left	 = colourToOgre(colours.d_bottom_left);
+		final_colours.d_top_right	 = colourToOgre(colours.d_bottom_right);
+		final_colours.d_bottom_left	 = colourToOgre(colours.d_top_left);
+		final_colours.d_bottom_right = colourToOgre(colours.d_top_right);
 
-	//
-	// perform rendering...
-	//
-	initRenderStates();
-	d_render_sys->_setTexture(0, true, ((OgreTexture*)tex)->getOgreTexture()->getName());
-	QuadVertex*	buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
+		//
+		// perform rendering...
+		//
+		initRenderStates();
+		d_render_sys->_setTexture(0, true, ((OgreTexture*)tex)->getOgreTexture()->getName());
+		QuadVertex*	buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
 
-	// setup Vertex 1...
-	(&buffmem[0])->x	= final_rect.d_left;
-	(&buffmem[0])->y	= final_rect. d_bottom;
-	(&buffmem[0])->z	= z;
-	(&buffmem[0])->diffuse = (final_colours.d_top_left);
-	(&buffmem[0])->tu1	= texture_rect.d_left;
-	(&buffmem[0])->tv1	= texture_rect.d_bottom;
+		// setup Vertex 1...
+		(&buffmem[0])->x	= final_rect.d_left;
+		(&buffmem[0])->y	= final_rect. d_bottom;
+		(&buffmem[0])->z	= z;
+		(&buffmem[0])->diffuse = (final_colours.d_top_left);
+		(&buffmem[0])->tu1	= texture_rect.d_left;
+		(&buffmem[0])->tv1	= texture_rect.d_bottom;
 
-	// setup Vertex 2...
-	(&buffmem[1])->x	= final_rect.d_right;
-	(&buffmem[1])->y	= final_rect.d_bottom;
-	(&buffmem[1])->z	= z;
-	(&buffmem[1])->diffuse = (final_colours.d_top_right);
-	(&buffmem[1])->tu1	= texture_rect.d_right;
-	(&buffmem[1])->tv1	= texture_rect.d_bottom;
+		// setup Vertex 2...
+		(&buffmem[1])->x	= final_rect.d_right;
+		(&buffmem[1])->y	= final_rect.d_bottom;
+		(&buffmem[1])->z	= z;
+		(&buffmem[1])->diffuse = (final_colours.d_top_right);
+		(&buffmem[1])->tu1	= texture_rect.d_right;
+		(&buffmem[1])->tv1	= texture_rect.d_bottom;
 
-	// setup Vertex 3...
-	(&buffmem[2])->x	= final_rect.d_left;
-	(&buffmem[2])->y	= final_rect.d_top;
-	(&buffmem[2])->z	= z;
-	(&buffmem[2])->diffuse = (final_colours.d_bottom_left);
-	(&buffmem[2])->tu1	= texture_rect.d_left;
-	(&buffmem[2])->tv1	= texture_rect.d_top;
+		// setup Vertex 3...
+		(&buffmem[2])->x	= final_rect.d_left;
+		(&buffmem[2])->y	= final_rect.d_top;
+		(&buffmem[2])->z	= z;
+		(&buffmem[2])->diffuse = (final_colours.d_bottom_left);
+		(&buffmem[2])->tu1	= texture_rect.d_left;
+		(&buffmem[2])->tv1	= texture_rect.d_top;
 
-	// setup Vertex 4...
-	(&buffmem[3])->x	= final_rect.d_right;
-	(&buffmem[3])->y	= final_rect.d_bottom;
-	(&buffmem[3])->z	= z;
-	(&buffmem[3])->diffuse = (final_colours.d_top_right);
-	(&buffmem[3])->tu1	= texture_rect.d_right;
-	(&buffmem[3])->tv1	= texture_rect.d_bottom;
+		// setup Vertex 4...
+		(&buffmem[3])->x	= final_rect.d_right;
+		(&buffmem[3])->y	= final_rect.d_bottom;
+		(&buffmem[3])->z	= z;
+		(&buffmem[3])->diffuse = (final_colours.d_top_right);
+		(&buffmem[3])->tu1	= texture_rect.d_right;
+		(&buffmem[3])->tv1	= texture_rect.d_bottom;
 
-	// setup Vertex 5...
-	(&buffmem[4])->x	= final_rect.d_right;
-	(&buffmem[4])->y	= final_rect.d_top;
-	(&buffmem[4])->z	= z;
-	(&buffmem[4])->diffuse = (final_colours.d_bottom_right);
-	(&buffmem[4])->tu1	= texture_rect.d_right;
-	(&buffmem[4])->tv1	= texture_rect.d_top;
+		// setup Vertex 5...
+		(&buffmem[4])->x	= final_rect.d_right;
+		(&buffmem[4])->y	= final_rect.d_top;
+		(&buffmem[4])->z	= z;
+		(&buffmem[4])->diffuse = (final_colours.d_bottom_right);
+		(&buffmem[4])->tu1	= texture_rect.d_right;
+		(&buffmem[4])->tv1	= texture_rect.d_top;
 
-	// setup Vertex 6...
-	(&buffmem[5])->x	= final_rect.d_left;
-	(&buffmem[5])->y	= final_rect.d_top;
-	(&buffmem[5])->z	= z;
-	(&buffmem[5])->diffuse = (final_colours.d_bottom_left);
-	(&buffmem[5])->tu1	= texture_rect.d_left;
-	(&buffmem[5])->tv1	= texture_rect.d_top;
+		// setup Vertex 6...
+		(&buffmem[5])->x	= final_rect.d_left;
+		(&buffmem[5])->y	= final_rect.d_top;
+		(&buffmem[5])->z	= z;
+		(&buffmem[5])->diffuse = (final_colours.d_bottom_left);
+		(&buffmem[5])->tu1	= texture_rect.d_left;
+		(&buffmem[5])->tv1	= texture_rect.d_top;
 
-	d_buffer->unlock();
-	d_bufferPos = VERTEX_PER_QUAD;
+		d_buffer->unlock();
+		d_bufferPos = VERTEX_PER_QUAD;
 
-	renderVBuffer();
+		renderVBuffer();
+	}
 }
 
 
