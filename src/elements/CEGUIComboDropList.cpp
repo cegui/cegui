@@ -186,7 +186,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		if (d_armed)
+		if (d_armed && (getChildAtPosition(e.position) == NULL))
 		{
 			releaseInput();
 
