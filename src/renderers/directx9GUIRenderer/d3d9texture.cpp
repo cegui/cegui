@@ -26,6 +26,7 @@
 #include "renderers/directx9GUIRenderer/d3d9texture.h"
 #include "renderers/directx9GUIRenderer/d3d9renderer.h"
 #include "CEGUIExceptions.h"
+#include "CEGUISystem.h"
 
 #include <d3dx9.h>
 #include <dxerr9.h>
@@ -60,11 +61,15 @@ void DirectX9Texture::loadFromFile(const String& filename)
 {
 	freeD3DTexture();
 	
+	// load the file via the resource provider
+	RawDataContainer texFile;
+	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile);
+
 	D3DXIMAGE_INFO texInfo;
-	HRESULT hr = D3DXCreateTextureFromFileEx(((DirectX9Renderer*)getRenderer())->getDevice(), (char*)filename.c_str(), 
+	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX9Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(), texFile.getSize(),
 						D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT,
 						0, &texInfo, NULL, &d_d3dtexture);
-
+	
 	if (SUCCEEDED(hr))
 	{
 		d_width		= (ushort)texInfo.Width;

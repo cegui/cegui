@@ -26,6 +26,7 @@
 #include "renderers/directx81GUIRenderer/texture.h"
 #include "renderers/directx81GUIRenderer/renderer.h"
 #include "CEGUIExceptions.h"
+#include "CEGUISystem.h"
 
 #include <d3dx8.h>
 #include <dxerr8.h>
@@ -63,9 +64,13 @@ DirectX81Texture::~DirectX81Texture(void)
 void DirectX81Texture::loadFromFile(const String& filename)
 {
 	freeD3DTexture();
+
+	// load the file via the resource provider
+	RawDataContainer texFile;
+	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile);
 	
 	D3DXIMAGE_INFO texInfo;
-	HRESULT hr = D3DXCreateTextureFromFileEx(((DirectX81Renderer*)getRenderer())->getDevice(), (char*)filename.c_str(), 
+	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX81Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(), texFile.getSize(),
 						D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT,
 						0, &texInfo, NULL, &d_d3dtexture);
 
