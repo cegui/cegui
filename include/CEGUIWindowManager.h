@@ -58,7 +58,7 @@ public:
 	/*!
 	\brief
 		Function type that is used as a callback when loading layouts from XML; the function is called
-		for each <Property> element encountered.
+		for each Property element encountered.
 
 	\param window
 		Window object that the property is to be applied to.
@@ -230,11 +230,11 @@ public:
         Resource group identifier to be passed to the resource provider when loading the layout file.
 
 	\param callback
-		PropertyCallback function to be called for each <Property> element loaded from the layout.  This is
+		PropertyCallback function to be called for each Property element loaded from the layout.  This is
 		called prior to the property value being applied to the window enabling client code manipulation of
 		properties.
 
-	\userdata
+	\param userdata
 		Client code data pointer passed to the PropertyCallback function.
 
 	\return

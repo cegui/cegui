@@ -66,6 +66,9 @@ public:
 
 	\param help
 		String containing a description of the Property and it's usage.
+		
+	\param defaultValue
+		String holding the textual representation of the default value for this Property
 	*/
 	Property(const String& name, const String& help, const String& defaultValue = "") : 
 	  d_name(name),
