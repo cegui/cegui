@@ -1,1 +1,1 @@
-SUBDIRS = OpenGLGUIRenderer
+SUBDIRS = OpenGLGUIRenderer IrrlichtRenderer

@@ -34,6 +34,8 @@ AC_CHECK_FUNCS([memmove memset])
 
 # check for renderers
 CEGUI_ENABLE_OPENGL_RENDERER
+CEGUI_ENABLE_OGRE_RENDERER
+CEGUI_ENABLE_IRRLICHT_RENDERER
 
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library ver sion
@@ -48,8 +50,12 @@ AC_CONFIG_FILES([Makefile \
                  include/Makefile \
                  include/elements/Makefile \
                  include/renderers/Makefile \
+                 include/renderers/OpenGLGUIRenderer/Makefile \
+                 include/renderers/IrrlichtRenderer/Makefile \
                  src/Makefile \
                  src/renderers/Makefile \
+                 src/renderers/OpenGLGUIRenderer/Makefile \
+                 src/renderers/IrrlichtRenderer/Makefile \
                  WidgetSets/Makefile \
                  WidgetSets/TaharezLook/Makefile \
                  WidgetSets/TaharezLook/src/Makefile \
@@ -57,8 +63,10 @@ AC_CONFIG_FILES([Makefile \
                  WidgetSets/WindowsLook/Makefile \
                  WidgetSets/WindowsLook/src/Makefile \
                  WidgetSets/WindowsLook/include/Makefile \
-                 include/renderers/OpenGLGUIRenderer/Makefile \
-                 src/renderers/OpenGLGUIRenderer/Makefile \
+                 Samples/Makefile \
+                 Samples/common/Makefile \
+                 Samples/common/include/Makefile \
+                 Samples/common/src/Makefile \
                  CEGUI-OPENGL.pc \
                  CEGUI.spec \
                  CEGUI.pc])
