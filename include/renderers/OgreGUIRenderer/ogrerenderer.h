@@ -327,6 +327,7 @@ private:
 	bool						d_post_queue;		//!< true if we render after everything else in our queue.
 	int							d_bufferPos;		//!< index into buffer where next vertex should be put.
 	bool						d_sorted;			//!< true when data in quad list is sorted.
+	Point						d_texelOffset;		//!< Offset required for proper texel mapping.
 
 	std::list<OgreTexture*>		d_texturelist;		//!< List used to track textures.
 };

@@ -96,8 +96,8 @@ void TLSlider::layoutComponentWidgets(void)
 *************************************************************************/
 void TLSlider::updateThumb(void)
 {
-	float fltVal		= (float)d_value;
-	float posExtent		= (float)(d_maxValue - 1);
+	float fltVal		= d_value;
+	float posExtent		= d_maxValue;
 	float slideExtent	= getAbsoluteHeight()- d_thumb->getAbsoluteHeight();
 	
 	d_thumb->setVertRange(0, absoluteToRelativeY_impl(this, slideExtent));
@@ -109,12 +109,12 @@ void TLSlider::updateThumb(void)
 	return value that best represents current slider value given the
 	current location of the thumb.	
 *************************************************************************/
-ulong TLSlider::getValueFromThumb(void) const
+float TLSlider::getValueFromThumb(void) const
 {
-	float posExtent		= (float)d_maxValue;
+	float posExtent		= d_maxValue;
 	float slideExtent	= getAbsoluteHeight()- d_thumb->getAbsoluteHeight();
 
-	return getMaxValue() - (ulong)(d_thumb->getAbsoluteYPosition() / (slideExtent / posExtent));
+	return d_maxValue - (d_thumb->getAbsoluteYPosition() / (slideExtent / posExtent));
 }
 
 
@@ -122,7 +122,7 @@ ulong TLSlider::getValueFromThumb(void) const
 	Given window location 'pt', return a value indicating what change
 	should be made to the slider.
 *************************************************************************/
-int TLSlider::getAdjustDirectionFromPoint(const Point& pt) const
+float TLSlider::getAdjustDirectionFromPoint(const Point& pt) const
 {
 	Rect absrect(d_thumb->getUnclippedPixelRect());
 

@@ -64,7 +64,7 @@ namespace CEGUI
 class CEGUIBASE_API Event
 {
 public:
-	typedef	boost::signal<void (const EventArgs&)>	Signal;			//!< Represents the internal signal object
+	typedef	boost::signal1<void, const EventArgs&>	Signal;			//!< Represents the internal signal object
 	typedef const Signal::slot_type					Subscriber;		//!< Function / object that can subscribe to an Event
 	typedef Signal::group_type						Group;			//!< Group for subscription (groups are called in ascending sequence)
 	typedef boost::signals::connection				Connection;		//!< An object that is returned from subscribe function that can be used to control the connection / subscription.

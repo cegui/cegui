@@ -40,23 +40,6 @@ namespace CEGUI
 */
 class CEGUIBASE_API Titlebar : public Window
 {
-public:
-	/*************************************************************************
-		Implementation of abstract methods from base class
-	*************************************************************************/
-		/*!
-	\brief
-		Initialises the Window based object ready for use.
-
-	\note
-		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
-
-	\return
-		Nothing
-	*/
-	virtual void	initialise(void)	{}
-
-
 protected:
 	/*************************************************************************
 		Construction / Destruction

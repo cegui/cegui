@@ -75,13 +75,6 @@ public:
 	virtual ~TLRadioButton(void);
 
 	
-	/*!
-	\brief
-		Initialisation method for the widget
-	*/
-	virtual	void	initialise(void) {}
-
-
 protected:
 	/*************************************************************************
 		Implementation Rendering Functions

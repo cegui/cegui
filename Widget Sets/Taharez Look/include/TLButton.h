@@ -80,13 +80,6 @@ public:
 	virtual ~TLButton(void);
 
 	
-	/*!
-	\brief
-		Initialisation method for the widget
-	*/
-	virtual	void	initialise(void) {}
-
-
 	/*************************************************************************
 		Accessors
 	*************************************************************************/

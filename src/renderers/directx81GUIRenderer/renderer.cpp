@@ -117,6 +117,13 @@ void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* t
 
 		QuadInfo& quad = d_quadBuff[d_quadBuffPos];
 
+		// ensure co-ordinates are whole numbers (fixes distortion issues)
+		Rect final_rect;
+		final_rect.d_left		= (float)((int)dest_rect.d_left);		
+		final_rect.d_right		= (float)((int)dest_rect.d_right);		
+		final_rect.d_top		= (float)((int)dest_rect.d_top);		
+		final_rect.d_bottom		= (float)((int)dest_rect.d_bottom);
+
 		quad.position		= dest_rect;
 		quad.z				= z;
 		quad.texture		= ((DirectX81Texture*)tex)->getD3DTexture();
@@ -387,7 +394,13 @@ void DirectX81Renderer::sortQuads(void)
 *************************************************************************/
 void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
 {
-	Rect final_rect(dest_rect);
+	// ensure co-ordinates are whole numbers (fixes distortion issues)
+	Rect final_rect;
+	final_rect.d_left		= (float)((int)dest_rect.d_left);		
+	final_rect.d_right		= (float)((int)dest_rect.d_right);		
+	final_rect.d_top		= (float)((int)dest_rect.d_top);		
+	final_rect.d_bottom		= (float)((int)dest_rect.d_bottom);
+
 	final_rect.offset(Point(-0.5f, -0.5f));
 
 	QuadVertex*	buffmem;

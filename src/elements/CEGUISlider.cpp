@@ -42,8 +42,9 @@ const utf8	Slider::ValueChanged[]		= "ValueChanged";
 *************************************************************************/
 Slider::Slider(const String& type, const String& name) :
 	Window(type, name),
-	d_value(0),
-	d_maxValue(100),
+	d_value(0.0f),
+	d_maxValue(1.0f),
+	d_step(0.01f),
 	d_thumb(NULL)
 {
 	addSliderEvents();
@@ -78,11 +79,11 @@ void Slider::initialise(void)
 	set the maximum value for the slider.
 	Note that the minimum value is fixed at 0.	
 *************************************************************************/
-void Slider::setMaxValue(ulong maxVal)
+void Slider::setMaxValue(float maxVal)
 {
 	d_maxValue = maxVal;
 
-	ulong oldval = d_value;
+	float oldval = d_value;
 
 	// limit current value to be within new max
 	if (d_value > d_maxValue) {
@@ -103,9 +104,9 @@ void Slider::setMaxValue(ulong maxVal)
 /*************************************************************************
 	set the current slider value.
 *************************************************************************/
-void Slider::setCurrentValue(ulong value)
+void Slider::setCurrentValue(float value)
 {
-	ulong oldval = d_value;
+	float oldval = d_value;
 
 	// range for value: 0 <= value <= maxValue
 	d_value = (value <= d_maxValue) ? value : d_maxValue;
@@ -149,12 +150,12 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		int adj = getAdjustDirectionFromPoint(e.position);
+		float adj = getAdjustDirectionFromPoint(e.position);
 
 		// adjust slider position in whichever direction as required.
 		if (adj != 0)
 		{
-			setCurrentValue(getCurrentValue() + adj);
+			setCurrentValue(d_value + (adj * d_step));
 		}
 
 		e.handled = true;

@@ -36,6 +36,9 @@ namespace CEGUI
 /*!
 \brief
 	Base class for Slider widgets.
+
+	The slider widget has a default range of 0.0f - 1.0f.  This enables use of the slider value to scale
+	any value needed by way of a simple multiplication.
 */
 class CEGUIBASE_API Slider : public Window
 {
@@ -54,9 +57,9 @@ public:
 		return the current slider value.
 
 	\return
-		ulong value equal to the sliders current value.
+		float value equal to the sliders current value.
 	*/
-	ulong	getCurrentValue(void) const			{return d_value;}
+	float	getCurrentValue(void) const			{return d_value;}
 
 
 	/*!
@@ -64,9 +67,22 @@ public:
 		return the maximum value set for this widget
 
 	\return
-		ulong value equal to the currently set maximum value for this slider.
+		float value equal to the currently set maximum value for this slider.
 	*/
-	ulong	getMaxValue(void) const				{return d_maxValue;}
+	float	getMaxValue(void) const				{return d_maxValue;}
+
+
+	/*!
+	\brief
+		return the current click step setting for the slider.
+
+		The click step size is the amount the slider value will be adjusted when the widget
+		is clicked wither side of the slider thumb.
+
+	\return
+		float value representing the current click step setting.
+	*/
+	float	getClickStep(void) const		{return d_step;}
 
 
 	/*************************************************************************
@@ -90,12 +106,12 @@ public:
 		set the maximum value for the slider.  Note that the minimum value is fixed at 0.
 
 	\param maxVal
-		ulong value specifying the maximum value for this slider widget.
+		float value specifying the maximum value for this slider widget.
 
 	\return
 		Nothing.
 	*/
-	void	setMaxValue(ulong maxVal);
+	void	setMaxValue(float maxVal);
 
 
 	/*!
@@ -103,12 +119,28 @@ public:
 		set the current slider value.
 
 	\param value
-		ulong value specifying the new value for this slider widget.
+		float value specifying the new value for this slider widget.
 
 	\return
 		Nothing.
 	*/
-	void	setCurrentValue(ulong value);
+	void	setCurrentValue(float value);
+
+
+	/*!
+	\brief
+		set the current click step setting for the slider.
+
+		The click step size is the amount the slider value will be adjusted when the widget
+		is clicked wither side of the slider thumb.
+
+	\param step
+		float value representing the click step setting to use.
+
+	\return
+		Nothing.
+	*/
+	void	setClickStep(float step)		{d_step = step;}
 
 
 protected:
@@ -165,9 +197,9 @@ protected:
 		return value that best represents current slider value given the current location of the thumb.
 
 	\return
-		ulong value that, given the thumb widget position, best represents the current value for the slider.
+		float value that, given the thumb widget position, best represents the current value for the slider.
 	*/
-	virtual ulong	getValueFromThumb(void) const	= 0;
+	virtual float	getValueFromThumb(void) const	= 0;
 
 
 	/*!
@@ -183,7 +215,7 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual int		getAdjustDirectionFromPoint(const Point& pt) const	= 0;
+	virtual float	getAdjustDirectionFromPoint(const Point& pt) const	= 0;
 
 
 	/*!
@@ -213,8 +245,9 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	ulong	d_value;		//!< current slider value
-	ulong	d_maxValue;		//!< slider maximum value (minimum is fixed at 0)
+	float	d_value;		//!< current slider value
+	float	d_maxValue;		//!< slider maximum value (minimum is fixed at 0)
+	float	d_step;			//!< amount to adjust slider by when clicked (and not dragged).
 
 	// Pointers to the controls that make up the slider
 	Thumb*	d_thumb;		//!< widget used to represent the 'thumb' of the slider.

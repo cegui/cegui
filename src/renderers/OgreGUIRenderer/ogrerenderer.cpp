@@ -98,6 +98,9 @@ OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID 
 	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
 	d_quadList = new QuadInfo*[max_quads];
 
+	// initialise required texel offset
+	d_texelOffset = Point((float)d_render_sys->getHorizontalTexelOffset(), (float)d_render_sys->getVerticalTexelOffset());
+
 	// create listener which will handler the rendering side of things for us.
 	d_ourlistener = new OgreRQListener(this, queue_id, post_queue);
 
@@ -143,12 +146,20 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 		d_sorted = false;
 
 		QuadInfo& quad = d_quadBuff[d_quadBuffPos];
+		
+		// set quad position, flipping y co-ordinates, and applying appropriate texel origin offset
+		quad.position.d_left	= dest_rect.d_left;
+		quad.position.d_right	= dest_rect.d_right;
+		quad.position.d_top		= d_display_area.getHeight() - dest_rect.d_top;
+		quad.position.d_bottom	= d_display_area.getHeight() - dest_rect.d_bottom;
+		quad.position.offset(d_texelOffset);
 
-		// for Ogre, destination position needs to be normalised for a -1 to 1 co-ordinate system.
-		quad.position.d_left	= ((dest_rect.d_left / d_display_area.getWidth()) * 2.0f) - 1.0f;
-		quad.position.d_right	= ((dest_rect.d_right / d_display_area.getWidth()) * 2.0f) - 1.0f;
-		quad.position.d_top		= (((d_display_area.getHeight() - dest_rect.d_top) / d_display_area.getHeight()) * 2.0f) - 1.0f;
-		quad.position.d_bottom	= (((d_display_area.getHeight() - dest_rect.d_bottom) / d_display_area.getHeight()) * 2.0f) - 1.0f;
+		// convert quad co-ordinates for a -1 to 1 co-ordinate system.
+		quad.position.d_left	/= (d_display_area.getWidth() * 0.5f);
+		quad.position.d_right	/= (d_display_area.getWidth() * 0.5f);
+		quad.position.d_top		/= (d_display_area.getHeight() * 0.5f);
+		quad.position.d_bottom	/= (d_display_area.getHeight() * 0.5f);
+		quad.position.offset(Point(-1.0f, -1.0f));
 
 		quad.z				= -1 + z;
 		quad.texture		= ((OgreTexture*)tex)->getOgreTexture();
@@ -378,7 +389,7 @@ void OgreRenderer::initRenderStates(void)
 	// initialise texture settings
 	d_render_sys->_setTextureCoordSet(0, 0);
 	d_render_sys->_setTextureUnitFiltering(0, FO_POINT, FO_POINT, FO_POINT);
-	d_render_sys->_setTextureAddressingMode(0, TextureUnitState::TAM_WRAP);
+	d_render_sys->_setTextureAddressingMode(0, TextureUnitState::TAM_CLAMP);
 	d_render_sys->_setTextureMatrix(0, Matrix4::IDENTITY);
 	d_render_sys->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0);
 	d_render_sys->_disableTextureUnitsFrom(1);
@@ -430,12 +441,23 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 
 	Rect final_rect;
 
-	// for Ogre, destination position needs to be normalised for a -1 to 1 co-ordinate system.
-	final_rect.d_left	= ((dest_rect.d_left / d_display_area.getWidth()) * 2.0f) - 1.0f;
-	final_rect.d_right	= ((dest_rect.d_right / d_display_area.getWidth()) * 2.0f) - 1.0f;
-	final_rect.d_top	= (((d_display_area.getHeight() - dest_rect.d_top) / d_display_area.getHeight()) * 2.0f) - 1.0f;
-	final_rect.d_bottom	= (((d_display_area.getHeight() - dest_rect.d_bottom) / d_display_area.getHeight()) * 2.0f) - 1.0f;
+	// set quad position, flipping y co-ordinates, and applying appropriate texel origin offset
+	final_rect.d_left	= dest_rect.d_left;
+	final_rect.d_right	= dest_rect.d_right;
+	final_rect.d_top	= d_display_area.getHeight() - dest_rect.d_top;
+	final_rect.d_bottom	= d_display_area.getHeight() - dest_rect.d_bottom;
+	final_rect.offset(d_texelOffset);
 
+	// convert quad co-ordinates for a -1 to 1 co-ordinate system.
+	final_rect.d_left	/= (d_display_area.getWidth() * 0.5f);
+	final_rect.d_right	/= (d_display_area.getWidth() * 0.5f);
+	final_rect.d_top	/= (d_display_area.getHeight() * 0.5f);
+	final_rect.d_bottom	/= (d_display_area.getHeight() * 0.5f);
+	final_rect.offset(Point(-1.0f, -1.0f));
+
+	//
+	// perform rendering...
+	//
 	initRenderStates();
 	d_render_sys->_setTexture(0, true, ((OgreTexture*)tex)->getOgreTexture()->getName());
 	QuadVertex*	buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
@@ -510,8 +532,8 @@ void OgreRQListener::renderQueueStarted(Ogre::RenderQueueGroupID id, bool& skipT
 
 
 /*************************************************************************
-	Callback from Ogre invoked after other stuff in our target queue
-	is rendered
+Callback from Ogre invoked after other stuff in our target queue
+is rendered
 *************************************************************************/
 void OgreRQListener::renderQueueEnded(Ogre::RenderQueueGroupID id, bool& repeatThisQueue)
 {

@@ -906,7 +906,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void) = 0;
+	virtual void	initialise(void) {}
 
 
 	/*!

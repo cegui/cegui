@@ -102,9 +102,9 @@ protected:
 		return value that best represents current slider value given the current location of the thumb.
 
 	\return
-		ulong value that, given the thumb widget position, best represents the current value for the slider.
+		float value that, given the thumb widget position, best represents the current value for the slider.
 	*/
-	virtual ulong	getValueFromThumb(void) const;
+	virtual float	getValueFromThumb(void) const;
 
 
 	/*!
@@ -120,7 +120,7 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual int		getAdjustDirectionFromPoint(const Point& pt) const;
+	virtual float	getAdjustDirectionFromPoint(const Point& pt) const;
 
 
 	/*************************************************************************
