@@ -14,9 +14,6 @@ AC_CHECK_LIB([dl], [main])
 AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
 AC_CHECK_LIB([xerces-c], [main],, AC_MSG_ERROR([cannot find xerces library]), -lpthread)
 #AC_HAVE_LIBRARY(boost_signals-gcc,[main] , [AC_MSG_ERROR([cannot find boost libraries])])
-PKG_CHECK_MODULES(OGRE, OGRE >= 0.14.0)
-AC_SUBST(OGRE_CFLAGS)
-AC_SUBST(OGRE_LIBS)
 
 PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
 AC_SUBST(freetype2_CFLAGS)
@@ -36,6 +33,9 @@ AC_FUNC_ERROR_AT_LINE
 AC_HEADER_STDC
 AC_CHECK_FUNCS([memmove memset])
 
+# check for renderers
+CEGUI_ENABLE_OGRE_RENDERER
+
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library ver sion
 CEGUI_CURRENT=0
@@ -49,16 +49,13 @@ AC_CONFIG_FILES([Makefile \
                  include/Makefile \
                  include/elements/Makefile \
                  include/renderers/Makefile \
-                 include/renderers/OgreGUIRenderer/Makefile \
                  src/Makefile \
                  src/renderers/Makefile \
-                 src/renderers/OgreGUIRenderer/Makefile \
                  WidgetSets/Makefile \
                  WidgetSets/TaharezLook/Makefile \
                  WidgetSets/TaharezLook/src/Makefile \
                  WidgetSets/WindowsLook/Makefile \
                  WidgetSets/WindowsLook/src/Makefile \
-                 CEGUI.pc \
-                 CEGUI-OGRE.pc])
+                 CEGUI.pc])
 
 AC_OUTPUT

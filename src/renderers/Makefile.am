@@ -1,1 +1,4 @@
-SUBDIRS = . OgreGUIRenderer
+if BUILD_OGRE_RENDERER
+OGRE=OgreGUIRenderer
+endif
+SUBDIRS = . $(OGRE)
