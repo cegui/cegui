@@ -138,6 +138,7 @@ protected:
 	*************************************************************************/
 	virtual void	onSized(WindowEventArgs& e);
 	virtual void	onAlphaChanged(WindowEventArgs& e);
+    virtual void    onClippingChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************
