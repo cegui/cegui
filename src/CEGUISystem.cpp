@@ -58,7 +58,7 @@ const Size		System::DefaultMultiClickAreaSize(12,12);
 /*************************************************************************
 	Constructor
 *************************************************************************/
-System::System(Renderer* renderer) :
+System::System(Renderer* renderer, utf8* logFile) :
 	d_renderer(renderer),
 	d_activeSheet(NULL),
 	d_wndWithMouse(NULL),
@@ -74,7 +74,7 @@ System::System(Renderer* renderer) :
 	d_rshift(false)
 {
 	// first thing to do is create logger
-	new Logger((utf8*)"CEGUI.log");
+	new Logger(logFile);
 
 	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System initialisation ----");
 

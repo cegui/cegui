@@ -69,7 +69,7 @@ public:
 		Pointer to the valid Renderer object that will be used to render GUI imagery
 
 	*/
-	System(Renderer* renderer);
+	System(Renderer* renderer, utf8* logFile = (utf8*)"CEGUI.log");
 
 	/*!
 	\brief
