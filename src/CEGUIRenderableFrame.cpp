@@ -229,7 +229,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 
 
 		final_size.d_height	= org_height - size_adj;
-		final_size.d_width	= d_left->getWidth();
+		final_size.d_width	= d_right->getWidth();
 		final_pos.d_y		= position.d_y + coord_adj;
 		final_pos.d_x		= position.d_x + org_width - final_size.d_width;
 
@@ -288,9 +288,9 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		else
 		{
 			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + d_topleft->getWidth() - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + d_topright->getWidth() - position.d_x) / org_width;
 			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + d_topleft->getHeight() - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + d_topright->getHeight() - position.d_y) / org_height;
 			if( rightfactor > 1 ) rightfactor = 1;
 			if( bottomfactor > 1 ) bottomfactor = 1;
 
@@ -312,9 +312,9 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		else
 		{
 			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + d_topleft->getWidth() - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + d_bottomleft->getWidth() - position.d_x) / org_width;
 			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + d_topleft->getHeight() - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + d_bottomleft->getHeight() - position.d_y) / org_height;
 			if( rightfactor > 1 ) rightfactor = 1;
 			if( bottomfactor > 1 ) bottomfactor = 1;
 
@@ -336,9 +336,9 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		else
 		{
 			leftfactor = (final_pos.d_x - position.d_x) / org_width;
-			rightfactor = (final_pos.d_x + d_topleft->getWidth() - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + d_bottomright->getWidth() - position.d_x) / org_width;
 			topfactor = (final_pos.d_y - position.d_y) / org_height;
-			bottomfactor = (final_pos.d_y + d_topleft->getHeight() - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + d_bottomright->getHeight() - position.d_y) / org_height;
 			if( rightfactor > 1 ) rightfactor = 1;
 			if( bottomfactor > 1 ) bottomfactor = 1;
 
