@@ -173,6 +173,8 @@ Window::Window(const String& type, const String& name) :
 *************************************************************************/
 Window::~Window(void)
 {
+	releaseInput();
+
 	// signal our imminent destruction
 	WindowEventArgs args(this);
 	onDestructionStarted(args);
