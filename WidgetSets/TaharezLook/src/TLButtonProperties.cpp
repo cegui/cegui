@@ -44,8 +44,8 @@ void NormalImage::set(void *receiver, const String &value)
 {
    RenderableImage * image = new RenderableImage();
    image->setImage(PropertyHelper::stringToImage(value));
-   image->setHorzFormatting(RenderableImage::HorzFormatting::HorzStretched);
-   image->setVertFormatting(RenderableImage::VertFormatting::VertStretched);
+   image->setHorzFormatting(RenderableImage::HorzStretched);
+   image->setVertFormatting(RenderableImage::VertStretched);
    static_cast<TLButton*>(receiver)->setNormalImage(image);
 }
 
@@ -59,8 +59,8 @@ void PushedImage::set(void *receiver, const String &value)
 {
    RenderableImage * image = new RenderableImage();
    image->setImage(PropertyHelper::stringToImage(value));
-   image->setHorzFormatting(RenderableImage::HorzFormatting::HorzStretched);
-   image->setVertFormatting(RenderableImage::VertFormatting::VertStretched);
+   image->setHorzFormatting(RenderableImage::HorzStretched);
+   image->setVertFormatting(RenderableImage::VertStretched);
    static_cast<TLButton*>(receiver)->setPushedImage(image);
 }
 
@@ -74,8 +74,8 @@ void HoverImage::set(void *receiver, const String &value)
 {
    RenderableImage * image = new RenderableImage();
    image->setImage(PropertyHelper::stringToImage(value));
-   image->setHorzFormatting(RenderableImage::HorzFormatting::HorzStretched);
-   image->setVertFormatting(RenderableImage::VertFormatting::VertStretched);
+   image->setHorzFormatting(RenderableImage::HorzStretched);
+   image->setVertFormatting(RenderableImage::VertStretched);
    static_cast<TLButton*>(receiver)->setHoverImage(image);
 }
 
