@@ -25,6 +25,14 @@
 *************************************************************************/
 #include "CEGUIEvent.h"
 
+#if defined (_MSC_VER)
+#	pragma warning(disable : 4251)
+#	pragma warning(disable : 4786)
+#	if !defined (_MSC_EXTENSIONS)
+#		pragma warning (disable : 4224)
+#	endif
+#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI {
@@ -119,3 +127,4 @@ bool Event::unsubscribe(Subscriber subscriber, Group group)
 }
 
 } // End of  CEGUI namespace section
+

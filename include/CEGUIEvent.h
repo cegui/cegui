@@ -1,9 +1,10 @@
 /************************************************************************
-	filename: 	CEGUIEvent.h
-	created:	15/10/2004
-	author:		Gerald Lindsly
+	filename: CEGUIEvent.h
+	created:  15/10/2004
+	authors:  Paul D Turner (High-level design) 
+            Gerald Lindsly (Coder)
 	
-	purpose:	Defines interface for Event class
+	purpose:  Defines interface for Event class
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -28,6 +29,7 @@
 
 #if defined (_MSC_VER)
 #	pragma warning(push)
+#	pragma warning(disable : 4786)
 #	pragma warning(disable : 4251)
 #	if !defined (_MSC_EXTENSIONS)
 #		pragma warning (disable : 4224)
@@ -46,130 +48,143 @@
 namespace CEGUI
 {
 
-class CEGUIBASE_API SubscriberInterface
-{
+/* The base class for the various binders.  This provides
+   a consistent interface for firing functions bound to an event.
+*/
+template <typename Ret, typename Args>
+class SubscriberInterface {
 public:
-	virtual bool operator()(const EventArgs& args) const = 0;
-	virtual ~SubscriberInterface() {}
+  virtual Ret operator()(Args) const = 0;
+  virtual ~SubscriberInterface() {}
 };
 
 
-template <typename Args>
-class _freeBinder : public SubscriberInterface
+/* This class binds a free function. */
+template <typename Ret, typename Args>
+class _freeBinder : public SubscriberInterface<Ret,Args>
 {
 public:
-	virtual bool operator()(Args args) const 
-	{
-		return d_f(args);
-	}
-
-	typedef bool (*SlotFunction)(Args);
-	_freeBinder(SlotFunction f) : d_f(f) {}
-
+  virtual Ret operator()(Args args) const 
+  {
+    return d_f(args);
+  }
+  typedef Ret (*SlotFunction)(Args);
+  _freeBinder(SlotFunction f) : d_f(f) {}
 protected:
-	SlotFunction d_f;
+  SlotFunction d_f;
 };
 
 
-template <class Functor, typename Args>
-class _functorBinder : public SubscriberInterface
+/* This class binds a copy of a functor. */
+template <class Functor, typename Ret, typename Args>
+class _functorBinder : public SubscriberInterface<Ret,Args>
 {
 public:
-	virtual bool operator()(Args args) const 
-	{
-		return d_f(args);
-	}
-
-	_functorBinder(const Functor& f) : d_f(f) {}
-
+  virtual Ret operator()(Args args) const 
+  {
+    return d_f(args);
+  }
+  _functorBinder(const Functor& f) : d_f(f) {}
 protected:
-	Functor d_f;
+  Functor d_f;
 };
 
 
-template <class T, typename Args>
-class _memberBinder : public SubscriberInterface
+/* This class binds a member function along with a target
+   object. */
+template <class T, typename Ret, typename Args>
+class _memberBinder : public SubscriberInterface<Ret,Args>
 {
-	typedef bool (T::*F)(Args);
-
+  typedef Ret (T::*F)(Args);
 public:
-	virtual bool operator()(Args args) const
-	{
-		return (d_t->*d_f)(args);
-	}
-
-	_memberBinder(F f, T* t) : d_f(f), d_t(t) {}
-
+  virtual Ret operator()(Args args) const
+  {
+    return (d_t->*d_f)(args);
+  }
+  _memberBinder(F f, T* t) : d_f(f), d_t(t) {}
 protected:
-	F  d_f;
-	T* d_t;
+  F  d_f;
+  T* d_t;
 };
 
 
-template <typename Args>
+/* This template describes the Subscriber class.  It is a wrapper
+   for a pointer to a SubscriberInterface with various constructors
+   that will by implicit conversion construct the various binders. */
+template <typename Ret, typename Args>
 class SubscriberTemplate
 {
 public:
-	bool operator()(Args args) const
-	{
-		return (*d_si)(args);
-	}
+  Ret operator()(Args args) const
+  {
+    return (*d_si)(args);  // call the bound function
+  }
 
-	template <class T>
-	SubscriberTemplate(bool (T::*f)(Args), T* target)
-	{
-		d_si = new _memberBinder<T,Args>(f, target);
-	}
+  typedef Ret (*SlotFunction)(Args);
 
-	typedef bool (*SlotFunction)(Args);
+  // construct from a free function
+  SubscriberTemplate(SlotFunction f)
+  {
+    d_si = new _freeBinder<Ret,Args>(f);
+  }
 
-	SubscriberTemplate(SlotFunction f)
-	{
-		d_si = new _freeBinder<Args>(f);
-	}
+  // construct from a member function and a pointer to the target object.
+  template <class T>
+  SubscriberTemplate(Ret (T::*f)(Args), T* target)
+  {
+    d_si = new _memberBinder<T,Ret,Args>(f, target);
+  }
 
-	SubscriberTemplate(SubscriberInterface* si) : d_si(si) {}
+  // construct from a generalized functor by copying it
+  template <typename Functor> 
+  SubscriberTemplate(const Functor& f)
+  {
+    d_si = new _functorBinder<Functor,Ret,Args>(f);
+  }
 
-	template <typename Functor> 
-	SubscriberTemplate(const Functor& f)
-	{
-		d_si = new _functorBinder<Functor,Args>(f);
-	}
+  /* construct from a preconstructed SubscriberInterface.
+     used for SubscriberRef(). */
+  SubscriberTemplate(SubscriberInterface<Ret,Args>* si) : d_si(si) {}
 
-	SubscriberTemplate(const SubscriberTemplate<Args>& copy) : d_si(copy.d_si) {}
+  // copy constructor
+  SubscriberTemplate(const SubscriberTemplate<Ret,Args>& copy) : d_si(copy.d_si) {}
 
-	bool operator<(const SubscriberTemplate<Args>& rhs) const { return d_si < rhs.d_si; }
+  // 'less than' comparable for insertion in a map
+  bool operator<(const SubscriberTemplate<Ret,Args>& rhs) const { return d_si < rhs.d_si; }
 
-	void release() const
-	{
-		delete d_si;
-	}
+  // release the binding -- called upon disconnection
+  void release() const
+  {
+    delete d_si;
+  }
 
 protected:
-	SubscriberInterface* d_si;
+  SubscriberInterface<Ret,Args>* d_si;
 };
 
 
-template <class Functor, typename Args>
-class _refBinder : public SubscriberInterface
+/* This class binds a const reference to a generalized functor.
+   Sometimes it may not be appropriate for the functor to be
+   cloned.  In which case, use SubscriberRef() (which uses this). */
+template <class Functor, typename Ret, typename Args>
+class _refBinder : public SubscriberInterface<Ret,Args>
 {
 public:
-	bool operator()(Args args) const
-	{
-		return d_f(args);
-	}
-
-	_refBinder(const Functor& f) : d_f(f) {}
-
+  virtual Ret operator()(Args args) const
+  {
+    return d_f(args);
+  }
+  _refBinder(const Functor& f) : d_f(f) {}
 protected:
-	const Functor& d_f;
+  const Functor& d_f;
 };
 
-
+/* This helper function produces a const reference binding */
 template <class Functor>
-SubscriberInterface* SubscriberRef(const Functor& f)
+SubscriberInterface<bool, const EventArgs&>*
+SubscriberRef(const Functor& f)
 {
-  return new _refBinder<Functor,const EventArgs&>(f);
+  return new _refBinder<Functor,bool,const EventArgs&>(f);
 }
 
 
@@ -203,7 +218,7 @@ public:
 	};
 
 
-	typedef SubscriberTemplate<const EventArgs&> Subscriber;
+	typedef SubscriberTemplate<bool, const EventArgs&> Subscriber;
 	typedef int Group;
 
 	/*************************************************************************
