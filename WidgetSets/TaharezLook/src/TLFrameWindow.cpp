@@ -124,9 +124,15 @@ Rect TLFrameWindow::getUnclippedInnerRect(void) const
 	{
 		Point pos(d_frame.getPosition());
 
-		tmp.d_left		+= pos.d_x + d_frameLeftSize;
+		tmp.d_left		+= d_frameLeftSize;
 		tmp.d_right		-= d_frameRightSize;
-		tmp.d_top		+= pos.d_y + d_frameTopSize;
+		tmp.d_top		+= pos.d_y;
+
+		if (!isTitleBarEnabled())
+		{
+			tmp.d_top	+= d_frameTopSize;
+		}
+
 		tmp.d_bottom	-= d_frameBottomSize;
 	}
 
@@ -243,12 +249,12 @@ void TLFrameWindow::onSized(WindowEventArgs& e)
 	//
 	float frame_offset = 0;
 
-	// if title bar is active, close button is the same height.
+	// if title bar is active frame is offset by the height of the title bar
 	if (isTitleBarEnabled())
 	{
 		frame_offset = d_titlebar->getUnclippedPixelRect().getHeight();
 	}
-	// if no title bar, measure the close button instead.
+	// if no title bar, measure the close button instead (which will look crap, actually).
 	else if (isCloseButtonEnabled())
 	{
 		frame_offset = d_closeButton->getUnclippedPixelRect().getHeight();
@@ -258,23 +264,28 @@ void TLFrameWindow::onSized(WindowEventArgs& e)
 	Point pos(0, frame_offset);
 	d_frame.setPosition(pos);
 
-	// adjust position for client brush
-	pos.d_y += d_frameTopSize;
-	pos.d_x += d_frameLeftSize;
-	d_clientbrush.setPosition(pos);
-
 	// adjust size of frame
 	newsz.d_height -= frame_offset;
 	d_frame.setSize(newsz);
 
+	// adjust position for client brush
+	pos.d_y += (isTitleBarEnabled() || !isFrameEnabled()) ? 0 : d_frameTopSize;
+
 	// modify size of client so it is within the frame
 	if (isFrameEnabled())
 	{
+		pos.d_x += d_frameLeftSize;
 		newsz.d_width	-= (d_frameLeftSize + d_frameRightSize);
-		newsz.d_height	-= (d_frameTopSize + d_frameBottomSize);
+		newsz.d_height	-= d_frameBottomSize;
+
+		if (!isTitleBarEnabled())
+		{
+			newsz.d_height -= d_frameTopSize;
+		}
 	}
 
 	d_clientbrush.setSize(newsz);
+	d_clientbrush.setPosition(pos);
 }
 
 
