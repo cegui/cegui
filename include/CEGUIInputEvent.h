@@ -213,7 +213,7 @@ enum MouseButton
 \brief
 	System key flag values
 */
-enum CEGUIBASE_API SystemKey
+enum SystemKey
 {
 	LeftMouse		= 0x01,			//!< The left mouse button.
 	RightMouse		= 0x02,			//!< The right mouse button.

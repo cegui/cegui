@@ -51,7 +51,7 @@ public:
 	\brief
 		Enumeration of horizontal formatting options for a RenderableImage
 	*/
-	enum CEGUIBASE_API HorzFormatting
+	enum HorzFormatting
 	{
 		LeftAligned,	//!< Image will be rendered at it's natural size and with it's left edge aligned with the left edge of the RenderableImage rect.
 		RightAligned,	//!< Image will be rendered at it's natural size and with it's right edge aligned with the right edge of the RenderableImage rect.
@@ -65,7 +65,7 @@ public:
 	\brief
 		Enumeration of vertical formatting options for a RenderableImage
 	*/
-	enum CEGUIBASE_API VertFormatting
+	enum VertFormatting
 	{
 		TopAligned,		//!< Image will be rendered at it's natural size and with it's top edge aligned with the top edge of the RenderableImage rect.
 		BottomAligned,	//!< Image will be rendered at it's natural size and with it's bottom edge aligned with the bottom edge of the RenderableImage rect.
