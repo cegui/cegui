@@ -84,10 +84,10 @@ public:
 	\param scriptModule
 		Pointer to a ScriptModule object.  may be NULL.
 
-	\param logFile
-		pointer to a utf8 encoded buffer containing the name to use for the log file.
+	\param configFile
+		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
 	*/
-	System(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile = (utf8*)"CEGUI.log");
+	System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile = (utf8*)"cegui.config");
 
 
 	/*!
@@ -371,6 +371,30 @@ public:
 	ScriptModule*	getScriptingModule(void) const;
 
 
+	/*!
+	\brief
+		Execute a script file if possible.
+
+	\param filename
+		String object holding the filename of the script file that is to be executed
+	*/
+	void	executeScriptFile(const String& filename) const;
+
+
+	/*!
+	\brief
+		Execute a scripted global function if possible.  The function should not take any parameters and should return an integer.
+
+	\param function_name
+		String object holding the name of the function, in the global script environment, that
+		is to be executed.
+
+	\return
+		The integer value returned from the script function.
+	*/
+	int		executeScriptGloabl(const String& function_name) const;
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -456,6 +480,12 @@ public:
 
 private:
 	/*************************************************************************
+		Implementation Constants
+	*************************************************************************/
+	static const char	CEGUIConfigSchemaName[];			//!< Filename of the XML schema used for validating Config files.
+
+
+	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
 	/*!
@@ -506,7 +536,7 @@ private:
 	\brief
 		Method to do the work of the constructor
 	*/
-	void	constructor_impl(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile);
+	void	constructor_impl(Renderer* renderer, ScriptModule* scriptModule, const String& configFile, const String& logFile);
 
 
 	/*************************************************************************
@@ -550,6 +580,7 @@ private:
 
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
+	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
 };
 
 } // End of  CEGUI namespace section

@@ -6,6 +6,7 @@ lib_LTLIBRARIES=libCEGUIBase.la
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
 		      CEGUIColourManipulator.cpp \
                       CEGUIColourRect.cpp \
+		      CEGUIConfig_xmlHandler.cpp \
                       CEGUIEvent.cpp \
                       CEGUIEventArgs.cpp \
                       CEGUIEventSet.cpp \

@@ -35,14 +35,24 @@
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
 #include "elements/CEGUIGUISheet.h"
+#include "CEGUIScriptModule.h"
+#include "CEGUIConfig_xmlHandler.h"
 #include "xercesc/util/PlatformUtils.hpp"
 #include "xercesc/util/Janitor.hpp"
 #include "xercesc/sax2/DefaultHandler.hpp"
+#include "xercesc/sax2/SAX2XMLReader.hpp"
+#include "xercesc/sax2/XMLReaderFactory.hpp"
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Constants definitions
+*************************************************************************/
+const char	System::CEGUIConfigSchemaName[]		= "CEGUIConfig.xsd";
+
+
 /*************************************************************************
 	Static Data Definitions
 *************************************************************************/
@@ -60,22 +70,23 @@ const Size		System::DefaultMultiClickAreaSize(12,12);
 *************************************************************************/
 System::System(Renderer* renderer, utf8* logFile)
 {
-	constructor_impl(renderer, NULL, logFile);
+	constructor_impl(renderer, NULL, (utf8*)"", logFile);
 }
 
 /*************************************************************************
 	Construct a new System object
 *************************************************************************/
-System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile)
+System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile)
 {
-	constructor_impl(renderer, scriptModule, logFile);
+	constructor_impl(renderer, scriptModule, configFile, (utf8*)"CEGUI.log");
 }
 
 
 /*************************************************************************
 	Method to do the work of the constructor
 *************************************************************************/
-void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile)
+void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, const String& configFile, const String& logFile)
+
 {
 	d_renderer		= renderer;
 	d_gui_redraw	= false;
@@ -95,9 +106,126 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, ut
 	d_defaultMouseCursor = NULL;
 	d_scriptModule		 = scriptModule;
 
-	// first thing to do is create logger
-	new Logger(logFile);
+	// initialise Xerces-C XML system
+	XERCES_CPP_NAMESPACE_USE
+	try
+	{
+		XMLPlatformUtils::Initialize();
+	}
+	catch(XMLException& exc)
+	{
+		// prepare a message about the failure
+		char* excmsg = XMLString::transcode(exc.getMessage());
+		String message((utf8*)"An exception occurred while initialising the Xerces-C XML system.  Additional information: ");
+		message += (utf8*)excmsg;
+		XMLString::release(&excmsg);
 
+		// throw a std::exception (because it won't try and use logger)
+		throw message.c_str();
+	}
+
+	// strings we may get from the configuration file.
+	String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
+
+	// now XML is available, read the configuration file (if any)
+	if (!configFile.empty())
+	{
+		SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
+
+		// set basic settings we want from parser
+		parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
+		parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
+		parser->setFeature(XMLUni::fgXercesSchema, true);
+		parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
+
+		// setup schema for Scheme data
+		XMLCh* pval = XMLString::transcode(CEGUIConfigSchemaName);
+		parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+		XMLString::release(&pval);
+
+		// setup handler object
+		Config_xmlHandler handler;
+		parser->setContentHandler(&handler);
+		parser->setErrorHandler(&handler);
+
+		// do parsing of xml file
+		try
+		{
+			parser->parse(configFile.c_str());
+
+			// get the strings read
+			configLogname		= handler.getLogFilename();
+			configSchemeName	= handler.getSchemeFilename();
+			configLayoutName	= handler.getLayoutFilename();
+			defaultFontName		= handler.getDefaultFontName();
+			configInitScript	= handler.getInitScriptFilename();
+			d_termScriptName	= handler.getTermScriptFilename();
+		}
+		catch(const XMLException& exc)
+		{
+			if (exc.getCode() != XMLExcepts::NoError)
+			{
+				delete parser;
+
+				char* excmsg = XMLString::transcode(exc.getMessage());
+				String message((utf8*)"System::System - An error occurred while parsing configuration file '" + configFile + "'.  Additional information: ");
+				message += excmsg;
+				XMLString::release(&excmsg);
+
+				// cleanup XML stuff
+				XERCES_CPP_NAMESPACE_USE
+				XMLPlatformUtils::Terminate();
+
+				// throw a std::exception (because it won't try and use logger)
+				throw message.c_str();
+			}
+
+		}
+		catch(const SAXParseException& exc)
+		{
+			delete parser;
+
+			char* excmsg = XMLString::transcode(exc.getMessage());
+			String message((utf8*)"System::System - An error occurred while parsing configuration file '" + configFile + "'.  Additional information: ");
+			message += excmsg;
+			XMLString::release(&excmsg);
+
+			// cleanup XML stuff
+			XERCES_CPP_NAMESPACE_USE
+			XMLPlatformUtils::Terminate();
+
+			// throw a std::exception (because it won't try and use logger)
+			throw message.c_str();
+		}
+		catch(...)
+		{
+			delete parser;
+
+			// cleanup XML stuff
+			XERCES_CPP_NAMESPACE_USE
+			XMLPlatformUtils::Terminate();
+
+			// throw a std::exception (because it won't try and use logger)
+			throw String((utf8*)"System::System - An unexpected error occurred while parsing configuration file '" + configFile + "'.").c_str();
+		}
+
+		// cleanup parser
+		delete parser;
+	}
+
+	// Start up the logger:
+	// prefer log filename from config file
+	if (!configLogname.empty())
+	{
+		new Logger(configLogname);
+	}
+	// no log specified in configuration, use default / hard-coded option
+	else
+	{
+		new Logger(logFile);
+	}
+	
+	// beginning main init
 	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System initialisation ----");
 
 	// cause creation of other singleton objects
@@ -108,42 +236,53 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, ut
 	new SchemeManager();
 	new MouseCursor();
 
-	// initialise Xerces-C XML sysetm
-	XERCES_CPP_NAMESPACE_USE
-	try
-	{
-		XMLPlatformUtils::Initialize();
-	}
-	catch(XMLException& exc)
-	{
-		// cleanup most stuff we done so far:
-		delete	MouseCursor::getSingletonPtr();
-		delete	SchemeManager::getSingletonPtr();
-		delete	WindowManager::getSingletonPtr();
-		delete	WindowFactoryManager::getSingletonPtr();
-		delete	FontManager::getSingletonPtr();
-		delete	ImagesetManager::getSingletonPtr();
-
-		// log a message about the failure
-		char* excmsg = XMLString::transcode(exc.getMessage());
-		String message((utf8*)"An exception occurred while initialising the Xerces-C XML system.  Additional information: ");
-		message += (utf8*)excmsg;
-		Logger::getSingleton().logEvent(message, Errors);
-		XMLString::release(&excmsg);
-		
-		// now delete the logger singleton
-		delete Logger::getSingletonPtr();
-
-		// throw a std::exception (because it won't try and use logger)
-		throw message.c_str();
-	}
-
 	// add default GUISheet factory - the only UI element we can create "out of the box".
 	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
 
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
+
+	// load base scheme
+	if (!configSchemeName.empty())
+	{
+		try
+		{
+			SchemeManager::getSingleton().loadScheme(configSchemeName);
+
+			// set default font if that was specified also
+			if (!defaultFontName.empty())
+			{
+				setDefaultFont(defaultFontName);
+			}
+
+		}
+		catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
+
+	}
+
+	// load initial layout
+	if (!configLayoutName.empty())
+	{
+		try
+		{
+			setGUISheet(WindowManager::getSingleton().loadWindowLayout(configLayoutName));
+		}
+		catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
+
+	}
+
+	// execute start up script
+	if (!configInitScript.empty())
+	{
+		try
+		{
+			executeScriptFile(configInitScript);
+		}
+		catch (...) {}  // catch all exceptions and try to continue anyway
+
+	}
+
 }
 
 
@@ -153,6 +292,17 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, ut
 System::~System(void)
 {
 	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System destruction ----");
+
+	// execute shut-down script
+	if (!d_termScriptName.empty())
+	{
+		try
+		{
+			executeScriptFile(d_termScriptName);
+		}
+		catch (...) {}  // catch all exceptions and continue system shutdown
+
+	}
 
 	// cleanup XML stuff
 	XERCES_CPP_NAMESPACE_USE
@@ -297,6 +447,58 @@ ScriptModule* System::getScriptingModule(void) const
 
 
 /*************************************************************************
+	Execute a script file if possible.	
+*************************************************************************/
+void System::executeScriptFile(const String& filename) const
+{
+	if (d_scriptModule != NULL)
+	{
+		try
+		{
+			d_scriptModule->executeScriptFile(filename);
+		}
+		catch(...)
+		{
+			throw GenericException((utf8*)"System::executeScriptFile - An exception was thrown during the execution of the script file.");
+		}
+
+	}
+	else
+	{
+		Logger::getSingleton().logEvent((utf8*)"System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", Errors);
+	}
+
+}
+
+
+/*************************************************************************
+	Execute a scripted global function if possible.  The function should
+	not take any parameters and should return an integer.
+*************************************************************************/
+int	System::executeScriptGloabl(const String& function_name) const
+{
+	if (d_scriptModule != NULL)
+	{
+		try
+		{
+			return d_scriptModule->executeScriptGloabl(function_name);
+		}
+		catch(...)
+		{
+			throw GenericException((utf8*)"System::executeScriptGloabl - An exception was thrown during execution of the scripted function.");
+		}
+
+	}
+	else
+	{
+		Logger::getSingleton().logEvent((utf8*)"System::executeScriptGloabl - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
+	}
+
+	return 0;
+}
+
+
+/*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
 void System::injectMouseMove(float delta_x, float delta_y)
@@ -359,18 +561,6 @@ void System::injectMouseButtonDown(MouseButton button)
 	ma.button = button;
 	ma.sysKeys = d_sysKeys;
 
-	Window* dest_window = getTargetWindow(ma.position);
-
-	Window*	event_wnd = dest_window;
-
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (event_wnd != NULL))
-	{
-		ma.window = event_wnd;
-		event_wnd->onMouseButtonDown(ma);
-		event_wnd = event_wnd->getParent();
-	}
-
 	//
 	// Handling for multi-click generation
 	//
@@ -393,35 +583,29 @@ void System::injectMouseButtonDown(MouseButton button)
 		d_click_trackers[button].d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 	}
 
-	// reuse same event args from earlier
-	ma.handled = false;
+	Window* dest_window = getTargetWindow(ma.position);
 
-	// process multi-clicks we have generated so far
-	switch (tkr.d_click_count)
+	// loop backwards until event is handled or we run out of windows.
+	while ((!ma.handled) && (dest_window != NULL))
 	{
-	case 2:
-		event_wnd = dest_window;
+		ma.window = dest_window;
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (event_wnd != NULL))
+		switch (tkr.d_click_count)
 		{
-			ma.window = event_wnd;
-			event_wnd->onMouseDoubleClicked(ma);
-			event_wnd = event_wnd->getParent();
-		}
-		break;
+		case 1:
+			dest_window->onMouseButtonDown(ma);
+			break;
 
-	case 3:
-		event_wnd = dest_window;
+		case 2:
+			dest_window->onMouseDoubleClicked(ma);
+			break;
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (event_wnd != NULL))
-		{
-			ma.window = event_wnd;
-			event_wnd->onMouseTripleClicked(ma);
-			event_wnd = event_wnd->getParent();
+		case 3:
+			dest_window->onMouseTripleClicked(ma);
+			break;
 		}
-		break;
+
+		dest_window = dest_window->getParent();
 	}
 
 	// reset timer for this button.

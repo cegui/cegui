@@ -122,6 +122,9 @@
 				RelativePath="..\..\..\..\src\CEGUIColourRect.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIConfig_xmlHandler.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIEvent.cpp">
 			</File>
 			<File
@@ -389,6 +392,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIColourRect.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIConfig_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIEvent.h">
