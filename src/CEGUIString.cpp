@@ -155,7 +155,7 @@ bool	operator<=(const String& str, const std::string& std_str)
 
 bool	operator<=(const std::string& std_str, const String& str)
 {
-	return (str.compare(std_str) > 0);
+	return (str.compare(std_str) >= 0);
 }
 
 bool	operator<=(const String& str, const utf8* utf8_str)
@@ -165,7 +165,7 @@ bool	operator<=(const String& str, const utf8* utf8_str)
 
 bool	operator<=(const utf8* utf8_str, const String& str)
 {
-	return (str.compare(utf8_str) > 0);
+	return (str.compare(utf8_str) >= 0);
 }
 
 
@@ -181,7 +181,7 @@ bool	operator>=(const String& str, const std::string& std_str)
 
 bool	operator>=(const std::string& std_str, const String& str)
 {
-	return (str.compare(std_str) < 0);
+	return (str.compare(std_str) <= 0);
 }
 
 bool	operator>=(const String& str, const utf8* utf8_str)
@@ -191,9 +191,71 @@ bool	operator>=(const String& str, const utf8* utf8_str)
 
 bool	operator>=(const utf8* utf8_str, const String& str)
 {
-	return (str.compare(utf8_str) < 0);
+	return (str.compare(utf8_str) <= 0);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// c-string operators
+//////////////////////////////////////////////////////////////////////////
+bool operator==(const String& str, const char* c_str)
+{
+	return (str.compare(c_str) == 0);
+}
+
+bool operator==(const char* c_str, const String& str)
+{
+	return (str.compare(c_str) == 0);
+}
+
+bool operator!=(const String& str, const char* c_str)
+{
+	return (str.compare(c_str) != 0);
+}
+
+bool operator!=(const char* c_str, const String& str)
+{
+	return (str.compare(c_str) != 0);
+}
+
+bool operator<(const String& str, const char* c_str)
+{
+	return (str.compare(c_str) < 0);
+}
+
+bool operator<(const char* c_str, const String& str)
+{
+	return (str.compare(c_str) >= 0);
+}
+
+bool operator>(const String& str, const char* c_str)
+{
+	return (str.compare(c_str) > 0);
+}
+
+bool operator>(const char* c_str, const String& str)
+{
+	return (str.compare(c_str) <= 0);
+}
+
+bool operator<=(const String& str, const char* c_str)
+{
+	return (str.compare(c_str) <= 0);
+}
+
+bool operator<=(const char* c_str, const String& str)
+{
+	return (str.compare(c_str) >= 0);
+}
+
+bool operator>=(const String& str, const char* c_str)
+{
+	return (str.compare(c_str) >= 0);
+}
+
+bool operator>=(const char* c_str, const String& str)
+{
+	return (str.compare(c_str) <= 0);
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Concatenation operator functions
@@ -245,6 +307,20 @@ String	operator+(utf32 code_point, const String& str)
 	String temp(1, code_point);
 	temp.append(str);
 	return temp;
+}
+
+String operator+(const String str, const char* c_str)
+{
+	String tmp(str);
+	tmp.append(c_str);
+	return tmp;
+}
+
+String operator+(const char* c_str, const String& str)
+{
+	String tmp(c_str);
+	tmp.append(str);
+	return tmp;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include <string>
+#include <string.h>
 #include <stdexcept>
 
 // Start of CEGUI namespace section
@@ -572,6 +573,50 @@ public:
 		append(beg, end);
 	}
 
+
+	//////////////////////////////////////////////////////////////////////////
+	// Construction via c-string
+	//////////////////////////////////////////////////////////////////////////
+	/*!
+	\brief
+		Constructs a new String object and initialise it using the provided c-string.
+
+	\param c_str
+		Pointer to a c-string.
+
+	\return
+		Nothing
+
+	\exception std::length_error	Thrown if resulting String object would be too big.
+	*/
+	String(const char* c_str)
+	{
+		init();
+		assign(c_str);
+	}
+
+	/*!
+	\brief
+		Constructs a new String object and initialise it using characters from the provided char array.
+
+	\param chars
+		char array.
+
+	\param chars_len
+		Number of chars from the array to be used.
+
+	\return
+		Nothing
+
+	\exception std::length_error	Thrown if resulting String object would be too big.
+	*/
+	String(const char* chars, size_type chars_len)
+	{
+		init();
+		assign(chars, chars_len);
+	}
+
+
 	//////////////////////////////////////////////////////////////////////////
 	// Size operations
 	//////////////////////////////////////////////////////////////////////////
@@ -922,6 +967,101 @@ public:
 
 		return (val != 0) ? ((val < 0) ? -1 : 1) : (len < str_cplen) ? -1 : (len == str_cplen) ? 0 : 1;
 	}
+
+
+	/*!
+	\brief
+		Compares this String with the given c-string.
+
+	\note
+		This does currently not properly consider Unicode and / or the system locale.
+
+	\param c_str
+		The c-string that is to compared with this String.
+
+	\return
+		-  0 if the strings are equal
+		- <0 if this string is lexicographically smaller than \a c_str
+		- >0 if this string is lexicographically greater than \a c_str
+	*/
+	int		compare(const char* c_str) const
+	{
+		return compare(0, d_cplength, c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Compares code points from this String with the given c-string.
+
+	\note
+		This does currently not properly consider Unicode and / or the system locale.
+
+	\param idx
+		Index of the first code point from this String to consider.
+
+	\param len
+		Maximum number of code points from this String to consider.
+
+	\param c_str
+		The c-string that is to compared with this String.
+
+	\return
+		-  0 if the specified sub-strings are equal
+		- <0 if specified sub-strings are lexicographically smaller than \a c_str
+		- >0 if specified sub-strings are lexicographically greater than \a c_str
+
+	\exception std::out_of_range	Thrown if \a idx is invalid.
+	*/
+	int		compare(size_type idx, size_type len, const char* c_str) const
+	{
+		return compare(idx, len, c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Compares code points from this String with chars in the given char array.
+
+	\note
+		This does currently not properly consider Unicode and / or the system locale.
+
+	\param idx
+		Index of the first code point from this String to consider.
+
+	\param len
+		Maximum number of code points from this String to consider.
+
+	\param chars
+		The array containing the chars that are to compared with this String.
+
+	\param chars_len
+		The number of chars in the array.
+
+	\return
+		-  0 if the specified sub-strings are equal
+		- <0 if specified sub-strings are lexicographically smaller than \a chars
+		- >0 if specified sub-strings are lexicographically greater than \a chars
+
+	\exception std::out_of_range	Thrown if \a idx is invalid.
+	\exception std::length_error	Thrown if \a chars_len is set to npos.
+	*/
+	int		compare(size_type idx, size_type len, const char* chars, size_type chars_len) const
+	{
+		if (d_cplength < idx)
+			throw std::out_of_range("Index is out of range for CEGUI::String");
+
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if ((len == npos) || (idx + len > d_cplength))
+			len = d_cplength - idx;
+
+		int val = (len == 0) ? 0 : utf32_comp_char(&ptr()[idx], chars, (len < chars_len) ? len : chars_len);
+
+		return (val != 0) ? ((val < 0) ? -1 : 1) : (len < chars_len) ? -1 : (len == chars_len) ? 0 : 1;
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Character access
@@ -1346,6 +1486,73 @@ public:
 		return *this;
 	}
 
+
+	/*!
+	\brief
+		Assign to this String the given C-string.
+
+	\param c_str
+		Pointer to a valid C style string.
+
+	\return
+		This String after the assignment has happened
+
+	\exception std::length_error	Thrown if the resulting String would have been too large.
+	*/
+	String&	operator=(const char* c_str)
+	{
+		return assign(c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Assign to this String the given C-string.
+
+	\param c_str
+		Pointer to a valid C style string.
+
+	\return
+		This String after the assignment has happened
+
+	\exception std::length_error	Thrown if the resulting String would have been too large.
+	*/
+	String&	assign(const char* c_str)
+	{
+		return assign(c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Assign to this String a number of chars from a char array.
+
+	\param chars
+		char array.
+
+	\param chars_len
+		Number of chars to be assigned.
+
+	\return
+		This String after the assignment has happened
+
+	\exception std::length_error	Thrown if the resulting String would have been too large.
+	*/
+	String&	assign(const char* chars, size_type chars_len)
+	{
+		grow(chars_len);
+		utf32* pt = ptr();
+
+		for (size_type i = 0; i < chars_len; ++i)
+		{
+			*pt++ = static_cast<utf32>(*chars++);
+		}
+
+		setlen(chars_len);
+		return *this;
+	}
+
+
 	/*!
 	\brief
 		Swaps the value of this String with the given String \a str
@@ -1672,6 +1879,78 @@ public:
 		return replace(this->end(), this->end(), beg, end);
 	}
 
+
+	/*!
+	\brief
+		Appends to the String the given c-string.
+
+	\param c_str
+		c-string that is to be appended.
+
+	\return
+		This String after the append operation
+
+	\exception std::length_error	Thrown if resulting String would be too large.
+	*/
+	String&	operator+=(const char* c_str)
+	{
+		return append(c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Appends to the String the given c-string.
+
+	\param c_str
+		c-string that is to be appended.
+
+	\return
+		This String after the append operation
+
+	\exception std::length_error	Thrown if resulting String would be too large.
+	*/
+	String& append(const char* c_str)
+	{
+		return append(c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Appends to the String chars from the given char array.
+
+	\param chars
+		char array holding the chars that are to be appended
+
+	\param chars_len
+		Number of chars to be appended
+
+	\return
+		This String after the append operation
+
+	\exception std::length_error	Thrown if resulting String would be too large, or if \a chars_len was 'npos'
+	*/
+	String& append(const char* chars, size_type chars_len)
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		size_type newsz = d_cplength + chars_len;
+
+		grow(newsz);
+
+		utf32* pt = &ptr()[newsz-1];
+
+		while(chars_len--)
+			*pt-- = static_cast<utf32>(chars[chars_len]);
+
+		setlen(newsz);
+
+		return *this;
+	}
+
+
 	//////////////////////////////////////////////////////////////////////////
 	// Insertion Functions
 	//////////////////////////////////////////////////////////////////////////
@@ -1991,6 +2270,72 @@ public:
 	{
 		replace(pos, pos, beg, end);
 	}
+
+
+	/*!
+	\brief
+		Inserts the given c-string at the specified position.
+
+	\param idx
+		Index where the c-string is to be inserted.
+
+	\param c_str
+		c-string that is to be inserted.
+
+	\return
+		This String after the insert.
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	\exception std::length_error	Thrown if resulting String would be too large.
+	*/
+	String&	insert(size_type idx, const char* c_str)
+	{
+		return insert(idx, c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Inserts chars from the given char array at the specified position.
+
+	\param idx
+		Index where the data is to be inserted.
+
+	\param chars
+		char array containing the chars that are to be inserted.
+
+	\param chars_len
+		Length of the char array to be inserted.
+
+	\return
+		This String after the insert.
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	\exception std::length_error	Thrown if resulting String would be too large, or if \a chars_len is 'npos'
+	*/
+	String& insert(size_type idx, const char* chars, size_type chars_len)
+	{
+		if (d_cplength < idx)
+			throw std::out_of_range("Index is out of range for CEGUI::String");
+
+		if (chars_len == npos)
+			throw std::length_error("Length of char array can not be 'npos'");
+
+		size_type newsz = d_cplength + chars_len;
+
+		grow(newsz);
+		memmove(&ptr()[idx + chars_len], &ptr()[idx], (d_cplength - idx) * sizeof(utf32));
+
+		utf32* pt = &ptr()[idx + chars_len - 1];
+
+		while(chars_len--)
+			*pt-- = static_cast<utf32>(chars[chars_len]);
+
+		setlen(newsz);
+
+		return *this;
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Erasing characters
@@ -2655,6 +3000,138 @@ public:
 	}
 
 
+	/*!
+	\brief
+		Replace code points in the String with the specified c-string.
+
+	\param idx
+		Index of the first code point to be replaced
+
+	\param len
+		Maximum number of code points to be replaced (if this is 0, operation is an insert at position \a idx)
+
+	\param c_str
+		c-string that is to replace the specified code points
+
+	\return
+		This String after the replace operation
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String
+	\exception std::length_error	Thrown if the resulting String would be too large.
+	*/
+	String& replace(size_type idx, size_type len, const char* c_str)
+	{
+		return replace(idx, len, c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Replace the code points in the range [beg, end) with the specified c-string.
+
+	\note
+		If \a beg == \a end, the operation is a insert at iterator position \a beg
+
+	\param beg
+		Iterator describing the start of the range to be replaced
+
+	\param end
+		Iterator describing the (exclusive) end of the range to be replaced.
+
+	\param c_str
+		c-string that is to replace the specified range of code points
+
+	\return
+		This String after the replace operation
+
+	\exception std::length_error	Thrown if the resulting String would be too large.
+	*/
+	String& replace(iterator beg, iterator end, const char* c_str)
+	{
+		return replace(beg, end, c_str, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Replace code points in the String with chars from the given char array.
+
+	\param idx
+		Index of the first code point to be replaced
+
+	\param len
+		Maximum number of code points to be replaced (if this is 0, operation is an insert at position \a idx)
+
+	\param chars
+		char array containing the cars that are to replace the specified code points
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		This String after the replace operation
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String
+	\exception std::length_error	Thrown if the resulting String would be too large, or if \a chars_len was 'npos'.
+	*/
+	String& replace(size_type idx, size_type len, const char* chars, size_type chars_len)
+	{
+		if (d_cplength < idx)
+			throw std::out_of_range("Index is out of range for CEGUI::String");
+
+		if (chars_len == npos)
+			throw std::length_error("Length for the char array can not be 'npos'");
+
+		if (((len + idx) > d_cplength) || (len == npos))
+			len = d_cplength - idx;
+
+		size_type newsz = d_cplength + chars_len - len;
+
+		grow(newsz);
+
+		if ((idx + len) < d_cplength)
+			memmove(&ptr()[idx + chars_len], &ptr()[len + idx], (d_cplength - idx - len) * sizeof(utf32));
+
+		utf32* pt = &ptr()[idx + chars_len - 1];
+
+		while (chars_len--)
+			*pt-- = static_cast<utf32>(chars[chars_len]);
+
+		setlen(newsz);
+		return *this;
+	}
+
+
+	/*!
+	\brief
+		Replace the code points in the range [beg, end) with chars from the given char array.
+
+	\note
+		If \a beg == \a end, the operation is a insert at iterator position \a beg
+
+	\param beg
+		Iterator describing the start of the range to be replaced
+
+	\param end
+		Iterator describing the (exclusive) end of the range to be replaced.
+
+	\param chars
+		char array containing the chars that are to replace the specified range of code points
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		This String after the replace operation
+
+	\exception std::length_error	Thrown if the resulting String would be too large, or if \a chars_len was 'npos'.
+	*/
+	String& replace(iterator beg, iterator end, const char* chars, size_type chars_len)
+	{
+		return replace(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg), chars, chars_len);
+	}
+
+
 	//////////////////////////////////////////////////////////////////////////
 	// Find a code point
 	//////////////////////////////////////////////////////////////////////////
@@ -3041,6 +3518,139 @@ public:
 	}
 
 
+	/*!
+	\brief
+		Search forwards for a sub-string
+
+	\param c_str
+		c-string describing the sub-string to search for
+
+	\param idx
+		Index of the code point where the search is to start
+
+	\return
+		- Index of the first occurrence of sub-string \a c_str travelling forwards from \a idx.
+		- npos if the sub-string could not be found
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	*/
+	size_type	find(const char* c_str, size_type idx = 0) const
+	{
+		return find(c_str, idx, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Search backwards for a sub-string
+
+	\param c_str
+		c-string describing the sub-string to search for
+
+	\param idx
+		Index of the code point where the search is to start
+
+	\return
+		- Index of the first occurrence of sub-string \a c_str travelling backwards from \a idx.
+		- npos if the sub-string could not be found
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	*/
+	size_type	rfind(const char* c_str, size_type idx = npos) const
+	{
+		return rfind(c_str, idx, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Search forwards for a sub-string
+
+	\param chars
+		char array describing the sub-string to search for
+
+	\param idx
+		Index of the code point where the search is to start
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		- Index of the first occurrence of sub-string \a chars travelling forwards from \a idx.
+		- npos if the sub-string could not be found
+
+	\exception std::length_error	Thrown if \a chars_len is 'npos'
+	*/
+	size_type	find(const char* chars, size_type idx, size_type chars_len) const
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if ((chars_len == 0) && (idx < d_cplength))
+			return idx;
+
+		if (idx < d_cplength)
+		{
+			// loop while search string could fit in to search area
+			while (d_cplength - idx >= chars_len)
+			{
+				if (0 == compare(idx, chars_len, chars, chars_len))
+					return idx;
+
+				++idx;
+			}
+
+		}
+
+		return npos;
+	}
+
+
+	/*!
+	\brief
+		Search backwards for a sub-string
+
+	\param chars
+		char array describing the sub-string to search for
+
+	\param idx
+		Index of the code point where the search is to start
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		- Index of the first occurrence of sub-string \a chars travelling backwards from \a idx.
+		- npos if the sub-string could not be found
+
+	\exception std::length_error	Thrown if \a chars_len is 'npos'
+	*/
+	size_type	rfind(const char* chars, size_type idx, size_type chars_len) const
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if (chars_len == 0)
+			return (idx < d_cplength) ? idx : d_cplength;
+
+		if (chars_len <= d_cplength)
+		{
+			if (idx > (d_cplength - chars_len))
+				idx = d_cplength - chars_len;
+
+			do
+			{
+				if (0 == compare(idx, chars_len, chars, chars_len))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
+
+		return npos;
+	}
+
+
 	//////////////////////////////////////////////////////////////////////////
 	// Find first of different code-points
 	//////////////////////////////////////////////////////////////////////////
@@ -3378,6 +3988,132 @@ public:
 					return idx;
 
 			} while(idx++ < d_cplength);
+
+		}
+
+		return npos;
+	}
+
+
+	/*!
+	\brief
+		Find the first occurrence of one of a set of chars.
+
+	\param c_str
+		c-string describing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\return
+		- Index of the first occurrence of any one of the chars in \a c_str starting from from \a idx.
+		- npos if none of the chars in \a c_str were found.
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	*/
+	size_type	find_first_of(const char* c_str, size_type idx = 0) const
+	{
+		return find_first_of(c_str, idx, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Find the first code point that is not one of a set of chars.
+
+	\param c_str
+		c-string describing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\return
+		- Index of the first code point that does not match any one of the chars in \a c_str starting from from \a idx.
+		- npos if all code points matched any of the chars in \a c_str.
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	*/
+	size_type	find_first_not_of(const char* c_str, size_type idx = 0) const
+	{
+		return find_first_not_of(c_str, idx, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Find the first occurrence of one of a set of chars.
+
+	\param chars
+		char array containing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		- Index of the first occurrence of any one of the chars in \a chars starting from from \a idx.
+		- npos if none of the chars in \a chars were found.
+
+	\exception std::length_error	Thrown if \a chars_len was 'npos'.
+	*/
+	size_type	find_first_of(const char* chars, size_type idx, size_type chars_len) const
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if (idx < d_cplength)
+		{
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos != find_codepoint(chars, chars_len, *pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
+
+		return npos;
+	}
+
+
+	/*!
+	\brief
+		Find the first code point that is not one of a set of chars.
+
+	\param chars
+		char array containing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\param chars_len
+		Number of chars in the car array.
+
+	\return
+		- Index of the first code point that does not match any one of the chars in \a chars starting from from \a idx.
+		- npos if all code points matched any of the chars in \a chars.
+
+	\exception std::length_error	Thrown if \a chars_len was 'npos'.
+	*/
+	size_type	find_first_not_of(const char* chars, size_type idx, size_type chars_len) const
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if (idx < d_cplength)
+		{
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos == find_codepoint(chars, chars_len, *pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
 
 		}
 
@@ -3741,6 +4477,138 @@ public:
 					return idx;
 
 			} while(idx-- != 0);
+
+		}
+
+		return npos;
+	}
+
+
+	/*!
+	\brief
+		Find the last occurrence of one of a set of chars.
+
+	\param c_str
+		c-string describing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\return
+		- Index of the last occurrence of any one of the chars in \a c_str starting from \a idx.
+		- npos if none of the chars in \a c_str were found.
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	*/
+	size_type	find_last_of(const char* c_str, size_type idx = npos) const
+	{
+		return find_last_of(c_str, idx, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Find the last code point that is not one of a set of chars.
+
+	\param c_str
+		c-string describing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\return
+		- Index of the last code point that does not match any one of the chars in \a c_str starting from \a idx.
+		- npos if all code points matched any of the chars in \a c_str.
+
+	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
+	*/
+	size_type	find_last_not_of(const char* c_str, size_type idx = npos) const
+	{
+		return find_last_not_of(c_str, idx, strlen(c_str));
+	}
+
+
+	/*!
+	\brief
+		Find the last occurrence of one of a set of chars.
+
+	\param chars
+		char array containing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		- Index of the last occurrence of any one of the chars in \a chars, starting from from \a idx.
+		- npos if none of the chars in \a chars were found.
+
+	\exception std::length_error	Thrown if \a chars_len was 'npos'.
+	*/
+	size_type	find_last_of(const char* chars, size_type idx, size_type chars_len) const
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if (d_cplength > 0)
+		{
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
+
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos != find_codepoint(chars, chars_len, *pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
+
+		return npos;
+	}
+
+
+	/*!
+	\brief
+		Find the last code point that is not one of a set of chars.
+
+	\param chars
+		char array containing the set of chars.
+
+	\param idx
+		Index of the start point for the search
+
+	\param chars_len
+		Number of chars in the char array.
+
+	\return
+		- Index of the last code point that does not match any one of the chars in \a chars, starting from from \a idx.
+		- npos if all code points matched any of the chars in \a chars.
+
+	\exception std::length_error	Thrown if \a chars_len was 'npos'.
+	*/
+	size_type	find_last_not_of(const char* chars, size_type idx, size_type chars_len) const
+	{
+		if (chars_len == npos)
+			throw std::length_error("Length for char array can not be 'npos'");
+
+		if (d_cplength > 0)
+		{
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
+
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos == find_codepoint(chars, chars_len, *pt--))
+					return idx;
+
+			} while (idx-- != 0);
 
 		}
 
@@ -4334,7 +5202,21 @@ private:
 		return npos;
 	}
 
+
+	// return index of first occurrence of 'code_point' in char array 'chars', or npos if none
+	size_type find_codepoint(const char* chars, size_type chars_len, utf32 code_point) const
+	{
+		for (size_type idx = 0; idx != chars_len; ++idx)
+		{
+			if (code_point == static_cast<utf32>(chars[idx]))
+				return idx;
+		}
+
+		return npos;
+	}
+
 };
+
 
 //////////////////////////////////////////////////////////////////////////
 // Comparison operators
@@ -4519,6 +5401,78 @@ bool CEGUIBASE_API	operator>=(const String& str, const utf8* utf8_str);
 */
 bool CEGUIBASE_API	operator>=(const utf8* utf8_str, const String& str);
 
+/*!
+\brief
+	Return true if String \a str is equal to c-string \a c_str
+*/
+bool CEGUIBASE_API	operator==(const String& str, const char* c_str);
+
+/*!
+\brief
+	Return true if c-string \a c_str is equal to String \a str
+*/
+bool CEGUIBASE_API	operator==(const char* c_str, const String& str);
+
+/*!
+\brief
+	Return true if String \a str is not equal to c-string \a c_str
+*/
+bool CEGUIBASE_API	operator!=(const String& str, const char* c_str);
+
+/*!
+\brief
+	Return true if c-string \a c_str is not equal to String \a str
+*/
+bool CEGUIBASE_API	operator!=(const char* c_str, const String& str);
+
+/*!
+\brief
+	Return true if String \a str is lexicographically less than c-string \a c_str
+*/
+bool CEGUIBASE_API	operator<(const String& str, const char* c_str);
+
+/*!
+\brief
+	Return true if c-string \a c_str is lexicographically less than String \a str
+*/
+bool CEGUIBASE_API	operator<(const char* c_str, const String& str);
+
+/*!
+\brief
+Return true if String \a str is lexicographically greater than c-string \a c_str
+*/
+bool CEGUIBASE_API	operator>(const String& str, const char* c_str);
+
+/*!
+\brief
+Return true if c-string \a c_str is lexicographically greater than String \a str
+*/
+bool CEGUIBASE_API	operator>(const char* c_str, const String& str);
+
+/*!
+\brief
+	Return true if String \a str is lexicographically less than or equal to c-string \a c_str
+*/
+bool CEGUIBASE_API	operator<=(const String& str, const char* c_str);
+
+/*!
+\brief
+	Return true if c-string \a c_str is lexicographically less than or equal to String \a str
+*/
+bool CEGUIBASE_API	operator<=(const char* c_str, const String& str);
+
+/*!
+\brief
+	Return true if String \a str is lexicographically greater than or equal to c-string \a c_str
+*/
+bool CEGUIBASE_API	operator>=(const String& str, const char* c_str);
+
+/*!
+\brief
+	Return true if c-string \a c_str is lexicographically greater than or equal to String \a str
+*/
+bool CEGUIBASE_API	operator>=(const char* c_str, const String& str);
+
 //////////////////////////////////////////////////////////////////////////
 // Concatenation operator functions
 //////////////////////////////////////////////////////////////////////////
@@ -4640,6 +5594,40 @@ String CEGUIBASE_API	operator+(const String str, utf32 code_point);
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
 String CEGUIBASE_API	operator+(utf32 code_point, const String& str);
+
+/*!
+\brief
+	Return String object that is the concatenation of the given inputs
+
+\param str
+	String object describing first part of the new string
+
+\param c_str
+	c-string describing the second part of the new string
+
+\return
+	A String object that is the concatenation of \a str and \a c_str
+
+\exception std::length_error	Thrown if the resulting String would be too large.
+*/
+String CEGUIBASE_API	operator+(const String str, const char* c_str);
+
+/*!
+\brief
+	Return String object that is the concatenation of the given inputs
+
+\param c_str
+	c-string describing the first part of the new string
+
+\param str
+	String object describing the second part of the new string
+
+\return
+	A String object that is the concatenation of \a c_str and \a str
+
+\exception std::length_error	Thrown if the resulting String would be too large.
+*/
+String CEGUIBASE_API	operator+(const char* c_str, const String& str);
 
 
 //////////////////////////////////////////////////////////////////////////
