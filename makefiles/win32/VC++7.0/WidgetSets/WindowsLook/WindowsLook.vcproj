@@ -21,7 +21,7 @@
 				AdditionalOptions="/Zm150"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\WindowsLook\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;WINDOWSLOOK_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_STLP_DEBUG;_WINDOWS;_USRDLL;WINDOWSLOOK_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
