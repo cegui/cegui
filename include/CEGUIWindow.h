@@ -1789,6 +1789,26 @@ public:
     */
     void    setDistributesCapturedInputs(bool setting);
 
+    /*!
+    \brief
+        Internal support method for drag & drop.  You do not normally call
+        this directly from client code.  See the DragContainer class.
+    */
+    void    notifyDragDropItemEnters(DragContainer* item);
+
+    /*!
+    \brief
+        Internal support method for drag & drop.  You do not normally call
+        this directly from client code.  See the DragContainer class.
+    */
+    void    notifyDragDropItemLeaves(DragContainer* item);
+
+    /*!
+    \brief
+        Internal support method for drag & drop.  You do not normally call
+        this directly from client code.  See the DragContainer class.
+    */
+    void    notifyDragDropItemDropped(DragContainer* item);
 
 	/*************************************************************************
 		Co-ordinate and Size Conversion Functions

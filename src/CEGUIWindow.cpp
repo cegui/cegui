@@ -2780,6 +2780,36 @@ void Window::setDistributesCapturedInputs(bool setting)
     }
 }
 
+void Window::notifyDragDropItemEnters(DragContainer* item)
+{
+    if (item)
+    {
+        DragDropEventArgs args(this);
+        args.dragDropItem = item;
+        onDragDropItemEnters(args);
+    }
+}
+
+void Window::notifyDragDropItemLeaves(DragContainer* item)
+{
+    if (item)
+    {
+        DragDropEventArgs args(this);
+        args.dragDropItem = item;
+        onDragDropItemLeaves(args);
+    }
+}
+
+void Window::notifyDragDropItemDropped(DragContainer* item)
+{
+    if (item)
+    {
+        DragDropEventArgs args(this);
+        args.dragDropItem = item;
+        onDragDropItemDropped(args);
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
