@@ -4,6 +4,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIColourRect.h \
                  CEGUIConfig.h \
                  CEGUIConfig_xmlHandler.h \
+                 CEGUIDataContainer.h \
+                 CEGUIDefaultResourceProvider.h \
                  CEGUIEvent.h \
                  CEGUIEventArgs.h \
                  CEGUIEventSet.h \
@@ -31,6 +33,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIRenderableFrame.h \
                  CEGUIRenderableImage.h \
                  CEGUIRenderer.h \
+                 CEGUIResourceProvider.h \
                  CEGUIScheme.h \
                  CEGUISchemeManager.h \
                  CEGUIScheme_xmlHandler.h \

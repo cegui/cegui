@@ -5,7 +5,8 @@ lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIColourRect.cpp \
-		      CEGUIConfig_xmlHandler.cpp \
+                      CEGUIConfig_xmlHandler.cpp \
+                      CEGUIDefaultResourceProvider.cpp \
                       CEGUIEvent.cpp \
                       CEGUIEventArgs.cpp \
                       CEGUIEventSet.cpp \
@@ -32,6 +33,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIRenderableFrame.cpp \
                       CEGUIRenderableImage.cpp \
                       CEGUIRenderer.cpp \
+                      CEGUIResourceProvider.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \
