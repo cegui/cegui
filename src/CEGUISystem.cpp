@@ -117,37 +117,37 @@ const String System::EventMouseMoveScalingChanged( (utf8*)"MouseMoveScalingChang
 /*************************************************************************
 	Constructor
 *************************************************************************/
-System::System(Renderer* renderer, utf8* logFile) :
+System::System(Renderer* renderer, const utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, NULL, NULL, (utf8*)"", logFile);
+	constructor_impl(renderer, NULL, NULL, (const utf8*)"", logFile);
 }
 /*************************************************************************
 	Construct a new System object
 *************************************************************************/
-System::System(Renderer* renderer, ResourceProvider* resourceProvider, utf8* logFile) :
+System::System(Renderer* renderer, ResourceProvider* resourceProvider,const utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, resourceProvider, NULL, (utf8*)"", logFile);
+	constructor_impl(renderer, resourceProvider, NULL, (const utf8*)"", logFile);
 }
 
 /*************************************************************************
 	Construct a new System object
 *************************************************************************/
-System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile) :
+System::System(Renderer* renderer, ScriptModule* scriptModule, const utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, NULL, scriptModule, configFile, (utf8*)"CEGUI.log");
+	constructor_impl(renderer, NULL, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
 
 /*************************************************************************
 	Construct a new System object
 *************************************************************************/
-System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, utf8* configFile) :
+System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, resourceProvider, scriptModule, configFile, (utf8*)"CEGUI.log");
+	constructor_impl(renderer, resourceProvider, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
 

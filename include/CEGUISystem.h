@@ -92,7 +92,7 @@ public:
 	\param logFile
 		pointer to a utf8 encoded buffer containing the name to use for the log file.
 	*/
-	System(Renderer* renderer, utf8* logFile = (utf8*)"CEGUI.log");
+	System(Renderer* renderer, const utf8* logFile = (const utf8*)"CEGUI.log");
 
 	/*!
 	\brief
@@ -107,7 +107,7 @@ public:
 	\param logFile
 		pointer to a utf8 encoded buffer containing the name to use for the log file.
 	*/
-	System(Renderer* renderer, ResourceProvider* resourceProvider, utf8* logFile = (utf8*)"CEGUI.log");
+	System(Renderer* renderer, ResourceProvider* resourceProvider, const utf8* logFile = (const utf8*)"CEGUI.log");
 
 
 	/*!
@@ -123,7 +123,7 @@ public:
 	\param configFile
 		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
 	*/
-	System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile = (utf8*)"cegui.config");
+	System(Renderer* renderer, ScriptModule* scriptModule, const utf8* configFile = (const utf8*)"cegui.config");
 
 
 	/*!
@@ -142,7 +142,7 @@ public:
 	\param configFile
 		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
 	*/
-	System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, utf8* configFile = (utf8*)"cegui.config");
+	System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile = (const utf8*)"cegui.config");
 
 
 	/*!
