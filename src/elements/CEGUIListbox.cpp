@@ -774,19 +774,26 @@ bool Listbox::clearAllSelections_impl(void)
 *************************************************************************/
 ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 {
-	float y = getListRenderArea().d_top - d_vertScrollbar->getScrollPosition();
+	Rect renderArea(getListRenderArea());
 
-	if (pt.d_y >= y)
+	// point must be within the rendering area of the Listbox.
+	if (renderArea.isPointInRect(pt))
 	{
-		for (uint i = 0; i < getItemCount(); ++i)
+		float y = renderArea.d_top - d_vertScrollbar->getScrollPosition();
+
+		// test if point is above first item
+		if (pt.d_y >= y)
 		{
-			y += d_listItems[i]->getPixelSize().d_height;
-
-			if (pt.d_y < y)
+			for (uint i = 0; i < getItemCount(); ++i)
 			{
-				return d_listItems[i];
-			}
+				y += d_listItems[i]->getPixelSize().d_height;
 
+				if (pt.d_y < y)
+				{
+					return d_listItems[i];
+				}
+
+			}
 		}
 	}
 
