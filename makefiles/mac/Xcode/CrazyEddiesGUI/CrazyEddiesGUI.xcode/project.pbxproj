@@ -79,9 +79,8 @@
 			children = (
 				5B7CD83C070DD05B00FE8C88,
 				5B7CD845070DD09100FE8C88,
-				5B7CD84D070DD0A100FE8C88,
-				5B7CD855070DD0AD00FE8C88,
-				8D07F2C70486CC7A007CD1D0,
+				5B78EC830717B9EF00DB5B0A,
+				5B78EC8A0717BA6600DB5B0A,
 				089C1666FE841158C02AAC07,
 			);
 			isa = PBXGroup;
@@ -118,8 +117,9 @@
 		08FB77ACFE841707C02AAC07 = {
 			children = (
 				5B7CDAE8070DD69700FE8C88,
+				5B78EBCA07173D1100DB5B0A,
+				5B78EBCB07173D1100DB5B0A,
 				5B7CD868070DD19000FE8C88,
-				5B7CD869070DD19000FE8C88,
 				5B7CD86A070DD19000FE8C88,
 				5B7CD86B070DD19000FE8C88,
 				5B7CD86C070DD19000FE8C88,
@@ -231,6 +231,132 @@
 //5B2
 //5B3
 //5B4
+		5B78EBCA07173D1100DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CEGUIcolour.cpp;
+			path = ../../../../src/CEGUIcolour.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B78EBCB07173D1100DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CEGUIFactoryModule.cpp;
+			path = ../../../../src/CEGUIFactoryModule.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B78EBCC07173D1100DB5B0A = {
+			fileRef = 5B78EBCA07173D1100DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EBCD07173D1100DB5B0A = {
+			fileRef = 5B78EBCB07173D1100DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EBD307173D5D00DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			path = CEGUIGUISheet.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		5B78EBD407173D5D00DB5B0A = {
+			fileRef = 5B78EBD307173D5D00DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EBD707173D8500DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CEGUIcolour.h;
+			path = /Users/pauly/Projects/Frameworks/cegui_mk2/include/CEGUIcolour.h;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		5B78EBD807173D8500DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CEGUIConfig.h;
+			path = /Users/pauly/Projects/Frameworks/cegui_mk2/include/CEGUIConfig.h;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		5B78EBD907173D8500DB5B0A = {
+			fileRef = 5B78EBD707173D8500DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		5B78EBDA07173D8500DB5B0A = {
+			fileRef = 5B78EBD807173D8500DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		5B78EC300717A66500DB5B0A = {
+			fileRef = 32BAE0B70371A74B00C91783;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EC830717B9EF00DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.xml;
+			path = "CEGUITaharezLook-Info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		5B78EC840717B9F000DB5B0A = {
+			fileRef = 5B78EC830717B9EF00DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EC850717BA0F00DB5B0A = {
+			fileRef = 5B7CD83C070DD05B00FE8C88;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EC870717BA2100DB5B0A = {
+			fileRef = 5B7CD845070DD09100FE8C88;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B78EC8A0717BA6600DB5B0A = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.xml;
+			path = "CEGUIWindowsLook-Info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		5B78EC8B0717BA6600DB5B0A = {
+			fileRef = 5B78EC8A0717BA6600DB5B0A;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		5B7CD801070DCF2F00FE8C88 = {
 			children = (
 				08FB77ACFE841707C02AAC07,
@@ -244,9 +370,10 @@
 		5B7CD804070DCF5400FE8C88 = {
 			children = (
 				5B7CDAEB070DD6B800FE8C88,
+				5B78EBD707173D8500DB5B0A,
+				5B78EBD807173D8500DB5B0A,
 				5B7CD91D070DD1EF00FE8C88,
 				5B7CD91E070DD1EF00FE8C88,
-				5B7CD91F070DD1EF00FE8C88,
 				5B7CD920070DD1EF00FE8C88,
 				5B7CD921070DD1EF00FE8C88,
 				5B7CD922070DD1EF00FE8C88,
@@ -545,7 +672,6 @@
 			files = (
 				5B7CD980070DD1EF00FE8C88,
 				5B7CD981070DD1EF00FE8C88,
-				5B7CD982070DD1EF00FE8C88,
 				5B7CD983070DD1EF00FE8C88,
 				5B7CD984070DD1EF00FE8C88,
 				5B7CD985070DD1EF00FE8C88,
@@ -641,6 +767,9 @@
 				5B7CD9DF070DD1EF00FE8C88,
 				5B7CD9E0070DD1EF00FE8C88,
 				5B7CDAE5070DD68B00FE8C88,
+				5B78EBD907173D8500DB5B0A,
+				5B78EBDA07173D8500DB5B0A,
+				5B78EC300717A66500DB5B0A,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -648,6 +777,7 @@
 		5B7CD837070DD05B00FE8C88 = {
 			buildActionMask = 2147483647;
 			files = (
+				5B78EC850717BA0F00DB5B0A,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -656,7 +786,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B7CD8C2070DD19000FE8C88,
-				5B7CD8C3070DD19000FE8C88,
 				5B7CD8C4070DD19000FE8C88,
 				5B7CD8C5070DD19000FE8C88,
 				5B7CD8C6070DD19000FE8C88,
@@ -744,8 +873,10 @@
 				5B7CD918070DD19000FE8C88,
 				5B7CD919070DD19000FE8C88,
 				5B7CD91A070DD19000FE8C88,
-				5B7CDAE3070DD68B00FE8C88,
 				5B7CDAE4070DD68B00FE8C88,
+				5B78EBCC07173D1100DB5B0A,
+				5B78EBCD07173D1100DB5B0A,
+				5B78EBD407173D5D00DB5B0A,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -846,6 +977,7 @@
 		5B7CD840070DD09100FE8C88 = {
 			buildActionMask = 2147483647;
 			files = (
+				5B78EC870717BA2100DB5B0A,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -972,6 +1104,7 @@
 				5B7CDA77070DD2C500FE8C88,
 				5B7CDA78070DD2C500FE8C88,
 				5B7CDA79070DD2C500FE8C88,
+				5B78EC840717B9F000DB5B0A,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1034,19 +1167,19 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ../../../../include;
-				INFOPLIST_FILE = "Taharez Look-Info.plist";
+				INFOPLIST_FILE = "CEGUITaharezLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-framework Carbon";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "Taharez Look";
+				PRODUCT_NAME = CEGUITaharezLook;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 			};
 			dependencies = (
 			);
 			isa = PBXNativeTarget;
-			name = "Taharez Look";
+			name = CEGUITaharezLook;
 			productName = "Taharez Look";
 			productReference = 5B7CD84C070DD0A100FE8C88;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -1078,17 +1211,9 @@
 			explicitFileType = wrapper.cfbundle;
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = "Taharez Look.bundle";
+			path = CEGUITaharezLook.bundle;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5B7CD84D070DD0A100FE8C88 = {
-			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
-			name = "Taharez Look-Info.plist";
-			path = "/Users/pauly/Projects/Frameworks/cegui_mk2/makefiles/mac/Xcode/CrazyEddiesGUI/Taharez Look-Info.plist";
-			refType = 0;
-			sourceTree = "<absolute>";
 		};
 		5B7CD850070DD0AD00FE8C88 = {
 			buildActionMask = 2147483647;
@@ -1116,6 +1241,7 @@
 				5B7CDAD3070DD2F400FE8C88,
 				5B7CDAD4070DD2F400FE8C88,
 				5B7CDAD5070DD2F400FE8C88,
+				5B78EC8B0717BA6600DB5B0A,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1170,19 +1296,19 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ../../../../include;
-				INFOPLIST_FILE = "Windows Look-Info.plist";
+				INFOPLIST_FILE = "CEGUIWindowsLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-framework Carbon";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = "Windows Look";
+				PRODUCT_NAME = CEGUIWindowsLook;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 			};
 			dependencies = (
 			);
 			isa = PBXNativeTarget;
-			name = "Windows Look";
+			name = CEGUIWindowsLook;
 			productName = "Windows Look";
 			productReference = 5B7CD854070DD0AD00FE8C88;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -1214,17 +1340,9 @@
 			explicitFileType = wrapper.cfbundle;
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = "Windows Look.bundle";
+			path = CEGUIWindowsLook.bundle;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5B7CD855070DD0AD00FE8C88 = {
-			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
-			name = "Windows Look-Info.plist";
-			path = "/Users/pauly/Projects/Frameworks/cegui_mk2/makefiles/mac/Xcode/CrazyEddiesGUI/Windows Look-Info.plist";
-			refType = 0;
-			sourceTree = "<absolute>";
 		};
 		5B7CD858070DD0FE00FE8C88 = {
 			isa = PBXFileReference;
@@ -1294,15 +1412,6 @@
 			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIBase.cpp;
 			path = ../../../../src/CEGUIBase.cpp;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
-		5B7CD869070DD19000FE8C88 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = CEGUIColourManipulator.cpp;
-			path = ../../../../src/CEGUIColourManipulator.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -1686,6 +1795,7 @@
 		};
 		5B7CD894070DD19000FE8C88 = {
 			children = (
+				5B78EBD307173D5D00DB5B0A,
 				5B7CD895070DD19000FE8C88,
 				5B7CD896070DD19000FE8C88,
 				5B7CD897070DD19000FE8C88,
@@ -2100,12 +2210,6 @@
 		};
 		5B7CD8C2070DD19000FE8C88 = {
 			fileRef = 5B7CD868070DD19000FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B7CD8C3070DD19000FE8C88 = {
-			fileRef = 5B7CD869070DD19000FE8C88;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -2647,15 +2751,6 @@
 			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIBase.h;
 			path = ../../../../include/CEGUIBase.h;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
-		5B7CD91F070DD1EF00FE8C88 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = CEGUIColourManipulator.h;
-			path = ../../../../include/CEGUIColourManipulator.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -3572,15 +3667,6 @@
 		};
 		5B7CD981070DD1EF00FE8C88 = {
 			fileRef = 5B7CD91E070DD1EF00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-				ATTRIBUTES = (
-					Public,
-				);
-			};
-		};
-		5B7CD982070DD1EF00FE8C88 = {
-			fileRef = 5B7CD91F070DD1EF00FE8C88;
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
@@ -6048,15 +6134,6 @@
 			settings = {
 			};
 		};
-		5B7CDAE0070DD68B00FE8C88 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = CEGUIFactoryModule.cpp;
-			path = ../../../../src/implementations/mac/CEGUIFactoryModule.cpp;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
 		5B7CDAE1070DD68B00FE8C88 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -6075,12 +6152,6 @@
 			refType = 0;
 			sourceTree = "<absolute>";
 		};
-		5B7CDAE3070DD68B00FE8C88 = {
-			fileRef = 5B7CDAE0070DD68B00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		5B7CDAE4070DD68B00FE8C88 = {
 			fileRef = 5B7CDAE1070DD68B00FE8C88;
 			isa = PBXBuildFile;
@@ -6095,7 +6166,6 @@
 		};
 		5B7CDAE8070DD69700FE8C88 = {
 			children = (
-				5B7CDAE0070DD68B00FE8C88,
 				5B7CDAE1070DD68B00FE8C88,
 			);
 			isa = PBXGroup;
@@ -6198,24 +6268,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "INCDEST=elements\n\nmkdir -p \"$BUILD_ROOT/$PUBLIC_HEADERS_FOLDER_PATH/$INCDEST\"\n/Developer/Tools/pbxcp -V -exclude CVS ../../../../include/$INCDEST/*.h \"$BUILD_ROOT/$PUBLIC_HEADERS_FOLDER_PATH/$INCDEST/\"";
-		};
-//5B0
-//5B1
-//5B2
-//5B3
-//5B4
-//8D0
-//8D1
-//8D2
-//8D3
-//8D4
-		8D07F2C70486CC7A007CD1D0 = {
-			fileEncoding = 4;
-			isa = PBXFileReference;
-			lastKnownFileType = text.plist;
-			path = Info.plist;
-			refType = 4;
-			sourceTree = "<group>";
 		};
 	};
 	rootObject = 0867D690FE84028FC02AAC07;
