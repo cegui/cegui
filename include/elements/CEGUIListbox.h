@@ -124,7 +124,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-	ListboxItem*	getListboxItemFomIndex(uint index) const;
+	ListboxItem*	getListboxItemFromIndex(uint index) const;
 
 
 	/*!

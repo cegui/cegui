@@ -157,7 +157,7 @@ ListboxItem* Listbox::getNextSelected(const ListboxItem* start_item) const
 /*************************************************************************
 	Return the item at index position 'index'.
 *************************************************************************/
-ListboxItem* Listbox::getListboxItemFomIndex(uint index) const
+ListboxItem* Listbox::getListboxItemFromIndex(uint index) const
 {
 	if (index < (uint)d_listItems.size())
 	{
@@ -165,7 +165,7 @@ ListboxItem* Listbox::getListboxItemFomIndex(uint index) const
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"Listbox::getListboxItemFomIndex - the specified index is out of range for this Listbox.");
+		throw InvalidRequestException((utf8*)"Listbox::getListboxItemFromIndex - the specified index is out of range for this Listbox.");
 	}
 }
 

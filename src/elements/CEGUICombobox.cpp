@@ -402,9 +402,9 @@ ListboxItem* Combobox::getSelectedItem(void) const
 /*************************************************************************
 	Return the item at index position \a index.
 *************************************************************************/
-ListboxItem* Combobox::getListboxItemFomIndex(uint index) const
+ListboxItem* Combobox::getListboxItemFromIndex(uint index) const
 {
-	return d_droplist->getListboxItemFomIndex(index);
+	return d_droplist->getListboxItemFromIndex(index);
 }
 
 
