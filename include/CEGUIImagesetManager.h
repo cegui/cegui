@@ -1,0 +1,189 @@
+/************************************************************************
+	filename: 	CEGUIImagesetManager.h
+	created:	21/2/2004
+	author:		Paul D Turner
+	
+	purpose:	Defines interface for ImagesetManager object
+*************************************************************************/
+/*************************************************************************
+    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
+    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*************************************************************************/
+#ifndef _CEGUIImagesetManager_h_
+#define _CEGUIImagesetManager_h_
+
+#include "CEGUIBase.h"
+#include "CEGUIString.h"
+#include "CEGUISingleton.h"
+#include "CEGUIImageset.h"
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+/*!
+\brief
+	Class providing a shared library of Imageset objects to the system.
+
+	The ImagesetManager is used to create, access, and destroy Imageset objects.  The idea is that
+	the ImagesetManager will function as a central repository for imagery used within the GUI system,
+	and that such imagery can be accessed, via a unique name, by any interested party within the system.
+*/
+class CEGUIBASE_API ImagesetManager : public Singleton<ImagesetManager>
+{
+public:
+	/*!
+	\brief
+		Constructor for ImagesetManager objects
+	*/
+	ImagesetManager(void);
+
+
+	/*!
+	\brief
+		Destructor for ImagesetManager objects
+	*/
+	virtual ~ImagesetManager(void);
+
+
+	/*!
+	\brief
+		Return singleton ImagesetManager object
+
+	\return
+		Singleton ImagesetManager object
+	*/
+	static	ImagesetManager&	getSingleton(void)			{return Singleton<ImagesetManager>::getSingleton();}
+
+
+	/*!
+	\brief
+		Return pointer to singleton ImagesetManager object
+
+	\return
+		Pointer to singleton ImagesetManager object
+	*/
+	static	ImagesetManager*	getSingletonPtr(void)			{return Singleton<ImagesetManager>::getSingletonPtr();}
+
+
+	/*!
+	\brief
+		Create a Imageset object with the given name and Texture
+
+		The created Imageset will be of limited use, and will require one or more images to be defined for the set.
+
+	\param name
+		String object containing the unique name for the Imageset being created.
+
+	\param texture
+		Texture object to be associated with the Imageset
+
+	\return
+		Pointer to the newly created Imageset object
+
+	\exception AlreadyExistsException	Thrown if an Imageset named \a name is already present in the system.
+	*/
+	Imageset*	createImageset(const String& name, Texture* texture);
+
+	/*!
+	\brief
+		Create an Imageset object from the specified file
+
+	\param filename
+		String object holding the name of the Imageset definition file which should be used to create the Imageset
+
+	\return
+		Pointer to the newly created Imageset object
+
+	\exception	AlreadyExistsException	Thrown if an Imageset named \a name is already present in the system.
+	\exception	FileIOException			Thrown if something goes wrong while processing the file \a filename.
+	*/
+	Imageset*	createImageset(const String& filename);
+
+
+	/*!
+	\brief
+		Destroys the Imageset with the specified name
+
+	\param name
+		String object containing the name of the Imageset to be destroyed.  If no such Imageset exists, nothing happens.
+
+	\return
+		Nothing.
+	*/
+	void	destroyImageset(const String& name);
+
+/*!
+	\brief
+		Destroys the given Imageset object
+
+	\param imageset
+		Pointer to the Imageset to be destroyed.  If no such Imageset exists, nothing happens.
+
+	\return
+		Nothing.
+	*/
+	void	destroyImageset(Imageset* imageset);
+
+
+	/*!
+	\brief
+		Destroys all Imageset objects registered in the system
+
+	\return
+		Nothing
+	*/
+	void	destroyAllImagesets(void);
+
+
+	/*!
+	\brief
+		Returns a pointer to the Imageset object with the specified name
+
+	\param name
+		String object containing the name of the Imageset to return a pointer to
+
+	\return
+		Pointer to the requested Imageset object
+
+	\exception	UnknownObjectException	Thrown if no Imageset named \a name is present in within the system
+	*/
+	Imageset*	getImageset(const String& name) const;
+
+
+	/*!
+	\brief
+		Check for the existence of a named Imageset
+
+	\param name
+		String object containing the name of the Imageset to look for
+
+	\return
+		true if an Imageset named \a name is presently loaded in the system, else false.
+	*/
+	bool	isImagesetPresent(const String& name) const			{return d_imagesets.find(name) != d_imagesets.end();}
+
+private:
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	typedef	std::map<String, Imageset*>		ImagesetRegistry;
+	ImagesetRegistry	d_imagesets;
+};
+
+} // End of  CEGUI namespace section
+
+#endif	// end of guard _CEGUIImageSetManager_h_
