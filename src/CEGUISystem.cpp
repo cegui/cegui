@@ -481,6 +481,14 @@ Window* System::setGUISheet(Window* sheet)
 	Window* old = d_activeSheet;
 	d_activeSheet = sheet;
 
+    // Force and update for the area Rects for 'sheet' so they're correct according
+    // to the screen size.
+    if (sheet != 0)
+    {    
+        WindowEventArgs sheetargs(0);
+        sheet->onParentSized(sheetargs);
+    }
+    
 	// fire event
 	WindowEventArgs args(old);
 	onGUISheetChanged(args);
