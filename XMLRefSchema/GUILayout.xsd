@@ -7,10 +7,12 @@
 		<xsd:sequence>
 			<xsd:element name="Window" type="WindowType" />
 		</xsd:sequence>
+		<xsd:attribute name="Parent" type="xsd:string" use="optional" default=""/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="WindowType">
 		<xsd:sequence>
+			<xsd:element name="LayoutImport" type="LayoutImportType"  minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Window" type="WindowType"  minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
@@ -22,6 +24,10 @@
 	<xsd:complexType name="PropertyType">
 		<xsd:attribute name="Name" type="xsd:string" use="required"/>
 		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="LayoutImportType">
+		<xsd:attribute name="Filename" type="xsd:string" use="required"/>
 	</xsd:complexType>
 
 </xsd:schema>

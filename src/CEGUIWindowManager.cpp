@@ -175,6 +175,9 @@ Window* WindowManager::loadWindowLayout(const String& filename)
 		throw InvalidRequestException((utf8*)"WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid.");
 	}
 
+	// log the fact we are about to load a layout
+	Logger::getSingleton().logEvent((utf8*)"---- Beginning loading of GUI layout from '" + filename + "' ----", Informative);
+
 	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
 
 	// set basic settings we want from parser
@@ -197,6 +200,9 @@ Window* WindowManager::loadWindowLayout(const String& filename)
 	try
 	{
 		parser->parse(filename.c_str());
+
+		// log the completion of loading
+		Logger::getSingleton().logEvent((utf8*)"---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);
 	}
 	catch(const XMLException& exc)
 	{

@@ -41,10 +41,14 @@ namespace CEGUI
 const utf8	GUILayout_xmlHandler::GUILayoutElement[]		= "GUILayout";
 const utf8	GUILayout_xmlHandler::WindowElement[]			= "Window";
 const utf8	GUILayout_xmlHandler::PropertyElement[]			= "Property";
+const utf8	GUILayout_xmlHandler::LayoutImportElement[]		= "LayoutImport";
 const char	GUILayout_xmlHandler::WindowTypeAttribute[]		= "Type";
 const char	GUILayout_xmlHandler::WindowNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::PropertyNameAttribute[]	= "Name";
 const char	GUILayout_xmlHandler::PropertyValueAttribute[]	= "Value";
+const char	GUILayout_xmlHandler::LayoutParentAttribute[]	= "Parent";
+const char	GUILayout_xmlHandler::LayoutImportFilenameAttribute[]	= "Filename";
+
 
 
 void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
@@ -55,6 +59,19 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 	// handle root GUILayoutElement element
 	if (element == GUILayoutElement)
 	{
+		d_layoutParent = XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutParentAttribute);
+
+		// before we go to the trouble of creating the layout, see if this parent exists
+		if (!d_layoutParent.empty())
+		{
+			if (!WindowManager::getSingleton().isWindowPresent(d_layoutParent))
+			{
+				// signal error - with more info about what we have done.
+				throw InvalidRequestException((utf8*)"GUILayout_xmlHandler::startElement - layout loading has been aborted since the specified parent Window ('" + d_layoutParent + "') does not exist.");
+			}
+
+		}
+
 	}
 	// handle Window element (create window and make an entry on our "window stack")
 	else if (element == WindowElement)
@@ -124,6 +141,17 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		}
 
 	}
+	// handle layout import element (attach a layout to the window at the top of the stack)
+	else if (element == LayoutImportElement)
+	{
+		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute));
+
+		if ((subLayout != NULL) && (!d_stack.empty()))
+		{
+			d_stack.back()->addChildWindow(subLayout);
+		}
+
+	}
 	// anything else is an error which *should* have already been caught by XML validation
 	else
 	{
@@ -138,7 +166,17 @@ void GUILayout_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const
 	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
 
 	// handle root GUILayoutElement element
-	if (element == WindowElement)
+	if (element == GUILayoutElement)
+	{
+		// attach to named parent if needed
+		if (!d_layoutParent.empty() && (d_root != NULL))
+		{
+			WindowManager::getSingleton().getWindow(d_layoutParent)->addChildWindow(d_root);
+		}
+
+	}
+	// handle Window element
+	else if (element == WindowElement)
 	{
 		// pop a window from the window stack
 		if (!d_stack.empty())

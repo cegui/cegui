@@ -142,13 +142,26 @@ GUILayout Element
 =================
 GUILayout is the root element.
 The GUILayout must contain a single Window element only.
-There are currently no attributes defined for GUILayout.
+
+GUILayout attributes
+--------------------
+Parent		- Specifies the name of an existing window that this gui layout should be attached to (optional).
+
+
+LayoutImport Element
+====================
+The LayoutImport element is used to reference (import) a layout file into another.  The root window of the imported layout is attached to the Window where the import occurrs.
+The LayoutImport element has attributes but no sub-elements.
+
+LayoutImport attributes
+-----------------------
+Filename	- Specifies the filename of the layout XML file to be imported.
 
 
 Window Element
 ==============
 The Window element is used to specify a new window object to be created.
-The Window element has attributes as described below and may contain any number of nested Window elements and any number of Property elements.
+The Window element has attributes as described below and may contain any number of nested Window elements, any number of Property elements, and any number of LayoutImport elements.
 
 Window attributes
 -----------------

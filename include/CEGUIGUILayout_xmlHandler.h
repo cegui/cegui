@@ -100,10 +100,13 @@ private:
 	static const utf8	GUILayoutElement[];				//!< Tag name for GUILayout elements.
 	static const utf8	WindowElement[];				//!< Tag name for Window elements.
 	static const utf8	PropertyElement[];				//!< Tag name for Property elements.
+	static const utf8	LayoutImportElement[];			//!< Tag name for LayoutImport elements.
 	static const char	WindowTypeAttribute[];			//!< Attribute name that stores the type of Window to create.
 	static const char	WindowNameAttribute[];			//!< Attribute name that stores the name of the window to create.
 	static const char	PropertyNameAttribute[];		//!< Attribute name that stores the name of the property to set.
 	static const char	PropertyValueAttribute[];		//!< Attribute name that stores the value to pass to the property.
+	static const char	LayoutParentAttribute[];		//!< Attribute name that stores the name of the window to attach the layout to.
+	static const char	LayoutImportFilenameAttribute[];//!< Attribute name that stores the file name of the layout to import.
 
 
 	/*************************************************************************
@@ -112,6 +115,7 @@ private:
 	typedef std::vector<Window*>	WindowStack;	
 	Window*	d_root;				//!< Will point to first window created.
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
+	String		d_layoutParent;	//!< Name of the parent window to attach the loaded layout to.
 };
 
 
