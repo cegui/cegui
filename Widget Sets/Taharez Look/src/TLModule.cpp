@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIForwardRefs.h
-	created:	21/2/2004
+	filename: 	TLModule.cpp
+	created:	13/4/2004
 	author:		Paul D Turner
 	
-	purpose:	Forward declares all core system classes
+	purpose:	Implements the System <-> GUI Module interface.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,62 +23,32 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUIForwardRefs_h_
-#define _CEGUIForwardRefs_h_
+#include "TLModule.h"
+#include "CEGUIExceptions.h"
+#include "CEGUIWindowFactoryManager.h"
+#include "../../Widget Sets/Taharez Look/include/TLFrameWindow.h"
+#include "../../Widget Sets/Taharez Look/include/TLTitlebar.h"
 
-// Start of CEGUI namespace section
-namespace CEGUI
+
+/*************************************************************************
+	Plugin access interface
+*************************************************************************/
+extern "C" void registerFactory(const CEGUI::String& type_name)
 {
+	using namespace CEGUI;
 
-/*************************************************************************
-	Forward reference declarations of all core GUI system classes
-*************************************************************************/
-class String;
-class Vector3;
-class Size;
-class Exception;
-class Rect;
-class Texture;
-class Renderer;
-class Image;
-class Imageset;
-class ImagesetManager;
-class MouseCursor;
-class Font;
-class FontManager;
-class EventArgs;
-class Event;
-class EventSet;
-class Property;
-class PropertySet;
-class Window;
-class WindowFactory;
-class WindowManager;
-class Scheme;
-class SchemeManager;
-class System;
-class FactoryModule;
+	if (type_name == "Taharez Frame Window")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLFrameWindowFactory());
+		return;
+	}
+	else if (type_name == "Taharez Titlebar")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLTitlebarFactory());
+		return;
+	}
 
-/*************************************************************************
-	Forward reference declarations for GUI element base classes
-*************************************************************************/
-class ButtonBase;
-class RadioButton;
-class Checkbox;
-class PushButton;
-class Titlebar;
-class FrameWindow;
-class Editbox;
-class Listbox;
-class Combobox;
-class ListHeader;
-class MultiColumnList;
-class ProgressBar;
-class Thumb;
-class Scrollbar;
-class Slider;
-class Static;
+	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
-} // End of  CEGUI namespace section
-
-#endif	// end of guard _CEGUIForwardRefs_h_
+	return;
+}

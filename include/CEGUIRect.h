@@ -148,6 +148,48 @@ public:
 	bool	isPointInRect(const Point& pt) const;
 
 
+	/*!
+	\brief
+		check the size of the Rect object and if it is bigger than \a sz, resize it so it isn't.
+
+	\param sz
+		Size object that describes the maximum dimensions that this Rect should be limited to.
+
+	\return
+		'this' Rect object after the constrain operation
+	*/
+	Rect&	constrainSizeMax(const Size& sz);
+
+
+	/*!
+	\brief
+		check the size of the Rect object and if it is smaller than \a sz, resize it so it isn't.
+
+	\param sz
+		Size object that describes the minimum dimensions that this Rect should be limited to.
+
+	\return
+		'this' Rect object after the constrain operation
+	*/
+	Rect&	constrainSizeMin(const Size& sz);
+
+
+	/*!
+	\brief
+		check the size of the Rect object and if it is bigger than \a max_sz or smaller than \a min_sz, resize it so it isn't.
+
+	\param max_sz
+		Size object that describes the maximum dimensions that this Rect should be limited to.
+
+	\param min_sz
+		Size object that describes the minimum dimensions that this Rect should be limited to.
+
+	\return
+		'this' Rect object after the constrain operation
+	*/
+	Rect&	constrainSize(const Size& max_sz, const Size& min_sz);
+
+
 	/*************************************************************************
 		Data Fields
 	*************************************************************************/

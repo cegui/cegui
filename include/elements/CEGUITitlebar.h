@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIWindowFactory.h
-	created:	21/2/2004
+	filename: 	CEGUITitlebar.h
+	created:	25/4/2004
 	author:		Paul D Turner
 	
-	purpose:	Defines abstract base class for WindowFactory objects
+	purpose:	Interface for a Titlebar Widget
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,75 +23,76 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUIWindowFactory_h_
-#define _CEGUIWindowFactory_h_
+#ifndef _CEGUITitlebar_h_
+#define _CEGUITitlebar_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
 #include "CEGUIWindow.h"
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
-	Abstract class that defines the required interface for all WindowFactory objects
+	Class representing the title bar for Frame Windows.
 
-	A WindowFactory is used to create and destroy windows of a specific type.  For every
-	type of Window object wihin the system (widgets, dialogs, movable windows etc) there
-	must be an associated WindowFactory registered with the WindowManager so that the system
-	knows how to create and destroy those types of Window base object.
 */
-class CEGUIBASE_API WindowFactory
+class CEGUIBASE_API Titlebar : public Window
 {
 public:
-	/*!
+	/*************************************************************************
+		Implementation of abstract methods from base class
+	*************************************************************************/
+		/*!
 	\brief
-		Create a new Window object of whatever type this WindowFactory produces.
+		Initialises the Window based object ready for use.
 
-	\param name
-		A unique name that is to be assigned to the newly created Window object
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
 
 	\return
-		Pointer to the new Window object.
+		Nothing
 	*/
-	virtual	Window*	createWindow(const String& name) = 0;
+	virtual void	initialise(void)	{}
 
-	/*!
-	\brief
-		Destroys the given Window object.
-
-	\param window
-		Pointer to the Window object to be destroyed.
-
-	\return
-		Nothing.
-	*/
-	virtual void	destroyWindow(Window* window) = 0;
-
-	/*!
-	\brief
-		Get the string that describes the type of Window object this WindowFactory produces.
-
-	\return
-		String object that contains the unique Window object type produced by this WindowFactory
-	*/
-	const String& getTypeName(void) const		{return d_type;}
 
 protected:
 	/*************************************************************************
-		Construction and Destruction
+		Construction / Destruction
 	*************************************************************************/
-	WindowFactory(const String& type) : d_type(type) {}
-	virtual ~WindowFactory(void) {}
+	/*!
+	\brief
+		Constructor for Titlebar base class.
+	*/
+	Titlebar(const String& type, const String& name);
+
+
+	/*!
+	\brief
+		Destructor for Titlebar base class.
+	*/
+	virtual ~Titlebar(void);
+
+
+	/*************************************************************************
+		Overridden event handler functions
+	*************************************************************************/
+	virtual void	onMouseMove(MouseEventArgs& e);
+	virtual void	onMouseButtonDown(MouseEventArgs& e);
+	virtual void	onMouseButtonUp(MouseEventArgs& e);
+	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
+	virtual void	onCaptureLost(EventArgs& e);
+
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	String		d_type;		//!< String holding the type of object created by this factory
+	bool	d_dragging;			//!< set to true when the window is being dragged.
+	Point	d_dragPoint;		//!< Point at which we are being dragged.
 };
 
 } // End of  CEGUI namespace section
 
-#endif	// end of guard _CEGUIWindowFactory_h_
+
+#endif	// end of guard _CEGUITitlebar_h_

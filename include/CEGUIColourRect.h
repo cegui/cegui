@@ -40,16 +40,86 @@ namespace CEGUI
 class CEGUIBASE_API ColourRect
 {
 public:
-	ColourRect(ulong top_left = 0xFF000000, ulong top_right = 0xFF000000, ulong bottom_left = 0xFF000000, ulong bottom_right = 0xFF000000);
+	/*!
+	\brief
+		Constructor for ColourRect objects
+	*/
+	ColourRect(colour top_left = 0xFF000000, colour top_right = 0xFF000000, colour bottom_left = 0xFF000000, colour bottom_right = 0xFF000000);
+
+
+	/*!
+	\brief
+		Destructor for ColourRect objects.
+	*/
 	virtual ~ColourRect(void);
 
+
+	/*!
+	\brief
+		Set the alpha value to use for all four corners of the ColourRect.
+
+	\param alpha
+		Alpha value to use.
+
+	\return
+		Nothing.
+	*/
 	void	setAlpha(float alpha);
+
+
+	/*!
+	\brief
+		Set the alpha value to use for the top edge of the ColourRect.
+
+	\param alpha
+		Alpha value to use.
+
+	\return
+		Nothing.
+	*/
 	void	setTopAlpha(float alpha);
+
+
+	/*!
+	\brief
+		Set the alpha value to use for the bottom edge of the ColourRect.
+
+	\param alpha
+		Alpha value to use.
+
+	\return
+		Nothing.
+	*/
 	void	setBottomAlpha(float alpha);
+
+
+	/*!
+	\brief
+		Set the alpha value to use for the left edge of the ColourRect.
+
+	\param alpha
+		Alpha value to use.
+
+	\return
+		Nothing.
+	*/
 	void	setLeftAlpha(float alpha);
+
+
+	/*!
+	\brief
+		Set the alpha value to use for the right edge of the ColourRect.
+
+	\param alpha
+		Alpha value to use.
+
+	\return
+		Nothing.
+	*/
 	void	setRightAlpha(float alpha);
 
-	ulong d_top_left, d_top_right, d_bottom_left, d_bottom_right;
+
+	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
 };
 
 } // End of  CEGUI namespace section

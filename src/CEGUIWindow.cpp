@@ -99,7 +99,7 @@ Window::Window(const String& type, const String& name) :
 	// basic settings
 	d_enabled			= true;
 	d_visible			= true;
-	d_active			= false;
+	d_active			= true;
 	d_clippedByParent	= true;
 	d_destroyedByParent	= true;
 	d_alwaysOnTop		= false;
@@ -109,6 +109,10 @@ Window::Window(const String& type, const String& name) :
 	// position and size
 	d_abs_area = Rect(0, 0, 0, 0);
 	d_rel_area = absoluteToRelative(d_abs_area);
+
+	// TODO: Change these to named constants.
+	d_minSize = Size(0, 0);
+	d_maxSize = Size(640, 480);
 
 	// add events
 	addStandardEvents();
@@ -429,7 +433,7 @@ Rect Window::getPixelRect(void) const
 	// clip to parent?
 	if (isClippedByParent() && (d_parent != NULL))
 	{
-		return getUnclippedPixelRect().getIntersection(d_parent->getPixelRect());
+		return getUnclippedPixelRect().getIntersection(d_parent->getInnerRect());
 	}
 	// else, clip to screen
 	else
@@ -441,12 +445,50 @@ Rect Window::getPixelRect(void) const
 
 
 /*************************************************************************
+	return a Rect object describing the clipping area for this window.
+*************************************************************************/
+Rect Window::getInnerRect(void) const
+{
+	// clip to parent?
+	if (isClippedByParent() && (d_parent != NULL))
+	{
+		return getUnclippedInnerRect().getIntersection(d_parent->getInnerRect());
+	}
+	// else, clip to screen
+	else
+	{
+		return getUnclippedInnerRect().getIntersection(System::getSingleton().getRenderer()->getRect());
+	}
+
+}
+
+
+/*************************************************************************
 	return a Rect object describing the Window area unclipped, in
 	screen space.	
 *************************************************************************/
 Rect Window::getUnclippedPixelRect(void) const
 {
-	return windowToScreen(Rect(0, 0, getWidth(), getHeight()));
+	if (getMetricsMode() == Relative)
+	{
+		return windowToScreen(Rect(0, 0, 1, 1));
+	}
+	else
+	{
+		return windowToScreen(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+	}
+}
+
+
+/*************************************************************************
+	Return a Rect object that describes, unclipped, the inner rectangle
+	for this window.  The inner rectangle is typically an area that
+	excludes some frame or other rendering that should not be touched by
+	subsequent rendering.
+*************************************************************************/
+Rect Window::getUnclippedInnerRect(void) const
+{
+	return getUnclippedPixelRect();
 }
 
 
@@ -535,7 +577,7 @@ MetricsMode Window::getMetricsMode(void) const
 	return the x position of the window.  Interpretation of return value
 	depends upon the metric type in use by this window.
 *************************************************************************/
-float Window::getXPos(void) const
+float Window::getXPosition(void) const
 {
 	if (getMetricsMode() == Relative)
 	{
@@ -550,7 +592,7 @@ float Window::getXPos(void) const
 	return the y position of the window.  Interpretation of return value
 	depends upon the metric type in use by this window.
 *************************************************************************/
-float Window::getYPos(void) const
+float Window::getYPosition(void) const
 {
 	if (getMetricsMode() == Relative)
 	{
@@ -565,7 +607,7 @@ float Window::getYPos(void) const
 	return the position of the window.  Interpretation of return value
 	depends upon the metric type in use by this window.
 *************************************************************************/
-Point Window::getPos(void) const
+Point Window::getPosition(void) const
 {
 	if (getMetricsMode() == Relative)
 	{
@@ -633,12 +675,12 @@ void Window::setAlwaysOnTop(bool setting)
 		d_alwaysOnTop = setting;
 
 		// move us infront of sibling windows with the same 'always-on-top' setting as we have.
-		Window* parent = getParent();
-
-		if (parent != NULL)
+		if (d_parent != NULL)
 		{
-			parent->removeChild_impl(this);
-			parent->addChild_impl(this);
+			Window* org_parent = d_parent;
+
+			org_parent->removeChild_impl(this);
+			org_parent->addChild_impl(this);
 
 			onZChange_impl();
 		}
@@ -744,12 +786,18 @@ void Window::setSize(const Size& size)
 	if (getMetricsMode() == Relative)
 	{
 		d_rel_area.setSize(size);
-		d_abs_area.setSize(relativeToAbsolute(size));
+		d_rel_area.constrainSize(absoluteToRelative_impl(d_parent, d_maxSize), absoluteToRelative_impl(d_parent, d_minSize));
+
+		// update Rect for the other metrics system
+		d_abs_area.setSize(relativeToAbsolute_impl(d_parent, size));
 	}
 	else
 	{
 		d_abs_area.setSize(size);
-		d_rel_area.setSize(absoluteToRelative(size));
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+
+		// update Rect for the other metrics system.
+		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
 	}
 
 	onSized(EventArgs());
@@ -761,9 +809,9 @@ void Window::setSize(const Size& size)
 	input value is dependant upon the current metrics system set for the
 	Window.
 *************************************************************************/
-void Window::setXPos(float x)
+void Window::setXPosition(float x)
 {
-	setPosition(Point(x, getYPos()));
+	setPosition(Point(x, getYPosition()));
 }
 
 
@@ -772,9 +820,9 @@ void Window::setXPos(float x)
 	input value is dependant upon the current metrics system set for the
 	Window.
 *************************************************************************/
-void Window::setYPos(float y)
+void Window::setYPosition(float y)
 {
-	setPosition(Point(getXPos(), y));
+	setPosition(Point(getXPosition(), y));
 }
 
 
@@ -787,12 +835,12 @@ void Window::setPosition(const Point& position)
 	if (getMetricsMode() == Relative)
 	{
 		d_rel_area.setPosition(position);
-		d_abs_area.setPosition(relativeToAbsolute(position));
+		d_abs_area.setPosition(relativeToAbsolute_impl(d_parent, position));
 	}
 	else
 	{
 		d_abs_area.setPosition(position);
-		d_rel_area.setPosition(absoluteToRelative(position));
+		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
 	}
 
 	onMoved(EventArgs());
@@ -809,12 +857,16 @@ void Window::setAreaRect(const Rect& area)
 	if (getMetricsMode() == Relative)
 	{
 		d_rel_area = area;
-		d_abs_area = relativeToAbsolute(area);
+		d_rel_area.constrainSize(absoluteToRelative_impl(d_parent, d_maxSize), absoluteToRelative_impl(d_parent, d_minSize));
+
+		d_abs_area = relativeToAbsolute_impl(d_parent, area);
 	}
 	else
 	{
 		d_abs_area = area;
-		d_rel_area = absoluteToRelative(area);
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+
+		d_rel_area = absoluteToRelative_impl(d_parent, area);
 	}
 
 	onMoved(EventArgs());
@@ -932,8 +984,7 @@ void Window::removeChildWindow(uint ID)
 void Window::moveToFront()
 {
 	// if the window has no parent then we can have no siblings and have nothing more to do.
-	Window* parent = getParent();
-	if (parent == NULL)
+	if (d_parent == NULL)
 	{
 		return;
 	}
@@ -945,17 +996,18 @@ void Window::moveToFront()
 
 	while (idx-- > 0)
 	{
-		if (parent->d_children[idx]->isActive())
+		if (d_parent->d_children[idx]->isActive())
 		{
-			activeWnd = parent->d_children[idx];
+			activeWnd = d_parent->d_children[idx];
 			break;
 		}
 
 	}
 
 	// move us infront of sibling windows with the same 'always-on-top' setting as we have.
-	parent->removeChild_impl(this);
-	parent->addChild_impl(this);
+	Window* org_parent = d_parent;
+	org_parent->removeChild_impl(this);
+	org_parent->addChild_impl(this);
 
 	// notify ourselves that we have become active
 	if (activeWnd != this)
@@ -972,7 +1024,7 @@ void Window::moveToFront()
 	onZChange_impl();
 
 	// bring parent window to front of it's siblings...
-	parent->moveToFront();
+	d_parent->moveToFront();
 }
 
 
@@ -981,10 +1033,8 @@ void Window::moveToFront()
 *************************************************************************/
 void Window::moveToBack()
 {
-	Window* parent = getParent();
-
 	// if the window has no parent then we can have no siblings and have nothing more to do.
-	if (parent == NULL)
+	if (d_parent == NULL)
 	{
 		return;
 	}
@@ -993,6 +1043,7 @@ void Window::moveToBack()
 	onDeactivated(WindowEventArgs(NULL));
 
 	// move us behind all sibling windows with the same 'always-on-top' setting as we have.
+	Window* org_parent = d_parent;
 	d_parent->removeChild_impl(this);
 
 	ChildList::iterator pos = d_children.begin();
@@ -1007,11 +1058,11 @@ void Window::moveToBack()
 	}
 
 	d_children.insert(pos, this);
-	setParent(parent);
+	setParent(org_parent);
 
 	onZChange_impl();
 
-	parent->moveToBack();
+	d_parent->moveToBack();
 }
 
 
@@ -1124,7 +1175,7 @@ void Window::requestRedraw(void) const
 *************************************************************************/
 float Window::absoluteToRelativeX(float val) const
 {
-	return val / getParentWidth();
+	return val / d_abs_area.getWidth();
 }
 
 
@@ -1133,7 +1184,7 @@ float Window::absoluteToRelativeX(float val) const
 *************************************************************************/
 float Window::absoluteToRelativeY(float val) const
 {
-	return val / getParentHeight();
+	return val / d_abs_area.getHeight();
 }
 
 
@@ -1142,9 +1193,7 @@ float Window::absoluteToRelativeY(float val) const
 *************************************************************************/
 Point Window::absoluteToRelative(const Point& pt) const
 {
-	Size parSze(getParentSize());
-
-	return Point(pt.d_x / parSze.d_width, pt.d_y / parSze.d_height);
+	return Point(pt.d_x / d_abs_area.getWidth(), pt.d_y / d_abs_area.getHeight());
 }
 
 
@@ -1153,9 +1202,7 @@ Point Window::absoluteToRelative(const Point& pt) const
 *************************************************************************/
 Size Window::absoluteToRelative(const Size& sze) const
 {
-	Size parSze(getParentSize());
-
-	return Size(sze.d_width / parSze.d_width, sze.d_height / parSze.d_height);
+	return Size(sze.d_width / d_abs_area.getWidth(), sze.d_height / d_abs_area.getHeight());
 }
 
 
@@ -1164,9 +1211,7 @@ Size Window::absoluteToRelative(const Size& sze) const
 *************************************************************************/
 Rect Window::absoluteToRelative(const Rect& rect) const
 {
-	Size parSze(getParentSize());
-
-	return Rect(rect.d_left / parSze.d_width, rect.d_top / parSze.d_height, rect.d_right / parSze.d_width, rect.d_bottom / parSze.d_height);
+	return Rect(rect.d_left / d_abs_area.getWidth(), rect.d_top / d_abs_area.getHeight(), rect.d_right / d_abs_area.getWidth(), rect.d_bottom / d_abs_area.getHeight());
 }
 
 
@@ -1175,7 +1220,7 @@ Rect Window::absoluteToRelative(const Rect& rect) const
 *************************************************************************/
 float Window::relativeToAbsoluteX(float val) const
 {
-	return val * getParentWidth();
+	return val * d_abs_area.getWidth();
 }
 
 
@@ -1184,7 +1229,7 @@ float Window::relativeToAbsoluteX(float val) const
 *************************************************************************/
 float Window::relativeToAbsoluteY(float val) const
 {
-	return val * getParentHeight();
+	return val * d_abs_area.getHeight();
 }
 
 
@@ -1193,9 +1238,7 @@ float Window::relativeToAbsoluteY(float val) const
 *************************************************************************/
 Point Window::relativeToAbsolute(const Point& pt) const
 {
-	Size parSze(getParentSize());
-
-	return Point(pt.d_x * parSze.d_width, pt.d_y * parSze.d_height);
+	return Point(pt.d_x * d_abs_area.getWidth(), pt.d_y * d_abs_area.getHeight());
 }
 
 
@@ -1204,9 +1247,7 @@ Point Window::relativeToAbsolute(const Point& pt) const
 *************************************************************************/
 Size Window::relativeToAbsolute(const Size& sze) const
 {
-	Size parSze(getParentSize());
-
-	return Size(sze.d_width * parSze.d_width, sze.d_height * parSze.d_height);
+	return Size(sze.d_width * d_abs_area.getWidth(), sze.d_height * d_abs_area.getHeight());
 }
 
 
@@ -1215,9 +1256,7 @@ Size Window::relativeToAbsolute(const Size& sze) const
 *************************************************************************/
 Rect Window::relativeToAbsolute(const Rect& rect) const
 {
-	Size parSze(getParentSize());
-
-	return Rect(rect.d_left * parSze.d_width, rect.d_top * parSze.d_height, rect.d_right * parSze.d_width, rect.d_bottom * parSze.d_height);
+	return Rect(rect.d_left * d_abs_area.getWidth(), rect.d_top * d_abs_area.getHeight(), rect.d_right * d_abs_area.getWidth(), rect.d_bottom * d_abs_area.getHeight());
 }
 
 
@@ -1233,15 +1272,18 @@ float Window::windowToScreenX(float x) const
 	while (wnd != NULL)
 	{
 		baseX += wnd->d_abs_area.d_left;
-		wnd = wnd->getParent();
+		wnd = wnd->d_parent;
 	}
 
 	if (getMetricsMode() == Relative)
 	{
-		x = relativeToAbsoluteX(x);
+		return baseX + relativeToAbsoluteX(x);
+	}
+	else
+	{
+		return baseX + x;
 	}
 
-	return baseX + x;
 }
 
 
@@ -1257,15 +1299,18 @@ float Window::windowToScreenY(float y) const
 	while (wnd != NULL)
 	{
 		baseY += wnd->d_abs_area.d_top;
-		wnd = wnd->getParent();
+		wnd = wnd->d_parent;
 	}
 
 	if (getMetricsMode() == Relative)
 	{
-		y = relativeToAbsoluteX(y);
+		return baseY + relativeToAbsoluteY(y);
+	}
+	else
+	{
+		return baseY + y;
 	}
 
-	return baseY + y;
 }
 
 
@@ -1282,21 +1327,18 @@ Point Window::windowToScreen(const Point& pt) const
 	{
 		base.d_x += wnd->d_abs_area.d_left;
 		base.d_y += wnd->d_abs_area.d_top;
-		wnd = wnd->getParent();
+		wnd = wnd->d_parent;
 	}
-
-	Point tmp;
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp = relativeToAbsolute(pt);
+		return base + relativeToAbsolute(pt);
 	}
 	else
 	{
-		tmp = pt;
+		return base + pt;
 	}
 
-	return base += tmp;
 }
 
 
@@ -1306,15 +1348,15 @@ Point Window::windowToScreen(const Point& pt) const
 *************************************************************************/
 Size Window::windowToScreen(const Size& sze) const
 {
-	Size tmp(sze);
-
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_width		*= d_abs_area.getWidth();
-		tmp.d_height	*= d_abs_area.getHeight();
+		return Size(sze.d_width * d_abs_area.getWidth(), sze.d_height * d_abs_area.getHeight());
+	}
+	else
+	{
+		return sze;
 	}
 
-	return tmp;
 }
 
 
@@ -1331,21 +1373,19 @@ Rect Window::windowToScreen(const Rect& rect) const
 	{
 		base.d_x += wnd->d_abs_area.d_left;
 		base.d_y += wnd->d_abs_area.d_top;
-		wnd = wnd->getParent();
+		wnd = wnd->d_parent;
 	}
-
-	Rect tmp;
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp = relativeToAbsolute(rect);
+		return relativeToAbsolute(rect).offset(base);
 	}
 	else
 	{
-		tmp = rect;
+		Rect tmp(rect);
+		return tmp.offset(base);
 	}
 
-	return tmp.offset(base);
 }
 
 
@@ -1355,10 +1395,7 @@ Rect Window::windowToScreen(const Rect& rect) const
 *************************************************************************/
 float Window::screenToWindowX(float x) const
 {
-	if (d_parent != NULL)
-	{
-		x -= windowToScreenX(0);
-	}
+	x -= windowToScreenX(0);
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1375,10 +1412,7 @@ float Window::screenToWindowX(float x) const
 *************************************************************************/
 float Window::screenToWindowY(float y) const
 {
-	if (d_parent != NULL)
-	{
-		y -= windowToScreenY(0);
-	}
+	y -= windowToScreenY(0);
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1397,11 +1431,8 @@ Point Window::screenToWindow(const Point& pt) const
 {
 	Point tmp(pt);
 
-	if (d_parent != NULL)
-	{
-		tmp.d_x -= windowToScreenX(0);
-		tmp.d_y -= windowToScreenY(0);
-	}
+	tmp.d_x -= windowToScreenX(0);
+	tmp.d_y -= windowToScreenY(0);
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1438,13 +1469,10 @@ Rect Window::screenToWindow(const Rect& rect) const
 {
 	Rect tmp(rect);
 
-	if (d_parent != NULL)
-	{
-		tmp.d_left		-= windowToScreenX(0);
-		tmp.d_top		-= windowToScreenY(0);
-		tmp.d_right		-= windowToScreenX(0);
-		tmp.d_bottom	-= windowToScreenY(0);
-	}
+	tmp.d_left		-= windowToScreenX(0);
+	tmp.d_top		-= windowToScreenY(0);
+	tmp.d_right		-= windowToScreenX(0);
+	tmp.d_bottom	-= windowToScreenY(0);
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1529,12 +1557,7 @@ float Window::getParentHeight(void) const
 *************************************************************************/
 Size Window::getParentSize(void) const
 {
-	if (d_parent == NULL)
-	{
-		return System::getSingleton().getRenderer()->getSize();
-	}
-
-	return Size(d_parent->d_abs_area.getWidth(), d_parent->d_abs_area.getHeight());
+	return getWindowSize_impl(d_parent);
 }
 
 
@@ -1591,19 +1614,17 @@ void Window::cleanupChildren(void)
 void Window::addChild_impl(Window* wnd)
 {
 	// if window is already attached, detach it first (will fire normal events)
-	if (wnd->getParent() != NULL)
+	if (d_parent != NULL)
 	{
-		wnd->getParent()->removeChildWindow(wnd);
+		d_parent->removeChildWindow(wnd);
 	}
 
 	// calculate position where window should be added
-	ChildList::reverse_iterator		position;
-	if (wnd->isAlwaysOnTop())
+	ChildList::reverse_iterator		position = d_children.rbegin();
+	if (!wnd->isAlwaysOnTop())
 	{
-		position = d_children.rend();
-	}
-	else
-	{
+		position = d_children.rbegin();
+
 		// find last non-topmost window
 		while ((position != d_children.rend()) && ((*position)->isAlwaysOnTop()))
 		{
@@ -1666,6 +1687,213 @@ void Window::onZChange_impl(void)
 }
 
 
+/*************************************************************************
+	
+*************************************************************************/
+Rect Window::absoluteToRelative_impl(const Window* window, const Rect& rect) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return Rect(rect.d_left / sz.d_width, rect.d_top / sz.d_height, rect.d_right / sz.d_width, rect.d_bottom / sz.d_height);
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+Size Window::absoluteToRelative_impl(const Window* window, const Size& sz) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size wndsz = getWindowSize_impl(window);
+
+	return Size(sz.d_width / wndsz.d_width, sz.d_height / wndsz.d_height);
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+Point Window::absoluteToRelative_impl(const Window* window, const Point& pt) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return Point(pt.d_x / sz.d_width, pt.d_y / sz.d_height);
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+float Window::absoluteToRelativeX_impl(const Window* window, float x) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return x / sz.d_width;
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+float Window::absoluteToRelativeY_impl(const Window* window, float y) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return y / sz.d_height;
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+Rect Window::relativeToAbsolute_impl(const Window* window, const Rect& rect) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return Rect(rect.d_left * sz.d_width, rect.d_top * sz.d_height, rect.d_right * sz.d_width, rect.d_bottom * sz.d_height);
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+Size Window::relativeToAbsolute_impl(const Window* window, const Size& sz) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size wndsz = getWindowSize_impl(window);
+
+	return Size(sz.d_width * wndsz.d_width, sz.d_height * wndsz.d_height);
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+Point Window::relativeToAbsolute_impl(const Window* window, const Point& pt) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return Point(pt.d_x * sz.d_width, pt.d_y * sz.d_height);
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+float Window::relativeToAbsoluteX_impl(const Window* window, float x) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return x * sz.d_width;
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+float Window::relativeToAbsoluteY_impl(const Window* window, float y) const
+{
+	// get size object for whatever we are using as a base for the conversion
+	Size sz = getWindowSize_impl(window);
+
+	return y * sz.d_height;
+}
+
+
+/*************************************************************************
+	Return size of window.  If window is NULL return size of display.
+*************************************************************************/
+Size Window::getWindowSize_impl(const Window* window) const
+{
+	if (window == NULL)
+	{
+		return System::getSingleton().getRenderer()->getSize();
+	}
+	else
+	{
+		return window->d_abs_area.getSize();
+	}
+
+}
+
+
+/*************************************************************************
+	Return the current maximum size for this window.
+*************************************************************************/
+Size Window::getMaximumSize(void) const
+{
+	if (getMetricsMode() == Absolute)
+	{
+		return d_maxSize;
+	}
+	else
+	{
+		return absoluteToRelative_impl(NULL, d_maxSize);
+	}
+
+}
+
+
+/*************************************************************************
+	Return the current minimum size for this window.
+*************************************************************************/
+Size Window::getMinimumSize(void) const
+{
+	if (getMetricsMode() == Absolute)
+	{
+		return d_minSize;
+	}
+	else
+	{
+		return absoluteToRelative_impl(NULL, d_minSize);
+	}
+
+}
+
+
+/*************************************************************************
+	Set the minimum size for this window.
+*************************************************************************/
+void Window::setMinimumSize(const Size& sz)
+{
+	if (getMetricsMode() == Absolute)
+	{
+		d_minSize = sz;
+	}
+	else
+	{
+		d_minSize = relativeToAbsolute_impl(NULL, sz);
+	}
+
+	d_abs_area.constrainSizeMin(d_minSize);
+}
+
+
+/*************************************************************************
+	Set the maximum size for this window.
+*************************************************************************/
+void Window::setMaximumSize(const Size& sz)
+{
+	if (getMetricsMode() == Absolute)
+	{
+		d_maxSize = sz;
+	}
+	else
+	{
+		d_maxSize = relativeToAbsolute_impl(NULL, sz);
+	}
+
+	d_abs_area.constrainSizeMax(d_maxSize);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -1674,7 +1902,7 @@ void Window::onZChange_impl(void)
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 
-void Window::onSized(const EventArgs& e)
+void Window::onSized(EventArgs& e)
 {
 	// inform children their parent has been re-sized
 	uint child_count = getChildCount();
@@ -1690,108 +1918,120 @@ void Window::onSized(const EventArgs& e)
 }
 
 
-void Window::onMoved(const EventArgs& e)
+void Window::onMoved(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(MovedEvent, e);
 }
 
 
-void Window::onTextChanged(const EventArgs& e)
+void Window::onTextChanged(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(TextChangedEvent, e);
 }
 
 
-void Window::onFontChanged(const EventArgs& e)
+void Window::onFontChanged(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(FontChangedEvent, e);
 }
 
 
-void Window::onAlphaChanged(const EventArgs& e)
+void Window::onAlphaChanged(EventArgs& e)
 {
+	// scan child list and call this method for all children that inherit alpha
+	int child_count = getChildCount();
+
+	for (int i = 0; i < child_count; ++i)
+	{
+		if (d_children[i]->inheritsAlpha())
+		{
+			d_children[i]->onAlphaChanged(e);
+		}
+
+	}
+
 	requestRedraw();
 	fireEvent(AlphaChangedEvent, e);
 }
 
 
-void Window::onIDChanged(const EventArgs& e)
+void Window::onIDChanged(EventArgs& e)
 {
 	fireEvent(IDChangedEvent, e);
 }
 
 
-void Window::onShown(const EventArgs& e)
+void Window::onShown(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ShownEvent, e);
 }
 
 
-void Window::onHidden(const EventArgs& e)
+void Window::onHidden(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(HiddenEvent, e);
 }
 
 
-void Window::onEnabled(const EventArgs& e)
+void Window::onEnabled(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(EnabledEvent, e);
 }
 
 
-void Window::onDisabled(const EventArgs& e)
+void Window::onDisabled(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(DisabledEvent, e);
 }
 
 
-void Window::onMetricsChanged(const EventArgs& e)
+void Window::onMetricsChanged(EventArgs& e)
 {
 	fireEvent(MetricsChangedEvent, e);
 }
 
 
-void Window::onClippingChanged(const EventArgs& e)
+void Window::onClippingChanged(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ClippingChangedEvent, e);
 }
 
 
-void Window::onParentDestroyChanged(const EventArgs& e)
+void Window::onParentDestroyChanged(EventArgs& e)
 {
 	fireEvent(ParentDestroyChangedEvent, e);
 }
 
 
-void Window::onInheritsAlphaChanged(const EventArgs& e)
+void Window::onInheritsAlphaChanged(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(InheritsAlphaChangedEvent, e);
 }
 
 
-void Window::onAlwaysOnTopChanged(const EventArgs& e)
+void Window::onAlwaysOnTopChanged(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(AlwaysOnTopChangedEvent, e);
 }
 
 
-void Window::onCaptureGained(const EventArgs& e)
+void Window::onCaptureGained(EventArgs& e)
 {
 	fireEvent(CaptureGainedEvent, e);
 }
 
 
-void Window::onCaptureLost(const EventArgs& e)
+void Window::onCaptureLost(EventArgs& e)
 {
 	if (d_restoreOldCapture && (d_oldCapture != NULL)) {
 		d_oldCapture->onCaptureLost(e);
@@ -1802,32 +2042,32 @@ void Window::onCaptureLost(const EventArgs& e)
 }
 
 
-void Window::onRenderingStarted(const EventArgs& e)
+void Window::onRenderingStarted(EventArgs& e)
 {
 	fireEvent(RenderingStartedEvent, e);
 }
 
 
-void Window::onRenderingEnded(const EventArgs& e)
+void Window::onRenderingEnded(EventArgs& e)
 {
 	fireEvent(RenderingEndedEvent, e);
 }
 
 
-void Window::onZChanged(const EventArgs& e)
+void Window::onZChanged(EventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ZChangedEvent, e);
 }
 
 
-void Window::onDestructionStarted(const EventArgs& e)
+void Window::onDestructionStarted(EventArgs& e)
 {
 	fireEvent(DestructionStartedEvent, e);
 }
 
 
-void Window::onActivated(const WindowEventArgs& e)
+void Window::onActivated(WindowEventArgs& e)
 {
 	d_active = true;
 	requestRedraw();
@@ -1835,7 +2075,7 @@ void Window::onActivated(const WindowEventArgs& e)
 }
 
 
-void Window::onDeactivated(const WindowEventArgs& e)
+void Window::onDeactivated(WindowEventArgs& e)
 {
 	d_active = false;
 	requestRedraw();
@@ -1843,97 +2083,115 @@ void Window::onDeactivated(const WindowEventArgs& e)
 }
 
 
-void Window::onParentSized(const WindowEventArgs& e)
+void Window::onParentSized(WindowEventArgs& e)
 {
-	// re-calculate relative rect
-	d_rel_area = absoluteToRelative(d_abs_area);
+	// synchronise area rects for new parent size
+	if (getMetricsMode() == Relative)
+	{
+		d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
+
+		// Check new absolute size and limit to currently set max/min values.  This does not affect relative co-ordinates
+		// which must 'recover' after window is again sized so normal relativity can take over.
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+	}
+	else
+	{
+		d_rel_area = absoluteToRelative_impl(d_parent, d_abs_area);
+	}
+
+	onSized(EventArgs());
 
 	requestRedraw();
 	fireEvent(ParentSized, e);
 }
 
 
-void Window::onChildAdded(const WindowEventArgs& e)
+void Window::onChildAdded(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ChildAddedEvent, e);
 }
 
 
-void Window::onChildRemoved(const WindowEventArgs& e)
+void Window::onChildRemoved(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(ChildRemovedEvent, e);
 }
 
 
-void Window::onMouseEnters(const MouseEventArgs& e)
+void Window::onMouseEnters(MouseEventArgs& e)
 {
 	fireEvent(MouseEntersEvent, e);
 }
 
 
-void Window::onMouseLeaves(const MouseEventArgs& e)
+void Window::onMouseLeaves(MouseEventArgs& e)
 {
 	fireEvent(MouseLeavesEvent, e);
 }
 
 
-void Window::onMouseMove(const MouseEventArgs& e)
+void Window::onMouseMove(MouseEventArgs& e)
 {
 	fireEvent(MouseMoveEvent, e);
 }
 
 
-void Window::onMouseWheel(const MouseEventArgs& e)
+void Window::onMouseWheel(MouseEventArgs& e)
 {
 	fireEvent(MouseWheelEvent, e);
 }
 
 
-void Window::onMouseButtonDown(const MouseEventArgs& e)
+void Window::onMouseButtonDown(MouseEventArgs& e)
 {
+	if (e.button == LeftButton)
+	{
+		moveToFront();
+	}
+
 	fireEvent(MouseButtonDownEvent, e);
 }
 
 
-void Window::onMouseButtonUp(const MouseEventArgs& e)
+void Window::onMouseButtonUp(MouseEventArgs& e)
 {
 	fireEvent(MouseButtonUpEvent, e);
 }
 
 
-void Window::onMouseClicked(const MouseEventArgs& e)
+void Window::onMouseClicked(MouseEventArgs& e)
 {
 	fireEvent(MouseClickEvent, e);
 }
 
 
-void Window::onMouseDoubleClicked(const MouseEventArgs& e)
+void Window::onMouseDoubleClicked(MouseEventArgs& e)
 {
 	fireEvent(MouseDoubleClickEvent, e);
 }
 
 
-void Window::onMouseTripleClicked(const MouseEventArgs& e)
+void Window::onMouseTripleClicked(MouseEventArgs& e)
 {
 	fireEvent(MouseTripleClickEvent, e);
 }
 
 
-void Window::onKeyDown(const KeyEventArgs& e)
+void Window::onKeyDown(KeyEventArgs& e)
 {
 	fireEvent(KeyDownEvent, e);
 }
 
 
-void Window::onKeyUp(const KeyEventArgs& e)
+void Window::onKeyUp(KeyEventArgs& e)
 {
 	fireEvent(KeyUpEvent, e);
 }
 
 
-void Window::onCharacter(const KeyEventArgs& e)
+void Window::onCharacter(KeyEventArgs& e)
 {
 	fireEvent(CharacterEvent, e);
 }

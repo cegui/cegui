@@ -28,8 +28,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-ColourRect::ColourRect(ulong top_left /* = 0xFF000000 */, ulong top_right /* = 0xFF000000 */, ulong bottom_left /* = 0xFF000000 */, ulong bottom_right /* = 0xFF000000 */) :
+/*************************************************************************
+	Constructor
+*************************************************************************/
+ColourRect::ColourRect(colour top_left /* = 0xFF000000 */, colour top_right /* = 0xFF000000 */, colour bottom_left /* = 0xFF000000 */, colour bottom_right /* = 0xFF000000 */) :
 	d_top_left(top_left),
 	d_top_right(top_right),
 	d_bottom_left(bottom_left),
@@ -37,8 +39,101 @@ ColourRect::ColourRect(ulong top_left /* = 0xFF000000 */, ulong top_right /* = 0
 {
 }
 
+
+/*************************************************************************
+	Destructor
+*************************************************************************/
 ColourRect::~ColourRect(void)
 {
+}
+
+
+/*************************************************************************
+	Set the alpha value to use for all four corners of the ColourRect.	
+*************************************************************************/
+void ColourRect::setAlpha(float alpha)
+{
+	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
+
+	// remove old alpha values
+	d_top_left		&= 0x00FFFFFF;
+	d_top_right		&= 0x00FFFFFF;
+	d_bottom_left	&= 0x00FFFFFF;
+	d_bottom_right	&= 0x00FFFFFF;
+
+	// set new alpha values
+	d_top_left		|= alpha_comp;
+	d_top_right		|= alpha_comp;
+	d_bottom_left	|= alpha_comp;
+	d_bottom_right	|= alpha_comp;
+}
+
+
+/*************************************************************************
+	Set the alpha value to use for the top edge of the ColourRect.	
+*************************************************************************/
+void ColourRect::setTopAlpha(float alpha)
+{
+	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
+
+	// remove old alpha values
+	d_top_left		&= 0x00FFFFFF;
+	d_top_right		&= 0x00FFFFFF;
+
+	// set new alpha values
+	d_top_left		|= alpha_comp;
+	d_top_right		|= alpha_comp;
+}
+
+
+/*************************************************************************
+	Set the alpha value to use for the bottom edge of the ColourRect.	
+*************************************************************************/
+void ColourRect::setBottomAlpha(float alpha)
+{
+	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
+
+	// remove old alpha values
+	d_bottom_left	&= 0x00FFFFFF;
+	d_bottom_right	&= 0x00FFFFFF;
+
+	// set new alpha values
+	d_bottom_left	|= alpha_comp;
+	d_bottom_right	|= alpha_comp;
+}
+
+
+/*************************************************************************
+	Set the alpha value to use for the left edge of the ColourRect.	
+*************************************************************************/
+void ColourRect::setLeftAlpha(float alpha)
+{
+	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
+
+	// remove old alpha values
+	d_top_left		&= 0x00FFFFFF;
+	d_bottom_left	&= 0x00FFFFFF;
+
+	// set new alpha values
+	d_top_left		|= alpha_comp;
+	d_bottom_left	|= alpha_comp;
+}
+
+
+/*************************************************************************
+	Set the alpha value to use for the right edge of the ColourRect.	
+*************************************************************************/
+void ColourRect::setRightAlpha(float alpha)
+{
+	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
+
+	// remove old alpha values
+	d_top_right		&= 0x00FFFFFF;
+	d_bottom_right	&= 0x00FFFFFF;
+
+	// set new alpha values
+	d_top_right		|= alpha_comp;
+	d_bottom_left	|= alpha_comp;
 }
 
 } // End of  CEGUI namespace section

@@ -109,4 +109,73 @@ void Rect::setPosition(const Point& pt)
 }
 
 
+/*************************************************************************
+	check the size of the Rect object and if it is bigger than 'sz', 
+	resize it so it isn't.	
+*************************************************************************/
+Rect& Rect::constrainSizeMax(const Size& sz)
+{
+	if (getWidth() > sz.d_width)
+	{
+		setWidth(sz.d_width);
+	}
+
+	if (getHeight() > sz.d_height)
+	{
+		setHeight(sz.d_height);
+	}
+
+	return *this;
+}
+
+
+/*************************************************************************
+	check the size of the Rect object and if it is smaller than 'sz',
+	resize it so it isn't.
+*************************************************************************/
+Rect& Rect::constrainSizeMin(const Size& sz)
+{
+	if (getWidth() < sz.d_width)
+	{
+		setWidth(sz.d_width);
+	}
+
+	if (getHeight() < sz.d_height)
+	{
+		setHeight(sz.d_height);
+	}
+
+	return *this;
+}
+
+
+/*************************************************************************
+	check the size of the Rect object and if it is bigger than 'max_sz'
+	or smaller than 'min_sz', resize it so it isn't.
+*************************************************************************/
+Rect& Rect::constrainSize(const Size& max_sz, const Size& min_sz)
+{
+	Size curr_sz(getSize());
+
+	if (curr_sz.d_width > max_sz.d_width)
+	{
+		setWidth(max_sz.d_width);
+	}
+	else if (curr_sz.d_width < min_sz.d_width)
+	{
+		setWidth(min_sz.d_width);
+	}
+
+	if (curr_sz.d_height > max_sz.d_height)
+	{
+		setHeight(max_sz.d_height);
+	}
+	else if (curr_sz.d_height < min_sz.d_height)
+	{
+		setHeight(min_sz.d_height);
+	}
+
+	return *this;
+}
+
 } // End of  CEGUI namespace section

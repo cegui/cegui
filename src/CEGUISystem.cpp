@@ -54,6 +54,7 @@ template<> System* Singleton<System>::ms_Singleton	= NULL;
 System::System(Renderer* renderer) :
 	d_renderer(renderer),
 	d_activeSheet(NULL),
+	d_wndWithMouse(NULL),
 	d_gui_redraw(false)
 {
 	// first thing to do is create logger
@@ -173,24 +174,46 @@ void System::renderGUI(void)
 
 
 /*************************************************************************
+	Set the active GUI sheet (root) window.	
+*************************************************************************/
+Window* System::setGUISheet(Window* sheet)
+{
+	Window* old = d_activeSheet;
+	d_activeSheet = sheet;
+	return old;
+}
+
+
+/*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
 void System::injectMouseMove(int delta_x, int delta_y)
 {
+	MouseEventArgs ma;
 	MouseCursor& mouse = MouseCursor::getSingleton();
 
-	// move the mouse cursor
-	mouse.offsetPosition(Point((float)delta_x, (float)delta_y));
-	
-	if (d_activeSheet != NULL)
+	ma.moveDelta.d_x = (float)delta_x;
+	ma.moveDelta.d_y = (float)delta_y;
+
+	// move the mouse cursor & update position in args.
+	mouse.offsetPosition(ma.moveDelta);
+	ma.position = mouse.getPosition();
+
+	Window* dest_window = getTargetWindow(ma.position);
+
+	// if there is no GUI sheet, then there is nowhere to send input
+	if (dest_window != NULL)
 	{
-		// get new mouse position and trigger event on Window with focus
-		Point pos = mouse.getPosition();
+		if (dest_window != d_wndWithMouse)
+		{
+			if (d_wndWithMouse != NULL)
+			{
+				d_wndWithMouse->onMouseLeaves(MouseEventArgs(ma));
+			}
 
-		// TODO: Complete this!
-
-		MouseEventArgs ma;
-		Window* dest_window = d_activeSheet->getActiveChild();
+			d_wndWithMouse = dest_window;
+			dest_window->onMouseEnters(MouseEventArgs(ma));
+		}
 
 		while ((!ma.handled) && (dest_window != NULL))
 		{
@@ -208,6 +231,20 @@ void System::injectMouseMove(int delta_x, int delta_y)
 *************************************************************************/
 void System::injectMouseButtonDown(MouseButton button)
 {
+	MouseEventArgs ma;
+	ma.position = MouseCursor::getSingleton().getPosition();
+	ma.moveDelta = Vector2(0.0f, 0.0f);
+	ma.button = button;
+	// TODO: Add system keys to MouseEventArgs
+
+	Window* dest_window = getTargetWindow(ma.position);
+
+	while ((!ma.handled) && (dest_window != NULL))
+	{
+		dest_window->onMouseButtonDown(ma);
+		dest_window = dest_window->getParent();
+	}
+
 }
 
 
@@ -216,6 +253,20 @@ void System::injectMouseButtonDown(MouseButton button)
 *************************************************************************/
 void System::injectMouseButtonUp(MouseButton button)
 {
+	MouseEventArgs ma;
+	ma.position = MouseCursor::getSingleton().getPosition();
+	ma.moveDelta = Vector2(0.0f, 0.0f);
+	ma.button = button;
+	// TODO: Add system keys to MouseEventArgs
+
+	Window* dest_window = getTargetWindow(ma.position);
+
+	while ((!ma.handled) && (dest_window != NULL))
+	{
+		dest_window->onMouseButtonUp(ma);
+		dest_window = dest_window->getParent();
+	}
+
 }
 
 
@@ -241,5 +292,35 @@ void System::injectKeyUp(uint key_code)
 void System::injectChar(utf32 code_point)
 {
 }
+
+
+/*************************************************************************
+	Return window that should get mouse inouts when mouse it at 'pt'
+*************************************************************************/
+Window*	System::getTargetWindow(const Point& pt) const
+{
+	Window* dest_window = NULL;
+
+	// if there is no GUI sheet, then there is nowhere to send input
+	if (d_activeSheet != NULL)
+	{
+		dest_window = Window::getCaptureWindow();
+
+		if (dest_window == NULL)
+		{
+			dest_window = d_activeSheet->getChildAtPosition(pt);
+
+			if (dest_window == NULL)
+			{
+				dest_window = d_activeSheet;
+			}
+
+		}
+
+	}
+
+	return dest_window;
+}
+
 
 } // End of  CEGUI namespace section

@@ -149,6 +149,28 @@ public:
 
 	/*!
 	\brief
+		Sets the colours to be applied when rendering the element.
+
+	\param top_left_colour
+		Colour (as 0xAARRGGBB value) to be applied to the top-left corner of each Image used in the element.
+
+	\param top_right_colour
+		Colour (as 0xAARRGGBB value) to be applied to the top-right corner of each Image used in the element.
+
+	\param bottom_left_colour
+		Colour (as 0xAARRGGBB value) to be applied to the bottom-left corner of each Image used in the element.
+
+	\param bottom_right_colour
+		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of each Image used in the element.
+
+	\return 
+		Nothing.
+	*/
+	void	setColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+
+
+	/*!
+	\brief
 		Set the rendering offset position for this element.
 
 	\param position

@@ -40,25 +40,6 @@
 namespace CEGUI
 {
 
-class CEGUIBASE_API WindowEventArgs : public EventArgs
-{
-public:
-	WindowEventArgs(Window* wnd) : window(wnd) {}
-
-	Window*	window;		//!< pointer to a Window object of relevance to the event.
-};
-
-class CEGUIBASE_API MouseEventArgs : public EventArgs
-{
-public:
-};
-
-class CEGUIBASE_API KeyEventArgs : public EventArgs
-{
-public:
-};
-
-
 /*!
 \brief
 	Mode used for Window size and position metrics.
@@ -88,6 +69,46 @@ enum CEGUIBASE_API SystemKey
 	MiddleMouse		= 0x10,			//!< The middle mouse button.
 	X1Mouse			= 0x20,			//!< The first 'extra' mouse button
 	X2Mouse			= 0x40,			//!< The second 'extra' mouse button.
+};
+
+
+/*!
+\brief
+	EventArgs based class that is used for objects passed to handlers triggered for events
+	concerning some Window object.
+*/
+class CEGUIBASE_API WindowEventArgs : public EventArgs
+{
+public:
+	WindowEventArgs(Window* wnd) : window(wnd) {}
+
+	Window*	window;		//!< pointer to a Window object of relevance to the event.
+};
+
+
+/*!
+\brief
+	EventArgs based class that is used for objects passed to input event handlers
+	concerning mouse input.
+*/
+class CEGUIBASE_API MouseEventArgs : public EventArgs
+{
+public:
+	Point		position;		//!< holds current mouse position.
+	Vector2		moveDelta;		//!< holds variation of mouse position from last mouse input
+	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
+	SystemKey	sysKeys;		//!< current state of the system keys and mouse buttons.
+};
+
+
+/*!
+\brief
+	EventArgs based class that is used for objects passed to input event handlers
+	concerning keyboard input.
+*/
+class CEGUIBASE_API KeyEventArgs : public EventArgs
+{
+public:
 };
 
 
@@ -497,6 +518,16 @@ public:
 
 	/*!
 	\brief
+		return a Rect object describing the clipped inner area for this window.
+
+	\return
+		Rect object that describes, in appropriately clipped screen pixel co-ordinates, the window object's inner rect area.
+	*/
+	Rect	getInnerRect(void) const;
+
+
+	/*!
+	\brief
 		return a Rect object describing the Window area unclipped, in screen space.
 
 	\return
@@ -504,6 +535,17 @@ public:
 		returned rect is fully unclipped.
 	*/
 	Rect	getUnclippedPixelRect(void) const;
+
+
+	/*!
+	\brief
+		Return a Rect object that describes, unclipped, the inner rectangle for this window.  The inner rectangle is
+		typically an area that excludes some frame or other rendering that should not be touched by subsequent rendering.
+
+	\return
+		Rect object that describes, in unclipped screen pixel co-ordinates, the window object's inner rect area.
+	*/
+	virtual Rect	getUnclippedInnerRect(void) const;
 
 
 	/*!
@@ -590,7 +632,7 @@ public:
 		float value that specifies the x position of the Window relative to it's parent, depending on the metrics system in use for this
 		Window, this value will specify either pixels or a decimal fraction of the width of the parent Window.
 	*/
-	float	getXPos(void) const;
+	float	getXPosition(void) const;
 
 
 	/*!
@@ -601,7 +643,7 @@ public:
 		float value that specifies the y position of the Window relative to it's parent, depending on the metrics system in use for this
 		Window, this value will specify either pixels or a decimal fraction of the height of the parent Window.
 	*/
-	float	getYPos(void) const;
+	float	getYPosition(void) const;
 
 
 	/*!
@@ -612,7 +654,7 @@ public:
 		Point object that describes the position of the Window relative to it's parent, depending on the metrics system in use for this
 		Window, the values in the Point will specify either pixels or decimal fractions of the total width and height of the parent.
 	*/
-	Point	getPos(void) const;
+	Point	getPosition(void) const;
 
 
 	/*!
@@ -656,6 +698,28 @@ public:
 		Sheet / Root.
 	*/
 	Window*	getParent(void) const				{return d_parent;}
+
+
+	/*!
+	\brief
+		Return the current maximum size for this window.
+
+	\return
+		Size object describing the maximum size for this window.  If using absolute co-ordinates the returned object has it's values expressed
+		as screen pixels.  If using relative co-ordinates the returned object has it's values expressed as fractions of the current display size.
+	*/
+	Size	getMaximumSize(void) const;
+
+
+	/*!
+	\brief
+		Return the current minimum size for this window.
+
+	\return
+		Size object describing the minimum size for this window.  If using absolute co-ordinates the returned object has it's values expressed
+		as screen pixels.  If using relative co-ordinates the returned object has it's values expressed as fractions of the current display size.
+	*/
+	Size	getMinimumSize(void) const;
 
 
 	/*************************************************************************
@@ -869,7 +933,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setXPos(float x);
+	void	setXPosition(float x);
 
 
 	/*!
@@ -882,7 +946,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setYPos(float y);
+	void	setYPosition(float y);
 
 
 	/*!
@@ -1118,6 +1182,41 @@ public:
 		Nothing
 	*/
 	void	requestRedraw(void) const;
+
+
+		/*!
+	\brief
+		set the current metrics mode employed by the Window
+
+	\param mode
+		One of the values of the MectricsMode enumerated type, that describes the metrics mode to be used by the Window.
+
+	\return
+		Nothing
+	*/
+	void setMetricsMode(MetricsMode	mode)		{ d_metricsMode = mode;}
+
+
+	/*!
+	\brief
+		Set the minimum size for this window.
+
+	\param sz
+		Size object describing the minimum size for the window.  For absolute metrics, the Size values are in screen pixels,
+		for relative metrics the Size values are relative to the display size.
+	*/
+	void	setMinimumSize(const Size& sz);
+
+
+	/*!
+	\brief
+		Set the maximum size for this window.
+
+	\param sz
+		Size object describing the maximum size for the window.  For absolute metrics, the Size values are in screen pixels,
+		for relative metrics the Size values are relative to the display size.
+	*/
+	void	setMaximumSize(const Size& sz);
 
 
 	/*************************************************************************
@@ -1401,55 +1500,57 @@ protected:
 		System object can trigger events directly
 	*************************************************************************/
 	friend	void System::injectMouseMove(int delta_x, int delta_y);
+	friend	void System::injectMouseButtonDown(MouseButton button);
+	friend	void System::injectMouseButtonUp(MouseButton button);
 
 	/*************************************************************************
 		Event trigger methods
 	*************************************************************************/
 	// no specific parameters passed
-	virtual void	onSized(const EventArgs& e);
-	virtual void	onMoved(const EventArgs& e);
-	virtual void	onTextChanged(const EventArgs& e);
-	virtual void	onFontChanged(const EventArgs& e);
-	virtual void	onAlphaChanged(const EventArgs& e);
-	virtual void	onIDChanged(const EventArgs& e);
-	virtual void	onShown(const EventArgs& e);
-	virtual void	onHidden(const EventArgs& e);
-	virtual void	onEnabled(const EventArgs& e);
-	virtual void	onDisabled(const EventArgs& e);
-	virtual void	onMetricsChanged(const EventArgs& e);
-	virtual void	onClippingChanged(const EventArgs& e);
-	virtual void	onParentDestroyChanged(const EventArgs& e);
-	virtual void	onInheritsAlphaChanged(const EventArgs& e);
-	virtual void	onAlwaysOnTopChanged(const EventArgs& e);
-	virtual void	onCaptureGained(const EventArgs& e);
-	virtual void	onCaptureLost(const EventArgs& e);
-	virtual void	onRenderingStarted(const EventArgs& e);
-	virtual void	onRenderingEnded(const EventArgs& e);
-	virtual void	onZChanged(const EventArgs& e);
-	virtual void	onDestructionStarted(const EventArgs& e);
+	virtual void	onSized(EventArgs& e);
+	virtual void	onMoved(EventArgs& e);
+	virtual void	onTextChanged(EventArgs& e);
+	virtual void	onFontChanged(EventArgs& e);
+	virtual void	onAlphaChanged(EventArgs& e);
+	virtual void	onIDChanged(EventArgs& e);
+	virtual void	onShown(EventArgs& e);
+	virtual void	onHidden(EventArgs& e);
+	virtual void	onEnabled(EventArgs& e);
+	virtual void	onDisabled(EventArgs& e);
+	virtual void	onMetricsChanged(EventArgs& e);
+	virtual void	onClippingChanged(EventArgs& e);
+	virtual void	onParentDestroyChanged(EventArgs& e);
+	virtual void	onInheritsAlphaChanged(EventArgs& e);
+	virtual void	onAlwaysOnTopChanged(EventArgs& e);
+	virtual void	onCaptureGained(EventArgs& e);
+	virtual void	onCaptureLost(EventArgs& e);
+	virtual void	onRenderingStarted(EventArgs& e);
+	virtual void	onRenderingEnded(EventArgs& e);
+	virtual void	onZChanged(EventArgs& e);
+	virtual void	onDestructionStarted(EventArgs& e);
 
 	// passed a WindowEventArgs
-	virtual void	onActivated(const WindowEventArgs& e);
-	virtual void	onDeactivated(const WindowEventArgs& e);
-	virtual void	onParentSized(const WindowEventArgs& e);
-	virtual void	onChildAdded(const WindowEventArgs& e);
-	virtual void	onChildRemoved(const WindowEventArgs& e);
+	virtual void	onActivated(WindowEventArgs& e);
+	virtual void	onDeactivated(WindowEventArgs& e);
+	virtual void	onParentSized(WindowEventArgs& e);
+	virtual void	onChildAdded(WindowEventArgs& e);
+	virtual void	onChildRemoved(WindowEventArgs& e);
 
 	// passed a MouseEventArgs
-	virtual void	onMouseEnters(const MouseEventArgs& e);
-	virtual void	onMouseLeaves(const MouseEventArgs& e);
-	virtual void	onMouseMove(const MouseEventArgs& e);
-	virtual void	onMouseWheel(const MouseEventArgs& e);
-	virtual void	onMouseButtonDown(const MouseEventArgs& e);
-	virtual void	onMouseButtonUp(const MouseEventArgs& e);
-	virtual void	onMouseClicked(const MouseEventArgs& e);
-	virtual void	onMouseDoubleClicked(const MouseEventArgs& e);
-	virtual void	onMouseTripleClicked(const MouseEventArgs& e);
+	virtual void	onMouseEnters(MouseEventArgs& e);
+	virtual void	onMouseLeaves(MouseEventArgs& e);
+	virtual void	onMouseMove(MouseEventArgs& e);
+	virtual void	onMouseWheel(MouseEventArgs& e);
+	virtual void	onMouseButtonDown(MouseEventArgs& e);
+	virtual void	onMouseButtonUp(MouseEventArgs& e);
+	virtual void	onMouseClicked(MouseEventArgs& e);
+	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
+	virtual void	onMouseTripleClicked(MouseEventArgs& e);
 
 	// passed a KeyEventArgs
-	virtual void	onKeyDown(const KeyEventArgs& e);
-	virtual void	onKeyUp(const KeyEventArgs& e);
-	virtual void	onCharacter(const KeyEventArgs& e);
+	virtual void	onKeyDown(KeyEventArgs& e);
+	virtual void	onKeyUp(KeyEventArgs& e);
+	virtual void	onCharacter(KeyEventArgs& e);
 
 
 	/*************************************************************************
@@ -1511,6 +1612,50 @@ protected:
 	Size	getParentSize(void) const;
 
 
+	/*!
+	\brief
+		Return a Rect object that describes, in values relative to \a window, the absolute area described by \a rect.
+
+	\param window
+		Pointer to a window object that is to be used as the base for the conversion.  If this is NULL then the size of the
+		display, as returned by the renderer object, is used.
+
+	\param rect
+		Rect object describing the area, in absolute values, that is to be returned as relative values.
+
+	\return
+		Rect object that describes in values relative to \a window, the same area described as absolute values in \a rect.
+	*/
+	Rect	absoluteToRelative_impl(const Window* window, const Rect& rect) const;
+	Size	absoluteToRelative_impl(const Window* window, const Size& sz) const;
+	Point	absoluteToRelative_impl(const Window* window, const Point& pt) const;
+	float	absoluteToRelativeX_impl(const Window* window, float x) const;
+	float	absoluteToRelativeY_impl(const Window* window, float y) const;
+
+
+	/*!
+	\brief
+		Return a Rect object that describes, in absolute values offset from \a window, the relative area described by \a rect.
+
+	\param window
+		Pointer to a window object that is to be used as the base for the conversion.  If this is NULL then the size of the
+		display, as returned by the renderer object, is used.
+
+	\param rect
+		Rect object describing the area, in relative values, that is to be returned as absolute values.
+
+	\return
+		Rect object that describes in absolute values offset from \a window, the same area described as relative values in \a rect.
+	*/
+	Rect	relativeToAbsolute_impl(const Window* window, const Rect& rect) const;
+	Size	relativeToAbsolute_impl(const Window* window, const Size& sz) const;
+	Point	relativeToAbsolute_impl(const Window* window, const Point& pt) const;
+	float	relativeToAbsoluteX_impl(const Window* window, float x) const;
+	float	relativeToAbsoluteY_impl(const Window* window, float y) const;
+
+	Size	getWindowSize_impl(const Window* window) const;
+
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -1529,6 +1674,10 @@ protected:
 	float			d_alpha;			//!< Alpha transparency setting for the Window
 	Rect			d_abs_area;			//!< This Window objects area (pixels relative to parent)
 	Rect			d_rel_area;			//!< This Window objects area (decimal fractions relative to parent)
+
+	// maximum and minimum sizes
+	Size	d_minSize;					//!< current minimum size for the window (this is always stored in pixels).
+	Size	d_maxSize;					//!< current maximum size for the window (this is always stored in pixels).
 
 	// settings
 	bool	d_enabled;					//!< true when Window is enabled
@@ -1574,6 +1723,7 @@ private:
 	*/
 	void	onZChange_impl(void);
 
+	
 	/*************************************************************************
 		May not copy or assign Window objects
 	*************************************************************************/

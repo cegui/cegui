@@ -141,6 +141,29 @@ public:
 	void	renderGUI(void);
 
 
+	/*!
+	\brief
+		Set the active GUI sheet (root) window.
+
+	\param sheet
+		Pointer to a Window object that will become the new GUI 'root'
+
+	\return
+		Pointer to the window that was previously set as the GUI root.
+	*/
+	Window*	setGUISheet(Window* sheet);
+
+
+	/*!
+	\brief
+		Return a pointer to the active GUI sheet (root) window.
+
+	\return
+		Pointer to the window object that has been set as the GUI root element.
+	*/
+	Window*	getGUISheet(void) const		{return d_activeSheet;}
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -226,11 +249,29 @@ public:
 
 private:
 	/*************************************************************************
+		Implementation Functions
+	*************************************************************************/
+	/*!
+	\brief
+		Given Point \a pt, return a pointer to the Window that should receive a mouse input if \a pt is the mouse location.
+
+	\param pt
+		Point object describing a screen location in pixels.
+
+	\return
+		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
+	*/
+	Window*	getTargetWindow(const Point& pt) const;
+
+
+	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
 	Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
+
+	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
 	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
 };
 

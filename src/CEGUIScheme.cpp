@@ -260,7 +260,7 @@ void Scheme::unloadResources(void)
 			wfmgr.removeFactory((*elem).name);
 		}
 
-		// create and load dynamic module as required
+		// unload dynamic module as required
 		if ((*cmod).module != NULL)
 		{
 			delete (*cmod).module;

@@ -79,7 +79,13 @@ void WindowManager::destroyWindow(Window* window)
 {
 	if (window != NULL)
 	{
-		destroyWindow(window->getName());
+		// this is done because the name is used for the log after the window is destroyed,
+		// if we just did getName() we would get a const ref to the Window's internal name
+		// string which is destroyed along with the window so wouldn't exist when the log tried
+		// to use it (as I soon discovered).
+		String name = window->getName();
+
+		destroyWindow(name);
 	}
 
 }
@@ -134,9 +140,11 @@ bool WindowManager::isWindowPresent(const String& name) const
 *************************************************************************/
 void WindowManager::destroyAllWindows(void)
 {
+	String window_name;
 	while (!d_windowRegistry.empty())
 	{
-		destroyWindow(d_windowRegistry.begin()->first);
+		window_name = d_windowRegistry.begin()->first;
+		destroyWindow(window_name);
 	}
 
 }
