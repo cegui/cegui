@@ -23,6 +23,7 @@
 		<WindowFactory Name="TaharezLook/RadioButton" />
 		<WindowFactory Name="TaharezLook/Slider" />
 		<WindowFactory Name="TaharezLook/SliderThumb" />
+		<WindowFactory Name="TaharezLook/Spinner" />
 		<WindowFactory Name="TaharezLook/StaticImage" />
 		<WindowFactory Name="TaharezLook/StaticText" />
 		<WindowFactory Name="TaharezLook/TabButton" />
