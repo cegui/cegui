@@ -80,9 +80,11 @@ public:
 		- "LeftAligned"
 		- "RightAligned"
 		- "HorzCentred"
+		- "HorzJustified"
 		- "WordWrapLeftAligned"
 		- "WordWrapRightAligned"
 		- "WordWrapCentred"
+		- "WordWrapJustified"
 */
 class HorzFormatting : public Property
 {

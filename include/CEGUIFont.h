@@ -64,9 +64,11 @@ enum TextFormatting
 	LeftAligned,			//!< All text is printed on a single line.  The left-most character is aligned with the left edge of the formatting Rect.
 	RightAligned,			//!< All text is printed on a single line.  The right-most character is aligned with the right edge of the formatting Rect.
 	Centred,				//!< All text is printed on a single line.  The text is centred horizontally in the formatting Rect.
+	Justified,				//!< All text is printed on a single line.  The left-most and right-most characters are aligned with the edges of the formatting Rect.
 	WordWrapLeftAligned,	//!< Text is broken into multiple lines no wider than the formatting Rect.  The left-most character of each line is aligned with the left edge of the formatting Rect.
 	WordWrapRightAligned,	//!< Text is broken into multiple lines no wider than the formatting Rect.  The right-most character of each line is aligned with the right edge of the formatting Rect.
-	WordWrapCentred 		//!< Text is broken into multiple lines no wider than the formatting Rect.  Each line is centred horizontally in the formatting Rect.
+	WordWrapCentred, 		//!< Text is broken into multiple lines no wider than the formatting Rect.  Each line is centred horizontally in the formatting Rect.
+	WordWrapJustified 		//!< Text is broken into multiple lines no wider than the formatting Rect.  The left-most and right-most characters of each line are aligned with the edges of the formatting Rect.
 };
 
 /*!
@@ -961,6 +963,13 @@ private:
 		Draw a line of text.  No formatting is applied.
 	*/
 	void	drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
+
+
+	/*!
+	\brief
+		Draw a justified line of text.
+	*/
+	void	drawTextLineJustified(const String& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
 
 
 	/*!

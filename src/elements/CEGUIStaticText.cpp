@@ -142,6 +142,8 @@ void StaticText::drawSelf(float z)
 		{
 		case LeftAligned:
 		case WordWrapLeftAligned:
+		case Justified:
+		case WordWrapJustified:
 			absarea.offset(Point(-d_horzScrollbar->getScrollPosition(), 0));
 			break;
 

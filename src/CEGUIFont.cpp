@@ -270,6 +270,13 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
 			y_base += getLineSpacing(y_scale);
 			break;
 
+		case Justified:
+			// new function in order to keep drawTextLine's signature unchanged
+			drawTextLineJustified(currLine, draw_area, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
+			thisCount = 1;
+			y_base += getLineSpacing(y_scale);
+			break;
+
 		case WordWrapLeftAligned:
 			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours, x_scale, y_scale);
 			tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
@@ -282,6 +289,12 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
 
 		case WordWrapCentred:
 			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Centred, colours, x_scale, y_scale);
+			tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
+			break;
+
+		case WordWrapJustified:
+			// no change needed
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Justified, colours, x_scale, y_scale);
 			tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
 			break;
 
@@ -575,8 +588,10 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
 		thisLine += thisWord;
 	}
 
+	// Last line is left aligned
+	TextFormatting last_fmt = (fmt == Justified ? LeftAligned : fmt);
 	// output last bit of string
-	line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
+	line_count += drawText(thisLine, dest_area, z, clip_rect, last_fmt, colours, x_scale, y_scale);
 
 	return line_count;
 }
@@ -616,6 +631,50 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 			Size sz(img->getWidth() * x_scale, img->getHeight() * y_scale);
 			img->draw(cur_pos, sz, clip_rect, colours);
 			cur_pos.d_x += (float)pos->second.d_horz_advance * x_scale;
+		}
+
+	}
+
+}
+
+
+/*************************************************************************
+	Draw a justified line of text.
+*************************************************************************/
+void Font::drawTextLineJustified(const String& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale, float y_scale) const
+{
+	Vector3	cur_pos(position);
+
+	float base_y = position.d_y;
+	// Calculate the length difference between the justified text and the same text, left aligned
+	// This space has to be shared between the space characters of the line
+	float lost_space = getFormattedTextExtent(text, draw_area, Justified, x_scale) - getTextExtent(text, x_scale);
+
+	size_t char_count = text.length();
+	CodepointMap::const_iterator	pos, end = d_cp_map.end();
+
+	// The number of spaces and tabs in the current line
+	uint space_count = 0;
+	for (size_t c = 0; c < char_count; ++c)
+		if ((text[c] == ' ') || (text[c] == '\t')) ++space_count;
+
+	// The width that must be added to each space character in order to transform the left aligned text in justified text
+	float shared_lost_space = 0.0;
+	if (space_count > 0) shared_lost_space = lost_space / (float)space_count;
+
+	for (size_t c = 0; c < char_count; ++c)
+	{
+		pos = d_cp_map.find(text[c]);
+
+		if (pos != end)
+		{
+			const Image* img = pos->second.d_image;
+			cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
+			Size sz(img->getWidth() * x_scale, img->getHeight() * y_scale);
+			img->draw(cur_pos, sz, clip_rect, colours);
+			cur_pos.d_x += (float)pos->second.d_horz_advance * x_scale;
+			// That's where we adjust the size of each space character
+			if ((text[c] == ' ') || (text[c] == '\t')) cur_pos.d_x += shared_lost_space;
 		}
 
 	}
@@ -965,7 +1024,7 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 size_t Font::getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale) const
 {
 	// handle simple non-wrapped cases.
-	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned))
+	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned) || (fmt == Justified))
 	{
 		return std::count(text.begin(), text.end(), static_cast<utf8>('\n')) + 1;
 	}
@@ -1077,10 +1136,20 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
 			lineWidth = getTextExtent(currLine, x_scale);
 			break;
 
+		case Justified:
+			// usually we use the width of the rect but we have to ensure the current line is not wider than that
+			lineWidth = ceguimax(format_area.getWidth(), getTextExtent(currLine, x_scale));
+			break;
+
 		case WordWrapLeftAligned:
 		case WordWrapRightAligned:
 		case WordWrapCentred:
 			lineWidth = getWrappedTextExtent(currLine, format_area.getWidth(), x_scale);
+			break;
+
+		case WordWrapJustified:
+			// same as above
+			lineWidth = ceguimax(format_area.getWidth(), getWrappedTextExtent(currLine, format_area.getWidth(), x_scale));
 			break;
 
 		default:

@@ -59,6 +59,10 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 		return String((utf8*)"HorzCentred");
 		break;
 
+	case StaticText::HorzJustified:
+		return String((utf8*)"HorzJustified");
+		break;
+
 	case StaticText::WordWrapLeftAligned:
 		return String((utf8*)"WordWrapLeftAligned");
 		break;
@@ -69,6 +73,10 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 
 	case StaticText::WordWrapCentred:
 		return String((utf8*)"WordWrapCentred");
+		break;
+
+	case StaticText::WordWrapJustified:
+		return String((utf8*)"WordWrapJustified");
 		break;
 
 	default:
@@ -90,6 +98,10 @@ void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 	{
 		fmt = StaticText::HorzCentred;
 	}
+	else if (value == (utf8*)"HorzJustified")
+	{
+		fmt = StaticText::HorzJustified;
+	}
 	else if (value == (utf8*)"WordWrapLeftAligned")
 	{
 		fmt = StaticText::WordWrapLeftAligned;
@@ -101,6 +113,10 @@ void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 	else if (value == (utf8*)"WordWrapCentred")
 	{
 		fmt = StaticText::WordWrapCentred;
+	}
+	else if (value == (utf8*)"WordWrapJustified")
+	{
+		fmt = StaticText::WordWrapJustified;
 	}
 	else
 	{

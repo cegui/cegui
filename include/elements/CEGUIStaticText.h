@@ -61,9 +61,11 @@ public:
 		LeftAligned,			//!< Text is output as a single line of text with the first character aligned with the left edge of the widget.
 		RightAligned,			//!< Text is output as a single line of text with the last character aligned with the right edge of the widget.
 		HorzCentred,			//!< Text is output as a single line of text horizontally centred within the widget.
+		HorzJustified,			//!< Text is output as a single line of text with the first and last characters aligned with the edges of the widget.
 		WordWrapLeftAligned,	//!< Text is output as multiple word-wrapped lines of text with the first character of each line aligned with the left edge of the widget.
 		WordWrapRightAligned,	//!< Text is output as multiple word-wrapped lines of text with the last character of each line aligned with the right edge of the widget.
-		WordWrapCentred         //!< Text is output as multiple word-wrapped lines of text with each line horizontally centered within the widget.
+		WordWrapCentred,		//!< Text is output as multiple word-wrapped lines of text with each line horizontally centered within the widget.
+		WordWrapJustified		//!< Text is output as multiple word-wrapped lines of text with the first and last characters of each line aligned with the edges of the widget.
 	};
 
 
