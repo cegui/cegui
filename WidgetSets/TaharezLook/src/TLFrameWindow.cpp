@@ -365,7 +365,8 @@ void TLFrameWindow::componentDisabledHandler(const EventArgs& e)
 	((WindowEventArgs&)e).window->hide();
 
 	// update for possible changed frame size and layout
-	onSized(WindowEventArgs(this));
+	WindowEventArgs args(this);
+	onSized(args);
 }
 
 
@@ -377,7 +378,8 @@ void TLFrameWindow::componentEnabledHandler(const EventArgs& e)
 	((WindowEventArgs&)e).window->show();
 
 	// update for possible changed frame size and layout
-	onSized(WindowEventArgs(this));
+	WindowEventArgs args(this);
+	onSized(args);
 }
 
 
