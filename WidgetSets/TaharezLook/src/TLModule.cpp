@@ -52,6 +52,9 @@
 #include "TLListHeaderSegment.h"
 #include "TLMultiColumnList.h"
 #include "TLMultiLineEditbox.h"
+#include "TLTabControl.h"
+#include "TLTabButton.h"
+#include "TLTabPane.h"
 
 
 /*************************************************************************
@@ -84,6 +87,9 @@ static CEGUI::TLListHeaderSegmentFactory	s_ListHeaderSegmentFactory;
 static CEGUI::TLListHeaderFactory		s_ListHeaderFactory;
 static CEGUI::TLMultiColumnListFactory	s_MultiColumnListFactory;
 static CEGUI::TLMultiLineEditboxFactory	s_MultiLineEditboxFactory;
+static CEGUI::TLTabControlFactory	    s_TabControlFactory;
+static CEGUI::TLTabButtonFactory	    s_TabButtonFactory;
+static CEGUI::TLTabPaneFactory	        s_TabPaneFactory;
 
 
 /*************************************************************************
@@ -228,6 +234,21 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiLineEditboxFactory);
 		return;
 	}
+    else if (type_name == "Taharez Tab Control")
+    {
+        WindowFactoryManager::getSingleton().addFactory(&s_TabControlFactory);
+        return;
+    }
+    else if (type_name == "Taharez Tab Button")
+    {
+        WindowFactoryManager::getSingleton().addFactory(&s_TabButtonFactory);
+        return;
+    }
+    else if (type_name == "Taharez Tab Pane")
+    {
+        WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
+        return;
+    }
 	
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 

@@ -167,10 +167,10 @@
 				RelativePath="..\..\..\..\src\CEGUIFont.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIFont_xmlHandler.cpp">
+				RelativePath="..\..\..\..\src\CEGUIFontManager.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIFontManager.cpp">
+				RelativePath="..\..\..\..\src\CEGUIFont_xmlHandler.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIGUILayout_xmlHandler.cpp">
@@ -182,10 +182,10 @@
 				RelativePath="..\..\..\..\src\CEGUIImageset.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIImageset_xmlHandler.cpp">
+				RelativePath="..\..\..\..\src\CEGUIImagesetManager.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIImagesetManager.cpp">
+				RelativePath="..\..\..\..\src\CEGUIImageset_xmlHandler.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUILogger.cpp">
@@ -221,10 +221,10 @@
 				RelativePath="..\..\..\..\src\CEGUIScheme.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIScheme_xmlHandler.cpp">
+				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
+				RelativePath="..\..\..\..\src\CEGUIScheme_xmlHandler.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIScriptModule.cpp">
@@ -239,10 +239,10 @@
 				RelativePath="..\..\..\..\src\CEGUISystem.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUITexture.cpp">
+				RelativePath="..\..\..\..\src\CEGUITextUtils.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUITextUtils.cpp">
+				RelativePath="..\..\..\..\src\CEGUITexture.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIVector.cpp">
@@ -281,13 +281,13 @@
 					RelativePath="..\..\..\..\src\elements\CEGUICheckboxProperties.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIComboDropList.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUICombobox.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIComboboxProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIComboDropList.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIEditbox.cpp">
@@ -302,18 +302,6 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIFrameWindowProperties.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListbox.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListboxItem.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListboxProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListboxTextItem.cpp">
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
 				</File>
 				<File
@@ -324,6 +312,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegmentProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListbox.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListboxItem.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListboxProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListboxTextItem.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiColumnList.cpp">
@@ -383,6 +383,15 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIStaticTextProperties.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITabButton.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITabControl.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITabControlProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIThumb.cpp">
 				</File>
 				<File
@@ -434,16 +443,16 @@
 				RelativePath="..\..\..\..\include\CEGUIFont.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFont_implData.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\CEGUIFont_xmlHandler.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\include\CEGUIFontManager.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIFontManager_implData.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIFont_implData.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIFont_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIForwardRefs.h">
@@ -458,10 +467,10 @@
 				RelativePath="..\..\..\..\include\CEGUIImageset.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImageset_xmlHandler.h">
+				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
+				RelativePath="..\..\..\..\include\CEGUIImageset_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIInputEvent.h">
@@ -503,10 +512,10 @@
 				RelativePath="..\..\..\..\include\CEGUIScheme.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIScheme_xmlHandler.h">
+				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
+				RelativePath="..\..\..\..\include\CEGUIScheme_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIScriptModule.h">
@@ -524,10 +533,10 @@
 				RelativePath="..\..\..\..\include\CEGUISystem.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUITexture.h">
+				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
+				RelativePath="..\..\..\..\include\CEGUITexture.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIVector.h">
@@ -566,13 +575,13 @@
 					RelativePath="..\..\..\..\include\elements\CEGUICheckboxProperties.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIComboDropList.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUICombobox.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIComboboxProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIComboDropList.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIEditbox.h">
@@ -590,18 +599,6 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIGUISheet.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListbox.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListboxItem.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListboxProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListboxTextItem.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">
 				</File>
 				<File
@@ -612,6 +609,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegmentProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListbox.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListboxItem.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListboxProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListboxTextItem.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiColumnList.h">
@@ -669,6 +678,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIStaticTextProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITabButton.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITabControl.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITabControlProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITabPane.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIThumb.h">
