@@ -1553,6 +1553,7 @@ void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 {
+	requestRedraw();
 	fireEvent(CaratMoved, e);
 }
 
@@ -1562,6 +1563,7 @@ void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 {
+	requestRedraw();
 	fireEvent(TextSelectionChanged, e);
 }
 
@@ -1581,6 +1583,7 @@ void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
+	requestRedraw();
 	fireEvent(VertScrollbarModeChanged, e);
 }
 
@@ -1591,6 +1594,7 @@ void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
+	requestRedraw();
 	fireEvent(HorzScrollbarModeChanged, e);
 }
 
