@@ -1912,14 +1912,7 @@ protected:
 	/*************************************************************************
 		System object can trigger events directly
 	*************************************************************************/
-	friend	void System::injectMouseMove(float delta_x, float delta_y);
-	friend	void System::injectMouseButtonDown(MouseButton button);
-	friend	void System::injectMouseButtonUp(MouseButton button);
-	friend	void System::injectChar(utf32 code_point);
-	friend	void System::injectKeyDown(uint key_code);
-	friend	void System::injectKeyUp(uint key_code);
-	friend	void System::injectMouseWheelChange(float delta);
-	friend	void System::handleDisplaySizeChange(const EventArgs& e);
+	friend	class System;
 
 
 	/*************************************************************************
