@@ -164,7 +164,7 @@ Window* TLStaticTextFactory::createWindow(const String& name)
 *************************************************************************/
 Window* TLStaticImageFactory::createWindow(const String& name)
 {
-	StaticImage* wnd = new StaticImage(d_type, name);
+	TLStaticImage* wnd = new TLStaticImage(d_type, name);
 	wnd->initialise();
 
 	return wnd;

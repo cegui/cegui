@@ -165,7 +165,7 @@ Window* WLStaticTextFactory::createWindow(const String& name)
 *************************************************************************/
 Window* WLStaticImageFactory::createWindow(const String& name)
 {
-	StaticImage* wnd = new StaticImage(d_type, name);
+	WLStaticImage* wnd = new WLStaticImage(d_type, name);
 	wnd->initialise();
 
 	return wnd;
