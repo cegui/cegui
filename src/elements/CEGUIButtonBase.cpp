@@ -48,36 +48,38 @@ ButtonBase::~ButtonBase(void)
 
 
 /*************************************************************************
-	return true if user is hovering over this widget (or it's pushed
-	and user is not over it for highlight)	
+	Update the internal state of the Widget
 *************************************************************************/
-bool ButtonBase::isHovering(void) const
+void ButtonBase::updateInternalState(const Point& mouse_pos)
 {
+	bool oldstate = d_hovering;
+
+	// assume not hovering 
+	d_hovering = false;
+
 	// if input is captured, but not by 'this', then we never hover highlight
 	const Window* capture_wnd = getCaptureWindow();
 
-	if ((capture_wnd != NULL) && (capture_wnd != this)) {
-		return false;
-	}
-
-
-	Window* sheet = System::getSingleton().getGUISheet();
-
-	if (sheet != NULL)
+	if ((capture_wnd == NULL) || (capture_wnd == this))
 	{
-		// if widget is pushed and we are over widget, return false
-		if (this == sheet->getChildAtPosition(MouseCursor::getSingleton().getPosition())) {
-			return d_pushed ? false : true;
-		}
-		// else, we are not over widget, but widget is pushed, return true (to highlight widget with capture)
-		else {
-			return d_pushed ? true : false;
+		Window* sheet = System::getSingleton().getGUISheet();
+
+		if (sheet != NULL)
+		{
+			// check if hovering highlight is required, which is basically ("mouse over widget" XOR "widget pushed").
+			if ((this == sheet->getChildAtPosition(mouse_pos)) != d_pushed)
+			{
+				d_hovering = true;
+			}
+
 		}
 
 	}
-	else
+
+	// if state has changed, trigger a re-draw
+	if (oldstate != d_hovering)
 	{
-		return false;
+		requestRedraw();
 	}
 
 }
@@ -88,16 +90,38 @@ bool ButtonBase::isHovering(void) const
 *************************************************************************/
 void ButtonBase::drawSelf(float z)
 {
-	if (isHovering()) {
+	if (isHovering())
+	{
 		drawHover(z);
 	}
-	else if (isPushed()) {
+	else if (isPushed())
+	{
 		drawPushed(z);
 	}
-	else {
+	else
+	{
 		drawNormal(z);
 	}
 
+}
+
+
+/*************************************************************************
+	Handler for when the mouse moves
+*************************************************************************/
+void ButtonBase::onMouseMove(MouseEventArgs& e)
+{
+	// this is needed to discover whether mouse is in the widget area or not.
+	// The same thing used to be done each frame in the rendering method,
+	// but in this version the rendering method may not be called every frame
+	// so we must discover the internal widget state here - which is actually
+	// more efficient anyway.
+
+	// base class processing
+	Window::onMouseMove(e);
+
+	updateInternalState(e.position);
+	e.handled = true;
 }
 
 
@@ -113,6 +137,7 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 	{
 		captureInput();
 		d_pushed = true;
+		requestRedraw();
 
 		// event was handled by us.
 		e.handled = true;
@@ -148,6 +173,7 @@ void ButtonBase::onCaptureLost(EventArgs& e)
 	Window::onCaptureLost(e);
 
 	d_pushed = false;
+	requestRedraw();
 
 	// event was handled by us.
 	e.handled = true;

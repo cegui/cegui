@@ -50,7 +50,7 @@ public:
 	\return
 		true if the user is hovering or if the button is pushed and the mouse is not over the button.  Otherwise return false.
 	*/
-	bool	isHovering(void) const;
+	bool	isHovering(void) const			{return d_hovering;}
 
 
 	/*!
@@ -84,9 +84,26 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
+	virtual void	onMouseMove(MouseEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(EventArgs& e);
+
+
+	/*************************************************************************
+		Implementation Functions
+	*************************************************************************/
+	/*!
+	\brief
+		Update the internal state of the widget with the mouse at the given position.
+
+	\param mouse_pos
+		Point object describing, in screen pixel co-ordinates, the location of the mouse cursor.
+
+	\return
+		Nothing
+	*/
+	void	updateInternalState(const Point& mouse_pos);
 
 
 	/*************************************************************************
@@ -148,6 +165,7 @@ protected:
 		Implementation Data
 	*************************************************************************/
 	bool	d_pushed;			//!< true when widget is pushed
+	bool	d_hovering;			//!< true when the button is in 'hover' state and requires the hover rendering.
 };
 
 } // End of  CEGUI namespace section
