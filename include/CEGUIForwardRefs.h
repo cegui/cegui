@@ -78,6 +78,10 @@ class Thumb;
 class Scrollbar;
 class Slider;
 class Static;
+class StaticText;
+class StaticImage;
+class ListboxItem;
+class ListboxTextItem;
 
 } // End of  CEGUI namespace section
 

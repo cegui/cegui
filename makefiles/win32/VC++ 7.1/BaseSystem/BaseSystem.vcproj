@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xerces-c_2D.lib freetype214MT.lib"
+				AdditionalDependencies="xerces-c_2D.lib freetype214MT_D.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\dependencies\lib"
@@ -193,6 +193,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\elements\CEGUIListbox.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\elements\CEGUIListboxItem.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\elements\CEGUIListboxTextItem.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
@@ -372,6 +378,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\elements\CEGUIListbox.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\elements\CEGUIListboxItem.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\elements\CEGUIListboxTextItem.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">

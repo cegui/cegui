@@ -146,6 +146,9 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLFrameWindow.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLListbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniHorzScrollbar.cpp">
 			</File>
 			<File
@@ -206,6 +209,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLFrameWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLListbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniHorzScrollbar.h">
