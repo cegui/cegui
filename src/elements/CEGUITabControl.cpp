@@ -111,6 +111,43 @@ Window*	TabControl::getTabContents(uint ID) const
     return d_tabContentPane->getChild(ID);
 }
 /*************************************************************************
+Get the tab for the given index
+*************************************************************************/
+Window*	TabControl::getTabContentsAtIndex(uint index) const
+{
+	return d_tabContentPane->getChildAtIdx(index);
+}
+
+/*************************************************************************
+Return whether the tab content window is currently selected.
+*************************************************************************/
+bool TabControl::isTabContentsSelected(Window* wnd) const
+{
+	TabButton* button = getButtonForTabContents(wnd);
+	return button->isSelected();
+}
+
+/*************************************************************************
+Return whether the tab content window is currently selected.
+*************************************************************************/
+uint TabControl::getSelectedTabIndex() const
+{
+	uint index = 0;
+    TabButtonIndexMap::const_iterator i, iend;
+    iend = d_tabButtonIndexMap.end();
+    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++index)
+    {
+        // get corresponding tab button and content window
+        TabButton* tb = i->second;
+        if (tb->isSelected())
+        {
+			break;
+        }
+	}
+	return index;
+}
+
+/*************************************************************************
 Set the selected tab by window name
 *************************************************************************/
 void TabControl::setSelectedTab(const String &name)
@@ -129,6 +166,14 @@ void TabControl::setSelectedTab(uint ID)
     Window* wnd = d_tabContentPane->getChild(ID);
 
     selectTab_impl(wnd);
+}
+/*************************************************************************
+Set the selected tab by window name
+*************************************************************************/
+void TabControl::setSelectedTabAtIndex(uint index)
+{
+	Window* wnd = getTabContentsAtIndex(index);
+	selectTab_impl(wnd);
 }
 /*************************************************************************
 Get the tab height
@@ -336,6 +381,26 @@ void TabControl::addButtonForTabContent(Window* wnd)
     tb->subscribeEvent(TabButton::EventClicked, 
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
 
+}
+
+/*************************************************************************
+	Return the tab button for the given tab content window
+*************************************************************************/
+TabButton* TabControl::getButtonForTabContents(Window* wnd) const
+{
+    TabButtonIndexMap::const_iterator i, iend;
+    iend = d_tabButtonIndexMap.end();
+    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
+    {
+        // get corresponding tab button and content window
+        TabButton* tb = i->second;
+        Window* child = tb->getTargetWindow();
+        if (child == wnd)
+        {
+			return tb;
+        }
+	}
+	throw UnknownObjectException((utf8*)"TabControl::getButtonForTabContents - The Window object is not a tab contents.");
 }
 /*************************************************************************
 	Calculate size and position for a tab button

@@ -88,6 +88,13 @@ public:
     void    setSelectedTab(uint ID);
 
     /*!
+    \brief
+        Set the selected tab by the index position in the tab control.
+    \exception	InvalidRequestException	thrown if \a index is out of range.
+    */
+    void    setSelectedTabAtIndex(uint index);
+
+    /*!
 	\brief
 		Return the Window which is the first child of the tab at index position \a index.
 
@@ -129,6 +136,29 @@ public:
     */
     Window*	getTabContents(uint ID) const;
 
+    /*!
+	\brief
+		Return whether the tab contents window is currently selected.
+
+    \param wnd
+        The tab contents window to query.
+
+	\return
+		true if the tab is currently selected, false otherwise.
+
+	\exception	InvalidRequestException	thrown if \a wnd is not a valid tab contents window.
+	*/
+    bool	isTabContentsSelected(Window* wnd) const;
+
+    /*!
+	\brief
+		Return the index of the currently selected tab.
+
+	\return
+		index of the currently selected tab.
+	*/
+    uint	getSelectedTabIndex() const;
+	
     /*!
     \brief
         Return the relative height of the tabs
@@ -286,9 +316,16 @@ protected:
     virtual void removeButtonForTabContent(Window* wnd);
     /*!
     \brief
+        Return the TabButton associated with this Window.
+    \exception	InvalidRequestException	thrown if content is not found.
+    */
+	TabButton* getButtonForTabContents(Window* wnd) const;
+    /*!
+    \brief
         Construct a button name to handle a window.
     */
     String makeButtonName(Window* wnd);
+    
     /*!
     \brief
         Internal implementation of select tab.
