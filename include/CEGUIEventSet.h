@@ -163,6 +163,32 @@ public:
 	*/
 	void	fireEvent(const String& name, const EventArgs& args);
 
+
+	/*!
+	\brief
+		Return whether the EventSet is muted or not.
+
+	\return
+		- true if the EventSet is muted.  All requests to fire events will be ignored.
+		- false if the EventSet is not muted.  All requests to fire events are processed as normal.
+	*/
+	bool	isMuted(void) const;
+
+
+	/*!
+	\brief
+		Set the mute state for this EventSet.
+
+	\param setting
+		- true if the EventSet is to be muted (no further event firing requests will be honoured until EventSet is unmuted).
+		- false if the EventSet is not to be muted and all events should fired as requested.
+
+	\return
+		Nothing.
+	*/
+	void	setMutedState(bool setting);
+
+
 private:
 	// Do not allow copying, assignment, or any other usage than simple creation.
 	EventSet(EventSet& e) {}
@@ -170,6 +196,8 @@ private:
 
 	typedef std::map<String, Event*>	EventMap;
 	EventMap	d_events;
+
+	bool	d_muted;	//!< true if events for this EventSet have been muted.
 };
 
 } // End of  CEGUI namespace section

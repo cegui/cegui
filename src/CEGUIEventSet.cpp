@@ -33,7 +33,8 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-EventSet::EventSet(void)
+EventSet::EventSet(void) :
+	d_muted(false)
 {
 }
 
@@ -147,7 +148,30 @@ void EventSet::fireEvent(const String& name, const EventArgs& args)
 	}
 
 	// fire the event
-	(*pos->second)(args);
+	if (!d_muted)
+	{
+		(*pos->second)(args);
+	}
+
 }
+
+
+/*************************************************************************
+	Return whether the EventSet is muted or not.	
+*************************************************************************/
+bool EventSet::isMuted(void) const
+{
+	return d_muted;
+}
+
+
+/*************************************************************************
+	Set the mute state for this EventSet.	
+*************************************************************************/
+void EventSet::setMutedState(bool setting)
+{
+	d_muted = setting;
+}
+
 
 } // End of  CEGUI namespace section
