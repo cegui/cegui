@@ -78,10 +78,13 @@ namespace CEGUI
 		\param filename
 		The filename of the image file that is to be loaded into the texture
 
+	    \param resourceGroup
+        Resource group identifier passed to the resource provider.
+
 		\return
 		Nothing.
 		*/
-		virtual void	loadFromFile(const String& filename);
+		virtual void	loadFromFile(const String& filename, const String& resourceGroup);
 
 
 		/*!

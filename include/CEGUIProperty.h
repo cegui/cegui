@@ -66,6 +66,9 @@ public:
 
 	\param help
 		String containing a description of the Property and it's usage.
+		
+	\param defaultValue
+		String holding the textual representation of the default value for this Property
 	*/
 	Property(const String& name, const String& help, const String& defaultValue = "") : 
 	  d_name(name),
@@ -144,7 +147,7 @@ public:
 		- true if the property has it's default value.
 		- false if the property has been modified from it's default value.
 	*/
-	virtual bool	isDefault(const PropertyReceiver* reciever) const;
+	virtual bool	isDefault(const PropertyReceiver* receiver) const;
 
 
 	/*!
@@ -157,7 +160,7 @@ public:
 	\return
 		String object containing a textual representation of the default value for this property.
 	*/
-	virtual String	getDefault(const PropertyReceiver* reciever) const;
+	virtual String	getDefault(const PropertyReceiver* receiver) const;
 
 protected:
 	String	d_name;		//!< String that stores the Property name.

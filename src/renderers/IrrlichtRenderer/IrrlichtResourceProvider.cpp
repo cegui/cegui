@@ -46,11 +46,11 @@ namespace CEGUI
 		if(fsys!=0)fsys->drop();
 	}
 
-	void IrrlichtResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
+	void IrrlichtResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup)
 	{
 		if(!fsys->existFile(filename.c_str()))
 		{
-			String sMsg=(utf8*)"Scheme::Scheme - Filename supplied for Scheme loading must be valid";
+			String sMsg=(utf8*)"IrrlichtResourceProvider::loadRawDataContainer - Filename supplied for loading must be valid";
 			sMsg+=(utf8*)" ["+filename+(utf8*)"]";
 			throw InvalidRequestException(sMsg);
 		}

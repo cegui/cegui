@@ -138,7 +138,7 @@ public:
 	\brief
 		Set the required quad split mode
 
-	\param formatting
+	\param split_mode
 		One of the QuadSplitMode values specifying the way quads are split into triangles.
 
 	\return

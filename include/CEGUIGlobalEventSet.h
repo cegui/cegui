@@ -110,6 +110,9 @@ public:
 	\param args
 		The EventArgs (or derived) object that is to be bassed to each subscriber of the Event.  Once all subscribers
 		have been called the 'handled' field of the event is updated appropriately.
+		
+	\param eventNamespace
+		String object describing the namespace prefix to use when firing the global event.
 
 	\return
 		Nothing.

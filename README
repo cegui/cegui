@@ -27,7 +27,7 @@ AUTHORS   - Contains a list of authors and contributors.
 The main start point for system documentation is the Readme.html file (still
 TODO).  API documentation built from the source by Doxygen
 (http://www.doxygen.org) is available, and can be found online at
-http://www.chaendaer.net/code/cegui/api_reference/.  For the very latest
+http://www.cegui.org.uk/api_reference/.  For the very latest
 information and help, visit the project home page at
 http://www.cegui.org.uk.
 
@@ -53,10 +53,6 @@ are as follows:
 
 Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
 Freetype2 (http://www.freetype.org)
-
-For Linux and Macintosh systems you also currently require the Ogre engine
-(http://www.ogre3d.org), although other renderer modules, for example OpenGL,
-will be available in the future.
 
 Have Fun!
 

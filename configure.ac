@@ -13,7 +13,6 @@ AM_PROG_LIBTOOL
 AC_CHECK_LIB([dl], [main])
 AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
 AC_CHECK_LIB([xerces-c], [main],, AC_MSG_ERROR([cannot find xerces library]), -lpthread)
-#AC_HAVE_LIBRARY(boost_signals-gcc,[main] , [AC_MSG_ERROR([cannot find boost libraries])])
 
 PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
 AC_SUBST(freetype2_CFLAGS)
@@ -34,7 +33,6 @@ AC_HEADER_STDC
 AC_CHECK_FUNCS([memmove memset])
 
 # check for renderers
-CEGUI_ENABLE_OGRE_RENDERER
 CEGUI_ENABLE_OPENGL_RENDERER
 
 dnl versioning info for libtool
@@ -59,9 +57,6 @@ AC_CONFIG_FILES([Makefile \
                  WidgetSets/WindowsLook/Makefile \
                  WidgetSets/WindowsLook/src/Makefile \
                  WidgetSets/WindowsLook/include/Makefile \
-                 include/renderers/OgreGUIRenderer/Makefile \
-                 src/renderers/OgreGUIRenderer/Makefile \
-                 CEGUI-OGRE.pc \
                  include/renderers/OpenGLGUIRenderer/Makefile \
                  src/renderers/OpenGLGUIRenderer/Makefile \
                  CEGUI-OPENGL.pc \

@@ -80,7 +80,7 @@ namespace CEGUI
 		return 0;
 	}
 /************************************************************************/
-	void IrrlichtTexture::loadFromFile(const String& filename)
+	void IrrlichtTexture::loadFromFile(const String& filename, const String& resourceGroup)
 	{
 		freeTexture();
 		driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS,true);

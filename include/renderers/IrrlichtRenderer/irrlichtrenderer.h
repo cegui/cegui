@@ -58,7 +58,7 @@ namespace CEGUI
 		/*! constructor 
 		\brief create the irrlicht renderer
 
-		\param dev, 
+		\param dev 
 		pointer to irr::IrrlichtDevice value specifying the irrlicht device
 
 		\param bWithIrrlichtResourceProvicer
@@ -170,6 +170,9 @@ namespace CEGUI
 		\param filename
 		String object that specifies the path and filename of the image file to use when creating the texture.
 
+		\param resourceGroup
+		Resource group identifier passed to the resource provider.
+
 		\return
 		a newly created Texture object.  The initial contents of the texture memory is the requested image file.
 
@@ -179,7 +182,7 @@ namespace CEGUI
 		size is governed by the larger of the width and height of the specified file.  You can check the ultimate sizes
 		by querying the texture after creation.
 		*/
-		virtual	Texture*	createTexture(const String& filename);
+		virtual	Texture*	createTexture(const String& filename, const String& resourceGroup);
 
 
 		/*!
