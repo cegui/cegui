@@ -29,6 +29,8 @@
 #include "OgreArchiveManager.h"
 
 #include <xercesc/framework/MemBufInputSource.hpp>
+#include <xercesc/framework/MemoryManager.hpp>
+#include <memory.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,7 +46,11 @@ namespace CEGUI
         }
 
         XERCES_CPP_NAMESPACE_USE
-        InputSource* mInputSource = new MemBufInputSource(input.getPtr(), input.getSize(), filename.c_str(), true);
+        size_t buffsz = input.getSize();
+        unsigned char* mem = reinterpret_cast<unsigned char*>(XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
+        memcpy(mem, input.getPtr(), buffsz);
+        InputSource* mInputSource = new MemBufInputSource(mem, buffsz, filename.c_str(), true);
+        input.clear();
 
         output.setData(mInputSource);
     }
@@ -59,7 +65,12 @@ namespace CEGUI
                 "Scheme::Scheme - Filename supplied for Scheme loading must be valid");
         }
 
-        output.setData(input.getPtr());
-        output.setSize(input.getSize());
+        size_t buffsz = input.getSize();
+        unsigned char* mem = reinterpret_cast<unsigned char*>(XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
+        memcpy(mem, input.getPtr(), buffsz);
+        input.clear();
+
+        output.setData(mem);
+        output.setSize(buffsz);
     }
 } // End of  CEGUI namespace section
