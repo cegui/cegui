@@ -57,7 +57,7 @@ namespace CEGUI
 	In Relative mode, layout is maintained for different screen resolutions, and also  offers the
 	ability for child windows to properly adjust their layout as their parent is sized.
 */
-enum CEGUIBASE_API MetricsMode
+enum MetricsMode
 {
 	Relative,		//!< Metrics are specified as a decimal fraction of parent Window size.
 	Absolute,		//!< Metrics are specified as whole pixels.

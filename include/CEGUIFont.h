@@ -48,7 +48,7 @@ namespace CEGUI
 \brief
 	Enumerated type that contains the valid flags that can be passed to createFont when creating a new font.
 */
-enum CEGUIBASE_API FontFlag
+enum FontFlag
 {
 	Default,			//!< Default / None.
 	NoAntiAlias 		//!< Fonts generated from TrueType files should not be anti-aliased.
@@ -59,7 +59,7 @@ enum CEGUIBASE_API FontFlag
 \brief
 	Enumerated type that contains valid formatting types that can be specified when rendering text into a Rect area (the formatting Rect).
 */
-enum CEGUIBASE_API TextFormatting
+enum TextFormatting
 {
 	LeftAligned,			//!< All text is printed on a single line.  The left-most character is aligned with the left edge of the formatting Rect.
 	RightAligned,			//!< All text is printed on a single line.  The right-most character is aligned with the right edge of the formatting Rect.
