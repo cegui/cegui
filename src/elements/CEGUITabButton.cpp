@@ -105,7 +105,11 @@ Draw method
 *************************************************************************/
 void TabButton::drawSelf(float z)
 {
-    if (d_selected)
+	if (isHovering())
+	{
+		drawHover(z);
+	}
+    else if (d_selected)
     {
         drawPushed(z);
     }
