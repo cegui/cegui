@@ -34,6 +34,7 @@
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "xercesc/framework/MemBufInputSource.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -127,9 +128,14 @@ void Imageset::load(const String& filename)
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
-    InputSourceContainer imagesetSchemaData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(ImagesetSchemaName, imagesetSchemaData);
-    parser->loadGrammar(*(imagesetSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+//    InputSourceContainer imagesetSchemaData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(ImagesetSchemaName, imagesetSchemaData);
+//    parser->loadGrammar(*(imagesetSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+
+    RawDataContainer rawSchemaData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(ImagesetSchemaName, rawSchemaData);
+    MemBufInputSource  imagesetSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), ImagesetSchemaName, false);
+    parser->loadGrammar(imagesetSchemaData, Grammar::SchemaGrammarType, true);
     // enable grammar reuse
     parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
@@ -143,13 +149,18 @@ void Imageset::load(const String& filename)
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
-    InputSourceContainer imagesetData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename,imagesetData);
+//    InputSourceContainer imagesetData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename,imagesetData);
+
+    RawDataContainer rawXMLData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    MemBufInputSource  imagesetData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(*(imagesetData.getDataPtr()));
+//        parser->parse(*(imagesetData.getDataPtr()));
+        parser->parse(imagesetData);
 	}
 	catch(const XMLException& exc)
 	{

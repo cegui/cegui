@@ -33,21 +33,21 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    void DefaultResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
-    {
-        if (filename.empty() || (filename == (utf8*)""))
-        {
-            throw InvalidRequestException((utf8*)
-                "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
-        }
-
-        XERCES_CPP_NAMESPACE_USE
-        XMLCh* pval = XMLString::transcode(filename.c_str());
-        InputSource* mInputSource = new LocalFileInputSource(pval);
-        XMLString::release(&pval);
-
-        output.setData(mInputSource);
-    }
+//    void DefaultResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
+//    {
+//        if (filename.empty() || (filename == (utf8*)""))
+//        {
+//            throw InvalidRequestException((utf8*)
+//                "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
+//        }
+//
+//        XERCES_CPP_NAMESPACE_USE
+//        XMLCh* pval = XMLString::transcode(filename.c_str());
+//        InputSource* mInputSource = new LocalFileInputSource(pval);
+//        XMLString::release(&pval);
+//
+//        output.setData(mInputSource);
+//    }
 
     void DefaultResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
     {

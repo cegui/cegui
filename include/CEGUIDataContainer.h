@@ -29,7 +29,7 @@
 #include "CEGUIBase.h"
 
 #include <malloc.h>
-#include <xercesc/sax/InputSource.hpp>
+//#include <xercesc/sax/InputSource.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -145,7 +145,7 @@ public:
 };
 
 //typedef DataContainer<unsigned char> RawDataContainer;
-typedef DataContainer<XERCES_CPP_NAMESPACE::InputSource> InputSourceContainer;
+//typedef DataContainer<XERCES_CPP_NAMESPACE::InputSource> InputSourceContainer;
 
 } // End of  CEGUI namespace section
 

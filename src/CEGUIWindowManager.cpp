@@ -32,6 +32,7 @@
 
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include "xercesc/framework/MemBufInputSource.hpp"
 
 
 
@@ -191,9 +192,15 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
-    InputSourceContainer layoutSchemaData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUILayoutSchemaName, layoutSchemaData);
-    parser->loadGrammar(*(layoutSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+//    InputSourceContainer layoutSchemaData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUILayoutSchemaName, layoutSchemaData);
+//    parser->loadGrammar(*(layoutSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+
+    RawDataContainer rawSchemaData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUILayoutSchemaName, rawSchemaData);
+    MemBufInputSource  layoutSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), GUILayoutSchemaName, false);
+    parser->loadGrammar(layoutSchemaData, Grammar::SchemaGrammarType, true);
+
     // enable grammar reuse
     parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
@@ -207,13 +214,18 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
-    InputSourceContainer layoutData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, layoutData);
+//    InputSourceContainer layoutData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, layoutData);
+
+    RawDataContainer rawXMLData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    MemBufInputSource  layoutData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(*(layoutData.getDataPtr()));
+//        parser->parse(*(layoutData.getDataPtr()));
+        parser->parse(layoutData);
 
 		// log the completion of loading
 		Logger::getSingleton().logEvent((utf8*)"---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);

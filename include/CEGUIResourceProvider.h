@@ -61,17 +61,17 @@ public:
         Accessor functions
     *************************************************************************/
 
-    /*!
-    \brief
-        Load XML data using InputSource objects.
-
-    \param filename
-        String containing a filename of the resource to be loaded.
-
-	\param output
-		Reference to a InputSourceContainer object to load the data into.
-    */
-    virtual void loadInputSourceContainer(const String& filename, InputSourceContainer& output) = 0;
+//    /*!
+//    \brief
+//        Load XML data using InputSource objects.
+//
+//    \param filename
+//        String containing a filename of the resource to be loaded.
+//
+//	\param output
+//		Reference to a InputSourceContainer object to load the data into.
+//   */
+//    virtual void loadInputSourceContainer(const String& filename, InputSourceContainer& output) = 0;
 
     /*!
     \brief

@@ -39,6 +39,7 @@
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "xercesc/framework/MemBufInputSource.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -71,11 +72,17 @@ Scheme::Scheme(const String& filename)
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
-    InputSourceContainer schemeSchemaData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUISchemeSchemaName, schemeSchemaData);
+//    InputSourceContainer schemeSchemaData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUISchemeSchemaName, schemeSchemaData);
+//
+//    parser->loadGrammar(*(schemeSchemaData.getDataPtr()),
+//            Grammar::SchemaGrammarType, true);
 
-    parser->loadGrammar(*(schemeSchemaData.getDataPtr()),
-            Grammar::SchemaGrammarType, true);
+    RawDataContainer rawSchemaData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUISchemeSchemaName, rawSchemaData);
+    MemBufInputSource  schemeSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), GUISchemeSchemaName, false);
+    parser->loadGrammar(schemeSchemaData, Grammar::SchemaGrammarType, true);
+
     // enable grammar reuse
     parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
@@ -89,13 +96,18 @@ Scheme::Scheme(const String& filename)
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
-    InputSourceContainer schemeData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, schemeData);
+//    InputSourceContainer schemeData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, schemeData);
+
+    RawDataContainer rawXMLData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    MemBufInputSource  schemeData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(*(schemeData.getDataPtr()));
+//        parser->parse(*(schemeData.getDataPtr()));
+        parser->parse(schemeData);
 	}
 	catch(const XMLException& exc)
 	{

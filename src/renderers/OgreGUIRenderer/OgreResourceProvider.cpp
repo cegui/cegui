@@ -35,25 +35,25 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    void OgreResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
-    {
-        Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str());
-
-		if (input.isNull())
-		{
-			throw InvalidRequestException((utf8*)
-				"Scheme::Scheme - Filename supplied for Scheme loading must be valid");
-		}
-
-        XERCES_CPP_NAMESPACE_USE
-        size_t buffsz = input->size();
-        unsigned char* mem = reinterpret_cast<unsigned char*>(XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
-        memcpy(mem, input.getPointer()->getAsString().c_str(), buffsz);
-        InputSource* mInputSource = new MemBufInputSource(mem, buffsz, filename.c_str(), true);
-        input.setNull();
-
-        output.setData(mInputSource);
-    }
+//    void OgreResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
+//   {
+//        Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str());
+//
+//		if (input.isNull())
+//		{
+//			throw InvalidRequestException((utf8*)
+//				"Scheme::Scheme - Filename supplied for Scheme loading must be valid");
+//		}
+//
+//       XERCES_CPP_NAMESPACE_USE
+//        size_t buffsz = input->size();
+//        unsigned char* mem = reinterpret_cast<unsigned char*>(XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
+//        memcpy(mem, input.getPointer()->getAsString().c_str(), buffsz);
+//        InputSource* mInputSource = new MemBufInputSource(mem, buffsz, filename.c_str(), true);
+//        input.setNull();
+//
+//       output.setData(mInputSource);
+//    }
 
     void OgreResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
     {

@@ -38,6 +38,7 @@
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "xercesc/framework/MemBufInputSource.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -713,9 +714,14 @@ void Font::load(const String& filename)
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
-    InputSourceContainer fontSchemaData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(FontSchemaName, fontSchemaData);
-    parser->loadGrammar(*(fontSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+//    InputSourceContainer fontSchemaData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(FontSchemaName, fontSchemaData);
+//    parser->loadGrammar(*(fontSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+
+    RawDataContainer rawSchemaData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(FontSchemaName, rawSchemaData);
+    MemBufInputSource  fontSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), FontSchemaName, false);
+    parser->loadGrammar(fontSchemaData, Grammar::SchemaGrammarType, true);
     // enable grammar reuse
     parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
@@ -729,13 +735,18 @@ void Font::load(const String& filename)
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
-    InputSourceContainer fontData;
-    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, fontData);
+//    InputSourceContainer fontData;
+//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, fontData);
+
+    RawDataContainer rawXMLData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    MemBufInputSource  fontData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(*(fontData.getDataPtr()));
+//        parser->parse(*(fontData.getDataPtr()));
+        parser->parse(fontData);
 	}
 	catch(const XMLException& exc)
 	{

@@ -42,6 +42,7 @@
 #include "xercesc/sax2/DefaultHandler.hpp"
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "xercesc/framework/MemBufInputSource.hpp"
 #include "CEGUIDataContainer.h"
 #include "CEGUIResourceProvider.h"
 #include "CEGUIGlobalEventSet.h"
@@ -217,10 +218,16 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 		parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
 
-        InputSourceContainer configSchemaData;
-        System::getSingleton().getResourceProvider()->loadInputSourceContainer(CEGUIConfigSchemaName, configSchemaData);
-        parser->loadGrammar(*(configSchemaData.getDataPtr()), 
-                Grammar::SchemaGrammarType, true);
+//        InputSourceContainer configSchemaData;
+//        System::getSingleton().getResourceProvider()->loadInputSourceContainer(CEGUIConfigSchemaName, configSchemaData);
+//        parser->loadGrammar(*(configSchemaData.getDataPtr()), 
+//                Grammar::SchemaGrammarType, true);
+
+        RawDataContainer rawSchemaData;
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(CEGUIConfigSchemaName, rawSchemaData);
+        MemBufInputSource  configSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), CEGUIConfigSchemaName, false);
+        parser->loadGrammar(configSchemaData, Grammar::SchemaGrammarType, true);
+
         // enable grammar reuse
         parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
 
@@ -234,13 +241,18 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 		parser->setContentHandler(&handler);
 		parser->setErrorHandler(&handler);
 
-        InputSourceContainer configData;
-        d_resourceProvider->loadInputSourceContainer(configFile, configData);
+//        InputSourceContainer configData;
+//        d_resourceProvider->loadInputSourceContainer(configFile, configData);
+
+        RawDataContainer rawXMLData;
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(configFile, rawXMLData);
+        MemBufInputSource  configData(rawXMLData.getDataPtr(), rawXMLData.getSize(), configFile.c_str(), false);
 
 		// do parsing of xml file
 		try
 		{
-			parser->parse(*(configData.getDataPtr()));
+//            parser->parse(*(configData.getDataPtr()));
+            parser->parse(configData);
 
 			// get the strings read
 			configLogname		= handler.getLogFilename();

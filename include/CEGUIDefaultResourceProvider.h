@@ -42,7 +42,7 @@ public:
 	DefaultResourceProvider() {}
 	~DefaultResourceProvider(void) {}
 
-    void loadInputSourceContainer(const String& filename, InputSourceContainer& output);
+//    void loadInputSourceContainer(const String& filename, InputSourceContainer& output);
     void loadRawDataContainer(const String& filename, RawDataContainer& output);
 };
 
