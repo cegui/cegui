@@ -891,8 +891,8 @@ void Font::calculateStaticVertSpacing(void)
 		{
 			const Image* img = pos->second.d_image;
 
-			if (img->getOffsetY() > d_max_bearingY)
-				d_max_bearingY = img->getOffsetY();
+			if (-img->getOffsetY() > d_max_bearingY)
+				d_max_bearingY = -img->getOffsetY();
 
 			if (img->getHeight() > d_lineHeight)
 				d_lineHeight = img->getHeight();
@@ -901,6 +901,7 @@ void Font::calculateStaticVertSpacing(void)
 		d_max_bearingY *= scale;
 		d_lineHeight *= scale;
 		d_lineSpacing = d_lineHeight;
+        d_maxGlyphHeight = d_lineHeight;
 	}
 
 }
