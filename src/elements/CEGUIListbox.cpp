@@ -429,7 +429,7 @@ void Listbox::setMultiselectEnabled(bool setting)
 		{
 			ListboxItem* itm = getFirstSelectedItem();
 
-			while (itm = getNextSelected(itm))
+			while ((itm = getNextSelected(itm)))
 			{
 				itm->setSelected(false);
 			}

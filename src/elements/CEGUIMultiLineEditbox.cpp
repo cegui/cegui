@@ -374,8 +374,6 @@ void MultiLineEditbox::ensureCaratIsVisible(void)
 {
 	// calculate the location of the carat
 	const Font* fnt = getFont();
-
-	uint indexCount = 0;
 	uint caratLine = getLineNumberFromIndex(d_caratPos);
 
 	if (caratLine < (uint)d_lines.size())
@@ -1477,6 +1475,10 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 				handleLineEnd(e.sysKeys);
 			}
 			break;
+
+        // default case is now to leave event as (possibly) unhandled.
+        default:
+            return;
 		}
 
 		e.handled = true;

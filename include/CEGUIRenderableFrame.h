@@ -47,7 +47,7 @@ enum FrameLocation
 	LeftEdge,			// Left edge of a frame / rectangle.	
 	TopEdge,			// Top edge of a frame / rectangle.
 	RightEdge,			// Right edge of a frame / rectangle.
-	BottomEdge,			// Bottom edge of a frame / rectangle.
+	BottomEdge			// Bottom edge of a frame / rectangle.
 };
 
 

@@ -57,11 +57,11 @@ Thumb::Thumb(const String& type, const String& name) :
 	d_hotTrack(true),
 	d_vertFree(false),
 	d_horzFree(false),
-	d_beingDragged(false),
 	d_vertMin(0.0f),
-	d_horzMin(0.0f),
 	d_vertMax(1.0f),
-	d_horzMax(1.0f)
+    d_horzMin(0.0f),
+	d_horzMax(1.0f),
+    d_beingDragged(false)
 {
 	addThumbEvents();
 	addThumbProperties();

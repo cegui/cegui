@@ -74,7 +74,7 @@ public:
 		SizingTop,			//!< Position will size from the top.
 		SizingLeft,			//!< Position will size from the left.
 		SizingBottom,		//!< Position will size from the bottom.
-		SizingRight,		//!< Position will size from the right.
+		SizingRight         //!< Position will size from the right.
 	};
 
 	/*!

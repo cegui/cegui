@@ -689,6 +689,10 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 		case Key::End:
 			handleEnd(e.sysKeys);
 			break;
+
+        // default case is now to leave event as (possibly) unhandled.
+        default:
+            return;
 		}
 
 		e.handled = true;

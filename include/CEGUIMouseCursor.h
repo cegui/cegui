@@ -53,7 +53,7 @@ namespace CEGUI
 enum MouseCursorImage
 {		
 	BlankMouseCursor	= 0,		//!< No image should be displayed for the mouse cursor.
-	DefaultMouseCursor	= -1,		//!< The default mouse cursor image should be displayed.
+	DefaultMouseCursor	= -1		//!< The default mouse cursor image should be displayed.
 };
 
 

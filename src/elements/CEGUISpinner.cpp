@@ -230,6 +230,7 @@ namespace CEGUI
         }
 
         int res, tmp;
+        uint utmp;
         float val;
 
         switch (d_inputMode)
@@ -242,12 +243,12 @@ namespace CEGUI
             val = static_cast<float>(tmp);
             break;
         case Hexadecimal:
-            res = std::sscanf(d_editbox->getText().c_str(), "%x", &tmp);
-            val = static_cast<float>(tmp);
+            res = std::sscanf(d_editbox->getText().c_str(), "%x", &utmp);
+            val = static_cast<float>(utmp);
             break;
         case Octal:
-            res = std::sscanf(d_editbox->getText().c_str(), "%o", &tmp);
-            val = static_cast<float>(tmp);
+            res = std::sscanf(d_editbox->getText().c_str(), "%o", &utmp);
+            val = static_cast<float>(utmp);
             break;
         default:
             throw InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered.");

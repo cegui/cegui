@@ -273,8 +273,6 @@ void WLMultiLineEditbox::renderCarat(float baseX, float baseY, const Rect& clipp
 {
 	// calculate position of carat
 	const Font* fnt = getFont();
-
-	uint indexCount = 0;
 	uint caratLine = getLineNumberFromIndex(d_caratPos);
 
 	if (caratLine < (uint)d_lines.size())

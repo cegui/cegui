@@ -38,13 +38,6 @@ namespace CEGUI
 
 /*!
 \brief
-	Routine to do some common initialisation of static widgets
-*/
-static void initTaharezStatic(Static* s);
-
-
-/*!
-\brief
 	StaticText class for the TaharezLook Gui Scheme
 */
 class TAHAREZLOOK_API TLStaticText : public StaticText

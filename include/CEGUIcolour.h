@@ -32,6 +32,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+typedef uint32 argb_t;    //!< 32 bit ARGB representation of a colour.
+
 /*!
 \brief
 	Class representing colour values within the system.
@@ -45,12 +47,12 @@ public:
 	colour(void);
 	colour(const colour& val);
 	colour(float red, float green, float blue, float alpha = 1.0f);
-	colour(ulong argb);
+	colour(argb_t argb);
 
 	/*************************************************************************
 		Accessors
 	*************************************************************************/
-	ulong	getARGB(void) const
+	argb_t	getARGB(void) const
 	{
 		if (!d_argbValid)
 		{
@@ -74,7 +76,7 @@ public:
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
-	void	setARGB(ulong argb);
+	void	setARGB(argb_t argb);
 	inline void setAlpha(float alpha)
     {
         d_argbValid = false;
@@ -135,7 +137,7 @@ public:
 	/*************************************************************************
 		Operators
 	*************************************************************************/
-	inline colour& operator=(ulong val)
+	inline colour& operator=(argb_t val)
     {
         setARGB(val);
         return *this;
@@ -153,7 +155,7 @@ public:
         return *this;
     }
 
-	inline colour& operator&=(ulong val)
+	inline colour& operator&=(argb_t val)
     {
         setARGB(getARGB() & val);
         return *this;
@@ -165,7 +167,7 @@ public:
         return *this;
     }
 
-	inline colour& operator|=(ulong val)
+	inline colour& operator|=(argb_t val)
     {
         setARGB(getARGB() | val);
         return *this;
@@ -238,7 +240,7 @@ public:
 	//
 	// Conversion operators
 	//
-	operator ulong() const		{return getARGB();}
+	operator argb_t() const		{return getARGB();}
 
 private:
 	/*************************************************************************
@@ -248,13 +250,13 @@ private:
 	\brief
 		calculate and return the ARGB value based on the current colour component values.
 	*/
-	ulong	calculateARGB(void) const;
+	argb_t	calculateARGB(void) const;
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	float d_alpha, d_red, d_green, d_blue;		//!< Colour components.
-	mutable ulong d_argb;						//!< Colour as ARGB value.
+	mutable argb_t d_argb;						//!< Colour as ARGB value.
 	mutable bool d_argbValid;					//!< True if argb value is valid.
 };
 

@@ -628,7 +628,6 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 *************************************************************************/
 void Font::constructor_impl(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set)
 {
-	FontManager&	 fman	= FontManager::getSingleton();
 	ImagesetManager& ismgr	= ImagesetManager::getSingleton();
 
 	// pull a-a setting from flags
@@ -968,7 +967,7 @@ uint Font::getFormattedLineCount(const String& text, const Rect& format_area, Te
 	// handle simple non-wrapped cases.
 	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned))
 	{
-		return std::count(text.begin(), text.end(), '\n') + 1;
+		return std::count(text.begin(), text.end(), static_cast<utf8>('\n')) + 1;
 	}
 
 	// handle wraping cases

@@ -257,7 +257,7 @@ colour PropertyHelper::stringToColour(const String& str)
 {
 	using namespace std;
 
-	ulong val = 0xFF000000;
+	argb_t val = 0xFF000000;
 	sscanf(str.c_str(), " %8X", &val);
 
 	return colour(val);
@@ -280,7 +280,7 @@ ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
 	using namespace std;
 
-	ulong topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
+	argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
 	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &topLeft, &topRight, &bottomLeft, &bottomRight);
 
 	return ColourRect(topLeft, topRight, bottomLeft, bottomRight);

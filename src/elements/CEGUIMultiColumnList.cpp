@@ -848,8 +848,6 @@ uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx)
 	}
 	else
 	{
-		uint col_idx = 0;
-		
 		// Build the new row (empty)
 		ListRow row;
 		row.d_sortColumn = getSortColumn();

@@ -47,9 +47,9 @@ StaticTextProperties::HorzScrollbar		StaticText::d_horzScrollbarProperty;
 *************************************************************************/
 StaticText::StaticText(const String& type, const String& name) :
 	Static(type, name),
-	d_textCols(0xFFFFFFFF),
 	d_horzFormatting(LeftAligned),
 	d_vertFormatting(VertCentred),
+    d_textCols(0xFFFFFFFF),
 	d_enableVertScrollbar(false),
 	d_enableHorzScrollbar(false)
 {

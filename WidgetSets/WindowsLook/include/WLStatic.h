@@ -35,13 +35,6 @@ namespace CEGUI
 
 /*!
 \brief
-	Routine to do some common initialisation of static widgets
-*/
-static void initWinLookStatic(Static* s);
-
-
-/*!
-\brief
 	StaticText class for the WindowsLook Gui Scheme
 */
 class WINDOWSLOOK_API WLStaticText : public StaticText

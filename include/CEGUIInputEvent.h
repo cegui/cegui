@@ -221,7 +221,7 @@ enum CEGUIBASE_API SystemKey
 	Control			= 0x08,			//!< Either control key.
 	MiddleMouse		= 0x10,			//!< The middle mouse button.
 	X1Mouse			= 0x20,			//!< The first 'extra' mouse button
-	X2Mouse			= 0x40,			//!< The second 'extra' mouse button.
+	X2Mouse			= 0x40			//!< The second 'extra' mouse button.
 };
 
 

@@ -219,8 +219,6 @@ void WLFrameWindow::layoutComponentWidgets()
 {
 	// TODO: Magic number removal
 
-	ImagesetManager& ismgr = ImagesetManager::getSingleton();
-
 	// calculate and set size of title bar
 	Size titleSz;
 	titleSz.d_height = d_titlebar->getFont()->getLineSpacing() + TitlebarTextPadding;

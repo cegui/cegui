@@ -710,7 +710,7 @@ private:
 	Helper function used in sorting to compare two list box item text strings
 	via the ListboxItem pointers and return if \a a is less than \a b.
 */
-static bool lbi_less(const ListboxItem* a, const ListboxItem* b);
+bool lbi_less(const ListboxItem* a, const ListboxItem* b);
 
 
 /*!
@@ -718,7 +718,7 @@ static bool lbi_less(const ListboxItem* a, const ListboxItem* b);
 	Helper function used in sorting to compare two list box item text strings
 	via the ListboxItem pointers and return if \a a is greater than \a b.
 */
-static bool lbi_greater(const ListboxItem* a, const ListboxItem* b);
+bool lbi_greater(const ListboxItem* a, const ListboxItem* b);
 
 } // End of  CEGUI namespace section
 

@@ -264,12 +264,10 @@ void TLMultiColumnList::renderListboxBaseImagery(float z)
 *************************************************************************/
 void TLMultiColumnList::storeFrameSizes(void)
 {
-	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
-
-	d_frameLeftSize		= 2;//iset->getImage(LeftEdgeImageName).getWidth();
-	d_frameRightSize	= 2;//iset->getImage(RightEdgeImageName).getWidth();
-	d_frameTopSize		= 2;//iset->getImage(TopEdgeImageName).getHeight();
-	d_frameBottomSize	= 2;//iset->getImage(BottomEdgeImageName).getHeight();
+	d_frameLeftSize		= 2;
+	d_frameRightSize	= 2;
+	d_frameTopSize		= 2;
+	d_frameBottomSize	= 2;
 }
 
 

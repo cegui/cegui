@@ -60,7 +60,7 @@ colour::colour(float red, float green, float blue, float alpha) :
 }
 
 
-colour::colour(ulong argb)
+colour::colour(argb_t argb)
 {
 	setARGB(argb);
 }
@@ -107,10 +107,6 @@ float colour::getHue(void) const
 
 float colour::getSaturation(void) const
 {
-	float pRed = d_red;
-	float pGreen = d_green;
-	float pBlue = d_blue;
-
 	float pMax = ceguimax(ceguimax(d_red, d_green), d_blue);
 	float pMin = ceguimin(ceguimin(d_red, d_green), d_blue);
 
@@ -135,10 +131,6 @@ float colour::getSaturation(void) const
 
 float colour::getLumination(void) const
 {
-	float pRed = d_red;
-	float pGreen = d_green;
-	float pBlue = d_blue;
-
 	float pMax = ceguimax(ceguimax(d_red, d_green), d_blue);
 	float pMin = ceguimin(ceguimin(d_red, d_green), d_blue);
 
@@ -147,7 +139,7 @@ float colour::getLumination(void) const
 }
 
 
-void colour::setARGB(ulong argb)
+void colour::setARGB(argb_t argb)
 {
 	d_argb = argb;
 
@@ -237,13 +229,13 @@ void colour::setHSL(float hue, float saturation, float luminance, float alpha)
 }
 
 
-ulong colour::calculateARGB(void) const
+argb_t colour::calculateARGB(void) const
 {
 	return (
-		static_cast<ulong>(d_alpha * 255) << 24 |
-		static_cast<ulong>(d_red * 255) << 16 |
-		static_cast<ulong>(d_green * 255) << 8 |
-		static_cast<ulong>(d_blue * 255)
+		static_cast<argb_t>(d_alpha * 255) << 24 |
+		static_cast<argb_t>(d_red * 255) << 16 |
+		static_cast<argb_t>(d_green * 255) << 8 |
+		static_cast<argb_t>(d_blue * 255)
 	);
 }
 
