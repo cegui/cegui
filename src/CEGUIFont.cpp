@@ -498,7 +498,13 @@ void Font::drawGlyphToBuffer(ulong* buffer, uint buf_width)
 			switch (glyph_bitmap->pixel_mode)
 			{
 			case FT_PIXEL_MODE_GRAY:
-				buffer[j] = ((glyph_bitmap->buffer[(i * glyph_bitmap->pitch) + j] << 24) | 0x00FFFFFF);
+				{
+					uchar* bytebuff = reinterpret_cast<uchar*>(&buffer[j]);
+					*bytebuff++ = 0xFF;
+					*bytebuff++ = 0xFF;
+					*bytebuff++ = 0xFF;
+					*bytebuff = glyph_bitmap->buffer[(i * glyph_bitmap->pitch) + j];
+				}
 				break;
 
 			case FT_PIXEL_MODE_MONO:
