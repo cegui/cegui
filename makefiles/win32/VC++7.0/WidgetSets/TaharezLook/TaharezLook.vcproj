@@ -12,20 +12,21 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm125"
+				AdditionalOptions="/Zm150"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\TaharezLook\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS;_STLP_DEBUG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				DisableLanguageExtensions="FALSE"
+				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
@@ -36,19 +37,20 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CEGUIBase.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
+				AdditionalDependencies="CEGUIBase_d.lib"
+				OutputFile="$(OutDir)/CEGUITaharezLook_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
+				ProgramDatabaseFile="$(IntDir)/CEGUITaharezLook_d.pdb"
 				SubSystem="2"
-				ImportLibrary="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\..\lib\CEGUITaharezLook_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -58,21 +60,28 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm125"
+				AdditionalOptions="/Zm150"
 				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\TaharezLook\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
 				RuntimeLibrary="2"
 				DisableLanguageExtensions="FALSE"
+				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
@@ -84,20 +93,21 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="CEGUIBase.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
+				OutputFile="$(OutDir)/CEGUITaharezLook.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
+				ProgramDatabaseFile="$(IntDir)/CEGUITaharezLook.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\..\lib\CEGUITaharezLook.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -107,7 +117,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<Files>

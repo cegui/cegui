@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -20,10 +20,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\..\ogrenew\OgreMain\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRE_GUIRENDERER_EXPORTS;_STLP_DEBUG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRE_GUIRENDERER_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
@@ -34,19 +35,20 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CEGUIBase.lib Ogremain_d.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
+				AdditionalDependencies="CEGUIBase_d.lib Ogremain_d.lib"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)&quot;;..\..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib&quot;;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
-				ImportLibrary="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -56,11 +58,17 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -69,6 +77,7 @@
 				AdditionalIncludeDirectories="..\..\..\..\..\..\ogrenew\OgreMain\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGRE_GUIRENDERER_EXPORTS"
 				RuntimeLibrary="2"
+				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
@@ -82,18 +91,19 @@
 				AdditionalDependencies="CEGUIBase.lib Ogremain.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)&quot;;..\..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib&quot;;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\..\lib\$(ProjectName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -103,7 +113,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<Files>
