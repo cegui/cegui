@@ -428,6 +428,7 @@ void DirectX81Renderer::initPerFrameStates(void)
 	d_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	d_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	d_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
+    d_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 
 	// setup texture addressing settings
