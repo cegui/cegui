@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "elements/CEGUIButtonBase.h"
+#include "elements/CEGUICheckboxProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -127,6 +128,18 @@ protected:
 		Implementation Data
 	*************************************************************************/
 	bool		d_selected;					//!< true if check-box is selected (has checkmark)
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static CheckboxProperties::Selected	d_selectedProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addCheckboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -29,6 +29,12 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definitions for Properties
+*************************************************************************/
+CheckboxProperties::Selected	Checkbox::d_selectedProperty;
+
+
+/*************************************************************************
 	Event name constants
 *************************************************************************/
 // generated internally by Window
@@ -44,6 +50,8 @@ Checkbox::Checkbox(const String& type, const String& name) :
 {
 	// add events for this widget
 	addCheckboxEvents();
+
+	addCheckboxProperties();
 }
 
 
@@ -116,6 +124,15 @@ void Checkbox::addCheckboxEvents(void)
 {
 	addEvent(CheckStateChanged);
 }
+
+/*************************************************************************
+	Add properties
+*************************************************************************/
+void Checkbox::addCheckboxProperties(void)
+{
+	addProperty(&d_selectedProperty);
+}
+
 
 
 } // End of  CEGUI namespace section

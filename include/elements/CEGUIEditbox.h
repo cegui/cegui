@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIEditboxProperties.h"
 #include <boost/regex.hpp>
 
 
@@ -651,6 +652,30 @@ protected:
 	colour	d_selectTextColour;				//!< Text colour used when text is highlighted
 	colour	d_selectBrushColour;			//!< Colour to apply to the selection brush.
 	colour	d_inactiveSelectBrushColour;	//!< Colour to apply to the selection brush when widget is inactive / read-only.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static EditboxProperties::ReadOnly					d_readOnlyProperty;
+	static EditboxProperties::MaskText					d_maskTextProperty;
+	static EditboxProperties::MaskCodepoint				d_maskCodepointProperty;
+	static EditboxProperties::ValidationString			d_validationStringProperty;
+	static EditboxProperties::CaratIndex				d_caratIndexProperty;
+	static EditboxProperties::SelectionStart			d_selectionStartProperty;
+	static EditboxProperties::SelectionLength			d_selectionLengthProperty;
+	static EditboxProperties::MaxTextLength				d_maxTextLengthProperty;
+	static EditboxProperties::NormalTextColour			d_normalTextColourProperty;
+	static EditboxProperties::SelectedTextColour		d_selectedTextColourProperty;
+	static EditboxProperties::ActiveSelectionColour		d_activeSelectionColourProperty;
+	static EditboxProperties::InactiveSelectionColour	d_inactiveSelectionColourProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addEditboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

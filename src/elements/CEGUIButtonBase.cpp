@@ -30,6 +30,15 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definition of Properties for this class
+*************************************************************************/
+ButtonBaseProperties::NormalTextColour		ButtonBase::d_normalTextColourProperty;
+ButtonBaseProperties::HoverTextColour		ButtonBase::d_hoverTextColourProperty;
+ButtonBaseProperties::PushedTextColour		ButtonBase::d_pushedTextColourProperty;
+ButtonBaseProperties::DisabledTextColour	ButtonBase::d_disabledTextColourProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // default colours for text label rendering
@@ -51,6 +60,7 @@ ButtonBase::ButtonBase(const String& type, const String& name) :
 	d_pushedColour(DefaultPushedLabelColour),
 	d_disabledColour(DefaultDisabledLabelColour)
 {
+	addButtonBaseProperties();
 }
 
 
@@ -273,6 +283,18 @@ void ButtonBase::onMouseLeaves(MouseEventArgs& e)
 	requestRedraw();
 
 	e.handled = true;
+}
+
+
+/*************************************************************************
+	Add properties for this class
+*************************************************************************/
+void ButtonBase::addButtonBaseProperties(void)
+{
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_hoverTextColourProperty);
+	addProperty(&d_pushedTextColourProperty);
+	addProperty(&d_disabledTextColourProperty);
 }
 
 } // End of  CEGUI namespace section

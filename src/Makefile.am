@@ -46,10 +46,13 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
 		      CEGUIWindowProperties.cpp \
 		      CEGUIXmlHandlerHelper.cpp\
                       elements/CEGUIButtonBase.cpp \
+		      elements/CEGUIButtonBaseProperties.cpp \
                       elements/CEGUICheckbox.cpp \
+		      elements/CEGUICheckboxProperties.cpp \
                       elements/CEGUICombobox.cpp \
                       elements/CEGUIComboDropList.cpp \
                       elements/CEGUIEditbox.cpp \
+		      elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \

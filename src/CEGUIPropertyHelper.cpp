@@ -220,4 +220,41 @@ String PropertyHelper::imageToString(const Image* const val)
 }
 
 
+String PropertyHelper::colourToString(colour val)
+{
+	char buff[16];
+	std::sprintf(buff, "%.8X", val);
+
+	return String((utf8*)buff);
+}
+
+
+colour PropertyHelper::stringToColour(const String& str)
+{
+	colour val = 0xFF000000;
+	std::sscanf(str.c_str(), " %8X", &val);
+
+	return val;
+
+}
+
+
+String PropertyHelper::colourRectToString(const ColourRect& val)
+{
+	char buff[64];
+	std::sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left, val.d_top_right, val.d_bottom_left, val.d_bottom_right);
+
+	return String((utf8*)buff);
+}
+
+
+ColourRect PropertyHelper::stringtoColourRect(const String& str)
+{
+	ColourRect val(0xFF000000);
+
+	std::sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &val.d_top_left, &val.d_top_right, &val.d_bottom_left, &val.d_bottom_right);
+
+	return val;
+}
+
 } // End of  CEGUI namespace section

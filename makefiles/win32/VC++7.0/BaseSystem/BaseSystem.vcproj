@@ -248,7 +248,13 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIButtonBase.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIButtonBaseProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUICheckbox.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUICheckboxProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUICombobox.cpp">
@@ -258,6 +264,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIEditbox.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIEditboxProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIFrameWindow.cpp">
@@ -466,7 +475,13 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIButtonBase.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIButtonBaseProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUICheckbox.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUICheckboxProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUICombobox.h">
@@ -476,6 +491,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIEditbox.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIEditboxProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIFrameWindow.h">

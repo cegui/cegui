@@ -38,6 +38,23 @@ namespace CEGUI
 	Undo support
 *************************************************************************/
 /*************************************************************************
+	Definition of Properties
+*************************************************************************/
+EditboxProperties::ReadOnly					Editbox::d_readOnlyProperty;
+EditboxProperties::MaskText					Editbox::d_maskTextProperty;
+EditboxProperties::MaskCodepoint			Editbox::d_maskCodepointProperty;
+EditboxProperties::ValidationString			Editbox::d_validationStringProperty;
+EditboxProperties::CaratIndex				Editbox::d_caratIndexProperty;
+EditboxProperties::SelectionStart			Editbox::d_selectionStartProperty;
+EditboxProperties::SelectionLength			Editbox::d_selectionLengthProperty;
+EditboxProperties::MaxTextLength			Editbox::d_maxTextLengthProperty;
+EditboxProperties::NormalTextColour			Editbox::d_normalTextColourProperty;
+EditboxProperties::SelectedTextColour		Editbox::d_selectedTextColourProperty;
+EditboxProperties::ActiveSelectionColour	Editbox::d_activeSelectionColourProperty;
+EditboxProperties::InactiveSelectionColour	Editbox::d_inactiveSelectionColourProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // default colours
@@ -82,6 +99,7 @@ Editbox::Editbox(const String& type, const String& name) :
 	d_inactiveSelectBrushColour(DefaultInactiveSelectionColour)
 {
 	addEditboxEvents();
+	addEditboxProperties();
 
 	// default to accepting all characters
 	setValidationString((utf8*)".*");
@@ -1059,5 +1077,25 @@ void Editbox::onTextChanged(WindowEventArgs& e)
 
 	e.handled = true;
 }
+
+/*************************************************************************
+	Add properties
+*************************************************************************/
+void Editbox::addEditboxProperties(void)
+{
+	addProperty(&d_readOnlyProperty);
+	addProperty(&d_maskTextProperty);
+	addProperty(&d_maskCodepointProperty);
+	addProperty(&d_validationStringProperty);
+	addProperty(&d_caratIndexProperty);
+	addProperty(&d_selectionStartProperty);
+	addProperty(&d_selectionLengthProperty);
+	addProperty(&d_maxTextLengthProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_selectedTextColourProperty);
+	addProperty(&d_activeSelectionColourProperty);
+	addProperty(&d_inactiveSelectionColourProperty);
+}
+
 
 } // End of  CEGUI namespace section

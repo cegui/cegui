@@ -28,6 +28,8 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIButtonBaseProperties.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -278,6 +280,20 @@ protected:
 	colour	d_hoverColour;					//!< Colour used for label text when rendering in highlighted state
 	colour	d_pushedColour;					//!< Colour used for label text when rendering in pushed state
 	colour	d_disabledColour;				//!< Colour used for label text when rendering in disabled state
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ButtonBaseProperties::NormalTextColour	d_normalTextColourProperty;
+	static ButtonBaseProperties::HoverTextColour	d_hoverTextColourProperty;
+	static ButtonBaseProperties::PushedTextColour	d_pushedTextColourProperty;
+	static ButtonBaseProperties::DisabledTextColour	d_disabledTextColourProperty;
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addButtonBaseProperties(void);
 };
 
 } // End of  CEGUI namespace section
