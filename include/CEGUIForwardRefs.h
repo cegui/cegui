@@ -38,6 +38,8 @@ class Vector3;
 class Size;
 class Exception;
 class Rect;
+class ColourRect;
+class colour;
 class Texture;
 class Renderer;
 class Image;
