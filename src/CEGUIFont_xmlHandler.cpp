@@ -156,7 +156,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 				d_glyphSet += first_codepoint;
 			}
 
-            uint flags = attributes.getValueAsBool(FontAntiAliasedAttribute, true);
+            uint flags = attributes.getValueAsBool(FontAntiAliasedAttribute, true) ? 0 : NoAntiAlias;
 
 			// perform pre-initialisation
 			d_font->setNativeResolution(Size(hres, vres));
