@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	TLCheckbox.h
-	created:	21/5/2004
+	filename: 	TLSlider.h
+	created:	22/5/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to Taharez Checkbox widget
+	purpose:	Interface to Taharez slider widget.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,12 +23,12 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _TLCheckbox_h_
-#define _TLCheckbox_h_
+#ifndef _TLSlider_h_
+#define _TLSlider_h_
 
 #include "TLModule.h"
+#include "elements/CEGUISlider.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUICheckbox.h"
 
 
 // Start of CEGUI namespace section
@@ -36,103 +36,128 @@ namespace CEGUI
 {
 /*!
 \brief
-	Checkbox class for the TaharezLook GUI scheme
+	Slider class for the Taharez Gui Scheme.
 */
-class TAHAREZLOOK_API TLCheckbox : public Checkbox
+class TAHAREZLOOK_API TLSlider : public Slider
 {
 public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// Image names
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
-	static const utf8	NormalImageName[];			//!< Name of the image to use for the normal state.
-	static const utf8	HighlightImageName[];		//!< Name of the image to use for the highlighted state.
-	static const utf8	CheckMarkImageName[];		//!< Name of the image to use for the check / selected mark.
+	static const utf8	ContainerImageName[];		//!< Name of the image to use for rendering the slider container
 
-	static const float	LabelPadding;				//!< Pixel padding value for text label (space between image and text label).
+	// window type stuff
+	static const utf8	ThumbType[];				//!< Window type to create for the sliders thumb.
+
+	// layout constants
+	static const float	ContainerPaddingX;
 
 
 	/*************************************************************************
-		Construction and Destruction
+		Construction / Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for Taharez Look Checkbox objects.
-
-	\param type
-		String object that specifies a type for this window, usually provided by a factory class.
-
-	\param name
-		String object that specifies a unique name that will be used to identify the new Window object
+		Constructor for Taharez slider widgets
 	*/
-	TLCheckbox(const String& type, const String& name);
+	TLSlider(const String& type, const String& name);
 
 
 	/*!
 	\brief
-		Destructor for TLCheckbox objects.
+		Destructor for Taharez slider widgets
 	*/
-	virtual ~TLCheckbox(void);
-
-	
-	/*!
-	\brief
-		Initialisation method for the widget
-	*/
-	virtual	void	initialise(void) {}
+	virtual ~TLSlider(void);
 
 
 protected:
 	/*************************************************************************
-		Implementation Rendering Functions
+		Implementation Functions
 	*************************************************************************/
 	/*!
 	\brief
-		render the Checkbox in the normal state.
+		create a Thumb based widget to use as the thumb for this slider.
 	*/
-	virtual void	drawNormal(float z);
+	virtual Thumb*	createThumb(void) const;
+
 
 	/*!
 	\brief
-		render the Checkbox in the hover / highlighted state.
+		layout the slider component widgets
 	*/
-	virtual void	drawHover(float z);
+	virtual void	layoutComponentWidgets(void);
+
 
 	/*!
 	\brief
-		render the Checkbox in the pushed state.
+		update the size and location of the thumb to properly represent the current state of the slider
 	*/
-	virtual void	drawPushed(float z);
+	virtual void	updateThumb(void);
+
 
 	/*!
 	\brief
-		render the Checkbox in the disabled state
+		return value that best represents current slider value given the current location of the thumb.
+
+	\return
+		ulong value that, given the thumb widget position, best represents the current value for the slider.
 	*/
-	virtual void	drawDisabled(float z);
+	virtual ulong	getValueFromThumb(void) const;
+
+
+	/*!
+	\brief
+		Given window location \a pt, return a value indicating what change should be 
+		made to the slider.
+
+	\param pt
+		Point object describing a pixel position in window space.
+
+	\return
+		- -1 to indicate slider should be moved to a lower setting.
+		-  0 to indicate slider should not be moved.
+		- +1 to indicate slider should be moved to a higher setting.
+	*/
+	virtual int		getAdjustDirectionFromPoint(const Point& pt) const;
 
 
 	/*************************************************************************
-		Implementation Data
+		Overridden Rendering Functions
 	*************************************************************************/
-	// rendering images
-	const Image*	d_normalImage;			//!< Image to use when rendering in normal state.
-	const Image*	d_hoverImage;			//!< Image to use when rendering in hover  / highlighted state.
-	const Image*	d_checkMarkImage;		//!< Image to use when rendering the check-mark.
+	/*!
+	\brief
+		Perform the actual rendering for this Window.
+
+	\param z
+		float value specifying the base Z co-ordinate that should be used when rendering
+
+	\return
+		Nothing
+	*/
+	virtual	void	drawSelf(float z);
+
+
+	/*************************************************************************
+		Implementation data
+	*************************************************************************/
+	const Image*	d_container;		//!< Pointer to the image to render as the slider container.
 };
 
 
 /*!
 \brief
-	Factory class for producing TLCheckbox objects
+	Factory class for producing TLSlider objects
 */
-class TAHAREZLOOK_API TLCheckboxFactory : public WindowFactory
+class TAHAREZLOOK_API TLSliderFactory : public WindowFactory
 {
 public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLCheckboxFactory(void) : WindowFactory((utf8*)"Taharez Checkbox") { }
-	~TLCheckboxFactory(void){}
+	TLSliderFactory(void) : WindowFactory((utf8*)"Taharez Slider") { }
+	~TLSliderFactory(void){}
 
 
 	/*!
@@ -161,8 +186,7 @@ public:
 	virtual void	destroyWindow(Window* window)	 { if (window->getType() == d_type) delete window; }
 };
 
-
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _TLCheckbox_h_
+#endif	// end of guard _TLSlider_h_

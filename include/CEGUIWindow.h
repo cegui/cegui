@@ -753,6 +753,25 @@ public:
 	const Image*	getMouseCursor(void) const;
 
 
+	// This section of methoed were added because there were far too many co-ordinate conversions going on...
+	// TODO: Add docs for this batch of methods.
+	Rect	getRelativeRect(void) const				{return d_rel_area;}
+	Point	getRelativePosition(void) const			{return d_rel_area.getPosition();}
+	float	getRelativeXPosition(void) const		{return d_rel_area.d_left;}
+	float	getRelativeYPosition(void) const		{return d_rel_area.d_top;}
+	Size	getRelativeSize(void) const				{return d_rel_area.getSize();}
+	float	getRelativeWidth(void) const			{return d_rel_area.getWidth();}
+	float	getRelativeHeight(void) const			{return d_rel_area.getHeight();}
+
+	Rect	getAbsoluteRect(void) const				{return d_abs_area;}
+	Point	getAbsolutePosition(void) const			{return d_abs_area.getPosition();}
+	float	getAbsoluteXPosition(void) const		{return d_abs_area.d_left;}
+	float	getAbsoluteYPosition(void) const		{return d_abs_area.d_top;}
+	Size	getAbsoluteSize(void) const				{return d_abs_area.getSize();}
+	float	getAbsoluteWidth(void) const			{return d_abs_area.getWidth();}
+	float	getAbsoluteHeight(void) const			{return d_abs_area.getHeight();}
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/

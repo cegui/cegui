@@ -1618,9 +1618,9 @@ void Window::cleanupChildren(void)
 void Window::addChild_impl(Window* wnd)
 {
 	// if window is already attached, detach it first (will fire normal events)
-	if (d_parent != NULL)
+	if (wnd->getParent() != NULL)
 	{
-		d_parent->removeChildWindow(wnd);
+		wnd->getParent()->removeChildWindow(wnd);
 	}
 
 	// calculate position where window should be added
@@ -1641,7 +1641,8 @@ void Window::addChild_impl(Window* wnd)
 	d_children.insert(position.base(), wnd);
 	wnd->setParent(this);
 
-	// TODO: Update the area Rects for 'wnd' so they're correct for it's new parent.
+	// Force and update for the area Rects for 'wnd' so they're correct for it's new parent.
+	wnd->onParentSized(WindowEventArgs(this));
 }
 
 
@@ -1699,7 +1700,29 @@ Rect Window::absoluteToRelative_impl(const Window* window, const Rect& rect) con
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return Rect(rect.d_left / sz.d_width, rect.d_top / sz.d_height, rect.d_right / sz.d_width, rect.d_bottom / sz.d_height);
+	Rect tmp;
+
+	if (sz.d_width)
+	{
+		tmp.d_left	= rect.d_left / sz.d_width;
+		tmp.d_right = rect.d_right / sz.d_width;
+	}
+	else
+	{
+		tmp.d_left = tmp.d_right = 0;
+	}
+
+	if (sz.d_height)
+	{
+		tmp.d_top		= rect.d_top / sz.d_height;
+		tmp.d_bottom	= rect.d_bottom / sz.d_height;
+	}
+	else
+	{
+		tmp.d_top = tmp.d_bottom= 0;
+	}
+
+	return tmp;
 }
 
 
@@ -1711,7 +1734,27 @@ Size Window::absoluteToRelative_impl(const Window* window, const Size& sz) const
 	// get size object for whatever we are using as a base for the conversion
 	Size wndsz = getWindowSize_impl(window);
 
-	return Size(sz.d_width / wndsz.d_width, sz.d_height / wndsz.d_height);
+	Size tmp;
+
+	if (wndsz.d_width)
+	{
+		tmp.d_width = sz.d_width / wndsz.d_width;
+	}
+	else
+	{
+		tmp.d_width = 0;
+	}
+
+	if (wndsz.d_height)
+	{
+		tmp.d_height = sz.d_height / wndsz.d_height;
+	}
+	else
+	{
+		tmp.d_height = 0;
+	}
+
+	return tmp;
 }
 
 
@@ -1723,7 +1766,27 @@ Point Window::absoluteToRelative_impl(const Window* window, const Point& pt) con
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return Point(pt.d_x / sz.d_width, pt.d_y / sz.d_height);
+	Point tmp;
+
+	if (sz.d_width)
+	{
+		tmp.d_x = pt.d_x / sz.d_width;
+	}
+	else
+	{
+		tmp.d_x = 0;
+	}
+
+	if (sz.d_height)
+	{
+		tmp.d_y = pt.d_y / sz.d_height;
+	}
+	else
+	{
+		tmp.d_y = 0;
+	}
+
+	return tmp;
 }
 
 
@@ -1735,7 +1798,14 @@ float Window::absoluteToRelativeX_impl(const Window* window, float x) const
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return x / sz.d_width;
+	if (sz.d_width)
+	{
+		return x / sz.d_width;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 
@@ -1747,7 +1817,14 @@ float Window::absoluteToRelativeY_impl(const Window* window, float y) const
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return y / sz.d_height;
+	if (sz.d_height)
+	{
+		return y / sz.d_height;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 

@@ -23,7 +23,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				DisableLanguageExtensions="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -75,7 +75,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\..\..\..\Widget Sets\Taharez Look\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				DisableLanguageExtensions="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -146,6 +146,12 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLRadioButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLSlider.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLSliderThumb.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLTitlebar.cpp">
 			</File>
 		</Filter>
@@ -170,6 +176,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLRadioButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLSlider.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLSliderThumb.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLTitlebar.h">

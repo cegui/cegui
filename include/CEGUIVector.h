@@ -91,6 +91,16 @@ public:
 		return Vector2(d_x * vec.d_x, d_y * vec.d_y);
 	}
 
+	bool	operator==(const Vector2& vec) const
+	{
+		return ((d_x == vec.d_x) && (d_y == vec.d_y));
+	}
+
+	bool	operator!=(const Vector2& vec) const
+	{
+		return !(operator==(vec));
+	}
+
 	float d_x, d_y;
 };
 

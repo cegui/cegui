@@ -32,6 +32,8 @@
 #include "../../Widget Sets/Taharez Look/include/TLCloseButton.h"
 #include "../../Widget Sets/Taharez Look/include/TLCheckbox.h"
 #include "../../Widget Sets/Taharez Look/include/TLRadioButton.h"
+#include "../../Widget Sets/Taharez Look/include/TLSliderThumb.h"
+#include "../../Widget Sets/Taharez Look/include/TLSlider.h"
 
 
 /*************************************************************************
@@ -71,6 +73,17 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(new TLRadioButtonFactory());
 		return;
 	}
+	else if (type_name == "Taharez Slider Thumb")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLSliderThumbFactory());
+		return;
+	}
+	else if (type_name == "Taharez Slider")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLSliderFactory());
+		return;
+	}
+
 
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 

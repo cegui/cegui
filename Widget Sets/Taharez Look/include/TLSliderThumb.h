@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	TLCheckbox.h
-	created:	21/5/2004
+	filename: 	TLSliderThumb.h
+	created:	22/5/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to Taharez Checkbox widget
+	purpose:	Interface to Thumb class used within the Taharez slider.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,12 +23,12 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _TLCheckbox_h_
-#define _TLCheckbox_h_
+#ifndef _TLSliderThumb_h_
+#define _TLSliderThumb_h_
 
 #include "TLModule.h"
+#include "elements/CEGUIThumb.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUICheckbox.h"
 
 
 // Start of CEGUI namespace section
@@ -36,45 +36,27 @@ namespace CEGUI
 {
 /*!
 \brief
-	Checkbox class for the TaharezLook GUI scheme
+	Thumb class as used in the Taharez Slider.
 */
-class TAHAREZLOOK_API TLCheckbox : public Checkbox
+class TAHAREZLOOK_API TLSliderThumb : public Thumb
 {
 public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// Image names
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
-	static const utf8	NormalImageName[];			//!< Name of the image to use for the normal state.
-	static const utf8	HighlightImageName[];		//!< Name of the image to use for the highlighted state.
-	static const utf8	CheckMarkImageName[];		//!< Name of the image to use for the check / selected mark.
-
-	static const float	LabelPadding;				//!< Pixel padding value for text label (space between image and text label).
+	static const utf8	NormalImageName[];			//!< Name of the image to use for normal rendering.
+	static const utf8	HighlightImageName[];		//!< Name of the image to use for hover / highlighted rendering.
 
 
 	/*************************************************************************
-		Construction and Destruction
+		Construction / Destruction
 	*************************************************************************/
-	/*!
-	\brief
-		Constructor for Taharez Look Checkbox objects.
-
-	\param type
-		String object that specifies a type for this window, usually provided by a factory class.
-
-	\param name
-		String object that specifies a unique name that will be used to identify the new Window object
-	*/
-	TLCheckbox(const String& type, const String& name);
+	TLSliderThumb(const String& type, const String& name);
+	virtual ~TLSliderThumb(void);
 
 
-	/*!
-	\brief
-		Destructor for TLCheckbox objects.
-	*/
-	virtual ~TLCheckbox(void);
-
-	
 	/*!
 	\brief
 		Initialisation method for the widget
@@ -88,25 +70,25 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		render the Checkbox in the normal state.
+		render the thumb in the normal state.
 	*/
 	virtual void	drawNormal(float z);
 
 	/*!
 	\brief
-		render the Checkbox in the hover / highlighted state.
+		render the thumb in the hover / highlighted state.
 	*/
 	virtual void	drawHover(float z);
 
 	/*!
 	\brief
-		render the Checkbox in the pushed state.
+		render the thumb in the pushed state.
 	*/
-	virtual void	drawPushed(float z);
+	virtual void	drawPushed(float z)		{drawHover(z);}
 
 	/*!
 	\brief
-		render the Checkbox in the disabled state
+		render the thumb in the disabled state
 	*/
 	virtual void	drawDisabled(float z);
 
@@ -114,25 +96,23 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	// rendering images
-	const Image*	d_normalImage;			//!< Image to use when rendering in normal state.
-	const Image*	d_hoverImage;			//!< Image to use when rendering in hover  / highlighted state.
-	const Image*	d_checkMarkImage;		//!< Image to use when rendering the check-mark.
+	const Image*	d_normalImage;			//!< Image to render in normal state
+	const Image*	d_highlightImage;		//!< Image to render in highlighted state.
 };
 
 
 /*!
 \brief
-	Factory class for producing TLCheckbox objects
+	Factory class for producing TLSliderThumb objects
 */
-class TAHAREZLOOK_API TLCheckboxFactory : public WindowFactory
+class TAHAREZLOOK_API TLSliderThumbFactory : public WindowFactory
 {
 public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLCheckboxFactory(void) : WindowFactory((utf8*)"Taharez Checkbox") { }
-	~TLCheckboxFactory(void){}
+	TLSliderThumbFactory(void) : WindowFactory((utf8*)"Taharez Slider Thumb") { }
+	~TLSliderThumbFactory(void){}
 
 
 	/*!
@@ -165,4 +145,4 @@ public:
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _TLCheckbox_h_
+#endif	// end of guard _TLSliderThumb_h_
