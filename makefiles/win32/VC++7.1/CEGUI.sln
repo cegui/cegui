@@ -30,6 +30,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IrrlichtGUIRenderer", "Rend
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsLook", "WidgetSets\WindowsLook\WindowsLook.vcproj", "{20B194DE-F95C-4FBD-8D90-0F7581E0595C}"
 	ProjectSection(ProjectDependencies) = postProject
+		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLGUIRenderer", "Renderers\OpenGLRenderer\OpenGLRenderer.vcproj", "{DB27024F-1F70-48DB-8DB9-7E12AFAC23AE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
 	EndProjectSection
 EndProject
 Global
@@ -64,6 +70,10 @@ Global
 		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Debug.Build.0 = Debug|Win32
 		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Release.ActiveCfg = Release|Win32
 		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Release.Build.0 = Release|Win32
+		{DB27024F-1F70-48DB-8DB9-7E12AFAC23AE}.Debug.ActiveCfg = Debug|Win32
+		{DB27024F-1F70-48DB-8DB9-7E12AFAC23AE}.Debug.Build.0 = Debug|Win32
+		{DB27024F-1F70-48DB-8DB9-7E12AFAC23AE}.Release.ActiveCfg = Release|Win32
+		{DB27024F-1F70-48DB-8DB9-7E12AFAC23AE}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
