@@ -214,6 +214,7 @@ void ListHeaderSegment::onSizingSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSortDirectionChanged(WindowEventArgs& e)
 {
+	requestRedraw();
 	fireEvent(SortDirectionChanged, e);
 }
 
