@@ -109,7 +109,7 @@ void Slider::setCurrentValue(float value)
 	float oldval = d_value;
 
 	// range for value: 0 <= value <= maxValue
-	d_value = (value <= d_maxValue) ? value : d_maxValue;
+	d_value = (value >= 0.0f) ? ((value <= d_maxValue) ? value : d_maxValue) : 0.0f;
 
 	updateThumb();
 
