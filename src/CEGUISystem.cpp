@@ -36,6 +36,7 @@
 #include "CEGUIExceptions.h"
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIDragContainer.h"
+#include "elements/CEGUIScrolledContainer.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
 #include "CEGUIDataContainer.h"
@@ -62,7 +63,7 @@ public:
 	SimpleTimer() : d_baseTime(clock()) {}
 
 	void	restart()	{ d_baseTime = clock(); }
-	double	elapsed()	{ return static_cast<double>((clock() - d_baseTime) / CLOCKS_PER_SEC); }
+	double	elapsed()	{ return static_cast<double>(clock() - d_baseTime) / CLOCKS_PER_SEC; }
 };
 	
 /*!
@@ -266,6 +267,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
     // (mainly because they do no rendering)
     WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
     WindowFactoryManager::getSingleton().addFactory(new DragContainerFactory);
+    WindowFactoryManager::getSingleton().addFactory(new ScrolledContainerFactory);
 
 	// GUISheet's name was changed, register an alias so both can be used
 	WindowFactoryManager::getSingleton().addWindowTypeAlias((utf8*)"DefaultGUISheet", GUISheet::WidgetTypeName);
@@ -356,12 +358,16 @@ System::~System(void)
     WindowFactory* dragContainerFactory =
         WindowFactoryManager::getSingleton().getFactory(DragContainer::WidgetTypeName);
 
+    WindowFactory* scrolledContainerFactory =
+        WindowFactoryManager::getSingleton().getFactory(ScrolledContainer::WidgetTypeName);
+
     // remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
 
 	// destroy factories we created
 	delete guiSheetFactory;
     delete dragContainerFactory;
+    delete scrolledContainerFactory;
 
 	// cleanup singletons
 	delete	SchemeManager::getSingletonPtr();

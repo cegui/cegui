@@ -263,11 +263,27 @@ SOURCE=..\..\..\..\src\elements\CEGUIRadioButtonProperties.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUIScrollablePane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIScrollablePaneProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIScrollbar.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\src\elements\CEGUIScrollbarProperties.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIScrolledContainer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIScrolledContainerProperties.cpp
 # End Source File
 # Begin Source File
 
@@ -691,11 +707,27 @@ SOURCE=..\..\..\..\include\elements\CEGUIRadioButtonProperties.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\elements\CEGUIScrollablePane.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIScrollablePaneProperties.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\elements\CEGUIScrollbar.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUIScrollbarProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIScrolledContainer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIScrolledContainerProperties.h
 # End Source File
 # Begin Source File
 

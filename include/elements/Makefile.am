@@ -33,8 +33,12 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIPushButtonProperties.h \
                      CEGUIRadioButton.h \
                      CEGUIRadioButtonProperties.h \
+                     CEGUIScrollablePane.h \
+                     CEGUIScrollablePaneProperties.h \
                      CEGUIScrollbar.h \
                      CEGUIScrollbarProperties.h \
+                     CEGUIScrolledContainer.h \
+                     CEGUIScrolledContainerProperties.h \
                      CEGUISlider.h \
                      CEGUISliderProperties.h \
                      CEGUISpinner.h \

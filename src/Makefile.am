@@ -83,8 +83,12 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIPushButtonProperties.cpp \
                       elements/CEGUIRadioButton.cpp \
                       elements/CEGUIRadioButtonProperties.cpp \
+                      elements/CEGUIScrollablePane.cpp \
+                      elements/CEGUIScrollablePaneProperties.cpp \
                       elements/CEGUIScrollbar.cpp \
                       elements/CEGUIScrollbarProperties.cpp \
+                      elements/CEGUIScrolledContainer.cpp \
+                      elements/CEGUIScrolledContainerProperties.cpp \
                       elements/CEGUISlider.cpp \
                       elements/CEGUISliderProperties.cpp \
                       elements/CEGUISpinner.cpp \

@@ -29,6 +29,8 @@
 #ifndef _CEGUIBase_h_
 #define _CEGUIBase_h_
 
+#include <cassert>
+
 // bring in configuration options
 #include "CEGUIConfig.h"
 

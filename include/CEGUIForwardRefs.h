@@ -95,6 +95,9 @@ class MultiLineEditbox;
 class Spinner;
 class GUISheet;
 class DragContainer;
+class ScrollablePane;
+class ScrolledContainer;
+class Tooltip;
 
 } // End of  CEGUI namespace section
 
