@@ -52,13 +52,6 @@ public:
 
 	/*!
 	\brief
-		Destructor for Rect objects.
-	*/
-	~Rect(void) {}
-
-
-	/*!
-	\brief
 		Return top-left postion of Rect as a Point
 	*/
 	Point	getPosition(void) const		{return Point(d_left, d_top);}

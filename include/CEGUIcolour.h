@@ -47,8 +47,6 @@ public:
 	colour(float red, float green, float blue, float alpha = 1.0f);
 	colour(ulong argb);
 
-	~colour(void);
-
 	/*************************************************************************
 		Accessors
 	*************************************************************************/

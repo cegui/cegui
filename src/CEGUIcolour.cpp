@@ -66,11 +66,6 @@ colour::colour(ulong argb)
 }
 
 
-colour::~colour(void)
-{
-}
-
-
 float colour::getHue(void) const
 {
 	float pRed = d_red;

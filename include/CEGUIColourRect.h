@@ -73,13 +73,6 @@ public:
 
 	/*!
 	\brief
-		Destructor for ColourRect objects.
-	*/
-	virtual ~ColourRect(void);
-
-
-	/*!
-	\brief
 		Set the alpha value to use for all four corners of the ColourRect.
 
 	\param alpha

@@ -57,18 +57,10 @@ ColourRect::ColourRect(const colour& col) :
 	Default constructor
 *************************************************************************/
 ColourRect::ColourRect(void) :
-	d_top_left(0, 0, 0),
-	d_top_right(0, 0, 0),
-	d_bottom_left(0, 0, 0),
-	d_bottom_right(0, 0, 0)
-{
-}
-
-
-/*************************************************************************
-	Destructor
-*************************************************************************/
-ColourRect::~ColourRect(void)
+	d_top_left(),
+	d_top_right(),
+	d_bottom_left(),
+	d_bottom_right()
 {
 }
 

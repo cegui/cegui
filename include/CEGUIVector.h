@@ -42,7 +42,6 @@ class CEGUIBASE_API Vector2
 public:
 	Vector2(void) {}
 	Vector2(float x, float y) : d_x(x), d_y(y) {}
-	~Vector2(void) {}
 
 	Vector2& operator*=(const Vector2& vec)
 	{
@@ -120,7 +119,6 @@ class CEGUIBASE_API Vector3
 public:
 	Vector3(void) {}
 	Vector3(float x, float y, float z) : d_x(x), d_y(y), d_z(z) {}
-	~Vector3(void){}
 
 	float	d_x, d_y, d_z;
 };
