@@ -64,11 +64,11 @@ SchemeManager::~SchemeManager(void)
 /*************************************************************************
 	Loads a scheme
 *************************************************************************/
-Scheme* SchemeManager::loadScheme(const String& scheme_filename)
+Scheme* SchemeManager::loadScheme(const String& scheme_filename, const String& resourceGroup)
 {
 	Logger::getSingleton().logEvent((utf8*)"Attempting to load Scheme from file '" + scheme_filename + "'.");
 
-	Scheme* tmp = new Scheme(scheme_filename);
+	Scheme* tmp = new Scheme(scheme_filename, resourceGroup);
 	String name = tmp->getName();
 	d_schemes[name] = tmp;
 	return tmp;

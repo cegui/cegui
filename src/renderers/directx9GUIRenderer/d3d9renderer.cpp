@@ -343,10 +343,10 @@ Texture* DirectX9Renderer::createTexture(void)
 /*************************************************************************
 	Create a new Texture object and load a file into it.
 *************************************************************************/
-Texture* DirectX9Renderer::createTexture(const String& filename)
+Texture* DirectX9Renderer::createTexture(const String& filename, const String& resourceGroup)
 {
 	DirectX9Texture* tex = (DirectX9Texture*)createTexture();
-	tex->loadFromFile(filename);
+	tex->loadFromFile(filename, resourceGroup);
 
 	return tex;
 }

@@ -48,7 +48,7 @@ private:
 		Friends (to allow construction and destruction)
 	*************************************************************************/
 	friend	Texture* DirectX81Renderer::createTexture(void);
-	friend	Texture* DirectX81Renderer::createTexture(const String& filename);
+	friend	Texture* DirectX81Renderer::createTexture(const String& filename, const String& resourceGroup);
 	friend	Texture* DirectX81Renderer::createTexture(float size);
 	friend	void	 DirectX81Renderer::destroyTexture(Texture* texture);
 
@@ -87,10 +87,13 @@ public:
 	\param filename
 		The filename of the image file that is to be loaded into the texture
 
+    \param resourceGroup
+        Resource group identifier passed to the resource provider.
+
 	\return
 		Nothing.
 	*/
-	virtual void	loadFromFile(const String& filename);
+	virtual void	loadFromFile(const String& filename, const String& resourceGroup);
 
 
 	/*!
@@ -177,7 +180,8 @@ private:
 	*************************************************************************/
 	LPDIRECT3DTEXTURE8		d_d3dtexture;		//!< The 'real' texture.
 	String					d_filename;			//!< name of file used to create the texture, if any.
-	bool					d_isMemoryTexture;	//!< true if the texture was created from memory (and not a file).
+    String                  d_resourceGroup;    //!< resource provider group ID to use when loading file.
+    bool					d_isMemoryTexture;	//!< true if the texture was created from memory (and not a file).
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture

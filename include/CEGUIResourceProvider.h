@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIDataContainer.h"
+#include "CEGUIString.h"
 
 
 // Start of CEGUI namespace section
@@ -82,8 +83,36 @@ public:
 
 	\param output
         Reference to a RawDataContainer object to load the data into.
+
+    \param resourceGroup
+        Optional String that may be used by implementations to identify the group from
+        which the resource should be loaded.
     */
-    virtual void loadRawDataContainer(const String& filename, RawDataContainer& output) = 0;
+    virtual void loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup) = 0;
+
+    /*!
+    \brief
+        Return the current default resource group identifier.
+
+    \return
+        String object containing the currently set default resource group identifier.
+    */
+    const String&   getDefaultResourceGroup(void) const     { return d_defaultResourceGroup; }
+    
+    /*!
+    \brief
+        Set the default resource group identifier.
+
+    \param resourceGroup
+        String object containing the default resource group identifier to be used.
+
+    \return
+        Nothing.
+    */
+    void    setDefaultResourceGroup(const String& resourceGroup)    { d_defaultResourceGroup = resourceGroup; }
+
+protected:
+    String  d_defaultResourceGroup;     //!< Default resource group identifier.
 };
 
 } // End of  CEGUI namespace section

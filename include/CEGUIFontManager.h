@@ -95,6 +95,9 @@ public:
 	\param filename
 		String object containing the filename of a 'font definition file' what will be used to create the new font
 
+    \param resourceGroup
+        Resource group identifier to pass to the resource provider when loading the font definition file.
+
 	\return
 		Pointer the the newly created Font object
 
@@ -105,7 +108,7 @@ public:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& filename);
+	Font*	createFont(const String& filename, const String& resourceGroup = "");
 
 
 	/*!
@@ -124,6 +127,9 @@ public:
 	\param flags
 		Some combination of FontFlag values to be used for the creation of this font.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource provider when loading the font definition file.
+
 	\return
 		Pointer to the newly created Font object.
 
@@ -132,7 +138,7 @@ public:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& name, const String& fontname, uint size, uint flags);
+	Font*	createFont(const String& name, const String& fontname, uint size, uint flags, const String& resourceGroup = "");
 
 
 	/*!

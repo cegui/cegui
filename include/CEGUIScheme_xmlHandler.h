@@ -92,6 +92,7 @@ private:
 	static const char	FilenameAttribute[];			//!< Attribute specifying the name of some file.
 	static const char	AliasAttribute[];				//!< Attribute specifying an alias name.
 	static const char	TargetAttribute[];				//!< Attribute specifying target for an alias.
+    static const char	ResourceGroupAttribute[];       //!< Attribute specifying resource group for some loadable resource.
 
 
 	/*************************************************************************

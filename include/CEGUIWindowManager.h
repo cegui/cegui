@@ -226,6 +226,9 @@ public:
 		String object holding the prefix that is to be used when creating the windows in the layout file, this
 		function allows a layout to be loaded multiple times without having name clashes.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource provider when loading the layout file.
+
 	\param callback
 		PropertyCallback function to be called for each <Property> element loaded from the layout.  This is
 		called prior to the property value being applied to the window enabling client code manipulation of
@@ -240,7 +243,7 @@ public:
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadWindowLayout(const String& filename, const String& name_prefix = (utf8*)"", PropertyCallback* callback = NULL, void* userdata = NULL);
+	Window*	loadWindowLayout(const String& filename, const String& name_prefix = "", const String& resourceGroup = "", PropertyCallback* callback = NULL, void* userdata = NULL);
 
 
 private:

@@ -263,10 +263,10 @@ Texture* OpenGLRenderer::createTexture(void)
 /*************************************************************************
 	Create a new Texture object and load a file into it.
 *************************************************************************/
-Texture* OpenGLRenderer::createTexture(const String& filename)
+Texture* OpenGLRenderer::createTexture(const String& filename, const String& resourceGroup)
 {
 	OpenGLTexture* tex = (OpenGLTexture*)createTexture();
-	tex->loadFromFile(filename);
+	tex->loadFromFile(filename, resourceGroup);
 
 	return tex;
 }

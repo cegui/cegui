@@ -14,6 +14,7 @@ Has attributes and a collection of one or more Image elements.
 Imageset attributes
 -------------------
 Imagefile	- path to the image file containing the graphics (required).
+ResourceGroup	- The resource group identifier to pass to the resource provider when loading the file.
 Name		- the name that will be assigned to the Imageset in the GUI system (required).
 NativeHorzRes	- The horizontal screen resolution that the images were are intended to be displayed at (optional, default=640).
 NativeVertRes	- The vertical screen resolution that the images were are intended to be displayed at (optional, default=480).
@@ -54,6 +55,7 @@ Font attributes
 ---------------
 Name		- the name that will be used to identify the Font within the system. (required).
 Filename	- filename for the font.  For Static fonts this is an Imageset.  For Dynamic fonts this is a .ttf file. (required).
+ResourceGroup - The resource group identifier to pass to the resource provider when loading the file.
 Type		- Specifies the type of font.  Valid options are 'Static' or 'Dynamic' (required).
 Size		- Specifies the point size for a dynamic font, ignored for Static fonts.  (optional, default=12).
 FirstCodepoint	- Specifies the first codepoint to be available on the dynamic font.  (optional, default=32).
@@ -133,6 +135,7 @@ Imageset attributes
 -------------------
 Name		- The name of the Imageset. (required).
 Filename	- Filename of the Imageset file.  If the imageset created by this file does not = Name above, an exception is thrown. (required).
+ResourceGroup - The resource group identifier to pass to the resource provider when loading the file.
 
 
 Font Element
@@ -144,6 +147,7 @@ Font attributes
 -------------------
 Name		- The name of the Font. (required).
 Filename	- Filename of the Font file.  If the font created by this file does not = Name above, an exception is thrown. (required).
+ResourceGroup - The resource group identifier to pass to the resource provider when loading the file.
 
 
 WindowSet Element
@@ -223,6 +227,7 @@ The LayoutImport element has attributes but no sub-elements.
 LayoutImport attributes
 -----------------------
 Filename	- Specifies the filename of the layout XML file to be imported.
+ResourceGroup - The resource group identifier to pass to the resource provider when loading the file.
 
 
 Event Element

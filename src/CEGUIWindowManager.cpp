@@ -172,7 +172,7 @@ void WindowManager::destroyAllWindows(void)
 	Creates a set of windows (a Gui layout) from the information in the
 	specified XML file.	
 *************************************************************************/
-Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, PropertyCallback* callback, void* userdata)
+Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, const String& resourceGroup, PropertyCallback* callback, void* userdata)
 {
 	XERCES_CPP_NAMESPACE_USE
 
@@ -197,7 +197,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 //    parser->loadGrammar(*(layoutSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
 
     RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUILayoutSchemaName, rawSchemaData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUILayoutSchemaName, rawSchemaData, resourceGroup);
     MemBufInputSource  layoutSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), GUILayoutSchemaName, false);
     parser->loadGrammar(layoutSchemaData, Grammar::SchemaGrammarType, true);
 
@@ -218,7 +218,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 //    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, layoutData);
 
     RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
     MemBufInputSource  layoutData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)

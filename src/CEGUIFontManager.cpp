@@ -79,11 +79,11 @@ FontManager::~FontManager(void)
 /*************************************************************************
 	Create a font from a definition file
 *************************************************************************/
-Font* FontManager::createFont(const String& filename)
+Font* FontManager::createFont(const String& filename, const String& resourceGroup)
 {
 	Logger::getSingleton().logEvent((utf8*)"Attempting to create Font from the information specified in file '" + filename + "'.");
 
-	Font* temp = new Font(filename, new Font::FontImplData(d_implData->d_ftlib));
+	Font* temp = new Font(filename, resourceGroup, new Font::FontImplData(d_implData->d_ftlib));
 
 	String name = temp->getName();
 
@@ -103,7 +103,7 @@ Font* FontManager::createFont(const String& filename)
 /*************************************************************************
 	Create a font from an installed OS font
 *************************************************************************/
-Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags)
+Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags, const String& resourceGroup)
 {
 	char strbuf[16];
 	sprintf(strbuf, "%d", size);
@@ -115,7 +115,7 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint s
 		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
 	}
 
-	Font* temp = new Font(name, fontname, size, flags, new Font::FontImplData(d_implData->d_ftlib));
+	Font* temp = new Font(name, fontname, resourceGroup, size, flags, new Font::FontImplData(d_implData->d_ftlib));
 	d_fonts[name] = temp;
 
 	return temp; 

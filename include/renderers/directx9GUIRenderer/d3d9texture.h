@@ -48,7 +48,7 @@ private:
 		Friends (to allow construction and destruction)
 	*************************************************************************/
 	friend	Texture* DirectX9Renderer::createTexture(void);
-	friend	Texture* DirectX9Renderer::createTexture(const String& filename);
+	friend	Texture* DirectX9Renderer::createTexture(const String& filename, const String& resourceGroup);
 	friend	Texture* DirectX9Renderer::createTexture(float size);
 	friend	void	 DirectX9Renderer::destroyTexture(Texture* texture);
 
@@ -90,7 +90,7 @@ public:
 	\return
 		Nothing.
 	*/
-	virtual void	loadFromFile(const String& filename);
+	virtual void	loadFromFile(const String& filename, const String& resourceGroup);
 
 
 	/*!
@@ -177,6 +177,7 @@ private:
 	*************************************************************************/
 	LPDIRECT3DTEXTURE9		d_d3dtexture;		//!< The 'real' texture.
 	String					d_filename;			//!< name of file used to create the texture, if any.
+    String                  d_resourceGroup;    //!< Group from which the file was loaded.
 	bool					d_isMemoryTexture;	//!< true if the texture was created from memory (and not a file).
 
 	ushort					d_width;			//!< cached width of the texture

@@ -37,6 +37,12 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    OgreResourceProvider::OgreResourceProvider() : ResourceProvider()
+    {
+        // set deafult resource group for Ogre
+        d_defaultResourceGroup = Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME.c_str();
+    }
+
 //    void OgreResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
 //   {
 //        Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str());
@@ -57,9 +63,16 @@ namespace CEGUI
 //       output.setData(mInputSource);
 //    }
 
-    void OgreResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
+    void OgreResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output,  const String& resourceGroup)
     {
-		Ogre::DataStreamPtr input = Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str());
+        String orpGroup;
+        if (resourceGroup.empty())
+            orpGroup = d_defaultResourceGroup.empty() ? Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME.c_str() : d_defaultResourceGroup;
+        else
+            orpGroup = resourceGroup;
+
+        Ogre::DataStreamPtr input = 
+            Ogre::ResourceGroupManager::getSingleton().openResource(filename.c_str(), orpGroup.c_str());
 
 		if (input.isNull())
 		{

@@ -114,13 +114,17 @@ public:
 	\param filename
 		String object holding the name of the Imageset definition file which should be used to create the Imageset
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource manager.  NB: This affects the
+        imageset xml file only, the texture loaded may have its own group specified in the XML file.
+
 	\return
 		Pointer to the newly created Imageset object
 
 	\exception	AlreadyExistsException	Thrown if an Imageset named \a name is already present in the system.
 	\exception	FileIOException			Thrown if something goes wrong while processing the file \a filename.
 	*/
-	Imageset*	createImageset(const String& filename);
+	Imageset*	createImageset(const String& filename, const String& resourceGroup = "");
 
 
 	/*!

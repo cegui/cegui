@@ -44,6 +44,7 @@ Definition of constant data for Imageset (and sub-classes)
 const String Imageset_xmlHandler::ImagesetElement( (utf8*)"Imageset" );
 const String Imageset_xmlHandler::ImageElement( (utf8*)"Image" );
 const char	Imageset_xmlHandler::ImagesetImageFileAttribute[]		= "Imagefile";
+const char	Imageset_xmlHandler::ImagesetResourceGroupAttribute[]   = "ResourceGroup";
 const char	Imageset_xmlHandler::ImagesetNameAttribute[]			= "Name";
 const char	Imageset_xmlHandler::ImagesetNativeHorzResAttribute[]	= "NativeHorzRes";
 const char	Imageset_xmlHandler::ImagesetNativeVertResAttribute[]	= "NativeVertRes";
@@ -118,10 +119,11 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 		// Create a Texture object via the specified filename, and set it as the texture for the Imageset
 		//
 		String filename(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetImageFileAttribute));
+        String resourceGroup(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetResourceGroupAttribute));
 
 		try
 		{
-			d_imageset->d_texture = System::getSingleton().getRenderer()->createTexture(filename);
+			d_imageset->d_texture = System::getSingleton().getRenderer()->createTexture(filename, resourceGroup);
 		}
 		catch(...)
 		{

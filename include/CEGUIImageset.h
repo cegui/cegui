@@ -65,7 +65,7 @@ private:
 		Friends to allow access to constructors and destructors
 	*************************************************************************/
 	friend Imageset*	ImagesetManager::createImageset(const String& name, Texture* texture);
-	friend Imageset*	ImagesetManager::createImageset(const String& filename);
+	friend Imageset*	ImagesetManager::createImageset(const String& filename, const String& resourceGroup);
 	friend void			ImagesetManager::destroyImageset(const String& name);
 
 
@@ -90,9 +90,13 @@ private:
 	\param filename
 		String object that holds the name of the Imageset data file that is to be processed.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource manager.  NB: This affects the
+        imageset xml file only, the texture loaded may have its own group specified in the XML file.
+
 	\exception	FileIOException		thrown if something goes wrong while processing the file \a filename.
 	*/
-	Imageset(const String& filename);
+	Imageset(const String& filename, const String& resourceGroup);
 
 
 public:	// For luabind support
@@ -478,12 +482,16 @@ protected:
 	\param filename
 		String object that holds the name of the Imageset data file that is to be processed.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource manager.  NB: This affects the
+        imageset xml file only, the texture loaded may have its own group specified in the XML file.
+
 	\return
 		Nothing
 
 	\exception	FileIOException		thrown if something goes wrong while processing the file \a filename.
 	*/	
-	void	load(const String& filename);
+	void	load(const String& filename, const String& resourceGroup);
 
 
 	/*!

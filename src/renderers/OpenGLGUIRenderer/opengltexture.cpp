@@ -82,13 +82,13 @@ OpenGLTexture::~OpenGLTexture(void)
 	Load texture from file.  Texture is made to be same size as image in
 	file.
 *************************************************************************/
-void OpenGLTexture::loadFromFile(const String& filename)
+void OpenGLTexture::loadFromFile(const String& filename, const String& resourceGroup)
 {
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 
 	// load file to memory via resource provider
 	RawDataContainer texFile;
-	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile);
+	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile, resourceGroup);
 
 #ifndef USE_DEVIL_LIBRARY
 	tImageTGA*	img = LoadTGA(texFile.getDataPtr(), texFile.getSize());

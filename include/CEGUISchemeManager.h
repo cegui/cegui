@@ -91,10 +91,15 @@ public:
 	\param scheme_filename
 		String object that holds the filename of the scheme to be loaded
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource manager.  NB: This
+        affects loading of the scheme xml file only, scheme resources may specify
+        their own groups.
+
 	\return
 		Pointer to an object representing the loaded Scheme.
 	*/
-	Scheme*	loadScheme(const String& scheme_filename);
+	Scheme*	loadScheme(const String& scheme_filename, const String& resourceGroup = "");
 
 
 	/*!

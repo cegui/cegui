@@ -55,6 +55,7 @@ const String Font_xmlHandler::GlyphRangeElement( (utf8*)"GlyphRange" );
 const String Font_xmlHandler::GlyphSetElement( (utf8*)"GlyphSet" );
 const char	Font_xmlHandler::FontNameAttribute[]			= "Name";
 const char	Font_xmlHandler::FontFilenameAttribute[]		= "Filename";
+const char	Font_xmlHandler::FontResourceGroupAttribute[]   = "ResourceGroup";
 const char	Font_xmlHandler::FontTypeAttribute[]			= "Type";
 const char	Font_xmlHandler::FontSizeAttribute[]			= "Size";
 const char	Font_xmlHandler::FontFirstCodepointAttribute[]	= "FirstCodepoint";
@@ -122,6 +123,8 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 
 		// get filename for the font
 		String filename(XmlHandlerHelper::getAttributeValueAsString(attrs, FontFilenameAttribute));
+        // get resource group for font file.
+        String resourceGroup(XmlHandlerHelper::getAttributeValueAsString(attrs, FontResourceGroupAttribute));
 
 		Logger::getSingleton().logEvent("Started creation of Font '" + font_name + "' via XML file.", Informative);
 
@@ -171,7 +174,7 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 
 			// Finalise construction of font without glyphs.
 			// Glyphs will defined after we know which ones we need.
-			d_font->constructor_impl(font_name, filename, size, flags, String(""));
+			d_font->constructor_impl(font_name, filename, resourceGroup, size, flags, String(""));
 		}
 		// static (Imageset based) font
 		else if (font_type == FontTypeStatic)
@@ -180,7 +183,7 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 			d_font->d_freetype = false;
 
 			// load the Imageset
-			d_font->d_glyph_images = ImagesetManager::getSingleton().createImageset(filename);
+			d_font->d_glyph_images = ImagesetManager::getSingleton().createImageset(filename, resourceGroup);
 
 			d_font->setNativeResolution(Size(hres, vres));
 			d_font->setAutoScalingEnabled(auto_scale);

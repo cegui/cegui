@@ -23,6 +23,7 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#include "CEGUISystem.h"
 #include "renderers/OgreGUIRenderer/ogretexture.h"
 #include "renderers/OgreGUIRenderer/ogrerenderer.h"
 #include "CEGUIExceptions.h"
@@ -62,7 +63,7 @@ OgreTexture::~OgreTexture(void)
 	Loads the specified image file into the texture.  The texture is
 	resized as required to hold the image.	
 *************************************************************************/
-void OgreTexture::loadFromFile(const String& filename)
+void OgreTexture::loadFromFile(const String& filename, const String& resourceGroup)
 {
 	using namespace Ogre;
 
@@ -86,7 +87,18 @@ void OgreTexture::loadFromFile(const String& filename)
 		// texture does not already exist, so load it in
 		else
 		{
-			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), "General", TEX_TYPE_2D, 0, 1.0f);
+            String orpGroup;
+            if (resourceGroup.empty())
+            {
+                const String& defGrp = CEGUI::System::getSingleton().getResourceProvider()->getDefaultResourceGroup();
+                orpGroup = defGrp.empty() ? Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME.c_str() : defGrp;
+            }
+            else
+            {
+                orpGroup = resourceGroup;
+            }
+
+			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), orpGroup.c_str(), TEX_TYPE_2D, 0, 1.0f);
 			d_isLinked = false;
 		}
 

@@ -50,7 +50,7 @@ private:
 	    Friends (to allow construction and destruction)
     *************************************************************************/
     friend	Texture* OpenGLRenderer::createTexture(void);
-    friend	Texture* OpenGLRenderer::createTexture(const String& filename);
+    friend	Texture* OpenGLRenderer::createTexture(const String& filename, const String& resourceGroup);
     friend	Texture* OpenGLRenderer::createTexture(float size);
     friend	void	 OpenGLRenderer::destroyTexture(Texture* texture);
 
@@ -92,7 +92,7 @@ public:
     \return
 	    Nothing.
     */
-    virtual void	loadFromFile(const String& filename);
+    virtual void	loadFromFile(const String& filename, const String& resourceGroup);
 
 
     /*!

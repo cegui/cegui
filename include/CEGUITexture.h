@@ -75,10 +75,13 @@ public:
 	\param filename
 		The filename of the image file that is to be loaded into the texture
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource provider when loading the image file.
+
 	\return
 		Nothing.
 	*/
-	virtual void	loadFromFile(const String& filename) = 0;
+	virtual void	loadFromFile(const String& filename, const String& resourceGroup) = 0;
 
 
 	/*!

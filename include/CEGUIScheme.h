@@ -103,7 +103,7 @@ private:
 	/*************************************************************************
 		Friends
 	*************************************************************************/
-	friend	Scheme* SchemeManager::loadScheme(const String& scheme_filename);
+	friend	Scheme* SchemeManager::loadScheme(const String& scheme_filename, const String& resourceGroup);
 	friend	void	SchemeManager::unloadScheme(const String& scheme_name);
 
 
@@ -117,10 +117,14 @@ private:
 	\param filename
 		String object holding the name of the file to use when creating this Scheme object.
 
+    \param resourceGroup
+        Group identifier to be passed to the resource provider when loading the scheme
+        specification file.
+
 	\return
 		Nothing.
 	*/
-	Scheme(const String& filename);
+	Scheme(const String& filename, const String& resourceGroup);
 
 
 public:		// for luabind compatibility
@@ -142,6 +146,7 @@ private:
 	{
 		String	name;
 		String	filename;
+        String  resourceGroup;
 	};
 
 	struct	UIElementFactory

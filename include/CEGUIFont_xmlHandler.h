@@ -90,7 +90,8 @@ private:
 	static const String GlyphRangeElement;			//!< Tag name for GlyphRange elements.
 	static const String GlyphSetElement;				//!< Tag name for GlyphSet elements.
 	static const char	FontNameAttribute[];			//!< Attribute name that stores the name of the Font
-	static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
+    static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
+    static const char	FontResourceGroupAttribute[];   //!< Attribute name that stores the resource group identifier used when loading font file.
 	static const char	FontTypeAttribute[];			//!< Attribute name that stores the type of font being defined (either static or dynamic).
 	static const char	FontSizeAttribute[];			//!< Attribute name that stores the point size for a dynamic font.
 	static const char	FontFirstCodepointAttribute[];	//!< Attribute name that stores the first code-point for a dynamic font.
