@@ -54,15 +54,41 @@ const ulong			DirectX81Renderer::VERTEX_FVF				= (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D
 /*************************************************************************
 	Constructor
 *************************************************************************/
-DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
-	d_device(device),
-	d_queueing(true)
+DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads)
 {
-	d_device->AddRef();
+	d_canGetVPSize = true;
+	d_device = device;
+	Size size(getViewportSize());
 
-	d_currTexture	= NULL;
-	d_buffer		= NULL;
-	d_bufferPos		= 0;
+	constructor_impl(device, size);
+}
+
+
+/*************************************************************************
+	Constructor
+*************************************************************************/
+DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, const Size& sz)
+{
+	d_canGetVPSize = true;
+	constructor_impl(device, sz);
+}
+
+
+/*************************************************************************
+	Method to do common work for the constructor
+*************************************************************************/
+void DirectX81Renderer::constructor_impl(LPDIRECT3DDEVICE8 device, const Size& display_size)
+{
+	d_device        = device;
+	d_queueing      = true;
+	d_currTexture   = NULL;
+	d_buffer        = NULL;
+	d_bufferPos     = 0;
+
+	// initialise renderer display area
+	d_display_area.d_left = 0;
+	d_display_area.d_top  = 0;
+	d_display_area.setSize(display_size);
 
 	// Create a vertex buffer
 	if (FAILED(d_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &d_buffer)))
@@ -71,20 +97,6 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 		// and that requires a Renderer passed to the constructor, so we throw this instead.
 		throw std::exception("Creation of VertexBuffer for Renderer object failed");
 	}
-
-	// initialise renderer size
-	D3DVIEWPORT8	vp;
-	if (FAILED(device->GetViewport(&vp)))
-	{
-		// release vertex buffer
-		d_buffer->Release();
-		throw std::exception("Unable to access required viewport information from Direct3DDevice8.");
-	}
-
-	d_display_area.d_left	= 0;
-	d_display_area.d_top	= 0;
-	d_display_area.d_right	= (float)vp.Width;
-	d_display_area.d_bottom	= (float)vp.Height;
 
 	// get the maximum available texture size.
 	D3DCAPS8	devCaps;
@@ -97,6 +109,8 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 
 	// set max texture size the the smaller of max width and max height.
 	d_maxTextureSize = std::min(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
+
+	d_device->AddRef();
 }
 
 
@@ -544,9 +558,52 @@ void DirectX81Renderer::postD3DReset(void)
 		(*ctex)->postD3DReset();
 	}
 
+	// update size of display (if we can)
+	if (d_canGetVPSize)
+	{
+		setDisplaySize(getViewportSize());
+	}
+
 	// Now we've come back, we MUST ensure a full redraw is done since the
 	// textures in the stored quads will have been invalidated.
 	System::getSingleton().signalRedraw();
+}
+
+
+/*************************************************************************
+	return size of device view port (if possible)	
+*************************************************************************/
+Size DirectX81Renderer::getViewportSize(void)
+{
+	// initialise renderer size
+	D3DVIEWPORT8	vp;
+
+	if (FAILED(d_device->GetViewport(&vp)))
+	{
+		d_canGetVPSize = false;
+		throw std::exception("Unable to access required view port information from Direct3DDevice8.");
+	}
+	else
+	{
+		return Size((float)vp.Width, (float)vp.Height);
+	}
+
+}
+
+
+/*************************************************************************
+	Set the size of the display in pixels.	
+*************************************************************************/
+void DirectX81Renderer::setDisplaySize(const Size& sz)
+{
+	if (d_display_area.getSize() != sz)
+	{
+		d_display_area.setSize(sz);
+
+		EventArgs args;
+		fireEvent(EventDisplaySizeChanged, args);
+	}
+
 }
 
 } // End of  CEGUI namespace section

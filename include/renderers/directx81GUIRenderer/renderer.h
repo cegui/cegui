@@ -76,6 +76,20 @@ public:
 	*/
 	DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads = 0);
 
+
+	/*!
+	\brief
+		Constructor for Direct3D 8.1 Renderer object
+		
+	\param device
+		Pointer to the IDirect3DDevice8 interface object that will be used for all rendering
+
+	\param sz
+		Size object describing the initial size of the display (the dimensions should be >0)
+	*/
+	DirectX81Renderer(LPDIRECT3DDEVICE8 device, const Size& sz);
+
+
 	/*!
 	\brief
 		Destructor for DirectX81Renderer objects
@@ -228,6 +242,27 @@ public:
 	virtual	void	postD3DReset(void);
 
 
+	/*!
+	\brief
+		Set the size of the display in pixels.
+
+		This method is important if your D3D 8 device is a pure device; since
+		with a pure device the system is unable to determine the size of the
+		view port, so you must manually tell it the size by using this method.
+
+	\note
+		This method will cause the EventDisplaySizeChanged event to fire if the
+		display size has changed.
+
+	\param sz
+		Size object describing the size of the display.
+
+	\return
+		Nothing.
+	*/
+	void	setDisplaySize(const Size& sz);
+
+
 private:
 	/************************************************************************
 		Implementation Constants
@@ -288,6 +323,13 @@ private:
 	// render a quad directly to the display
 	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
 
+	// return size of device view port (if possible)
+	Size	getViewportSize(void);
+
+	// method to do work of constructor
+	void	constructor_impl(LPDIRECT3DDEVICE8 device, const Size& display_size);
+
+
 	/*************************************************************************
 	    Implementation Data
 	*************************************************************************/
@@ -305,6 +347,7 @@ private:
 	std::list<DirectX81Texture*>	d_texturelist;		//!< List used to track textures.
 
 	uint	d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
+	bool	d_canGetVPSize;			//!< true if we should try to extract the view port size ourselves.
 };
 
 } // End of  CEGUI namespace section
