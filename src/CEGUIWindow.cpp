@@ -32,7 +32,7 @@
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
 #include <algorithm>
-#inlcude <stdio.h>
+#include <stdio.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
