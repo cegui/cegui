@@ -50,6 +50,9 @@ ScrollbarProperties::ScrollPosition	Scrollbar::d_scrollPositionProperty;
 	Event name constants
 *************************************************************************/
 const utf8	Scrollbar::ScrollPositionChanged[]		= "ScrollPosChanged";
+const utf8	Scrollbar::ThumbTrackStarted[]			= "ThumbTrackStarted";
+const utf8	Scrollbar::ThumbTrackEnded[]			= "ThumbTrackEnded";
+const utf8	Scrollbar::ScrollConfigChanged[]		= "ScrollConfigChanged";
 
 
 /*************************************************************************
@@ -85,6 +88,8 @@ void Scrollbar::initialise(void)
 	d_thumb = createThumb();
 	addChildWindow(d_thumb);
 	d_thumb->subscribeEvent(Thumb::ThumbPositionChanged, boost::bind(&CEGUI::Scrollbar::handleThumbMoved, this, _1));
+	d_thumb->subscribeEvent(Thumb::ThumbTrackStarted, boost::bind(&CEGUI::Scrollbar::handleThumbTrackStarted, this, _1));
+	d_thumb->subscribeEvent(Thumb::ThumbTrackEnded, boost::bind(&CEGUI::Scrollbar::handleThumbTrackEnded, this, _1));
 
 	// set up Increase button
 	d_increase = createIncreaseButton();
@@ -106,8 +111,15 @@ void Scrollbar::initialise(void)
 *************************************************************************/
 void Scrollbar::setDocumentSize(float document_size)
 {
-	d_documentSize = document_size;
-	updateThumb();
+	if (d_documentSize != document_size)
+	{
+		d_documentSize = document_size;
+		updateThumb();
+
+		WindowEventArgs args(this);
+		onScrollConfigChanged(args);
+	}
+
 }
 
 
@@ -116,8 +128,15 @@ void Scrollbar::setDocumentSize(float document_size)
 *************************************************************************/
 void Scrollbar::setPageSize(float page_size)
 {
-	d_pageSize = page_size;
-	updateThumb();
+	if (d_pageSize != page_size)
+	{
+		d_pageSize = page_size;
+		updateThumb();
+
+		WindowEventArgs args(this);
+		onScrollConfigChanged(args);
+	}
+
 }
 
 
@@ -126,7 +145,14 @@ void Scrollbar::setPageSize(float page_size)
 *************************************************************************/
 void Scrollbar::setStepSize(float step_size)
 {
-	d_stepSize = step_size;
+	if (d_stepSize != step_size)
+	{
+		d_stepSize = step_size;
+
+		WindowEventArgs args(this);
+		onScrollConfigChanged(args);
+	}
+
 }
 
 
@@ -135,7 +161,14 @@ void Scrollbar::setStepSize(float step_size)
 *************************************************************************/
 void Scrollbar::setOverlapSize(float overlap_size)
 {
-	d_overlapSize = overlap_size;
+	if (d_overlapSize != overlap_size)
+	{
+		d_overlapSize = overlap_size;
+
+		WindowEventArgs args(this);
+		onScrollConfigChanged(args);
+	}
+
 }
 
 
@@ -170,6 +203,9 @@ void Scrollbar::setScrollPosition(float position)
 void Scrollbar::addScrollbarEvents(void)
 {
 	addEvent(ScrollPositionChanged);
+	addEvent(ThumbTrackStarted);
+	addEvent(ThumbTrackEnded);
+	addEvent(ScrollConfigChanged);
 }
 
 
@@ -180,6 +216,34 @@ void Scrollbar::onScrollPositionChanged(WindowEventArgs& e)
 {
 	fireEvent(ScrollPositionChanged, e);
 }
+
+
+/*************************************************************************
+	Handler triggered when the user begins to drag the scroll bar thumb. 	
+*************************************************************************/
+void Scrollbar::onThumbTrackStarted(WindowEventArgs& e)
+{
+	fireEvent(ThumbTrackStarted, e);
+}
+
+
+/*************************************************************************
+	Handler triggered when the scroll bar thumb is released
+*************************************************************************/
+void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
+{
+	fireEvent(ThumbTrackEnded, e);
+}
+
+
+/*************************************************************************
+	Handler triggered when the scroll bar data configuration changes
+*************************************************************************/
+void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
+{
+	fireEvent(ScrollConfigChanged, e);
+}
+
 
 
 /*************************************************************************
@@ -248,6 +312,29 @@ void Scrollbar::handleDecreaseClicked(const EventArgs& e)
 	// adjust scroll bar position as required.
 	setScrollPosition(d_position - d_stepSize);
 }
+
+
+/*************************************************************************
+	handler function for when thumb tracking begins
+*************************************************************************/
+void Scrollbar::handleThumbTrackStarted(const EventArgs& e)
+{
+	// simply trigger our own version of this event
+	WindowEventArgs args(this);
+	onThumbTrackStarted(args);
+}
+
+
+/*************************************************************************
+	handler function for when thumb tracking begins
+*************************************************************************/
+void Scrollbar::handleThumbTrackEnded(const EventArgs& e)
+{
+	// simply trigger our own version of this event
+	WindowEventArgs args(this);
+	onThumbTrackEnded(args);
+}
+
 
 /*************************************************************************
 	Add scroll bar properties

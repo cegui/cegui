@@ -43,6 +43,8 @@ ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
 *************************************************************************/
 // generated internally by Window
 const utf8	Thumb::ThumbPositionChanged[]		= "ThumbPosChanged";
+const utf8	Thumb::ThumbTrackStarted[]			= "ThumbTrackStarted";
+const utf8	Thumb::ThumbTrackEnded[]			= "ThumbTrackEnded";
 
 
 /*************************************************************************
@@ -140,6 +142,8 @@ void Thumb::setHorzRange(float min, float max)
 void Thumb::addThumbEvents(void)
 {
 	addEvent(ThumbPositionChanged);
+	addEvent(ThumbTrackStarted);
+	addEvent(ThumbTrackEnded);
 }
 
 
@@ -149,6 +153,24 @@ void Thumb::addThumbEvents(void)
 void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 {
 	fireEvent(ThumbPositionChanged, e);
+}
+
+
+/*************************************************************************
+	Handler triggered when the user begins to drag the thumb. 	
+*************************************************************************/
+void Thumb::onThumbTrackStarted(WindowEventArgs& e)
+{
+	fireEvent(ThumbTrackStarted, e);
+}
+
+
+/*************************************************************************
+	Handler triggered when the thumb is released
+*************************************************************************/
+void Thumb::onThumbTrackEnded(WindowEventArgs& e)
+{
+	fireEvent(ThumbTrackEnded, e);
 }
 
 
@@ -254,6 +276,10 @@ void Thumb::onMouseButtonDown(MouseEventArgs& e)
 			d_dragPoint = relativeToAbsolute(d_dragPoint);
 		}
 
+		// trigger tracking started event
+		WindowEventArgs args(this);
+		onThumbTrackStarted(args);
+
 		e.handled = true;
 	}
 
@@ -270,8 +296,11 @@ void Thumb::onCaptureLost(WindowEventArgs& e)
 
 	d_beingDragged = false;
 
-	// send notification whenever thumb is released
+	// trigger tracking ended event
 	WindowEventArgs args(this);
+	onThumbTrackEnded(args);
+
+	// send notification whenever thumb is released
 	onThumbPositionChanged(args);
 }
 

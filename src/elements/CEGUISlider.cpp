@@ -42,6 +42,8 @@ SliderProperties::ClickStepSize	Slider::d_clickStepSizeProperty;
 	Event name constants
 *************************************************************************/
 const utf8	Slider::ValueChanged[]		= "ValueChanged";
+const utf8	Slider::ThumbTrackStarted[]	= "ThumbTrackStarted";
+const utf8	Slider::ThumbTrackEnded[]	= "ThumbTrackEnded";
 
 
 /*************************************************************************
@@ -76,8 +78,10 @@ void Slider::initialise(void)
 	d_thumb = createThumb();
 	addChildWindow(d_thumb);
 
-	// bind handler to thumb event triggered when thumb moves
+	// bind handler to thumb events
 	d_thumb->subscribeEvent(Thumb::ThumbPositionChanged, boost::bind(&CEGUI::Slider::handleThumbMoved, this, _1));
+	d_thumb->subscribeEvent(Thumb::ThumbTrackStarted, boost::bind(&CEGUI::Slider::handleThumbTrackStarted, this, _1));
+	d_thumb->subscribeEvent(Thumb::ThumbTrackEnded, boost::bind(&CEGUI::Slider::handleThumbTrackEnded, this, _1));
 
 	layoutComponentWidgets();
 }
@@ -138,6 +142,8 @@ void Slider::setCurrentValue(float value)
 void Slider::addSliderEvents(void)
 {
 	addEvent(ValueChanged);
+	addEvent(ThumbTrackStarted);
+	addEvent(ThumbTrackEnded);
 }
 
 
@@ -147,6 +153,24 @@ void Slider::addSliderEvents(void)
 void Slider::onValueChanged(WindowEventArgs& e)
 {
 	fireEvent(ValueChanged, e);
+}
+
+
+/*************************************************************************
+	Handler triggered when the user begins to drag the slider thumb. 	
+*************************************************************************/
+void Slider::onThumbTrackStarted(WindowEventArgs& e)
+{
+	fireEvent(ThumbTrackStarted, e);
+}
+
+
+/*************************************************************************
+	Handler triggered when the slider thumb is released
+*************************************************************************/
+void Slider::onThumbTrackEnded(WindowEventArgs& e)
+{
+	fireEvent(ThumbTrackEnded, e);
 }
 
 
@@ -195,6 +219,29 @@ void Slider::handleThumbMoved(const EventArgs& e)
 {
 	setCurrentValue(getValueFromThumb());
 }
+
+
+/*************************************************************************
+	handler function for when thumb tracking begins
+*************************************************************************/
+void Slider::handleThumbTrackStarted(const EventArgs& e)
+{
+	// simply trigger our own version of this event
+	WindowEventArgs args(this);
+	onThumbTrackStarted(args);
+}
+
+
+/*************************************************************************
+	handler function for when thumb tracking begins
+*************************************************************************/
+void Slider::handleThumbTrackEnded(const EventArgs& e)
+{
+	// simply trigger our own version of this event
+	WindowEventArgs args(this);
+	onThumbTrackEnded(args);
+}
+
 
 /*************************************************************************
 	Add properties for the slider

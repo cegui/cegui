@@ -55,6 +55,8 @@ public:
 		Event name constants
 	*************************************************************************/
 	static const utf8	ValueChanged[];			//!< Event fired when the slider value changes.
+	static const utf8	ThumbTrackStarted[];	//!< Name of the event fired when the user begins dragging the thumb.
+	static const utf8	ThumbTrackEnded[];		//!< Name of the event fired when the user releases the thumb.
 
 
 	/*************************************************************************
@@ -233,6 +235,20 @@ protected:
 	void	handleThumbMoved(const EventArgs& e);
 
 
+	/*!
+	\brief
+		handler function for when thumb tracking begins
+	*/
+	void	handleThumbTrackStarted(const EventArgs& e);
+
+
+	/*!
+	\brief
+		handler function for when thumb tracking begins
+	*/
+	void	handleThumbTrackEnded(const EventArgs& e);
+
+
 	/*************************************************************************
 		New event handlers for slider widget
 	*************************************************************************/
@@ -241,6 +257,20 @@ protected:
 		Handler triggered when the slider value changes
 	*/
 	virtual void	onValueChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the user begins to drag the slider thumb. 
+	*/
+	virtual void	onThumbTrackStarted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the slider thumb is released
+	*/
+	virtual void	onThumbTrackEnded(WindowEventArgs& e);
 
 
 	/*************************************************************************

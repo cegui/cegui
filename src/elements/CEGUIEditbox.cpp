@@ -639,21 +639,6 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when we are deactivated
-*************************************************************************/
-void Editbox::onDeactivated(WindowEventArgs& e)
-{
-	// base processing
-	Window::onDeactivated(e);
-	e.handled;
-
-	// text accepted.
-	WindowEventArgs args(this);
-	onTextAcceptedEvent(args);
-}
-
-
-/*************************************************************************
 	Processing for backspace key	
 *************************************************************************/
 void Editbox::handleBackspace(void)

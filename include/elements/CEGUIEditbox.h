@@ -634,7 +634,6 @@ protected:
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onCharacter(KeyEventArgs& e);
 	virtual void	onKeyDown(KeyEventArgs& e);
-	virtual void	onDeactivated(WindowEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 
 

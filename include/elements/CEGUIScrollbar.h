@@ -55,6 +55,10 @@ public:
 		Event name constants
 	*************************************************************************/
 	static const utf8	ScrollPositionChanged[];		//!< Name of the event fired when the scroll bar position value changes
+	static const utf8	ThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
+	static const utf8	ThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
+	static const utf8	ScrollConfigChanged[];			//!< Name of the event fired when the scroll bar configuration data changes.
+
 
 
 	/*************************************************************************
@@ -395,6 +399,20 @@ protected:
 	void	handleDecreaseClicked(const EventArgs& e);
 
 
+	/*!
+	\brief
+		handler function for when thumb tracking begins
+	*/
+	void	handleThumbTrackStarted(const EventArgs& e);
+
+
+	/*!
+	\brief
+		handler function for when thumb tracking begins
+	*/
+	void	handleThumbTrackEnded(const EventArgs& e);
+
+
 	/*************************************************************************
 		New event handlers for slider widget
 	*************************************************************************/
@@ -403,6 +421,27 @@ protected:
 		Handler triggered when the scroll position changes
 	*/
 	virtual void	onScrollPositionChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the user begins to drag the scroll bar thumb. 
+	*/
+	virtual void	onThumbTrackStarted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the scroll bar thumb is released
+	*/
+	virtual void	onThumbTrackEnded(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the scroll bar data configuration changes
+	*/
+	virtual void	onScrollConfigChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************

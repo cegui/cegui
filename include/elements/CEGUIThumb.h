@@ -57,6 +57,8 @@ public:
 	*************************************************************************/
 	// generated internally by Window
 	static const utf8	ThumbPositionChanged[];			//!< The position of the thumb widget has changed.
+	static const utf8	ThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
+	static const utf8	ThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
 
 
 	/*************************************************************************
@@ -230,6 +232,20 @@ protected:
 		event triggered internally when the position of the thumb
 	*/
 	virtual void	onThumbPositionChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the user begins to drag the thumb. 
+	*/
+	virtual void	onThumbTrackStarted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler triggered when the thumb is released
+	*/
+	virtual void	onThumbTrackEnded(WindowEventArgs& e);
 
 
 
