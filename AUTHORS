@@ -47,6 +47,7 @@ Magnus Osterlind:
 
 James O'Sullivan:
 - Linux build system and maintenance.
+- Resource provider system.
 
 Paul Schifferer:
 - Mac OS X build system and maintenance.
@@ -76,6 +77,7 @@ Chris Weaver
 
 Special Thanks
 --------------
+Shawn Carroll	- For his tutorial series.
 Patrick Kooman	- For his layout editor project.
 Chris McGuirk	- For his C#.Net port.
 
