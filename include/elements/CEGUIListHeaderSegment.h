@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIListHeaderSegmentProperties.h"
 
 
 // Start of CEGUI namespace section
@@ -390,6 +391,22 @@ protected:
 	bool	d_dragMoving;		//!< true when segment is being drag moved.
 	Point	d_dragPosition;		//!< position of dragged segment.
 	bool	d_allowClicks;		//!< true if the segment can be clicked.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ListHeaderSegmentProperties::Clickable		d_clickableProperty;
+	static ListHeaderSegmentProperties::Dragable		d_dragableProperty;
+	static ListHeaderSegmentProperties::Sizable			d_sizableProperty;
+	static ListHeaderSegmentProperties::SortDirection	d_sortDirectionProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addHeaderSegmentProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -260,6 +260,9 @@
 					RelativePath="..\..\..\..\src\elements\CEGUICombobox.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIComboboxProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIComboDropList.cpp">
 				</File>
 				<File
@@ -281,16 +284,28 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIListboxItem.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListboxProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListboxTextItem.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegment.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegmentProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiColumnList.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMultiColumnListProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiLineEditbox.cpp">
@@ -520,6 +535,9 @@
 					RelativePath="..\..\..\..\include\elements\CEGUICombobox.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIComboboxProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIComboDropList.h">
 				</File>
 				<File
@@ -544,16 +562,28 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIListboxItem.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListboxProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListboxTextItem.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegment.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegmentProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiColumnList.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMultiColumnListProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiLineEditbox.h">

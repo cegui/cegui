@@ -5,18 +5,24 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
 		     CEGUICheckboxProperties.h \
                      CEGUIComboDropList.h \
                      CEGUICombobox.h \
+                     CEGUIComboboxProperties.h \
                      CEGUIEditbox.h \
 		     CEGUIEditboxProperties.h \
                      CEGUIFrameWindow.h \
                      CEGUIFrameWindowProperties.h \
                      CEGUIGUISheet.h \
                      CEGUIListHeader.h \
+                     CEGUIListHeaderProperties.h \
                      CEGUIListbox.h \
                      CEGUIListboxItem.h \
+                     CEGUIListboxProperties.h \
                      CEGUIListboxTextItem.h \
                      CEGUIListHeader.h \
+                     CEGUIListHeaderProperties.h \
                      CEGUIListHeaderSegment.h \
+                     CEGUIListHeaderSegmentProperties.h \
                      CEGUIMultiColumnList.h \
+                     CEGUIMultiColumnListProperties.h \
 		     CEGUIMultiLineEditbox.h \
 		     CEGUIMultiLineEditboxProperties.h \
                      CEGUIProgressBar.h \

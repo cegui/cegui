@@ -34,6 +34,15 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definition of Properties for this class
+*************************************************************************/
+ListboxProperties::Sort					Listbox::d_sortProperty;
+ListboxProperties::MultiSelect			Listbox::d_multiSelectProperty;
+ListboxProperties::ForceVertScrollbar	Listbox::d_forceVertProperty;
+ListboxProperties::ForceHorzScrollbar	Listbox::d_forceHorzProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // event names
@@ -58,6 +67,8 @@ Listbox::Listbox(const String& type, const String& name)
 {
 	// add new events specific to list box.
 	addListboxEvents();
+
+	addListboxProperties();
 }
 
 
@@ -1001,6 +1012,35 @@ void Listbox::ensureItemIsVisible(uint item_index)
 void Listbox::ensureItemIsVisible(const ListboxItem* item)
 {
 	ensureItemIsVisible(getItemIndex(item));
+}
+
+
+/*************************************************************************
+	Return whether the vertical scroll bar is always shown.	
+*************************************************************************/
+bool Listbox::isVertScrollbarAlwaysShown(void) const
+{
+	return d_forceVertScroll;
+}
+
+
+/*************************************************************************
+	Return whether the horizontal scroll bar is always shown.	
+*************************************************************************/
+bool Listbox::isHorzScrollbarAlwaysShown(void) const
+{
+	return d_forceHorzScroll;
+}
+
+/*************************************************************************
+	Add properties for this class
+*************************************************************************/
+void Listbox::addListboxProperties(void)
+{
+	addProperty(&d_sortProperty);
+	addProperty(&d_multiSelectProperty);
+	addProperty(&d_forceHorzProperty);
+	addProperty(&d_forceVertProperty);
 }
 
 

@@ -44,6 +44,24 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definitions for Properties for this class
+*************************************************************************/
+ComboboxProperties::ReadOnly					Combobox::d_readOnlyProperty;
+ComboboxProperties::ValidationString			Combobox::d_validationStringProperty;
+ComboboxProperties::CaratIndex					Combobox::d_caratIndexProperty;
+ComboboxProperties::EditSelectionStart			Combobox::d_selStartProperty;
+ComboboxProperties::EditSelectionLength			Combobox::d_selLengthProperty;
+ComboboxProperties::MaxEditTextLength			Combobox::d_maxTextLengthProperty;
+ComboboxProperties::NormalEditTextColour		Combobox::d_normalTextColourProperty;
+ComboboxProperties::SelectedEditTextColour		Combobox::d_selectedTextColourProperty;
+ComboboxProperties::ActiveEditSelectionColour	Combobox::d_activeSelectionColourProperty;
+ComboboxProperties::InactiveEditSelectionColour	Combobox::d_inactiveSelectionColourProperty;
+ComboboxProperties::SortList					Combobox::d_sortProperty;
+ComboboxProperties::ForceVertScrollbar			Combobox::d_forceVertProperty;
+ComboboxProperties::ForceHorzScrollbar			Combobox::d_forceHorzProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // event names from edit box
@@ -77,6 +95,7 @@ Combobox::Combobox(const String& type, const String& name) :
 	Window(type, name)
 {
 	addComboboxEvents();
+	addComboboxProperties();
 }
 
 
@@ -795,6 +814,45 @@ void Combobox::droplist_HiddenHandler(const EventArgs& e)
 {
 	WindowEventArgs args(this);
 	onDroplistRemoved(args);
+}
+
+
+/*************************************************************************
+	Return whether the vertical scroll bar is always shown.	
+*************************************************************************/
+bool Combobox::isVertScrollbarAlwaysShown(void) const
+{
+	return d_droplist->isVertScrollbarAlwaysShown();
+}
+
+
+/*************************************************************************
+	Return whether the horizontal scroll bar is always shown.	
+*************************************************************************/
+bool Combobox::isHorzScrollbarAlwaysShown(void) const
+{
+	return d_droplist->isHorzScrollbarAlwaysShown();
+}
+
+
+/*************************************************************************
+	Add properties for this class
+*************************************************************************/
+void Combobox::addComboboxProperties(void)
+{
+	addProperty(&d_sortProperty);
+	addProperty(&d_forceHorzProperty);
+	addProperty(&d_forceVertProperty);
+	addProperty(&d_readOnlyProperty);
+	addProperty(&d_validationStringProperty);
+	addProperty(&d_maxTextLengthProperty);
+	addProperty(&d_selStartProperty);
+	addProperty(&d_selLengthProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_selectedTextColourProperty);
+	addProperty(&d_activeSelectionColourProperty);
+	addProperty(&d_inactiveSelectionColourProperty);
+	addProperty(&d_caratIndexProperty);
 }
 
 

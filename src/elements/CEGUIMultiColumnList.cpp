@@ -38,6 +38,21 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Properties for this class
+*************************************************************************/
+MultiColumnListProperties::ColumnsMovable				MultiColumnList::d_columnsMovableProperty;
+MultiColumnListProperties::ColumnsSizable				MultiColumnList::d_columnsSizableProperty;
+MultiColumnListProperties::ForceHorzScrollbar			MultiColumnList::d_forceHorzScrollProperty;
+MultiColumnListProperties::ForceVertScrollbar			MultiColumnList::d_forceVertScrollProperty;
+MultiColumnListProperties::NominatedSelectionColumnID	MultiColumnList::d_nominatedSelectColProperty;
+MultiColumnListProperties::NominatedSelectionRow		MultiColumnList::d_nominatedSelectRowProperty;
+MultiColumnListProperties::SelectionMode				MultiColumnList::d_selectModeProperty;
+MultiColumnListProperties::SortColumnID					MultiColumnList::d_sortColumnIDProperty;
+MultiColumnListProperties::SortDirection				MultiColumnList::d_sortDirectionProperty;
+MultiColumnListProperties::SortSettingEnabled			MultiColumnList::d_sortSettingProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // Event names
@@ -67,6 +82,9 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 {
 	// add multi-column list box specific events
 	addMultiColumnListboxEvents();
+
+	// add properties
+	addMultiColumnListProperties();
 
 	// set default selection mode
 	setSelectionMode(RowSingle);
@@ -2084,11 +2102,84 @@ void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 
 
 /*************************************************************************
+	Set whether user manipulation of the sort column and direction are
+	enabled.	
+*************************************************************************/
+void MultiColumnList::setUserSortControlEnabled(bool setting)
+{
+	d_header->setSortingEnabled(setting);
+}
+
+
+/*************************************************************************
+	Set whether the user may size column segments.	
+*************************************************************************/
+void MultiColumnList::setUserColumnSizingEnabled(bool setting)
+{
+	d_header->setColumnSizingEnabled(setting);
+}
+
+
+/*************************************************************************
+	Set whether the user may modify the order of the columns.	
+*************************************************************************/
+void MultiColumnList::setUserColumnDraggingEnabled(bool setting)
+{
+	d_header->setColumnDraggingEnabled(setting);
+}
+
+
+/*************************************************************************
+	Return the ID code assigned to the requested column.
+*************************************************************************/
+uint MultiColumnList::getColumnID(uint col_idx) const
+{
+	return d_header->getSegmentFromColumn(col_idx).getID();
+}
+
+
+/*************************************************************************
 	std algorithm predicate used for sorting in descending order (static)
 *************************************************************************/
 bool MultiColumnList::pred_descend(const ListRow& a, const ListRow& b)
 {
 	return a > b;
+}
+
+
+/*************************************************************************
+	Return whether the vertical scroll bar is always shown.
+*************************************************************************/
+bool MultiColumnList::isVertScrollbarAlwaysShown(void) const
+{
+	return d_forceVertScroll;
+}
+
+
+/*************************************************************************
+	Return whether the horizontal scroll bar is always shown.
+*************************************************************************/
+bool MultiColumnList::isHorzScrollbarAlwaysShown(void) const
+{
+	return d_forceHorzScroll;
+}
+
+
+/*************************************************************************
+	Adds properties for MCL
+*************************************************************************/
+void MultiColumnList::addMultiColumnListProperties(void)
+{
+	addProperty(&d_columnsSizableProperty);
+	addProperty(&d_columnsMovableProperty);
+	addProperty(&d_forceHorzScrollProperty);
+	addProperty(&d_forceVertScrollProperty);
+	addProperty(&d_nominatedSelectColProperty);
+	addProperty(&d_nominatedSelectRowProperty);
+	addProperty(&d_selectModeProperty);
+	addProperty(&d_sortColumnIDProperty);
+	addProperty(&d_sortDirectionProperty);
+	addProperty(&d_sortSettingProperty);
 }
 
 

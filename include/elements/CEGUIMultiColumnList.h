@@ -29,6 +29,8 @@
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
 #include "CEGUIListHeader.h"
+#include "elements/CEGUIMultiColumnListProperties.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -527,6 +529,43 @@ public:
 	MultiColumnList::SelectionMode	getSelectionMode(void) const;
 
 
+	/*!
+	\brief
+		Return whether the vertical scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isVertScrollbarAlwaysShown(void) const;
+
+
+	/*!
+	\brief
+		Return whether the horizontal scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isHorzScrollbarAlwaysShown(void) const;
+
+
+	/*!
+	\brief
+		Return the ID code assigned to the requested column.
+
+	\param col_idx
+		Zero based index of the column whos ID code is to be returned.
+
+	\return
+		Current ID code assigned to the column at the requested index.
+
+	\exception InvalidRequestException	thrown if \a col_idx is out of range
+	*/
+	uint	getColumnID(uint col_idx) const;
+
+
 	/*************************************************************************
 		Manipulator Methods
 	*************************************************************************/
@@ -1010,6 +1049,45 @@ public:
 	void	setColumnHeaderWidth(uint col_idx, float width);
 
 
+	/*!
+	\brief
+		Set whether user manipulation of the sort column and direction are enabled.
+
+	\param setting
+		- true if the user may interactively modify the sort column and direction.
+		- false if the user may not modify the sort column and direction (these can still be set programmatically).
+
+	\return
+		Nothing.
+	*/
+	void	setUserSortControlEnabled(bool setting);
+
+
+	/*!
+	\brief
+		Set whether the user may size column segments.
+
+	\param setting
+		- true if the user may interactively modify the width of columns.
+		- false if the user may not change the width of the columns.
+
+	\return
+		Nothing.
+	*/
+	void	setUserColumnSizingEnabled(bool setting);
+
+
+	/*!
+	\brief
+		Set whether the user may modify the order of the columns.
+
+	\param setting
+		- true if the user may interactively modify the order of the columns.
+		- false if the user may not modify the order of the columns.
+	*/
+	void	setUserColumnDraggingEnabled(bool setting);
+
+
 protected:
 	/*************************************************************************
 		Construction and Destruction
@@ -1359,6 +1437,27 @@ protected:
 	typedef std::vector<ListRow>		ListItemGrid;
 	ListItemGrid	d_grid;			//!< Holds the list box data.
 
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static MultiColumnListProperties::ColumnsMovable				d_columnsMovableProperty;
+	static MultiColumnListProperties::ColumnsSizable				d_columnsSizableProperty;
+	static MultiColumnListProperties::ForceHorzScrollbar			d_forceHorzScrollProperty;
+	static MultiColumnListProperties::ForceVertScrollbar			d_forceVertScrollProperty;
+	static MultiColumnListProperties::NominatedSelectionColumnID	d_nominatedSelectColProperty;
+	static MultiColumnListProperties::NominatedSelectionRow			d_nominatedSelectRowProperty;
+	static MultiColumnListProperties::SelectionMode					d_selectModeProperty;
+	static MultiColumnListProperties::SortColumnID					d_sortColumnIDProperty;
+	static MultiColumnListProperties::SortDirection					d_sortDirectionProperty;
+	static MultiColumnListProperties::SortSettingEnabled			d_sortSettingProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addMultiColumnListProperties(void);
 };
 
 } // End of  CEGUI namespace section

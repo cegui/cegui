@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIComboboxProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -345,6 +346,28 @@ public:
 		true if ListboxItem \a item is in the list, false if ListboxItem \a item is not in the list.
 	*/
 	bool	isListboxItemInList(const ListboxItem* item) const;
+
+
+	/*!
+	\brief
+		Return whether the vertical scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isVertScrollbarAlwaysShown(void) const;
+
+
+	/*!
+	\brief
+		Return whether the horizontal scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isHorzScrollbarAlwaysShown(void) const;
 
 
 	/*************************************************************************
@@ -938,6 +961,30 @@ protected:
 	Editbox*		d_editbox;		//!< Editbox widget sub-component.
 	ComboDropList*	d_droplist;		//!< ComboDropList widget sub-component.	
 	PushButton*		d_button;		//!< PushButton widget sub-component.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ComboboxProperties::ReadOnly						d_readOnlyProperty;
+	static ComboboxProperties::ValidationString				d_validationStringProperty;
+	static ComboboxProperties::CaratIndex					d_caratIndexProperty;
+	static ComboboxProperties::EditSelectionStart			d_selStartProperty;
+	static ComboboxProperties::EditSelectionLength			d_selLengthProperty;
+	static ComboboxProperties::MaxEditTextLength			d_maxTextLengthProperty;
+	static ComboboxProperties::NormalEditTextColour			d_normalTextColourProperty;
+	static ComboboxProperties::SelectedEditTextColour		d_selectedTextColourProperty;
+	static ComboboxProperties::ActiveEditSelectionColour	d_activeSelectionColourProperty;
+	static ComboboxProperties::InactiveEditSelectionColour	d_inactiveSelectionColourProperty;
+	static ComboboxProperties::SortList						d_sortProperty;
+	static ComboboxProperties::ForceVertScrollbar			d_forceVertProperty;
+	static ComboboxProperties::ForceHorzScrollbar			d_forceHorzProperty;
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addComboboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

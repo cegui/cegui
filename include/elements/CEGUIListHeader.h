@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
 #include "elements/CEGUIListHeaderSegment.h"
+#include "elements/CEGUIListHeaderProperties.h"
 
 
 // Start of CEGUI namespace section
@@ -794,6 +795,23 @@ protected:
 	uint	d_uniqueIDNumber;		//!< field used to create unique names.
 	float	d_segmentOffset;		//!< Base offset used to layout the segments (allows scrolling within the window area)
 	ListHeaderSegment::SortDirection	d_sortDir;		//!< Brief copy of the current sort direction.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ListHeaderProperties::SortSettingEnabled		d_sortSettingProperty;
+	static ListHeaderProperties::ColumnsSizable			d_sizableProperty;
+	static ListHeaderProperties::ColumnsMovable			d_movableProperty;
+	static ListHeaderProperties::SortColumnID			d_sortColumnIDProperty;
+	static ListHeaderProperties::SortDirection			d_sortDirectionProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addHeaderProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -34,6 +34,16 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Properties for this class
+*************************************************************************/
+ListHeaderProperties::SortSettingEnabled	ListHeader::d_sortSettingProperty;
+ListHeaderProperties::ColumnsSizable		ListHeader::d_sizableProperty;
+ListHeaderProperties::ColumnsMovable		ListHeader::d_movableProperty;
+ListHeaderProperties::SortColumnID			ListHeader::d_sortColumnIDProperty;
+ListHeaderProperties::SortDirection			ListHeader::d_sortDirectionProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // Event names
@@ -68,6 +78,7 @@ ListHeader::ListHeader(const String& type, const String& name) :
 	d_sortDir(ListHeaderSegment::None)
 {
 	addListHeaderEvents();
+	addHeaderProperties();
 }
 
 
@@ -1048,5 +1059,18 @@ void ListHeader::addListHeaderEvents(void)
 	addEvent(DragSizeSettingChanged);
 	addEvent(SegmentOffsetChanged);
 }
+
+/*************************************************************************
+	Add ListHeader specific properties
+*************************************************************************/
+void ListHeader::addHeaderProperties(void)
+{
+	addProperty(&d_sizableProperty);
+	addProperty(&d_movableProperty);
+	addProperty(&d_sortSettingProperty);
+	addProperty(&d_sortColumnIDProperty);
+	addProperty(&d_sortDirectionProperty);
+}
+
 
 } // End of  CEGUI namespace section

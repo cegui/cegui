@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIListboxProperties.h"
 #include <vector>
 
 
@@ -197,6 +198,28 @@ public:
 		true if ListboxItem \a item is in the list, false if ListboxItem \a item is not in the list.
 	*/
 	bool	isListboxItemInList(const ListboxItem* item) const;
+
+
+	/*!
+	\brief
+		Return whether the vertical scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isVertScrollbarAlwaysShown(void) const;
+
+
+	/*!
+	\brief
+		Return whether the horizontal scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isHorzScrollbarAlwaysShown(void) const;
 
 
 	/*************************************************************************
@@ -640,6 +663,21 @@ protected:
 	Scrollbar*	d_horzScrollbar;	//!< horizontal scroll-bar widget
 	LBItemList	d_listItems;		//!< list of items in the list box.
 	ListboxItem*	d_lastSelected;	//!< holds pointer to the last selected item (used in range selections)
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ListboxProperties::Sort					d_sortProperty;
+	static ListboxProperties::MultiSelect			d_multiSelectProperty;
+	static ListboxProperties::ForceVertScrollbar	d_forceVertProperty;
+	static ListboxProperties::ForceHorzScrollbar	d_forceHorzProperty;
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addListboxProperties(void);
 };
 
 

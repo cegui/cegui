@@ -31,6 +31,15 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Properties for this class
+*************************************************************************/
+ListHeaderSegmentProperties::Clickable		ListHeaderSegment::d_clickableProperty;
+ListHeaderSegmentProperties::Dragable		ListHeaderSegment::d_dragableProperty;
+ListHeaderSegmentProperties::Sizable		ListHeaderSegment::d_sizableProperty;
+ListHeaderSegmentProperties::SortDirection	ListHeaderSegment::d_sortDirectionProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // Event names
@@ -70,6 +79,7 @@ ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	d_allowClicks(true)
 {
 	addHeaderSegmentEvents();
+	addHeaderSegmentProperties();
 }
 
 
@@ -620,5 +630,18 @@ void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 
 	e.handled = true;
 }
+
+/*************************************************************************
+	adds properties for the class
+*************************************************************************/
+void ListHeaderSegment::addHeaderSegmentProperties(void)
+{
+	addProperty(&d_clickableProperty);
+	addProperty(&d_sizableProperty);
+	addProperty(&d_dragableProperty);
+	addProperty(&d_sortDirectionProperty);
+}
+
+
 
 } // End of  CEGUI namespace section
