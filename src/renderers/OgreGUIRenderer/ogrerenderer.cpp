@@ -32,8 +32,6 @@
 #include "renderers/OgreGUIRenderer/ogrerenderer.h"
 #include "renderers/OgreGUIRenderer/ogretexture.h"
 
-#include <algorithm>
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -85,10 +83,6 @@ OgreRenderer::~OgreRenderer(void)
 	// cleanup vertex data we allocated in constructor
 	delete d_render_op.vertexData;
 
-	// cleanup quad buffers allocated in constructor
-	delete[] d_quadBuff;
-	delete[] d_quadList;
-
 	destroyAllTextures();
 }
 
@@ -105,14 +99,8 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 	}
 	else
 	{
-		if (d_quadBuffPos >= d_quadBuffSize)
-		{
-			return;
-		}
-
 		d_sorted = false;
-
-		QuadInfo& quad = d_quadBuff[d_quadBuffPos];
+		QuadInfo quad;
 		
 		// set quad position, flipping y co-ordinates, and applying appropriate texel origin offset
 		quad.position.d_left	= dest_rect.d_left;
@@ -138,8 +126,7 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 		quad.bottomLeftCol	= colourToOgre(colours.d_top_left);
 		quad.bottomRightCol	= colourToOgre(colours.d_top_right);
 
-		d_quadList[d_quadBuffPos] = &quad;
-		d_quadBuffPos++;
+		d_quadlist.insert(quad);
 	}
 }
 
@@ -160,15 +147,13 @@ void OgreRenderer::doRender(void)
 
 		bool locked = false;
 		QuadVertex*	buffmem;
-		QuadInfo*	quad;
 
 		// iterate over each quad in the list
-		for (int i = 0; i < d_quadBuffPos; ++i)
+		for (QuadList::iterator i = d_quadlist.begin(); i != d_quadlist.end(); ++i)
 		{
-			quad = d_quadList[i];
-
+			const QuadInfo& quad = (*i);
 			// flush & set texture if needed
-			if (d_currTexture != quad->texture)
+			if (d_currTexture != quad.texture)
 			{
 				if (locked)
 				{
@@ -180,8 +165,8 @@ void OgreRenderer::doRender(void)
 				renderVBuffer();
 
 				// set new texture
-				d_render_sys->_setTexture(0, true, quad->texture->getName());
-				d_currTexture = quad->texture;
+				d_render_sys->_setTexture(0, true, quad.texture->getName());
+				d_currTexture = quad.texture;
 			}
 
 			// lock the vertex buffer if it is not already locked
@@ -192,56 +177,61 @@ void OgreRenderer::doRender(void)
 			}
 
 			// setup Vertex 1...
-			(&buffmem[0])->x	= quad->position.d_left;
-			(&buffmem[0])->y	= quad->position.d_bottom;
-			(&buffmem[0])->z	= quad->z;
-			(&buffmem[0])->diffuse = quad->topLeftCol;
-			(&buffmem[0])->tu1	= quad->texPosition.d_left;
-			(&buffmem[0])->tv1	= quad->texPosition.d_bottom;
+			buffmem->x = quad.position.d_left;
+			buffmem->y = quad.position.d_bottom;
+			buffmem->z = quad.z;
+			buffmem->diffuse = quad.topLeftCol;
+			buffmem->tu1 = quad.texPosition.d_left;
+			buffmem->tv1 = quad.texPosition.d_bottom;
+			++buffmem;
 
 			// setup Vertex 2...
-			(&buffmem[1])->x	= quad->position.d_right;
-			(&buffmem[1])->y	= quad->position.d_bottom;
-			(&buffmem[1])->z	= quad->z;
-			(&buffmem[1])->diffuse = quad->topRightCol;
-			(&buffmem[1])->tu1	= quad->texPosition.d_right;
-			(&buffmem[1])->tv1	= quad->texPosition.d_bottom;
+			buffmem->x = quad.position.d_right;
+			buffmem->y = quad.position.d_bottom;
+			buffmem->z = quad.z;
+			buffmem->diffuse = quad.topRightCol;
+			buffmem->tu1 = quad.texPosition.d_right;
+			buffmem->tv1 = quad.texPosition.d_bottom;
+			++buffmem;
 
 			// setup Vertex 3...
-			(&buffmem[2])->x	= quad->position.d_left;
-			(&buffmem[2])->y	= quad->position.d_top;
-			(&buffmem[2])->z	= quad->z;
-			(&buffmem[2])->diffuse = quad->bottomLeftCol;
-			(&buffmem[2])->tu1	= quad->texPosition.d_left;
-			(&buffmem[2])->tv1	= quad->texPosition.d_top;
+			buffmem->x = quad.position.d_left;
+			buffmem->y = quad.position.d_top;
+			buffmem->z = quad.z;
+			buffmem->diffuse = quad.bottomLeftCol;
+			buffmem->tu1 = quad.texPosition.d_left;
+			buffmem->tv1 = quad.texPosition.d_top;
+			++buffmem;
 
 			// setup Vertex 4...
-			(&buffmem[3])->x	= quad->position.d_right;
-			(&buffmem[3])->y	= quad->position.d_bottom;
-			(&buffmem[3])->z	= quad->z;
-			(&buffmem[3])->diffuse = quad->topRightCol;
-			(&buffmem[3])->tu1	= quad->texPosition.d_right;
-			(&buffmem[3])->tv1	= quad->texPosition.d_bottom;
+			buffmem->x = quad.position.d_right;
+			buffmem->y = quad.position.d_bottom;
+			buffmem->z = quad.z;
+			buffmem->diffuse = quad.topRightCol;
+			buffmem->tu1 = quad.texPosition.d_right;
+			buffmem->tv1 = quad.texPosition.d_bottom;
+			++buffmem;
 
 			// setup Vertex 5...
-			(&buffmem[4])->x	= quad->position.d_right;
-			(&buffmem[4])->y	= quad->position.d_top;
-			(&buffmem[4])->z	= quad->z;
-			(&buffmem[4])->diffuse = quad->bottomRightCol;
-			(&buffmem[4])->tu1	= quad->texPosition.d_right;
-			(&buffmem[4])->tv1	= quad->texPosition.d_top;
+			buffmem->x = quad.position.d_right;
+			buffmem->y = quad.position.d_top;
+			buffmem->z = quad.z;
+			buffmem->diffuse = quad.bottomRightCol;
+			buffmem->tu1 = quad.texPosition.d_right;
+			buffmem->tv1 = quad.texPosition.d_top;
+			++buffmem;
 
 			// setup Vertex 6...
-			(&buffmem[5])->x	= quad->position.d_left;
-			(&buffmem[5])->y	= quad->position.d_top;
-			(&buffmem[5])->z	= quad->z;
-			(&buffmem[5])->diffuse = quad->bottomLeftCol;
-			(&buffmem[5])->tu1	= quad->texPosition.d_left;
-			(&buffmem[5])->tv1	= quad->texPosition.d_top;
+			buffmem->x = quad.position.d_left;
+			buffmem->y = quad.position.d_top;
+			buffmem->z = quad.z;
+			buffmem->diffuse = quad.bottomLeftCol;
+			buffmem->tu1 = quad.texPosition.d_left;
+			buffmem->tv1 = quad.texPosition.d_top;
+			++buffmem;
 
 			// update position within buffer for next time
 			d_bufferPos += VERTEX_PER_QUAD;
-			buffmem		+= VERTEX_PER_QUAD;
 
 			// if there is not enough room in the buffer for another sprite, render what we have
 			if (d_bufferPos >= (VERTEXBUFFER_CAPACITY - VERTEX_PER_QUAD))
@@ -277,7 +267,7 @@ void OgreRenderer::doRender(void)
 void OgreRenderer::clearRenderList(void)
 {
 	d_sorted = true;
-	d_quadBuffPos = 0;
+	d_quadlist.clear();
 }
 
 
@@ -406,7 +396,6 @@ void OgreRenderer::sortQuads(void)
 {
 	if (!d_sorted)
 	{
-		std::stable_sort(d_quadList, d_quadList + d_quadBuffPos, quadsorter());
 		d_sorted = true;
 	}
 
@@ -452,52 +441,57 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		QuadVertex*	buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
 
 		// setup Vertex 1...
-		(&buffmem[0])->x	= final_rect.d_left;
-		(&buffmem[0])->y	= final_rect. d_bottom;
-		(&buffmem[0])->z	= z;
-		(&buffmem[0])->diffuse = topLeftCol;
-		(&buffmem[0])->tu1	= texture_rect.d_left;
-		(&buffmem[0])->tv1	= texture_rect.d_bottom;
+		buffmem->x	= final_rect.d_left;
+		buffmem->y	= final_rect. d_bottom;
+		buffmem->z	= z;
+		buffmem->diffuse = topLeftCol;
+		buffmem->tu1	= texture_rect.d_left;
+		buffmem->tv1	= texture_rect.d_bottom;
+		++buffmem;
 
 		// setup Vertex 2...
-		(&buffmem[1])->x	= final_rect.d_right;
-		(&buffmem[1])->y	= final_rect.d_bottom;
-		(&buffmem[1])->z	= z;
-		(&buffmem[1])->diffuse = topRightCol;
-		(&buffmem[1])->tu1	= texture_rect.d_right;
-		(&buffmem[1])->tv1	= texture_rect.d_bottom;
+		buffmem->x	= final_rect.d_right;
+		buffmem->y	= final_rect.d_bottom;
+		buffmem->z	= z;
+		buffmem->diffuse = topRightCol;
+		buffmem->tu1	= texture_rect.d_right;
+		buffmem->tv1	= texture_rect.d_bottom;
+		++buffmem;
 
 		// setup Vertex 3...
-		(&buffmem[2])->x	= final_rect.d_left;
-		(&buffmem[2])->y	= final_rect.d_top;
-		(&buffmem[2])->z	= z;
-		(&buffmem[2])->diffuse = bottomLeftCol;
-		(&buffmem[2])->tu1	= texture_rect.d_left;
-		(&buffmem[2])->tv1	= texture_rect.d_top;
+		buffmem->x	= final_rect.d_left;
+		buffmem->y	= final_rect.d_top;
+		buffmem->z	= z;
+		buffmem->diffuse = bottomLeftCol;
+		buffmem->tu1	= texture_rect.d_left;
+		buffmem->tv1	= texture_rect.d_top;
+		++buffmem;
 
 		// setup Vertex 4...
-		(&buffmem[3])->x	= final_rect.d_right;
-		(&buffmem[3])->y	= final_rect.d_bottom;
-		(&buffmem[3])->z	= z;
-		(&buffmem[3])->diffuse = topRightCol;
-		(&buffmem[3])->tu1	= texture_rect.d_right;
-		(&buffmem[3])->tv1	= texture_rect.d_bottom;
+		buffmem->x	= final_rect.d_right;
+		buffmem->y	= final_rect.d_bottom;
+		buffmem->z	= z;
+		buffmem->diffuse = topRightCol;
+		buffmem->tu1	= texture_rect.d_right;
+		buffmem->tv1	= texture_rect.d_bottom;
+		++buffmem;
 
 		// setup Vertex 5...
-		(&buffmem[4])->x	= final_rect.d_right;
-		(&buffmem[4])->y	= final_rect.d_top;
-		(&buffmem[4])->z	= z;
-		(&buffmem[4])->diffuse = bottomRightCol;
-		(&buffmem[4])->tu1	= texture_rect.d_right;
-		(&buffmem[4])->tv1	= texture_rect.d_top;
+		buffmem->x	= final_rect.d_right;
+		buffmem->y	= final_rect.d_top;
+		buffmem->z	= z;
+		buffmem->diffuse = bottomRightCol;
+		buffmem->tu1	= texture_rect.d_right;
+		buffmem->tv1	= texture_rect.d_top;
+		++buffmem;
 
 		// setup Vertex 6...
-		(&buffmem[5])->x	= final_rect.d_left;
-		(&buffmem[5])->y	= final_rect.d_top;
-		(&buffmem[5])->z	= z;
-		(&buffmem[5])->diffuse = bottomLeftCol;
-		(&buffmem[5])->tu1	= texture_rect.d_left;
-		(&buffmem[5])->tv1	= texture_rect.d_top;
+		buffmem->x	= final_rect.d_left;
+		buffmem->y	= final_rect.d_top;
+		buffmem->z	= z;
+		buffmem->diffuse = bottomLeftCol;
+		buffmem->tu1	= texture_rect.d_left;
+		buffmem->tv1	= texture_rect.d_top;
 
 		d_buffer->unlock();
 		d_bufferPos = VERTEX_PER_QUAD;
@@ -580,7 +574,6 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 	using namespace Ogre;
 
 	// initialise the renderer fields
-	d_quadBuffSize	= max_quads;
 	d_queueing		= true;
 	d_queue_id		= queue_id;
 	d_currTexture	= NULL;
@@ -619,11 +612,6 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= window->getWidth();
 	d_display_area.d_bottom	= window->getHeight();
-
-	// initialise quad buffer
-	d_quadBuffPos = 0;
-	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
-	d_quadList = new QuadInfo*[max_quads];
 
 	// initialise required texel offset
 	d_texelOffset = Point((float)d_render_sys->getHorizontalTexelOffset(), -(float)d_render_sys->getVerticalTexelOffset());

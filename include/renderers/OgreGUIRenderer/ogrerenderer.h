@@ -44,6 +44,7 @@
 #include "CEGUITexture.h"
 
 #include <Ogre.h>
+#include <set>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,7 +54,6 @@ namespace CEGUI
 *************************************************************************/
 class OgreTexture;
 class OgreRenderer;
-class OgreRQListener;
 
 
 /*!
@@ -111,12 +111,12 @@ public:
 		\a queue_id.
 
 	\param max_quads
-		Maximum number of quads that the Renderer will be able to render per frame.
+		Obsolete.  Set to 0.
 
 	\param scene_type
 		One of the Ogre::SceneType enumerated values specifying the scene manager to be targeted by the GUI renderer.
 	*/
-	OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads, Ogre::SceneType scene_type = Ogre::ST_GENERIC);
+	OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id = Ogre::RENDER_QUEUE_OVERLAY, bool post_queue = false, uint max_quads = 0, Ogre::SceneType scene_type = Ogre::ST_GENERIC);
 
 
 	/*!
@@ -134,7 +134,7 @@ public:
 		\a queue_id.
 
 	\param max_quads
-		Maximum number of quads that the Renderer will be able to render per frame.
+		Obsolete.  Set to 0.
 
 	\param scene_manager
 		Pointer to an Ogre::SceneManager object that is to be used for GUI rendering.
@@ -380,20 +380,14 @@ private:
 		ulong				topRightCol;
 		ulong				bottomLeftCol;
 		ulong				bottomRightCol;
+
+		bool operator<(const QuadInfo& other) const
+		{
+			// this is intentionally reversed.
+			return z > other.z;
+		}
 	};
 
-
-	// this is a function object that is used by the sorting algorithm to
-	// sort the quads.  It would be possible to define comparison operators
-	// the the QuadInfo structure and not have this - the reason this was
-	// not done, is because the system could be extended to have >1 quad
-	// list each sorted by a different key (by texture for non-alpha stuff, etc).
-	struct quadsorter
-		: public std::binary_function<QuadInfo*, QuadInfo*, bool>
-	{
-		bool operator()(const QuadInfo* _Left, const QuadInfo* _Right) const
-		{return (_Left->z > _Right->z);}
-	};
 
 	/*************************************************************************
 	    Implementation Methods
@@ -421,12 +415,10 @@ private:
 	    Implementation Data
 	*************************************************************************/
 	Rect				d_display_area;
-	QuadInfo**			d_quadList;
-	QuadInfo*			d_quadBuff;
-	int					d_quadBuffPos;
-	int					d_quadBuffSize;
 
-	bool	d_queueing;		//!< setting for queueing control.
+	typedef std::multiset<QuadInfo>		QuadList;
+	QuadList d_quadlist;
+	bool	 d_queueing;		//!< setting for queueing control.
 
 	// Ogre specific bits.
 	Ogre::Root*					d_ogre_root;		//!< pointer to the Ogre root object that we attach to
