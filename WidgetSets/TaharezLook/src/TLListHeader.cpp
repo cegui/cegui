@@ -76,7 +76,7 @@ ListHeaderSegment* TLListHeader::createNewSegment(const String& name) const
 *************************************************************************/
 void TLListHeader::destroyListSegment(ListHeaderSegment* segment) const
 {
-	delete	segment;
+	WindowManager::getSingleton().destroyWindow(segment);
 }
 
 
