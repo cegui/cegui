@@ -49,6 +49,7 @@
 #include "WLTabControl.h"
 #include "WLTabButton.h"
 #include "WLTabPane.h"
+#include "WLSpinner.h"
 
 
 /*************************************************************************
@@ -80,6 +81,7 @@ static CEGUI::WLMultiColumnListFactory		s_MultiColumnListFactory;
 static CEGUI::WLTabControlFactory		    s_TabControlFactory;
 static CEGUI::WLTabButtonFactory		    s_TabButtonFactory;
 static CEGUI::WLTabPaneFactory				s_TabPaneFactory;
+static CEGUI::WLSpinnerFactory              s_SpinnerFactory;
 
 
 /*************************************************************************
@@ -219,6 +221,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
 		return;
 	}
+    else if (type_name == WLSpinner::WidgetTypeName)
+    {
+        WindowFactoryManager::getSingleton().addFactory(&s_SpinnerFactory);
+        return;
+    }
 
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 

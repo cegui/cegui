@@ -22,6 +22,7 @@ libCEGUIWindowsLook_la_SOURCES = WLButton.cpp \
 				 WLRadioButton.cpp \
 				 WLSlider.cpp \
 				 WLSliderThumb.cpp \
+				 WLSpinner.cpp \
 				 WLStatic.cpp \
 				 WLTabButton.cpp \
 				 WLTabControl.cpp \

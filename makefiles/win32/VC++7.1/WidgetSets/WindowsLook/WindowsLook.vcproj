@@ -187,6 +187,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLSliderThumb.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLSpinner.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLStatic.cpp">
 			</File>
 			<File
@@ -268,6 +271,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLSliderThumb.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLSpinner.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLStatic.h">

@@ -180,6 +180,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLSliderThumb.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLSpinner.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLStatic.cpp
 # End Source File
 # Begin Source File
@@ -285,6 +289,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSlider.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSliderThumb.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSpinner.h
 # End Source File
 # Begin Source File
 
