@@ -30,8 +30,6 @@
 #include "CEGUIString.h"
 #include "CEGUISchemeManager.h"
 
-#include "xercesc/sax2/DefaultHandler.hpp"
-
 #include <vector>
 
 // Start of CEGUI namespace section
@@ -48,6 +46,7 @@ namespace CEGUI
 */
 class CEGUIBASE_API Scheme
 {
+	friend class Scheme_xmlHandler;
 public:
 	/*!
 	\brief
@@ -147,72 +146,6 @@ private:
 		FactoryModule*	module;
 		std::vector<UIElementFactory>	factories;
 	};
-
-	/*************************************************************************
-		Implementation Classes
-	*************************************************************************/
-	/*!
-	\brief
-		Handler class used to parse the Scheme XML files using SAX2
-	*/
-	class xmlHandler : public XERCES_CPP_NAMESPACE::DefaultHandler
-	{
-	public:
-		/*************************************************************************
-			Construction & Destruction
-		*************************************************************************/
-		/*!
-		\brief
-			Constructor for Scheme::xmlHandler objects
-
-		\param scheme
-			Pointer to the Scheme object creating this xmlHandler object
-		*/
-		xmlHandler(Scheme* scheme) : d_scheme(scheme) {}
-
-		/*!
-		\brief
-			Destructor for Scheme::xmlHandler objects
-		*/
-		virtual ~xmlHandler(void) {}
-
-		/*************************************************************************
-			SAX2 Handler overrides
-		*************************************************************************/ 
-		/*!
-		\brief
-			document processing (only care about elements, schema validates format)
-		*/
-		virtual void	startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
- 
-		/*!
-		\brief
-			error processing
-		*/
-		virtual void  warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-		virtual void  error (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-		virtual void  fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-
-	private:
-		/*************************************************************************
-			Implementation Constants
-		*************************************************************************/
-		// XML related strings
-		static const char	GUISchemeElement[];				//!< Root GUIScheme element.
-		static const char	ImagesetElement[];				//!< Element specifying an Imageset
-		static const char	FontElement[];					//!< Element specifying a Font
-		static const char	WindowSetElement[];				//!< Element specifying a module and set of WindowFactory elements.
-		static const char	WindowFactoryElement[];			//!< Element specifying a WindowFactory type.
-		static const char	NameAttribute[];				//!< Attribute specifying the name of some object.
-		static const char	FilenameAttribute[];			//!< Attribute specifying the name of some file.
-
-
-		/*************************************************************************
-			Implementation Data
-		*************************************************************************/
-		Scheme* d_scheme;			//!< Scheme object that we are helping to build
-	};
-
 
 
 	/*************************************************************************

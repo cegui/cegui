@@ -154,20 +154,24 @@ void RadioButton::onMouseButtonUp(MouseEventArgs& e)
 	// default handling
 	ButtonBase::onMouseButtonUp(e);
 
-	Window* sheet = System::getSingleton().getGUISheet();
-
-	if (sheet != NULL)
+	if (e.button == LeftButton)
 	{
-		// if mouse was released over this widget
-		if (this == sheet->getChildAtPosition(e.position))
+		Window* sheet = System::getSingleton().getGUISheet();
+
+		if (sheet != NULL)
 		{
-			// select this button & deselect all others in the same group.
-			setSelected(true);
+			// if mouse was released over this widget
+			if (this == sheet->getChildAtPosition(e.position))
+			{
+				// select this button & deselect all others in the same group.
+				setSelected(true);
+			}
+
 		}
 
+		e.handled = true;
 	}
 
-	e.handled = true;
 }
 
 } // End of  CEGUI namespace section

@@ -32,6 +32,7 @@
 #include "CEGUITexture.h"
 #include "CEGUILogger.h"
 #include "CEGUITextUtils.h"
+#include "CEGUIFont_xmlHandler.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -50,25 +51,6 @@ const uint	Font::InterGlyphPadSpace			= 2;
 
 // XML related strings
 const char	Font::FontSchemaName[]							= "Font.xsd";
-const char	Font::xmlHandler::FontElement[]					= "Font";
-const char	Font::xmlHandler::MappingElement[]				= "Mapping";
-const char	Font::xmlHandler::FontNameAttribute[]			= "Name";
-const char	Font::xmlHandler::FontFilenameAttribute[]		= "Filename";
-const char	Font::xmlHandler::FontTypeAttribute[]			= "Type";
-const char	Font::xmlHandler::FontSizeAttribute[]			= "Size";
-const char	Font::xmlHandler::FontFirstCodepointAttribute[]	= "FirstCodepoint";
-const char	Font::xmlHandler::FontLastCodepointAttribute[]	= "LastCodepoint";
-const char	Font::xmlHandler::FontNativeHorzResAttribute[]	= "NativeHorzRes";
-const char	Font::xmlHandler::FontNativeVertResAttribute[]	= "NativeVertRes";
-const char	Font::xmlHandler::FontAutoScaledAttribute[]		= "AutoScaled";
-const char	Font::xmlHandler::MappingCodepointAttribute[]	= "Codepoint";
-const char	Font::xmlHandler::MappingImageAttribute[]		= "Image";
-const char	Font::xmlHandler::MappingHorzAdvanceAttribute[]	= "HorzAdvance";
-const char	Font::xmlHandler::FontTypeStatic[]				= "Static";
-const char	Font::xmlHandler::FontTypeDynamic[]				= "Dynamic";
-
-// General constants
-const int	Font::xmlHandler::AutoGenerateHorzAdvance		= -1;
 
 
 /*************************************************************************
@@ -653,7 +635,7 @@ void Font::load(const String& filename)
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
 
 	// setup handler object
-	xmlHandler handler(this);
+	Font_xmlHandler handler(this);
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
@@ -923,150 +905,6 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 		throw GenericException((utf8*)"Font::createFontFromFT_Face - An error occurred while creating a source font with the requested size.");
 	}
 
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
-/*************************************************************************
-	SAX2 Handler methods
-*************************************************************************/
-void Font::xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
-{
-	XERCES_CPP_NAMESPACE_USE
-	std::string element(XMLString::transcode(localname));
-
-	// handle a Mapping element
-	if ((element == MappingElement) && !d_font->d_freetype)
-	{
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(MappingImageAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		String	image_name((utf8*)val_str.get());
-
-		attr_name.reset(XMLString::transcode(MappingCodepointAttribute));
-		utf32 codepoint = (utf32)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		attr_name.reset(XMLString::transcode(MappingHorzAdvanceAttribute));
-		int horzAdvance = XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		Font::glyphDat	mapDat;
-		mapDat.d_image = &d_font->d_glyph_images->getImage(image_name);
-
-		// calculate advance width if it was not specified
-		if (horzAdvance == AutoGenerateHorzAdvance)
-		{
-			horzAdvance = (int)(mapDat.d_image->getWidth() + mapDat.d_image->getOffsetX());
-		}
-
-		mapDat.d_horz_advance_unscaled = horzAdvance;
-		mapDat.d_horz_advance = (uint)(((float)horzAdvance) * d_font->d_horzScaling);
-		d_font->d_cp_map[codepoint] = mapDat;
-	}
-	// handle root Font element
-	else if (element == FontElement)
-	{
-		// get name of font we are creating
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(FontNameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		String font_name = (utf8*)val_str.get();
-
-		// get filename for the font
-		attr_name.reset(XMLString::transcode(FontFilenameAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		String filename((utf8*)val_str.get());
-
-		//
-		// load auto-scaling configuration
-		//
-		float hres, vres;
-		bool auto_scale;
-
-		// get native horizontal resolution
-		attr_name.reset(XMLString::transcode(FontNativeHorzResAttribute));
-		hres = (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		// get native vertical resolution
-		attr_name.reset(XMLString::transcode(FontNativeVertResAttribute));
-		vres = (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		// get auto-scaling setting
-		attr_name.reset(XMLString::transcode(FontAutoScaledAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		std::string autoscaleval = val_str.get();
-
-		auto_scale = ((autoscaleval == "true") || (autoscaleval == "1")) ? true : false;
-
-		//
-		// get type of font
-		//
-		attr_name.reset(XMLString::transcode(FontTypeAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		std::string	font_type = val_str.get();
-		
-		// dynamic (ttf) font
-		if (font_type == FontTypeDynamic)
-		{
-			// get size of font
-			attr_name.reset(XMLString::transcode(FontSizeAttribute));
-			uint size = (uint)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-			// extract codepoint range
-			attr_name.reset(XMLString::transcode(FontFirstCodepointAttribute));
-			utf32 first_codepoint = (utf32)XMLString::parseInt(attrs.getValue(attr_name.get()));
-			attr_name.reset(XMLString::transcode(FontLastCodepointAttribute));
-			utf32 last_codepoint = (utf32)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-			// build string containing the required code-points.
-			String glyph_set;
-			for (;first_codepoint <= last_codepoint; ++first_codepoint)
-				glyph_set += first_codepoint;
-
-			// perform construction
-			d_font->setNativeResolution(Size(hres, vres));
-			d_font->setAutoScalingEnabled(auto_scale);
-			d_font->constructor_impl(font_name, filename, size, 0, glyph_set);
-		}
-		// static (Imageset based) font
-		else if (font_type == FontTypeStatic)
-		{
-			d_font->d_name = font_name;
-			d_font->d_freetype = false;
-
-			// load the Imageset
-			d_font->d_glyph_images = ImagesetManager::getSingleton().createImageset(filename);
-
-			d_font->setNativeResolution(Size(hres, vres));
-			d_font->setAutoScalingEnabled(auto_scale);
-		}
-		// error (should never happen)
-		else
-		{
-			throw FileIOException("Font::xmlHandler::startElement - The unknown Font:Type attribute value '" + font_type + "' was encountered while processing the Font file.");
-		}
-
-	}
-	// anything else is an error which *should* have already been caught by XML validation
-	else
-	{
-		throw FileIOException("Font::xmlHandler::startElement - Unexpected data was found while parsing the Font file: '" + element + "' is unknown.");
-	}
-
-}
-
-void Font::xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Font::xmlHandler::error(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Font::xmlHandler::fatalError(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
 }
 
 } // End of  CEGUI namespace section

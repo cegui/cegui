@@ -239,7 +239,7 @@ void TLButton::drawNormal(float z)
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
-	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), Centred, colours);
+	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
 
@@ -303,7 +303,7 @@ void TLButton::drawHover(float z)
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_hoverColour | alpha_comp);
-	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), Centred, colours);
+	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
 
@@ -370,7 +370,7 @@ void TLButton::drawPushed(float z)
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
-	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), Centred, colours);
+	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
 
@@ -431,7 +431,7 @@ void TLButton::drawDisabled(float z)
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_disabledColour | alpha_comp);
-	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), Centred, colours);
+	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
 

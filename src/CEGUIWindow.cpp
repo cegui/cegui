@@ -103,7 +103,7 @@ Window::Window(const String& type, const String& name) :
 	// basic settings
 	d_enabled			= true;
 	d_visible			= true;
-	d_active			= true;
+	d_active			= false;
 	d_clippedByParent	= true;
 	d_destroyedByParent	= true;
 	d_alwaysOnTop		= false;
@@ -1953,7 +1953,18 @@ void Window::setMinimumSize(const Size& sz)
 		d_minSize = relativeToAbsolute_impl(NULL, sz);
 	}
 
+	// store old size.
+	Rect old_sz(d_abs_area);
+
+	// limit size as required
 	d_abs_area.constrainSizeMin(d_minSize);
+
+	// if size has changed, trigger notifications
+	if (old_sz != d_abs_area)
+	{
+		onSized(EventArgs());
+	}
+
 }
 
 
@@ -1971,7 +1982,18 @@ void Window::setMaximumSize(const Size& sz)
 		d_maxSize = relativeToAbsolute_impl(NULL, sz);
 	}
 
+	// store old size.
+	Rect old_sz(d_abs_area);
+
+	// limit size as required
 	d_abs_area.constrainSizeMax(d_maxSize);
+
+	// if size has changed, trigger notifications
+	if (old_sz != d_abs_area)
+	{
+		onSized(EventArgs());
+	}
+
 }
 
 

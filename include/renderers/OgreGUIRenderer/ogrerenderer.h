@@ -301,8 +301,8 @@ private:
 	// render a quad directly to the display
 	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
 
-	// simple converter from CEGUI::colour to Ogre::RGBA
-	Ogre::RGBA	colourToRgba(colour col) const	{return col;}// ((col << 8) | (col >> 24));}
+	// convert ARGB colour value to whatever the Ogre render system is expecting.
+	ulong	colourToOgre(colour col) const;
 
 	/*************************************************************************
 	    Implementation Data

@@ -33,10 +33,6 @@
 #include "CEGUIColourRect.h"
 #include "CEGUIFontManager.h"
 
-#include "xercesc/sax2/DefaultHandler.hpp"
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include <map>
 
 // Start of CEGUI namespace section
@@ -78,6 +74,7 @@ enum CEGUIBASE_API TextFormatting
 */
 class CEGUIBASE_API Font
 {
+	friend class Font_xmlHandler;
 public:
 	/*************************************************************************
 		Constants
@@ -820,84 +817,6 @@ private:
 		uint			d_horz_advance;			//!< Amount to advance the pen after rendering this glyph
 		uint			d_horz_advance_unscaled;	//!< original unscaled advance value (only used with static / bitmap fonts).
 	};
-
-
-	/*************************************************************************
-		Implementation Classes
-	*************************************************************************/
-	/*!
-	\brief
-		Handler class used to parse the Font XML files using SAX2
-	*/
-	class xmlHandler : public XERCES_CPP_NAMESPACE::DefaultHandler
-	{
-	public:
-		/*************************************************************************
-			Construction & Destruction
-		*************************************************************************/
-		/*!
-		\brief
-			Constructor for Font::xmlHandler objects
-
-		\param font
-			Pointer to the Font object creating this xmlHandler object
-		*/
-		xmlHandler(Font* font) : d_font(font) {}
-
-		/*!
-		\brief
-			Destructor for Font::xmlHandler objects
-		*/
-		virtual ~xmlHandler(void) {}
-
-		/*************************************************************************
-			SAX2 Handler overrides
-		*************************************************************************/ 
-		/*!
-		\brief
-			document processing (only care about elements, schema validates format)
-		*/
-		virtual void	startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
- 
-		/*!
-		\brief
-			error processing
-		*/
-		virtual void  warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-		virtual void  error (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-		virtual void  fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-
-	private:
-		/*************************************************************************
-			Implementation Constants
-		*************************************************************************/
-		// XML related strings
-		static const char	FontElement[];					//!< Tag name for Font elements.
-		static const char	MappingElement[];				//!< Tag name for Mapping elements.
-		static const char	FontNameAttribute[];			//!< Attribute name that stores the name of the Font
-		static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
-		static const char	FontTypeAttribute[];			//!< Attribute name that stores the type of font being defined (either static or dynamic).
-		static const char	FontSizeAttribute[];			//!< Attribute name that stores the point size for a dynamic font.
-		static const char	FontFirstCodepointAttribute[];	//!< Attribute name that stores the first code-point for a dynamic font.
-		static const char	FontLastCodepointAttribute[];	//!< Attribute name that stores the last code-point for a dynamic font.
-		static const char	FontNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Font.
-		static const char	FontNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Font.
-		static const char	FontAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Font should be auto-scaled.
-		static const char	MappingCodepointAttribute[];	//!< Attribute name that stores the Unicode code-point for a mapping.
-		static const char	MappingImageAttribute[];		//!< Attribute name that stores the Image name for a mapping.
-		static const char	MappingHorzAdvanceAttribute[];	//!< Attribute name that stores the horizontal advance for a glyph.
-		static const char	FontTypeStatic[];				//!< Value used for FontTypeAttribute for a static (bitmapped) font.
-		static const char	FontTypeDynamic[];				//!< Value used for FontTypeAttribute for a dynamic (true-type) font.
-
-		// general constants
-		static const int	AutoGenerateHorzAdvance;		//!< Horizontal advance value that tells the parser to auto-calculate some reasonable value.
-
-		/*************************************************************************
-			Implementation Data
-		*************************************************************************/
-		Font* d_font;			//!< Font object that we are helping to build
-	};
-
 
 	/*************************************************************************
 		Implementation Data

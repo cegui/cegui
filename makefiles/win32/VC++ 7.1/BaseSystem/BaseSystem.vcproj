@@ -171,6 +171,9 @@
 				RelativePath="..\..\..\..\src\CEGUIFont.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIFont_xmlHandler.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIFontManager.cpp">
 			</File>
 			<File
@@ -181,6 +184,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIImageset.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIImageset_xmlHandler.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIImagesetManager.cpp">
@@ -232,6 +238,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIScheme.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIScheme_xmlHandler.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
@@ -326,6 +335,9 @@
 				RelativePath="..\..\..\..\include\CEGUIFont.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIFont_xmlHandler.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIFontManager.h">
 			</File>
 			<File
@@ -339,6 +351,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIImageset.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIImageset_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
@@ -393,6 +408,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIScheme.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIScheme_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">

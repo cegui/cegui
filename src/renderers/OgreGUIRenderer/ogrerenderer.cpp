@@ -163,7 +163,12 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 		quad.z				= -1 + z;
 		quad.texture		= ((OgreTexture*)tex)->getOgreTexture();
 		quad.texPosition	= texture_rect;
-		quad.colours		= colours;
+
+		// covert colours for ogre
+		quad.colours.d_top_left		= colourToOgre(colours.d_top_left);
+		quad.colours.d_top_right	= colourToOgre(colours.d_top_right);
+		quad.colours.d_bottom_left	= colourToOgre(colours.d_bottom_left);
+		quad.colours.d_bottom_right	= colourToOgre(colours.d_bottom_right);
 
 		d_quadList[d_quadBuffPos] = &quad;
 		d_quadBuffPos++;
@@ -454,6 +459,13 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	final_rect.d_bottom	/= (d_display_area.getHeight() * 0.5f);
 	final_rect.offset(Point(-1.0f, -1.0f));
 
+	// covert colours for ogre
+	ColourRect final_colours;
+	final_colours.d_top_left	 = colourToOgre(colours.d_top_left);
+	final_colours.d_top_right	 = colourToOgre(colours.d_top_right);
+	final_colours.d_bottom_left	 = colourToOgre(colours.d_bottom_left);
+	final_colours.d_bottom_right = colourToOgre(colours.d_bottom_right);
+
 	//
 	// perform rendering...
 	//
@@ -465,7 +477,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	(&buffmem[0])->x	= final_rect.d_left;
 	(&buffmem[0])->y	= final_rect. d_bottom;
 	(&buffmem[0])->z	= z;
-	(&buffmem[0])->diffuse = (colours.d_top_left);
+	(&buffmem[0])->diffuse = (final_colours.d_top_left);
 	(&buffmem[0])->tu1	= texture_rect.d_left;
 	(&buffmem[0])->tv1	= texture_rect.d_bottom;
 
@@ -473,7 +485,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	(&buffmem[1])->x	= final_rect.d_right;
 	(&buffmem[1])->y	= final_rect.d_bottom;
 	(&buffmem[1])->z	= z;
-	(&buffmem[1])->diffuse = (colours.d_top_right);
+	(&buffmem[1])->diffuse = (final_colours.d_top_right);
 	(&buffmem[1])->tu1	= texture_rect.d_right;
 	(&buffmem[1])->tv1	= texture_rect.d_bottom;
 
@@ -481,7 +493,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	(&buffmem[2])->x	= final_rect.d_left;
 	(&buffmem[2])->y	= final_rect.d_top;
 	(&buffmem[2])->z	= z;
-	(&buffmem[2])->diffuse = (colours.d_bottom_left);
+	(&buffmem[2])->diffuse = (final_colours.d_bottom_left);
 	(&buffmem[2])->tu1	= texture_rect.d_left;
 	(&buffmem[2])->tv1	= texture_rect.d_top;
 
@@ -489,7 +501,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	(&buffmem[3])->x	= final_rect.d_right;
 	(&buffmem[3])->y	= final_rect.d_bottom;
 	(&buffmem[3])->z	= z;
-	(&buffmem[3])->diffuse = (colours.d_top_right);
+	(&buffmem[3])->diffuse = (final_colours.d_top_right);
 	(&buffmem[3])->tu1	= texture_rect.d_right;
 	(&buffmem[3])->tv1	= texture_rect.d_bottom;
 
@@ -497,7 +509,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	(&buffmem[4])->x	= final_rect.d_right;
 	(&buffmem[4])->y	= final_rect.d_top;
 	(&buffmem[4])->z	= z;
-	(&buffmem[4])->diffuse = (colours.d_bottom_right);
+	(&buffmem[4])->diffuse = (final_colours.d_bottom_right);
 	(&buffmem[4])->tu1	= texture_rect.d_right;
 	(&buffmem[4])->tv1	= texture_rect.d_top;
 
@@ -505,7 +517,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	(&buffmem[5])->x	= final_rect.d_left;
 	(&buffmem[5])->y	= final_rect.d_top;
 	(&buffmem[5])->z	= z;
-	(&buffmem[5])->diffuse = (colours.d_bottom_left);
+	(&buffmem[5])->diffuse = (final_colours.d_bottom_left);
 	(&buffmem[5])->tu1	= texture_rect.d_left;
 	(&buffmem[5])->tv1	= texture_rect.d_top;
 
@@ -513,6 +525,25 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	d_bufferPos = VERTEX_PER_QUAD;
 
 	renderVBuffer();
+}
+
+
+/*************************************************************************
+	convert ARGB colour value to whatever the Ogre render system is
+	expecting.	
+*************************************************************************/
+ulong OgreRenderer::colourToOgre(colour col) const
+{
+	Ogre::ColourValue cv(
+		(((col & 0x00FF0000) >> 16) / 255.0f),
+		(((col & 0x0000FF00) >> 8) / 255.0f),
+		((col & 0x000000FF) / 255.0f),
+		((col >> 24) / 255.0f));
+
+	ulong final;
+	d_render_sys->convertColourValue(cv, &final);
+
+	return final;
 }
 
 

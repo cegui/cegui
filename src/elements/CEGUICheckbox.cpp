@@ -88,20 +88,24 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 	// default handling
 	ButtonBase::onMouseButtonUp(e);
 
-	Window* sheet = System::getSingleton().getGUISheet();
-
-	if (sheet != NULL)
+	if (e.button == LeftButton)
 	{
-		// if mouse was released over this widget
-		if (this == sheet->getChildAtPosition(e.position))
+		Window* sheet = System::getSingleton().getGUISheet();
+
+		if (sheet != NULL)
 		{
-			// toggle selected state
-			setSelected(d_selected ^ true);
+			// if mouse was released over this widget
+			if (this == sheet->getChildAtPosition(e.position))
+			{
+				// toggle selected state
+				setSelected(d_selected ^ true);
+			}
+
 		}
 
+		e.handled = true;
 	}
 
-	e.handled = true;
 }
 
 

@@ -32,7 +32,7 @@
 #include "CEGUIColourRect.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImage.h"
-#include "xercesc/sax2/DefaultHandler.hpp"
+
 #include <map>
 
 
@@ -50,6 +50,7 @@ namespace CEGUI
 */
 class CEGUIBASE_API Imageset
 {
+	friend class Imageset_xmlHandler;
 private:
 	/*************************************************************************
 		Friends to allow access to constructors and destructors
@@ -490,82 +491,6 @@ protected:
 		Nothing.
 	*/
 	void	updateImageScalingFactors(void);
-
-
-	/*************************************************************************
-		Implementation Classes
-	*************************************************************************/
-	/*!
-	\brief
-		Handler class used to parse the Imageset XML files using SAX2
-	*/
-	class xmlHandler : public XERCES_CPP_NAMESPACE::DefaultHandler
-	{
-	public:
-		/*************************************************************************
-			Construction & Destruction
-		*************************************************************************/
-		/*!
-		\brief
-			Constructor for Imageset::xmlHandler objects
-
-		\param imageset
-			Pointer to the Imageset object creating this xmlHandler object
-		*/
-		xmlHandler(Imageset* imageset) : d_imageset(imageset) {}
-
-		/*!
-		\brief
-			Destructor for Imageset::xmlHandler objects
-		*/
-		virtual ~xmlHandler(void) {}
-
-		/*************************************************************************
-			SAX2 Handler overrides
-		*************************************************************************/ 
-		/*!
-		\brief
-			document processing (only care about elements, schema validates format)
-		*/
-		virtual void	startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
- 
-		/*!
-		\brief
-			error processing
-		*/
-		virtual void  warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-		virtual void  error (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-		virtual void  fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-
-		/*************************************************************************
-			Functions used by our implementation
-		*************************************************************************/
-		Imageset*	getImageset(void) const				{return d_imageset;}
-
-	private:
-		/*************************************************************************
-			Implementation Constants
-		*************************************************************************/
-		static const char	ImagesetElement[];				//!< Tag name for Imageset elements.
-		static const char	ImageElement[];					//!< Tag name for Image elements.
-		static const char	ImagesetNameAttribute[];		//!< Attribute name that stores the name of the Imageset
-		static const char	ImagesetImageFileAttribute[];	//!< Attribute name that stores the filename for the image file.
-		static const char	ImagesetNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.
-		static const char	ImagesetNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Imageset.
-		static const char	ImagesetAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Imageset should be auto-scaled.
-		static const char	ImageNameAttribute[];			//!< Attribute name that stores the name of the new Image.
-		static const char	ImageXPosAttribute[];			//!< Attribute name that stores the x position of the new Image.
-		static const char	ImageYPosAttribute[];			//!< Attribute name that stores the y position of the new Image.
-		static const char	ImageWidthAttribute[];			//!< Attribute name that stores the width of the new Image.
-		static const char	ImageHeightAttribute[];			//!< Attribute name that stores the height of the new Image.
-		static const char	ImageXOffsetAttribute[];		//!< Attribute name that stores the x rendering offset of the new Image.
-		static const char	ImageYOffsetAttribute[];		//!< Attribute name that stores the y rendering offset of the new Image.
-
-		/*************************************************************************
-			Implementation Data
-		*************************************************************************/
-		Imageset*	d_imageset;			//!< Holds a pointer to the Imageset that created the handler object
-	};
 
 	/*************************************************************************
 		Implementation Data

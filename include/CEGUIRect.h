@@ -191,6 +191,17 @@ public:
 
 
 	/*************************************************************************
+		Operators
+	*************************************************************************/
+	bool	operator==(const Rect& rhs) const
+	{
+		return ((d_left == rhs.d_left) && (d_right == rhs.d_right) && (d_top == rhs.d_top) && (d_bottom == rhs.d_bottom));
+	}
+
+	bool	operator!=(const Rect& rhs) const		{return !operator==(rhs);}
+
+
+	/*************************************************************************
 		Data Fields
 	*************************************************************************/
 	float	d_top, d_bottom, d_left, d_right;
