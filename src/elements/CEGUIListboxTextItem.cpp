@@ -92,7 +92,7 @@ Size ListboxTextItem::getPixelSize(void) const
 
 	if (fnt != NULL)
 	{
-		tmp.d_height	= fnt->getFontHeight();
+		tmp.d_height	= fnt->getLineSpacing();
 		tmp.d_width		= fnt->getTextExtent(d_itemText);
 	}
 
@@ -114,7 +114,9 @@ void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& cli
 
 	if (fnt != NULL)
 	{
-		fnt->drawText(d_itemText, position, clipper, getModulateAlphaColourRect(d_textCols, alpha));
+        Vector3 finalPos(position);
+        finalPos.d_y -= PixelAligned((fnt->getLineSpacing() - fnt->getBaseline()) * 0.5f);
+		fnt->drawText(d_itemText, finalPos, clipper, getModulateAlphaColourRect(d_textCols, alpha));
 	}
 
 }

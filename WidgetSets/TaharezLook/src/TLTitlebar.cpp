@@ -170,7 +170,7 @@ void TLTitlebar::drawSelf(float z)
 	textClipper.setWidth(midWidth);
 	textClipper = clipper.getIntersection(textClipper);
 	pos.d_x = absrect.d_left + leftWidth;
-	pos.d_y = absrect.d_top + PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	pos.d_y = absrect.d_top + PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 	getFont()->drawText(d_parent->getText(), pos, textClipper, colours);
 }

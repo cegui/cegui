@@ -102,7 +102,7 @@ void TLRadioButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
@@ -144,7 +144,7 @@ void TLRadioButton::drawHover(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_hoverImage->getWidth() + LabelPadding;
 	colours.setColours(d_hoverColour);
 	colours.setAlpha(alpha_comp);
@@ -186,7 +186,7 @@ void TLRadioButton::drawPushed(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
@@ -228,7 +228,7 @@ void TLRadioButton::drawDisabled(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);

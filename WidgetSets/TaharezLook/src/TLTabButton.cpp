@@ -177,7 +177,7 @@ void TLTabButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) / 2);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -257,7 +257,7 @@ void TLTabButton::drawPushed(float z)
     //
     // Draw label text
     //
-    absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) / 2);
+    absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
     colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
     getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);

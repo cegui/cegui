@@ -267,7 +267,7 @@ void TLButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
@@ -332,7 +332,7 @@ void TLButton::drawHover(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_hoverColour);
 	colours.setAlpha(alpha_comp);
@@ -397,7 +397,7 @@ void TLButton::drawPushed(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
@@ -462,7 +462,7 @@ void TLButton::drawDisabled(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);

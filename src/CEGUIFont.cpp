@@ -430,11 +430,11 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer
 
 		cur_x += width;
 
-		// check and update maximum bearingY value
-		if (static_cast<float>(glyph->metrics.horiBearingY >> 6) > d_max_bearingY)
-		{
-			d_max_bearingY = static_cast<float>(glyph->metrics.horiBearingY >> 6);
-		}
+//		// check and update maximum bearingY value
+//		if (static_cast<float>(glyph->metrics.horiBearingY >> 6) > d_max_bearingY)
+//		{
+//			d_max_bearingY = static_cast<float>(glyph->metrics.horiBearingY >> 6);
+//		}
 
 		// create entry in code-point to Image map
 		glyphDat	dat;
@@ -867,11 +867,9 @@ void Font::defineFontGlyphs_impl(void)
 
 	d_lineHeight = (float)d_maxGlyphHeight;
 
-	// calculate a spacing value based upon the size of the glyphs defined.
-	float ils = ((float)d_impldat->fontFace->height / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
-	ils -= ((float)d_impldat->fontFace->ascender / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
-	ils += ((float)d_impldat->fontFace->descender / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
-	d_lineSpacing = d_lineHeight + ils;
+	// calculate spacing and base-line
+    d_max_bearingY = ((float)d_impldat->fontFace->ascender / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
+	d_lineSpacing = ((float)d_impldat->fontFace->height / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
 }
 
 

@@ -242,7 +242,7 @@ void TLEditbox::drawSelf(float z)
 	//
 	// setup initial rect for text formatting
 	Rect text_rect(absrect);
-	text_rect.d_top  += PixelAligned((text_rect.getHeight() - getFont()->getFontHeight()) * 0.5f);
+	text_rect.d_top  += PixelAligned((text_rect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	text_rect.d_left += textOffset;
 
 	// draw pre-highlight text
@@ -286,7 +286,7 @@ void TLEditbox::drawSelf(float z)
 		hlarea.d_left	= absrect.d_left + textOffset + selStartOffset;
 		hlarea.d_right	= absrect.d_left + textOffset + selEndOffset;
 		hlarea.d_top	= text_rect.d_top;
-		hlarea.d_bottom = hlarea.d_top + fnt->getFontHeight();
+		hlarea.d_bottom = hlarea.d_top + fnt->getLineSpacing();
 
 		// render the highlight
 		d_selection->draw(hlarea, renderer->getZLayer(SelectionLayer), clipper, colours);
