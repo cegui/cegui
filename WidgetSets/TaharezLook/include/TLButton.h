@@ -31,6 +31,8 @@
 #include "CEGUIWindowFactory.h"
 #include "CEGUIRenderableImage.h"
 
+#include "TLButtonProperties.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -191,6 +193,31 @@ public:
 	*/
 	void	setDisabledImage(const RenderableImage* image);
 
+   /*!
+   \brief
+      get the offset that is used to shift of the text in the x-direction
+      this is useful if the button-images are not symmetrical and the
+      text shouldn't be completely centered
+
+   \return
+      the offset relative to the button-size
+   */
+   float   getTextXOffset() const;
+
+   /*!
+   \brief
+      set the offset to use for a shift of the text in the x-direction
+      this is useful if the button-images are not symmetrical and the
+      text shouldn't be completely centered
+
+   \param offset
+      The offset to use. This is relative to the button-width
+
+   \return
+      Nothing.
+   */
+   void   setTextXOffset(float offset);
+
 
 protected:
 	/*************************************************************************
@@ -254,6 +281,18 @@ protected:
 	const Image*	d_leftSectionPushed;			//!< Image to use when rendering the button left section (pushed state).
 	const Image*	d_middleSectionPushed;			//!< Image to use when rendering the button middle section (pushed state).
 	const Image*	d_rightSectionPushed;			//!< Image to use when rendering the button right section (pushed state).
+
+   //text-offset
+   float d_textXOffset;		//!< offset applied to the x co-ordinate of the text label.
+
+private:
+   static TLButtonProperties::NormalImage d_normalImageProperty;
+   static TLButtonProperties::PushedImage d_pushedImageProperty;
+   static TLButtonProperties::HoverImage  d_hoverImageProperty;
+   static TLButtonProperties::UseStandardImagery d_useStandardImageryProperty;
+   static TLButtonProperties::TextXOffset d_textXOffsetProperty;
+
+   void addTLButtonProperties(void);
 };
 
 

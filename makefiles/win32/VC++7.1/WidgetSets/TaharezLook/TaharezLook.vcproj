@@ -136,10 +136,16 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLButtonProperties.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCheckbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCloseButton.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCombobox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLComboDropList.cpp">
@@ -148,22 +154,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLComboEditbox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCombobox.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLEditbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLFrameWindow.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLListbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLListHeader.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLListHeaderSegment.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLListbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLMiniHorzScrollbar.cpp">
@@ -231,10 +234,16 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLButton.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLButtonProperties.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCheckbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCloseButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCombobox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLComboDropList.h">
@@ -243,22 +252,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLComboEditbox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCombobox.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLEditbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLFrameWindow.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLListbox.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLListHeader.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLListHeaderSegment.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLListbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLMiniHorzScrollbar.h">

@@ -46,6 +46,12 @@ const utf8	TLButton::MiddlePushedImageName[]		= "ButtonMiddlePushed";
 const utf8	TLButton::RightPushedImageName[]		= "ButtonRightPushed";
 const utf8  TLButton::MouseCursorImageName[]		= "MouseArrow";
 
+TLButtonProperties::NormalImage TLButton::d_normalImageProperty;
+TLButtonProperties::PushedImage TLButton::d_pushedImageProperty;
+TLButtonProperties::HoverImage  TLButton::d_hoverImageProperty;
+TLButtonProperties::UseStandardImagery TLButton::d_useStandardImageryProperty;
+TLButtonProperties::TextXOffset TLButton::d_textXOffsetProperty;
+
 
 /*************************************************************************
 	Constructor
@@ -76,7 +82,11 @@ TLButton::TLButton(const String& type, const String& name) :
 	d_middleSectionPushed	= &iset->getImage(MiddlePushedImageName);
 	d_rightSectionPushed	= &iset->getImage(RightPushedImageName);
 
+	d_textXOffset = 0.0f;
+
 	setMouseCursor(&iset->getImage(MouseCursorImageName));
+
+	addTLButtonProperties();
 }
 
 
@@ -186,6 +196,16 @@ void TLButton::setDisabledImage(const RenderableImage* image)
 	requestRedraw();
 }
 
+float TLButton::getTextXOffset() const
+{
+   return d_textXOffset;
+}
+
+void TLButton::setTextXOffset(float offset)
+{
+   d_textXOffset = offset;
+}
+
 
 /*************************************************************************
 	render Widget in normal state	
@@ -246,6 +266,7 @@ void TLButton::drawNormal(float z)
 	// Draw label text
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_left += d_textXOffset * absrect.getWidth();
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
@@ -310,6 +331,7 @@ void TLButton::drawHover(float z)
 	// Draw label text
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_left += d_textXOffset * absrect.getWidth();
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_hoverColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
@@ -374,6 +396,7 @@ void TLButton::drawPushed(float z)
 	// Draw label text
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_left += d_textXOffset * absrect.getWidth();
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
@@ -435,6 +458,7 @@ void TLButton::drawDisabled(float z)
 	// Draw label text
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_left += d_textXOffset * absrect.getWidth();
 	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_disabledColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
@@ -484,6 +508,15 @@ void TLButton::onSized(WindowEventArgs& e)
 		e.handled = true;
 	}
 
+}
+
+void TLButton::addTLButtonProperties(void)
+{
+   addProperty(&d_normalImageProperty);
+   addProperty(&d_pushedImageProperty);
+   addProperty(&d_hoverImageProperty);
+   addProperty(&d_useStandardImageryProperty);
+   addProperty(&d_textXOffsetProperty);
 }
 
 

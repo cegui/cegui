@@ -121,6 +121,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLButtonProperties.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCheckbox.cpp">
 			</File>
 			<File
@@ -213,6 +216,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLButtonProperties.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCheckbox.h">

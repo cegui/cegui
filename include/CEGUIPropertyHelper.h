@@ -36,7 +36,7 @@ namespace CEGUI
 \brief
 	Helper class used to convert various data types to and from the format expected in Propery strings
 */
-class PropertyHelper
+class CEGUIBASE_API PropertyHelper
 {
 public:
 	static	float	stringToFloat(const String& str);
