@@ -1,0 +1,73 @@
+class EventArgs
+{
+	bool handled;
+	EventArgs();
+};
+
+
+
+class MouseCursorEventArgs : public EventArgs
+{
+	MouseCursor* mouseCursor;
+	const Image* image;
+	MouseCursorEventArgs(MouseCursor* cursor);
+};
+
+
+
+class WindowEventArgs : public EventArgs
+{
+	Window* window;
+	WindowEventArgs(Window* wnd);
+};
+
+
+class ActivationEventArgs : public WindowEventArgs
+{
+	Window* otherWindow;
+	ActivationEventArgs(Window* wnd);
+};
+
+
+class HeaderSequenceEventArgs : public WindowEventArgs
+{
+	unsigned int d_oldIdx @ oldIdx;
+	unsigned int d_newIdx @ newIdx;
+	HeaderSequenceEventArgs(Window* wnd, unsigned int old_index, unsigned int new_index);
+};
+
+
+enum MouseButton
+{
+	LeftButton,
+	RightButton,
+	MiddleButton,
+	X1Button,
+	X2Button,
+	MouseButtonCount,
+	NoButton
+};
+
+class MouseEventArgs : public WindowEventArgs
+{
+	Point position;
+	Vector2 moveDelta;
+	MouseButton button;
+	unsigned int sysKeys;
+	float wheelChange;
+	MouseEventArgs(Window* wnd);
+};
+
+class KeyEventArgs : public WindowEventArgs
+{
+	unsigned long codepoint;
+	Key::Scan scancode;
+	unsigned int sysKeys;
+	KeyEventArgs(Window* wnd);
+};
+
+const MouseCursorEventArgs& toMouseCursorEventArgs(const EventArgs& e);
+const WindowEventArgs& toWindowEventArgs(const EventArgs& e);
+const ActivationEventArgs& toActivationEventArgs(const EventArgs& e);
+const HeaderSequenceEventArgs& toHeaderSequenceEventArgs(const EventArgs& e);
+const MouseEventArgs& toMouseEventArgs(const EventArgs& e);

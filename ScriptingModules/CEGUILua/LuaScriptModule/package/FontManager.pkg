@@ -1,0 +1,13 @@
+class FontManager
+{
+	static FontManager& getSingleton();
+	
+	Font* createFont(string name, string fontname, unsigned int size, unsigned int flags, string resourcegroup="");
+	Font* createFont(string filename, string resourcegroup="");
+	void destroyFont(string name);
+	void destroyFont(Font* font);
+	void destroyAllFonts();
+	bool isFontPresent(string name) const;
+	Font* getFont(string name) const;
+	void notifyScreenResolution(const Size& sz);
+};

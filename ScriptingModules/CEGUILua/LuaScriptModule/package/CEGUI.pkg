@@ -1,0 +1,31 @@
+$#include "required.h"
+
+namespace CEGUI
+{
+
+$pfile "Basic.pkg"
+$pfile "Logger.pkg"
+
+$pfile "Font.pkg"
+$pfile "FontManager.pkg"
+
+$pfile "Image.pkg"
+$pfile "Texture.pkg"
+$pfile "Imageset.pkg"
+$pfile "ImagesetManager.pkg"
+
+$pfile "Key.pkg"
+$pfile "InputEvent.pkg"
+$pfile "EventSet.pkg"
+
+$pfile "MouseCursor.pkg"
+$pfile "Window.pkg"
+$pfile "Renderer.pkg"
+$pfile "System.pkg"
+
+$pfile "WindowManager.pkg"
+
+$pfile "Scheme.pkg"
+$pfile "SchemeManager.pkg"
+
+}

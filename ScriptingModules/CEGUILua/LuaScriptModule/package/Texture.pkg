@@ -1,0 +1,9 @@
+class Texture
+{
+	unsigned short getWidth() const;
+	unsigned short getHeight() const;
+	void loadFromFile(string filename, string resourcegroup="");
+	// no memory loading
+	
+	Renderer* getRenderer() const;
+};

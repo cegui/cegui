@@ -1,0 +1,17 @@
+class WindowManager
+{
+	static WindowManager& getSingleton();
+	
+	Window* createWindow(string type, string name);
+	Window* loadWindowLayout(string filename, string name_prefix="", string resourcegroup="");
+	
+	void destroyWindow(string name);
+	void destroyWindow(Window* window);
+	void destroyAllWindows();
+	
+	Window* getWindow(string name) const;
+	bool isWindowPresent(string name) const;
+	
+	bool isDeadPoolEmpty() const;
+	void cleanDeadPool();
+};

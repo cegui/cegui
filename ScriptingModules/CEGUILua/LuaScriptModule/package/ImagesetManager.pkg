@@ -1,0 +1,15 @@
+class ImagesetManager
+{
+	static ImagesetManager& getSingleton();
+	
+	Imageset* createImageset(string name, Texture* texture);
+	Imageset* createImageset(string filename, string resourcegroup="");
+
+	void destroyImageset(Imageset* imageset);
+	void destroyImageset(string name);
+	void destroyAllImagesets();
+	
+	Imageset* getImageset(string name) const;
+	bool isImagesetPresent(string name) const;
+	void notifyScreenResolution(const Size& size);
+};

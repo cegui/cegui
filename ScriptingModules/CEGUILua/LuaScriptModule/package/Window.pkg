@@ -1,0 +1,223 @@
+enum MetricsMode
+{
+	Relative,
+	Absolute,
+	Inherited
+};
+
+class Window // : public EventSet
+{
+	// accessor functions
+	//////////////////////
+	string getType() const;
+	string getName() const;
+	
+	bool isDestroyedByParent() const;
+	bool isAlwaysOnTop() const;
+	bool isDisabled() const;
+	bool isVisible() const;
+	bool isActive() const;
+	bool isClippedByParent() const;
+	
+	void setDestroyedByParent(bool setting);
+	void setAlwaysOnTop(bool setting);
+	void setEnabled(bool setting);
+	void enable();
+	void disable();
+	void setVisible(bool setting);
+	void show();
+	void hide();
+	void activate();
+	void deactivate();
+	void setClippedByParent(bool setting);
+	
+	unsigned int getID() const;
+	void setID(unsigned int ID);
+	
+	unsigned int getChildCount() const;
+	
+	bool isChild(unsigned int ID) const;
+	bool isChild(string name) const;
+	bool isChild(const Window* window) const;
+	
+	void addChildWindow(string name);
+	void addChildWindow(Window* window);
+	
+	void removeChildWindow(unsigned int ID);
+	void removeChildWindow(string name);
+	void removeChildWindow(Window* window);
+	
+	Window* getChild(unsigned int ID) const;
+	Window* getChild(string name) const;
+	Window* getChildAtIdx(unsigned int ID) const;
+	Window* getActiveChild() const;
+	Window* getChildAtPosition(const Point& pos) const;
+	
+	Window* getParent() const;
+	
+	bool isAncestor(unsigned int ID) const;
+	bool isAncestor(string name) const;
+	bool isAncestor(const Window* window) const;
+	
+	void setFont(string name);
+	void setFont(const Font* font);
+	Font* getFont() const;
+	
+	void setText(string text);
+	string getText() const;
+	
+	bool inheritsAlpha() const;
+	float getAlpha() const;
+	float getEffectiveAlpha() const;
+	void setAlpha(float a);
+	void setInheritsAlpha(bool setting);
+	
+	void requestRedraw() const;
+	
+	bool isZOrderingEnabled() const;
+	void setZOrderingEnabled(bool setting);
+	
+	Rect getRect() const;
+	Rect getPixelRect() const;
+	Rect getInnerRect() const;
+	Rect getUnclippedPixelRect() const;
+	Rect getUnclippedInnerRect() const;
+	
+	static Window* getCaptureWindow();
+	void setRestoreCapture(bool setting);
+	bool restoresOldCapture() const;
+	
+	bool distributesCapturedInputs() const;
+	void setDistributesCapturedInputs(bool setting);
+	
+	bool captureInput();
+	void releaseInput();
+	
+	bool isCapturedByThis() const;
+	bool isCapturedByAncestor() const;
+	bool isCapturedByChild() const;
+	
+	bool isHit(const Point& pos) const;
+	
+	MetricsMode getMetricsMode() const;
+	void setMetricsMode(MetricsMode mode);
+	
+	const Image* getMouseCursor() const;
+	void setMouseCursor(MouseCursorImage cursor);
+	void setMouseCursor(const Image* image);
+	void setMouseCursor(string imageset, string image);
+	
+	Rect getRelativeRect() const;
+	Point getRelativePosition() const;
+	float getRelativeXPosition() const;
+	float getRelativeYPosition() const;
+	Size getRelativeSize() const;
+	float getRelativeWidth() const;
+	float getRelativeHeight() const;
+	
+	Rect getAbsoluteRect() const;
+	Point getAbsolutePosition() const;
+	float getAbsoluteXPosition() const;
+	float getAbsoluteYPosition() const;
+	Size getAbsoluteSize() const;
+	float getAbsoluteWidth() const;
+	float getAbsoluteHeight() const;
+	
+	void setPosition(MetricsMode mode, const Point& pos);
+	void setXPosition(MetricsMode mode, float x);
+	void setYPosition(MetricsMode mode, float y);
+	void setWidth(MetricsMode mode, float w);
+	void setHeight(MetricsMode mode, float h);
+	void setSize(MetricsMode mode, const Size& sz);
+	void setRect(MetricsMode mode, const Rect& r);
+	
+	Point getPosition(MetricsMode mode) const;
+	float getXPosition(MetricsMode mode) const;
+	float getYPosition(MetricsMode mode) const;
+	float getWidth(MetricsMode mode) const;
+	float getHeight(MetricsMode mode) const;
+	Size getSize(MetricsMode mode) const;
+	Rect getRect(MetricsMode mode) const;
+	
+	void setMinimumSize(const Size& sz);
+	void setMaximumSize(const Size& sz);
+	void setSize(const Size& sz);
+	void setWidth(float w);
+	void setHeight(float h);
+	float getWidth() const;
+	float getHeight() const;
+	Size getSize() const;
+	Size getMinimumSize() const;
+	Size getMaximumSize() const;
+	
+	void setPosition(const Point& pos);
+	void setXPosition(float x);
+	void setYPosition(float y);
+	float getXPosition() const;
+	float getYPosition() const;
+	Point getPosition() const;
+	
+	void setAreaRect(const Rect& rect);
+	
+	float absoluteToRelativeX(float x) const;
+	float absoluteToRelativeY(float y) const;
+	Point absoluteToRelative(const Point& p) const;
+	Size absoluteToRelative(const Size& sz) const;
+	Rect absoluteToRelative(const Rect& r) const;
+	
+	float relativeToAbsoluteX(float x) const;
+	float relativeToAbsoluteY(float y) const;
+	Point relativeToAbsolute(const Point& p) const;
+	Size relativeToAbsolute(const Size& sz) const;
+	Rect relativeToAbsolute(const Rect& r) const;
+	
+	float windowToScreenX(float x) const;
+	float windowToScreenY(float y) const;
+	Point windowToScreen(const Point& p) const;
+	Size windowToScreen(const Size& sz) const;
+	Rect windowToScreen(const Rect& r) const;
+	
+	float screenToWindowX(float x) const;
+	float screenToWindowY(float y) const;
+	Point screenToWindow(const Point& p) const;
+	Size screenToWindow(const Size& sz) const;
+	Rect screenToWindow(const Rect& r) const;
+	
+	void moveToFront();
+	void moveToBack();
+	
+	bool wantsMultiClickEvents() const;
+	bool isMouseAutoRepeatEnabled() const;
+	float getAutoRepeatDelay() const;
+	float getAutoRepeatRate() const;
+	void setWantsMultiClickEvents(bool setting);
+	void setMouseAutoRepeatEnabled(bool setting);
+	void setAutoRepeatDelay(float delay);
+	void setAutoRepeatRate(float rate);
+	
+	void destroy();
+	
+	// PropertySet - only inheritant
+	/////////////////////////////////
+	void setProperty(string name, string value);
+	string getProperty(string name) const;
+	string getPropertyDefault(string name) const;
+	string getPropertyHelp(string name) const;
+	
+	bool isPropertyPresent(string name) const;
+	bool isPropertyDefault(string name) const;
+	
+	
+	// EventSet - inheritance crashes
+	//////////////////////////////////
+	void addEvent(string name);
+	void removeEvent(string name);
+	void removeAllEvents();
+	bool isEventPresent(string name);
+	
+	void subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
+	void fireEvent(string name, EventArgs& args, string eventnamespace="");
+	
+	bool isMuted() const;
+	void setMutedState(bool setting);
+};
