@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLProgressBar::WidgetTypeName[]	= "TaharezLook/ProgressBar";
+
 // Progress bar image names
-const utf8	TLProgressBar::ImagesetName[]				= "TaharezImagery";
+const utf8	TLProgressBar::ImagesetName[]				= "TaharezLook";
 const utf8	TLProgressBar::ContainerLeftImageName[]		= "ProgressBarLeft";
 const utf8	TLProgressBar::ContainerMiddleImageName[]	= "ProgressBarMiddle";
 const utf8	TLProgressBar::ContainerRightImageName[]	= "ProgressBarRight";

@@ -44,12 +44,15 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Image names
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	ContainerImageName[];		//!< Name of the image to use for rendering the slider container
 
 	// window type stuff
-	static const utf8	ThumbType[];				//!< Window type to create for the sliders thumb.
+	static const utf8*	ThumbType;					//!< Window type to create for the sliders thumb.
 
 	// layout constants
 	static const float	ContainerPaddingX;
@@ -156,7 +159,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLSliderFactory(void) : WindowFactory((utf8*)"Taharez Slider") { }
+	TLSliderFactory(void) : WindowFactory(TLSlider::WidgetTypeName) { }
 	~TLSliderFactory(void){}
 
 

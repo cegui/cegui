@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLTitlebar::ImagesetName[]				= "TaharezImagery";
+// type name for this widget
+const utf8	TLTitlebar::WidgetTypeName[]	= "TaharezLook/Titlebar";
+
+const utf8	TLTitlebar::ImagesetName[]				= "TaharezLook";
 const utf8	TLTitlebar::LeftEndSectionImageName[]	= "NewTitlebarLeft";
 const utf8	TLTitlebar::MiddleSectionImageName[]	= "NewTitlebarMiddle";
 const utf8	TLTitlebar::RightEndSectionImageName[]	= "NewTitlebarRight";

@@ -43,7 +43,14 @@ namespace CEGUI
 class TAHAREZLOOK_API TLCloseButton : public TLButton
 {
 public:
-		/*************************************************************************
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+
+	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
@@ -91,7 +98,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLCloseButtonFactory(void) : WindowFactory((utf8*)"Taharez Close Button") { }
+	TLCloseButtonFactory(void) : WindowFactory(TLCloseButton::WidgetTypeName) { }
 	~TLCloseButtonFactory(void){}
 
 

@@ -44,6 +44,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Image names
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	NormalImageName[];				//!< Name of the image to use for normal rendering (used for sizes only).
@@ -120,7 +123,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLMiniVertScrollbarThumbFactory(void) : WindowFactory((utf8*)"Taharez MiniVertScrollbarThumb") { }
+	TLMiniVertScrollbarThumbFactory(void) : WindowFactory(TLMiniVertScrollbarThumb::WidgetTypeName) { }
 	~TLMiniVertScrollbarThumbFactory(void){}
 
 

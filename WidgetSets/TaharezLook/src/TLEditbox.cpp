@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLEditbox::WidgetTypeName[]	= "TaharezLook/Editbox";
+
 // image name constants
-const utf8	TLEditbox::ImagesetName[]				= "TaharezImagery";
+const utf8	TLEditbox::ImagesetName[]				= "TaharezLook";
 const utf8	TLEditbox::ContainerLeftImageName[]		= "EditBoxLeft";
 const utf8	TLEditbox::ContainerMiddleImageName[]	= "EditBoxMiddle";
 const utf8	TLEditbox::ContainerRightImageName[]	= "EditBoxRight";

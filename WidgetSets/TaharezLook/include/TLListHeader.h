@@ -44,8 +44,11 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// type names for the component widgets
-	static const utf8	SegmentWidgetType[];			//!< Type of widget to create for the header segments;
+	static const utf8*	SegmentWidgetType;				//!< Type of widget to create for the header segments;
 
 
 	/*************************************************************************
@@ -121,7 +124,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLListHeaderFactory(void) : WindowFactory((utf8*)"Taharez ListHeader") { }
+	TLListHeaderFactory(void) : WindowFactory(TLListHeader::WidgetTypeName) { }
 	~TLListHeaderFactory(void){}
 
 

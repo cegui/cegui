@@ -35,12 +35,15 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLSlider::WidgetTypeName[]	= "TaharezLook/Slider";
+
 // Image names
-const utf8	TLSlider::ImagesetName[]		= "TaharezImagery";
+const utf8	TLSlider::ImagesetName[]		= "TaharezLook";
 const utf8	TLSlider::ContainerImageName[]	= "VertSliderBody";
 
 // window type stuff
-const utf8	TLSlider::ThumbType[]			= "Taharez Slider Thumb";
+const utf8*	TLSlider::ThumbType				= TLSliderThumb::WidgetTypeName;
 
 // layout constants
 const float	TLSlider::ContainerPaddingX		= 3;

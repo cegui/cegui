@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLButton::ImagesetName[]				= "TaharezImagery";
+// type name for this widget
+const utf8	TLButton::WidgetTypeName[]				= "TaharezLook/Button";
+
+const utf8	TLButton::ImagesetName[]				= "TaharezLook";
 const utf8	TLButton::LeftNormalImageName[]			= "ButtonLeftNormal";
 const utf8	TLButton::MiddleNormalImageName[]		= "ButtonMiddleNormal";
 const utf8	TLButton::RightNormalImageName[]		= "ButtonRightNormal";

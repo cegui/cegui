@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "TLListHeader.h"
 #include "CEGUIWindowManager.h"
+#include "TLListHeaderSegment.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -32,8 +33,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLListHeader::WidgetTypeName[]	= "TaharezLook/ListHeader";
+
 // type names for the component widgets
-const utf8 TLListHeader::SegmentWidgetType[]	= "Taharez ListHeaderSegment";
+const utf8* TLListHeader::SegmentWidgetType		= TLListHeaderSegment::WidgetTypeName;
 
 
 /*************************************************************************

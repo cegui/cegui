@@ -47,6 +47,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Image related stuff
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	TopLeftFrameImageName[];		//!< Name of the image to use for the top-left corner of the frame.
@@ -72,8 +75,8 @@ public:
 
 
 	// window type stuff
-	static const utf8	TitlebarType[];					//!< Window type to create for the title bar.
-	static const utf8	CloseButtonType[];				//!< Window type to create for the close button.
+	static const utf8*	TitlebarType;					//!< Window type to create for the title bar.
+	static const utf8*	CloseButtonType;				//!< Window type to create for the close button.
 
 	// layout constants
 	static const float	TitlebarXOffset;				//!< X Offset used for title bar
@@ -239,7 +242,7 @@ public:
 	\brief
 		Constructor for Taharez Frame Window factory class.
 	*/
-	TLFrameWindowFactory(void) : WindowFactory((utf8*)"Taharez Frame Window") { }
+	TLFrameWindowFactory(void) : WindowFactory(TLFrameWindow::WidgetTypeName) { }
 
 
 	/*

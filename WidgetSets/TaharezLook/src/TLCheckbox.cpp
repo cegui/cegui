@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLCheckbox::ImagesetName[]			= "TaharezImagery";
+// type name for this widget
+const utf8	TLCheckbox::WidgetTypeName[]		= "TaharezLook/Checkbox";
+
+const utf8	TLCheckbox::ImagesetName[]			= "TaharezLook";
 const utf8	TLCheckbox::NormalImageName[]		= "CheckboxNormal";
 const utf8	TLCheckbox::HighlightImageName[]	= "CheckboxHover";
 const utf8	TLCheckbox::CheckMarkImageName[]	= "CheckboxMark";

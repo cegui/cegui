@@ -34,11 +34,18 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Constants
+*************************************************************************/
+const utf8	TLStaticText::WidgetTypeName[]		= "TaharezLook/StaticText";
+const utf8	TLStaticImage::WidgetTypeName[]		= "TaharezLook/StaticImage";
+
+
+/*************************************************************************
 	Routine to do some common initialisation of static widgets
 *************************************************************************/
 void initTaharezStatic(Static* s)
 {
-	Imageset* iset = ImagesetManager::getSingleton().getImageset((utf8*)"TaharezImagery");
+	Imageset* iset = ImagesetManager::getSingleton().getImageset((utf8*)"TaharezLook");
 	
 	s->setFrameImages(
 		&iset->getImage((utf8*)"StaticTopLeft"),

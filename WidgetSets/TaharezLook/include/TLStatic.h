@@ -28,7 +28,8 @@
 
 #include "TLModule.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUIStatic.h"
+#include "elements/CEGUIStaticText.h"
+#include "elements/CEGUIStaticImage.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -43,6 +44,81 @@ static void initTaharezStatic(Static* s);
 
 /*!
 \brief
+	StaticText class for the Taharez Gui Scheme
+*/
+class TAHAREZLOOK_API TLStaticText : public StaticText
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for Taharez Look StaticText objects.
+
+	\param type
+		String object that specifies a type for this window, usually provided by a factory class.
+
+	\param name
+		String object that specifies a unique name that will be used to identify the new Window object
+	*/
+	TLStaticText(const String& type, const String& name) : StaticText(type, name) {}
+
+
+	/*!
+	\brief
+		Destructor for TLStaticText objects.
+	*/
+	virtual ~TLStaticText(void) {}
+};
+
+
+
+/*!
+\brief
+	StaticImage class for the Taharez Gui Scheme
+*/
+class TAHAREZLOOK_API TLStaticImage : public StaticImage
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for Taharez Look StaticImage objects.
+
+	\param type
+		String object that specifies a type for this window, usually provided by a factory class.
+
+	\param name
+		String object that specifies a unique name that will be used to identify the new Window object
+	*/
+	TLStaticImage(const String& type, const String& name) : StaticImage(type, name) {}
+
+
+	/*!
+	\brief
+		Destructor for TLStaticImage objects.
+	*/
+	virtual ~TLStaticImage(void) {}
+};
+
+
+/*!
+\brief
 	Factory class for producing StaticText objects for the Taharez GUI Scheme
 */
 class TAHAREZLOOK_API TLStaticTextFactory : public WindowFactory
@@ -51,7 +127,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLStaticTextFactory(void) : WindowFactory((utf8*)"Taharez StaticText") { }
+	TLStaticTextFactory(void) : WindowFactory(TLStaticText::WidgetTypeName) { }
 	~TLStaticTextFactory(void){}
 
 
@@ -92,7 +168,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLStaticImageFactory(void) : WindowFactory((utf8*)"Taharez StaticImage") { }
+	TLStaticImageFactory(void) : WindowFactory(TLStaticImage::WidgetTypeName) { }
 	~TLStaticImageFactory(void){}
 
 

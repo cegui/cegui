@@ -31,6 +31,8 @@
 #include "CEGUIFont.h"
 #include "elements/CEGUIEditbox.h"
 #include "elements/CEGUIComboDropList.h"
+#include "TLComboEditbox.h"
+#include "TLComboDropList.h"
 
 
 // Start of CEGUI namespace section
@@ -39,15 +41,18 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLCombobox::WidgetTypeName[]	= "TaharezLook/Combobox";
+
 // image / imageset related
-const utf8	TLCombobox::ImagesetName[]					= "TaharezImagery";
+const utf8	TLCombobox::ImagesetName[]					= "TaharezLook";
 const utf8	TLCombobox::ButtonNormalImageName[]			= "ComboboxListButtonNormal";
 const utf8	TLCombobox::ButtonHighlightedImageName[]	= "ComboboxListButtonHover";
 
 // component widget type names
-const utf8	TLCombobox::EditboxTypeName[]	= "Taharez ComboEditbox";
-const utf8	TLCombobox::DropListTypeName[]	= "Taharez ComboDropList";
-const utf8	TLCombobox::ButtonTypeName[]	= "Taharez Button";
+const utf8*	TLCombobox::EditboxTypeName		= TLComboEditbox::WidgetTypeName;
+const utf8*	TLCombobox::DropListTypeName	= TLComboDropList::WidgetTypeName;
+const utf8*	TLCombobox::ButtonTypeName		= TLButton::WidgetTypeName;
 
 
 /*************************************************************************

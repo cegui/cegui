@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLSliderThumb::WidgetTypeName[]	= "TaharezLook/SliderThumb";
+
 // Image names
-const utf8	TLSliderThumb::ImagesetName[]			= "TaharezImagery";
+const utf8	TLSliderThumb::ImagesetName[]			= "TaharezLook";
 const utf8	TLSliderThumb::NormalImageName[]		= "VertSliderThumbNormal";
 const utf8	TLSliderThumb::HighlightImageName[]		= "VertSliderThumbHover";
 

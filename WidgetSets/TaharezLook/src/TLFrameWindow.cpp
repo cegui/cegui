@@ -30,6 +30,7 @@
 #include "TLTitlebar.h"
 #include "TLButton.h"
 #include "CEGUIFont.h"
+#include "TLCloseButton.h"
 
 #include <boost/bind.hpp>
 
@@ -39,8 +40,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLFrameWindow::WidgetTypeName[]	= "TaharezLook/FrameWindow";
+
 // image stuff
-const utf8	TLFrameWindow::ImagesetName[]					= "TaharezImagery";
+const utf8	TLFrameWindow::ImagesetName[]					= "TaharezLook";
 const utf8	TLFrameWindow::TopLeftFrameImageName[]			= "WindowTopLeft";
 const utf8	TLFrameWindow::TopRightFrameImageName[]			= "WindowTopRight";
 const utf8	TLFrameWindow::BottomLeftFrameImageName[]		= "WindowBottomLeft";
@@ -64,8 +68,8 @@ const utf8	TLFrameWindow::NEastSWestCursorImageName[]		= "MouseNeSwCursor";
 
 
 // window type stuff
-const utf8	TLFrameWindow::TitlebarType[]		= "Taharez Titlebar";
-const utf8	TLFrameWindow::CloseButtonType[]	= "Taharez Close Button";
+const utf8*	TLFrameWindow::TitlebarType			= TLTitlebar::WidgetTypeName;
+const utf8*	TLFrameWindow::CloseButtonType		= TLCloseButton::WidgetTypeName;
 
 // layout constants
 const float	TLFrameWindow::TitlebarXOffset			= 0;

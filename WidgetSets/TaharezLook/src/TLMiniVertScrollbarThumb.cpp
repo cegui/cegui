@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLMiniVertScrollbarThumb::WidgetTypeName[]	= "TaharezLook/VerticalScrollbarThumb";
+
 // Image names
-const utf8	TLMiniVertScrollbarThumb::ImagesetName[]				= "TaharezImagery";
+const utf8	TLMiniVertScrollbarThumb::ImagesetName[]				= "TaharezLook";
 const utf8	TLMiniVertScrollbarThumb::NormalImageName[]				= "MiniVertScrollThumbNormal";
 const utf8	TLMiniVertScrollbarThumb::NormalTopImageName[]			= "MiniVertScrollThumbTopNormal";
 const utf8	TLMiniVertScrollbarThumb::NormalMiddleImageName[]		= "MiniVertScrollThumbMiddleNormal";

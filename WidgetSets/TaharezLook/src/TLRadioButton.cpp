@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLRadioButton::ImagesetName[]			= "TaharezImagery";
+// type name for this widget
+const utf8	TLRadioButton::WidgetTypeName[]	= "TaharezLook/RadioButton";
+
+const utf8	TLRadioButton::ImagesetName[]			= "TaharezLook";
 const utf8	TLRadioButton::NormalImageName[]		= "RadioButtonNormal";
 const utf8	TLRadioButton::HighlightImageName[]		= "RadioButtonHover";
 const utf8	TLRadioButton::SelectMarkImageName[]	= "RadioButtonMark";

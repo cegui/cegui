@@ -44,6 +44,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image / imageset related
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	BackdropNormalImageName[];		//!< Image to use for segment backdrop in normal state.
@@ -108,7 +111,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLListHeaderSegmentFactory(void) : WindowFactory((utf8*)"Taharez ListHeaderSegment") { }
+	TLListHeaderSegmentFactory(void) : WindowFactory(TLListHeaderSegment::WidgetTypeName) { }
 	~TLListHeaderSegmentFactory(void){}
 
 

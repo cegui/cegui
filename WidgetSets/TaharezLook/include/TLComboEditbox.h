@@ -44,6 +44,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image name constants
 	static const utf8	ImagesetName[];						//!< Name of the Imageset containing the imagery to use.
 	static const utf8	ContainerLeftImageName[];			//!< Name of the image to use for the left end of the container.
@@ -145,7 +148,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLComboEditboxFactory(void) : WindowFactory((utf8*)"Taharez ComboEditbox") { }
+	TLComboEditboxFactory(void) : WindowFactory(TLComboEditbox::WidgetTypeName) { }
 	~TLComboEditboxFactory(void){}
 
 

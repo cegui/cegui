@@ -27,7 +27,8 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
-#include "elements/CEGUIScrollbar.h"
+#include "TLMiniHorzScrollbar.h"
+#include "TLMiniVertScrollbar.h"
 
 
 // Start of CEGUI namespace section
@@ -36,8 +37,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLMultiLineEditbox::WidgetTypeName[]	= "TaharezLook/MultiLineEditbox";
+
 // image / imageset related
-const utf8	TLMultiLineEditbox::ImagesetName[]				= "TaharezImagery";
+const utf8	TLMultiLineEditbox::ImagesetName[]				= "TaharezLook";
 const utf8	TLMultiLineEditbox::TopLeftImageName[]			= "MultiLineEditboxTopLeft";
 const utf8	TLMultiLineEditbox::TopRightImageName[]			= "MultiLineEditboxTopRight";
 const utf8	TLMultiLineEditbox::BottomLeftImageName[]		= "MultiLineEditboxBottomLeft";
@@ -52,8 +56,8 @@ const utf8	TLMultiLineEditbox::SelectionBrushImageName[]	= "MultiLineEditboxSele
 const utf8	TLMultiLineEditbox::MouseCursorImageName[]		= "MouseTextBar";
 
 // component widget type names
-const utf8	TLMultiLineEditbox::HorzScrollbarTypeName[]		= "Taharez MiniHorzScrollbar";
-const utf8	TLMultiLineEditbox::VertScrollbarTypeName[]		= "Taharez MiniVertScrollbar";
+const utf8*	TLMultiLineEditbox::HorzScrollbarTypeName		= TLMiniHorzScrollbar::WidgetTypeName;
+const utf8*	TLMultiLineEditbox::VertScrollbarTypeName		= TLMiniVertScrollbar::WidgetTypeName;
 
 
 /*************************************************************************

@@ -44,6 +44,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	NormalImageName[];			//!< Name of the image to use for the normal state.
 	static const utf8	HighlightImageName[];		//!< Name of the image to use for the highlighted state.
@@ -124,7 +127,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLRadioButtonFactory(void) : WindowFactory((utf8*)"Taharez RadioButton") { }
+	TLRadioButtonFactory(void) : WindowFactory(TLRadioButton::WidgetTypeName) { }
 	~TLRadioButtonFactory(void){}
 
 
