@@ -697,6 +697,8 @@ bool System::injectMouseButtonUp(MouseButton button)
 		dest_window = dest_window->getParent();
 	}
 
+	bool wasUpHandled = ma.handled;
+
 	// check timer for 'button' to see if this up event also constitutes a single 'click'
 	if (d_click_trackers[button].d_timer.elapsed() <= d_click_timeout)
 	{
@@ -713,7 +715,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 
 	}
 
-	return ma.handled;
+	return wasUpHandled;
 }
 
 
