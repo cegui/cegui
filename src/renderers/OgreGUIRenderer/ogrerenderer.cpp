@@ -31,6 +31,7 @@
 
 #include "renderers/OgreGUIRenderer/ogrerenderer.h"
 #include "renderers/OgreGUIRenderer/ogretexture.h"
+#include "renderers/OgreGUIRenderer/OgreResourceProvider.h"
 
 
 // Start of CEGUI namespace section
@@ -648,6 +649,14 @@ Texture* OgreRenderer::createTexture(Ogre::Texture* texture)
 
 }
 
+/*************************************************************************
+	Create a resource provider object
+*************************************************************************/
+ResourceProvider* OgreRenderer::createResourceProvider(void)
+{
+    d_resourceProvider = new OgreResourceProvider();
+    return d_resourceProvider;
+}
 
 /*************************************************************************
 	Callback from Ogre invoked before other stuff in our target queue

@@ -187,6 +187,9 @@ public:
 	// create a texture and set it to the specified size
 	virtual	Texture*	createTexture(float size);
 
+    // create an OGRE resource provider.
+    virtual ResourceProvider* createResourceProvider(void);
+
 	// destroy the given texture
 	virtual	void		destroyTexture(Texture* texture);
 

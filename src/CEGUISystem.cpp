@@ -42,6 +42,8 @@
 #include "xercesc/sax2/DefaultHandler.hpp"
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "CEGUIDataContainer.h"
+#include "CEGUIResourceProvider.h"
 
 #include <boost/timer.hpp>
 
@@ -106,7 +108,15 @@ const utf8	System::EventMouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
 System::System(Renderer* renderer, utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, NULL, (utf8*)"", logFile);
+	constructor_impl(renderer, NULL, NULL, (utf8*)"", logFile);
+}
+/*************************************************************************
+	Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, ResourceProvider* resourceProvider, utf8* logFile) :
+	d_clickTrackerPimpl(new MouseClickTrackerImpl)
+{
+	constructor_impl(renderer, resourceProvider, NULL, (utf8*)"", logFile);
 }
 
 /*************************************************************************
@@ -115,14 +125,14 @@ System::System(Renderer* renderer, utf8* logFile) :
 System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, scriptModule, configFile, (utf8*)"CEGUI.log");
+	constructor_impl(renderer, NULL, scriptModule, configFile, (utf8*)"CEGUI.log");
 }
 
 
 /*************************************************************************
 	Method to do the work of the constructor
 *************************************************************************/
-void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, const String& configFile, const String& logFile)
+void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, ScriptModule* scriptModule, const String& configFile, const String& logFile)
 
 {
 	d_renderer		= renderer;
@@ -147,6 +157,9 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 
 	// add events for Sytem object
 	addSystemEvents();
+
+    // if there has been a resource provider supplied use that otherwise create one.
+    d_resourceProvider = resourceProvider ? resourceProvider : renderer->createResourceProvider();
 
 	// initialise Xerces-C XML system
 	XERCES_CPP_NAMESPACE_USE
@@ -190,10 +203,13 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 		parser->setContentHandler(&handler);
 		parser->setErrorHandler(&handler);
 
+        InputSourceContainer configData;
+        d_resourceProvider->loadInputSourceContainer(configFile, configData);
+
 		// do parsing of xml file
 		try
 		{
-			parser->parse(configFile.c_str());
+			parser->parse(*(configData.getDataPtr()));
 
 			// get the strings read
 			configLogname		= handler.getLogFilename();
@@ -506,6 +522,14 @@ ScriptModule* System::getScriptingModule(void) const
 	return d_scriptModule;
 }
 
+/*************************************************************************
+	Return a pointer to the ResourceProvider being used for within the GUI 
+    system.
+*************************************************************************/
+ResourceProvider* System::getResourceProvider(void) const
+{
+	return d_resourceProvider;
+}
 
 /*************************************************************************
 	Execute a script file if possible.	

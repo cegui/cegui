@@ -26,6 +26,7 @@
 #include "CEGUIRenderer.h"
 #include "CEGUIEventSet.h"
 #include "CEGUIEvent.h"
+#include "CEGUIDefaultResourceProvider.h"
 
 
 // Start of CEGUI namespace section
@@ -63,6 +64,17 @@ Renderer::Renderer(void)
 *************************************************************************/
 Renderer::~Renderer(void)
 {
+    if(d_resourceProvider)
+    {
+        delete d_resourceProvider;
+        d_resourceProvider = 0;
+    }
+}
+
+ResourceProvider* Renderer::createResourceProvider(void)
+{
+    d_resourceProvider = new DefaultResourceProvider();
+    return d_resourceProvider;
 }
 
 } // End of  CEGUI namespace section

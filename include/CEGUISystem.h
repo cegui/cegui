@@ -32,6 +32,7 @@
 #include "CEGUIRenderer.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIInputEvent.h"
+#include "CEGUIResourceProvider.h"
 
 
 #if defined(_MSC_VER)
@@ -90,6 +91,21 @@ public:
 		pointer to a utf8 encoded buffer containing the name to use for the log file.
 	*/
 	System(Renderer* renderer, utf8* logFile = (utf8*)"CEGUI.log");
+
+	/*!
+	\brief
+		Construct a new System object
+
+	\param renderer
+		Pointer to the valid Renderer object that will be used to render GUI imagery
+
+	\param resourceProvider
+		Pointer to a ResourceProvider object.
+
+	\param logFile
+		pointer to a utf8 encoded buffer containing the name to use for the log file.
+	*/
+	System(Renderer* renderer, ResourceProvider* resourceProvider, utf8* logFile = (utf8*)"CEGUI.log");
 
 
 	/*!
@@ -388,6 +404,14 @@ public:
 	*/
 	ScriptModule*	getScriptingModule(void) const;
 
+	/*!
+	\brief
+		Return a pointer to the ResourceProvider being used within the GUI system.
+
+	\return
+		Pointer to a ResourceProvider based object.
+	*/
+	ResourceProvider* getResourceProvider(void) const;
 
 	/*!
 	\brief
@@ -626,7 +650,7 @@ private:
 	\brief
 		Method to do the work of the constructor
 	*/
-	void	constructor_impl(Renderer* renderer, ScriptModule* scriptModule, const String& configFile, const String& logFile);
+	void	constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, ScriptModule* scriptModule, const String& configFile, const String& logFile);
 
 
 	/*!
@@ -701,6 +725,7 @@ private:
 		Implementation Data
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
+    ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
 	Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
 

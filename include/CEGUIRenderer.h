@@ -325,6 +325,7 @@ public:
 	*/
 	float	getZLayer(uint layer) const		{return d_current_z - ((float)layer * GuiZLayerStep);}
 
+    virtual ResourceProvider* createResourceProvider(void);
 
 protected:
 	/*************************************************************************
@@ -348,6 +349,9 @@ private:
 		Implementation Data
 	*************************************************************************/
 	float	d_current_z;		//!< The current z co-ordinate value.
+
+protected:
+    ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object.
 };
 
 } // End of  CEGUI namespace section

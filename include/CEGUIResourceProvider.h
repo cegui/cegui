@@ -27,7 +27,6 @@
 #define _CEGUIResourceProvider_h_
 
 #include "CEGUIBase.h"
-#include "CEGUISingleton.h"
 #include "CEGUIDataContainer.h"
 
 
@@ -40,7 +39,7 @@ namespace CEGUI
 
 	A ResourceProvider is used to load both XML and binary data from an external source.  This could be from a filesystem or the resource manager of a specific renderer.
 */
-class CEGUIBASE_API ResourceProvider : public Singleton<ResourceProvider>
+class CEGUIBASE_API ResourceProvider
 {
 public:
 	/*************************************************************************
@@ -61,24 +60,6 @@ public:
     /*************************************************************************
         Accessor functions
     *************************************************************************/
-    /*!
-    \brief
-        Return singleton ResourceProvider object
-
-    \return
-        Singleton WindowManager object
-    */
-
-    static ResourceProvider& getSingleton(void);
-
-    /*!
-    \brief
-        Return pointer to singleton WindowManager object
-
-    \return
-        Pointer to singleton WindowManager object
-    */
-    static ResourceProvider* getSingletonPtr(void);
 
     /*!
     \brief

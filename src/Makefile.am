@@ -33,7 +33,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIRenderableFrame.cpp \
                       CEGUIRenderableImage.cpp \
                       CEGUIRenderer.cpp \
-                      CEGUIResourceProvider.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \

@@ -59,6 +59,8 @@ class SchemeManager;
 class System;
 class FactoryModule;
 class ScriptModule;
+class ResourceProvider;
+class DefaultResourceProvider;
 
 /*************************************************************************
 	Forward reference declarations for GUI element base classes
