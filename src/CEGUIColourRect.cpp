@@ -117,6 +117,16 @@ void ColourRect::setRightAlpha(float alpha)
 }
 
 /*************************************************************************
+	Determinate whehter the ColourRect is monochromatic or variegated
+*************************************************************************/
+bool ColourRect::isMonochromatic() const
+{
+	return d_top_left == d_top_right &&
+		   d_top_left == d_bottom_left &&
+		   d_top_left == d_bottom_right;
+}
+
+/*************************************************************************
 	Get the colour at a specified point
 *************************************************************************/
 colour ColourRect::getColourAtPoint( float x, float y ) const

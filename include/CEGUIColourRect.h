@@ -138,6 +138,16 @@ public:
 
 	/*!
 	\brief
+		Determinate the ColourRect is monochromatic or variegated.
+
+	\return
+		True if all four corners of the ColourRect has same colour, false otherwise.
+	*/
+	bool	isMonochromatic() const;
+
+
+	/*!
+	\brief
 		Gets a portion of this ColourRect as a subset ColourRect
 
 	\param left
