@@ -75,7 +75,7 @@ void WLSliderThumb::drawNormal(float z)
 	if (clipper.getWidth() != 0)
 	{
 		// draw thumb image
-		d_normalImage->draw(getUnclippedPixelRect(), z, clipper, colour(1, 1, 1, getEffectiveAlpha()));
+		d_normalImage->draw(getUnclippedPixelRect(), z, clipper, ColourRect(colour(1, 1, 1, getEffectiveAlpha())));
 	}
 
 }
@@ -92,7 +92,7 @@ void WLSliderThumb::drawHover(float z)
 	if (clipper.getWidth() != 0)
 	{
 		// draw thumb image
-		d_highlightImage->draw(getUnclippedPixelRect(), z, clipper, colour(1, 1, 1, getEffectiveAlpha()));
+		d_highlightImage->draw(getUnclippedPixelRect(), z, clipper, ColourRect(colour(1, 1, 1, getEffectiveAlpha())));
 	}
 
 }
@@ -109,7 +109,7 @@ void WLSliderThumb::drawDisabled(float z)
 	if (clipper.getWidth() != 0)
 	{
 		// draw thumb image
-		d_normalImage->draw(getUnclippedPixelRect(), z, clipper, colour(0.5f, 0.5f, 0.5f, getEffectiveAlpha()));
+		d_normalImage->draw(getUnclippedPixelRect(), z, clipper, ColourRect(colour(0.5f, 0.5f, 0.5f, getEffectiveAlpha())));
 	}
 
 }
