@@ -113,5 +113,13 @@
 	<Image Name="TabButtonUpperRightSelected" XPos="105" YPos="20" Width="3" Height="3" />
 	<Image Name="TabButtonMiddleSelected" XPos="9" YPos="9" Width="2" Height="2" />
 
-	
+	<Image Name="TooltipTopLeft" XPos="74" YPos="38" Width="3" Height="3" />
+	<Image Name="TooltipTopRight" XPos="87" YPos="38" Width="4" Height="3" />
+	<Image Name="TooltipBottomLeft" XPos="74" YPos="51" Width="3" Height="3" />
+	<Image Name="TooltipBottomRight" XPos="87" YPos="51" Width="4" Height="4" />
+	<Image Name="TooltipLeftEdge" XPos="74" YPos="45" Width="3" Height="2" />
+	<Image Name="TooltipRightEdge" XPos="87" YPos="45" Width="4" Height="2" />
+	<Image Name="TooltipTopEdge" XPos="81" YPos="38" Width="2" Height="3" />
+	<Image Name="TooltipBottomEdge" XPos="81" YPos="51" Width="2" Height="4" />
+	<Image Name="TooltipMiddle" XPos="81" YPos="45" Width="2" Height="2" />	
 </Imageset>

@@ -29,6 +29,7 @@ noinst_HEADERS = TLAlternateProgressBar.h \
                  TLTabControl.h \
                  TLTabPane.h \
                  TLTitlebar.h \
+                 TLTooltip.h \
                  TLVertScrollbar.h \
                  TLVertScrollbarThumb.h \
                  TLVUMeter.h

@@ -27,6 +27,7 @@
 		<WindowFactory Name="WindowsLook/TabControl" />
 		<WindowFactory Name="WindowsLook/TabPane" />
 		<WindowFactory Name="WindowsLook/Titlebar" />
+        <WindowFactory Name="WindowsLook/Tooltip" />
 		<WindowFactory Name="WindowsLook/VerticalScrollbar" />
 		<WindowFactory Name="WindowsLook/VerticalScrollbarThumb" />
 	</WindowSet>

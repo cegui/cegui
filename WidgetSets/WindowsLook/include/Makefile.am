@@ -24,5 +24,6 @@ noinst_HEADERS = WLButton.h \
              WLTabControl.h \
              WLTabPane.h \
              WLTitlebar.h \
+             WLTooltip.h \
              WLVertScrollbar.h \
              WLVertScrollbarThumb.h

@@ -32,6 +32,7 @@
 		<WindowFactory Name="TaharezLook/TabControl" />
 		<WindowFactory Name="TaharezLook/TabPane" />
 		<WindowFactory Name="TaharezLook/Titlebar" />
+        <WindowFactory Name="TaharezLook/Tooltip" />
 		<WindowFactory Name="TaharezLook/VerticalScrollbar" />
 		<WindowFactory Name="TaharezLook/VerticalScrollbarThumb" />
 		<WindowFactory Name="TaharezLook/VUMeter" />

@@ -33,6 +33,7 @@ libCEGUITaharezLook_la_SOURCES = TLAlternateProgressBar.cpp \
                                  TLTabControl.cpp \
                                  TLTabPane.cpp \
                                  TLTitlebar.cpp \
+                                 TLTooltip.cpp \
                                  TLVertScrollbar.cpp \
                                  TLVertScrollbarThumb.cpp \
                                  TLVUMeter.cpp

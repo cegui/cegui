@@ -29,6 +29,7 @@ libCEGUIWindowsLook_la_SOURCES = WLButton.cpp \
 				 WLTabControl.cpp \
 				 WLTabPane.cpp \
 				 WLTitlebar.cpp \
+				 WLTooltip.cpp \
 				 WLVertScrollbar.cpp \
 				 WLVertScrollbarThumb.cpp
 
