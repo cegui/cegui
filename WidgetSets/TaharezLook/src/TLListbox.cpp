@@ -172,7 +172,12 @@ void TLListbox::layoutComponentWidgets()
 
 
 	// set desired size for horizontal scroll-bar
-	Size h_sz(1.0f, (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight());
+	Size h_sz(1.0f, 0.0f);
+
+	if (d_abs_area.getHeight() != 0.0f)
+	{
+		h_sz.d_height = (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight();
+	}
 
 	// adjust length to consider width of vertical scroll bar if that is visible
 	if (d_vertScrollbar->isVisible())

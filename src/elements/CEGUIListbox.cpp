@@ -255,7 +255,6 @@ void Listbox::resetList(void)
 
 	d_lastSelected = NULL;
 
-	configureScrollbars();
 	WindowEventArgs args(this);
 	onListContentsChanged(args);
 }
@@ -283,7 +282,6 @@ void Listbox::addItem(ListboxItem* item)
 			d_listItems.push_back(item);
 		}
 
-		configureScrollbars();
 		WindowEventArgs args(this);
 		onListContentsChanged(args);
 	}
@@ -328,8 +326,6 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 		
 		d_listItems.insert(ins_pos, item);
 
-
-		configureScrollbars();
 		WindowEventArgs args(this);
 		onListContentsChanged(args);
 	}
@@ -368,7 +364,6 @@ void Listbox::removeItem(const ListboxItem* item)
 				delete item;
 			}
 
-			configureScrollbars();
 			WindowEventArgs args(this);
 			onListContentsChanged(args);
 		}
@@ -819,6 +814,7 @@ void Listbox::addListboxEvents(void)
 *************************************************************************/
 void Listbox::onListContentsChanged(WindowEventArgs& e)
 {
+	configureScrollbars();
 	requestRedraw();
 	fireEvent(ListContentsChanged, e);
 }

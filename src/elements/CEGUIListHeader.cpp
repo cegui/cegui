@@ -569,10 +569,10 @@ void ListHeader::moveColumn(uint column, uint position)
 	}
 	else
 	{
-		// if position is too big, insert at end.
-		if (position > getColumnCount())
+		// if position is too big, move to end.
+		if (position >= getColumnCount())
 		{
-			position = getColumnCount();
+			position = getColumnCount() - 1;
 		}
 
 		ListHeaderSegment* seg = d_segments[column];

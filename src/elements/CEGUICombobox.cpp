@@ -719,6 +719,25 @@ void Combobox::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
+	Handler for when text changes
+*************************************************************************/
+void Combobox::onTextChanged(WindowEventArgs& e)
+{
+	// update ourselves only if needed (prevents perpetual event loop & stack overflow)
+	if (d_editbox->getText() != d_text)
+	{
+		// done before doing base class processing so event subscribers see 'updated' version of this.
+		d_editbox->setText(d_text);
+		e.handled = true;
+
+		Window::onTextChanged(e);
+	}
+
+}
+
+
+
+/*************************************************************************
 	Handler function for button clicks.
 *************************************************************************/
 void Combobox::button_ClickHandler(const EventArgs& e)

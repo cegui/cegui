@@ -929,6 +929,7 @@ protected:
 		Overridden Event handlers
 	*************************************************************************/
 	virtual	void	onSized(WindowEventArgs& e);
+	virtual void	onTextChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************

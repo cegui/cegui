@@ -105,7 +105,7 @@ void TLCombobox::layoutComponentWidgets()
 
 	// set list position and size (relative)
 	pos.d_x = 0;
-	pos.d_y = ebheight / getAbsoluteHeight();
+	pos.d_y = (getAbsoluteHeight() == 0.0f) ? 0.0f : (ebheight / getAbsoluteHeight());
 	d_droplist->setPosition(pos);
 
 	sz.d_width	= 1.0f;

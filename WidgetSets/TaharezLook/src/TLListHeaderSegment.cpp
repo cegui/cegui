@@ -83,27 +83,27 @@ TLListHeaderSegment::~TLListHeaderSegment(void)
 *************************************************************************/
 void TLListHeaderSegment::drawSelf(float z)
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
 	// get the destination screen rect for this window
 	Rect absrect(getUnclippedPixelRect());
 
+	// get clipping Rect for window
+	Rect clipper(getPixelRect());
+
 	Vector3 pos(absrect.d_left, absrect.d_top, z);
 
-	renderSegmentImagery(pos, getEffectiveAlpha(), clipper);
+	// if widget is not totally clipped
+	if (clipper.getWidth() != 0)
+	{
+		renderSegmentImagery(pos, getEffectiveAlpha(), clipper);
+	}
 
+	// always draw the ghost if the segment is geing dragged.
 	if (d_dragMoving)
 	{
 		clipper = System::getSingleton().getRenderer()->getRect();
 		pos.d_x = absrect.d_left + d_dragPosition.d_x;
 		pos.d_y = absrect.d_top + d_dragPosition.d_y;
-		//pos.d_z = 1.0f;
+		pos.d_z = 0.0f;
 		renderSegmentImagery(pos, getEffectiveAlpha() * 0.5f, clipper);
 	}
 }
