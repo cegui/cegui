@@ -55,8 +55,17 @@ AC_CONFIG_FILES([Makefile \
                  WidgetSets/Makefile \
                  WidgetSets/TaharezLook/Makefile \
                  WidgetSets/TaharezLook/src/Makefile \
+                 WidgetSets/TaharezLook/include/Makefile \
                  WidgetSets/WindowsLook/Makefile \
                  WidgetSets/WindowsLook/src/Makefile \
+                 WidgetSets/WindowsLook/include/Makefile \
+                 include/renderers/OgreGUIRenderer/Makefile \
+                 src/renderers/OgreGUIRenderer/Makefile \
+                 CEGUI-OGRE.pc \
+                 include/renderers/OpenGLGUIRenderer/Makefile \
+                 src/renderers/OpenGLGUIRenderer/Makefile \
+                 CEGUI-OPENGL.pc \
+                 CEGUI.spec \
                  CEGUI.pc])
 
 AC_OUTPUT

@@ -6,9 +6,6 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
             [build_ogre_renderer=false], [build_ogre_renderer=true])
     ], [build_ogre_renderer=false])
     if test x$build_ogre_renderer = xtrue; then
-        AC_CONFIG_FILES([include/renderers/OgreGUIRenderer/Makefile \
-                         src/renderers/OgreGUIRenderer/Makefile \
-                         CEGUI-OGRE.pc])
         AC_SUBST(OGRE_CFLAGS)
         AC_SUBST(OGRE_LIBS)
         AC_MSG_RESULT([OGRE renderer enabled])
@@ -35,12 +32,9 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         [use_devil_library=no]
     ])
     if test x$build_opengl_renderer = xtrue; then
-        AC_CONFIG_FILES([include/renderers/OpenGLGUIRenderer/Makefile \
-                         src/renderers/OpenGLGUIRenderer/Makefile \
-                         CEGUI-OPENGL.pc])
         AC_MSG_RESULT([OpenGL renderer enabled])
         if test x$use_devil_library = xyes; then
-            AC_CHECK_LIB(ILU, iluFlipImage,,AC_MSG_ERROR([Library ilu required for DevIL support is missing]))
+            AC_CHECK_LIB(ILU, iluFlipImage,,AC_MSG_ERROR([Library ilu required for DevIL support is missing]),-lIL)
             DevIL_CFLAGS=-DUSE_DEVIL_LIBRARY
             AC_MSG_RESULT([Image loading via DevIL by OpenGL renderer enabled])
         else

@@ -51,4 +51,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIWindowFactoryManager.h \
                  CEGUIWindowManager.h \
 		 CEGUIWindowProperties.h \
-                 CEGUIcolour.h
+                 CEGUIcolour.h 
+		 
+noinst_HEADERS = CEGUIXmlHandlerHelper.h \
+		CEGUIFontManager_implData.h \
+		CEGUIFont_implData.h 

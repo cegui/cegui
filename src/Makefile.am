@@ -105,6 +105,13 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       pcre/pcre.c \
                       pcre/pcreposix.c \
                       pcre/study.c
+		      
+noinst_HEADERS =      pcre/internal.h \
+                      pcre/ucpinternal.h \
+                      pcre/pcre.h \
+                      pcre/pcreposix.h \
+                      pcre/ucp.h \
+		      pcre/pcreconfig.h
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 libCEGUIBase_la_LIBADD = $(freetype2_LIBS)
