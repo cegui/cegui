@@ -12,6 +12,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIEventSignal.cpp \
                       CEGUIEventSignalSet.cpp \
                       CEGUIExceptions.cpp \
+		      CEGUIFactoryModule.cpp \
                       CEGUIFont.cpp \
                       CEGUIFontManager.cpp \
                       CEGUIFont_xmlHandler.cpp \
@@ -92,8 +93,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIThumb.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
-                      elements/CEGUITitlebarProperties.cpp \
-                      implementations/linux/CEGUIFactoryModule.cpp
+                      elements/CEGUITitlebarProperties.cpp
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 libCEGUIBase_la_LIBADD = -lboost_regex -lboost_signals $(freetype2_LIBS)

@@ -236,7 +236,17 @@ void WLMultiLineEditbox::renderEditboxBaseImagery(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	ColourRect colours(colour(isReadOnly() ? ReadOnlyBackgroundColour : ReadWriteBackgroundColour));
+	ColourRect colours;
+
+	if (isReadOnly())
+	{
+		colours.setColours(ReadOnlyBackgroundColour);
+	}
+	else
+	{
+		colours.setColours(ReadWriteBackgroundColour);
+	}
+	
 	colours.setAlpha(getEffectiveAlpha());
 
 	//
