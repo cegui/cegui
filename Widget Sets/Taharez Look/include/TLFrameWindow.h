@@ -63,6 +63,14 @@ public:
 	static const utf8	CloseButtonHoverImageName[];	//!< Name of the image to use for the close button in hover state.
 	static const utf8	CloseButtonPushedImageName[];	//!< Name of the image to use for the close button in pushed state.
 
+	// cursor images
+	static const utf8	NormalCursorImageName[];		//!< Name of the image to use for the normal cursor.
+	static const utf8	NorthSouthCursorImageName[];	//!< Name of the image to use for up/down sizing cursor.
+	static const utf8	EastWestCursorImageName[];		//!< Name of the image to use for left/right sizing cursor.
+	static const utf8	NWestSEastCursorImageName[];	//!< Name of the image to use for up-left/down-right sizing cursor.
+	static const utf8	NEastSWestCursorImageName[];	//!< Name of the image to use for up-right/down-left sizing cursor.
+
+
 	// window type stuff
 	static const utf8	TitlebarType[];					//!< Window type to create for the title bar.
 	static const utf8	CloseButtonType[];				//!< Window type to create for the close button.
@@ -167,6 +175,13 @@ protected:
 		Store the sizes for the frame edges
 	*/
 	void	storeFrameSizes(void);
+
+
+	/*!
+	\brief
+		Return a Rect that describes, in window relative pixel co-ordinates, the outer edge of the sizing area for this window.
+	*/
+	virtual	Rect	getSizingRect(void) const;
 
 
 	/*************************************************************************

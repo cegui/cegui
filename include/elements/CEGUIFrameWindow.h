@@ -459,6 +459,20 @@ protected:
 	void	closeClickHandler(const EventArgs& e);
 
 
+	/*!
+	\brief
+		Set the appropriate mouse cursor for the given window-relative pixel point.
+	*/
+	void	setCursorForPoint(const Point& pt) const;
+
+
+	/*!
+	\brief
+		Return a Rect that describes, in window relative pixel co-ordinates, the outer edge of the sizing area for this window.
+	*/
+	virtual	Rect	getSizingRect(void) const		{return Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());}
+
+
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
@@ -490,6 +504,12 @@ protected:
 	// composite controls
 	Titlebar*	d_titlebar;				//!< points to the title bar widget.
 	PushButton*	d_closeButton;			//!< points to close button widget.
+
+	// images for cursor when on sizing border
+	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.
+	const Image*	d_ewSizingCursor;		//!< East/West sizing cursor image.
+	const Image*	d_nwseSizingCursor;		//!< North-West/South-East cursor image.
+	const Image*	d_neswSizingCursor;		//!< North-East/South-West cursor image.
 };
 
 } // End of  CEGUI namespace section

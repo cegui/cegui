@@ -1,9 +1,11 @@
 /************************************************************************
-	filename: 	TLTitlebar.h
-	created:	9/5/2004
+	filename: 	TLCloseButton.h
+	created:	20/5/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to Taharez Look Titlebar widget
+	purpose:	Interface to 'close button' widget.  This is needed due
+				to the fact that Taharez frame windows standard controls
+				have custom clipping requirements.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,39 +25,30 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _TLTitlebar_h_
-#define _TLTitlebar_h_
+#ifndef _TLCloseButton_h_
+#define _TLCloseButton_h_
 
-#include "TLModule.h"
-#include "elements/CEGUITitlebar.h"
-#include "CEGUIWindowFactory.h"
+#include "TLButton.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-	Titlebar class for the TaharezLook GUI scheme
+	Customised push-button used for the close button control on Taharez
+	frame windows.  This is required due to the custom clipping required
+	for these windows
 */
-class TAHAREZLOOK_API TLTitlebar : public Titlebar
+class TAHAREZLOOK_API TLCloseButton : public TLButton
 {
 public:
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
-	static const utf8	LeftEndSectionImageName[];		//!< Name of the image to use for the left section of the title bar.
-	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the middle section of the title bar.
-	static const utf8	RightEndSectionImageName[];		//!< Name of the image to use for the right section of the title bar.
-	static const utf8	NormalCursorImageName[];		//!< Name of the image to use as the mouse cursor for this window.
-
-
-	/*************************************************************************
+		/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for Taharez Look Titlebar objects.
+		Constructor for Taharez Look Close Button objects.
 
 	\param type
 		String object that specifies a type for this window, usually provided by a factory class.
@@ -63,14 +56,14 @@ public:
 	\param name
 		String object that specifies a unique name that will be used to identify the new Window object
 	*/
-	TLTitlebar(const String& type, const String& name);
+	TLCloseButton(const String& type, const String& name) : TLButton(type, name) {}
 
 
 	/*!
 	\brief
-		Destructor for TLTitlebar objects.
+		Destructor for TLCloseButton objects.
 	*/
-	virtual ~TLTitlebar(void);
+	virtual ~TLCloseButton(void) {}
 
 
 	/*!
@@ -85,54 +78,21 @@ public:
 		This has now been made virtual to ease some customisations that require more specialised clipping requirements.
 	*/
 	virtual Rect	getPixelRect(void) const;
-
-
-protected:
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
-
-	/*************************************************************************
-		Event handlers
-	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-
-
-
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	// cache image objects used for rendering
-	const Image*	d_leftImage;		//!< Image object used for the left edge of the title bar.
-	const Image*	d_middleImage;		//!< Image object used for the middle section of the title bar.
-	const Image*	d_rightImage;		//!< Image object used for the right edge of the title bar.
 };
-
 
 
 /*!
 \brief
-	Factory class for producing TLTitlebar objects
+	Factory class for producing TLCloseButton objects
 */
-class TAHAREZLOOK_API TLTitlebarFactory : public WindowFactory
+class TAHAREZLOOK_API TLCloseButtonFactory : public WindowFactory
 {
 public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLTitlebarFactory(void) : WindowFactory((utf8*)"Taharez Titlebar") { }
-	~TLTitlebarFactory(void){}
+	TLCloseButtonFactory(void) : WindowFactory((utf8*)"Taharez Close Button") { }
+	~TLCloseButtonFactory(void){}
 
 
 	/*!
@@ -165,4 +125,4 @@ public:
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _TLTitlebar_h_
+#endif	// end of guard _TLCloseButton_h_

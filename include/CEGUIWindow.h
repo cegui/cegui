@@ -512,8 +512,11 @@ public:
 	\return
 		Rect object that describes the area covered by the Window.  The values in the returned Rect are in screen pixels.  The
 		returned Rect is clipped as appropriate and depending upon the 'ClippedByParent' setting.
+
+	\note
+		This has now been made virtual to ease some customisations that require more specialised clipping requirements.
 	*/
-	Rect	getPixelRect(void) const;
+	virtual Rect	getPixelRect(void) const;
 
 
 	/*!
@@ -1240,6 +1243,19 @@ public:
 		Nothing.
 	*/
 	void	setMouseCursor(const Image* image)		{d_mouseCursor = image;}
+
+
+	/*!
+	\brief
+		Set the mouse cursor image to be used when the mouse enters this window.
+
+	\param image
+		One of the MouseCursorImage enumerated values.
+
+	\return
+		Nothing.
+	*/
+	void	setMouseCursor(MouseCursorImage image)		{d_mouseCursor = (const Image*)image;}
 
 
 	/*!

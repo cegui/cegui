@@ -53,10 +53,17 @@ const utf8	TLFrameWindow::CloseButtonNormalImageName[]		= "CloseButtonNormal";
 const utf8	TLFrameWindow::CloseButtonHoverImageName[]		= "CloseButtonHover";
 const utf8	TLFrameWindow::CloseButtonPushedImageName[]		= "CloseButtonPressed";
 
+// cursor images
+const utf8	TLFrameWindow::NormalCursorImageName[]			= "MouseArrow";
+const utf8	TLFrameWindow::NorthSouthCursorImageName[]		= "MouseNoSoCursor";
+const utf8	TLFrameWindow::EastWestCursorImageName[]		= "MouseEsWeCursor";
+const utf8	TLFrameWindow::NWestSEastCursorImageName[]		= "MouseNwSeCursor";
+const utf8	TLFrameWindow::NEastSWestCursorImageName[]		= "MouseNeSwCursor";
+
 
 // window type stuff
 const utf8	TLFrameWindow::TitlebarType[]		= "Taharez Titlebar";
-const utf8	TLFrameWindow::CloseButtonType[]	= "Taharez Button";
+const utf8	TLFrameWindow::CloseButtonType[]	= "Taharez Close Button";
 
 // layout constants
 const float	TLFrameWindow::TitlebarXOffset			= 10;
@@ -86,6 +93,13 @@ TLFrameWindow::TLFrameWindow(const String& type, const String& name) :
 	d_clientbrush.setPosition(Point(d_frameLeftSize, d_frameTopSize));
 	d_clientbrush.setHorzFormatting(RenderableImage::HorzTiled);
 	d_clientbrush.setVertFormatting(RenderableImage::VertTiled);
+
+	// setup cursor images for this window.
+	setMouseCursor(&iset->getImage(NormalCursorImageName));
+	d_nsSizingCursor = &iset->getImage(NorthSouthCursorImageName);
+	d_ewSizingCursor = &iset->getImage(EastWestCursorImageName);
+	d_nwseSizingCursor = &iset->getImage(NWestSEastCursorImageName);
+	d_neswSizingCursor = &iset->getImage(NEastSWestCursorImageName);
 }
 
 
@@ -141,7 +155,6 @@ PushButton* TLFrameWindow::createCloseButton(void) const
 {
 	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, getName() + "__auto_closebutton__");
 
-	btn->setClippedByParent(false);
 	btn->setStandardImageryEnabled(false);
 	btn->setCustomImageryAutoSized(true);
 	
@@ -244,7 +257,7 @@ void TLFrameWindow::onSized(EventArgs& e)
 	// if no title bar, measure the close button instead.
 	else if (isCloseButtonEnabled())
 	{
-		//frame_offset = d_closeButton->getUnclippedPixelRect().getHeight() / 2;
+		frame_offset = d_closeButton->getUnclippedPixelRect().getHeight() / 2;
 	}
 
 	// move frame into position
@@ -304,6 +317,16 @@ void TLFrameWindow::storeFrameSizes(void)
 	d_frameTopSize		= iset->getImage(TopFrameImageName).getHeight();
 	d_frameBottomSize	= iset->getImage(BottomFrameImageName).getHeight();
 
+}
+
+
+/*************************************************************************
+	Return a Rect that describes, in window relative pixel co-ordinates,
+	the outer edge of the sizing area for this window.
+*************************************************************************/
+Rect TLFrameWindow::getSizingRect(void) const
+{
+	return d_frame.getRect();
 }
 
 

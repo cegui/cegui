@@ -90,6 +90,8 @@ protected:
 	*************************************************************************/
 	bool	d_dragging;			//!< set to true when the window is being dragged.
 	Point	d_dragPoint;		//!< Point at which we are being dragged.
+
+	Rect	d_oldCursorArea;	//!< Used to backup cursor restraint area.
 };
 
 } // End of  CEGUI namespace section

@@ -30,6 +30,7 @@
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
 #include "CEGUIRenderer.h"
+#include "CEGUIMouseCursor.h"
 
 #include <boost/timer.hpp>
 
@@ -312,6 +313,19 @@ public:
 		Nothing.
 	*/
 	void	setDefaultMouseCursor(const Image* image);
+
+
+	/*!
+	\brief
+		Set the image to be used as the default mouse cursor.
+
+	\param image
+		One of the MouseCursorImage enumerated values.
+
+	\return
+		Nothing.
+	*/
+	void	setDefaultMouseCursor(MouseCursorImage image)		{setDefaultMouseCursor((const Image*)image);}
 
 
 	/*!

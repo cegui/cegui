@@ -26,6 +26,7 @@
 #include "elements/CEGUIFrameWindow.h"
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIPushButton.h"
+#include "CEGUIMouseCursor.h"
 
 #include <boost/bind.hpp>
 
@@ -57,6 +58,8 @@ FrameWindow::FrameWindow(const String& type, const String& name) :
 	d_beingSized		= false;
 	
 	d_borderSize		= DefaultSizingBorderSize;
+
+	d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = NULL;
 
 	addFrameWindowEvents();
 }
@@ -252,7 +255,7 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 *************************************************************************/
 FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt) const
 {
-	Rect	frame(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());
+	Rect	frame(getSizingRect());
 
 	// return none if point is not inside the outer edge
 	if (!frame.isPointInRect(pt)) {
@@ -425,6 +428,42 @@ void FrameWindow::closeClickHandler(const EventArgs& e)
 
 
 /*************************************************************************
+	Set the appropriate mouse cursor for the given window-relative pixel
+	point.
+*************************************************************************/
+void FrameWindow::setCursorForPoint(const Point& pt) const
+{
+	switch(getSizingBorderAtPoint(pt))
+	{
+	case SizingTop:
+	case SizingBottom:
+		MouseCursor::getSingleton().setImage(d_nsSizingCursor);
+		break;
+
+	case SizingLeft:
+	case SizingRight:
+		MouseCursor::getSingleton().setImage(d_ewSizingCursor);
+		break;
+
+	case SizingTopLeft:
+	case SizingBottomRight:
+		MouseCursor::getSingleton().setImage(d_nwseSizingCursor);
+		break;
+
+	case SizingTopRight:
+	case SizingBottomLeft:
+		MouseCursor::getSingleton().setImage(d_neswSizingCursor);
+		break;
+
+	default:
+		MouseCursor::getSingleton().setImage(getMouseCursor());
+		break;
+	}
+
+}
+
+
+/*************************************************************************
 	Handler for mouse move events
 *************************************************************************/
 void FrameWindow::onMouseMove(MouseEventArgs& e)
@@ -472,7 +511,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 		}
 		else
 		{
-			//setCursorForPoint(x, y);
+			setCursorForPoint(localMousePos);
 		}
 
 	}

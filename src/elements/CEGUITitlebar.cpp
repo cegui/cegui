@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIFrameWindow.h"
+#include "CEGUIMouseCursor.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -35,7 +36,6 @@ namespace CEGUI
 Titlebar::Titlebar(const String& type, const String& name) :
 	Window(type, name)
 {
-	setClippedByParent(false);
 	setAlwaysOnTop(true);
 
 	// basic initialisation
@@ -102,6 +102,19 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				d_dragPoint = relativeToAbsolute(d_dragPoint);
 			}
 
+			// store old constraint area
+			d_oldCursorArea = MouseCursor::getSingleton().getConstraintArea();
+
+			// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
+			if ((d_parent == NULL) || (d_parent->getParent() == NULL))
+			{
+				MouseCursor::getSingleton().setConstraintArea(&System::getSingleton().getRenderer()->getRect().getIntersection(d_oldCursorArea));
+			}
+			else 
+			{
+				MouseCursor::getSingleton().setConstraintArea(&d_parent->getParent()->getInnerRect().getIntersection(d_oldCursorArea));
+			}
+
 		}
 
 		e.handled = true;
@@ -159,6 +172,9 @@ void Titlebar::onCaptureLost(EventArgs& e)
 
 	// when we lose out hold on the mouse inputs, we are no longer dragging.
 	d_dragging = false;
+
+	// restore old constraint area
+	MouseCursor::getSingleton().setConstraintArea(&d_oldCursorArea);
 }
 
 } // End of  CEGUI namespace section

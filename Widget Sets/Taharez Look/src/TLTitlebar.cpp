@@ -37,6 +37,7 @@ const utf8	TLTitlebar::ImagesetName[]				= "TaharezImagery";
 const utf8	TLTitlebar::LeftEndSectionImageName[]	= "TitlebarLeft";
 const utf8	TLTitlebar::MiddleSectionImageName[]	= "TitlebarMiddle";
 const utf8	TLTitlebar::RightEndSectionImageName[]	= "TitlebarRight";
+const utf8	TLTitlebar::NormalCursorImageName[]		= "MouseMoveCursor";
 
 
 /*************************************************************************
@@ -51,6 +52,9 @@ TLTitlebar::TLTitlebar(const String& type, const String& name) :
 	d_leftImage		= &iset->getImage(LeftEndSectionImageName);
 	d_middleImage	= &iset->getImage(MiddleSectionImageName);
 	d_rightImage	= &iset->getImage(RightEndSectionImageName);
+
+	// set cursor
+	setMouseCursor(&iset->getImage(NormalCursorImageName));
 }
 
 
@@ -59,6 +63,26 @@ TLTitlebar::TLTitlebar(const String& type, const String& name) :
 *************************************************************************/
 TLTitlebar::~TLTitlebar(void)
 {
+}
+
+
+/*************************************************************************
+	return a Rect object describing the appropriately clipped Window
+	area in screen space.
+*************************************************************************/
+Rect TLTitlebar::getPixelRect(void) const
+{
+	// clip to screen if we have no grand-parent
+	if ((d_parent == NULL) || (d_parent->getParent() == NULL))
+	{
+		return System::getSingleton().getRenderer()->getRect().getIntersection(getUnclippedPixelRect());
+	}
+	// else clip to grand-parent
+	else 
+	{
+		return d_parent->getParent()->getInnerRect().getIntersection(getUnclippedPixelRect());
+	}
+
 }
 
 
@@ -109,6 +133,18 @@ void TLTitlebar::drawSelf(float z)
 	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 	getFont()->drawText(d_parent->getText(), pos, clipper, colours);
+}
+
+
+/*************************************************************************
+	Handler for mouse move events.
+*************************************************************************/
+void TLTitlebar::onMouseMove(MouseEventArgs& e)
+{
+	Titlebar::onMouseMove(e);
+
+	// simply mark as handled to stop parent getting the message
+	e.handled = true;
 }
 
 
