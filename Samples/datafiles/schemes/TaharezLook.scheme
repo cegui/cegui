@@ -32,5 +32,6 @@
 		<WindowFactory Name="TaharezLook/Titlebar" />
 		<WindowFactory Name="TaharezLook/VerticalScrollbar" />
 		<WindowFactory Name="TaharezLook/VerticalScrollbarThumb" />
+		<WindowFactory Name="TaharezLook/VUMeter" />
 	</WindowSet>
 </GUIScheme>
