@@ -431,10 +431,10 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		final_rect.offset(Point(-1.0f, -1.0f));
 
 		// convert colours for ogre, note that top / bottom are switched.
-		ulong topLeftCol	= colourToOgre(colours.d_bottom_left);
-		ulong topRightCol	= colourToOgre(colours.d_bottom_right);
-		ulong bottomLeftCol	= colourToOgre(colours.d_top_left);
-		ulong bottomRightCol= colourToOgre(colours.d_top_right);
+        Ogre::uint32 topLeftCol	= colourToOgre(colours.d_bottom_left);
+        Ogre::uint32 topRightCol	= colourToOgre(colours.d_bottom_right);
+        Ogre::uint32 bottomLeftCol	= colourToOgre(colours.d_top_left);
+        Ogre::uint32 bottomRightCol= colourToOgre(colours.d_top_right);
 
 		//
 		// perform rendering...
@@ -509,12 +509,12 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	convert ARGB colour value to whatever the Ogre render system is
 	expecting.	
 *************************************************************************/
-ulong OgreRenderer::colourToOgre(const colour& col) const
+Ogre::uint32 OgreRenderer::colourToOgre(const colour& col) const
 {
 	Ogre::ColourValue cv(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha());
 
-	ulong final;
-	d_render_sys->convertColourValue(cv, (Ogre::uint32 *)&final);
+    Ogre::uint32 final;
+	d_render_sys->convertColourValue(cv, &final);
 
 	return final;
 }

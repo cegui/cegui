@@ -35,7 +35,7 @@ namespace CEGUI
 /*************************************************************************
 	Static data definition / initialisation
 *************************************************************************/
-ulong OgreTexture::d_texturenumber		= 0;
+Ogre::uint32 OgreTexture::d_texturenumber		= 0;
 
 
 /*************************************************************************
@@ -123,7 +123,7 @@ void OgreTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffH
 	freeOgreTexture();
 
 	// wrap input buffer with an Ogre DataChunk
-	ulong bytesize = ((buffWidth * sizeof(ulong)) * buffHeight);
+    Ogre::uint32 bytesize = ((buffWidth * sizeof(Ogre::uint32)) * buffHeight);
 	DataStreamPtr odc(new MemoryDataStream(const_cast<void*>(buffPtr), bytesize, false));
 
 	// try to create a Ogre::Texture from the input data

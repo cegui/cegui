@@ -379,10 +379,10 @@ private:
 		Rect				position;
 		float				z;
 		Rect				texPosition;
-		ulong				topLeftCol;
-		ulong				topRightCol;
-		ulong				bottomLeftCol;
-		ulong				bottomRightCol;
+        Ogre::uint32		topLeftCol;
+        Ogre::uint32		topRightCol;
+        Ogre::uint32		bottomLeftCol;
+        Ogre::uint32		bottomRightCol;
 
 		bool operator<(const QuadInfo& other) const
 		{
@@ -408,7 +408,7 @@ private:
 	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
 
 	// convert colour value to whatever the Ogre render system is expecting.
-	ulong	colourToOgre(const colour& col) const;
+    Ogre::uint32    colourToOgre(const colour& col) const;
 
 	// perform main work of the constructor.  This does everything except the final hook into the render system.
 	void	constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads);

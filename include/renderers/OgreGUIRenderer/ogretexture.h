@@ -159,7 +159,7 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	static	ulong			d_texturenumber;	//!< Counter used to provide unique texture names.
+	static	Ogre::uint32    d_texturenumber;	//!< Counter used to provide unique texture names.
 
 	Ogre::TexturePtr		d_ogre_texture;		//!< The 'real' texture.
 
