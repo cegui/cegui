@@ -1094,6 +1094,22 @@ public:
 	void	setUserColumnDraggingEnabled(bool setting);
 
 
+	/*!
+	\brief
+		Automatically determines the "best fit" size for the specified column and sets
+		the column width to the same.
+
+	\param col_idx
+		Zero based index of the column to be sized.
+
+	\return
+		Nothing.
+
+	\exception InvalidRequestException	thrown if \a col_idx is out of range.
+	*/
+	void	autoSizeColumnHeader(uint col_idx);
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/

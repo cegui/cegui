@@ -2108,17 +2108,7 @@ bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 	// get the column index for the segment that was double-clicked
 	uint col = d_header->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
 
-	// get the width of the widest item in the column.
-	float width = std::max(getWidestColumnItemWidth(col), ListHeader::MinimumSegmentPixelWidth);
-
-	// perform metrics conversion if needed
-	if (getMetricsMode() == Relative)
-	{
-		width = absoluteToRelativeX(width);
-	}
-
-	// set new column width
-	setColumnHeaderWidth(col, width);
+	autoSizeColumnHeader(col);
 
 	return true;
 }
@@ -2243,6 +2233,35 @@ bool MultiColumnList::resetList_impl(void)
 		d_lastSelected = NULL;
 
 		return true;
+	}
+
+}
+
+
+/*************************************************************************
+	Automatically determines the "best fit" size for the specified column
+	and sets the column width to the same.
+*************************************************************************/
+void MultiColumnList::autoSizeColumnHeader(uint col_idx)
+{
+	// check for invalid index
+	if (col_idx >= getColumnCount())
+	{
+		throw InvalidRequestException((utf8*)"MultiColumnList::isListboxItemInColumn - the column index given is out of range.");
+	}
+	else
+	{
+		// get the width of the widest item in the column.
+		float width = std::max(getWidestColumnItemWidth(col_idx), ListHeader::MinimumSegmentPixelWidth);
+
+		// perform metrics conversion if needed
+		if (getMetricsMode() == Relative)
+		{
+			width = absoluteToRelativeX(width);
+		}
+
+		// set new column width
+		setColumnHeaderWidth(col_idx, width);
 	}
 
 }
