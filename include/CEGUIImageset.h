@@ -86,6 +86,7 @@ private:
 	Imageset(const String& filename);
 
 
+public:	// For luabind support
 	/*!
 	\brief
 		Destroys Imageset objects

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIForwardRefs.h
-	created:	21/2/2004
+	filename: 	CEGUIScriptModule.cpp
+	created:	16/7/2004
 	author:		Paul D Turner
 	
-	purpose:	Forward declares all core system classes
+	purpose:	Abstract class for scripting support
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,70 +23,24 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUIForwardRefs_h_
-#define _CEGUIForwardRefs_h_
+#include "CEGUIScriptModule.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Constructor for ScriptModule base class
+*************************************************************************/
+ScriptModule::ScriptModule(void)
+{
+}
+
 
 /*************************************************************************
-	Forward reference declarations of all core GUI system classes
+	Destructor for ScriptModule base class.
 *************************************************************************/
-class String;
-class Vector3;
-class Size;
-class Exception;
-class Rect;
-class Texture;
-class Renderer;
-class Image;
-class Imageset;
-class ImagesetManager;
-class MouseCursor;
-class Font;
-class FontManager;
-class EventArgs;
-class Event;
-class EventSet;
-class Property;
-class PropertySet;
-class Window;
-class WindowFactory;
-class WindowManager;
-class Scheme;
-class SchemeManager;
-class System;
-class FactoryModule;
-class ScriptModule;
-
-/*************************************************************************
-	Forward reference declarations for GUI element base classes
-*************************************************************************/
-class ButtonBase;
-class RadioButton;
-class Checkbox;
-class PushButton;
-class Titlebar;
-class FrameWindow;
-class Editbox;
-class Listbox;
-class Combobox;
-class ListHeaderSegment;
-class ListHeader;
-class MultiColumnList;
-class ProgressBar;
-class Thumb;
-class Scrollbar;
-class Slider;
-class Static;
-class StaticText;
-class StaticImage;
-class ListboxItem;
-class ListboxTextItem;
-class ComboDropList;
-class MultiLineEditbox;
+ScriptModule::~ScriptModule(void)
+{
+}
 
 } // End of  CEGUI namespace section
-
-#endif	// end of guard _CEGUIForwardRefs_h_

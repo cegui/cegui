@@ -119,7 +119,6 @@ public:
 	void	adjustProgress(float delta)		{setProgress(d_progress + delta);}
 
 
-protected:
 	/*************************************************************************
 		Construction / Destruction
 	*************************************************************************/
@@ -137,6 +136,7 @@ protected:
 	virtual ~ProgressBar(void);
 
 
+protected:
 	/*************************************************************************
 		Implementation methods
 	*************************************************************************/

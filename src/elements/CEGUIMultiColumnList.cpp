@@ -1233,7 +1233,7 @@ void MultiColumnList::setItemSelectState(ListboxItem* item, bool state)
 /*************************************************************************
 	Set the selected state of the item at 'grid_ref'.
 *************************************************************************/
-void MultiColumnList::setItemSelectState(const MCLGridRef grid_ref, bool state)
+void MultiColumnList::setItemSelectState(const MCLGridRef& grid_ref, bool state)
 {
 	if (setItemSelectState_impl(grid_ref, state))
 	{

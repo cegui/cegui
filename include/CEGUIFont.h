@@ -637,6 +637,7 @@ private:
 	Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat);
 
 
+public:		// For luabind support
 	/*!
 	\brief
 		Destroys a Font object
@@ -644,6 +645,7 @@ private:
 	~Font(void);
 
 
+private:
 	/*************************************************************************
 		Implementation Methods
 	*************************************************************************/

@@ -51,6 +51,7 @@
 #include "CEGUIScheme.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUISystem.h"
+#include "CEGUIScriptModule.h"
 
 // mid-level renderables
 #include "CEGUIRenderableFrame.h"

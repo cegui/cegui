@@ -40,7 +40,7 @@ namespace CEGUI
 class CEGUIBASE_API ListboxItem
 {
 public:
-		/*************************************************************************
+	/*************************************************************************
 		Constants
 	*************************************************************************/
 	static const colour	DefaultSelectionColour;		//!< Default selection brush colour.

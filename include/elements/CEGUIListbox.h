@@ -448,7 +448,6 @@ public:
 	void	ensureItemIsVisible(const ListboxItem* item);
 
 
-protected:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -466,6 +465,7 @@ protected:
 	virtual ~Listbox(void);
 
 
+protected:
 	/*************************************************************************
 		Abstract Implementation Functions (must be provided by derived class)
 	*************************************************************************/

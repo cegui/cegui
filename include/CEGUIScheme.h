@@ -116,6 +116,7 @@ private:
 	Scheme(const String& filename);
 
 
+public:		// for luabind compatibility
 	/*!
 	\brief
 		Destroys a Scheme object
@@ -126,6 +127,7 @@ private:
 	~Scheme(void);
 
 	
+private:
 	/*************************************************************************
 		Structs used to hold scheme information
 	*************************************************************************/

@@ -364,6 +364,7 @@ private:
 	Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
 
 
+public:		// made public for luabind
 	/*!
 	\brief
 		Copy constructor
@@ -377,7 +378,7 @@ private:
 	*/
 	~Image(void);
 
-
+private:
 	/*!
 	\brief
 		set the horizontal scaling factor to be applied to this Image

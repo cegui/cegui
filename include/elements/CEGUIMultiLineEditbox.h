@@ -344,7 +344,6 @@ public:
 	void	setWordWrapping(bool setting);
 
 
-protected:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -360,6 +359,7 @@ protected:
 		Destructor for the MultiLineEditbox base class.
 	*/
 	virtual ~MultiLineEditbox(void);
+
 
 protected:
 	/*************************************************************************

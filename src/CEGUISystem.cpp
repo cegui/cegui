@@ -58,21 +58,43 @@ const Size		System::DefaultMultiClickAreaSize(12,12);
 /*************************************************************************
 	Constructor
 *************************************************************************/
-System::System(Renderer* renderer, utf8* logFile) :
-	d_renderer(renderer),
-	d_gui_redraw(false),
-	d_wndWithMouse(NULL),
-	d_activeSheet(NULL),
-	d_sysKeys(0),
-	d_lshift(false),
-	d_rshift(false),
-	d_lctrl(false),
-	d_rctrl(false),
-	d_click_timeout(DefaultSingleClickTimeout),
-	d_dblclick_timeout(DefaultMultiClickTimeout),
-	d_dblclick_size(DefaultMultiClickAreaSize),
-	d_defaultMouseCursor(NULL)
+System::System(Renderer* renderer, utf8* logFile)
 {
+	constructor_impl(renderer, NULL, logFile);
+}
+
+/*************************************************************************
+	Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile)
+{
+	constructor_impl(renderer, scriptModule, logFile);
+}
+
+
+/*************************************************************************
+	Method to do the work of the constructor
+*************************************************************************/
+void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile)
+{
+	d_renderer		= renderer;
+	d_gui_redraw	= false;
+	d_wndWithMouse	= NULL;
+	d_activeSheet	= NULL;
+	d_sysKeys		= 0;
+
+	d_lshift	= false;
+	d_rshift	= false;
+	d_lctrl		= false;
+	d_rctrl		= false;
+
+	d_click_timeout		= DefaultSingleClickTimeout;
+	d_dblclick_timeout	= DefaultMultiClickTimeout;
+	d_dblclick_size		= DefaultMultiClickAreaSize;
+
+	d_defaultMouseCursor = NULL;
+	d_scriptModule		 = scriptModule;
+
 	// first thing to do is create logger
 	new Logger(logFile);
 
@@ -123,6 +145,7 @@ System::System(Renderer* renderer, utf8* logFile) :
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
 }
+
 
 /*************************************************************************
 	Destructor
@@ -260,6 +283,16 @@ void System::setDefaultMouseCursor(const Image* image)
 void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
 {
 	d_defaultMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name);
+}
+
+
+/*************************************************************************
+	Return a pointer to the ScriptModule being used for scripting within
+	the GUI system.
+*************************************************************************/
+ScriptModule* System::getScriptingModule(void) const
+{
+	return d_scriptModule;
 }
 
 

@@ -76,17 +76,17 @@ public:
 		return *this;
 	}
 
-	Vector2	operator+(const Vector2& vec)
+	Vector2	operator+(const Vector2& vec) const
 	{
 		return Vector2(d_x + vec.d_x, d_y + vec.d_y);
 	}
 
-	Vector2	operator-(const Vector2& vec)
+	Vector2	operator-(const Vector2& vec) const
 	{
 		return Vector2(d_x - vec.d_x, d_y - vec.d_y);
 	}
 
-	Vector2	operator*(const Vector2& vec)
+	Vector2	operator*(const Vector2& vec) const
 	{
 		return Vector2(d_x * vec.d_x, d_y * vec.d_y);
 	}

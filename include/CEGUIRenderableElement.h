@@ -234,7 +234,6 @@ public:
 	void	setColourRectPerImage(bool setting)		{d_useColoursPerImage = setting;}
 
 
-protected:
 	/*************************************************************************
 		Construction / Destruction
 	*************************************************************************/
@@ -245,6 +244,7 @@ protected:
 	RenderableElement(void);
 
 
+
 	/*!
 	\brief
 		Destructor for RenderableElement base class
@@ -252,6 +252,7 @@ protected:
 	virtual ~RenderableElement(void);
 
 
+protected:
 	/*************************************************************************
 		Implementation methods
 	*************************************************************************/

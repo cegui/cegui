@@ -68,8 +68,27 @@ public:
 	\param renderer
 		Pointer to the valid Renderer object that will be used to render GUI imagery
 
+	\param logFile
+		pointer to a utf8 encoded buffer containing the name to use for the log file.
 	*/
 	System(Renderer* renderer, utf8* logFile = (utf8*)"CEGUI.log");
+
+
+	/*!
+	\brief
+		Construct a new System object
+
+	\param renderer
+		Pointer to the valid Renderer object that will be used to render GUI imagery
+
+	\param scriptModule
+		Pointer to a ScriptModule object.  may be NULL.
+
+	\param logFile
+		pointer to a utf8 encoded buffer containing the name to use for the log file.
+	*/
+	System(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile = (utf8*)"CEGUI.log");
+
 
 	/*!
 	\brief
@@ -342,6 +361,16 @@ public:
 	Window*	getWindowContainingMouse(void) const	{return d_wndWithMouse;}
 
 
+	/*!
+	\brief
+		Return a pointer to the ScriptModule being used for scripting within the GUI system.
+
+	\return
+		Pointer to a ScriptModule based object.
+	*/
+	ScriptModule*	getScriptingModule(void) const;
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -472,6 +501,14 @@ private:
 	*/
 	SystemKey	keyCodeToSyskey(Key::Scan key, bool direction);
 
+
+	/*!
+	\brief
+		Method to do the work of the constructor
+	*/
+	void	constructor_impl(Renderer* renderer, ScriptModule* scriptModule, utf8* logFile);
+
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -510,6 +547,9 @@ private:
 
 	// mouse cursor related
 	const Image*	d_defaultMouseCursor;		//!< Image to be used as the default mouse cursor.
+
+	// scripting
+	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
 };
 
 } // End of  CEGUI namespace section

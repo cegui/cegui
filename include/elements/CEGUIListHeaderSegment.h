@@ -194,7 +194,6 @@ public:
 	void setClickable(bool setting);
 
 
-protected:
 	/*************************************************************************
 		Construction & Destruction
 	*************************************************************************/
@@ -204,7 +203,7 @@ protected:
 	*/
 	ListHeaderSegment(const String& type, const String& name);
 
-public:
+
 	/*!
 	\brief
 		Destructor for list header segment base class.

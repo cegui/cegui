@@ -58,7 +58,6 @@ public:
 	virtual void	initialise(void);
 
 
-protected:
 	/*************************************************************************
 		Constructor & Destructor
 	*************************************************************************/
@@ -76,6 +75,7 @@ protected:
 	virtual ~ComboDropList(void);
 
 
+protected:
 	/*!
 	\brief
 		Add drop-list specific events

@@ -317,7 +317,6 @@ public:
 	void	setImageForFrameLocation(FrameLocation location, const Image* image);
 
 
-protected:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -335,6 +334,7 @@ protected:
 	virtual ~Static(void);
 
 
+protected:
 	/*************************************************************************
 		Overridden from base class
 	*************************************************************************/

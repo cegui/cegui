@@ -613,7 +613,6 @@ public:
 	void	setColumnPixelWidth(uint column, float width);
 
 
-protected:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -631,6 +630,7 @@ protected:
 	virtual ~ListHeader(void);
 
 
+protected:
 	/*************************************************************************
 		Abstract Implementation Methods
 	*************************************************************************/

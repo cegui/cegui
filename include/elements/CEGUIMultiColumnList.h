@@ -1017,7 +1017,7 @@ public:
 	
 	\exception InvalidRequestException	thrown if \a grid_ref is invalid for this list box.
 	*/
-	void	setItemSelectState(const MCLGridRef grid_ref, bool state);
+	void	setItemSelectState(const MCLGridRef& grid_ref, bool state);
 
 	
 	/*!
@@ -1088,7 +1088,6 @@ public:
 	void	setUserColumnDraggingEnabled(bool setting);
 
 
-protected:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -1106,6 +1105,7 @@ protected:
 	virtual ~MultiColumnList(void);
 
 
+protected:
 	/*************************************************************************
 		Implementation Functions (abstract interface)
 	*************************************************************************/

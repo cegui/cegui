@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIPushButton.h
-	created:	13/4/2004
+	filename: 	CEGUIScriptModule.h
+	created:	16/7/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to base class for PushButton widget
+	purpose:	Abstract class interface for scripting support
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,74 +23,67 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUIPushButton_h_
-#define _CEGUIPushButton_h_
+#ifndef _CEGUIScriptModule_h_
+#define _CEGUIScriptModule_h_
 
 #include "CEGUIBase.h"
-#include "elements/CEGUIButtonBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-
+	Abstract interface required for all scripting support modules to be used with
+	the CEGUI system.
 */
-class CEGUIBASE_API PushButton : public ButtonBase
+class CEGUIBASE_API ScriptModule
 {
 public:
-	/*************************************************************************
-		Event name constants
-	*************************************************************************/
-	// generated internally by Window
-	static const utf8	Clicked[];					//!< The button was clicked.
-
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for base PushButton class
+		Constructor for ScriptModule base class
 	*/
-	PushButton(const String& type, const String& name);
+	ScriptModule(void);
 
 
 	/*!
 	\brief
-		Destructor for PushButton class
+		Destructor for ScriptModule base class.
 	*/
-	virtual ~PushButton(void);
+	virtual ~ScriptModule(void);
 
 
-protected:
 	/*************************************************************************
-		New Event Handlers
+		Abstract interface
 	*************************************************************************/
 	/*!
 	\brief
-		handler invoked internally when the button is clicked.
+		Execute a script file.
+
+	\param filename
+		String object holding the filename of the script file that is to be executed
 	*/
-	virtual void	onClicked(WindowEventArgs& e);
+	virtual	void	executeScriptFile(const String& filename)	= 0;
 
 
-	/*************************************************************************
-		Overridden Event Handlers
-	*************************************************************************/
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-
-
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
 	/*!
 	\brief
-		Add button specific events
+		Execute a scripted global function.  The function should not take any parameters and should return an integer.
+
+	\param function_name
+		String object holding the name of the function, in the global script environment, that
+		is to be executed.
+
+	\return
+		The integer value returned from the script function.
 	*/
-	void	addPushButtonEvents(void);
+	virtual int	executeScriptGloabl(const String& function_name)	= 0;
 };
-
 
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _CEGUIPushButton_h_
+#endif	// end of guard _CEGUIScriptModule_h_

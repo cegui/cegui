@@ -331,6 +331,8 @@ protected:
 		Construction and Destruction
 	*************************************************************************/
 	Renderer(void);
+
+public:		// for luabind support
 	virtual ~Renderer(void);
 
 private:

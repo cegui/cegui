@@ -124,6 +124,7 @@ protected:
 	*/
 	Texture(Renderer* owner) : d_owner(owner) {}
 
+public:		// luabind compatibility
 	/*!
 	\brief
 		Destructor for Texture base class.  This is never called by client code.

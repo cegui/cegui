@@ -84,8 +84,11 @@ protected:
 		Construction and Destruction
 	*************************************************************************/
 	WindowFactory(const String& type) : d_type(type) {}
+
+public:		// luabind compatibility
 	virtual ~WindowFactory(void) {}
 
+protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
