@@ -184,7 +184,29 @@ public:
 	void	destroyAllWindows(void);
 
 
+	/*!
+	\brief
+		Creates a set of windows (a Gui layout) from the information in the specified XML file.	
+
+	\param filename
+		String object holding the filename of the XML file to be processed.
+
+	\return
+		Nothing.
+
+	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
+	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
+	*/
+	void	loadWindowLayout(const String& filename);
+
+
 private:
+	/*************************************************************************
+		Implementation Constants
+	*************************************************************************/
+	static const char	GUILayoutSchemaName[];			//!< Filename of the XML schema used for validating GUILayout files.
+
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/

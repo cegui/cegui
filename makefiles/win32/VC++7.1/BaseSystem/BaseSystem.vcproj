@@ -167,6 +167,9 @@
 				RelativePath="..\..\..\..\src\CEGUIFontManager.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIGUILayout_xmlHandler.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIImage.cpp">
 			</File>
 			<File
@@ -366,6 +369,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIForwardRefs.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIGUILayout_xmlHandler.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIImage.h">

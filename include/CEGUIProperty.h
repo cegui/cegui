@@ -81,22 +81,28 @@ public:
 	\return
 		String containing the name of the Property
 	*/
-	const String& getName(void) const		{return d_help;}
+	const String& getName(void) const		{return d_name;}
 
 
 	/*!
 	\brief
 		Return the current value of the Property as a String
 
+	\param receiver
+		Pointer to the target object.
+
 	\return
 		String object containing a textual representation of the current value of the Property
 	*/
-	virtual String	get(void) const = 0;
+	virtual String	get(const void* receiver) const = 0;
 
 
 	/*!
 	\brief
 		Sets the value of the property
+
+	\param receiver
+		Pointer to the target object.
 
 	\param value
 		A String object that contains a textual representation of the new value to assign to the Property.
@@ -106,7 +112,8 @@ public:
 
 	\exception InvalidRequestException	Thrown when the Property was unable to interpret the content of \a value.
 	*/
-	virtual void	set(const String& value) = 0;
+	virtual void	set(void* receiver, const String& value) = 0;
+
 
 protected:
 	String	d_name;		//!< String that stores the Property name.

@@ -105,7 +105,7 @@ String PropertySet::getProperty(const String& name) const
 		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
 	}
 
-	return pos->second->get();
+	return pos->second->get(this);
 }
 
 /*************************************************************************
@@ -120,7 +120,7 @@ void PropertySet::setProperty(const String& name,const String& value)
 		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
 	}
 
-	pos->second->set(value);
+	pos->second->set(this, value);
 }
 
 } // End of  CEGUI namespace section

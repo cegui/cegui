@@ -11,6 +11,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFontManager.h \
                  CEGUIFont_xmlHandler.h \
                  CEGUIForwardRefs.h \
+		 CEGUIGUILayout_xmlHandler.h \
                  CEGUIImage.h \
                  CEGUIImageset.h \
                  CEGUIImagesetManager.h \
