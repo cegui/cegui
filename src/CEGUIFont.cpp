@@ -164,7 +164,7 @@ Font::~Font(void)
 *************************************************************************/
 float Font::getTextExtent(const String& text, float x_scale) const
 {
-	float cur_extent = 0;
+    float cur_extent = 0, adv_extent = 0, width;
 
 	uint char_count = text.length();
 	CodepointMap::const_iterator	pos, end = d_cp_map.end();
@@ -175,7 +175,14 @@ float Font::getTextExtent(const String& text, float x_scale) const
 
 		if (pos != end)
 		{
-			cur_extent += (float)pos->second.d_horz_advance * x_scale;
+            width = (pos->second.d_image->getWidth() + pos->second.d_image->getOffsetX()) * x_scale;
+            
+            if (adv_extent + width > cur_extent)
+            {
+                cur_extent = adv_extent + width;
+            }
+            
+            adv_extent += (float)pos->second.d_horz_advance * x_scale;
 		}
 
 	}
