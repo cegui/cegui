@@ -101,7 +101,7 @@ namespace CEGUI
 
         if (d_target)
         {
-            colours.setColours((static_cast<argb_t>(alpha * 255) << 24) | 0x000000);
+            colours.setColours((static_cast<ulong>(alpha * 255) << 24) | 0x000000);
             // render text
             getFont()->drawText(d_target->getTooltipText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
         }

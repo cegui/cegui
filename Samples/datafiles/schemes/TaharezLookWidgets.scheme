@@ -21,14 +21,17 @@
 		<WindowFactory Name="TaharezLook/MultiLineEditbox" />
 		<WindowFactory Name="TaharezLook/ProgressBar" />
 		<WindowFactory Name="TaharezLook/RadioButton" />
+		<WindowFactory Name="TaharezLook/ScrollablePane" />
 		<WindowFactory Name="TaharezLook/Slider" />
 		<WindowFactory Name="TaharezLook/SliderThumb" />
+		<WindowFactory Name="TaharezLook/Spinner" />
 		<WindowFactory Name="TaharezLook/StaticImage" />
 		<WindowFactory Name="TaharezLook/StaticText" />
 		<WindowFactory Name="TaharezLook/TabButton" />
 		<WindowFactory Name="TaharezLook/TabControl" />
 		<WindowFactory Name="TaharezLook/TabPane" />
 		<WindowFactory Name="TaharezLook/Titlebar" />
+        <WindowFactory Name="TaharezLook/Tooltip" />
 		<WindowFactory Name="TaharezLook/VerticalScrollbar" />
 		<WindowFactory Name="TaharezLook/VerticalScrollbarThumb" />
 		<WindowFactory Name="TaharezLook/VUMeter" />
