@@ -144,6 +144,7 @@ protected:
 	virtual void	onAlphaChanged(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
 	virtual void	onDeactivated(ActivationEventArgs& e);
+    virtual void    onClippingChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************

@@ -38,17 +38,16 @@ const utf8	WLCloseButton::WidgetTypeName[]		= "WindowsLook/CloseButton";
 *************************************************************************/
 Rect WLCloseButton::getPixelRect(void) const
 {
-	// clip to screen if we have no grand-parent
-	if ((d_parent == NULL) || (d_parent->getParent() == NULL))
-	{
-		return System::getSingleton().getRenderer()->getRect().getIntersection(getUnclippedPixelRect());
-	}
-	// else clip to grand-parent
-	else 
-	{
-		return d_parent->getParent()->getInnerRect().getIntersection(getUnclippedPixelRect());
-	}
-
+    // clip to grand-parent as needed
+    if (d_parent && d_parent->getParent() && isClippedByParent())
+    {
+        return d_parent->getParent()->getInnerRect().getIntersection(getUnclippedPixelRect());
+    }
+    // clip to screen if no grand-parent, or if clipping has been disabled for us.
+    else 
+    {
+        return System::getSingleton().getRenderer()->getRect().getIntersection(getUnclippedPixelRect());
+    }
 }
 
 

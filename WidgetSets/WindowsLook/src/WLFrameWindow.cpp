@@ -332,6 +332,25 @@ void WLFrameWindow::onAlphaChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
+    Handler for when clip mode changes
+*************************************************************************/
+void WLFrameWindow::onClippingChanged(WindowEventArgs& e)
+{
+    FrameWindow::onClippingChanged(e);
+
+    // set same mode on the titlebar and close button
+    if (d_titlebar)
+    {
+        d_titlebar->setClippedByParent(d_clippedByParent);
+    }
+    if (d_closeButton)
+    {
+        d_closeButton->setClippedByParent(d_clippedByParent);
+    }
+}
+
+
+/*************************************************************************
 	Handler for when window is activated
 *************************************************************************/
 void WLFrameWindow::onActivated(ActivationEventArgs& e)

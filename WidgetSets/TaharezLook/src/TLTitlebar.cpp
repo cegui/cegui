@@ -88,16 +88,16 @@ TLTitlebar::~TLTitlebar(void)
 *************************************************************************/
 Rect TLTitlebar::getPixelRect(void) const
 {
-	// clip to screen if we have no grand-parent
-	if ((d_parent == NULL) || (d_parent->getParent() == NULL))
+    // clip to grand-parent as needed
+    if (d_parent && d_parent->getParent() && isClippedByParent())
 	{
-		return System::getSingleton().getRenderer()->getRect().getIntersection(getUnclippedPixelRect());
+        return d_parent->getParent()->getInnerRect().getIntersection(getUnclippedPixelRect());
 	}
-	// else clip to grand-parent
+	// clip to screen if no grand-parent, or if clipping has been disabled for us.
 	else 
 	{
-		return d_parent->getParent()->getInnerRect().getIntersection(getUnclippedPixelRect());
-	}
+        return System::getSingleton().getRenderer()->getRect().getIntersection(getUnclippedPixelRect());
+    }
 
 }
 
