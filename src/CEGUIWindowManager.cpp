@@ -59,6 +59,7 @@ const char	WindowManager::GUILayoutSchemaName[]	= "GUILayout.xsd";
 WindowManager::~WindowManager(void)
 {
 	destroyAllWindows();
+    cleanDeadPool();
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowManager singleton destroyed");
 }
@@ -113,16 +114,21 @@ void WindowManager::destroyWindow(const String& window)
 
 	if (wndpos != d_windowRegistry.end())
 	{
-		WindowFactory* factory = WindowFactoryManager::getSingleton().getFactory(wndpos->second->getType());
-		factory->destroyWindow(wndpos->second);
+        Window* wnd = wndpos->second;
 
-		// notify system object of the window destruction
-		System::getSingleton().notifyWindowDestroyed(wndpos->second);
+        // remove entry from the WindowRegistry.
+        d_windowRegistry.erase(wndpos);
 
-		// remove entry from the WindowRegistry.
-		d_windowRegistry.erase(wndpos);
+        // do 'safe' part of cleanup
+        wnd->destroy();
 
-		Logger::getSingleton().logEvent((utf8*)"Window '" + window + "' has been destroyed.", Informative);
+        // add window to dead pool
+        d_deathrow.push_back(wnd);
+
+        // notify system object of the window destruction
+        System::getSingleton().notifyWindowDestroyed(wnd);
+
+		Logger::getSingleton().logEvent((utf8*)"Window '" + window + "' has been added to dead pool.", Informative);
 	}
 
 }
@@ -284,6 +290,29 @@ WindowManager& WindowManager::getSingleton(void)
 WindowManager* WindowManager::getSingletonPtr(void)
 {
 	return Singleton<WindowManager>::getSingletonPtr();
+}
+
+bool WindowManager::isDeadPoolEmpty(void) const
+{
+    return d_deathrow.empty();
+}
+
+void WindowManager::cleanDeadPool(void)
+{
+    WindowVector::reverse_iterator curr = d_deathrow.rbegin();
+    for (; curr != d_deathrow.rend(); ++curr)
+    {
+// in debug mode, log what gets cleaned from the dead pool (insane level)
+#if defined(DEBUG) || defined (_DEBUG)
+        CEGUI_LOGINSANE("Window '" + (*curr)->getName() + "' about to be finally destroyed from dead pool.");
+#endif
+
+        WindowFactory* factory = WindowFactoryManager::getSingleton().getFactory((*curr)->getType());
+        factory->destroyWindow(*curr);
+    }
+    
+    // all done here, so clear all pointers from dead pool
+    d_deathrow.clear();
 }
 
 

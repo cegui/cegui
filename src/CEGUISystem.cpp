@@ -430,7 +430,8 @@ System::~System(void)
 	// perform cleanup in correct sequence
 	//
 	// destroy windows so it's safe to destroy factories
-	WindowManager::getSingleton().destroyAllWindows();
+    WindowManager::getSingleton().destroyAllWindows();
+    WindowManager::getSingleton().cleanDeadPool();
 
 	// get pointers to the factories we added
 	WindowFactory* guiSheetFactory =
@@ -497,6 +498,9 @@ void System::renderGUI(void)
 	// draw mouse
 	d_renderer->setQueueingEnabled(false);
 	MouseCursor::getSingleton().draw();
+
+    // do final destruction on dead-pool windows
+    WindowManager::getSingleton().cleanDeadPool();
 }
 
 

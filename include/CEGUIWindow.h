@@ -1810,6 +1810,21 @@ public:
     */
     void    notifyDragDropItemDropped(DragContainer* item);
 
+    /*!
+    \brief
+        Internal destroy method which actually just adds the window and any 
+        parent destructed child windows to the dead pool.
+
+        This is virtual to allow for specialised cleanup which may be required
+        in some advanced cases.  If you override this for the above reason, you
+        MUST call this base class version.
+        
+    \note
+        You never have to call this method yourself, use WindowManager to
+        destroy your Window objects (which will call this for you).
+    */
+    virtual void    destroy(void);
+
 	/*************************************************************************
 		Co-ordinate and Size Conversion Functions
 	*************************************************************************/

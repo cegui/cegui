@@ -32,6 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIIteratorBase.h"
 #include <map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -245,6 +246,28 @@ public:
 	*/
 	Window*	loadWindowLayout(const String& filename, const String& name_prefix = "", const String& resourceGroup = "", PropertyCallback* callback = NULL, void* userdata = NULL);
 
+    /*!
+    \brief
+        Return whether the window dead pool is empty.
+
+    \return
+        - true if there are no windows in the dead pool.
+        - false if the dead pool contains >=1 window awaiting destruction.
+    */
+    bool isDeadPoolEmpty(void) const;
+
+    /*!
+    \brief
+        Permanently destroys any windows placed in the dead pool.
+
+    \note
+        It is probably not a good idea to call this from a Window based event handler
+        if the specific window has been or is being destroyed.
+
+    \return
+        Nothing.
+    */
+    void cleanDeadPool(void);
 
 private:
 	/*************************************************************************
@@ -257,9 +280,10 @@ private:
 		Implementation Data
 	*************************************************************************/
 	typedef std::map<String, Window*>			WindowRegistry;				//!< Type used to implement registry of Window objects
+    typedef std::vector<Window*>    WindowVector;   //!< Type to use for a collection of Window pointers.
 
 	WindowRegistry			d_windowRegistry;			//!< The container that forms the Window registry
-
+    WindowVector    d_deathrow;     //!< Collection of 'destroyed' windows.
 
 public:
 	/*************************************************************************

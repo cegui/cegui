@@ -197,19 +197,7 @@ Window::Window(const String& type, const String& name) :
 *************************************************************************/
 Window::~Window(void)
 {
-	releaseInput();
-
-	// signal our imminent destruction
-	WindowEventArgs args(this);
-	onDestructionStarted(args);
-
-	// double check we are detached from parent
-	if (d_parent != NULL)
-	{
-		d_parent->removeChildWindow(this);
-	}
-
-	cleanupChildren();
+    // cleanup events actually happened earlier.
 }
 
 
@@ -2808,6 +2796,37 @@ void Window::notifyDragDropItemDropped(DragContainer* item)
         args.dragDropItem = item;
         onDragDropItemDropped(args);
     }
+}
+
+void Window::destroy(void)
+{
+    // because we know that people do not read the API ref properly,
+    // here is some protection to ensure that WindowManager does the
+    // destruction and not anyone else.
+    WindowManager& wmgr = WindowManager::getSingleton();
+
+    if (wmgr.isWindowPresent(this->getName()))
+    {
+        wmgr.destroyWindow(this);
+
+        // now return, the rest of what we need to do will happen
+        // once WindowManager re-calls this method.
+        return;
+    }
+
+    releaseInput();
+
+    // signal our imminent destruction
+    WindowEventArgs args(this);
+    onDestructionStarted(args);
+
+    // double check we are detached from parent
+    if (d_parent != NULL)
+    {
+        d_parent->removeChildWindow(this);
+    }
+
+    cleanupChildren();
 }
 
 
