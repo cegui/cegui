@@ -190,4 +190,15 @@ ImagesetManager* ImagesetManager::getSingletonPtr(void)
 	return Singleton<ImagesetManager>::getSingletonPtr();
 }
 
+
+/*************************************************************************
+	Return a ImagesetManager::ImagesetIterator object to iterate over
+	the available Imageset objects.
+*************************************************************************/
+ImagesetManager::ImagesetIterator ImagesetManager::getIterator(void) const
+{
+	return ImagesetIterator(d_imagesets.begin(), d_imagesets.end());
+}
+
+
 } // End of  CEGUI namespace section

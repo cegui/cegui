@@ -29,7 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
-
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 
@@ -141,6 +141,19 @@ private:
 	*************************************************************************/
 	typedef	std::map<String, Scheme*> SchemeRegistry;
 	SchemeRegistry	d_schemes;			//!< Collection that tracks the loaded Schemes.
+
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<SchemeRegistry>	SchemeIterator;
+
+	/*!
+	\brief
+		Return a SchemeManager::SchemeIterator object to iterate over the available schemes.
+	*/
+	SchemeIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

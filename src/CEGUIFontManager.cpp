@@ -221,4 +221,13 @@ FontManager* FontManager::getSingletonPtr(void)
 }
 
 
+/*************************************************************************
+	Return a FontManager::FontIterator object to iterate over the
+	available Font objects.
+*************************************************************************/
+FontManager::FontIterator FontManager::getIterator(void) const
+{
+	return FontIterator(d_fonts.begin(), d_fonts.end());
+}
+
 } // End of  CEGUI namespace section

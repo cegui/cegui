@@ -448,6 +448,9 @@
 				RelativePath="..\..\..\..\include\CEGUIInputEvent.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIIteratorBase.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUILogger.h">
 			</File>
 			<File

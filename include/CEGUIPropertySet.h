@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 
@@ -163,6 +164,19 @@ public:
 private:
 	typedef std::map<String, Property*>	PropertyRegistry;
 	PropertyRegistry	d_properties;
+
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<PropertyRegistry>	PropertyIterator;
+
+	/*!
+	\brief
+		Return a PropertySet::PropertyIterator object to iterate over the available Properties.
+	*/
+	PropertyIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

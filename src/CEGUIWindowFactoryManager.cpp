@@ -122,4 +122,14 @@ WindowFactoryManager* WindowFactoryManager::getSingletonPtr(void)
 	return Singleton<WindowFactoryManager>::getSingletonPtr();
 }
 
+
+/*************************************************************************
+	Return a WindowFactoryManager::WindowFactoryIterator object to
+	iterate over the available WindowFactory types.
+*************************************************************************/
+WindowFactoryManager::WindowFactoryIterator	WindowFactoryManager::getIterator(void) const
+{
+	return WindowFactoryIterator(d_factoryRegistry.begin(), d_factoryRegistry.end());
+}
+
 } // End of  CEGUI namespace section

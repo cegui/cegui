@@ -716,6 +716,10 @@ SOURCE=..\..\..\..\include\CEGUIInputEvent.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\CEGUIIteratorBase.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\CEGUILogger.h
 # End Source File
 # Begin Source File

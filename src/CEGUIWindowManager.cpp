@@ -255,4 +255,13 @@ WindowManager* WindowManager::getSingletonPtr(void)
 	return Singleton<WindowManager>::getSingletonPtr();
 }
 
+
+/*************************************************************************
+	Return a WindowManager::WindowIterator object to iterate over the
+	currently defined Windows.
+*************************************************************************/
+WindowManager::WindowIterator WindowManager::getIterator(void) const
+{
+	return WindowIterator(d_windowRegistry.begin(), d_windowRegistry.end());
+}
 } // End of  CEGUI namespace section

@@ -120,4 +120,14 @@ SchemeManager* SchemeManager::getSingletonPtr(void)
 	return Singleton<SchemeManager>::getSingletonPtr();
 }
 
+
+/*************************************************************************
+	Return a SchemeManager::SchemeIterator object to iterate over the
+	available schemes.
+*************************************************************************/
+SchemeManager::SchemeIterator SchemeManager::getIterator(void) const
+{
+	return SchemeIterator(d_schemes.begin(), d_schemes.end());
+}
+
 } // End of  CEGUI namespace section

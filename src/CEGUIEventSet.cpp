@@ -174,4 +174,14 @@ void EventSet::setMutedState(bool setting)
 }
 
 
+/*************************************************************************
+	Return a EventSet::EventIterator object to iterate over the available
+	events.
+*************************************************************************/
+EventSet::EventIterator EventSet::getIterator(void) const
+{
+	return EventIterator(d_events.begin(), d_events.end());
+}
+
+
 } // End of  CEGUI namespace section

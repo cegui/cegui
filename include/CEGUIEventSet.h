@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIEvent.h"
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 #if defined (_MSC_VER)
@@ -203,6 +204,19 @@ private:
 	EventMap	d_events;
 
 	bool	d_muted;	//!< true if events for this EventSet have been muted.
+
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<EventMap>	EventIterator;
+
+	/*!
+	\brief
+		Return a EventSet::EventIterator object to iterate over the available events.
+	*/
+	EventIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

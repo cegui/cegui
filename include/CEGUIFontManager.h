@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -220,6 +221,19 @@ private:
 
 	struct FontManagerImplData;
 	FontManagerImplData*	d_implData;
+
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<FontRegistry>	FontIterator;
+
+	/*!
+	\brief
+		Return a FontManager::FontIterator object to iterate over the available Font objects.
+	*/
+	FontIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

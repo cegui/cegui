@@ -30,6 +30,7 @@
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
 #include "CEGUILogger.h"
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -220,6 +221,19 @@ private:
 	typedef std::map<String, Window*>			WindowRegistry;				//!< Type used to implement registry of Window objects
 
 	WindowRegistry			d_windowRegistry;			//!< The container that forms the Window registry
+
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<WindowRegistry>	WindowIterator;
+
+	/*!
+	\brief
+		Return a WindowManager::WindowIterator object to iterate over the currently defined Windows.
+	*/
+	WindowIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

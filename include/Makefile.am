@@ -18,7 +18,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIImagesetManager.h \
                  CEGUIImageset_xmlHandler.h \
                  CEGUIInputEvent.h \
-                 CEGUILogger.h \
+		 CEGUIIteratorBase.h \
+		 CEGUILogger.h \
                  CEGUIMouseCursor.h \
                  CEGUIProperty.h \
 		 CEGUIPropertyHelper.h \

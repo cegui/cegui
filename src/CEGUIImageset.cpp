@@ -327,4 +327,14 @@ void Imageset::notifyScreenResolution(const Size& size)
 
 }
 
+
+/*************************************************************************
+	Return an iterator object that can be used to iterate over the Image
+	objects in the Imageset.
+*************************************************************************/
+Imageset::ImageIterator Imageset::getIterator(void) const
+{
+	return ImageIterator(d_images.begin(), d_images.end());
+}
+
 } // End of  CEGUI namespace section

@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 
@@ -204,6 +205,18 @@ private:
 	*************************************************************************/
 	typedef	std::map<String, Imageset*>		ImagesetRegistry;
 	ImagesetRegistry	d_imagesets;
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<ImagesetRegistry>	ImagesetIterator;
+
+	/*!
+	\brief
+		Return a ImagesetManager::ImagesetIterator object to iterate over the available Imageset objects.
+	*/
+	ImagesetIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

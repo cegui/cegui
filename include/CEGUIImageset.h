@@ -32,6 +32,7 @@
 #include "CEGUIColourRect.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImage.h"
+#include "CEGUIIteratorBase.h"
 
 #include <map>
 
@@ -58,6 +59,8 @@ class CEGUIBASE_API Imageset
 {
 	friend class Imageset_xmlHandler;
 private:
+	typedef	std::map<String, Image>	ImageRegistry;
+
 	/*************************************************************************
 		Friends to allow access to constructors and destructors
 	*************************************************************************/
@@ -101,6 +104,8 @@ public:	// For luabind support
 
 
 public:
+	typedef	ConstBaseIterator<ImageRegistry>	ImageIterator;	//!< Iterator type for this collection
+
 	/*************************************************************************
 		Public interface
 	*************************************************************************/
@@ -443,6 +448,13 @@ public:
 	void	notifyScreenResolution(const Size& size);
 
 
+	/*!
+	\brief
+		Return an Imageset::ImageIterator object that can be used to iterate over the Image objects in the Imageset.
+	*/
+	ImageIterator	getIterator(void) const;
+
+
 protected:
 	/*************************************************************************
 		Implementation Constants
@@ -502,7 +514,6 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, Image>	ImageRegistry;
 	String			d_name;						//!< Holds the name of this imageset.
 	ImageRegistry	d_images;					//!< Registry of Image objects for the images defined for this Imageset
 	Texture*		d_texture;					//!< Texture object that handles imagery for this Imageset

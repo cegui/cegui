@@ -30,6 +30,7 @@
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
 #include "CEGUILogger.h"
+#include "CEGUIIteratorBase.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -190,6 +191,19 @@ private:
 	typedef	std::map<String, WindowFactory*>	WindowFactoryRegistry;		//!< Type used to implement registry of WindowFactory objects
 
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
+
+
+public:
+	/*************************************************************************
+		Iterator stuff
+	*************************************************************************/
+	typedef	ConstBaseIterator<WindowFactoryRegistry>	WindowFactoryIterator;
+
+	/*!
+	\brief
+		Return a WindowFactoryManager::WindowFactoryIterator object to iterate over the available WindowFactory types.
+	*/
+	WindowFactoryIterator	getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section
