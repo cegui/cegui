@@ -14,7 +14,7 @@ libCEGUIWindowsLook_la_SOURCES = WLButton.cpp \
 				 WLHorzScrollbarThumb.cpp \
 				 WLListbox.cpp \
 				 WLListHeader.cpp \
-				 WLListHeaderSegment \
+				 WLListHeaderSegment.cpp \
 				 WLModule.cpp \
 				 WLMultiColumnList.cpp \
 				 WLMultiLineEditbox.cpp \
