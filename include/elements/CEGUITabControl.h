@@ -57,7 +57,7 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const utf8	SelectionChanged[];				//!< Event triggered when there is a change to the currently selected tab.
+	static const utf8	EventSelectionChanged[];			//!< Event triggered when there is a change to the currently selected tab.
 
 
 	/*************************************************************************

@@ -43,7 +43,7 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const utf8	Clicked[];					//!< The button was clicked.
+	static const utf8	EventClicked[];					//!< The button was clicked.
 
 	/*************************************************************************
 		Construction and Destruction

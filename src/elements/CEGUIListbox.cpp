@@ -46,12 +46,12 @@ ListboxProperties::ForceHorzScrollbar	Listbox::d_forceHorzProperty;
 	Constants
 *************************************************************************/
 // event names
-const utf8	Listbox::ListContentsChanged[]			= "ListItemsChanged";
-const utf8	Listbox::SelectionChanged[]				= "ItemSelectionChanged";
-const utf8	Listbox::SortModeChanged[]				= "SortModeChanged";
-const utf8	Listbox::MultiselectModeChanged[]		= "MuliselectModeChanged";
-const utf8	Listbox::VertScrollbarModeChanged[]		= "VertScrollModeChanged";
-const utf8	Listbox::HorzScrollbarModeChanged[]		= "HorzScrollModeChanged";
+const utf8	Listbox::EventListContentsChanged[]			= "ListItemsChanged";
+const utf8	Listbox::EventSelectionChanged[]				= "ItemSelectionChanged";
+const utf8	Listbox::EventSortModeChanged[]				= "SortModeChanged";
+const utf8	Listbox::EventMultiselectModeChanged[]		= "MuliselectModeChanged";
+const utf8	Listbox::EventVertScrollbarModeChanged[]		= "VertScrollModeChanged";
+const utf8	Listbox::EventHorzScrollbarModeChanged[]		= "HorzScrollModeChanged";
 
 	
 /*************************************************************************
@@ -796,12 +796,12 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 *************************************************************************/
 void Listbox::addListboxEvents(void)
 {
-	addEvent(ListContentsChanged);
-	addEvent(SelectionChanged);
-	addEvent(SortModeChanged);
-	addEvent(MultiselectModeChanged);
-	addEvent(VertScrollbarModeChanged);
-	addEvent(HorzScrollbarModeChanged);
+	addEvent(EventListContentsChanged);
+	addEvent(EventSelectionChanged);
+	addEvent(EventSortModeChanged);
+	addEvent(EventMultiselectModeChanged);
+	addEvent(EventVertScrollbarModeChanged);
+	addEvent(EventHorzScrollbarModeChanged);
 }
 
 
@@ -812,7 +812,7 @@ void Listbox::onListContentsChanged(WindowEventArgs& e)
 {
 	configureScrollbars();
 	requestRedraw();
-	fireEvent(ListContentsChanged, e);
+	fireEvent(EventListContentsChanged, e);
 }
 
 
@@ -823,7 +823,7 @@ void Listbox::onListContentsChanged(WindowEventArgs& e)
 void Listbox::onSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SelectionChanged, e);
+	fireEvent(EventSelectionChanged, e);
 }
 
 
@@ -833,7 +833,7 @@ void Listbox::onSelectionChanged(WindowEventArgs& e)
 void Listbox::onSortModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SortModeChanged, e);
+	fireEvent(EventSortModeChanged, e);
 }
 
 
@@ -842,7 +842,7 @@ void Listbox::onSortModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Listbox::onMultiselectModeChanged(WindowEventArgs& e)
 {
-	fireEvent(MultiselectModeChanged, e);
+	fireEvent(EventMultiselectModeChanged, e);
 }
 
 
@@ -853,7 +853,7 @@ void Listbox::onMultiselectModeChanged(WindowEventArgs& e)
 void Listbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(VertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e);
 }
 
 
@@ -864,7 +864,7 @@ void Listbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 void Listbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(HorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e);
 }
 
 

@@ -35,7 +35,7 @@ namespace CEGUI
 /*************************************************************************
 	Event name constants (static data definitions)
 *************************************************************************/
-const utf8	Renderer::ModeChangedEvent[]		= "DisplayModeChanged";
+const utf8	Renderer::EventDisplaySizeChanged[]		= "DisplayModeChanged";
 
 
 /*************************************************************************
@@ -52,7 +52,7 @@ const float	Renderer::GuiZLayerStep			= 0.0001f;		// provides space for 10 layer
 Renderer::Renderer(void)
 {
 	// setup standard events available
-	addEvent(ModeChangedEvent);
+	addEvent(EventDisplaySizeChanged);
 
 	// default initialisation
 	resetZValue();

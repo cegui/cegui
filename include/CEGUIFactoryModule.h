@@ -28,14 +28,39 @@
 #ifndef _CEGUIFactoryModule_h_
 #define _CEGUIFactoryModule_h_
 
+/*************************************************************************
+	The following is basically taken from DynLib.h, which is part of
+	the Ogre project (http://www.ogre3d.org/)
+*************************************************************************/
+#if defined(__WIN32__) || defined(_WIN32)
+#    define DYNLIB_HANDLE hInstance
+#    define DYNLIB_LOAD( a ) LoadLibrary( a )
+#    define DYNLIB_GETSYM( a, b ) GetProcAddress( a, b )
+#    define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
+#    define DYNLIB_ERROR( )  "Unknown Error"
+
+	struct HINSTANCE__;
+	typedef struct HINSTANCE__* hInstance;
+
+#elif defined(__linux__)
+#    define DYNLIB_HANDLE void*
+#    define DYNLIB_LOAD( a ) dlopen( a, RTLD_LAZY )
+#    define DYNLIB_GETSYM( a, b ) dlsym( a, b )
+#    define DYNLIB_UNLOAD( a ) dlclose( a )
+#    define DYNLIB_ERROR( ) dlerror( )
+
+#elif defined(__APPLE_CC__)
+#    define DYNLIB_HANDLE CFBundleRef
+#    define DYNLIB_LOAD( a ) mac_loadExeBundle( a )
+#    define DYNLIB_GETSYM( a, b ) mac_getBundleSym( a, b )
+#    define DYNLIB_UNLOAD( a ) mac_unloadExeBundle( a )
+#    define DYNLIB_ERROR( ) mac_errorBundle()
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Forward refs
-*************************************************************************/
-class FactoryModuleImplDat;
-
 
 /*!
 \brief
@@ -83,23 +108,14 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	FactoryModuleImplDat*	d_data;		//!< Pointer to a ImplDat derived class that can hold any required implementation data
+	static const char	RegisterFactoryFunctionName[];
+
+	typedef void (*FactoryRegisterFunction)(const String&); 
+
+	FactoryRegisterFunction	d_regFunc;	//!< Pointer to the function called to register factories.
+	String			d_moduleName;		//!< Holds the name of the loaded module.
+	DYNLIB_HANDLE	d_handle;			//!< Pointer to a ImplDat derived class that can hold any required implementation data
 };
-
-
-/*************************************************************************
-	class that can be derived from to hold implementation specific data
-*************************************************************************/
-class FactoryModuleImplDat
-{
-public:
-	FactoryModuleImplDat(void) {}
-	virtual ~FactoryModuleImplDat(void) {}
-};
-
-
-
-
 
 } // End of  CEGUI namespace section
 

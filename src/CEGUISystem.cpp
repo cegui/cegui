@@ -66,13 +66,13 @@ const double	System::DefaultMultiClickTimeout	= 0.33;
 const Size		System::DefaultMultiClickAreaSize(12,12);
 
 // event names
-const utf8	System::GUISheetChanged[]			= "GUISheetChanged";
-const utf8	System::SingleClickTimeoutChanged[]	= "SingleClickTimeoutChanged";
-const utf8	System::MultiClickTimeoutChanged[]	= "MultiClickTimeoutChanged";
-const utf8	System::MultiClickAreaSizeChanged[]	= "MultiClickAreaSizeChanged";
-const utf8	System::DefaultFontChanged[]		= "DefaultFontChanged";
-const utf8	System::DefaultMouseCursorChanged[]	= "DefaultMouseCursorChanged";
-const utf8	System::MouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
+const utf8	System::EventGUISheetChanged[]			= "GUISheetChanged";
+const utf8	System::EventSingleClickTimeoutChanged[]	= "SingleClickTimeoutChanged";
+const utf8	System::EventMultiClickTimeoutChanged[]	= "MultiClickTimeoutChanged";
+const utf8	System::EventMultiClickAreaSizeChanged[]	= "MultiClickAreaSizeChanged";
+const utf8	System::EventDefaultFontChanged[]		= "DefaultFontChanged";
+const utf8	System::EventDefaultMouseCursorChanged[]	= "DefaultMouseCursorChanged";
+const utf8	System::EventMouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
 
 
 /*************************************************************************
@@ -259,7 +259,7 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
 
 	// subscribe to hear about display mode changes
-	d_renderer->subscribeEvent(Renderer::ModeChangedEvent, boost::bind(&CEGUI::System::handleDisplaySizeChange, this, _1));
+	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, boost::bind(&CEGUI::System::handleDisplaySizeChange, this, _1));
 
 	// load base scheme
 	if (!configSchemeName.empty())
@@ -1008,13 +1008,13 @@ void System::setMultiClickToleranceAreaSize(const Size&	sz)
 *************************************************************************/
 void System::addSystemEvents(void)
 {
-	addEvent(GUISheetChanged);
-	addEvent(SingleClickTimeoutChanged);
-	addEvent(MultiClickTimeoutChanged);
-	addEvent(MultiClickAreaSizeChanged);
-	addEvent(DefaultFontChanged);
-	addEvent(DefaultMouseCursorChanged);
-	addEvent(MouseMoveScalingChanged);
+	addEvent(EventGUISheetChanged);
+	addEvent(EventSingleClickTimeoutChanged);
+	addEvent(EventMultiClickTimeoutChanged);
+	addEvent(EventMultiClickAreaSizeChanged);
+	addEvent(EventDefaultFontChanged);
+	addEvent(EventDefaultMouseCursorChanged);
+	addEvent(EventMouseMoveScalingChanged);
 }
 
 
@@ -1023,7 +1023,7 @@ void System::addSystemEvents(void)
 *************************************************************************/
 void System::onGUISheetChanged(WindowEventArgs& e)
 {
-	fireEvent(GUISheetChanged, e);
+	fireEvent(EventGUISheetChanged, e);
 }
 
 
@@ -1032,7 +1032,7 @@ void System::onGUISheetChanged(WindowEventArgs& e)
 *************************************************************************/
 void System::onSingleClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(SingleClickTimeoutChanged, e);
+	fireEvent(EventSingleClickTimeoutChanged, e);
 }
 
 
@@ -1041,7 +1041,7 @@ void System::onSingleClickTimeoutChanged(EventArgs& e)
 *************************************************************************/
 void System::onMultiClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(MultiClickTimeoutChanged, e);
+	fireEvent(EventMultiClickTimeoutChanged, e);
 }
 
 
@@ -1051,7 +1051,7 @@ void System::onMultiClickTimeoutChanged(EventArgs& e)
 *************************************************************************/
 void System::onMultiClickAreaSizeChanged(EventArgs& e)
 {
-	fireEvent(MultiClickAreaSizeChanged, e);
+	fireEvent(EventMultiClickAreaSizeChanged, e);
 }
 
 
@@ -1060,7 +1060,7 @@ void System::onMultiClickAreaSizeChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
 {
-	fireEvent(DefaultFontChanged, e);
+	fireEvent(EventDefaultFontChanged, e);
 }
 
 
@@ -1069,7 +1069,7 @@ void System::onDefaultFontChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultMouseCursorChanged(EventArgs& e)
 {
-	fireEvent(DefaultMouseCursorChanged, e);
+	fireEvent(EventDefaultMouseCursorChanged, e);
 }
 
 
@@ -1078,7 +1078,7 @@ void System::onDefaultMouseCursorChanged(EventArgs& e)
 *************************************************************************/
 void System::onMouseMoveScalingChanged(EventArgs& e)
 {
-	fireEvent(MouseMoveScalingChanged, e);
+	fireEvent(EventMouseMoveScalingChanged, e);
 }
 
 

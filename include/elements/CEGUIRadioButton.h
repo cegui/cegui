@@ -52,7 +52,7 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const utf8	SelectStateChanged[];			//!< The selected state of the widget has changed.
+	static const utf8	EventSelectStateChanged[];			//!< The selected state of the widget has changed.
 
 
 	/*************************************************************************

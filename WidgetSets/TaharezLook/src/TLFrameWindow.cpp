@@ -355,12 +355,12 @@ void TLFrameWindow::initialise(void)
 	FrameWindow::initialise();
 
 	// subscribe to enable/disable events on title bar since we need something a little more than that.
-	d_titlebar->subscribeEvent(Window::DisabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentDisabledHandler, this, _1));
-	d_titlebar->subscribeEvent(Window::EnabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentEnabledHandler, this, _1));
+	d_titlebar->subscribeEvent(Window::EventDisabled, boost::bind(&CEGUI::TLFrameWindow::componentDisabledHandler, this, _1));
+	d_titlebar->subscribeEvent(Window::EventEnabled, boost::bind(&CEGUI::TLFrameWindow::componentEnabledHandler, this, _1));
 
 	// subscribe to enable/disable events on close button since we need something a little more than that.
-	d_closeButton->subscribeEvent(Window::DisabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentDisabledHandler, this, _1));
-	d_closeButton->subscribeEvent(Window::EnabledEvent, boost::bind(&CEGUI::TLFrameWindow::componentEnabledHandler, this, _1));
+	d_closeButton->subscribeEvent(Window::EventDisabled, boost::bind(&CEGUI::TLFrameWindow::componentDisabledHandler, this, _1));
+	d_closeButton->subscribeEvent(Window::EventEnabled, boost::bind(&CEGUI::TLFrameWindow::componentEnabledHandler, this, _1));
 }
 
 

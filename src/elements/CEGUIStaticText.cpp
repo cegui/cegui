@@ -231,8 +231,8 @@ void StaticText::initialise(void)
 	layoutComponentWidgets();
 
 	// event subscription
-	d_vertScrollbar->subscribeEvent(Scrollbar::ScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
-	d_horzScrollbar->subscribeEvent(Scrollbar::ScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
+	d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
+	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
 }
 
 

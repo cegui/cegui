@@ -31,7 +31,7 @@ namespace CEGUI
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	PushButton::Clicked[]				= "Clicked";
+const utf8	PushButton::EventClicked[]				= "Clicked";
 
 
 /*************************************************************************
@@ -58,7 +58,7 @@ PushButton::~PushButton(void)
 *************************************************************************/
 void PushButton::addPushButtonEvents(void)
 {
-	addEvent(Clicked);
+	addEvent(EventClicked);
 }
 
 
@@ -67,7 +67,7 @@ void PushButton::addPushButtonEvents(void)
 *************************************************************************/
 void PushButton::onClicked(WindowEventArgs& e)
 {
-	fireEvent(Clicked, e);
+	fireEvent(EventClicked, e);
 }
 
 

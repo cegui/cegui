@@ -49,7 +49,7 @@ TabControlProperties::RelativeTabTextPadding	TabControl::d_relativeTabTextPaddin
 	Constants
 *************************************************************************/
 // event names
-const utf8	TabControl::SelectionChanged[]			= "TabSelectionChanged";
+const utf8	TabControl::EventSelectionChanged[]			= "TabSelectionChanged";
 
 	
 /*************************************************************************
@@ -255,7 +255,7 @@ void TabControl::addTab(Window* wnd)
     layoutComponentWidgets();
     requestRedraw();
     // Subscribe to text changed event so that we can resize as needed
-    wnd->subscribeEvent(Window::TextChangedEvent, 
+    wnd->subscribeEvent(Window::EventTextChanged, 
         boost::bind(&TabControl::handleContentWindowTextChanged, this, _1));
 
 }
@@ -334,7 +334,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     // add the button
     d_tabButtonPane->addChildWindow(tb);
     // Subscribe to clicked event so that we can change tab
-    tb->subscribeEvent(TabButton::Clicked, 
+    tb->subscribeEvent(TabButton::EventClicked, 
         boost::bind(&TabControl::handleTabButtonClicked, this, _1));
 
 }
@@ -459,7 +459,7 @@ Selection changed event
 void TabControl::onSelectionChanged(WindowEventArgs& e)
 {
     requestRedraw();
-    fireEvent(SelectionChanged, e);
+    fireEvent(EventSelectionChanged, e);
 }
 /*************************************************************************
 Font changed event
@@ -479,7 +479,7 @@ Add events for this class
 *************************************************************************/
 void TabControl::addTabControlEvents(void)
 {
-    addEvent(SelectionChanged);
+    addEvent(EventSelectionChanged);
 }
 /*************************************************************************
 Handler for when widget is re-sized

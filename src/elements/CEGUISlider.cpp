@@ -41,9 +41,9 @@ SliderProperties::ClickStepSize	Slider::d_clickStepSizeProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Slider::ValueChanged[]		= "ValueChanged";
-const utf8	Slider::ThumbTrackStarted[]	= "ThumbTrackStarted";
-const utf8	Slider::ThumbTrackEnded[]	= "ThumbTrackEnded";
+const utf8	Slider::EventValueChanged[]		= "ValueChanged";
+const utf8	Slider::EventThumbTrackStarted[]	= "ThumbTrackStarted";
+const utf8	Slider::EventThumbTrackEnded[]	= "ThumbTrackEnded";
 
 
 /*************************************************************************
@@ -79,9 +79,9 @@ void Slider::initialise(void)
 	addChildWindow(d_thumb);
 
 	// bind handler to thumb events
-	d_thumb->subscribeEvent(Thumb::ThumbPositionChanged, boost::bind(&CEGUI::Slider::handleThumbMoved, this, _1));
-	d_thumb->subscribeEvent(Thumb::ThumbTrackStarted, boost::bind(&CEGUI::Slider::handleThumbTrackStarted, this, _1));
-	d_thumb->subscribeEvent(Thumb::ThumbTrackEnded, boost::bind(&CEGUI::Slider::handleThumbTrackEnded, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, boost::bind(&CEGUI::Slider::handleThumbMoved, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, boost::bind(&CEGUI::Slider::handleThumbTrackStarted, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, boost::bind(&CEGUI::Slider::handleThumbTrackEnded, this, _1));
 
 	layoutComponentWidgets();
 }
@@ -141,9 +141,9 @@ void Slider::setCurrentValue(float value)
 *************************************************************************/
 void Slider::addSliderEvents(void)
 {
-	addEvent(ValueChanged);
-	addEvent(ThumbTrackStarted);
-	addEvent(ThumbTrackEnded);
+	addEvent(EventValueChanged);
+	addEvent(EventThumbTrackStarted);
+	addEvent(EventThumbTrackEnded);
 }
 
 
@@ -152,7 +152,7 @@ void Slider::addSliderEvents(void)
 *************************************************************************/
 void Slider::onValueChanged(WindowEventArgs& e)
 {
-	fireEvent(ValueChanged, e);
+	fireEvent(EventValueChanged, e);
 }
 
 
@@ -161,7 +161,7 @@ void Slider::onValueChanged(WindowEventArgs& e)
 *************************************************************************/
 void Slider::onThumbTrackStarted(WindowEventArgs& e)
 {
-	fireEvent(ThumbTrackStarted, e);
+	fireEvent(EventThumbTrackStarted, e);
 }
 
 
@@ -170,7 +170,7 @@ void Slider::onThumbTrackStarted(WindowEventArgs& e)
 *************************************************************************/
 void Slider::onThumbTrackEnded(WindowEventArgs& e)
 {
-	fireEvent(ThumbTrackEnded, e);
+	fireEvent(EventThumbTrackEnded, e);
 }
 
 

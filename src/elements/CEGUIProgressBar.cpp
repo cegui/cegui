@@ -38,8 +38,8 @@ ProgressBarProperties::StepSize			ProgressBar::d_stepSizeProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	ProgressBar::ProgressChanged[]	= "ProgressChanged";
-const utf8	ProgressBar::ProgressDone[]		= "ProgressDone";
+const utf8	ProgressBar::EventProgressChanged[]	= "ProgressChanged";
+const utf8	ProgressBar::EventProgressDone[]		= "ProgressDone";
 
 
 /*************************************************************************
@@ -94,8 +94,8 @@ void ProgressBar::setProgress(float progress)
 *************************************************************************/
 void ProgressBar::addProgressBarEvents(void)
 {
-	addEvent(ProgressChanged);
-	addEvent(ProgressDone);
+	addEvent(EventProgressChanged);
+	addEvent(EventProgressDone);
 }
 
 /*************************************************************************
@@ -105,7 +105,7 @@ void ProgressBar::onProgressChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 
-	fireEvent(ProgressChanged, e);
+	fireEvent(EventProgressChanged, e);
 }
 
 
@@ -114,7 +114,7 @@ void ProgressBar::onProgressChanged(WindowEventArgs& e)
 *************************************************************************/
 void ProgressBar::onProgressDone(WindowEventArgs& e)
 {
-	fireEvent(ProgressDone, e);
+	fireEvent(EventProgressDone, e);
 }
 
 /*************************************************************************

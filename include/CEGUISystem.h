@@ -66,13 +66,13 @@ public:
 	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
 
 	// event names
-	static const utf8	GUISheetChanged[];					//!< Name of event fired whenever the GUI sheet is changed.
-	static const utf8	SingleClickTimeoutChanged[];		//!< Name of event fired when the single-click timeout is changed.
-	static const utf8	MultiClickTimeoutChanged[];			//!< Name of event fired when the multi-click timeout is changed.
-	static const utf8	MultiClickAreaSizeChanged[];		//!< Name of event fired when the size of the multi-click tolerance area is changed.
-	static const utf8	DefaultFontChanged[];				//!< Name of event fired when the default font changes.
-	static const utf8	DefaultMouseCursorChanged[];		//!< Name of event fired when the default mouse cursor changes.
-	static const utf8	MouseMoveScalingChanged[];			//!< Name of event fired when the mouse move scaling factor changes.
+	static const utf8	EventGUISheetChanged[];				//!< Name of event fired whenever the GUI sheet is changed.
+	static const utf8	EventSingleClickTimeoutChanged[];	//!< Name of event fired when the single-click timeout is changed.
+	static const utf8	EventMultiClickTimeoutChanged[];	//!< Name of event fired when the multi-click timeout is changed.
+	static const utf8	EventMultiClickAreaSizeChanged[];	//!< Name of event fired when the size of the multi-click tolerance area is changed.
+	static const utf8	EventDefaultFontChanged[];			//!< Name of event fired when the default font changes.
+	static const utf8	EventDefaultMouseCursorChanged[];	//!< Name of event fired when the default mouse cursor changes.
+	static const utf8	EventMouseMoveScalingChanged[];		//!< Name of event fired when the mouse move scaling factor changes.
 
 
 	/*************************************************************************

@@ -58,14 +58,14 @@ MultiLineEditboxProperties::InactiveSelectionColour	MultiLineEditbox::d_inactive
 	Constants
 *************************************************************************/
 // event names
-const utf8	MultiLineEditbox::ReadOnlyChanged[]				= "ReadOnlyChanged";
-const utf8	MultiLineEditbox::WordWrapModeChanged[]			= "WordWrapModeChanged";
-const utf8	MultiLineEditbox::MaximumTextLengthChanged[]	= "MaximumTextLengthChanged";
-const utf8	MultiLineEditbox::CaratMoved[]					= "CaratMoved";
-const utf8	MultiLineEditbox::TextSelectionChanged[]		= "TextSelectionChanged";
-const utf8	MultiLineEditbox::EditboxFullEvent[]			= "EditboxFullEvent";
-const utf8	MultiLineEditbox::VertScrollbarModeChanged[]	= "VertScrollbarModeChanged";
-const utf8	MultiLineEditbox::HorzScrollbarModeChanged[]	= "HorzScrollbarModeChanged";
+const utf8	MultiLineEditbox::EventReadOnlyModeChanged[]				= "ReadOnlyChanged";
+const utf8	MultiLineEditbox::EventWordWrapModeChanged[]			= "WordWrapModeChanged";
+const utf8	MultiLineEditbox::EventMaximumTextLengthChanged[]	= "MaximumTextLengthChanged";
+const utf8	MultiLineEditbox::EventCaratMoved[]					= "CaratMoved";
+const utf8	MultiLineEditbox::EventTextSelectionChanged[]		= "TextSelectionChanged";
+const utf8	MultiLineEditbox::EventEditboxFull[]			= "EditboxFullEvent";
+const utf8	MultiLineEditbox::EventVertScrollbarModeChanged[]	= "VertScrollbarModeChanged";
+const utf8	MultiLineEditbox::EventHorzScrollbarModeChanged[]	= "HorzScrollbarModeChanged";
 
 // default colours
 const ulong	MultiLineEditbox::DefaultNormalTextColour			= 0xFFFFFFFF;
@@ -175,14 +175,14 @@ ulong MultiLineEditbox::getSelectionLength(void) const
 *************************************************************************/
 void MultiLineEditbox::addMultiLineEditboxEvents(void)
 {
-	addEvent(ReadOnlyChanged);
-	addEvent(WordWrapModeChanged);
-	addEvent(MaximumTextLengthChanged);
-	addEvent(CaratMoved);
-	addEvent(TextSelectionChanged);
-	addEvent(EditboxFullEvent);
-	addEvent(VertScrollbarModeChanged);
-	addEvent(HorzScrollbarModeChanged);
+	addEvent(EventReadOnlyModeChanged);
+	addEvent(EventWordWrapModeChanged);
+	addEvent(EventMaximumTextLengthChanged);
+	addEvent(EventCaratMoved);
+	addEvent(EventTextSelectionChanged);
+	addEvent(EventEditboxFull);
+	addEvent(EventVertScrollbarModeChanged);
+	addEvent(EventHorzScrollbarModeChanged);
 }
 
 
@@ -1554,7 +1554,7 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)
 {
-	fireEvent(ReadOnlyChanged, e);
+	fireEvent(EventReadOnlyModeChanged, e);
 }
 
 
@@ -1563,7 +1563,7 @@ void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
 {
-	fireEvent(WordWrapModeChanged, e);
+	fireEvent(EventWordWrapModeChanged, e);
 }
 
 
@@ -1572,7 +1572,7 @@ void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
-	fireEvent(MaximumTextLengthChanged, e);
+	fireEvent(EventMaximumTextLengthChanged, e);
 }
 
 
@@ -1582,7 +1582,7 @@ void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(CaratMoved, e);
+	fireEvent(EventCaratMoved, e);
 }
 
 
@@ -1592,7 +1592,7 @@ void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(TextSelectionChanged, e);
+	fireEvent(EventTextSelectionChanged, e);
 }
 
 
@@ -1601,7 +1601,7 @@ void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 {
-	fireEvent(EditboxFullEvent, e);
+	fireEvent(EventEditboxFull, e);
 }
 
 
@@ -1612,7 +1612,7 @@ void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(VertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e);
 }
 
 
@@ -1623,7 +1623,7 @@ void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(HorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e);
 }
 
 

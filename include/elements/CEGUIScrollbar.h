@@ -54,11 +54,10 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const utf8	ScrollPositionChanged[];		//!< Name of the event fired when the scroll bar position value changes
-	static const utf8	ThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
-	static const utf8	ThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
-	static const utf8	ScrollConfigChanged[];			//!< Name of the event fired when the scroll bar configuration data changes.
-
+	static const utf8	EventScrollPositionChanged[];		//!< Name of the event fired when the scroll bar position value changes
+	static const utf8	EventThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
+	static const utf8	EventThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
+	static const utf8	EventScrollConfigChanged[];			//!< Name of the event fired when the scroll bar configuration data changes.
 
 
 	/*************************************************************************
