@@ -776,15 +776,18 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 {
 	float y = getListRenderArea().d_top - d_vertScrollbar->getScrollPosition();
 
-	for (uint i = 0; i < getItemCount(); ++i)
+	if (pt.d_y >= y)
 	{
-		y += d_listItems[i]->getPixelSize().d_height;
-
-		if (pt.d_y < y)
+		for (uint i = 0; i < getItemCount(); ++i)
 		{
-			return d_listItems[i];
-		}
+			y += d_listItems[i]->getPixelSize().d_height;
 
+			if (pt.d_y < y)
+			{
+				return d_listItems[i];
+			}
+
+		}
 	}
 
 	return NULL;
