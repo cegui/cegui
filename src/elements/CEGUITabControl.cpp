@@ -380,6 +380,8 @@ void TabControl::removeButtonForTabContent(Window* wnd)
     // remove
     d_tabButtonIndexMap.erase(tb->getTabIndex());
     d_tabButtonPane->removeChildWindow(tb);
+	// destroy
+	WindowManager::getSingleton().destroyWindow(tb);
 }
 /*************************************************************************
 Remove tab button
