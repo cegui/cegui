@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>CEGUIBase</string>
+	<string>OpenGLRenderer</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.crayzedsgui.CEGUIBase</string>
+	<string>net.sourceforge.crayzedsgui.OpenGLRenderer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

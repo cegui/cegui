@@ -74,8 +74,14 @@ typedef unsigned short wchar_t;
 #  endif
 # endif //win32 end glut.h stuff
 
+/* XXX Hack for finding headers in Apple's OpenGL framework. */
+#if defined( __APPLE__ )
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else /* __APPLE__ */
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif /* __APPLE__ */
 #include <list>
 #include <set>
 #include "CEGUIBase.h"
