@@ -72,7 +72,7 @@
 #include "elements/CEGUIListbox.h"
 #include "elements/CEGUICombobox.h"
 #include "elements/CEGUIListHeader.h"
-//#include "elements/CEGUIMultiColumnList.h"
+#include "elements/CEGUIMultiColumnList.h"
 #include "elements/CEGUIStaticText.h"
 #include "elements/CEGUIStaticImage.h"
 #include "elements/CEGUIGUISheet.h"

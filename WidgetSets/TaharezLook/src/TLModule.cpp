@@ -50,7 +50,7 @@
 #include "TLComboDropList.h"
 #include "TLListHeader.h"
 #include "TLListHeaderSegment.h"
-//#include "TLMultiColumnList.h"
+#include "TLMultiColumnList.h"
 
 
 /*************************************************************************
@@ -81,7 +81,7 @@ static CEGUI::TLComboDropListFactory	s_ComboDropListFactory;
 static CEGUI::TLComboEditboxFactory		s_ComboEditboxFactory;
 static CEGUI::TLListHeaderSegmentFactory	s_ListHeaderSegmentFactory;
 static CEGUI::TLListHeaderFactory		s_ListHeaderFactory;
-//static CEGUI::TLMultiColumnListFactory	s_MultiColumnListFactory;
+static CEGUI::TLMultiColumnListFactory	s_MultiColumnListFactory;
 
 
 /*************************************************************************
@@ -216,11 +216,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderFactory);
 		return;
 	}
-//	else if (type_name == "Taharez MultiColumnList")
-//	{
-//		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
-//		return;
-//	}
+	else if (type_name == "Taharez MultiColumnList")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
+		return;
+	}
 	
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 

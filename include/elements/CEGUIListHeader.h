@@ -36,6 +36,20 @@ namespace CEGUI
 {
 /*!
 \brief
+	EventArgs class used for segment move (sequence changed) events.
+*/
+class CEGUIBASE_API HeaderSequenceEventArgs : public WindowEventArgs
+{
+public:
+	HeaderSequenceEventArgs(Window* wnd, uint old_idx, uint new_idx) : WindowEventArgs(wnd), d_oldIdx(old_idx), d_newIdx(new_idx) {};
+
+	uint d_oldIdx;		//!< The original column index of the segment that has moved.
+	uint d_newIdx;		//!< The new column index of the segment that has moved.
+};
+
+
+/*!
+\brief
 	Base class for the multi column list header widget.
 */
 class CEGUIBASE_API ListHeader : public Window
@@ -50,7 +64,7 @@ public:
 	static const utf8	SegmentSized[];				//!< Event fired when a segment has been sized by the user (e.window is the segment).
 	static const utf8	SegmentClicked[];			//!< Event fired when a segment has been clicked by the user (e.window is the segment).
 	static const utf8	SplitterDoubleClicked[];	//!< Event fired when a segment splitter has been double-clicked.  (e.window is the segment).
-	static const utf8	SegmentSequenceChanged[];	//!< Event fired when the order of the segments has changed.
+	static const utf8	SegmentSequenceChanged[];	//!< Event fired when the order of the segments has changed.  ('e' is a HeaderSequenceEventArgs&)
 	static const utf8	SegmentAdded[];				//!< Event fired when a segment is added to the header.
 	static const utf8	SegmentRemoved[];			//!< Event fired when a segment is removed from the header.
 	static const utf8	SortSettingChanged[];		//!< Event fired when setting that controls user modification to sort configuration changes.

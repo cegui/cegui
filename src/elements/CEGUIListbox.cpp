@@ -567,7 +567,7 @@ void Listbox::drawSelf(float z)
 	// set up some initial positional details for items
 	itemPos.d_x = absarea.d_left - d_horzScrollbar->getScrollPosition();
 	itemPos.d_y = absarea.d_top - d_vertScrollbar->getScrollPosition();
-	itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(2);
+	itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3);
 
 	float alpha = getEffectiveAlpha();
 
@@ -1022,7 +1022,7 @@ bool lbi_less(const ListboxItem* a, const ListboxItem* b)
 }
 
 /*************************************************************************
-	used for < comparisons between ListboxItem pointers
+	used for > comparisons between ListboxItem pointers
 *************************************************************************/
 bool lbi_greater(const ListboxItem* a, const ListboxItem* b)
 {

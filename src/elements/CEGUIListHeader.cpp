@@ -575,12 +575,6 @@ void ListHeader::moveColumn(uint column, uint position)
 
 		ListHeaderSegment* seg = d_segments[column];
 
-		// if position will change when current copy is removed, adjust as needed
-		if (position > column)
-		{
-			position--;
-		}
-
 		// remove original copy of segment
 		d_segments.erase(d_segments.begin() + column);
 
@@ -588,7 +582,7 @@ void ListHeader::moveColumn(uint column, uint position)
 		d_segments.insert(d_segments.begin() + position, seg);
 
 		// Fire sequence changed event
-		WindowEventArgs args(this);
+		HeaderSequenceEventArgs args(this, column, position);
 		onSegmentSequenceChanged(args);
 
 		layoutSegments();
@@ -676,7 +670,9 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	d_uniqueIDNumber++;
 
 	// setup segment;
+	newseg->setMetricsMode(Relative);
 	newseg->setSize(Size(width, 1.0f));
+	newseg->setMinimumSize(newseg->absoluteToRelative(Size(5.0f, 5.0f)));
 	newseg->setText(text);
 	newseg->setID(id);
 
@@ -875,11 +871,6 @@ void ListHeader::segmentMovedHandler(const EventArgs& e)
 		// find original column for dragged segment.
 		ListHeaderSegment* seg = ((ListHeaderSegment*)((WindowEventArgs&)e).window);
 		uint curcol = getColumnFromSegment(*seg);
-
-		if (col > curcol)
-		{
-			col++;
-		}
 
 		// move column
 		moveColumn(curcol, col);
