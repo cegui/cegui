@@ -46,7 +46,12 @@ const utf8	Scrollbar::ScrollPositionChanged[]		= "ScrollPosChanged";
 	Constructor for Scrollbar objects
 *************************************************************************/
 Scrollbar::Scrollbar(const String& type, const String& name) :
-	Window(type, name)
+	Window(type, name),
+	d_documentSize(1.0f),
+	d_pageSize(0.0f),
+	d_stepSize(1.0f),
+	d_overlapSize(0.0f),
+	d_position(0.0f)
 {
 	addScrollbarEvents();
 }
@@ -126,7 +131,7 @@ void Scrollbar::setOverlapSize(float overlap_size)
 /*************************************************************************
 	Set the current position of scroll bar within the document.
 *************************************************************************/
-void Scrollbar::setCurrentPosition(float position)
+void Scrollbar::setScrollPosition(float position)
 {
 	float old_pos = d_position;
 
@@ -180,7 +185,7 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
 		// adjust scroll bar position in whichever direction as required.
 		if (adj != 0)
 		{
-			setCurrentPosition(d_position + ((d_pageSize - d_overlapSize) * adj));
+			setScrollPosition(d_position + ((d_pageSize - d_overlapSize) * adj));
 		}
 
 		e.handled = true;
@@ -209,7 +214,7 @@ void Scrollbar::onSized(EventArgs& e)
 void Scrollbar::handleThumbMoved(const EventArgs& e)
 {
 	// adjust scroll bar position as required.
-	setCurrentPosition(getValueFromThumb());
+	setScrollPosition(getValueFromThumb());
 }
 
 
@@ -219,7 +224,7 @@ void Scrollbar::handleThumbMoved(const EventArgs& e)
 void Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
 	// adjust scroll bar position as required.
-	setCurrentPosition(d_position + d_stepSize);
+	setScrollPosition(d_position + d_stepSize);
 }
 
 
@@ -229,7 +234,7 @@ void Scrollbar::handleIncreaseClicked(const EventArgs& e)
 void Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
 	// adjust scroll bar position as required.
-	setCurrentPosition(d_position - d_stepSize);
+	setScrollPosition(d_position - d_stepSize);
 }
 
 } // End of  CEGUI namespace section

@@ -1188,7 +1188,7 @@ void Window::requestRedraw(void) const
 *************************************************************************/
 float Window::absoluteToRelativeX(float val) const
 {
-	return val / d_abs_area.getWidth();
+	return absoluteToRelativeX_impl(this, val);
 }
 
 
@@ -1197,7 +1197,7 @@ float Window::absoluteToRelativeX(float val) const
 *************************************************************************/
 float Window::absoluteToRelativeY(float val) const
 {
-	return val / d_abs_area.getHeight();
+	return absoluteToRelativeY_impl(this, val);
 }
 
 
@@ -1206,7 +1206,7 @@ float Window::absoluteToRelativeY(float val) const
 *************************************************************************/
 Point Window::absoluteToRelative(const Point& pt) const
 {
-	return Point(pt.d_x / d_abs_area.getWidth(), pt.d_y / d_abs_area.getHeight());
+	return absoluteToRelative_impl(this, pt);
 }
 
 
@@ -1215,7 +1215,7 @@ Point Window::absoluteToRelative(const Point& pt) const
 *************************************************************************/
 Size Window::absoluteToRelative(const Size& sze) const
 {
-	return Size(sze.d_width / d_abs_area.getWidth(), sze.d_height / d_abs_area.getHeight());
+	return absoluteToRelative_impl(this, sze);
 }
 
 
@@ -1224,7 +1224,7 @@ Size Window::absoluteToRelative(const Size& sze) const
 *************************************************************************/
 Rect Window::absoluteToRelative(const Rect& rect) const
 {
-	return Rect(rect.d_left / d_abs_area.getWidth(), rect.d_top / d_abs_area.getHeight(), rect.d_right / d_abs_area.getWidth(), rect.d_bottom / d_abs_area.getHeight());
+	return absoluteToRelative_impl(this, rect);
 }
 
 
@@ -1233,7 +1233,7 @@ Rect Window::absoluteToRelative(const Rect& rect) const
 *************************************************************************/
 float Window::relativeToAbsoluteX(float val) const
 {
-	return val * d_abs_area.getWidth();
+	return relativeToAbsoluteX_impl(this, val);
 }
 
 
@@ -1242,7 +1242,7 @@ float Window::relativeToAbsoluteX(float val) const
 *************************************************************************/
 float Window::relativeToAbsoluteY(float val) const
 {
-	return val * d_abs_area.getHeight();
+	return relativeToAbsoluteY_impl(this, val);
 }
 
 
@@ -1251,7 +1251,7 @@ float Window::relativeToAbsoluteY(float val) const
 *************************************************************************/
 Point Window::relativeToAbsolute(const Point& pt) const
 {
-	return Point(pt.d_x * d_abs_area.getWidth(), pt.d_y * d_abs_area.getHeight());
+	return relativeToAbsolute_impl(this, pt);
 }
 
 
@@ -1260,7 +1260,7 @@ Point Window::relativeToAbsolute(const Point& pt) const
 *************************************************************************/
 Size Window::relativeToAbsolute(const Size& sze) const
 {
-	return Size(sze.d_width * d_abs_area.getWidth(), sze.d_height * d_abs_area.getHeight());
+	return relativeToAbsolute_impl(this, sze);
 }
 
 
@@ -1269,7 +1269,7 @@ Size Window::relativeToAbsolute(const Size& sze) const
 *************************************************************************/
 Rect Window::relativeToAbsolute(const Rect& rect) const
 {
-	return Rect(rect.d_left * d_abs_area.getWidth(), rect.d_top * d_abs_area.getHeight(), rect.d_right * d_abs_area.getWidth(), rect.d_bottom * d_abs_area.getHeight());
+		return relativeToAbsolute_impl(this, rect);
 }
 
 

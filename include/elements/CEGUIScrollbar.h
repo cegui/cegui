@@ -145,7 +145,7 @@ public:
 		float value specifying the current position of the scroll bar within its
 		document.
 	*/
-	float	getCurrentPosition(void) const		{return d_position;}
+	float	getScrollPosition(void) const		{return d_position;}
 
 
 	/*************************************************************************
@@ -274,7 +274,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setCurrentPosition(float position);
+	void	setScrollPosition(float position);
 
 
 protected:

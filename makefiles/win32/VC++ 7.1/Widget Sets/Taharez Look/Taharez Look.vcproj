@@ -146,6 +146,18 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLFrameWindow.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniHorzScrollbar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniHorzScrollbarThumb.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniVertScrollbar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniVertScrollbarThumb.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLModule.cpp">
 			</File>
 			<File
@@ -162,6 +174,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLTitlebar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLVertScrollbar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLVertScrollbarThumb.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -187,6 +205,18 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLFrameWindow.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniHorzScrollbar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniHorzScrollbarThumb.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniVertScrollbar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniVertScrollbarThumb.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLModule.h">
 			</File>
 			<File
@@ -203,6 +233,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLTitlebar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLVertScrollbar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLVertScrollbarThumb.h">
 			</File>
 		</Filter>
 		<Filter

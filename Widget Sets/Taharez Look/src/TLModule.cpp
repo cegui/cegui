@@ -37,6 +37,8 @@
 #include "TLProgressBar.h"
 #include "TLAlternateProgressBar.h"
 #include "TLEditbox.h"
+#include "TLVertScrollbarThumb.h"
+#include "TLVertScrollbar.h"
 
 
 /*************************************************************************
@@ -101,7 +103,16 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(new TLEditboxFactory());
 		return;
 	}
-
+	else if (type_name == "Taharez VertScrollbar")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLVertScrollbarFactory());
+		return;
+	}
+	else if (type_name == "Taharez VertScrollbarThumb")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLVertScrollbarThumbFactory());
+		return;
+	}
 
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
