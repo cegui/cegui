@@ -55,7 +55,7 @@ public:
 	\brief
 		Constructor for EventSet objects
 	*/
-	EventSet(void);
+	EventSet();
 
 
 	/*!
@@ -128,7 +128,7 @@ public:
 
 	\exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
 	*/
-	Event::Connection	subscribeEvent(const String& name, Event::Subscriber subscriber);
+	virtual Event::Connection	subscribeEvent(const String& name, Event::Subscriber subscriber);
 
 
 	/*!
@@ -149,7 +149,7 @@ public:
 
 	\exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
 	*/
-	Event::Connection	subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber);
+	virtual Event::Connection	subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber);
 
 
 	/*!
@@ -168,7 +168,7 @@ public:
 
 	\exception UnknownObjectException	Thrown if no Event named \a name was found in the EventSet.
 	*/
-	void	fireEvent(const String& name, EventArgs& args);
+	virtual void	fireEvent(const String& name, EventArgs& args, const String& eventNamespace = "");
 
 
 	/*!
@@ -196,7 +196,7 @@ public:
 	void	setMutedState(bool setting);
 
 
-private:
+protected:
 	// Do not allow copying, assignment, or any other usage than simple creation.
 	EventSet(EventSet& e) {}
 	EventSet& operator=(EventSet& e) {return *this;}
@@ -205,7 +205,6 @@ private:
 	EventMap	d_events;
 
 	bool	d_muted;	//!< true if events for this EventSet have been muted.
-
 
 public:
 	/*************************************************************************

@@ -33,6 +33,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Listbox::EventNamespace("Listbox");
+
 /*************************************************************************
 	Definition of Properties for this class
 *************************************************************************/
@@ -822,7 +824,7 @@ void Listbox::onListContentsChanged(WindowEventArgs& e)
 {
 	configureScrollbars();
 	requestRedraw();
-	fireEvent(EventListContentsChanged, e);
+	fireEvent(EventListContentsChanged, e, EventNamespace);
 }
 
 
@@ -833,7 +835,7 @@ void Listbox::onListContentsChanged(WindowEventArgs& e)
 void Listbox::onSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventSelectionChanged, e);
+	fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 
 
@@ -843,7 +845,7 @@ void Listbox::onSelectionChanged(WindowEventArgs& e)
 void Listbox::onSortModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventSortModeChanged, e);
+	fireEvent(EventSortModeChanged, e, EventNamespace);
 }
 
 
@@ -852,7 +854,7 @@ void Listbox::onSortModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Listbox::onMultiselectModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventMultiselectModeChanged, e);
+	fireEvent(EventMultiselectModeChanged, e, EventNamespace);
 }
 
 
@@ -863,7 +865,7 @@ void Listbox::onMultiselectModeChanged(WindowEventArgs& e)
 void Listbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventVertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
 
@@ -874,7 +876,7 @@ void Listbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 void Listbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventHorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
 

@@ -62,6 +62,9 @@ public:
 class CEGUIBASE_API ListHeader : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/

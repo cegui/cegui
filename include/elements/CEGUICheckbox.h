@@ -48,6 +48,8 @@ namespace CEGUI
 class CEGUIBASE_API Checkbox : public ButtonBase
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

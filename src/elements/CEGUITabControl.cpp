@@ -34,6 +34,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String TabControl::EventNamespace("TabControl");
+
 /*************************************************************************
 	Definition of Properties for this class
 *************************************************************************/
@@ -525,7 +527,7 @@ Selection changed event
 void TabControl::onSelectionChanged(WindowEventArgs& e)
 {
     requestRedraw();
-    fireEvent(EventSelectionChanged, e);
+    fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 /*************************************************************************
 Font changed event

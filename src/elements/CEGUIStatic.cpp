@@ -31,6 +31,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Static::EventNamespace("Static");
+
 /*************************************************************************
 	Definitions of Properties for this class
 *************************************************************************/

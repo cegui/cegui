@@ -51,6 +51,9 @@ namespace CEGUI
 class CEGUIBASE_API Slider : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

@@ -71,6 +71,9 @@ struct CEGUIBASE_API MCLGridRef
 class CEGUIBASE_API MultiColumnList : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/

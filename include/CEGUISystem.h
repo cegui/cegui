@@ -60,6 +60,8 @@ struct MouseClickTrackerImpl;
 class CEGUIBASE_API System : public Singleton<System>, public EventSet
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/

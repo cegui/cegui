@@ -48,6 +48,8 @@ namespace CEGUI
 class CEGUIBASE_API Combobox : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/

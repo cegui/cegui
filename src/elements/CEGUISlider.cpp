@@ -29,6 +29,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Slider::EventNamespace("Slider");
+
 /*************************************************************************
 	Definition of Properties for this class
 *************************************************************************/
@@ -151,7 +153,7 @@ void Slider::addSliderEvents(void)
 *************************************************************************/
 void Slider::onValueChanged(WindowEventArgs& e)
 {
-	fireEvent(EventValueChanged, e);
+	fireEvent(EventValueChanged, e, EventNamespace);
 }
 
 
@@ -160,7 +162,7 @@ void Slider::onValueChanged(WindowEventArgs& e)
 *************************************************************************/
 void Slider::onThumbTrackStarted(WindowEventArgs& e)
 {
-	fireEvent(EventThumbTrackStarted, e);
+	fireEvent(EventThumbTrackStarted, e, EventNamespace);
 }
 
 
@@ -169,7 +171,7 @@ void Slider::onThumbTrackStarted(WindowEventArgs& e)
 *************************************************************************/
 void Slider::onThumbTrackEnded(WindowEventArgs& e)
 {
-	fireEvent(EventThumbTrackEnded, e);
+	fireEvent(EventThumbTrackEnded, e, EventNamespace);
 }
 
 

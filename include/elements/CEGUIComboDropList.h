@@ -45,6 +45,9 @@ namespace CEGUI
 class CEGUIBASE_API ComboDropList : public Listbox
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/

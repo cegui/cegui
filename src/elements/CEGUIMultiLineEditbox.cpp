@@ -33,6 +33,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
+
 /*************************************************************************
 	TODO:
 
@@ -1555,7 +1557,7 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)
 {
-	fireEvent(EventReadOnlyModeChanged, e);
+	fireEvent(EventReadOnlyModeChanged, e, EventNamespace);
 }
 
 
@@ -1564,7 +1566,7 @@ void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventWordWrapModeChanged, e);
+	fireEvent(EventWordWrapModeChanged, e, EventNamespace);
 }
 
 
@@ -1573,7 +1575,7 @@ void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
-	fireEvent(EventMaximumTextLengthChanged, e);
+	fireEvent(EventMaximumTextLengthChanged, e, EventNamespace);
 }
 
 
@@ -1583,7 +1585,7 @@ void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventCaratMoved, e);
+	fireEvent(EventCaratMoved, e, EventNamespace);
 }
 
 
@@ -1593,7 +1595,7 @@ void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventTextSelectionChanged, e);
+	fireEvent(EventTextSelectionChanged, e, EventNamespace);
 }
 
 
@@ -1602,7 +1604,7 @@ void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 {
-	fireEvent(EventEditboxFull, e);
+	fireEvent(EventEditboxFull, e, EventNamespace);
 }
 
 
@@ -1613,7 +1615,7 @@ void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventVertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
 
@@ -1624,7 +1626,7 @@ void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventHorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
 

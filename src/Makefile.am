@@ -17,6 +17,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIFont.cpp \
                       CEGUIFontManager.cpp \
                       CEGUIFont_xmlHandler.cpp \
+                      CEGUIGlobalEventSet.cpp \
 		      CEGUIGUILayout_xmlHandler.cpp \
                       CEGUIImage.cpp \
                       CEGUIImageset.cpp \

@@ -38,6 +38,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Window::EventNamespace("Window");
+
 /*************************************************************************
 	Definitions for Window base class Properties
 *************************************************************************/
@@ -2611,28 +2613,28 @@ void Window::onSized(WindowEventArgs& e)
 
 	requestRedraw();
 
-	fireEvent(EventSized, e);
+	fireEvent(EventSized, e, EventNamespace);
 }
 
 
 void Window::onMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventMoved, e);
+	fireEvent(EventMoved, e, EventNamespace);
 }
 
 
 void Window::onTextChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventTextChanged, e);
+	fireEvent(EventTextChanged, e, EventNamespace);
 }
 
 
 void Window::onFontChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventFontChanged, e);
+	fireEvent(EventFontChanged, e, EventNamespace);
 }
 
 
@@ -2652,80 +2654,80 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 	}
 
 	requestRedraw();
-	fireEvent(EventAlphaChanged, e);
+	fireEvent(EventAlphaChanged, e, EventNamespace);
 }
 
 
 void Window::onIDChanged(WindowEventArgs& e)
 {
-	fireEvent(EventIDChanged, e);
+	fireEvent(EventIDChanged, e, EventNamespace);
 }
 
 
 void Window::onShown(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventShown, e);
+	fireEvent(EventShown, e, EventNamespace);
 }
 
 
 void Window::onHidden(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventHidden, e);
+	fireEvent(EventHidden, e, EventNamespace);
 }
 
 
 void Window::onEnabled(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventEnabled, e);
+	fireEvent(EventEnabled, e, EventNamespace);
 }
 
 
 void Window::onDisabled(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventDisabled, e);
+	fireEvent(EventDisabled, e, EventNamespace);
 }
 
 
 void Window::onMetricsChanged(WindowEventArgs& e)
 {
-	fireEvent(EventMetricsModeChanged, e);
+	fireEvent(EventMetricsModeChanged, e, EventNamespace);
 }
 
 
 void Window::onClippingChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventClippedByParentChanged, e);
+	fireEvent(EventClippedByParentChanged, e, EventNamespace);
 }
 
 
 void Window::onParentDestroyChanged(WindowEventArgs& e)
 {
-	fireEvent(EventDestroyedByParentChanged, e);
+	fireEvent(EventDestroyedByParentChanged, e, EventNamespace);
 }
 
 
 void Window::onInheritsAlphaChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventInheritsAlphaChanged, e);
+	fireEvent(EventInheritsAlphaChanged, e, EventNamespace);
 }
 
 
 void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventAlwaysOnTopChanged, e);
+	fireEvent(EventAlwaysOnTopChanged, e, EventNamespace);
 }
 
 
 void Window::onCaptureGained(WindowEventArgs& e)
 {
-	fireEvent(EventInputCaptureGained, e);
+	fireEvent(EventInputCaptureGained, e, EventNamespace);
 }
 
 
@@ -2741,32 +2743,32 @@ void Window::onCaptureLost(WindowEventArgs& e)
 	// (this is a bit of a hack that uses the mouse input injector to handle this for us).
 	System::getSingleton().injectMouseMove(0, 0);
 
-	fireEvent(EventInputCaptureLost, e);
+	fireEvent(EventInputCaptureLost, e, EventNamespace);
 }
 
 
 void Window::onRenderingStarted(WindowEventArgs& e)
 {
-	fireEvent(EventRenderingStarted, e);
+	fireEvent(EventRenderingStarted, e, EventNamespace);
 }
 
 
 void Window::onRenderingEnded(WindowEventArgs& e)
 {
-	fireEvent(EventRenderingEnded, e);
+	fireEvent(EventRenderingEnded, e, EventNamespace);
 }
 
 
 void Window::onZChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventZOrderChanged, e);
+	fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
 
 void Window::onDestructionStarted(WindowEventArgs& e)
 {
-	fireEvent(EventDestructionStarted, e);
+	fireEvent(EventDestructionStarted, e, EventNamespace);
 }
 
 
@@ -2774,7 +2776,7 @@ void Window::onActivated(ActivationEventArgs& e)
 {
 	d_active = true;
 	requestRedraw();
-	fireEvent(EventActivated, e);
+	fireEvent(EventActivated, e, EventNamespace);
 }
 
 
@@ -2793,7 +2795,7 @@ void Window::onDeactivated(ActivationEventArgs& e)
 
 	d_active = false;
 	requestRedraw();
-	fireEvent(EventDeactivated, e);
+	fireEvent(EventDeactivated, e, EventNamespace);
 }
 
 
@@ -2821,21 +2823,21 @@ void Window::onParentSized(WindowEventArgs& e)
 		d_rel_area = absoluteToRelative_impl(d_parent, d_abs_area);
 	}
 
-	fireEvent(EventParentSized, e);
+	fireEvent(EventParentSized, e, EventNamespace);
 }
 
 
 void Window::onChildAdded(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventChildAdded, e);
+	fireEvent(EventChildAdded, e, EventNamespace);
 }
 
 
 void Window::onChildRemoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventChildRemoved, e);
+	fireEvent(EventChildRemoved, e, EventNamespace);
 }
 
 
@@ -2844,25 +2846,25 @@ void Window::onMouseEnters(MouseEventArgs& e)
 	// set the mouse cursor
 	MouseCursor::getSingleton().setImage(getMouseCursor());
 
-	fireEvent(EventMouseEnters, e);
+	fireEvent(EventMouseEnters, e, EventNamespace);
 }
 
 
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
-	fireEvent(EventMouseLeaves, e);
+	fireEvent(EventMouseLeaves, e, EventNamespace);
 }
 
 
 void Window::onMouseMove(MouseEventArgs& e)
 {
-	fireEvent(EventMouseMove, e);
+	fireEvent(EventMouseMove, e, EventNamespace);
 }
 
 
 void Window::onMouseWheel(MouseEventArgs& e)
 {
-	fireEvent(EventMouseWheel, e);
+	fireEvent(EventMouseWheel, e, EventNamespace);
 }
 
 
@@ -2873,49 +2875,49 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 		moveToFront();
 	}
 
-	fireEvent(EventMouseButtonDown, e);
+	fireEvent(EventMouseButtonDown, e, EventNamespace);
 }
 
 
 void Window::onMouseButtonUp(MouseEventArgs& e)
 {
-	fireEvent(EventMouseButtonUp, e);
+	fireEvent(EventMouseButtonUp, e, EventNamespace);
 }
 
 
 void Window::onMouseClicked(MouseEventArgs& e)
 {
-	fireEvent(EventMouseClick, e);
+	fireEvent(EventMouseClick, e, EventNamespace);
 }
 
 
 void Window::onMouseDoubleClicked(MouseEventArgs& e)
 {
-	fireEvent(EventMouseDoubleClick, e);
+	fireEvent(EventMouseDoubleClick, e, EventNamespace);
 }
 
 
 void Window::onMouseTripleClicked(MouseEventArgs& e)
 {
-	fireEvent(EventMouseTripleClick, e);
+	fireEvent(EventMouseTripleClick, e, EventNamespace);
 }
 
 
 void Window::onKeyDown(KeyEventArgs& e)
 {
-	fireEvent(EventKeyDown, e);
+	fireEvent(EventKeyDown, e, EventNamespace);
 }
 
 
 void Window::onKeyUp(KeyEventArgs& e)
 {
-	fireEvent(EventKeyUp, e);
+	fireEvent(EventKeyUp, e, EventNamespace);
 }
 
 
 void Window::onCharacter(KeyEventArgs& e)
 {
-	fireEvent(EventCharacterKey, e);
+	fireEvent(EventCharacterKey, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section

@@ -45,7 +45,6 @@ namespace CEGUI
 class CEGUIBASE_API TabPane : public Static
 {
 public:
-
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/

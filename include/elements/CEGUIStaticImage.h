@@ -50,6 +50,9 @@ namespace CEGUI
 class CEGUIBASE_API StaticImage : public Static
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Formatting Enumerations
 	*************************************************************************/

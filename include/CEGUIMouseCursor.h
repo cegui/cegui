@@ -66,6 +66,8 @@ enum MouseCursorImage
 class CEGUIBASE_API MouseCursor : public EventSet, public Singleton<MouseCursor>
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

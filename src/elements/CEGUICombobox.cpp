@@ -41,6 +41,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Combobox::EventNamespace("Combobox");
+
 /*************************************************************************
 	Definitions for Properties for this class
 *************************************************************************/
@@ -580,7 +582,7 @@ void Combobox::addComboboxEvents(void)
 *************************************************************************/
 void Combobox::onReadOnlyChanged(WindowEventArgs& e)
 {
-	fireEvent(EventReadOnlyModeChanged, e);
+	fireEvent(EventReadOnlyModeChanged, e, EventNamespace);
 }
 
 
@@ -589,7 +591,7 @@ void Combobox::onReadOnlyChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onValidationStringChanged(WindowEventArgs& e)
 {
-	fireEvent(EventValidationStringChanged, e);
+	fireEvent(EventValidationStringChanged, e, EventNamespace);
 }
 
 
@@ -598,7 +600,7 @@ void Combobox::onValidationStringChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
-	fireEvent(EventMaximumTextLengthChanged, e);
+	fireEvent(EventMaximumTextLengthChanged, e, EventNamespace);
 }
 
 
@@ -607,7 +609,7 @@ void Combobox::onMaximumTextLengthChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onTextInvalidatedEvent(WindowEventArgs& e)
 {
-	fireEvent(EventTextInvalidated, e);
+	fireEvent(EventTextInvalidated, e, EventNamespace);
 }
 
 
@@ -616,7 +618,7 @@ void Combobox::onTextInvalidatedEvent(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onInvalidEntryAttempted(WindowEventArgs& e)
 {
-	fireEvent(EventInvalidEntryAttempted, e);
+	fireEvent(EventInvalidEntryAttempted, e, EventNamespace);
 }
 
 
@@ -625,7 +627,7 @@ void Combobox::onInvalidEntryAttempted(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onCaratMoved(WindowEventArgs& e)
 {
-	fireEvent(EventCaratMoved, e);
+	fireEvent(EventCaratMoved, e, EventNamespace);
 }
 
 
@@ -634,7 +636,7 @@ void Combobox::onCaratMoved(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onTextSelectionChanged(WindowEventArgs& e)
 {
-	fireEvent(EventTextSelectionChanged, e);
+	fireEvent(EventTextSelectionChanged, e, EventNamespace);
 }
 
 
@@ -643,7 +645,7 @@ void Combobox::onTextSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onEditboxFullEvent(WindowEventArgs& e)
 {
-	fireEvent(EventEditboxFull, e);
+	fireEvent(EventEditboxFull, e, EventNamespace);
 }
 
 
@@ -652,7 +654,7 @@ void Combobox::onEditboxFullEvent(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onTextAcceptedEvent(WindowEventArgs& e)
 {
-	fireEvent(EventTextAccepted, e);
+	fireEvent(EventTextAccepted, e, EventNamespace);
 }
 
 
@@ -661,7 +663,7 @@ void Combobox::onTextAcceptedEvent(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onListContentsChanged(WindowEventArgs& e)
 {
-	fireEvent(EventListContentsChanged, e);
+	fireEvent(EventListContentsChanged, e, EventNamespace);
 }
 
 
@@ -670,7 +672,7 @@ void Combobox::onListContentsChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onListSelectionChanged(WindowEventArgs& e)
 {
-	fireEvent(EventListSelectionChanged, e);
+	fireEvent(EventListSelectionChanged, e, EventNamespace);
 }
 
 
@@ -679,7 +681,7 @@ void Combobox::onListSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onSortModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSortModeChanged, e);
+	fireEvent(EventSortModeChanged, e, EventNamespace);
 }
 
 
@@ -688,7 +690,7 @@ void Combobox::onSortModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventVertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
 
@@ -697,7 +699,7 @@ void Combobox::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventHorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
 
@@ -706,7 +708,7 @@ void Combobox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onDropListDisplayed(WindowEventArgs& e)
 {
-	fireEvent(EventDropListDisplayed, e);
+	fireEvent(EventDropListDisplayed, e, EventNamespace);
 }
 
 
@@ -715,7 +717,7 @@ void Combobox::onDropListDisplayed(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onDroplistRemoved(WindowEventArgs& e)
 {
-	fireEvent(EventDropListRemoved, e);
+	fireEvent(EventDropListRemoved, e, EventNamespace);
 }
 
 
@@ -724,7 +726,7 @@ void Combobox::onDroplistRemoved(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onListSelectionAccepted(WindowEventArgs& e)
 {
-	fireEvent(EventListSelectionAccepted, e);
+	fireEvent(EventListSelectionAccepted, e, EventNamespace);
 }
 
 

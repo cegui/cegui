@@ -30,6 +30,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String StaticImage::EventNamespace("StaticImage");
+
 /*************************************************************************
 	Definitions of Properties for this class
 *************************************************************************/

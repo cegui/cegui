@@ -28,6 +28,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String PushButton::EventNamespace("PushButton");
+
 /*************************************************************************
 	Event name constants
 *************************************************************************/
@@ -67,7 +69,7 @@ void PushButton::addPushButtonEvents(void)
 *************************************************************************/
 void PushButton::onClicked(WindowEventArgs& e)
 {
-	fireEvent(EventClicked, e);
+	fireEvent(EventClicked, e, EventNamespace);
 }
 
 

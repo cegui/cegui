@@ -28,6 +28,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String TabButton::EventNamespace("TabButton");
+
 /*************************************************************************
 	Event name constants
 *************************************************************************/
@@ -69,7 +71,7 @@ void TabButton::addTabButtonEvents(void)
 *************************************************************************/
 void TabButton::onClicked(WindowEventArgs& e)
 {
-	fireEvent(EventClicked, e);
+	fireEvent(EventClicked, e, EventNamespace);
 }
 
 

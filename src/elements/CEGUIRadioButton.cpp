@@ -28,6 +28,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String RadioButton::EventNamespace("RadioButton");
+
 /*************************************************************************
 	Definitions of Properties for this class
 *************************************************************************/
@@ -152,7 +154,7 @@ void RadioButton::deselectOtherButtonsInGroup(void) const
 *************************************************************************/
 void RadioButton::onSelectStateChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSelectStateChanged, e);
+	fireEvent(EventSelectStateChanged, e, EventNamespace);
 }
 
 

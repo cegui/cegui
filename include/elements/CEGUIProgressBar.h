@@ -47,6 +47,9 @@ namespace CEGUI
 class CEGUIBASE_API ProgressBar : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

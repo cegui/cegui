@@ -380,6 +380,10 @@ SOURCE=..\..\..\..\src\CEGUIFontManager.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\CEGUIGlobalEventSet.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\CEGUIGUILayout_xmlHandler.cpp
 # End Source File
 # Begin Source File
@@ -801,6 +805,10 @@ SOURCE=..\..\..\..\include\CEGUIFontManager_implData.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIForwardRefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIGlobalEventSet.h
 # End Source File
 # Begin Source File
 

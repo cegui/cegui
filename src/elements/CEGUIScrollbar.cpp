@@ -30,6 +30,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Scrollbar::EventNamespace("Scrollbar");
+
 /*************************************************************************
 	Definition of Properties for this class
 *************************************************************************/
@@ -208,7 +210,7 @@ void Scrollbar::addScrollbarEvents(void)
 *************************************************************************/
 void Scrollbar::onScrollPositionChanged(WindowEventArgs& e)
 {
-	fireEvent(EventScrollPositionChanged, e);
+	fireEvent(EventScrollPositionChanged, e, EventNamespace);
 }
 
 
@@ -217,7 +219,7 @@ void Scrollbar::onScrollPositionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onThumbTrackStarted(WindowEventArgs& e)
 {
-	fireEvent(EventThumbTrackStarted, e);
+	fireEvent(EventThumbTrackStarted, e, EventNamespace);
 }
 
 
@@ -226,7 +228,7 @@ void Scrollbar::onThumbTrackStarted(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 {
-	fireEvent(EventThumbTrackEnded, e);
+	fireEvent(EventThumbTrackEnded, e, EventNamespace);
 }
 
 
@@ -235,7 +237,7 @@ void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 {
-	fireEvent(EventScrollConfigChanged, e);
+	fireEvent(EventScrollConfigChanged, e, EventNamespace);
 }
 
 

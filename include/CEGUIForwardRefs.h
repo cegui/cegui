@@ -61,6 +61,8 @@ class FactoryModule;
 class ScriptModule;
 class ResourceProvider;
 class DefaultResourceProvider;
+class PropertyReceiver;
+class GlobalEventSet;
 
 /*************************************************************************
 	Forward reference declarations for GUI element base classes

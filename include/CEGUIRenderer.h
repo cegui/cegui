@@ -47,6 +47,8 @@ namespace CEGUI
 class CEGUIBASE_API Renderer : public EventSet
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

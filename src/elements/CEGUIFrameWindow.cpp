@@ -32,6 +32,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String FrameWindow::EventNamespace("FrameWindow");
+
 /*************************************************************************
 	Definitions for Properties
 *************************************************************************/
@@ -526,7 +528,7 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
-	fireEvent(EventRollupToggled, e);
+	fireEvent(EventRollupToggled, e, EventNamespace);
 }
 
 
@@ -535,7 +537,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
 *************************************************************************/
 void FrameWindow::onCloseClicked(WindowEventArgs& e)
 {
-	fireEvent(EventCloseClicked, e);
+	fireEvent(EventCloseClicked, e, EventNamespace);
 }
 
 

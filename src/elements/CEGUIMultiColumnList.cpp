@@ -36,6 +36,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String MultiColumnList::EventNamespace("MultiColumnList");
+
 /*************************************************************************
 	Properties for this class
 *************************************************************************/
@@ -1787,7 +1789,7 @@ void MultiColumnList::drawSelf(float z)
 *************************************************************************/
 void MultiColumnList::onSelectionModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSelectionModeChanged, e);
+	fireEvent(EventSelectionModeChanged, e, EventNamespace);
 }
 
 
@@ -1796,7 +1798,7 @@ void MultiColumnList::onSelectionModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onNominatedSelectColumnChanged(WindowEventArgs& e)
 {
-	fireEvent(EventNominatedSelectColumnChanged, e);
+	fireEvent(EventNominatedSelectColumnChanged, e, EventNamespace);
 }
 
 
@@ -1805,7 +1807,7 @@ void MultiColumnList::onNominatedSelectColumnChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onNominatedSelectRowChanged(WindowEventArgs& e)
 {
-	fireEvent(EventNominatedSelectRowChanged, e);
+	fireEvent(EventNominatedSelectRowChanged, e, EventNamespace);
 }
 
 
@@ -1814,7 +1816,7 @@ void MultiColumnList::onNominatedSelectRowChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventVertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 }
 
 
@@ -1823,7 +1825,7 @@ void MultiColumnList::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-	fireEvent(EventHorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 }
 
 
@@ -1833,7 +1835,7 @@ void MultiColumnList::onHorzScrollbarModeChanged(WindowEventArgs& e)
 void MultiColumnList::onSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventSelectionChanged, e);
+	fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 
 
@@ -1844,7 +1846,7 @@ void MultiColumnList::onListContentsChanged(WindowEventArgs& e)
 {
 	configureScrollbars();
 	requestRedraw();
-	fireEvent(EventListContentsChanged, e);
+	fireEvent(EventListContentsChanged, e, EventNamespace);
 }
 
 
@@ -1854,7 +1856,7 @@ void MultiColumnList::onListContentsChanged(WindowEventArgs& e)
 void MultiColumnList::onSortColumnChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventSortColumnChanged, e);
+	fireEvent(EventSortColumnChanged, e, EventNamespace);
 }
 
 
@@ -1864,7 +1866,7 @@ void MultiColumnList::onSortColumnChanged(WindowEventArgs& e)
 void MultiColumnList::onSortDirectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventSortDirectionChanged, e);
+	fireEvent(EventSortDirectionChanged, e, EventNamespace);
 }
 
 
@@ -1875,7 +1877,7 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 {
 	configureScrollbars();
 	requestRedraw();
-	fireEvent(EventListColumnSized, e);
+	fireEvent(EventListColumnSized, e, EventNamespace);
 }
 
 
@@ -1885,7 +1887,7 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventListColumnMoved, e);
+	fireEvent(EventListColumnMoved, e, EventNamespace);
 }
 
 

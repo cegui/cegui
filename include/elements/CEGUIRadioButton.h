@@ -48,6 +48,9 @@ namespace CEGUI
 class CEGUIBASE_API RadioButton : public ButtonBase
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

@@ -51,6 +51,9 @@ struct RegexValidator;
 class CEGUIBASE_API Editbox : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/

@@ -28,6 +28,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Thumb::EventNamespace("Thumb");
+
 /*************************************************************************
 	Static Properties for this class
 *************************************************************************/
@@ -152,7 +154,7 @@ void Thumb::addThumbEvents(void)
 *************************************************************************/
 void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 {
-	fireEvent(EventThumbPositionChanged, e);
+	fireEvent(EventThumbPositionChanged, e, EventNamespace);
 }
 
 
@@ -161,7 +163,7 @@ void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Thumb::onThumbTrackStarted(WindowEventArgs& e)
 {
-	fireEvent(EventThumbTrackStarted, e);
+	fireEvent(EventThumbTrackStarted, e, EventNamespace);
 }
 
 
@@ -170,7 +172,7 @@ void Thumb::onThumbTrackStarted(WindowEventArgs& e)
 *************************************************************************/
 void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 {
-	fireEvent(EventThumbTrackEnded, e);
+	fireEvent(EventThumbTrackEnded, e, EventNamespace);
 }
 
 

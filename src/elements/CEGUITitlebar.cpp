@@ -30,6 +30,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Titlebar::EventNamespace("Titlebar");
+
 /*************************************************************************
 	Definition of Properties for this class
 *************************************************************************/

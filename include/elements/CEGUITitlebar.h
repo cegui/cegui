@@ -48,6 +48,9 @@ namespace CEGUI
 class CEGUIBASE_API Titlebar : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*!
 	\brief
 		Return whether this title bar will respond to dragging.

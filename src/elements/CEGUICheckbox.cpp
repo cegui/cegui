@@ -28,6 +28,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Checkbox::EventNamespace("Checkbox");
+
 /*************************************************************************
 	Definitions for Properties
 *************************************************************************/
@@ -85,7 +87,7 @@ void Checkbox::setSelected(bool select)
 *************************************************************************/
 void Checkbox::onSelectStateChange(WindowEventArgs& e)
 {
-	fireEvent(EventCheckStateChanged, e);
+	fireEvent(EventCheckStateChanged, e, EventNamespace);
 }
 
 

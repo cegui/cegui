@@ -44,12 +44,15 @@
 #include "xercesc/sax2/XMLReaderFactory.hpp"
 #include "CEGUIDataContainer.h"
 #include "CEGUIResourceProvider.h"
+#include "CEGUIGlobalEventSet.h"
 #include <time.h>
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String System::EventNamespace("System");
+
 /*!
 \brief
 	Simple timer class.
@@ -321,6 +324,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	new WindowManager();
 	new SchemeManager();
 	new MouseCursor();
+	new GlobalEventSet();
 
 	// add default GUISheet factory - the only UI element we can create "out of the box".
 	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
@@ -422,6 +426,7 @@ System::~System(void)
 	delete	FontManager::getSingletonPtr();
 	delete	MouseCursor::getSingletonPtr();
 	delete	ImagesetManager::getSingletonPtr();
+	delete	GlobalEventSet::getSingletonPtr();
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton destroyed.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System destruction completed ----");
@@ -1136,7 +1141,7 @@ void System::addSystemEvents(void)
 *************************************************************************/
 void System::onGUISheetChanged(WindowEventArgs& e)
 {
-	fireEvent(EventGUISheetChanged, e);
+	fireEvent(EventGUISheetChanged, e, EventNamespace);
 }
 
 
@@ -1145,7 +1150,7 @@ void System::onGUISheetChanged(WindowEventArgs& e)
 *************************************************************************/
 void System::onSingleClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(EventSingleClickTimeoutChanged, e);
+	fireEvent(EventSingleClickTimeoutChanged, e, EventNamespace);
 }
 
 
@@ -1154,7 +1159,7 @@ void System::onSingleClickTimeoutChanged(EventArgs& e)
 *************************************************************************/
 void System::onMultiClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(EventMultiClickTimeoutChanged, e);
+	fireEvent(EventMultiClickTimeoutChanged, e, EventNamespace);
 }
 
 
@@ -1164,7 +1169,7 @@ void System::onMultiClickTimeoutChanged(EventArgs& e)
 *************************************************************************/
 void System::onMultiClickAreaSizeChanged(EventArgs& e)
 {
-	fireEvent(EventMultiClickAreaSizeChanged, e);
+	fireEvent(EventMultiClickAreaSizeChanged, e, EventNamespace);
 }
 
 
@@ -1173,7 +1178,7 @@ void System::onMultiClickAreaSizeChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
 {
-	fireEvent(EventDefaultFontChanged, e);
+	fireEvent(EventDefaultFontChanged, e, EventNamespace);
 }
 
 
@@ -1182,7 +1187,7 @@ void System::onDefaultFontChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultMouseCursorChanged(EventArgs& e)
 {
-	fireEvent(EventDefaultMouseCursorChanged, e);
+	fireEvent(EventDefaultMouseCursorChanged, e, EventNamespace);
 }
 
 
@@ -1191,7 +1196,7 @@ void System::onDefaultMouseCursorChanged(EventArgs& e)
 *************************************************************************/
 void System::onMouseMoveScalingChanged(EventArgs& e)
 {
-	fireEvent(EventMouseMoveScalingChanged, e);
+	fireEvent(EventMouseMoveScalingChanged, e, EventNamespace);
 }
 
 

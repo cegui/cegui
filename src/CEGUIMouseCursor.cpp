@@ -35,6 +35,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String MouseCursor::EventNamespace("MouseCursor");
+
 /*************************************************************************
 	Static Data Definitions
 *************************************************************************/
@@ -211,7 +213,7 @@ void MouseCursor::addMouseCursorEvents(void)
 
 void MouseCursor::onImageChanged(MouseCursorEventArgs& e)
 {
-	fireEvent(EventImageChanged, e);
+	fireEvent(EventImageChanged, e, EventNamespace);
 }
 
 

@@ -28,6 +28,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ProgressBar::EventNamespace("ProgressBar");
+
 /*************************************************************************
 	Definitions of Properties for this class
 *************************************************************************/
@@ -105,7 +107,7 @@ void ProgressBar::onProgressChanged(WindowEventArgs& e)
 {
 	requestRedraw();
 
-	fireEvent(EventProgressChanged, e);
+	fireEvent(EventProgressChanged, e, EventNamespace);
 }
 
 
@@ -114,7 +116,7 @@ void ProgressBar::onProgressChanged(WindowEventArgs& e)
 *************************************************************************/
 void ProgressBar::onProgressDone(WindowEventArgs& e)
 {
-	fireEvent(EventProgressDone, e);
+	fireEvent(EventProgressDone, e, EventNamespace);
 }
 
 /*************************************************************************

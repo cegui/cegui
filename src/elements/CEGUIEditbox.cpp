@@ -34,6 +34,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Editbox::EventNamespace("Editbox");
+
 /*!
 \brief
 	Internal struct to contain compiled regex string
@@ -953,7 +955,7 @@ void Editbox::addEditboxEvents(void)
 void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventReadOnlyModeChanged, e);
+	fireEvent(EventReadOnlyModeChanged, e, EventNamespace);
 }
 
 
@@ -964,7 +966,7 @@ void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 void Editbox::onMaskedRenderingModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventMaskedRenderingModeChanged , e);
+	fireEvent(EventMaskedRenderingModeChanged , e, EventNamespace);
 }
 
 
@@ -980,7 +982,7 @@ void Editbox::onMaskCodePointChanged(WindowEventArgs& e)
 		requestRedraw();
 	}
 
-	fireEvent(EventMaskCodePointChanged , e);
+	fireEvent(EventMaskCodePointChanged , e, EventNamespace);
 }
 
 
@@ -989,7 +991,7 @@ void Editbox::onMaskCodePointChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onValidationStringChanged(WindowEventArgs& e)
 {
-	fireEvent(EventValidationStringChanged , e);
+	fireEvent(EventValidationStringChanged , e, EventNamespace);
 }
 
 
@@ -999,7 +1001,7 @@ void Editbox::onValidationStringChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
-	fireEvent(EventMaximumTextLengthChanged , e);
+	fireEvent(EventMaximumTextLengthChanged , e, EventNamespace);
 }
 
 
@@ -1009,7 +1011,7 @@ void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onTextInvalidatedEvent(WindowEventArgs& e)
 {
-	fireEvent(EventTextInvalidated, e);
+	fireEvent(EventTextInvalidated, e, EventNamespace);
 }
 
 
@@ -1019,7 +1021,7 @@ void Editbox::onTextInvalidatedEvent(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
 {
-	fireEvent(EventInvalidEntryAttempted , e);
+	fireEvent(EventInvalidEntryAttempted , e, EventNamespace);
 }
 
 
@@ -1029,7 +1031,7 @@ void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
 void Editbox::onCaratMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventCaratMoved , e);
+	fireEvent(EventCaratMoved , e, EventNamespace);
 }
 
 
@@ -1039,7 +1041,7 @@ void Editbox::onCaratMoved(WindowEventArgs& e)
 void Editbox::onTextSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EventTextSelectionChanged , e);
+	fireEvent(EventTextSelectionChanged , e, EventNamespace);
 }
 
 
@@ -1049,7 +1051,7 @@ void Editbox::onTextSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onEditboxFullEvent(WindowEventArgs& e)
 {
-	fireEvent(EventEditboxFull, e);
+	fireEvent(EventEditboxFull, e, EventNamespace);
 }
 
 
@@ -1059,7 +1061,7 @@ void Editbox::onEditboxFullEvent(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 {
-	fireEvent(EventTextAccepted, e);
+	fireEvent(EventTextAccepted, e, EventNamespace);
 }
 
 

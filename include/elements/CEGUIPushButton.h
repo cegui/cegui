@@ -39,6 +39,9 @@ namespace CEGUI
 class CEGUIBASE_API PushButton : public ButtonBase
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

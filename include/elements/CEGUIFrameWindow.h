@@ -47,6 +47,9 @@ namespace CEGUI
 class CEGUIBASE_API FrameWindow : public Window
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
+
 	/*************************************************************************
 		Constants	
 	*************************************************************************/

@@ -30,6 +30,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ComboDropList::EventNamespace("ComboDropList");
+
 /*************************************************************************
 	Constants
 *************************************************************************/
@@ -86,7 +88,7 @@ void ComboDropList::addComboDropListEvents(void)
 *************************************************************************/
 void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 {
-	fireEvent(EventListSelectionAccepted, e);
+	fireEvent(EventListSelectionAccepted, e, EventNamespace);
 }
 
 

@@ -32,6 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String Renderer::EventNamespace("Renderer");
 
 /*************************************************************************
 	Event name constants (static data definitions)

@@ -42,6 +42,7 @@
 #include "CEGUIEventArgs.h"
 #include "CEGUIEvent.h"
 #include "CEGUIEventSet.h"
+#include "CEGUIGlobalEventSet.h"
 #include "CEGUIProperty.h"
 #include "CEGUIPropertySet.h"
 #include "CEGUIWindow.h"

@@ -77,6 +77,8 @@ enum CEGUIBASE_API MetricsMode
 class CEGUIBASE_API Window : public PropertySet, public EventSet
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/

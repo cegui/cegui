@@ -25,7 +25,7 @@
 *************************************************************************/
 #include "CEGUIEventSet.h"
 #include "CEGUIExceptions.h"
-
+#include "CEGUIGlobalEventSet.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -33,7 +33,7 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-EventSet::EventSet(void) :
+EventSet::EventSet() :
 	d_muted(false)
 {
 }
@@ -138,7 +138,7 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Group grou
 /*************************************************************************
 	Fire / Trigger an event
 *************************************************************************/
-void EventSet::fireEvent(const String& name, EventArgs& args)
+void EventSet::fireEvent(const String& name, EventArgs& args, const String& eventNamespace)
 {
 	EventMap::iterator pos = d_events.find(name);
 
@@ -153,6 +153,8 @@ void EventSet::fireEvent(const String& name, EventArgs& args)
 		(*pos->second)(args);
 	}
 
+	// handle global events
+	GlobalEventSet::getSingleton().fireEvent(name, args, eventNamespace);
 }
 
 

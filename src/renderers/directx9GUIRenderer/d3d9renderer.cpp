@@ -595,7 +595,7 @@ void DirectX9Renderer::setDisplaySize(const Size& sz)
 		d_display_area.setSize(sz);
 
 		EventArgs args;
-		fireEvent(EventDisplaySizeChanged, args);
+		fireEvent(EventDisplaySizeChanged, args, EventNamespace);
 	}
 
 }

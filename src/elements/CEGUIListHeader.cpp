@@ -32,6 +32,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ListHeader::EventNamespace("ListHeader");
+
 /*************************************************************************
 	Properties for this class
 *************************************************************************/
@@ -744,7 +746,7 @@ void ListHeader::layoutSegments(void)
 *************************************************************************/
 void ListHeader::onSortColumnChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSortColumnChanged, e);
+	fireEvent(EventSortColumnChanged, e, EventNamespace);
 }
 
 
@@ -753,7 +755,7 @@ void ListHeader::onSortColumnChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSortDirectionChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSortDirectionChanged, e);
+	fireEvent(EventSortDirectionChanged, e, EventNamespace);
 }
 
 
@@ -763,7 +765,7 @@ void ListHeader::onSortDirectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentSized(WindowEventArgs& e)
 {
-	fireEvent(EventSegmentSized, e);
+	fireEvent(EventSegmentSized, e, EventNamespace);
 }
 
 
@@ -773,7 +775,7 @@ void ListHeader::onSegmentSized(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentClicked(WindowEventArgs& e)
 {
-	fireEvent(EventSegmentClicked, e);
+	fireEvent(EventSegmentClicked, e, EventNamespace);
 }
 
 
@@ -783,7 +785,7 @@ void ListHeader::onSegmentClicked(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSplitterDoubleClicked(WindowEventArgs& e)
 {
-	fireEvent(EventSplitterDoubleClicked, e);
+	fireEvent(EventSplitterDoubleClicked, e, EventNamespace);
 }
 
 
@@ -792,7 +794,7 @@ void ListHeader::onSplitterDoubleClicked(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentSequenceChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSegmentSequenceChanged, e);
+	fireEvent(EventSegmentSequenceChanged, e, EventNamespace);
 }
 
 
@@ -801,7 +803,7 @@ void ListHeader::onSegmentSequenceChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentAdded(WindowEventArgs& e)
 {
-	fireEvent(EventSegmentAdded, e);
+	fireEvent(EventSegmentAdded, e, EventNamespace);
 }
 
 
@@ -810,7 +812,7 @@ void ListHeader::onSegmentAdded(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentRemoved(WindowEventArgs& e)
 {
-	fireEvent(EventSegmentRemoved, e);
+	fireEvent(EventSegmentRemoved, e, EventNamespace);
 }
 
 
@@ -820,7 +822,7 @@ void ListHeader::onSegmentRemoved(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSortSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSortSettingChanged, e);
+	fireEvent(EventSortSettingChanged, e, EventNamespace);
 }
 
 
@@ -830,7 +832,7 @@ void ListHeader::onSortSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onDragMoveSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(EventDragMoveSettingChanged, e);
+	fireEvent(EventDragMoveSettingChanged, e, EventNamespace);
 }
 
 
@@ -840,7 +842,7 @@ void ListHeader::onDragMoveSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onDragSizeSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(EventDragSizeSettingChanged, e);
+	fireEvent(EventDragSizeSettingChanged, e, EventNamespace);
 }
 
 
@@ -850,7 +852,7 @@ void ListHeader::onDragSizeSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentOffsetChanged(WindowEventArgs& e)
 {
-	fireEvent(EventSegmentRenderOffsetChanged, e);
+	fireEvent(EventSegmentRenderOffsetChanged, e, EventNamespace);
 }
 
 
