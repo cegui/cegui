@@ -314,11 +314,18 @@ void TLFrameWindow::storeFrameSizes(void)
 {
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
 
-	d_frameLeftSize		= iset->getImage(TopLeftFrameImageName).getWidth();
-	d_frameRightSize	= iset->getImage(TopRightFrameImageName).getWidth();
-	d_frameTopSize		= iset->getImage(TopFrameImageName).getHeight();
-	d_frameBottomSize	= iset->getImage(BottomFrameImageName).getHeight();
+	const Image* img;
+	img = &iset->getImage(LeftFrameImageName);
+	d_frameLeftSize = img->getWidth() + img->getOffsetX();
 
+	img = &iset->getImage(LeftFrameImageName);
+	d_frameRightSize = img->getWidth() + img->getOffsetX();
+
+	img = &iset->getImage(TopFrameImageName);
+	d_frameTopSize = img->getHeight() + img->getOffsetY();
+
+	img = &iset->getImage(BottomFrameImageName);
+	d_frameBottomSize = img->getHeight() + img->getOffsetY();
 }
 
 
