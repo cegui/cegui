@@ -161,9 +161,9 @@ Font::~Font(void)
 /*************************************************************************
 	Return the pixel width of the specified text if rendered with this Font.
 *************************************************************************/
-float Font::getTextExtent(const String& text) const
+float Font::getTextExtent(const String& text, float x_scale) const
 {
-	uint cur_extent = 0;
+	float cur_extent = 0;
 
 	uint char_count = text.length();
 	CodepointMap::const_iterator	pos, end = d_cp_map.end();
@@ -174,12 +174,12 @@ float Font::getTextExtent(const String& text) const
 
 		if (pos != end)
 		{
-			cur_extent += pos->second.d_horz_advance;
+			cur_extent += (float)pos->second.d_horz_advance * x_scale;
 		}
 
 	}
 
-	return (float)cur_extent;
+	return cur_extent;
 }
 
 
@@ -187,9 +187,9 @@ float Font::getTextExtent(const String& text) const
 	Return the index of the closest text character in String 'text' that
 	corresponds to pixel location 'pixel' if the text were rendered.
 *************************************************************************/
-uint Font::getCharAtPixel(const String& text, uint start_char, float pixel) const
+uint Font::getCharAtPixel(const String& text, uint start_char, float pixel, float x_scale) const
 {
-	uint cur_extent = 0;
+	float cur_extent = 0;
 	uint char_count = text.length();
 
 	// handle simple cases
@@ -206,7 +206,7 @@ uint Font::getCharAtPixel(const String& text, uint start_char, float pixel) cons
 
 		if (pos != end)
 		{
-			cur_extent += pos->second.d_horz_advance;
+			cur_extent += (float)pos->second.d_horz_advance * x_scale;
 
 			if (pixel < cur_extent)
 			{
@@ -224,12 +224,12 @@ uint Font::getCharAtPixel(const String& text, uint start_char, float pixel) cons
 /*************************************************************************
 	Renders text on the display.  Return number of lines output.
 *************************************************************************/
-uint Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours) const
+uint Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale) const
 {
 	uint thisCount;
 	uint lineCount = 0;
 
-	float	y_base = draw_area.d_top + d_max_bearingY;
+	float	y_base = draw_area.d_top + ((float)d_max_bearingY * y_scale);
 
 	Rect tmpDrawArea(
 		PixelAligned(draw_area.d_left),
@@ -254,36 +254,36 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 		switch(fmt)
 		{
 		case LeftAligned:
-			drawTextLine(currLine, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours);
+			drawTextLine(currLine, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
 			thisCount = 1;
-			y_base += getLineSpacing();
+			y_base += getLineSpacing(y_scale);
 			break;
 
 		case RightAligned:
-			drawTextLine(currLine, Vector3(tmpDrawArea.d_right - getTextExtent(currLine), y_base, z), clip_rect, colours);
+			drawTextLine(currLine, Vector3(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base, z), clip_rect, colours, x_scale, y_scale);
 			thisCount = 1;
-			y_base += getLineSpacing();
+			y_base += getLineSpacing(y_scale);
 			break;
 
 		case Centred:
-			drawTextLine(currLine, Vector3(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine)) / 2.0f)), y_base, z), clip_rect, colours);
+			drawTextLine(currLine, Vector3(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base, z), clip_rect, colours, x_scale, y_scale);
 			thisCount = 1;
-			y_base += getLineSpacing();
+			y_base += getLineSpacing(y_scale);
 			break;
 
 		case WordWrapLeftAligned:
-			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours);
-			tmpDrawArea.d_top += thisCount * getLineSpacing();
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours, x_scale, y_scale);
+			tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
 			break;
 
 		case WordWrapRightAligned:
-			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, RightAligned, colours);
-			tmpDrawArea.d_top += thisCount * getLineSpacing();
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, RightAligned, colours, x_scale, y_scale);
+			tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
 			break;
 
 		case WordWrapCentred:
-			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Centred, colours);
-			tmpDrawArea.d_top += thisCount * getLineSpacing();
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Centred, colours, x_scale, y_scale);
+			tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
 			break;
 
 		default:
@@ -534,7 +534,7 @@ void Font::drawGlyphToBuffer(ulong* buffer, uint buf_width)
 /*************************************************************************
 	draws wrapped text
 *************************************************************************/
-uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours) const
+uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale) const
 {
 	uint	line_count = 0;
 	Rect	dest_area(draw_area);
@@ -553,9 +553,9 @@ uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, c
 		currpos += getNextWord(text, currpos, thisWord);
 
 		// if the new word would make the string too long
-		if ((getTextExtent(thisLine) + getTextExtent(thisWord)) > wrap_width) {
+		if ((getTextExtent(thisLine, x_scale) + getTextExtent(thisWord, x_scale)) > wrap_width) {
 			// output what we had until this new word
-			line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours);
+			line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
 
 			// remove whitespace from next word - it will form start of next line
 			thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
@@ -564,7 +564,7 @@ uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, c
 			thisLine.clear();
 
 			// update y co-ordinate for next line
-			dest_area.d_top += getLineSpacing();
+			dest_area.d_top += getLineSpacing(y_scale);
 		}
 
 		// add the next word to the line
@@ -572,7 +572,7 @@ uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, c
 	}
 
 	// output last bit of string
-	line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours);
+	line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
 
 	return line_count;
 }
@@ -592,9 +592,11 @@ uint Font::getNextWord(const String& in_string, uint start_idx, String& out_stri
 /*************************************************************************
 	Draw a line of text.  No formatting is applied.
 *************************************************************************/
-void Font::drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours) const
+void Font::drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale, float y_scale) const
 {
 	Vector3	cur_pos(position);
+
+	float base_y = position.d_y;
 
 	uint char_count = text.length();
 	CodepointMap::const_iterator	pos, end = d_cp_map.end();
@@ -605,11 +607,15 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 
 		if (pos != end)
 		{
-			pos->second.d_image->draw(cur_pos, clip_rect, colours);
-			cur_pos.d_x += pos->second.d_horz_advance;
+			const Image* img = pos->second.d_image;
+			cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
+			Size sz(img->getWidth() * x_scale, img->getHeight() * y_scale);
+			img->draw(cur_pos, sz, clip_rect, colours);
+			cur_pos.d_x += (float)pos->second.d_horz_advance * x_scale;
 		}
 
 	}
+
 }
 
 
@@ -1000,7 +1006,7 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 /*************************************************************************
 	Return the number of lines the given text would be formatted to.	
 *************************************************************************/
-uint Font::getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt) const
+uint Font::getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale) const
 {
 	// handle simple non-wrapped cases.
 	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned))
@@ -1037,7 +1043,7 @@ uint Font::getFormattedLineCount(const String& text, const Rect& format_area, Te
 			currpos += getNextWord(sourceLine, currpos, thisWord);
 
 			// if the new word would make the string too long
-			if ((getTextExtent(thisLine) + getTextExtent(thisWord)) > wrap_width)
+			if ((getTextExtent(thisLine, x_scale) + getTextExtent(thisWord, x_scale)) > wrap_width)
 			{
 				// too long, so that's another line of text
 				line_count++;
@@ -1089,7 +1095,7 @@ void Font::setAntiAliased(bool setting)
 /*************************************************************************
 	Return the horizontal pixel extent given text would be formatted to.	
 *************************************************************************/
-float Font::getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt) const
+float Font::getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale) const
 {
 	float lineWidth;
 	float widest = 0;
@@ -1112,13 +1118,13 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
 		case Centred:
 		case RightAligned:
 		case LeftAligned:
-			lineWidth = getTextExtent(currLine);
+			lineWidth = getTextExtent(currLine, x_scale);
 			break;
 
 		case WordWrapLeftAligned:
 		case WordWrapRightAligned:
 		case WordWrapCentred:
-			lineWidth = getWrappedTextExtent(currLine, format_area.getWidth());
+			lineWidth = getWrappedTextExtent(currLine, format_area.getWidth(), x_scale);
 			break;
 
 		default:
@@ -1139,7 +1145,7 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
 /*************************************************************************
 	returns extent of widest line of wrapped text.
 *************************************************************************/
-float Font::getWrappedTextExtent(const String& text, float wrapWidth) const
+float Font::getWrappedTextExtent(const String& text, float wrapWidth, float x_scale) const
 {
 	String  whitespace = TextUtils::DefaultWhitespace;
 	String	thisWord;
@@ -1149,13 +1155,13 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth) const
 
 	// get first word.
 	currpos = getNextWord(text, 0, thisWord);
-	lineWidth = getTextExtent(thisWord);
+	lineWidth = getTextExtent(thisWord, x_scale);
 
 	// while there are words left in the string...
 	while (String::npos != text.find_first_not_of(whitespace, currpos)) {
 		// get next word of the string...
 		currpos += getNextWord(text, currpos, thisWord);
-		wordWidth = getTextExtent(thisWord);
+		wordWidth = getTextExtent(thisWord, x_scale);
 
 		// if the new word would make the string too long
 		if ((lineWidth + wordWidth) > wrapWidth) {
@@ -1167,7 +1173,7 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth) const
 
 			// remove whitespace from next word - it will form start of next line
 			thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
-			wordWidth = getTextExtent(thisWord);
+			wordWidth = getTextExtent(thisWord, x_scale);
 
 			// reset for a new line.
 			lineWidth = 0;

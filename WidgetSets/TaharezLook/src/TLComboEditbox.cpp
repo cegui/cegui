@@ -104,11 +104,11 @@ ulong TLComboEditbox::getTextIndexFromPosition(const Point& pt) const
 	//
 	if (isTextMasked())
 	{
-		return getFont()->getCharAtPixel(String(d_text.length(), getMaskCodePoint()), 0, wndx);
+		return getFont()->getCharAtPixel(String(d_text.length(), getMaskCodePoint()), wndx);
 	}
 	else
 	{
-		return getFont()->getCharAtPixel(d_text, 0, wndx);
+		return getFont()->getCharAtPixel(d_text, wndx);
 	}
 	
 }

@@ -114,10 +114,16 @@ public:
 		ColourRect object describing the colours to be applied when drawing the text.  NB: The colours specified in here are applied to each glyph,
 		rather than the text as a whole.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours) const;
+	uint	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
 
 
 	/*!
@@ -140,11 +146,17 @@ public:
 	\param fmt
 		One of the TextFormatting values specifying the text formatting required.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt) const
-	{ return drawText(text, draw_area, z, clip_rect, fmt, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour)); }
+	uint	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ return drawText(text, draw_area, z, clip_rect, fmt, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
 	/*!
@@ -164,11 +176,17 @@ public:
 	\param clip_rect
 		Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		Nothing.
 	*/
-	void	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect) const
-	{ drawText(text, draw_area, z, clip_rect, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour)); }
+	void	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ drawText(text, draw_area, z, clip_rect, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
 	/*!
@@ -193,11 +211,17 @@ public:
 		ColourRect object describing the colours to be applied when drawing the text.  NB: The colours specified in here are applied to each glyph,
 		rather than the text as a whole.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, const ColourRect& colours) const
-	{ return drawText(text, draw_area, z, draw_area, fmt, colours); }
+	uint	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ return drawText(text, draw_area, z, draw_area, fmt, colours, x_scale, y_scale); }
 
 
 	/*!
@@ -218,11 +242,17 @@ public:
 	\param fmt
 		One of the TextFormatting values specifying the text formatting required.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt) const
-	{ return drawText(text, draw_area, z, draw_area, fmt, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour)); }
+	uint	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ return drawText(text, draw_area, z, draw_area, fmt, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
 	/*!
@@ -240,11 +270,17 @@ public:
 	\param z
 		flat value specifying the z co-ordinate for the drawn text.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		Nothing.
 	*/
-	void	drawText(const String& text, const Rect& draw_area, float z) const
-	{ drawText(text, draw_area, z, draw_area, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour)); }
+	void	drawText(const String& text, const Rect& draw_area, float z, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ drawText(text, draw_area, z, draw_area, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
 	/*!
@@ -265,11 +301,17 @@ public:
 		ColourRect object describing the colours to be applied when drawing the text.  NB: The colours specified in here are applied to each glyph,
 		rather than the text as a whole.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		Nothing.
 	*/
-	void	drawText(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours) const
-	{ drawText(text, Rect(position.d_x, position.d_y, position.d_x, position.d_y), position.d_z, clip_rect, LeftAligned, colours); }
+	void	drawText(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ drawText(text, Rect(position.d_x, position.d_y, position.d_x, position.d_y), position.d_z, clip_rect, LeftAligned, colours, x_scale, y_scale); }
 
 
 	/*!
@@ -286,11 +328,17 @@ public:
 	\param clip_rect
 		Rect object describing the clipping area for the drawing.  No drawing will occur outside this Rect.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
+	\param y_scale
+		Scaling factor to be applied to each glyph's y axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		Nothing.
 	*/
-	void	drawText(const String& text, const Vector3& position, const Rect& clip_rect) const
-	{ drawText(text, Rect(position.d_x, position.d_y, position.d_x, position.d_y), position.d_z, clip_rect, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour)); }
+	void	drawText(const String& text, const Vector3& position, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f) const
+	{ drawText(text, Rect(position.d_x, position.d_y, position.d_x, position.d_y), position.d_z, clip_rect, LeftAligned, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
 	/*************************************************************************
@@ -408,30 +456,39 @@ public:
 	\param text
 		String object containing the text to return the rendered pixel width for.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis when measuring the extent, where 1.0f is considered to be 'normal'.
+
 	\return
 		Number of pixels that \a text will occupy when rendered with this Font.
 	*/
-	float	getTextExtent(const String& text) const;
+	float	getTextExtent(const String& text, float x_scale = 1.0f) const;
 
 
 	/*!
 	\brief
 		Return the pixel height for this Font.  This value is to be used for line spacing.
 
+	\param y_scale
+		Scaling factor to be applied to the line spacing, where 1.0f is considered to be 'normal'.
+
 	\return
 		Number of pixels between vertical base lines, i.e. The minimum pixel space between two lines of text.
 	*/
-	float	getLineSpacing(void) const		{return d_y_spacing;}
+	float	getLineSpacing(float y_scale = 1.0f) const		{return d_y_spacing * y_scale;}
 
 
 	/*!
 	\brief
 		Return the number of pixels from the top of the highest glyph to the baseline
 
+	\param y_scale
+		Scaling factor to be applied to the baseline distance, where 1.0f is considered to be 'normal'.
+
 	\return
 		pixel spacing from top of front glyphs to baseline
 	*/
-	float	getBaseline(void) const			{return (float)d_max_bearingY;}
+	float	getBaseline(float y_scale = 1.0f) const			{return (float)d_max_bearingY * y_scale;}
 
 
 	/*!
@@ -444,12 +501,15 @@ public:
 	\param pixel
 		Specifies the (horizontal) pixel offset to return the character index for.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis when measuring the text extent, where 1.0f is considered to be 'normal'.
+
 	\return
 		Returns a character index into String \a text for the character that would be rendered closest to horizontal pixel offset \a pixel if the
 		text were to be rendered via this Font.  Range of the return is from 0 to text.length(), so may actually return an index past the end of
 		the string, which indicates \a pixel was beyond the last character.
 	*/
-	uint	getCharAtPixel(const String& text, float pixel) const		{return getCharAtPixel(text, 0, pixel);}
+	uint	getCharAtPixel(const String& text, float pixel, float x_scale = 1.0f) const		{return getCharAtPixel(text, 0, pixel, x_scale);}
 
 
 	/*!
@@ -466,12 +526,15 @@ public:
 	\param pixel
 		Specifies the (horizontal) pixel offset to return the character index for.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis when measuring the text extent, where 1.0f is considered to be 'normal'.
+
 	\return
 		Returns a character index into String \a text for the character that would be rendered closest to horizontal pixel offset \a pixel if the
 		text were to be rendered via this Font.  Range of the return is from 0 to text.length(), so may actually return an index past the end of
 		the string, which indicates \a pixel was beyond the last character.
 	*/
-	uint	getCharAtPixel(const String& text, uint start_char, float pixel) const;
+	uint	getCharAtPixel(const String& text, uint start_char, float pixel, float x_scale = 1.0f) const;
 
 
 	/*!
@@ -533,10 +596,13 @@ public:
 	\param fmt
 		One of the TextFormatting values specifying the text formatting required.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		The number of lines produced from the specified formatting
 	*/
-	uint	getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt) const;
+	uint	getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f) const;
 
 
 	/*!
@@ -554,10 +620,13 @@ public:
 	\param fmt
 		One of the TextFormatting values specifying the text formatting required.
 
+	\param x_scale
+		Scaling factor to be applied to each glyph's x axis, where 1.0f is considered to be 'normal'.
+
 	\return
 		The widest pixel extent of the lines produced from the specified formatting.
 	*/
-	float	getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt) const;
+	float	getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f) const;
 
 
 	/*!
@@ -844,7 +913,7 @@ private:
 	\brief
 		draws wrapped text.  returns number of lines output.
 	*/
-	uint	drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours) const;
+	uint	drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
 
 
 	/*!
@@ -858,7 +927,7 @@ private:
 	\brief
 		Draw a line of text.  No formatting is applied.
 	*/
-	void	drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours) const;
+	void	drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
 
 
 	/*!
@@ -910,7 +979,7 @@ private:
 	\brief
 		returns extent of widest line of wrapped text.
 	*/
-	float	getWrappedTextExtent(const String& text, float wrapWidth) const;
+	float	getWrappedTextExtent(const String& text, float wrapWidth, float x_scale = 1.0f) const;
 
 
 	/*************************************************************************
