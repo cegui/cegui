@@ -109,6 +109,9 @@ public:
 	static const String EventChildRemoved;			//!< A child window has been removed
 	static const String EventDestructionStarted;		//!< Destruction of the Window is about to begin.
 	static const String EventZOrderChanged;			//!< The z-order of the window has changed
+	static const String EventDragDropItemEnters;	//!< A DragContainer has been dragged over this window.
+	static const String EventDragDropItemLeaves;	//!< A DragContainer has left this window.
+	static const String EventDragDropItemDropped;	//!< A DragContainer was dropped on this Window.
 
 	// generated externally (inputs)
 	static const String EventMouseEnters;				//!< Mouse cursor has entered the Window.
@@ -2498,6 +2501,41 @@ protected:
 		considered as 'junk'.
 	*/
 	virtual void	onCharacter(KeyEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when a DragContainer is dragged over this window.
+
+    \param e
+        DragDropEventArgs object initialised as follows:
+        - window field is normaly set to point to 'this' window.
+        - dragDropItem is a pointer to a DragContainer window that triggered the event.
+    */
+    virtual void    onDragDropItemEnters(DragDropEventArgs& e);
+
+
+    /*!
+    \brief
+        Handler called when a DragContainer is dragged over this window.
+
+    \param e
+        DragDropEventArgs object initialised as follows:
+        - window field is normaly set to point to 'this' window.
+        - dragDropItem is a pointer to a DragContainer window that triggered the event.
+    */
+    virtual void    onDragDropItemLeaves(DragDropEventArgs& e);
+
+
+    /*!
+    \brief
+        Handler called when a DragContainer is dragged over this window.
+
+    \param e
+        DragDropEventArgs object initialised as follows:
+        - window field is normaly set to point to 'this' window.
+        - dragDropItem is a pointer to a DragContainer window that triggered the event.
+    */
+    virtual void    onDragDropItemDropped(DragDropEventArgs& e);
 
 
 	/*************************************************************************

@@ -124,6 +124,9 @@ const String Window::EventChildAdded( (utf8*)"AddedChild" );
 const String Window::EventChildRemoved( (utf8*)"RemovedChild" );
 const String Window::EventDestructionStarted( (utf8*)"DestructStart" );
 const String Window::EventZOrderChanged( (utf8*)"ZChanged" );
+const String Window::EventDragDropItemEnters("DragDropItemEnters");
+const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
+const String Window::EventDragDropItemDropped("DragDropItemDropped");
 const String Window::EventMouseEnters( (utf8*)"MouseEnter" );
 const String Window::EventMouseLeaves( (utf8*)"MouseLeave" );
 const String Window::EventMouseMove( (utf8*)"MouseMove" );
@@ -1693,7 +1696,8 @@ void Window::addStandardEvents(void)
 	addEvent(EventInheritsAlphaChanged);	addEvent(EventAlwaysOnTopChanged);		addEvent(EventInputCaptureGained);
 	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
 	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
-	addEvent(EventZOrderChanged);			addEvent(EventParentSized);
+	addEvent(EventZOrderChanged);			addEvent(EventParentSized);             addEvent(EventDragDropItemEnters);
+    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);
 
 	// general input handling
 	addEvent(EventMouseEnters);				addEvent(EventMouseLeaves);				addEvent(EventMouseMove);
@@ -3118,6 +3122,21 @@ void Window::onKeyUp(KeyEventArgs& e)
 void Window::onCharacter(KeyEventArgs& e)
 {
 	fireEvent(EventCharacterKey, e, EventNamespace);
+}
+
+void Window::onDragDropItemEnters(DragDropEventArgs& e)
+{
+    fireEvent(EventDragDropItemEnters, e, EventNamespace);
+}
+
+void Window::onDragDropItemLeaves(DragDropEventArgs& e)
+{
+    fireEvent(EventDragDropItemLeaves, e, EventNamespace);
+}
+
+void Window::onDragDropItemDropped(DragDropEventArgs& e)
+{
+    fireEvent(EventDragDropItemDropped, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section

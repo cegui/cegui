@@ -300,6 +300,16 @@ public:
 	Window*	otherWindow;	//!< Pointer to the other window involved in the activation change.
 };
 
+/*!
+\brief
+	EventArgs based class used for certain drag/drop notifications
+*/
+class CEGUIBASE_API DragDropEventArgs : public WindowEventArgs
+{
+public:
+	DragDropEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+	DragContainer*	dragDropItem; //<! pointer to the DragContainer window being dragged / dropped.
+};
 
 } // End of  CEGUI namespace section
 

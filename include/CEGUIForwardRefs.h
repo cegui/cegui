@@ -93,6 +93,8 @@ class ListboxTextItem;
 class ComboDropList;
 class MultiLineEditbox;
 class Spinner;
+class GUISheet;
+class DragContainer;
 
 } // End of  CEGUI namespace section
 
