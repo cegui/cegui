@@ -108,9 +108,17 @@ void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& di
 *************************************************************************/
 DirectX9Renderer::~DirectX9Renderer(void)
 {
-	d_buffer->Release();
+	if (d_buffer != NULL)
+	{
+		d_buffer->Release();
+	}
+
 	destroyAllTextures();
-	d_device->Release();
+
+	if (d_device != NULL)
+	{
+		d_device->Release();
+	}
 }
 
 

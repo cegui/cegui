@@ -131,9 +131,17 @@ void DirectX81Renderer::constructor_impl(LPDIRECT3DDEVICE8 device, const Size& d
 *************************************************************************/
 DirectX81Renderer::~DirectX81Renderer(void)
 {
-	d_buffer->Release();
+	if (d_buffer != NULL)
+	{
+		d_buffer->Release();
+	}
+	
 	destroyAllTextures();
-	d_device->Release();
+	
+	if (d_device != NULL)
+	{
+		d_device->Release();
+	}
 }
 
 
