@@ -37,6 +37,16 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definition of Properties for this class
+*************************************************************************/
+ScrollbarProperties::DocumentSize	Scrollbar::d_documentSizeProperty;
+ScrollbarProperties::PageSize		Scrollbar::d_pageSizeProperty;
+ScrollbarProperties::StepSize		Scrollbar::d_stepSizeProperty;
+ScrollbarProperties::OverlapSize	Scrollbar::d_overlapSizeProperty;
+ScrollbarProperties::ScrollPosition	Scrollbar::d_scrollPositionProperty;
+
+
+/*************************************************************************
 	Event name constants
 *************************************************************************/
 const utf8	Scrollbar::ScrollPositionChanged[]		= "ScrollPosChanged";
@@ -54,6 +64,7 @@ Scrollbar::Scrollbar(const String& type, const String& name) :
 	d_position(0.0f)
 {
 	addScrollbarEvents();
+	addScrollbarProperties();
 }
 
 
@@ -239,5 +250,19 @@ void Scrollbar::handleDecreaseClicked(const EventArgs& e)
 	// adjust scroll bar position as required.
 	setScrollPosition(d_position - d_stepSize);
 }
+
+/*************************************************************************
+	Add scroll bar properties
+*************************************************************************/
+void Scrollbar::addScrollbarProperties(void)
+{
+	addProperty(&d_documentSizeProperty);
+	addProperty(&d_pageSizeProperty);
+	addProperty(&d_stepSizeProperty);
+	addProperty(&d_overlapSizeProperty);
+	addProperty(&d_scrollPositionProperty);
+}
+
+
 
 } // End of  CEGUI namespace section

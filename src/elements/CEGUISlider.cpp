@@ -30,6 +30,13 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Definition of Properties for this class
+*************************************************************************/
+SliderProperties::CurrentValue	Slider::d_currentValueProperty;
+SliderProperties::MaximumValue	Slider::d_maximumValueProperty;
+SliderProperties::ClickStepSize	Slider::d_clickStepSizeProperty;
+
 
 /*************************************************************************
 	Event name constants
@@ -48,6 +55,7 @@ Slider::Slider(const String& type, const String& name) :
 	d_thumb(NULL)
 {
 	addSliderEvents();
+	addSliderProperties();
 }
 
 
@@ -186,6 +194,16 @@ void Slider::onSized(WindowEventArgs& e)
 void Slider::handleThumbMoved(const EventArgs& e)
 {
 	setCurrentValue(getValueFromThumb());
+}
+
+/*************************************************************************
+	Add properties for the slider
+*************************************************************************/
+void Slider::addSliderProperties(void)
+{
+	addProperty(&d_currentValueProperty);
+	addProperty(&d_clickStepSizeProperty);
+	addProperty(&d_maximumValueProperty);
 }
 
 

@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
 #include "CEGUIFont.h"
+#include "elements/CEGUIMultiLineEditboxProperties.h"
 
 #include <vector>
 
@@ -182,6 +183,17 @@ public:
 		colour value describing the ARGB colour that is currently set.
 	*/
 	colour	getInactiveSelectBrushColour(void) const	{return d_inactiveSelectBrushColour;}
+
+
+	/*!
+	\brief
+		Return whether the text in the edit box will be word-wrapped.
+
+	\return
+		- true if the text will be word-wrapped at the edges of the widget frame.
+		- false if text will not be word-wrapped (a scroll bar will be used to access long text lines).
+	*/
+	bool	isWordWrapped(void) const;
 
 
 	/*************************************************************************
@@ -727,6 +739,28 @@ protected:
 	colour	d_selectTextColour;				//!< Text colour used when text is highlighted
 	colour	d_selectBrushColour;			//!< Colour to apply to the selection brush.
 	colour	d_inactiveSelectBrushColour;	//!< Colour to apply to the selection brush when widget is inactive / read-only.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static MultiLineEditboxProperties::ReadOnly					d_readOnlyProperty;
+	static MultiLineEditboxProperties::WordWrap					d_wordWrapProperty;
+	static MultiLineEditboxProperties::CaratIndex				d_caratIndexProperty;
+	static MultiLineEditboxProperties::SelectionStart			d_selectionStartProperty;
+	static MultiLineEditboxProperties::SelectionLength			d_selectionLengthProperty;
+	static MultiLineEditboxProperties::MaxTextLength			d_maxTextLengthProperty;
+	static MultiLineEditboxProperties::NormalTextColour			d_normalTextColourProperty;
+	static MultiLineEditboxProperties::SelectedTextColour		d_selectedTextColourProperty;
+	static MultiLineEditboxProperties::ActiveSelectionColour	d_activeSelectionColourProperty;
+	static MultiLineEditboxProperties::InactiveSelectionColour	d_inactiveSelectionColourProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addMultiLineEditboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIProgressBarProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -168,6 +169,20 @@ protected:
 	*************************************************************************/
 	float	d_progress;		//!< current progress (from 0.0f to 1.0f)
 	float	d_step;			//!< amount to 'step' progress by on a call to step()
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ProgressBarProperties::CurrentProgress	d_currentProgressProperty;
+	static ProgressBarProperties::StepSize			d_stepSizeProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addProgressBarProperties(void);
 };
 
 

@@ -272,6 +272,9 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIFrameWindow.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIFrameWindowProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListbox.cpp">
 				</File>
 				<File
@@ -293,7 +296,13 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiLineEditbox.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMultiLineEditboxProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIProgressBar.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIProgressBarProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIPushButton.cpp">
@@ -302,10 +311,19 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIRadioButton.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIRadioButtonProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIScrollbar.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIScrollbarProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUISlider.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUISliderProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIStatic.cpp">
@@ -499,6 +517,9 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIFrameWindow.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIFrameWindowProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIGUISheet.h">
 				</File>
 				<File
@@ -523,7 +544,13 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiLineEditbox.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMultiLineEditboxProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIProgressBar.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIProgressBarProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIPushButton.h">
@@ -532,10 +559,19 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIRadioButton.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIRadioButtonProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIScrollbar.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIScrollbarProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUISlider.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUISliderProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIStatic.h">

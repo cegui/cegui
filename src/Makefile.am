@@ -54,6 +54,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIEditbox.cpp \
 		      elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
+                      elements/CEGUIFrameWindowProperties.cpp \
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \
                       elements/CEGUIListboxTextItem.cpp \
@@ -61,11 +62,16 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIListHeaderSegment.cpp \
                       elements/CEGUIMultiColumnList.cpp \
 		      elements/CEGUIMultiLineEditbox.cpp \
+		      elements/CEGUIMultiLineEditboxProperties.cpp \
                       elements/CEGUIProgressBar.cpp \
+                      elements/CEGUIProgressBarProperties.cpp \
                       elements/CEGUIPushButton.cpp \
                       elements/CEGUIRadioButton.cpp \
+                      elements/CEGUIRadioButtonProperties.cpp \
                       elements/CEGUIScrollbar.cpp \
+                      elements/CEGUIScrollbarProperties.cpp \
                       elements/CEGUISlider.cpp \
+                      elements/CEGUISliderProperties.cpp \
                       elements/CEGUIStatic.cpp \
                       elements/CEGUIStaticImage.cpp \
                       elements/CEGUIStaticText.cpp \

@@ -28,7 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "elements/CEGUIButtonBase.h"
-
+#include "elements/CEGUIRadioButtonProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -162,6 +162,20 @@ protected:
 	*************************************************************************/
 	bool		d_selected;				// true when radio button is selected (has checkmark)
 	ulong		d_groupID;				// radio button group ID
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static RadioButtonProperties::Selected	d_selectedProperty;
+	static RadioButtonProperties::GroupID	d_groupIDProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addRadioButtonProperties(void);
 };
 
 

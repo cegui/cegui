@@ -40,6 +40,21 @@ namespace CEGUI
 	Undo support
 *************************************************************************/
 /*************************************************************************
+	Static Properties for this class
+*************************************************************************/
+MultiLineEditboxProperties::ReadOnly				MultiLineEditbox::d_readOnlyProperty;
+MultiLineEditboxProperties::WordWrap				MultiLineEditbox::d_wordWrapProperty;
+MultiLineEditboxProperties::CaratIndex				MultiLineEditbox::d_caratIndexProperty;
+MultiLineEditboxProperties::SelectionStart			MultiLineEditbox::d_selectionStartProperty;
+MultiLineEditboxProperties::SelectionLength			MultiLineEditbox::d_selectionLengthProperty;
+MultiLineEditboxProperties::MaxTextLength			MultiLineEditbox::d_maxTextLengthProperty;
+MultiLineEditboxProperties::NormalTextColour		MultiLineEditbox::d_normalTextColourProperty;
+MultiLineEditboxProperties::SelectedTextColour		MultiLineEditbox::d_selectedTextColourProperty;
+MultiLineEditboxProperties::ActiveSelectionColour	MultiLineEditbox::d_activeSelectionColourProperty;
+MultiLineEditboxProperties::InactiveSelectionColour	MultiLineEditbox::d_inactiveSelectionColourProperty;
+
+
+/*************************************************************************
 	Constants
 *************************************************************************/
 // event names
@@ -86,6 +101,8 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 {
 	// add events specific to this widget.
 	addMultiLineEditboxEvents();
+
+	addMultiLineEditboxProperties();
 }
 
 
@@ -1577,5 +1594,31 @@ void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 	fireEvent(HorzScrollbarModeChanged, e);
 }
 
+
+/*************************************************************************
+	Return whether the text in the edit box will be word-wrapped.
+*************************************************************************/
+bool MultiLineEditbox::isWordWrapped(void) const
+{
+	return d_wordWrap;
+}
+
+
+/*************************************************************************
+	Add new properties for this class
+*************************************************************************/
+void MultiLineEditbox::addMultiLineEditboxProperties(void)
+{
+	addProperty(&d_readOnlyProperty);
+	addProperty(&d_wordWrapProperty);
+	addProperty(&d_caratIndexProperty);
+	addProperty(&d_selectionStartProperty);
+	addProperty(&d_selectionLengthProperty);
+	addProperty(&d_maxTextLengthProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_selectedTextColourProperty);
+	addProperty(&d_activeSelectionColourProperty);
+	addProperty(&d_inactiveSelectionColourProperty);
+}
 
 } // End of  CEGUI namespace section

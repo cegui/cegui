@@ -29,6 +29,13 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definitions of Properties for this class
+*************************************************************************/
+ProgressBarProperties::CurrentProgress	ProgressBar::d_currentProgressProperty;
+ProgressBarProperties::StepSize			ProgressBar::d_stepSizeProperty;
+
+
+/*************************************************************************
 	Event name constants
 *************************************************************************/
 const utf8	ProgressBar::ProgressChanged[]	= "ProgressChanged";
@@ -44,6 +51,7 @@ ProgressBar::ProgressBar(const String& type, const String& name) :
 	d_step(0.01f)
 {
 	addProgressBarEvents();
+	addProgressBarProperties();
 }
 
 
@@ -108,5 +116,15 @@ void ProgressBar::onProgressDone(WindowEventArgs& e)
 {
 	fireEvent(ProgressDone, e);
 }
+
+/*************************************************************************
+	add properties defined for this class
+*************************************************************************/
+void ProgressBar::addProgressBarProperties(void)
+{
+	addProperty(&d_stepSizeProperty);
+	addProperty(&d_currentProgressProperty);
+}
+
 
 } // End of  CEGUI namespace section

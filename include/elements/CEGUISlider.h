@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUISliderProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -251,6 +252,21 @@ protected:
 
 	// Pointers to the controls that make up the slider
 	Thumb*	d_thumb;		//!< widget used to represent the 'thumb' of the slider.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static SliderProperties::CurrentValue	d_currentValueProperty;
+	static SliderProperties::MaximumValue	d_maximumValueProperty;
+	static SliderProperties::ClickStepSize	d_clickStepSizeProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addSliderProperties(void);
 };
 
 } // End of  CEGUI namespace section

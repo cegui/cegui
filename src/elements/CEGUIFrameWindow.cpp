@@ -33,6 +33,19 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Definitions for Properties
+*************************************************************************/
+FrameWindowProperties::SizingEnabled			FrameWindow::d_sizingEnabledProperty;
+FrameWindowProperties::FrameEnabled				FrameWindow::d_frameEnabledProperty;
+FrameWindowProperties::TitlebarEnabled			FrameWindow::d_titlebarEnabledProperty;
+FrameWindowProperties::CloseButtonEnabled		FrameWindow::d_closeButtonEnabledProperty;
+FrameWindowProperties::RollUpState				FrameWindow::d_rollUpStateProperty;
+FrameWindowProperties::RollUpEnabled			FrameWindow::d_rollUpEnabledProperty;
+FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProperty;
+FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
+FrameWindowProperties::TitlebarFont				FrameWindow::d_titlebarFontProperty;
+
 
 /*************************************************************************
 	Constants
@@ -63,6 +76,7 @@ FrameWindow::FrameWindow(const String& type, const String& name) :
 	d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = NULL;
 
 	addFrameWindowEvents();
+	addFrameWindowProperties();
 }
 
 
@@ -705,6 +719,32 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 
 	}
 
+}
+
+
+/*************************************************************************
+	Return the font being used for the title bar text
+*************************************************************************/
+const Font* FrameWindow::getTitlebarFont(void) const
+{
+	return (d_titlebar != NULL) ? d_titlebar->getFont() : NULL;
+}
+
+
+/*************************************************************************
+	Add properties for this class
+*************************************************************************/
+void FrameWindow::addFrameWindowProperties(void)
+{
+	addProperty(&d_sizingEnabledProperty);
+	addProperty(&d_frameEnabledProperty);
+	addProperty(&d_titlebarEnabledProperty);
+	addProperty(&d_closeButtonEnabledProperty);
+	addProperty(&d_rollUpEnabledProperty);
+	addProperty(&d_rollUpStateProperty);
+	addProperty(&d_dragMovingEnabledProperty);
+	addProperty(&d_sizingBorderThicknessProperty);
+	addProperty(&d_titlebarFontProperty);
 }
 
 

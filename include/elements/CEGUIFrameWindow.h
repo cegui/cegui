@@ -28,6 +28,8 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIFrameWindowProperties.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -301,6 +303,16 @@ public:
 	void	setDragMovingEnabled(bool setting);
 
 
+	/*!
+	\brief
+		Return the font being used for the title bar text
+
+	\return
+		Pointer to the Font being used for the TitleBar on this FrameWindow.
+	*/
+	const Font*	getTitlebarFont(void) const;
+
+
 protected:
 	/*************************************************************************
 		Construction / Destruction
@@ -545,6 +557,27 @@ protected:
 	const Image*	d_neswSizingCursor;		//!< North-East/South-West cursor image.
 
 	bool	d_dragMovable;		//!< true if the window will move when dragged by the title bar.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static FrameWindowProperties::SizingEnabled		d_sizingEnabledProperty;
+	static FrameWindowProperties::FrameEnabled		d_frameEnabledProperty;
+	static FrameWindowProperties::TitlebarEnabled	d_titlebarEnabledProperty;
+	static FrameWindowProperties::CloseButtonEnabled d_closeButtonEnabledProperty;
+	static FrameWindowProperties::RollUpState		d_rollUpStateProperty;
+	static FrameWindowProperties::RollUpEnabled		d_rollUpEnabledProperty;
+	static FrameWindowProperties::DragMovingEnabled	d_dragMovingEnabledProperty;
+	static FrameWindowProperties::SizingBorderThickness d_sizingBorderThicknessProperty;
+	static FrameWindowProperties::TitlebarFont		d_titlebarFontProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addFrameWindowProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -29,6 +29,13 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definitions of Properties for this class
+*************************************************************************/
+RadioButtonProperties::Selected	RadioButton::d_selectedProperty;
+RadioButtonProperties::GroupID	RadioButton::d_groupIDProperty;
+
+
+/*************************************************************************
 	Event name constants
 *************************************************************************/
 // generated internally by Window
@@ -45,6 +52,8 @@ RadioButton::RadioButton(const String& type, const String& name) :
 {
 	// add radio button specific events.
 	addRadioButtonEvents();
+
+	addRadioButtonProperties();
 }
 
 
@@ -210,5 +219,15 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 	// no selected button attached to this window is in same group
 	return NULL;
 }
+
+/*************************************************************************
+	Add properties for radio button
+*************************************************************************/
+void RadioButton::addRadioButtonProperties(void)
+{
+	addProperty(&d_selectedProperty);
+	addProperty(&d_groupIDProperty);
+}
+
 
 } // End of  CEGUI namespace section

@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIScrollbarProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -417,6 +418,23 @@ protected:
 	Thumb*		d_thumb;		//!< widget used to represent the 'thumb' of the scroll bar.
 	PushButton*	d_increase;		//!< Widget used for the increase button of the scroll bar.
 	PushButton*	d_decrease;		//!< Widget used for the decrease button of the scroll bar.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ScrollbarProperties::DocumentSize	d_documentSizeProperty;
+	static ScrollbarProperties::PageSize		d_pageSizeProperty;
+	static ScrollbarProperties::StepSize		d_stepSizeProperty;
+	static ScrollbarProperties::OverlapSize		d_overlapSizeProperty;
+	static ScrollbarProperties::ScrollPosition	d_scrollPositionProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addScrollbarProperties(void);
 };
 
 
