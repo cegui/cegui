@@ -1155,6 +1155,90 @@ public:
     void	set(PropertyReceiver* receiver, const String& value);
 };
 
+
+/*!
+\brief
+    Property to control whether the window will receive autorepeat mouse button down events.
+
+    This property offers access to the setting that controls whether a window will receive autorepeat
+    mouse button down events.
+
+    \par Usage:
+        - Name: MouseButtonDownAutoRepeat
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate the Window will receive autorepeat mouse button down events.
+        - "False" to indicate the Window will not receive autorepeat mouse button down events.
+*/
+class MouseButtonDownAutoRepeat : public Property
+{
+public:
+    MouseButtonDownAutoRepeat() : Property(
+        "MouseButtonDownAutoRepeat",
+        "Property to get/set whether the window will receive autorepeat mouse button down events.  Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*!
+\brief
+    Property to access window autorepeat delay value.
+
+    This property offers access to the value that controls the initial delay for autorepeat mouse button down events.
+
+    \par Usage:
+        - Name: AutoRepeatDelay
+        - Format: "[float]".
+
+    \par Where:
+        - [float]   specifies the delay in seconds.
+*/
+class AutoRepeatDelay : public Property
+{
+public:
+    AutoRepeatDelay() : Property(
+        "AutoRepeatDelay",
+        "Property to get/set the autorepeat delay.  Value is a floating point number indicating the delay required in seconds.",
+        "0.3")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*!
+\brief
+    Property to access window autorepeat rate value.
+
+    This property offers access to the value that controls the generation rate for autorepeat mouse button down events.
+
+    \par Usage:
+        - Name: AutoRepeatRate
+        - Format: "[float]".
+
+    \par Where:
+        - [float]   specifies the rate at which autorepeat events will be generated in seconds.
+*/
+class AutoRepeatRate : public Property
+{
+public:
+    AutoRepeatRate() : Property(
+        "AutoRepeatRate",
+        "Property to get/set the autorepeat rate.  Value is a floating point number indicating the rate required in seconds.",
+        "0.06")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 

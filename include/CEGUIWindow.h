@@ -61,7 +61,7 @@ enum CEGUIBASE_API MetricsMode
 {
 	Relative,		//!< Metrics are specified as a decimal fraction of parent Window size.
 	Absolute,		//!< Metrics are specified as whole pixels.
-	Inherited,		//!< Metrics are inherited from parent.
+	Inherited		//!< Metrics are inherited from parent.
 };
 
 
@@ -987,7 +987,38 @@ public:
     bool    wantsMultiClickEvents(void) const;
 
 
-	/*************************************************************************
+    /*!
+    \brief
+        Return whether mouse button down event autorepeat is enabled for this window.
+
+    \return
+        - true if autorepeat of mouse button down events is enabled for this window.
+        - false if autorepeat of mouse button down events is not enabled for this window.
+    */
+    bool    isMouseAutoRepeatEnabled(void) const;
+
+
+    /*!
+    \brief
+        Return the current auto-repeat delay setting for this window.
+
+    \return
+        float value indicating the delay, in seconds, defore the first repeat mouse button down event will be triggered when autorepeat is enabled.
+    */
+    float   getAutoRepeatDelay(void) const;
+
+    
+    /*!
+    \brief
+        Return the current auto-repeat rate setting for this window.
+
+    \return
+        float value indicating the rate, in seconds, at which repeat mouse button down events will be generated after the initial delay has expired.
+    */
+    float   getAutoRepeatRate(void) const;
+
+
+    /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
 	/*!
@@ -1692,6 +1723,46 @@ public:
     */
     void setWantsMultiClickEvents(bool setting);
 
+    
+    /*!
+    \brief
+        Set whether mouse button down event autorepeat is enabled for this window.
+
+    \param setting
+        - true to enable autorepeat of mouse button down events.
+        - false to disable autorepeat of mouse button down events.
+
+    \return
+        Nothing.
+    */
+    void    setMouseAutoRepeatEnabled(bool setting);
+
+
+    /*!
+    \brief
+        Set the current auto-repeat delay setting for this window.
+
+    \param delay
+        float value indicating the delay, in seconds, defore the first repeat mouse button down event should be triggered when autorepeat is enabled.
+
+    \return
+        Nothing.
+    */
+    void   setAutoRepeatDelay(float delay);
+
+    
+    /*!
+    \brief
+        Set the current auto-repeat rate setting for this window.
+
+    \param rate
+        float value indicating the rate, in seconds, at which repeat mouse button down events should be generated after the initial delay has expired.
+
+    \return
+        Nothing.
+    */
+    void   setAutoRepeatRate(float rate);
+
 
 	/*************************************************************************
 		Co-ordinate and Size Conversion Functions
@@ -1972,7 +2043,7 @@ public:
 	/*!
 	\brief
 		Cause window to update itself and any attached children.  Client code does not need to call this method; to
-		ensure full, and proper updates, call the TODO: methodname method provided by the System class.
+		ensure full, and proper updates, call the injectTimePulse methodname method provided by the System class.
 
 	\note
 		The update order is such that 'this' window is updated prior to any child windows, this is so
@@ -2419,7 +2490,7 @@ protected:
 	\return
 		Nothing.
 	*/
-	virtual void	updateSelf(float elapsed) {}
+	virtual void	updateSelf(float elapsed);
 
 
 	/*!
@@ -2529,6 +2600,13 @@ protected:
 	*/
 	MetricsMode getInheritedMetricsMode(void) const;
 
+    
+    /*!
+    \brief
+        Fires off a repeated mouse button down event for this window.
+    */
+    void    generateAutoRepeatEvent(MouseButton button);
+
 
 	/*************************************************************************
 		Implementation Data
@@ -2566,6 +2644,14 @@ protected:
 	bool	d_restoreOldCapture;		//!< true if the Window restores capture to the previous window when it releases capture.
 	bool	d_zOrderingEnabled;			//!< true if the Window responds to z-order change requests.
     bool    d_wantsMultiClicks;         //!< true if the Window wishes to hear about multi-click mouse events.
+
+    // mouse button autorepeat data
+    bool    d_autoRepeat;       //!< true if button will auto-repeat mouse button down events while mouse button is held down,
+    float   d_repeatDelay;      //!< seconds before first repeat event is fired
+    float   d_repeatRate;       //!< secons between further repeats after delay has expired.
+    bool    d_repeating;        //!< implements repeating - is true after delay has elapsed,
+    float   d_repeatElapsed;    //!< implements repeating - tracks time elapsed.
+    MouseButton d_repeatButton; //!< Button we're tracking (implication of this is that we only support one button at a time).
 
 protected:
 	/*************************************************************************
@@ -2611,6 +2697,9 @@ protected:
 	static	WindowProperties::YPosition			d_yPosProperty;
 	static	WindowProperties::ZOrderChangeEnabled	d_zOrderChangeProperty;
     static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
+    static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
+    static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
+    static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
 
 
 	/*************************************************************************

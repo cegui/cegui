@@ -83,6 +83,9 @@ WindowProperties::XPosition			Window::d_xPosProperty;
 WindowProperties::YPosition			Window::d_yPosProperty;
 WindowProperties::ZOrderChangeEnabled	Window::d_zOrderChangeProperty;
 WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
+WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
+WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
+WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
 
 
 /*************************************************************************
@@ -161,6 +164,13 @@ Window::Window(const String& type, const String& name) :
 	d_restoreOldCapture	= false;
 	d_zOrderingEnabled	= true;
     d_wantsMultiClicks  = true;
+
+    // initialise mouse button auto-repeat state
+    d_repeatButton = NoButton;
+    d_autoRepeat   = false;
+    d_repeating    = false;
+    d_repeatDelay  = 0.3f;
+    d_repeatRate   = 0.06f;
 
 	// position and size
 	d_abs_area = Rect(0, 0, 0, 0);
@@ -2509,6 +2519,21 @@ void Window::setRect(MetricsMode mode, const Rect& area)
 
 
 /*************************************************************************
+    Helper method to fire off a mouse button down event.
+*************************************************************************/
+void Window::generateAutoRepeatEvent(MouseButton button)
+{
+    MouseEventArgs ma(this);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = System::getSingleton().getSystemKeys();
+    ma.wheelChange = 0;
+    onMouseButtonDown(ma);
+}
+
+
+/*************************************************************************
 	Add standard CEGUI::Window properties.
 *************************************************************************/
 void Window::addStandardProperties(void)
@@ -2553,6 +2578,9 @@ void Window::addStandardProperties(void)
 	addProperty(&d_yPosProperty);
 	addProperty(&d_zOrderChangeProperty);
     addProperty(&d_wantsMultiClicksProperty);
+    addProperty(&d_autoRepeatProperty);
+    addProperty(&d_autoRepeatDelayProperty);
+    addProperty(&d_autoRepeatRateProperty);
 }
 
 
@@ -2605,6 +2633,81 @@ void Window::setWantsMultiClickEvents(bool setting)
 
 
 /*************************************************************************
+    Return whether mouse button down event autorepeat is enabled for
+    this window.
+*************************************************************************/
+bool Window::isMouseAutoRepeatEnabled(void) const
+{
+    return d_autoRepeat;
+}
+
+
+/*************************************************************************
+    Return the current auto-repeat delay setting for this window.
+*************************************************************************/
+float Window::getAutoRepeatDelay(void) const
+{
+    return d_repeatDelay;
+}
+
+    
+/*************************************************************************
+    Return the current auto-repeat rate setting for this window.
+*************************************************************************/
+float Window::getAutoRepeatRate(void) const
+{
+    return d_repeatRate;
+}
+
+
+/*************************************************************************
+    Set whether mouse button down event autorepeat is enabled for this
+    window.
+*************************************************************************/
+void Window::setMouseAutoRepeatEnabled(bool setting)
+{
+    if (d_autoRepeat != setting)
+    {
+        d_autoRepeat = setting;
+        d_repeatButton = NoButton;
+ 
+        // TODO: Maybe add a 'setting changed' event for this?
+    }
+
+}
+
+
+/*************************************************************************
+    Set the current auto-repeat delay setting for this window.
+*************************************************************************/
+void Window::setAutoRepeatDelay(float delay)
+{
+    if (d_repeatDelay != delay)
+    {
+        d_repeatDelay = delay;
+
+        // TODO: Maybe add a 'setting changed' event for this?
+    }
+
+}
+
+    
+/*************************************************************************
+    Set the current auto-repeat rate setting for this window.
+*************************************************************************/
+void Window::setAutoRepeatRate(float rate)
+{
+    if (d_repeatRate != rate)
+    {
+        d_repeatRate = rate;
+
+        // TODO: Maybe add a 'setting changed' event for this?
+    }
+
+}
+
+
+/*************************************************************************
 	Cause window to update itself and any attached children
 *************************************************************************/
 void Window::update(float elapsed)
@@ -2620,6 +2723,39 @@ void Window::update(float elapsed)
 		d_children[i]->update(elapsed);
 	}
 
+}
+
+
+/*************************************************************************
+    Perform actual update processing for this Window.
+*************************************************************************/
+void Window::updateSelf(float elapsed)
+{
+    // Mouse button autorepeat processing.
+    if (d_autoRepeat && d_repeatButton != NoButton)
+    {
+        d_repeatElapsed += elapsed;
+
+        if (d_repeating)
+        {
+            if (d_repeatElapsed > d_repeatRate)
+            {
+                d_repeatElapsed -= d_repeatRate;
+                // trigger the repeated event
+                generateAutoRepeatEvent(d_repeatButton);
+            }
+        }
+        else
+        {
+            if (d_repeatElapsed > d_repeatDelay)
+            {
+                d_repeatElapsed = 0;
+                d_repeating = true;
+                // trigger the repeated event
+                generateAutoRepeatEvent(d_repeatButton);
+            }
+        }
+    }
 }
 
 
@@ -2763,6 +2899,9 @@ void Window::onCaptureGained(WindowEventArgs& e)
 
 void Window::onCaptureLost(WindowEventArgs& e)
 {
+    // reset auto-repeat state
+    d_repeatButton = NoButton;
+
 	// handle restore of previous capture window as required.
 	if (d_restoreOldCapture && (d_oldCapture != NULL)) {
 		d_oldCapture->onCaptureLost(e);
@@ -2905,12 +3044,25 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 		moveToFront();
 	}
 
+    // if auto repeat is enabled and we are not currently tracking
+    // the button that was just pushed (need this button check because
+    // it could be us that generated this event via auto-repeat).
+    if (d_autoRepeat && d_repeatButton != e.button)
+    {
+        d_repeatButton = e.button;
+        d_repeatElapsed = 0;
+        d_repeating = false;
+    }
+
 	fireEvent(EventMouseButtonDown, e, EventNamespace);
 }
 
 
 void Window::onMouseButtonUp(MouseEventArgs& e)
 {
+    // reset auto-repeat state
+    d_repeatButton = NoButton;
+
 	fireEvent(EventMouseButtonUp, e, EventNamespace);
 }
 

@@ -642,6 +642,41 @@ void WantsMultiClickEvents::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String MouseButtonDownAutoRepeat::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isMouseAutoRepeatEnabled());
+}
+
+
+void MouseButtonDownAutoRepeat::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setMouseAutoRepeatEnabled(PropertyHelper::stringToBool(value));
+}
+
+
+String AutoRepeatDelay::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAutoRepeatDelay());
+}
+
+
+void AutoRepeatDelay::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setAutoRepeatDelay(PropertyHelper::stringToFloat(value));
+}
+
+
+String AutoRepeatRate::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::floatToString(static_cast<const Window*>(receiver)->getAutoRepeatRate());
+}
+
+
+void AutoRepeatRate::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setAutoRepeatRate(PropertyHelper::stringToFloat(value));
+}
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section
