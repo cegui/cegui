@@ -783,11 +783,11 @@ protected:
 	/*************************************************************************
 		handlers for events we subscribe to from segments
 	*************************************************************************/
-	void	segmentSizedHandler(const EventArgs& e);
-	void	segmentMovedHandler(const EventArgs& e);
-	void	segmentClickedHandler(const EventArgs& e);
-	void	segmentDoubleClickHandler(const EventArgs& e);
-	void	segmentDragHandler(const EventArgs& e);
+	bool	segmentSizedHandler(const EventArgs& e);
+	bool	segmentMovedHandler(const EventArgs& e);
+	bool	segmentClickedHandler(const EventArgs& e);
+	bool	segmentDoubleClickHandler(const EventArgs& e);
+	bool	segmentDragHandler(const EventArgs& e);
 
 
 	/*************************************************************************

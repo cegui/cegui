@@ -210,14 +210,14 @@ protected:
 	\brief
 		handler used for when the title bar or close button are disabled.
 	*/
-	void	componentDisabledHandler(const EventArgs& e);
+	bool	componentDisabledHandler(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler used for when the title bar or close button are enabled.
 	*/
-	void	componentEnabledHandler(const EventArgs& e);
+	bool	componentEnabledHandler(const EventArgs& e);
 
 
 	/*!

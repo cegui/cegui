@@ -858,20 +858,22 @@ void ListHeader::onSegmentOffsetChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler method for when a segment is sized.
 *************************************************************************/
-void ListHeader::segmentSizedHandler(const EventArgs& e)
+bool ListHeader::segmentSizedHandler(const EventArgs& e)
 {
 	layoutSegments();
 
 	// Fire segment sized event.
 	WindowEventArgs args(((WindowEventArgs&)e).window);
 	onSegmentSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler method for when a segment is dragged & dropped.
 *************************************************************************/
-void ListHeader::segmentMovedHandler(const EventArgs& e)
+bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
 	Point mousePos(MouseCursor::getSingleton().getPosition());
 
@@ -913,13 +915,14 @@ void ListHeader::segmentMovedHandler(const EventArgs& e)
 		moveColumn(curcol, col);
 	}
 
+	return true;
 }
 
 
 /*************************************************************************
 	Hanlder for when a segment is clicked (to change sort segment / direction)
 *************************************************************************/
-void ListHeader::segmentClickedHandler(const EventArgs& e)
+bool ListHeader::segmentClickedHandler(const EventArgs& e)
 {
 	// double-check we allow this action
 	if (d_sortingEnabled)
@@ -960,23 +963,26 @@ void ListHeader::segmentClickedHandler(const EventArgs& e)
 		onSegmentClicked(args);
 	}
 
+	return true;
 }
 
 
 /*************************************************************************
 	Handler called when a segment splitter is double-clicked.
 *************************************************************************/
-void ListHeader::segmentDoubleClickHandler(const EventArgs& e)
+bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 {
 	WindowEventArgs args(((WindowEventArgs&)e).window);
 	onSplitterDoubleClicked(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler called whenever the mouse moves while dragging a segment
 *************************************************************************/
-void ListHeader::segmentDragHandler(const EventArgs& e)
+bool ListHeader::segmentDragHandler(const EventArgs& e)
 {
 	// what we do here is monitor the position and scroll if we can when mouse is outside area.
 
@@ -1031,6 +1037,7 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 
 	}
 
+	return true;
 }
 
 

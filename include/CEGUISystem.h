@@ -622,7 +622,7 @@ private:
 	\brief
 		Handler method for display size change notifications
 	*/
-	void	handleDisplaySizeChange(const EventArgs& e);
+	bool	handleDisplaySizeChange(const EventArgs& e);
 
 
 	/*************************************************************************

@@ -412,8 +412,8 @@ protected:
     /*************************************************************************
     Event handlers
     *************************************************************************/
-    void handleContentWindowTextChanged(const EventArgs& args);
-    void handleTabButtonClicked(const EventArgs& args);
+    bool handleContentWindowTextChanged(const EventArgs& args);
+    bool handleTabButtonClicked(const EventArgs& args);
 };
 
 

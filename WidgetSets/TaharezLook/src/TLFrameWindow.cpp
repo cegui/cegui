@@ -367,7 +367,7 @@ void TLFrameWindow::initialise(void)
 /*************************************************************************
 	handler used for when the title bar or close button are disabled.	
 *************************************************************************/
-void TLFrameWindow::componentDisabledHandler(const EventArgs& e)
+bool TLFrameWindow::componentDisabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->hide();
 
@@ -385,13 +385,15 @@ void TLFrameWindow::componentDisabledHandler(const EventArgs& e)
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler used for when the title bar or close button are enabled.
 *************************************************************************/
-void TLFrameWindow::componentEnabledHandler(const EventArgs& e)
+bool TLFrameWindow::componentEnabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->show();
 
@@ -409,6 +411,8 @@ void TLFrameWindow::componentEnabledHandler(const EventArgs& e)
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
+
+	return true;
 }
 
 

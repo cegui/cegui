@@ -411,7 +411,7 @@ void WLFrameWindow::initialise(void)
 /*************************************************************************
 	handler used for when the title bar or close button are disabled.	
 *************************************************************************/
-void WLFrameWindow::componentDisabledHandler(const EventArgs& e)
+bool WLFrameWindow::componentDisabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->hide();
 
@@ -429,13 +429,15 @@ void WLFrameWindow::componentDisabledHandler(const EventArgs& e)
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler used for when the title bar or close button are enabled.
 *************************************************************************/
-void WLFrameWindow::componentEnabledHandler(const EventArgs& e)
+bool WLFrameWindow::componentEnabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->show();
 
@@ -453,6 +455,8 @@ void WLFrameWindow::componentEnabledHandler(const EventArgs& e)
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
+
+	return true;
 }
 
 

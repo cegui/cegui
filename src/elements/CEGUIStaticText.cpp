@@ -490,9 +490,11 @@ void StaticText::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	Handler called when the scroll bar positions change
 *************************************************************************/
-void StaticText::handleScrollbarChange(const EventArgs& e)
+bool StaticText::handleScrollbarChange(const EventArgs& e)
 {
 	requestRedraw();
+
+	return true;
 }
 
 /*************************************************************************

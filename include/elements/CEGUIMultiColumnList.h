@@ -1400,13 +1400,13 @@ protected:
 	/*************************************************************************
 		Handlers for subscribed events
 	*************************************************************************/
-	void	handleHeaderScroll(const EventArgs& e);
-	void	handleHeaderSegMove(const EventArgs& e);
-	void	handleColumnSizeChange(const EventArgs& e);
-	void	handleHorzScrollbar(const EventArgs& e);
-	void	handleSortColumnChange(const EventArgs& e);
-	void	handleSortDirectionChange(const EventArgs& e);
-	void	handleHeaderSegDblClick(const EventArgs& e);
+	bool	handleHeaderScroll(const EventArgs& e);
+	bool	handleHeaderSegMove(const EventArgs& e);
+	bool	handleColumnSizeChange(const EventArgs& e);
+	bool	handleHorzScrollbar(const EventArgs& e);
+	bool	handleSortColumnChange(const EventArgs& e);
+	bool	handleSortDirectionChange(const EventArgs& e);
+	bool	handleHeaderSegDblClick(const EventArgs& e);
 
 
 	/*************************************************************************

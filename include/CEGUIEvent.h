@@ -50,7 +50,7 @@ namespace CEGUI
 	An Event can be subscribed by a function, a static member function, or a function object.  Whichever option
 	is taken, the function signature needs to be as follows
 	\par
-	<em>void function_name(const EventArgs& args);</em>
+	<em>bool function_name(const EventArgs& args);</em>
 	\note
 		Currently, this class is effectively a thin wrapper around boost::signals.  You need to have boost::signals
 		available to be able to compile and use this class.  Note also that this may not always be the case, so use
@@ -60,11 +60,34 @@ namespace CEGUI
 */
 class CEGUIBASE_API Event
 {
+	/*************************************************************************
+		Combiner used for slot results
+	*************************************************************************/
+	struct bool_result
+	{
+		typedef bool result_type;
+
+		template<typename InputIterator>
+		result_type operator()(InputIterator first, InputIterator last) const
+		{
+			result_type res = false;
+
+			while (first != last)
+			{
+				res |= (*first != 0);
+				++first;
+			}
+
+			return res;
+		}
+	};
+
+
 public:
-	typedef	boost::signal1<void, const EventArgs&>	Signal;			//!< Represents the internal signal object
-	typedef const Signal::slot_function_type		Subscriber;		//!< Function / object that can subscribe to an Event
-	typedef Signal::group_type						Group;			//!< Group for subscription (groups are called in ascending sequence)
-	typedef boost::signals::connection				Connection;		//!< An object that is returned from subscribe function that can be used to control the connection / subscription.
+	typedef	boost::signal1<bool, const EventArgs&, bool_result>	Signal;		//!< Represents the internal signal object
+	typedef const Signal::slot_function_type		Subscriber;				//!< Function / object that can subscribe to an Event
+	typedef Signal::group_type						Group;					//!< Group for subscription (groups are called in ascending sequence)
+	typedef boost::signals::connection				Connection;				//!< An object that is returned from subscribe function that can be used to control the connection / subscription.
 
 	/*************************************************************************
 		Construction and Destruction
@@ -127,12 +150,13 @@ public:
 		Fires the event.  All event subscribers get called in the appropriate sequence.
 
 	\param args
-		An object derived from EventArgs to be passed to each event subscriber.
+		An object derived from EventArgs to be passed to each event subscriber.  The handled field of the EventArgs
+		will be appropriately set after the event handlers have been executed.
 
 	\return
 		Nothing.
 	*/
-	void	operator()(const EventArgs& args)		{d_sig(args);}
+	void	operator()(EventArgs& args);
 
 private:
 	/*************************************************************************

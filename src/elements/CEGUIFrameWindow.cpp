@@ -465,10 +465,12 @@ void FrameWindow::addFrameWindowEvents(void)
 /*************************************************************************
 	Handler to map close button clicks to FrameWindow 'CloseCliked' events
 *************************************************************************/
-void FrameWindow::closeClickHandler(const EventArgs& e)
+bool FrameWindow::closeClickHandler(const EventArgs& e)
 {
     WindowEventArgs args(this);
 	onCloseClicked(args);
+
+	return true;
 }
 
 

@@ -381,35 +381,35 @@ protected:
 	\brief
 		handler function for when thumb moves.
 	*/
-	void	handleThumbMoved(const EventArgs& e);
+	bool	handleThumbMoved(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler function for when the increase button is clicked.
 	*/
-	void	handleIncreaseClicked(const EventArgs& e);
+	bool	handleIncreaseClicked(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler function for when the decrease button is clicked.
 	*/
-	void	handleDecreaseClicked(const EventArgs& e);
+	bool	handleDecreaseClicked(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler function for when thumb tracking begins
 	*/
-	void	handleThumbTrackStarted(const EventArgs& e);
+	bool	handleThumbTrackStarted(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler function for when thumb tracking begins
 	*/
-	void	handleThumbTrackEnded(const EventArgs& e);
+	bool	handleThumbTrackEnded(const EventArgs& e);
 
 
 	/*************************************************************************

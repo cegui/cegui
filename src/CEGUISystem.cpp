@@ -1085,7 +1085,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-void System::handleDisplaySizeChange(const EventArgs& e)
+bool System::handleDisplaySizeChange(const EventArgs& e)
 {
 	// notify gui sheet / root if size change, event propagation will ensure everything else
 	// gets updated as required.
@@ -1095,6 +1095,7 @@ void System::handleDisplaySizeChange(const EventArgs& e)
 		d_activeSheet->onParentSized(args);
 	}
 
+	return true;
 }
 
 

@@ -28,6 +28,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-// Everything is inline
+void Event::operator()(EventArgs& args)
+{
+	args.handled = d_sig(args);
+}
 
 } // End of  CEGUI namespace section

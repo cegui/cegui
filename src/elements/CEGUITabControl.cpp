@@ -533,7 +533,7 @@ Window*	TabControl::createTabButtonPane(void) const
 /*************************************************************************
 Text changed on a content window
 *************************************************************************/
-void TabControl::handleContentWindowTextChanged(const EventArgs& args)
+bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
 {
     // update text
     const WindowEventArgs& wargs = static_cast<const WindowEventArgs&>(args);
@@ -542,15 +542,19 @@ void TabControl::handleContentWindowTextChanged(const EventArgs& args)
     tabButton->setText(wargs.window->getText());
     // sort out the layout
     layoutComponentWidgets();
-    requestRedraw();
+	requestRedraw();
+
+	return true;
 }
 /*************************************************************************
 Tab button clicked
 *************************************************************************/
-void TabControl::handleTabButtonClicked(const EventArgs& args)
+bool TabControl::handleTabButtonClicked(const EventArgs& args)
 {
     const WindowEventArgs& wargs = static_cast<const WindowEventArgs&>(args);
     TabButton* tabButton = static_cast<TabButton*>(wargs.window);
     setSelectedTab(tabButton->getTargetWindow()->getName());
+
+	return true;
 }
 } // End of  CEGUI namespace section

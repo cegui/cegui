@@ -511,7 +511,7 @@ protected:
 	\brief
 		Method to respond to close button click events and fire our close event
 	*/
-	void	closeClickHandler(const EventArgs& e);
+	bool	closeClickHandler(const EventArgs& e);
 
 
 	/*!

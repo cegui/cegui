@@ -138,7 +138,7 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Group grou
 /*************************************************************************
 	Fire / Trigger an event
 *************************************************************************/
-void EventSet::fireEvent(const String& name, const EventArgs& args)
+void EventSet::fireEvent(const String& name, EventArgs& args)
 {
 	EventMap::iterator pos = d_events.find(name);
 

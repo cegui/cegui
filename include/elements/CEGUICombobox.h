@@ -802,41 +802,41 @@ protected:
 	\brief
 		Handler function for button clicks.
 	*/
-	void	button_ClickHandler(const EventArgs& e);
+	bool	button_ClickHandler(const EventArgs& e);
 
 
 	/*!
 	\brief
 		Handler for selections made in the drop-list
 	*/
-	void	droplist_SelectionAcceptedHandler(const EventArgs& e);
+	bool	droplist_SelectionAcceptedHandler(const EventArgs& e);
 
 
 	/*!
 	\brief
 		Handler for when drop-list hides itself
 	*/
-	void	droplist_HiddenHandler(const EventArgs& e);
+	bool	droplist_HiddenHandler(const EventArgs& e);
 
 
 	/*************************************************************************
 		Handlers to relay child widget events so they appear to come from us
 	*************************************************************************/
-	void editbox_ReadOnlyChangedHandler(const EventArgs& e);
-	void editbox_ValidationStringChangedHandler(const EventArgs& e);
-	void editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
-	void editbox_TextInvalidatedEventHandler(const EventArgs& e);
-	void editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
-	void editbox_CaratMovedHandler(const EventArgs& e);
-	void editbox_TextSelectionChangedHandler(const EventArgs& e);
-	void editbox_EditboxFullEventHandler(const EventArgs& e);
-	void editbox_TextAcceptedEventHandler(const EventArgs& e);
-	void editbox_TextChangedEventHandler(const EventArgs& e);
-	void listbox_ListContentsChangedHandler(const EventArgs& e);
-	void listbox_ListSelectionChangedHandler(const EventArgs& e);
-	void listbox_SortModeChangedHandler(const EventArgs& e);
-	void listbox_VertScrollModeChangedHandler(const EventArgs& e);
-	void listbox_HorzScrollModeChangedHandler(const EventArgs& e);
+	bool editbox_ReadOnlyChangedHandler(const EventArgs& e);
+	bool editbox_ValidationStringChangedHandler(const EventArgs& e);
+	bool editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
+	bool editbox_TextInvalidatedEventHandler(const EventArgs& e);
+	bool editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
+	bool editbox_CaratMovedHandler(const EventArgs& e);
+	bool editbox_TextSelectionChangedHandler(const EventArgs& e);
+	bool editbox_EditboxFullEventHandler(const EventArgs& e);
+	bool editbox_TextAcceptedEventHandler(const EventArgs& e);
+	bool editbox_TextChangedEventHandler(const EventArgs& e);
+	bool listbox_ListContentsChangedHandler(const EventArgs& e);
+	bool listbox_ListSelectionChangedHandler(const EventArgs& e);
+	bool listbox_SortModeChangedHandler(const EventArgs& e);
+	bool listbox_VertScrollModeChangedHandler(const EventArgs& e);
+	bool listbox_HorzScrollModeChangedHandler(const EventArgs& e);
 
 	
 	/*************************************************************************

@@ -775,7 +775,7 @@ void Combobox::onTextChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler function for button clicks.
 *************************************************************************/
-void Combobox::button_ClickHandler(const EventArgs& e)
+bool Combobox::button_ClickHandler(const EventArgs& e)
 {
 	showDropList();
 
@@ -788,13 +788,14 @@ void Combobox::button_ClickHandler(const EventArgs& e)
 		d_droplist->ensureItemIsVisible(item);
 	}
 
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for selections made in the drop-list
 *************************************************************************/
-void Combobox::droplist_SelectionAcceptedHandler(const EventArgs& e)
+bool Combobox::droplist_SelectionAcceptedHandler(const EventArgs& e)
 {
 	// copy the text from the selected item into the edit box
 	ListboxItem* item = ((ComboDropList*)((WindowEventArgs&)e).window)->getFirstSelectedItem();
@@ -821,16 +822,19 @@ void Combobox::droplist_SelectionAcceptedHandler(const EventArgs& e)
 		d_editbox->activate();
 	}
 
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when drop-list hides itself
 *************************************************************************/
-void Combobox::droplist_HiddenHandler(const EventArgs& e)
+bool Combobox::droplist_HiddenHandler(const EventArgs& e)
 {
 	WindowEventArgs args(this);
 	onDroplistRemoved(args);
+
+	return true;
 }
 
 
@@ -906,108 +910,138 @@ void Combobox::onActivated(ActivationEventArgs& e)
 	Handlers to relay child widget events so they appear to come from us
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
-void Combobox::editbox_ReadOnlyChangedHandler(const EventArgs& e)
+bool Combobox::editbox_ReadOnlyChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onReadOnlyChanged(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_ValidationStringChangedHandler(const EventArgs& e)
+bool Combobox::editbox_ValidationStringChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onValidationStringChanged(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_MaximumTextLengthChangedHandler(const EventArgs& e)
+bool Combobox::editbox_MaximumTextLengthChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onMaximumTextLengthChanged(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_TextInvalidatedEventHandler(const EventArgs& e)
+bool Combobox::editbox_TextInvalidatedEventHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onTextInvalidatedEvent(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_InvalidEntryAttemptedHandler(const EventArgs& e)
+bool Combobox::editbox_InvalidEntryAttemptedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onInvalidEntryAttempted(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_CaratMovedHandler(const EventArgs& e)
+bool Combobox::editbox_CaratMovedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onCaratMoved(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_TextSelectionChangedHandler(const EventArgs& e)
+bool Combobox::editbox_TextSelectionChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onTextSelectionChanged(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_EditboxFullEventHandler(const EventArgs& e)
+bool Combobox::editbox_EditboxFullEventHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onEditboxFullEvent(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_TextAcceptedEventHandler(const EventArgs& e)
+bool Combobox::editbox_TextAcceptedEventHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onTextAcceptedEvent(args);
+
+	return true;
 }
 
 
-void Combobox::editbox_TextChangedEventHandler(const EventArgs& e)
+bool Combobox::editbox_TextChangedEventHandler(const EventArgs& e)
 {
 	// set this windows text to match
 	setText(((const WindowEventArgs&)e).window->getText());
+
+	return true;
 }
 
 
-void Combobox::listbox_ListContentsChangedHandler(const EventArgs& e)
+bool Combobox::listbox_ListContentsChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onListContentsChanged(args);
+
+	return true;
 }
 
 
-void Combobox::listbox_ListSelectionChangedHandler(const EventArgs& e)
+bool Combobox::listbox_ListSelectionChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onListSelectionChanged(args);
+
+	return true;
 }
 
 
-void Combobox::listbox_SortModeChangedHandler(const EventArgs& e)
+bool Combobox::listbox_SortModeChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onSortModeChanged(args);
+
+	return true;
 }
 
 
-void Combobox::listbox_VertScrollModeChangedHandler(const EventArgs& e)
+bool Combobox::listbox_VertScrollModeChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onVertScrollbarModeChanged(args);
+
+	return true;
 }
 
 
-void Combobox::listbox_HorzScrollModeChangedHandler(const EventArgs& e)
+bool Combobox::listbox_HorzScrollModeChangedHandler(const EventArgs& e)
 {
 	WindowEventArgs	args(this);
 	onHorzScrollbarModeChanged(args);
+
+	return true;
 }
 
 } // End of  CEGUI namespace section

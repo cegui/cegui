@@ -1981,23 +1981,27 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	Event handler for header offset changes (scrolling)
 *************************************************************************/
-void MultiColumnList::handleHeaderScroll(const EventArgs& e)
+bool MultiColumnList::handleHeaderScroll(const EventArgs& e)
 {
 	// grab the header scroll value, convert to pixels, and set the scroll bar to match.
 	d_horzScrollbar->setScrollPosition(d_header->relativeToAbsoluteX(d_header->getSegmentOffset()));
+
+	return true;
 }
 
 
 /*************************************************************************
 	Event handler for drag & drop of header segments
 *************************************************************************/
-void MultiColumnList::handleHeaderSegMove(const EventArgs& e)
+bool MultiColumnList::handleHeaderSegMove(const EventArgs& e)
 {
 	moveColumn_impl(((HeaderSequenceEventArgs&)e).d_oldIdx, ((HeaderSequenceEventArgs&)e).d_newIdx);
 
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onListColumnMoved(args);
+
+	return true;
 }
 
 
@@ -2005,30 +2009,34 @@ void MultiColumnList::handleHeaderSegMove(const EventArgs& e)
 /*************************************************************************
 	Event handler for when header segment size (column width) changes
 *************************************************************************/
-void MultiColumnList::handleColumnSizeChange(const EventArgs& e)
+bool MultiColumnList::handleColumnSizeChange(const EventArgs& e)
 {
 	configureScrollbars();
 
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onListColumnSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Event handler for when horizontal scroll bar is moved.
 *************************************************************************/
-void MultiColumnList::handleHorzScrollbar(const EventArgs& e)
+bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
 {
 	// set header offset to match scroll position
 	d_header->setSegmentOffset(d_header->absoluteToRelativeX(d_horzScrollbar->getScrollPosition()));
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when sort column in header is changed
 *************************************************************************/
-void MultiColumnList::handleSortColumnChange(const EventArgs& e)
+bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
 {
 	uint col = getSortColumn();
 
@@ -2055,13 +2063,15 @@ void MultiColumnList::handleSortColumnChange(const EventArgs& e)
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onSortColumnChanged(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when sort direction in header is changed
 *************************************************************************/
-void MultiColumnList::handleSortDirectionChange(const EventArgs& e)
+bool MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 {
 	// re-sort list according to direction
 	ListHeaderSegment::SortDirection dir = getSortDirection();
@@ -2080,13 +2090,15 @@ void MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onSortDirectionChanged(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when user double-clicks on header segment splitter
 *************************************************************************/
-void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
+bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 {
 	// get the column index for the segment that was double-clicked
 	uint col = d_header->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
@@ -2102,6 +2114,8 @@ void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 
 	// set new column width
 	setColumnHeaderWidth(col, width);
+
+	return true;
 }
 
 
