@@ -35,8 +35,10 @@ namespace CEGUI
 {
 float PropertyHelper::stringToFloat(const String& str)
 {
+	using namespace std;
+
 	float val = 0;
-	std::sscanf(str.c_str(), " %f", &val);
+	sscanf(str.c_str(), " %f", &val);
 
 	return val;
 }
@@ -44,8 +46,10 @@ float PropertyHelper::stringToFloat(const String& str)
 
 uint PropertyHelper::stringToUint(const String& str)
 {
+	using namespace std;
+
 	uint val = 0;
-	std::sscanf(str.c_str(), " %u", &val);
+	sscanf(str.c_str(), " %u", &val);
 
 	return val;
 }
@@ -67,8 +71,10 @@ bool PropertyHelper::stringToBool(const String& str)
 
 Size PropertyHelper::stringToSize(const String& str)
 {
+	using namespace std;
+
 	Size val(0,0);
-	std::sscanf(str.c_str(), " w:%f h:%f", &val.d_width, &val.d_height);
+	sscanf(str.c_str(), " w:%f h:%f", &val.d_width, &val.d_height);
 
 	return val;
 }
@@ -76,8 +82,10 @@ Size PropertyHelper::stringToSize(const String& str)
 
 Point PropertyHelper::stringToPoint(const String& str)
 {
+	using namespace std;
+
 	Point val(0,0) ;
-	std::sscanf(str.c_str(), " x:%f y:%f", &val.d_x, &val.d_y);
+	sscanf(str.c_str(), " x:%f y:%f", &val.d_x, &val.d_y);
 
 	return val;
 }
@@ -85,8 +93,10 @@ Point PropertyHelper::stringToPoint(const String& str)
 
 Rect PropertyHelper::stringToRect(const String& str)
 {
+	using namespace std;
+
 	Rect val(0, 0, 0, 0);
-	std::sscanf(str.c_str(), " l:%f t:%f r:%f b:%f", &val.d_left, &val.d_top, &val.d_right, &val.d_bottom);
+	sscanf(str.c_str(), " l:%f t:%f r:%f b:%f", &val.d_left, &val.d_top, &val.d_right, &val.d_bottom);
 
 	return val;
 }
@@ -112,10 +122,12 @@ MetricsMode PropertyHelper::stringToMetricsMode(const String& str)
 
 const Image* PropertyHelper::stringToImage(const String& str)
 {
+	using namespace std;
+
 	char imageSet[128];
 	char imageName[128];
 
-	std::sscanf(str.c_str(), " set:%127s image:%127s", imageSet, imageName);
+	sscanf(str.c_str(), " set:%127s image:%127s", imageSet, imageName);
 
 	const Image* image;
 
@@ -134,8 +146,10 @@ const Image* PropertyHelper::stringToImage(const String& str)
 
 String PropertyHelper::floatToString(float val)
 {
+	using namespace std;
+
 	char buff[64];
-	std::sprintf(buff, "%f", val);
+	sprintf(buff, "%f", val);
 
 	return String((utf8*)buff);
 }
@@ -143,8 +157,10 @@ String PropertyHelper::floatToString(float val)
 
 String PropertyHelper::uintToString(uint val)
 {
+	using namespace std;
+
 	char buff[64];
-	std::sprintf(buff, "%u", val);
+	sprintf(buff, "%u", val);
 
 	return String((utf8*)buff);
 }
@@ -166,8 +182,10 @@ String PropertyHelper::boolToString(bool val)
 
 String PropertyHelper::sizeToString(const Size& val)
 {
+	using namespace std;
+
 	char buff[128];
-	std::sprintf(buff, "w:%f h:%f", val.d_width, val.d_height);
+	sprintf(buff, "w:%f h:%f", val.d_width, val.d_height);
 
 	return String((utf8*)buff);
 }
@@ -175,8 +193,10 @@ String PropertyHelper::sizeToString(const Size& val)
 
 String PropertyHelper::pointToString(const Point& val)
 {
+	using namespace std;
+
 	char buff[128];
-	std::sprintf(buff, "x:%f y:%f", val.d_x, val.d_y);
+	sprintf(buff, "x:%f y:%f", val.d_x, val.d_y);
 
 	return String((utf8*)buff);
 }
@@ -184,8 +204,10 @@ String PropertyHelper::pointToString(const Point& val)
 
 String PropertyHelper::rectToString(const Rect& val)
 {
+	using namespace std;
+
 	char buff[256];
-	std::sprintf(buff, "l:%f t:%f r:%f b:%f", val.d_left, val.d_top, val.d_right, val.d_bottom);
+	sprintf(buff, "l:%f t:%f r:%f b:%f", val.d_left, val.d_top, val.d_right, val.d_bottom);
 
 	return String((utf8*)buff);
 }
@@ -222,8 +244,10 @@ String PropertyHelper::imageToString(const Image* const val)
 
 String PropertyHelper::colourToString(colour val)
 {
+	using namespace std;
+
 	char buff[16];
-	std::sprintf(buff, "%.8X", val);
+	sprintf(buff, "%.8X", val);
 
 	return String((utf8*)buff);
 }
@@ -231,8 +255,10 @@ String PropertyHelper::colourToString(colour val)
 
 colour PropertyHelper::stringToColour(const String& str)
 {
+	using namespace std;
+
 	colour val = 0xFF000000;
-	std::sscanf(str.c_str(), " %8X", &val);
+	sscanf(str.c_str(), " %8X", &val);
 
 	return val;
 
@@ -241,8 +267,10 @@ colour PropertyHelper::stringToColour(const String& str)
 
 String PropertyHelper::colourRectToString(const ColourRect& val)
 {
+	using namespace std;
+
 	char buff[64];
-	std::sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left, val.d_top_right, val.d_bottom_left, val.d_bottom_right);
+	sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left, val.d_top_right, val.d_bottom_left, val.d_bottom_right);
 
 	return String((utf8*)buff);
 }
@@ -250,9 +278,10 @@ String PropertyHelper::colourRectToString(const ColourRect& val)
 
 ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
-	ColourRect val(0xFF000000);
+	using namespace std;
 
-	std::sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &val.d_top_left, &val.d_top_right, &val.d_bottom_left, &val.d_bottom_right);
+	ColourRect val(0xFF000000);
+	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &val.d_top_left, &val.d_top_right, &val.d_bottom_left, &val.d_bottom_right);
 
 	return val;
 }

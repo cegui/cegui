@@ -645,7 +645,7 @@ void OgreRQListener::renderQueueStarted(Ogre::RenderQueueGroupID id, bool& skipT
 {
 	if ((!d_post_queue) && (d_queue_id == id))
 	{
-		System::getSingleton().renderGUI();
+		CEGUI::System::getSingleton().renderGUI();
 	}
 
 }
@@ -659,7 +659,7 @@ void OgreRQListener::renderQueueEnded(Ogre::RenderQueueGroupID id, bool& repeatT
 {
 	if ((d_post_queue) && (d_queue_id == id))
 	{
-		System::getSingleton().renderGUI();
+		CEGUI::System::getSingleton().renderGUI();
 	}
 
 }

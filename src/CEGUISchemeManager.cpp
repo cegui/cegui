@@ -109,4 +109,15 @@ Scheme* SchemeManager::getScheme(const String& name) const
 }
 
 
+SchemeManager& SchemeManager::getSingleton(void)
+{
+	return Singleton<SchemeManager>::getSingleton();
+}
+
+
+SchemeManager* SchemeManager::getSingletonPtr(void)
+{
+	return Singleton<SchemeManager>::getSingletonPtr();
+}
+
 } // End of  CEGUI namespace section

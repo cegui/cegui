@@ -32,6 +32,14 @@
 
 #include <map>
 
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4275)
+#	pragma warning(disable : 4251)
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -63,7 +71,7 @@ public:
 	\return
 		Singleton SchemeManager object
 	*/
-	static	SchemeManager&	getSingleton(void)			{return Singleton<SchemeManager>::getSingleton();}
+	static	SchemeManager&	getSingleton(void);
 
 
 	/*!
@@ -73,7 +81,7 @@ public:
 	\return
 		Pointer to singleton SchemeManager object
 	*/
-	static	SchemeManager*	getSingletonPtr(void)			{return Singleton<SchemeManager>::getSingletonPtr();}
+	static	SchemeManager*	getSingletonPtr(void);
 
 
 	/*!
@@ -136,5 +144,9 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUISchemeManager_h_

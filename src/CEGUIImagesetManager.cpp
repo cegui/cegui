@@ -178,4 +178,16 @@ void ImagesetManager::notifyScreenResolution(const Size& size)
 
 }
 
+
+ImagesetManager& ImagesetManager::getSingleton(void)
+{
+	return Singleton<ImagesetManager>::getSingleton();
+}
+
+
+ImagesetManager* ImagesetManager::getSingletonPtr(void)
+{
+	return Singleton<ImagesetManager>::getSingletonPtr();
+}
+
 } // End of  CEGUI namespace section

@@ -73,10 +73,11 @@ void	HorzFree::set(void* receiver, const String& value)
 
 String	VertRange::get(const void* receiver) const
 {
+	using namespace std;
 	char buff[64];
-	std::pair<float, float> range = static_cast<const Thumb*>(receiver)->getVertRange();
 
-	std::sprintf(buff, "min:%f max:%f", range.first, range.second);
+	pair<float, float> range = static_cast<const Thumb*>(receiver)->getVertRange();
+	sprintf(buff, "min:%f max:%f", range.first, range.second);
 
 	return String((utf8*)buff);
 }
@@ -84,8 +85,10 @@ String	VertRange::get(const void* receiver) const
 
 void	VertRange::set(void* receiver, const String& value)
 {
+	using namespace std;
+
 	float rangeMin = 0, rangeMax = 0;
-	std::sscanf(value.c_str(), " min:%f max:%f", &rangeMin, &rangeMax);
+	sscanf(value.c_str(), " min:%f max:%f", &rangeMin, &rangeMax);
 
 	static_cast<Thumb*>(receiver)->setVertRange(rangeMin, rangeMax);
 }
@@ -93,10 +96,11 @@ void	VertRange::set(void* receiver, const String& value)
 
 String	HorzRange::get(const void* receiver) const
 {
-	char buff[64];
-	std::pair<float, float> range = static_cast<const Thumb*>(receiver)->getHorzRange();
+	using namespace std;
 
-	std::sprintf(buff, "min:%f max:%f", range.first, range.second);
+	char buff[64];
+	pair<float, float> range = static_cast<const Thumb*>(receiver)->getHorzRange();
+	sprintf(buff, "min:%f max:%f", range.first, range.second);
 
 	return String((utf8*)buff);
 }
@@ -104,8 +108,10 @@ String	HorzRange::get(const void* receiver) const
 
 void	HorzRange::set(void* receiver, const String& value)
 {
+	using namespace std;
+
 	float rangeMin = 0, rangeMax = 0;
-	std::sscanf(value.c_str(), " min:%f max:%f", &rangeMin, &rangeMax);
+	sscanf(value.c_str(), " min:%f max:%f", &rangeMin, &rangeMax);
 
 	static_cast<Thumb*>(receiver)->setHorzRange(rangeMin, rangeMax);
 }

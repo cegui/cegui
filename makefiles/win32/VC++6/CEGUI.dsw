@@ -1,0 +1,101 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "CEGUIBase"=".\BaseSystem\BaseSystem.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DirectX81Renderer"=".\RENDERERS\DirectX81Renderer\DirectX81Renderer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name BaseSystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "DirectX9Renderer"=".\RENDERERS\DirectX9Renderer\DirectX9Renderer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name BaseSystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "OgreRenderer"=".\RENDERERS\OgreRenderer\OgreRenderer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name BaseSystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TaharezLook"=".\WIDGETSETS\TaharezLook\TaharezLook.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name BaseSystem
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

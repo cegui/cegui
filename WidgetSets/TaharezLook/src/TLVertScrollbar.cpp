@@ -197,14 +197,12 @@ void TLVertScrollbar::layoutComponentWidgets(void)
 *************************************************************************/
 void TLVertScrollbar::updateThumb(void)
 {
-	using namespace std;
-
 	// calculate actual padding values to use.
 	float slideTrackYPadding = d_decrease->getAbsoluteHeight() + (d_containerTop->getHeight() * 0.5f);
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= max(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
+	float slideExtent	= std::max(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setVertRange(absoluteToRelativeY(slideTrackYPadding), absoluteToRelativeY(slideTrackYPadding + slideExtent));

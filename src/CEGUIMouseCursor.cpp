@@ -171,4 +171,15 @@ Point MouseCursor::getDisplayIndependantPosition(void) const
 }
 
 
+MouseCursor& MouseCursor::getSingleton(void)
+{
+	return Singleton<MouseCursor>::getSingleton();
+}
+
+
+MouseCursor* MouseCursor::getSingletonPtr(void)
+{
+	return Singleton<MouseCursor>::getSingletonPtr();
+}
+
 } // End of  CEGUI namespace section

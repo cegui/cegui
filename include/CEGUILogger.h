@@ -32,6 +32,13 @@
 
 #include "CEGUISingleton.h"
 
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4275)
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -84,7 +91,7 @@ public:
 	\return
 		Reference to the one and only Logger object
 	*/
-	static Logger&	getSingleton(void)			{return Singleton<Logger>::getSingleton();}
+	static Logger&	getSingleton(void);
 
 
 	/*!
@@ -142,5 +149,9 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUILogger_h_

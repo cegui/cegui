@@ -75,21 +75,23 @@ void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */
 	// only log the message if the current logging level is >= the level for the message
 	if (d_level >= level)
 	{
+		using namespace std;
+
 		time_t	et;
-		std::time(&et);
-		std::tm* etm = std::gmtime(&et);
+		time(&et);
+		tm* etm = gmtime(&et);
 
 		if (etm != NULL)
 		{
 			// write date
-			d_ostream << std::setfill('0') << std::setw(2) << etm->tm_mday << '/' <<
-				std::setfill('0') << std::setw(2) << etm->tm_mon << '/' <<
-				std::setw(4) << (1900 + etm->tm_year) << ' ';
+			d_ostream << setfill('0') << setw(2) << etm->tm_mday << '/' <<
+				setfill('0') << setw(2) << etm->tm_mon << '/' <<
+				setw(4) << (1900 + etm->tm_year) << ' ';
 
 			// wite time
-			d_ostream << std::setfill('0') << std::setw(2) << etm->tm_hour << ':' <<
-				std::setfill('0') << std::setw(2) << etm->tm_min << ':' <<
-				std::setfill('0') << std::setw(2) << etm->tm_sec << ' ';
+			d_ostream << setfill('0') << setw(2) << etm->tm_hour << ':' <<
+				setfill('0') << setw(2) << etm->tm_min << ':' <<
+				setfill('0') << setw(2) << etm->tm_sec << ' ';
 
 			// write event type code
 			switch(level)
@@ -116,7 +118,7 @@ void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */
 			}
 
 			// write message
-			d_ostream << message << std::endl;
+			d_ostream << message << endl;
 		}
 
 		// ensure new event is written to the file, rather than just being buffered.
@@ -124,5 +126,10 @@ void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */
 	}
 }
 
+
+Logger&	Logger::getSingleton(void)
+{
+	return Singleton<Logger>::getSingleton();
+}
 
 } // End of  CEGUI namespace section

@@ -33,7 +33,7 @@
 #define _CEGUISingleton_h_
 
 #include "CEGUIBase.h"
-
+#include <cassert>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -47,10 +47,11 @@ namespace CEGUI
  * below is included in the resulting source code, for example:
  * "Portions Copyright (C) Scott Bilas, 2000"
  */
-#include <cassert>
+
 
 template <typename T> class CEGUIBASE_API Singleton
 {
+protected:
     static T* ms_Singleton;
 
 public:

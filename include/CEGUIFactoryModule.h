@@ -64,7 +64,7 @@ public:
 	\return
 		Nothing
 	*/
-	~FactoryModule(void);
+	virtual ~FactoryModule(void);
 
 
 	/*!

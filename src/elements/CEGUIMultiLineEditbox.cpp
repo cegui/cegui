@@ -487,18 +487,16 @@ void MultiLineEditbox::configureScrollbars(void)
 	//
 	// Set up scroll bar values
 	//
-	using namespace std;
-
 	Rect renderArea(getTextRenderArea());
 
 	d_vertScrollbar->setDocumentSize(totalHeight);
 	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(max(1.0f, renderArea.getHeight() / 10.0f));
+	d_vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
 	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
 
 	d_horzScrollbar->setDocumentSize(widestItem);
 	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(max(1.0f, renderArea.getWidth() / 10.0f));
+	d_horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
 	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
 }
 
@@ -574,8 +572,7 @@ void MultiLineEditbox::renderTextLines(const Rect& dest_area, const Rect& clippe
 				}
 
 				// calculate the length of the selected section
-				using namespace std;
-				sectLen = min(d_selectionEnd - currLine.d_startIdx, currLine.d_length) - sectIdx;
+				sectLen = std::min(d_selectionEnd - currLine.d_startIdx, currLine.d_length) - sectIdx;
 
 				// get the text for this section
 				sect = lineText.substr(sectIdx, sectLen);

@@ -31,6 +31,12 @@
 #include "CEGUISingleton.h"
 #include <map>
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4275)
+#	pragma warning(disable : 4251)
+#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -68,7 +74,7 @@ public:
 	\return
 		Singleton FontManager object
 	*/
-	static	FontManager&	getSingleton(void)			{return Singleton<FontManager>::getSingleton();}
+	static	FontManager&	getSingleton(void);
 
 
 	/*!
@@ -78,7 +84,7 @@ public:
 	\return
 		Pointer to singleton FontManager object
 	*/
-	static	FontManager*	getSingletonPtr(void)			{return Singleton<FontManager>::getSingletonPtr();}
+	static	FontManager*	getSingletonPtr(void);
 
 
 	/*!
@@ -217,5 +223,10 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIFontManager_h_

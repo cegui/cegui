@@ -28,7 +28,7 @@
 
 #include "CEGUIBase.h"
 #include <string>
-#if defined(linux)
+#if defined(linux) || (defined(_MSC_VER) && (_MSC_VER <= 1200))
 #   include <stdexcept>
 #endif
 
@@ -116,10 +116,18 @@ public:
 			return *d_ptr;
 		}
 
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+#	pragma warning (push)
+#	pragma warning (disable : 4284)
+#endif
 		const_pointer	operator->() const		
 		{
 			return &**this;
 		}
+
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+#	pragma warning (pop)
+#endif
 
 		const_iterator&	operator++()
 		{
@@ -233,10 +241,19 @@ public:
 			return ((reference)**(const_iterator *)this);
 		}
 
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+#	pragma warning (push)
+#	pragma warning (disable : 4284)
+#endif
+
 		pointer operator->() const
 		{
 			return &**this;
 		}
+
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+#	pragma warning (pop)
+#endif
 
 		iterator& operator++()
 		{
@@ -308,13 +325,21 @@ public:
 	\brief
 		Constant reverse iterator class for String objects
 	*/
+#if (_MSC_VER) && (_MSC_VER <= 1200)
+	typedef	std::reverse_iterator<const_iterator, const_pointer, const_reference, difference_type>	const_reverse_iterator;
+#else
 	typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
+#endif
 
 	/*!
 	\brief
 		Reverse iterator class for String objects
 	*/
+#if (_MSC_VER) && (_MSC_VER <= 1200)
+	typedef std::reverse_iterator<iterator, pointer, reference, difference_type>			reverse_iterator;
+#else
 	typedef std::reverse_iterator<iterator>			reverse_iterator;
+#endif
 
 public:
 	//////////////////////////////////////////////////////////////////////////
@@ -1082,7 +1107,7 @@ public:
 
 		size_type	maxlen = d_cplength - idx;
 
-		return encoded_size(&ptr()[idx], min(num, maxlen));
+		return encoded_size(&ptr()[idx], std::min(num, maxlen));
 	}
 
 	//////////////////////////////////////////////////////////////////////////

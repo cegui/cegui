@@ -47,6 +47,13 @@
 #       define CEGUIBASE_API
 #endif
 
+
+// totally kill this warning (debug info truncated to 255 chars etc...) on <= VC6
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+#   pragma warning(disable : 4786)
+#endif
+
+
 /*************************************************************************
 	Documentation for the CEGUI namespace itself
 *************************************************************************/

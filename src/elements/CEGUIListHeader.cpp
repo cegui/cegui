@@ -1000,7 +1000,6 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 	{
 		if (d_segmentOffset > 0.0f)
 		{
-			using namespace std;
 			float adjust = ScrollSpeed;
 			
 			if (mmode == Relative)
@@ -1008,18 +1007,16 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 				adjust = absoluteToRelativeX(adjust);
 			}
 			
-			setSegmentOffset(max(0.0f, d_segmentOffset - adjust));
+			setSegmentOffset(std::max(0.0f, d_segmentOffset - adjust));
 		}
 
 	}
 	// scroll right?
 	else if (localMousePos.d_x >= getAbsoluteWidth())
 	{
-		using namespace std;
-
 		float adjust	= ScrollSpeed;
 		float pixOffset = d_segmentOffset;
-		float maxOffset = max(0.0f, getTotalSegmentsPixelExtent() - getAbsoluteWidth());
+		float maxOffset = std::max(0.0f, getTotalSegmentsPixelExtent() - getAbsoluteWidth());
 
 		// convert values as required so calculations can be done in a consistent way
 		if (mmode == Relative)
@@ -1033,7 +1030,7 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 		if (d_segmentOffset < maxOffset)
 		{
 			// scroll, but never beyond the limit
-			setSegmentOffset(min(maxOffset, d_segmentOffset + adjust));
+			setSegmentOffset(std::min(maxOffset, d_segmentOffset + adjust));
 		}
 
 	}

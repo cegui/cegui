@@ -35,6 +35,12 @@
 #include <map>
 
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -333,17 +339,13 @@ public:
 	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours) const;
 
 
-private:
-	/*************************************************************************
-		Friends (allows us to ensure only the GUI system creates Image objects)
-	*************************************************************************/
-	friend class Imageset;
+
 	friend class std::map<String, Image>;
 	friend struct std::pair<const String, Image>;
 
 
 	/*************************************************************************
-		Implementation Methods
+		Construction and Destruction
 	*************************************************************************/
 	/*!
 	\brief
@@ -364,7 +366,7 @@ private:
 	Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
 
 
-public:		// made public for luabind
+
 	/*!
 	\brief
 		Copy constructor
@@ -378,7 +380,17 @@ public:		// made public for luabind
 	*/
 	~Image(void);
 
+
 private:
+	/*************************************************************************
+		Friends
+	*************************************************************************/
+	friend class Imageset;
+
+		
+	/*************************************************************************
+		Implementation Methods
+	*************************************************************************/
 	/*!
 	\brief
 		set the horizontal scaling factor to be applied to this Image
@@ -421,5 +433,8 @@ private:
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIImage_h_

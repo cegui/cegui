@@ -93,10 +93,9 @@ void TLMiniVertScrollbarThumb::drawNormal(float z)
 	ColourRect colours(colval, colval, colval, colval);
 
 	// calculate segment sizes
-	using namespace std;
 	float minHeight		= absrect.getHeight() * 0.5f;
-	float topHeight		= min(d_normalTopImage->getHeight(), minHeight);
-	float bottomHeight	= min(d_normalBottomImage->getHeight(), minHeight);
+	float topHeight		= std::min(d_normalTopImage->getHeight(), minHeight);
+	float bottomHeight	= std::min(d_normalBottomImage->getHeight(), minHeight);
 	float middleHeight	= absrect.getHeight() - topHeight - bottomHeight;
 
 
@@ -137,10 +136,9 @@ void TLMiniVertScrollbarThumb::drawHover(float z)
 	ColourRect colours(colval, colval, colval, colval);
 
 	// calculate segment sizes
-	using namespace std;
 	float minHeight		= absrect.getHeight() * 0.5f;
-	float topHeight		= min(d_highlightTopImage->getHeight(), minHeight);
-	float bottomHeight	= min(d_highlightBottomImage->getHeight(), minHeight);
+	float topHeight		= std::min(d_highlightTopImage->getHeight(), minHeight);
+	float bottomHeight	= std::min(d_highlightBottomImage->getHeight(), minHeight);
 	float middleHeight	= absrect.getHeight() - topHeight - bottomHeight;
 
 
@@ -181,10 +179,9 @@ void TLMiniVertScrollbarThumb::drawDisabled(float z)
 	ColourRect colours(colval, colval, colval, colval);
 
 	// calculate segment sizes
-	using namespace std;
 	float minHeight		= absrect.getHeight() * 0.5f;
-	float topHeight		= min(d_highlightTopImage->getHeight(), minHeight);
-	float bottomHeight	= min(d_highlightBottomImage->getHeight(), minHeight);
+	float topHeight		= std::min(d_highlightTopImage->getHeight(), minHeight);
+	float bottomHeight	= std::min(d_highlightBottomImage->getHeight(), minHeight);
 	float middleHeight	= absrect.getHeight() - topHeight - bottomHeight;
 
 

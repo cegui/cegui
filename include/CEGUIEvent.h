@@ -31,9 +31,16 @@
 #define BOOST_LIB_NAME	boost_signals
 #include "boost/config/auto_link.hpp"
 
-// disable warning on MSVC: "nonstandard extension used : formal parameter 'identifier' was previously defined as a type"
-#if defined (_MSC_VER) && !defined (_MSC_EXTENSIONS)
-#	pragma warning (disable : 4224)
+#if defined (_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#	if !defined (_MSC_EXTENSIONS)
+#		pragma warning (disable : 4224)
+#	endif
+#endif
+
+
+#if defined(_MSC_VER)
 #endif
 
 
@@ -41,6 +48,7 @@
 #include "CEGUIString.h"
 #include "CEGUIEventArgs.h"
 #include "boost/signals.hpp"
+
 
 
 // Start of CEGUI namespace section
@@ -152,5 +160,9 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIEvent_h_

@@ -208,4 +208,17 @@ void FontManager::notifyScreenResolution(const Size& size)
 
 }
 
+
+FontManager& FontManager::getSingleton(void)
+{
+	return Singleton<FontManager>::getSingleton();
+}
+
+
+FontManager* FontManager::getSingletonPtr(void)
+{
+	return Singleton<FontManager>::getSingletonPtr();
+}
+
+
 } // End of  CEGUI namespace section

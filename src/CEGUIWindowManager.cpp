@@ -244,4 +244,15 @@ Window* WindowManager::loadWindowLayout(const String& filename)
 }
 
 
+WindowManager& WindowManager::getSingleton(void)
+{
+	return Singleton<WindowManager>::getSingleton();
+}
+
+
+WindowManager* WindowManager::getSingletonPtr(void)
+{
+	return Singleton<WindowManager>::getSingletonPtr();
+}
+
 } // End of  CEGUI namespace section

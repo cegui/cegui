@@ -32,6 +32,13 @@
 #include "CEGUILogger.h"
 #include <map>
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4275)
+#	pragma warning(disable : 4251)
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -78,7 +85,7 @@ public:
 	\return
 		Singleton WindowManager object
 	*/
-	static	WindowManager&	getSingleton(void)			{return Singleton<WindowManager>::getSingleton();}
+	static	WindowManager&	getSingleton(void);
 
 
 	/*!
@@ -88,7 +95,7 @@ public:
 	\return
 		Pointer to singleton WindowManager object
 	*/
-	static	WindowManager*	getSingletonPtr(void)		{return Singleton<WindowManager>::getSingletonPtr();}
+	static	WindowManager*	getSingletonPtr(void);
 
 
 	/*************************************************************************
@@ -216,5 +223,9 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIWindowManager_h_

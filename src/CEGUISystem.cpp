@@ -859,4 +859,17 @@ SystemKey System::keyCodeToSyskey(Key::Scan key, bool direction)
 	return (SystemKey)0;
 }
 
+
+System&	System::getSingleton(void)
+{
+	return Singleton<System>::getSingleton();
+}
+
+
+System*	System::getSingletonPtr(void)
+{
+	return Singleton<System>::getSingletonPtr();
+}
+
+
 } // End of  CEGUI namespace section

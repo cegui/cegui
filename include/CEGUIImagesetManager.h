@@ -31,6 +31,14 @@
 #include "CEGUISingleton.h"
 #include <map>
 
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4275)
+#	pragma warning(disable : 4251)
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -66,7 +74,7 @@ public:
 	\return
 		Singleton ImagesetManager object
 	*/
-	static	ImagesetManager&	getSingleton(void)			{return Singleton<ImagesetManager>::getSingleton();}
+	static	ImagesetManager&	getSingleton(void);
 
 
 	/*!
@@ -76,7 +84,7 @@ public:
 	\return
 		Pointer to singleton ImagesetManager object
 	*/
-	static	ImagesetManager*	getSingletonPtr(void)			{return Singleton<ImagesetManager>::getSingletonPtr();}
+	static	ImagesetManager*	getSingletonPtr(void);
 
 
 	/*!
@@ -199,5 +207,9 @@ private:
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIImageSetManager_h_
