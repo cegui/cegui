@@ -30,6 +30,9 @@
 #include <d3dx9.h>
 #include <dxerr9.h>
 
+// remove Microsoft idiocy
+#undef max
+#undef min
 
 // Start of CEGUI namespace section
 namespace CEGUI
