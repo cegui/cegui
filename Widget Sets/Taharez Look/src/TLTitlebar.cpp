@@ -38,6 +38,7 @@ const utf8	TLTitlebar::LeftEndSectionImageName[]	= "TitlebarLeft";
 const utf8	TLTitlebar::MiddleSectionImageName[]	= "TitlebarMiddle";
 const utf8	TLTitlebar::RightEndSectionImageName[]	= "TitlebarRight";
 const utf8	TLTitlebar::NormalCursorImageName[]		= "MouseMoveCursor";
+const utf8	TLTitlebar::NoDragCursorImageName[]		= "MouseTarget";
 
 
 /*************************************************************************
@@ -133,6 +134,30 @@ void TLTitlebar::drawSelf(float z)
 	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 	getFont()->drawText(d_parent->getText(), pos, clipper, colours);
+}
+
+
+/*************************************************************************
+	Handler for when drag mode changes
+*************************************************************************/
+void TLTitlebar::onDraggingModeChanged(WindowEventArgs& e)
+{
+	// base class processing
+	Titlebar::onDraggingModeChanged(e);
+
+	// change cursor depending on new mode.
+	if (d_dragEnabled)
+	{
+		setMouseCursor(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(NormalCursorImageName));
+	}
+	else
+	{
+		setMouseCursor(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(NoDragCursorImageName));
+	}
+
+	requestRedraw();
+
+	e.handled = true;
 }
 
 

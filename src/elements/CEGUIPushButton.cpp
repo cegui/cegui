@@ -76,10 +76,7 @@ void PushButton::onClicked(WindowEventArgs& e)
 *************************************************************************/
 void PushButton::onMouseButtonUp(MouseEventArgs& e)
 {
-	// default handling
-	ButtonBase::onMouseButtonUp(e);
-
-	if (e.button == LeftButton)
+	if ((e.button == LeftButton) && isPushed())
 	{
 		Window* sheet = System::getSingleton().getGUISheet();
 
@@ -97,6 +94,8 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 		e.handled = true;
 	}
 
+	// default handling
+	ButtonBase::onMouseButtonUp(e);
 }
 
 

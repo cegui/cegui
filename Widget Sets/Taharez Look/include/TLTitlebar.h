@@ -48,6 +48,7 @@ public:
 	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the middle section of the title bar.
 	static const utf8	RightEndSectionImageName[];		//!< Name of the image to use for the right section of the title bar.
 	static const utf8	NormalCursorImageName[];		//!< Name of the image to use as the mouse cursor for this window.
+	static const utf8	NoDragCursorImageName[];		//!< Name of the image to use as mouse cursor when dragging is disabled.
 
 
 	/*************************************************************************
@@ -102,6 +103,12 @@ protected:
 		Nothing
 	*/
 	virtual	void	drawSelf(float z);
+
+
+	/*************************************************************************
+		Overridden event handlers
+	*************************************************************************/
+	virtual void	onDraggingModeChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************

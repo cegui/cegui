@@ -278,6 +278,29 @@ public:
 	void	offsetPixelPosition(const Vector2& offset);
 
 
+	/*!
+	\brief
+		Return whether this FrameWindow can be moved by dragging the title bar.
+
+	\return
+		true if the Window will move when the user drags the title bar, false if the window will not move.
+	*/
+	bool	isDragMovingEnabled(void) const		{return d_dragMovable;}
+
+
+	/*!
+	\brief
+		Set whether this FrameWindow can be moved by dragging the title bar.
+
+	\param setting
+		true if the Window should move when the user drags the title bar, false if the window should not move.
+
+	\return
+		Nothing.
+	*/
+	void	setDragMovingEnabled(bool setting);
+
+
 protected:
 	/*************************************************************************
 		Construction / Destruction
@@ -520,6 +543,8 @@ protected:
 	const Image*	d_ewSizingCursor;		//!< East/West sizing cursor image.
 	const Image*	d_nwseSizingCursor;		//!< North-West/South-East cursor image.
 	const Image*	d_neswSizingCursor;		//!< North-East/South-West cursor image.
+
+	bool	d_dragMovable;		//!< true if the window will move when dragged by the title bar.
 };
 
 } // End of  CEGUI namespace section

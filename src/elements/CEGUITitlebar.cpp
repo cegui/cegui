@@ -40,6 +40,7 @@ Titlebar::Titlebar(const String& type, const String& name) :
 
 	// basic initialisation
 	d_dragging = false;
+	d_dragEnabled = true;
 }
 
 /*************************************************************************
@@ -47,6 +48,37 @@ Titlebar::Titlebar(const String& type, const String& name) :
 *************************************************************************/
 Titlebar::~Titlebar(void)
 {
+}
+
+
+/*************************************************************************
+	Return whether this title bar will respond to dragging.
+*************************************************************************/
+bool Titlebar::isDraggingEnabled(void) const
+{
+	return d_dragEnabled;
+}
+
+
+/*************************************************************************
+	Set whether this title bar widget will respond to dragging.
+*************************************************************************/
+void Titlebar::setDraggingEnabled(bool setting)
+{
+	if (d_dragEnabled != setting)
+	{
+		d_dragEnabled = setting;
+
+		// stop dragging now if the setting has been disabled.
+		if ((!d_dragEnabled) && d_dragging)
+		{
+			releaseInput();
+		}
+
+		// call event handler.
+		onDraggingModeChanged(WindowEventArgs(this));
+	}
+
 }
 
 
@@ -88,7 +120,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		if (d_parent != NULL)
+		if ((d_parent != NULL) && d_dragEnabled)
 		{
 			// we want all mouse inputs from now on
 			captureInput();

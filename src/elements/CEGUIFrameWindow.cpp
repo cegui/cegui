@@ -56,7 +56,8 @@ FrameWindow::FrameWindow(const String& type, const String& name) :
 	d_rolledup			= false;
 	d_sizingEnabled		= true;
 	d_beingSized		= false;
-	
+	d_dragMovable		= true;
+
 	d_borderSize		= DefaultSizingBorderSize;
 
 	d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = NULL;
@@ -85,6 +86,7 @@ void FrameWindow::initialise(void)
 	// add child controls
 	if (d_titlebar != NULL)
 	{
+		d_titlebar->setDraggingEnabled(d_dragMovable);
 		addChildWindow(d_titlebar);
 	}
 
@@ -677,6 +679,25 @@ void FrameWindow::onParentSized(WindowEventArgs& e)
 	}
 
 	Window::onParentSized(e);
+}
+
+
+/*************************************************************************
+	Set whether this FrameWindow can be moved by dragging the title bar.	
+*************************************************************************/
+void FrameWindow::setDragMovingEnabled(bool setting)
+{
+	if (d_dragMovable != setting)
+	{
+		d_dragMovable = setting;
+
+		if (d_titlebar != NULL)
+		{
+			d_titlebar->setDraggingEnabled(setting);
+		}
+
+	}
+
 }
 
 

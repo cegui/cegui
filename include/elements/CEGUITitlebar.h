@@ -40,6 +40,30 @@ namespace CEGUI
 */
 class CEGUIBASE_API Titlebar : public Window
 {
+public:
+	/*!
+	\brief
+		Return whether this title bar will respond to dragging.
+
+	\return
+		true if the title bar will respond to dragging, false if the title bar will not respond.
+	*/
+	bool	isDraggingEnabled(void) const;
+
+
+	/*!
+	\brief
+		Set whether this title bar widget will respond to dragging.
+
+	\param setting
+		true if the title bar should respond to being dragged, false if it should not respond.
+
+	\return
+		Nothing.
+	*/
+	void	setDraggingEnabled(bool setting);
+
+
 protected:
 	/*************************************************************************
 		Construction / Destruction
@@ -69,10 +93,24 @@ protected:
 
 
 	/*************************************************************************
+		New event handlers for title bar
+	*************************************************************************/
+	/*!
+	\brief
+		Event handler called when the 'draggable' state for the title bar is changed.
+		
+		Note that this is for 'internal' use at the moment and as such does not add or
+		fire a public Event that can be subscribed to.
+	*/
+	virtual void	onDraggingModeChanged(WindowEventArgs& e) {}
+
+
+	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	bool	d_dragging;			//!< set to true when the window is being dragged.
 	Point	d_dragPoint;		//!< Point at which we are being dragged.
+	bool	d_dragEnabled;		//!< true when dragging for the widget is enabled.
 
 	Rect	d_oldCursorArea;	//!< Used to backup cursor restraint area.
 };
