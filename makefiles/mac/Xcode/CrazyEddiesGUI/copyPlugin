@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mkdir -p ${BUILT_PRODUCTS_DIR}/Ogre.framework/Resources/
+cp -R "${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.bundle" "${BUILT_PRODUCTS_DIR}/Ogre.framework/Resources/"
+touch ${BUILT_PRODUCTS_DIR}/Ogre.framework
