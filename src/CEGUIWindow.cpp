@@ -1009,6 +1009,9 @@ void Window::moveToFront()
 		return;
 	}
 
+	// bring parent window to front of it's siblings...
+	d_parent->moveToFront();
+
 	// get our sibling window which is currently active (if any)
 	Window* activeWnd = NULL;
 
@@ -1044,9 +1047,6 @@ void Window::moveToFront()
 	}
 
 	onZChange_impl();
-
-	// bring parent window to front of it's siblings...
-	d_parent->moveToFront();
 }
 
 
