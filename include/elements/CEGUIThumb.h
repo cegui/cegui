@@ -28,6 +28,8 @@
 #define _CEGUIThumb_h_
 
 #include "CEGUIPushButton.h"
+#include "elements/CEGUIThumbProperties.h"
+#include <utility>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -81,6 +83,28 @@ public:
 		false if the thumb is fixed on the horizontal axis.
 	*/
 	bool	isHorzFree(void) const				{return d_horzFree;}
+
+
+	/*!
+	\brief
+		Return a std::pair that describes the current range set for the vertical movement.
+
+	\return
+		a std::pair describing the current vertical range.  The first element is the minimum value,
+		the second element is the maximum value.
+	*/
+	std::pair<float, float>	getVertRange(void) const;
+
+
+	/*!
+	\brief
+		Return a std::pair that describes the current range set for the horizontal movement.
+
+	\return
+		a std::pair describing the current horizontal range.  The first element is the minimum value,
+		the second element is the maximum value.
+	*/
+	std::pair<float, float>	getHorzRange(void) const;
 
 
 	/*************************************************************************
@@ -225,6 +249,23 @@ protected:
 	// internal state
 	bool	d_beingDragged;				//!< true if thumb is being dragged
 	Point	d_dragPoint;				//!< point where we are being dragged at.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static ThumbProperties::HotTracked	d_hotTrackedProperty;
+	static ThumbProperties::VertFree	d_vertFreeProperty;
+	static ThumbProperties::HorzFree	d_horzFreeProperty;
+	static ThumbProperties::VertRange	d_vertRangeProperty;
+	static ThumbProperties::HorzRange	d_horzRangeProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addThumbProperties(void);
 };
 
 } // End of  CEGUI namespace section

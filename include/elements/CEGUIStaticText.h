@@ -27,6 +27,7 @@
 #define _CEGUIStaticText_h_
 
 #include "elements/CEGUIStatic.h"
+#include "elements/CEGUIStaticTextProperties.h"
 
 
 // Start of CEGUI namespace section
@@ -242,6 +243,21 @@ protected:
 	HorzFormatting	d_horzFormatting;
 	VertFormatting	d_vertFormatting;
 	ColourRect		d_textCols;
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static StaticTextProperties::TextColours	d_textColoursProperty;
+	static StaticTextProperties::VertFormatting	d_vertFormattingProperty;
+	static StaticTextProperties::HorzFormatting	d_horzFormattingProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addStaticTextProperties(void);
 };
 
 } // End of  CEGUI namespace section

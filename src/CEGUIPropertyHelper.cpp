@@ -248,7 +248,7 @@ String PropertyHelper::colourRectToString(const ColourRect& val)
 }
 
 
-ColourRect PropertyHelper::stringtoColourRect(const String& str)
+ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
 	ColourRect val(0xFF000000);
 

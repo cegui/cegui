@@ -48,7 +48,7 @@ public:
 	static	MetricsMode	stringToMetricsMode(const String& str);
 	static const Image*	stringToImage(const String& str);
 	static	colour	stringToColour(const String& str);
-	static	ColourRect	stringtoColourRect(const String& str);
+	static	ColourRect	stringToColourRect(const String& str);
 
 	static String	floatToString(float val);
 	static String	uintToString(uint val);

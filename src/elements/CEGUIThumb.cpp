@@ -29,6 +29,16 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Static Properties for this class
+*************************************************************************/
+ThumbProperties::HotTracked	Thumb::d_hotTrackedProperty;
+ThumbProperties::VertFree	Thumb::d_vertFreeProperty;
+ThumbProperties::HorzFree	Thumb::d_horzFreeProperty;
+ThumbProperties::VertRange	Thumb::d_vertRangeProperty;
+ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
+
+
+/*************************************************************************
 	Event name constants
 *************************************************************************/
 // generated internally by Window
@@ -50,6 +60,7 @@ Thumb::Thumb(const String& type, const String& name) :
 	d_horzMax(1.0f)
 {
 	addThumbEvents();
+	addThumbProperties();
 }
 
 
@@ -262,6 +273,39 @@ void Thumb::onCaptureLost(WindowEventArgs& e)
 	// send notification whenever thumb is released
 	WindowEventArgs args(this);
 	onThumbPositionChanged(args);
+}
+
+
+/*************************************************************************
+	Return a std::pair that describes the current range set for the
+	vertical movement.	
+*************************************************************************/
+std::pair<float, float>	Thumb::getVertRange(void) const
+{
+	return std::make_pair(d_vertMin, d_vertMax);
+}
+
+
+/*************************************************************************
+	Return a std::pair that describes the current range set for the
+	horizontal movement.	
+*************************************************************************/
+std::pair<float, float>	Thumb::getHorzRange(void) const
+{
+	return std::make_pair(d_horzMin, d_horzMax);
+}
+
+
+/*************************************************************************
+	Add thumb specifiec properties
+*************************************************************************/
+void Thumb::addThumbProperties(void)
+{
+	addProperty(&d_hotTrackedProperty);
+	addProperty(&d_vertFreeProperty);
+	addProperty(&d_horzFreeProperty);
+	addProperty(&d_vertRangeProperty);
+	addProperty(&d_horzRangeProperty);
 }
 
 

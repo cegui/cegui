@@ -31,6 +31,14 @@
 namespace CEGUI
 {
 /*************************************************************************
+Static Properties for this class
+*************************************************************************/
+StaticTextProperties::TextColours		StaticText::d_textColoursProperty;
+StaticTextProperties::VertFormatting	StaticText::d_vertFormattingProperty;
+StaticTextProperties::HorzFormatting	StaticText::d_horzFormattingProperty;
+
+
+/*************************************************************************
 	Constructor for static text widgets.	
 *************************************************************************/
 StaticText::StaticText(const String& type, const String& name) :
@@ -39,6 +47,7 @@ StaticText::StaticText(const String& type, const String& name) :
 	d_horzFormatting(LeftAligned),
 	d_vertFormatting(VertCentred)
 {
+	addStaticTextProperties();
 }
 
 
@@ -142,5 +151,17 @@ void StaticText::drawSelf(float z)
 
 	getFont()->drawText(getText(), absarea, System::getSingleton().getRenderer()->getZLayer(1), clipper, (TextFormatting)d_horzFormatting, final_cols);
 }
+
+
+/*************************************************************************
+	Add properties for static text
+*************************************************************************/
+void StaticText::addStaticTextProperties(void)
+{
+	addProperty(&d_textColoursProperty);
+	addProperty(&d_vertFormattingProperty);
+	addProperty(&d_horzFormattingProperty);
+}
+
 
 } // End of  CEGUI namespace section

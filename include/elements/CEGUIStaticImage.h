@@ -28,6 +28,7 @@
 
 #include "elements/CEGUIStatic.h"
 #include "CEGUIRenderableImage.h"
+#include "elements/CEGUIStaticImageProperties.h"
 
 
 // Start of CEGUI namespace section
@@ -299,6 +300,22 @@ protected:
 	*************************************************************************/
 	RenderableImage	d_image;		//!< RenderableImage that does most of the work for us.
 	ColourRect		d_imageCols;	//!< Colours to use for the image.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static StaticImageProperties::Image				d_imageProperty;
+	static StaticImageProperties::ImageColours		d_imageColoursProperty;
+	static StaticImageProperties::VertFormatting	d_vertFormattingProperty;
+	static StaticImageProperties::HorzFormatting	d_horzFormattingProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addStaticImageProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -332,13 +332,28 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIStaticImage.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIStaticImageProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIStaticProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIStaticText.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIStaticTextProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIThumb.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIThumbProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUITitlebar.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITitlebarProperties.cpp">
 				</File>
 			</Filter>
 		</Filter>
@@ -580,13 +595,28 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIStaticImage.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIStaticImageProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIStaticProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIStaticText.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIStaticTextProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIThumb.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIThumbProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITitlebar.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITitlebarProperties.h">
 				</File>
 			</Filter>
 		</Filter>

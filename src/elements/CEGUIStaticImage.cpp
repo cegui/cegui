@@ -30,6 +30,14 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Definitions of Properties for this class
+*************************************************************************/
+StaticImageProperties::Image			StaticImage::d_imageProperty;
+StaticImageProperties::ImageColours		StaticImage::d_imageColoursProperty;
+StaticImageProperties::VertFormatting	StaticImage::d_vertFormattingProperty;
+StaticImageProperties::HorzFormatting	StaticImage::d_horzFormattingProperty;
+
 
 /*************************************************************************
 	Constructor for static image widgets.	
@@ -38,6 +46,8 @@ StaticImage::StaticImage(const String& type, const String& name) :
 	Static(type, name),
 	d_imageCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
 {
+	addStaticImageProperties();
+
 	// default to stretched image
 	d_image.setHorzFormatting(RenderableImage::HorzStretched);
 	d_image.setVertFormatting(RenderableImage::VertStretched);
@@ -207,6 +217,17 @@ void StaticImage::onStaticFrameChanged(WindowEventArgs& e)
 	d_image.setSize(getUnclippedInnerRect().getSize());
 
 	e.handled = true;
+}
+
+/*************************************************************************
+	Add properties for static image
+*************************************************************************/
+void StaticImage::addStaticImageProperties(void)
+{
+	addProperty(&d_imageProperty);
+	addProperty(&d_imageColoursProperty);
+	addProperty(&d_vertFormattingProperty);
+	addProperty(&d_horzFormattingProperty);
 }
 
 

@@ -27,6 +27,7 @@
 #define _CEGUITitlebar_h_
 
 #include "CEGUIWindow.h"
+#include "elements/CEGUITitlebarProperties.h"
 
 
 // Start of CEGUI namespace section
@@ -113,6 +114,19 @@ protected:
 	bool	d_dragEnabled;		//!< true when dragging for the widget is enabled.
 
 	Rect	d_oldCursorArea;	//!< Used to backup cursor restraint area.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static TitlebarProperties::DraggingEnabled	d_dragEnabledProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addTitlebarProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -351,4 +351,97 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 }
 
 
+/*************************************************************************
+	Set the Image to use for the specified location of the frame.
+*************************************************************************/
+void RenderableFrame::setImageForLocation(FrameLocation location, const Image* image)
+{
+	switch (location)
+	{
+	case TopLeftCorner:
+		d_topleft = image;
+		break;
+
+	case TopRightCorner:
+		d_topright = image;
+		break;
+
+	case BottomLeftCorner:
+		d_bottomleft = image;
+		break;
+
+	case BottomRightCorner:
+		d_bottomright = image;
+		break;
+
+	case LeftEdge:
+		d_left = image;
+		break;
+
+	case RightEdge:
+		d_right = image;
+		break;
+
+	case TopEdge:
+		d_top = image;
+		break;
+
+	case BottomEdge:
+		d_bottom = image;
+		break;
+
+	default:
+		break;
+	}
+
+}
+
+
+/*************************************************************************
+	Return the Image being used for the specified location of the frame.	
+*************************************************************************/
+const Image* RenderableFrame::getImageForLocation(FrameLocation location) const
+{
+	switch (location)
+	{
+	case TopLeftCorner:
+		return d_topleft;
+		break;
+
+	case TopRightCorner:
+		return d_topright;
+		break;
+
+	case BottomLeftCorner:
+		return d_bottomleft;
+		break;
+
+	case BottomRightCorner:
+		return d_bottomright;
+		break;
+
+	case LeftEdge:
+		return d_left;
+		break;
+
+	case RightEdge:
+		return d_right;
+		break;
+
+	case TopEdge:
+		return d_top;
+		break;
+
+	case BottomEdge:
+		return d_bottom;
+		break;
+
+	default:
+		return NULL;
+		break;
+	}
+
+}
+
+
 } // End of  CEGUI namespace section

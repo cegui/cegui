@@ -35,6 +35,24 @@ namespace CEGUI
 {
 /*!
 \brief
+	Enumeration of positions for a frame.
+*/
+enum FrameLocation
+{
+	Invalid,			// Value reserved to indicate some invalid or unknown location.
+	TopLeftCorner,		// Top-Left corner of a frame / rectangle.
+	TopRightCorner,		// Top-Right corner of a frame / rectangle.
+	BottomLeftCorner,	// Bottom-Left corner of a frame / rectangle.
+	BottomRightCorner,	// Bottom-Right corner of a frame / rectangle.
+	LeftEdge,			// Left edge of a frame / rectangle.	
+	TopEdge,			// Top edge of a frame / rectangle.
+	RightEdge,			// Right edge of a frame / rectangle.
+	BottomEdge,			// Bottom edge of a frame / rectangle.
+};
+
+
+/*!
+\brief
 	A higher order GUI entity that represents a renderable frame.
 
 	This class is intended to be used where a (usually top-level) GUI element needs to draw a frame that is constructed from
@@ -96,6 +114,38 @@ public:
 		Nothing
 	*/
 	void	setImages(const Image* topleft, const Image* topright, const Image* bottomleft, const Image* bottomright, const Image* left, const Image* top, const Image* right, const Image* bottom);
+
+
+	/*!
+	\brief
+		Set the Image to use for the specified location of the frame.
+
+	\param location
+		One of the FrameLocation enumerated values specifying the image to be returned.
+
+	\param image
+		Pointer to the Image to use for the frame location specified in \a location.  May be NULL to indicate the
+		frame component is not required.
+
+	\return
+		Nothing.
+	*/
+	void	setImageForLocation(FrameLocation location, const Image* image);
+
+
+
+	/*!
+	\brief
+		Return the Image being used for the specified location of the frame.
+
+	\param location
+		One of the FrameLocation enumerated values specifying the image to be returned.
+
+	\return
+		Pointer to the Image object currently set for the frame location specified in \a location.  May return NULL if no
+		Image is set for the requested position.
+	*/
+	const Image*	getImageForLocation(FrameLocation location) const;
 
 
 protected:

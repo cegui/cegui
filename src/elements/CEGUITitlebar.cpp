@@ -31,11 +31,19 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definition of Properties for this class
+*************************************************************************/
+TitlebarProperties::DraggingEnabled	Titlebar::d_dragEnabledProperty;
+
+
+/*************************************************************************
 	Constructor
 *************************************************************************/
 Titlebar::Titlebar(const String& type, const String& name) :
 	Window(type, name)
 {
+	addTitlebarProperties();
+
 	setAlwaysOnTop(true);
 
 	// basic initialisation
@@ -212,6 +220,15 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
 
 	// restore old constraint area
 	MouseCursor::getSingleton().setConstraintArea(&d_oldCursorArea);
+}
+
+
+/*************************************************************************
+	Add title bar specific properties
+*************************************************************************/
+void Titlebar::addTitlebarProperties(void)
+{
+	addProperty(&d_dragEnabledProperty);
 }
 
 } // End of  CEGUI namespace section

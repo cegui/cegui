@@ -74,9 +74,14 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUISliderProperties.cpp \
                       elements/CEGUIStatic.cpp \
                       elements/CEGUIStaticImage.cpp \
+                      elements/CEGUIStaticImageProperties.cpp \
+                      elements/CEGUIStaticProperties.cpp \
                       elements/CEGUIStaticText.cpp \
+                      elements/CEGUIStaticTextProperties.cpp \
                       elements/CEGUIThumb.cpp \
+                      elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
+                      elements/CEGUITitlebarProperties.cpp \
                       implementations/linux/CEGUIFactoryModule.cpp
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@

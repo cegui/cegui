@@ -32,6 +32,24 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Definitions of Properties for this class
+*************************************************************************/
+StaticProperties::FrameEnabled				Static::d_frameEnabledProperty;
+StaticProperties::BackgroundEnabled			Static::d_backgroundEnabledProperty;
+StaticProperties::FrameColours				Static::d_frameColoursProperty;
+StaticProperties::BackgroundColours			Static::d_backgroundColoursProperty;
+StaticProperties::BackgroundImage			Static::d_backgroundImageProperty;
+StaticProperties::TopLeftFrameImage			Static::d_topLeftFrameProperty;
+StaticProperties::TopRightFrameImage		Static::d_topRightFrameProperty;
+StaticProperties::BottomLeftFrameImage		Static::d_bottomLeftFrameProperty;
+StaticProperties::BottomRightFrameImage		Static::d_bottomRightFrameProperty;
+StaticProperties::LeftFrameImage			Static::d_leftFrameProperty;
+StaticProperties::RightFrameImage			Static::d_rightFrameProperty;
+StaticProperties::TopFrameImage				Static::d_topFrameProperty;
+StaticProperties::BottomFrameImage			Static::d_bottomFrameProperty;
+
+
+/*************************************************************************
 	Constructor for static widget base class
 *************************************************************************/
 Static::Static(const String& type, const String& name) :
@@ -40,6 +58,7 @@ Static::Static(const String& type, const String& name) :
 	d_frameCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
 	d_backgroundCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
 {
+	addStaticProperties();
 }
 
 
@@ -330,6 +349,53 @@ void Static::onAlphaChanged(WindowEventArgs& e)
 	updateRenderableFrameColours();
 
 	e.handled = true;
+}
+
+
+/*************************************************************************
+	Return the Image being used for the specified location of the frame.	
+*************************************************************************/
+const Image* Static::getImageForFrameLocation(FrameLocation location) const
+{
+	return d_frame.getImageForLocation(location);
+}
+
+
+/*************************************************************************
+	Return the Image currently set as the background image for the widget.
+*************************************************************************/
+const Image* Static::getBackgroundImage(void) const
+{
+	return d_background;
+}
+
+
+/*************************************************************************
+	Set the Image to use for the specified location of the frame.	
+*************************************************************************/
+void Static::setImageForFrameLocation(FrameLocation location, const Image* image)
+{
+	d_frame.setImageForLocation(location, image);
+}
+
+/*************************************************************************
+	Adds properties for the static widget base class
+*************************************************************************/
+void Static::addStaticProperties(void)
+{
+	addProperty(&d_frameEnabledProperty);
+	addProperty(&d_backgroundEnabledProperty);
+	addProperty(&d_frameColoursProperty);
+	addProperty(&d_backgroundColoursProperty);
+	addProperty(&d_backgroundImageProperty);
+	addProperty(&d_topLeftFrameProperty);
+	addProperty(&d_topRightFrameProperty);
+	addProperty(&d_bottomLeftFrameProperty);
+	addProperty(&d_bottomRightFrameProperty);
+	addProperty(&d_leftFrameProperty);
+	addProperty(&d_topFrameProperty);
+	addProperty(&d_rightFrameProperty);
+	addProperty(&d_bottomFrameProperty);
 }
 
 } // End of  CEGUI namespace section

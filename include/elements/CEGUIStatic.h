@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
 #include "CEGUIRenderableFrame.h"
+#include "elements/CEGUIStaticProperties.h"
 
 
 // Start of CEGUI namespace section
@@ -86,6 +87,31 @@ public:
 
 	// overridden so derived classes are auto-clipped to within the inner area of the frame when it's active.
 	virtual Rect	getUnclippedInnerRect(void) const;
+
+
+	/*!
+	\brief
+		Return the Image being used for the specified location of the frame.
+
+	\param location
+		One of the FrameLocation enumerated values specifying the image to be returned.
+
+	\return
+		Pointer to the Image object currently set for the frame location specified in \a location.  May return NULL if no
+		Image is set for the requested position.
+	*/
+	const Image*	getImageForFrameLocation(FrameLocation location) const;
+
+
+	/*!
+	\brief
+		Return the Image currently set as the background image for the widget.
+
+	\return
+		Pointer to the Image object currently set as the background for this StaticWidget.  May return NULL if
+		no Image is currently set.
+	*/
+	const Image* getBackgroundImage(void) const;
 
 
 	/*************************************************************************
@@ -274,6 +300,23 @@ public:
 	void	setBackgroundColours(colour col)		{setBackgroundColours(col, col, col, col);}
 
 
+	/*!
+	\brief
+		Set the Image to use for the specified location of the frame.
+
+	\param location
+		One of the FrameLocation enumerated values specifying the image to be returned.
+
+	\param image
+		Pointer to the Image to use for the frame location specified in \a location.  May be NULL to indicate the
+		frame component is not required.
+
+	\return
+		Nothing.
+	*/
+	void	setImageForFrameLocation(FrameLocation location, const Image* image);
+
+
 protected:
 	/*************************************************************************
 		Construction and Destruction
@@ -358,6 +401,31 @@ protected:
 	float	d_right_width;			//!< Width of the right edge image for the current frame.
 	float	d_top_height;			//!< Height of the top edge image for the current frame.
 	float	d_bottom_height;		//!< Height of the bottom edge image for the current frame.
+
+
+private:
+	/*************************************************************************
+		Static Properties for this class
+	*************************************************************************/
+	static StaticProperties::FrameEnabled				d_frameEnabledProperty;
+	static StaticProperties::BackgroundEnabled			d_backgroundEnabledProperty;
+	static StaticProperties::FrameColours				d_frameColoursProperty;
+	static StaticProperties::BackgroundColours			d_backgroundColoursProperty;
+	static StaticProperties::BackgroundImage			d_backgroundImageProperty;
+	static StaticProperties::TopLeftFrameImage			d_topLeftFrameProperty;
+	static StaticProperties::TopRightFrameImage			d_topRightFrameProperty;
+	static StaticProperties::BottomLeftFrameImage		d_bottomLeftFrameProperty;
+	static StaticProperties::BottomRightFrameImage		d_bottomRightFrameProperty;
+	static StaticProperties::LeftFrameImage				d_leftFrameProperty;
+	static StaticProperties::RightFrameImage			d_rightFrameProperty;
+	static StaticProperties::TopFrameImage				d_topFrameProperty;
+	static StaticProperties::BottomFrameImage			d_bottomFrameProperty;
+
+
+	/*************************************************************************
+		Private methods
+	*************************************************************************/
+	void	addStaticProperties(void);
 };
 
 

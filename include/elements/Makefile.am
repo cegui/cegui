@@ -30,7 +30,12 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUISliderProperties.h \
                      CEGUIStatic.h \
                      CEGUIStaticImage.h \
+                     CEGUIStaticImageProperties.h \
+                     CEGUIStaticProperties.h \
                      CEGUIStaticText.h \
+                     CEGUIStaticTextProperties.h \
                      CEGUIThumb.h \
-                     CEGUITitlebar.h
+                     CEGUIThumbProperties.h \
+                     CEGUITitlebar.h \
+                     CEGUITitlebarProperties.h
 
