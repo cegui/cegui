@@ -57,6 +57,7 @@ ComboboxProperties::InactiveEditSelectionColour	Combobox::d_inactiveSelectionCol
 ComboboxProperties::SortList					Combobox::d_sortProperty;
 ComboboxProperties::ForceVertScrollbar			Combobox::d_forceVertProperty;
 ComboboxProperties::ForceHorzScrollbar			Combobox::d_forceHorzProperty;
+ComboboxProperties::SingleClickMode				Combobox::d_singleClickOperationProperty;
 
 
 /*************************************************************************
@@ -874,6 +875,7 @@ void Combobox::addComboboxProperties(void)
 	addProperty(&d_activeSelectionColourProperty);
 	addProperty(&d_inactiveSelectionColourProperty);
 	addProperty(&d_caratIndexProperty);
+	addProperty(&d_singleClickOperationProperty);
 }
 
 

@@ -195,6 +195,18 @@ void	ForceHorzScrollbar::set(void* receiver, const String& value)
 }
 
 
+String	SingleClickMode::get(const void* receiver) const
+{
+	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->getSingleClickEnabled());
+}
+
+
+void	SingleClickMode::set(void* receiver, const String& value)
+{
+	static_cast<Combobox*>(receiver)->setSingleClickEnabled(PropertyHelper::stringToBool(value));
+}
+
+
 } // End of  ComboboxProperties namespace section
 
 } // End of  CEGUI namespace section

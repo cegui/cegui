@@ -1024,6 +1024,7 @@ private:
 	static ComboboxProperties::SortList						d_sortProperty;
 	static ComboboxProperties::ForceVertScrollbar			d_forceVertProperty;
 	static ComboboxProperties::ForceHorzScrollbar			d_forceHorzProperty;
+	static ComboboxProperties::SingleClickMode				d_singleClickOperationProperty;
 
 	/*************************************************************************
 		Private methods

@@ -316,6 +316,29 @@ public:
 	void	set(void* receiver, const String& value);
 };
 
+
+/*!
+\brief
+	Property to access the 'single click mode' setting for the combo box.
+
+	\par Usage:
+		- Name: SingleClickMode
+		- Format: "[text]"
+
+	\par Where [Text] is:
+		- "True" to indicate that the box will operate in single click mode
+		- "False" to indicate that the box will not operate in single click mode
+*/
+class SingleClickMode : public Property
+{
+public:
+	SingleClickMode() : Property((utf8*)"SingleClickMode", (utf8*)"Property to get/set the 'single click mode' setting for the combo box.  Value is either \"True\" or \"False\".") {}
+
+	String	get(const void* receiver) const;
+	void	set(void* receiver, const String& value);
+};
+
+
 } // End of  ComboboxProperties namespace section
 
 } // End of  CEGUI namespace section
