@@ -277,13 +277,13 @@ void Font::defineFontGlyphs(const String& glyph_set)
 *************************************************************************/
 uint Font::getRequiredTextureSize(const String& glyph_set)
 {
-	uint	texSize = 32;			// start with a texture this size
+	d_maxGlyphHeight = 0;
 
-	uint	height = ((d_impldat->fontFace->bbox.yMax - d_impldat->fontFace->bbox.yMin) / d_impldat->fontFace->units_per_EM) * (d_impldat->fontFace->size->metrics.y_ppem) + InterGlyphPadSpace;
+	uint	texSize = 32;			// start with a texture this size
 	uint	width;
 
 	uint	cur_x = 0;
-	uint	cur_y = height;
+	uint	cur_y = d_maxGlyphHeight;
 
 	uint	glyph_set_length = glyph_set.length();
 
@@ -296,6 +296,13 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 			continue;
 		}
 
+		// if this glyph is taller than all others so far, update height and re-calculate cur_y
+		if ((uint)d_impldat->fontFace->glyph->bitmap.rows + InterGlyphPadSpace > d_maxGlyphHeight)
+		{
+			d_maxGlyphHeight = d_impldat->fontFace->glyph->bitmap.rows + InterGlyphPadSpace;
+			cur_y = (i + 1) * d_maxGlyphHeight;
+		}
+
 		width = d_impldat->fontFace->glyph->bitmap.width + InterGlyphPadSpace;
 		cur_x += width;
 
@@ -303,14 +310,14 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 		if (cur_x >= texSize)
 		{
 			cur_x = width;
-			cur_y += height;
+			cur_y += d_maxGlyphHeight;
 
 			if (cur_y >= texSize)
 			{
 				// texture is too small, set-up to start again...
 				texSize *= 2;
 				cur_x = 0;
-				cur_y = height;
+				cur_y = d_maxGlyphHeight;
 				i = (uint)-1;
 			}
 
@@ -339,7 +346,6 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 	uint	glyph_set_length = glyph_set.length();
 	uint	cur_x = 0;
 	uint	cur_y = 0;
-	uint	height = ((d_impldat->fontFace->bbox.yMax - d_impldat->fontFace->bbox.yMin) / d_impldat->fontFace->units_per_EM) * (d_impldat->fontFace->size->metrics.y_ppem) + InterGlyphPadSpace;
 	uint	width;
 
 	for (uint i = 0; i < glyph_set_length; ++i)
@@ -357,7 +363,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 		if (cur_x + width >= size)
 		{
 			cur_x = 0;
-			cur_y += height;
+			cur_y += d_maxGlyphHeight;
 		}
 
 		// calculate offset into buffer for this glyph
@@ -371,7 +377,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 		rect.d_left		= (float)cur_x;
 		rect.d_top		= (float)cur_y;
 		rect.d_right	= (float)(cur_x + width - InterGlyphPadSpace);
-		rect.d_bottom	= (float)(cur_y + height - InterGlyphPadSpace);
+		rect.d_bottom	= (float)(cur_y + d_maxGlyphHeight - InterGlyphPadSpace);
 		offset.d_x		= (float)(glyph->metrics.horiBearingX >> 6);
 		offset.d_y		= -(float)(glyph->metrics.horiBearingY >> 6);
 
@@ -574,7 +580,7 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 	d_antiAliased = (flags == NoAntiAlias) ? false : true;
 
 	// create an blank Imageset
-	d_glyph_images = ismgr.createImageset(name + " auto_glyph_images", System::getSingleton().getRenderer()->createTexture());
+	d_glyph_images = ismgr.createImageset(name + "_auto_glyph_images", System::getSingleton().getRenderer()->createTexture());
 
 	uint		horzdpi		= System::getSingleton().getRenderer()->getHorzScreenDPI();
 	uint		vertdpi		= System::getSingleton().getRenderer()->getVertScreenDPI();

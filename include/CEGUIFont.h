@@ -888,6 +888,7 @@ private:
 	bool	d_freetype;			//!< true when the font is a FreeType based font
 	float	d_y_spacing;		//!< Height of font in pixels, a.k.a Line spacing.
 	int		d_max_bearingY;		//!< Maximum bearingY value (gives required spacing down to baseline).
+	uint	d_maxGlyphHeight;	//!< Height of the largest glyph (calculated in getRequiredTextureSize)
 
 	FontImplData*	d_impldat;	//!< Implementation data
 	uint		d_ptSize;		//!< Point size of font.
