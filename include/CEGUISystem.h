@@ -611,6 +611,19 @@ public:
 	bool	injectMousePosition(float x_pos, float y_pos);
 
 
+	/*!
+	\brief
+		Method to inject time pulses into the system.
+
+	\param timeElapsed
+		float value indicating the amount of time passed, in seconds, since the last time this method was called.
+
+	\return
+		Currently, this method always returns true.
+	*/
+	bool	injectTimePulse(float timeElapsed);
+
+
 private:
 	/*************************************************************************
 		Implementation Constants

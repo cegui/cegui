@@ -930,6 +930,20 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 
 
 /*************************************************************************
+	Method to inject time pulses into the system.	
+*************************************************************************/
+bool System::injectTimePulse(float timeElapsed)
+{
+	if (d_activeSheet != NULL)
+	{
+		d_activeSheet->update(timeElapsed);
+	}
+
+	return true;
+}
+
+
+/*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
 Window*	System::getTargetWindow(const Point& pt) const

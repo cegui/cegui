@@ -2572,6 +2572,25 @@ void Window::setZOrderingEnabled(bool setting)
 }
 
 
+/*************************************************************************
+	Cause window to update itself and any attached children
+*************************************************************************/
+void Window::update(float elapsed)
+{
+	// perform update for 'this' Window
+	updateSelf(elapsed);
+
+	// update child windows
+	uint child_count = getChildCount();
+
+	for (uint i = 0; i < child_count; ++i)
+	{
+		d_children[i]->update(elapsed);
+	}
+
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 

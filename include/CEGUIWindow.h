@@ -1942,6 +1942,24 @@ public:
 	void	render(void);
 
 
+	/*!
+	\brief
+		Cause window to update itself and any attached children.  Client code does not need to call this method; to
+		ensure full, and proper updates, call the TODO: methodname method provided by the System class.
+
+	\note
+		The update order is such that 'this' window is updated prior to any child windows, this is so
+		that child windows that access the parent in their update code get the correct updated state.
+
+	\param elapsed
+		float value indicating the number of seconds passed since the last update.
+
+	\return
+		Nothing.
+	*/
+	void	update(float elapsed);
+
+
 protected:
 	/*************************************************************************
 		System object can trigger events directly
@@ -2364,6 +2382,19 @@ protected:
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
+	/*!
+	\brief
+		Perform actual update processing for this Window.
+
+	\param elapsed
+		float value indicating the number of seconds elapsed since the last update call.
+
+	\return
+		Nothing.
+	*/
+	virtual void	updateSelf(float elapsed) {}
+
+
 	/*!
 	\brief
 		Perform the actual rendering for this Window.
