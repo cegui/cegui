@@ -211,7 +211,7 @@ public:
 
 	/*!
 	\brief
-		Return the width of the specified column header.
+		Return the width of the specified column header (and therefore the column itself).
 
 	\param col_idx
 		Zero based column index of the column whos width is to be returned.
@@ -990,6 +990,24 @@ public:
 		Nothing.
 	*/
 	void	handleUpdatedItemData(void);
+
+
+	/*!
+	\brief
+		Set the width of the specified column header (and therefore the column itself).
+
+	\param col_idx
+		Zero based column index of the column whos width is to be set.
+
+	\param width
+		float value specifying the new width for the column using the active metrics system.
+
+	\return
+		Nothing.
+
+	\exception InvalidRequestException	thrown if \a column is out of range.
+	*/
+	void	setColumnHeaderWidth(uint col_idx, float width);
 
 
 protected:

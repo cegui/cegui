@@ -1238,6 +1238,21 @@ void MultiColumnList::handleUpdatedItemData(void)
 
 
 /*************************************************************************
+	Set the width of the specified column header (and therefore the
+	column itself).	
+*************************************************************************/
+void MultiColumnList::setColumnHeaderWidth(uint col_idx, float width)
+{
+	if (getMetricsMode() == Relative)
+	{
+		width = relativeToAbsoluteX(width);
+	}
+
+	d_header->setColumnPixelWidth(col_idx, width);
+}
+
+
+/*************************************************************************
 	Add multi column list box specific events	
 *************************************************************************/
 void MultiColumnList::addMultiColumnListboxEvents(void)

@@ -658,6 +658,34 @@ void ListHeader::setSegmentOffset(float offset)
 
 
 /*************************************************************************
+	Set the pixel width of the specified column.	
+*************************************************************************/
+void ListHeader::setColumnPixelWidth(uint column, float width)
+{
+	if (column >= getColumnCount())
+	{
+		throw InvalidRequestException((utf8*)"ListHeader::setColumnPixelWidth - specified column index is out of range for this ListHeader.");
+	}
+	else
+	{
+		if (d_segments[column]->getMetricsMode() == Relative)
+		{
+			width = absoluteToRelativeX(width);
+		}
+
+		d_segments[column]->setWidth(width);
+
+		layoutSegments();
+
+		// Fire segment sized event.
+		WindowEventArgs args(d_segments[column]);
+		onSegmentSized(args);
+	}
+
+}
+
+
+/*************************************************************************
 	Create initialise and return a ListHeaderSegment object, with all
 	events subscribed and ready to use.
 *************************************************************************/

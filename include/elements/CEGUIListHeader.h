@@ -593,6 +593,25 @@ public:
 	void	setSegmentOffset(float offset);
 
 
+	/*!
+	\brief
+		Set the pixel width of the specified column.
+
+	\param column
+		Zero based column index of the segment whos pixel width is to be set.
+
+	\param width
+		float value specifying the new pixel width to set for the ListHeaderSegment at the zero based column
+		index specified by \a column.
+
+	\return
+		Nothing
+
+	\exception InvalidRequestException	thrown if \a column is out of range.
+	*/
+	void	setColumnPixelWidth(uint column, float width);
+
+
 protected:
 	/*************************************************************************
 		Construction and Destruction
