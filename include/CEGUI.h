@@ -26,6 +26,7 @@
 #ifndef _CEGUI_h_
 #define _CEGUI_h_
 
+// base stuff
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIRect.h"
@@ -51,5 +52,10 @@
 #include "CEGUISchemeManager.h"
 #include "CEGUISystem.h"
 
+// mid-level renderables
+#include "CEGUIRenderableFrame.h"
+#include "CEGUIRenderableImage.h"
+
+// gui elements
 
 #endif	// end of guard _CEGUI_h_
