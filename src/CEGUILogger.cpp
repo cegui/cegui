@@ -86,7 +86,7 @@ void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */
 		{
 			// write date
 			d_ostream << setfill('0') << setw(2) << etm->tm_mday << '/' <<
-				setfill('0') << setw(2) << etm->tm_mon << '/' <<
+				setfill('0') << setw(2) << 1 + etm->tm_mon << '/' <<
 				setw(4) << (1900 + etm->tm_year) << ' ';
 
 			// wite time
