@@ -26,6 +26,7 @@
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
+#include "CEGUIConfig.h"
 
 // includes for renderer selector classes
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -106,12 +107,9 @@ bool CEGuiSample::initialise()
     d_rendererSelector = new Win32CEGuiRendererSelector;
 
     // enable renderer types supported for Win32
-    d_rendererSelector->setRendererAvailability(OgreGuiRendererType);
     d_rendererSelector->setRendererAvailability(Direct3D81GuiRendererType);
     d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
-    d_rendererSelector->setRendererAvailability(OpenGLGuiRendererType);
 
-    // Setup renderer selection dialog for linux
 #elif defined(linux)
     // decide which method to use for renderer selection
 #   ifdef CEGUI_SAMPLES_USE_GTK2
@@ -119,17 +117,17 @@ bool CEGuiSample::initialise()
 #   else
         d_rendererSelector = new CLICEGuiRendererSelector();
 #   endif
+#endif
 
-    // enable available renderer types for linux
-#   ifdef CEGUI_SAMPLES_USE_OGRE
-        d_rendererSelector->setRendererAvailability(OgreGuiRendererType);
-#   endif
-#   ifdef CEGUI_SAMPLES_USE_OPENGL
-        d_rendererSelector->setRendererAvailability(OpenGLGuiRendererType);
-#   endif
-#   ifdef CEGUI_SAMPLES_USE_IRRLICHT
-        d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
-#   endif
+    // enable available renderer types
+#ifdef CEGUI_SAMPLES_USE_OGRE
+    d_rendererSelector->setRendererAvailability(OgreGuiRendererType);
+#endif
+#ifdef CEGUI_SAMPLES_USE_OPENGL
+    d_rendererSelector->setRendererAvailability(OpenGLGuiRendererType);
+#endif
+#ifdef CEGUI_SAMPLES_USE_IRRLICHT
+    d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
 #endif
 
     // get selection from user

@@ -76,6 +76,14 @@ Each item in here has a comment to describe what it's for.
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_WITH_XERCES
 
+//////////////////////////////////////////////////////////////////////////
+// Comment/Uncomment these lines to control renderer use in samples where
+// MSVC is used (since it can't auto-detect things for itself).
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_SAMPLES_USE_OPENGL
+//#define CEGUI_SAMPLES_USE_OGRE
+//#define CEGUI_SAMPLES_USE_IRRLICHT
+
 #endif // defined(_MSC_VER)
 
 #endif	// end of guard _CEGUIConfig_h_

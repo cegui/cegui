@@ -24,6 +24,17 @@
 #ifndef _CEGuiSample_h_
 #define _CEGuiSample_h_
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUISAMPLE_EXPORTS
+#       define CEGUISAMPLE_API __declspec(dllexport)
+#   else
+#       define CEGUISAMPLE_API __declspec(dllimport)
+#   endif
+#else
+#       define CEGUISAMPLE_API
+#endif
+
+
 // forward declarations
 class CEGuiBaseApplication;
 class CEGuiRendererSelector;
@@ -35,7 +46,7 @@ class CEGuiRendererSelector;
     Here we take care of common things such the renderer selection and application
     startup.
 */
-class CEGuiSample
+class CEGUISAMPLE_API CEGuiSample
 {
 public:
     /*!
