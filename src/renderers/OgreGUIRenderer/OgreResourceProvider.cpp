@@ -44,7 +44,7 @@ namespace CEGUI
         }
 
         XERCES_CPP_NAMESPACE_USE
-        InputSource* mInputSource = new MemBufInputSource(input.getPtr(), input.getSize(), filename.c_str(), false);
+        InputSource* mInputSource = new MemBufInputSource(input.getPtr(), input.getSize(), filename.c_str(), true);
 
         output.setData(mInputSource);
     }
