@@ -30,7 +30,7 @@
 #include <d3dx9.h>
 #include <dxerr9.h>
 #include <algorithm>
-
+#undef min
 
 // Start of CEGUI namespace section
 namespace CEGUI

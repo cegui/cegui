@@ -29,7 +29,7 @@
 
 #include <d3dx9.h>
 #include <dxerr9.h>
-
+#undef max
 
 // Start of CEGUI namespace section
 namespace CEGUI
