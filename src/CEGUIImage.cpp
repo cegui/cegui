@@ -131,4 +131,12 @@ const String& Image::getImagesetName(void) const
 	return d_owner->getName();
 }
 
+/*************************************************************************
+	Return Rect describing the source texture area used by this Image.
+*************************************************************************/
+const Rect& Image::getSourceTextureArea(void) const
+{
+    return d_area;
+}
+
 } // End of  CEGUI namespace section

@@ -131,6 +131,15 @@ public:
 	*/
 	const String&	getImagesetName(void) const;
 
+    /*!
+    \brief
+        Return Rect describing the source texture area used by this Image.
+
+    \return
+        Rect object that describes, in pixels, the area upon the source texture
+        which is used when rendering this Image.
+    */
+    const Rect& getSourceTextureArea(void) const;
 
 	/*!
 	\brief
