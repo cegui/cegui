@@ -598,6 +598,19 @@ void AbsoluteRect::set(void* receiver, const String& value)
 	static_cast<Window*>(receiver)->setRect(Absolute, PropertyHelper::stringToRect(value));
 }
 
+
+String ZOrderChangeEnabled::get(const void* receiver) const
+{
+	return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isZOrderingEnabled());
+}
+
+
+void ZOrderChangeEnabled::set(void* receiver, const String& value)
+{
+	static_cast<Window*>(receiver)->setZOrderingEnabled(PropertyHelper::stringToBool(value));
+}
+
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

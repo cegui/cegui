@@ -963,6 +963,17 @@ public:
 	bool	restoresOldCapture(void) const		{return d_restoreOldCapture;}
 
 
+	/*!
+	\brief
+		Return whether z-order changes are enabled or disabled for this Window.
+
+	\return
+		- true if z-order changes are enabled for this window.  moveToFront/moveToBack work normally as expected.
+		- false: z-order changes are disabled for this window.  moveToFront/moveToBack are ignored for this window.
+	*/
+	bool	isZOrderingEnabled(void) const;
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1639,6 +1650,20 @@ public:
 		Nothing.
 	*/
 	void	setRect(MetricsMode mode, const Rect& area);
+
+
+	/*!
+	\brief
+		Set whether z-order changes are enabled or disabled for this Window.
+
+	\param setting
+		- true if z-order changes are enabled for this window.  moveToFront/moveToBack work normally as expected.
+		- false: z-order changes are disabled for this window.  moveToFront/moveToBack are ignored for this window.
+
+	\return
+		Nothing.
+	*/
+	void	setZOrderingEnabled(bool setting);
 
 
 	/*************************************************************************
@@ -2481,6 +2506,7 @@ protected:
 	bool	d_alwaysOnTop;				//!< true if Window will be drawn on top of all other Windows
 	bool	d_inheritsAlpha;			//!< true if the Window inherits alpha from the parent Window
 	bool	d_restoreOldCapture;		//!< true if the Window restores capture to the previous window when it releases capture.
+	bool	d_zOrderingEnabled;			//!< true if the Window responds to z-order change requests.
 
 protected:
 	/*************************************************************************
@@ -2524,6 +2550,7 @@ protected:
 	static	WindowProperties::Width				d_widthProperty;
 	static	WindowProperties::XPosition			d_xPosProperty;
 	static	WindowProperties::YPosition			d_yPosProperty;
+	static	WindowProperties::ZOrderChangeEnabled	d_zOrderChangeProperty;
 
 
 	/*************************************************************************

@@ -944,6 +944,30 @@ public:
 };
 
 
+/*!
+\brief
+	Property to access window Z-Order changing enabled setting.
+
+	This property offers access to the setting that controls whether z-order changes are enabled for the window.
+
+	\par Usage:
+		- Name: ZOrderChangeEnabled
+		- Format: "[text]".
+
+	\par Where [Text] is:
+		- "True" to indicate the Window should respect requests to change z-order.
+		- "False" to indicate the Window should not change it's z-order.
+*/
+class ZOrderChangeEnabled : public Property
+{
+public:
+	ZOrderChangeEnabled() : Property("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".") {}
+
+	String	get(const void* receiver) const;
+	void	set(void* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 

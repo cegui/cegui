@@ -77,6 +77,7 @@ WindowProperties::Visible			Window::d_visibleProperty;
 WindowProperties::Width				Window::d_widthProperty;
 WindowProperties::XPosition			Window::d_xPosProperty;
 WindowProperties::YPosition			Window::d_yPosProperty;
+WindowProperties::ZOrderChangeEnabled	Window::d_zOrderChangeProperty;
 
 
 /*************************************************************************
@@ -153,6 +154,7 @@ Window::Window(const String& type, const String& name) :
 	d_alwaysOnTop		= false;
 	d_inheritsAlpha		= true;
 	d_restoreOldCapture	= false;
+	d_zOrderingEnabled	= true;
 
 	// position and size
 	d_abs_area = Rect(0, 0, 0, 0);
@@ -726,7 +728,7 @@ void Window::setAlwaysOnTop(bool setting)
 	{
 		d_alwaysOnTop = setting;
 
-		// move us infront of sibling windows with the same 'always-on-top' setting as we have.
+		// move us in front of sibling windows with the same 'always-on-top' setting as we have.
 		if (d_parent != NULL)
 		{
 			Window* org_parent = d_parent;
@@ -1056,10 +1058,13 @@ void Window::moveToFront()
 
 	}
 
-	// move us infront of sibling windows with the same 'always-on-top' setting as we have.
-	Window* org_parent = d_parent;
-	org_parent->removeChild_impl(this);
-	org_parent->addChild_impl(this);
+	if (d_zOrderingEnabled)
+	{
+		// move us in front of sibling windows with the same 'always-on-top' setting as we have.
+		Window* org_parent = d_parent;
+		org_parent->removeChild_impl(this);
+		org_parent->addChild_impl(this);
+	}
 
 	// notify ourselves that we have become active
 	if (activeWnd != this)
@@ -1077,7 +1082,12 @@ void Window::moveToFront()
 		activeWnd->onDeactivated(args);
 	}
 
-	onZChange_impl();
+	// TODO: This could probably be moved above, is anyone relying on ordering of events?
+	if (d_zOrderingEnabled)
+	{
+		onZChange_impl();
+	}
+
 }
 
 
@@ -1100,25 +1110,28 @@ void Window::moveToBack()
 		return;
 	}
 
-	// move us behind all sibling windows with the same 'always-on-top' setting as we have.
-	Window* org_parent = d_parent;
-	d_parent->removeChild_impl(this);
-
-	ChildList::iterator pos = d_children.begin();
-
-	if (isAlwaysOnTop())
+	if (d_zOrderingEnabled)
 	{
-		while ((pos != d_children.end()) && (!(*pos)->isAlwaysOnTop()))
+		// move us behind all sibling windows with the same 'always-on-top' setting as we have.
+		Window* org_parent = d_parent;
+		d_parent->removeChild_impl(this);
+
+		ChildList::iterator pos = d_children.begin();
+
+		if (isAlwaysOnTop())
 		{
-			++pos;
+			while ((pos != d_children.end()) && (!(*pos)->isAlwaysOnTop()))
+			{
+				++pos;
+			}
+
 		}
 
+		d_children.insert(pos, this);
+		setParent(org_parent);
+
+		onZChange_impl();
 	}
-
-	d_children.insert(pos, this);
-	setParent(org_parent);
-
-	onZChange_impl();
 
 	d_parent->moveToBack();
 }
@@ -2507,6 +2520,29 @@ void Window::addStandardProperties(void)
 	addProperty(&d_widthProperty);
 	addProperty(&d_xPosProperty);
 	addProperty(&d_yPosProperty);
+	addProperty(&d_zOrderChangeProperty);
+}
+
+
+/*************************************************************************
+	Return whether z-order changes are enabled.
+*************************************************************************/
+bool Window::isZOrderingEnabled(void) const
+{
+	return d_zOrderingEnabled;
+}
+
+
+/*************************************************************************
+	Set whether z-order changes are enabled.
+*************************************************************************/
+void Window::setZOrderingEnabled(bool setting)
+{
+	if (d_zOrderingEnabled != setting)
+	{
+		d_zOrderingEnabled = setting;
+	}
+
 }
 
 
