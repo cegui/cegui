@@ -249,7 +249,7 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
         WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
         return;
     }
-	
+
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
 	return;

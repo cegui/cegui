@@ -143,6 +143,10 @@ SOURCE=..\..\..\..\src\elements\CEGUIFrameWindowProperties.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUIGUISheet.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIListbox.cpp
 # End Source File
 # Begin Source File
@@ -284,7 +288,7 @@ SOURCE=..\..\..\..\src\CEGUIBase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\CEGUIColourManipulator.cpp
+SOURCE=..\..\..\..\src\CEGUIcolour.cpp
 # End Source File
 # Begin Source File
 
@@ -664,7 +668,7 @@ SOURCE=..\..\..\..\include\CEGUIBase.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\CEGUIColourManipulator.h
+SOURCE=..\..\..\..\include\CEGUIcolour.h
 # End Source File
 # Begin Source File
 

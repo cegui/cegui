@@ -124,8 +124,9 @@ void WLProgressBar::drawSelf(float z)
 	absrect.d_bottom	-= d_frameBottomSize;
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | ContainerBackgroundColour);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(ContainerBackgroundColour);
+	colours.setAlpha(alpha_comp);
 
 	// draw background image
 	d_background->draw(absrect, pos.d_z, clipper, colours);
@@ -134,7 +135,8 @@ void WLProgressBar::drawSelf(float z)
 	absrect.setWidth(absrect.getWidth() * getProgress());
 
 	// calculate colours for progress bar itself
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | d_progressColour;
+	colours.setColours(d_progressColour);
+	colours.setAlpha(alpha_comp);
 	d_background->draw(absrect, renderer->getZLayer(ProgressLayer), clipper, colours);
 }
 

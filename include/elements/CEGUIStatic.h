@@ -187,21 +187,21 @@ public:
 		Sets the colours to be applied when rendering the frame.
 
 	\param top_left_colour
-		Colour (as ARGB value) to be applied to the top-left corner of each Image used in the frame.
+		Colour to be applied to the top-left corner of each Image used in the frame.
 
 	\param top_right_colour
-		Colour (as ARGB value) to be applied to the top-right corner of each Image used in the frame.
+		Colour to be applied to the top-right corner of each Image used in the frame.
 
 	\param bottom_left_colour
-		Colour (as ARGB value) to be applied to the bottom-left corner of each Image used in the frame.
+		Colour to be applied to the bottom-left corner of each Image used in the frame.
 
 	\param bottom_right_colour
-		Colour (as ARGB value) to be applied to the bottom-right corner of each Image used in the frame.
+		Colour to be applied to the bottom-right corner of each Image used in the frame.
 
 	\return 
 		Nothing.
 	*/
-	void	setFrameColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void	setFrameColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour);
 
 
 	/*!
@@ -214,7 +214,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setFrameColours(colour col)		{setFrameColours(col, col, col, col);}
+	void	setFrameColours(const colour& col)		{setFrameColours(col, col, col, col);}
 
 
 	/*!
@@ -276,21 +276,21 @@ public:
 		Sets the colours to be applied when rendering the background.
 
 	\param top_left_colour
-		Colour (as ARGB value) to be applied to the top-left corner of the background.
+		Colour to be applied to the top-left corner of the background.
 
 	\param top_right_colour
-		Colour (as ARGB value) to be applied to the top-right corner of the background.
+		Colour to be applied to the top-right corner of the background.
 
 	\param bottom_left_colour
-		Colour (as ARGB value) to be applied to the bottom-left corner of the background.
+		Colour to be applied to the bottom-left corner of the background.
 
 	\param bottom_right_colour
-		Colour (as ARGB value) to be applied to the bottom-right corner of the background.
+		Colour to be applied to the bottom-right corner of the background.
 
 	\return 
 		Nothing.
 	*/
-	void	setBackgroundColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void	setBackgroundColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour);
 
 
 	/*!
@@ -303,7 +303,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setBackgroundColours(colour col)		{setBackgroundColours(col, col, col, col);}
+	void	setBackgroundColours(const colour& col)		{setBackgroundColours(col, col, col, col);}
 
 
 	/*!
@@ -379,7 +379,7 @@ protected:
 	\brief
 		return ARGB colour value \a col, with its alpha component modulated by the value specified in float \a alpha.
 	*/
-	colour	calculateModulatedAlphaColour(colour col, float alpha) const;
+	colour	calculateModulatedAlphaColour(const colour& col, float alpha) const;
 
 
 	/*!

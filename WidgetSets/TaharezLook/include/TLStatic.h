@@ -31,6 +31,7 @@
 #include "elements/CEGUIStaticText.h"
 #include "elements/CEGUIStaticImage.h"
 
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -44,7 +45,7 @@ static void initTaharezStatic(Static* s);
 
 /*!
 \brief
-	StaticText class for the Taharez Gui Scheme
+	StaticText class for the TaharezLook Gui Scheme
 */
 class TAHAREZLOOK_API TLStaticText : public StaticText
 {
@@ -54,6 +55,10 @@ public:
 	*************************************************************************/
 	// type name for this widget
 	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+	// component widget type names
+	static const utf8*	HorzScrollbarTypeName;		//!< Type name of widget to be created as horizontal scroll bar.
+	static const utf8*	VertScrollbarTypeName;		//!< Type name of widget to be created as vertical scroll bar.
 
 	/*************************************************************************
 		Construction / Destruction
@@ -76,13 +81,36 @@ public:
 		Destructor for TLStaticText objects.
 	*/
 	virtual ~TLStaticText(void) {}
+
+protected:
+	/*************************************************************************
+		Implementation Methods (abstract)
+	*************************************************************************/
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling vertically.
+	*/
+	virtual Scrollbar*	createVertScrollbar(void) const;
+ 
+
+	/*!
+	\brief
+		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
+
+	\return
+		Pointer to a Scrollbar to be used for scrolling horizontally.
+	*/
+	virtual Scrollbar*	createHorzScrollbar(void) const;
 };
 
 
 
 /*!
 \brief
-	StaticImage class for the Taharez Gui Scheme
+	StaticImage class for the TaharezLook Gui Scheme
 */
 class TAHAREZLOOK_API TLStaticImage : public StaticImage
 {
@@ -115,6 +143,7 @@ public:
 	*/
 	virtual ~TLStaticImage(void) {}
 };
+
 
 
 /*!

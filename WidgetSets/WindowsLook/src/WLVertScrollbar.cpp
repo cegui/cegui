@@ -282,8 +282,8 @@ void WLVertScrollbar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | BackgroundColour);
+	ColourRect colours(BackgroundColour);
+	colours.setAlpha(getEffectiveAlpha());
 
 	// draw background image
 	d_background->draw(absrect, z, clipper, colours);

@@ -462,7 +462,8 @@ void WLFrameWindow::componentEnabledHandler(const EventArgs& e)
 void WLFrameWindow::updateFrameColours(void)
 {
 	// set active colours
-	colour colval = ((colour)(getEffectiveAlpha() * 255.0f) << 24) | (isActive() ? ActiveColour : InactiveColour);
+	colour colval(isActive() ? ActiveColour : InactiveColour);
+	colval.setAlpha(getEffectiveAlpha());
 
 	d_frame.setColours(colval, colval, colval, colval);
 }

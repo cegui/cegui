@@ -114,8 +114,7 @@ void TLTitlebar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour colval = ((colour)(getEffectiveAlpha() * 255.0f) << 24) | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	// calculate widths for the title bar segments
 	float leftWidth		= d_leftImage->getWidth();
@@ -161,7 +160,7 @@ void TLTitlebar::drawSelf(float z)
 	textClipper.setWidth(midWidth);
 	textClipper = clipper.getIntersection(textClipper);
 	pos.d_x = absrect.d_left + leftWidth;
-	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 	getFont()->drawText(d_parent->getText(), pos, textClipper, colours);
 }

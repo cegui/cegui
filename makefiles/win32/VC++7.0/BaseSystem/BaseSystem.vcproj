@@ -116,7 +116,7 @@
 				RelativePath="..\..\..\..\src\CEGUIBase.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIColourManipulator.cpp">
+				RelativePath="..\..\..\..\src\CEGUIcolour.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIColourRect.cpp">
@@ -284,6 +284,9 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIFrameWindowProperties.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIGUISheet.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
 				</File>
 				<File
@@ -397,7 +400,7 @@
 				RelativePath="..\..\..\..\include\CEGUIBase.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIColourManipulator.h">
+				RelativePath="..\..\..\..\include\CEGUIcolour.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIColourRect.h">

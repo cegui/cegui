@@ -1025,7 +1025,7 @@ void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 	Set the colour to be used for rendering Editbox text in the normal,
 	unselected state.	
 *************************************************************************/
-void Editbox::setNormalTextColour(colour col)
+void Editbox::setNormalTextColour(const colour& col)
 {
 	d_normalTextColour = col;
 	requestRedraw();
@@ -1036,7 +1036,7 @@ void Editbox::setNormalTextColour(colour col)
 	Set the colour to be used for rendering the Editbox text when within
 	the selected region.
 *************************************************************************/
-void Editbox::setSelectedTextColour(colour col)
+void Editbox::setSelectedTextColour(const colour& col)
 {
 	d_selectTextColour = col;
 	requestRedraw();
@@ -1047,7 +1047,7 @@ void Editbox::setSelectedTextColour(colour col)
 	Set the colour to be used for rendering the Editbox selection highlight
 	when the Editbox is active.
 *************************************************************************/
-void Editbox::setNormalSelectBrushColour(colour col)
+void Editbox::setNormalSelectBrushColour(const colour& col)
 {
 	d_selectBrushColour = col;
 	requestRedraw();
@@ -1058,7 +1058,7 @@ void Editbox::setNormalSelectBrushColour(colour col)
 	Set the colour to be used for rendering the Editbox selection highlight
 	when the Editbox is inactive.
 *************************************************************************/
-void Editbox::setInactiveSelectBrushColour(colour col)
+void Editbox::setInactiveSelectBrushColour(const colour& col)
 {
 	d_inactiveSelectBrushColour = col;
 	requestRedraw();

@@ -4,7 +4,6 @@ INCLUDES = -I$(top_srcdir)/include $(freetype2_CFLAGS)
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
-		      CEGUIColourManipulator.cpp \
                       CEGUIColourRect.cpp \
 		      CEGUIConfig_xmlHandler.cpp \
                       CEGUIEvent.cpp \
@@ -47,6 +46,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIWindowManager.cpp \
 		      CEGUIWindowProperties.cpp \
 		      CEGUIXmlHandlerHelper.cpp\
+		      CEGUIcolour.cpp \
                       elements/CEGUIButtonBase.cpp \
 		      elements/CEGUIButtonBaseProperties.cpp \
                       elements/CEGUICheckbox.cpp \
@@ -58,6 +58,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
 		      elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
                       elements/CEGUIFrameWindowProperties.cpp \
+		      elements/CEGUIGUISheet.cpp \
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \
                       elements/CEGUIListboxProperties.cpp \

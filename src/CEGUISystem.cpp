@@ -333,7 +333,7 @@ System::~System(void)
 	WindowManager::getSingleton().destroyAllWindows();
 
 	// get pointer to the GUI sheet factory we added
-	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory((utf8*)"DefaultGUISheet");
+	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
 
 	// remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();

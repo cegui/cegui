@@ -28,6 +28,9 @@
 #include "elements/CEGUIStaticImage.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include "CEGUIWindowManager.h"
+#include "TLMiniVertScrollbar.h"
+#include "TLMiniHorzScrollbar.h"
 
 
 // Start of CEGUI namespace section
@@ -38,6 +41,10 @@ namespace CEGUI
 *************************************************************************/
 const utf8	TLStaticText::WidgetTypeName[]		= "TaharezLook/StaticText";
 const utf8	TLStaticImage::WidgetTypeName[]		= "TaharezLook/StaticImage";
+
+// component widget type names
+const utf8*	TLStaticText::HorzScrollbarTypeName	= TLMiniHorzScrollbar::WidgetTypeName;
+const utf8*	TLStaticText::VertScrollbarTypeName	= TLMiniVertScrollbar::WidgetTypeName;
 
 
 /*************************************************************************
@@ -67,6 +74,46 @@ void initTaharezStatic(Static* s)
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
+	
+	TLStaticText methods
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+
+/*************************************************************************
+	create and return a pointer to a Scrollbar widget for use as
+	vertical scroll bar	
+*************************************************************************/
+Scrollbar* TLStaticText::createVertScrollbar(void) const
+{
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+
+	// set min/max sizes
+	sbar->setMinimumSize(Size(0.0125f, 0.0f));
+	sbar->setMaximumSize(Size(0.0125f, 1.0f));
+
+	return sbar;
+}
+
+
+/*************************************************************************
+	create and return a pointer to a Scrollbar widget for use as
+	horizontal scroll bar	
+*************************************************************************/
+Scrollbar* TLStaticText::createHorzScrollbar(void) const
+{
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+
+	// set min/max sizes
+	sbar->setMinimumSize(Size(0.0f, 0.016667f));
+	sbar->setMaximumSize(Size(1.0f, 0.016667f));
+
+	return sbar;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
 
 	Factory Methods
 
@@ -77,7 +124,7 @@ void initTaharezStatic(Static* s)
 *************************************************************************/
 Window* TLStaticTextFactory::createWindow(const String& name)
 {
-	StaticText* wnd = new StaticText(d_type, name);
+	TLStaticText* wnd = new TLStaticText(d_type, name);
 	wnd->initialise();
 
 	initTaharezStatic(wnd);

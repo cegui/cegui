@@ -193,21 +193,21 @@ public:
 		Sets the colours to be applied when rendering the image.
 
 	\param top_left_colour
-		Colour (as ARGB value) to be applied to the top-left corner of each Image used in the image.
+		Colour to be applied to the top-left corner of each Image used in the image.
 
 	\param top_right_colour
-		Colour (as ARGB value) to be applied to the top-right corner of each Image used in the image.
+		Colour to be applied to the top-right corner of each Image used in the image.
 
 	\param bottom_left_colour
-		Colour (as ARGB value) to be applied to the bottom-left corner of each Image used in the image.
+		Colour to be applied to the bottom-left corner of each Image used in the image.
 
 	\param bottom_right_colour
-		Colour (as ARGB value) to be applied to the bottom-right corner of each Image used in the image.
+		Colour to be applied to the bottom-right corner of each Image used in the image.
 
 	\return 
 		Nothing.
 	*/
-	void	setImageColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void	setImageColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour);
 
 
 	/*!
@@ -220,7 +220,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setImageColours(colour col)		{setImageColours(col, col, col, col);}
+	void	setImageColours(const colour& col)		{setImageColours(col, col, col, col);}
 
 
 	/*!

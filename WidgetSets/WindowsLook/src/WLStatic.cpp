@@ -26,6 +26,9 @@
 #include "elements/CEGUIStaticImage.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include "CEGUIWindowManager.h"
+#include "WLVertScrollbar.h"
+#include "WLHorzScrollbar.h"
 
 
 // Start of CEGUI namespace section
@@ -36,6 +39,10 @@ namespace CEGUI
 *************************************************************************/
 const utf8	WLStaticText::WidgetTypeName[]		= "WindowsLook/StaticText";
 const utf8	WLStaticImage::WidgetTypeName[]		= "WindowsLook/StaticImage";
+
+// component widget type names for static text
+const utf8*	WLStaticText::HorzScrollbarTypeName		= WLHorzScrollbar::WidgetTypeName;
+const utf8*	WLStaticText::VertScrollbarTypeName		= WLVertScrollbar::WidgetTypeName;
 
 
 /*************************************************************************
@@ -57,10 +64,50 @@ void initWinLookStatic(Static* s)
 		);
 
 	s->setBackgroundImage(&iset->getImage((utf8*)"Background"));
-	s->setBackgroundColours(0xFFDFDFDF);
+	s->setBackgroundColours(colour(0.875f, 0.875f, 0.875f));
 
 	s->setFrameEnabled(true);
 	s->setBackgroundEnabled(true);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	
+	WLStaticText methods
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+
+/*************************************************************************
+	create and return a pointer to a Scrollbar widget for use as
+	vertical scroll bar	
+*************************************************************************/
+Scrollbar* WLStaticText::createVertScrollbar(void) const
+{
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+
+	// set min/max sizes
+	sbar->setMinimumSize(Size(0.0125f, 0.0f));
+	sbar->setMaximumSize(Size(0.0125f, 1.0f));
+
+	return sbar;
+}
+
+
+/*************************************************************************
+	create and return a pointer to a Scrollbar widget for use as
+	horizontal scroll bar	
+*************************************************************************/
+Scrollbar* WLStaticText::createHorzScrollbar(void) const
+{
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+
+	// set min/max sizes
+	sbar->setMinimumSize(Size(0.0f, 0.016667f));
+	sbar->setMaximumSize(Size(1.0f, 0.016667f));
+
+	return sbar;
 }
 
 
@@ -76,11 +123,11 @@ void initWinLookStatic(Static* s)
 *************************************************************************/
 Window* WLStaticTextFactory::createWindow(const String& name)
 {
-	StaticText* wnd = new StaticText(d_type, name);
+	WLStaticText* wnd = new WLStaticText(d_type, name);
 	wnd->initialise();
 
 	initWinLookStatic(wnd);
-	wnd->setTextColours(0xFF000000);
+	wnd->setTextColours(colour(0, 0, 0));
 
 	return wnd;
 }

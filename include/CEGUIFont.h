@@ -541,6 +541,27 @@ public:
 
 	/*!
 	\brief
+		Return the horizontal pixel extent given text would be formatted to.
+
+		The value return by this method is basically the extent of the widest line within the formatted text.
+
+	\param text
+		String object containing the text to be measured.
+
+	\param format_area
+		Rect object describing the area to be used when formatting the text depending upon the option specified in \a fmt.
+
+	\param fmt
+		One of the TextFormatting values specifying the text formatting required.
+
+	\return
+		The widest pixel extent of the lines produced from the specified formatting.
+	*/
+	float	getFormattedTextExtent(const String& text, const Rect& format_area, TextFormatting fmt) const;
+
+
+	/*!
+	\brief
 		Return whether this font is anti-aliased or not.  This is only relevant for dynamic fonts created from a TrueType font file.
 
 	\return
@@ -861,6 +882,14 @@ private:
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
 	void	defineFontGlyphs_impl(void);
+
+
+	/*!
+	\brief
+		returns extent of widest line of wrapped text.
+	*/
+	float	getWrappedTextExtent(const String& text, float wrapWidth) const;
+
 
 	/*************************************************************************
 		Implementation structs

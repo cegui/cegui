@@ -122,8 +122,6 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	Rect absrect(pos.d_x, pos.d_y, pos.d_x + getAbsoluteWidth(), pos.d_y + getAbsoluteHeight());
 	Rect destrect(absrect);
 
-	// calculate colours to use.
-	colour alpha_comp = ((colour)(alpha * 255.0f) << 24);
 	ColourRect colours;
 
 	//
@@ -131,12 +129,14 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	//
 	if ((d_segmentHover != d_segmentPushed) && !d_splitterHover && isClickable())
 	{
-		colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | BackdropHighlightColour;
+		colours.setColours(BackdropHighlightColour);
 	}
 	else
 	{
-		colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | BackdropNormalColour;
+		colours.setColours(BackdropNormalColour);
 	}
+
+	colours.setAlpha(alpha);
 
 	// draw main area
 	destrect.d_right -= d_splitterImage->getWidth();
@@ -155,12 +155,14 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 
 	if (d_splitterHover)
 	{
-		colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | SplitterHighlightColour;
+		colours.setColours(SplitterHighlightColour);
 	}
 	else
 	{
-		colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | SplitterNormalColour;
+		colours.setColours(SplitterNormalColour);
 	}
+
+	colours.setAlpha(alpha);
 
 	d_splitterImage->draw(destrect, pos.d_z, clipper, colours);
 
@@ -176,7 +178,7 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	//
 	// Render 'sort' icon as needed
 	//
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | 0xFFFFFF;
+	colours.setColours(colour(1, 1, 1, alpha));
 
 	if (d_sortDir == Ascending)
 	{
@@ -207,7 +209,7 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 		fnt = System::getSingleton().getDefaultFont();
 	}
 
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | 0x000000;
+	colours.setColours(colour(0, 0, 0, alpha));
 
 	// centre text vertically
 	destrect.d_top += ((destrect.getHeight() - fnt->getLineSpacing()) * 0.5f);

@@ -377,7 +377,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalTextColour(colour col);
+	void	setNormalTextColour(const colour& col);
 
 
 	/*!
@@ -388,7 +388,7 @@ public:
 	\return
 		colour value describing the ARGB colour that is currently set.
 	*/
-	void	setSelectedTextColour(colour col);
+	void	setSelectedTextColour(const colour& col);
 
 
 	/*!
@@ -402,7 +402,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalSelectBrushColour(colour col);
+	void	setNormalSelectBrushColour(const colour& col);
 
 
 	/*!
@@ -416,7 +416,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setInactiveSelectBrushColour(colour col);
+	void	setInactiveSelectBrushColour(const colour& col);
 
 
 	/*************************************************************************

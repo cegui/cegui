@@ -34,7 +34,7 @@ namespace CEGUI
 *************************************************************************/
 RenderableElement::RenderableElement(void) :
 	d_next(NULL),
-	d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+	d_colours(colour(1, 1, 1, 1)),
 	d_area(0, 0, 0, 0),
 	d_useColoursPerImage(false)
 {
@@ -52,7 +52,7 @@ RenderableElement::~RenderableElement(void)
 /*************************************************************************
 	Sets the colours to be applied when rendering the element.
 *************************************************************************/
-void RenderableElement::setColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void RenderableElement::setColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour)
 {
 	d_colours.d_top_left		= top_left_colour;
 	d_colours.d_top_right		= top_right_colour;

@@ -158,7 +158,7 @@ void Static::setFrameColours(const ColourRect& colours)
 /*************************************************************************
 	Sets the colours to be applied when rendering the frame	
 *************************************************************************/
-void Static::setFrameColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void Static::setFrameColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour)
 {
 	d_frameCols.d_top_left		= top_left_colour;
 	d_frameCols.d_top_right		= top_right_colour;
@@ -233,7 +233,7 @@ void Static::setBackgroundColours(const ColourRect& colours)
 /*************************************************************************
 	Sets the colours to be applied when rendering the background.	
 *************************************************************************/
-void Static::setBackgroundColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void Static::setBackgroundColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour)
 {
 	d_backgroundCols.d_top_left		= top_left_colour;
 	d_backgroundCols.d_top_right	= top_right_colour;
@@ -270,9 +270,11 @@ void Static::updateRenderableFrameColours(void)
 	given an ARGB colour value and a alpha float value return the colour
 	value with the alpha component modulated by the given alpha float.
 *************************************************************************/
-colour Static::calculateModulatedAlphaColour(colour col, float alpha) const
+colour Static::calculateModulatedAlphaColour(const colour& col, float alpha) const
 {
-	return ((col & 0x00FFFFFF) | (((colour)(((float)(col >> 24)) * alpha)) << 24));
+	colour temp(col);
+	temp.setAlpha(temp.getAlpha() * alpha);
+	return temp;
 }
 
 

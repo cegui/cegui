@@ -242,12 +242,12 @@ String PropertyHelper::imageToString(const Image* const val)
 }
 
 
-String PropertyHelper::colourToString(colour val)
+String PropertyHelper::colourToString(const colour& val)
 {
 	using namespace std;
 
 	char buff[16];
-	sprintf(buff, "%.8X", val);
+	sprintf(buff, "%.8X", val.getARGB());
 
 	return String((utf8*)buff);
 }
@@ -257,10 +257,10 @@ colour PropertyHelper::stringToColour(const String& str)
 {
 	using namespace std;
 
-	colour val = 0xFF000000;
+	ulong val = 0xFF000000;
 	sscanf(str.c_str(), " %8X", &val);
 
-	return val;
+	return colour(val);
 
 }
 
@@ -270,7 +270,7 @@ String PropertyHelper::colourRectToString(const ColourRect& val)
 	using namespace std;
 
 	char buff[64];
-	sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left, val.d_top_right, val.d_bottom_left, val.d_bottom_right);
+	sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
 
 	return String((utf8*)buff);
 }
@@ -280,10 +280,10 @@ ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
 	using namespace std;
 
-	ColourRect val(0xFF000000);
-	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &val.d_top_left, &val.d_top_right, &val.d_bottom_left, &val.d_bottom_right);
+	ulong topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
+	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &topLeft, &topRight, &bottomLeft, &bottomRight);
 
-	return val;
+	return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
 }
 
 } // End of  CEGUI namespace section

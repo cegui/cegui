@@ -325,7 +325,7 @@ void MultiLineEditbox::setMaxTextLength(ulong max_len)
 	Set the colour to be used for rendering edit box text in the normal,
 	unselected state.	
 *************************************************************************/
-void MultiLineEditbox::setNormalTextColour(colour col)
+void MultiLineEditbox::setNormalTextColour(const colour& col)
 {
 	d_normalTextColour = col;
 	requestRedraw();
@@ -336,7 +336,7 @@ void MultiLineEditbox::setNormalTextColour(colour col)
 	Set the colour to be used for rendering the edit box text when
 	within the selected region.	
 *************************************************************************/
-void MultiLineEditbox::setSelectedTextColour(colour col)
+void MultiLineEditbox::setSelectedTextColour(const colour& col)
 {
 	d_selectTextColour = col;
 	requestRedraw();
@@ -347,7 +347,7 @@ void MultiLineEditbox::setSelectedTextColour(colour col)
 	Set the colour to be used for rendering the edit box selection
 	highlight when the edit box is active.	
 *************************************************************************/
-void MultiLineEditbox::setNormalSelectBrushColour(colour col)
+void MultiLineEditbox::setNormalSelectBrushColour(const colour& col)
 {
 	d_selectBrushColour = col;
 	requestRedraw();
@@ -358,7 +358,7 @@ void MultiLineEditbox::setNormalSelectBrushColour(colour col)
 	Set the colour to be used for rendering the edit box selection
 	highlight when the edit box is inactive.	
 *************************************************************************/
-void MultiLineEditbox::setInactiveSelectBrushColour(colour col)
+void MultiLineEditbox::setInactiveSelectBrushColour(const colour& col)
 {
 	d_inactiveSelectBrushColour = col;
 	requestRedraw();
@@ -522,12 +522,12 @@ void MultiLineEditbox::renderTextLines(const Rect& dest_area, const Rect& clippe
 
 		// calculate final colours to use.
 		float alpha = getEffectiveAlpha();
-		colour normalTextCol  = ((d_normalTextColour & 0x00FFFFFF) | (((colour)(((float)(d_normalTextColour >> 24)) * alpha)) << 24));
-		colour selectTextCol  = ((d_selectTextColour & 0x00FFFFFF) | (((colour)(((float)(d_selectTextColour >> 24)) * alpha)) << 24));
+		colour normalTextCol  = ((d_normalTextColour & 0x00FFFFFF) | (((ulong)(((float)(d_normalTextColour >> 24)) * alpha)) << 24));
+		colour selectTextCol  = ((d_selectTextColour & 0x00FFFFFF) | (((ulong)(((float)(d_selectTextColour >> 24)) * alpha)) << 24));
 
 		colour selectBrushCol = hasInputFocus() ?
-			((d_selectBrushColour & 0x00FFFFFF) | (((colour)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24)) :
-			((d_inactiveSelectBrushColour & 0x00FFFFFF) | (((colour)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24));
+			((d_selectBrushColour & 0x00FFFFFF) | (((ulong)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24)) :
+			((d_inactiveSelectBrushColour & 0x00FFFFFF) | (((ulong)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24));
 
 		// for each formatted line.
 		for (uint i = 0; i < (uint)d_lines.size(); ++i)

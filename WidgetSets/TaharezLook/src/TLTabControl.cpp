@@ -39,8 +39,8 @@ namespace CEGUI
 	// type name for this widget
 	const utf8	TLTabControl::WidgetTypeName[]	= "TaharezLook/TabControl";
 
-    const utf8	TLTabControl::ImagesetName[]				= "TaharezLook";
-    const utf8	TLTabControl::FillerImageName[]		        = "TabControlButtonPaneFiller";
+    const utf8	TLTabControl::ImagesetName[]		= "TaharezLook";
+    const utf8	TLTabControl::FillerImageName[]		= "TabControlButtonPaneFiller";
     // window type stuff
 	const utf8*	TLTabControl::TabContentPaneType	= TLTabPane::WidgetTypeName;
 	const utf8*	TLTabControl::TabButtonType		    = TLTabButton::WidgetTypeName;
@@ -97,17 +97,22 @@ namespace CEGUI
         if (d_tabButtonPane)
         {
             // Calculate the positions and sizes of the tab buttons
+			d_fillerSize.d_width = d_tabButtonPane->getWidth(Absolute);
+			d_fillerSize.d_height = d_fillerImage->getHeight();
             d_fillerPos.d_x = d_tabButtonPane->getAbsoluteXPosition();
-            d_fillerPos.d_y = d_tabButtonPane->getAbsoluteYPosition() + d_abs_tabHeight - 1; // 1 pixel filler
-            d_fillerSize.d_width = d_tabButtonPane->getWidth(Absolute);
-            d_fillerSize.d_height = 1;
-            for (uint i = 0; i < getTabCount(); ++i)
-            {
-                Window* btn = d_tabButtonPane->getChildAtIdx(i);
-                d_fillerPos.d_x = d_tabButtonPane->getAbsoluteXPosition() + 
-                    btn->getAbsoluteXPosition() + btn->getWidth(Absolute);
-            }
-            d_fillerSize.d_width -= d_fillerPos.d_x;
+            d_fillerPos.d_y = d_tabButtonPane->getAbsoluteYPosition() + d_tabButtonPane->getAbsoluteHeight() - d_fillerSize.d_height;
+
+			if (getTabCount() > 0)
+			{
+				TabButtonIndexMap::iterator iter = d_tabButtonIndexMap.end();
+				std::advance(iter, -1);
+				Window* btn = iter->second;
+
+				d_fillerPos.d_x = d_tabButtonPane->getAbsoluteXPosition() + 
+					btn->getAbsoluteXPosition() + btn->getWidth(Absolute);
+
+				d_fillerSize.d_width -= d_fillerPos.d_x;
+			}
 
         }
 
@@ -130,10 +135,8 @@ namespace CEGUI
         // get the destination screen rect for this window
         Rect absrect(getUnclippedPixelRect());
 
-        // calculate colours to use.
-        colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-        colour colval = alpha_comp | 0xFFFFFF;
-        ColourRect colours(colval, colval, colval, colval);
+		// calculate colours to use.
+		ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
         // Do filler section
         Vector3 pos = d_fillerPos;

@@ -134,7 +134,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalTextColour(colour colour);
+	void	setNormalTextColour(const colour& colour);
 
 
 	/*!
@@ -147,7 +147,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setHoverTextColour(colour colour);
+	void	setHoverTextColour(const colour& colour);
 
 
 	/*!
@@ -160,7 +160,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setPushedTextColour(colour colour);
+	void	setPushedTextColour(const colour& colour);
 
 
 	/*!
@@ -173,7 +173,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setDisabledTextColour(colour colour);
+	void	setDisabledTextColour(const colour& colour);
 
 
 	/*************************************************************************

@@ -115,6 +115,8 @@ void Combobox::initialise(void)
 	d_editbox	= createEditbox();
 	d_droplist	= createDropList();
 	d_button	= createPushButton();
+    d_droplist->setFont(getFont());
+    d_editbox->setFont(getFont());
 
 	addChildWindow(d_editbox);
 	addChildWindow(d_droplist);
@@ -734,6 +736,20 @@ void Combobox::onSized(WindowEventArgs& e)
 	layoutComponentWidgets();
 
 	e.handled = true;
+}
+
+
+/*************************************************************************
+Handler for when widget font is changed
+*************************************************************************/
+void Combobox::onFontChanged(WindowEventArgs& e)
+{
+    // Propagate to children
+    d_editbox->setFont(getFont());
+    d_droplist->setFont(getFont());
+
+    // Call base class handler
+    Window::onFontChanged(e);
 }
 
 

@@ -252,7 +252,7 @@ void TLMultiLineEditbox::renderCarat(float baseX, float baseY, const Rect& clipp
 		float ypos = caratLine * fnt->getLineSpacing();
 		float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));
 
-		colour col = ((colour)(getEffectiveAlpha() * 255.0f) << 24) | 0xFFFFFF;
+		colour col = ((ulong)(getEffectiveAlpha() * 255.0f) << 24) | 0xFFFFFF;
 
 		d_carat->draw(Vector3(baseX + xpos, baseY + ypos, System::getSingleton().getRenderer()->getZLayer(7)), Size(d_carat->getWidth(), fnt->getLineSpacing()), clipper, ColourRect(col));
 	}

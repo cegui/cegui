@@ -27,6 +27,7 @@
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
 #include "elements/CEGUIStatic.h"
+#include "elements/CEGUIGUISheet.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
 #include <boost/bind.hpp>
@@ -338,7 +339,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
 
 }
 /*************************************************************************
-Add tab button
+	Calculate size and position for a tab button
 *************************************************************************/
 void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex)
 {
@@ -349,8 +350,11 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
     // x position is based on previous button
     if (targetIndex > 0)
     {
-        Window* prevButton = d_tabButtonPane->getChildAtIdx(targetIndex - 1);
-        // position is prev pos + width
+		TabButtonIndexMap::iterator iter = d_tabButtonIndexMap.begin();
+		std::advance(iter, targetIndex - 1);
+		Window* prevButton = iter->second;
+
+		// position is prev pos + width
         btn->setXPosition(Relative, 
             prevButton->getXPosition(Relative) 
             + prevButton->getWidth(Relative));
@@ -365,7 +369,6 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
     btn->setWidth(Absolute, 
         fnt->getTextExtent(btn->getText()) + getAbsoluteTabTextPadding()*2);
     btn->requestRedraw();
-
 }
 /*************************************************************************
 Remove tab button
@@ -525,7 +528,7 @@ Window*	TabControl::createTabButtonPane(void) const
 {
     // Generate name based on own name
     String newName = getName() + (utf8*)"__TabPane__Buttons";
-    return WindowManager::getSingleton().createWindow((utf8*)"DefaultGUISheet", newName);
+	return WindowManager::getSingleton().createWindow(GUISheet::WidgetTypeName, newName);
 }
 /*************************************************************************
 Text changed on a content window
