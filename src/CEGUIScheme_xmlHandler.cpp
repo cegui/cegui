@@ -28,10 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "CEGUIExceptions.h"
 #include "CEGUIImageset.h"
 #include "CEGUILogger.h"
-#include "CEGUIXmlHandlerHelper.h"
-
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "CEGUIXMLAttributes.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -55,20 +52,17 @@ const char	Scheme_xmlHandler::TargetAttribute[]			= "Target";
 const char	Scheme_xmlHandler::ResourceGroupAttribute[]     = "ResourceGroup";
 
 /*************************************************************************
-SAX2 Handler methods
+Handler methods
 *************************************************************************/
-void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
+void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	// handle alias element
 	if (element == WindowAliasElement)
 	{
 		Scheme::AliasMapping	alias;
 
-		alias.aliasName	 = XmlHandlerHelper::getAttributeValueAsString(attrs, AliasAttribute);
-		alias.targetName = XmlHandlerHelper::getAttributeValueAsString(attrs, TargetAttribute);
+		alias.aliasName	 = attributes.getValueAsString(AliasAttribute);
+        alias.targetName = attributes.getValueAsString(TargetAttribute);
 		d_scheme->d_aliasMappings.push_back(alias);
 	}
 	// handle an Imageset element
@@ -76,9 +70,9 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	{
 		Scheme::LoadableUIElement	imageset;
 
-		imageset.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
-		imageset.filename = XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
-        imageset.resourceGroup = XmlHandlerHelper::getAttributeValueAsString(attrs, ResourceGroupAttribute);
+        imageset.name = attributes.getValueAsString(NameAttribute);
+        imageset.filename = attributes.getValueAsString(FilenameAttribute);
+        imageset.resourceGroup = attributes.getValueAsString(ResourceGroupAttribute);
 
 		d_scheme->d_imagesets.push_back(imageset);
 	}
@@ -87,9 +81,9 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	{
 		Scheme::LoadableUIElement	font;
 
-		font.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
-		font.filename = XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
-        font.resourceGroup = XmlHandlerHelper::getAttributeValueAsString(attrs, ResourceGroupAttribute);
+        font.name = attributes.getValueAsString(NameAttribute);
+        font.filename = attributes.getValueAsString(FilenameAttribute);
+        font.resourceGroup = attributes.getValueAsString(ResourceGroupAttribute);
 
 		d_scheme->d_fonts.push_back(font);
 	}
@@ -97,7 +91,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	else if (element == WindowSetElement)
 	{
 		Scheme::UIModule	module;
-		module.name		= XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
+        module.name		= attributes.getValueAsString(FilenameAttribute);
 		module.module	= NULL;
 
 		module.factories.clear();
@@ -108,7 +102,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	{
 		Scheme::UIElementFactory factory;
 
-		factory.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
+        factory.name = attributes.getValueAsString(NameAttribute);
 
 		d_scheme->d_widgetModules[d_scheme->d_widgetModules.size() - 1].factories.push_back(factory);
 	}
@@ -116,7 +110,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	else if (element == GUISchemeElement)
 	{
 		// get name of scheme we are creating
-		d_scheme->d_name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
+        d_scheme->d_name = attributes.getValueAsString(NameAttribute);
 
 		Logger::getSingleton().logEvent("Started creation of Scheme '" + d_scheme->d_name + "' via XML file.", Informative);
 
@@ -134,32 +128,13 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 
 }
 
-void Scheme_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+void Scheme_xmlHandler::elementEnd(const String& element)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	if (element == GUISchemeElement)
 	{
 		Logger::getSingleton().logEvent("Finished creation of Scheme '" + d_scheme->d_name + "' via XML file.", Informative);
 	}
 
-}
-
-
-void Scheme_xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Scheme_xmlHandler::error(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Scheme_xmlHandler::fatalError(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
 }
 
 } // End of  CEGUI namespace section

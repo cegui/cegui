@@ -107,7 +107,7 @@ public:
 	\param logFile
 		pointer to a utf8 encoded buffer containing the name to use for the log file.
 	*/
-	System(Renderer* renderer, ResourceProvider* resourceProvider, const utf8* logFile = (const utf8*)"CEGUI.log");
+    System(Renderer* renderer, ResourceProvider* resourceProvider, const utf8* logFile = (const utf8*)"CEGUI.log");
 
 
 	/*!
@@ -143,6 +143,82 @@ public:
 		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
 	*/
 	System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile = (const utf8*)"cegui.config");
+
+
+    /*!
+    \brief
+        Constructs a System object.
+
+    \param renderer
+        Pointer to the valid Renderer object that will be used to render GUI imagery
+
+    \param xmlParser
+        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
+
+    \param logFile
+        pointer to a utf8 encoded buffer containing the name to use for the log file.
+    */
+    System(Renderer* renderer, XMLParser* xmlParser, const utf8* logFile = (const utf8*)"CEGUI.log");
+
+    
+    /*!
+    \brief
+        Constructs a System object.
+
+    \param renderer
+        Pointer to the valid Renderer object that will be used to render GUI imagery
+
+    \param resourceProvider
+        Pointer to a ResourceProvider object.
+    
+    \param xmlParser
+        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
+
+    \param logFile
+        pointer to a utf8 encoded buffer containing the name to use for the log file.
+    */
+    System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, const utf8* logFile = (const utf8*)"CEGUI.log");
+
+    
+    /*!
+    \brief
+        Construct a new System object
+
+    \param renderer
+        Pointer to the valid Renderer object that will be used to render GUI imagery
+
+    \param xmlParser
+        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
+    
+    \param scriptModule
+        Pointer to a ScriptModule object.  may be NULL.
+
+    \param configFile
+        pointer to a utf8 encoded buffer containing the name to use for the configuration file.
+    */
+    System(Renderer* renderer, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile = (const utf8*)"cegui.config");
+
+        
+    /*!
+    \brief
+        Construct a new System object
+
+    \param renderer
+        Pointer to the valid Renderer object that will be used to render GUI imagery
+
+    \param resourceProvider
+        Pointer to a ResourceProvider object.
+    
+    \param xmlParser
+        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
+    
+    \param scriptModule
+        Pointer to a ScriptModule object.  may be NULL.
+
+    \param configFile
+        pointer to a utf8 encoded buffer containing the name to use for the configuration file.
+    */
+    System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile = (const utf8*)"cegui.config");
 
 
 	/*!
@@ -524,6 +600,12 @@ public:
     */
     uint    getSystemKeys(void) const   { return d_sysKeys; }
 
+    /*!
+    \brief
+        Return the XMLParser object.
+     */
+    XMLParser* getXMLParser(void) const     { return d_xmlParser; }
+
 
 	/*************************************************************************
 		Input injection interface
@@ -732,7 +814,7 @@ private:
 	\brief
 		Method to do the work of the constructor
 	*/
-	void	constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, ScriptModule* scriptModule, const String& configFile, const String& logFile);
+       void	constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, ScriptModule* scriptModule, const String& configFile, const String& logFile);
 
 
 	/*!
@@ -834,6 +916,9 @@ private:
 	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
 
 	float	d_mouseScalingFactor;			//!< Scaling applied to mouse movement inputs.
+
+    XMLParser*  d_xmlParser;        //!< XMLParser object we use to process xml files.
+    bool        d_ourXmlParser;     //!< true when we created the xml parser.
 };
 
 } // End of  CEGUI namespace section

@@ -26,11 +26,8 @@
 #include "CEGUIGUILayout_xmlHandler.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
-#include "CEGUIXmlHandlerHelper.h"
 #include "CEGUIScriptModule.h"
-
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "CEGUIXMLAttributes.h"
 
 
 // Start of CEGUI namespace section
@@ -55,16 +52,12 @@ const char	GUILayout_xmlHandler::LayoutImportResourceGroupAttribute[] = "Resourc
 const char	GUILayout_xmlHandler::EventNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::EventFunctionAttribute[]	= "Function";
 
-
-void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
+void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	// handle root GUILayoutElement element
 	if (element == GUILayoutElement)
 	{
-		d_layoutParent = XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutParentAttribute);
+		d_layoutParent = attributes.getValueAsString(LayoutParentAttribute);
 
 		// before we go to the trouble of creating the layout, see if this parent exists
 		if (!d_layoutParent.empty())
@@ -82,10 +75,10 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 	else if (element == WindowElement)
 	{
 		// get type of window to create
-		String windowType(XmlHandlerHelper::getAttributeValueAsString(attrs, WindowTypeAttribute));
+        String windowType(attributes.getValueAsString(WindowTypeAttribute));
 
 		// get name for new window
-		String windowName(XmlHandlerHelper::getAttributeValueAsString(attrs, WindowNameAttribute));
+        String windowName(attributes.getValueAsString(WindowNameAttribute));
 
 		// attempt to create window
 		try
@@ -127,10 +120,10 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 	else if (element == PropertyElement)
 	{
 		// get property name
-		String propertyName(XmlHandlerHelper::getAttributeValueAsString(attrs, PropertyNameAttribute));
+        String propertyName(attributes.getValueAsString(PropertyNameAttribute));
 
 		// get property value string
-		String propertyValue(XmlHandlerHelper::getAttributeValueAsString(attrs, PropertyValueAttribute));
+        String propertyValue(attributes.getValueAsString(PropertyValueAttribute));
 
 		// attempt to set property on window
 		try
@@ -159,12 +152,12 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 	else if (element == LayoutImportElement)
 	{
 		String prefixName(d_namingPrefix);
-		prefixName += XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportPrefixAttribute);
+        prefixName += attributes.getValueAsString(LayoutImportPrefixAttribute);
 
 		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
-				XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute), 
+                attributes.getValueAsString( LayoutImportFilenameAttribute),
 				prefixName,
-                XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportResourceGroupAttribute), 
+                attributes.getValueAsString(LayoutImportResourceGroupAttribute),
 				d_propertyCallback,
 				d_userData);
 
@@ -177,8 +170,8 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 	// handle event subscription element
 	else if (element == EventElement)
 	{
-		String eventName(XmlHandlerHelper::getAttributeValueAsString(attrs, EventNameAttribute));
-		String functionName(XmlHandlerHelper::getAttributeValueAsString(attrs, EventFunctionAttribute));
+        String eventName(attributes.getValueAsString(EventNameAttribute));
+        String functionName(attributes.getValueAsString(EventFunctionAttribute));
 
 		// attempt to subscribe property on window
 		try
@@ -202,11 +195,8 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 
 }
 
-void GUILayout_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+void GUILayout_xmlHandler::elementEnd(const String& element)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	// handle root GUILayoutElement element
 	if (element == GUILayoutElement)
 	{
@@ -228,22 +218,6 @@ void GUILayout_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const
 
 	}
 
-}
-
-
-void GUILayout_xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void GUILayout_xmlHandler::error(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void GUILayout_xmlHandler::fatalError(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
 }
 
 

@@ -31,7 +31,7 @@
 #include "CEGUIImageset_xmlHandler.h"
 #include "CEGUILogger.h"
 #include "CEGUIDataContainer.h"
-#include "CEGUIXmlHandlerHelper.h"
+#include "CEGUIXMLParser.h"
 
 #include <iostream>
 #include <cmath>
@@ -107,8 +107,6 @@ void Imageset::setTexture(Texture* texture)
 *************************************************************************/
 void Imageset::load(const String& filename, const String& resourceGroup)
 {
-	XERCES_CPP_NAMESPACE_USE
-
 	// unload old data and texture.
 	unload();
 
@@ -123,7 +121,7 @@ void Imageset::load(const String& filename, const String& resourceGroup)
 	// do parse (which uses handler to create actual data)
 	try
 	{
-        XmlHandlerHelper::parseXMLFile(handler, ImagesetSchemaName, filename, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, ImagesetSchemaName, resourceGroup);
 	}
 	catch(...)
 	{

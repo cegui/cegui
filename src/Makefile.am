@@ -49,7 +49,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIWindowFactoryManager.cpp \
                       CEGUIWindowManager.cpp \
                       CEGUIWindowProperties.cpp \
-                      CEGUIXmlHandlerHelper.cpp\
+                      CEGUIXMLAttributes.cpp \
+                      CEGUIXMLHandler.cpp \
+                      CEGUIXMLParser.cpp \
                       CEGUIcolour.cpp \
                       elements/CEGUIButtonBase.cpp \
                       elements/CEGUIButtonBaseProperties.cpp \
@@ -112,13 +114,28 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       pcre/pcre.c \
                       pcre/pcreposix.c \
                       pcre/study.c
-		      
+
 noinst_HEADERS =      pcre/internal.h \
                       pcre/ucpinternal.h \
                       pcre/pcre.h \
                       pcre/pcreposix.h \
                       pcre/ucp.h \
                       pcre/pcreconfig.h
+
+if CEGUI_USING_TINYXML
+libCEGUIBase_la_SOURCES += CEGUITinyXMLParser.cpp \
+                      tinyxml/tinystr.cpp \
+                      tinyxml/tinyxml.cpp \
+                      tinyxml/tinyxmlerror.cpp \
+                      tinyxml/tinyxmlparser.cpp
+
+noinst_HEADERS += tinyxml/tinystr.h \
+                  tinyxml/tinyxml.h
+endif
+
+if CEGUI_USING_XERCES
+libCEGUIBase_la_SOURCES += CEGUIXercesParser.cpp
+endif
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 libCEGUIBase_la_LIBADD = $(freetype2_LIBS)

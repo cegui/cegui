@@ -29,7 +29,8 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include <fstream>
-
+#include <sstream>
+#include <vector>
 #include "CEGUISingleton.h"
 
 
@@ -64,19 +65,9 @@ class CEGUIBASE_API Logger : public Singleton <Logger>
 public:
 	/*!
 	\brief
-		Constructor for Logger object
-
-	\param filename
-		Name of the file to put log messages.
-
-	\param append
-		- If true, events will be added to the end of the current file.
-		- If false, the current contents of the file will be discarded.
-
-	\return
-		Nothing.
+		Constructor for Logger object.
 	*/
-	Logger(const String& filename, bool append = false);
+	Logger(void);
 
 	/*!
 	\brief Destructor for Logger object.
@@ -132,13 +123,33 @@ public:
 	*/
 	void	logEvent(const String& message, LoggingLevel level = Standard);
 
+    /*!
+    \brief
+        Set the name of the log file where all subsequent log entries should be written.
+
+    \note
+        When this is called, and the log file is created, any cached log entries are
+        flushed to the log file.
+
+    \param filename
+        Name of the file to put log messages.
+
+    \param append
+        - true if events should be added to the end of the current file.
+        - false if the current contents of the file should be discarded.
+     */
+    void    setLogFilename(const String& filename, bool append = false);
+
 protected:
-	/*************************************************************************
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	LoggingLevel	d_level;		//!< Holds current logging level
 	std::ofstream	d_ostream;		//!< Stream used to implement the logger
-
+    std::vector<String> d_cache;    //!< Used to cache log entries before log file is created.
+    std::ostringstream d_workstream;//!< Used to build log entry strings. 
+    bool d_caching;                 //!< true while log entries are beign cached (prior to logfile creation)
+    
 private:
 	/*************************************************************************
 		Copy constructor and assignment usage is denied.

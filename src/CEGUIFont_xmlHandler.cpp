@@ -28,10 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "CEGUIExceptions.h"
 #include "CEGUIImageset.h"
 #include "CEGUILogger.h"
-#include "CEGUIXmlHandlerHelper.h"
-
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "CEGUIXMLAttributes.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -81,21 +78,16 @@ const int	Font_xmlHandler::AutoGenerateHorzAdvance		= -1;
 /*************************************************************************
 SAX2 Handler methods
 *************************************************************************/
-void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
+void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	// handle a Mapping element
 	if (element == MappingElement)
 	{
 		if (!d_font->d_freetype)
 		{
-			String	image_name(XmlHandlerHelper::getAttributeValueAsString(attrs, MappingImageAttribute));
-
-			utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, MappingCodepointAttribute);
-
-			int horzAdvance = XmlHandlerHelper::getAttributeValueAsInteger(attrs, MappingHorzAdvanceAttribute);
+            String	image_name(attributes.getValueAsString(MappingImageAttribute));
+			utf32 codepoint = (utf32)attributes.getValueAsInteger(MappingCodepointAttribute);
+            int horzAdvance = attributes.getValueAsInteger(MappingHorzAdvanceAttribute, -1);
 
 			Font::glyphDat	mapDat;
 			mapDat.d_image = &d_font->d_glyph_images->getImage(image_name);
@@ -119,12 +111,12 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	else if (element == FontElement)
 	{
 		// get name of font we are creating
-		String font_name(XmlHandlerHelper::getAttributeValueAsString(attrs, FontNameAttribute));
+		String font_name(attributes.getValueAsString(FontNameAttribute));
 
 		// get filename for the font
-		String filename(XmlHandlerHelper::getAttributeValueAsString(attrs, FontFilenameAttribute));
+        String filename(attributes.getValueAsString(FontFilenameAttribute));
         // get resource group for font file.
-        String resourceGroup(XmlHandlerHelper::getAttributeValueAsString(attrs, FontResourceGroupAttribute));
+        String resourceGroup(attributes.getValueAsString(FontResourceGroupAttribute));
 
 		Logger::getSingleton().logEvent("Started creation of Font '" + font_name + "' via XML file.", Informative);
 
@@ -135,29 +127,28 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 		bool auto_scale;
 
 		// get native horizontal resolution
-		hres = (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, FontNativeHorzResAttribute);
+        hres = (float)attributes.getValueAsInteger(FontNativeHorzResAttribute, 640);
 
 		// get native vertical resolution
-		vres = (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, FontNativeVertResAttribute);
+        vres = (float)attributes.getValueAsInteger(FontNativeVertResAttribute, 480);
 
 		// get auto-scaling setting
-		String autoscaleval(XmlHandlerHelper::getAttributeValueAsString(attrs, FontAutoScaledAttribute));
-		auto_scale = ((autoscaleval == (utf8*)"true") || (autoscaleval == (utf8*)"1")) ? true : false;
+        auto_scale = attributes.getValueAsBool(FontAutoScaledAttribute, false);
 
 		//
 		// get type of font
 		//
-		String	font_type(XmlHandlerHelper::getAttributeValueAsString(attrs, FontTypeAttribute));
+        String	font_type(attributes.getValueAsString(FontTypeAttribute));
 
 		// dynamic (ttf) font
 		if (font_type == FontTypeDynamic)
 		{
 			// get size of font
-			uint size = (uint)XmlHandlerHelper::getAttributeValueAsInteger(attrs, FontSizeAttribute);
+            uint size = (uint)attributes.getValueAsInteger(FontSizeAttribute, 12);
 
 			// extract codepoint range
-			utf32 first_codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, FontFirstCodepointAttribute);
-			utf32 last_codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, FontLastCodepointAttribute);
+            utf32 first_codepoint = (utf32)attributes.getValueAsInteger(FontFirstCodepointAttribute, 32);
+            utf32 last_codepoint = (utf32)attributes.getValueAsInteger(FontLastCodepointAttribute, 127);
 
 			// build string containing the required code-points.
 			for (;first_codepoint <= last_codepoint; ++first_codepoint)
@@ -165,8 +156,7 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 				d_glyphSet += first_codepoint;
 			}
 
-			String antiAlias(XmlHandlerHelper::getAttributeValueAsString(attrs, FontAntiAliasedAttribute));
-			uint flags = ((antiAlias == (utf8*)"true") || (antiAlias == (utf8*)"1")) ? 0 : NoAntiAlias;
+            uint flags = attributes.getValueAsBool(FontAntiAliasedAttribute, true);
 
 			// perform pre-initialisation
 			d_font->setNativeResolution(Size(hres, vres));
@@ -200,7 +190,7 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	{
 		if (d_font->d_freetype)
 		{
-			utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphCodepointAttribute);
+            utf32 codepoint = (utf32)attributes.getValueAsInteger(GlyphCodepointAttribute);
 
 			if (d_glyphSet.find(codepoint) == String::npos)
 			{
@@ -217,8 +207,8 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	{
 		if (d_font->d_freetype)
 		{
-			utf32 start = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeStartCodepointAttribute);
-			utf32 end	= (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeEndCodepointAttribute);
+            utf32 start = (utf32)attributes.getValueAsInteger(GlyphRangeStartCodepointAttribute);
+            utf32 end	= (utf32)attributes.getValueAsInteger(GlyphRangeEndCodepointAttribute);
 
 			for (utf32 codepoint = start; codepoint <= end; ++codepoint)
 			{
@@ -239,7 +229,7 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	{
 		if (d_font->d_freetype)
 		{
-			String glyphs(XmlHandlerHelper::getAttributeValueAsString(attrs, GlyphSetGlyphsAttribute));
+            String glyphs(attributes.getValueAsString(GlyphSetGlyphsAttribute));
 
 			for (String::size_type i = 0; i < glyphs.length(); ++i)
 			{
@@ -266,11 +256,8 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 
 }
 
-void Font_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+void Font_xmlHandler::elementEnd(const String& element)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	if (element == FontElement)
 	{
 		// if this is a freetype based font, perform glyph definition
@@ -282,22 +269,6 @@ void Font_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const loca
 		Logger::getSingleton().logEvent("Finished creation of Font '" + d_font->d_name + "' via XML file.", Informative);
 	}
 
-}
-
-
-void Font_xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Font_xmlHandler::error(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Font_xmlHandler::fatalError(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
 }
 
 } // End of  CEGUI namespace section

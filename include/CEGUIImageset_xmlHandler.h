@@ -27,8 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define _CEGUIImageset_xmlHandler_h_
 
 #include "CEGUIImageset.h"
-
-#include "xercesc/sax2/DefaultHandler.hpp"
+#include "CEGUIXMLHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,7 +40,7 @@ Implementation Classes
 \brief
 Handler class used to parse the Imageset XML files using SAX2
 */
-class Imageset_xmlHandler : public XERCES_CPP_NAMESPACE::DefaultHandler
+class Imageset_xmlHandler : public XMLHandler
 {
 public:
 	/*************************************************************************
@@ -69,16 +68,8 @@ public:
 	\brief
 	document processing (only care about elements, schema validates format)
 	*/
-	virtual void	startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
-	virtual void	endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname);
-
-	/*!
-	\brief
-	error processing
-	*/
-	virtual void  warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-	virtual void  error (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
-	virtual void  fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
+    virtual void elementStart(const String& element, const XMLAttributes& attributes);
+    virtual void elementEnd(const String& element);
 
 	/*************************************************************************
 	Functions used by our implementation

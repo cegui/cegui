@@ -65,6 +65,9 @@ class ResourceProvider;
 class DefaultResourceProvider;
 class PropertyReceiver;
 class GlobalEventSet;
+class XMLAttributes;
+class XMLHandler;
+class XMLParser;
 
 /*************************************************************************
 	Forward reference declarations for GUI element base classes

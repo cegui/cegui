@@ -28,10 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUILogger.h"
-#include "CEGUIXmlHandlerHelper.h"
-
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "CEGUIXMLAttributes.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,32 +57,29 @@ const char	Imageset_xmlHandler::ImageYOffsetAttribute[]			= "YOffset";
 /*************************************************************************
 SAX2 Handler methods
 *************************************************************************/
-void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
+void Imageset_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	// handle an Image element (extract all element attributes and use data to define an Image for the Imageset)
 	if (element == ImageElement)
 	{
-		String	name(XmlHandlerHelper::getAttributeValueAsString(attrs, ImageNameAttribute));
+		String	name(attributes.getValueAsString(ImageNameAttribute));
 
 		Rect	rect;
-		rect.d_left	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageXPosAttribute);
-		rect.d_top	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageYPosAttribute);
-		rect.setWidth((float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageWidthAttribute));
-		rect.setHeight((float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageHeightAttribute));
+        rect.d_left	= (float)attributes.getValueAsInteger(ImageXPosAttribute);
+        rect.d_top	= (float)attributes.getValueAsInteger(ImageYPosAttribute);
+        rect.setWidth((float)attributes.getValueAsInteger(ImageWidthAttribute));
+        rect.setHeight((float)attributes.getValueAsInteger(ImageHeightAttribute));
 
 		Point	offset;
-		offset.d_x	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageXOffsetAttribute);
-		offset.d_y	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageYOffsetAttribute);
+        offset.d_x	= (float)attributes.getValueAsInteger(ImageXOffsetAttribute, 0);
+        offset.d_y	= (float)attributes.getValueAsInteger(ImageYOffsetAttribute, 0);
 
 		d_imageset->defineImage(name, rect, offset);
 	}
 	// handle root Imageset element
 	else if (element == ImagesetElement)
 	{
-		d_imageset->d_name = XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetNameAttribute);
+        d_imageset->d_name = attributes.getValueAsString(ImagesetNameAttribute);
 
 		Logger::getSingleton().logEvent("Started creation of Imageset '" + d_imageset->d_name + "' via XML file.", Informative);
 
@@ -95,31 +89,21 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 		float hres, vres;
 
 		// get native horizontal resolution
-		hres = (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImagesetNativeHorzResAttribute);
+        hres = (float)attributes.getValueAsInteger(ImagesetNativeHorzResAttribute, 640);
 
 		// get native vertical resolution
-		vres = (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImagesetNativeVertResAttribute);
+        vres = (float)attributes.getValueAsInteger(ImagesetNativeVertResAttribute, 480);
 
 		d_imageset->setNativeResolution(Size(hres, vres));
 
-		// get auto-scaling setting
-		String autoscale(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetAutoScaledAttribute));
-
 		// enable / disable auto-scaling for this Imageset according to the setting
-		if ((autoscale == (utf8*)"true") || (autoscale == (utf8*)"1"))
-		{
-			d_imageset->setAutoScalingEnabled(true);
-		}
-		else
-		{
-			d_imageset->setAutoScalingEnabled(false);
-		}
+        d_imageset->setAutoScalingEnabled(attributes.getValueAsBool(ImagesetAutoScaledAttribute, false));
 
 		//
 		// Create a Texture object via the specified filename, and set it as the texture for the Imageset
 		//
-		String filename(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetImageFileAttribute));
-        String resourceGroup(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetResourceGroupAttribute));
+        String filename(attributes.getValueAsString(ImagesetImageFileAttribute));
+        String resourceGroup(attributes.getValueAsString(ImagesetResourceGroupAttribute));
 
 		try
 		{
@@ -139,31 +123,12 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 
 }
 
-void Imageset_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+void Imageset_xmlHandler::elementEnd(const String& element)
 {
-	XERCES_CPP_NAMESPACE_USE
-	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
-
 	if (element == ImagesetElement)
 	{
 		Logger::getSingleton().logEvent("Finished creation of Imageset '" + d_imageset->d_name + "' via XML file.", Informative);
 	}
-}
-
-
-void Imageset_xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Imageset_xmlHandler::error(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
-}
-
-void Imageset_xmlHandler::fatalError(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-{
-	throw(exc);
 }
 
 } // End of  CEGUI namespace section

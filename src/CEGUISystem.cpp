@@ -23,6 +23,10 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "CEGUISystem.h"
 #include "CEGUILogger.h"
 #include "CEGUIImagesetManager.h"
@@ -42,8 +46,16 @@
 #include "CEGUIDataContainer.h"
 #include "CEGUIResourceProvider.h"
 #include "CEGUIGlobalEventSet.h"
-#include "CEGUIXmlHandlerHelper.h"
 #include <time.h>
+
+// set up for whichever default xml parser will be used
+#ifdef CEGUI_WITH_XERCES
+#   include "CEGUIXercesParser.h"
+#   define CEGUI_DEFAULT_XMLPARSER     XercesParser
+#else
+#   include "CEGUITinyXMLParser.h"
+#   define CEGUI_DEFAULT_XMLPARSER     TinyXMLParser
+#endif
 
 
 // Start of CEGUI namespace section
@@ -120,7 +132,7 @@ const String System::EventMouseMoveScalingChanged( (utf8*)"MouseMoveScalingChang
 System::System(Renderer* renderer, const utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, NULL, NULL, (const utf8*)"", logFile);
+	constructor_impl(renderer, NULL, NULL, NULL, (const utf8*)"", logFile);
 }
 /*************************************************************************
 	Construct a new System object
@@ -128,7 +140,7 @@ System::System(Renderer* renderer, const utf8* logFile) :
 System::System(Renderer* renderer, ResourceProvider* resourceProvider,const utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, resourceProvider, NULL, (const utf8*)"", logFile);
+    constructor_impl(renderer, resourceProvider, NULL, NULL, (const utf8*)"", logFile);
 }
 
 /*************************************************************************
@@ -137,7 +149,7 @@ System::System(Renderer* renderer, ResourceProvider* resourceProvider,const utf8
 System::System(Renderer* renderer, ScriptModule* scriptModule, const utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, NULL, scriptModule, configFile, (const utf8*)"CEGUI.log");
+    constructor_impl(renderer, NULL, NULL, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
 
@@ -147,15 +159,53 @@ System::System(Renderer* renderer, ScriptModule* scriptModule, const utf8* confi
 System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, resourceProvider, scriptModule, configFile, (const utf8*)"CEGUI.log");
+    constructor_impl(renderer, resourceProvider, NULL, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
+/*************************************************************************
+    Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, XMLParser* xmlParser, const utf8* logFile) :
+        d_clickTrackerPimpl(new MouseClickTrackerImpl)
+{
+    constructor_impl(renderer, NULL, xmlParser, NULL, (const utf8*)"", logFile);
+}
+
+/*************************************************************************
+    Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, const utf8* logFile) :
+        d_clickTrackerPimpl(new MouseClickTrackerImpl)
+{
+    constructor_impl(renderer, resourceProvider, xmlParser, NULL, (const utf8*)"", logFile);
+}
+
+/*************************************************************************
+    Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile) :
+        d_clickTrackerPimpl(new MouseClickTrackerImpl)
+{
+    constructor_impl(renderer, NULL, xmlParser, scriptModule, configFile, (const utf8*)"CEGUI.log");
+}
+
+/*************************************************************************
+    Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile) :
+        d_clickTrackerPimpl(new MouseClickTrackerImpl)
+{
+    constructor_impl(renderer, resourceProvider, xmlParser, scriptModule, configFile, (const utf8*)"CEGUI.log");
+}
 
 /*************************************************************************
 	Method to do the work of the constructor
 *************************************************************************/
-void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, ScriptModule* scriptModule, const String& configFile, const String& logFile)
+void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider,  XMLParser* xmlParser, ScriptModule* scriptModule, const String& configFile, const String& logFile)
 {
+    // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
+    new Logger();
+
 	d_renderer		= renderer;
 	d_gui_redraw	= false;
 	d_defaultFont	= NULL;
@@ -183,23 +233,20 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
     // if there has been a resource provider supplied use that otherwise create one.
     d_resourceProvider = resourceProvider ? resourceProvider : renderer->createResourceProvider();
 
-	// initialise Xerces-C XML system
-	XERCES_CPP_NAMESPACE_USE
-	try
-	{
-		XMLPlatformUtils::Initialize();
-	}
-	catch(XMLException& exc)
-	{
-		// prepare a message about the failure
-		char* excmsg = XMLString::transcode(exc.getMessage());
-		String message((utf8*)"An exception occurred while initialising the Xerces-C XML system.  Additional information: ");
-		message += (utf8*)excmsg;
-		XMLString::release(&excmsg);
+    // use supplied xml parser if provided, otherwise create one of the defaults
+    if (xmlParser)
+    {
+        d_xmlParser = xmlParser;
+        d_ourXmlParser = false;
+    }
+    else
+    {
+        d_xmlParser = new CEGUI_DEFAULT_XMLPARSER;
+        d_ourXmlParser = true;
+    }
 
-		// throw a std::exception (because it won't try and use logger)
-		throw message.c_str();
-	}
+    // perform initialisation of XML parser.
+    d_xmlParser->initialise();
 
 	// strings we may get from the configuration file.
 	String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
@@ -213,15 +260,15 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 		// do parsing of xml file
 		try
 		{
-            XmlHandlerHelper::parseXMLFile(handler, CEGUIConfigSchemaName, configFile, "");
+            d_xmlParser->parseXMLFile(handler, configFile, CEGUIConfigSchemaName, "");
 		}
 		catch(...)
 		{
 			// cleanup XML stuff
-			XERCES_CPP_NAMESPACE_USE
-			XMLPlatformUtils::Terminate();
+            d_xmlParser->cleanup();
+            delete d_xmlParser;
 
-			throw;
+            throw;
 		}
 
         // get the strings read
@@ -243,12 +290,12 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	// prefer log filename from config file
 	if (!configLogname.empty())
 	{
-		new Logger(configLogname);
+        Logger::getSingleton().setLogFilename(configLogname, false);
 	}
 	// no log specified in configuration, use default / hard-coded option
 	else
 	{
-		new Logger(logFile);
+        Logger::getSingleton().setLogFilename(logFile, false);
 	}
 
 	// beginning main init
@@ -353,10 +400,14 @@ System::~System(void)
     }
 
 	// cleanup XML stuff
-	XERCES_CPP_NAMESPACE_USE
-	XMLPlatformUtils::Terminate();
+    if (d_xmlParser)
+    {
+        d_xmlParser->cleanup();
+        if (d_ourXmlParser)
+            delete d_xmlParser;
+    }
 
-	//
+    //
 	// perform cleanup in correct sequence
 	//
 	// destroy windows so it's safe to destroy factories

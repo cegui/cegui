@@ -29,7 +29,7 @@
 #include "CEGUIWindow.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIGUILayout_xmlHandler.h"
-#include "CEGUIXmlHandlerHelper.h"
+#include "CEGUIXMLParser.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -175,8 +175,6 @@ void WindowManager::destroyAllWindows(void)
 *************************************************************************/
 Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, const String& resourceGroup, PropertyCallback* callback, void* userdata)
 {
-	XERCES_CPP_NAMESPACE_USE
-
 	if (filename.empty() || (filename == (utf8*)""))
 	{
 		throw InvalidRequestException((utf8*)"WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid.");
@@ -191,7 +189,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	// do parse (which uses handler to create actual data)
 	try
 	{
-        XmlHandlerHelper::parseXMLFile(handler, GUILayoutSchemaName, filename, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, GUILayoutSchemaName, resourceGroup);
 	}
 	catch(...)
 	{

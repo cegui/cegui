@@ -1,3 +1,20 @@
+AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
+    AC_ARG_WITH([xerces-c], AC_HELP_STRING([--without-xerces-c], [Disables the use of the external Xerces-C++ XML Parser (will use embedded TinyXML instead)]),
+                [cegui_with_xerces=$withval], [cegui_with_xerces=yes])
+    AC_CHECK_LIB([xerces-c], [main], [cegui_found_xerces=yes], [cegui_found_xerces=no], -lpthread)
+
+    if test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes; then
+        LIBS="-lxerces-c $LIBS"
+        AC_DEFINE(CEGUI_WITH_XERCES, [], [Define to have the system use Xerces-C++ XML Parser as the default.])
+        AC_MSG_NOTICE([Default XML Parser is: Xerces-C++])
+    else
+        AC_MSG_NOTICE([Default XML Parser is: TinyXML])
+    fi
+
+    AM_CONDITIONAL([CEGUI_USING_XERCES], [test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes])
+    AM_CONDITIONAL([CEGUI_USING_TINYXML], [test x$cegui_found_xerces = xno || test x$cegui_with_xerces = xno])
+])
+
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
     PKG_CHECK_MODULES(CEGUIOGRE, CEGUI-OGRE >= 1.0.0, [cegui_found_ogre_renderer=yes], [cegui_found_ogre_renderer=no])
     PKG_CHECK_MODULES(CEGUI_NULL, CEGUI, [cegui_found_cegui=yes], [cegui_found_cegui=no])    

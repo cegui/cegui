@@ -35,7 +35,7 @@
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIFont_implData.h"
 #include "CEGUIResourceProvider.h"
-#include "CEGUIXmlHandlerHelper.h"
+#include "CEGUIXMLParser.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -764,8 +764,6 @@ void Font::constructor_impl(const String& name, const String& fontname, const St
 *************************************************************************/
 void Font::load(const String& filename, const String& resourceGroup)
 {
-	XERCES_CPP_NAMESPACE_USE
-
 	// unload old data
 	unload();
 
@@ -780,7 +778,7 @@ void Font::load(const String& filename, const String& resourceGroup)
 	// do parse (which uses handler to create actual data)
 	try
 	{
-        XmlHandlerHelper::parseXMLFile(handler, FontSchemaName, filename, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, FontSchemaName, resourceGroup);
 	}
 	catch(...)
 	{

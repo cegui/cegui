@@ -36,7 +36,7 @@
 #include "CEGUIScheme_xmlHandler.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUISystem.h"
-#include "CEGUIXmlHandlerHelper.h"
+#include "CEGUIXMLParser.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,8 +54,6 @@ const char Scheme::GUISchemeSchemaName[]					= "GUIScheme.xsd";
 *************************************************************************/
 Scheme::Scheme(const String& filename, const String& resourceGroup)
 {
-	XERCES_CPP_NAMESPACE_USE
-
 	if (filename.empty() || (filename == (utf8*)""))
 	{
 		throw InvalidRequestException((utf8*)"Scheme::Scheme - Filename supplied for Scheme loading must be valid");
@@ -67,7 +65,7 @@ Scheme::Scheme(const String& filename, const String& resourceGroup)
     // do parse (which uses handler to create actual data)
 	try
 	{
-        XmlHandlerHelper::parseXMLFile(handler, GUISchemeSchemaName, filename, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, GUISchemeSchemaName, resourceGroup);
 	}
 	catch(...)
 	{
