@@ -492,6 +492,16 @@ public:
 	void	notifyWindowDestroyed(const Window* window);
 
 
+    /*!
+    \brief
+        Return the current system keys value.
+
+    \return
+        uint value representing a combination of the SystemKey bits.
+    */
+    uint    getSystemKeys(void) const   { return d_sysKeys; }
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
