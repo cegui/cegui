@@ -40,6 +40,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <algorithm>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -223,41 +225,68 @@ uint Font::getCharAtPixel(const String& text, uint start_char, float pixel) cons
 *************************************************************************/
 uint Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours) const
 {
+	uint thisCount;
+	uint lineCount = 0;
+
 	float	y_base = draw_area.d_top + d_max_bearingY;
 
-	switch(fmt)
+	Rect tmpDrawArea(draw_area);
+	uint lineStart = 0, lineEnd = 0;
+	String	currLine;
+
+	while (lineEnd < text.length())
 	{
-	case LeftAligned:
-		drawTextLine(text, Vector3(draw_area.d_left, y_base, z), clip_rect, colours);
-		return 1;
-		break;
+		if ((lineEnd = text.find_first_of('\n', lineStart)) == String::npos)
+		{
+			lineEnd = text.length();
+		}
 
-	case RightAligned:
-		drawTextLine(text, Vector3(draw_area.d_right - getTextExtent(text), y_base, z), clip_rect, colours);
-		return 1;
-		break;
+		currLine = text.substr(lineStart, lineEnd - lineStart);
+		lineStart = lineEnd + 1;	// +1 to skip \n char
 
-	case Centred:
-		drawTextLine(text, Vector3(draw_area.d_left + ((draw_area.getWidth() - getTextExtent(text)) / 2.0f), y_base, z), clip_rect, colours);
-		return 1;
-		break;
+		switch(fmt)
+		{
+		case LeftAligned:
+			drawTextLine(currLine, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours);
+			thisCount = 1;
+			y_base += getLineSpacing();
+			break;
 
-	case WordWrapLeftAligned:
-		return drawWrappedText(text, draw_area, z, clip_rect, LeftAligned, colours);
-		break;
+		case RightAligned:
+			drawTextLine(currLine, Vector3(tmpDrawArea.d_right - getTextExtent(currLine), y_base, z), clip_rect, colours);
+			thisCount = 1;
+			y_base += getLineSpacing();
+			break;
 
-	case WordWrapRightAligned:
-		return drawWrappedText(text, draw_area, z, clip_rect, RightAligned, colours);
-		break;
+		case Centred:
+			drawTextLine(currLine, Vector3(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine)) / 2.0f), y_base, z), clip_rect, colours);
+			thisCount = 1;
+			y_base += getLineSpacing();
+			break;
 
-	case WordWrapCentred:
-		return drawWrappedText(text, draw_area, z, clip_rect, Centred, colours);
-		break;
+		case WordWrapLeftAligned:
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours);
+			tmpDrawArea.d_top += thisCount * getLineSpacing();
+			break;
 
-	default:
-		throw InvalidRequestException((utf8*)"Font::drawText - Unknown or unsupported TextFormatting value specified.");
+		case WordWrapRightAligned:
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, RightAligned, colours);
+			tmpDrawArea.d_top += thisCount * getLineSpacing();
+			break;
+
+		case WordWrapCentred:
+			thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Centred, colours);
+			tmpDrawArea.d_top += thisCount * getLineSpacing();
+			break;
+
+		default:
+			throw InvalidRequestException((utf8*)"Font::drawText - Unknown or unsupported TextFormatting value specified.");
+		}
+
+		lineCount += thisCount;
 	}
 
+	return lineCount;
 }
 
 
@@ -948,45 +977,57 @@ uint Font::getFormattedLineCount(const String& text, const Rect& format_area, Te
 	// handle simple non-wrapped cases.
 	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned))
 	{
-		return 1;
+		return std::count(text.begin(), text.end(), '\n') + 1;
 	}
 
 	// handle wraping cases
-	uint	line_count = 0;
-	float	wrap_width = format_area.getWidth();
+	uint lineStart = 0, lineEnd = 0;
+	String	sourceLine;
 
+	float	wrap_width = format_area.getWidth();
 	String  whitespace = TextUtils::DefaultWhitespace;
 	String	thisLine, thisWord;
-	uint	currpos = 0;
+	uint	line_count = 0, currpos = 0;
 
-	// get first word.
-	currpos += getNextWord(text, currpos, thisLine);
-
-	// while there are words left in the string...
-	while (String::npos != text.find_first_not_of(whitespace, currpos))
+	while (lineEnd < text.length())
 	{
-		// get next word of the string...
-		currpos += getNextWord(text, currpos, thisWord);
-
-		// if the new word would make the string too long
-		if ((getTextExtent(thisLine) + getTextExtent(thisWord)) > wrap_width)
+		if ((lineEnd = text.find_first_of('\n', lineStart)) == String::npos)
 		{
-			// too long, so that's another line of text
-			line_count++;
-
-			// remove whitespace from next word - it will form start of next line
-			thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
-
-			// reset for a new line.
-			thisLine.clear();
+			lineEnd = text.length();
 		}
 
-		// add the next word to the line
-		thisLine += thisWord;
-	}
+		sourceLine = text.substr(lineStart, lineEnd - lineStart);
+		lineStart = lineEnd + 1;
 
-	// plus one for final line
-	line_count++;
+		// get first word.
+		currpos = getNextWord(sourceLine, 0, thisLine);
+
+		// while there are words left in the string...
+		while (String::npos != sourceLine.find_first_not_of(whitespace, currpos))
+		{
+			// get next word of the string...
+			currpos += getNextWord(sourceLine, currpos, thisWord);
+
+			// if the new word would make the string too long
+			if ((getTextExtent(thisLine) + getTextExtent(thisWord)) > wrap_width)
+			{
+				// too long, so that's another line of text
+				line_count++;
+
+				// remove whitespace from next word - it will form start of next line
+				thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
+
+				// reset for a new line.
+				thisLine.clear();
+			}
+
+			// add the next word to the line
+			thisLine += thisWord;
+		}
+
+		// plus one for final line
+		line_count++;
+	}
 
 	return line_count;
 }
