@@ -601,7 +601,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 	vd->addElement(0, vd_offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
 
 	// create hardware vertex buffer
-	d_buffer = HardwareBufferManager::getSingleton().createVertexBuffer(vd->getVertexSize(0), VERTEXBUFFER_CAPACITY, HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY, false);
+	d_buffer = HardwareBufferManager::getSingleton().createVertexBuffer(vd->getVertexSize(0), VERTEXBUFFER_CAPACITY, HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE, false);
 
 	// bind vertex buffer
 	d_render_op.vertexData->vertexBufferBinding->setBinding(0, d_buffer);
