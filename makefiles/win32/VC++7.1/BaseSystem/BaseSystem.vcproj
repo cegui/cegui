@@ -294,6 +294,12 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIComboDropList.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIDragContainer.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIDragContainerProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIEditbox.cpp">
 				</File>
 				<File
@@ -635,6 +641,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIComboDropList.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIDragContainer.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIDragContainerProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIEditbox.h">

@@ -163,6 +163,14 @@ SOURCE=..\..\..\..\src\elements\CEGUIComboDropList.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUIDragContainer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIDragContainerProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIEditbox.cpp
 # End Source File
 # Begin Source File
@@ -576,6 +584,14 @@ SOURCE=..\..\..\..\include\elements\CEGUIComboboxProperties.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUIComboDropList.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIDragContainer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIDragContainerProperties.h
 # End Source File
 # Begin Source File
 
