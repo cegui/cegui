@@ -310,7 +310,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 				texSize *= 2;
 				cur_x = 0;
 				cur_y = height;
-				i = -1;
+				i = (uint)-1;
 			}
 
 		}

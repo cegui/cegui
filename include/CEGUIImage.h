@@ -159,7 +159,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, colour top_left_colour = -1, colour top_right_colour = -1, colour bottom_left_colour = -1, colour bottom_right_colour = -1) const
+	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, colour top_left_colour = 0xFFFFFFFF, colour top_right_colour = 0xFFFFFFFF, colour bottom_left_colour = 0xFFFFFFFF, colour bottom_right_colour = 0xFFFFFFFF) const
 	{
 		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, 
 			ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
@@ -200,7 +200,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect, colour top_left_colour = -1, colour top_right_colour = -1, colour bottom_left_colour = -1, colour bottom_right_colour = -1) const
+	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect, colour top_left_colour = 0xFFFFFFFF, colour top_right_colour = 0xFFFFFFFF, colour bottom_left_colour = 0xFFFFFFFF, colour bottom_right_colour = 0xFFFFFFFF) const
 	{
 		draw(dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
 	}
@@ -299,7 +299,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	draw(const Vector3& position, const Rect& clip_rect, colour top_left_colour = -1, colour top_right_colour = -1, colour bottom_left_colour = -1, colour bottom_right_colour = -1) const
+	void	draw(const Vector3& position, const Rect& clip_rect, colour top_left_colour = 0xFFFFFFFF, colour top_right_colour = 0xFFFFFFFF, colour bottom_left_colour = 0xFFFFFFFF, colour bottom_right_colour = 0xFFFFFFFF) const
 	{
 		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
 	}

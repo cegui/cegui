@@ -71,7 +71,7 @@ Editbox::Editbox(const String& type, const String& name) :
 	d_readOnly(false),
 	d_maskText(false),
 	d_maskCodePoint('*'),
-	d_maxTextLen(-1),		// TODO: Change to String::max_length() once that's a static
+	d_maxTextLen(String::max_size()),
 	d_caratPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),

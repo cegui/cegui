@@ -37,8 +37,8 @@ namespace CEGUI
 Static::Static(const String& type, const String& name) :
 	Window(type, name),
 	d_frameEnabled(false),
-	d_frameCols(-1, -1, -1, -1),
-	d_backgroundCols(-1, -1, -1, -1)
+	d_frameCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+	d_backgroundCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
 {
 }
 

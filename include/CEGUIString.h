@@ -597,7 +597,7 @@ public:
 	\return
 		The maximum number of code points that a string can contain
 	*/
-	size_type	max_size(void) const
+	static size_type	max_size(void)
 	{
 		return (((size_type)-1) / sizeof(utf32));
 	}

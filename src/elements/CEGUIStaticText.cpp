@@ -35,7 +35,7 @@ namespace CEGUI
 *************************************************************************/
 StaticText::StaticText(const String& type, const String& name) :
 	Static(type, name),
-	d_textCols(-1, -1, -1, -1),
+	d_textCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
 	d_horzFormatting(LeftAligned),
 	d_vertFormatting(VertCentred)
 {

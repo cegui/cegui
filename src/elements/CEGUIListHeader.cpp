@@ -976,9 +976,7 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 				adjust = absoluteToRelativeX(adjust);
 			}
 			
-			d_segmentOffset = max(0.0f, d_segmentOffset - adjust);
-			layoutSegments();
-			requestRedraw();
+			setSegmentOffset(max(0.0f, d_segmentOffset - adjust));
 		}
 
 	}
@@ -1003,9 +1001,7 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 		if (d_segmentOffset < maxOffset)
 		{
 			// scroll, but never beyond the limit
-			d_segmentOffset = min(maxOffset, d_segmentOffset + adjust);
-			layoutSegments();
-			requestRedraw();
+			setSegmentOffset(min(maxOffset, d_segmentOffset + adjust));
 		}
 
 	}

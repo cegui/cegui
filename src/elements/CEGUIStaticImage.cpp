@@ -36,7 +36,7 @@ namespace CEGUI
 *************************************************************************/
 StaticImage::StaticImage(const String& type, const String& name) :
 	Static(type, name),
-	d_imageCols(-1, -1, -1, -1)
+	d_imageCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
 {
 	// default to stretched image
 	d_image.setHorzFormatting(RenderableImage::HorzStretched);
