@@ -184,6 +184,18 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLStatic.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabButton.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabControl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabPane.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp
 # End Source File
 # Begin Source File
@@ -277,6 +289,18 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSliderThumb.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLStatic.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabControl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h
 # End Source File
 # Begin Source File
 

@@ -190,6 +190,15 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLStatic.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabButton.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabControl.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabPane.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp">
 			</File>
 			<File
@@ -262,6 +271,15 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLStatic.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabControl.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTitlebar.h">
