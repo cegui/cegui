@@ -36,8 +36,57 @@ namespace CEGUI
 \brief
 
 */
-class PushButton : public ButtonBase
+class CEGUIBASE_API PushButton : public ButtonBase
 {
+public:
+	/*************************************************************************
+		Event name constants
+	*************************************************************************/
+	// generated internally by Window
+	static const utf8	Clicked[];					//!< The button was clicked.
+
+protected:
+	/*************************************************************************
+		Construction and Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for base PushButton class
+	*/
+	PushButton(const String& type, const String& name);
+
+
+	/*!
+	\brief
+		Destructor for PushButton class
+	*/
+	virtual ~PushButton(void);
+
+
+	/*************************************************************************
+		New Event Handlers
+	*************************************************************************/
+	/*!
+	\brief
+		handler invoked internally when the button is clicked.
+	*/
+	virtual void	onClicked(EventArgs& e);
+
+
+	/*************************************************************************
+		Overridden Event Handlers
+	*************************************************************************/
+	virtual void	onMouseButtonUp(MouseEventArgs& e);
+
+
+	/*************************************************************************
+		Implementation Functions
+	*************************************************************************/
+	/*!
+	\brief
+		Add button specific events
+	*/
+	void	addPushButtonEvents(void);
 };
 
 
