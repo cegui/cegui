@@ -599,13 +599,13 @@ ResourceProvider* System::getResourceProvider(void) const
 /*************************************************************************
 	Execute a script file if possible.
 *************************************************************************/
-void System::executeScriptFile(const String& filename) const
+void System::executeScriptFile(const String& filename, const String& resourceGroup) const
 {
 	if (d_scriptModule != NULL)
 	{
 		try
 		{
-			d_scriptModule->executeScriptFile(filename);
+			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
 		catch(...)
 		{

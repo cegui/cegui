@@ -68,8 +68,11 @@ public:
 
 	\param filename
 		String object holding the filename of the script file that is to be executed
+		
+	\param resourceGroup
+		Resource group idendifier to be passed to the ResourceProvider when loading the script file.
 	*/
-	virtual	void	executeScriptFile(const String& filename)	= 0;
+	virtual	void	executeScriptFile(const String& filename, const String& resourceGroup = "")	= 0;
 
 
 	/*!
