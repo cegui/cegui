@@ -42,9 +42,6 @@ namespace CEGUI
 /*!
 \brief
 	Base class for a static text widget.
-
-	This base class performs it's own rendering.  There is no need to override this widget to perform rendering
-	of static texts.
 */
 class CEGUIBASE_API StaticText : public Static
 {
