@@ -134,6 +134,9 @@
 				RelativePath="..\..\..\..\src\CEGUIBase.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIColourManipulator.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIColourRect.cpp">
 			</File>
 			<File
@@ -339,6 +342,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIBase.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIColourManipulator.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIColourRect.h">

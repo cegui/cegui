@@ -114,6 +114,18 @@ public:
 	Rect	getRect(void) const				{return d_area;}
 
 
+	/*!
+	\brief
+		return whether the element colours will be applied locally to each image drawn as part of the RenderableElement, or
+		applied across the whole of the RenderableElement area.
+
+	\return
+		- true if the RenderableElement colours will be applied locally to each sub-image drawn as part of this RenderableElement.
+		- false if the RenderableElement colours will be applied evenly across the face of the entire RenderableElement.
+	*/
+	bool	isColourRectPerImage(bool setting)		{return d_useColoursPerImage;}
+
+
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
@@ -207,6 +219,21 @@ public:
 	void	setRect(const Rect& area)		{d_area = area;}
 
 
+	/*!
+	\brief
+		set whether the element colours should be applied locally to each image drawn as part of the RenderableElement, or
+		applied across the whole of the RenderableElement area.
+
+	\param setting
+		- true to specify that RenderableElement colours be applied locally to each sub-image drawn as part of this RenderableElement.
+		- false to specify that RenderableElement colours should be applied evenly across the face of the entire RenderableElement.
+
+	\return
+		Nothing.
+	*/
+	void	setColourRectPerImage(bool setting)		{d_useColoursPerImage = setting;}
+
+
 protected:
 	/*************************************************************************
 		Construction / Destruction
@@ -250,6 +277,7 @@ protected:
 	RenderableElement*	d_next;		//!< Link to another RenderableElement.
 	ColourRect	d_colours;			//!< Colours to be used for this element;
 	Rect		d_area;				//!< Currently defined area for this element.
+	bool		d_useColoursPerImage;	//!< true if d_colours should be applied separately to each Image drawn (false to interpolate across d_area).
 };
 
 } // End of  CEGUI namespace section

@@ -24,6 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUIColourRect.h"
+#include "CEGUIColourManipulator.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -147,6 +148,40 @@ void ColourRect::setRightAlpha(float alpha)
 	// set new alpha values
 	d_top_right		|= alpha_comp;
 	d_bottom_left	|= alpha_comp;
+}
+
+/*************************************************************************
+	Get the colour at a specified point
+*************************************************************************/
+colour ColourRect::getColourAtPoint( float x, float y ) const
+{
+	ColourManipulator topleft( d_top_left );
+	ColourManipulator topright( d_top_right );
+	ColourManipulator bottomleft( d_bottom_left );
+	ColourManipulator bottomright( d_bottom_right );
+	ColourManipulator h1, h2;
+	ColourManipulator ColourAtPoint;
+
+    h1 = (topright - topleft) * x + topleft;
+	h2 = (bottomright - bottomleft) * x + bottomleft;
+	ColourAtPoint = (h2 - h1) * y + h1;
+
+	return static_cast<colour>(ColourAtPoint);
+}
+
+/*************************************************************************
+	Get a ColourRectangle from the specified Region
+*************************************************************************/
+ColourRect ColourRect::getSubRectangle( float left, float right, float top, float bottom ) const
+{
+	ColourRect OurRect;
+	
+	OurRect.d_top_left = getColourAtPoint( left, top );
+	OurRect.d_top_right = getColourAtPoint( right, top );
+	OurRect.d_bottom_left = getColourAtPoint( left, bottom );
+	OurRect.d_bottom_right = getColourAtPoint( right, bottom );
+    
+	return OurRect;
 }
 
 } // End of  CEGUI namespace section

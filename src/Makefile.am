@@ -4,6 +4,7 @@ INCLUDES = -I$(top_srcdir)/include $(freetype2_CFLAGS)
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
+		      CEGUIColourManipulator.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIEvent.cpp \
                       CEGUIEventArgs.cpp \

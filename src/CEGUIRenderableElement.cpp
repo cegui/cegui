@@ -35,7 +35,8 @@ namespace CEGUI
 RenderableElement::RenderableElement(void) :
 	d_next(NULL),
 	d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-	d_area(0, 0, 0, 0)
+	d_area(0, 0, 0, 0),
+	d_useColoursPerImage(false)
 {
 }
 

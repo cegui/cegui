@@ -126,6 +126,39 @@ public:
 	void	setRightAlpha(float alpha);
 
 
+	/*!
+	\brief
+		Gets a portion of this ColourRect as a subset ColourRect
+
+	\param left
+		The left side of this subrectangle (in the range of 0-1 float)
+	\param right
+		The right side of this subrectangle (in the range of 0-1 float)
+	\param top
+		The top side of this subrectangle (in the range of 0-1 float)
+	\param bottom
+		The bottom side of this subrectangle (in the range of 0-1 float)
+
+	\return
+		A ColourRect from the specified range
+	*/
+	ColourRect getSubRectangle( float left, float right, float top, float bottom ) const;
+
+	/*!
+	\brief
+		Get the colour at a point in the rectangle
+
+	\param x
+		The x coordinate of the point
+	\param y
+		The y coordinate of the point
+
+	\return
+		The colour at the specified point.
+	*/
+	colour getColourAtPoint( float x, float y ) const;
+
+
 	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
 };
 

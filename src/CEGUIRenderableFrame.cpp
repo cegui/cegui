@@ -73,6 +73,8 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	Vector3 final_pos(position);
 	float	org_width = d_area.getWidth(), org_height = d_area.getHeight();
 	Size	final_size;
+	ColourRect final_colours;
+	float leftfactor, rightfactor, topfactor, bottomfactor;
 
 	// calculate 'adjustments' required to accommodate corner pieces.
 	float	coord_adj, size_adj;
@@ -99,7 +101,24 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_size.d_height	= d_top->getHeight();
 		final_pos.d_x		= position.d_x + coord_adj;
 
-		d_top->draw(final_pos, final_size, clip_rect, d_colours);
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+ 		
+		d_top->draw(final_pos, final_size, clip_rect, final_colours);
 	}
 
 	// draw bottom-edge, if required
@@ -125,7 +144,24 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_x		= position.d_x + coord_adj;
 		final_pos.d_y		= position.d_y + org_height - final_size.d_height;
 
-		d_bottom->draw(final_pos, final_size, clip_rect, d_colours);
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_bottom->draw(final_pos, final_size, clip_rect, final_colours);
 	}
 	
 	// reset x co-ordinate to input value
@@ -153,7 +189,24 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_size.d_width	= d_left->getWidth();
 		final_pos.d_y		= position.d_y + coord_adj;
 
-		d_left->draw(final_pos, final_size, clip_rect, d_colours);
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_left->draw(final_pos, final_size, clip_rect, final_colours);
 	}
 
 	// draw right-edge, if required
@@ -180,30 +233,119 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		final_pos.d_y		= position.d_y + coord_adj;
 		final_pos.d_x		= position.d_x + org_width - final_size.d_width;
 
-		d_right->draw(final_pos, final_size, clip_rect, d_colours);
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + final_size.d_width - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + final_size.d_height - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_right->draw(final_pos, final_size, clip_rect, final_colours);
 	}
 
 	// draw required corner pieces...
 	if (d_topleft != NULL) {
-		d_topleft->draw(position, clip_rect, d_colours);
+
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = 0;
+			rightfactor = (d_topleft->getWidth()) / org_width;
+			topfactor = 0;
+			bottomfactor = (d_topleft->getHeight()) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_topleft->draw(position, clip_rect, final_colours);
 	}
 
 	if (d_topright != NULL) {
 		final_pos.d_x = position.d_x + org_width - d_topright->getWidth();
 		final_pos.d_y = position.d_y;
-		d_topright->draw(final_pos, clip_rect, d_colours);
+
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + d_topleft->getWidth() - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + d_topleft->getHeight() - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_topright->draw(final_pos, clip_rect, final_colours);
 	}
 
 	if (d_bottomleft != NULL) {
 		final_pos.d_x = position.d_x;
 		final_pos.d_y = position.d_y + org_height - d_bottomleft->getHeight();
-		d_bottomleft->draw(final_pos, clip_rect, d_colours);
+
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + d_topleft->getWidth() - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + d_topleft->getHeight() - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_bottomleft->draw(final_pos, clip_rect, final_colours);
 	}
 
 	if (d_bottomright != NULL) {
 		final_pos.d_x = position.d_x + org_width - d_bottomright->getWidth();
 		final_pos.d_y = position.d_y + org_height - d_bottomright->getHeight();
-		d_bottomright->draw(final_pos, clip_rect, d_colours);
+
+		// calculate final colours that are to be used
+		if (d_useColoursPerImage)
+		{
+			final_colours = d_colours;
+		}
+		else
+		{
+			leftfactor = (final_pos.d_x - position.d_x) / org_width;
+			rightfactor = (final_pos.d_x + d_topleft->getWidth() - position.d_x) / org_width;
+			topfactor = (final_pos.d_y - position.d_y) / org_height;
+			bottomfactor = (final_pos.d_y + d_topleft->getHeight() - position.d_y) / org_height;
+			if( rightfactor > 1 ) rightfactor = 1;
+			if( bottomfactor > 1 ) bottomfactor = 1;
+
+			final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
+		}
+
+		d_bottomright->draw(final_pos, clip_rect, final_colours);
 	}
 
 }
