@@ -71,6 +71,19 @@ public:
 	ulong	getGroupID(void) const				{return d_groupID;}
 
 
+	/*!
+	\brief
+		Return a pointer to the RadioButton object within the same group as this RadioButton, that
+		is currently selected.
+
+	\return
+		Pointer to the RadioButton object that is the RadioButton within the same group as this RadioButton,
+		and is attached to the same parent window as this RadioButton, that is currently selected.
+		Returns NULL if no button within the group is selected, or if 'this' is not attached to a parent window.
+	*/
+	RadioButton*	getSelectedButtonInGroup(void) const;
+
+
 	/*************************************************************************
 		Manipulator Functions
 	*************************************************************************/

@@ -167,7 +167,7 @@ Point MouseCursor::getDisplayIndependantPosition(void) const
 {
 	Size dsz(System::getSingleton().getRenderer()->getSize());
 
-	return Point(d_position.d_x / dsz.d_width, d_position.d_y / dsz.d_height);
+	return Point(d_position.d_x / (dsz.d_width - 1.0f), d_position.d_y / (dsz.d_height - 1.0f));
 }
 
 

@@ -174,4 +174,41 @@ void RadioButton::onMouseButtonUp(MouseEventArgs& e)
 	ButtonBase::onMouseButtonUp(e);
 }
 
+
+/*************************************************************************
+	Return a pointer to the RadioButton object within the same group as
+	this RadioButton, that is currently selected.
+*************************************************************************/
+RadioButton* RadioButton::getSelectedButtonInGroup(void) const
+{
+	// Only search we we are a child window
+	if (d_parent != NULL)
+	{
+		int child_count = d_parent->getChildCount();
+
+		// scan all children
+		for (int child = 0; child < child_count; ++child)
+		{
+			// is this child same type as we are?
+			if (d_parent->getChildAtIdx(child)->getType() == getType())
+			{
+				RadioButton* rb = (RadioButton*)d_parent->getChildAtIdx(child);
+
+				// is child same group and selected?
+				if (rb->isSelected() && (rb->getGroupID() == d_groupID))
+				{
+					// return the matching RadioButton pointer (may even be 'this').
+					return rb;
+				}
+
+			}
+
+		}
+
+	}
+
+	// no selected button attached to this window is in same group
+	return NULL;
+}
+
 } // End of  CEGUI namespace section
