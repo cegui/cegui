@@ -570,12 +570,7 @@ MetricsMode Window::getMetricsMode(void) const
 {
 	if (d_metricsMode == Inherited)
 	{
-		if (d_parent != NULL)
-		{
-			return d_parent->getMetricsMode();
-		}
-
-		return Relative;
+		return getInheritedMetricsMode();
 	}
 
 	return d_metricsMode;
@@ -2125,6 +2120,178 @@ void Window::setDestroyedByParent(bool setting)
 
 		WindowEventArgs args(this);
 		onParentDestroyChanged(args);
+	}
+
+}
+
+
+/*************************************************************************
+	Return the inherited metrics mode.  This is either the metrics mode
+	of our parent, or Relative if we have no parent.	
+*************************************************************************/
+MetricsMode Window::getInheritedMetricsMode(void) const
+{
+	return (d_parent == NULL) ? Relative : d_parent->getMetricsMode();
+}
+
+
+/*************************************************************************
+	return the x position of the window using the specified metrics system.	
+*************************************************************************/
+float Window::getXPosition(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area.d_left;
+	}
+	else
+	{
+		return d_rel_area.d_left;
+	}
+
+}
+
+
+/*************************************************************************
+	return the y position of the window using the specified metrics system.	
+*************************************************************************/
+float Window::getYPosition(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area.d_top;
+	}
+	else
+	{
+		return d_rel_area.d_top;
+	}
+
+}
+
+
+/*************************************************************************
+	return the position of the window using the specified metrics system.	
+*************************************************************************/
+Point Window::getPosition(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area.getPosition();
+	}
+	else
+	{
+		return d_rel_area.getPosition();
+	}
+
+}
+
+
+/*************************************************************************
+	return the width of the Window using the specified metrics system.	
+*************************************************************************/
+float Window::getWidth(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area.getWidth();
+	}
+	else
+	{
+		return d_rel_area.getWidth();
+	}
+
+}
+
+
+/*************************************************************************
+	return the height of the Window using the specified metrics system.	
+*************************************************************************/
+float Window::getHeight(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area.getHeight();
+	}
+	else
+	{
+		return d_rel_area.getHeight();
+	}
+
+}
+
+
+/*************************************************************************
+	return the size of the Window using the specified metrics system.	
+*************************************************************************/
+Size Window::getSize(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area.getSize();
+	}
+	else
+	{
+		return d_rel_area.getSize();
+	}
+
+}
+
+
+/*************************************************************************
+	return a Rect object that describes the Window area using the
+	specified metrics system.
+*************************************************************************/
+Rect Window::getRect(MetricsMode mode) const
+{
+	// get proper mode to use for inherited.
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Absolute)
+	{
+		return d_abs_area;
+	}
+	else
+	{
+		return d_rel_area;
 	}
 
 }

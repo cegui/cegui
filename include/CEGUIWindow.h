@@ -851,6 +851,97 @@ public:
 	void*	getUserData(void) const			{return d_userData;}
 
 
+	/*!
+	\brief
+		return the x position of the window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		float value that specifies the x position of the Window relative to it's parent, using the specified MetricsMode.
+	*/
+	float	getXPosition(MetricsMode mode) const;
+
+
+	/*!
+	\brief
+		return the y position of the window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		float value that specifies the y position of the Window relative to it's parent,  using the specified MetricsMode.
+	*/
+	float	getYPosition(MetricsMode mode) const;
+
+
+	/*!
+	\brief
+		return the position of the window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		Point object that describes the position of the Window relative to it's parent, using the specified MetricsMode.
+	*/
+	Point	getPosition(MetricsMode mode) const;
+
+
+	/*!
+	\brief
+		return the width of the Window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		float value that specifies the width of the Window using the specified MetricsMode.
+	*/
+	float	getWidth(MetricsMode mode) const;
+
+
+	/*!
+	\brief
+		return the height of the Window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		float value that specifies the height of the Window using the specified MetricsMode.
+	*/
+	float	getHeight(MetricsMode mode) const;
+
+
+	/*!
+	\brief
+		return the size of the Window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		Size object that describes the dimensions of the Window using the specified MetricsMode.
+	*/
+	Size	getSize(MetricsMode mode) const;
+
+
+	/*!
+	\brief
+		return a Rect object that describes the Window area using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\return
+		Rect object that describes the area covered by the Window using the specified MetricsMode.
+	*/
+	Rect	getRect(MetricsMode mode) const;
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -2209,6 +2300,14 @@ protected:
 	float	relativeToAbsoluteY_impl(const Window* window, float y) const;
 
 	Size	getWindowSize_impl(const Window* window) const;
+
+
+	/*!
+	\brief
+		Return the inherited metrics mode.  This is either the metrics mode of our parent, or Relative
+		if we have no parent.
+	*/
+	MetricsMode getInheritedMetricsMode(void) const;
 
 
 	/*************************************************************************
