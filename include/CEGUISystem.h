@@ -33,8 +33,6 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIInputEvent.h"
 
-#include <boost/timer.hpp>
-
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -46,6 +44,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+// forward reference of impl struct
+struct MouseClickTrackerImpl;
+
 
 /*!
 \brief
@@ -716,21 +717,7 @@ private:
 	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
 	Size		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
 
-	/*!
-	\brief
-		Internal structure used in tracking up & down mouse button inputs in order to generate click, double-click,
-		and triple-click events.
-	*/
-	struct MouseClickTracker
-	{
-		MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
-
-		boost::timer	d_timer;			//!< Timer used to track clicks for this button.
-		int				d_click_count;		//!< count of clicks made so far.
-		Rect			d_click_area;		//!< area used to detect multi-clicks
-	};
-
-	MouseClickTracker	d_click_trackers[MouseButtonCount];		//!< Structs used to keep track of mouse button click generation
+	MouseClickTrackerImpl* const	d_clickTrackerPimpl;		//!< Tracks mouse button click generation.
 
 	// mouse cursor related
 	const Image*	d_defaultMouseCursor;		//!< Image to be used as the default mouse cursor.

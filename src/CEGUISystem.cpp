@@ -43,10 +43,36 @@
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
 
+#include <boost/timer.hpp>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	
+*************************************************************************/
+/*!
+\brief
+	Implementation structure used in tracking up & down mouse button inputs in order to generate click, double-click,
+	and triple-click events.
+*/
+struct MouseClickTracker
+{
+	MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
+
+	boost::timer	d_timer;			//!< Timer used to track clicks for this button.
+	int				d_click_count;		//!< count of clicks made so far.
+	Rect			d_click_area;		//!< area used to detect multi-clicks
+};
+
+
+struct MouseClickTrackerImpl
+{
+	MouseClickTracker	click_trackers[MouseButtonCount];
+};
+
+
 /*************************************************************************
 	Constants definitions
 *************************************************************************/
@@ -77,7 +103,8 @@ const utf8	System::EventMouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
 /*************************************************************************
 	Constructor
 *************************************************************************/
-System::System(Renderer* renderer, utf8* logFile)
+System::System(Renderer* renderer, utf8* logFile) :
+	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
 	constructor_impl(renderer, NULL, (utf8*)"", logFile);
 }
@@ -85,7 +112,8 @@ System::System(Renderer* renderer, utf8* logFile)
 /*************************************************************************
 	Construct a new System object
 *************************************************************************/
-System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile)
+System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile) :
+	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
 	constructor_impl(renderer, scriptModule, configFile, (utf8*)"CEGUI.log");
 }
@@ -354,6 +382,8 @@ System::~System(void)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton destroyed.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System destruction completed ----");
 	delete Logger::getSingletonPtr();
+
+	delete d_clickTrackerPimpl;
 }
 
 
@@ -621,12 +651,11 @@ bool System::injectMouseButtonDown(MouseButton button)
 	//
 	// Handling for multi-click generation
 	//
-	MouseClickTracker& tkr = d_click_trackers[button];
+	MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
 
 	tkr.d_click_count++;
 
 	// see if we meet multi-click timing
-
 	if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
 		(!tkr.d_click_area.isPointInRect(ma.position)) ||
 		(tkr.d_click_count > 3))
@@ -635,9 +664,9 @@ bool System::injectMouseButtonDown(MouseButton button)
 		tkr.d_click_count = 1;
 
 		// build allowable area for multi-clicks
-		d_click_trackers[button].d_click_area.setPosition(ma.position);
-		d_click_trackers[button].d_click_area.setSize(d_dblclick_size);
-		d_click_trackers[button].d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+		tkr.d_click_area.setPosition(ma.position);
+		tkr.d_click_area.setSize(d_dblclick_size);
+		tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 	}
 
 	Window* dest_window = getTargetWindow(ma.position);
@@ -665,8 +694,8 @@ bool System::injectMouseButtonDown(MouseButton button)
 		dest_window = dest_window->getParent();
 	}
 
-	// reset timer for this button.
-	d_click_trackers[button].d_timer.restart();
+	// reset timer for this tracker.
+	tkr.d_timer.restart();
 
 	return ma.handled;
 }
@@ -700,7 +729,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	bool wasUpHandled = ma.handled;
 
 	// check timer for 'button' to see if this up event also constitutes a single 'click'
-	if (d_click_trackers[button].d_timer.elapsed() <= d_click_timeout)
+	if (d_clickTrackerPimpl->click_trackers[button].d_timer.elapsed() <= d_click_timeout)
 	{
 		ma.handled = false;
 		dest_window = getTargetWindow(ma.position);
