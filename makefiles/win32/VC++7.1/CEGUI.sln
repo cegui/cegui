@@ -28,6 +28,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IrrlichtGUIRenderer", "Rend
 		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsLook", "WidgetSets\WindowsLook\WindowsLook.vcproj", "{20B194DE-F95C-4FBD-8D90-0F7581E0595C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -56,6 +60,10 @@ Global
 		{7582B608-D92F-4FCB-B682-2214B48D1596}.Release.Build.0 = Release|Win32
 		{AE2A5869-F7AB-46CE-B2B2-84D3242B6037}.Debug.ActiveCfg = Debug|Win32
 		{AE2A5869-F7AB-46CE-B2B2-84D3242B6037}.Release.ActiveCfg = Release|Win32
+		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Debug.ActiveCfg = Debug|Win32
+		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Debug.Build.0 = Debug|Win32
+		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Release.ActiveCfg = Release|Win32
+		{20B194DE-F95C-4FBD-8D90-0F7581E0595C}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

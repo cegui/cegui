@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX9GUIRenderer", "Rend
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IrrlichtRenderer", "Renderers\IrrlichtRenderer\IrrlichtRenderer.vcproj", "{F4751DD9-F2FD-43B6-87B9-BCA3E4692988}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsLook", "WidgetSets\TaharezLook\WindowsLook.vcproj", "{846339AB-BB36-4b1c-AD04-D492738D3427}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -22,6 +24,7 @@ Global
 		{AF07C5D2-23BB-4777-A042-18F2A1CE508D}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
 		{4D8333C0-EE9A-4BDF-8D7A-A03319B83DCB}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
 		{F4751DD9-F2FD-43B6-87B9-BCA3E4692988}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
+		{846339AB-BB36-4b1c-AD04-D492738D3427}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{41479B71-4AA0-47FC-9738-12F6DA994CD0}.Debug.ActiveCfg = Debug|Win32
@@ -46,6 +49,10 @@ Global
 		{4D8333C0-EE9A-4BDF-8D7A-A03319B83DCB}.Release.Build.0 = Release|Win32
 		{F4751DD9-F2FD-43B6-87B9-BCA3E4692988}.Debug.ActiveCfg = Debug|Win32
 		{F4751DD9-F2FD-43B6-87B9-BCA3E4692988}.Release.ActiveCfg = Release|Win32
+		{846339AB-BB36-4b1c-AD04-D492738D3427}.Debug.ActiveCfg = Debug|Win32
+		{846339AB-BB36-4b1c-AD04-D492738D3427}.Debug.Build.0 = Debug|Win32
+		{846339AB-BB36-4b1c-AD04-D492738D3427}.Release.ActiveCfg = Release|Win32
+		{846339AB-BB36-4b1c-AD04-D492738D3427}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
