@@ -226,6 +226,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLVertScrollbar.cpp
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLVertScrollbarThumb.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLVUMeter.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -353,6 +357,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLVertScrollbar.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLVertScrollbarThumb.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLVUMeter.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

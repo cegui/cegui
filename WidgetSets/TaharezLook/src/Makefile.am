@@ -33,4 +33,5 @@ libCEGUITaharezLook_la_SOURCES = TLAlternateProgressBar.cpp \
                                  TLTabPane.cpp \
                                  TLTitlebar.cpp \
                                  TLVertScrollbar.cpp \
-                                 TLVertScrollbarThumb.cpp
+                                 TLVertScrollbarThumb.cpp \
+                                 TLVUMeter.cpp
