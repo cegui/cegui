@@ -32,15 +32,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*
-	TODO: Add events
-	New events needed for this window
-
-	RollupToggled	- fired when window is rolled up or unrolled.
-	CloseClicked	- fired when close button is clicked.
-*/
-
-
 /*!
 \brief
 	Abstract base class for a movable, sizable, window with a title-bar and a frame.
@@ -474,6 +465,24 @@ protected:
 
 
 	/*************************************************************************
+		New events for Frame Windows
+	*************************************************************************/
+	/*!
+	\brief
+		Event generated internally whenever the roll-up / shade state of the window
+		changes.
+	*/
+	virtual void	onRollupToggled(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Event generated internally whenever the close button is clicked.
+	*/
+	virtual void	onCloseClicked(WindowEventArgs& e);
+
+
+	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
 	virtual void	onMouseMove(MouseEventArgs& e);
@@ -481,6 +490,7 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(EventArgs& e);
 	virtual void	onSized(EventArgs& e);
+	virtual void	onParentSized(WindowEventArgs& e);
 
 
 	/*************************************************************************

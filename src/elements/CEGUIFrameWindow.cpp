@@ -185,8 +185,15 @@ void FrameWindow::toggleRollup(void)
 				titleSize = d_titlebar->getSize();
 			}
 
+			// work-around minimum size setting
+			Size orgmin(d_minSize);
+			d_minSize.d_width = d_minSize.d_height = 0;
+
 			// set size of this window to 0x0, since the title/close controls are not clipped by us, they will still be visible
 			setSize(Size(0.0f, 0.0f));
+
+			// restore original min size;
+			d_minSize = orgmin;
 
 			// re-set the size of the title bar
 			if (d_titlebar != NULL)
@@ -199,8 +206,8 @@ void FrameWindow::toggleRollup(void)
 			layoutComponentWidgets();
 		}
 
-		// fire notification.
-		fireEvent(RollupToggled, WindowEventArgs(this));
+		// event notification.
+		onRollupToggled(WindowEventArgs(this));
 	}
 
 }
@@ -423,7 +430,7 @@ void FrameWindow::addFrameWindowEvents(void)
 *************************************************************************/
 void FrameWindow::closeClickHandler(const EventArgs& e)
 {
-	fireEvent(CloseClicked, WindowEventArgs(this));
+	onCloseClicked(WindowEventArgs(this));
 }
 
 
@@ -460,6 +467,25 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 		break;
 	}
 
+}
+
+
+/*************************************************************************
+	Event generated internally whenever the roll-up / shade state of the
+	window changes.
+*************************************************************************/
+void FrameWindow::onRollupToggled(WindowEventArgs& e)
+{
+	fireEvent(RollupToggled, e);
+}
+
+
+/*************************************************************************
+	Event generated internally whenever the close button is clicked.	
+*************************************************************************/
+void FrameWindow::onCloseClicked(WindowEventArgs& e)
+{
+	fireEvent(CloseClicked, e);
 }
 
 
@@ -598,9 +624,6 @@ void FrameWindow::onCaptureLost(EventArgs& e)
 *************************************************************************/
 void FrameWindow::onSized(EventArgs& e)
 {
-	// MUST call base class handler no matter what.  This is now required 100%
-	Window::onSized(e);
-
 	if (isRolledup())
 	{
 		// capture changed size(s)
@@ -614,6 +637,27 @@ void FrameWindow::onSized(EventArgs& e)
 	}
 
 	layoutComponentWidgets();
+
+	// MUST call base class handler no matter what.  This is now required 100%
+	Window::onSized(e);
 }
+
+
+/*************************************************************************
+	Handler for when a frame windows parent is sized.
+*************************************************************************/
+void FrameWindow::onParentSized(WindowEventArgs& e)
+{
+	// if we are rolled up we temporarily need to restore the original sizes so
+	// that the required calculations can occur when our parent is sized.
+	if (isRolledup())
+	{
+		d_rel_area.setSize(d_rel_openSize);
+		d_abs_area.setSize(d_abs_openSize);
+	}
+
+	Window::onParentSized(e);
+}
+
 
 } // End of  CEGUI namespace section

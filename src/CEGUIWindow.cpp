@@ -790,10 +790,10 @@ void Window::setSize(const Size& size)
 	if (getMetricsMode() == Relative)
 	{
 		d_rel_area.setSize(size);
-		d_rel_area.constrainSize(absoluteToRelative_impl(d_parent, d_maxSize), absoluteToRelative_impl(d_parent, d_minSize));
 
 		// update Rect for the other metrics system
 		d_abs_area.setSize(relativeToAbsolute_impl(d_parent, size));
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{
@@ -861,9 +861,9 @@ void Window::setAreaRect(const Rect& area)
 	if (getMetricsMode() == Relative)
 	{
 		d_rel_area = area;
-		d_rel_area.constrainSize(absoluteToRelative_impl(d_parent, d_maxSize), absoluteToRelative_impl(d_parent, d_minSize));
 
 		d_abs_area = relativeToAbsolute_impl(d_parent, area);
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{

@@ -71,6 +71,12 @@ Thumb* TLSlider::createThumb(void) const
 {
 	Thumb* tmb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbType, getName() + "__auto_thumb__");
 	tmb->setVertFree(true);
+
+	// set size for thumb
+	float height = ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(TLSliderThumb::NormalImageName).getHeight();
+	height /=  d_container->getHeight();
+	tmb->setSize(Size(1.0f, height));
+
 	return tmb;
 }
 
@@ -80,12 +86,6 @@ Thumb* TLSlider::createThumb(void) const
 *************************************************************************/
 void TLSlider::layoutComponentWidgets(void)
 {
-	// ensure thumb is correct size
-	// calculate relative height by using image dimensions
-	float height = ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(TLSliderThumb::NormalImageName).getHeight();
-	height /=  d_container->getHeight();
-	d_thumb->setSize(Size(1.0f, height));
-
 	updateThumb();
 }
 

@@ -753,22 +753,143 @@ public:
 	const Image*	getMouseCursor(void) const;
 
 
-	// This section of methoed were added because there were far too many co-ordinate conversions going on...
-	// TODO: Add docs for this batch of methods.
+	/*!
+	\brief
+		Return the window area rect in relative metrics.
+
+	\return
+		Rect object describing this windows area, relative to the parent window, in parent relative metrics.
+	*/
 	Rect	getRelativeRect(void) const				{return d_rel_area;}
+
+
+	/*!
+	\brief
+		Return the window position in relative metrics.
+
+	\return
+		Point object describing this windows position, relative to the parent window, in parent relative metrics.
+	*/
 	Point	getRelativePosition(void) const			{return d_rel_area.getPosition();}
+
+
+	/*!
+	\brief
+		Return the window X position in relative metrics.
+
+	\return
+		float value describing this windows X position, relative to the parent window, in parent relative metrics.
+	*/
 	float	getRelativeXPosition(void) const		{return d_rel_area.d_left;}
+
+
+	/*!
+	\brief
+		Return the window Y position in relative metrics.
+
+	\return
+		float value describing this windows Y position, relative to the parent window, in parent relative metrics.
+	*/
 	float	getRelativeYPosition(void) const		{return d_rel_area.d_top;}
+
+
+	/*!
+	\brief
+		Return the window size in relative metrics.
+
+	\return
+		Size object describing this windows size in parent relative metrics.
+	*/
 	Size	getRelativeSize(void) const				{return d_rel_area.getSize();}
+
+
+	/*!
+	\brief
+		Return the window width in relative metrics.
+
+	\return
+		float value describing this windows width in parent relative metrics.
+	*/
 	float	getRelativeWidth(void) const			{return d_rel_area.getWidth();}
+
+
+	/*!
+	\brief
+		Return the window height in relative metrics.
+
+	\return
+		float value describing this windows height in parent relative metrics.
+	*/
 	float	getRelativeHeight(void) const			{return d_rel_area.getHeight();}
 
+
+	/*!
+	\brief
+		Return the window area rect in absolute metrics.
+
+	\return
+		Rect object describing this windows area, relative to the parent window, in absolute metrics
+	*/
 	Rect	getAbsoluteRect(void) const				{return d_abs_area;}
+
+
+	/*!
+	\brief
+		Return the window position in absolute metrics.
+
+	\return
+		Point object describing this windows position, relative to the parent window, in absolute metrics.
+	*/
 	Point	getAbsolutePosition(void) const			{return d_abs_area.getPosition();}
+
+
+	/*!
+	\brief
+		Return the window X position in absolute metrics.
+
+	\return
+		float value describing this windows X position, relative to the parent window, in absolute metrics.
+	*/
 	float	getAbsoluteXPosition(void) const		{return d_abs_area.d_left;}
+
+
+	/*!
+	\brief
+		Return the window Y position in absolute metrics.
+
+	\return
+		float value describing this windows Y position, relative to the parent window, in absolute metrics.
+	*/
 	float	getAbsoluteYPosition(void) const		{return d_abs_area.d_top;}
+
+
+	/*!
+	\brief
+		Return the window size in absolute metrics.
+
+	\return
+		Size object describing this windows size in absolute metrics.
+	*/
 	Size	getAbsoluteSize(void) const				{return d_abs_area.getSize();}
+
+
+	/*!
+	\brief
+		Return the window width in absolute metrics.
+
+	\return
+		float value describing this windows width in absolute metrics.
+	*/
 	float	getAbsoluteWidth(void) const			{return d_abs_area.getWidth();}
+
+
+	/*!
+	\brief
+		Return the window height in absolute metrics.
+
+	\return
+	float value describing this windows height in absolute metrics.
+	*/
 	float	getAbsoluteHeight(void) const			{return d_abs_area.getHeight();}
 
 
