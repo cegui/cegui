@@ -88,6 +88,7 @@ protected:
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(EventArgs& e);
+	virtual void	onMouseLeaves(MouseEventArgs& e);
 
 
 	/*************************************************************************

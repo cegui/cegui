@@ -48,6 +48,17 @@ namespace CEGUI
 class CEGUIBASE_API FrameWindow : public Window
 {
 public:
+	/*************************************************************************
+		Constants	
+	*************************************************************************/
+	// additional event names for this window
+	static const utf8	RollupToggled[];		//!< Fired when the rollup (shade) state of the window changes
+	static const utf8	CloseClicked[];			//!< Fired when the close button for the window is clicked.
+
+	// other bits
+	static const float	DefaultSizingBorderSize;	//!< Default size for the sizing border (in pixels)
+
+
 	/*!
 	\brief
 		Enumeration that defines the set of possible locations for the mouse on a frame windows sizing border.
@@ -434,6 +445,20 @@ protected:
 	bool	isBottomSizingLocation(SizingLocation loc) const		{return ((loc == SizingBottom) || (loc == SizingBottomLeft) || (loc == SizingBottomRight));}
 
 
+	/*!
+	\brief
+		Add frame window specific events
+	*/
+	void	addFrameWindowEvents(void);
+
+
+	/*!
+	\brief
+		Method to respond to close button click events and fire our close event
+	*/
+	void	closeClickHandler(const EventArgs& e);
+
+
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
@@ -463,8 +488,6 @@ protected:
 	Point	d_dragPoint;		//!< point window is being dragged at.
 
 	// composite controls
-	//bool		d_titlebarEnabled;		//!< true if title-bar is enabled for this window.
-	//bool		d_closeButtonEnabled;	//!< true if the close-button is enabled for this window.
 	Titlebar*	d_titlebar;				//!< points to the title bar widget.
 	PushButton*	d_closeButton;			//!< points to close button widget.
 };

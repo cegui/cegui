@@ -59,9 +59,19 @@ public:
 	static const utf8	BottomFrameImageName[];			//!< Name of the image to use for the bottom edge of the frame.
 	static const utf8	ClientBrushImageName[];			//!< Name of the image to use as the client area brush.
 
+	static const utf8	CloseButtonNormalImageName[];	//!< Name of the image to use for the close button in normal state.
+	static const utf8	CloseButtonHoverImageName[];	//!< Name of the image to use for the close button in hover state.
+	static const utf8	CloseButtonPushedImageName[];	//!< Name of the image to use for the close button in pushed state.
+
 	// window type stuff
 	static const utf8	TitlebarType[];					//!< Window type to create for the title bar.
 	static const utf8	CloseButtonType[];				//!< Window type to create for the close button.
+
+	// layout constants
+	static const float	TitlebarXOffset;				//!< X Offset used for title bar
+	static const float	TitlebarYOffset;				//!< Y Offset used for title bar
+	static const float	TitlebarTextPadding;			//!< Padding space used for text in title bar.
+	static const float	TitlebarWidthPercentage;		//!< Percentage of window width to use for title bar width.
 
 
 	/*************************************************************************

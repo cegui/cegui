@@ -2033,10 +2033,15 @@ void Window::onCaptureGained(EventArgs& e)
 
 void Window::onCaptureLost(EventArgs& e)
 {
+	// handle restore of previous capture window as required.
 	if (d_restoreOldCapture && (d_oldCapture != NULL)) {
 		d_oldCapture->onCaptureLost(e);
 		d_oldCapture = NULL;
 	}
+
+	// handle case where mouse is now in a different window
+	// (this is a bit of a hack that uses the mouse input injector to handle this for us).
+	System::getSingleton().injectMouseMove(0, 0);
 
 	fireEvent(CaptureLostEvent, e);
 }

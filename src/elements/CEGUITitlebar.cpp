@@ -35,7 +35,6 @@ namespace CEGUI
 Titlebar::Titlebar(const String& type, const String& name) :
 	Window(type, name)
 {
-	// title bars are not by default clipped by their parent windows.
 	setClippedByParent(false);
 	setAlwaysOnTop(true);
 

@@ -34,7 +34,8 @@ namespace CEGUI
 *************************************************************************/
 ButtonBase::ButtonBase(const String& type, const String& name) :
 	Window(type, name),
-	d_pushed(false)
+	d_pushed(false),
+	d_hovering(false)
 {
 }
 
@@ -137,6 +138,7 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 	{
 		captureInput();
 		d_pushed = true;
+		updateInternalState(e.position);
 		requestRedraw();
 
 		// event was handled by us.
@@ -173,9 +175,25 @@ void ButtonBase::onCaptureLost(EventArgs& e)
 	Window::onCaptureLost(e);
 
 	d_pushed = false;
+	updateInternalState(MouseCursor::getSingleton().getPosition());
 	requestRedraw();
 
 	// event was handled by us.
+	e.handled = true;
+}
+
+
+/*************************************************************************
+	Handler for when mouse leaves the widget
+*************************************************************************/
+void ButtonBase::onMouseLeaves(MouseEventArgs& e)
+{
+	// deafult processing
+	Window::onMouseLeaves(e);
+
+	d_hovering = false;
+	requestRedraw();
+
 	e.handled = true;
 }
 

@@ -111,6 +111,32 @@ public:
 
 	/*!
 	\brief
+		Set the default font to be used by the system
+
+	\param name
+		String object containing the name of the font to be used as the system default.
+
+	\return
+		Nothing.
+	*/
+	void	setDefaultFont(const String& name);
+
+
+	/*!
+	\brief
+		Set the default font to be used by the system
+
+	\param font
+		Pointer to the font to be used as the system default.
+
+	\return
+		Nothing.
+	*/
+	void	setDefaultFont(Font* font);
+
+
+	/*!
+	\brief
 		Return a pointer to the default Font for the GUI system
 
 	\return

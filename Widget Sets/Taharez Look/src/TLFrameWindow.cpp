@@ -27,8 +27,9 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
-#include "elements/CEGUITitlebar.h"
-
+#include "../Widget Sets/Taharez Look/include/TLTitlebar.h"
+#include "../Widget Sets/Taharez Look/include/TLButton.h"
+#include "CEGUIFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -48,10 +49,20 @@ const utf8	TLFrameWindow::TopFrameImageName[]				= "WindowTopEdge";
 const utf8	TLFrameWindow::BottomFrameImageName[]			= "WindowBottomEdge";
 const utf8	TLFrameWindow::ClientBrushImageName[]			= "ClientBrush";
 
+const utf8	TLFrameWindow::CloseButtonNormalImageName[]		= "CloseButtonNormal";
+const utf8	TLFrameWindow::CloseButtonHoverImageName[]		= "CloseButtonHover";
+const utf8	TLFrameWindow::CloseButtonPushedImageName[]		= "CloseButtonPressed";
+
+
 // window type stuff
 const utf8	TLFrameWindow::TitlebarType[]		= "Taharez Titlebar";
 const utf8	TLFrameWindow::CloseButtonType[]	= "Taharez Button";
 
+// layout constants
+const float	TLFrameWindow::TitlebarXOffset			= 10;
+const float	TLFrameWindow::TitlebarYOffset			= 0;
+const float	TLFrameWindow::TitlebarTextPadding		= 8;
+const float	TLFrameWindow::TitlebarWidthPercentage	= 66;
 
 
 /*************************************************************************
@@ -96,9 +107,11 @@ Rect TLFrameWindow::getUnclippedInnerRect(void) const
 
 	if (isFrameEnabled())
 	{
-		tmp.d_left		+= d_frameLeftSize;
+		Point pos(d_frame.getPosition());
+
+		tmp.d_left		+= pos.d_x + d_frameLeftSize;
 		tmp.d_right		-= d_frameRightSize;
-		tmp.d_top		+= d_frameTopSize;
+		tmp.d_top		+= pos.d_y + d_frameTopSize;
 		tmp.d_bottom	-= d_frameBottomSize;
 	}
 
@@ -112,7 +125,11 @@ Rect TLFrameWindow::getUnclippedInnerRect(void) const
 *************************************************************************/
 Titlebar* TLFrameWindow::createTitlebar(void) const
 {
-	return (Titlebar*)WindowManager::getSingleton().createWindow(TitlebarType, getName() + "__auto_titlebar__");
+	TLTitlebar* tbar = (TLTitlebar*)WindowManager::getSingleton().createWindow(TitlebarType, getName() + "__auto_titlebar__");
+	tbar->setMetricsMode(Absolute);
+	tbar->setPosition(Point(TitlebarXOffset, TitlebarYOffset));
+
+	return tbar;
 }
 
 
@@ -122,7 +139,27 @@ Titlebar* TLFrameWindow::createTitlebar(void) const
 *************************************************************************/
 PushButton* TLFrameWindow::createCloseButton(void) const
 {
-	return NULL;
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, getName() + "__auto_closebutton__");
+
+	btn->setClippedByParent(false);
+	btn->setStandardImageryEnabled(false);
+	btn->setCustomImageryAutoSized(true);
+	
+	// setup close button imagery
+	RenderableImage img;
+	img.setHorzFormatting(RenderableImage::HorzStretched);
+	img.setVertFormatting(RenderableImage::VertStretched);
+	img.setImage(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(CloseButtonNormalImageName));
+	btn->setNormalImage(&img);
+	img.setImage(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(CloseButtonHoverImageName));
+	btn->setHoverImage(&img);
+	img.setImage(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(CloseButtonPushedImageName));
+	btn->setPushedImage(&img);
+
+	btn->setMetricsMode(Absolute);
+	btn->setAlwaysOnTop(true);
+	
+	return btn;
 }
 
 
@@ -132,16 +169,33 @@ PushButton* TLFrameWindow::createCloseButton(void) const
 *************************************************************************/
 void TLFrameWindow::layoutComponentWidgets()
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setMetricsMode(Absolute);
-		d_titlebar->setPosition(Point(5, -10));
-		d_titlebar->setSize(Size(100, 20));
-		d_titlebar->setMetricsMode(Inherited);
-	}
+	// calculate and set height of title bar
+	float title_height = getFont()->getLineSpacing() + TitlebarTextPadding;
+	d_titlebar->setHeight(title_height);
 
-	if (d_closeButton != NULL)
+	// set size of close button to be the same as the height for the title bar.
+	d_closeButton->setSize(Size(title_height, title_height));
+
+	if (isRolledup())
 	{
+		// if window is rolled-up position close button at the end of the title bar
+		d_closeButton->setPosition(Point(d_titlebar->getXPosition() + d_titlebar->getWidth(), TitlebarYOffset));
+	}
+	else
+	{
+		// title bar width is a percentage of the parent frame window.
+		d_titlebar->setWidth((d_abs_area.getWidth() * TitlebarWidthPercentage) / 100);
+
+		// calculate ideal position for close button
+		float closeX = (d_abs_area.getWidth() - d_closeButton->getWidth() - TitlebarXOffset);
+
+		// if ideal close button position overlaps the title bar, set position for close button at end of title bar
+		if (closeX < (d_titlebar->getXPosition() + d_titlebar->getWidth()))
+		{
+			closeX = (d_titlebar->getXPosition() + d_titlebar->getWidth());
+		}
+
+		d_closeButton->setPosition(Point(closeX, TitlebarYOffset));
 	}
 
 }
@@ -177,6 +231,33 @@ void TLFrameWindow::onSized(EventArgs& e)
 	Rect area(getUnclippedPixelRect());
 	Size newsz(area.getWidth(), area.getHeight());
 
+	//
+	// adjust frame and client area rendering objects so that the title bar and close button appear half in and half-out of the frame.
+	//
+	float frame_offset = 0;
+
+	// if title bar is active, close button is the same height.
+	if (isTitleBarEnabled())
+	{
+		frame_offset = d_titlebar->getUnclippedPixelRect().getHeight() / 2;
+	}
+	// if no title bar, measure the close button instead.
+	else if (isCloseButtonEnabled())
+	{
+		//frame_offset = d_closeButton->getUnclippedPixelRect().getHeight() / 2;
+	}
+
+	// move frame into position
+	Point pos(0, frame_offset);
+	d_frame.setPosition(pos);
+
+	// adjust position for client brush
+	pos.d_y += d_frameTopSize;
+	pos.d_x += d_frameLeftSize;
+	d_clientbrush.setPosition(pos);
+
+	// adjust size of frame
+	newsz.d_height -= frame_offset;
 	d_frame.setSize(newsz);
 
 	// modify size of client so it is within the frame

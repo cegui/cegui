@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	TLModule.cpp
-	created:	13/4/2004
+	filename: 	ogrerenderer.h
+	created:	11/5/2004
 	author:		Paul D Turner
 	
-	purpose:	Implements the System <-> GUI Module interface.
+	purpose:	Interface for main Ogre GUI renderer class
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,38 +23,40 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "TLModule.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowFactoryManager.h"
-#include "../../Widget Sets/Taharez Look/include/TLFrameWindow.h"
-#include "../../Widget Sets/Taharez Look/include/TLTitlebar.h"
-#include "../../Widget Sets/Taharez Look/include/TLButton.h"
-
-
 /*************************************************************************
-	Plugin access interface
+	This file contains code that is specific to Ogre (http://www.ogre3d.org)
 *************************************************************************/
-extern "C" void registerFactory(const CEGUI::String& type_name)
+#ifndef _ogrerenderer_h_
+#define _ogrerenderer_h_
+
+#ifdef OGRE_GUIRENDERER_EXPORTS
+#define OGRE_GUIRENDERER_API __declspec(dllexport)
+#else
+#define OGRE_GUIRENDERER_API __declspec(dllimport)
+#endif
+
+#include "CEGUIBase.h"
+#include "CEGUIRenderer.h"
+#include "CEGUITexture.h"
+
+// Start of CEGUI namespace section
+namespace CEGUI
 {
-	using namespace CEGUI;
+/*!
+\brief
+	Renderer class to interface with Ogre engine.
+*/
+class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
+{
+public:
 
-	if (type_name == "Taharez Frame Window")
-	{
-		WindowFactoryManager::getSingleton().addFactory(new TLFrameWindowFactory());
-		return;
-	}
-	else if (type_name == "Taharez Titlebar")
-	{
-		WindowFactoryManager::getSingleton().addFactory(new TLTitlebarFactory());
-		return;
-	}
-	else if (type_name == "Taharez Button")
-	{
-		WindowFactoryManager::getSingleton().addFactory(new TLButtonFactory());
-		return;
-	}
+private:
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+};
 
-	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
+} // End of  CEGUI namespace section
 
-	return;
-}
+
+#endif	// end of guard _ogrerenderer_h_

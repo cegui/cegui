@@ -185,6 +185,34 @@ Window* System::setGUISheet(Window* sheet)
 
 
 /*************************************************************************
+	Set the default font to be used by the system	
+*************************************************************************/
+void System::setDefaultFont(const String& name)
+{
+	if (name.empty())
+	{
+		setDefaultFont(NULL);
+	}
+	else
+	{
+		setDefaultFont(FontManager::getSingleton().getFont(name));
+	}
+
+}
+
+
+/*************************************************************************
+	Set the default font to be used by the system	
+*************************************************************************/
+void System::setDefaultFont(Font* font)
+{
+	d_defaultFont = font;
+	
+	// TODO: Add a 'system default font' changed event and fire it here.
+}
+
+
+/*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
 void System::injectMouseMove(int delta_x, int delta_y)

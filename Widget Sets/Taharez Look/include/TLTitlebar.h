@@ -44,9 +44,9 @@ public:
 		Constants
 	*************************************************************************/
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
-	static const utf8	LeftEndSectionImageName[];		//!< Name of the image to use for the top-left corner of the frame.
-	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the top-right corner of the frame.
-	static const utf8	RightEndSectionImageName[];		//!< Name of the image to use for the top-right corner of the frame.
+	static const utf8	LeftEndSectionImageName[];		//!< Name of the image to use for the left section of the title bar.
+	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the middle section of the title bar.
+	static const utf8	RightEndSectionImageName[];		//!< Name of the image to use for the right section of the title bar.
 
 	/*************************************************************************
 		Construction and Destruction
@@ -66,7 +66,7 @@ public:
 
 	/*!
 	\brief
-		Destructor for TLFrameWindow objects.
+		Destructor for TLTitlebar objects.
 	*/
 	virtual ~TLTitlebar(void);
 
@@ -100,7 +100,7 @@ protected:
 
 /*!
 \brief
-	Factory class for producing TLFrameWindow objects
+	Factory class for producing TLTitlebar objects
 */
 class TAHAREZLOOK_API TLTitlebarFactory : public WindowFactory
 {
@@ -122,7 +122,7 @@ public:
 	\return
 		Pointer to the new Window object.
 	*/
-	Window*	createWindow(const String& name)	{ return new TLTitlebar(d_type, name); }
+	Window*	createWindow(const String& name);
 
 
 	/*!

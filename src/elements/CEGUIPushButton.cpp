@@ -79,8 +79,18 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 	// default handling
 	ButtonBase::onMouseButtonUp(e);
 
-	// fire event
-	onClicked(EventArgs());
+	Window* sheet = System::getSingleton().getGUISheet();
+
+	if (sheet != NULL)
+	{
+		// if mouse was released over this widget
+		if (this == sheet->getChildAtPosition(e.position))
+		{
+			// fire event
+			onClicked(WindowEventArgs(this));
+		}
+
+	}
 
 	e.handled = true;
 }
