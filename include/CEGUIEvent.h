@@ -26,11 +26,6 @@
 #ifndef _CEGUIEvent_h_
 #define _CEGUIEvent_h_
 
-// setup auto-link for boost.signals (works only with _MSC_EXTENSIONS on and with MSCV or Borland compilers, so they say...)
-// if this can't be used obviously you need to link with the appropriate version of the library manually.
-#define BOOST_LIB_NAME	boost_signals
-#include "boost/config/auto_link.hpp"
-
 #if defined (_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
@@ -39,16 +34,10 @@
 #	endif
 #endif
 
-
-#if defined(_MSC_VER)
-#endif
-
-
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIEventArgs.h"
 #include "boost/signals.hpp"
-
 
 
 // Start of CEGUI namespace section
