@@ -985,7 +985,7 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 
 	if (FT_Set_Char_Size(d_impldat->fontFace, 0, d_ptSize * 64, horzDpi, vertDpi) == 0)
 	{
-		d_y_spacing = (float)(d_impldat->fontFace->height / d_impldat->fontFace->units_per_EM) * d_impldat->fontFace->size->metrics.y_ppem;
+		d_y_spacing = ((float)d_impldat->fontFace->height / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
 		defineFontGlyphs_impl();
 	}
 	// failed to set size for font
