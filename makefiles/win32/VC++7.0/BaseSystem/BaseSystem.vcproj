@@ -191,6 +191,9 @@
 				RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegment.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUILogger.cpp">
 			</File>
 			<File
@@ -376,6 +379,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegment.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUILogger.h">

@@ -48,6 +48,9 @@
 #include "TLCombobox.h"
 #include "TLComboEditbox.h"
 #include "TLComboDropList.h"
+#include "TLListHeader.h"
+#include "TLListHeaderSegment.h"
+
 
 /*************************************************************************
 	Static factory objects
@@ -75,6 +78,8 @@ static CEGUI::TLListboxFactory			s_ListboxFactory;
 static CEGUI::TLComboboxFactory			s_ComboboxFactory;
 static CEGUI::TLComboDropListFactory	s_ComboDropListFactory;
 static CEGUI::TLComboEditboxFactory		s_ComboEditboxFactory;
+static CEGUI::TLListHeaderSegmentFactory	s_ListHeaderSegmentFactory;
+static CEGUI::TLListHeaderFactory		s_ListHeaderFactory;
 
 
 /*************************************************************************
@@ -197,6 +202,16 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez ComboEditbox")
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboEditboxFactory);
+		return;
+	}
+	else if (type_name == "Taharez ListHeaderSegment")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderSegmentFactory);
+		return;
+	}
+	else if (type_name == "Taharez ListHeader")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderFactory);
 		return;
 	}
 	
