@@ -162,12 +162,12 @@ Window::Window(const String& type, const String& name) :
 	d_abs_area = Rect(0, 0, 0, 0);
 	d_rel_area = Rect(0, 0, 0, 0);
 
+	// add events
+	addStandardEvents();
+
 	// set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
 	setMinimumSize(Size(0.0f, 0.0f));
 	setMaximumSize(Size(1.0f, 1.0f));
-
-	// add events
-	addStandardEvents();
 
 	// add properties
 	addStandardProperties();
