@@ -62,7 +62,7 @@ String XmlHandlerHelper::getAttributeValueAsString(const XERCES_CPP_NAMESPACE::A
 String XmlHandlerHelper::transcodeXmlCharToString(const XMLCh* const xmlch_str)
 {
 	XMLTransService::Codes	res;
-	XMLTranscoder* transcoder = XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XMLRecognizer::UTF_8, res, 4096);
+	XMLTranscoder* transcoder = XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XMLRecognizer::UTF_8, res, 4096, XMLPlatformUtils::fgMemoryManager );
 
 	if (res == XMLTransService::Ok)
 	{
