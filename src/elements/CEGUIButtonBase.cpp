@@ -187,6 +187,10 @@ void ButtonBase::drawSelf(float z)
 	{
 		drawPushed(z);
 	}
+	else if (isDisabled())
+	{
+		drawDisabled(z);
+	}
 	else
 	{
 		drawNormal(z);

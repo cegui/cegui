@@ -275,6 +275,19 @@ protected:
 	virtual void	drawPushed(float z)		{drawNormal(z);}
 
 
+	/*!
+	\brief
+		Render the button-type widget in it's 'disabled' state
+
+	\param z
+		float value specifying the base Z co-ordinate that should be used when rendering
+
+	\return
+		Nothing
+	*/
+	virtual void	drawDisabled(float z)		{drawNormal(z);}
+
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
