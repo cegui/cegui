@@ -47,6 +47,8 @@ public:
 	static const utf8	LeftEndSectionImageName[];		//!< Name of the image to use for the left section of the title bar.
 	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the middle section of the title bar.
 	static const utf8	RightEndSectionImageName[];		//!< Name of the image to use for the right section of the title bar.
+	static const utf8	SysAreaMiddleImageName[];		//!< Name of the image to use for the middle section of the sys buttons area.
+	static const utf8	SysAreaRightImageName[];		//!< Name of the image to use for the right section of the sys buttons area.
 	static const utf8	NormalCursorImageName[];		//!< Name of the image to use as the mouse cursor for this window.
 	static const utf8	NoDragCursorImageName[];		//!< Name of the image to use as mouse cursor when dragging is disabled.
 
@@ -118,6 +120,8 @@ protected:
 	const Image*	d_leftImage;		//!< Image object used for the left edge of the title bar.
 	const Image*	d_middleImage;		//!< Image object used for the middle section of the title bar.
 	const Image*	d_rightImage;		//!< Image object used for the right edge of the title bar.
+	const Image*	d_sysMidImage;		//!< Image object used for the system area (middle section).
+	const Image*	d_sysRightImage;	//!< Image object used for the system area (right end section).
 };
 
 

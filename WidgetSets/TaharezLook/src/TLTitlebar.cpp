@@ -26,6 +26,7 @@
 #include "TLTitlebar.h"
 #include "CEGUIImageset.h"
 #include "CEGUIFont.h"
+#include "elements/CEGUIFrameWindow.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -34,9 +35,11 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 const utf8	TLTitlebar::ImagesetName[]				= "TaharezImagery";
-const utf8	TLTitlebar::LeftEndSectionImageName[]	= "TitlebarLeft";
-const utf8	TLTitlebar::MiddleSectionImageName[]	= "TitlebarMiddle";
-const utf8	TLTitlebar::RightEndSectionImageName[]	= "TitlebarRight";
+const utf8	TLTitlebar::LeftEndSectionImageName[]	= "NewTitlebarLeft";
+const utf8	TLTitlebar::MiddleSectionImageName[]	= "NewTitlebarMiddle";
+const utf8	TLTitlebar::RightEndSectionImageName[]	= "NewTitlebarRight";
+const utf8	TLTitlebar::SysAreaMiddleImageName[]	= "SysAreaMiddle";
+const utf8	TLTitlebar::SysAreaRightImageName[]		= "SysAreaRight";
 const utf8	TLTitlebar::NormalCursorImageName[]		= "MouseMoveCursor";
 const utf8	TLTitlebar::NoDragCursorImageName[]		= "MouseTarget";
 
@@ -53,9 +56,13 @@ TLTitlebar::TLTitlebar(const String& type, const String& name) :
 	d_leftImage		= &iset->getImage(LeftEndSectionImageName);
 	d_middleImage	= &iset->getImage(MiddleSectionImageName);
 	d_rightImage	= &iset->getImage(RightEndSectionImageName);
+	d_sysMidImage	= &iset->getImage(SysAreaMiddleImageName);
+	d_sysRightImage = &iset->getImage(SysAreaRightImageName);
 
 	// set cursor
 	setMouseCursor(&iset->getImage(NormalCursorImageName));
+
+	setAlwaysOnTop(false);
 }
 
 
@@ -110,7 +117,15 @@ void TLTitlebar::drawSelf(float z)
 	// calculate widths for the title bar segments
 	float leftWidth		= d_leftImage->getWidth();
 	float rightWidth	= d_rightImage->getWidth();
-	float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
+
+	float sysRightWidth	= d_sysRightImage->getWidth();
+	float sysMidWidth;
+
+	FrameWindow* parent = (FrameWindow*)getParent();
+
+	sysMidWidth = ((parent != NULL) && parent->isCloseButtonEnabled()) ? d_sysMidImage->getWidth() : 0.0f;
+
+	float midWidth		= absrect.getWidth() - leftWidth - rightWidth - sysRightWidth - sysMidWidth;
 
 	//
 	// draw the title bar images
@@ -118,22 +133,34 @@ void TLTitlebar::drawSelf(float z)
 	Vector3 pos(absrect.d_left, absrect.d_top, z);
 	Size	sz(leftWidth, absrect.getHeight());
 	d_leftImage->draw(pos, sz, clipper, colours);
+	pos.d_x += sz.d_width;
 
-	pos.d_x = absrect.d_right - rightWidth;
-	sz.d_width = rightWidth;
-	d_rightImage->draw(pos, sz, clipper, colours);
-
-	pos.d_x = absrect.d_left + leftWidth;
 	sz.d_width = midWidth;
 	d_middleImage->draw(pos, sz, clipper, colours);
+	pos.d_x += sz.d_width;
+
+	sz.d_width = rightWidth;
+	d_rightImage->draw(pos, sz, clipper, colours);
+	pos.d_x += sz.d_width;
+
+	sz.d_width = sysMidWidth;
+	d_sysMidImage->draw(pos, sz, clipper, colours);
+	pos.d_x += sz.d_width;
+
+	sz.d_width = sysRightWidth;
+	d_sysRightImage->draw(pos, sz, clipper, colours);
+
 
 	//
 	// Draw the title text
 	//
-	pos.d_x = absrect.d_left + 10.0f;
+	Rect textClipper(clipper);
+	textClipper.setWidth(midWidth);
+	textClipper = clipper.getIntersection(textClipper);
+	pos.d_x = absrect.d_left + leftWidth;
 	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
-	getFont()->drawText(d_parent->getText(), pos, clipper, colours);
+	getFont()->drawText(d_parent->getText(), pos, textClipper, colours);
 }
 
 

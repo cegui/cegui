@@ -51,9 +51,9 @@ const utf8	TLFrameWindow::TopFrameImageName[]				= "WindowTopEdge";
 const utf8	TLFrameWindow::BottomFrameImageName[]			= "WindowBottomEdge";
 const utf8	TLFrameWindow::ClientBrushImageName[]			= "ClientBrush";
 
-const utf8	TLFrameWindow::CloseButtonNormalImageName[]		= "CloseButtonNormal";
-const utf8	TLFrameWindow::CloseButtonHoverImageName[]		= "CloseButtonHover";
-const utf8	TLFrameWindow::CloseButtonPushedImageName[]		= "CloseButtonPressed";
+const utf8	TLFrameWindow::CloseButtonNormalImageName[]		= "NewCloseButtonNormal";
+const utf8	TLFrameWindow::CloseButtonHoverImageName[]		= "NewCloseButtonHover";
+const utf8	TLFrameWindow::CloseButtonPushedImageName[]		= "NewCloseButtonPressed";
 
 // cursor images
 const utf8	TLFrameWindow::NormalCursorImageName[]			= "MouseTarget";
@@ -68,7 +68,7 @@ const utf8	TLFrameWindow::TitlebarType[]		= "Taharez Titlebar";
 const utf8	TLFrameWindow::CloseButtonType[]	= "Taharez Close Button";
 
 // layout constants
-const float	TLFrameWindow::TitlebarXOffset			= 10;
+const float	TLFrameWindow::TitlebarXOffset			= 0;
 const float	TLFrameWindow::TitlebarYOffset			= 0;
 const float	TLFrameWindow::TitlebarTextPadding		= 8;
 const float	TLFrameWindow::TitlebarWidthPercentage	= 66;
@@ -82,10 +82,9 @@ TLFrameWindow::TLFrameWindow(const String& type, const String& name) :
 {
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
 
-	// setup frame images
-	d_frame.setImages(&iset->getImage(TopLeftFrameImageName), &iset->getImage(TopRightFrameImageName),
+	d_frame.setImages(NULL, NULL,
 		&iset->getImage(BottomLeftFrameImageName), &iset->getImage(BottomRightFrameImageName),
-		&iset->getImage(LeftFrameImageName), &iset->getImage(TopFrameImageName), 
+		&iset->getImage(LeftFrameImageName), NULL, 
 		&iset->getImage(RightFrameImageName), &iset->getImage(BottomFrameImageName));
 
 	storeFrameSizes();
@@ -165,10 +164,13 @@ PushButton* TLFrameWindow::createCloseButton(void) const
 	img.setHorzFormatting(RenderableImage::HorzStretched);
 	img.setVertFormatting(RenderableImage::VertStretched);
 	img.setImage(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(CloseButtonNormalImageName));
+	img.setColours(ColourRect(0xFFBBBBBB));
 	btn->setNormalImage(&img);
 	img.setImage(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(CloseButtonHoverImageName));
+	img.setColours(ColourRect(0xFFFFFFFF));
 	btn->setHoverImage(&img);
 	img.setImage(&ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(CloseButtonPushedImageName));
+	img.setColours(ColourRect(0xFF999999));
 	btn->setPushedImage(&img);
 
 	btn->setMetricsMode(Absolute);
@@ -184,35 +186,23 @@ PushButton* TLFrameWindow::createCloseButton(void) const
 *************************************************************************/
 void TLFrameWindow::layoutComponentWidgets()
 {
-	// calculate and set height of title bar
+	ImagesetManager& ismgr = ImagesetManager::getSingleton();
+
+	// calculate and set size of title bar
 	float title_height = getFont()->getLineSpacing() + TitlebarTextPadding;
-	d_titlebar->setHeight(title_height);
+	d_titlebar->setSize(Size(getWidth(Absolute), title_height));
 
 	// set size of close button to be the same as the height for the title bar.
-	d_closeButton->setSize(Size(title_height, title_height));
+	float closeSize = ismgr.getImageset(ImagesetName)->getImage(CloseButtonNormalImageName).getWidth();
+	d_closeButton->setSize(Size(closeSize, closeSize));
 
-	if (isRolledup())
-	{
-		// if window is rolled-up position close button at the end of the title bar
-		d_closeButton->setPosition(Point(d_titlebar->getXPosition() + d_titlebar->getWidth(), TitlebarYOffset));
-	}
-	else
-	{
-		// title bar width is a percentage of the parent frame window.
-		d_titlebar->setWidth((d_abs_area.getWidth() * TitlebarWidthPercentage) / 100);
+	// calculate position for close button (somewhere over the end of the titlbar)
+	float closeX = getWidth(Absolute) - closeSize - 
+		ismgr.getImageset(TLTitlebar::ImagesetName)->getImage(TLTitlebar::SysAreaRightImageName).getWidth();
 
-		// calculate ideal position for close button
-		float closeX = (d_abs_area.getWidth() - d_closeButton->getWidth() - TitlebarXOffset);
+	float closeY = TitlebarYOffset + ((title_height - closeSize) / 2);
 
-		// if ideal close button position overlaps the title bar, set position for close button at end of title bar
-		if (closeX < (d_titlebar->getXPosition() + d_titlebar->getWidth()))
-		{
-			closeX = (d_titlebar->getXPosition() + d_titlebar->getWidth());
-		}
-
-		d_closeButton->setPosition(Point(closeX, TitlebarYOffset));
-	}
-
+	d_closeButton->setPosition(Point(closeX, closeY));
 }
 
 
@@ -247,19 +237,19 @@ void TLFrameWindow::onSized(WindowEventArgs& e)
 	Size newsz(area.getWidth(), area.getHeight());
 
 	//
-	// adjust frame and client area rendering objects so that the title bar and close button appear half in and half-out of the frame.
+	// adjust frame and client area rendering objects so that the title bar is outside the frame area.
 	//
 	float frame_offset = 0;
 
 	// if title bar is active, close button is the same height.
 	if (isTitleBarEnabled())
 	{
-		frame_offset = d_titlebar->getUnclippedPixelRect().getHeight() / 2;
+		frame_offset = d_titlebar->getUnclippedPixelRect().getHeight();
 	}
 	// if no title bar, measure the close button instead.
 	else if (isCloseButtonEnabled())
 	{
-		frame_offset = d_closeButton->getUnclippedPixelRect().getHeight() / 2;
+		frame_offset = d_closeButton->getUnclippedPixelRect().getHeight();
 	}
 
 	// move frame into position
@@ -364,6 +354,17 @@ void TLFrameWindow::componentDisabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->hide();
 
+	// update frame images if the title bar has been removed
+	if (((WindowEventArgs&)e).window == d_titlebar)
+	{
+		Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+
+		d_frame.setImages(&iset->getImage(TopLeftFrameImageName), &iset->getImage(TopRightFrameImageName),
+			&iset->getImage(BottomLeftFrameImageName), &iset->getImage(BottomRightFrameImageName),
+			&iset->getImage(LeftFrameImageName), &iset->getImage(TopFrameImageName), 
+			&iset->getImage(RightFrameImageName), &iset->getImage(BottomFrameImageName));
+	}
+
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
@@ -376,6 +377,17 @@ void TLFrameWindow::componentDisabledHandler(const EventArgs& e)
 void TLFrameWindow::componentEnabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->show();
+
+	// update frame images if the title bar has been displayed
+	if (((WindowEventArgs&)e).window == d_titlebar)
+	{
+		Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+
+		d_frame.setImages(NULL, NULL,
+			&iset->getImage(BottomLeftFrameImageName), &iset->getImage(BottomRightFrameImageName),
+			&iset->getImage(LeftFrameImageName), NULL, 
+			&iset->getImage(RightFrameImageName), &iset->getImage(BottomFrameImageName));
+	}
 
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
