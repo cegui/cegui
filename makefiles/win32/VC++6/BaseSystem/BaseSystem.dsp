@@ -308,6 +308,10 @@ SOURCE=..\..\..\..\src\CEGUIConfig_xmlHandler.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\CEGUIDefaultResourceProvider.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\CEGUIEvent.cpp
 # End Source File
 # Begin Source File
@@ -409,6 +413,10 @@ SOURCE=..\..\..\..\src\CEGUIRenderableImage.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\CEGUIRenderer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\CEGUIResourceProvider.cpp
 # End Source File
 # Begin Source File
 
@@ -696,6 +704,14 @@ SOURCE=..\..\..\..\include\CEGUIConfig_xmlHandler.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\CEGUIDataContainer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIDefaultResourceProvider.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\CEGUIEvent.h
 # End Source File
 # Begin Source File
@@ -809,6 +825,10 @@ SOURCE=..\..\..\..\include\CEGUIRenderableImage.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIRenderer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIResourceProvider.h
 # End Source File
 # Begin Source File
 

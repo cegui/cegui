@@ -144,6 +144,9 @@
 				RelativePath="..\..\..\..\src\CEGUIConfig_xmlHandler.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIDefaultResourceProvider.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIEvent.cpp">
 			</File>
 			<File
@@ -214,6 +217,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderer.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIResourceProvider.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIScheme.cpp">
@@ -429,6 +435,12 @@
 				RelativePath="..\..\..\..\include\CEGUIConfig_xmlHandler.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIDataContainer.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIDefaultResourceProvider.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIEvent.h">
 			</File>
 			<File
@@ -514,6 +526,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderer.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIResourceProvider.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIScheme.h">

@@ -27,12 +27,12 @@
 #define _CEGUIOgreResourceProvider_h_
 
 #include "CEGUIResourceProvider.h"
-
+#include "ogrerenderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIBASE_API OgreResourceProvider : public ResourceProvider
+class OGRE_GUIRENDERER_API OgreResourceProvider : public ResourceProvider
 {
 public:
 	/*************************************************************************

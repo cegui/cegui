@@ -35,7 +35,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CEGUIBase_d.lib Ogremain_d.lib"
+				AdditionalDependencies="CEGUIBase_d.lib Ogremain_d.lib xerces-c_2D.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib&quot;;..\..\..\..\..\dependencies\lib"
@@ -88,7 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CEGUIBase.lib Ogremain.lib"
+				AdditionalDependencies="CEGUIBase.lib Ogremain.lib xerces-c_2.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib&quot;;..\..\..\..\..\dependencies\lib"
@@ -133,6 +133,9 @@
 				RelativePath="..\..\..\..\..\src\renderers\OgreGUIRenderer\ogrerenderer.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\src\renderers\OgreGUIRenderer\OgreResourceProvider.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\src\renderers\OgreGUIRenderer\ogretexture.cpp">
 			</File>
 		</Filter>
@@ -142,6 +145,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\OgreGUIRenderer\ogrerenderer.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\include\renderers\OgreGUIRenderer\OgreResourceProvider.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\OgreGUIRenderer\ogretexture.h">
