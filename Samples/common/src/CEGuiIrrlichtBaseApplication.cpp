@@ -21,6 +21,10 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 // this controls conditional compile of file for MSVC
 #include "CEGUIConfig.h"
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
@@ -111,3 +115,4 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
 }
 
 #endif
+
