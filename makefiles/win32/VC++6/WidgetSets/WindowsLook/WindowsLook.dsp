@@ -208,6 +208,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTooltip.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLVertScrollbar.cpp
 # End Source File
 # Begin Source File
@@ -321,6 +325,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTitlebar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTooltip.h
 # End Source File
 # Begin Source File
 

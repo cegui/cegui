@@ -224,6 +224,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTitlebar.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTooltip.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLVertScrollbar.cpp
 # End Source File
 # Begin Source File
@@ -356,6 +360,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTabPane.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTitlebar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTooltip.h
 # End Source File
 # Begin Source File
 

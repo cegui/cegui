@@ -220,6 +220,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLTitlebar.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLTooltip.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLVertScrollbar.cpp">
 			</File>
 			<File
@@ -322,6 +325,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLTitlebar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLTooltip.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLVertScrollbar.h">

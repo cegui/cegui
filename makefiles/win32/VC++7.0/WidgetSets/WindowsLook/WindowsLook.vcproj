@@ -209,6 +209,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTooltip.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLVertScrollbar.cpp">
 			</File>
 			<File
@@ -295,6 +298,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTitlebar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTooltip.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLVertScrollbar.h">

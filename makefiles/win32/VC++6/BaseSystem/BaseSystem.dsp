@@ -381,6 +381,14 @@ SOURCE=..\..\..\..\src\elements\CEGUITitlebar.cpp
 
 SOURCE=..\..\..\..\src\elements\CEGUITitlebarProperties.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUITooltip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUITooltipProperties.cpp
+# End Source File
 # End Group
 # Begin Source File
 
@@ -840,6 +848,14 @@ SOURCE=..\..\..\..\include\elements\CEGUITitlebar.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUITitlebarProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITooltip.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITooltipProperties.h
 # End Source File
 # End Group
 # Begin Source File
