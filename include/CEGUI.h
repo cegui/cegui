@@ -77,5 +77,6 @@
 #include "elements/CEGUIStaticImage.h"
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIListboxTextItem.h"
+#include "elements/CEGUIComboDropList.h"
 
 #endif	// end of guard _CEGUI_h_

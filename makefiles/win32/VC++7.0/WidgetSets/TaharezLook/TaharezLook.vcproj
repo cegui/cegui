@@ -128,6 +128,12 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCombobox.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLComboDropList.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLComboEditbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLEditbox.cpp">
 			</File>
 			<File
@@ -193,6 +199,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCombobox.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLComboDropList.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLComboEditbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLEditbox.h">

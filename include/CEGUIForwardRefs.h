@@ -82,6 +82,7 @@ class StaticText;
 class StaticImage;
 class ListboxItem;
 class ListboxTextItem;
+class ComboDropList;
 
 } // End of  CEGUI namespace section
 

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	TLCombobox.h
-	created:	12/6/2004
+	filename: 	TLComboEditbox.h
+	created:	13/6/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to Taharez look combo box class
+	purpose:	Interface to Taharez Look Combobox-Editbox widget
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,128 +23,130 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _TLCombobox_h_
-#define _TLCombobox_h_
+#ifndef _TLComboEditbox_h_
+#define _TLComboEditbox_h_
 
 #include "TLModule.h"
-#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIEditbox.h"
 #include "CEGUIWindowFactory.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-	Combobox class for the Taharez look Gui scheme
+	Edit box class for use as sub-widget of the Combobox in the Taharez look Gui Scheme
 */
-class TAHAREZLOOK_API TLCombobox : public Combobox
+class TAHAREZLOOK_API TLComboEditbox : public Editbox
 {
 public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	// image / imageset related
-	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
-	static const utf8	ButtonNormalImageName[];	//!< Name of the image to use for rendering the button normally
-	static const utf8	ButtonHighlightedImageName[];	//!< Name of the image to use for rendering the button highlighted.
+	// image name constants
+	static const utf8	ImagesetName[];						//!< Name of the Imageset containing the imagery to use.
+	static const utf8	ContainerLeftImageName[];			//!< Name of the image to use for the left end of the container.
+	static const utf8	ContainerMiddleImageName[];			//!< Name of the image to use for the middle of the container.
+	static const utf8	CaratImageName[];					//!< Name of the image to use for the carat.
+	static const utf8	SelectionBrushImageName[];			//!< Name of the image to use for the selection brush.
+	static const utf8	MouseCursorImageName[];				//!< Name of the image used for the mouse cursor.
 
-	// component widget type names
-	static const utf8	EditboxTypeName[];			//!< Type name of widget to be created as the edit box.
-	static const utf8	DropListTypeName[];			//!< Type name of widget to be created as the drop list.
-	static const utf8	ButtonTypeName[];			//!< Type name of widget to be created as the push button.
+	// layout values
+	static const float	TextPaddingRatio;				//!< Used to generate padding distance for text.
 
 
 	/*************************************************************************
-		Construction and Destruction
+		Construction / Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for Taharez Combobox
+		Constructor for Taharez combo box edit widgets
 	*/
-	TLCombobox(const String& type, const String& name);
+	TLComboEditbox(const String& type, const String& name);
 
 
 	/*!
 	\brief
-		Destructor for Taharez Combobox
+		Destructor for Taharez combo box edit widgets
 	*/
-	virtual ~TLCombobox(void);
+	virtual ~TLComboEditbox(void);
 
 
 protected:
 	/*************************************************************************
-		Overridden Implementation Rendering Functions
+		Rendering layers
 	*************************************************************************/
-	/*!
-	\brief
-		Perform rendering for this widget
-	*/
-	virtual void	drawSelf(float z);
+	static const uint	SelectionLayer;		//!< Layer to use for selection rendering.
+	static const uint	TextLayer;			//!< Layer to use for text.
+	static const uint	CaratLayer;			//!< Layer to use for carat.
 
 
 	/*************************************************************************
-		Implementation methods
+		Implementation functions
 	*************************************************************************/
 	/*!
 	\brief
-		Setup size and position for the component widgets attached to this Combobox.
+		Return the text code point index that is rendered closest to screen position \a pt.
+
+	\param pt
+		Point object describing a position on the screen in pixels.
 
 	\return
-		Nothing.
+		Code point index into the text that is rendered closest to screen position \pt.
 	*/
-	virtual void	layoutComponentWidgets();
+	virtual	ulong	getTextIndexFromPosition(const Point& pt) const;
 
 
 	/*!
 	\brief
-		Create, initialise, and return a pointer to an Editbox widget to be used as part
-		of this Combobox.
-
-	\return
-		Pointer to an Editbox derived class.
+		return text padding value to use in pixels
 	*/
-	virtual	Editbox*	createEditbox(void) const;
+	float	getTextPaddingPixels(void) const;
 
 
+	/*************************************************************************
+		Overridden Rendering Functions
+	*************************************************************************/
 	/*!
 	\brief
-		Create, initialise, and return a pointer to a PushButton widget to be used as part
-		of this Combobox.
+		Perform the actual rendering for this Window.
+
+	\param z
+		float value specifying the base Z co-ordinate that should be used when rendering
 
 	\return
-		Pointer to a PushButton derived class.
+		Nothing
 	*/
-	virtual	PushButton*	createPushButton(void) const;
-
-
-	/*!
-	\brief
-		Create, initialise, and return a pointer to a ComboDropList widget to be used as part
-		of this Combobox.
-
-	\return
-		Pointer to a ComboDropList derived class.
-	*/
-	virtual	ComboDropList*	createDropList(void) const;
+	virtual	void	drawSelf(float z);
 
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
+	// images
+	const Image*	d_left;			//!< Image to use for left end of the edit box.
+	const Image*	d_middle;		//!< Image to use for the  middle section of the edit box.
+	const Image*	d_carat;		//!< Image to use for the carat.
+	const Image*	d_selection;	//!< Image to use for selection highlight brush.
+
+	// rendering internal vars
+	float	d_lastTextOffset;		//!< x rendering offset used last time we drew the widget.
 };
+
 
 /*!
 \brief
-	Factory class for producing TLCombobox objects
+	Factory class for producing TLComboEditbox objects
 */
-class TAHAREZLOOK_API TLComboboxFactory : public WindowFactory
+class TAHAREZLOOK_API TLComboEditboxFactory : public WindowFactory
 {
 public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLComboboxFactory(void) : WindowFactory((utf8*)"Taharez Combobox") { }
-	~TLComboboxFactory(void){}
+	TLComboEditboxFactory(void) : WindowFactory((utf8*)"Taharez ComboEditbox") { }
+	~TLComboEditboxFactory(void){}
 
 
 	/*!
@@ -175,4 +177,5 @@ public:
 
 } // End of  CEGUI namespace section
 
-#endif	// end of guard _TLCombobox_h_
+
+#endif	// end of guard _TLComboEditbox_h_

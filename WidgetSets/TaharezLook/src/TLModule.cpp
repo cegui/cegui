@@ -46,6 +46,8 @@
 #include "TLStatic.h"
 #include "TLListbox.h"
 #include "TLCombobox.h"
+#include "TLComboEditbox.h"
+#include "TLComboDropList.h"
 
 /*************************************************************************
 	Static factory objects
@@ -71,6 +73,8 @@ static CEGUI::TLStaticImageFactory		s_StaticImageFactory;
 static CEGUI::TLStaticTextFactory		s_StaticTextFactory;
 static CEGUI::TLListboxFactory			s_ListboxFactory;
 static CEGUI::TLComboboxFactory			s_ComboboxFactory;
+static CEGUI::TLComboDropListFactory	s_ComboDropListFactory;
+static CEGUI::TLComboEditboxFactory		s_ComboEditboxFactory;
 
 
 /*************************************************************************
@@ -185,7 +189,17 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboboxFactory);
 		return;
 	}
-
+	else if (type_name == "Taharez ComboDropList")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_ComboDropListFactory);
+		return;
+	}
+	else if (type_name == "Taharez ComboEditbox")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_ComboEditboxFactory);
+		return;
+	}
+	
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
 	return;

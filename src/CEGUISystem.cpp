@@ -522,6 +522,16 @@ Window*	System::getTargetWindow(const Point& pt) const
 			}
 
 		}
+		else
+		{
+			Window* child_window = dest_window->getChildAtPosition(pt);
+
+			if (child_window != NULL)
+			{
+				dest_window = child_window;
+			}
+
+		}
 
 	}
 

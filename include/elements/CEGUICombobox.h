@@ -43,7 +43,42 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	// event names
+	// event names from edit box
+	static const utf8	ReadOnlyChanged[];				//!< The read-only mode for the edit box has been changed.
+	static const utf8	ValidationStringChanged[];		//!< The validation string has been changed.
+	static const utf8	MaximumTextLengthChanged[];		//!< The maximum allowable string length has been changed.
+	static const utf8	TextInvalidatedEvent[];			//!< Some operation has made the current text invalid with regards to the validation string.
+	static const utf8	InvalidEntryAttempted[];		//!< The user attempted to modify the text in a way that would have made it invalid.
+	static const utf8	CaratMoved[];					//!< The text carat (insert point) has changed.
+	static const utf8	TextSelectionChanged[];			//!< The current text selection has changed.
+	static const utf8	EditboxFullEvent[];				//!< The number of characters in the edit box has reached the current maximum.
+	static const utf8	TextAcceptedEvent[];			//!< The user has accepted the current text by pressing Return, Enter, or Tab.
+
+	// event names from list box
+	static const utf8	ListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
+	static const utf8	ListSelectionChanged[];			//!< Event triggered when there is a change to the currently selected item(s).
+	static const utf8	SortModeChanged[];				//!< Event triggered when the sort mode setting changes.
+	static const utf8	VertScrollbarModeChanged[];		//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const utf8	HorzScrollbarModeChanged[];		//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+
+	// events we produce / generate ourselves
+	static const utf8	DropListDisplayed[];			//!< Event triggered when the drop-down list is displayed
+	static const utf8	DropListRemoved[];				//!< Event triggered when the drop-down list is removed / hidden.
+	static const utf8	ListSelectionAccepted[];		//!< Event triggered when the user accepts a selection from the drop-down list
+
+
+
+	/*!
+	\brief
+		check if the given position would hit this window.
+
+	\param position
+		Point object describing the position to check in screen pixels
+
+	\return
+		true if \a position 'hits' this Window, else false.
+	*/
+	virtual bool	isHit(const Point& position) const		{return false;}
 
 
 	/*************************************************************************
@@ -206,6 +241,147 @@ public:
 	/*************************************************************************
 		List Accessors
 	*************************************************************************/
+	/*!
+	\brief
+		Return number of items attached to the list box
+
+	\return
+		the number of items currently attached to this list box.
+	*/
+	uint	getItemCount(void) const;
+
+	
+	/*!
+	\brief
+		Return a pointer to the currently selected item.
+
+	\return
+		Pointer to a ListboxItem based object that is the selected item in the list.  will return NULL if
+		no item is selected.
+	*/
+	ListboxItem*	getSelectedItem(void) const;
+
+
+	/*!
+	\brief
+		Return the item at index position \a index.
+
+	\param index
+		Zero based index of the item to be returned.
+
+	\return
+		Pointer to the ListboxItem at index position \a index in the list box.
+
+	\exception	InvalidRequestException	thrown if \a index is out of range.
+	*/
+	ListboxItem*	getListboxItemFomIndex(uint index) const;
+
+
+	/*!
+	\brief
+		Return the index of ListboxItem \a item
+
+	\param item
+		Pointer to a ListboxItem whos zero based index is to be returned.
+
+	\return
+		Zero based index indicating the position of ListboxItem \a item in the list box.
+
+	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
+	*/
+	uint	getItemIndex(const ListboxItem* item) const;
+
+
+	/*!
+	\brief
+		return whether list sorting is enabled
+
+	\return
+		true if the list is sorted, false if the list is not sorted
+	*/
+	bool	isSortEnabled(void) const;
+
+
+	/*!
+	\brief
+		return whether the string at index position \a index is selected
+
+	\param index
+		Zero based index of the item to be examined.
+
+	\return
+		true if the item at \a index is selected, false if the item at \a index is not selected.
+
+	\exception	InvalidRequestException	thrown if \a index is out of range.
+	*/
+	bool	isItemSelected(uint index) const;
+
+
+	/*!
+	\brief
+		Search the list for an item with the specified text
+
+	\param text
+		String object containing the text to be searched for.
+
+	\param start_item
+		ListboxItem where the search is to begin, the search will not include \a item.  If \a item is
+		NULL, the search will begin from the first item in the list.
+
+	\return
+		Pointer to the first ListboxItem in the list after \a item that has text matching \a text.  If
+		no item matches the criteria NULL is returned.
+
+	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
+	*/
+	ListboxItem*	findItemWithText(const String& text, const ListboxItem* start_item);
+
+
+	/*!
+	\brief
+		Return whether the specified ListboxItem is in the List
+
+	\return
+		true if ListboxItem \a item is in the list, false if ListboxItem \a item is not in the list.
+	*/
+	bool	isListboxItemInList(const ListboxItem* item) const;
+
+
+	/*************************************************************************
+		Combobox Manipulators
+	*************************************************************************/
+	/*!
+	\brief
+		Initialise the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
+
+
+	/*!
+	\brief
+		Show the drop-down list
+
+	\return
+		Nothing
+	*/
+	void	showDropList(void);
+
+
+	/*!
+	\brief
+		Hide the drop-down list
+
+	\return
+		Nothing.
+	*/
+	void	hideDropList(void);
+
 
 	/*************************************************************************
 		Editbox Manipulators
@@ -345,6 +521,171 @@ public:
 	/*************************************************************************
 		List Manipulators
 	*************************************************************************/
+	/*!
+	\brief
+		Remove all items from the list.
+
+		Note that this will cause 'AutoDelete' items to be deleted.
+	*/
+	void	resetList(void);
+
+
+	/*!
+	\brief
+		Add the given ListboxItem to the list.
+
+	\param item
+		Pointer to the ListboxItem to be added to the list.  Note that it is the passed object that is added to the
+		list, a copy is not made.  If this parameter is NULL, nothing happens.
+
+	\return
+		Nothing.
+	*/
+	void	addItem(ListboxItem* item);
+
+
+	/*!
+	\brief
+		Insert an item into the list box after a specified item already in the list.
+
+		Note that if the list is sorted, the item may not end up in the requested position.
+
+	\param item
+		Pointer to the ListboxItem to be inserted.  Note that it is the passed object that is added to the
+		list, a copy is not made.  If this parameter is NULL, nothing happens.
+
+	\param position
+		Pointer to a ListboxItem that \a item is to be inserted after.  If this parameter is NULL, the item is
+		inserted at the start of the list.
+
+	\return
+		Nothing.
+	*/
+	void	insertItem(ListboxItem* item, const ListboxItem* position);
+
+
+	/*!
+	\brief
+		Removes the given item from the list box.
+
+	\param item
+		Pointer to the ListboxItem that is to be removed.  If \a item is not attached to this list box then nothing
+		will happen.
+
+	\return
+		Nothing.
+	*/
+	void	removeItem(const ListboxItem* item);
+
+
+	/*!
+	\brief
+		Clear the selected state for all items.
+
+	\return
+		Nothing.
+	*/
+	void	clearAllSelections(void);
+
+
+	/*!
+	\brief
+		Set whether the list should be sorted.
+
+	\param setting
+		true if the list should be sorted, false if the list should not be sorted.
+
+	\return
+		Nothing.
+	*/
+	void	setSortingEnabled(bool setting);
+
+	
+	/*!
+	\brief
+		Set whether the vertical scroll bar should always be shown.
+
+	\param setting
+		true if the vertical scroll bar should be shown even when it is not required.  false if the vertical
+		scroll bar should only be shown when it is required.
+
+	\return
+		Nothing.
+	*/
+	void	setShowVertScrollbar(bool setting);
+
+
+	/*!
+	\brief
+		Set whether the horizontal scroll bar should always be shown.
+
+	\param setting
+		true if the horizontal scroll bar should be shown even when it is not required.  false if the horizontal
+		scroll bar should only be shown when it is required.
+
+	\return
+		Nothing.
+	*/
+	void	setShowHorzScrollbar(bool setting);
+
+
+	/*!
+	\brief
+		Set the select state of an attached ListboxItem.
+
+		This is the recommended way of selecting and deselecting items attached to a list box as it respects the
+		multi-select mode setting.  It is possible to modify the setting on ListboxItems directly, but that approach
+		does not respect the settings of the list box.
+
+	\param item
+		The ListboxItem to be affected.  This item must be attached to the list box.
+
+	\param state
+		true to select the item, false to de-select the item.
+
+	\return
+		Nothing.
+	
+	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
+	*/
+	void	setItemSelectState(ListboxItem* item, bool state);
+
+
+	/*!
+	\brief
+		Set the select state of an attached ListboxItem.
+
+		This is the recommended way of selecting and deselecting items attached to a list box as it respects the
+		multi-select mode setting.  It is possible to modify the setting on ListboxItems directly, but that approach
+		does not respect the settings of the list box.
+
+	\param item
+		The zero based index of the ListboxItem to be affected.  This must be a valid index (0 <= index < getItemCount())
+
+	\param state
+		true to select the item, false to de-select the item.
+
+	\return
+		Nothing.
+	
+	\exception	InvalidRequestException	thrown if \a item_index is out of range for the list box
+	*/
+	void	setItemSelectState(uint item_index, bool state);
+
+
+	/*!
+	\brief
+		Causes the list box to update it's internal state after changes have been made to one or more
+		attached ListboxItem objects.
+
+		Client code must call this whenever it has made any changes to ListboxItem objects already attached to the
+		list box.  If you are just adding items, or removed items to update them prior to re-adding them, there is
+		no need to call this method.
+
+	\return
+		Nothing.
+	*/
+	void	handleUpdatedListItemData(void);
 
 
 protected:
@@ -366,10 +707,235 @@ protected:
 
 
 	/*************************************************************************
+		Implementation Methods
+	*************************************************************************/
+	/*!
+	\brief
+		Add combo box specific events
+	*/
+	void	addComboboxEvents(void);
+
+
+	/*!
+	\brief
+		Setup size and position for the component widgets attached to this Combobox.
+
+	\return
+		Nothing.
+	*/
+	virtual void	layoutComponentWidgets()	= 0;
+
+
+	/*!
+	\brief
+		Create, initialise, and return a pointer to an Editbox widget to be used as part
+		of this Combobox.
+
+	\return
+		Pointer to an Editbox derived class.
+	*/
+	virtual	Editbox*	createEditbox(void) const		= 0;
+
+
+	/*!
+	\brief
+		Create, initialise, and return a pointer to a PushButton widget to be used as part
+		of this Combobox.
+
+	\return
+		Pointer to a PushButton derived class.
+	*/
+	virtual	PushButton*	createPushButton(void) const	= 0;
+
+
+	/*!
+	\brief
+		Create, initialise, and return a pointer to a ComboDropList widget to be used as part
+		of this Combobox.
+
+	\return
+		Pointer to a ComboDropList derived class.
+	*/
+	virtual	ComboDropList*	createDropList(void) const	= 0;
+
+
+	/*!
+	\brief
+		Handler function for button clicks.
+	*/
+	void	button_ClickHandler(const EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler for selections made in the drop-list
+	*/
+	void	droplist_SelectionAcceptedHandler(const EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler for when drop-list hides itself
+	*/
+	void	droplist_HiddenHandler(const EventArgs& e);
+
+
+	/*************************************************************************
+		Handlers to relay child widget events so they appear to come from us
+	*************************************************************************/
+	void editbox_ReadOnlyChangedHandler(const EventArgs& e);
+	void editbox_ValidationStringChangedHandler(const EventArgs& e);
+	void editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
+	void editbox_TextInvalidatedEventHandler(const EventArgs& e);
+	void editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
+	void editbox_CaratMovedHandler(const EventArgs& e);
+	void editbox_TextSelectionChangedHandler(const EventArgs& e);
+	void editbox_EditboxFullEventHandler(const EventArgs& e);
+	void editbox_TextAcceptedEventHandler(const EventArgs& e);
+	void listbox_ListContentsChangedHandler(const EventArgs& e);
+	void listbox_ListSelectionChangedHandler(const EventArgs& e);
+	void listbox_SortModeChangedHandler(const EventArgs& e);
+	void listbox_VertScrollModeChangedHandler(const EventArgs& e);
+	void listbox_HorzScrollModeChangedHandler(const EventArgs& e);
+
+	
+	/*************************************************************************
+		New Events for Combobox
+	*************************************************************************/
+	/*!
+	\brief
+		Handler called internally when the read only state of the Combobox's Editbox has been changed.
+	*/
+	virtual	void	onReadOnlyChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the Combobox's Editbox validation string has been changed.
+	*/
+	virtual	void	onValidationStringChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the Combobox's Editbox maximum text length is changed.
+	*/
+	virtual	void	onMaximumTextLengthChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the Combobox's Editbox text has been invalidated.
+	*/
+	virtual	void	onTextInvalidatedEvent(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when an invalid entry was attempted in the Combobox's Editbox.
+	*/
+	virtual	void	onInvalidEntryAttempted(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the carat in the Comboxbox's Editbox moves.
+	*/
+	virtual	void	onCaratMoved(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the selection within the Combobox's Editbox changes.
+	*/
+	virtual	void	onTextSelectionChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the maximum length is reached for text in the Combobox's Editbox.
+	*/
+	virtual	void	onEditboxFullEvent(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the text in the Combobox's Editbox is accepted (by various means).
+	*/
+	virtual	void	onTextAcceptedEvent(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the Combobox's Drop-down list contents are changed.
+	*/
+	virtual	void	onListContentsChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the selection within the Combobox's drop-down list changes
+		(this is not the 'final' accepted selection, just the currently highlighted item).
+	*/
+	virtual	void	onListSelectionChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called  fired internally when the sort mode for the Combobox's drop-down list is changed.
+	*/
+	virtual	void	onSortModeChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the 'force' setting for the vertical scrollbar within the Combobox's
+		drop-down list is changed.
+	*/
+	virtual	void	onVertScrollbarModeChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the 'force' setting for the horizontal scrollbar within the Combobox's
+		drop-down list is changed.
+	*/
+	virtual	void	onHorzScrollbarModeChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the Combobox's drop-down list has been displayed.
+	*/
+	virtual	void	onDropListDisplayed(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the Combobox's drop-down list has been hidden.
+	*/
+	virtual	void	onDroplistRemoved(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called internally when the user has confirmed a selection within the Combobox's drop-down list.
+	*/
+	virtual	void	onListSelectionAccepted(WindowEventArgs& e);
+
+
+	/*************************************************************************
+		Overridden Event handlers
+	*************************************************************************/
+	virtual	void	onSized(WindowEventArgs& e);
+
+
+	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	Editbox*	d_editbox;
-	Listbox*	d_droplist;
+	Editbox*		d_editbox;		//!< Editbox widget sub-component.
+	ComboDropList*	d_droplist;		//!< ComboDropList widget sub-component.	
+	PushButton*		d_button;		//!< PushButton widget sub-component.
 };
 
 } // End of  CEGUI namespace section
