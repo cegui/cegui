@@ -179,7 +179,7 @@ void OgreTexture::setOgreTextureSize(uint size)
 *************************************************************************/
 void OgreTexture::freeOgreTexture(void)
 {
-	if (d_ogre_texture != NULL)
+	if ((d_ogre_texture != NULL) && !d_isLinked)
 	{
 		Ogre::TextureManager::getSingleton().unload(d_ogre_texture->getName());
 		d_ogre_texture->destroy();
