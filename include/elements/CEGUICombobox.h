@@ -854,6 +854,13 @@ protected:
 	bool	droplist_HiddenHandler(const EventArgs& e);
 
 
+	/*!
+	\brief
+		Mouse button down handler attached to edit box
+	*/
+	bool	editbox_MouseDownHandler(const EventArgs& e);
+
+
 	/*************************************************************************
 		Handlers to relay child widget events so they appear to come from us
 	*************************************************************************/

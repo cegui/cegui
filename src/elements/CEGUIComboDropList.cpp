@@ -97,45 +97,56 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 {
 	Listbox::onMouseMove(e);
 
-	if (d_armed)
-	{
-		// remove current selection
-		clearAllSelections_impl();
-	}
-
 	// if mouse is within our area (but not our children)
-	if (isHit(e.position) && (getChildAtPosition(e.position) == NULL))
+	if (isHit(e.position))
 	{
-		// handle auto-arm
-		if (d_autoArm)
+		if (getChildAtPosition(e.position) == NULL)
 		{
-			d_armed = true;
-		}
-
-		if (d_armed)
-		{
-			//
-			// Convert mouse position to absolute window pixels
-			//
-			Point localPos(screenToWindow(e.position));
-
-			if (getMetricsMode() == Relative)
+			// handle auto-arm
+			if (d_autoArm)
 			{
-				localPos = relativeToAbsolute(localPos);
+				d_armed = true;
 			}
 
-			// check for an item under the mouse
-			ListboxItem* selItem = getItemAtPoint(localPos);
-
-			// if an item is under mouse, select it
-			if (selItem != NULL)
+			if (d_armed)
 			{
-				setItemSelectState(selItem, true);
-			}
+				//
+				// Convert mouse position to absolute window pixels
+				//
+				Point localPos(screenToWindow(e.position));
 
+				if (getMetricsMode() == Relative)
+				{
+					localPos = relativeToAbsolute(localPos);
+				}
+
+				// check for an item under the mouse
+				ListboxItem* selItem = getItemAtPoint(localPos);
+
+				// if an item is under mouse, select it
+				if (selItem != NULL)
+				{
+					setItemSelectState(selItem, true);
+				}
+				else
+				{
+					clearAllSelections();
+				}
+
+			}
 		}
 
 		e.handled = true;
+	}
+	// not within the list area
+	else
+	{
+		// if left mouse button is down, clear any selection
+		if (e.sysKeys & LeftMouse)
+		{
+			clearAllSelections();
+		}
+
 	}
 
 }
@@ -152,6 +163,7 @@ void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
 	{
 		if (!isHit(e.position))
 		{
+			clearAllSelections();
 			releaseInput();
 		}
 		else

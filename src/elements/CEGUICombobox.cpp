@@ -127,6 +127,7 @@ void Combobox::initialise(void)
 	d_button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
 	d_droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
 	d_droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
+	d_editbox->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::editbox_MouseDownHandler, this));
 
 	// event forwarding setup
 	d_editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
@@ -788,6 +789,11 @@ bool Combobox::button_PressHandler(const EventArgs& e)
 		d_droplist->setItemSelectState(item, true);
 		d_droplist->ensureItemIsVisible(item);
 	}
+	// no matching item, so select nothing
+	else
+	{
+		d_droplist->clearAllSelections();
+	}
 
 	return true;
 }
@@ -836,6 +842,41 @@ bool Combobox::droplist_HiddenHandler(const EventArgs& e)
 	onDroplistRemoved(args);
 
 	return true;
+}
+
+
+/*************************************************************************
+	Handler for mouse button down events in editbox	
+*************************************************************************/
+bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
+{
+	// only interested in left button
+	if (((const MouseEventArgs&)e).button == LeftButton)
+	{
+		// if edit box is read-only, show list
+		if (d_editbox->isReadOnly())
+		{
+			showDropList();
+
+			// if there is an item with the same text as the edit box, pre-select it
+			ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), NULL);
+
+			if (item != NULL)
+			{
+				d_droplist->setItemSelectState(item, true);
+				d_droplist->ensureItemIsVisible(item);
+			}
+			// no matching item, so select nothing
+			else
+			{
+				d_droplist->clearAllSelections();
+			}
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
