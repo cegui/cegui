@@ -55,6 +55,7 @@
 #include "TLTabControl.h"
 #include "TLTabButton.h"
 #include "TLTabPane.h"
+#include "TLVUMeter.h"
 
 
 /*************************************************************************
@@ -90,6 +91,7 @@ static CEGUI::TLMultiLineEditboxFactory	s_MultiLineEditboxFactory;
 static CEGUI::TLTabControlFactory	    s_TabControlFactory;
 static CEGUI::TLTabButtonFactory	    s_TabButtonFactory;
 static CEGUI::TLTabPaneFactory	        s_TabPaneFactory;
+static CEGUI::TLVUMeterFactory			s_VUMeterFactory;
 
 
 /*************************************************************************
@@ -249,8 +251,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
         WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
         return;
     }
+	else if (type_name == TLVUMeter::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_VUMeterFactory);
+		return;
+	}
 
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
-
-	return;
 }
