@@ -58,7 +58,19 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads)
 {
 	d_canGetVPSize = true;
 	d_device = device;
-	Size size(getViewportSize());
+
+	Size size;
+
+	try
+	{
+		size = getViewportSize();
+	}
+	catch (std::exception e)
+	{
+		// we'll allow things to continue here, and assume that the user will
+		// be calling DirectX81Renderer::setDisplaySize afterwards.
+		size.d_height = size.d_width = 0.0f;
+	}
 
 	constructor_impl(device, size);
 }
@@ -561,7 +573,15 @@ void DirectX81Renderer::postD3DReset(void)
 	// update size of display (if we can)
 	if (d_canGetVPSize)
 	{
-		setDisplaySize(getViewportSize());
+		try
+		{
+			setDisplaySize(getViewportSize());
+		}
+		catch (std::exception e)
+		{
+			// Do nothing here, DirectX81Renderer::getViewportSize has set a flag so we never try to do this again!
+			// The user must call DirectX81Renderer::setDisplaySize to ensure correct re-sizing of the view.
+		}
 	}
 
 	// Now we've come back, we MUST ensure a full redraw is done since the
