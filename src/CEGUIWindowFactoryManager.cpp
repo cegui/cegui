@@ -26,7 +26,7 @@
 #include "CEGUIWindowFactoryManager.h"
 #include "CEGUIWindowFactory.h"
 #include "CEGUIExceptions.h"
-
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI

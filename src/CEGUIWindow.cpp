@@ -31,6 +31,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
