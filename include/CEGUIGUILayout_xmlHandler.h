@@ -42,6 +42,7 @@ namespace CEGUI
 */
 class GUILayout_xmlHandler : public XERCES_CPP_NAMESPACE::DefaultHandler
 {
+	typedef WindowManager::PropertyCallback PropertyCallback;
 public:
 	/*************************************************************************
 		Construction & Destruction
@@ -50,9 +51,11 @@ public:
 	\brief
 		Constructor for GUILayout_xmlHandler objects
 	*/
-	GUILayout_xmlHandler(const String& name_prefix) : 
+	GUILayout_xmlHandler(const String& name_prefix, PropertyCallback* callback = NULL, void* userdata = NULL) : 
 	  d_root(NULL),
-	  d_namingPrefix(name_prefix)
+	  d_namingPrefix(name_prefix),
+	  d_propertyCallback(callback),
+	  d_userData(userdata)
 	  {}
 
 	/*!
@@ -124,6 +127,8 @@ private:
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 	String		d_layoutParent;	//!< Name of the parent window to attach the loaded layout to.
 	const String&		d_namingPrefix;	//!< Prefix that is to prepend all names of created windows.
+	PropertyCallback*	d_propertyCallback; //!< Callback for every property loaded
+	void*				d_userData;			//!< User data for the property callback
 };
 
 

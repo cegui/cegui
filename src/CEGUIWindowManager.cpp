@@ -171,7 +171,7 @@ void WindowManager::destroyAllWindows(void)
 	Creates a set of windows (a Gui layout) from the information in the
 	specified XML file.	
 *************************************************************************/
-Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix)
+Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, PropertyCallback* callback, void* userdata)
 {
 	XERCES_CPP_NAMESPACE_USE
 
@@ -203,7 +203,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	XMLString::release(&pval);
 
 	// setup handler object
-	GUILayout_xmlHandler handler(name_prefix);
+	GUILayout_xmlHandler handler(name_prefix, callback, userdata);
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 

@@ -55,6 +55,29 @@ namespace CEGUI
 class CEGUIBASE_API WindowManager : public Singleton <WindowManager>
 {
 public:
+	/*!
+	\brief
+		Function type that is used as a callback when loading layouts from XML; the function is called
+		for each <Property> element encountered.
+
+	\param window
+		Window object that the property is to be applied to.
+
+	\param propname
+		String holding the name of the property that is being set.
+
+	\param propvalue
+		String holding the new value that will be applied to the property specified by /a propname.
+
+	\param userdata
+		Some client code supplied data.
+
+	\return
+		- true if the property should be set.
+		- false if the property should not be set,
+	*/
+	typedef bool PropertyCallback(Window* window, String& propname, String& propvalue, void* userdata);
+	
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -203,13 +226,21 @@ public:
 		String object holding the prefix that is to be used when creating the windows in the layout file, this
 		function allows a layout to be loaded multiple times without having name clashes.
 
+	\param callback
+		PropertyCallback function to be called for each <Property> element loaded from the layout.  This is
+		called prior to the property value being applied to the window enabling client code manipulation of
+		properties.
+
+	\userdata
+		Client code data pointer passed to the PropertyCallback function.
+
 	\return
 		Pointer to the root Window object defined in the layout.
 
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadWindowLayout(const String& filename, const String& name_prefix = (utf8*)"");
+	Window*	loadWindowLayout(const String& filename, const String& name_prefix = (utf8*)"", PropertyCallback* callback = NULL, void* userdata = NULL);
 
 
 private:

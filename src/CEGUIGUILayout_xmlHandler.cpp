@@ -136,7 +136,16 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		{
 			if (!d_stack.empty())
 			{
-				d_stack.back()->setProperty(propertyName, propertyValue);
+				Window* curwindow = d_stack.back();
+				bool useit = true;
+				if (NULL != d_propertyCallback)
+				{
+					useit = (*d_propertyCallback)(curwindow, propertyName, propertyValue, d_userData);
+				}
+				if (useit)
+				{
+					curwindow->setProperty(propertyName, propertyValue);
+				}
 			}
 		}
 		catch (Exception exc)
@@ -151,7 +160,11 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		String prefixName(d_namingPrefix);
 		prefixName += XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportPrefixAttribute);
 
-		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute), prefixName);
+		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
+				XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute), 
+				prefixName,
+				d_propertyCallback,
+				d_userData);
 
 		if ((subLayout != NULL) && (!d_stack.empty()))
 		{
