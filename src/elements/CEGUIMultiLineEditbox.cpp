@@ -395,7 +395,7 @@ void MultiLineEditbox::ensureCaratIsVisible(void)
 			d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + ypos);
 		}
 		// if carat is below the window, scroll down
-		else if (ypos > textArea.getHeight())
+		else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
 		{
 			d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
 		}
