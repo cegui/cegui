@@ -184,5 +184,8 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="DevPartner_IsInstrumented"
+			Value="1"/>
 	</Globals>
 </VisualStudioProject>

@@ -740,7 +740,7 @@ void Combobox::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
-Handler for when widget font is changed
+	Handler for when widget font is changed
 *************************************************************************/
 void Combobox::onFontChanged(WindowEventArgs& e)
 {

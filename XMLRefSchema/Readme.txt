@@ -167,6 +167,7 @@ The LayoutImport element has attributes but no sub-elements.
 LayoutImport attributes
 -----------------------
 Filename	- Specifies the filename of the layout XML file to be imported.
+Prefix		- Specifies a name prefix (or namespace) that will be used when naming created windows (optional).
 
 
 Window Element

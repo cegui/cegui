@@ -61,6 +61,9 @@ WLTitlebar::WLTitlebar(const String& type, const String& name) :
 	d_middleImage	= &iset->getImage(MiddleSectionImageName);
 	d_rightImage	= &iset->getImage(RightEndSectionImageName);
 
+	// default text colour
+	d_captionColour = CaptionColour;
+
 	// set cursor
 	setMouseCursor(&iset->getImage(NormalCursorImageName));
 

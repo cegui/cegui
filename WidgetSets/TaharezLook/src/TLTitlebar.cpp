@@ -46,6 +46,8 @@ const utf8	TLTitlebar::SysAreaRightImageName[]		= "SysAreaRight";
 const utf8	TLTitlebar::NormalCursorImageName[]		= "MouseMoveCursor";
 const utf8	TLTitlebar::NoDragCursorImageName[]		= "MouseTarget";
 
+const colour TLTitlebar::CaptionColour		= 0xFFFFFF;
+
 
 /*************************************************************************
 	Constructor
@@ -61,6 +63,9 @@ TLTitlebar::TLTitlebar(const String& type, const String& name) :
 	d_rightImage	= &iset->getImage(RightEndSectionImageName);
 	d_sysMidImage	= &iset->getImage(SysAreaMiddleImageName);
 	d_sysRightImage = &iset->getImage(SysAreaRightImageName);
+
+	// default text colour
+	d_captionColour = CaptionColour;
 
 	// set cursor
 	setMouseCursor(&iset->getImage(NormalCursorImageName));
@@ -114,7 +119,8 @@ void TLTitlebar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
+	float alpha = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha));
 
 	// calculate widths for the title bar segments
 	float leftWidth		= d_leftImage->getWidth();
@@ -156,6 +162,10 @@ void TLTitlebar::drawSelf(float z)
 	//
 	// Draw the title text
 	//
+	// calculate colours to use for caption text
+	colours.setColours(d_captionColour);
+	colours.setAlpha(alpha);
+
 	Rect textClipper(clipper);
 	textClipper.setWidth(midWidth);
 	textClipper = clipper.getIntersection(textClipper);

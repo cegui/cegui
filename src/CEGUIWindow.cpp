@@ -785,6 +785,18 @@ void Window::activate(void)
 
 
 /*************************************************************************
+	Deactivate the window.  No further inputs will be received by the
+	window until it is re-activated either programmatically or by the
+	user interacting with the gui.
+*************************************************************************/
+void Window::deactivate(void)
+{
+	WindowEventArgs args(NULL);
+	onDeactivated(args);
+}
+
+
+/*************************************************************************
 	Set whether this Window will be clipped by its parent window(s).
 *************************************************************************/
 void Window::setClippedByParent(bool setting)
@@ -1042,7 +1054,7 @@ void Window::moveToFront()
 	// notify previously active window that it is no longer active
 	if ((activeWnd != NULL) && (activeWnd != this))
 	{
-        WindowEventArgs args(NULL);
+        WindowEventArgs args(this);
 		activeWnd->onDeactivated(args);
 	}
 
@@ -1058,7 +1070,7 @@ void Window::moveToBack()
 	// if the window is active, de-activate it.
 	if (isActive())
 	{
-        WindowEventArgs args(this);
+        WindowEventArgs args(NULL);
 		onDeactivated(args);
 	}
 

@@ -1076,13 +1076,21 @@ public:
 	\brief
 		Activate the Window giving it input focus and bringing it to the top of all non always-on-top Windows.
 
-	\note
-		A Window cannot be programmatically 'disabled', as such.  To disable a Window, you must activate another one.
-
 	\return
 		Nothing
 	*/
 	void	activate(void);
+
+
+	/*!
+	\brief
+		Deactivate the window.  No further inputs will be received by the window until it is re-activated either programmatically or
+		by the user interacting with the gui.
+	
+	\return
+		Nothing.
+	*/
+	void	deactivate(void);
 
 
 	/*!

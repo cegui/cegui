@@ -61,6 +61,27 @@ public:
 	void	set(void* receiver, const String& value);
 };
 
+
+/*!
+\brief
+	Property to colour used for rendering the caption text.
+
+	\par Usage:
+		- Name: CaptionColour
+		- Format: "aarrggbb".
+
+	\par Where:
+		- aarrggbb is the ARGB colour value to be used.
+*/
+class CaptionColour : public Property
+{
+public:
+	CaptionColour() : Property((utf8*)"CaptionColour", (utf8*)"Property to get/set the colour used for rendering the caption text.  Value is \"aarrggbb\" (hex).") {}
+
+	String	get(const void* receiver) const;
+	void	set(void* receiver, const String& value);
+};
+
 } // End of  TitlebarProperties namespace section
 
 } // End of  CEGUI namespace section

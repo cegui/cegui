@@ -50,7 +50,10 @@ public:
 	\brief
 		Constructor for GUILayout_xmlHandler objects
 	*/
-	GUILayout_xmlHandler(void) : d_root(NULL) {}
+	GUILayout_xmlHandler(const String& name_prefix) : 
+	  d_root(NULL),
+	  d_namingPrefix(name_prefix)
+	  {}
 
 	/*!
 	\brief
@@ -107,6 +110,7 @@ private:
 	static const char	PropertyValueAttribute[];		//!< Attribute name that stores the value to pass to the property.
 	static const char	LayoutParentAttribute[];		//!< Attribute name that stores the name of the window to attach the layout to.
 	static const char	LayoutImportFilenameAttribute[];//!< Attribute name that stores the file name of the layout to import.
+	static const char	LayoutImportPrefixAttribute[];	//!< Attribute name that stores the prefix to use when loading the imported layout.
 
 
 	/*************************************************************************
@@ -116,6 +120,7 @@ private:
 	Window*	d_root;				//!< Will point to first window created.
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 	String		d_layoutParent;	//!< Name of the parent window to attach the loaded layout to.
+	const String&		d_namingPrefix;	//!< Prefix that is to prepend all names of created windows.
 };
 
 
