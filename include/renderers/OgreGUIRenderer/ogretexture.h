@@ -123,7 +123,6 @@ public:
 	Ogre::Texture*	getOgreTexture(void) const		{return d_ogre_texture;}
 
 
-	// 
 	/*!
 	\brief
 		set the size of the internal Ogre texture.  Previous Ogre texture is lost.
@@ -135,6 +134,19 @@ public:
 		Nothing.
 	*/
 	void	setOgreTextureSize(uint size);
+
+
+	/*!
+	\brief
+		Set the internal Ogre::Texture object.
+
+	\param texture
+		Reference to an Ogre::Texture object that is to be used by this Texture object.
+
+	\return
+		Nothing.
+	*/
+	void	setOgreTexture(Ogre::Texture& texture);
 
 
 private:
@@ -157,6 +169,8 @@ private:
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture
+
+	bool	d_isLinked;		//!< True if we are linked to a texture we did not actually create.
 };
 
 
