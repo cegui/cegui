@@ -80,10 +80,16 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIPushButton.cpp \
                       elements/CEGUIRadioButton.cpp \
                       elements/CEGUIRadioButtonProperties.cpp \
+                      elements/CEGUIScrollablePane.cpp \
+                      elements/CEGUIScrollablePaneProperties.cpp \
                       elements/CEGUIScrollbar.cpp \
                       elements/CEGUIScrollbarProperties.cpp \
+                      elements/CEGUIScrolledContainer.cpp \
+                      elements/CEGUIScrolledContainerProperties.cpp \
                       elements/CEGUISlider.cpp \
                       elements/CEGUISliderProperties.cpp \
+                      elements/CEGUISpinner.cpp \
+                      elements/CEGUISpinnerProperties.cpp \
                       elements/CEGUIStatic.cpp \
                       elements/CEGUIStaticImage.cpp \
                       elements/CEGUIStaticImageProperties.cpp \
@@ -97,6 +103,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
                       elements/CEGUITitlebarProperties.cpp \
+                      elements/CEGUITooltip.cpp \
+                      elements/CEGUITooltipProperties.cpp \
                       pcre/chartables.c \
                       pcre/get.c \
                       pcre/maketables.c \

@@ -31,6 +31,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
+#include "elements/CEGUITooltip.h"
 #include <algorithm>
 #include <cmath>
 #include <stdio.h>
@@ -86,6 +87,9 @@ WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
 WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
 WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
 WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
+WindowProperties::CustomTooltipType Window::d_tooltipTypeProperty;
+WindowProperties::Tooltip           Window::d_tooltipProperty;
+WindowProperties::InheritsTooltipText Window::d_inheritsTooltipProperty;
 
 
 /*************************************************************************
@@ -171,6 +175,11 @@ Window::Window(const String& type, const String& name) :
     d_repeating    = false;
     d_repeatDelay  = 0.3f;
     d_repeatRate   = 0.06f;
+
+    // Tooltip setup
+    d_customTip = 0;
+    d_weOwnTip = false;
+    d_inheritsTipText = false;
 
 	// position and size
 	d_abs_area = Rect(0, 0, 0, 0);
@@ -2581,6 +2590,9 @@ void Window::addStandardProperties(void)
     addProperty(&d_autoRepeatProperty);
     addProperty(&d_autoRepeatDelayProperty);
     addProperty(&d_autoRepeatRateProperty);
+    addProperty(&d_tooltipTypeProperty);
+    addProperty(&d_tooltipProperty);
+    addProperty(&d_inheritsTooltipProperty);
 }
 
 
@@ -2755,6 +2767,90 @@ void Window::updateSelf(float elapsed)
                 generateAutoRepeatEvent(d_repeatButton);
             }
         }
+    }
+}
+
+bool Window::isUsingDefaultTooltip(void) const
+{
+    return d_customTip == 0;
+}
+
+Tooltip* Window::getTooltip(void) const
+{
+    return isUsingDefaultTooltip() ? System::getSingleton().getDefaultTooltip() : d_customTip;
+}
+
+void Window::setTooltip(Tooltip* tooltip)
+{
+    // destroy current custom tooltip if one exists and we created it
+    if (d_customTip && d_weOwnTip)
+        WindowManager::getSingleton().destroyWindow(d_customTip);
+
+    // set new custom tooltip 
+    d_weOwnTip = false;
+    d_customTip = tooltip;
+}
+
+void Window::setTooltipType(const String& tooltipType)
+{
+    // destroy current custom tooltip if one exists and we created it
+    if (d_customTip && d_weOwnTip)
+        WindowManager::getSingleton().destroyWindow(d_customTip);
+
+    if (tooltipType.empty())
+    {
+        d_customTip = 0;
+        d_weOwnTip = false;
+    }
+    else
+    {
+        try
+        {
+            d_customTip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, getName() + "__auto_tooltip__"));
+            d_weOwnTip = true;
+        }
+        catch (UnknownObjectException x)
+        {
+            d_customTip = 0;
+            d_weOwnTip = false;
+        }
+    }
+}
+
+String Window::getTooltipType(void) const
+{
+    return isUsingDefaultTooltip() ? String("") : d_customTip->getType();
+}
+
+void Window::setTooltipText(const String& tip)
+{
+    d_tooltipText = tip;
+}
+
+const String& Window::getTooltipText(void) const
+{
+    if (d_inheritsTipText && d_parent && d_tooltipText.empty())
+    {
+        return d_parent->getTooltipText();
+    }
+    else
+    {
+        return d_tooltipText;
+    }
+}
+
+bool Window::inheritsTooltipText(void) const
+{
+    return d_inheritsTipText;
+}
+   
+void Window::setInheritsTooltipText(bool setting)
+{
+    if (d_inheritsTipText != setting)
+    {
+        d_inheritsTipText = setting;
+
+        // TODO: Maybe add a 'setting changed' event for this?
     }
 }
 
@@ -3015,18 +3111,39 @@ void Window::onMouseEnters(MouseEventArgs& e)
 	// set the mouse cursor
 	MouseCursor::getSingleton().setImage(getMouseCursor());
 
+    // perform tooltip control
+    Tooltip* tip = getTooltip();
+    if (tip)
+    {
+        tip->setTargetWindow(this);
+    }
+
 	fireEvent(EventMouseEnters, e, EventNamespace);
 }
 
 
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
+    // perform tooltip control
+    Tooltip* tip = getTooltip();
+    if (tip)
+    {
+        tip->setTargetWindow(0);
+    }
+
 	fireEvent(EventMouseLeaves, e, EventNamespace);
 }
 
 
 void Window::onMouseMove(MouseEventArgs& e)
 {
+    // perform tooltip control
+    Tooltip* tip = getTooltip();
+    if (tip)
+    {
+        tip->resetTimer();
+    }
+
 	fireEvent(EventMouseMove, e, EventNamespace);
 }
 
@@ -3039,6 +3156,13 @@ void Window::onMouseWheel(MouseEventArgs& e)
 
 void Window::onMouseButtonDown(MouseEventArgs& e)
 {
+    // perform tooltip control
+    Tooltip* tip = getTooltip();
+    if (tip)
+    {
+        tip->setTargetWindow(0);
+    }
+
 	if (e.button == LeftButton)
 	{
 		moveToFront();

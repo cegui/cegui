@@ -502,6 +502,49 @@ public:
     uint    getSystemKeys(void) const   { return d_sysKeys; }
 
 
+    /*!
+    \brief
+        Set the system default Tooltip object.  This value may be NULL to indicate that no default Tooltip will be
+        available.
+
+    \param tooltip
+        Pointer to a valid Tooltip based object which should be used as the default tooltip for the system, or NULL to
+        indicate that no system default tooltip is required.  Note that when passing a pointer to a Tooltip object,
+        ownership of the Tooltip does not pass to System.
+
+    \return
+        Nothing.
+    */
+    void setTooltip(Tooltip* tooltip);
+
+    /*!
+    \brief
+        Set the system default Tooltip to be used by specifying a Window type.
+
+        System will internally attempt to create an instance of the specified window type (which must be
+        derived from the base Tooltip class).  If the Tooltip creation fails, the error is logged and no
+        system default Tooltip will be available.
+
+    \param tooltipType
+        String object holding the name of the Tooltip based Window type which should be used as the Tooltip for
+        the system default.
+
+    \return
+        Nothing.
+    */
+    void setTooltip(const String& tooltipType);
+
+    /*!
+    \brief
+        return a poiter to the system default tooltip.  May return 0.
+
+    \return
+        Pointer to the current system default tooltip.  May return 0 if
+        no system default tooltip is available.
+    */
+    Tooltip* getDefaultTooltip(void) const  { return d_defaultTooltip; }
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -796,6 +839,9 @@ private:
 	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
 
 	float	d_mouseScalingFactor;			//!< Scaling applied to mouse movement inputs.
+
+    Tooltip* d_defaultTooltip;      //!< System default tooltip object.
+    bool     d_weOwnTooltip;        //!< true if System created the custom Tooltip.
 };
 
 } // End of  CEGUI namespace section

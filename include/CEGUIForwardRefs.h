@@ -90,6 +90,11 @@ class ListboxItem;
 class ListboxTextItem;
 class ComboDropList;
 class MultiLineEditbox;
+class Spinner;
+class GUISheet;
+class ScrollablePane;
+class ScrolledContainer;
+class Tooltip;
 
 } // End of  CEGUI namespace section
 

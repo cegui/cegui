@@ -172,11 +172,19 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLRadioButton.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLScrollablePane.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLSlider.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLSliderThumb.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLSpinner.cpp
 # End Source File
 # Begin Source File
 
@@ -197,6 +205,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabPane.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTooltip.cpp
 # End Source File
 # Begin Source File
 
@@ -280,11 +292,19 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLRadioButton.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLScrollablePane.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSlider.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSliderThumb.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLSpinner.h
 # End Source File
 # Begin Source File
 
@@ -305,6 +325,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTitlebar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTooltip.h
 # End Source File
 # Begin Source File
 

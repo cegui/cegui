@@ -251,6 +251,14 @@ SOURCE=..\..\..\..\src\elements\CEGUIRadioButtonProperties.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUIScrollablePane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIScrollablePaneProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIScrollbar.cpp
 # End Source File
 # Begin Source File
@@ -259,11 +267,27 @@ SOURCE=..\..\..\..\src\elements\CEGUIScrollbarProperties.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUIScrolledContainer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIScrolledContainerProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUISlider.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\src\elements\CEGUISliderProperties.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUISpinner.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUISpinnerProperties.cpp
 # End Source File
 # Begin Source File
 
@@ -316,6 +340,14 @@ SOURCE=..\..\..\..\src\elements\CEGUITitlebar.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\elements\CEGUITitlebarProperties.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUITooltip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUITooltipProperties.cpp
 # End Source File
 # End Group
 # Begin Source File
@@ -659,6 +691,14 @@ SOURCE=..\..\..\..\include\elements\CEGUIRadioButtonProperties.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\elements\CEGUIScrollablePane.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIScrollablePaneProperties.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\elements\CEGUIScrollbar.h
 # End Source File
 # Begin Source File
@@ -667,11 +707,27 @@ SOURCE=..\..\..\..\include\elements\CEGUIScrollbarProperties.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\elements\CEGUIScrolledContainer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIScrolledContainerProperties.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\elements\CEGUISlider.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUISliderProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUISpinner.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUISpinnerProperties.h
 # End Source File
 # Begin Source File
 
@@ -728,6 +784,14 @@ SOURCE=..\..\..\..\include\elements\CEGUITitlebar.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUITitlebarProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITooltip.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUITooltipProperties.h
 # End Source File
 # End Group
 # Begin Source File

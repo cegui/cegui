@@ -677,6 +677,50 @@ void AutoRepeatRate::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->setAutoRepeatRate(PropertyHelper::stringToFloat(value));
 }
 
+
+String CustomTooltipType::get(const PropertyReceiver* receiver) const
+{
+    return static_cast<const Window*>(receiver)->getTooltipType();
+}
+
+
+void CustomTooltipType::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setTooltipType(value);
+}
+
+String Tooltip::get(const PropertyReceiver* receiver) const
+{
+    const Window* wnd = static_cast<const Window*>(receiver);
+
+    if (!wnd->getParent() || !wnd->inheritsTooltipText() || (wnd->getTooltipText() != wnd->getParent()->getTooltipText()))
+    {
+        return wnd->getTooltipText();
+    }
+    else
+    {
+        return String("");
+    }
+}
+
+
+void Tooltip::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setTooltipText(value);
+}
+
+
+String InheritsTooltipText::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->inheritsTooltipText());
+}
+
+
+void InheritsTooltipText::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setInheritsTooltipText(PropertyHelper::stringToBool(value));
+}
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

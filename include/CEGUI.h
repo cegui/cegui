@@ -84,5 +84,10 @@
 #include "elements/CEGUITabButton.h"
 #include "elements/CEGUITabPane.h"
 #include "elements/CEGUITabControl.h"
+#include "elements/CEGUISpinner.h"
+#include "elements/CEGUIDragContainer.h"
+#include "elements/CEGUIScrolledContainer.h"
+#include "elements/CEGUIScrollablePane.h"
+#include "elements/CEGUITooltip.h"
 
 #endif	// end of guard _CEGUI_h_

@@ -129,6 +129,15 @@ public:
 
 	/*!
 	\brief
+		Get the current mouse cursor image
+	\return
+		The current image used to draw mouse cursor.
+	*/
+	const Image*	getImage(void) const	{return d_cursorImage;}
+
+
+	/*!
+	\brief
 		Set the current mouse cursor image
 	*/
 	void	setImage(const Image* image);

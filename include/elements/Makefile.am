@@ -30,10 +30,16 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIPushButton.h \
                      CEGUIRadioButton.h \
                      CEGUIRadioButtonProperties.h \
+                     CEGUIScrollablePane.h \
+                     CEGUIScrollablePaneProperties.h \
                      CEGUIScrollbar.h \
                      CEGUIScrollbarProperties.h \
+                     CEGUIScrolledContainer.h \
+                     CEGUIScrolledContainerProperties.h \
                      CEGUISlider.h \
                      CEGUISliderProperties.h \
+                     CEGUISpinner.h \
+                     CEGUISpinnerProperties.h \
                      CEGUIStatic.h \
                      CEGUIStaticImage.h \
                      CEGUIStaticImageProperties.h \
@@ -47,5 +53,7 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIThumb.h \
                      CEGUIThumbProperties.h \
                      CEGUITitlebar.h \
-                     CEGUITitlebarProperties.h
+                     CEGUITitlebarProperties.h \
+                     CEGUITooltip.h \
+                     CEGUITooltipProperties.h
 

@@ -6,6 +6,33 @@ Copyright ©2004 - 2005 Paul D Turner & Contributing Authors
 
 The following is a high-level view of changes made to the system between releases.
 
+Release 0.2.1
+=============
+Added: Spinner widget.
+Added: ScrollablePane widget.
+Added: Tooltip widget.
+Added: RPM spec file.
+
+Modified: In the Xcode build, changed framework name to CEGUI instead of CEGUIBase (for Ogre's CEGUI renderer).
+Modified: Promoted custom image properties for PushButton from 'look' modules into base class.
+
+Bug Fix: Some delete/delete[] issues for String class fixed, moved all String delete usages into .cpp file.
+Bug Fix: Modification to ensure stable index values for tab buttons and tab content.
+Bug Fix: Spacing between non-autoscaled bitmapped font glyphs was incorrect.
+Bug Fix: FrameWindow title bar and close button were still clipped when clippedByParent was false.
+Bug Fix: Text extents calculations were incorrect under certain cicumstances.
+Bug Fix: Added a work around for over-optimisation bug in MulticolumnList under VC++.
+Bug Fix: WindowsLook titlebar was not using correct set caption colour.
+Bug Fix: OpenGL configure options did not function correctly.
+Bug Fix: In System constructors the logfile parameter was missing a const specifier.
+Bug Fix: Direct3D renderers had missing cull mode state setting.
+Bug Fix: SimpleTimer::elapsed was returning incorrect values.
+Bug Fix: Removed incorrect usage of Win32 dll import/export construct from enums.
+Bug Fix: List box items (ListboxTextItem) suffered from a cumulative alignment issue.
+Bug Fix: Fixed a type conversion warning in CEGUIFont for MSVC++.
+Bug Fix: Baseline and Linespacing calculations for bitmapped / static fonts was incorrect.
+Bug Fix: 'make dist' fixed on linux.
+
 
 Release 0.2.0
 =============

@@ -192,11 +192,19 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLRadioButton.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLScrollablePane.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLSlider.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLSliderThumb.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLSpinner.cpp
 # End Source File
 # Begin Source File
 
@@ -217,6 +225,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTabPane.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTitlebar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLTooltip.cpp
 # End Source File
 # Begin Source File
 
@@ -324,11 +336,19 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLRadioButton.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLScrollablePane.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSlider.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSliderThumb.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSpinner.h
 # End Source File
 # Begin Source File
 
@@ -349,6 +369,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTabPane.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTitlebar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLTooltip.h
 # End Source File
 # Begin Source File
 

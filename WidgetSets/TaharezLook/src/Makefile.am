@@ -25,13 +25,16 @@ libCEGUITaharezLook_la_SOURCES = TLAlternateProgressBar.cpp \
                                  TLMultiLineEditbox.cpp \
                                  TLProgressBar.cpp \
                                  TLRadioButton.cpp \
+                                 TLScrollablePane.cpp \
                                  TLSlider.cpp \
                                  TLSliderThumb.cpp \
+                                 TLSpinner.cpp \
                                  TLStatic.cpp \
                                  TLTabButton.cpp \
                                  TLTabControl.cpp \
                                  TLTabPane.cpp \
                                  TLTitlebar.cpp \
+                                 TLTooltip.cpp \
                                  TLVertScrollbar.cpp \
                                  TLVertScrollbarThumb.cpp \
                                  TLVUMeter.cpp

@@ -20,13 +20,16 @@ noinst_HEADERS = TLAlternateProgressBar.h \
              TLMultiLineEditbox.h \
              TLProgressBar.h \
              TLRadioButton.h \
+             TLScrollablePane.h \
              TLSlider.h \
              TLSliderThumb.h \
+             TLSpinner.h \
              TLStatic.h \
              TLTabButton.h \
              TLTabControl.h \
              TLTabPane.h \
              TLTitlebar.h \
+             TLTooltip.h \
              TLVertScrollbar.h \
              TLVertScrollbarThumb.h \
              TLVUMeter.h

@@ -35,6 +35,8 @@
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
 #include "elements/CEGUIGUISheet.h"
+#include "elements/CEGUIScrolledContainer.h"
+#include "elements/CEGUITooltip.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
 #include "xercesc/util/PlatformUtils.hpp"
@@ -179,6 +181,10 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 
 	d_mouseScalingFactor = 1.0f;
 
+    // Tooltip setup
+    d_defaultTooltip = 0;
+    d_weOwnTooltip = false;
+	
 	// add events for Sytem object
 	addSystemEvents();
 
@@ -344,8 +350,10 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	new MouseCursor();
 	new GlobalEventSet();
 
-	// add default GUISheet factory - the only UI element we can create "out of the box".
-	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
+    // Add factories for types that the system supports natively
+    // (mainly because they do no rendering)
+    WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
+    WindowFactoryManager::getSingleton().addFactory(new ScrolledContainerFactory);
 
 	// GUISheet's name was changed, register an alias so both can be used
 	WindowFactoryManager::getSingleton().addWindowTypeAlias((utf8*)"DefaultGUISheet", GUISheet::WidgetTypeName);
@@ -428,14 +436,19 @@ System::~System(void)
 	// destroy windows so it's safe to destroy factories
 	WindowManager::getSingleton().destroyAllWindows();
 
-	// get pointer to the GUI sheet factory we added
-	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
+	// get pointers to the factories we added
+	WindowFactory* guiSheetFactory =
+        WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
 
-	// remove factories so it's safe to unload GUI modules
+    WindowFactory* scrolledContainerFactory =
+        WindowFactoryManager::getSingleton().getFactory(ScrolledContainer::WidgetTypeName);
+
+    // remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
 
-	// destroy GUI sheet factory
-	delete factory;
+	// destroy factories we created
+	delete guiSheetFactory;
+    delete scrolledContainerFactory;
 
 	// cleanup singletons
 	delete	SchemeManager::getSingletonPtr();
@@ -1268,6 +1281,43 @@ void System::notifyWindowDestroyed(const Window* window)
 		d_activeSheet = NULL;
 	}
 
+}
+
+void System::setTooltip(Tooltip* tooltip)
+{
+    // destroy current custom tooltip if one exists and we created it
+    if (d_defaultTooltip && d_weOwnTooltip)
+        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+
+    // set new custom tooltip 
+    d_weOwnTooltip = false;
+    d_defaultTooltip = tooltip;
+}
+
+void System::setTooltip(const String& tooltipType)
+{
+    // destroy current tooltip if one exists and we created it
+    if (d_defaultTooltip && d_weOwnTooltip)
+        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+
+    if (tooltipType.empty())
+    {
+        d_defaultTooltip = 0;
+        d_weOwnTooltip = false;
+    }
+    else
+    {
+        try
+        {
+            d_defaultTooltip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, "CEGUI::System::default__auto_tooltip__"));
+            d_weOwnTooltip = true;
+        }
+        catch(UnknownObjectException x)
+        {
+            d_defaultTooltip = 0;
+            d_weOwnTooltip = false;
+        }
+    }
 }
 
 } // End of  CEGUI namespace section
