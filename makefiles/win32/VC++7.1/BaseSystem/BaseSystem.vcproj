@@ -28,7 +28,6 @@
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="FALSE"
 				WarningLevel="3"
-				WarnAsError="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
 				DisableSpecificWarnings="4251;4100"/>
@@ -36,7 +35,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xerces-c_2D.lib freetype219_D.lib"
+				AdditionalDependencies="freetype219_D.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
@@ -82,7 +81,6 @@
 				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"
 				DisableSpecificWarnings="4251;4100"/>
@@ -90,7 +88,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xerces-c_2.lib freetype219.lib"
+				AdditionalDependencies="freetype219.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
@@ -252,6 +250,9 @@
 				RelativePath="..\..\..\..\src\CEGUIVector.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIWin32XMLSelectHack.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIWindow.cpp">
 			</File>
 			<File
@@ -267,7 +268,13 @@
 				RelativePath="..\..\..\..\src\CEGUIWindowProperties.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIXmlHandlerHelper.cpp">
+				RelativePath="..\..\..\..\src\CEGUIXMLAttributes.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIXMLHandler.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIXMLParser.cpp">
 			</File>
 			<Filter
 				Name="elements"
@@ -538,6 +545,28 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
+			<Filter
+				Name="tinyxml"
+				Filter="">
+				<File
+					RelativePath="..\..\..\..\src\tinyxml\tinystr.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tinyxml\tinystr.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tinyxml\tinyxml.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tinyxml\tinyxml.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tinyxml\tinyxmlerror.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\tinyxml\tinyxmlparser.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -691,6 +720,9 @@
 				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUITinyXMLParser.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIVector.h">
 			</File>
 			<File
@@ -709,7 +741,16 @@
 				RelativePath="..\..\..\..\include\CEGUIWindowProperties.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIXmlHandlerHelper.h">
+				RelativePath="..\..\..\..\include\CEGUIXercesParser.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIXMLAttributes.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIXMLHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIXMLParser.h">
 			</File>
 			<Filter
 				Name="elements"

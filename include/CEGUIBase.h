@@ -55,6 +55,12 @@
 #   pragma warning(disable : 4786)
 #endif
 
+// No thanks Bill.
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   define NOMINMAX
+#endif
+
+
 // include this to see if it defines _STLPORT_VERION
 #	include <string>
 
