@@ -6,6 +6,8 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIComboDropList.h \
                      CEGUICombobox.h \
                      CEGUIComboboxProperties.h \
+                     CEGUIDragContainer.h \
+                     CEGUIDragContainerProperties.h \
                      CEGUIEditbox.h \
 		     CEGUIEditboxProperties.h \
                      CEGUIFrameWindow.h \

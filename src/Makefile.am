@@ -58,6 +58,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUICombobox.cpp \
                       elements/CEGUIComboboxProperties.cpp \
                       elements/CEGUIComboDropList.cpp \
+                      elements/CEGUIDragContainer.cpp \
+                      elements/CEGUIDragContainerProperties.cpp \
                       elements/CEGUIEditbox.cpp \
 		      elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
