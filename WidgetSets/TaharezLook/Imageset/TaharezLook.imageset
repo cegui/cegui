@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset Name="TaharezLook" Imagefile="../../datafiles/imagesets/TaharezLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+<Imageset Name="TaharezLook" Imagefile="TaharezLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
 	<Image Name="ClientBrush" XPos="2" YPos="2" Width="64" Height="64" />
 	<Image Name="WindowLeftEdge" XPos="6" YPos="95" Width="1" Height="22" XOffset="4" />
 	<Image Name="WindowRightEdge" XPos="34" YPos="95" Width="1" Height="22" XOffset="-4" />
