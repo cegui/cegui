@@ -36,9 +36,14 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 // Image names
-const utf8	TLMiniHorzScrollbarThumb::ImagesetName[]		= "TaharezImagery";
-const utf8	TLMiniHorzScrollbarThumb::NormalImageName[]		= "MiniHorzScrollThumbNormal";
-const utf8	TLMiniHorzScrollbarThumb::HighlightImageName[]	= "MiniHorzScrollThumbHover";
+const utf8	TLMiniHorzScrollbarThumb::ImagesetName[]				= "TaharezImagery";
+const utf8	TLMiniHorzScrollbarThumb::NormalImageName[]				= "MiniHorzScrollThumbNormal";
+const utf8	TLMiniHorzScrollbarThumb::NormalLeftImageName[]			= "MiniHorzScrollThumbLeftNormal";
+const utf8	TLMiniHorzScrollbarThumb::NormalMiddleImageName[]		= "MiniHorzScrollThumbMiddleNormal";
+const utf8	TLMiniHorzScrollbarThumb::NormalRightImageName[]		= "MiniHorzScrollThumbRightNormal";
+const utf8	TLMiniHorzScrollbarThumb::HighlightLeftImageName[]		= "MiniHorzScrollThumbLeftHover";
+const utf8	TLMiniHorzScrollbarThumb::HighlightMiddleImageName[]	= "MiniHorzScrollThumbMiddleHover";
+const utf8	TLMiniHorzScrollbarThumb::HighlightRightImageName[]		= "MiniHorzScrollThumbRightHover";
 
 
 /*************************************************************************
@@ -49,8 +54,13 @@ TLMiniHorzScrollbarThumb::TLMiniHorzScrollbarThumb(const String& type, const Str
 {
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
 
-	d_normalImage		= &iset->getImage(NormalImageName);
-	d_highlightImage	= &iset->getImage(HighlightImageName);
+	d_normalImage			= &iset->getImage(NormalImageName);
+	d_normalLeftImage		= &iset->getImage(NormalLeftImageName);
+	d_normalMiddleImage		= &iset->getImage(NormalMiddleImageName);
+	d_normalRightImage		= &iset->getImage(NormalRightImageName);
+	d_highlightLeftImage	= &iset->getImage(HighlightLeftImageName);
+	d_highlightMiddleImage	= &iset->getImage(HighlightMiddleImageName);
+	d_highlightRightImage	= &iset->getImage(HighlightRightImageName);
 }
 
 
@@ -83,8 +93,25 @@ void TLMiniHorzScrollbarThumb::drawNormal(float z)
 	colour colval = alpha_comp | 0xFFFFFF;
 	ColourRect colours(colval, colval, colval, colval);
 
-	// draw the image
-	d_normalImage->draw(absrect, z, clipper, colours);
+	// calculate segment sizes
+	float minWidth		= absrect.getWidth() * 0.5f;
+	float leftWidth		= min(d_normalLeftImage->getWidth(), minWidth);
+	float rightWidth	= min(d_normalRightImage->getWidth(), minWidth);
+	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
+
+
+	// draw the images
+	Vector3	pos(absrect.d_left, absrect.d_top, z);
+	Size	sz(leftWidth, absrect.getHeight());
+	d_normalLeftImage->draw(pos, sz, clipper, colours);
+
+	pos.d_x += sz.d_width;
+	sz.d_width = middleWidth;
+	d_normalMiddleImage->draw(pos, sz, clipper, colours);
+
+	pos.d_x += sz.d_width;
+	sz.d_width = rightWidth;
+	d_normalRightImage->draw(pos, sz, clipper, colours);
 }
 
 
@@ -109,8 +136,25 @@ void TLMiniHorzScrollbarThumb::drawHover(float z)
 	colour colval = alpha_comp | 0xFFFFFF;
 	ColourRect colours(colval, colval, colval, colval);
 
-	// draw the image
-	d_highlightImage->draw(absrect, z, clipper, colours);
+	// calculate segment sizes
+	float minWidth		= absrect.getWidth() * 0.5f;
+	float leftWidth		= min(d_highlightLeftImage->getWidth(), minWidth);
+	float rightWidth	= min(d_highlightRightImage->getWidth(), minWidth);
+	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
+
+
+	// draw the images
+	Vector3	pos(absrect.d_left, absrect.d_top, z);
+	Size	sz(leftWidth, absrect.getHeight());
+	d_highlightLeftImage->draw(pos, sz, clipper, colours);
+
+	pos.d_x += sz.d_width;
+	sz.d_width = middleWidth;
+	d_highlightMiddleImage->draw(pos, sz, clipper, colours);
+
+	pos.d_x += sz.d_width;
+	sz.d_width = rightWidth;
+	d_highlightRightImage->draw(pos, sz, clipper, colours);
 }
 
 
@@ -135,8 +179,25 @@ void TLMiniHorzScrollbarThumb::drawDisabled(float z)
 	colour colval = alpha_comp | 0x7F7F7F;
 	ColourRect colours(colval, colval, colval, colval);
 
-	// draw the image
-	d_normalImage->draw(absrect, z, clipper, colours);
+	// calculate segment sizes
+	float minWidth		= absrect.getWidth() * 0.5f;
+	float leftWidth		= min(d_normalLeftImage->getWidth(), minWidth);
+	float rightWidth	= min(d_normalRightImage->getWidth(), minWidth);
+	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
+
+
+	// draw the images
+	Vector3	pos(absrect.d_left, absrect.d_top, z);
+	Size	sz(leftWidth, absrect.getHeight());
+	d_normalLeftImage->draw(pos, sz, clipper, colours);
+
+	pos.d_x += sz.d_width;
+	sz.d_width = middleWidth;
+	d_normalMiddleImage->draw(pos, sz, clipper, colours);
+
+	pos.d_x += sz.d_width;
+	sz.d_width = rightWidth;
+	d_normalRightImage->draw(pos, sz, clipper, colours);
 }
 
 
@@ -145,17 +206,33 @@ void TLMiniHorzScrollbarThumb::drawDisabled(float z)
 *************************************************************************/
 void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 {
-	// We want to keep this thumb's aspect the same, so when the size
-	// changes, we modify the width in relation to the height (since that is
-	// known, but the width is not).
-	float ratio = getAbsoluteHeight() / d_normalImage->getHeight();
-	d_abs_area.setWidth(d_normalImage->getWidth() * ratio);
-	d_rel_area.setWidth(absoluteToRelativeX_impl(getParent(), d_abs_area.getWidth()));
+	// calculate preferred width from height(which is known).
+	float prefWidth = d_normalImage->getWidth() * (getAbsoluteHeight() / d_normalImage->getHeight());
+
+	Window* par = getParent();
+
+	// Only proceed if parent is not NULL.
+	if (par != NULL)
+	{
+		// calculate scaled height.
+		float scaledWidth = (par->getAbsoluteWidth() - (2 * par->getAbsoluteHeight())) * 0.575f;
+
+		// use preferred width if there is room, else use the scaled width.
+		if (scaledWidth < prefWidth)
+		{
+			prefWidth = scaledWidth;
+		}
+	}
+
+	// install new width values.
+	d_abs_area.setWidth(prefWidth);
+	d_rel_area.setWidth(absoluteToRelativeX_impl(getParent(), prefWidth));
 
 	// base class processing.
 	Thumb::onSized(e);
 
 	e.handled = true;
+
 }
 
 

@@ -45,9 +45,14 @@ public:
 		Constants
 	*************************************************************************/
 	// Image names
-	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
-	static const utf8	NormalImageName[];			//!< Name of the image to use for normal rendering.
-	static const utf8	HighlightImageName[];		//!< Name of the image to use for hover / highlighted rendering.
+	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
+	static const utf8	NormalImageName[];				//!< Name of the image to use for normal rendering (used for size only now).
+	static const utf8	NormalLeftImageName[];			//!< Name of the image to use for normal rendering (left end).
+	static const utf8	NormalMiddleImageName[];		//!< Name of the image to use for normal rendering (mid section).
+	static const utf8	NormalRightImageName[];			//!< Name of the image to use for normal rendering (right end).
+	static const utf8	HighlightLeftImageName[];		//!< Name of the image to use for hover / highlighted rendering (left end).
+	static const utf8	HighlightMiddleImageName[];		//!< Name of the image to use for hover / highlighted rendering (mid section).
+	static const utf8	HighlightRightImageName[];		//!< Name of the image to use for hover / highlighted rendering (right end).
 
 
 	/*************************************************************************
@@ -95,8 +100,13 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	const Image*	d_normalImage;			//!< Image to render in normal state
-	const Image*	d_highlightImage;		//!< Image to render in highlighted state.
+	const Image*	d_normalImage;			//!< Image to render in normal state (used for measuring only)
+	const Image*	d_normalLeftImage;		//!< Image to render in normal state (left end)
+	const Image*	d_normalMiddleImage;	//!< Image to render in normal state (middle section)
+	const Image*	d_normalRightImage;		//!< Image to render in normal state (right end)
+	const Image*	d_highlightLeftImage;	//!< Image to render in highlighted state (left end).
+	const Image*	d_highlightMiddleImage;	//!< Image to render in highlighted state (middle section).
+	const Image*	d_highlightRightImage;	//!< Image to render in highlighted state (right end).
 };
 
 

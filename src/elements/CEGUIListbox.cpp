@@ -81,8 +81,8 @@ void Listbox::initialise(void)
 	addChildWindow(d_vertScrollbar);
 	addChildWindow(d_horzScrollbar);
 
-	layoutComponentWidgets();
 	configureScrollbars();
+	layoutComponentWidgets();
 }
 
 
@@ -669,10 +669,12 @@ void Listbox::configureScrollbars(void)
 	d_vertScrollbar->setDocumentSize(totalHeight);
 	d_vertScrollbar->setPageSize(renderArea.getHeight());
 	d_vertScrollbar->setStepSize(max(1.0f, renderArea.getHeight() / 10.0f));
+	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
 
 	d_horzScrollbar->setDocumentSize(widestItem);
 	d_horzScrollbar->setPageSize(renderArea.getWidth());
 	d_horzScrollbar->setStepSize(max(1.0f, renderArea.getWidth() / 10.0f));
+	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
 }
 
 
@@ -882,8 +884,8 @@ void Listbox::onSized(WindowEventArgs& e)
 	// base class handling
 	Window::onSized(e);
 
-	layoutComponentWidgets();
 	configureScrollbars();
+	layoutComponentWidgets();
 
 	e.handled = true;
 }

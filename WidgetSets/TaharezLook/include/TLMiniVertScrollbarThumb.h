@@ -45,9 +45,14 @@ public:
 		Constants
 	*************************************************************************/
 	// Image names
-	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
-	static const utf8	NormalImageName[];			//!< Name of the image to use for normal rendering.
-	static const utf8	HighlightImageName[];		//!< Name of the image to use for hover / highlighted rendering.
+	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
+	static const utf8	NormalImageName[];				//!< Name of the image to use for normal rendering (used for sizes only).
+	static const utf8	NormalTopImageName[];			//!< Name of the image to use for normal rendering (top end).
+	static const utf8	NormalMiddleImageName[];		//!< Name of the image to use for normal rendering (mid section).
+	static const utf8	NormalBottomImageName[];		//!< Name of the image to use for normal rendering (bottom end).
+	static const utf8	HighlightTopImageName[];		//!< Name of the image to use for hover / highlighted rendering (top end).
+	static const utf8	HighlightMiddleImageName[];		//!< Name of the image to use for hover / highlighted rendering (mid section).
+	static const utf8	HighlightBottomImageName[];		//!< Name of the image to use for hover / highlighted rendering (bottom end).
 
 
 	/*************************************************************************
@@ -95,8 +100,13 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	const Image*	d_normalImage;			//!< Image to render in normal state
-	const Image*	d_highlightImage;		//!< Image to render in highlighted state.
+	const Image*	d_normalImage;				//!< Image to render in normal state (used to get sizes only)
+	const Image*	d_normalTopImage;			//!< Image to render in normal state (top end)
+	const Image*	d_normalMiddleImage;		//!< Image to render in normal state (mid section)
+	const Image*	d_normalBottomImage;		//!< Image to render in normal state (bottom end)
+	const Image*	d_highlightTopImage;		//!< Image to render in highlighted state (top end).
+	const Image*	d_highlightMiddleImage;		//!< Image to render in highlighted state (mid section).
+	const Image*	d_highlightBottomImage;		//!< Image to render in highlighted state (bottom end).
 };
 
 

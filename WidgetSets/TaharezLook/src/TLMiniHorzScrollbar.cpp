@@ -90,6 +90,7 @@ PushButton* TLMiniHorzScrollbar::createIncreaseButton(void) const
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
 	btn->setCustomImageryAutoSized(true);
+	btn->setAlwaysOnTop(true);
 
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
 	RenderableImage img;
@@ -119,6 +120,7 @@ PushButton* TLMiniHorzScrollbar::createDecreaseButton(void) const
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
 	btn->setCustomImageryAutoSized(true);
+	btn->setAlwaysOnTop(true);
 
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
 	RenderableImage img;

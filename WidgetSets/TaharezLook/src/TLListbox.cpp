@@ -132,6 +132,11 @@ Rect TLListbox::getListRenderArea(void) const
 Scrollbar* TLListbox::createVertScrollbar(void) const
 {
 	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+
+	// set min/max sizes
+	sbar->setMinimumSize(Size(0.0125f, 0.0f));
+	sbar->setMaximumSize(Size(0.0125f, 1.0f));
+
 	return sbar;
 }
 
@@ -143,6 +148,11 @@ Scrollbar* TLListbox::createVertScrollbar(void) const
 Scrollbar* TLListbox::createHorzScrollbar(void) const
 {
 	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+
+	// set min/max sizes
+	sbar->setMinimumSize(Size(0.0f, 0.016667f));
+	sbar->setMaximumSize(Size(1.0f, 0.016667f));
+
 	return sbar;
 }
 
@@ -153,36 +163,34 @@ Scrollbar* TLListbox::createHorzScrollbar(void) const
 *************************************************************************/
 void TLListbox::layoutComponentWidgets()
 {
-	Point	v_pos, h_pos;
-	Size	v_sz, h_sz;
-
-	// one end of scroll bar is always fixed.
-	v_pos.d_y = h_pos.d_x = 0.0f;
-
-	// fixed relative width of vertical scroll bar.
-	// this is used as a basis for calculations for other layout values.
-	v_sz.d_width = 0.05f;
-
-	// horizontal position for vertical bar is as far right as possible.
-	v_pos.d_x = 1.0f - v_sz.d_width;
-
-	// Calculate height for horizontal bar so it's the same pixel size as the vertical bar
-	h_sz.d_height = (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight();
-
-	// position horizontal bar as far down as possible
-	h_pos.d_y = 1.0f - h_sz.d_height;
-
-	// height of vertical bar is to the top edge of the horizontal bar
-	v_sz.d_height = h_pos.d_y;
-
-	// width of horizontal bar is to the left edge of the vertical bar
-	h_sz.d_width = v_pos.d_x;
-
-	// install the new values
-	d_vertScrollbar->setPosition(v_pos);
+	// set desired size for vertical scroll-bar
+	Size v_sz(0.05f, 1.0f);
 	d_vertScrollbar->setSize(v_sz);
-	d_horzScrollbar->setPosition(h_pos);
+
+	// get the actual size used for vertical scroll bar.
+	v_sz = absoluteToRelative(d_vertScrollbar->getAbsoluteSize());
+
+
+	// set desired size for horizontal scroll-bar
+	Size h_sz(1.0f, (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight());
+
+	// adjust length to consider width of vertical scroll bar if that is visible
+	if (d_vertScrollbar->isVisible())
+	{
+		h_sz.d_width -= v_sz.d_width;
+	}
+
 	d_horzScrollbar->setSize(h_sz);
+
+	// get actual size used
+	h_sz = absoluteToRelative(d_horzScrollbar->getAbsoluteSize());
+
+
+	// position vertical scroll bar
+	d_vertScrollbar->setPosition(Point(1.0f - v_sz.d_width, 0.0f));
+
+	// position horizontal scroll bar
+	d_horzScrollbar->setPosition(Point(0.0f, 1.0f - h_sz.d_height));
 }
 
 
