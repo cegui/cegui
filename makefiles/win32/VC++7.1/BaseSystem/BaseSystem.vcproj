@@ -27,7 +27,6 @@
 				DisableLanguageExtensions="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="FALSE"
-				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="FALSE"
 				Detect64BitPortabilityProblems="FALSE"
@@ -200,6 +199,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIRect.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIRefPtr.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderableElement.cpp">
@@ -497,6 +499,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRect.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIRefPtr.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderableElement.h">

@@ -27,6 +27,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
 		      CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
+		      CEGUIRefPtr.cpp \
                       CEGUIRenderableElement.cpp \
                       CEGUIRenderableFrame.cpp \
                       CEGUIRenderableImage.cpp \
@@ -96,4 +97,4 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITitlebarProperties.cpp
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
-libCEGUIBase_la_LIBADD = -lboost_regex -lboost_signals $(freetype2_LIBS)
+libCEGUIBase_la_LIBADD = -lboost_regex $(freetype2_LIBS)

@@ -200,6 +200,9 @@
 				RelativePath="..\..\..\..\src\CEGUIRect.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIRefPtr.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderableElement.cpp">
 			</File>
 			<File
@@ -494,6 +497,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRect.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIRefPtr.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderableElement.h">

@@ -392,6 +392,10 @@ SOURCE=..\..\..\..\src\CEGUIRect.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\CEGUIRefPtr.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\CEGUIRenderableElement.cpp
 # End Source File
 # Begin Source File
@@ -785,6 +789,10 @@ SOURCE=..\..\..\..\include\CEGUIPropertySet.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIRect.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIRefPtr.h
 # End Source File
 # Begin Source File
 

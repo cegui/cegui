@@ -26,6 +26,7 @@ pkginclude_HEADERS = CEGUI.h \
 		 CEGUIPropertyHelper.h \
 		 CEGUIPropertySet.h \
                  CEGUIRect.h \
+		 CEGUIRefPtr.h \
                  CEGUIRenderableElement.h \
                  CEGUIRenderableFrame.h \
                  CEGUIRenderableImage.h \
