@@ -87,6 +87,7 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	addMultiColumnListProperties();
 
 	// set default selection mode
+	d_selectMode = CellSingle;		// hack to ensure call below does what it should.
 	setSelectionMode(RowSingle);
 }
 
@@ -388,7 +389,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	}
 
 	// find start position for search
-	uint i = (start_item == NULL) ? 0 : getItemRowIndex(start_item);
+	uint i = (start_item == NULL) ? 0 : getItemRowIndex(start_item) + 1;
 
 	for ( ; i < getRowCount(); ++i)
 	{
@@ -419,7 +420,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 	}
 
 	// find start position for search
-	uint i = (start_item == NULL) ? 0 : getItemColumnIndex(start_item);
+	uint i = (start_item == NULL) ? 0 : getItemColumnIndex(start_item) + 1;
 
 	for ( ; i < getColumnCount(); ++i)
 	{
@@ -451,6 +452,7 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 	if (start_item != NULL)
 	{
 		startRef = getItemGridReference(start_item);
+		++startRef.column;
 	}
 
 	// perform the search
@@ -498,6 +500,7 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	if (start_item != NULL)
 	{
 		startRef = getItemGridReference(start_item);
+		++startRef.column;
 	}
 
 	// perform the search
@@ -625,7 +628,10 @@ void MultiColumnList::initialise(void)
 	d_header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this, _1));
 	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&CEGUI::MultiColumnList::handleHorzScrollbar, this, _1));
 
-	// complete set up operations
+	// final initialisation now widget is complete
+	setSortDirection(ListHeaderSegment::None);
+
+	// Perform initial layout
 	configureScrollbars();
 	layoutComponentWidgets();
 }
