@@ -146,6 +146,7 @@ void TLEditbox::drawSelf(float z)
 	colour colval = alpha_comp | 0xFFFFFF;
 	ColourRect colours(colval, colval, colval, colval);
 
+	bool hasFocus = hasInputFocus();
 
 	//
 	// render container
@@ -199,8 +200,13 @@ void TLEditbox::drawSelf(float z)
 	float textOffset;
 	float extentToCarat = fnt->getTextExtent(editText.substr(0, getCaratIndex()));
 
+	// if box is inactive
+	if (!hasFocus)
+	{
+		textOffset = d_lastTextOffset;
+	}
 	// if carat is to the left of the box
-	if ((d_lastTextOffset + extentToCarat) < 0)
+	else if ((d_lastTextOffset + extentToCarat) < 0)
 	{
 		textOffset = -extentToCarat;
 	}
@@ -222,7 +228,7 @@ void TLEditbox::drawSelf(float z)
 	//
 	// Render carat
 	//
-	if ((!isReadOnly()) && hasInputFocus())
+	if ((!isReadOnly()) && hasFocus)
 	{
 		Vector3 pos(absrect.d_left + textOffset + extentToCarat, absrect.d_top, renderer->getZLayer(CaratLayer));
 		Size	sz(d_carat->getWidth(), absrect.getHeight());
@@ -267,7 +273,7 @@ void TLEditbox::drawSelf(float z)
 		float selEndOffset		= fnt->getTextExtent(editText.substr(0, getSelectionEndIndex()));
 
 		// setup colours
-		if (hasInputFocus() && (!isReadOnly()))
+		if (hasFocus && (!isReadOnly()))
 		{
 			colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_selectBrushColour | alpha_comp);
 		}
