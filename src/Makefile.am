@@ -51,6 +51,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIListboxTextItem.cpp \
                       elements/CEGUIListHeader.cpp \
                       elements/CEGUIListHeaderSegment.cpp \
+                      elements/CEGUIMultiColumnList.cpp \
                       elements/CEGUIProgressBar.cpp \
                       elements/CEGUIPushButton.cpp \
                       elements/CEGUIRadioButton.cpp \

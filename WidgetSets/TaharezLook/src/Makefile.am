@@ -20,6 +20,7 @@ libCEGUITaharezLook_la_SOURCES = TLAlternateProgressBar.cpp \
                                  TLMiniVertScrollbar.cpp \
                                  TLMiniVertScrollbarThumb.cpp \
                                  TLModule.cpp \
+                                 TLMultiColumnList.cpp \
                                  TLProgressBar.cpp \
                                  TLRadioButton.cpp \
                                  TLSlider.cpp \
