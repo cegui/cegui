@@ -859,7 +859,8 @@ void ListHeader::segmentMovedHandler(const EventArgs& e)
 		}
 
 		// calculate column where dragged segment was dropped
-		for (uint col = 0; col < getColumnCount(); ++col)
+        uint col;
+		for (col = 0; col < getColumnCount(); ++col)
 		{
 			currwidth += d_segments[col]->getAbsoluteWidth();
 

@@ -60,18 +60,18 @@ const Size		System::DefaultMultiClickAreaSize(12,12);
 *************************************************************************/
 System::System(Renderer* renderer, utf8* logFile) :
 	d_renderer(renderer),
-	d_activeSheet(NULL),
-	d_wndWithMouse(NULL),
 	d_gui_redraw(false),
+	d_wndWithMouse(NULL),
+	d_activeSheet(NULL),
+	d_sysKeys(0),
+	d_lshift(false),
+	d_rshift(false),
+	d_lctrl(false),
+	d_rctrl(false),
 	d_click_timeout(DefaultSingleClickTimeout),
 	d_dblclick_timeout(DefaultMultiClickTimeout),
 	d_dblclick_size(DefaultMultiClickAreaSize),
-	d_defaultMouseCursor(NULL),
-	d_sysKeys(0),
-	d_lctrl(false),
-	d_rctrl(false),
-	d_lshift(false),
-	d_rshift(false)
+	d_defaultMouseCursor(NULL)
 {
 	// first thing to do is create logger
 	new Logger(logFile);
@@ -112,7 +112,7 @@ System::System(Renderer* renderer, utf8* logFile) :
 		delete Logger::getSingletonPtr();
 
 		// throw a std::exception (because it won't try and use logger)
-		throw std::exception(message.c_str());
+		throw message.c_str();
 	}
 
 	// add default GUISheet factory - the only UI element we can create "out of the box".
@@ -286,11 +286,11 @@ void System::injectMouseMove(float delta_x, float delta_y)
 		{
 			if (d_wndWithMouse != NULL)
 			{
-				d_wndWithMouse->onMouseLeaves(MouseEventArgs(ma));
+				d_wndWithMouse->onMouseLeaves(ma);
 			}
 
 			d_wndWithMouse = dest_window;
-			dest_window->onMouseEnters(MouseEventArgs(ma));
+			dest_window->onMouseEnters(ma);
 		}
 
 		while ((!ma.handled) && (dest_window != NULL))
@@ -611,6 +611,8 @@ SystemKey System::keyCodeToSyskey(Key::Scan key, bool direction)
 		}
 		break;
 
+    default:
+        break;
 	}
 
 	// if not a system key or overall state unchanged, return 0.
