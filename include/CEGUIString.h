@@ -2644,22 +2644,21 @@ public:
 	\return
 		- Index of the first occurrence of \a code_point travelling forwards from \a idx.
 		- npos if the code point could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find(utf32 code_point, size_type idx = 0) const
 	{
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		while (idx < d_cplength)
+		if (idx < d_cplength)
 		{
-			if (*pt++ == code_point)
-				return idx;
+			const utf32* pt = &ptr()[idx];
 
-			++idx;
+			while (idx < d_cplength)
+			{
+				if (*pt++ == code_point)
+					return idx;
+
+				++idx;
+			}
+
 		}
 
 		return npos;
@@ -2678,25 +2677,24 @@ public:
 	\return
 		- Index of the first occurrence of \a code_point travelling backwards from \a idx.
 		- npos if the code point could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	rfind(utf32 code_point, size_type idx = npos) const
 	{
-		if (idx == npos)
+		if (idx >= d_cplength)
 			idx = d_cplength - 1;
 
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (*pt-- == code_point)
-				return idx;
+			const utf32* pt = &ptr()[idx];
 
-		} while (idx-- != 0);
+			do
+			{
+				if (*pt-- == code_point)
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -2717,24 +2715,23 @@ public:
 	\return
 		- Index of the first occurrence of sub-string \a str travelling forwards from \a idx.
 		- npos if the sub-string could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find(const String& str, size_type idx = 0) const
 	{
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		if (str.d_cplength == 0)
+		if ((str.d_cplength == 0) && (idx < d_cplength))
 			return idx;
 
-		// loop while search string could fit in to search area
-		while (d_cplength - idx >= str.d_cplength)
+		if (idx < d_cplength)
 		{
-			if (0 == compare(idx, str.d_cplength, str))
-				return idx;
+			// loop while search string could fit in to search area
+			while (d_cplength - idx >= str.d_cplength)
+			{
+				if (0 == compare(idx, str.d_cplength, str))
+					return idx;
 
-			++idx;
+				++idx;
+			}
+
 		}
 
 		return npos;
@@ -2753,29 +2750,25 @@ public:
 	\return
 		- Index of the first occurrence of sub-string \a str travelling backwards from \a idx.
 		- npos if the sub-string could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	rfind(const String& str, size_type idx = npos) const
 	{
-		if (d_cplength < str.d_cplength)
-			return npos;
-
-		if (idx == npos)
-			idx = d_cplength - str.d_cplength;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (str.d_cplength == 0)
-			return idx;
+			return (idx < d_cplength) ? idx : d_cplength;
 
-		do
+		if (str.d_cplength <= d_cplength)
 		{
-			if (0 == compare(idx, str.d_cplength, str))
-				return idx;
+			if (idx > (d_cplength - str.d_cplength))
+				idx = d_cplength - str.d_cplength;
 
-		} while (idx-- != 0);
+			do
+			{
+				if (0 == compare(idx, str.d_cplength, str))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -2797,26 +2790,25 @@ public:
 	\return
 		- Index of the first occurrence of sub-string \a std_str travelling forwards from \a idx.
 		- npos if the sub-string could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find(const std::string& std_str, size_type idx = 0) const
 	{
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		std::string::size_type sze = std_str.size();
 
-		if (sze == 0)
+		if ((sze == 0) && (idx < d_cplength))
 			return idx;
 
-		// loop while search string could fit in to search area
-		while (d_cplength - idx >= sze)
+		if (idx < d_cplength)
 		{
-			if (0 == compare(idx, (size_type)sze, std_str))
-				return idx;
+			// loop while search string could fit in to search area
+			while (d_cplength - idx >= sze)
+			{
+				if (0 == compare(idx, (size_type)sze, std_str))
+					return idx;
 
-			++idx;
+				++idx;
+			}
+
 		}
 
 		return npos;
@@ -2839,31 +2831,27 @@ public:
 	\return
 		- Index of the first occurrence of sub-string \a std_str travelling backwards from \a idx.
 		- npos if the sub-string could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	rfind(const std::string& std_str, size_type idx = npos) const
 	{
 		std::string::size_type sze = std_str.size();
 
-		if (d_cplength < sze)
-			return npos;
-
-		if (idx == npos)
-			idx = d_cplength - sze;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (sze == 0)
-			return idx;
+			return (idx < d_cplength) ? idx : d_cplength;
 
-		do
+		if (sze <= d_cplength)
 		{
-			if (0 == compare(idx, (size_type)sze, std_str))
-				return idx;
+			if (idx > (d_cplength - sze))
+				idx = d_cplength - sze;
 
-		} while (idx-- != 0);
+			do
+			{
+				if (0 == compare(idx, (size_type)sze, std_str))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -2945,29 +2933,29 @@ public:
 		- Index of the first occurrence of sub-string \a utf8_str travelling forwards from \a idx.
 		- npos if the sub-string could not be found
 
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if \a str_len is 'npos'
 	*/
 	size_type	find(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (str_len == npos)
 			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
 		size_type sze = encoded_size(utf8_str, str_len);
 
-		if ((str_len == 0) || (sze == 0))
+		if ((sze == 0) && (idx < d_cplength))
 			return idx;
 
-		// loop while search string could fit in to search area
-		while (d_cplength - idx >= sze)
+		if (idx < d_cplength)
 		{
-			if (0 == compare(idx, sze, utf8_str, sze))
-				return idx;
+			// loop while search string could fit in to search area
+			while (d_cplength - idx >= sze)
+			{
+				if (0 == compare(idx, sze, utf8_str, sze))
+					return idx;
 
-			++idx;
+				++idx;
+			}
+
 		}
 
 		return npos;
@@ -2996,7 +2984,6 @@ public:
 		- Index of the first occurrence of sub-string \a utf8_str travelling backwards from \a idx.
 		- npos if the sub-string could not be found
 
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if \a str_len is 'npos'
 	*/
 	size_type	rfind(const utf8* utf8_str, size_type idx, size_type str_len) const
@@ -3006,24 +2993,22 @@ public:
 
 		size_type sze = encoded_size(utf8_str, str_len);
 
-		if (d_cplength < sze)
-			return npos;
+		if (sze == 0)
+			return (idx < d_cplength) ? idx : d_cplength;
 
-		if ((str_len == 0) || (sze == 0))
-			return idx;
-
-		if (idx == npos)
-			idx = d_cplength - sze;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		do
+		if (sze <= d_cplength)
 		{
-			if (0 == compare(idx, sze, utf8_str, sze))
-				return idx;
+			if (idx > (d_cplength - sze))
+				idx = d_cplength - sze;
 
-		} while (idx-- != 0);
+			do
+			{
+				if (0 == compare(idx, sze, utf8_str, sze))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3045,25 +3030,21 @@ public:
 	\return
 		- Index of the first occurrence of any one of the code points in \a str starting from from \a idx.
 		- npos if none of the code points in \a str were found.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_first_of(const String& str, size_type idx = 0) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (idx < d_cplength)
 		{
-			if (npos != str.find(*pt++))
-				return idx;
+			const utf32* pt = &ptr()[idx];
 
-		} while (++idx != d_cplength);
+			do
+			{
+				if (npos != str.find(*pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
 
 		return npos;
 	}
@@ -3081,25 +3062,21 @@ public:
 	\return
 		- Index of the first code point that does not match any one of the code points in \a str starting from from \a idx.
 		- npos if all code points matched one of the code points in \a str.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_first_not_of(const String& str, size_type idx = 0) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (idx < d_cplength)
 		{
-			if (npos == str.find(*pt++))
-				return idx;
+			const utf32* pt = &ptr()[idx];
 
-		} while (++idx != d_cplength);
+			do
+			{
+				if (npos == str.find(*pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
 
 		return npos;
 	}
@@ -3122,25 +3099,21 @@ public:
 	\return
 		- Index of the first occurrence of any one of the code points in \a std_str starting from from \a idx.
 		- npos if none of the code points in \a std_str were found.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_first_of(const std::string& std_str, size_type idx = 0) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (idx < d_cplength)
 		{
-			if (npos != find_codepoint(std_str, *pt++))
-				return idx;
+			const utf32* pt = &ptr()[idx];
 
-		} while (++idx != d_cplength);
+			do
+			{
+				if (npos != find_codepoint(std_str, *pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
 
 		return npos;
 	}
@@ -3162,25 +3135,21 @@ public:
 	\return
 		- Index of the first code point that does not match any one of the code points in \a std_str starting from from \a idx.
 		- npos if all code points matched one of the code points in \a std_str.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_first_not_of(const std::string& std_str, size_type idx = 0) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (idx < d_cplength)
 		{
-			if (npos == find_codepoint(std_str, *pt++))
-				return idx;
+			const utf32* pt = &ptr()[idx];
 
-		} while (++idx != d_cplength);
+			do
+			{
+				if (npos == find_codepoint(std_str, *pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
 
 		return npos;
 	}
@@ -3263,30 +3232,27 @@ public:
 		- Index of the first occurrence of any one of the code points in \a utf8_str starting from from \a idx.
 		- npos if none of the code points in \a utf8_str were found.
 
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if \a str_len was 'npos'.
 	*/
 	size_type	find_first_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (str_len == npos)
 			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
-		size_type encsze = encoded_size(utf8_str, str_len);
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (idx < d_cplength)
 		{
-			if (npos != find_codepoint(utf8_str, encsze, *pt++))
-				return idx;
+			size_type encsze = encoded_size(utf8_str, str_len);
 
-		} while (++idx != d_cplength);
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos != find_codepoint(utf8_str, encsze, *pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
 
 		return npos;
 	}
@@ -3314,30 +3280,27 @@ public:
 		- Index of the first code point that does not match any one of the code points in \a utf8_str starting from from \a idx.
 		- npos if all code points matched one of the code points in \a utf8_str.
 
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if \a str_len was 'npos'.
 	*/
 	size_type	find_first_not_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (str_len == npos)
 			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
-		size_type encsze = encoded_size(utf8_str, str_len);
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (idx < d_cplength)
 		{
-			if (npos == find_codepoint(utf8_str, encsze, *pt++))
-				return idx;
+			size_type encsze = encoded_size(utf8_str, str_len);
 
-		} while (++idx != d_cplength);
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos == find_codepoint(utf8_str, encsze, *pt++))
+					return idx;
+
+			} while (++idx != d_cplength);
+
+		}
 
 		return npos;
 	}
@@ -3356,8 +3319,6 @@ public:
 	\return
 		- Index of the first occurrence of \a code_point starting from from \a idx.
 		- npos if the code point could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_first_of(utf32 code_point, size_type idx = 0) const
 	{
@@ -3382,19 +3343,17 @@ public:
 	*/
 	size_type	find_first_not_of(utf32 code_point, size_type idx = 0) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		do
+		if (idx < d_cplength)
 		{
-			if ((*this)[idx] != code_point)
-				return idx;
-			
-		} while(idx++ < d_cplength);
-		
+			do
+			{
+				if ((*this)[idx] != code_point)
+					return idx;
+
+			} while(idx++ < d_cplength);
+
+		}
+
 		return npos;
 	}
 
@@ -3415,28 +3374,24 @@ public:
 	\return
 		- Index of the last occurrence of any one of the code points in \a str starting from \a idx.
 		- npos if none of the code points in \a str were found.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_last_of(const String& str, size_type idx = npos) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (npos != str.find(*pt--))
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while (idx-- != 0);
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos != str.find(*pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3454,28 +3409,24 @@ public:
 	\return
 		- Index of the last code point that does not match any one of the code points in \a str starting from \a idx.
 		- npos if all code points matched one of the code points in \a str.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_last_not_of(const String& str, size_type idx = npos) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (npos == str.find(*pt--))
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while (idx-- != 0);
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos == str.find(*pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3498,28 +3449,24 @@ public:
 	\return
 		- Index of the last occurrence of any one of the code points in \a std_str starting from \a idx.
 		- npos if none of the code points in \a std_str were found.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_last_of(const std::string& std_str, size_type idx = npos) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (npos != find_codepoint(std_str, *pt--))
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while (idx-- != 0);
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos != find_codepoint(std_str, *pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3541,28 +3488,24 @@ public:
 	\return
 		- Index of the last code point that does not match any one of the code points in \a std_str starting from \a idx.
 		- npos if all code points matched one of the code points in \a std_str.
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_last_not_of(const std::string& std_str, size_type idx = npos) const
 	{
-		if (d_cplength == 0)
-			return npos;
-
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (npos == find_codepoint(std_str, *pt--))
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while (idx-- != 0);
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos == find_codepoint(std_str, *pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3645,30 +3588,30 @@ public:
 		- Index of the last occurrence of any one of the code points in \a utf8_str starting from from \a idx.
 		- npos if none of the code points in \a utf8_str were found.
 
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if \a str_len was 'npos'.
 	*/
 	size_type	find_last_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (str_len == npos)
 			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
-		size_type encsze = encoded_size(utf8_str, str_len);
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (npos != find_codepoint(utf8_str, encsze, *pt--))
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while (idx-- != 0);
+			size_type encsze = encoded_size(utf8_str, str_len);
+
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos != find_codepoint(utf8_str, encsze, *pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3696,30 +3639,30 @@ public:
 		- Index of the last code point that does not match any one of the code points in \a utf8_str starting from from \a idx.
 		- npos if all code points matched one of the code points in \a utf8_str.
 
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if \a str_len was 'npos'.
 	*/
 	size_type	find_last_not_of(const utf8* utf8_str, size_type idx, size_type str_len) const
 	{
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
 		if (str_len == npos)
 			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
-		size_type encsze = encoded_size(utf8_str, str_len);
-
-		const utf32* pt = &ptr()[idx];
-
-		do
+		if (d_cplength > 0)
 		{
-			if (npos == find_codepoint(utf8_str, encsze, *pt--))
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while (idx-- != 0);
+			size_type encsze = encoded_size(utf8_str, str_len);
+
+			const utf32* pt = &ptr()[idx];
+
+			do
+			{
+				if (npos == find_codepoint(utf8_str, encsze, *pt--))
+					return idx;
+
+			} while (idx-- != 0);
+
+		}
 
 		return npos;
 	}
@@ -3738,8 +3681,6 @@ public:
 	\return
 		- Index of the last occurrence of \a code_point starting from \a idx.
 		- npos if the code point could not be found
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_last_of(utf32 code_point, size_type idx = npos) const
 	{
@@ -3759,23 +3700,22 @@ public:
 	\return
 		- Index of the last code point that does not match \a code_point starting from from \a idx.
 		- npos if all code points matched \a code_point
-
-	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
 	size_type	find_last_not_of(utf32 code_point, size_type idx = npos) const
 	{
-		if (idx == npos)
-			idx = d_cplength - 1;
-
-		if (d_cplength < idx)
-			throw std::out_of_range("Index is out of range for CEGUI::String");
-
-		do
+		if (d_cplength > 0)
 		{
-			if ((*this)[idx] != code_point)
-				return idx;
+			if (idx >= d_cplength)
+				idx = d_cplength - 1;
 
-		} while(idx-- != 0);
+			do
+			{
+				if ((*this)[idx] != code_point)
+					return idx;
+
+			} while(idx-- != 0);
+
+		}
 
 		return npos;
 	}
