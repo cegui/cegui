@@ -86,7 +86,8 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 			if (this == sheet->getChildAtPosition(e.position))
 			{
 				// fire event
-				onClicked(WindowEventArgs(this));
+				WindowEventArgs args(this);
+				onClicked(args);
 			}
 
 		}

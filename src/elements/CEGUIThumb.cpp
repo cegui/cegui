@@ -212,7 +212,8 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 			// send notification as required
 			if (d_hotTrack)
 			{
-				onThumbPositionChanged(WindowEventArgs(this));
+				WindowEventArgs args(this);
+				onThumbPositionChanged(args);
 			}
 
 		}
@@ -259,7 +260,8 @@ void Thumb::onCaptureLost(WindowEventArgs& e)
 	d_beingDragged = false;
 
 	// send notification whenever thumb is released
-	onThumbPositionChanged(WindowEventArgs(this));
+	WindowEventArgs args(this);
+	onThumbPositionChanged(args);
 }
 
 

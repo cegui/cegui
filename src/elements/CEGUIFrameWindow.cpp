@@ -209,7 +209,8 @@ void FrameWindow::toggleRollup(void)
 		}
 
 		// event notification.
-		onRollupToggled(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onRollupToggled(args);
 	}
 
 }
@@ -253,7 +254,8 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onMoved(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onMoved(args);
 }
 
 
@@ -348,8 +350,9 @@ void FrameWindow::moveLeftEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onMoved(WindowEventArgs(this));
-	onSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onMoved(args);
+	onSized(args);
 }
 
 
@@ -375,7 +378,8 @@ void FrameWindow::moveRightEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onSized(args);
 }
 
 
@@ -400,8 +404,9 @@ void FrameWindow::moveTopEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onMoved(WindowEventArgs(this));
-	onSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onMoved(args);
+	onSized(args);
 }
 
 
@@ -427,7 +432,8 @@ void FrameWindow::moveBottomEdge(float delta)
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
-	onSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onSized(args);
 }
 
 
@@ -446,7 +452,8 @@ void FrameWindow::addFrameWindowEvents(void)
 *************************************************************************/
 void FrameWindow::closeClickHandler(const EventArgs& e)
 {
-	onCloseClicked(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onCloseClicked(args);
 }
 
 

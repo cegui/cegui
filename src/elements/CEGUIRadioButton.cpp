@@ -72,7 +72,8 @@ void RadioButton::setSelected(bool select)
 			deselectOtherButtonsInGroup();
 		}
 
-		onSelectStateChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onSelectStateChanged(args);
 	}
 
 }

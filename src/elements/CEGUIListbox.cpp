@@ -256,7 +256,8 @@ void Listbox::resetList(void)
 	d_lastSelected = NULL;
 
 	configureScrollbars();
-	onListContentsChanged(WindowEventArgs(this));
+	WindowEventArgs args(this);
+	onListContentsChanged(args);
 }
 
 
@@ -283,7 +284,8 @@ void Listbox::addItem(ListboxItem* item)
 		}
 
 		configureScrollbars();
-		onListContentsChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onListContentsChanged(args);
 	}
 
 }
@@ -328,7 +330,8 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 
 
 		configureScrollbars();
-		onListContentsChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onListContentsChanged(args);
 	}
 
 }
@@ -366,7 +369,8 @@ void Listbox::removeItem(const ListboxItem* item)
 			}
 
 			configureScrollbars();
-			onListContentsChanged(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onListContentsChanged(args);
 		}
 
 	}
@@ -382,7 +386,8 @@ void Listbox::clearAllSelections(void)
 	// only fire events and update if we actually made any changes
 	if (clearAllSelections_impl())
 	{
-		onSelectionChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onSelectionChanged(args);
 	}
 
 }
@@ -404,7 +409,8 @@ void Listbox::setSortingEnabled(bool setting)
 			std::sort(d_listItems.begin(), d_listItems.end(), &lbi_greater);
 		}
 
-		onSortModeChanged(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onSortModeChanged(args);
 	}
 
 }
@@ -422,6 +428,7 @@ void Listbox::setMultiselectEnabled(bool setting)
 		d_multiselect = setting;
 
 		// if we change to single-select, deselect all except the first selected item.
+        WindowEventArgs args(this);
 		if ((!d_multiselect) && (getSelectedCount() > 1))
 		{
 			ListboxItem* itm = getFirstSelectedItem();
@@ -431,11 +438,11 @@ void Listbox::setMultiselectEnabled(bool setting)
 				itm->setSelected(false);
 			}
 
-			onSelectionChanged(WindowEventArgs(this));
+			onSelectionChanged(args);
 
 		}
 
-		onMultiselectModeChanged(WindowEventArgs(this));
+		onMultiselectModeChanged(args);
 	}
 
 }
@@ -451,7 +458,8 @@ void Listbox::setShowVertScrollbar(bool setting)
 		d_forceVertScroll = setting;
 
 		configureScrollbars();
-		onVertScrollbarModeChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onVertScrollbarModeChanged(args);
 	}
 
 }
@@ -467,7 +475,8 @@ void Listbox::setShowHorzScrollbar(bool setting)
 		d_forceHorzScroll = setting;
 
 		configureScrollbars();
-		onHorzScrollbarModeChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onHorzScrollbarModeChanged(args);
 	}
 
 }
@@ -508,7 +517,8 @@ void Listbox::setItemSelectState(uint item_index, bool state)
 			}
 
 			d_listItems[item_index]->setSelected(state);
-			onSelectionChanged(WindowEventArgs(this));
+            WindowEventArgs args(this);
+			onSelectionChanged(args);
 		}
 
 	}

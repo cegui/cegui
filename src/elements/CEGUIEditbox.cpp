@@ -152,7 +152,8 @@ void Editbox::setReadOnly(bool setting)
 	if (d_readOnly != setting)
 	{
 		d_readOnly = setting;
-		onReadOnlyChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onReadOnlyChanged(args);
 	}
 
 }
@@ -167,7 +168,8 @@ void Editbox::setTextMasked(bool setting)
 	if (d_maskText != setting)
 	{
 		d_maskText = setting;
-		onMaskedRenderingModeChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onMaskedRenderingModeChanged(args);
 	}
 
 }
@@ -192,12 +194,13 @@ void Editbox::setValidationString(const String& validation_string)
 		}
 
 		// notification
-		onValidationStringChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onValidationStringChanged(args);
 
 		if (!isTextValid())
 		{
 			// also notify if text is now invalid.
-			onTextInvalidatedEvent(WindowEventArgs(this));
+			onTextInvalidatedEvent(args);
 		}
 
 	}
@@ -222,7 +225,8 @@ void Editbox::setCaratIndex(ulong carat_pos)
 		d_caratPos = carat_pos;
 
 		// Trigger "carat moved" event
-		onCaratMoved(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onCaratMoved(args);
 	}
 
 }
@@ -261,7 +265,8 @@ void Editbox::setSelection(ulong start_pos, ulong end_pos)
 		d_selectionEnd	 = end_pos;
 
 		// Trigger "selection changed" event
-		onTextSelectionChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onTextSelectionChanged(args);
 	}
 
 }
@@ -277,7 +282,8 @@ void Editbox::setMaskCodePoint(utf32 code_point)
 		d_maskCodePoint = code_point;
 
 		// Trigger "mask code point changed" event
-		onMaskCodePointChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onMaskCodePointChanged(args);
 	}
 
 }
@@ -293,19 +299,20 @@ void Editbox::setMaxTextLength(ulong max_len)
 		d_maxTextLen = max_len;
 		
 		// Trigger max length changed event
-		onMaximumTextLengthChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onMaximumTextLengthChanged(args);
 
 		// trim string
 		if (d_text.length() > d_maxTextLen)
 		{
 			d_text.resize(d_maxTextLen);
-			onTextChanged(WindowEventArgs(this));
+			onTextChanged(args);
 
 			// see if new text is valid
 			if (!isTextValid())
 			{
 				// Trigger Text is invalid event.
-				onTextInvalidatedEvent(WindowEventArgs(this));
+				onTextInvalidatedEvent(args);
 			}
 
 		}
@@ -346,7 +353,8 @@ void Editbox::eraseSelectedText(bool modify_text)
 			d_text.erase(getSelectionStartIndex(), getSelectionLength());
 
 			// trigger notification that text has changed.
-			onTextChanged(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onTextChanged(args);
 		}
 
 	}
@@ -521,14 +529,16 @@ void Editbox::onCharacter(KeyEventArgs& e)
 			else
 			{
 				// Trigger invalid modification attempted event.
-				onInvalidEntryAttempted(WindowEventArgs(this));
+				WindowEventArgs args(this);
+				onInvalidEntryAttempted(args);
 			}
 
 		}
 		else
 		{
 			// Trigger text box full event
-			onEditboxFullEvent(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onEditboxFullEvent(args);
 		}
 
 	}
@@ -547,6 +557,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 
 	if (hasInputFocus())
 	{
+		WindowEventArgs args(this);
 		switch (e.scancode)
 		{
 		case Key::LeftShift:
@@ -569,7 +580,7 @@ void Editbox::onKeyDown(KeyEventArgs& e)
 		case Key::Return:
 		case Key::NumpadEnter:
 			// Fire 'input accepted' event
-			onTextAcceptedEvent(WindowEventArgs(this));
+			onTextAcceptedEvent(args);
 			break;
 
 		case Key::ArrowLeft:
@@ -619,7 +630,8 @@ void Editbox::onDeactivated(WindowEventArgs& e)
 	e.handled;
 
 	// text accepted.
-	onTextAcceptedEvent(WindowEventArgs(this));
+	WindowEventArgs args(this);
+	onTextAcceptedEvent(args);
 }
 
 
@@ -645,7 +657,8 @@ void Editbox::handleBackspace(void)
 		else
 		{
 			// Trigger invalid modification attempted event.
-			onInvalidEntryAttempted(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onInvalidEntryAttempted(args);
 		}
 
 	}
@@ -663,7 +676,8 @@ void Editbox::handleBackspace(void)
 		else
 		{
 			// Trigger invalid modification attempted event.
-			onInvalidEntryAttempted(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onInvalidEntryAttempted(args);
 		}
 
 	}
@@ -693,7 +707,8 @@ void Editbox::handleDelete(void)
 		else
 		{
 			// Trigger invalid modification attempted event.
-			onInvalidEntryAttempted(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onInvalidEntryAttempted(args);
 		}
 
 	}
@@ -709,7 +724,8 @@ void Editbox::handleDelete(void)
 		else
 		{
 			// Trigger invalid modification attempted event.
-			onInvalidEntryAttempted(WindowEventArgs(this));
+			WindowEventArgs args(this);
+			onInvalidEntryAttempted(args);
 		}
 
 	}

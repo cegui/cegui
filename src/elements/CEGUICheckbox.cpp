@@ -65,7 +65,8 @@ void Checkbox::setSelected(bool select)
 		d_selected = select;
 		requestRedraw();
 
-		onSelectStateChange(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onSelectStateChange(args);
 	}
 
 }

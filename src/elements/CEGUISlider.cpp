@@ -95,7 +95,8 @@ void Slider::setMaxValue(float maxVal)
 	// send notification if slider value changed.
 	if (d_value != oldval)
 	{
-		onValueChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onValueChanged(args);
 	}
 
 }
@@ -116,7 +117,8 @@ void Slider::setCurrentValue(float value)
 	// send notification if slider value changed.
 	if (d_value != oldval)
 	{
-		onValueChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onValueChanged(args);
 	}
 
 }

@@ -690,7 +690,8 @@ void Window::setAlwaysOnTop(bool setting)
 			onZChange_impl();
 		}
 
-		onAlwaysOnTopChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onAlwaysOnTopChanged(args);
 	}
 
 }
@@ -706,7 +707,8 @@ void Window::setEnabled(bool setting)
 	if (d_enabled != setting)
 	{
 		d_enabled = setting;
-		d_enabled ? onEnabled(WindowEventArgs(this)) : onDisabled(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		d_enabled ? onEnabled(args) : onDisabled(args);
 	}
 
 }
@@ -721,7 +723,8 @@ void Window::setVisible(bool setting)
 	if (d_visible != setting)
 	{
 		d_visible = setting;
-		d_visible ? onShown(WindowEventArgs(this)) : onHidden(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		d_visible ? onShown(args) : onHidden(args);
 	}
 
 }
@@ -746,7 +749,8 @@ void Window::setClippedByParent(bool setting)
 	if (d_clippedByParent != setting)
 	{
 		d_clippedByParent = setting;
-		onClippingChanged(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onClippingChanged(args);
 	}
 
 }
@@ -758,7 +762,8 @@ void Window::setClippedByParent(bool setting)
 void Window::setText(const String& text)
 {
 	d_text = text;
-	onTextChanged(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onTextChanged(args);
 }
 
 
@@ -805,7 +810,8 @@ void Window::setSize(const Size& size)
 		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
 	}
 
-	onSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onSized(args);
 }
 
 
@@ -848,7 +854,8 @@ void Window::setPosition(const Point& position)
 		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
 	}
 
-	onMoved(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onMoved(args);
 }
 
 
@@ -874,8 +881,9 @@ void Window::setAreaRect(const Rect& area)
 		d_rel_area = absoluteToRelative_impl(d_parent, area);
 	}
 
-	onMoved(WindowEventArgs(this));
-	onSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onMoved(args);
+	onSized(args);
 }
 
 
@@ -885,7 +893,8 @@ void Window::setAreaRect(const Rect& area)
 void Window::setFont(const Font* font)
 {
 	d_font = font;
-	onFontChanged(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onFontChanged(args);
 }
 
 
@@ -925,7 +934,8 @@ void Window::addChildWindow(const String& name)
 void Window::addChildWindow(Window* window)
 {
 	addChild_impl(window);
-	onChildAdded(WindowEventArgs(window));
+    WindowEventArgs args(window);
+	onChildAdded(args);
 	window->onZChange_impl();
 }
 
@@ -956,7 +966,8 @@ void Window::removeChildWindow(const String& name)
 void Window::removeChildWindow(Window* window)
 {
 	removeChild_impl(window);
-	onChildRemoved(WindowEventArgs(window));
+    WindowEventArgs args(window);
+	onChildRemoved(args);
 	window->onZChange_impl();
 }
 
@@ -994,7 +1005,8 @@ void Window::moveToFront()
 		// perform initial activation if required.
 		if (!isActive())
 		{
-			onActivated(WindowEventArgs(NULL));
+            WindowEventArgs args(NULL);
+			onActivated(args);
 		}
 
 		return;
@@ -1023,13 +1035,15 @@ void Window::moveToFront()
 	// notify ourselves that we have become active
 	if (activeWnd != this)
 	{
-		onActivated(WindowEventArgs(activeWnd));
+        WindowEventArgs args(activeWnd);
+		onActivated(args);
 	}
 
 	// notify previously active window that it is no longer active
 	if ((activeWnd != NULL) && (activeWnd != this))
 	{
-		activeWnd->onDeactivated(WindowEventArgs(this));
+        WindowEventArgs args(NULL);
+		activeWnd->onDeactivated(args);
 	}
 
 	onZChange_impl();
@@ -1047,7 +1061,8 @@ void Window::moveToBack()
 	// if the window is active, de-activate it.
 	if (isActive())
 	{
-		onDeactivated(WindowEventArgs(NULL));
+        WindowEventArgs args(this);
+		onDeactivated(args);
 	}
 
 	// if the window has no parent then we can have no siblings and have nothing more to do.
@@ -1092,17 +1107,18 @@ void Window::captureInput(void)
 
 	Window* current_capture = d_captureWindow;
 	d_captureWindow = this;
+    WindowEventArgs args(this);
 
 	// inform any window which previously had capture that it doesn't anymore!
 	if ((current_capture != NULL) && (current_capture != this) && (!d_restoreOldCapture)) {
-		current_capture->onCaptureLost(WindowEventArgs(this));
+		current_capture->onCaptureLost(args);
 	}
 
 	if (d_restoreOldCapture) {
 		d_oldCapture = current_capture;
 	}
 
-	onCaptureGained(WindowEventArgs(this));
+	onCaptureGained(args);
 }
 
 
@@ -1132,7 +1148,8 @@ void Window::releaseInput(void)
 		d_captureWindow = NULL;
 	}
 
-	onCaptureLost(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onCaptureLost(args);
 }
 
 
@@ -1160,7 +1177,8 @@ void Window::setRestoreCapture(bool setting)
 void Window::setAlpha(float alpha)
 {
 	d_alpha = alpha;
-	onAlphaChanged(WindowEventArgs(this));
+	WindowEventArgs args(this);
+	onAlphaChanged(args);
 }
 
 
@@ -1170,7 +1188,8 @@ void Window::setAlpha(float alpha)
 void Window::setInheritsAlpha(bool setting)
 {
 	d_inheritsAlpha = setting;
-	onInheritsAlphaChanged(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	onInheritsAlphaChanged(args);
 }
 
 
@@ -1652,7 +1671,8 @@ void Window::addChild_impl(Window* wnd)
 	wnd->setParent(this);
 
 	// Force and update for the area Rects for 'wnd' so they're correct for it's new parent.
-	wnd->onParentSized(WindowEventArgs(this));
+    WindowEventArgs args(this);
+	wnd->onParentSized(args);
 }
 
 
@@ -1684,7 +1704,8 @@ void Window::onZChange_impl(void)
 {
 	if (d_parent == NULL)
 	{
-		onZChanged(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onZChanged(args);
 	}
 	else
 	{
@@ -1692,7 +1713,8 @@ void Window::onZChange_impl(void)
 
 		for (uint i = 0; i < child_count; ++i)
 		{
-			d_parent->d_children[i]->onZChanged(WindowEventArgs(d_parent->d_children[i]));
+            WindowEventArgs args(d_parent->d_children[i]);
+			d_parent->d_children[i]->onZChanged(args);
 		}
 
 	}
@@ -1970,7 +1992,8 @@ void Window::setMinimumSize(const Size& sz)
 	// if size has changed, trigger notifications
 	if (old_sz != d_abs_area)
 	{
-		onSized(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onSized(args);
 	}
 
 }
@@ -1999,7 +2022,8 @@ void Window::setMaximumSize(const Size& sz)
 	// if size has changed, trigger notifications
 	if (old_sz != d_abs_area)
 	{
-		onSized(WindowEventArgs(this));
+        WindowEventArgs args(this);
+		onSized(args);
 	}
 
 }
@@ -2087,7 +2111,8 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 	{
 		if (d_children[i]->inheritsAlpha())
 		{
-			d_children[i]->onAlphaChanged(WindowEventArgs(d_children[i]));
+            WindowEventArgs args(d_children[i]);
+			d_children[i]->onAlphaChanged(args);
 		}
 
 	}
@@ -2250,8 +2275,9 @@ void Window::onParentSized(WindowEventArgs& e)
 		d_abs_area.constrainSize(d_maxSize, d_minSize);
 
 		// perform notifications
-		onMoved(WindowEventArgs(this));
-		onSized(WindowEventArgs(this));
+        WindowEventArgs args(this); 
+		onMoved(args);
+		onSized(args);
 
 		// call for a redraw
 		requestRedraw();

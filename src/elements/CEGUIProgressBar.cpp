@@ -40,8 +40,8 @@ const utf8	ProgressBar::ProgressDone[]		= "ProgressDone";
 *************************************************************************/
 ProgressBar::ProgressBar(const String& type, const String& name) :
 	Window(type, name),
-	d_step(0.01f),
-	d_progress(0)
+	d_progress(0),
+	d_step(0.01f)
 {
 	addProgressBarEvents();
 }
@@ -67,12 +67,13 @@ void ProgressBar::setProgress(float progress)
 	{
 		// update progress and fire off event.
 		d_progress = progress;
-		onProgressChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onProgressChanged(args);
 
 		// if new progress is 100%, fire off the 'done' event as well.
 		if (d_progress == 1.0f)
 		{
-			onProgressDone(WindowEventArgs(this));
+			onProgressDone(args);
 		}
 
 	}

@@ -148,7 +148,8 @@ void Scrollbar::setScrollPosition(float position)
 	// notification if required
 	if (d_position != old_pos)
 	{
-		onScrollPositionChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onScrollPositionChanged(args);
 	}
 
 }

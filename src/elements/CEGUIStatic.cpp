@@ -84,7 +84,8 @@ void Static::setFrameEnabled(bool setting)
 	if (d_frameEnabled != setting)
 	{
 		d_frameEnabled = setting;
-		onStaticFrameChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onStaticFrameChanged(args);
 		requestRedraw();
 	}
 }
@@ -108,7 +109,8 @@ void Static::setFrameImages(const Image* topleft, const Image* topright, const I
 	// redraw only if change would be seen.
 	if (d_frameEnabled)
 	{
-		onStaticFrameChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onStaticFrameChanged(args);
 		requestRedraw();
 	}
 
@@ -126,7 +128,8 @@ void Static::setFrameColours(const ColourRect& colours)
 	// redraw only if change would be seen.
 	if (d_frameEnabled)
 	{
-		onStaticFrameChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onStaticFrameChanged(args);
 		requestRedraw();
 	}
 
@@ -147,7 +150,8 @@ void Static::setFrameColours(colour top_left_colour, colour top_right_colour, co
 	// redraw only if change would be seen.
 	if (d_frameEnabled)
 	{
-		onStaticFrameChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onStaticFrameChanged(args);
 		requestRedraw();
 	}
 

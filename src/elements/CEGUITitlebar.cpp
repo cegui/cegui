@@ -76,7 +76,8 @@ void Titlebar::setDraggingEnabled(bool setting)
 		}
 
 		// call event handler.
-		onDraggingModeChanged(WindowEventArgs(this));
+		WindowEventArgs args(this);
+		onDraggingModeChanged(args);
 	}
 
 }
