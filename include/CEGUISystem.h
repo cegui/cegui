@@ -31,6 +31,7 @@
 #include "CEGUISingleton.h"
 #include "CEGUIRenderer.h"
 
+#include <boost/timer.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -46,6 +47,8 @@ enum MouseButton
 	MiddleButton,
 	X1Button,
 	X2Button,
+	// TODO:  This should be a #define for compiler compatibility reasons.
+	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
 };
 
 /*!
@@ -59,6 +62,14 @@ enum MouseButton
 class CEGUIBASE_API System : public Singleton<System>
 {
 public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	static const double		DefaultSingleClickTimeout;		//!< Default timeout for generation of single click events.
+	static const double		DefaultMultiClickTimeout;		//!< Default timeout for generation of multi-click events.
+	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -190,6 +201,93 @@ public:
 	Window*	getGUISheet(void) const		{return d_activeSheet;}
 
 
+	/*!
+	\brief
+		Return the current timeout for generation of single-click events.
+
+		A single-click is defined here as a button being pressed and then released.
+
+	\return
+		double value equal to the current single-click timeout value.
+	*/
+	double	getSingleClickTimeout(void) const		{return d_click_timeout;}
+
+
+	/*!
+	\brief
+		Return the current timeout for generation of multi-click events.
+
+		A multi-click event is a double-click, or a triple-click.  The value returned
+		here is the maximum allowable time between mouse button down events for which
+		a multi-click event will be generated.
+
+	\return
+		double value equal to the current multi-click timeout value.
+	*/
+	double	getMultiClickTimeout(void) const		{return d_dblclick_timeout;}
+
+
+	/*!
+	\brief
+		Return the size of the allowable mouse movement tolerance used when generating multi-click events.
+
+		This size defines an area with the mouse at the centre.  The mouse must stay within the tolerance defined
+		for a multi-click (double click, or triple click) event to be generated.
+
+	\return
+		Size object describing the current multi-click tolerance area size.
+	*/
+	const Size&	getMultiClickToleranceAreaSize(void) const		{return d_dblclick_size;}
+
+
+	/*!
+	\brief
+		Set the timeout used for generation of single-click events.
+
+		A single-click is defined here as a button being pressed and then released.
+
+	\param timeout
+		double value equal to the single-click timeout value to be used from now onwards.
+
+	\return
+		Nothing.
+	*/
+	void	setSingleClickTimeout(double timeout)		{d_click_timeout = timeout;}
+
+
+	/*!
+	\brief
+		Set the timeout to be used for the generation of multi-click events.
+
+		A multi-click event is a double-click, or a triple-click.  The value returned
+		here is the maximum allowable time between mouse button down events for which
+		a multi-click event will be generated.
+
+	\param timeout
+		double value equal to the multi-click timeout value to be used from now onwards.
+
+	\return
+		Nothing.
+	*/
+	void setMultiClickTimeout(double timeout)			{d_dblclick_timeout = timeout;}
+
+
+	/*!
+	\brief
+		Set the size of the allowable mouse movement tolerance used when generating multi-click events.
+
+		This size defines an area with the mouse at the centre.  The mouse must stay within the tolerance defined
+		for a multi-click (double click, or triple click) event to be generated.
+
+	\param sz
+		Size object describing the multi-click tolerance area size to be used.
+
+	\return
+		Nothing.
+	*/
+	void setMultiClickToleranceAreaSize(const Size&	sz)		{d_dblclick_size = sz;}
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -299,6 +397,22 @@ private:
 
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
 	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
+
+	double		d_click_timeout;	//!< Timeout value, in seconds, used to generate a single-click (button down then up)
+	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
+	Size		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
+
+	// Struct with data used for generation of clicks, double-clicks, and treble-clicks from simple button up & down events
+	struct MouseClickTracker
+	{
+		MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
+
+		boost::timer	d_timer;			//!< Timer used to track clicks for this button.
+		int				d_click_count;		//!< count of clicks made so far.
+		Rect			d_click_area;		//!< area used to detect multi-clicks
+	};
+
+	MouseClickTracker	d_click_trackers[MouseButtonCount];		//!< Structs used to keep track of mouse button click generation
 };
 
 } // End of  CEGUI namespace section

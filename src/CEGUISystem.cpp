@@ -46,6 +46,10 @@ namespace CEGUI
 // singleton instance pointer
 template<> System* Singleton<System>::ms_Singleton	= NULL;
 
+// click event generation defaults
+const double	System::DefaultSingleClickTimeout	= 0.2;
+const double	System::DefaultMultiClickTimeout	= 0.33;
+const Size		System::DefaultMultiClickAreaSize(12,12);
 
 
 /*************************************************************************
@@ -55,7 +59,10 @@ System::System(Renderer* renderer) :
 	d_renderer(renderer),
 	d_activeSheet(NULL),
 	d_wndWithMouse(NULL),
-	d_gui_redraw(false)
+	d_gui_redraw(false),
+	d_click_timeout(DefaultSingleClickTimeout),
+	d_dblclick_timeout(DefaultMultiClickTimeout),
+	d_dblclick_size(DefaultMultiClickAreaSize)
 {
 	// first thing to do is create logger
 	new Logger((utf8*)"CEGUI.log");
@@ -269,11 +276,65 @@ void System::injectMouseButtonDown(MouseButton button)
 
 	Window* dest_window = getTargetWindow(ma.position);
 
-	while ((!ma.handled) && (dest_window != NULL))
+	Window*	event_wnd = dest_window;
+
+	while ((!ma.handled) && (event_wnd != NULL))
 	{
-		dest_window->onMouseButtonDown(ma);
-		dest_window = dest_window->getParent();
+		event_wnd->onMouseButtonDown(ma);
+		event_wnd = event_wnd->getParent();
 	}
+
+	//
+	// Handling for multi-click generation
+	//
+	MouseClickTracker& tkr = d_click_trackers[button];
+
+	tkr.d_click_count++;
+
+	// see if we meet multi-click timing
+
+	if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
+		(!tkr.d_click_area.isPointInRect(ma.position)) ||
+		(tkr.d_click_count > 3))
+	{
+		// single down event.
+		tkr.d_click_count = 1;
+
+		// build allowable area for multi-clicks
+		d_click_trackers[button].d_click_area.setPosition(ma.position);
+		d_click_trackers[button].d_click_area.setSize(d_dblclick_size);
+		d_click_trackers[button].d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+	}
+
+	// reuse same event args from earlier
+	ma.handled = false;
+
+	// process multi-clicks we have generated so far
+	switch (tkr.d_click_count)
+	{
+	case 2:
+		event_wnd = dest_window;
+
+		while ((!ma.handled) && (event_wnd != NULL))
+		{
+			event_wnd->onMouseDoubleClicked(ma);
+			event_wnd = event_wnd->getParent();
+		}
+		break;
+
+	case 3:
+		event_wnd = dest_window;
+
+		while ((!ma.handled) && (event_wnd != NULL))
+		{
+			event_wnd->onMouseTripleClicked(ma);
+			event_wnd = event_wnd->getParent();
+		}
+		break;
+	}
+
+	// reset timer for this button.
+	d_click_trackers[button].d_timer.restart();
 
 }
 
@@ -295,6 +356,20 @@ void System::injectMouseButtonUp(MouseButton button)
 	{
 		dest_window->onMouseButtonUp(ma);
 		dest_window = dest_window->getParent();
+	}
+
+	// check timer for 'button' to see if this up event also constitutes a single 'click'
+	if (d_click_trackers[button].d_timer.elapsed() <= d_click_timeout)
+	{
+		ma.handled = false;
+		dest_window = getTargetWindow(ma.position);
+
+		while ((!ma.handled) && (dest_window != NULL))
+		{
+			dest_window->onMouseClicked(ma);
+			dest_window = dest_window->getParent();
+		}
+
 	}
 
 }
