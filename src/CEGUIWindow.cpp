@@ -91,6 +91,7 @@ WindowProperties::DistributeCapturedInputs Window::d_distInputsProperty;
 WindowProperties::CustomTooltipType Window::d_tooltipTypeProperty;
 WindowProperties::Tooltip           Window::d_tooltipProperty;
 WindowProperties::InheritsTooltipText Window::d_inheritsTooltipProperty;
+WindowProperties::RiseOnClick       Window::d_riseOnClickProperty;
 
 
 /*************************************************************************
@@ -173,6 +174,7 @@ Window::Window(const String& type, const String& name) :
 	d_zOrderingEnabled	= true;
     d_wantsMultiClicks  = true;
     d_distCapturedInputs = false;
+    d_riseOnClick       = true;
 
     // initialise mouse button auto-repeat state
     d_repeatButton = NoButton;
@@ -1044,6 +1046,15 @@ void Window::removeChildWindow(uint ID)
 *************************************************************************/
 void Window::moveToFront()
 {
+    moveToFront_impl(false);
+}
+
+
+/*************************************************************************
+	Implementation of move to front
+*************************************************************************/
+void Window::moveToFront_impl(bool wasClicked)
+{
 	// if the window has no parent then we can have no siblings
 	if (d_parent == NULL)
 	{
@@ -1059,7 +1070,7 @@ void Window::moveToFront()
 	}
 
 	// bring parent window to front of it's siblings...
-	d_parent->moveToFront();
+    wasClicked ? d_parent->doRiseOnClick() : d_parent->moveToFront_impl(false);
 
 	// get our sibling window which is currently active (if any)
 	Window* activeWnd = NULL;
@@ -2588,6 +2599,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_tooltipTypeProperty);
     addProperty(&d_tooltipProperty);
     addProperty(&d_inheritsTooltipProperty);
+    addProperty(&d_riseOnClickProperty);
 }
 
 
@@ -2925,6 +2937,19 @@ void Window::setInheritsTooltipText(bool setting)
     }
 }
 
+void Window::doRiseOnClick(void)
+{
+    // does this window rise on click?
+    if (d_riseOnClick)
+    {
+        moveToFront_impl(true);
+    }
+    else if (d_parent)
+    {
+        d_parent->doRiseOnClick();
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -3236,7 +3261,7 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 
     if (e.button == LeftButton)
 	{
-		moveToFront();
+		doRiseOnClick();
 	}
 
     // if auto repeat is enabled and we are not currently tracking

@@ -1338,6 +1338,32 @@ public:
 };
 
 
+/*!
+\brief
+	Property to access whether the window rises to the top of the z order when clicked.
+
+	\par Usage:
+		- Name: RiseOnClick
+		- Format: "[text]".
+
+	\par Where [Text] is:
+		- "True" to indicate the Window will rise to the surface when clicked.
+		- "False" to indicate the Window will not change z position when clicked.
+*/
+class RiseOnClick : public Property
+{
+public:
+    RiseOnClick() : Property(
+		"RiseOnClick",
+		"Property to get/set whether the window will come tot he top of the z order hwn clicked.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
+
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 

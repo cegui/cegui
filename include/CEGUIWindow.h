@@ -1080,6 +1080,17 @@ public:
         - false if the window does not inherit tooltip text from its parent (and shows no tooltip when no text is set).
      */
     bool inheritsTooltipText(void) const;
+
+    /*!
+    \brief
+        Return whether this window will rise to the top of the z-order when clicked with the left mouse button.
+
+    \return
+        - true if the window will come to the top of other windows when the left mouse button is pushed within its area.
+        - false if the window does not change z-order position when the left mouse button is pushed within its area.
+     */
+    bool isRiseOnClickEnabled(void) const   { return d_riseOnClick; }
+
     
     /*************************************************************************
 		Manipulator functions
@@ -1930,6 +1941,20 @@ public:
         Nothing.
      */
     void setInheritsTooltipText(bool setting);
+
+    /*!
+    \brief
+        Set whether this window will rise to the top of the z-order when clicked with the left mouse button.
+
+    \param setting
+        - true if the window should come to the top of other windows when the left mouse button is pushed within its area.
+        - false if the window should not change z-order position when the left mouse button is pushed within its area.
+
+    \return
+        Nothing.
+     */
+    void setRiseOnClickEnabled(bool setting)    { d_riseOnClick = setting; }
+
 
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
@@ -2847,6 +2872,7 @@ protected:
 	bool	d_zOrderingEnabled;			//!< true if the Window responds to z-order change requests.
     bool    d_wantsMultiClicks;         //!< true if the Window wishes to hear about multi-click mouse events.
     bool    d_distCapturedInputs;       //!< true if unhandled captured inputs should be distributed to child windows.
+    bool    d_riseOnClick;              //!< True if the window should come to the front of the z order in respose to a left mouse button down event.
 
     // mouse button autorepeat data
     bool    d_autoRepeat;       //!< true if button will auto-repeat mouse button down events while mouse button is held down,
@@ -2913,6 +2939,7 @@ protected:
     static  WindowProperties::CustomTooltipType d_tooltipTypeProperty;
     static  WindowProperties::Tooltip           d_tooltipProperty;
     static  WindowProperties::InheritsTooltipText d_inheritsTooltipProperty;
+    static  WindowProperties::RiseOnClick       d_riseOnClickProperty;
 
 
 	/*************************************************************************
@@ -2954,6 +2981,20 @@ protected:
 		Add standard CEGUI::Window properties.
 	*/
 	void	addStandardProperties(void);
+
+
+    /*!
+    \brief
+        Implements move to fron behavior.
+     */
+    virtual void moveToFront_impl(bool wasClicked);
+
+
+    /*!
+    \brief
+        Implementation of rise on click functionality.
+     */
+    void doRiseOnClick(void);
 
 	
 	/*************************************************************************
