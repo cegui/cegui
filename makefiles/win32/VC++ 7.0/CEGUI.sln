@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEGUIBase", "BaseSystem\BaseSystem.vcproj", "{41479B71-4AA0-47FC-9738-12F6DA994CD0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX81Renderer", "Renderers\DirectX81Renderer\DirectX81Renderer.vcproj", "{213AE338-9D65-46F9-A3C7-A2AE9BA16B55}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreGUIRenderer", "Renderers\OgreRenderer\OgreGUIRenderer.vcproj", "{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Taharez Look", "Widget Sets\Taharez Look\Taharez Look.vcproj", "{AF07C5D2-23BB-4777-A042-18F2A1CE508D}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+		{213AE338-9D65-46F9-A3C7-A2AE9BA16B55}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
+		{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
+		{AF07C5D2-23BB-4777-A042-18F2A1CE508D}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{41479B71-4AA0-47FC-9738-12F6DA994CD0}.Debug.ActiveCfg = Debug|Win32
+		{41479B71-4AA0-47FC-9738-12F6DA994CD0}.Debug.Build.0 = Debug|Win32
+		{41479B71-4AA0-47FC-9738-12F6DA994CD0}.Release.ActiveCfg = Release|Win32
+		{41479B71-4AA0-47FC-9738-12F6DA994CD0}.Release.Build.0 = Release|Win32
+		{213AE338-9D65-46F9-A3C7-A2AE9BA16B55}.Debug.ActiveCfg = Debug|Win32
+		{213AE338-9D65-46F9-A3C7-A2AE9BA16B55}.Debug.Build.0 = Debug|Win32
+		{213AE338-9D65-46F9-A3C7-A2AE9BA16B55}.Release.ActiveCfg = Release|Win32
+		{213AE338-9D65-46F9-A3C7-A2AE9BA16B55}.Release.Build.0 = Release|Win32
+		{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}.Debug.ActiveCfg = Debug|Win32
+		{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}.Debug.Build.0 = Debug|Win32
+		{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}.Release.ActiveCfg = Release|Win32
+		{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}.Release.Build.0 = Release|Win32
+		{AF07C5D2-23BB-4777-A042-18F2A1CE508D}.Debug.ActiveCfg = Debug|Win32
+		{AF07C5D2-23BB-4777-A042-18F2A1CE508D}.Debug.Build.0 = Debug|Win32
+		{AF07C5D2-23BB-4777-A042-18F2A1CE508D}.Release.ActiveCfg = Release|Win32
+		{AF07C5D2-23BB-4777-A042-18F2A1CE508D}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
