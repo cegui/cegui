@@ -230,7 +230,7 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 	uint thisCount;
 	uint lineCount = 0;
 
-	float	y_base = draw_area.d_top + ((float)d_max_bearingY * y_scale);
+	float	y_base = draw_area.d_top + getBaseline(y_scale);
 
 	Rect tmpDrawArea(
 		PixelAligned(draw_area.d_left),
@@ -431,9 +431,9 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer
 		cur_x += width;
 
 		// check and update maximum bearingY value
-		if ((glyph->metrics.horiBearingY >> 6) > d_max_bearingY)
+		if (static_cast<float>(glyph->metrics.horiBearingY >> 6) > d_max_bearingY)
 		{
-			d_max_bearingY = glyph->metrics.horiBearingY >> 6;
+			d_max_bearingY = static_cast<float>(glyph->metrics.horiBearingY >> 6);
 		}
 
 		// create entry in code-point to Image map
@@ -824,7 +824,7 @@ void Font::unload(void)
 *************************************************************************/
 void Font::defineFontGlyphs_impl(void)
 {
-	// must be a font useing the FreeType system
+	// must be a font using the FreeType system
 	if (!d_freetype)
 	{
 		throw InvalidRequestException((utf8*)"Font::defineFontGlyphs_impl - operation not supported on bitmap based fonts.");
@@ -864,6 +864,14 @@ void Font::defineFontGlyphs_impl(void)
 	d_glyph_images->getTexture()->loadFromMemory(mem_buffer, texture_size, texture_size);
 
 	delete[] mem_buffer;
+
+	d_lineHeight = d_maxGlyphHeight;
+
+	// calculate a spacing value based upon the size of the glyphs defined.
+	float ils = ((float)d_impldat->fontFace->height / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
+	ils -= ((float)d_impldat->fontFace->ascender / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
+	ils += ((float)d_impldat->fontFace->descender / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
+	d_lineSpacing = d_lineHeight + ils;
 }
 
 
@@ -876,7 +884,7 @@ void Font::calculateStaticVertSpacing(void)
 	{
 		float scale = d_autoScale ? d_vertScaling : 1.0f;
 
-		d_y_spacing		= 0;
+		d_lineHeight	= 0;
 		d_max_bearingY	= 0;
 
 		CodepointMap::iterator pos = d_cp_map.begin(), end = d_cp_map.end();
@@ -886,14 +894,15 @@ void Font::calculateStaticVertSpacing(void)
 			const Image* img = pos->second.d_image;
 
 			if (img->getOffsetY() > d_max_bearingY)
-				d_max_bearingY = (int)img->getOffsetY();
+				d_max_bearingY = img->getOffsetY();
 
-			if (img->getHeight() > d_y_spacing)
-				d_y_spacing = img->getHeight();
+			if (img->getHeight() > d_lineHeight)
+				d_lineHeight = img->getHeight();
 		}
 
-		d_y_spacing *= scale;
-		d_max_bearingY = (int)(((float)d_max_bearingY) * scale);
+		d_max_bearingY *= scale;
+		d_lineHeight *= scale;
+		d_lineSpacing = d_lineHeight;
 	}
 
 }
@@ -1007,7 +1016,6 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 
 	if (FT_Set_Char_Size(d_impldat->fontFace, 0, d_ptSize * 64, horzDpi, vertDpi) == 0)
 	{
-		d_y_spacing = ((float)d_impldat->fontFace->height / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
 		defineFontGlyphs_impl();
 	}
 	// failed to set size for font

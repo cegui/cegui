@@ -467,7 +467,7 @@ public:
 
 	/*!
 	\brief
-		Return the pixel height for this Font.  This value is to be used for line spacing.
+		Return the pixel line spacing value for.
 
 	\param y_scale
 		Scaling factor to be applied to the line spacing, where 1.0f is considered to be 'normal'.
@@ -475,7 +475,20 @@ public:
 	\return
 		Number of pixels between vertical base lines, i.e. The minimum pixel space between two lines of text.
 	*/
-	float	getLineSpacing(float y_scale = 1.0f) const		{return d_y_spacing * y_scale;}
+	float	getLineSpacing(float y_scale = 1.0f) const		{return d_lineSpacing * y_scale;}
+
+
+	/*!
+	\brief
+		return the exact pixel height of the font.
+
+	\param y_scale
+		Scaling factor to be applied to the height, where 1.0f is considered to be 'normal'.
+
+	\return
+		float value describing the pixel height of the font without any additional padding.
+	*/
+	float	getFontHeight(float y_scale = 1.0f) const	{return d_lineHeight * y_scale;}
 
 
 	/*!
@@ -488,7 +501,7 @@ public:
 	\return
 		pixel spacing from top of front glyphs to baseline
 	*/
-	float	getBaseline(float y_scale = 1.0f) const			{return (float)d_max_bearingY * y_scale;}
+	float	getBaseline(float y_scale = 1.0f) const			{return d_max_bearingY * y_scale;}
 
 
 	/*!
@@ -1006,8 +1019,9 @@ private:
 	Imageset*	d_glyph_images;	//!< Imageset that holds the glyphs for this font.
 
 	bool	d_freetype;			//!< true when the font is a FreeType based font
-	float	d_y_spacing;		//!< Height of font in pixels, a.k.a Line spacing.
-	int		d_max_bearingY;		//!< Maximum bearingY value (gives required spacing down to baseline).
+	float	d_lineHeight;		//!< Exact pixel height of font.
+	float	d_lineSpacing;		//!< Spacing between multiple lines.
+	float	d_max_bearingY;		//!< Maximum bearingY value (gives required spacing down to baseline).
 	uint	d_maxGlyphHeight;	//!< Height of the largest glyph (calculated in getRequiredTextureSize)
 
 	FontImplData*	d_impldat;	//!< Implementation data
