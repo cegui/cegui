@@ -102,6 +102,34 @@ PostBuild_Cmds=copy "..\..\..\..\bin\CEGUIBase_d.dll" "..\..\..\..\Samples\bin"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Group "pcre (source)"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\chartables.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\get.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\maketables.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\pcre.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\pcreposix.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\study.c
+# End Source File
+# End Group
 # Begin Group "elements (source)"
 
 # PROP Default_Filter ""
@@ -482,6 +510,30 @@ SOURCE=..\..\..\..\src\CEGUIXmlHandlerHelper.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Group "pcre (headers)"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\pcre.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\pcreconfig.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\pcreposix.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\ucp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\pcre\ucpinternal.h
+# End Source File
+# End Group
 # Begin Group "elements (headers)"
 
 # PROP Default_Filter ""

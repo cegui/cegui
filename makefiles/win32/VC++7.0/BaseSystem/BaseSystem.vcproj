@@ -395,6 +395,28 @@
 					RelativePath="..\..\..\..\src\elements\CEGUITitlebarProperties.cpp">
 				</File>
 			</Filter>
+			<Filter
+				Name="pcre"
+				Filter="">
+				<File
+					RelativePath="..\..\..\..\src\pcre\chartables.c">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\get.c">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\maketables.c">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\pcre.c">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\pcreposix.c">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\study.c">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -707,6 +729,25 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITitlebarProperties.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="pcre"
+				Filter="">
+				<File
+					RelativePath="..\..\..\..\src\pcre\pcre.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\pcreconfig.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\pcreposix.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\ucp.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\pcre\ucpinternal.h">
 				</File>
 			</Filter>
 		</Filter>

@@ -95,7 +95,13 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIThumb.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
-                      elements/CEGUITitlebarProperties.cpp
+                      elements/CEGUITitlebarProperties.cpp \
+                      pcre/chartables.c \
+                      pcre/get.c \
+                      pcre/maketables.c \
+                      pcre/pcre.c \
+                      pcre/pcreposix.c \
+                      pcre/study.c
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
-libCEGUIBase_la_LIBADD = -lboost_regex $(freetype2_LIBS)
+libCEGUIBase_la_LIBADD = $(freetype2_LIBS)
