@@ -46,6 +46,9 @@
 #include "WLListHeaderSegment.h"
 #include "WLListHeader.h"
 #include "WLMultiColumnList.h"
+#include "WLTabControl.h"
+#include "WLTabButton.h"
+#include "WLTabPane.h"
 
 
 /*************************************************************************
@@ -74,6 +77,9 @@ static CEGUI::WLMultiLineEditboxFactory		s_MultiLineEditboxFactory;
 static CEGUI::WLListHeaderSegmentFactory	s_ListHeaderSegmentFactory;
 static CEGUI::WLListHeaderFactory			s_ListHeaderFactory;
 static CEGUI::WLMultiColumnListFactory		s_MultiColumnListFactory;
+static CEGUI::WLTabControlFactory		    s_TabControlFactory;
+static CEGUI::WLTabButtonFactory		    s_TabButtonFactory;
+static CEGUI::WLTabPaneFactory				s_TabPaneFactory;
 
 
 /*************************************************************************
@@ -198,7 +204,22 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
 		return;
 	}
-	
+	else if (type_name == WLTabControl::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_TabControlFactory);
+		return;
+	}
+	else if (type_name == WLTabButton::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_TabButtonFactory);
+		return;
+	}
+	else if (type_name == WLTabPane::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
+		return;
+	}
+
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
 	return;
