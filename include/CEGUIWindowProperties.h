@@ -1264,6 +1264,79 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to access the custom tooltip for this Window.
+
+    \par Usage:
+        - Name: CustomTooltipType
+        - Format: "[text]".
+
+    \par Where:
+        - [Text] is the typename of the custom tooltip for the Window.
+ */
+class CustomTooltipType : public Property
+{
+public:
+    CustomTooltipType() : Property(
+    "CustomTooltipType",
+    "Property to get/set the custom tooltip for the window.  Value is the type name of the custom tooltip.",
+    "")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access the tooltip text for this Window.
+
+    \par Usage:
+        - Name: Tooltip
+        - Format: "[text]".
+
+    \par Where:
+        - [Text] is the tooltip text for this window.
+ */
+class Tooltip : public Property
+{
+public:
+    Tooltip() : Property(
+    "Tooltip",
+    "Property to get/set the tooltip text for the window.  Value is the tooltip text for the window.",
+    "")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+    Property to access whether the window inherits its tooltip text from its parent whn it has no tooltip text of its own.
+
+    \par Usage:
+        - Name: InheritsTooltipText
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate the Window inherits its tooltip text from its parent.
+        - "False" to indicate the Window does not inherit its tooltip text.
+*/
+class InheritsTooltipText : public Property
+{
+public:
+    InheritsTooltipText() : Property(
+        "InheritsTooltipText",
+        "Property to get/set whether the window inherits its parents tooltip text when it has none of its own.  Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
 
 } // End of  WindowProperties namespace section
 

@@ -1032,6 +1032,55 @@ public:
     */
     bool    distributesCapturedInputs(void) const;
 
+
+    /*!
+    \brief
+        Return whether this Window is using the system default Tooltip for its Tooltip window.
+
+    \return
+        - true if the Window will use the system default tooltip.
+        - false if the window has a custom Tooltip object.
+    */
+    bool isUsingDefaultTooltip(void) const;
+
+    /*!
+    \brief
+        Return a pointer to the Tooltip object used by this Window.  The value returned may
+        point to the system default Tooltip, a custom Window specific Tooltip, or be NULL.
+
+    \return
+        Pointer to a Tooltip based object, or NULL.
+    */
+    Tooltip* getTooltip(void) const;
+
+    /*!
+    \brief
+        Return the custom tooltip type.
+
+    \return
+        String object holding the current custom tooltip window type, or an empty string if no custom tooltip is set.
+     */
+    String getTooltipType(void) const;
+
+    /*!
+    \brief
+        Return the current tooltip text set for this Window.
+
+    \return
+        String object holding the current tooltip text set for this window.
+     */
+    const String& getTooltipText(void) const;
+
+    /*!
+    \brief
+        Return whether this window inherits Tooltip text from its parent when its own tooltip text is not set.
+
+    \return
+        - true if the window inherits tooltip text from its parent when its own text is not set.
+        - false if the window does not inherit tooltip text from its parent (and shows no tooltip when no text is set).
+     */
+    bool inheritsTooltipText(void) const;
+    
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1825,7 +1874,64 @@ public:
     */
     virtual void    destroy(void);
 
-	/*************************************************************************
+    /*!
+    \brief
+        Set the custom Tooltip object for this Window.  This value may be NULL to indicate that the
+        Window should use the system default Tooltip object.
+
+    \param tooltip
+        Pointer to a valid Tooltip based object which should be used as the tooltip for this Window, or NULL to
+        indicate that the Window should use the system default Tooltip object.  Note that when passing a pointer
+        to a Tooltip object, ownership of the Tooltip does not pass to this Window object.
+
+    \return
+        Nothing.
+    */
+    void setTooltip(Tooltip* tooltip);
+
+    /*!
+    \brief
+        Set the custom Tooltip to be used by this Window by specifying a Window type.
+
+        The Window will internally attempt to create an instance of the specified window type (which must be
+        derived from the base Tooltip class).  If the Tooltip creation fails, the error is logged and the
+        Window will revert to using either the existing custom Tooltip or the system default Tooltip.
+
+    \param tooltipType
+        String object holding the name of the Tooltip based Window type which should be used as the Tooltip for
+        this Window.
+
+    \return
+        Nothing.
+    */
+    void setTooltipType(const String& tooltipType);
+
+    /*!
+    \brief
+        Set the tooltip text for this window.
+
+    \param tip
+        String object holding the text to be displayed in the tooltip for this Window.
+
+    \return
+        Nothing.
+    */
+    void setTooltipText(const String& tip);
+
+	/*!
+    \brief
+        Set whether this window inherits Tooltip text from its parent when its own tooltip text is not set.
+
+    \param setting
+        - true if the window should inherit tooltip text from its parent when its own text is not set.
+        - false if the window should not inherit tooltip text from its parent (and so show no tooltip when no text is set).
+
+    \return
+        Nothing.
+     */
+    void setInheritsTooltipText(bool setting);
+
+    /*************************************************************************
 		Co-ordinate and Size Conversion Functions
 	*************************************************************************/
 	/*!
@@ -2750,6 +2856,12 @@ protected:
     float   d_repeatElapsed;    //!< implements repeating - tracks time elapsed.
     MouseButton d_repeatButton; //!< Button we're tracking (implication of this is that we only support one button at a time).
 
+    // Tooltip stuff
+    String   d_tooltipText;     //!< Text string used as tip for this window.
+    Tooltip* d_customTip;       //!< Possible custom Tooltip for this window.
+    bool     d_weOwnTip;        //!< true if this Window created the custom Tooltip.
+    bool     d_inheritsTipText; //!< true if the Window inherits tooltip text from its parent (when none set for itself).
+
 protected:
 	/*************************************************************************
 		Properties for Window base class
@@ -2798,6 +2910,9 @@ protected:
     static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
     static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
     static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
+    static  WindowProperties::CustomTooltipType d_tooltipTypeProperty;
+    static  WindowProperties::Tooltip           d_tooltipProperty;
+    static  WindowProperties::InheritsTooltipText d_inheritsTooltipProperty;
 
 
 	/*************************************************************************

@@ -108,6 +108,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
                       elements/CEGUITitlebarProperties.cpp \
+                      elements/CEGUITooltip.cpp \
+                      elements/CEGUITooltipProperties.cpp \
                       pcre/chartables.c \
                       pcre/get.c \
                       pcre/maketables.c \

@@ -56,5 +56,6 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIThumb.h \
                      CEGUIThumbProperties.h \
                      CEGUITitlebar.h \
-                     CEGUITitlebarProperties.h
-
+                     CEGUITitlebarProperties.h \
+                     CEGUITooltip.h \
+                     CEGUITooltipProperties.h

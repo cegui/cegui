@@ -41,6 +41,7 @@
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIDragContainer.h"
 #include "elements/CEGUIScrolledContainer.h"
+#include "elements/CEGUITooltip.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
 #include "CEGUIDataContainer.h"
@@ -226,6 +227,10 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	d_scriptModule		 = scriptModule;
 
 	d_mouseScalingFactor = 1.0f;
+
+    // Tooltip setup
+    d_defaultTooltip = 0;
+    d_weOwnTooltip = false;
 
 	// add events for Sytem object
 	addSystemEvents();
@@ -1324,6 +1329,43 @@ void System::notifyWindowDestroyed(const Window* window)
 		d_activeSheet = NULL;
 	}
 
+}
+
+void System::setTooltip(Tooltip* tooltip)
+{
+    // destroy current custom tooltip if one exists and we created it
+    if (d_defaultTooltip && d_weOwnTooltip)
+        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+
+    // set new custom tooltip 
+    d_weOwnTooltip = false;
+    d_defaultTooltip = tooltip;
+}
+
+void System::setTooltip(const String& tooltipType)
+{
+    // destroy current tooltip if one exists and we created it
+    if (d_defaultTooltip && d_weOwnTooltip)
+        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
+
+    if (tooltipType.empty())
+    {
+        d_defaultTooltip = 0;
+        d_weOwnTooltip = false;
+    }
+    else
+    {
+        try
+        {
+            d_defaultTooltip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, "CEGUI::System::default__auto_tooltip__"));
+            d_weOwnTooltip = true;
+        }
+        catch(UnknownObjectException x)
+        {
+            d_defaultTooltip = 0;
+            d_weOwnTooltip = false;
+        }
+    }
 }
 
 } // End of  CEGUI namespace section
