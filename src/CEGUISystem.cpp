@@ -66,7 +66,7 @@ public:
 	SimpleTimer() : d_baseTime(clock()) {}
 
 	void	restart()	{ d_baseTime = clock(); }
-	double	elapsed()	{ return static_cast<double>((clock() - d_baseTime) / CLOCKS_PER_SEC); }
+	double	elapsed()	{ return static_cast<double>(clock() - d_baseTime) / CLOCKS_PER_SEC; }
 };
 	
 /*!
