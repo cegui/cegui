@@ -34,6 +34,7 @@
 #include "CEGUITexture.h"
 #include <d3d9.h>
 #include <list>
+#include <set>
 
 #ifdef DIRECTX9_GUIRENDERER_EXPORTS
 #define DIRECTX9_GUIRENDERER_API __declspec(dllexport)
@@ -71,7 +72,7 @@ public:
 		Pointer to the IDirect3DDevice9 interface object that will be used for all rendering
 
 	\param max_quads
-		Maximum number of quads that the Renderer will be able to render per frame.
+		Obsolete.  Set to 0.
 	*/
 	DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads);
 
@@ -241,21 +242,18 @@ private:
 		Rect				position;
 		float				z;
 		Rect				texPosition;
-		ColourRect			colours;
+		ulong				topLeftCol;
+		ulong				topRightCol;
+		ulong				bottomLeftCol;
+		ulong				bottomRightCol;
+
+		bool operator<(const QuadInfo& other) const
+		{
+			// this is intentionally reversed.
+			return z > other.z;
+		}
 	};
 
-
-	// this is a function object that is used by the sorting algorithm to
-	// sort the quads.  It would be possible to define comparison operators
-	// the the QuadInfo structure and not have this - the reason this was
-	// not done, is because the system could be extended to have >1 quad
-	// list each sorted by a different key (by texture for non-alpha stuff, etc).
-	struct quadsorter
-		: public std::binary_function<QuadInfo*, QuadInfo*, bool>
-	{
-		bool operator()(const QuadInfo* _Left, const QuadInfo* _Right) const
-		{return (_Left->z > _Right->z);}
-	};
 
 	/*************************************************************************
 	    Implementation Methods
@@ -276,18 +274,15 @@ private:
 	    Implementation Data
 	*************************************************************************/
 	Rect				d_display_area;
-	QuadInfo**			d_quadList;
-	QuadInfo*			d_quadBuff;
-	int					d_quadBuffPos;
-	int					d_quadBuffSize;
 
+	typedef std::multiset<QuadInfo>		QuadList;
+	QuadList d_quadlist;
 	bool	d_queueing;		//!< setting for queueing control.
 
 	LPDIRECT3DDEVICE9		d_device;			//!< Base Direct3DDevice9 interface that we use for rendering
 	LPDIRECT3DTEXTURE9		d_currTexture;		//!< currently set texture;
 	LPDIRECT3DVERTEXBUFFER9	d_buffer;			//!< vertex buffer to queue sprite rendering
 	int						d_bufferPos;		//!< index into buffer where next vertex should be put.
-	bool					d_sorted;			//!< true when data in quad list is sorted.
 
 	std::list<DirectX9Texture*>	d_texturelist;		//!< List used to track textures.
 
