@@ -89,6 +89,28 @@ Window::Window(const String& type, const String& name) :
 	d_type(type),
 	d_name(name)
 {
+	// basic set-up
+	d_metricsMode	= Relative;
+	d_parent		= NULL;
+	d_font			= NULL;
+	d_ID			= 0;
+	d_alpha			= 1.0f;
+
+	// basic settings
+	d_enabled			= true;
+	d_visible			= true;
+	d_active			= false;
+	d_clippedByParent	= true;
+	d_destroyedByParent	= true;
+	d_alwaysOnTop		= false;
+	d_inheritsAlpha		= true;
+	d_restoreOldCapture	= false;
+
+	// position and size
+	d_abs_area = Rect(0, 0, 0, 0);
+	d_rel_area = absoluteToRelative(d_abs_area);
+
+	// add events
 	addStandardEvents();
 }
 
@@ -424,7 +446,7 @@ Rect Window::getPixelRect(void) const
 *************************************************************************/
 Rect Window::getUnclippedPixelRect(void) const
 {
-	return windowToScreen(d_abs_area);
+	return windowToScreen(Rect(0, 0, getWidth(), getHeight()));
 }
 
 
@@ -1593,6 +1615,8 @@ void Window::addChild_impl(Window* wnd)
 	// add window (just behind 'pos')
 	d_children.insert(position.base(), wnd);
 	wnd->setParent(this);
+
+	// TODO: Update the area Rects for 'wnd' so they're correct for it's new parent.
 }
 
 
