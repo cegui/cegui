@@ -1132,18 +1132,18 @@ void Window::moveToBack()
 		Window* org_parent = d_parent;
 		d_parent->removeChild_impl(this);
 
-		ChildList::iterator pos = d_children.begin();
+		ChildList::iterator pos = org_parent->d_children.begin();
 
 		if (isAlwaysOnTop())
 		{
-			while ((pos != d_children.end()) && (!(*pos)->isAlwaysOnTop()))
+			while ((pos != org_parent->d_children.end()) && (!(*pos)->isAlwaysOnTop()))
 			{
 				++pos;
 			}
 
 		}
 
-		d_children.insert(pos, this);
+		org_parent->d_children.insert(pos, this);
 		setParent(org_parent);
 
 		onZChange_impl();
