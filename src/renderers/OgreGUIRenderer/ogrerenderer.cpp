@@ -49,62 +49,24 @@ const int	OgreRenderer::VERTEXBUFFER_CAPACITY		= 4096;
 /*************************************************************************
 	Constructor
 *************************************************************************/
-OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads) :
-	d_quadBuffSize(max_quads),
-	d_queueing(true),
-	d_queue_id(queue_id),
-	d_currTexture(NULL),
-	d_post_queue(post_queue),
-	d_bufferPos(0),
-	d_sorted(true)
+OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads, Ogre::SceneType scene_type)
 {
-	using namespace Ogre;
-
-	d_ogre_root		= Root::getSingletonPtr();
-	d_render_sys	= d_ogre_root->getRenderSystem();
-
-	// Create and initialise the Ogre specific parts required for use in rendering later.
-	d_render_op.vertexData = new VertexData;
-	d_render_op.vertexData->vertexStart = 0;
-
-	// setup vertex declaration for the vertex format we use
-	VertexDeclaration* vd = d_render_op.vertexData->vertexDeclaration;
-	size_t vd_offset = 0;
-	vd->addElement(0, vd_offset, VET_FLOAT3, VES_POSITION);
-	vd_offset += VertexElement::getTypeSize(VET_FLOAT3);
-	vd->addElement(0, vd_offset, VET_COLOUR, VES_DIFFUSE);
-	vd_offset += VertexElement::getTypeSize(VET_COLOUR);
-	vd->addElement(0, vd_offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
-
-	// create hardware vertex buffer
-	d_buffer = HardwareBufferManager::getSingleton().createVertexBuffer(vd->getVertexSize(0), VERTEXBUFFER_CAPACITY, HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY, false);
-
-	// bind vertex buffer
-	d_render_op.vertexData->vertexBufferBinding->setBinding(0, d_buffer);
-
-	// complete render operation basic initialisation
-	d_render_op.operationType = RenderOperation::OT_TRIANGLE_LIST;
-	d_render_op.useIndexes = false;
-
-	// Discover display settings and setup d_display_area
-	d_display_area.d_left	= 0;
-	d_display_area.d_top	= 0;
-	d_display_area.d_right	= window->getWidth();
-	d_display_area.d_bottom	= window->getHeight();
-
-	// initialise quad buffer
-	d_quadBuffPos = 0;
-	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
-	d_quadList = new QuadInfo*[max_quads];
-
-	// initialise required texel offset
-	d_texelOffset = Point((float)d_render_sys->getHorizontalTexelOffset(), (float)d_render_sys->getVerticalTexelOffset());
-
-	// create listener which will handler the rendering side of things for us.
-	d_ourlistener = new OgreRQListener(this, queue_id, post_queue);
+	constructor_impl(window, queue_id, post_queue, max_quads);
 
 	// hook into ogre rendering system
-	d_ogre_root->getSceneManager(ST_GENERIC)->addRenderQueueListener(d_ourlistener);
+	setTargetSceneManager(scene_type);
+}
+
+
+/*************************************************************************
+	Constructor (specifying scene manager)
+*************************************************************************/
+OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads, Ogre::SceneManager* scene_manager)
+{
+	constructor_impl(window, queue_id, post_queue, max_quads);
+
+	// hook into ogre rendering system
+	setTargetSceneManager(scene_manager);
 }
 
 
@@ -548,6 +510,116 @@ ulong OgreRenderer::colourToOgre(colour col) const
 
 
 /*************************************************************************
+	Set the scene manager to be used for rendering the GUI.	
+*************************************************************************/
+void OgreRenderer::setTargetSceneManager(Ogre::SceneType scene_type)
+{
+	setTargetSceneManager(d_ogre_root->getSceneManager(scene_type));
+}
+
+
+/*************************************************************************
+	Set the scene manager to be used for rendering the GUI.	
+*************************************************************************/
+void OgreRenderer::setTargetSceneManager(Ogre::SceneManager* scene_manager)
+{
+	// unhook from current scene manager.
+	if (d_sceneMngr != NULL)
+	{
+		d_sceneMngr->removeRenderQueueListener(d_ourlistener);
+		d_sceneMngr = NULL;
+	}
+
+	// hook new scene manager if that is not NULL
+	if (scene_manager != NULL)
+	{
+		d_sceneMngr = scene_manager;
+		d_sceneMngr->addRenderQueueListener(d_ourlistener);
+	}
+
+}
+
+
+/*************************************************************************
+	Set the target render queue for GUI rendering.	
+*************************************************************************/
+void OgreRenderer::setTargetRenderQueue(Ogre::RenderQueueGroupID queue_id, bool post_queue)
+{
+	d_queue_id		= queue_id;
+	d_post_queue	= post_queue;
+
+	if (d_ourlistener != NULL)
+	{
+		d_ourlistener->setTargetRenderQueue(queue_id);
+		d_ourlistener->setPostRenderQueue(post_queue);
+	}
+
+}
+
+
+
+/*************************************************************************
+	perform main work of the constructor
+*************************************************************************/
+void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads)
+{
+	using namespace Ogre;
+
+	// initialise the renderer fields
+	d_quadBuffSize	= max_quads;
+	d_queueing		= true;
+	d_queue_id		= queue_id;
+	d_currTexture	= NULL;
+	d_post_queue	= post_queue;
+	d_sceneMngr		= NULL;
+	d_bufferPos		= 0;
+	d_sorted		= true;
+	d_ogre_root		= Root::getSingletonPtr();
+	d_render_sys	= d_ogre_root->getRenderSystem();
+
+	// Create and initialise the Ogre specific parts required for use in rendering later.
+	d_render_op.vertexData = new VertexData;
+	d_render_op.vertexData->vertexStart = 0;
+
+	// setup vertex declaration for the vertex format we use
+	VertexDeclaration* vd = d_render_op.vertexData->vertexDeclaration;
+	size_t vd_offset = 0;
+	vd->addElement(0, vd_offset, VET_FLOAT3, VES_POSITION);
+	vd_offset += VertexElement::getTypeSize(VET_FLOAT3);
+	vd->addElement(0, vd_offset, VET_COLOUR, VES_DIFFUSE);
+	vd_offset += VertexElement::getTypeSize(VET_COLOUR);
+	vd->addElement(0, vd_offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+
+	// create hardware vertex buffer
+	d_buffer = HardwareBufferManager::getSingleton().createVertexBuffer(vd->getVertexSize(0), VERTEXBUFFER_CAPACITY, HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY, false);
+
+	// bind vertex buffer
+	d_render_op.vertexData->vertexBufferBinding->setBinding(0, d_buffer);
+
+	// complete render operation basic initialisation
+	d_render_op.operationType = RenderOperation::OT_TRIANGLE_LIST;
+	d_render_op.useIndexes = false;
+
+	// Discover display settings and setup d_display_area
+	d_display_area.d_left	= 0;
+	d_display_area.d_top	= 0;
+	d_display_area.d_right	= window->getWidth();
+	d_display_area.d_bottom	= window->getHeight();
+
+	// initialise quad buffer
+	d_quadBuffPos = 0;
+	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
+	d_quadList = new QuadInfo*[max_quads];
+
+	// initialise required texel offset
+	d_texelOffset = Point((float)d_render_sys->getHorizontalTexelOffset(), (float)d_render_sys->getVerticalTexelOffset());
+
+	// create listener which will handler the rendering side of things for us.
+	d_ourlistener = new OgreRQListener(this, queue_id, post_queue);
+}
+
+
+/*************************************************************************
 	Callback from Ogre invoked before other stuff in our target queue
 	is rendered
 *************************************************************************/
@@ -573,6 +645,5 @@ void OgreRQListener::renderQueueEnded(Ogre::RenderQueueGroupID id, bool& repeatT
 	}
 
 }
-
 
 } // End of  CEGUI namespace section

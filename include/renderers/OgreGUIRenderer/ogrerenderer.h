@@ -75,6 +75,10 @@ public:
 	virtual void	renderQueueStarted(Ogre::RenderQueueGroupID id, bool& skipThisQueue);
 	virtual void	renderQueueEnded(Ogre::RenderQueueGroupID id, bool& repeatThisQueue);
 
+	// methods for adjusting target queue settings
+	void	setTargetRenderQueue(Ogre::RenderQueueGroupID queue_id)		{d_queue_id = queue_id;}
+	void	setPostRenderQueue(bool post_queue)		{d_post_queue = post_queue;}
+
 private:
 	/*************************************************************************
 		Implementation Data
@@ -96,6 +100,9 @@ public:
 	\brief
 		Constructor for renderer class that uses Ogre for rendering.
 
+	\param window
+		Pointer to an Ogre::RenderWindow object.
+
 	\param queue_id
 		Ogre::RenderQueueGroupID value that specifies where the GUI should appear in the ogre rendering output.
 
@@ -105,8 +112,34 @@ public:
 
 	\param max_quads
 		Maximum number of quads that the Renderer will be able to render per frame.
+
+	\param scene_type
+		One of the Ogre::SceneType enumerated values specifying the scene manager to be targeted by the GUI renderer.
 	*/
-	OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads);
+	OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads, Ogre::SceneType scene_type = Ogre::ST_GENERIC);
+
+
+	/*!
+	\brief
+		Constructor for renderer class that uses Ogre for rendering.
+
+	\param window
+		Pointer to an Ogre::RenderWindow object.
+
+	\param queue_id
+		Ogre::RenderQueueGroupID value that specifies where the GUI should appear in the ogre rendering output.
+
+	\param post_queue
+		set to true to have GUI rendered after render queue \a queue_id, or false to have the GUI rendered before render queue
+		\a queue_id.
+
+	\param max_quads
+		Maximum number of quads that the Renderer will be able to render per frame.
+
+	\param scene_manager
+		Pointer to an Ogre::SceneManager object that is to be used for GUI rendering.
+	*/
+	OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads, Ogre::SceneManager* scene_manager);
 
 
 	/*!
@@ -242,6 +275,57 @@ public:
 	virtual	uint	getVertScreenDPI(void) const	{return 96;}
 
 
+	/*!
+	\brief
+		Set the scene manager to be used for rendering the GUI.
+
+		The GUI system will be unhooked from the current scene manager and attached to what ever
+		is specified here.
+
+	\param scene_type
+		One of the Ogre::SceneType enumerated values indicating the new target Ogre::SceneManager to be
+		used for GUI rendering.
+
+	\return
+		Nothing.
+	*/
+	void	setTargetSceneManager(Ogre::SceneType scene_type);
+
+
+	/*!
+	\brief
+		Set the scene manager to be used for rendering the GUI.
+
+		The GUI system will be unhooked from the current scene manager and attached to what ever
+		is specified here.
+
+	\param scene_manager
+		Pointer to an Ogre::SceneManager object that is the new target Ogre::SceneManager to be
+		used for GUI rendering.
+
+	\return
+		Nothing.
+	*/
+	void	setTargetSceneManager(Ogre::SceneManager* scene_manager);
+
+
+	/*!
+	\brief
+		Set the target render queue for GUI rendering.
+
+	\param queue_id
+		Ogre::RenderQueueGroupID value specifying the render queue that the GUI system should attach to.
+
+	\param post_queue
+		- true to specify that the GUI should render after everything else in render queue \a queue_id.
+		- false to specify the GUI should render before everything else in render queue \a queue_id.
+
+	\return
+		Nothing.
+	*/
+	void	setTargetRenderQueue(Ogre::RenderQueueGroupID queue_id, bool post_queue);
+
+
 private:
 	/************************************************************************
 		Implementation Constants
@@ -308,6 +392,10 @@ private:
 	// convert ARGB colour value to whatever the Ogre render system is expecting.
 	ulong	colourToOgre(colour col) const;
 
+	// perform main work of the constructor.  This does everything except the final hook into the render system.
+	void	constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads);
+
+
 	/*************************************************************************
 	    Implementation Data
 	*************************************************************************/
@@ -326,6 +414,7 @@ private:
 	Ogre::Texture*				d_currTexture;		//!< currently set texture;
 	Ogre::RenderOperation		d_render_op;		//!< Ogre render operation we use to do our stuff.
 	Ogre::HardwareVertexBufferSharedPtr	d_buffer;	//!< vertex buffer to queue sprite rendering
+	Ogre::SceneManager*			d_sceneMngr;		//!< The scene manager we are hooked into.
 
 	OgreRQListener*				d_ourlistener;
 	bool						d_post_queue;		//!< true if we render after everything else in our queue.
