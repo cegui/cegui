@@ -55,7 +55,7 @@
 
 // fix to undefine _STLP_DEBUG if STLport is not actually being used
 // (resolves some unresolved externals concerning boost)
-#if defined(_STLP_DEBUG) && defined(_MSC_VER) && (_MSC_VER == 1300)
+#if defined(_STLP_DEBUG) && defined(_MSC_VER) && (_MSC_VER >= 1300)
 #	include <string>		// include this to see if it defines _STLPORT_VERION
 #	if !defined(_STLPORT_VERSION)
 #		undef _STLP_DEBUG

@@ -21,7 +21,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;IRRRENDERER_EXPORTS"
+				PreprocessorDefinitions="WIN32;_STLP_DEBUG;_DEBUG;_WINDOWS;_USRDLL;IRRRENDERER_EXPORTS"
 				StringPooling="TRUE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
