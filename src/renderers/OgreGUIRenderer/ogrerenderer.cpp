@@ -164,11 +164,11 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 		quad.texture		= ((OgreTexture*)tex)->getOgreTexture();
 		quad.texPosition	= texture_rect;
 
-		// covert colours for ogre
-		quad.colours.d_top_left		= colourToOgre(colours.d_top_left);
-		quad.colours.d_top_right	= colourToOgre(colours.d_top_right);
-		quad.colours.d_bottom_left	= colourToOgre(colours.d_bottom_left);
-		quad.colours.d_bottom_right	= colourToOgre(colours.d_bottom_right);
+		// covert colours for ogre, note that top / bottom are switched.
+		quad.colours.d_top_left		= colourToOgre(colours.d_bottom_left);
+		quad.colours.d_top_right	= colourToOgre(colours.d_bottom_right);
+		quad.colours.d_bottom_left	= colourToOgre(colours.d_top_left);
+		quad.colours.d_bottom_right	= colourToOgre(colours.d_top_right);
 
 		d_quadList[d_quadBuffPos] = &quad;
 		d_quadBuffPos++;
@@ -459,12 +459,12 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	final_rect.d_bottom	/= (d_display_area.getHeight() * 0.5f);
 	final_rect.offset(Point(-1.0f, -1.0f));
 
-	// covert colours for ogre
+	// convert colours for ogre, note that top / bottom are switched.
 	ColourRect final_colours;
-	final_colours.d_top_left	 = colourToOgre(colours.d_top_left);
-	final_colours.d_top_right	 = colourToOgre(colours.d_top_right);
-	final_colours.d_bottom_left	 = colourToOgre(colours.d_bottom_left);
-	final_colours.d_bottom_right = colourToOgre(colours.d_bottom_right);
+	final_colours.d_top_left	 = colourToOgre(colours.d_bottom_left);
+	final_colours.d_top_right	 = colourToOgre(colours.d_bottom_right);
+	final_colours.d_bottom_left	 = colourToOgre(colours.d_top_left);
+	final_colours.d_bottom_right = colourToOgre(colours.d_top_right);
 
 	//
 	// perform rendering...

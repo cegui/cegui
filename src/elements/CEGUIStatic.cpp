@@ -291,7 +291,7 @@ void Static::drawSelf(float z)
 		colours.d_top_left		= calculateModulatedAlphaColour(d_backgroundCols.d_top_left, alpha);
 		colours.d_top_right		= calculateModulatedAlphaColour(d_backgroundCols.d_top_right, alpha);
 		colours.d_bottom_left	= calculateModulatedAlphaColour(d_backgroundCols.d_bottom_left, alpha);
-		colours.d_top_right		= calculateModulatedAlphaColour(d_backgroundCols.d_bottom_right, alpha);
+		colours.d_bottom_right	= calculateModulatedAlphaColour(d_backgroundCols.d_bottom_right, alpha);
 
 		d_background->draw(absrect, z, clipper, colours);
 	}

@@ -132,7 +132,15 @@ void StaticText::drawSelf(float z)
 		break;
 	}
 
-	getFont()->drawText(getText(), absarea, System::getSingleton().getRenderer()->getZLayer(1), clipper, (TextFormatting)d_horzFormatting, d_textCols);
+	float alpha = getEffectiveAlpha();
+	ColourRect final_cols(
+		calculateModulatedAlphaColour(d_textCols.d_top_left, alpha),
+		calculateModulatedAlphaColour(d_textCols.d_top_right, alpha),
+		calculateModulatedAlphaColour(d_textCols.d_bottom_left, alpha),
+		calculateModulatedAlphaColour(d_textCols.d_bottom_right, alpha)
+		);
+
+	getFont()->drawText(getText(), absarea, System::getSingleton().getRenderer()->getZLayer(1), clipper, (TextFormatting)d_horzFormatting, final_cols);
 }
 
 } // End of  CEGUI namespace section
