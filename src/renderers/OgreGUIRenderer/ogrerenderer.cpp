@@ -75,6 +75,8 @@ OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID 
 *************************************************************************/
 OgreRenderer::~OgreRenderer(void)
 {
+	setTargetSceneManager(NULL);
+
 	if (d_ourlistener)
 	{
 		delete d_ourlistener;
