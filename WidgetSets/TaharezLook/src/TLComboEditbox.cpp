@@ -46,7 +46,7 @@ const utf8	TLComboEditbox::SelectionBrushImageName[]	= "ComboboxSelectionBrush";
 const utf8	TLComboEditbox::MouseCursorImageName[]		= "MouseTextBar";
 
 // layout values
-const float	TLComboEditbox::TextPaddingRatio		= 0.5f;
+const float	TLComboEditbox::TextPaddingRatio		= 0.375f;
 
 // implementation constantss
 const uint	TLComboEditbox::SelectionLayer	= 1;
