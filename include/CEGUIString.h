@@ -28,9 +28,7 @@
 
 #include "CEGUIBase.h"
 #include <string>
-#if defined(linux) || (defined(_MSC_VER) && (_MSC_VER <= 1300))
-#   include <stdexcept>
-#endif
+#include <stdexcept>
 
 // Start of CEGUI namespace section
 namespace CEGUI
