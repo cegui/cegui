@@ -94,6 +94,7 @@ void TLMiniHorzScrollbarThumb::drawNormal(float z)
 	ColourRect colours(colval, colval, colval, colval);
 
 	// calculate segment sizes
+	using namespace std;
 	float minWidth		= absrect.getWidth() * 0.5f;
 	float leftWidth		= min(d_normalLeftImage->getWidth(), minWidth);
 	float rightWidth	= min(d_normalRightImage->getWidth(), minWidth);
@@ -137,6 +138,7 @@ void TLMiniHorzScrollbarThumb::drawHover(float z)
 	ColourRect colours(colval, colval, colval, colval);
 
 	// calculate segment sizes
+	using namespace std;
 	float minWidth		= absrect.getWidth() * 0.5f;
 	float leftWidth		= min(d_highlightLeftImage->getWidth(), minWidth);
 	float rightWidth	= min(d_highlightRightImage->getWidth(), minWidth);
@@ -180,6 +182,7 @@ void TLMiniHorzScrollbarThumb::drawDisabled(float z)
 	ColourRect colours(colval, colval, colval, colval);
 
 	// calculate segment sizes
+	using namespace std;
 	float minWidth		= absrect.getWidth() * 0.5f;
 	float leftWidth		= min(d_normalLeftImage->getWidth(), minWidth);
 	float rightWidth	= min(d_normalRightImage->getWidth(), minWidth);
