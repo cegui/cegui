@@ -93,17 +93,22 @@ namespace CEGUI
         if (d_tabButtonPane)
         {
             // Calculate the positions and sizes of the tab buttons
+			d_fillerSize.d_width = d_tabButtonPane->getWidth(Absolute);
+			d_fillerSize.d_height = d_fillerImage->getHeight();
             d_fillerPos.d_x = d_tabButtonPane->getAbsoluteXPosition();
-            d_fillerPos.d_y = d_tabButtonPane->getAbsoluteYPosition() + d_abs_tabHeight - 1; // 1 pixel filler
-            d_fillerSize.d_width = d_tabButtonPane->getWidth(Absolute);
-            d_fillerSize.d_height = 1;
-            for (uint i = 0; i < getTabCount(); ++i)
-            {
-                Window* btn = d_tabButtonPane->getChildAtIdx(i);
-                d_fillerPos.d_x = d_tabButtonPane->getAbsoluteXPosition() + 
-                    btn->getAbsoluteXPosition() + btn->getWidth(Absolute);
-            }
-            d_fillerSize.d_width -= d_fillerPos.d_x;
+            d_fillerPos.d_y = d_tabButtonPane->getAbsoluteYPosition() + d_tabButtonPane->getAbsoluteHeight() - d_fillerSize.d_height;
+
+			if (getTabCount() > 0)
+			{
+				TabButtonIndexMap::iterator iter = d_tabButtonIndexMap.end();
+				std::advance(iter, -1);
+				Window* btn = iter->second;
+
+				d_fillerPos.d_x = d_tabButtonPane->getAbsoluteXPosition() + 
+					btn->getAbsoluteXPosition() + btn->getWidth(Absolute);
+
+				d_fillerSize.d_width -= d_fillerPos.d_x;
+			}
 
         }
 

@@ -338,7 +338,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
 
 }
 /*************************************************************************
-Add tab button
+	Calculate size and position for a tab button
 *************************************************************************/
 void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex)
 {
@@ -349,8 +349,11 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
     // x position is based on previous button
     if (targetIndex > 0)
     {
-        Window* prevButton = d_tabButtonPane->getChildAtIdx(targetIndex - 1);
-        // position is prev pos + width
+		TabButtonIndexMap::iterator iter = d_tabButtonIndexMap.begin();
+		std::advance(iter, targetIndex - 1);
+		Window* prevButton = iter->second;
+
+		// position is prev pos + width
         btn->setXPosition(Relative, 
             prevButton->getXPosition(Relative) 
             + prevButton->getWidth(Relative));
@@ -365,7 +368,6 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
     btn->setWidth(Absolute, 
         fnt->getTextExtent(btn->getText()) + getAbsoluteTabTextPadding()*2);
     btn->requestRedraw();
-
 }
 /*************************************************************************
 Remove tab button
