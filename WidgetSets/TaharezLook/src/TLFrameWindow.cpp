@@ -32,6 +32,8 @@
 #include "CEGUIFont.h"
 #include "TLCloseButton.h"
 
+#include <math.h>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -270,11 +272,7 @@ void TLFrameWindow::onSized(WindowEventArgs& e)
 	newsz.d_height -= frame_offset;
 	d_frame.setSize(newsz);
 
-	// adjust position for client brush
-	pos.d_y += (isTitleBarEnabled() || !isFrameEnabled()) ? 0 : d_frameTopSize;
-
-	// modify size of client so it is within the frame
-	if (isFrameEnabled())
+	// adjust position and size of client so it is within the frame	if (isFrameEnabled())
 	{
 		pos.d_x += d_frameLeftSize;
 		newsz.d_width	-= (d_frameLeftSize + d_frameRightSize);
@@ -282,6 +280,7 @@ void TLFrameWindow::onSized(WindowEventArgs& e)
 
 		if (!isTitleBarEnabled())
 		{
+			pos.d_y += d_frameTopSize;
 			newsz.d_height -= d_frameTopSize;
 		}
 	}
@@ -321,16 +320,16 @@ void TLFrameWindow::storeFrameSizes(void)
 
 	const Image* img;
 	img = &iset->getImage(LeftFrameImageName);
-	d_frameLeftSize = img->getWidth() + img->getOffsetX();
+	d_frameLeftSize = img->getWidth() + fabs(img->getOffsetX());
 
-	img = &iset->getImage(LeftFrameImageName);
-	d_frameRightSize = img->getWidth() + img->getOffsetX();
+	img = &iset->getImage(RightFrameImageName);
+	d_frameRightSize = img->getWidth() + fabs(img->getOffsetX());
 
 	img = &iset->getImage(TopFrameImageName);
-	d_frameTopSize = img->getHeight() + img->getOffsetY();
+	d_frameTopSize = img->getHeight() + fabs(img->getOffsetY());
 
 	img = &iset->getImage(BottomFrameImageName);
-	d_frameBottomSize = img->getHeight() + img->getOffsetY();
+	d_frameBottomSize = img->getHeight() + fabs(img->getOffsetY());
 }
 
 
