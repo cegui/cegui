@@ -23,7 +23,7 @@
 *************************************************************************/
 #include "WLListHeader.h"
 #include "CEGUIWindowManager.h"
-
+#include "WLListHeaderSegment.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -31,13 +31,15 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLListHeader::WidgetTypeName[]		= "WindowsLook/ListHeader";
+
 // image / imageset related
 const utf8 WLListHeader::ImagesetName[]			= "WindowsLook";
 const utf8 WLListHeader::MouseCursorImageName[]	= "MouseArrow";
 
 	
 // type names for the component widgets
-const utf8 WLListHeader::SegmentWidgetType[]	= "WindowsLook/ListHeaderSegment";
+const utf8* WLListHeader::SegmentWidgetType		= WLListHeaderSegment::WidgetTypeName;
 
 
 /*************************************************************************

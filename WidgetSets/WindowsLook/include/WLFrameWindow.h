@@ -45,6 +45,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Image related stuff
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	TopLeftFrameImageName[];		//!< Name of the image to use for the top-left corner of the frame.
@@ -69,8 +72,8 @@ public:
 	static const utf8	NEastSWestCursorImageName[];	//!< Name of the image to use for up-right/down-left sizing cursor.
 
 	// window type stuff
-	static const utf8	TitlebarType[];					//!< Window type to create for the title bar.
-	static const utf8	CloseButtonType[];				//!< Window type to create for the close button.
+	static const utf8*	TitlebarType;					//!< Window type to create for the title bar.
+	static const utf8*	CloseButtonType;				//!< Window type to create for the close button.
 
 	// layout constants
 	static const float	TitlebarXOffset;				//!< X Offset used for title bar
@@ -252,7 +255,7 @@ public:
 	\brief
 		Constructor for WindowsLook Frame Window factory class.
 	*/
-	WLFrameWindowFactory(void) : WindowFactory((utf8*)"WindowsLook/FrameWindow") { }
+	WLFrameWindowFactory(void) : WindowFactory(WLFrameWindow::WidgetTypeName) { }
 
 
 	/*

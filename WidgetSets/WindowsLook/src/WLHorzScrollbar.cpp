@@ -35,6 +35,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLHorzScrollbar::WidgetTypeName[]				= "WindowsLook/HorizontalScrollbar";
+
 // image name constants
 const utf8	WLHorzScrollbar::ImagesetName[]					= "WindowsLook";
 const utf8	WLHorzScrollbar::TopLeftFrameImageName[]		= "StaticFrameTopLeft";
@@ -59,9 +61,9 @@ const colour WLHorzScrollbar::BackgroundColour		= 0xDFDFDF;
 const float	WLHorzScrollbar::MinThumbWidth			= 10.0f;
 
 // type names for the component widgets
-const utf8	WLHorzScrollbar::ThumbWidgetType[]			= "WindowsLook/HorizontalScrollbarThumb";
-const utf8	WLHorzScrollbar::IncreaseButtonWidgetType[]	= "WindowsLook/Button";
-const utf8	WLHorzScrollbar::DecreaseButtonWidgetType[]	= "WindowsLook/Button";
+const utf8*	WLHorzScrollbar::ThumbWidgetType			= WLHorzScrollbarThumb::WidgetTypeName;
+const utf8*	WLHorzScrollbar::IncreaseButtonWidgetType	= WLButton::WidgetTypeName;
+const utf8*	WLHorzScrollbar::DecreaseButtonWidgetType	= WLButton::WidgetTypeName;
 
 
 /*************************************************************************

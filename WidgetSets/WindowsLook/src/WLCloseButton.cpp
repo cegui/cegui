@@ -27,6 +27,12 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Constants
+*************************************************************************/
+const utf8	WLCloseButton::WidgetTypeName[]		= "WindowsLook/CloseButton";
+
+
+/*************************************************************************
 	return a Rect object describing the appropriately clipped Window
 	area in screen space.
 *************************************************************************/

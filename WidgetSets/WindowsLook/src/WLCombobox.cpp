@@ -27,8 +27,8 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIFont.h"
-#include "elements/CEGUIEditbox.h"
-#include "elements/CEGUIComboDropList.h"
+#include "WLEditbox.h"
+#include "WLComboDropList.h"
 
 
 // Start of CEGUI namespace section
@@ -37,15 +37,17 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLCombobox::WidgetTypeName[]				= "WindowsLook/Combobox";
+
 // image / imageset related
 const utf8	WLCombobox::ImagesetName[]					= "WindowsLook";
 const utf8	WLCombobox::ButtonNormalImageName[]			= "LargeDownArrow";
 const utf8	WLCombobox::ButtonHighlightedImageName[]	= "LargeDownArrow";
 
 // component widget type names
-const utf8	WLCombobox::EditboxTypeName[]	= "WindowsLook/Editbox";
-const utf8	WLCombobox::DropListTypeName[]	= "WindowsLook/ComboDropList";
-const utf8	WLCombobox::ButtonTypeName[]	= "WindowsLook/Button";
+const utf8*	WLCombobox::EditboxTypeName		= WLEditbox::WidgetTypeName;
+const utf8*	WLCombobox::DropListTypeName	= WLComboDropList::WidgetTypeName;
+const utf8*	WLCombobox::ButtonTypeName		= WLButton::WidgetTypeName;
 
 
 /*************************************************************************

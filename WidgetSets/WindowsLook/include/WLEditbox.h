@@ -43,6 +43,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image name constants
 	static const utf8	ImagesetName[];					//!< Name of the Imageset containing the imagery to use.
 	static const utf8	TopLeftFrameImageName[];		//!< Name of the image to use for the top-left corner of the frame.
@@ -184,7 +187,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLEditboxFactory(void) : WindowFactory((utf8*)"WindowsLook/Editbox") { }
+	WLEditboxFactory(void) : WindowFactory(WLEditbox::WidgetTypeName) { }
 	~WLEditboxFactory(void){}
 
 

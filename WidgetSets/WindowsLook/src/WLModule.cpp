@@ -83,117 +83,117 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 {
 	using namespace CEGUI;
 
-	if (type_name == "WindowsLook/StaticText")
+	if (type_name == WLStaticText::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_StaticTextFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/StaticImage")
+	else if (type_name == WLStaticImage::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_StaticImageFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Button")
+	else if (type_name == WLButton::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ButtonFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Titlebar")
+	else if (type_name == WLTitlebar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_TitlebarFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/CloseButton")
+	else if (type_name == WLCloseButton::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_CloseButtonFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/FrameWindow")
+	else if (type_name == WLFrameWindow::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_FrameWindowFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Editbox")
+	else if (type_name == WLEditbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_EditboxFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Checkbox")
+	else if (type_name == WLCheckbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_CheckboxFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/RadioButton")
+	else if (type_name == WLRadioButton::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_RadioButtonFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/ProgressBar")
+	else if (type_name == WLProgressBar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ProgressBarFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/SliderThumb")
+	else if (type_name == WLSliderThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_SliderThumbFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Slider")
+	else if (type_name == WLSlider::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_SliderFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/VerticalScrollbarThumb")
+	else if (type_name == WLVertScrollbarThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarThumbFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/VerticalScrollbar")
+	else if (type_name == WLVertScrollbar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/HorizontalScrollbarThumb")
+	else if (type_name == WLHorzScrollbarThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_HorzScrollbarThumbFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/HorizontalScrollbar")
+	else if (type_name == WLHorzScrollbar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_HorzScrollbarFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Listbox")
+	else if (type_name == WLListbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListboxFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/ComboDropList")
+	else if (type_name == WLComboDropList::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboDropListFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/Combobox")
+	else if (type_name == WLCombobox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboboxFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/MultiLineEditbox")
+	else if (type_name == WLMultiLineEditbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiLineEditboxFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/ListHeaderSegment")
+	else if (type_name == WLListHeaderSegment::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderSegmentFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/ListHeader")
+	else if (type_name == WLListHeader::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderFactory);
 		return;
 	}
-	else if (type_name == "WindowsLook/MultiColumnList")
+	else if (type_name == WLMultiColumnList::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
 		return;

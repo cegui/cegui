@@ -32,6 +32,13 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Constants
+*************************************************************************/
+const utf8	WLStaticText::WidgetTypeName[]		= "WindowsLook/StaticText";
+const utf8	WLStaticImage::WidgetTypeName[]		= "WindowsLook/StaticImage";
+
+
+/*************************************************************************
 	Routine to do some common initialisation of static widgets
 *************************************************************************/
 void initWinLookStatic(Static* s)

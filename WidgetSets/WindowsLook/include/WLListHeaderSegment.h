@@ -42,6 +42,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image / imageset related
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	BackdropMainImageName[];		//!< Image to use for segment backdrop main area.
@@ -109,7 +112,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLListHeaderSegmentFactory(void) : WindowFactory((utf8*)"WindowsLook/ListHeaderSegment") { }
+	WLListHeaderSegmentFactory(void) : WindowFactory(WLListHeaderSegment::WidgetTypeName) { }
 	~WLListHeaderSegmentFactory(void){}
 
 

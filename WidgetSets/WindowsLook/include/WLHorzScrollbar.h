@@ -43,6 +43,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image name constants
 	static const utf8	ImagesetName[];					//!< Name of the Imageset containing the imagery to use.
 	static const utf8	TopLeftFrameImageName[];		//!< Name of the image to use for the top-left corner of the frame.
@@ -67,9 +70,9 @@ public:
 	static const float	MinThumbWidth;					//!< Minimum width of the thumb in pixels.
 
 	// type names for the component widgets
-	static const utf8	ThumbWidgetType[];			//!< Type of widget to create for the scroll bar thumb;
-	static const utf8	IncreaseButtonWidgetType[];	//!< Type of widget to create for the increase button (right arrow).
-	static const utf8	DecreaseButtonWidgetType[];	//!< Type of widget to create for the decrease button (left arrow).
+	static const utf8*	ThumbWidgetType;			//!< Type of widget to create for the scroll bar thumb;
+	static const utf8*	IncreaseButtonWidgetType;	//!< Type of widget to create for the increase button (right arrow).
+	static const utf8*	DecreaseButtonWidgetType;	//!< Type of widget to create for the decrease button (left arrow).
 
 
 	/*************************************************************************
@@ -207,7 +210,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLHorzScrollbarFactory(void) : WindowFactory((utf8*)"WindowsLook/HorizontalScrollbar") { }
+	WLHorzScrollbarFactory(void) : WindowFactory(WLHorzScrollbar::WidgetTypeName) { }
 	~WLHorzScrollbarFactory(void){}
 
 

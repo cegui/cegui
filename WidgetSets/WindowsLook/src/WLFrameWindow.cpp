@@ -26,8 +26,8 @@
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIFont.h"
-#include "elements/CEGUITitlebar.h"
-#include "WLButton.h"
+#include "WLTitlebar.h"
+#include "WLCloseButton.h"
 
 #include <boost/bind.hpp>
 
@@ -37,6 +37,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLFrameWindow::WidgetTypeName[]					= "WindowsLook/FrameWindow";
+
 // image stuff
 const utf8	WLFrameWindow::ImagesetName[]					= "WindowsLook";
 const utf8	WLFrameWindow::TopLeftFrameImageName[]			= "WindowFrameTopLeft";
@@ -61,8 +63,8 @@ const utf8	WLFrameWindow::NWestSEastCursorImageName[]		= "MouseNwSeCursor";
 const utf8	WLFrameWindow::NEastSWestCursorImageName[]		= "MouseNeSwCursor";
 
 // window type stuff
-const utf8	WLFrameWindow::TitlebarType[]		= "WindowsLook/Titlebar";
-const utf8	WLFrameWindow::CloseButtonType[]	= "WindowsLook/CloseButton";
+const utf8*	WLFrameWindow::TitlebarType			= WLTitlebar::WidgetTypeName;
+const utf8*	WLFrameWindow::CloseButtonType		= WLCloseButton::WidgetTypeName;
 
 // layout constants
 const float	WLFrameWindow::TitlebarXOffset			= 0;

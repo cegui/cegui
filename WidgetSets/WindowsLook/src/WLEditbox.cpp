@@ -33,6 +33,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLEditbox::WidgetTypeName[]				= "WindowsLook/Editbox";
+
 // image name constants
 const utf8	WLEditbox::ImagesetName[]				= "WindowsLook";
 const utf8	WLEditbox::TopLeftFrameImageName[]		= "EditFrameTopLeft";

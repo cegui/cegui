@@ -42,6 +42,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Image names
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	TrackLeftImageName[];		//!< Name of the image to use for the left end of the slider track.
@@ -51,7 +54,7 @@ public:
 	static const utf8	MouseCursorImageName[];				//!< Name of the image used for the mouse cursor.
 
 	// window type stuff
-	static const utf8	ThumbType[];				//!< Window type to create for the sliders thumb.
+	static const utf8*	ThumbType;					//!< Window type to create for the sliders thumb.
 
 	// defaults
 	static const float	DefaultTickFrequency;
@@ -163,7 +166,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLSliderFactory(void) : WindowFactory((utf8*)"WindowsLook/Slider") { }
+	WLSliderFactory(void) : WindowFactory(WLSlider::WidgetTypeName) { }
 	~WLSliderFactory(void){}
 
 

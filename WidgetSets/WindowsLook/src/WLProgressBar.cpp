@@ -32,6 +32,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLProgressBar::WidgetTypeName[]				= "WindowsLook/ProgressBar";
+
 // image name constants
 const utf8	WLProgressBar::ImagesetName[]				= "WindowsLook";
 const utf8	WLProgressBar::TopLeftFrameImageName[]		= "StaticFrameTopLeft";

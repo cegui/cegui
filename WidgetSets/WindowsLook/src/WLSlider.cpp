@@ -34,6 +34,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLSlider::WidgetTypeName[]				= "WindowsLook/Slider";
+
 // Image names
 const utf8	WLSlider::ImagesetName[]				= "WindowsLook";
 const utf8	WLSlider::TrackLeftImageName[]			= "SliderTrackLeft";
@@ -43,7 +45,7 @@ const utf8	WLSlider::CalibrationMarkImageName[]	= "SliderTick";
 const utf8	WLSlider::MouseCursorImageName[]		= "MouseArrow";
 
 // window type stuff
-const utf8	WLSlider::ThumbType[] = "WindowsLook/SliderThumb";
+const utf8*	WLSlider::ThumbType = WLSliderThumb::WidgetTypeName;
 
 // defaults
 const float WLSlider::DefaultTickFrequency = 5;

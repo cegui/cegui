@@ -33,6 +33,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLTitlebar::WidgetTypeName[]			= "WindowsLook/Titlebar";
+
 const utf8	WLTitlebar::ImagesetName[]				= "WindowsLook";
 const utf8	WLTitlebar::LeftEndSectionImageName[]	= "TitlebarLeft";
 const utf8	WLTitlebar::MiddleSectionImageName[]	= "TitlebarMiddle";

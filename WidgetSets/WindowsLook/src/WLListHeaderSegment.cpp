@@ -33,6 +33,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLListHeaderSegment::WidgetTypeName[]			= "WindowsLook/ListHeaderSegment";
+
 // image / imageset related
 const utf8	WLListHeaderSegment::ImagesetName[]				= "WindowsLook";
 const utf8	WLListHeaderSegment::BackdropMainImageName[]	= "HeaderMainBrush";

@@ -26,7 +26,9 @@
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIFont.h"
-#include "elements/CEGUIScrollbar.h"
+#include "WLHorzScrollbar.h"
+#include "WLVertScrollbar.h"
+#include "WLListHeader.h"
 
 
 // Start of CEGUI namespace section
@@ -35,6 +37,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLMultiColumnList::WidgetTypeName[]				= "WindowsLook/MultiColumnList";
+
 // image / imageset related
 const utf8	WLMultiColumnList::ImagesetName[]				= "WindowsLook";
 const utf8	WLMultiColumnList::TopLeftImageName[]			= "StaticFrameTopLeft";
@@ -50,9 +54,9 @@ const utf8	WLMultiColumnList::SelectionBrushImageName[]	= "Background";
 const utf8	WLMultiColumnList::MouseCursorImageName[]		= "MouseArrow";
 
 // component widget type names
-const utf8	WLMultiColumnList::HorzScrollbarTypeName[]		= "WindowsLook/HorizontalScrollbar";
-const utf8	WLMultiColumnList::VertScrollbarTypeName[]		= "WindowsLook/VerticalScrollbar";
-const utf8	WLMultiColumnList::ListHeaderTypeName[]			= "WindowsLook/ListHeader";
+const utf8*	WLMultiColumnList::HorzScrollbarTypeName		= WLHorzScrollbar::WidgetTypeName;
+const utf8*	WLMultiColumnList::VertScrollbarTypeName		= WLVertScrollbar::WidgetTypeName;
+const utf8*	WLMultiColumnList::ListHeaderTypeName			= WLListHeader::WidgetTypeName;
 
 	
 /*************************************************************************

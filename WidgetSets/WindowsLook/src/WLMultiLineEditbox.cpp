@@ -25,7 +25,8 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
-#include "elements/CEGUIScrollbar.h"
+#include "WLHorzScrollbar.h"
+#include "WLVertScrollbar.h"
 
 
 // Start of CEGUI namespace section
@@ -34,6 +35,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLMultiLineEditbox::WidgetTypeName[]			= "WindowsLook/MultiLineEditbox";
+
 // image / imageset related
 const utf8	WLMultiLineEditbox::ImagesetName[]				= "WindowsLook";
 const utf8	WLMultiLineEditbox::TopLeftImageName[]			= "EditFrameTopLeft";
@@ -50,8 +53,8 @@ const utf8	WLMultiLineEditbox::SelectionBrushImageName[]	= "Background";
 const utf8	WLMultiLineEditbox::MouseCursorImageName[]		= "MouseTextBar";
 
 // component widget type names
-const utf8	WLMultiLineEditbox::HorzScrollbarTypeName[]		= "WindowsLook/HorizontalScrollbar";
-const utf8	WLMultiLineEditbox::VertScrollbarTypeName[]		= "WindowsLook/VerticalScrollbar";
+const utf8*	WLMultiLineEditbox::HorzScrollbarTypeName		= WLHorzScrollbar::WidgetTypeName;
+const utf8*	WLMultiLineEditbox::VertScrollbarTypeName		= WLVertScrollbar::WidgetTypeName;
 
 // colours
 const colour WLMultiLineEditbox::ReadWriteBackgroundColour	= 0xFFFFFF;

@@ -42,12 +42,15 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image / imageset related
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	MouseCursorImageName[];			//!< Image to use for mouse.
 
 	// type names for the component widgets
-	static const utf8	SegmentWidgetType[];			//!< Type of widget to create for the header segments;
+	static const utf8*	SegmentWidgetType;				//!< Type of widget to create for the header segments;
 
 
 	/*************************************************************************
@@ -123,7 +126,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLListHeaderFactory(void) : WindowFactory((utf8*)"WindowsLook/ListHeader") { }
+	WLListHeaderFactory(void) : WindowFactory(WLListHeader::WidgetTypeName) { }
 	~WLListHeaderFactory(void){}
 
 

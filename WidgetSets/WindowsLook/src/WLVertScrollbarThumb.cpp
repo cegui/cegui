@@ -32,6 +32,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLVertScrollbarThumb::WidgetTypeName[]					= "WindowsLook/VerticalScrollbarThumb";
+
 const utf8	WLVertScrollbarThumb::ImagesetName[]					= "WindowsLook";
 const utf8	WLVertScrollbarThumb::BackgroundImageName[]				= "Background";
 const utf8	WLVertScrollbarThumb::NormalLeftImageName[]				= "ButtonNormalLeft";

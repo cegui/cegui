@@ -40,6 +40,13 @@ class WINDOWSLOOK_API WLCloseButton : public WLButton
 {
 public:
 	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+
+	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
@@ -87,7 +94,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLCloseButtonFactory(void) : WindowFactory((utf8*)"WindowsLook/CloseButton") { }
+	WLCloseButtonFactory(void) : WindowFactory(WLCloseButton::WidgetTypeName) { }
 	~WLCloseButtonFactory(void){}
 
 

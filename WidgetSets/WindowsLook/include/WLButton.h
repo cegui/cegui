@@ -43,6 +43,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	BackgroundImageName[];			//!< Name of image to use as background for widget.
 	static const utf8	NormalLeftImageName[];			//!< Name of image to use for left edge (normal state)
@@ -306,7 +309,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLButtonFactory(void) : WindowFactory((utf8*)"WindowsLook/Button") { }
+	WLButtonFactory(void) : WindowFactory(WLButton::WidgetTypeName) { }
 	~WLButtonFactory(void){}
 
 

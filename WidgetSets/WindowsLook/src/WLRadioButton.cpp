@@ -32,6 +32,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLRadioButton::WidgetTypeName[]			= "WindowsLook/RadioButton";
+
 const utf8	WLRadioButton::ImagesetName[]			= "WindowsLook";
 const utf8	WLRadioButton::NormalImageName[]		= "RadioButtonNormal";
 const utf8	WLRadioButton::HighlightImageName[]		= "RadioButtonHover";

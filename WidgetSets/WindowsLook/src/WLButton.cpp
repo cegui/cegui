@@ -32,6 +32,7 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLButton::WidgetTypeName[]					= "WindowsLook/Button";
 const utf8	WLButton::ImagesetName[]					= "WindowsLook";
 const utf8	WLButton::BackgroundImageName[]				= "Background";
 const utf8	WLButton::NormalLeftImageName[]				= "ButtonNormalLeft";

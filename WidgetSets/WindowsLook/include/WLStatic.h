@@ -26,7 +26,8 @@
 
 #include "WLModule.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUIStatic.h"
+#include "elements/CEGUIStaticText.h"
+#include "elements/CEGUIStaticImage.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,6 +42,81 @@ static void initWinLookStatic(Static* s);
 
 /*!
 \brief
+	StaticText class for the WindowsLook Gui Scheme
+*/
+class WINDOWSLOOK_API WLStaticText : public StaticText
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for WIndowsLook StaticText objects.
+
+	\param type
+		String object that specifies a type for this window, usually provided by a factory class.
+
+	\param name
+		String object that specifies a unique name that will be used to identify the new Window object
+	*/
+	WLStaticText(const String& type, const String& name) : StaticText(type, name) {}
+
+
+	/*!
+	\brief
+		Destructor for WLStaticText objects.
+	*/
+	virtual ~WLStaticText(void) {}
+};
+
+
+
+/*!
+\brief
+	StaticImage class for the WindowsLook Gui Scheme
+*/
+class WINDOWSLOOK_API WLStaticImage : public StaticImage
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for WindowsLook StaticImage objects.
+
+	\param type
+		String object that specifies a type for this window, usually provided by a factory class.
+
+	\param name
+		String object that specifies a unique name that will be used to identify the new Window object
+	*/
+	WLStaticImage(const String& type, const String& name) : StaticImage(type, name) {}
+
+
+	/*!
+	\brief
+		Destructor for WLStaticImage objects.
+	*/
+	virtual ~WLStaticImage(void) {}
+};
+
+
+/*!
+\brief
 	Factory class for producing StaticText objects for the WindowsLook GUI Scheme
 */
 class WINDOWSLOOK_API WLStaticTextFactory : public WindowFactory
@@ -49,7 +125,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLStaticTextFactory(void) : WindowFactory((utf8*)"WindowsLook/StaticText") { }
+	WLStaticTextFactory(void) : WindowFactory(WLStaticText::WidgetTypeName) { }
 	~WLStaticTextFactory(void){}
 
 
@@ -90,7 +166,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLStaticImageFactory(void) : WindowFactory((utf8*)"WindowsLook/StaticImage") { }
+	WLStaticImageFactory(void) : WindowFactory(WLStaticImage::WidgetTypeName) { }
 	~WLStaticImageFactory(void){}
 
 

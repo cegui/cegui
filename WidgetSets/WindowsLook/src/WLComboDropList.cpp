@@ -25,7 +25,8 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
-#include "elements/CEGUIScrollbar.h"
+#include "WLHorzScrollbar.h"
+#include "WLVertScrollbar.h"
 
 
 // Start of CEGUI namespace section
@@ -34,6 +35,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLComboDropList::WidgetTypeName[]			= "WindowsLook/ComboDropList";
+
 // image / imageset related
 const utf8	WLComboDropList::ImagesetName[]				= "WindowsLook";
 const utf8	WLComboDropList::TopLeftImageName[]			= "StaticFrameTopLeft";
@@ -49,8 +52,8 @@ const utf8	WLComboDropList::SelectionBrushImageName[]	= "Background";
 const utf8	WLComboDropList::MouseCursorImageName[]		= "MouseArrow";
 
 // component widget type names
-const utf8	WLComboDropList::HorzScrollbarTypeName[]	= "WindowsLook/HorizontalScrollbar";
-const utf8	WLComboDropList::VertScrollbarTypeName[]	= "WindowsLook/VerticalScrollbar";
+const utf8*	WLComboDropList::HorzScrollbarTypeName		= WLHorzScrollbar::WidgetTypeName;
+const utf8*	WLComboDropList::VertScrollbarTypeName		= WLVertScrollbar::WidgetTypeName;
 
 	
 /*************************************************************************

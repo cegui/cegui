@@ -43,6 +43,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image name constants
 	static const utf8	ImagesetName[];					//!< Name of the Imageset containing the imagery to use.
 	static const utf8	TopLeftFrameImageName[];		//!< Name of the image to use for the top-left corner of the frame.
@@ -67,9 +70,9 @@ public:
 	static const float	MinThumbHeight;					//!< Minimum height of the thumb in pixels.
 
 	// type names for the component widgets
-	static const utf8	ThumbWidgetType[];			//!< Type of widget to create for the scroll bar thumb;
-	static const utf8	IncreaseButtonWidgetType[];	//!< Type of widget to create for the increase button (down arrow).
-	static const utf8	DecreaseButtonWidgetType[];	//!< Type of widget to create for the decrease button (up arrow).
+	static const utf8*	ThumbWidgetType;			//!< Type of widget to create for the scroll bar thumb;
+	static const utf8*	IncreaseButtonWidgetType;	//!< Type of widget to create for the increase button (down arrow).
+	static const utf8*	DecreaseButtonWidgetType;	//!< Type of widget to create for the decrease button (up arrow).
 
 
 	/*************************************************************************
@@ -207,7 +210,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLVertScrollbarFactory(void) : WindowFactory((utf8*)"WindowsLook/VerticalScrollbar") { }
+	WLVertScrollbarFactory(void) : WindowFactory(WLVertScrollbar::WidgetTypeName) { }
 	~WLVertScrollbarFactory(void){}
 
 

@@ -32,6 +32,7 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLCheckbox::WidgetTypeName[]		= "WindowsLook/Checkbox";
 const utf8	WLCheckbox::ImagesetName[]			= "WindowsLook";
 const utf8	WLCheckbox::NormalImageName[]		= "CheckboxNormal";
 const utf8	WLCheckbox::HighlightImageName[]	= "CheckboxHover";

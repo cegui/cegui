@@ -32,6 +32,8 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	WLSliderThumb::WidgetTypeName[]			= "WindowsLook/SliderThumb";
+
 // Image names
 const utf8	WLSliderThumb::ImagesetName[]			= "WindowsLook";
 const utf8	WLSliderThumb::NormalImageName[]		= "SliderThumbNormal";

@@ -44,6 +44,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image / imageset related
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	TopLeftImageName[];			//!< Name of the image to use for the top-left corner of the box.
@@ -60,8 +63,8 @@ public:
 	static const utf8	MouseCursorImageName[];		//!< Name of the image to use for the mouse cursor.
 
 	// component widget type names
-	static const utf8	HorzScrollbarTypeName[];	//!< Type name of widget to be created as horizontal scroll bar.
-	static const utf8	VertScrollbarTypeName[];	//!< Type name of widget to be created as vertical scroll bar.
+	static const utf8*	HorzScrollbarTypeName;		//!< Type name of widget to be created as horizontal scroll bar.
+	static const utf8*	VertScrollbarTypeName;		//!< Type name of widget to be created as vertical scroll bar.
 
 	// colours
 	static const colour	ReadWriteBackgroundColour;			//!< Colour used for background in read/write mode.
@@ -199,7 +202,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	WLMultiLineEditboxFactory(void) : WindowFactory((utf8*)"WindowsLook/MultiLineEditbox") { }
+	WLMultiLineEditboxFactory(void) : WindowFactory(WLMultiLineEditbox::WidgetTypeName) { }
 	~WLMultiLineEditboxFactory(void){}
 
 
