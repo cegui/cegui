@@ -40,6 +40,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIWindowFactory.cpp \
                       CEGUIWindowFactoryManager.cpp \
                       CEGUIWindowManager.cpp \
+		      CEGUIXmlHandlerHelper.cpp\
                       elements/CEGUIButtonBase.cpp \
                       elements/CEGUICheckbox.cpp \
                       elements/CEGUICombobox.cpp \

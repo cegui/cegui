@@ -103,10 +103,11 @@ System::System(Renderer* renderer, utf8* logFile) :
 		delete	ImagesetManager::getSingletonPtr();
 
 		// log a message about the failure
-		ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+		char* excmsg = XMLString::transcode(exc.getMessage());
 		String message((utf8*)"An exception occurred while initialising the Xerces-C XML system.  Additional information: ");
-		message += (utf8*)excmsg.get();
+		message += (utf8*)excmsg;
 		Logger::getSingleton().logEvent(message, Errors);
+		XMLString::release(&excmsg);
 		
 		// now delete the logger singleton
 		delete Logger::getSingletonPtr();

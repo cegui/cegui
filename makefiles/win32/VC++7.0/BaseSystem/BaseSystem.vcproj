@@ -226,6 +226,9 @@
 			<File
 				RelativePath="..\..\..\..\src\CEGUIWindowManager.cpp">
 			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIXmlHandlerHelper.cpp">
+			</File>
 			<Filter
 				Name="elements"
 				Filter="">
@@ -428,6 +431,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIWindowManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIXmlHandlerHelper.h">
 			</File>
 			<Filter
 				Name="elements"

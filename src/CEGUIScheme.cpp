@@ -71,8 +71,8 @@ Scheme::Scheme(const String& filename)
 
 	// setup schema for Scheme data
 	XMLCh* pval = XMLString::transcode(GUISchemeSchemaName);
-	ArrayJanitor<XMLCh>	arrayJanitor(pval);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+	XMLString::release(&pval);
 
 	// setup handler object
 	Scheme_xmlHandler handler(this);
@@ -90,9 +90,10 @@ Scheme::Scheme(const String& filename)
 		{
 			delete parser;
 
-			ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+			char* excmsg = XMLString::transcode(exc.getMessage());
 			String message((utf8*)"Scheme::Scheme - An error occurred while parsing Scheme file '" + filename + "'.  Additional information: ");
-			message += excmsg.get();
+			message += excmsg;
+			XMLString::release(&excmsg);
 
 			throw FileIOException(message);
 		}
@@ -102,9 +103,10 @@ Scheme::Scheme(const String& filename)
 	{
 		delete parser;
 
-		ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+		char* excmsg = XMLString::transcode(exc.getMessage());
 		String message((utf8*)"Scheme::Scheme - An error occurred while parsing Scheme file '" + filename + "'.  Additional information: ");
-		message += excmsg.get();
+		message += excmsg;
+		XMLString::release(&excmsg);
 
 		throw FileIOException(message);
 	}

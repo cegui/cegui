@@ -81,11 +81,11 @@ private:
 	Implementation Constants
 	*************************************************************************/
 	// XML related strings
-	static const char	GUISchemeElement[];				//!< Root GUIScheme element.
-	static const char	ImagesetElement[];				//!< Element specifying an Imageset
-	static const char	FontElement[];					//!< Element specifying a Font
-	static const char	WindowSetElement[];				//!< Element specifying a module and set of WindowFactory elements.
-	static const char	WindowFactoryElement[];			//!< Element specifying a WindowFactory type.
+	static const utf8	GUISchemeElement[];				//!< Root GUIScheme element.
+	static const utf8	ImagesetElement[];				//!< Element specifying an Imageset
+	static const utf8	FontElement[];					//!< Element specifying a Font
+	static const utf8	WindowSetElement[];				//!< Element specifying a module and set of WindowFactory elements.
+	static const utf8	WindowFactoryElement[];			//!< Element specifying a WindowFactory type.
 	static const char	NameAttribute[];				//!< Attribute specifying the name of some object.
 	static const char	FilenameAttribute[];			//!< Attribute specifying the name of some file.
 

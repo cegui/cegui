@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "CEGUIExceptions.h"
 #include "CEGUIImageset.h"
 
+#include "CEGUIXmlHandlerHelper.h"
+
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
 
@@ -40,11 +42,11 @@ Static Data definitions
 *************************************************************************/
 
 // xml file elements and attributes
-const char	Scheme_xmlHandler::GUISchemeElement[]			= "GUIScheme";
-const char	Scheme_xmlHandler::ImagesetElement[]			= "Imageset";
-const char	Scheme_xmlHandler::FontElement[]				= "Font";
-const char	Scheme_xmlHandler::WindowSetElement[]			= "WindowSet";
-const char	Scheme_xmlHandler::WindowFactoryElement[]		= "WindowFactory";
+const utf8	Scheme_xmlHandler::GUISchemeElement[]			= "GUIScheme";
+const utf8	Scheme_xmlHandler::ImagesetElement[]			= "Imageset";
+const utf8	Scheme_xmlHandler::FontElement[]				= "Font";
+const utf8	Scheme_xmlHandler::WindowSetElement[]			= "WindowSet";
+const utf8	Scheme_xmlHandler::WindowFactoryElement[]		= "WindowFactory";
 const char	Scheme_xmlHandler::NameAttribute[]				= "Name";
 const char	Scheme_xmlHandler::FilenameAttribute[]			= "Filename";
 
@@ -54,20 +56,15 @@ SAX2 Handler methods
 void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
 {
 	XERCES_CPP_NAMESPACE_USE
-		std::string element(XMLString::transcode(localname));
+	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
 
 	// handle an Imageset element
 	if (element == ImagesetElement)
 	{
 		Scheme::LoadableUIElement	imageset;
 
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(NameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		imageset.name = (utf8*)val_str.get();
-
-		attr_name.reset(XMLString::transcode(FilenameAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		imageset.filename = (utf8*)val_str.get();
+		imageset.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
+		imageset.filename = XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
 
 		d_scheme->d_imagesets.push_back(imageset);
 	}
@@ -76,13 +73,8 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	{
 		Scheme::LoadableUIElement	font;
 
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(NameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		font.name = (utf8*)val_str.get();
-
-		attr_name.reset(XMLString::transcode(FilenameAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		font.filename = (utf8*)val_str.get();
+		font.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
+		font.filename = XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
 
 		d_scheme->d_fonts.push_back(font);
 	}
@@ -90,9 +82,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	else if (element == WindowSetElement)
 	{
 		Scheme::UIModule	module;
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(FilenameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		module.name		= (utf8*)val_str.get();
+		module.name		= XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
 		module.module	= NULL;
 
 		module.factories.clear();
@@ -103,9 +93,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	{
 		Scheme::UIElementFactory factory;
 
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(NameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		factory.name = (utf8*)val_str.get();
+		factory.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
 
 		d_scheme->d_widgetModules[d_scheme->d_widgetModules.size() - 1].factories.push_back(factory);
 	}
@@ -113,9 +101,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	else if (element == GUISchemeElement)
 	{
 		// get name of scheme we are creating
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(NameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		d_scheme->d_name = (utf8*)val_str.get();
+		d_scheme->d_name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
 
 		if (SchemeManager::getSingleton().isSchemePresent(d_scheme->d_name))
 		{

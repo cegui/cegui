@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 
+#include "CEGUIXmlHandlerHelper.h"
+
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
 
@@ -38,15 +40,14 @@ namespace CEGUI
 /*************************************************************************
 Definition of constant data for Imageset (and sub-classes)
 *************************************************************************/
-
-	// Declared in Imageset::xmlHandler
+// Declared in Imageset::xmlHandler
+const utf8	Imageset_xmlHandler::ImagesetElement[]					= "Imageset";
+const utf8	Imageset_xmlHandler::ImageElement[]						= "Image";
 const char	Imageset_xmlHandler::ImagesetImageFileAttribute[]		= "Imagefile";
 const char	Imageset_xmlHandler::ImagesetNameAttribute[]			= "Name";
 const char	Imageset_xmlHandler::ImagesetNativeHorzResAttribute[]	= "NativeHorzRes";
 const char	Imageset_xmlHandler::ImagesetNativeVertResAttribute[]	= "NativeVertRes";
 const char	Imageset_xmlHandler::ImagesetAutoScaledAttribute[]		= "AutoScaled";
-const char	Imageset_xmlHandler::ImagesetElement[]					= "Imageset";
-const char	Imageset_xmlHandler::ImageElement[]						= "Image";
 const char	Imageset_xmlHandler::ImageNameAttribute[]				= "Name";
 const char	Imageset_xmlHandler::ImageXPosAttribute[]				= "XPos";
 const char	Imageset_xmlHandler::ImageYPosAttribute[]				= "YPos";
@@ -61,43 +62,29 @@ SAX2 Handler methods
 void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
 {
 	XERCES_CPP_NAMESPACE_USE
-		std::string element(XMLString::transcode(localname));
+	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
 
 	// handle an Image element (extract all element attributes and use data to define an Image for the Imageset)
 	if (element == ImageElement)
 	{
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(ImageNameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		String	name((utf8*)val_str.get());
+		String	name(XmlHandlerHelper::getAttributeValueAsString(attrs, ImageNameAttribute));
 
 		Rect	rect;
-		attr_name.reset(XMLString::transcode(ImageXPosAttribute));
-		rect.d_left	= (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		attr_name.reset(XMLString::transcode(ImageYPosAttribute));
-		rect.d_top	= (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		attr_name.reset(XMLString::transcode(ImageWidthAttribute));
-		rect.setWidth((float)XMLString::parseInt(attrs.getValue(attr_name.get())));
-
-		attr_name.reset(XMLString::transcode(ImageHeightAttribute));
-		rect.setHeight((float)XMLString::parseInt(attrs.getValue(attr_name.get())));
+		rect.d_left	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageXPosAttribute);
+		rect.d_top	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageYPosAttribute);
+		rect.setWidth((float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageWidthAttribute));
+		rect.setHeight((float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageHeightAttribute));
 
 		Point	offset;
-		attr_name.reset(XMLString::transcode(ImageXOffsetAttribute));
-		offset.d_x	= (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
-
-		attr_name.reset(XMLString::transcode(ImageYOffsetAttribute));
-		offset.d_y	= (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
+		offset.d_x	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageXOffsetAttribute);
+		offset.d_y	= (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImageYOffsetAttribute);
 
 		d_imageset->defineImage(name, rect, offset);
 	}
 	// handle root Imageset element
 	else if (element == ImagesetElement)
 	{
-		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(ImagesetNameAttribute));
-		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
-		d_imageset->d_name = (utf8*)val_str.get();
+		d_imageset->d_name = XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetNameAttribute);
 
 		//
 		// load auto-scaling configuration
@@ -105,22 +92,18 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 		float hres, vres;
 
 		// get native horizontal resolution
-		attr_name.reset(XMLString::transcode(ImagesetNativeHorzResAttribute));
-		hres = (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
+		hres = (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImagesetNativeHorzResAttribute);
 
 		// get native vertical resolution
-		attr_name.reset(XMLString::transcode(ImagesetNativeVertResAttribute));
-		vres = (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
+		vres = (float)XmlHandlerHelper::getAttributeValueAsInteger(attrs, ImagesetNativeVertResAttribute);
 
 		d_imageset->setNativeResolution(Size(hres, vres));
 
 		// get auto-scaling setting
-		attr_name.reset(XMLString::transcode(ImagesetAutoScaledAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		std::string autoscale = val_str.get();
+		String autoscale(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetAutoScaledAttribute));
 
 		// enable / disable auto-scaling for this Imageset according to the setting
-		if ((autoscale == "true") || (autoscale == "1"))
+		if ((autoscale == (utf8*)"true") || (autoscale == (utf8*)"1"))
 		{
 			d_imageset->setAutoScalingEnabled(true);
 		}
@@ -132,9 +115,7 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 		//
 		// Create a Texture object via the specified filename, and set it as the texture for the Imageset
 		//
-		attr_name.reset(XMLString::transcode(ImagesetImageFileAttribute));
-		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
-		String filename((utf8*)val_str.get());
+		String filename(XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetImageFileAttribute));
 
 		try
 		{

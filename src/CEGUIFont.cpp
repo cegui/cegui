@@ -637,8 +637,8 @@ void Font::load(const String& filename)
 
 	// setup schema for Font data
 	XMLCh* pval = XMLString::transcode(FontSchemaName);
-	ArrayJanitor<XMLCh>	arrayJanitor(pval);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+	XMLString::release(&pval);
 
 	// setup handler object
 	Font_xmlHandler handler(this);
@@ -657,9 +657,10 @@ void Font::load(const String& filename)
 			unload();
 			delete parser;
 
-			ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+			char* excmsg = XMLString::transcode(exc.getMessage());
 			String message((utf8*)"Font::load - An error occurred while parsing Font file '" + filename + "'.  Additional information: ");
-			message += excmsg.get();
+			message += excmsg;
+			XMLString::release(&excmsg);
 
 			throw FileIOException(message);
 		}
@@ -670,9 +671,10 @@ void Font::load(const String& filename)
 		unload();
 		delete parser;
 
-		ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+		char* excmsg = XMLString::transcode(exc.getMessage());
 		String message((utf8*)"Font::load - An error occurred while parsing Font file '" + filename + "'.  Additional information: ");
-		message += excmsg.get();
+		message += excmsg;
+		XMLString::release(&excmsg);
 
 		throw FileIOException(message);
 	}

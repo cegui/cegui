@@ -126,8 +126,8 @@ void Imageset::load(const String& filename)
 
 	// setup schema for Imageset data
 	XMLCh* pval = XMLString::transcode(ImagesetSchemaName);
-	ArrayJanitor<XMLCh>	arrayJanitor(pval);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+	XMLString::release(&pval);
 
 	// setup handler object
 	Imageset_xmlHandler handler(this);
@@ -146,9 +146,10 @@ void Imageset::load(const String& filename)
 			unload();
 			delete parser;
 
-			ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+			char* excmsg = XMLString::transcode(exc.getMessage());
 			String message((utf8*)"Imageset::load - An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
-			message += (utf8*)excmsg.get();
+			message += (utf8*)excmsg;
+			XMLString::release(&excmsg);
 
 			throw FileIOException(message);
 		}
@@ -159,9 +160,10 @@ void Imageset::load(const String& filename)
 		unload();
 		delete parser;
 
-		ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
+		char* excmsg = XMLString::transcode(exc.getMessage());
 		String message((utf8*)"Imageset::load - An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
-		message += (utf8*)excmsg.get();
+		message += (utf8*)excmsg;
+		XMLString::release(&excmsg);
 
 		throw FileIOException(message);
 	}

@@ -88,8 +88,8 @@ private:
 	/*************************************************************************
 	Implementation Constants
 	*************************************************************************/
-	static const char	ImagesetElement[];				//!< Tag name for Imageset elements.
-	static const char	ImageElement[];					//!< Tag name for Image elements.
+	static const utf8	ImagesetElement[];				//!< Tag name for Imageset elements.
+	static const utf8	ImageElement[];					//!< Tag name for Image elements.
 	static const char	ImagesetNameAttribute[];		//!< Attribute name that stores the name of the Imageset
 	static const char	ImagesetImageFileAttribute[];	//!< Attribute name that stores the filename for the image file.
 	static const char	ImagesetNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.

@@ -81,8 +81,10 @@ private:
 	Implementation Constants
 	*************************************************************************/
 	// XML related strings
-	static const char	FontElement[];					//!< Tag name for Font elements.
-	static const char	MappingElement[];				//!< Tag name for Mapping elements.
+	static const utf8	FontElement[];					//!< Tag name for Font elements.
+	static const utf8	MappingElement[];				//!< Tag name for Mapping elements.
+	static const utf8	FontTypeStatic[];				//!< Value used for FontTypeAttribute for a static (bitmapped) font.
+	static const utf8	FontTypeDynamic[];				//!< Value used for FontTypeAttribute for a dynamic (true-type) font.
 	static const char	FontNameAttribute[];			//!< Attribute name that stores the name of the Font
 	static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
 	static const char	FontTypeAttribute[];			//!< Attribute name that stores the type of font being defined (either static or dynamic).
@@ -95,8 +97,6 @@ private:
 	static const char	MappingCodepointAttribute[];	//!< Attribute name that stores the Unicode code-point for a mapping.
 	static const char	MappingImageAttribute[];		//!< Attribute name that stores the Image name for a mapping.
 	static const char	MappingHorzAdvanceAttribute[];	//!< Attribute name that stores the horizontal advance for a glyph.
-	static const char	FontTypeStatic[];				//!< Value used for FontTypeAttribute for a static (bitmapped) font.
-	static const char	FontTypeDynamic[];				//!< Value used for FontTypeAttribute for a dynamic (true-type) font.
 
 	// general constants
 	static const int	AutoGenerateHorzAdvance;		//!< Horizontal advance value that tells the parser to auto-calculate some reasonable value.
