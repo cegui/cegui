@@ -187,7 +187,7 @@ float Font::getTextExtent(const String& text, float x_scale) const
 
 	}
 
-	return cur_extent;
+	return ceguimax(adv_extent, cur_extent);
 }
 
 
