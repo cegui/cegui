@@ -218,6 +218,8 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	d_rshift	= false;
 	d_lctrl		= false;
 	d_rctrl		= false;
+    d_ralt      = false;
+    d_lalt      = false;
 
 	d_click_timeout		= DefaultSingleClickTimeout;
 	d_dblclick_timeout	= DefaultMultiClickTimeout;
@@ -1152,6 +1154,24 @@ SystemKey System::keyCodeToSyskey(Key::Scan key, bool direction)
 		if (!d_lctrl)
 		{
 			return Control;
+		}
+		break;
+
+	case Key::LeftAlt:
+		d_lalt = direction;
+
+		if (!d_ralt)
+		{
+			return Alt;
+		}
+		break;
+
+	case Key::RightAlt:
+		d_ralt = direction;
+
+		if (!d_lalt)
+		{
+			return Alt;
 		}
 		break;
 

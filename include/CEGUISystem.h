@@ -947,6 +947,8 @@ private:
 	bool		d_rshift;			//!< Tracks state of right shift.
 	bool		d_lctrl;			//!< Tracks state of left control.
 	bool		d_rctrl;			//!< Tracks state of right control.
+	bool		d_lalt;				//!< Tracks state of left alt.
+	bool		d_ralt;				//!< Tracks state of right alt.
 
 	double		d_click_timeout;	//!< Timeout value, in seconds, used to generate a single-click (button down then up)
 	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
