@@ -50,6 +50,7 @@ class CEGUIBASE_API SubscriberInterface
 {
 public:
 	virtual bool operator()(const EventArgs& args) const = 0;
+	virtual ~SubscriberInterface() {}
 };
 
 
