@@ -405,7 +405,7 @@ Window* System::setGUISheet(Window* sheet)
 
 	// fire event
 	WindowEventArgs args(old);
-	onDefaultFontChanged(args);
+	onGUISheetChanged(args);
 
 	return old;
 }
