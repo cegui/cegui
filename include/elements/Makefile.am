@@ -13,6 +13,7 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIListHeader.h \
                      CEGUIListHeaderSegment.h \
                      CEGUIMultiColumnList.h \
+		     CEGUIMultiLineEditbox.h \
                      CEGUIProgressBar.h \
                      CEGUIPushButton.h \
                      CEGUIRadioButton.h \

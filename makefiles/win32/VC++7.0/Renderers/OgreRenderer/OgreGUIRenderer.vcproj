@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CEGUIBase.lib Ogremain.lib"
+				AdditionalDependencies="CEGUIBase.lib Ogremain_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\..\..\ogrenew\OgreMain\lib\$(ConfigurationName)&quot;;&quot;..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)&quot;;..\..\..\..\..\dependencies\lib"

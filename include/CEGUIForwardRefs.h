@@ -71,6 +71,7 @@ class FrameWindow;
 class Editbox;
 class Listbox;
 class Combobox;
+class ListHeaderSegment;
 class ListHeader;
 class MultiColumnList;
 class ProgressBar;
@@ -83,6 +84,7 @@ class StaticImage;
 class ListboxItem;
 class ListboxTextItem;
 class ComboDropList;
+class MultiLineEditbox;
 
 } // End of  CEGUI namespace section
 

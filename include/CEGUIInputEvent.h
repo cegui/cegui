@@ -161,7 +161,7 @@ struct CEGUIBASE_API Key
         RightAlt        =0xB8,    /* right Alt */
         Pause           =0xC5,    /* Pause */
         Home            =0xC7,    /* Home on arrow keypad */
-        Up              =0xC8,    /* UpArrow on arrow keypad */
+        ArrowUp         =0xC8,    /* UpArrow on arrow keypad */
         PageUp          =0xC9,    /* PgUp on arrow keypad */
         ArrowLeft       =0xCB,    /* LeftArrow on arrow keypad */
         ArrowRight      =0xCD,    /* RightArrow on arrow keypad */

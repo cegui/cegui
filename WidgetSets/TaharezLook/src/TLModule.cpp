@@ -51,6 +51,7 @@
 #include "TLListHeader.h"
 #include "TLListHeaderSegment.h"
 #include "TLMultiColumnList.h"
+#include "TLMultiLineEditbox.h"
 
 
 /*************************************************************************
@@ -82,6 +83,7 @@ static CEGUI::TLComboEditboxFactory		s_ComboEditboxFactory;
 static CEGUI::TLListHeaderSegmentFactory	s_ListHeaderSegmentFactory;
 static CEGUI::TLListHeaderFactory		s_ListHeaderFactory;
 static CEGUI::TLMultiColumnListFactory	s_MultiColumnListFactory;
+static CEGUI::TLMultiLineEditboxFactory	s_MultiLineEditboxFactory;
 
 
 /*************************************************************************
@@ -219,6 +221,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez MultiColumnList")
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
+		return;
+	}
+	else if (type_name == "Taharez MultiLineEditbox")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_MultiLineEditboxFactory);
 		return;
 	}
 	

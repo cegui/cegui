@@ -78,5 +78,6 @@
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIListboxTextItem.h"
 #include "elements/CEGUIComboDropList.h"
+#include "elements/CEGUIMultiLineEditbox.h"
 
 #endif	// end of guard _CEGUI_h_

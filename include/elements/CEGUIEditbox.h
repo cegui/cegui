@@ -319,7 +319,7 @@ public:
 
 	\param end_pos
 		Index of the ending point for the selection.  If this value is greater than the number of characters in the Editbox, the
-		selection start will be set to the end of the text.
+		selection end will be set to the end of the text.
 
 	\return
 		Nothing.
