@@ -155,6 +155,7 @@ void System::renderGUI(void)
 	
 	if (d_gui_redraw)
 	{
+		d_renderer->resetZValue();
 		d_renderer->setQueueingEnabled(true);
 		d_renderer->clearRenderList();
 
@@ -163,6 +164,7 @@ void System::renderGUI(void)
 			d_activeSheet->render();
 		}
 
+		d_gui_redraw = false;
 	}
 
 	d_renderer->doRender();

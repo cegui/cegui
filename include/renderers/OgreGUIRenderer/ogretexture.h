@@ -40,12 +40,123 @@ namespace CEGUI
 */
 class OGRE_GUIRENDERER_API OgreTexture : public Texture
 {
+private:
+	/*************************************************************************
+		Friends (to allow construction and destruction)
+	*************************************************************************/
+	friend	Texture* OgreRenderer::createTexture(void);
+	friend	Texture* OgreRenderer::createTexture(const String& filename);
+	friend	Texture* OgreRenderer::createTexture(float size);
+	friend	void	 OgreRenderer::destroyTexture(Texture* texture);
+
+
+	/*************************************************************************
+		Construction & Destruction (by Renderer object only)
+	*************************************************************************/
+	OgreTexture(Renderer* owner);
+	virtual ~OgreTexture(void);
+
 public:
+	/*!
+	\brief
+		Returns the current pixel width of the texture
+
+	\return
+		ushort value that is the current width of the texture in pixels
+	*/
+	virtual	ushort	getWidth(void) const		{return d_width;}
+
+
+	/*!
+	\brief
+		Returns the current pixel height of the texture
+
+	\return
+		ushort value that is the current height of the texture in pixels
+	*/
+	virtual	ushort	getHeight(void) const		{return d_height;}
+
+
+	/*!
+	\brief
+		Loads the specified image file into the texture.  The texture is resized as required to hold the image.
+
+	\param filename
+		The filename of the image file that is to be loaded into the texture
+
+	\return
+		Nothing.
+
+	\exception
+	*/
+	virtual void	loadFromFile(const String& filename);
+
+
+	/*!
+	\brief
+		Loads (copies) an image in memory into the texture.  The texture is resized as required to hold the image.
+
+	\param buffPtr
+		Pointer to the buffer containing the image data
+
+	\param buffWidth
+		Width of the buffer (in 0xAARRGGBB pixels)
+
+	\param buffHeight
+		Height of the buffer (in 0xAARRGGBB pixels)
+
+	\return
+		Nothing.
+
+	\exception
+	*/
+	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight);
+
+
+	/*!
+	\brief
+		Return a pointer to the internal Ogre::Texture object
+
+	\return
+		Pointer to the Ogre::Texture object currently being used by this Texture object
+	*/
+	Ogre::Texture*	getOgreTexture(void) const		{return d_ogre_texture;}
+
+
+	// 
+	/*!
+	\brief
+		set the size of the internal Ogre texture.  Previous Ogre texture is lost.
+
+	\param size
+		pixel size of the new internal texture.  This will be rounded up to a power of 2.
+
+	\return
+		Nothing.
+	*/
+	void	setOgreTextureSize(uint size);
+
 
 private:
 	/*************************************************************************
+		Implementation Functions
+	*************************************************************************/
+	// safely free Ogre::Texture texture (can be called multiple times with no ill effect)
+	void	freeOgreTexture(void);
+
+	// return a Ogre::string that contains a unique name.
+	Ogre::String	getUniqueName(void);
+
+
+	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
+	static	ulong			d_texturenumber;	//!< Counter used to provide unique texture names.
+
+	Ogre::Texture*			d_ogre_texture;		//!< The 'real' texture.
+
+	ushort					d_width;			//!< cached width of the texture
+	ushort					d_height;			//!< cached height of the texture
 };
 
 

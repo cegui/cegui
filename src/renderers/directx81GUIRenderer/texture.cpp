@@ -171,7 +171,7 @@ void DirectX81Texture::setD3DTextureSize(uint size)
 
 	if (FAILED(hr))
 	{
-		throw RendererException((utf8*)"Failed to load texture from memory: D3D Texture creation failed.");
+		throw RendererException((utf8*)"Failed to create texture of specified size: D3D Texture creation failed.");
 	}
 	else
 	{

@@ -138,8 +138,9 @@ void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* t
 *************************************************************************/
 void DirectX81Renderer::doRender(void)
 {
-	sortQuads();
+	d_currTexture = NULL;
 
+	sortQuads();
 	initPerFrameStates();
 
 	bool locked = false;

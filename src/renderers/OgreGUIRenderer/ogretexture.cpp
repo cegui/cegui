@@ -26,10 +26,161 @@
 #include "renderers/OgreGUIRenderer/ogretexture.h"
 #include "renderers/OgreGUIRenderer/ogrerenderer.h"
 #include "CEGUIExceptions.h"
+#include <string>
+#include <Ogre.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Static data definition / initialisation
+*************************************************************************/
+ulong OgreTexture::d_texturenumber		= 0;
+
+
+/*************************************************************************
+	Constructor
+*************************************************************************/
+OgreTexture::OgreTexture(Renderer* owner) :
+	Texture(owner)
+{
+	d_ogre_texture = NULL;
+}
+
+
+/*************************************************************************
+	Destructor
+*************************************************************************/
+OgreTexture::~OgreTexture(void)
+{
+	freeOgreTexture();
+}
+
+
+/*************************************************************************
+	Loads the specified image file into the texture.  The texture is
+	resized as required to hold the image.	
+*************************************************************************/
+void OgreTexture::loadFromFile(const String& filename)
+{
+	using namespace Ogre;
+
+	// unload old ogre texture
+	freeOgreTexture();
+
+	// create / load a new ogre texture from the specified image
+	try
+	{
+		d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), TEX_TYPE_2D, 1, 1.0f, 1);
+	}
+	catch(Ogre::Exception e)
+	{
+		throw RendererException((utf8*)"Failed to create Texture object from file '" + filename + "'. Additional Information:\n" + e.getFullDescription().c_str());
+	}
+
+	// if we got a pointer cache some details
+	if (d_ogre_texture != NULL)
+	{
+		d_width		= d_ogre_texture->getWidth();
+		d_height	= d_ogre_texture->getHeight();
+	}
+	// no texture from image so throw.
+	else
+	{
+		throw RendererException((utf8*)"Failed to create Texture object from file '" + filename + "'.  Ogre returned a NULL pointer.");
+	}
+
+}
+
+
+/*************************************************************************
+	Loads (copies) an image in memory into the texture.  The texture is
+	resized as required to hold the image.	
+*************************************************************************/
+void OgreTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight)
+{
+	using namespace Ogre;
+
+	// get rid of old texture
+	freeOgreTexture();
+
+	// wrap input buffer with an Ogre DataChunk
+	ulong bytesize = ((buffWidth * sizeof(ulong)) * buffHeight);
+	const DataChunk odc(const_cast<void*>(buffPtr), bytesize);
+
+	// try to create a Ogre::Texture from the input data
+	d_ogre_texture = TextureManager::getSingleton().loadRawData(getUniqueName(), odc, buffWidth, buffHeight, PF_A8R8G8B8, TEX_TYPE_2D, 1, 1.0f, 1);
+
+	// if we got a pointer cache some details
+	if (d_ogre_texture != NULL)
+	{
+		d_width		= d_ogre_texture->getWidth();
+		d_height	= d_ogre_texture->getHeight();
+	}
+	// no texture from memory so throw.
+	else
+	{
+		throw RendererException((utf8*)"Failed to create Texture object from memory:  Ogre returned a NULL Ogre::Texture pointer.");
+	}
+
+}
+
+
+/*************************************************************************
+	set the size of the internal Ogre texture.  Previous Ogre texture
+	is lost.	
+*************************************************************************/
+void OgreTexture::setOgreTextureSize(uint size)
+{
+	using namespace Ogre;
+
+	// unload any current Ogre::Texture
+	freeOgreTexture();
+
+	// Try to create an empty texture of the given size
+	d_ogre_texture = TextureManager::getSingleton().createManual(getUniqueName(), TEX_TYPE_2D, size, size, 1, PF_A8R8G8B8, TU_DEFAULT);
+
+	// if we got a pointer cache some details
+	if (d_ogre_texture != NULL)
+	{
+		d_width		= d_ogre_texture->getWidth();
+		d_height	= d_ogre_texture->getHeight();
+	}
+	// no texture so throw.
+	else
+	{
+		throw RendererException((utf8*)"Failed to create texture of specified size: Ogre::Texture creation failed.");
+	}
+
+}
+
+
+/*************************************************************************
+	safely free Ogre::Texture texture (can be called multiple times with
+	no ill effect)
+*************************************************************************/
+void OgreTexture::freeOgreTexture(void)
+{
+	if (d_ogre_texture != NULL)
+	{
+		Ogre::TextureManager::getSingleton().unload(d_ogre_texture->getName());
+		d_ogre_texture = NULL;
+	}
+}
+
+
+/*************************************************************************
+	return a Ogre::string that contains a unique name.	
+*************************************************************************/
+Ogre::String OgreTexture::getUniqueName(void)
+{
+	Ogre::String str("_cegui_ogre_");
+	str += d_texturenumber;
+
+	++d_texturenumber;
+
+	return str;
+}
 
 
 } // End of  CEGUI namespace section
