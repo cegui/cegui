@@ -59,6 +59,7 @@ LastCodepoint	- Specifies the last codepoint to be available on the dynamic font
 NativeHorzRes	- The horizontal screen resolution that the images were are intended to be displayed at (optional, default=640).
 NativeVertRes	- The vertical screen resolution that the images were are intended to be displayed at (optional, default=480).
 AutoScaled	- Boolean, states whether to scale imagery so it appears the same size at any resolution (optional, default=false).
+AntiAliased	- Boolean, states whether the font should be anti-aliased, applies to dynamic fonts only.  (optional, default=true).
 
 
 Mapping Element

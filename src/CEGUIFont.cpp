@@ -59,6 +59,7 @@ const char	Font::FontSchemaName[]				= "Font.xsd";
 *************************************************************************/
 Font::Font(const String& filename, FontImplData* dat)
 {
+	d_antiAliased = false;
 	d_impldat = dat;
 	d_freetype = false;
 	d_glyph_images = NULL;
@@ -289,7 +290,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
 		// load-up required glyph
-		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER))
+		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|(d_antiAliased ? 0 : FT_LOAD_MONOCHROME)))
 		{
 			// skip errors
 			continue;
@@ -344,7 +345,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
 		// load-up required glyph
-		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER))
+		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|(d_antiAliased ? 0 : FT_LOAD_MONOCHROME)))
 		{
 			// skip errors
 			continue;
@@ -456,7 +457,21 @@ void Font::drawGlyphToBuffer(ulong* buffer, uint buf_width)
 	{
 		for (int j = 0; j < glyph_bitmap->width; ++j)
 		{
-			buffer[j] = ((glyph_bitmap->buffer[(i * glyph_bitmap->width) + j] << 24) | 0x00FFFFFF);
+			switch (glyph_bitmap->pixel_mode)
+			{
+			case FT_PIXEL_MODE_GRAY:
+				buffer[j] = ((glyph_bitmap->buffer[(i * glyph_bitmap->pitch) + j] << 24) | 0x00FFFFFF);
+				break;
+
+			case FT_PIXEL_MODE_MONO:
+				buffer[j] = ((glyph_bitmap->buffer[(i * glyph_bitmap->pitch) + j / 8] << (j % 8)) & 0x80) ? 0xFFFFFFFF : 0x00000000;
+				break;
+
+			default:
+				throw InvalidRequestException((utf8*)"Font::drawGlyphToBuffer - The glyph could not be drawn because the pixel mode is unsupported.");
+				break;
+			}
+
 		}
 
 		buffer += buf_width;
@@ -554,6 +569,9 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 {
 	FontManager&	 fman	= FontManager::getSingleton();
 	ImagesetManager& ismgr	= ImagesetManager::getSingleton();
+
+	// pull a-a setting from flags
+	d_antiAliased = (flags == NoAntiAlias) ? false : true;
 
 	// create an blank Imageset
 	d_glyph_images = ismgr.createImageset(name + " auto_glyph_images", System::getSingleton().getRenderer()->createTexture());
@@ -965,6 +983,31 @@ uint Font::getFormattedLineCount(const String& text, const Rect& format_area, Te
 	line_count++;
 
 	return line_count;
+}
+
+
+/*************************************************************************
+	Return whether this font is anti-aliased or not.
+*************************************************************************/
+bool Font::isAntiAliased(void) const
+{
+	return d_freetype ? d_antiAliased : false;
+}
+
+
+/*************************************************************************
+	Set whether the font is anti-aliased or not.
+*************************************************************************/
+void Font::setAntiAliased(bool setting)
+{
+	if (d_freetype && (d_antiAliased != setting))
+	{
+		d_antiAliased = setting;
+
+		// regenerate font
+		createFontFromFT_Face(d_ptSize, System::getSingleton().getRenderer()->getHorzScreenDPI(), System::getSingleton().getRenderer()->getVertScreenDPI());
+	}
+
 }
 
 

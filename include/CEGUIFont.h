@@ -51,6 +51,7 @@ namespace CEGUI
 enum CEGUIBASE_API FontFlag
 {
 	Default,			//!< Default / None.
+	NoAntiAlias,		//!< Fonts generated from TrueType files should not be anti-aliased.
 };
 
 
@@ -382,6 +383,21 @@ public:
 	void	setAutoScalingEnabled(bool setting);
 
 
+	/*!
+	\brief
+		Set whether the font is anti-aliased or not.  Only relevant for dynamic fonts, this setting is
+		ignored for bitmapped fonts.
+
+	\param setting
+		- true if the font should be anti-aliased.
+		- false if the font should not be anti-aliased.
+
+	\return
+		Nothing.
+	*/
+	void	setAntiAliased(bool setting);
+
+
 	/*************************************************************************
 		Informational methods
 	*************************************************************************/
@@ -521,6 +537,17 @@ public:
 		The number of lines produced from the specified formatting
 	*/
 	uint	getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt) const;
+
+
+	/*!
+	\brief
+		Return whether this font is anti-aliased or not.  This is only relevant for dynamic fonts created from a TrueType font file.
+
+	\return
+		- true if the font is anti-aliased.
+		- false if the font is not anti-aliased.
+	*/
+	bool	isAntiAliased(void) const;
 
 
 private:
@@ -872,6 +899,8 @@ private:
 	float	d_vertScaling;			//!< current vertical scaling factor.
 	float	d_nativeHorzRes;		//!< native horizontal resolution for this Imageset.
 	float	d_nativeVertRes;		//!< native vertical resolution for this Imageset.
+
+	bool	d_antiAliased;			//!< True if the font should be rendered as anti-alaised by freeType.
 };
 
 } // End of  CEGUI namespace section

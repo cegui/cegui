@@ -93,7 +93,8 @@ private:
 	static const char	FontLastCodepointAttribute[];	//!< Attribute name that stores the last code-point for a dynamic font.
 	static const char	FontNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Font.
 	static const char	FontNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Font.
-	static const char	FontAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Font should be auto-scaled.
+	static const char	FontAutoScaledAttribute[];		//!< Optional attribute that specifies whether the Font should be auto-scaled.
+	static const char	FontAntiAliasedAttribute[];		//!< Optional attribute that specifies whether the TTF based font should be anti-aliased.
 	static const char	MappingCodepointAttribute[];	//!< Attribute name that stores the Unicode code-point for a mapping.
 	static const char	MappingImageAttribute[];		//!< Attribute name that stores the Image name for a mapping.
 	static const char	MappingHorzAdvanceAttribute[];	//!< Attribute name that stores the horizontal advance for a glyph.

@@ -59,6 +59,7 @@ const char	Font_xmlHandler::FontLastCodepointAttribute[]	= "LastCodepoint";
 const char	Font_xmlHandler::FontNativeHorzResAttribute[]	= "NativeHorzRes";
 const char	Font_xmlHandler::FontNativeVertResAttribute[]	= "NativeVertRes";
 const char	Font_xmlHandler::FontAutoScaledAttribute[]		= "AutoScaled";
+const char	Font_xmlHandler::FontAntiAliasedAttribute[]		= "AntiAlias";
 const char	Font_xmlHandler::MappingCodepointAttribute[]	= "Codepoint";
 const char	Font_xmlHandler::MappingImageAttribute[]		= "Image";
 const char	Font_xmlHandler::MappingHorzAdvanceAttribute[]	= "HorzAdvance";
@@ -144,10 +145,14 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 			for (;first_codepoint <= last_codepoint; ++first_codepoint)
 				glyph_set += first_codepoint;
 
+			String antiAlias(XmlHandlerHelper::getAttributeValueAsString(attrs, FontAntiAliasedAttribute));
+			uint flags = ((antiAlias == (utf8*)"true") || (antiAlias == (utf8*)"1")) ? 0 : NoAntiAlias;
+
+
 			// perform construction
 			d_font->setNativeResolution(Size(hres, vres));
 			d_font->setAutoScalingEnabled(auto_scale);
-			d_font->constructor_impl(font_name, filename, size, 0, glyph_set);
+			d_font->constructor_impl(font_name, filename, size, flags, glyph_set);
 		}
 		// static (Imageset based) font
 		else if (font_type == FontTypeStatic)

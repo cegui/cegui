@@ -29,5 +29,6 @@
 		<xsd:attribute name="NativeHorzRes" type="xsd:nonNegativeInteger" use="optional" default="640" />
 		<xsd:attribute name="NativeVertRes" type="xsd:nonNegativeInteger" use="optional" default="480" />
 		<xsd:attribute name="AutoScaled" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="AntiAlias" type="xsd:boolean" use="optional" default="true" />
 	</xsd:attributeGroup>
 </xsd:schema>
