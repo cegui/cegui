@@ -901,7 +901,7 @@ void Font::calculateStaticVertSpacing(void)
 		d_max_bearingY *= scale;
 		d_lineHeight *= scale;
 		d_lineSpacing = d_lineHeight;
-        d_maxGlyphHeight = d_lineHeight;
+        d_maxGlyphHeight = static_cast<uint>(d_lineHeight);
 	}
 
 }
