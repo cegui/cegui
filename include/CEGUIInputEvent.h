@@ -27,6 +27,9 @@
 #define _CEGUIInputEvent_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIEventArgs.h"
+#include "CEGUIString.h"
+#include "CEGUIVector.h"
 
 
 // Start of CEGUI namespace section
