@@ -95,8 +95,8 @@ void OpenGLTexture::loadFromFile(const String& filename, const String& resourceG
 
 	if (img != 0)
 	{
-		d_width = img->sizeX;
-		d_height = img->sizeY;
+		d_width = static_cast<ushort>(img->sizeX);
+		d_height = static_cast<ushort>(img->sizeY);
 
 		// flip the image...
 		flipImageTGA(img);
@@ -174,8 +174,8 @@ void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buf
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, buffWidth, buffHeight, 0, GL_RGBA ,GL_UNSIGNED_BYTE, buffPtr);
 
-	d_width  = buffWidth;
-	d_height = buffHeight;
+	d_width  = static_cast<ushort>(buffWidth);
+	d_height = static_cast<ushort>(buffHeight);
 }
 
 
@@ -209,7 +209,7 @@ void OpenGLTexture::setOGLTextureSize(uint size)
 	// delete buffer
 	delete[] buff;
 
-	d_height = d_width = size;
+	d_height = d_width = static_cast<ushort>(size);
 }
 
 
@@ -336,7 +336,7 @@ OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, si
 				// files are stored as BGR instead of RGB (or use GL_BGR_EXT verses GL_RGB)
 				for(i = 0; i < stride; i += channels)
 				{
-					int temp     = pLine[i];
+					unsigned char temp     = pLine[i];
 					pLine[i]     = pLine[i + 2];
 					pLine[i + 2] = temp;
 				}
@@ -346,7 +346,7 @@ OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, si
 		else if(bits == 16)
 		{
 			unsigned short pixels = 0;
-			int r=0, g=0, b=0;
+			unsigned char r=0, g=0, b=0;
 
 			// Since we convert 16-bit images to 24 bit, we hardcode the channels to 3.
 			// We then calculate the stride and allocate memory for the pixels.
@@ -366,9 +366,9 @@ OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, si
 				// 0x1f = 11111 in binary, so since 5 bits are reserved in
 				// each unsigned short for the R, G and B, we bit shift and mask
 				// to find each value.  We then bit shift up by 3 to get the full color.
-				b = (pixels & 0x1f) << 3;
-				g = ((pixels >> 5) & 0x1f) << 3;
-				r = ((pixels >> 10) & 0x1f) << 3;
+				b = static_cast<unsigned char>((pixels & 0x1f) << 3);
+				g = static_cast<unsigned char>(((pixels >> 5) & 0x1f) << 3);
+				r = static_cast<unsigned char>(((pixels >> 10) & 0x1f) << 3);
 
 				// This essentially assigns the color to our array and swaps the
 				// B and R values at the same time.

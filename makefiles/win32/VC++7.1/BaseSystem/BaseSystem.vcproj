@@ -28,10 +28,10 @@
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="FALSE"
 				WarningLevel="3"
-				WarnAsError="FALSE"
-				Detect64BitPortabilityProblems="FALSE"
+				WarnAsError="TRUE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4251"/>
+				DisableSpecificWarnings="4251;4100"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -83,7 +83,7 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"
 				DisableSpecificWarnings="4251;4100"/>
 			<Tool
@@ -431,21 +431,93 @@
 				Filter="">
 				<File
 					RelativePath="..\..\..\..\src\pcre\chartables.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\pcre\get.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\pcre\maketables.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\pcre\pcre.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\pcre\pcreposix.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\pcre\study.c">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							Detect64BitPortabilityProblems="FALSE"/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>

@@ -658,6 +658,10 @@ public:
 
 
 private:
+    // unimplemented constructors / assignment
+    System(const System& obj);
+    System& operator=(const System& obj);
+
 	/*************************************************************************
 		Implementation Constants
 	*************************************************************************/

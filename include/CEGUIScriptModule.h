@@ -114,9 +114,13 @@ class ScriptFunctor
 {
 public:
 	ScriptFunctor(const String functionName) : scriptFunctionName(functionName) {}
+    ScriptFunctor(const ScriptFunctor& obj) : scriptFunctionName(obj.scriptFunctionName) {}
 	bool	operator()(const EventArgs& e) const;
 
 private:
+    // no assignment possible
+    ScriptFunctor& operator=(const ScriptFunctor& rhs);
+
 	const String	scriptFunctionName;
 };
 

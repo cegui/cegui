@@ -393,7 +393,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = -1, const colour& top_right_colour = -1,  const colour& bottom_left_colour = -1, const colour& bottom_right_colour = -1, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF,  const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
 		draw(source_rect, dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
 	}

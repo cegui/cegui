@@ -79,8 +79,8 @@ void DirectX81Texture::loadFromFile(const String& filename, const String& resour
 
 	if (SUCCEEDED(hr))
 	{
-		d_width		= texInfo.Width;
-		d_height	= texInfo.Height;
+		d_width		= static_cast<ushort>(texInfo.Width);
+		d_height	= static_cast<ushort>(texInfo.Height);
 
 		d_filename = filename;
         d_resourceGroup = resourceGroup;
@@ -121,8 +121,8 @@ void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint 
 		d_d3dtexture->GetLevelDesc(0, &texdesc);
 
 		// store new size;
-		d_width		= texdesc.Width;
-		d_height	= texdesc.Height;
+		d_width		= static_cast<ushort>(texdesc.Width);
+		d_height	= static_cast<ushort>(texdesc.Height);
 
 		// lock the D3D texture
 		D3DLOCKED_RECT	rect;
@@ -195,8 +195,8 @@ void DirectX81Texture::setD3DTextureSize(uint size)
 		d_d3dtexture->GetLevelDesc(0, &texdesc);
 
 		// store new size;
-		d_width		= texdesc.Width;
-		d_height	= texdesc.Height;
+		d_width		= static_cast<ushort>(texdesc.Width);
+		d_height	= static_cast<ushort>(texdesc.Height);
 	}
 
 }
