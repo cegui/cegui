@@ -548,6 +548,16 @@ public:
 	void	setInactiveSelectBrushColour(colour col);
 
 
+	/*!
+	\brief
+		Activate the edit box component of the Combobox.
+
+	\return
+		Nothing.
+	*/
+	void	activateEditbox(void);
+
+
 	/*************************************************************************
 		List Manipulators
 	*************************************************************************/
@@ -960,6 +970,7 @@ protected:
 	*************************************************************************/
 	virtual	void	onSized(WindowEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
+	virtual void	onActivated(WindowEventArgs& e);
 
 
 	/*************************************************************************

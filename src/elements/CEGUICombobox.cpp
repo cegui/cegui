@@ -857,6 +857,34 @@ void Combobox::addComboboxProperties(void)
 }
 
 
+/*************************************************************************
+	Activate the edit box component of the Combobox.
+*************************************************************************/
+void Combobox::activateEditbox(void)
+{
+	if (!d_editbox->isActive())
+	{
+		d_editbox->activate();
+	}
+}
+
+
+
+/*************************************************************************
+	Widget activation handler
+*************************************************************************/
+void Combobox::onActivated(WindowEventArgs& e)
+{
+	if (!isActive())
+	{
+		Window::onActivated(e);
+		activateEditbox();
+	}
+
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 	Handlers to relay child widget events so they appear to come from us
