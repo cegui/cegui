@@ -1,0 +1,27 @@
+Crazy Eddie's GUI System Mk-2
+http://www.cegui.org.uk
+
+Copyright ©2004 - 2005 Paul D Turner & Contributing Authors
+
+
+The following is a high-level view of changes made to the system between releases.
+
+
+Release 0.1.1
+=============
+Updated TODO file to reflect features already implemented in this branch.
+Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer
+Bug Fix: Removed erroneous use of D3DLOCK_DISCARD flag in D3D8 renderer (texture.cpp)
+Bug Fix: Dates in the log were using incorrect value for the month.
+Bug Fix: Added missing stdio.h include in CEGUIWindow.cpp.
+Bug Fix: Font attribute "AntiAlias" was incorrectly documented as "AntiAliased".
+Bug Fix: d_resourceProvider member in Renderer base class was not being initialised
+Bug Fix: corrected version information in configure.ac.
+Bug Fix: Resolved assert issues related to the Ogre debug memory manager.
+Bug Fix: Y Spacing calculation on certain ttf fonts was incorrect.
+Bug Fix: Added missing _STLP_DEBUG defines in the MSVC++ 7.0 projects.
+
+
+Release 0.1.0
+=============
+Initial release.
