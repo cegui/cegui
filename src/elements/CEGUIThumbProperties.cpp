@@ -26,7 +26,7 @@
 #include "elements/CEGUIThumbProperties.h"
 #include "elements/CEGUIThumb.h"
 #include "CEGUIPropertyHelper.h"
-
+#include <stdio.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
