@@ -6,8 +6,8 @@
 	purpose:	Implementation of ListHeader widget base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -46,18 +46,18 @@ ListHeaderProperties::SortDirection			ListHeader::d_sortDirectionProperty;
 	Constants
 *************************************************************************/
 // Event names
-const utf8	ListHeader::EventSortColumnChanged[]			= "SortColumnChanged";
-const utf8	ListHeader::EventSortDirectionChanged[]		= "SortDirectionChanged";
-const utf8	ListHeader::EventSegmentSized[]				= "SegmentSized";
-const utf8	ListHeader::EventSegmentClicked[]			= "SegmentClicked";
-const utf8	ListHeader::EventSplitterDoubleClicked[]		= "SplitterDoubleClicked";
-const utf8	ListHeader::EventSegmentSequenceChanged[]	= "SegmentSequenceChanged";
-const utf8	ListHeader::EventSegmentAdded[]				= "SegmentAdded";
-const utf8	ListHeader::EventSegmentRemoved[]			= "SegmentRemoved";
-const utf8	ListHeader::EventSortSettingChanged[]		= "SortSettingChanged";
-const utf8	ListHeader::EventDragMoveSettingChanged[]	= "DragMoveSettingChanged";
-const utf8	ListHeader::EventDragSizeSettingChanged[]	= "DragSizeSettingChanged";
-const utf8	ListHeader::EventSegmentRenderOffsetChanged[]		= "SegmentOffsetChanged";
+const String ListHeader::EventSortColumnChanged( (utf8*)"SortColumnChanged" );
+const String ListHeader::EventSortDirectionChanged( (utf8*)"SortDirectionChanged" );
+const String ListHeader::EventSegmentSized( (utf8*)"SegmentSized" );
+const String ListHeader::EventSegmentClicked( (utf8*)"SegmentClicked" );
+const String ListHeader::EventSplitterDoubleClicked( (utf8*)"SplitterDoubleClicked" );
+const String ListHeader::EventSegmentSequenceChanged( (utf8*)"SegmentSequenceChanged" );
+const String ListHeader::EventSegmentAdded( (utf8*)"SegmentAdded" );
+const String ListHeader::EventSegmentRemoved( (utf8*)"SegmentRemoved" );
+const String ListHeader::EventSortSettingChanged( (utf8*)"SortSettingChanged" );
+const String ListHeader::EventDragMoveSettingChanged( (utf8*)"DragMoveSettingChanged" );
+const String ListHeader::EventDragSizeSettingChanged( (utf8*)"DragSizeSettingChanged" );
+const String ListHeader::EventSegmentRenderOffsetChanged( (utf8*)"SegmentOffsetChanged" );
 
 // values
 const float	ListHeader::ScrollSpeed	= 8.0f;

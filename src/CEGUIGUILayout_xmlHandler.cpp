@@ -6,8 +6,8 @@
 	purpose:	Implements XML parser for GUILayout files
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -39,11 +39,11 @@ namespace CEGUI
 /*************************************************************************
 	Implementation Constants
 *************************************************************************/
-const utf8	GUILayout_xmlHandler::GUILayoutElement[]		= "GUILayout";
-const utf8	GUILayout_xmlHandler::WindowElement[]			= "Window";
-const utf8	GUILayout_xmlHandler::PropertyElement[]			= "Property";
-const utf8	GUILayout_xmlHandler::LayoutImportElement[]		= "LayoutImport";
-const utf8	GUILayout_xmlHandler::EventElement[]			= "Event";
+const String GUILayout_xmlHandler::GUILayoutElement( (utf8*)"GUILayout" );
+const String GUILayout_xmlHandler::WindowElement( (utf8*)"Window" );
+const String GUILayout_xmlHandler::PropertyElement( (utf8*)"Property" );
+const String GUILayout_xmlHandler::LayoutImportElement( (utf8*)"LayoutImport" );
+const String GUILayout_xmlHandler::EventElement( (utf8*)"Event" );
 const char	GUILayout_xmlHandler::WindowTypeAttribute[]		= "Type";
 const char	GUILayout_xmlHandler::WindowNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::PropertyNameAttribute[]	= "Name";

@@ -6,8 +6,8 @@
 	purpose:	Implementation of main system object
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -104,13 +104,13 @@ const double	System::DefaultMultiClickTimeout	= 0.33;
 const Size		System::DefaultMultiClickAreaSize(12,12);
 
 // event names
-const utf8	System::EventGUISheetChanged[]			= "GUISheetChanged";
-const utf8	System::EventSingleClickTimeoutChanged[]	= "SingleClickTimeoutChanged";
-const utf8	System::EventMultiClickTimeoutChanged[]	= "MultiClickTimeoutChanged";
-const utf8	System::EventMultiClickAreaSizeChanged[]	= "MultiClickAreaSizeChanged";
-const utf8	System::EventDefaultFontChanged[]		= "DefaultFontChanged";
-const utf8	System::EventDefaultMouseCursorChanged[]	= "DefaultMouseCursorChanged";
-const utf8	System::EventMouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
+const String System::EventGUISheetChanged( (utf8*)"GUISheetChanged" );
+const String System::EventSingleClickTimeoutChanged( (utf8*)"SingleClickTimeoutChanged" );
+const String System::EventMultiClickTimeoutChanged( (utf8*)"MultiClickTimeoutChanged" );
+const String System::EventMultiClickAreaSizeChanged( (utf8*)"MultiClickAreaSizeChanged" );
+const String System::EventDefaultFontChanged( (utf8*)"DefaultFontChanged" );
+const String System::EventDefaultMouseCursorChanged( (utf8*)"DefaultMouseCursorChanged" );
+const String System::EventMouseMoveScalingChanged( (utf8*)"MouseMoveScalingChanged" );
 
 
 /*************************************************************************

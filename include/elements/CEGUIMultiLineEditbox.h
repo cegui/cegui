@@ -6,8 +6,8 @@
 	purpose:	Interface to the Multi-lien edit box base class.
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -54,14 +54,14 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const utf8	EventReadOnlyModeChanged[];			//!< The read-only mode for the edit box has been changed.
-	static const utf8	EventWordWrapModeChanged[];			//!< The word wrap mode of the text box has been changed.
-	static const utf8	EventMaximumTextLengthChanged[];	//!< The maximum allowable string length has been changed.
-	static const utf8	EventCaratMoved[];					//!< The text carat (insert point) has changed.
-	static const utf8	EventTextSelectionChanged[];		//!< The current text selection has changed.
-	static const utf8	EventEditboxFull[];					//!< The number of characters in the edit box has reached the current maximum.
-	static const utf8	EventVertScrollbarModeChanged[];	//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+	static const String EventReadOnlyModeChanged;			//!< The read-only mode for the edit box has been changed.
+	static const String EventWordWrapModeChanged;			//!< The word wrap mode of the text box has been changed.
+	static const String EventMaximumTextLengthChanged;	//!< The maximum allowable string length has been changed.
+	static const String EventCaratMoved;					//!< The text carat (insert point) has changed.
+	static const String EventTextSelectionChanged;		//!< The current text selection has changed.
+	static const String EventEditboxFull;					//!< The number of characters in the edit box has reached the current maximum.
+	static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 	// default colours
 	static const ulong	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.

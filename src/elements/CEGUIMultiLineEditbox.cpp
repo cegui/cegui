@@ -6,8 +6,8 @@
 	purpose:	Implementation of the Multi-line edit box base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -58,14 +58,14 @@ MultiLineEditboxProperties::InactiveSelectionColour	MultiLineEditbox::d_inactive
 	Constants
 *************************************************************************/
 // event names
-const utf8	MultiLineEditbox::EventReadOnlyModeChanged[]				= "ReadOnlyChanged";
-const utf8	MultiLineEditbox::EventWordWrapModeChanged[]			= "WordWrapModeChanged";
-const utf8	MultiLineEditbox::EventMaximumTextLengthChanged[]	= "MaximumTextLengthChanged";
-const utf8	MultiLineEditbox::EventCaratMoved[]					= "CaratMoved";
-const utf8	MultiLineEditbox::EventTextSelectionChanged[]		= "TextSelectionChanged";
-const utf8	MultiLineEditbox::EventEditboxFull[]			= "EditboxFullEvent";
-const utf8	MultiLineEditbox::EventVertScrollbarModeChanged[]	= "VertScrollbarModeChanged";
-const utf8	MultiLineEditbox::EventHorzScrollbarModeChanged[]	= "HorzScrollbarModeChanged";
+const String MultiLineEditbox::EventReadOnlyModeChanged( (utf8*)"ReadOnlyChanged" );
+const String MultiLineEditbox::EventWordWrapModeChanged( (utf8*)"WordWrapModeChanged" );
+const String MultiLineEditbox::EventMaximumTextLengthChanged( (utf8*)"MaximumTextLengthChanged" );
+const String MultiLineEditbox::EventCaratMoved( (utf8*)"CaratMoved" );
+const String MultiLineEditbox::EventTextSelectionChanged( (utf8*)"TextSelectionChanged" );
+const String MultiLineEditbox::EventEditboxFull( (utf8*)"EditboxFullEvent" );
+const String MultiLineEditbox::EventVertScrollbarModeChanged( (utf8*)"VertScrollbarModeChanged" );
+const String MultiLineEditbox::EventHorzScrollbarModeChanged( (utf8*)"HorzScrollbarModeChanged" );
 
 // default colours
 const ulong	MultiLineEditbox::DefaultNormalTextColour			= 0xFFFFFFFF;

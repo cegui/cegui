@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for Combobox widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -52,27 +52,27 @@ public:
 		Constants
 	*************************************************************************/
 	// event names from edit box
-	static const utf8	EventReadOnlyModeChanged[];			//!< The read-only mode for the edit box has been changed.
-	static const utf8	EventValidationStringChanged[];		//!< The validation string has been changed.
-	static const utf8	EventMaximumTextLengthChanged[];	//!< The maximum allowable string length has been changed.
-	static const utf8	EventTextInvalidated[];				//!< Some operation has made the current text invalid with regards to the validation string.
-	static const utf8	EventInvalidEntryAttempted[];		//!< The user attempted to modify the text in a way that would have made it invalid.
-	static const utf8	EventCaratMoved[];					//!< The text carat (insert point) has changed.
-	static const utf8	EventTextSelectionChanged[];		//!< The current text selection has changed.
-	static const utf8	EventEditboxFull[];					//!< The number of characters in the edit box has reached the current maximum.
-	static const utf8	EventTextAccepted[];				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
+	static const String EventReadOnlyModeChanged;			//!< The read-only mode for the edit box has been changed.
+	static const String EventValidationStringChanged;		//!< The validation string has been changed.
+	static const String EventMaximumTextLengthChanged;	//!< The maximum allowable string length has been changed.
+	static const String EventTextInvalidated;				//!< Some operation has made the current text invalid with regards to the validation string.
+	static const String EventInvalidEntryAttempted;		//!< The user attempted to modify the text in a way that would have made it invalid.
+	static const String EventCaratMoved;					//!< The text carat (insert point) has changed.
+	static const String EventTextSelectionChanged;		//!< The current text selection has changed.
+	static const String EventEditboxFull;					//!< The number of characters in the edit box has reached the current maximum.
+	static const String EventTextAccepted;				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
 
 	// event names from list box
-	static const utf8	EventListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
-	static const utf8	EventListSelectionChanged[];		//!< Event triggered when there is a change to the currently selected item(s).
-	static const utf8	EventSortModeChanged[];				//!< Event triggered when the sort mode setting changes.
-	static const utf8	EventVertScrollbarModeChanged[];	//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+	static const String EventListContentsChanged;			//!< Event triggered when the contents of the list is changed.
+	static const String EventListSelectionChanged;		//!< Event triggered when there is a change to the currently selected item(s).
+	static const String EventSortModeChanged;				//!< Event triggered when the sort mode setting changes.
+	static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 	// events we produce / generate ourselves
-	static const utf8	EventDropListDisplayed[];			//!< Event triggered when the drop-down list is displayed
-	static const utf8	EventDropListRemoved[];				//!< Event triggered when the drop-down list is removed / hidden.
-	static const utf8	EventListSelectionAccepted[];		//!< Event triggered when the user accepts a selection from the drop-down list
+	static const String EventDropListDisplayed;			//!< Event triggered when the drop-down list is displayed
+	static const String EventDropListRemoved;				//!< Event triggered when the drop-down list is removed / hidden.
+	static const String EventListSelectionAccepted;		//!< Event triggered when the user accepts a selection from the drop-down list
 
 
 	/*!

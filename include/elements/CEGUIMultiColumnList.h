@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for MultiColumnList widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -75,17 +75,17 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	EventSelectionModeChanged[];		//!< Event fired when the selection mode for the list box changes.
-	static const utf8	EventNominatedSelectColumnChanged[];//!< Event fired when the nominated select column changes.
-	static const utf8	EventNominatedSelectRowChanged[];	//!< Event fired when the nominated select row changes.
-	static const utf8	EventVertScrollbarModeChanged[];	//!< Event fired when the vertical scroll bar 'force' setting changes.
-	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event fired when the horizontal scroll bar 'force' setting changes.
-	static const utf8	EventSelectionChanged[];			//!< Event fired when the current selection(s) within the list box changes.
-	static const utf8	EventListContentsChanged[];			//!< Event fired when the contents of the list box changes.
-	static const utf8	EventSortColumnChanged[];			//!< Event fired when the sort column changes.
-	static const utf8	EventSortDirectionChanged[];		//!< Event fired when the sort direction changes.
-	static const utf8	EventListColumnSized[];				//!< Event fired when the width of a column in the list changes.
-	static const utf8	EventListColumnMoved[];				//!< Event fired when the column order changes.
+	static const String EventSelectionModeChanged;		//!< Event fired when the selection mode for the list box changes.
+	static const String EventNominatedSelectColumnChanged;//!< Event fired when the nominated select column changes.
+	static const String EventNominatedSelectRowChanged;	//!< Event fired when the nominated select row changes.
+	static const String EventVertScrollbarModeChanged;	//!< Event fired when the vertical scroll bar 'force' setting changes.
+	static const String EventHorzScrollbarModeChanged;	//!< Event fired when the horizontal scroll bar 'force' setting changes.
+	static const String EventSelectionChanged;			//!< Event fired when the current selection(s) within the list box changes.
+	static const String EventListContentsChanged;			//!< Event fired when the contents of the list box changes.
+	static const String EventSortColumnChanged;			//!< Event fired when the sort column changes.
+	static const String EventSortDirectionChanged;		//!< Event fired when the sort direction changes.
+	static const String EventListColumnSized;				//!< Event fired when the width of a column in the list changes.
+	static const String EventListColumnMoved;				//!< Event fired when the column order changes.
 
 
 	/*************************************************************************

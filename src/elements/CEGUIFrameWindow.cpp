@@ -6,8 +6,8 @@
 	purpose:	Implementation of FrameWindow base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -51,8 +51,8 @@ FrameWindowProperties::CaptionColour			FrameWindow::d_captionColourProperty;
 	Constants
 *************************************************************************/
 // additional event names for this window
-const utf8	FrameWindow::EventRollupToggled[]	= "RollupToggled";
-const utf8	FrameWindow::EventCloseClicked[]		= "CloseClicked";
+const String FrameWindow::EventRollupToggled( (utf8*)"RollupToggled" );
+const String FrameWindow::EventCloseClicked( (utf8*)"CloseClicked" );
 
 // other bits
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;

@@ -6,8 +6,8 @@
 	purpose:	Interface to configuration file parser
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -125,7 +125,7 @@ private:
 	/*************************************************************************
 		Implementation Constants
 	*************************************************************************/
-	static const utf8	CEGUIConfigElement[];				//!< Tag name for CEGUIConfig elements.
+	static const String CEGUIConfigElement;				//!< Tag name for CEGUIConfig elements.
 	static const char	ConfigLogfileAttribute[];			//!< Attribute name that stores the filename to use for the log.
 	static const char	ConfigSchemeAttribute[];			//!< Attribute name that stores the filename of a scheme to load.
 	static const char	ConfigLayoutAttribute[];			//!< Attribute name that stores the filename of a layout to load.

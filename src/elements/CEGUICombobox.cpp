@@ -6,8 +6,8 @@
 	purpose:	Implementation of Combobox base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -64,27 +64,27 @@ ComboboxProperties::SingleClickMode				Combobox::d_singleClickOperationProperty;
 	Constants
 *************************************************************************/
 // event names from edit box
-const utf8	Combobox::EventReadOnlyModeChanged[]				= "ReadOnlyChanged";
-const utf8	Combobox::EventValidationStringChanged[]		= "ValidationStringChanged";
-const utf8	Combobox::EventMaximumTextLengthChanged[]	= "MaximumTextLengthChanged";
-const utf8	Combobox::EventTextInvalidated[]		= "TextInvalidatedEvent";
-const utf8	Combobox::EventInvalidEntryAttempted[]		= "InvalidEntryAttempted";
-const utf8	Combobox::EventCaratMoved[]					= "CaratMoved";
-const utf8	Combobox::EventTextSelectionChanged[]		= "TextSelectionChanged";
-const utf8	Combobox::EventEditboxFull[]			= "EditboxFullEvent";
-const utf8	Combobox::EventTextAccepted[]			= "TextAcceptedEvent";
+const String Combobox::EventReadOnlyModeChanged( (utf8*)"ReadOnlyChanged" );
+const String Combobox::EventValidationStringChanged( (utf8*)"ValidationStringChanged" );
+const String Combobox::EventMaximumTextLengthChanged( (utf8*)"MaximumTextLengthChanged" );
+const String Combobox::EventTextInvalidated( (utf8*)"TextInvalidatedEvent" );
+const String Combobox::EventInvalidEntryAttempted( (utf8*)"InvalidEntryAttempted" );
+const String Combobox::EventCaratMoved( (utf8*)"CaratMoved" );
+const String Combobox::EventTextSelectionChanged( (utf8*)"TextSelectionChanged" );
+const String Combobox::EventEditboxFull( (utf8*)"EditboxFullEvent" );
+const String Combobox::EventTextAccepted( (utf8*)"TextAcceptedEvent" );
 
 // event names from list box
-const utf8	Combobox::EventListContentsChanged[]			= "ListContentsChanged";
-const utf8	Combobox::EventListSelectionChanged[]		= "ListSelectionChanged";
-const utf8	Combobox::EventSortModeChanged[]				= "SortModeChanged";
-const utf8	Combobox::EventVertScrollbarModeChanged[]	= "VertScrollbarModeChanged";
-const utf8	Combobox::EventHorzScrollbarModeChanged[]	= "HorzScrollbarModeChanged";
+const String Combobox::EventListContentsChanged( (utf8*)"ListContentsChanged" );
+const String Combobox::EventListSelectionChanged( (utf8*)"ListSelectionChanged" );
+const String Combobox::EventSortModeChanged( (utf8*)"SortModeChanged" );
+const String Combobox::EventVertScrollbarModeChanged( (utf8*)"VertScrollbarModeChanged" );
+const String Combobox::EventHorzScrollbarModeChanged( (utf8*)"HorzScrollbarModeChanged" );
 
 // events we produce / generate ourselves
-const utf8	Combobox::EventDropListDisplayed[]			= "DropListDisplayed";
-const utf8	Combobox::EventDropListRemoved[]				= "DropListRemoved";
-const utf8	Combobox::EventListSelectionAccepted[]		= "ListSelectionAccepted";
+const String Combobox::EventDropListDisplayed( (utf8*)"DropListDisplayed" );
+const String Combobox::EventDropListRemoved( (utf8*)"DropListRemoved" );
+const String Combobox::EventListSelectionAccepted( (utf8*)"ListSelectionAccepted" );
 
 	
 /*************************************************************************

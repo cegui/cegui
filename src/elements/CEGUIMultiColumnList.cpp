@@ -6,8 +6,8 @@
 	purpose:	Implementation of MultiColumnList widget base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -55,17 +55,17 @@ MultiColumnListProperties::SortSettingEnabled			MultiColumnList::d_sortSettingPr
 	Constants
 *************************************************************************/
 // Event names
-const utf8	MultiColumnList::EventSelectionModeChanged[]			= "SelectModeChanged";
-const utf8	MultiColumnList::EventNominatedSelectColumnChanged[]	= "NomSelColChanged";
-const utf8	MultiColumnList::EventNominatedSelectRowChanged[]	= "NomSelRowChanged";
-const utf8	MultiColumnList::EventVertScrollbarModeChanged[]		= "VertBarModeChanged";
-const utf8	MultiColumnList::EventHorzScrollbarModeChanged[]		= "HorzBarModeChanged";
-const utf8	MultiColumnList::EventSelectionChanged[]				= "SelectionChanged";
-const utf8	MultiColumnList::EventListContentsChanged[]			= "ContentsChanged";
-const utf8	MultiColumnList::EventSortColumnChanged[]			= "SortColChanged";
-const utf8	MultiColumnList::EventSortDirectionChanged[]			= "SortDirChanged";
-const utf8	MultiColumnList::EventListColumnSized[]				= "ColSized";
-const utf8	MultiColumnList::EventListColumnMoved[]				= "ColMoved";
+const String MultiColumnList::EventSelectionModeChanged( (utf8*)"SelectModeChanged" );
+const String MultiColumnList::EventNominatedSelectColumnChanged( (utf8*)"NomSelColChanged" );
+const String MultiColumnList::EventNominatedSelectRowChanged( (utf8*)"NomSelRowChanged" );
+const String MultiColumnList::EventVertScrollbarModeChanged( (utf8*)"VertBarModeChanged" );
+const String MultiColumnList::EventHorzScrollbarModeChanged( (utf8*)"HorzBarModeChanged" );
+const String MultiColumnList::EventSelectionChanged( (utf8*)"SelectionChanged" );
+const String MultiColumnList::EventListContentsChanged( (utf8*)"ContentsChanged" );
+const String MultiColumnList::EventSortColumnChanged( (utf8*)"SortColChanged" );
+const String MultiColumnList::EventSortDirectionChanged( (utf8*)"SortDirChanged" );
+const String MultiColumnList::EventListColumnSized( (utf8*)"ColSized" );
+const String MultiColumnList::EventListColumnMoved( (utf8*)"ColMoved" );
 
 	
 /*************************************************************************

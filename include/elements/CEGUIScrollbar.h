@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for Scrollbar widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -54,10 +54,10 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const utf8	EventScrollPositionChanged[];		//!< Name of the event fired when the scroll bar position value changes
-	static const utf8	EventThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
-	static const utf8	EventThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
-	static const utf8	EventScrollConfigChanged[];			//!< Name of the event fired when the scroll bar configuration data changes.
+	static const String EventScrollPositionChanged;		//!< Name of the event fired when the scroll bar position value changes
+	static const String EventThumbTrackStarted;			//!< Name of the event fired when the user begins dragging the thumb.
+	static const String EventThumbTrackEnded;				//!< Name of the event fired when the user releases the thumb.
+	static const String EventScrollConfigChanged;			//!< Name of the event fired when the scroll bar configuration data changes.
 
 
 	/*************************************************************************

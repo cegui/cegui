@@ -6,8 +6,8 @@
 	purpose:	Implements common parts of the Thumb base class widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -42,9 +42,9 @@ ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const utf8	Thumb::EventThumbPositionChanged[]		= "ThumbPosChanged";
-const utf8	Thumb::EventThumbTrackStarted[]			= "ThumbTrackStarted";
-const utf8	Thumb::EventThumbTrackEnded[]			= "ThumbTrackEnded";
+const String Thumb::EventThumbPositionChanged( (utf8*)"ThumbPosChanged" );
+const String Thumb::EventThumbTrackStarted( (utf8*)"ThumbTrackStarted" );
+const String Thumb::EventThumbTrackEnded( (utf8*)"ThumbTrackEnded" );
 
 
 /*************************************************************************

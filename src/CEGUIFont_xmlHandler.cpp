@@ -6,8 +6,8 @@ author:		Paul D Turner
 purpose:	Implements Font class
 *************************************************************************/
 /*************************************************************************
-Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+Crazy Eddie's GUI System (http://www.cegui.org.uk)
+Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -46,13 +46,13 @@ static data definitions
 *************************************************************************/
 
 // XML related strings
-const utf8	Font_xmlHandler::FontElement[]					= "Font";
-const utf8	Font_xmlHandler::MappingElement[]				= "Mapping";
-const utf8	Font_xmlHandler::FontTypeStatic[]				= "Static";
-const utf8	Font_xmlHandler::FontTypeDynamic[]				= "Dynamic";
-const utf8	Font_xmlHandler::GlyphElement[]					= "Glyph";
-const utf8	Font_xmlHandler::GlyphRangeElement[]			= "GlyphRange";
-const utf8	Font_xmlHandler::GlyphSetElement[]				= "GlyphSet";
+const String Font_xmlHandler::FontElement( (utf8*)"Font" );
+const String Font_xmlHandler::MappingElement( (utf8*)"Mapping" );
+const String Font_xmlHandler::FontTypeStatic( (utf8*)"Static" );
+const String Font_xmlHandler::FontTypeDynamic( (utf8*)"Dynamic" );
+const String Font_xmlHandler::GlyphElement( (utf8*)"Glyph" );
+const String Font_xmlHandler::GlyphRangeElement( (utf8*)"GlyphRange" );
+const String Font_xmlHandler::GlyphSetElement( (utf8*)"GlyphSet" );
 const char	Font_xmlHandler::FontNameAttribute[]			= "Name";
 const char	Font_xmlHandler::FontFilenameAttribute[]		= "Filename";
 const char	Font_xmlHandler::FontTypeAttribute[]			= "Type";

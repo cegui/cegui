@@ -6,8 +6,8 @@
 	purpose:	Implementation of Editbox base class widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -92,17 +92,17 @@ const ulong	Editbox::DefaultInactiveSelectionColour		= 0x00808080;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Editbox::EventReadOnlyModeChanged[]				= "ReadOnlyChanged";
-const utf8	Editbox::EventMaskedRenderingModeChanged[]	= "MaskRenderChanged";
-const utf8	Editbox::EventMaskCodePointChanged[]			= "MaskCPChanged";
-const utf8	Editbox::EventValidationStringChanged[]		= "ValidatorChanged";
-const utf8	Editbox::EventMaximumTextLengthChanged[]		= "MaxTextLenChanged";
-const utf8	Editbox::EventTextInvalidated[]			= "TextInvalidated";
-const utf8	Editbox::EventInvalidEntryAttempted[]		= "InvalidInputAttempt";
-const utf8	Editbox::EventCaratMoved[]					= "TextCaratMoved";
-const utf8	Editbox::EventTextSelectionChanged[]			= "TextSelectChanged";
-const utf8	Editbox::EventEditboxFull[]				= "EditboxFull";
-const utf8	Editbox::EventTextAccepted[]			= "TextAccepted";
+const String Editbox::EventReadOnlyModeChanged( (utf8*)"ReadOnlyChanged" );
+const String Editbox::EventMaskedRenderingModeChanged( (utf8*)"MaskRenderChanged" );
+const String Editbox::EventMaskCodePointChanged( (utf8*)"MaskCPChanged" );
+const String Editbox::EventValidationStringChanged( (utf8*)"ValidatorChanged" );
+const String Editbox::EventMaximumTextLengthChanged( (utf8*)"MaxTextLenChanged" );
+const String Editbox::EventTextInvalidated( (utf8*)"TextInvalidated" );
+const String Editbox::EventInvalidEntryAttempted( (utf8*)"InvalidInputAttempt" );
+const String Editbox::EventCaratMoved( (utf8*)"TextCaratMoved" );
+const String Editbox::EventTextSelectionChanged( (utf8*)"TextSelectChanged" );
+const String Editbox::EventEditboxFull( (utf8*)"EditboxFull" );
+const String Editbox::EventTextAccepted( (utf8*)"TextAccepted" );
 
 
 /*************************************************************************

@@ -6,8 +6,8 @@ author:		Paul D Turner
 purpose:	Defines abstract base class for the GUI Scheme object.
 *************************************************************************/
 /*************************************************************************
-Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+Crazy Eddie's GUI System (http://www.cegui.org.uk)
+Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -82,12 +82,12 @@ private:
 	Implementation Constants
 	*************************************************************************/
 	// XML related strings
-	static const utf8	GUISchemeElement[];				//!< Root GUIScheme element.
-	static const utf8	ImagesetElement[];				//!< Element specifying an Imageset
-	static const utf8	FontElement[];					//!< Element specifying a Font
-	static const utf8	WindowSetElement[];				//!< Element specifying a module and set of WindowFactory elements.
-	static const utf8	WindowFactoryElement[];			//!< Element specifying a WindowFactory type.
-	static const utf8	WindowAliasElement[];			//!< Element specifying a WindowFactory type alias
+	static const String GUISchemeElement;				//!< Root GUIScheme element.
+	static const String ImagesetElement;				//!< Element specifying an Imageset
+	static const String FontElement;					//!< Element specifying a Font
+	static const String WindowSetElement;				//!< Element specifying a module and set of WindowFactory elements.
+	static const String WindowFactoryElement;			//!< Element specifying a WindowFactory type.
+	static const String WindowAliasElement;			//!< Element specifying a WindowFactory type alias
 	static const char	NameAttribute[];				//!< Attribute specifying the name of some object.
 	static const char	FilenameAttribute[];			//!< Attribute specifying the name of some file.
 	static const char	AliasAttribute[];				//!< Attribute specifying an alias name.

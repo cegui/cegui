@@ -6,8 +6,8 @@ author:		Paul D Turner
 purpose:	Defines interface for the Font class
 *************************************************************************/
 /*************************************************************************
-Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+Crazy Eddie's GUI System (http://www.cegui.org.uk)
+Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -82,13 +82,13 @@ private:
 	Implementation Constants
 	*************************************************************************/
 	// XML related strings
-	static const utf8	FontElement[];					//!< Tag name for Font elements.
-	static const utf8	MappingElement[];				//!< Tag name for Mapping elements.
-	static const utf8	FontTypeStatic[];				//!< Value used for FontTypeAttribute for a static (bitmapped) font.
-	static const utf8	FontTypeDynamic[];				//!< Value used for FontTypeAttribute for a dynamic (true-type) font.
-	static const utf8	GlyphElement[];					//!< Tag name for Glyph elements.
-	static const utf8	GlyphRangeElement[];			//!< Tag name for GlyphRange elements.
-	static const utf8	GlyphSetElement[];				//!< Tag name for GlyphSet elements.
+	static const String FontElement;					//!< Tag name for Font elements.
+	static const String MappingElement;				//!< Tag name for Mapping elements.
+	static const String FontTypeStatic;				//!< Value used for FontTypeAttribute for a static (bitmapped) font.
+	static const String FontTypeDynamic;				//!< Value used for FontTypeAttribute for a dynamic (true-type) font.
+	static const String GlyphElement;					//!< Tag name for Glyph elements.
+	static const String GlyphRangeElement;			//!< Tag name for GlyphRange elements.
+	static const String GlyphSetElement;				//!< Tag name for GlyphSet elements.
 	static const char	FontNameAttribute[];			//!< Attribute name that stores the name of the Font
 	static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
 	static const char	FontTypeAttribute[];			//!< Attribute name that stores the type of font being defined (either static or dynamic).

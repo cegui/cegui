@@ -6,8 +6,8 @@
 	purpose:	Defines interface for the MouseCursor class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -70,7 +70,7 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by MouseCursor
-	static const utf8	EventImageChanged[];			//!< The cursor image of the widget has changed.
+	static const String EventImageChanged;			//!< The cursor image of the widget has changed.
 
 
 	/*!

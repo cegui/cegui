@@ -1,7 +1,7 @@
 Crazy Eddie's GUI System Mk-2
-http://crayzedsgui.sourceforge.net
+http://www.cegui.org.uk
 
-Copyright ©2004 Paul D Turner & Contributing Authors
+Copyright ©2004 - 2005 Paul D Turner & Contributing Authors
 
 This sofware contains an embedded version of PCRE by Philip Hazel.
 PCRE is Copyright (c) 1997-2004 University of Cambridge, All rights reserved.
@@ -29,7 +29,7 @@ TODO).  API documentation built from the source by Doxygen
 (http://www.doxygen.org) is available, and can be found online at
 http://www.chaendaer.net/code/cegui/api_reference/.  For the very latest
 information and help, visit the project home page at
-http://crayzedsgui.sourceforge.net.
+http://www.cegui.org.uk.
 
 
 Supported Systems
@@ -51,7 +51,6 @@ As well as one of the above supported systems, Crazy Eddie's GUI System Mk-2
 also requires the use of some third party external libraries.  These libraries
 are as follows:
 
-boost::regex and boost::timer libraries (http://www.boost.org)
 Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
 Freetype2 (http://www.freetype.org)
 

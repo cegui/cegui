@@ -6,8 +6,8 @@
 	purpose:	Interface to XML parser for GUILayout files
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -100,11 +100,11 @@ private:
 	/*************************************************************************
 		Implementation Constants
 	*************************************************************************/
-	static const utf8	GUILayoutElement[];				//!< Tag name for GUILayout elements.
-	static const utf8	WindowElement[];				//!< Tag name for Window elements.
-	static const utf8	PropertyElement[];				//!< Tag name for Property elements.
-	static const utf8	LayoutImportElement[];			//!< Tag name for LayoutImport elements.
-	static const utf8	EventElement[];					//!< Tag name for Event elements.
+	static const String GUILayoutElement;				//!< Tag name for GUILayout elements.
+	static const String WindowElement;				//!< Tag name for Window elements.
+	static const String PropertyElement;				//!< Tag name for Property elements.
+	static const String LayoutImportElement;			//!< Tag name for LayoutImport elements.
+	static const String EventElement;					//!< Tag name for Event elements.
 	static const char	WindowTypeAttribute[];			//!< Attribute name that stores the type of Window to create.
 	static const char	WindowNameAttribute[];			//!< Attribute name that stores the name of the window to create.
 	static const char	PropertyNameAttribute[];		//!< Attribute name that stores the name of the property to set.

@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for FrameWindow
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -51,8 +51,8 @@ public:
 		Constants	
 	*************************************************************************/
 	// additional event names for this window
-	static const utf8	EventRollupToggled[];		//!< Fired when the rollup (shade) state of the window changes
-	static const utf8	EventCloseClicked[];		//!< Fired when the close button for the window is clicked.
+	static const String EventRollupToggled;		//!< Fired when the rollup (shade) state of the window changes
+	static const String EventCloseClicked;		//!< Fired when the close button for the window is clicked.
 
 	// other bits
 	static const float	DefaultSizingBorderSize;	//!< Default size for the sizing border (in pixels)

@@ -6,8 +6,8 @@
 	purpose:	Implementation of Scrollbar widget base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -43,10 +43,10 @@ ScrollbarProperties::ScrollPosition	Scrollbar::d_scrollPositionProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Scrollbar::EventScrollPositionChanged[]		= "ScrollPosChanged";
-const utf8	Scrollbar::EventThumbTrackStarted[]			= "ThumbTrackStarted";
-const utf8	Scrollbar::EventThumbTrackEnded[]			= "ThumbTrackEnded";
-const utf8	Scrollbar::EventScrollConfigChanged[]		= "ScrollConfigChanged";
+const String Scrollbar::EventScrollPositionChanged( (utf8*)"ScrollPosChanged" );
+const String Scrollbar::EventThumbTrackStarted( (utf8*)"ThumbTrackStarted" );
+const String Scrollbar::EventThumbTrackEnded( (utf8*)"ThumbTrackEnded" );
+const String Scrollbar::EventScrollConfigChanged( (utf8*)"ScrollConfigChanged" );
 
 
 /*************************************************************************

@@ -6,8 +6,8 @@ author:		Paul D Turner
 purpose:	Implements GUI Scheme class
 *************************************************************************/
 /*************************************************************************
-Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+Crazy Eddie's GUI System (http://www.cegui.org.uk)
+Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -42,12 +42,12 @@ Static Data definitions
 *************************************************************************/
 
 // xml file elements and attributes
-const utf8	Scheme_xmlHandler::GUISchemeElement[]			= "GUIScheme";
-const utf8	Scheme_xmlHandler::ImagesetElement[]			= "Imageset";
-const utf8	Scheme_xmlHandler::FontElement[]				= "Font";
-const utf8	Scheme_xmlHandler::WindowSetElement[]			= "WindowSet";
-const utf8	Scheme_xmlHandler::WindowFactoryElement[]		= "WindowFactory";
-const utf8	Scheme_xmlHandler::WindowAliasElement[]			= "WindowAlias";
+const String Scheme_xmlHandler::GUISchemeElement( (utf8*)"GUIScheme" );
+const String Scheme_xmlHandler::ImagesetElement( (utf8*)"Imageset" );
+const String Scheme_xmlHandler::FontElement( (utf8*)"Font" );
+const String Scheme_xmlHandler::WindowSetElement( (utf8*)"WindowSet" );
+const String Scheme_xmlHandler::WindowFactoryElement( (utf8*)"WindowFactory" );
+const String Scheme_xmlHandler::WindowAliasElement( (utf8*)"WindowAlias" );
 const char	Scheme_xmlHandler::NameAttribute[]				= "Name";
 const char	Scheme_xmlHandler::FilenameAttribute[]			= "Filename";
 const char	Scheme_xmlHandler::AliasAttribute[]				= "Alias";

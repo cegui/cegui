@@ -6,8 +6,8 @@
 	purpose:	Implementation of Slider widget base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -40,9 +40,9 @@ SliderProperties::ClickStepSize	Slider::d_clickStepSizeProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Slider::EventValueChanged[]		= "ValueChanged";
-const utf8	Slider::EventThumbTrackStarted[]	= "ThumbTrackStarted";
-const utf8	Slider::EventThumbTrackEnded[]	= "ThumbTrackEnded";
+const String Slider::EventValueChanged( (utf8*)"ValueChanged" );
+const String Slider::EventThumbTrackStarted( (utf8*)"ThumbTrackStarted" );
+const String Slider::EventThumbTrackEnded( (utf8*)"ThumbTrackEnded" );
 
 
 /*************************************************************************

@@ -6,8 +6,8 @@
 	purpose:	Implementation of Listbox widget base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -46,12 +46,12 @@ ListboxProperties::ForceHorzScrollbar	Listbox::d_forceHorzProperty;
 	Constants
 *************************************************************************/
 // event names
-const utf8	Listbox::EventListContentsChanged[]			= "ListItemsChanged";
-const utf8	Listbox::EventSelectionChanged[]				= "ItemSelectionChanged";
-const utf8	Listbox::EventSortModeChanged[]				= "SortModeChanged";
-const utf8	Listbox::EventMultiselectModeChanged[]		= "MuliselectModeChanged";
-const utf8	Listbox::EventVertScrollbarModeChanged[]		= "VertScrollModeChanged";
-const utf8	Listbox::EventHorzScrollbarModeChanged[]		= "HorzScrollModeChanged";
+const String Listbox::EventListContentsChanged( (utf8*)"ListItemsChanged" );
+const String Listbox::EventSelectionChanged( (utf8*)"ItemSelectionChanged" );
+const String Listbox::EventSortModeChanged( (utf8*)"SortModeChanged" );
+const String Listbox::EventMultiselectModeChanged( (utf8*)"MuliselectModeChanged" );
+const String Listbox::EventVertScrollbarModeChanged( (utf8*)"VertScrollModeChanged" );
+const String Listbox::EventHorzScrollbarModeChanged( (utf8*)"HorzScrollModeChanged" );
 
 	
 /*************************************************************************

@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for ProgressBar widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -50,8 +50,8 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const utf8	EventProgressChanged[];		//!< Event fired whenever the progress value changes.
-	static const utf8	EventProgressDone[];		//!< Event fired when the progress bar reaches 100%.	
+	static const String EventProgressChanged;		//!< Event fired whenever the progress value changes.
+	static const String EventProgressDone;		//!< Event fired when the progress bar reaches 100%.	
 
 
 	/************************************************************************

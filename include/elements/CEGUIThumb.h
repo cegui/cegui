@@ -7,8 +7,8 @@
 				part of other widgets such as scrollers and sliders.
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -56,9 +56,9 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const utf8	EventThumbPositionChanged[];		//!< The position of the thumb widget has changed.
-	static const utf8	EventThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
-	static const utf8	EventThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
+	static const String EventThumbPositionChanged;		//!< The position of the thumb widget has changed.
+	static const String EventThumbTrackStarted;			//!< Name of the event fired when the user begins dragging the thumb.
+	static const String EventThumbTrackEnded;				//!< Name of the event fired when the user releases the thumb.
 
 
 	/*************************************************************************

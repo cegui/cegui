@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for Listbox widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -53,12 +53,12 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const utf8	EventListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
-	static const utf8	EventSelectionChanged[];			//!< Event triggered when there is a change to the currently selected item(s).
-	static const utf8	EventSortModeChanged[];				//!< Event triggered when the sort mode setting changes.
-	static const utf8	EventMultiselectModeChanged[];		//!< Event triggered when the multi-select mode setting changes.
-	static const utf8	EventVertScrollbarModeChanged[];	//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+	static const String EventListContentsChanged;			//!< Event triggered when the contents of the list is changed.
+	static const String EventSelectionChanged;			//!< Event triggered when there is a change to the currently selected item(s).
+	static const String EventSortModeChanged;				//!< Event triggered when the sort mode setting changes.
+	static const String EventMultiselectModeChanged;		//!< Event triggered when the multi-select mode setting changes.
+	static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 
 	/*************************************************************************

@@ -6,8 +6,8 @@
 	purpose:	Interface to base class for ListHeader widget
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -66,18 +66,18 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	EventSortColumnChanged[];			//!< Event fired when the current sort column changes.
-	static const utf8	EventSortDirectionChanged[];		//!< Event fired when the sort direction changes.
-	static const utf8	EventSegmentSized[];				//!< Event fired when a segment has been sized by the user (e.window is the segment).
-	static const utf8	EventSegmentClicked[];				//!< Event fired when a segment has been clicked by the user (e.window is the segment).
-	static const utf8	EventSplitterDoubleClicked[];		//!< Event fired when a segment splitter has been double-clicked.  (e.window is the segment).
-	static const utf8	EventSegmentSequenceChanged[];		//!< Event fired when the order of the segments has changed.  ('e' is a HeaderSequenceEventArgs&)
-	static const utf8	EventSegmentAdded[];				//!< Event fired when a segment is added to the header.
-	static const utf8	EventSegmentRemoved[];				//!< Event fired when a segment is removed from the header.
-	static const utf8	EventSortSettingChanged[];			//!< Event fired when setting that controls user modification to sort configuration changes.
-	static const utf8	EventDragMoveSettingChanged[];		//!< Event fired when setting that controls user drag & drop of segments changes.
-	static const utf8	EventDragSizeSettingChanged[];		//!< Event fired when setting that controls user sizing of segments changes.
-	static const utf8	EventSegmentRenderOffsetChanged[];	//!< Event fired when the rendering offset for the segments changes.
+	static const String EventSortColumnChanged;			//!< Event fired when the current sort column changes.
+	static const String EventSortDirectionChanged;		//!< Event fired when the sort direction changes.
+	static const String EventSegmentSized;				//!< Event fired when a segment has been sized by the user (e.window is the segment).
+	static const String EventSegmentClicked;				//!< Event fired when a segment has been clicked by the user (e.window is the segment).
+	static const String EventSplitterDoubleClicked;		//!< Event fired when a segment splitter has been double-clicked.  (e.window is the segment).
+	static const String EventSegmentSequenceChanged;		//!< Event fired when the order of the segments has changed.  ('e' is a HeaderSequenceEventArgs&)
+	static const String EventSegmentAdded;				//!< Event fired when a segment is added to the header.
+	static const String EventSegmentRemoved;				//!< Event fired when a segment is removed from the header.
+	static const String EventSortSettingChanged;			//!< Event fired when setting that controls user modification to sort configuration changes.
+	static const String EventDragMoveSettingChanged;		//!< Event fired when setting that controls user drag & drop of segments changes.
+	static const String EventDragSizeSettingChanged;		//!< Event fired when setting that controls user sizing of segments changes.
+	static const String EventSegmentRenderOffsetChanged;	//!< Event fired when the rendering offset for the segments changes.
 
 	// values
 	static const float	ScrollSpeed;				//!< Speed to scroll at when dragging outside header.

@@ -6,8 +6,8 @@
 	purpose:	Implements MouseCursor class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@ template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= NULL;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	MouseCursor::EventImageChanged[]	= "ImageChanged";
+const String MouseCursor::EventImageChanged( (utf8*)"ImageChanged" );
 
 
 /*************************************************************************

@@ -6,8 +6,8 @@ author:		Paul D Turner
 purpose:	Defines the interface for the Imageset class
 *************************************************************************/
 /*************************************************************************
-Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+Crazy Eddie's GUI System (http://www.cegui.org.uk)
+Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -89,8 +89,8 @@ private:
 	/*************************************************************************
 	Implementation Constants
 	*************************************************************************/
-	static const utf8	ImagesetElement[];				//!< Tag name for Imageset elements.
-	static const utf8	ImageElement[];					//!< Tag name for Image elements.
+	static const String ImagesetElement;				//!< Tag name for Imageset elements.
+	static const String ImageElement;					//!< Tag name for Image elements.
 	static const char	ImagesetNameAttribute[];		//!< Attribute name that stores the name of the Imageset
 	static const char	ImagesetImageFileAttribute[];	//!< Attribute name that stores the filename for the image file.
 	static const char	ImagesetNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.

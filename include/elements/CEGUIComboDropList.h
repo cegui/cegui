@@ -6,8 +6,8 @@
 	purpose:	Interface for the Combobox Drop-List widget base class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -49,7 +49,7 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	EventListSelectionAccepted[];		//!< Event fired when the user confirms the selection by clicking the mouse.
+	static const String EventListSelectionAccepted;		//!< Event fired when the user confirms the selection by clicking the mouse.
 
 
 	/*!

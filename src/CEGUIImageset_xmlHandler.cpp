@@ -6,8 +6,8 @@ author:		Paul D Turner
 purpose:	Implements the Imageset class
 *************************************************************************/
 /*************************************************************************
-Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+Crazy Eddie's GUI System (http://www.cegui.org.uk)
+Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -41,8 +41,8 @@ namespace CEGUI
 Definition of constant data for Imageset (and sub-classes)
 *************************************************************************/
 // Declared in Imageset::xmlHandler
-const utf8	Imageset_xmlHandler::ImagesetElement[]					= "Imageset";
-const utf8	Imageset_xmlHandler::ImageElement[]						= "Image";
+const String Imageset_xmlHandler::ImagesetElement( (utf8*)"Imageset" );
+const String Imageset_xmlHandler::ImageElement( (utf8*)"Image" );
 const char	Imageset_xmlHandler::ImagesetImageFileAttribute[]		= "Imagefile";
 const char	Imageset_xmlHandler::ImagesetNameAttribute[]			= "Name";
 const char	Imageset_xmlHandler::ImagesetNativeHorzResAttribute[]	= "NativeHorzRes";

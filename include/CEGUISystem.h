@@ -6,8 +6,8 @@
 	purpose:	Defines interface for main GUI system class
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -68,13 +68,13 @@ public:
 	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
 
 	// event names
-	static const utf8	EventGUISheetChanged[];				//!< Name of event fired whenever the GUI sheet is changed.
-	static const utf8	EventSingleClickTimeoutChanged[];	//!< Name of event fired when the single-click timeout is changed.
-	static const utf8	EventMultiClickTimeoutChanged[];	//!< Name of event fired when the multi-click timeout is changed.
-	static const utf8	EventMultiClickAreaSizeChanged[];	//!< Name of event fired when the size of the multi-click tolerance area is changed.
-	static const utf8	EventDefaultFontChanged[];			//!< Name of event fired when the default font changes.
-	static const utf8	EventDefaultMouseCursorChanged[];	//!< Name of event fired when the default mouse cursor changes.
-	static const utf8	EventMouseMoveScalingChanged[];		//!< Name of event fired when the mouse move scaling factor changes.
+	static const String EventGUISheetChanged;				//!< Name of event fired whenever the GUI sheet is changed.
+	static const String EventSingleClickTimeoutChanged;	//!< Name of event fired when the single-click timeout is changed.
+	static const String EventMultiClickTimeoutChanged;	//!< Name of event fired when the multi-click timeout is changed.
+	static const String EventMultiClickAreaSizeChanged;	//!< Name of event fired when the size of the multi-click tolerance area is changed.
+	static const String EventDefaultFontChanged;			//!< Name of event fired when the default font changes.
+	static const String EventDefaultMouseCursorChanged;	//!< Name of event fired when the default mouse cursor changes.
+	static const String EventMouseMoveScalingChanged;		//!< Name of event fired when the mouse move scaling factor changes.
 
 
 	/*************************************************************************

@@ -6,8 +6,8 @@
 	purpose:	Implementation of List header segment widget.
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -43,16 +43,16 @@ ListHeaderSegmentProperties::SortDirection	ListHeaderSegment::d_sortDirectionPro
 	Constants
 *************************************************************************/
 // Event names
-const utf8	ListHeaderSegment::EventSegmentClicked[]			= "SegmentClicked";
-const utf8	ListHeaderSegment::EventSplitterDoubleClicked[]	= "SplitterDoubleClicked";
-const utf8	ListHeaderSegment::EventSizingSettingChanged[]	= "SizingSettingChanged";
-const utf8	ListHeaderSegment::EventSortDirectionChanged[]	= "SortDirectionChanged";
-const utf8	ListHeaderSegment::EventMovableSettingChanged[]	= "MovableSettingChanged";
-const utf8	ListHeaderSegment::EventSegmentDragStart[]		= "SegmentDragStart";
-const utf8	ListHeaderSegment::EventSegmentDragStop[]		= "SegmentDragStop";
-const utf8	ListHeaderSegment::EventSegmentDragPositionChanged[]	= "SegmentDragPositionChanged";
-const utf8	ListHeaderSegment::EventSegmentSized[]			= "SegmentSized";
-const utf8	ListHeaderSegment::EventClickableSettingChanged[]	= "ClickableSettingChanged";
+const String ListHeaderSegment::EventSegmentClicked( (utf8*)"SegmentClicked" );
+const String ListHeaderSegment::EventSplitterDoubleClicked( (utf8*)"SplitterDoubleClicked" );
+const String ListHeaderSegment::EventSizingSettingChanged( (utf8*)"SizingSettingChanged" );
+const String ListHeaderSegment::EventSortDirectionChanged( (utf8*)"SortDirectionChanged" );
+const String ListHeaderSegment::EventMovableSettingChanged( (utf8*)"MovableSettingChanged" );
+const String ListHeaderSegment::EventSegmentDragStart( (utf8*)"SegmentDragStart" );
+const String ListHeaderSegment::EventSegmentDragStop( (utf8*)"SegmentDragStop" );
+const String ListHeaderSegment::EventSegmentDragPositionChanged( (utf8*)"SegmentDragPositionChanged" );
+const String ListHeaderSegment::EventSegmentSized( (utf8*)"SegmentSized" );
+const String ListHeaderSegment::EventClickableSettingChanged( (utf8*)"ClickableSettingChanged" );
 
 // Defaults
 const float	ListHeaderSegment::DefaultSizingArea	= 8.0f;

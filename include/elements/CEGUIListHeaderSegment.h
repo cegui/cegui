@@ -6,8 +6,8 @@
 	purpose:	Interface to list header segment class.
 *************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
-    Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -51,16 +51,16 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	EventSegmentClicked[];				//!< Event fired when the segment is clicked.
-	static const utf8	EventSplitterDoubleClicked[];		//!< Event fired when the sizer/splitter is double-clicked.
-	static const utf8	EventSizingSettingChanged[];		//!< Event fired when the sizing setting changes.
-	static const utf8	EventSortDirectionChanged[];		//!< Event fired when the sort direction value changes.
-	static const utf8	EventMovableSettingChanged[];		//!< Event fired when the movable setting changes.
-	static const utf8	EventSegmentDragStart[];			//!< Event fired when the segment has started to be dragged.
-	static const utf8	EventSegmentDragStop[];				//!< Event fired when segment dragging has stopped (via mouse release).
-	static const utf8	EventSegmentDragPositionChanged[];	//!< Event fired when the segment drag position has changed.
-	static const utf8	EventSegmentSized[];				//!< Event fired when the segment is sized.
-	static const utf8	EventClickableSettingChanged[];		//!< Event fired when the clickable state of the segment changes.
+	static const String EventSegmentClicked;				//!< Event fired when the segment is clicked.
+	static const String EventSplitterDoubleClicked;		//!< Event fired when the sizer/splitter is double-clicked.
+	static const String EventSizingSettingChanged;		//!< Event fired when the sizing setting changes.
+	static const String EventSortDirectionChanged;		//!< Event fired when the sort direction value changes.
+	static const String EventMovableSettingChanged;		//!< Event fired when the movable setting changes.
+	static const String EventSegmentDragStart;			//!< Event fired when the segment has started to be dragged.
+	static const String EventSegmentDragStop;				//!< Event fired when segment dragging has stopped (via mouse release).
+	static const String EventSegmentDragPositionChanged;	//!< Event fired when the segment drag position has changed.
+	static const String EventSegmentSized;				//!< Event fired when the segment is sized.
+	static const String EventClickableSettingChanged;		//!< Event fired when the clickable state of the segment changes.
 
 	// Defaults
 	static const float	DefaultSizingArea;		//!< Default size of the sizing area.
