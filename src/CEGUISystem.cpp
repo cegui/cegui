@@ -44,16 +44,27 @@
 #include "xercesc/sax2/XMLReaderFactory.hpp"
 #include "CEGUIDataContainer.h"
 #include "CEGUIResourceProvider.h"
-
-#include <boost/timer.hpp>
+#include <time.h>
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
+/*!
+\brief
+	Simple timer class.
+*/
+class SimpleTimer
+{
+	clock_t d_baseTime;
+
+public:
+	SimpleTimer() : d_baseTime(clock()) {}
+
+	void	restart()	{ d_baseTime = clock(); }
+	double	elapsed()	{ return static_cast<double>((clock() - d_baseTime) / CLOCKS_PER_SEC); }
+};
 	
-*************************************************************************/
 /*!
 \brief
 	Implementation structure used in tracking up & down mouse button inputs in order to generate click, double-click,
@@ -63,7 +74,7 @@ struct MouseClickTracker
 {
 	MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
 
-	boost::timer	d_timer;			//!< Timer used to track clicks for this button.
+	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
 	int				d_click_count;		//!< count of clicks made so far.
 	Rect			d_click_area;		//!< area used to detect multi-clicks
 };
