@@ -26,7 +26,11 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
-
+#include "CEGUISystem.h"
+#include "CEGUIRenderer.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIImageset.h"
+#include "CEGUIImage.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,6 +48,20 @@ template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= NULL;
 *************************************************************************/
 MouseCursor::MouseCursor(void)
 {
+	// default constraint is to whole screen
+	d_constraints = System::getSingleton().getRenderer()->getRect();
+
+	// mouse defaults to middle of the constrained area
+	d_position.d_x = d_constraints.getWidth() / 2;
+	d_position.d_y = d_constraints.getHeight() / 2;
+	d_position.d_z = 1.0f;
+
+	// mouse defaults to visible
+	d_visible = true;
+
+	// no default image though
+	d_cursorImage = NULL;
+
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::MouseCursor singleton created.");
 }
 
@@ -57,5 +75,87 @@ MouseCursor::~MouseCursor(void)
 }
 
 
+/*************************************************************************
+	Set the current mouse cursor image
+*************************************************************************/
+void MouseCursor::setImage(const String& imageset, const String& image_name)
+{
+	setImage(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name));
+}
+
+
+/*************************************************************************
+	Draw the mouse cursor
+*************************************************************************/
+void MouseCursor::draw(void) const
+{
+	if (d_visible && (d_cursorImage != NULL))
+	{
+		d_cursorImage->draw(d_position, System::getSingleton().getRenderer()->getRect());
+	}
+
+}
+
+
+/*************************************************************************
+	Set the current mouse cursor position
+*************************************************************************/
+void MouseCursor::setPosition(const Point& position)
+{
+	d_position.d_x = position.d_x;
+	d_position.d_y = position.d_y;
+	constrainPosition();
+}
+
+
+/*************************************************************************
+	Offset the mouse cursor position by the deltas specified in 'offset'.
+*************************************************************************/
+void MouseCursor::offsetPosition(const Point& offset)
+{
+	d_position.d_x += offset.d_x;
+	d_position.d_y += offset.d_y;
+	constrainPosition();
+}
+
+
+/*************************************************************************
+	Checks the mouse cursor position is within the current 'constrain'
+	Rect and adjusts as required.
+*************************************************************************/
+void MouseCursor::constrainPosition(void)
+{
+	if (d_position.d_x >= d_constraints.d_right)
+		d_position.d_x = d_constraints.d_right -1;
+
+	if (d_position.d_y >= d_constraints.d_bottom)
+		d_position.d_y = d_constraints.d_bottom -1;
+
+	if (d_position.d_y < d_constraints.d_top)
+		d_position.d_y = d_constraints.d_top;
+
+	if (d_position.d_x < d_constraints.d_left)
+		d_position.d_x = d_constraints.d_left;
+}
+
+
+/*************************************************************************
+	Set the area that the mouse cursor is constrained to.
+*************************************************************************/
+void MouseCursor::setConstraintArea(const Rect* area)
+{
+	Rect renderer_area = System::getSingleton().getRenderer()->getRect();
+
+	if (area == NULL)
+	{
+		d_constraints = renderer_area;
+	}
+	else
+	{
+		d_constraints = area->getIntersection(renderer_area);
+	}
+
+	constrainPosition();
+}
 
 } // End of  CEGUI namespace section

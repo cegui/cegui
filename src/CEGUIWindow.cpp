@@ -218,7 +218,7 @@ Window* Window::getChild(const String& name) const
 
 	}
 
-	throw UnknownObjectException((utf8*)"The Window object named '" + name +"' is not attached to Window '" + d_name + "'.");
+	throw UnknownObjectException((utf8*)"Window::getChild - The Window object named '" + name +"' is not attached to Window '" + d_name + "'.");
 }
 
 
@@ -240,7 +240,9 @@ Window* Window::getChild(uint ID) const
 	}
 
 	// TODO: Update exception to include ID code
-	throw UnknownObjectException((utf8*)"The Window with the requested ID is not attached to Window '" + d_name + "'.");
+	char strbuf[16];
+	sprintf(strbuf, "%X", ID);
+	throw UnknownObjectException("Window::getChild - The Window with ID: '" + std::string(strbuf) + "' is not attached to Window '" + d_name + "'.");
 }
 
 

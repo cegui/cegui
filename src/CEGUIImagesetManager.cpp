@@ -26,6 +26,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
+#include "CEGUIImageset.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -51,6 +52,8 @@ ImagesetManager::ImagesetManager(void)
 *************************************************************************/
 ImagesetManager::~ImagesetManager(void)
 {
+	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of Imageset system ----");
+
 	destroyAllImagesets();
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::ImagesetManager singleton destroyed");
@@ -65,7 +68,7 @@ Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 {
 	if (isImagesetPresent(name))
 	{
-		throw	AlreadyExistsException("An Imageset object named '" + name + "' already exists.");
+		throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
 	}
 
 	Imageset* temp = new Imageset(name, texture);
@@ -90,12 +93,12 @@ Imageset* ImagesetManager::createImageset(const String& filename)
 	{
 		delete temp;
 
-		throw	AlreadyExistsException("An Imageset object named '" + name + "' already exists.");
+		throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
 	}
 
 	d_imagesets[name] = temp;
 
-	Logger::getSingleton().logEvent((utf8*)"Imageset '" + name +"' has been created from the data specified in file '" + filename + "'.", Informative);
+	Logger::getSingleton().logEvent((utf8*)"Imageset '" + name +"' has been created from the information specified in file '" + filename + "'.", Informative);
 
 	return temp;
 }
@@ -152,10 +155,27 @@ Imageset* ImagesetManager::getImageset(const String& name) const
 
 	if (pos == d_imagesets.end())
 	{
-		throw UnknownObjectException("No Imageset named '" + name + "' is present in the system.");
+		throw UnknownObjectException("ImagesetManager::getImageset - No Imageset named '" + name + "' is present in the system.");
 	}
 
 	return pos->second;
+}
+
+
+/*************************************************************************
+	Notify the ImagesetManager of the current (usually new) display
+	resolution.
+*************************************************************************/
+void ImagesetManager::notifyScreenResolution(const Size& size)
+{
+	// notify all attached Imageset objects of the change in resolution
+	ImagesetRegistry::iterator pos = d_imagesets.begin(), end = d_imagesets.end();
+
+	for (; pos != end; ++pos)
+	{
+		pos->second->notifyScreenResolution(size);
+	}
+
 }
 
 } // End of  CEGUI namespace section

@@ -1127,7 +1127,7 @@ public:
 
 		grow(str_num);
 		setlen(str_num);
-		memcpy(ptr(), str.ptr(), str_num * sizeof(utf32));
+		memcpy(ptr(), &str.ptr()[str_idx], str_num * sizeof(utf32));
 		return *this;
 	}
 
@@ -1188,7 +1188,7 @@ public:
 
 		while(str_num--)
 		{
-			((*this)[str_num]) = (utf32)(std_str[str_num]);
+			((*this)[str_num]) = (utf32)(std_str[str_num + str_idx]);
 		}
 
 		return *this;
@@ -1266,9 +1266,11 @@ public:
 		if (str_num == npos)
 			throw std::length_error("Length for utf8 encoded string can not be 'npos'");
 
-		grow(encoded_size(utf8_str, str_num));
-		setlen(str_num);
+		size_type enc_sze = encoded_size(utf8_str, str_num);
+
+		grow(enc_sze);
 		encode(utf8_str, ptr(), d_reserve, str_num);
+		setlen(enc_sze);
 		return *this;
 	}
 
@@ -3915,13 +3917,28 @@ private:
 	// perform re-allocation to remove wasted space.
 	void	trim(void)
 	{
+		size_type min_size = d_cplength + 1;
+
 		// only re-allocate when not using quick-buffer, and when size can be trimmed
-		if ((d_reserve > STR_QUICKBUFF_SIZE) && (d_reserve > (d_cplength + 1)))
+		if ((d_reserve > STR_QUICKBUFF_SIZE) && (d_reserve > min_size))
 		{
-			utf32* temp = new utf32[d_cplength + 1];
-			memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
-			delete d_buffer;
-			d_buffer = temp;
+			// see if we can trim to quick-buffer
+			if (min_size <= STR_QUICKBUFF_SIZE)
+			{
+				memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
+				delete d_buffer;
+				d_reserve = STR_QUICKBUFF_SIZE;
+			}
+			// re-allocate buffer
+			else
+			{
+				utf32* temp = new utf32[min_size];
+				memcpy(temp, d_buffer, min_size * sizeof(utf32));
+				delete d_buffer;
+				d_buffer = temp;
+				d_reserve = min_size;
+			}
+
 		}
 
 	}

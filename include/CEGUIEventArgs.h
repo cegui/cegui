@@ -48,6 +48,15 @@ namespace CEGUI
 class CEGUIBASE_API EventArgs
 {
 public:
+	/*************************************************************************
+		Construction
+	*************************************************************************/
+	EventArgs(void) : handled(false) {}
+
+
+	/*************************************************************************
+		Data members
+	*************************************************************************/
 	bool	handled;		//!< handlers should set this to true if they handled the event, or false otherwise.
 };
 

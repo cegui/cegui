@@ -58,7 +58,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 {
 	if (isWindowPresent(name))
 	{
-		throw AlreadyExistsException("A Window object with the name '" + name +"' already exists within the system.");
+		throw AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + name +"' already exists within the system.");
 	}
 
 	WindowFactory* factory = WindowFactoryManager::getSingleton().getFactory(type);
@@ -113,7 +113,7 @@ Window* WindowManager::getWindow(const String& name) const
 
 	if (pos == d_windowRegistry.end())
 	{
-		throw UnknownObjectException("A Window object with the name '" + name +"' does not exist within the system");
+		throw UnknownObjectException("WindowManager::getWindow - A Window object with the name '" + name +"' does not exist within the system");
 	}
 
 	return pos->second;

@@ -30,6 +30,7 @@
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
 
+#include <map>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -52,7 +53,7 @@ public:
 	\brief
 		Destructor for SchemeManager objects
 	*/
-	virtual ~SchemeManager(void);
+	~SchemeManager(void);
 
 
 	/*!
@@ -75,6 +76,63 @@ public:
 	static	SchemeManager*	getSingletonPtr(void)			{return Singleton<SchemeManager>::getSingletonPtr();}
 
 
+	/*!
+	\brief
+		Loads a scheme
+
+	\param scheme_filename
+		String object that holds the filename of the scheme to be loaded
+
+	\return
+		Pointer to an object representing the loaded Scheme.
+	*/
+	Scheme*	loadScheme(const String& scheme_filename);
+
+
+	/*!
+	\brief
+		Unloads all data referenced in a scheme.  If any object is using some resource which is listed in the scheme, this function
+		will effectively pull the rug out from under those objects.  This should be used with extreme caution, or not at all.
+
+	\param scheme_name
+		String object specifying the name of the Scheme to be unloaded.
+	*/
+	void	unloadScheme(const String& scheme_name);
+
+
+	/*!
+	\brief
+		Returns true if the named Scheme is present in the system (though the resources for the scheme may or may not be loaded)
+
+	\param scheme_name
+		String object specifying the name of the Scheme to check for.
+
+	\return
+		true if the scheme is loaded, false if it is not.
+	*/
+	bool	isSchemePresent(const String& scheme_name) const		{return (d_schemes.find(scheme_name) != d_schemes.end());}
+
+
+	/*!
+	\brief
+		Returns a pointer to the Scheme object with the specified name.
+
+	\param name
+		String object holding the name of the Scheme to be returned.
+
+	\return
+		Pointer to the Scheme named \a name.
+
+	\exception UnknownObjectException	thrown if no Scheme named \a name is present in the system
+	*/
+	Scheme*	getScheme(const String& name) const;
+
+private:
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	typedef	std::map<String, Scheme*> SchemeRegistry;
+	SchemeRegistry	d_schemes;			//!< Collection that tracks the loaded Schemes.
 };
 
 } // End of  CEGUI namespace section

@@ -111,6 +111,24 @@ public:
 
 	/*!
 	\brief
+		Enable or disable the queueing of quads from this point on.
+
+		This only affects queueing.  If queueing is turned off, any calls to addQuad will cause the quad to be rendered directly.  Note that
+		disabling queueing will not cause currently queued quads to be rendered, nor is the queue cleared - at any time the queue can still
+		be drawn by calling doRender, and the list can be cleared by calling clearRenderList.  Re-enabling the queue causes subsequent quads
+		to be added as if queueing had never been disabled.
+
+	\param setting
+		true to enable queueing, or false to disable queueing (see notes above).
+
+	\return
+		Nothing
+	*/
+	virtual void	setQueueingEnabled(bool setting) = 0;
+
+
+	/*!
+	\brief
 		Creates a 'null' Texture object.
 
 	\return
@@ -182,6 +200,16 @@ public:
 
 	/*!
 	\brief
+		Return whether queueing is enabled.
+
+	\return
+		true if queueing is enabled, false if queueing is disabled.
+	*/
+	virtual bool	isQueueingEnabled(void) const = 0;
+
+
+	/*!
+	\brief
 		Return the current width of the display in pixels
 
 	\return
@@ -221,6 +249,36 @@ public:
 	virtual Rect	getRect(void) const		= 0;
 
 
+	/*!
+	\brief
+		Return the maximum texture size available
+
+	\return
+		Size of the maximum supported texture in pixels (textures are always assumed to be square)
+	*/
+	virtual	uint	getMaxTextureSize(void) const	= 0;
+
+
+	/*!
+	\brief
+		Return the horizontal display resolution dpi
+
+	\return
+		horizontal resolution of the display in dpi.
+	*/
+	virtual	uint	getHorzScreenDPI(void) const	= 0;
+
+
+	/*!
+	\brief
+		Return the vertical display resolution dpi
+
+	\return
+		vertical resolution of the display in dpi.
+	*/
+	virtual	uint	getVertScreenDPI(void) const	= 0;
+
+
 	/*************************************************************************
 		Basic stuff we provide in base class
 	*************************************************************************/
@@ -241,7 +299,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	advanceZValue(void)				{d_current_z += GuiZElementStep;}
+	void	advanceZValue(void)				{d_current_z -= GuiZElementStep;}
 
 
 	/*!
@@ -265,7 +323,7 @@ public:
 	\return
 		float value that specifies the Z co-ordinate for layer \a layer on the current GUI element.
 	*/
-	float	getZLayer(uint layer) const		{return d_current_z + ((float)layer * GuiZLayerStep);}
+	float	getZLayer(uint layer) const		{return d_current_z - ((float)layer * GuiZLayerStep);}
 
 
 protected:

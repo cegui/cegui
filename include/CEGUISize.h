@@ -36,7 +36,7 @@ namespace CEGUI
 \brief
 	Class that holds the size (width & height) of something.
 */
-class Size
+class CEGUIBASE_API Size
 {
 public:
 	Size(void);

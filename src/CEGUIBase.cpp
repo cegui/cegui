@@ -3,7 +3,7 @@
 	created:	20/2/2004
 	author:		Paul D Turner
 	
-	purpose:	None whatsoever!
+	purpose:	Definition of any system-wide data, etc.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -25,19 +25,8 @@
 *************************************************************************/
 #include "CEGUIBase.h"
 
-//
-//BOOL APIENTRY DllMain( HANDLE hModule, 
-//                       DWORD  ul_reason_for_call, 
-//                       LPVOID lpReserved
-//					 )
-//{
-//	switch (ul_reason_for_call)
-//	{
-//	case DLL_PROCESS_ATTACH:
-//	case DLL_THREAD_ATTACH:
-//	case DLL_THREAD_DETACH:
-//	case DLL_PROCESS_DETACH:
-//		break;
-//	}
-//    return TRUE;
-//}
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+
+} // End of  CEGUI namespace section

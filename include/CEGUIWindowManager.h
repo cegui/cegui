@@ -68,7 +68,7 @@ public:
 		This will properly destry all remaining Window objects.  Note that WindowFactory objects will not
 		be destroyed (since they are owned by whoever created them).
 	*/
-	virtual ~WindowManager(void);
+	~WindowManager(void);
 
 
 	/*!

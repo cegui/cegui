@@ -47,114 +47,8 @@ namespace CEGUI
 /*************************************************************************
 	Forward refs
 *************************************************************************/
-class DirectX81Renderer;
 class DirectX81Texture;
 
-
-/*!
-\brief
-	Texture class that is created by DirectX81Renderer objects
-*/
-class DIRECTX81_GUIRENDERER_API DirectX81Texture : public Texture
-{
-private:
-	/*************************************************************************
-		Construction & Destruction (by Renderer object only)
-	*************************************************************************/
-	friend class DirectX81Renderer;
-
-	DirectX81Texture(Renderer* owner);
-	virtual ~DirectX81Texture(void);
-
-public:
-	/*!
-	\brief
-		Returns the current pixel width of the texture
-
-	\return
-		ushort value that is the current width of the texture in pixels
-	*/
-	virtual	ushort	getWidth(void) const		{return d_width;}
-
-
-	/*!
-	\brief
-		Returns the current pixel height of the texture
-
-	\return
-		ushort value that is the current height of the texture in pixels
-	*/
-	virtual	ushort	getHeight(void) const		{return d_height;}
-
-
-	/*!
-	\brief
-		Loads the specified image file into the texture.  The texture is resized as required to hold the image.
-
-	\param filename
-		The filename of the image file that is to be loaded into the texture
-
-	\return
-		Nothing.
-
-	\exception
-	*/
-	virtual void	loadFromFile(const String& filename);
-
-
-	/*!
-	\brief
-		Loads (copies) an image in memory into the texture.  The texture is resized as required to hold the image.
-
-	\param buffPtr
-		Pointer to the buffer containing the image data
-
-	\param buffWidth
-		Width of the buffer (in 0xAARRGGBB pixels)
-
-	\param buffHeight
-		Height of the buffer (in 0xAARRGGBB pixels)
-
-	\return
-		Nothing.
-
-	\exception
-	*/
-	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight);
-
-
-	/*!
-	\brief
-		Return a pointer to the internal Direct3DTexture8 object
-
-	\return
-		Pointer to the IDirect3DTexture8 interface currently being used by this Texture object
-	*/
-	LPDIRECT3DTEXTURE8	getD3DTexture(void) const		{return d_d3dtexture;}
-
-
-private:
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	// safely free direc3d texture (can be called multiple times with no ill effect)
-	void	freeD3DTexture(void);
-
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	LPDIRECT3DTEXTURE8		d_d3dtexture;		//!< The 'real' texture.
-
-	ushort					d_width;			//!< cached width of the texture
-	ushort					d_height;			//!< cached height of the texture
-};
-
-
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
-	
 /*!
 \brief
 	Renderer class to interface with Microsoft DirectX 8.1
@@ -189,6 +83,25 @@ public:
 	// clear the queue
 	virtual	void	clearRenderList(void);
 
+
+	/*!
+	\brief
+		Enable or disable the queueing of quads from this point on.
+
+		This only affects queueing.  If queueing is turned off, any calls to addQuad will cause the quad to be rendered directly.  Note that
+		disabling queueing will not cause currently queued quads to be rendered, nor is the queue cleared - at any time the queue can still
+		be drawn by calling doRender, and the list can be cleared by calling clearRenderList.  Re-enabling the queue causes subsequent quads
+		to be added as if queueing had never been disabled.
+
+	\param setting
+		true to enable queueing, or false to disable queueing (see notes above).
+
+	\return
+		Nothing
+	*/
+	virtual void	setQueueingEnabled(bool setting)		{d_queueing = setting;}
+
+
 	// create an empty texture
 	virtual	Texture*	createTexture(void);
 
@@ -196,7 +109,7 @@ public:
 	virtual	Texture*	createTexture(const String& filename);
 
 	// create a texture and set it to the specified size
-	virtual	Texture*	createTexture(float width, float height);
+	virtual	Texture*	createTexture(float size);
 
 	// destroy the given texture
 	virtual	void		destroyTexture(Texture* texture);
@@ -208,11 +121,92 @@ public:
 	LPDIRECT3DDEVICE8	getDevice(void) const		{return d_device;}
 
 
+	/*!
+	\brief
+		Return whether queueing is enabled.
+
+	\return
+		true if queueing is enabled, false if queueing is disabled.
+	*/
+	virtual bool	isQueueingEnabled(void) const	{return d_queueing;}
+
+
+	/*!
+	\brief
+	Return the current width of the display in pixels
+
+	\return
+	float value equal to the current width of the display in pixels.
+	*/
+	virtual float	getWidth(void) const		{return d_display_area.getWidth();}
+
+
+	/*!
+	\brief
+	Return the current height of the display in pixels
+
+	\return
+	float value equal to the current height of the display in pixels.
+	*/
+	virtual float	getHeight(void) const		{return d_display_area.getHeight();}
+
+
+	/*!
+	\brief
+	Return the size of the display in pixels
+
+	\return
+	Size object describing the dimensions of the current display.
+	*/
+	virtual Size	getSize(void) const			{return d_display_area.getSize();}
+
+
+	/*!
+	\brief
+	Return a Rect describing the screen
+
+	\return
+	A Rect object that describes the screen area.  Typically, the top-left values are always 0, and the size of the area described is
+	equal to the screen resolution.
+	*/
+	virtual Rect	getRect(void) const			{return d_display_area;}
+
+
+	/*!
+	\brief
+		Return the maximum texture size available
+
+	\return
+		Size of the maximum supported texture in pixels (textures are always assumed to be square)
+	*/
+	virtual	uint	getMaxTextureSize(void) const		{return 2048;}		// TODO: Change to proper value
+
+
+	/*!
+	\brief
+		Return the horizontal display resolution dpi
+
+	\return
+		horizontal resolution of the display in dpi.
+	*/
+	virtual	uint	getHorzScreenDPI(void) const	{return 96;}
+
+
+	/*!
+	\brief
+		Return the vertical display resolution dpi
+
+	\return
+		vertical resolution of the display in dpi.
+	*/
+	virtual	uint	getVertScreenDPI(void) const	{return 96;}
+
+
 private:
 	/************************************************************************
 		Implementation Constants
 	************************************************************************/
-	const static int			VERTEX_PER_SPRITE;							//!< number of vertices per sprite
+	const static int			VERTEX_PER_QUAD;							//!< number of vertices per quad
 	const static int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
 	const static int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
 	const static ulong			VERTEX_FVF;									//!< FVF specifier constant
@@ -259,19 +253,28 @@ private:
 	/*************************************************************************
 	    Implementation Methods
 	*************************************************************************/
+	// setup states etc
+	void	initPerFrameStates(void);
+
 	// renders whatever is in the vertex buffer
 	void	renderVBuffer(void);
 
 	// sort quads list according to texture
 	void	sortQuads(void);
 
+	// render a quad directly to the display
+	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+
 	/*************************************************************************
 	    Implementation Data
 	*************************************************************************/
+	Rect				d_display_area;
 	QuadInfo**			d_quadList;
 	QuadInfo*			d_quadBuff;
 	int					d_quadBuffPos;
 	int					d_quadBuffSize;
+
+	bool	d_queueing;		//!< setting for queueing control.
 
 	LPDIRECT3DDEVICE8		d_device;			//!< Base Direct3DDevice8 interface that we use for rendering
 	LPDIRECT3DTEXTURE8		d_currTexture;		//!< currently set texture;
@@ -281,10 +284,6 @@ private:
 
 	std::list<DirectX81Texture*>	d_texturelist;		//!< List used to track textures.
 };
-
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
 
 } // End of  CEGUI namespace section
 

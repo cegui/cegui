@@ -46,6 +46,9 @@ const char	Imageset::ImagesetSchemaName[]			= "Imageset.xsd";
 // Declared in Imageset::xmlHandler
 const char	Imageset::xmlHandler::ImagesetImageFileAttribute[]	= "Imagefile";
 const char	Imageset::xmlHandler::ImagesetNameAttribute[]		= "Name";
+const char	Imageset::xmlHandler::ImagesetNativeHorzResAttribute[]	= "NativeHorzRes";
+const char	Imageset::xmlHandler::ImagesetNativeVertResAttribute[]	= "NativeVertRes";
+const char	Imageset::xmlHandler::ImagesetAutoScaledAttribute[]		= "AutoScaled";
 const char	Imageset::xmlHandler::ImagesetElement[]				= "Imageset";
 const char	Imageset::xmlHandler::ImageElement[]				= "Image";
 const char	Imageset::xmlHandler::ImageNameAttribute[]			= "Name";
@@ -66,9 +69,12 @@ Imageset::Imageset(const String& name, Texture* texture) :
 {
 	if (d_texture == NULL)
 	{
-		throw NullObjectException((utf8*)"Texture object supplied for Imageset creation must not be NULL");
+		throw NullObjectException((utf8*)"Imageset::Imageset - Texture object supplied for Imageset creation must not be NULL");
 	}
 
+	// defaults for scaling options
+	d_autoScale = false;
+	setNativeResolution(Size(DefaultNativeHorzRes, d_nativeVertRes));
 }
 
 
@@ -77,6 +83,10 @@ Imageset::Imageset(const String& name, Texture* texture) :
 *************************************************************************/
 Imageset::Imageset(const String& filename)
 {
+	// defaults for scaling options
+	d_autoScale = false;
+	setNativeResolution(Size(DefaultNativeHorzRes, d_nativeVertRes));
+
 	d_texture = NULL;
 	load(filename);
 }
@@ -98,7 +108,7 @@ void Imageset::setTexture(Texture* texture)
 {
 	if (d_texture == NULL)
 	{
-		throw NullObjectException((utf8*)"Texture object supplied for Imageset creation must not be NULL");
+		throw NullObjectException((utf8*)"Imageset::setTexture - Texture object supplied for Imageset creation must not be NULL");
 	}
 
 	d_texture = texture;
@@ -117,7 +127,7 @@ void Imageset::load(const String& filename)
 
 	if (filename.empty() || (filename == (utf8*)""))
 	{
-		throw InvalidRequestException((utf8*)"Filename supplied for Imageset loading must be valid");
+		throw InvalidRequestException((utf8*)"Imageset::load - Filename supplied for Imageset loading must be valid");
 	}
 
 	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
@@ -151,7 +161,7 @@ void Imageset::load(const String& filename)
 			delete parser;
 
 			ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
-			String message((utf8*)"An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
+			String message((utf8*)"Imageset::load - An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
 			message += (utf8*)excmsg.get();
 
 			throw FileIOException(message);
@@ -164,7 +174,7 @@ void Imageset::load(const String& filename)
 		delete parser;
 
 		ArrayJanitor<char> excmsg(XMLString::transcode(exc.getMessage()));
-		String message((utf8*)"An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
+		String message((utf8*)"Imageset::load - An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
 		message += (utf8*)excmsg.get();
 
 		throw FileIOException(message);
@@ -174,7 +184,7 @@ void Imageset::load(const String& filename)
 		unload();
 		delete parser;
 
-		throw FileIOException((utf8*)"An unexpected error occurred while parsing Imageset file '" + filename + "'.");
+		throw FileIOException((utf8*)"Imageset::load - An unexpected error occurred while parsing Imageset file '" + filename + "'.");
 	}
 
 	// cleanup
@@ -191,7 +201,7 @@ const Image& Imageset::getImage(const String& name) const
 
 	if (pos == d_images.end())
 	{
-		throw	UnknownObjectException("The Image named '" + name + "' could not be found in Imageset '" + d_name + "'.");
+		throw	UnknownObjectException("Imageset::getImage - The Image named '" + name + "' could not be found in Imageset '" + d_name + "'.");
 	}
 
 	return pos->second;
@@ -205,11 +215,15 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 {
 	if (isImageDefined(name))
 	{
-		throw AlreadyExistsException("An image with the name '" + name + "' already exists in Imageset '" + d_name + "'.");
+		throw AlreadyExistsException("Imageset::defineImage - An image with the name '" + name + "' already exists in Imageset '" + d_name + "'.");
 	}
 
+	// get scaling factors
+	float hscale = d_autoScale ? d_horzScaling : 1.0f;
+	float vscale = d_autoScale ? d_vertScaling : 1.0f;
+
 	// add the Image definition
-	d_images[name] = Image(this, image_rect, render_offset);
+	d_images[name] = Image(this, image_rect, render_offset, hscale, vscale);
 }
 
 
@@ -253,6 +267,76 @@ void Imageset::unload(void)
 	// cleanup texture
 	System::getSingleton().getRenderer()->destroyTexture(d_texture);
 	d_texture = NULL;
+}
+
+
+/*************************************************************************
+	Sets the scaling factor for all Images that are a part of this Imageset.
+*************************************************************************/
+void Imageset::updateImageScalingFactors(void)
+{
+	float hscale, vscale;
+
+	if (d_autoScale)
+	{
+		hscale = d_horzScaling;
+		vscale = d_vertScaling;
+	}
+	else
+	{
+		hscale = vscale = 1.0f;
+	}
+
+	ImageRegistry::iterator pos = d_images.begin(), end = d_images.end();
+	for(; pos != end; ++pos)
+	{
+		pos->second.setHorzScaling(hscale);
+		pos->second.setVertScaling(vscale);
+	}
+
+}
+
+
+/*************************************************************************
+	Enable or disable auto-scaling for this Imageset.
+*************************************************************************/
+void Imageset::setAutoScalingEnabled(bool setting)
+{
+	if (setting != d_autoScale)
+	{
+		d_autoScale = setting;
+		updateImageScalingFactors();
+	}
+
+}
+
+
+/*************************************************************************
+	Set the native resolution for this Imageset
+*************************************************************************/
+void Imageset::setNativeResolution(const Size& size)
+{
+	d_nativeHorzRes = size.d_width;
+	d_nativeVertRes = size.d_height;
+
+	// re-calculate scaling factors & notify images as required
+	notifyScreenResolution(System::getSingleton().getRenderer()->getSize());
+}
+
+
+/*************************************************************************
+	Notify the Imageset of the current (usually new) display resolution.
+*************************************************************************/
+void Imageset::notifyScreenResolution(const Size& size)
+{
+	d_horzScaling = size.d_width / d_nativeHorzRes;
+	d_vertScaling = size.d_height / d_nativeVertRes;
+
+	if (d_autoScale)
+	{
+		updateImageScalingFactors();
+	}
+
 }
 
 
@@ -303,25 +387,57 @@ void Imageset::xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
 		d_imageset->d_name = (utf8*)val_str.get();
 
+		//
+		// load auto-scaling configuration
+		//
+		float hres, vres;
+
+		// get native horizontal resolution
+		attr_name.reset(XMLString::transcode(ImagesetNativeHorzResAttribute));
+		hres = (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
+
+		// get native vertical resolution
+		attr_name.reset(XMLString::transcode(ImagesetNativeVertResAttribute));
+		vres = (float)XMLString::parseInt(attrs.getValue(attr_name.get()));
+
+		d_imageset->setNativeResolution(Size(hres, vres));
+
+		// get auto-scaling setting
+		attr_name.reset(XMLString::transcode(ImagesetAutoScaledAttribute));
+		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
+		std::string autoscale = val_str.get();
+
+		// enable / disable auto-scaling for this Imageset according to the setting
+		if ((autoscale == "true") || (autoscale == "1"))
+		{
+			d_imageset->setAutoScalingEnabled(true);
+		}
+		else
+		{
+			d_imageset->setAutoScalingEnabled(false);
+		}
+		
+		//
+		// Create a Texture object via the specified filename, and set it as the texture for the Imageset
+		//
 		attr_name.reset(XMLString::transcode(ImagesetImageFileAttribute));
 		val_str.reset(XMLString::transcode(attrs.getValue(attr_name.get())));
 		String filename((utf8*)val_str.get());
 
-		// Create a Texture object via the specified filename, and set it as the texture for the Imageset
 		try
 		{
 			d_imageset->d_texture = System::getSingleton().getRenderer()->createTexture(filename);
 		}
 		catch(...)
 		{
-			throw RendererException((utf8*)"An unexpected error occurred while creating a Texture object from file '" + filename + "'");
+			throw RendererException((utf8*)"Imageset::xmlHandler::startElement - An unexpected error occurred while creating a Texture object from file '" + filename + "'");
 		}
 
 	}
 	// anything else is an error which *should* have already been caught by XML validation
 	else
 	{
-		throw FileIOException("Unexpected data was found while parsing the Imageset file: '" + element + "' is unknown.");
+		throw FileIOException("Imageset::xmlHandler::startElement - Unexpected data was found while parsing the Imageset file: '" + element + "' is unknown.");
 	}
 
 }

@@ -26,6 +26,7 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
+#include "CEGUIFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -43,6 +44,11 @@ template<> FontManager* Singleton<FontManager>::ms_Singleton	= NULL;
 *************************************************************************/
 FontManager::FontManager(void)
 {
+	if (FT_Init_FreeType(&d_ftlib))
+	{
+		throw GenericException((utf8*)"FontManager::FontManager - Failed to initialise the FreeType library.");
+	}
+
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::FontManager singleton created.");
 }
 
@@ -52,6 +58,11 @@ FontManager::FontManager(void)
 *************************************************************************/
 FontManager::~FontManager(void)
 {
+	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of Font system ----");
+	destroyAllFonts();
+
+	FT_Done_FreeType(d_ftlib);
+
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::FontManager singleton destroyed.");
 }
 
@@ -59,18 +70,47 @@ FontManager::~FontManager(void)
 /*************************************************************************
 	Create a font from a definition file
 *************************************************************************/
-Font* FontManager::createFont(const String& filename, uint flags)
+Font* FontManager::createFont(const String& filename)
 {
-	return NULL;
+	Font* temp = new Font(filename);
+
+	String name = temp->getName();
+
+	if (isFontPresent(name))
+	{
+		delete temp;
+
+		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
+	}
+
+	d_fonts[name] = temp;
+
+	Logger::getSingleton().logEvent((utf8*)"Font '" + name + "' has been created from the information specified in file '" + filename + "'.", Informative);
+
+	return temp; 
 }
 
 
 /*************************************************************************
 	Create a font from an installed OS font
 *************************************************************************/
-Font* FontManager::createFont(const String& name, const String& fontname, uint flags, uint size, bool dynamic)
+Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags)
 {
-	return NULL;
+	// first ensure name uniqueness
+	if (isFontPresent(name))
+	{
+		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
+	}
+
+	Font* temp = new Font(name, fontname, size, flags);
+	d_fonts[name] = temp;
+
+	char strbuf[16];
+	sprintf(strbuf, "%d", size);
+
+	Logger::getSingleton().logEvent((utf8*)"Font '" + name + "' has been created using the font file '" + fontname + "' and a size of " + strbuf + ".");
+
+	return temp; 
 }
 
 
@@ -79,6 +119,42 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint f
 *************************************************************************/
 void FontManager::destroyFont(const String& name)
 {
+	 FontRegistry::iterator	pos = d_fonts.find(name);
+
+	if (pos != d_fonts.end())
+	{
+		Logger::getSingleton().logEvent((utf8*)"Font '" + name +"' has been destroyed.", Informative);
+
+		delete pos->second;
+		d_fonts.erase(pos);
+	}
+
+}
+
+
+/*************************************************************************
+	Destroys the given Font object
+*************************************************************************/
+void FontManager::destroyFont(Font* font)
+{
+	if (font != NULL)
+	{
+		destroyFont(font->getName());
+	}
+
+}
+
+
+/*************************************************************************
+	Destroys all Font objects registered in the system
+*************************************************************************/
+void FontManager::destroyAllFonts(void)
+{
+	while (!d_fonts.empty())
+	{
+		destroyFont(d_fonts.begin()->first);
+	}
+
 }
 
 
@@ -100,11 +176,27 @@ Font* FontManager::getFont(const String& name) const
 
 	if (pos == d_fonts.end())
 	{
-		throw UnknownObjectException("A Font object with the specified name '" + name +"' does not exist within the system");
+		throw UnknownObjectException("FontManager::getFont - A Font object with the specified name '" + name +"' does not exist within the system");
 	}
 
 	return pos->second;
 }
 
+
+/*************************************************************************
+	Notify the FontManager of the current (usually new) display
+	resolution.
+*************************************************************************/
+void FontManager::notifyScreenResolution(const Size& size)
+{
+	// notify all attached Font objects of the change in resolution
+	FontRegistry::iterator pos = d_fonts.begin(), end = d_fonts.end();
+
+	for (; pos != end; ++pos)
+	{
+		pos->second->notifyScreenResolution(size);
+	}
+
+}
 
 } // End of  CEGUI namespace section

@@ -26,7 +26,7 @@
 #include "CEGUISchemeManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
-
+#include "CEGUIScheme.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,7 +53,59 @@ SchemeManager::SchemeManager(void)
 *************************************************************************/
 SchemeManager::~SchemeManager(void)
 {
+	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of GUI Scheme system ----");
+
+	// unload all schemes
+	while (!d_schemes.empty())
+	{
+		unloadScheme(d_schemes.begin()->first);
+	}
+
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::SchemeManager singleton destroyed.");
+}
+
+
+/*************************************************************************
+	Loads a scheme
+*************************************************************************/
+Scheme* SchemeManager::loadScheme(const String& scheme_filename)
+{
+	Scheme* tmp = new Scheme(scheme_filename);
+	String name = tmp->getName();
+	d_schemes[name] = tmp;
+	return tmp;
+}
+
+
+/*************************************************************************
+	Un-Loads a scheme
+*************************************************************************/
+void SchemeManager::unloadScheme(const String& scheme_name)
+{
+	SchemeRegistry::iterator pos = d_schemes.find(scheme_name);
+
+	if (pos != d_schemes.end())
+	{
+		delete pos->second;
+		d_schemes.erase(pos);
+	}
+
+}
+
+
+/*************************************************************************
+	Returns a pointer to the Scheme object with the specified name.
+*************************************************************************/
+Scheme* SchemeManager::getScheme(const String& name) const
+{
+	SchemeRegistry::const_iterator pos = d_schemes.find(name);
+
+	if (pos == d_schemes.end())
+	{
+		throw UnknownObjectException("SchemeManager::getScheme - A Scheme object with the specified name '" + name +"' does not exist within the system");
+	}
+
+	return pos->second;
 }
 
 

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIRenderer.cpp
-	created:	20/2/2004
+	filename: 	CEGUIFactoryModule.cpp
+	created:	12/4/2004
 	author:		Paul D Turner
 	
-	purpose:	Some base class implementation for Renderer objects
+	purpose:	Implements FactoryModule for Win32 systems
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,46 +23,78 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "CEGUIRenderer.h"
-#include "CEGUIEventSet.h"
-#include "CEGUIEvent.h"
+#include "CEGUIBase.h"
+#include "CEGUIString.h"
+#include "CEGUIExceptions.h"
+#include "CEGUIFactoryModule.h"
 
+#include <Windows.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 
 /*************************************************************************
-	Event name constants (static data definitions)
+	ImplDat based class we use to store some data in
 *************************************************************************/
-const utf8	Renderer::ModeChangedEvent[]		= "DisplayModeChanged";
-
-
-/*************************************************************************
-	Implementation constants
-*************************************************************************/
-const float	Renderer::GuiZInitialValue		= 1.0f;
-const float	Renderer::GuiZElementStep		= 0.001f;		// this is enough for 1000 Windows.
-const float	Renderer::GuiZLayerStep			= 0.0001f;		// provides space for 10 layers per Window.
-
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
-Renderer::Renderer(void)
+class ModuleDat : public FactoryModuleImplDat
 {
-	// setup standard events available
-	addEvent(ModeChangedEvent);
+public:
+	typedef void (*FactoryRegFunc)(const String&); 
 
-	// default initialisation
-	resetZValue();
+	HMODULE	handle;
+	FactoryRegFunc	regFunc;
+
+};
+
+/*************************************************************************
+	Construct the FactoryModule object by loading the dynamic loadable
+	module specified.
+*************************************************************************/
+FactoryModule::FactoryModule(const String& filename)
+{
+	ModuleDat* data = new ModuleDat;
+
+	data->handle = LoadLibrary(filename.c_str());
+
+	// check for library load failure
+	if (data->handle == NULL)
+	{
+		delete data;
+		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Failed to load module '" + filename + "'.");
+	}
+
+	data->regFunc = (ModuleDat::FactoryRegFunc)GetProcAddress(data->handle, "registerFactory");
+
+	// check for failure to find required function export
+	if (data->regFunc == NULL)
+	{
+		FreeLibrary(data->handle);
+		delete data;
+
+		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Required function export 'registerFactory' was not found in module '" + filename + "'.");
+	}
+
+	d_data = data;
 }
 
+
 /*************************************************************************
-	Destructor
+	Destroys the FactoryModule object and unloads any loadable module.
 *************************************************************************/
-Renderer::~Renderer(void)
+FactoryModule::~FactoryModule(void)
 {
+	FreeLibrary(((ModuleDat*)d_data)->handle);
+	delete (ModuleDat*)d_data;
+}
+
+
+/*************************************************************************
+	Register a WindowFactory for 'type' Windows.
+*************************************************************************/
+void FactoryModule::registerFactory(const String& type) const
+{
+	((ModuleDat*)d_data)->regFunc(type);
 }
 
 } // End of  CEGUI namespace section

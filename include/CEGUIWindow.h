@@ -33,13 +33,14 @@
 #include "CEGUISize.h"
 #include "CEGUIEventSet.h"
 #include "CEGUIPropertySet.h"
+#include "CEGUISystem.h"
 #include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 
-class WindowEventArgs : public EventArgs
+class CEGUIBASE_API WindowEventArgs : public EventArgs
 {
 public:
 	WindowEventArgs(Window* wnd) : window(wnd) {}
@@ -47,12 +48,12 @@ public:
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
 };
 
-class MouseEventArgs : public EventArgs
+class CEGUIBASE_API MouseEventArgs : public EventArgs
 {
 public:
 };
 
-class KeyEventArgs : public EventArgs
+class CEGUIBASE_API KeyEventArgs : public EventArgs
 {
 public:
 };
@@ -66,7 +67,7 @@ public:
 	In Relative mode, layout is maintained for different screen resolutions, and also  offers the
 	ability for child windows to properly adjust their layout as their parent is sized.
 */
-enum MetricsMode
+enum CEGUIBASE_API MetricsMode
 {
 	Relative,		//!< Metrics are specified as a decimal fraction of parent Window size.
 	Absolute,		//!< Metrics are specified as whole pixels.
@@ -78,7 +79,7 @@ enum MetricsMode
 \brief
 	System key flag values
 */
-enum SystemKey
+enum CEGUIBASE_API SystemKey
 {
 	LeftMouse		= 0x01,			//!< The left mouse button.
 	RightMouse		= 0x02,			//!< The right mouse button.
@@ -1397,9 +1398,13 @@ public:
 
 protected:
 	/*************************************************************************
+		System object can trigger events directly
+	*************************************************************************/
+	friend	void System::injectMouseMove(int delta_x, int delta_y);
+
+	/*************************************************************************
 		Event trigger methods
 	*************************************************************************/
-
 	// no specific parameters passed
 	virtual void	onSized(const EventArgs& e);
 	virtual void	onMoved(const EventArgs& e);

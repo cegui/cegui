@@ -24,6 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "renderers/directx81GUIRenderer/renderer.h"
+#include "renderers/directx81GUIRenderer/texture.h"
 #include "CEGUIExceptions.h"
 
 #include <d3dx8.h>
@@ -37,22 +38,19 @@ namespace CEGUI
 /*************************************************************************
 	Constants definitions
 *************************************************************************/
-const int			DirectX81Renderer::VERTEX_PER_SPRITE		= 6;
+const int			DirectX81Renderer::VERTEX_PER_QUAD			= 6;
 const int			DirectX81Renderer::VERTEX_PER_TRIANGLE		= 3;
 const int			DirectX81Renderer::VERTEXBUFFER_CAPACITY	= 4096;
 const ulong			DirectX81Renderer::VERTEX_FVF				= (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1);
 
-/*************************************************************************
-	
-	Renderer Functions
 
-*************************************************************************/
 /*************************************************************************
 	Constructor
 *************************************************************************/
 DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 	d_device(device),
-	d_quadBuffSize(max_quads)
+	d_quadBuffSize(max_quads),
+	d_queueing(true)
 {
 	d_device->AddRef();
 
@@ -64,13 +62,24 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads) :
 	// Create a vertex buffer
 	if (FAILED(d_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &d_buffer)))
 	{
-		d_buffer = NULL;
-
 		// Ideally, this would have been a RendererException, but we can't use that until the System object is created
 		// and that requires a Renderer passed to the constructor, so we throw this instead.
 		throw std::exception("Creation of VertexBuffer for Renderer object failed");
 	}
 
+	// initialise renderer size
+	D3DVIEWPORT8	vp;
+	if (FAILED(device->GetViewport(&vp)))
+	{
+		throw std::exception("Unable to access required viewport information from Direct3DDevice8.");
+	}
+
+	d_display_area.d_left	= 0;
+	d_display_area.d_top	= 0;
+	d_display_area.d_right	= (float)vp.Width;
+	d_display_area.d_bottom	= (float)vp.Height;
+
+	// initialise quad buffer
 	d_quadBuffPos = 0;
 	d_quadBuff = new QuadInfo[max_quads + 1];	// NB: alloc 1 extra QuadInfo to simplify management if we try to overrun
 	d_quadList = new QuadInfo*[max_quads];
@@ -92,26 +101,35 @@ DirectX81Renderer::~DirectX81Renderer(void)
 *************************************************************************/
 void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
 {
-	if (d_quadBuffPos >= d_quadBuffSize)
+	// if not queueing, render directly (as in, right now!)
+	if (!d_queueing)
 	{
-		return;
+		renderQuadDirect(dest_rect, z, tex, texture_rect, colours);
+	}
+	else
+	{
+		if (d_quadBuffPos >= d_quadBuffSize)
+		{
+			return;
+		}
+
+		d_sorted = false;
+
+		QuadInfo& quad = d_quadBuff[d_quadBuffPos];
+
+		quad.position		= dest_rect;
+		quad.z				= z;
+		quad.texture		= ((DirectX81Texture*)tex)->getD3DTexture();
+		quad.texPosition	= texture_rect;
+		quad.colours		= colours;
+
+		// offset destination to get correct texel to pixel mapping from Direct3D
+		quad.position.offset(Point(-0.5f, -0.5f));
+
+		d_quadList[d_quadBuffPos] = &quad;
+		d_quadBuffPos++;
 	}
 
-	d_sorted = false;
-
-	QuadInfo& quad = d_quadBuff[d_quadBuffPos];
-
-	quad.position		= dest_rect;
-	quad.z				= z;
-	quad.texture		= ((DirectX81Texture*)tex)->getD3DTexture();
-	quad.texPosition	= texture_rect;
-	quad.colours		= colours;
-
-	// offset destination to get correct texel to pixel mapping from Direct3D
-	quad.position.offset(Point(-0.5f, -0.5f));
-
-	d_quadList[d_quadBuffPos] = &quad;
-	d_quadBuffPos++;
 }
 
 
@@ -122,14 +140,7 @@ void DirectX81Renderer::doRender(void)
 {
 	sortQuads();
 
-	// set standard states
-	d_device->SetTextureStageState(0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
-	d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-	d_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-
-	// setup vertex stream
-	d_device->SetStreamSource(0, d_buffer, sizeof(QuadVertex));
-	d_device->SetVertexShader(VERTEX_FVF);
+	initPerFrameStates();
 
 	bool locked = false;
 	QuadVertex*	buffmem;
@@ -223,11 +234,11 @@ void DirectX81Renderer::doRender(void)
 		(&buffmem[5])->tv1	= quad->texPosition.d_bottom;
 
 		// update position within buffer for next time
-		d_bufferPos += VERTEX_PER_SPRITE;
-		buffmem		+= VERTEX_PER_SPRITE;
+		d_bufferPos += VERTEX_PER_QUAD;
+		buffmem		+= VERTEX_PER_QUAD;
 
 		// if there is not enough room in the buffer for another sprite, render what we have
-		if (d_bufferPos >= (VERTEXBUFFER_CAPACITY - VERTEX_PER_SPRITE))
+		if (d_bufferPos >= (VERTEXBUFFER_CAPACITY - VERTEX_PER_QUAD))
 		{
 			if (locked)
 			{
@@ -286,11 +297,10 @@ Texture* DirectX81Renderer::createTexture(const String& filename)
 /*************************************************************************
 	Create a new texture with the given dimensions
 *************************************************************************/
-Texture* DirectX81Renderer::createTexture(float width, float height)
+Texture* DirectX81Renderer::createTexture(float size)
 {
 	DirectX81Texture* tex = (DirectX81Texture*)createTexture();
-
-	// TODO: Set texture size
+	tex->setD3DTextureSize((uint)size);
 
 	return tex;
 }
@@ -319,6 +329,22 @@ void DirectX81Renderer::destroyAllTextures(void)
 	{
 		destroyTexture(*(d_texturelist.begin()));
 	}
+}
+
+
+/*************************************************************************
+	setup states etc
+*************************************************************************/
+void DirectX81Renderer::initPerFrameStates(void)
+{
+	// set standard states
+	d_device->SetTextureStageState(0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
+	d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	d_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+
+	// setup vertex stream
+	d_device->SetStreamSource(0, d_buffer, sizeof(QuadVertex));
+	d_device->SetVertexShader(VERTEX_FVF);
 }
 
 
@@ -354,70 +380,79 @@ void DirectX81Renderer::sortQuads(void)
 }
 
 
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
 /*************************************************************************
-	
-	Texture Functions
-
+	render a quad directly to the display
 *************************************************************************/
-/*************************************************************************
-	Constructor
-*************************************************************************/
-DirectX81Texture::DirectX81Texture(Renderer* owner) :
-	Texture(owner)
+void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
 {
-	d_d3dtexture = NULL;
-}
+	Rect final_rect(dest_rect);
+	final_rect.offset(Point(-0.5f, -0.5f));
 
-/*************************************************************************
-	Destructor
-*************************************************************************/
-DirectX81Texture::~DirectX81Texture(void)
-{
-	freeD3DTexture();
-}
+	QuadVertex*	buffmem;
 
-/*************************************************************************
-	Load texture from file.  Texture is made to be same size as image in
-	file.
-*************************************************************************/
-void DirectX81Texture::loadFromFile(const String& filename)
-{
-	freeD3DTexture();
-	
-	D3DXIMAGE_INFO texInfo;
-	HRESULT hr = D3DXCreateTextureFromFileEx(((DirectX81Renderer*)getRenderer())->getDevice(), (char*)filename.c_str(), 
-						D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT,
-						0, &texInfo, NULL, &d_d3dtexture);
+	initPerFrameStates();
+	d_device->SetTexture(0, ((DirectX81Texture*)tex)->getD3DTexture());
 
-	if (SUCCEEDED(hr))
+	if (SUCCEEDED(d_buffer->Lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), (BYTE**)&buffmem, D3DLOCK_DISCARD)))
 	{
-		d_width		= texInfo.Width;
-		d_height	= texInfo.Height;
-	}
-	else
-	{
-		throw RendererException((utf8*)"Failed to create Texture object from file '" + filename + "'.  Additional Info: " + (const utf8*)DXGetErrorString8(hr));
-	}
+		// setup Vertex 1...
+		(&buffmem[0])->x	= final_rect.d_left;
+		(&buffmem[0])->y	= final_rect.d_top;
+		(&buffmem[0])->z	= z;
+		(&buffmem[0])->rhw	= 1.0f;
+		(&buffmem[0])->diffuse = colours.d_top_left;
+		(&buffmem[0])->tu1	= texture_rect.d_left;
+		(&buffmem[0])->tv1	= texture_rect.d_top;
 
-}
+		// setup Vertex 2...
+		(&buffmem[1])->x	= final_rect.d_right;
+		(&buffmem[1])->y	= final_rect.d_top;
+		(&buffmem[1])->z	= z;
+		(&buffmem[1])->rhw	= 1.0f;
+		(&buffmem[1])->diffuse = colours.d_top_right;
+		(&buffmem[1])->tu1	= texture_rect.d_right;
+		(&buffmem[1])->tv1	= texture_rect.d_top;
 
+		// setup Vertex 3...
+		(&buffmem[2])->x	= final_rect.d_left;
+		(&buffmem[2])->y	= final_rect.d_bottom;
+		(&buffmem[2])->z	= z;
+		(&buffmem[2])->rhw	= 1.0f;
+		(&buffmem[2])->diffuse = colours.d_bottom_left;
+		(&buffmem[2])->tu1	= texture_rect.d_left;
+		(&buffmem[2])->tv1	= texture_rect.d_bottom;
 
-/*************************************************************************
-	Load texture from raw memory.	
-*************************************************************************/
-void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight)
-{
-}
+		// setup Vertex 4...
+		(&buffmem[3])->x	= final_rect.d_right;
+		(&buffmem[3])->y	= final_rect.d_top;
+		(&buffmem[3])->z	= z;
+		(&buffmem[3])->rhw	= 1.0f;
+		(&buffmem[3])->diffuse = colours.d_top_right;
+		(&buffmem[3])->tu1	= texture_rect.d_right;
+		(&buffmem[3])->tv1	= texture_rect.d_top;
 
-void DirectX81Texture::freeD3DTexture(void)
-{
-	if (d_d3dtexture != NULL)
-	{
-		d_d3dtexture->Release();
-		d_d3dtexture = NULL;
+		// setup Vertex 5...
+		(&buffmem[4])->x	= final_rect.d_right;
+		(&buffmem[4])->y	= final_rect.d_bottom;
+		(&buffmem[4])->z	= z;
+		(&buffmem[4])->rhw	= 1.0f;
+		(&buffmem[4])->diffuse = colours.d_bottom_right;
+		(&buffmem[4])->tu1	= texture_rect.d_right;
+		(&buffmem[4])->tv1	= texture_rect.d_bottom;
+
+		// setup Vertex 6...
+		(&buffmem[5])->x	= final_rect.d_left;
+		(&buffmem[5])->y	= final_rect.d_bottom;
+		(&buffmem[5])->z	= z;
+		(&buffmem[5])->rhw	= 1.0f;
+		(&buffmem[5])->diffuse = colours.d_bottom_left;
+		(&buffmem[5])->tu1	= texture_rect.d_left;
+		(&buffmem[5])->tv1	= texture_rect.d_bottom;
+
+		d_buffer->Unlock();
+		d_bufferPos = VERTEX_PER_QUAD;
+
+		renderVBuffer();
 	}
 
 }

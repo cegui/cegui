@@ -29,7 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
-#include "CEGUIImageset.h"
+#include <map>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -56,7 +56,7 @@ public:
 	\brief
 		Destructor for ImagesetManager objects
 	*/
-	virtual ~ImagesetManager(void);
+	~ImagesetManager(void);
 
 
 	/*!
@@ -126,7 +126,7 @@ public:
 	*/
 	void	destroyImageset(const String& name);
 
-/*!
+	/*!
 	\brief
 		Destroys the given Imageset object
 
@@ -175,6 +175,20 @@ public:
 		true if an Imageset named \a name is presently loaded in the system, else false.
 	*/
 	bool	isImagesetPresent(const String& name) const			{return d_imagesets.find(name) != d_imagesets.end();}
+
+
+	/*!
+	\brief
+		Notify the ImagesetManager of the current (usually new) display resolution.
+
+	\param size
+		Size object describing the display resolution
+
+	\return
+		Nothing
+	*/
+	void	notifyScreenResolution(const Size& size);
+
 
 private:
 	/*************************************************************************

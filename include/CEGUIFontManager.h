@@ -29,24 +29,14 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
-#include "CEGUIFont.h"
 #include <map>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-/*!
-\brief
-	Enumerated type that contains the valid flags that can be passed to createFont when creating a new font.
-*/
-enum CEGUIBASE_API FontFlag
-{
-	TestFlag			//!< This is a value in the FontFlag enumeration, it means nothing and will be deleted.
-};
-
-
 /*!
 \brief
 	Class providing a shared library of Font objects to the system.
@@ -70,7 +60,7 @@ public:
 	\brief
 		Destructor for FontManager objects
 	*/
-	virtual ~FontManager(void);
+	~FontManager(void);
 
 
 	/*!
@@ -100,17 +90,17 @@ public:
 	\param filename
 		String object containing the filename of a 'font definition file' what will be used to create the new font
 
-	\param flags
-		Some combination of FontFlag values used for creation of the font.  Values specified here can be overridden in the font definition file
-
 	\return
 		Pointer the the newly created Font object
 
-	\exception AlreadyExistsException	Thrown if a Font already exists with the name specified for the font in the file \a filename
-	\exception FileIOException			Thrown if some error occurred accessing the file \a filename
-	\exception InvalidRequestException	Thrown if some invalid or illogical combination of FontFlag values was given
+	\exception	FileIOException				thrown if there was some problem accessing or parsing the file \a filename
+	\exception	InvalidRequestException		thrown if an invalid filename was provided.
+	\exception	AlreadyExistsException		thrown if a Font already exists with the name specified, or if a font Imageset clashes with one already defined in the system.
+	\exception	GenericException			thrown if something goes wrong while accessing a true-type font referenced in file \a filename.
+	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
+	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& filename, uint flags);
+	Font*	createFont(const String& filename);
 
 
 	/*!
@@ -123,24 +113,21 @@ public:
 	\param fontname
 		String object containing the name and path of the true-type font to access.
 
-	\param flags
-		Some combination of FontFlag values to be used for the creation of this font.
-
 	\param size
 		Specifies the glyph size (point-size) for the new font.
 
-	\param dynamic
-		When true, the new Font will automatically adjust it's content for all glyphs supported by the true-type font,
-		when false, the Font is populated with the 7-bit ASCII glyphs only.
+	\param flags
+		Some combination of FontFlag values to be used for the creation of this font.
 
 	\return
 		Pointer to the newly created Font object.
 
-	\exception AlreadyExistsException	Thrown if a Font already exists with the name \a name
-	\exception InvalidRequestException	Thrown if some invalid or illogical combination of FontFlag values was given
-	\exception GenericException			Usually thrown if some error occurred accessing the OS font specified
+	\exception	AlreadyExistsException		thrown if a Font already exists with the name specified, or if a font Imageset clashes with one already defined in the system.
+	\exception	GenericException			thrown if something goes wrong while accessing a true-type font referenced in file \a fontname.
+	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
+	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& name, const String& fontname, uint flags, uint size, bool dynamic);
+	Font*	createFont(const String& name, const String& fontname, uint size, uint flags);
 
 
 	/*!
@@ -154,6 +141,29 @@ public:
 		Nothing
 	*/
 	void	destroyFont(const String& name);
+
+
+	/*!
+	\brief
+		Destroys the given Font object
+
+	\param font
+		Pointer to the Font to be destroyed.  If no such Font exists, nothing happens.
+
+	\return
+		Nothing.
+	*/
+	void	destroyFont(Font* font);
+
+
+	/*!
+	\brief
+		Destroys all Font objects registered in the system
+
+	\return
+		Nothing
+	*/
+	void	destroyAllFonts(void);
 
 
 	/*!
@@ -183,12 +193,38 @@ public:
 	*/
 	Font*	getFont(const String& name) const;
 
+
+	/*!
+	\brief
+		Notify the FontManager of the current (usually new) display resolution.
+
+	\param size
+		Size object describing the display resolution
+
+	\return
+		Nothing
+	*/
+	void	notifyScreenResolution(const Size& size);
+
+
+	/*!
+	\brief
+		Return the FreeType library object which is used by the font system
+
+	\return
+		reference to the FT_Library used to read true-type fonts
+	*/
+	FT_Library&	getFreeTypeLibrary(void)		{return d_ftlib;}
+
+
 private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	typedef	std::map<String, Font*>		FontRegistry;
 	FontRegistry		d_fonts;
+
+	FT_Library		d_ftlib;		//!< FreeType library;
 };
 
 } // End of  CEGUI namespace section

@@ -36,6 +36,19 @@
 namespace CEGUI
 {
 /*!
+/brief
+	Enumeration of mouse buttons
+*/
+enum MouseButton
+{
+	LeftButton,
+	RightButton,
+	MiddleButton,
+	X1Button,
+	X2Button,
+};
+
+/*!
 \brief
 	The System class is the CEGUI class that provides access to all other elements in this system.
 
@@ -63,7 +76,7 @@ public:
 	\brief
 		Destructor for System objects.
 	*/
-	virtual ~System(void);
+	~System(void);
 
 
 	/*!
@@ -128,6 +141,89 @@ public:
 	void	renderGUI(void);
 
 
+	/*************************************************************************
+		Input injection interface
+	*************************************************************************/
+	/*!
+	\brief
+		Method that injects a mouse movement event into the system
+
+	\param delta_x
+		amount the mouse moved on the x axis.
+
+	\param delta_y
+		amount the mouse moved on the y axis.
+
+	\return
+		Nothing.
+	*/
+	void	injectMouseMove(int delta_x, int delta_y);
+
+
+	/*!
+	\brief
+		Method that injects a mouse button down event into the system.
+
+	\param button
+		One of the MouseButton values indicating which button was pressed.
+
+	\return
+		Nothing.
+	*/
+	void	injectMouseButtonDown(MouseButton button);
+
+
+	/*!
+	\brief
+		Method that injects a mouse button up event into the system.
+
+	\param button
+		One of the MouseButton values indicating which button was released.
+
+	\return
+		Nothing.
+	*/
+	void	injectMouseButtonUp(MouseButton button);
+
+
+	/*!
+	\brief
+		Method that injects a key down event into the system.
+
+	\param key_code
+		uint value indicating which key was pressed.
+
+	\return
+		Nothing.
+	*/
+	void	injectKeyDown(uint key_code);
+
+
+	/*!
+	\brief
+		Method that injects a key up event into the system.
+
+	\param key_code
+		uint value indicating which key was released.
+
+	\return
+		Nothing.
+	*/
+	void	injectKeyUp(uint key_code);
+
+
+	/*!
+	\brief
+		Method that injects a typed character event into the system.
+
+	\param code_point
+		Unicode code point of the character that was typed.
+
+	\return
+		Nothing.
+	*/
+	void	injectChar(utf32 code_point);
+
 private:
 	/*************************************************************************
 		Implementation Data
@@ -135,6 +231,7 @@ private:
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
 	Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
+	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
 };
 
 } // End of  CEGUI namespace section

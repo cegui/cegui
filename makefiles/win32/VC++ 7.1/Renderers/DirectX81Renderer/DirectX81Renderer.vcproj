@@ -133,6 +133,9 @@
 			<File
 				RelativePath="..\..\..\..\..\src\renderers\directx81GUIRenderer\renderer.cpp">
 			</File>
+			<File
+				RelativePath="..\..\..\..\..\src\renderers\directx81GUIRenderer\texture.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -140,6 +143,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\directx81GUIRenderer\renderer.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\include\renderers\directx81GUIRenderer\texture.h">
 			</File>
 		</Filter>
 		<Filter

@@ -70,6 +70,13 @@ typedef unsigned char	uchar;
 *************************************************************************/
 typedef	ulong	colour;
 
+
+/*************************************************************************
+	System wide constants
+*************************************************************************/
+static const float		DefaultNativeHorzRes	= 640.0f;		//!< Default native horizontal resolution (for fonts and imagesets)
+static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical resolution (for fonts and imagesets)
+
 }  // end of CEGUI namespace section
 
 

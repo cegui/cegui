@@ -36,15 +36,19 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-Image::Image(const Imageset* owner, const Rect& area, const Point& render_offset) : 
+Image::Image(const Imageset* owner, const Rect& area, const Point& render_offset, float horzScaling, float vertScaling) : 
 	d_owner(owner),
 	d_area(area),
 	d_offset(render_offset)
 {
 	if (d_owner == NULL)
 	{
-		throw NullObjectException((utf8*)"Imageset pointer passed to Image constructor must not be null.");
+		throw NullObjectException((utf8*)"Image::Image - Imageset pointer passed to Image constructor must not be null.");
 	}
+
+	// setup initial image scaling
+	setHorzScaling(horzScaling);
+	setVertScaling(vertScaling);
 
 	// TODO: if we ever store texture co-ordinates, they should be calculated here.
 }
@@ -55,7 +59,10 @@ Image::Image(const Imageset* owner, const Rect& area, const Point& render_offset
 Image::Image(const Image& image) :
 	d_owner(image.d_owner),
 	d_area(image.d_area),
-	d_offset(image.d_offset)
+	d_offset(image.d_offset),
+	d_scaledOffset(image.d_scaledOffset),
+	d_scaledWidth(image.d_scaledWidth),
+	d_scaledHeight(image.d_scaledHeight)
 {
 }
 
@@ -66,6 +73,27 @@ Image::~Image(void)
 {
 }
 
+
+/*************************************************************************
+	set the horizontal scaling factor to be applied to this Image
+*************************************************************************/
+void Image::setHorzScaling(float factor)
+{
+	d_scaledWidth		= d_area.getWidth() * factor;
+	d_scaledOffset.d_x	= d_offset.d_x * factor;
+}
+
+
+/*************************************************************************
+	set the vertical scaling factor to be applied to this Image
+*************************************************************************/
+void Image::setVertScaling(float factor)
+{
+	d_scaledHeight		= d_area.getHeight() * factor;
+	d_scaledOffset.d_y	= d_offset.d_y * factor;
+}
+
+
 /*************************************************************************
 	Clip and then queue the image to be rendered.
 *************************************************************************/
@@ -74,7 +102,7 @@ void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const Co
 	Rect dest(dest_rect);
 
 	// apply rendering offset to the destination Rect
-	dest.offset(d_offset);
+	dest.offset(d_scaledOffset);
 
 	// draw
 	d_owner->draw(d_area, dest, z, clip_rect, colours);

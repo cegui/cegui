@@ -46,13 +46,13 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// throw exception if passed factory is null.
 	if (factory == NULL)
 	{
-		throw NullObjectException((utf8*)"The provided WindowFactory pointer was NULL");
+		throw NullObjectException((utf8*)"WindowFactoryManager::addFactory - The provided WindowFactory pointer was NULL");
 	}
 
 	// throw exception if type name for factory is already in use
 	if (d_factoryRegistry.find(factory->getTypeName()) != d_factoryRegistry.end())
 	{
-		throw AlreadyExistsException((utf8*)"A WindowFactory for type '" + factory->getTypeName() + (utf8*)"' is already registered.");
+		throw AlreadyExistsException((utf8*)"WindowFactoryManager::addFactory - A WindowFactory for type '" + factory->getTypeName() + (utf8*)"' is already registered.");
 	}
 
 	// add the factory to the registry
@@ -95,7 +95,7 @@ WindowFactory* WindowFactoryManager::getFactory(const String& type) const
 
 	if (pos == d_factoryRegistry.end())
 	{
-		throw UnknownObjectException((utf8*)"A WindowFactory object for '" + type + (utf8*)"' Window objects is not registered with the system.");
+		throw UnknownObjectException((utf8*)"WindowFactoryManager::getFactory - A WindowFactory object for '" + type + (utf8*)"' Window objects is not registered with the system.");
 	}
 
 	return pos->second;

@@ -30,6 +30,7 @@
 #include "CEGUIString.h"
 #include "CEGUIRect.h"
 #include "CEGUIColourRect.h"
+#include "CEGUIImagesetManager.h"
 #include "CEGUIImage.h"
 #include "xercesc/sax2/DefaultHandler.hpp"
 #include <map>
@@ -50,7 +51,13 @@ namespace CEGUI
 class CEGUIBASE_API Imageset
 {
 private:
-	friend class ImagesetManager;
+	/*************************************************************************
+		Friends to allow access to constructors and destructors
+	*************************************************************************/
+	friend Imageset*	ImagesetManager::createImageset(const String& name, Texture* texture);
+	friend Imageset*	ImagesetManager::createImageset(const String& filename);
+	friend void			ImagesetManager::destroyImageset(const String& name);
+
 
 	/*************************************************************************
 		Construction and Destruction (private, only ImagesetManager can 
@@ -82,7 +89,7 @@ private:
 	\brief
 		Destroys Imageset objects
 	*/
-	virtual ~Imageset(void);
+	~Imageset(void);
 
 
 public:
@@ -286,7 +293,6 @@ public:
 	}
 
 
-
 	/*!
 	\brief
 		Define a new Image for this Imageset
@@ -369,6 +375,66 @@ public:
 		draw(source_rect, dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
 	}
 
+
+	/*!
+	\brief
+		Return whether this Imageset is auto-scaled.
+
+	\return
+		true if Imageset is auto-scaled, false if not.
+	*/
+	bool	isAutoScaled(void) const		{return d_autoScale;}
+
+
+	/*!
+	\brief
+		Return the native display size for this Imageset.  This is only relevant if the Imageset is being auto-scaled.
+
+	\return
+		Size object describing the native display size for this Imageset.
+	*/
+	Size	getNativeResolution(void) const	{return Size(d_nativeHorzRes, d_nativeVertRes);}
+
+
+	/*!
+	\brief
+		Enable or disable auto-scaling for this Imageset.
+
+	\param setting
+		true to enable auto-scaling, false to disable auto-scaling.
+
+	\return
+		Nothing.
+	*/
+	void	setAutoScalingEnabled(bool setting);
+
+
+	/*!
+	\brief
+		Set the native resolution for this Imageset
+
+	\param size
+		Size object describing the new native screen resolution for this Imageset.
+
+	\return
+		Nothing
+	*/
+	void	setNativeResolution(const Size& size);
+
+
+	/*!
+	\brief
+		Notify the Imageset of the current (usually new) display resolution.
+
+	\param size
+		Size object describing the display resolution
+
+	\return
+		Nothing
+	*/
+	void	notifyScreenResolution(const Size& size);
+
+
 protected:
 	/*************************************************************************
 		Implementation Constants
@@ -414,6 +480,16 @@ protected:
 	\exception	NullObjectException		thrown if \a texture is NULL
 	*/
 	void	setTexture(Texture* texture);
+
+
+	/*!
+	\brief
+		Sets the scaling factor for all Images that are a part of this Imageset.
+
+	\return
+		Nothing.
+	*/
+	void	updateImageScalingFactors(void);
 
 
 	/*************************************************************************
@@ -474,6 +550,9 @@ protected:
 		static const char	ImageElement[];					//!< Tag name for Image elements.
 		static const char	ImagesetNameAttribute[];		//!< Attribute name that stores the name of the Imageset
 		static const char	ImagesetImageFileAttribute[];	//!< Attribute name that stores the filename for the image file.
+		static const char	ImagesetNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.
+		static const char	ImagesetNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Imageset.
+		static const char	ImagesetAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Imageset should be auto-scaled.
 		static const char	ImageNameAttribute[];			//!< Attribute name that stores the name of the new Image.
 		static const char	ImageXPosAttribute[];			//!< Attribute name that stores the x position of the new Image.
 		static const char	ImageYPosAttribute[];			//!< Attribute name that stores the y position of the new Image.
@@ -495,6 +574,13 @@ protected:
 	String			d_name;						//!< Holds the name of this imageset.
 	ImageRegistry	d_images;					//!< Registry of Image objects for the images defined for this Imageset
 	Texture*		d_texture;					//!< Texture object that handles imagery for this Imageset
+
+	// auto-scaling fields
+	bool	d_autoScale;			//!< true when auto-scaling is enabled.
+	float	d_horzScaling;			//!< current horizontal scaling factor.
+	float	d_vertScaling;			//!< current vertical scaling factor.
+	float	d_nativeHorzRes;		//!< native horizontal resolution for this Imageset.
+	float	d_nativeVertRes;		//!< native vertical resolution for this Imageset.
 };
 
 } // End of  CEGUI namespace section

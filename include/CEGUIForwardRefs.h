@@ -57,6 +57,7 @@ class WindowManager;
 class Scheme;
 class SchemeManager;
 class System;
+class FactoryModule;
 
 } // End of  CEGUI namespace section
 

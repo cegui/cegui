@@ -31,8 +31,11 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUIMouseCursor.h"
+#include "CEGUIWindow.h"
 #include "xercesc/util/PlatformUtils.hpp"
 #include "xercesc/util/Janitor.hpp"
+#include "xercesc/sax2/DefaultHandler.hpp"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -49,11 +52,14 @@ template<> System* Singleton<System>::ms_Singleton	= NULL;
 	Constructor
 *************************************************************************/
 System::System(Renderer* renderer) :
-	d_renderer(renderer)
+	d_renderer(renderer),
+	d_activeSheet(NULL),
+	d_gui_redraw(false)
 {
 	// first thing to do is create logger
 	new Logger((utf8*)"CEGUI.log");
 
+	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System initialisation ----");
 
 	// cause creation of other singleton objects
 	new ImagesetManager();
@@ -94,6 +100,7 @@ System::System(Renderer* renderer) :
 
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
+	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
 }
 
 /*************************************************************************
@@ -101,6 +108,8 @@ System::System(Renderer* renderer) :
 *************************************************************************/
 System::~System(void)
 {
+	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System destruction ----");
+
 	// cleanup XML stuff
 	XERCES_CPP_NAMESPACE_USE
 	XMLPlatformUtils::Terminate();
@@ -114,6 +123,7 @@ System::~System(void)
 	delete	ImagesetManager::getSingletonPtr();
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton destroyed.");
+	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System destruction completed ----");
 	delete Logger::getSingletonPtr();
 }
 
@@ -123,14 +133,104 @@ System::~System(void)
 *************************************************************************/
 void System::renderGUI(void)
 {
+	//////////////////////////////////////////////////////////////////////////
+	// This makes use of some tricks the Renderer can do so that we do not
+	// need to do a full redraw every frame - only when some UI element has
+	// changed.
+	//
+	// Since the mouse is likely to move very often, and in order not to
+	// short-circuit the above optimisation, the mouse is not queued, but is
+	// drawn directly to the display every frame.
+	//////////////////////////////////////////////////////////////////////////
+	
 	if (d_gui_redraw)
 	{
+		d_renderer->setQueueingEnabled(true);
 		d_renderer->clearRenderList();
 
-		// TODO: Trigger re-draw of current GUI sheet.
+		if (d_activeSheet != NULL)
+		{
+			d_activeSheet->render();
+		}
+
 	}
 
 	d_renderer->doRender();
+
+	// draw mouse
+	d_renderer->setQueueingEnabled(false);
+	MouseCursor::getSingleton().draw();
+}
+
+
+/*************************************************************************
+	Method that injects a mouse movement event into the system
+*************************************************************************/
+void System::injectMouseMove(int delta_x, int delta_y)
+{
+	MouseCursor& mouse = MouseCursor::getSingleton();
+
+	// move the mouse cursor
+	mouse.offsetPosition(Point((float)delta_x, (float)delta_y));
+	
+	if (d_activeSheet != NULL)
+	{
+		// get new mouse position and trigger event on Window with focus
+		Point pos = mouse.getPosition();
+
+		// TODO: Complete this!
+
+		MouseEventArgs ma;
+		Window* dest_window = d_activeSheet->getActiveChild();
+
+		while ((!ma.handled) && (dest_window != NULL))
+		{
+			dest_window->onMouseMove(ma);
+			dest_window = dest_window->getParent();
+		}
+
+	}
+
+}
+
+
+/*************************************************************************
+	Method that injects a mouse button down event into the system.
+*************************************************************************/
+void System::injectMouseButtonDown(MouseButton button)
+{
+}
+
+
+/*************************************************************************
+	Method that injects a mouse button up event into the system.
+*************************************************************************/
+void System::injectMouseButtonUp(MouseButton button)
+{
+}
+
+
+/*************************************************************************
+	Method that injects a key down event into the system.
+*************************************************************************/
+void System::injectKeyDown(uint key_code)
+{
+}
+
+
+/*************************************************************************
+	Method that injects a key up event into the system.
+*************************************************************************/
+void System::injectKeyUp(uint key_code)
+{
+}
+
+
+/*************************************************************************
+	Method that injects a typed character event into the system.	
+*************************************************************************/
+void System::injectChar(utf32 code_point)
+{
 }
 
 } // End of  CEGUI namespace section

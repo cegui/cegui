@@ -29,7 +29,8 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUISingleton.h"
-
+#include "CEGUIVector.h"
+#include "CEGUIRect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,7 +55,7 @@ public:
 	\brief
 		Destructor for MouseCursor objects
 	*/
-	virtual ~MouseCursor(void);
+	~MouseCursor(void);
 
 
 	/*!
@@ -76,6 +77,147 @@ public:
 	*/
 	static	MouseCursor*	getSingletonPtr(void)			{return Singleton<MouseCursor>::getSingletonPtr();}
 
+
+	/*!
+	\brief
+		Set the current mouse cursor image
+
+	\param imageset
+		String object holding the name of the Imageset that contains the desired Image.
+
+	\param image_name
+		String object holding the name of the desired Image on Imageset \a imageset.
+
+	\return
+		Nothing.
+
+	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	*/
+	void	setImage(const String& imageset, const String& image_name);
+
+
+	/*!
+	\brief
+		Set the current mouse cursor image
+	*/
+	void	setImage(const Image* image)		{d_cursorImage = image;}
+
+
+	/*!
+	\brief
+		Makes the cursor draw itself
+
+	\return
+		Nothing
+	*/
+	void	draw(void) const;
+
+
+	/*!
+	\brief
+		Set the current mouse cursor position
+
+	\param position
+		Point object describing the new location for the mouse.  This will be clipped to within the renderer screen area.
+	*/
+	void	setPosition(const Point& position);
+
+
+	/*!
+	\brief
+		Offset the mouse cursor position by the deltas specified in \a offset.
+
+	\param offset
+		Point object which describes the amount to move the cursor in each axis.
+
+	\return
+		Nothing.
+	*/
+	void	offsetPosition(const Point& offset);
+
+
+	/*!
+	\brief
+		Set the area that the mouse cursor is constrained to.
+
+	\param area
+		Pointer to a Rect object that describes the area of the display that the mouse is allowed to occupy.  The given area will be clipped to
+		the current Renderer screen area - it is never possible for the mouse to leave this area.  If this parameter is NULL, the
+		constraint is set to the size of the current Renderer screen area.
+
+	\return
+		Nothing.
+	*/
+	void	setConstraintArea(const Rect* area);
+
+
+	/*!
+	\brief
+		Hides the mouse cursor.
+
+	\return
+		Nothing.
+	*/
+	void	hide(void)		{d_visible = false;}
+
+
+	/*!
+	\brief
+		Shows the mouse cursor.
+
+	\return
+		Nothing.
+	*/
+	void	show(void)		{d_visible = true;}
+
+
+	/*!
+	\brief
+		return whether the mouse cursor is visible.
+
+	\return
+		true if the mouse cursor is visible, false if the mouse cursor is hidden.
+	*/
+	bool	isVisible(void) const	{return d_visible;}
+
+
+	/*!
+	\brief
+		Return the current mouse cursor position
+
+	\return
+		Point object describing the mouse cursor position
+	*/
+	Point	getPosition(void) const		{return Point(d_position.d_x, d_position.d_y);}
+
+
+	/*!
+	\brief
+		return the current constraint area of the mouse cursor.
+
+	\return
+		Rect object describing the active area that the mouse cursor is constrained to.
+	*/
+	Rect	getConstraintArea(void) const		{return d_constraints;}
+
+private:
+	/*************************************************************************
+		Implementation Methods
+	*************************************************************************/
+	/*!
+	\brief
+		Checks the mouse cursor position is within the current 'constrain' Rect and adjusts as required.
+	*/
+	void	constrainPosition(void);
+
+
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	const Image*	d_cursorImage;		//!< Image that is currently set as the mouse cursor.
+	Vector3	d_position;					//!< Current location of the cursor
+	bool	d_visible;					//!< true if the cursor will be drawn, else false.
+	Rect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
 };
 
 } // End of  CEGUI namespace section

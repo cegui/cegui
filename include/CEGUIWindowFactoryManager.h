@@ -59,7 +59,7 @@ public:
 	\brief
 		Destructor for WindowFactoryManager objects
 	*/
-	virtual ~WindowFactoryManager(void)
+	~WindowFactoryManager(void)
 	{
 		Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowFactoryManager singleton destroyed");
 	}

@@ -74,7 +74,7 @@ public:
 	/*!
 	\brief Destructor for Logger object.
 	*/
-	virtual ~Logger(void);
+	~Logger(void);
 
 	
 	/*!

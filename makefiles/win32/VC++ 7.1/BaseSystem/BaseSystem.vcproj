@@ -153,6 +153,9 @@
 				RelativePath="..\..\..\..\src\CEGUIExceptions.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\implementations\win32\CEGUIFactoryModule.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIFont.cpp">
 			</File>
 			<File
@@ -243,6 +246,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIExceptions.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIFactoryModule.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIFont.h">
