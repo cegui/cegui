@@ -117,8 +117,10 @@ void TLButton::setNormalImage(const RenderableImage* image)
 	{
 		d_useNormalImage = true;
 		d_normalImage = *image;
+		d_normalImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
 	}
 
+	requestRedraw();
 }
 
 
@@ -136,8 +138,10 @@ void TLButton::setHoverImage(const RenderableImage* image)
 	{
 		d_useHoverImage = true;
 		d_hoverImage = *image;
+		d_hoverImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
 	}
 
+	requestRedraw();
 }
 
 
@@ -155,8 +159,10 @@ void TLButton::setPushedImage(const RenderableImage* image)
 	{
 		d_usePushedImage = true;
 		d_pushedImage = *image;
+		d_pushedImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
 	}
 
+	requestRedraw();
 }
 
 
@@ -174,8 +180,10 @@ void TLButton::setDisabledImage(const RenderableImage* image)
 	{
 		d_useDisabledImage = true;
 		d_disabledImage = *image;
+		d_disabledImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
 	}
 
+	requestRedraw();
 }
 
 
