@@ -168,34 +168,6 @@ void colour::setARGB(ulong argb)
 }
 
 
-inline void colour::setAlpha(float alpha)
-{
-	d_argbValid = false;
-	d_alpha = alpha;
-}
-
-
-inline void colour::setRed(float red)
-{
-	d_argbValid = false;
-	d_red = red;
-}
-
-
-inline void colour::setGreen(float green)
-{
-	d_argbValid = false;
-	d_green = green;
-}
-
-
-inline void colour::setBlue(float blue)
-{
-	d_argbValid = false;
-	d_blue = blue;
-}
-
-
 void colour::setHSL(float hue, float saturation, float luminance, float alpha)
 {
 	d_alpha = alpha;
@@ -267,98 +239,6 @@ void colour::setHSL(float hue, float saturation, float luminance, float alpha)
 	}
 
 	d_argbValid = false;
-}
-
-
-inline colour& colour::operator=(ulong val)
-{
-	setARGB(val);
-	return *this;
-}
-
-
-inline colour& colour::operator=(const colour& val)
-{
-	d_alpha	= val.d_alpha;
-	d_red	= val.d_red;
-	d_green	= val.d_green;
-	d_blue	= val.d_blue;
-	d_argb	= val.d_argb;
-	d_argbValid = val.d_argbValid;
-
-	return *this;
-}
-
-inline colour&	colour::operator&=(ulong val)
-{
-	setARGB(getARGB() & val);
-	return *this;
-}
-
-
-inline colour&	colour::operator&=(const colour& val)
-{
-	setARGB(getARGB() & val.getARGB());
-	return *this;
-}
-
-
-inline colour&	colour::operator|=(ulong val)
-{
-	setARGB(getARGB() | val);
-	return *this;
-}
-
-
-inline colour&	colour::operator|=(const colour& val)
-{
-	setARGB(getARGB() | val.getARGB());
-	return *this;
-}
-
-
-inline colour&	colour::operator<<=(int val)
-{
-	setARGB(getARGB() << val);
-	return *this;
-}
-
-
-inline colour&	colour::operator>>=(int val)
-{
-	setARGB(getARGB() >> val);
-	return *this;
-}
-
-
-inline colour colour::operator+(const colour& val) const 
-{
-	return colour(
-		d_red	+ val.d_red, 
-		d_green	+ val.d_green, 
-		d_blue	+ val.d_blue,
-		d_alpha	+ val.d_alpha
-	);
-}
-
-inline colour colour::operator-(const colour& val) const
-{
-	return colour(
-		d_red	- val.d_red, 
-		d_green	- val.d_green, 
-		d_blue	- val.d_blue,
-		d_alpha	- val.d_alpha 
-	);
-}
-
-inline colour colour::operator*(const float val) const
-{
-	return colour(
-		d_red	* val, 
-		d_green	* val, 
-		d_blue	* val,
-		d_alpha	* val 
-	);
 }
 
 

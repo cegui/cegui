@@ -77,32 +77,119 @@ public:
 		Manipulators
 	*************************************************************************/
 	void	setARGB(ulong argb);
-	void	setAlpha(float alpha);
-	void	setRed(float red);
-	void	setGreen(float green);
-	void	setBlue(float blue);
+	inline void setAlpha(float alpha)
+    {
+        d_argbValid = false;
+        d_alpha = alpha;
+    }
+
+	inline void setRed(float red)
+    {   
+        d_argbValid = false;
+        d_red = red;
+    }
+
+	inline void setGreen(float green)
+    {
+        d_argbValid = false;
+        d_green = green;
+    }
+
+	inline void setBlue(float blue)
+    {
+        d_argbValid = false;
+        d_blue = blue;
+    }
+
 	void	setHSL(float hue, float saturation, float luminance, float alpha = 1.0f);
 
 
 	/*************************************************************************
 		Operators
 	*************************************************************************/
-	colour& operator=(ulong val);
-	colour& operator=(const colour& val);
+	inline colour& operator=(ulong val)
+    {
+        setARGB(val);
+        return *this;
+    }
 
-	colour&	operator&=(ulong val);
-	colour&	operator&=(const colour& val);
+	inline colour& operator=(const colour& val)
+    {
+        d_alpha = val.d_alpha;
+        d_red   = val.d_red;
+        d_green = val.d_green;
+        d_blue  = val.d_blue;
+        d_argb  = val.d_argb;
+        d_argbValid = val.d_argbValid;
 
-	colour&	operator|=(ulong val);
-	colour&	operator|=(const colour& val);
+        return *this;
+    }
 
-	colour&	operator<<=(int val);
-	colour&	operator>>=(int val);
+	inline colour& operator&=(ulong val)
+    {
+        setARGB(getARGB() & val);
+        return *this;
+    }
 
-	colour operator+(const colour& val) const; 
-	colour operator-(const colour& val) const;
-	colour operator*(const float val) const;
+	inline colour& operator&=(const colour& val)
+    {
+        setARGB(getARGB() & val.getARGB());
+        return *this;
+    }
 
+	inline colour& operator|=(ulong val)
+    {
+        setARGB(getARGB() | val);
+        return *this;
+    }
+
+	inline colour& operator|=(const colour& val)
+    {
+        setARGB(getARGB() | val.getARGB());
+        return *this;
+    }
+
+	inline colour& operator<<=(int val)
+    {
+        setARGB(getARGB() << val);
+        return *this;
+    }
+
+	inline colour& operator>>=(int val)
+    {
+        setARGB(getARGB() >> val);
+        return *this;
+    }
+
+	inline colour operator+(const colour& val) const
+    {
+        return colour(
+            d_red   + val.d_red, 
+            d_green + val.d_green, 
+            d_blue  + val.d_blue,
+            d_alpha + val.d_alpha
+        );
+    }
+
+	inline colour operator-(const colour& val) const
+    {
+        return colour(
+            d_red   - val.d_red,
+            d_green - val.d_green,
+            d_blue  - val.d_blue,
+            d_alpha - val.d_alpha
+        );
+    }
+
+	inline colour operator*(const float val) const
+    {       
+        return colour(
+            d_red   * val, 
+            d_green * val, 
+            d_blue  * val,
+            d_alpha * val 
+        );  
+    }
 
 	//
 	// Conversion operators

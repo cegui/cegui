@@ -2,6 +2,8 @@ SUBDIRS = . elements renderers
 pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
                  CEGUIColourRect.h \
+                 CEGUIConfig.h \
+                 CEGUIConfig_xmlHandler.h \
                  CEGUIEvent.h \
                  CEGUIEventArgs.h \
                  CEGUIEventSet.h \
