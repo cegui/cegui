@@ -80,5 +80,8 @@
 #include "elements/CEGUIListboxTextItem.h"
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIMultiLineEditbox.h"
+#include "elements/CEGUITabButton.h"
+#include "elements/CEGUITabPane.h"
+#include "elements/CEGUITabControl.h"
 
 #endif	// end of guard _CEGUI_h_
