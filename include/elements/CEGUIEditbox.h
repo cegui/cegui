@@ -58,10 +58,10 @@ public:
 		Constants
 	*************************************************************************/
 	// default colours
-	static const ulong	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
-	static const ulong	DefaultSelectedTextColour;			//!< Colour applied to selected text.
-	static const ulong	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
-	static const ulong	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
+	static const argb_t	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
+	static const argb_t	DefaultSelectedTextColour;			//!< Colour applied to selected text.
+	static const argb_t	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
+	static const argb_t	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
 
 
 	/*************************************************************************
@@ -155,7 +155,7 @@ public:
 	\return
 		Index of the insert carat relative to the start of the text.
 	*/
-	ulong	getCaratIndex(void) const		{return d_caratPos;}
+	size_t	getCaratIndex(void) const		{return d_caratPos;}
 
 
 	/*!
@@ -166,7 +166,7 @@ public:
 		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
 		the position of the carat.
 	*/
-	ulong	getSelectionStartIndex(void) const;
+	size_t	getSelectionStartIndex(void) const;
 
 
 	/*!
@@ -177,7 +177,7 @@ public:
 		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
 		the position of the carat.
 	*/
-	ulong	getSelectionEndIndex(void) const;
+	size_t	getSelectionEndIndex(void) const;
 
 	
 	/*!
@@ -187,7 +187,7 @@ public:
 	\return
 		Number of code points (or characters) contained within the currently defined selection.
 	*/
-	ulong	getSelectionLength(void) const;
+	size_t	getSelectionLength(void) const;
 
 
 	/*!
@@ -212,7 +212,7 @@ public:
 		Depending on the validation string set, the actual length of text that can be entered may be less than the value
 		returned here (it will never be more).
 	*/
-	ulong	getMaxTextLength(void) const		{return d_maxTextLen;}
+	size_t	getMaxTextLength(void) const		{return d_maxTextLen;}
 
 
 	/*!
@@ -318,7 +318,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setCaratIndex(ulong carat_pos);
+	void	setCaratIndex(size_t carat_pos);
 
 
 	/*!
@@ -336,7 +336,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelection(ulong start_pos, ulong end_pos);
+	void	setSelection(size_t start_pos, size_t end_pos);
 	
 
 	/*!
@@ -367,7 +367,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setMaxTextLength(ulong max_len);
+	void	setMaxTextLength(size_t max_len);
 
 
 	/*!
@@ -460,7 +460,7 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
-	virtual	ulong	getTextIndexFromPosition(const Point& pt) const		= 0;
+	virtual	size_t	getTextIndexFromPosition(const Point& pt) const		= 0;
 
 
 	/*!
@@ -648,14 +648,14 @@ protected:
 	bool	d_readOnly;			//!< True if the editbox is in read-only mode
 	bool	d_maskText;			//!< True if the editbox text should be rendered masked.
 	utf32	d_maskCodePoint;	//!< Code point to use when rendering masked text.
-	ulong	d_maxTextLen;		//!< Maximum number of characters for this Editbox.
-	ulong	d_caratPos;			//!< Position of the carat / insert-point.
-	ulong	d_selectionStart;	//!< Start of selection area.
-	ulong	d_selectionEnd;		//!< End of selection area.
+	size_t	d_maxTextLen;		//!< Maximum number of characters for this Editbox.
+	size_t	d_caratPos;			//!< Position of the carat / insert-point.
+	size_t	d_selectionStart;	//!< Start of selection area.
+	size_t	d_selectionEnd;		//!< End of selection area.
 	String	d_validationString;	//!< Copy of validation reg-ex string.
 	RegexValidator*	d_validator;		//!< RegEx String used for validation of text.
 	bool	d_dragging;			//!< true when a selection is being dragged.
-	ulong	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
+	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
 	// basic rendering colours
 	colour	d_normalTextColour;				//!< Text colour used normally.

@@ -175,7 +175,7 @@ public:
 	\return
 		Index of the insert carat relative to the start of the text.
 	*/
-	ulong	getCaratIndex(void) const;
+	size_t	getCaratIndex(void) const;
 
 
 	/*!
@@ -186,7 +186,7 @@ public:
 		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
 		the position of the carat.
 	*/
-	ulong	getSelectionStartIndex(void) const;
+	size_t	getSelectionStartIndex(void) const;
 
 
 	/*!
@@ -197,7 +197,7 @@ public:
 		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
 		the position of the carat.
 	*/
-	ulong	getSelectionEndIndex(void) const;
+	size_t	getSelectionEndIndex(void) const;
 
 	
 	/*!
@@ -207,7 +207,7 @@ public:
 	\return
 		Number of code points (or characters) contained within the currently defined selection.
 	*/
-	ulong	getSelectionLength(void) const;
+	size_t	getSelectionLength(void) const;
 
 
 	/*!
@@ -221,7 +221,7 @@ public:
 		Depending on the validation string set, the actual length of text that can be entered may be less than the value
 		returned here (it will never be more).
 	*/
-	ulong	getMaxTextLength(void) const;
+	size_t	getMaxTextLength(void) const;
 
 
 	/*!
@@ -278,7 +278,7 @@ public:
 	\return
 		the number of items currently attached to this list box.
 	*/
-	uint	getItemCount(void) const;
+	size_t	getItemCount(void) const;
 
 	
 	/*!
@@ -304,7 +304,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-	ListboxItem*	getListboxItemFromIndex(uint index) const;
+	ListboxItem*	getListboxItemFromIndex(size_t index) const;
 
 
 	/*!
@@ -319,7 +319,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
 	*/
-	uint	getItemIndex(const ListboxItem* item) const;
+	size_t	getItemIndex(const ListboxItem* item) const;
 
 
 	/*!
@@ -344,7 +344,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-	bool	isItemSelected(uint index) const;
+	bool	isItemSelected(size_t index) const;
 
 
 	/*!
@@ -494,7 +494,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setCaratIndex(ulong carat_pos);
+	void	setCaratIndex(size_t carat_pos);
 
 
 	/*!
@@ -512,7 +512,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelection(ulong start_pos, ulong end_pos);
+	void	setSelection(size_t start_pos, size_t end_pos);
 	
 
 	/*!
@@ -529,7 +529,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setMaxTextLength(ulong max_len);
+	void	setMaxTextLength(size_t max_len);
 
 
 	/*!
@@ -746,7 +746,7 @@ public:
 	
 	\exception	InvalidRequestException	thrown if \a item_index is out of range for the list box
 	*/
-	void	setItemSelectState(uint item_index, bool state);
+	void	setItemSelectState(size_t item_index, bool state);
 
 
 	/*!

@@ -111,7 +111,11 @@ void XmlHandlerHelper::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* par
     RawDataContainer rawSchemaData;
     System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, resourceGroup);
     // wrap schema data in a xerces MemBufInputSource object
-    MemBufInputSource  schemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), schemaName.c_str(), false);
+    MemBufInputSource  schemaData(
+        rawSchemaData.getDataPtr(),
+        static_cast<const unsigned int>(rawSchemaData.getSize()),
+        schemaName.c_str(),
+        false);
     parser->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
     // enable grammar reuse
     parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
@@ -145,7 +149,11 @@ void XmlHandlerHelper::parseXMLFile(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser,
     // use resource provider to load file data
     RawDataContainer rawXMLData;
     System::getSingleton().getResourceProvider()->loadRawDataContainer(xmlFilename, rawXMLData, resourceGroup);
-    MemBufInputSource  fileData(rawXMLData.getDataPtr(), rawXMLData.getSize(), xmlFilename.c_str(), false);
+    MemBufInputSource  fileData(
+        rawXMLData.getDataPtr(),
+        static_cast<const unsigned int>(rawXMLData.getSize()),
+        xmlFilename.c_str(),
+        false);
 
     // perform parse
     parser->parse(fileData);

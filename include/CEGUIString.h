@@ -57,7 +57,7 @@ public:
 		Integral Types
 	*************************************************************************/
 	typedef		utf32			value_type;					//!< Basic 'code point' type used for String (utf32)
-	typedef		uint			size_type;					//!< Unsigned type used for size values and indices
+	typedef		size_t			size_type;					//!< Unsigned type used for size values and indices
 	typedef		ptrdiff_t		difference_type;			//!< Signed type used for differences
 	typedef		utf32&			reference;					//!< Type used for utf32 code point references
 	typedef		const utf32&	const_reference;			//!< Type used for constant utf32 code point references

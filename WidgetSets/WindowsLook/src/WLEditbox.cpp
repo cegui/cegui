@@ -116,7 +116,7 @@ WLEditbox::~WLEditbox(void)
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.	
 *************************************************************************/
-ulong WLEditbox::getTextIndexFromPosition(const Point& pt) const
+size_t WLEditbox::getTextIndexFromPosition(const Point& pt) const
 {
 	//
 	// calculate final window position to be checked

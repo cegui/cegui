@@ -257,7 +257,7 @@ void OpenGLTexture::flipImageTGA(OpenGLTexture::tImageTGA* img)
 /////
 ///////////////////////////////// LOAD TGA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, unsigned int buffer_size)
+OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, size_t buffer_size)
 {
 	tImageTGA *pImageData = NULL;		// This stores our important image data
 	short width = 0, height = 0;			// The dimensions of the image

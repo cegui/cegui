@@ -63,7 +63,7 @@ void WordWrap::set(PropertyReceiver* receiver, const String& value)
 
 String CaratIndex::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getCaratIndex());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getCaratIndex()));
 }
 
 
@@ -75,7 +75,7 @@ void CaratIndex::set(PropertyReceiver* receiver, const String& value)
 
 String SelectionStart::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getSelectionStartIndex());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getSelectionStartIndex()));
 }
 
 
@@ -89,7 +89,7 @@ void SelectionStart::set(PropertyReceiver* receiver, const String& value)
 
 String SelectionLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getSelectionLength());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getSelectionLength()));
 }
 
 
@@ -103,7 +103,7 @@ void SelectionLength::set(PropertyReceiver* receiver, const String& value)
 
 String MaxTextLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiLineEditbox*>(receiver)->getMaxTextLength());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const MultiLineEditbox*>(receiver)->getMaxTextLength()));
 }
 
 

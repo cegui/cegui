@@ -70,10 +70,10 @@ const String MultiLineEditbox::EventVertScrollbarModeChanged( (utf8*)"VertScroll
 const String MultiLineEditbox::EventHorzScrollbarModeChanged( (utf8*)"HorzScrollbarModeChanged" );
 
 // default colours
-const ulong	MultiLineEditbox::DefaultNormalTextColour			= 0xFFFFFFFF;
-const ulong	MultiLineEditbox::DefaultSelectedTextColour			= 0xFF000000;
-const ulong	MultiLineEditbox::DefaultNormalSelectionColour		= 0xFF6060FF;
-const ulong	MultiLineEditbox::DefaultInactiveSelectionColour	= 0xFF808080;
+const argb_t MultiLineEditbox::DefaultNormalTextColour			= 0xFFFFFFFF;
+const argb_t MultiLineEditbox::DefaultSelectedTextColour		= 0xFF000000;
+const argb_t MultiLineEditbox::DefaultNormalSelectionColour		= 0xFF6060FF;
+const argb_t MultiLineEditbox::DefaultInactiveSelectionColour	= 0xFF808080;
 
 // Static data initialisation
 String MultiLineEditbox::d_lineBreakChars((utf8*)"\n");
@@ -148,7 +148,7 @@ bool MultiLineEditbox::hasInputFocus(void) const
 /*************************************************************************
 	return the current selection start point.	
 *************************************************************************/
-ulong MultiLineEditbox::getSelectionStartIndex(void) const
+size_t MultiLineEditbox::getSelectionStartIndex(void) const
 {
 	return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caratPos;
 }
@@ -157,7 +157,7 @@ ulong MultiLineEditbox::getSelectionStartIndex(void) const
 /*************************************************************************
 	return the current selection end point.
 *************************************************************************/
-ulong MultiLineEditbox::getSelectionEndIndex(void) const
+size_t MultiLineEditbox::getSelectionEndIndex(void) const
 {
 	return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caratPos;
 }
@@ -166,7 +166,7 @@ ulong MultiLineEditbox::getSelectionEndIndex(void) const
 /*************************************************************************
 	return the length of the current selection (in code points / characters).	
 *************************************************************************/
-ulong MultiLineEditbox::getSelectionLength(void) const
+size_t MultiLineEditbox::getSelectionLength(void) const
 {
 	return d_selectionEnd - d_selectionStart;
 }
@@ -236,7 +236,7 @@ void MultiLineEditbox::setReadOnly(bool setting)
 /*************************************************************************
 	Set the current position of the carat.	
 *************************************************************************/
-void MultiLineEditbox::setCaratIndex(ulong carat_pos)
+void MultiLineEditbox::setCaratIndex(size_t carat_pos)
 {
 	// make sure new position is valid
 	if (carat_pos > d_text.length() - 1)
@@ -261,7 +261,7 @@ void MultiLineEditbox::setCaratIndex(ulong carat_pos)
 /*************************************************************************
 	Define the current selection for the edit box	
 *************************************************************************/
-void MultiLineEditbox::setSelection(ulong start_pos, ulong end_pos)
+void MultiLineEditbox::setSelection(size_t start_pos, size_t end_pos)
 {
 	// ensure selection start point is within the valid range
 	if (start_pos > d_text.length() - 1)
@@ -278,7 +278,7 @@ void MultiLineEditbox::setSelection(ulong start_pos, ulong end_pos)
 	// ensure start is before end
 	if (start_pos > end_pos)
 	{
-		ulong tmp = end_pos;
+		size_t tmp = end_pos;
 		end_pos = start_pos;
 		start_pos = tmp;
 	}
@@ -301,7 +301,7 @@ void MultiLineEditbox::setSelection(ulong start_pos, ulong end_pos)
 /*************************************************************************
 	set the maximum text length for this edit box.	
 *************************************************************************/
-void MultiLineEditbox::setMaxTextLength(ulong max_len)
+void MultiLineEditbox::setMaxTextLength(size_t max_len)
 {
 	if (d_maxTextLen != max_len)
 	{
@@ -374,13 +374,13 @@ void MultiLineEditbox::ensureCaratIsVisible(void)
 {
 	// calculate the location of the carat
 	const Font* fnt = getFont();
-	uint caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caratLine = getLineNumberFromIndex(d_caratPos);
 
-	if (caratLine < (uint)d_lines.size())
+	if (caratLine < d_lines.size())
 	{
 		Rect textArea(getTextRenderArea());
 
-		uint caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
+		size_t caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
 
 		float ypos = caratLine * fnt->getLineSpacing();
 		float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));
@@ -522,15 +522,15 @@ void MultiLineEditbox::renderTextLines(const Rect& dest_area, const Rect& clippe
 
 		// calculate final colours to use.
 		float alpha = getEffectiveAlpha();
-		colour normalTextCol  = ((d_normalTextColour & 0x00FFFFFF) | (((ulong)(((float)(d_normalTextColour >> 24)) * alpha)) << 24));
-		colour selectTextCol  = ((d_selectTextColour & 0x00FFFFFF) | (((ulong)(((float)(d_selectTextColour >> 24)) * alpha)) << 24));
+		colour normalTextCol  = ((d_normalTextColour & 0x00FFFFFF) | (((argb_t)(((float)(d_normalTextColour >> 24)) * alpha)) << 24));
+		colour selectTextCol  = ((d_selectTextColour & 0x00FFFFFF) | (((argb_t)(((float)(d_selectTextColour >> 24)) * alpha)) << 24));
 
 		colour selectBrushCol = hasInputFocus() ?
-			((d_selectBrushColour & 0x00FFFFFF) | (((ulong)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24)) :
-			((d_inactiveSelectBrushColour & 0x00FFFFFF) | (((ulong)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24));
+			((d_selectBrushColour & 0x00FFFFFF) | (((argb_t)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24)) :
+			((d_inactiveSelectBrushColour & 0x00FFFFFF) | (((argb_t)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24));
 
 		// for each formatted line.
-		for (uint i = 0; i < (uint)d_lines.size(); ++i)
+		for (size_t i = 0; i < d_lines.size(); ++i)
 		{
 			Rect lineRect(drawArea);
 			const LineInfo& currLine = d_lines[i];
@@ -551,7 +551,7 @@ void MultiLineEditbox::renderTextLines(const Rect& dest_area, const Rect& clippe
 			{
 				// Start of actual rendering section.
 				String sect;
-				uint sectIdx = 0, sectLen;
+				size_t sectIdx = 0, sectLen;
 				float selStartOffset = 0.0f, selAreaWidth = 0.0f;
 
 				// render any text prior to selected region of line.
@@ -659,7 +659,7 @@ void MultiLineEditbox::formatText(void)
 			{
 				// no word wrapping, so we are just one long line.
 				line.d_startIdx = currPos;
-				line.d_length	= (uint)paraLen;
+				line.d_length	= paraLen;
 				line.d_extent	= fnt->getTextExtent(paraText); 
 				d_lines.push_back(line);
 
@@ -685,7 +685,7 @@ void MultiLineEditbox::formatText(void)
 					while (lineLen < (paraLen - lineIndex))
 					{
 						// get cp / char count of next token
-						uint nextTokenSize = getNextTokenLength(paraText, lineIndex + lineLen);
+						size_t nextTokenSize = getNextTokenLength(paraText, lineIndex + lineLen);
 
 						// get pixel width of the token
 						float tokenExtent  = fnt->getTextExtent(paraText.substr(lineIndex + lineLen, nextTokenSize));
@@ -742,23 +742,23 @@ void MultiLineEditbox::formatText(void)
 	Return the length of the next token in String 'text' starting at
 	index 'start_idx'.
 *************************************************************************/
-uint MultiLineEditbox::getNextTokenLength(const String& text, uint start_idx) const
+size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx) const
 {
 	String::size_type pos = text.find_first_of(TextUtils::DefaultWrapDelimiters, start_idx);
 
 	// handle case where no more whitespace exists (so this is last token)
 	if (pos == String::npos)
 	{
-		return ((uint)text.length()) - start_idx;
+		return (text.length() - start_idx);
 	}
 	// handle 'delimiter' token cases
-	else if (((uint)pos) - start_idx == 0)
+	else if ((pos - start_idx) == 0)
 	{
 		return 1;
 	}
 	else
 	{
-		return ((uint)pos) - start_idx;
+		return (pos - start_idx);
 	}
 
 }
@@ -768,7 +768,7 @@ uint MultiLineEditbox::getNextTokenLength(const String& text, uint start_idx) co
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.	
 *************************************************************************/
-uint MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
+size_t MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
 {
 	//
 	// calculate final window position to be checked
@@ -789,20 +789,20 @@ uint MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
 	wndPt.d_x += d_horzScrollbar->getScrollPosition();
 	wndPt.d_y += d_vertScrollbar->getScrollPosition();
 
-	uint lineNumber = (uint)(wndPt.d_y / getFont()->getLineSpacing());
+	size_t lineNumber = static_cast<size_t>(wndPt.d_y / getFont()->getLineSpacing());
 
-	if (lineNumber >= (uint)d_lines.size())
+	if (lineNumber >= d_lines.size())
 	{
-		lineNumber = (uint)d_lines.size() - 1;
+		lineNumber = d_lines.size() - 1;
 	}
 
 	String lineText(d_text.substr(d_lines[lineNumber].d_startIdx, d_lines[lineNumber].d_length));
 
-	uint lineIdx = getFont()->getCharAtPixel(lineText, wndPt.d_x);
+	size_t lineIdx = getFont()->getCharAtPixel(lineText, wndPt.d_x);
 
-	if (lineIdx >= (uint)lineText.length() - 1)
+	if (lineIdx >= lineText.length() - 1)
 	{
-		lineIdx = (uint)lineText.length() - 1;
+		lineIdx = lineText.length() - 1;
 	}
 
 	return d_lines[lineNumber].d_startIdx + lineIdx;
@@ -813,22 +813,22 @@ uint MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
 	Return the line number a given index falls on with the current
 	formatting.  Will return last line if index is out of range.
 *************************************************************************/
-uint MultiLineEditbox::getLineNumberFromIndex(uint index) const
+size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 {
-	uint lineCount = (uint)d_lines.size();
+	size_t lineCount = d_lines.size();
 
 	if (lineCount == 0)
 	{
 		return 0;
 	}
-	else if (index >= (uint)d_text.length() - 1)
+	else if (index >= d_text.length() - 1)
 	{
 		return lineCount - 1;
 	}
 	else
 	{
-		uint indexCount = 0;
-		uint caratLine = 0;
+		size_t indexCount = 0;
+		size_t caratLine = 0;
 
 		for (; caratLine < lineCount; ++caratLine)
 		{
@@ -1074,11 +1074,11 @@ void MultiLineEditbox::handleDocEnd(uint sysKeys)
 *************************************************************************/
 void MultiLineEditbox::handleLineHome(uint sysKeys)
 {
-	uint line = getLineNumberFromIndex(d_caratPos);
+	size_t line = getLineNumberFromIndex(d_caratPos);
 
-	if (line < (uint)d_lines.size())
+	if (line < d_lines.size())
 	{
-		uint lineStartIdx = d_lines[line].d_startIdx;
+		size_t lineStartIdx = d_lines[line].d_startIdx;
 
 		if (d_caratPos > lineStartIdx)
 		{
@@ -1104,11 +1104,11 @@ void MultiLineEditbox::handleLineHome(uint sysKeys)
 *************************************************************************/
 void MultiLineEditbox::handleLineEnd(uint sysKeys)
 {
-	uint line = getLineNumberFromIndex(d_caratPos);
+	size_t line = getLineNumberFromIndex(d_caratPos);
 
-	if (line < (uint)d_lines.size())
+	if (line < d_lines.size())
 	{
-		uint lineEndIdx = d_lines[line].d_startIdx + d_lines[line].d_length - 1;
+		size_t lineEndIdx = d_lines[line].d_startIdx + d_lines[line].d_length - 1;
 
 		if (d_caratPos < lineEndIdx)
 		{
@@ -1134,7 +1134,7 @@ void MultiLineEditbox::handleLineEnd(uint sysKeys)
 *************************************************************************/
 void MultiLineEditbox::handleLineUp(uint sysKeys)
 {
-	uint caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caratLine = getLineNumberFromIndex(d_caratPos);
 
 	if (caratLine > 0)
 	{
@@ -1142,7 +1142,7 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 
 		--caratLine;
 
-		uint newLineIndex = getFont()->getCharAtPixel(d_text.substr(d_lines[caratLine].d_startIdx, d_lines[caratLine].d_length), caratPixelOffset);
+		size_t newLineIndex = getFont()->getCharAtPixel(d_text.substr(d_lines[caratLine].d_startIdx, d_lines[caratLine].d_length), caratPixelOffset);
 
 		setCaratIndex(d_lines[caratLine].d_startIdx + newLineIndex);
 	}
@@ -1164,15 +1164,15 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 *************************************************************************/
 void MultiLineEditbox::handleLineDown(uint sysKeys)
 {
-	uint caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caratLine = getLineNumberFromIndex(d_caratPos);
 
-	if ((d_lines.size() > 1) && (caratLine < (uint)(d_lines.size() - 1)))
+	if ((d_lines.size() > 1) && (caratLine < (d_lines.size() - 1)))
 	{
 		float caratPixelOffset = getFont()->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, d_caratPos - d_lines[caratLine].d_startIdx));
 
 		++caratLine;
 
-		uint newLineIndex = getFont()->getCharAtPixel(d_text.substr(d_lines[caratLine].d_startIdx, d_lines[caratLine].d_length), caratPixelOffset);
+		size_t newLineIndex = getFont()->getCharAtPixel(d_text.substr(d_lines[caratLine].d_startIdx, d_lines[caratLine].d_length), caratPixelOffset);
 
 		setCaratIndex(d_lines[caratLine].d_startIdx + newLineIndex);
 	}
@@ -1200,7 +1200,7 @@ void MultiLineEditbox::handleNewLine(uint sysKeys)
 		eraseSelectedText();
 
 		// if there is room
-		if ((ulong)d_text.length() - 1 < d_maxTextLen)
+		if (d_text.length() - 1 < d_maxTextLen)
 		{
 			d_text.insert(getCaratIndex(), 1, 0x0a);
 			d_caratPos++;
@@ -1289,8 +1289,8 @@ void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		uint caratLine = getLineNumberFromIndex(d_caratPos);
-		uint lineStart = d_lines[caratLine].d_startIdx;
+		size_t caratLine = getLineNumberFromIndex(d_caratPos);
+		size_t lineStart = d_lines[caratLine].d_startIdx;
 
 		// find end of last paragraph
 		String::size_type paraStart = d_text.find_last_of(d_lineBreakChars, lineStart);
@@ -1369,7 +1369,7 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 		eraseSelectedText();
 
 		// if there is room
-		if ((ulong)d_text.length() - 1 < d_maxTextLen)
+		if (d_text.length() - 1 < d_maxTextLen)
 		{
 			d_text.insert(getCaratIndex(), 1, e.codepoint);
 			d_caratPos++;

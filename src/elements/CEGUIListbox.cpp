@@ -103,11 +103,11 @@ void Listbox::initialise(void)
 /*************************************************************************
 	Return the number of selected items in the list box.	
 *************************************************************************/
-uint Listbox::getSelectedCount(void) const
+size_t Listbox::getSelectedCount(void) const
 {
-	uint count = 0;
+	size_t count = 0;
 
-	for (uint index = 0; index < (uint)d_listItems.size(); ++index)
+	for (size_t index = 0; index < d_listItems.size(); ++index)
 	{
 		if (d_listItems[index]->isSelected())
 		{
@@ -135,9 +135,9 @@ ListboxItem* Listbox::getFirstSelectedItem(void) const
 ListboxItem* Listbox::getNextSelected(const ListboxItem* start_item) const
 {
 	// if start_item is NULL begin search at begining, else start at item after start_item
-	uint index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
+	size_t index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
 
-	while (index < (uint)d_listItems.size())
+	while (index < d_listItems.size())
 	{
 		// return pointer to this item if it's selected.
 		if (d_listItems[index]->isSelected())
@@ -160,9 +160,9 @@ ListboxItem* Listbox::getNextSelected(const ListboxItem* start_item) const
 /*************************************************************************
 	Return the item at index position 'index'.
 *************************************************************************/
-ListboxItem* Listbox::getListboxItemFromIndex(uint index) const
+ListboxItem* Listbox::getListboxItemFromIndex(size_t index) const
 {
-	if (index < (uint)d_listItems.size())
+	if (index < d_listItems.size())
 	{
 		return d_listItems[index];
 	}
@@ -176,13 +176,13 @@ ListboxItem* Listbox::getListboxItemFromIndex(uint index) const
 /*************************************************************************
 	Return the index of ListboxItem \a item
 *************************************************************************/
-uint Listbox::getItemIndex(const ListboxItem* item) const
+size_t Listbox::getItemIndex(const ListboxItem* item) const
 {
 	LBItemList::const_iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
 
 	if (pos != d_listItems.end())
 	{
-		return (uint)std::distance(d_listItems.begin(), pos);
+		return std::distance(d_listItems.begin(), pos);
 	}
 	else
 	{
@@ -195,9 +195,9 @@ uint Listbox::getItemIndex(const ListboxItem* item) const
 /*************************************************************************
 	return whether the string at index position \a index is selected
 *************************************************************************/
-bool Listbox::isItemSelected(uint index) const
+bool Listbox::isItemSelected(size_t index) const
 {
-	if (index < (uint)d_listItems.size())
+	if (index < d_listItems.size())
 	{
 		return d_listItems[index]->isSelected();
 	}
@@ -215,9 +215,9 @@ bool Listbox::isItemSelected(uint index) const
 ListboxItem* Listbox::findItemWithText(const String& text, const ListboxItem* start_item)
 {
 	// if start_item is NULL begin search at begining, else start at item after start_item
-	uint index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
+	size_t index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
 
-	while (index < (uint)d_listItems.size())
+	while (index < d_listItems.size())
 	{
 		// return pointer to this item if it's text matches
 		if (d_listItems[index]->getText() == text)
@@ -487,7 +487,7 @@ void Listbox::setItemSelectState(ListboxItem* item, bool state)
 
 	if (pos != d_listItems.end())
 	{
-		setItemSelectState((uint)std::distance(d_listItems.begin(), pos), state);
+		setItemSelectState(std::distance(d_listItems.begin(), pos), state);
 	}
 	else
 	{
@@ -499,7 +499,7 @@ void Listbox::setItemSelectState(ListboxItem* item, bool state)
 /*************************************************************************
 	Set the select state of an attached ListboxItem.	
 *************************************************************************/
-void Listbox::setItemSelectState(uint item_index, bool state)
+void Listbox::setItemSelectState(size_t item_index, bool state)
 {
 	if (item_index < getItemCount())
 	{
@@ -568,9 +568,9 @@ void Listbox::drawSelf(float z)
 	float alpha = getEffectiveAlpha();
 
 	// loop through the items
-	uint itemCount = getItemCount();
+	size_t itemCount = getItemCount();
 
-	for (uint i = 0; i < itemCount; ++i)
+	for (size_t i = 0; i < itemCount; ++i)
 	{
 		itemSize.d_height = d_listItems[i]->getPixelSize().d_height;
 
@@ -674,7 +674,7 @@ void Listbox::configureScrollbars(void)
 /*************************************************************************
 	select all strings between positions 'start' and 'end' (inclusive)
 *************************************************************************/
-void Listbox::selectRange(uint start, uint end)
+void Listbox::selectRange(size_t start, size_t end)
 {
 	// only continue if list has some items
 	if (d_listItems.size() > 0)
@@ -694,7 +694,7 @@ void Listbox::selectRange(uint start, uint end)
 		// ensure start becomes before the end.
 		if (start > end)
 		{
-			uint tmp;
+			size_t tmp;
 			tmp = start;
 			start = end;
 			end = tmp;
@@ -718,7 +718,7 @@ float Listbox::getTotalItemsHeight(void) const
 {
 	float height = 0;
 
-	for (uint i = 0; i < getItemCount(); ++i)
+	for (size_t i = 0; i < getItemCount(); ++i)
 	{
 		height += d_listItems[i]->getPixelSize().d_height;
 	}
@@ -734,7 +734,7 @@ float Listbox::getWidestItemWidth(void) const
 {
 	float widest = 0;
 
-	for (uint i = 0; i < getItemCount(); ++i)
+	for (size_t i = 0; i < getItemCount(); ++i)
 	{
 		float thisWidth = d_listItems[i]->getPixelSize().d_width;
 
@@ -757,7 +757,7 @@ bool Listbox::clearAllSelections_impl(void)
 	// flag used so we can track if we did anything.
 	bool modified = false;
 
-	for (uint index = 0; index < (uint)d_listItems.size(); ++index)
+	for (size_t index = 0; index < d_listItems.size(); ++index)
 	{
 		if (d_listItems[index]->isSelected())
 		{
@@ -786,7 +786,7 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 		// test if point is above first item
 		if (pt.d_y >= y)
 		{
-			for (uint i = 0; i < getItemCount(); ++i)
+			for (size_t i = 0; i < getItemCount(); ++i)
 			{
 				y += d_listItems[i]->getPixelSize().d_height;
 
@@ -977,7 +977,7 @@ void Listbox::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	Ensure the item at the specified index is visible within the list box.	
 *************************************************************************/
-void Listbox::ensureItemIsVisible(uint item_index)
+void Listbox::ensureItemIsVisible(size_t item_index)
 {
 	// handle simple "scroll to the bottom" case
 	if (item_index >= getItemCount())
@@ -991,7 +991,7 @@ void Listbox::ensureItemIsVisible(uint item_index)
 		float top = 0;
 
 		// get height to top of item
-		uint i;
+		size_t i;
 		for (i = 0; i < item_index; ++i)
 		{
 			top += d_listItems[i]->getPixelSize().d_height;
@@ -1076,7 +1076,7 @@ bool Listbox::resetList_impl(void)
 	else
 	{
 		// delete any items we are supposed to
-		for (uint i = 0; i < getItemCount(); ++i)
+		for (size_t i = 0; i < getItemCount(); ++i)
 		{
 			// if item is supposed to be deleted by us
 			if (d_listItems[i]->isAutoDeleted())

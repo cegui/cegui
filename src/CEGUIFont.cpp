@@ -49,7 +49,7 @@ namespace CEGUI
 /*************************************************************************
 	static data definitions
 *************************************************************************/
-const uint32 Font::DefaultColour					= 0xFFFFFFFF;
+const argb_t Font::DefaultColour					= 0xFFFFFFFF;
 const uint	Font::InterGlyphPadSpace			= 2;
 
 // XML related strings
@@ -164,10 +164,10 @@ float Font::getTextExtent(const String& text, float x_scale) const
 {
 	float cur_extent = 0;
 
-	uint char_count = text.length();
+	size_t char_count = text.length();
 	CodepointMap::const_iterator	pos, end = d_cp_map.end();
 
-	for (uint c = 0; c < char_count; ++c)
+	for (size_t c = 0; c < char_count; ++c)
 	{
 		pos = d_cp_map.find(text[c]);
 
@@ -186,10 +186,10 @@ float Font::getTextExtent(const String& text, float x_scale) const
 	Return the index of the closest text character in String 'text' that
 	corresponds to pixel location 'pixel' if the text were rendered.
 *************************************************************************/
-uint Font::getCharAtPixel(const String& text, uint start_char, float pixel, float x_scale) const
+size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel, float x_scale) const
 {
 	float cur_extent = 0;
-	uint char_count = text.length();
+	size_t char_count = text.length();
 
 	// handle simple cases
 	if ((pixel <= 0) || (char_count <= start_char))
@@ -199,7 +199,7 @@ uint Font::getCharAtPixel(const String& text, uint start_char, float pixel, floa
 
 	CodepointMap::const_iterator	pos, end = d_cp_map.end();
 
-	for (uint c = start_char; c < char_count; ++c)
+	for (size_t c = start_char; c < char_count; ++c)
 	{
 		pos = d_cp_map.find(text[c]);
 
@@ -223,10 +223,10 @@ uint Font::getCharAtPixel(const String& text, uint start_char, float pixel, floa
 /*************************************************************************
 	Renders text on the display.  Return number of lines output.
 *************************************************************************/
-uint Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale) const
+size_t Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale) const
 {
-	uint thisCount;
-	uint lineCount = 0;
+	size_t thisCount;
+	size_t lineCount = 0;
 
 	float	y_base = draw_area.d_top + getBaseline(y_scale);
 
@@ -237,7 +237,7 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 		PixelAligned(draw_area.d_bottom)
 		);
 
-	uint lineStart = 0, lineEnd = 0;
+	size_t lineStart = 0, lineEnd = 0;
 	String	currLine;
 
 	while (lineEnd < text.length())
@@ -323,7 +323,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 	uint	cur_x = 0;
 	uint	cur_y = d_maxGlyphHeight;
 
-	uint	glyph_set_length = glyph_set.length();
+	uint	glyph_set_length = static_cast<uint>(glyph_set.length());
 
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
@@ -371,7 +371,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 	Render a set of glyph images into the given memory buffer.
 	pixels will be in A8R8G8B8 format
 *************************************************************************/
-void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer)
+void Font::createFontGlyphSet(const String& glyph_set, uint size, argb_t* buffer)
 {
 	String	imageName;
 	Rect	rect;
@@ -381,7 +381,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer
 
 	d_max_bearingY = 0;
 
-	uint	glyph_set_length = glyph_set.length();
+	size_t	glyph_set_length = glyph_set.length();
 	uint	cur_x = 0;
 	uint	cur_y = 0;
 	uint	width;
@@ -410,7 +410,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer
 		}
 
 		// calculate offset into buffer for this glyph
-		uint32* dest_buff = buffer + (cur_y * size) + cur_x;
+		argb_t* dest_buff = buffer + (cur_y * size) + cur_x;
 
 		// draw glyph into buffer
 		drawGlyphToBuffer(dest_buff, size);
@@ -448,7 +448,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer
 	Render a range of glyph images into the given memory buffer.
 	pixels will be in A8R8G8B8 format
 *************************************************************************/
-void Font::createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, uint32* buffer)
+void Font::createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, argb_t* buffer)
 {
 	String tmp;
 
@@ -498,7 +498,7 @@ void Font::defineFontGlyphs(utf32 first_code_point, utf32 last_code_point)
 /*************************************************************************
 	Copy the FreeType glyph bitmap into the given memory buffer
 *************************************************************************/
-void Font::drawGlyphToBuffer(uint32* buffer, uint buf_width)
+void Font::drawGlyphToBuffer(argb_t* buffer, uint buf_width)
 {
 	FT_Bitmap* glyph_bitmap = &d_impldat->fontFace->glyph->bitmap;
 
@@ -538,15 +538,15 @@ void Font::drawGlyphToBuffer(uint32* buffer, uint buf_width)
 /*************************************************************************
 	draws wrapped text
 *************************************************************************/
-uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale) const
+size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale) const
 {
-	uint	line_count = 0;
+	size_t	line_count = 0;
 	Rect	dest_area(draw_area);
 	float	wrap_width = draw_area.getWidth();
 
 	String  whitespace = TextUtils::DefaultWhitespace;
 	String	thisLine, thisWord;
-	uint	currpos = 0;
+	size_t	currpos = 0;
 
 	// get first word.
 	currpos += getNextWord(text, currpos, thisLine);
@@ -585,7 +585,7 @@ uint Font::drawWrappedText(const String& text, const Rect& draw_area, float z, c
 /*************************************************************************
 	helper function for renderWrappedText to get next word of a string
 *************************************************************************/
-uint Font::getNextWord(const String& in_string, uint start_idx, String& out_string) const
+size_t Font::getNextWord(const String& in_string, size_t start_idx, String& out_string) const
 {
 	out_string = TextUtils::getNextWord(in_string, start_idx, TextUtils::DefaultWrapDelimiters);
 
@@ -602,10 +602,10 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 
 	float base_y = position.d_y;
 
-	uint char_count = text.length();
+	size_t char_count = text.length();
 	CodepointMap::const_iterator	pos, end = d_cp_map.end();
 
-	for (uint c = 0; c < char_count; ++c)
+	for (size_t c = 0; c < char_count; ++c)
 	{
 		pos = d_cp_map.find(text[c]);
 
@@ -772,11 +772,11 @@ void Font::defineFontGlyphs_impl(void)
 	}
 
 	// allocate memory buffer where we will define the imagery
-	uint32* mem_buffer;
+	argb_t* mem_buffer;
 
 	try
 	{
-		mem_buffer = new uint32[texture_size * texture_size];
+		mem_buffer = new argb_t[texture_size * texture_size];
 	}
 	catch (std::bad_alloc)
 	{
@@ -784,7 +784,7 @@ void Font::defineFontGlyphs_impl(void)
 	}
 
 	// initialise background to transparent black.
-	memset(mem_buffer, 0, ((texture_size * texture_size) * sizeof(uint32)));
+	memset(mem_buffer, 0, ((texture_size * texture_size) * sizeof(argb_t)));
 
 	// clear old data about glyphs and images
 	d_cp_map.clear();
@@ -962,7 +962,7 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 /*************************************************************************
 	Return the number of lines the given text would be formatted to.	
 *************************************************************************/
-uint Font::getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale) const
+size_t Font::getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale) const
 {
 	// handle simple non-wrapped cases.
 	if ((fmt == LeftAligned) || (fmt == Centred) || (fmt == RightAligned))
@@ -971,13 +971,13 @@ uint Font::getFormattedLineCount(const String& text, const Rect& format_area, Te
 	}
 
 	// handle wraping cases
-	uint lineStart = 0, lineEnd = 0;
+	size_t lineStart = 0, lineEnd = 0;
 	String	sourceLine;
 
 	float	wrap_width = format_area.getWidth();
 	String  whitespace = TextUtils::DefaultWhitespace;
 	String	thisLine, thisWord;
-	uint	line_count = 0, currpos = 0;
+	size_t	line_count = 0, currpos = 0;
 
 	while (lineEnd < text.length())
 	{
@@ -1056,7 +1056,7 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
 	float lineWidth;
 	float widest = 0;
 
-	uint lineStart = 0, lineEnd = 0;
+	size_t lineStart = 0, lineEnd = 0;
 	String	currLine;
 
 	while (lineEnd < text.length())
@@ -1105,7 +1105,7 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth, float x_sc
 {
 	String  whitespace = TextUtils::DefaultWhitespace;
 	String	thisWord;
-	uint	currpos;
+	size_t	currpos;
 	float	lineWidth, wordWidth;
 	float	widest = 0;
 

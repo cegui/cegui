@@ -85,7 +85,7 @@ TLComboEditbox::~TLComboEditbox(void)
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.	
 *************************************************************************/
-ulong TLComboEditbox::getTextIndexFromPosition(const Point& pt) const
+size_t TLComboEditbox::getTextIndexFromPosition(const Point& pt) const
 {
 	//
 	// calculate final window position to be checked

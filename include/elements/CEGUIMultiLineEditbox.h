@@ -67,10 +67,10 @@ public:
 	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 	// default colours
-	static const ulong	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
-	static const ulong	DefaultSelectedTextColour;			//!< Colour applied to selected text.
-	static const ulong	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
-	static const ulong	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
+	static const argb_t	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
+	static const argb_t	DefaultSelectedTextColour;			//!< Colour applied to selected text.
+	static const argb_t	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
+	static const argb_t	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
 
 
 	/*************************************************************************
@@ -105,7 +105,7 @@ public:
 	\return
 		Index of the insert carat relative to the start of the text.
 	*/
-	ulong	getCaratIndex(void) const		{return d_caratPos;}
+	size_t	getCaratIndex(void) const		{return d_caratPos;}
 
 
 	/*!
@@ -116,7 +116,7 @@ public:
 		Index of the selection start point relative to the start of the text.  If no selection is defined this function returns
 		the position of the carat.
 	*/
-	ulong	getSelectionStartIndex(void) const;
+	size_t	getSelectionStartIndex(void) const;
 
 
 	/*!
@@ -127,7 +127,7 @@ public:
 		Index of the selection end point relative to the start of the text.  If no selection is defined this function returns
 		the position of the carat.
 	*/
-	ulong	getSelectionEndIndex(void) const;
+	size_t	getSelectionEndIndex(void) const;
 
 	
 	/*!
@@ -137,7 +137,7 @@ public:
 	\return
 		Number of code points (or characters) contained within the currently defined selection.
 	*/
-	ulong	getSelectionLength(void) const;
+	size_t	getSelectionLength(void) const;
 
 
 	/*!
@@ -147,7 +147,7 @@ public:
 	\return
 		The maximum number of code points (characters) that can be entered into this edit box.
 	*/
-	ulong	getMaxTextLength(void) const		{return d_maxTextLen;}
+	size_t	getMaxTextLength(void) const		{return d_maxTextLen;}
 
 
 	/*!
@@ -246,7 +246,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setCaratIndex(ulong carat_pos);
+	void	setCaratIndex(size_t carat_pos);
 
 
 	/*!
@@ -264,7 +264,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSelection(ulong start_pos, ulong end_pos);
+	void	setSelection(size_t start_pos, size_t end_pos);
 	
 
 	/*!
@@ -277,7 +277,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setMaxTextLength(ulong max_len);
+	void	setMaxTextLength(size_t max_len);
 
 
 	/*!
@@ -475,7 +475,7 @@ protected:
 	\return
 		The code point length of the token.
 	*/
-	uint	getNextTokenLength(const String& text, uint start_idx) const;
+	size_t	getNextTokenLength(const String& text, size_t start_idx) const;
 
 
 	/*!
@@ -508,7 +508,7 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
-	uint	getTextIndexFromPosition(const Point& pt) const;
+	size_t	getTextIndexFromPosition(const Point& pt) const;
 
 
 	/*!
@@ -516,7 +516,7 @@ protected:
 		Return the line number a given index falls on with the current formatting.  Will return last line
 		if index is out of range.
 	*/
-	uint	getLineNumberFromIndex(uint index) const;
+	size_t	getLineNumberFromIndex(size_t index) const;
 
 
 	/*!
@@ -712,8 +712,8 @@ protected:
 	*/
 	struct LineInfo
 	{
-		ulong	d_startIdx;		//!< Starting index for this line.
-		ulong	d_length;		//!< Code point length of this line.
+		size_t	d_startIdx;		//!< Starting index for this line.
+		size_t	d_length;		//!< Code point length of this line.
 		float	d_extent;		//!< Rendered extent of this line.
 	};
 
@@ -722,12 +722,12 @@ protected:
 		Implementation data
 	*************************************************************************/
 	bool	d_readOnly;			//!< true if the edit box is in read-only mode
-	ulong	d_maxTextLen;		//!< Maximum number of characters for this Editbox.
-	ulong	d_caratPos;			//!< Position of the carat / insert-point.
-	ulong	d_selectionStart;	//!< Start of selection area.
-	ulong	d_selectionEnd;		//!< End of selection area.
+	size_t	d_maxTextLen;		//!< Maximum number of characters for this Editbox.
+	size_t	d_caratPos;			//!< Position of the carat / insert-point.
+	size_t	d_selectionStart;	//!< Start of selection area.
+	size_t	d_selectionEnd;		//!< End of selection area.
 	bool	d_dragging;			//!< true when a selection is being dragged.
-	ulong	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
+	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
 	typedef	std::vector<LineInfo>	LineList;	//!< Type for collection of LineInfos.
 	static String d_lineBreakChars;	//!< Holds what we consider to be line break characters.

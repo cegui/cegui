@@ -74,7 +74,7 @@ public:
 	\return
 		the number of items currently attached to this list box.
 	*/
-	uint	getItemCount(void) const		{return (uint)d_listItems.size();}
+	size_t	getItemCount(void) const		{return d_listItems.size();}
 
 	
 	/*!
@@ -84,7 +84,7 @@ public:
 	\return
 		Total number of attached items that are in the selected state.
 	*/
-	uint	getSelectedCount(void) const;
+	size_t	getSelectedCount(void) const;
 
 
 	/*!
@@ -127,7 +127,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-	ListboxItem*	getListboxItemFromIndex(uint index) const;
+	ListboxItem*	getListboxItemFromIndex(size_t index) const;
 
 
 	/*!
@@ -142,7 +142,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
 	*/
-	uint	getItemIndex(const ListboxItem* item) const;
+	size_t	getItemIndex(const ListboxItem* item) const;
 
 
 	/*!
@@ -176,7 +176,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-	bool	isItemSelected(uint index) const;
+	bool	isItemSelected(size_t index) const;
 
 
 	/*!
@@ -410,7 +410,7 @@ public:
 	
 	\exception	InvalidRequestException	thrown if \a item_index is out of range for the list box
 	*/
-	void	setItemSelectState(uint item_index, bool state);
+	void	setItemSelectState(size_t item_index, bool state);
 
 
 	/*!
@@ -439,7 +439,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	ensureItemIsVisible(uint item_index);
+	void	ensureItemIsVisible(size_t item_index);
 
 
 	/*!
@@ -570,7 +570,7 @@ protected:
 		select all strings between positions \a start and \a end.  (inclusive)
 		including \a end.
 	*/
-	void	selectRange(uint start, uint end);
+	void	selectRange(size_t start, size_t end);
 
 
 	/*!

@@ -84,7 +84,7 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	static const uint32		DefaultColour;			//!< Colour value used whenever a colour is not specified.
+	static const argb_t		DefaultColour;			//!< Colour value used whenever a colour is not specified.
 
 
 	/*************************************************************************
@@ -123,7 +123,7 @@ public:
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
+	size_t	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
 
 
 	/*!
@@ -155,7 +155,7 @@ public:
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f) const
+	size_t	drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f) const
 	{ return drawText(text, draw_area, z, clip_rect, fmt, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
@@ -220,7 +220,7 @@ public:
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const
+	size_t	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const
 	{ return drawText(text, draw_area, z, draw_area, fmt, colours, x_scale, y_scale); }
 
 
@@ -251,7 +251,7 @@ public:
 	\return
 		The number of lines output.  NB: This does not consider clipping, so if all text was clipped, this would still return >=1.
 	*/
-	uint	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f) const
+	size_t	drawText(const String& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f) const
 	{ return drawText(text, draw_area, z, draw_area, fmt, ColourRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); }
 
 
@@ -522,7 +522,7 @@ public:
 		text were to be rendered via this Font.  Range of the return is from 0 to text.length(), so may actually return an index past the end of
 		the string, which indicates \a pixel was beyond the last character.
 	*/
-	uint	getCharAtPixel(const String& text, float pixel, float x_scale = 1.0f) const		{return getCharAtPixel(text, 0, pixel, x_scale);}
+	size_t	getCharAtPixel(const String& text, float pixel, float x_scale = 1.0f) const		{return getCharAtPixel(text, 0, pixel, x_scale);}
 
 
 	/*!
@@ -547,7 +547,7 @@ public:
 		text were to be rendered via this Font.  Range of the return is from 0 to text.length(), so may actually return an index past the end of
 		the string, which indicates \a pixel was beyond the last character.
 	*/
-	uint	getCharAtPixel(const String& text, uint start_char, float pixel, float x_scale = 1.0f) const;
+	size_t	getCharAtPixel(const String& text, size_t start_char, float pixel, float x_scale = 1.0f) const;
 
 
 	/*!
@@ -615,7 +615,7 @@ public:
 	\return
 		The number of lines produced from the specified formatting
 	*/
-	uint	getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f) const;
+	size_t	getFormattedLineCount(const String& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f) const;
 
 
 	/*!
@@ -899,7 +899,7 @@ private:
 	\return
 		Nothing.
 	*/
-	void	createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer);
+	void	createFontGlyphSet(const String& glyph_set, uint size, argb_t* buffer);
 
 
 	/*!
@@ -923,7 +923,7 @@ private:
 	\return
 		Nothing.
 	*/
-	void	createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, uint32* buffer);
+	void	createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, argb_t* buffer);
 
 
 	/*!
@@ -934,26 +934,26 @@ private:
 		Memory buffer large enough to receive the imagery for the currently loaded glyph.
 
 	\param buf_width
-		Width of \a buffer in pixels (where each pixel is a uint32).
+		Width of \a buffer in pixels (where each pixel is a argb_t).
 
 	\return
 		Nothing.
 	*/
-	void	drawGlyphToBuffer(uint32* buffer, uint buf_width);
+	void	drawGlyphToBuffer(argb_t* buffer, uint buf_width);
 
 
 	/*!
 	\brief
 		draws wrapped text.  returns number of lines output.
 	*/
-	uint	drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
+	size_t	drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale = 1.0f, float y_scale = 1.0f) const;
 
 
 	/*!
 	\brief
 		helper function for renderWrappedText to get next word of a string
 	*/
-	uint	getNextWord(const String& in_string, uint start_idx, String& out_string) const;
+	size_t	getNextWord(const String& in_string, size_t start_idx, String& out_string) const;
 
 
 	/*!

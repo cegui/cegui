@@ -220,7 +220,7 @@ const String& Combobox::getValidationString(void) const
 /*************************************************************************
 	return the current position of the carat.
 *************************************************************************/
-ulong Combobox::getCaratIndex(void) const
+size_t Combobox::getCaratIndex(void) const
 {
 	return d_editbox->getCaratIndex();
 }
@@ -229,7 +229,7 @@ ulong Combobox::getCaratIndex(void) const
 /*************************************************************************
 	return the current selection start point.
 *************************************************************************/
-ulong Combobox::getSelectionStartIndex(void) const
+size_t Combobox::getSelectionStartIndex(void) const
 {
 	return d_editbox->getSelectionStartIndex();
 }
@@ -238,7 +238,7 @@ ulong Combobox::getSelectionStartIndex(void) const
 /*************************************************************************
 	return the current selection end point.
 *************************************************************************/
-ulong Combobox::getSelectionEndIndex(void) const
+size_t Combobox::getSelectionEndIndex(void) const
 {
 	return d_editbox->getSelectionEndIndex();
 }
@@ -247,7 +247,7 @@ ulong Combobox::getSelectionEndIndex(void) const
 /*************************************************************************
 	return the length of the current selection (in code points / characters).
 *************************************************************************/
-ulong Combobox::getSelectionLength(void) const
+size_t Combobox::getSelectionLength(void) const
 {
 	return d_editbox->getSelectionLength();
 }
@@ -256,7 +256,7 @@ ulong Combobox::getSelectionLength(void) const
 /*************************************************************************
 	return the maximum text length set for this Editbox.
 *************************************************************************/
-ulong Combobox::getMaxTextLength(void) const
+size_t Combobox::getMaxTextLength(void) const
 {
 	return d_editbox->getMaxTextLength();
 }
@@ -323,7 +323,7 @@ void Combobox::setValidationString(const String& validation_string)
 /*************************************************************************
 	Set the current position of the carat.
 *************************************************************************/
-void Combobox::setCaratIndex(ulong carat_pos)
+void Combobox::setCaratIndex(size_t carat_pos)
 {
 	d_editbox->setCaratIndex(carat_pos);
 }
@@ -332,7 +332,7 @@ void Combobox::setCaratIndex(ulong carat_pos)
 /*************************************************************************
 	Define the current selection for the Editbox
 *************************************************************************/
-void Combobox::setSelection(ulong start_pos, ulong end_pos)
+void Combobox::setSelection(size_t start_pos, size_t end_pos)
 {
 	d_editbox->setSelection(start_pos, end_pos);
 }
@@ -341,7 +341,7 @@ void Combobox::setSelection(ulong start_pos, ulong end_pos)
 /*************************************************************************
 	set the maximum text length for this Editbox.
 *************************************************************************/
-void Combobox::setMaxTextLength(ulong max_len)
+void Combobox::setMaxTextLength(size_t max_len)
 {
 	d_editbox->setMaxTextLength(max_len);
 }
@@ -390,7 +390,7 @@ void Combobox::setInactiveSelectBrushColour(colour col)
 /*************************************************************************
 	Return number of items attached to the list box	
 *************************************************************************/
-uint Combobox::getItemCount(void) const
+size_t Combobox::getItemCount(void) const
 {
 	return d_droplist->getItemCount();
 }
@@ -408,7 +408,7 @@ ListboxItem* Combobox::getSelectedItem(void) const
 /*************************************************************************
 	Return the item at index position \a index.
 *************************************************************************/
-ListboxItem* Combobox::getListboxItemFromIndex(uint index) const
+ListboxItem* Combobox::getListboxItemFromIndex(size_t index) const
 {
 	return d_droplist->getListboxItemFromIndex(index);
 }
@@ -417,7 +417,7 @@ ListboxItem* Combobox::getListboxItemFromIndex(uint index) const
 /*************************************************************************
 	Return the index of ListboxItem 'item'
 *************************************************************************/
-uint Combobox::getItemIndex(const ListboxItem* item) const
+size_t Combobox::getItemIndex(const ListboxItem* item) const
 {
 	return d_droplist->getItemIndex(item);
 }
@@ -435,7 +435,7 @@ bool Combobox::isSortEnabled(void) const
 /*************************************************************************
 	return whether the string at index position 'index' is selected	
 *************************************************************************/
-bool Combobox::isItemSelected(uint index) const
+bool Combobox::isItemSelected(size_t index) const
 {
 	return d_droplist->isItemSelected(index);
 }
@@ -544,7 +544,7 @@ void Combobox::setItemSelectState(ListboxItem* item, bool state)
 /*************************************************************************
 	Set the select state of an attached ListboxItem.	
 *************************************************************************/
-void Combobox::setItemSelectState(uint item_index, bool state)
+void Combobox::setItemSelectState(size_t item_index, bool state)
 {
 	d_droplist->setItemSelectState(item_index, state);
 }

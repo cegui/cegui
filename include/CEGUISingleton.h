@@ -58,8 +58,7 @@ public:
     Singleton( void )
     {
         assert( !ms_Singleton );
-        int offset = (int)(T*)1 - (int)(Singleton <T>*)(T*)1;
-        ms_Singleton = (T*)((int)this + offset);
+        ms_Singleton = static_cast<T*>(this);
     }
    ~Singleton( void )
         {  assert( ms_Singleton );  ms_Singleton = 0;  }

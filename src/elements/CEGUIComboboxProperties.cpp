@@ -61,7 +61,7 @@ void	ValidationString::set(PropertyReceiver* receiver, const String& value)
 
 String	CaratIndex::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getCaratIndex());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Combobox*>(receiver)->getCaratIndex()));
 }
 
 
@@ -73,7 +73,7 @@ void	CaratIndex::set(PropertyReceiver* receiver, const String& value)
 
 String	EditSelectionStart::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getSelectionStartIndex());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Combobox*>(receiver)->getSelectionStartIndex()));
 }
 
 
@@ -87,7 +87,7 @@ void	EditSelectionStart::set(PropertyReceiver* receiver, const String& value)
 
 String	EditSelectionLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getSelectionLength());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Combobox*>(receiver)->getSelectionLength()));
 }
 
 
@@ -101,7 +101,7 @@ void	EditSelectionLength::set(PropertyReceiver* receiver, const String& value)
 
 String	MaxEditTextLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Combobox*>(receiver)->getMaxTextLength());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Combobox*>(receiver)->getMaxTextLength()));
 }
 
 

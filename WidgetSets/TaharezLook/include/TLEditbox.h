@@ -99,7 +99,7 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \pt.
 	*/
-	virtual	ulong	getTextIndexFromPosition(const Point& pt) const;
+	virtual	size_t	getTextIndexFromPosition(const Point& pt) const;
 
 
 	/*!

@@ -73,9 +73,9 @@ void DirectX81Texture::loadFromFile(const String& filename, const String& resour
 	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile, resourceGroup);
 	
 	D3DXIMAGE_INFO texInfo;
-	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX81Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(), texFile.getSize(),
-						D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT,
-						0, &texInfo, NULL, &d_d3dtexture);
+	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX81Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(),
+            static_cast<UINT>(texFile.getSize()), D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT,
+            D3DX_DEFAULT, D3DX_DEFAULT, 0, &texInfo, NULL, &d_d3dtexture);
 
 	if (SUCCEEDED(hr))
 	{

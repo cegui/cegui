@@ -89,7 +89,7 @@ void ValidationString::set(PropertyReceiver* receiver, const String& value)
 
 String CaratIndex::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getCaratIndex());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Editbox*>(receiver)->getCaratIndex()));
 }
 
 
@@ -101,7 +101,7 @@ void CaratIndex::set(PropertyReceiver* receiver, const String& value)
 
 String SelectionStart::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getSelectionStartIndex());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Editbox*>(receiver)->getSelectionStartIndex()));
 }
 
 
@@ -115,7 +115,7 @@ void SelectionStart::set(PropertyReceiver* receiver, const String& value)
 
 String SelectionLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getSelectionLength());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Editbox*>(receiver)->getSelectionLength()));
 }
 
 
@@ -129,7 +129,7 @@ void SelectionLength::set(PropertyReceiver* receiver, const String& value)
 
 String MaxTextLength::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const Editbox*>(receiver)->getMaxTextLength());
+	return PropertyHelper::uintToString(static_cast<uint>(static_cast<const Editbox*>(receiver)->getMaxTextLength()));
 }
 
 

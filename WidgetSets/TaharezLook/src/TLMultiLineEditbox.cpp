@@ -241,11 +241,11 @@ void TLMultiLineEditbox::renderCarat(float baseX, float baseY, const Rect& clipp
 {
 	// calculate position of carat
 	const Font* fnt = getFont();
-	uint caratLine = getLineNumberFromIndex(d_caratPos);
+	size_t caratLine = getLineNumberFromIndex(d_caratPos);
 
 	if (caratLine < (uint)d_lines.size())
 	{
-		uint caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
+		size_t caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
 
 		float ypos = caratLine * fnt->getLineSpacing();
 		float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));

@@ -85,10 +85,10 @@ EditboxProperties::InactiveSelectionColour	Editbox::d_inactiveSelectionColourPro
 	Constants
 *************************************************************************/
 // default colours
-const ulong	Editbox::DefaultNormalTextColour			= 0x00FFFFFF;
-const ulong	Editbox::DefaultSelectedTextColour			= 0x00000000;
-const ulong	Editbox::DefaultNormalSelectionColour		= 0x006060FF;
-const ulong	Editbox::DefaultInactiveSelectionColour		= 0x00808080;
+const argb_t Editbox::DefaultNormalTextColour			= 0x00FFFFFF;
+const argb_t Editbox::DefaultSelectedTextColour			= 0x00000000;
+const argb_t Editbox::DefaultNormalSelectionColour		= 0x006060FF;
+const argb_t Editbox::DefaultInactiveSelectionColour	= 0x00808080;
 
 
 /*************************************************************************
@@ -166,7 +166,7 @@ bool Editbox::isTextValid(void) const
 /*************************************************************************
 	return the current selection start point.
 *************************************************************************/
-ulong Editbox::getSelectionStartIndex(void) const
+size_t Editbox::getSelectionStartIndex(void) const
 {
 	return (d_selectionStart != d_selectionEnd) ? d_selectionStart : d_caratPos;
 }
@@ -175,7 +175,7 @@ ulong Editbox::getSelectionStartIndex(void) const
 /*************************************************************************
 	return the current selection end point.
 *************************************************************************/
-ulong Editbox::getSelectionEndIndex(void) const
+size_t Editbox::getSelectionEndIndex(void) const
 {
 	return (d_selectionStart != d_selectionEnd) ? d_selectionEnd : d_caratPos;
 }
@@ -185,7 +185,7 @@ ulong Editbox::getSelectionEndIndex(void) const
 	return the length of the current selection
 	(in code points / characters).
 *************************************************************************/
-ulong Editbox::getSelectionLength(void) const
+size_t Editbox::getSelectionLength(void) const
 {
 	return d_selectionEnd - d_selectionStart;
 }
@@ -262,7 +262,7 @@ void Editbox::setValidationString(const String& validation_string)
 /*************************************************************************
 	Set the current position of the carat.
 *************************************************************************/
-void Editbox::setCaratIndex(ulong carat_pos)
+void Editbox::setCaratIndex(size_t carat_pos)
 {
 	// make sure new position is valid
 	if (carat_pos > d_text.length())
@@ -286,7 +286,7 @@ void Editbox::setCaratIndex(ulong carat_pos)
 /*************************************************************************
 	Define the current selection for the Editbox
 *************************************************************************/
-void Editbox::setSelection(ulong start_pos, ulong end_pos)
+void Editbox::setSelection(size_t start_pos, size_t end_pos)
 {
 	// ensure selection start point is within the valid range
 	if (start_pos > d_text.length())
@@ -303,7 +303,7 @@ void Editbox::setSelection(ulong start_pos, ulong end_pos)
 	// ensure start is before end
 	if (start_pos > end_pos)
 	{
-		ulong tmp = end_pos;
+		size_t tmp = end_pos;
 		end_pos = start_pos;
 		start_pos = tmp;
 	}
@@ -343,7 +343,7 @@ void Editbox::setMaskCodePoint(utf32 code_point)
 /*************************************************************************
 	set the maximum text length for this Editbox.
 *************************************************************************/
-void Editbox::setMaxTextLength(ulong max_len)
+void Editbox::setMaxTextLength(size_t max_len)
 {
 	if (d_maxTextLen != max_len)
 	{
@@ -427,7 +427,7 @@ bool Editbox::isStringValid(const String& str) const
 
 	const char* utf8str = str.c_str();
 	int	match[3];
-	int len = strlen(utf8str);
+	int len = static_cast<int>(strlen(utf8str));
 	int result = pcre_exec(d_validator->d_regex, NULL, utf8str, len, 0, 0, match, 3);
 
 	if (result >= 0)
