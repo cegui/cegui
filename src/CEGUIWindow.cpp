@@ -128,6 +128,10 @@ Window::Window(const String& type, const String& name) :
 *************************************************************************/
 Window::~Window(void)
 {
+	// signal our imminent destruction
+	WindowEventArgs args(this);
+	onDestructionStarted(args);
+
 	// double check we are detached from parent
 	if (d_parent != NULL)
 	{
@@ -1189,6 +1193,14 @@ void Window::setInheritsAlpha(bool setting)
 {
 	d_inheritsAlpha = setting;
     WindowEventArgs args(this);
+
+	// if alpha is now inherited, we need to see if this results in a new effective alpha
+	if (d_inheritsAlpha && (d_alpha != getEffectiveAlpha()))
+	{
+		onAlphaChanged(args);
+	}
+
+	// notify about the setting change.
 	onInheritsAlphaChanged(args);
 }
 
@@ -1529,6 +1541,10 @@ void Window::render(void)
 		return;
 	}
 
+	// signal rendering started
+	WindowEventArgs args(this);
+	onRenderingStarted(args);
+
 	// perform drawing for 'this' Window
 	Renderer* renderer = System::getSingleton().getRenderer();
 	drawSelf(renderer->getCurrentZ());
@@ -1542,6 +1558,8 @@ void Window::render(void)
 		d_children[i]->render();
 	}
 
+	// signal rendering ended
+	onRenderingEnded(args);
 }
 
 
@@ -2054,6 +2072,61 @@ const Image* Window::getMouseCursor(void) const
 void Window::setMouseCursor(const String& imageset, const String& image_name)
 {
 	d_mouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name);
+}
+
+
+/*************************************************************************
+	Set the current ID for the Window.	
+*************************************************************************/
+void Window::setID(uint ID)
+{
+	if (d_ID != ID)
+	{
+		d_ID = ID;
+
+		WindowEventArgs args(this);
+		onIDChanged(args);
+	}
+
+}
+
+
+/*************************************************************************
+	set the current metrics mode employed by the Window	
+*************************************************************************/
+void Window::setMetricsMode(MetricsMode	mode)
+{
+	if (d_metricsMode != mode)
+	{
+		MetricsMode oldMode = d_metricsMode;
+		d_metricsMode = mode;
+
+		// only ever trigger the event if the mode is actually changed.
+		if ((d_metricsMode != Inherited) || (oldMode != getMetricsMode()))
+		{
+			WindowEventArgs args(this);
+			onMetricsChanged(args);
+		}
+
+	}
+
+}
+
+
+/*************************************************************************
+	Set whether or not this Window will automatically be destroyed when
+	its parent Window is destroyed.	
+*************************************************************************/
+void Window::setDestroyedByParent(bool setting)
+{
+	if (d_destroyedByParent != setting)
+	{
+		d_destroyedByParent = setting;
+
+		WindowEventArgs args(this);
+		onParentDestroyChanged(args);
+	}
+
 }
 
 

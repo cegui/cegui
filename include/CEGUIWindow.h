@@ -878,7 +878,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setDestroyedByParent(bool setting)			{d_destroyedByParent = setting;}
+	void	setDestroyedByParent(bool setting);
 
 
 	/*!
@@ -997,7 +997,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setID(uint ID)		{d_ID = ID;}
+	void	setID(uint ID);
 
 
 	/*!
@@ -1313,7 +1313,7 @@ public:
 	void	requestRedraw(void) const;
 
 
-		/*!
+	/*!
 	\brief
 		set the current metrics mode employed by the Window
 
@@ -1323,7 +1323,7 @@ public:
 	\return
 		Nothing
 	*/
-	void setMetricsMode(MetricsMode	mode)		{ d_metricsMode = mode;}
+	void setMetricsMode(MetricsMode	mode);
 
 
 	/*!
