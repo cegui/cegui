@@ -3,7 +3,6 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
                  CEGUIColourRect.h \
                  CEGUIConfig.h \
-                 CEGUIConfig_xmlHandler.h \
                  CEGUIDataContainer.h \
                  CEGUIDefaultResourceProvider.h \
                  CEGUIEvent.h \
@@ -13,23 +12,20 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFactoryModule.h \
                  CEGUIFont.h \
                  CEGUIFontManager.h \
-                 CEGUIFont_xmlHandler.h \
                  CEGUIForwardRefs.h \
                  CEGUIGlobalEventSet.h \
-		 CEGUIGUILayout_xmlHandler.h \
                  CEGUIImage.h \
                  CEGUIImageset.h \
                  CEGUIImagesetManager.h \
-                 CEGUIImageset_xmlHandler.h \
                  CEGUIInputEvent.h \
-		 CEGUIIteratorBase.h \
-		 CEGUILogger.h \
+                 CEGUIIteratorBase.h \
+                 CEGUILogger.h \
                  CEGUIMouseCursor.h \
                  CEGUIProperty.h \
-		 CEGUIPropertyHelper.h \
-		 CEGUIPropertySet.h \
+                 CEGUIPropertyHelper.h \
+                 CEGUIPropertySet.h \
                  CEGUIRect.h \
-		 CEGUIRefPtr.h \
+                 CEGUIRefPtr.h \
                  CEGUIRenderableElement.h \
                  CEGUIRenderableFrame.h \
                  CEGUIRenderableImage.h \
@@ -37,8 +33,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIResourceProvider.h \
                  CEGUIScheme.h \
                  CEGUISchemeManager.h \
-                 CEGUIScheme_xmlHandler.h \
-		 CEGUIScriptModule.h \
+                 CEGUIScriptModule.h \
                  CEGUISingleton.h \
                  CEGUISize.h \
                  CEGUIString.h \
@@ -50,5 +45,14 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIWindowFactory.h \
                  CEGUIWindowFactoryManager.h \
                  CEGUIWindowManager.h \
-		 CEGUIWindowProperties.h \
+                 CEGUIWindowProperties.h \
                  CEGUIcolour.h
+
+noinst_HEADERS = CEGUIConfig_xmlHandler.h \
+             CEGUIFontManager_implData.h \
+             CEGUIFont_implData.h  \
+             CEGUIFont_xmlHandler.h \
+             CEGUIGUILayout_xmlHandler.h \
+             CEGUIImageset_xmlHandler.h \
+             CEGUIScheme_xmlHandler.h \
+             CEGUIXmlHandlerHelper.h

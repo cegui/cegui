@@ -13,7 +13,6 @@ AM_PROG_LIBTOOL
 AC_CHECK_LIB([dl], [main])
 AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
 AC_CHECK_LIB([xerces-c], [main],, AC_MSG_ERROR([cannot find xerces library]), -lpthread)
-#AC_HAVE_LIBRARY(boost_signals-gcc,[main] , [AC_MSG_ERROR([cannot find boost libraries])])
 
 PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
 AC_SUBST(freetype2_CFLAGS)
@@ -49,13 +48,19 @@ AC_CONFIG_FILES([Makefile \
                  include/Makefile \
                  include/elements/Makefile \
                  include/renderers/Makefile \
+                 include/renderers/OpenGLGUIRenderer/Makefile \
                  src/Makefile \
                  src/renderers/Makefile \
+                 src/renderers/OpenGLGUIRenderer/Makefile \
                  WidgetSets/Makefile \
                  WidgetSets/TaharezLook/Makefile \
+                 WidgetSets/TaharezLook/include/Makefile \
                  WidgetSets/TaharezLook/src/Makefile \
                  WidgetSets/WindowsLook/Makefile \
+                 WidgetSets/WindowsLook/include/Makefile \
                  WidgetSets/WindowsLook/src/Makefile \
-                 CEGUI.pc])
+                 CEGUI.pc \
+                 CEGUI-OPENGL.pc \
+                 CEGUI.spec])
 
 AC_OUTPUT
