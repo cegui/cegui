@@ -192,7 +192,7 @@ public:
 	\param setting
 		true to enable rendering of the background.  false to disable rendering of the background.
 	*/
-	void	setBackgoundEnabled(bool setting);
+	void	setBackgroundEnabled(bool setting);
 
 
 	/*!

@@ -161,7 +161,7 @@ void Static::setFrameColours(colour top_left_colour, colour top_right_colour, co
 /*************************************************************************
 	Enable or disable rendering of the background for this static widget.	
 *************************************************************************/
-void Static::setBackgoundEnabled(bool setting)
+void Static::setBackgroundEnabled(bool setting)
 {
 	if (d_backgroundEnabled != setting)
 	{

@@ -54,7 +54,7 @@ void initTaharezStatic(Static* s)
 	s->setBackgroundImage(&iset->getImage((utf8*)"StaticBackdrop"));
 
 	s->setFrameEnabled(true);
-	s->setBackgoundEnabled(true);
+	s->setBackgroundEnabled(true);
 }
 
 
