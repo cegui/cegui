@@ -636,15 +636,15 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 
 
 /*************************************************************************
-	Create a texture from an existing Ogre::Texture object	
+	Create a texture from an existing Ogre::TexturePtr object	
 *************************************************************************/
-Texture* OgreRenderer::createTexture(Ogre::Texture* texture)
+Texture* OgreRenderer::createTexture(Ogre::TexturePtr& texture)
 {
 	OgreTexture* t = (OgreTexture*)createTexture();
 
-	if (texture != NULL)
+	if (!texture.isNull())
 	{
-		t->setOgreTexture(*texture);
+		t->setOgreTexture(texture);
 	}
 
 	return t;

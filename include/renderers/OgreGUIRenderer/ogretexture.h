@@ -134,15 +134,15 @@ public:
 
 	/*!
 	\brief
-		Set the internal Ogre::Texture object.
+		Set the internal Ogre::TexturePtr object.
 
 	\param texture
-		Reference to an Ogre::Texture object that is to be used by this Texture object.
+		Reference to an Ogre::TexturePtr object that is to be used by this Texture object.
 
 	\return
 		Nothing.
 	*/
-	void	setOgreTexture(Ogre::Texture& texture);
+	void	setOgreTexture(Ogre::TexturePtr& texture);
 
 
 private:

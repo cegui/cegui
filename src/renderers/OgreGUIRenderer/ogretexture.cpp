@@ -211,11 +211,11 @@ Ogre::String OgreTexture::getUniqueName(void)
 /*************************************************************************
 	Set the internal Ogre::Texture object.
 *************************************************************************/
-void OgreTexture::setOgreTexture(Ogre::Texture& texture)
+void OgreTexture::setOgreTexture(Ogre::TexturePtr& texture)
 {
 	freeOgreTexture();
 
-	d_ogre_texture.bind(&texture);
+	d_ogre_texture = texture;
 	d_width	 = d_ogre_texture->getWidth();
 	d_height = d_ogre_texture->getHeight();
 	d_isLinked = true;

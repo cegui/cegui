@@ -331,20 +331,20 @@ public:
 
 	/*!
 	\brief
-		Create a texture from an existing Ogre::Texture object.
+		Create a texture from an existing Ogre::TexturePtr object.
 
 	\note
 		If you want to use an Ogre::RenderTexture (for putting rendered output onto Gui elements or other
-		advanced techniques), you can get the Ogre::Texture to be used by calling Ogre::TextureManager::getByName()
+		advanced techniques), you can get the Ogre::TexturePtr to be used by calling Ogre::TextureManager::getByName()
 		passing the name returned from Ogre::RenderTexture::getName() (and casting the result as necessary).
 
 	\param texture
-		pointer to an Ogre::Texture object to be used as the basis for the new CEGUI::Texture
+		pointer to an Ogre::TexturePtr object to be used as the basis for the new CEGUI::Texture
 
 	\return
-		Pointer to the newly created CEGUI::Texture object.
+		Pointer to the newly created CEGUI::TexturePtr object.
 	*/
-	Texture*	createTexture(Ogre::Texture* texture);
+	Texture*	createTexture(Ogre::TexturePtr& texture);
 
 
 private:
