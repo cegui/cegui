@@ -178,4 +178,14 @@ Rect& Rect::constrainSize(const Size& max_sz, const Size& min_sz)
 	return *this;
 }
 
+Rect& Rect::operator=(const Rect& rhs)
+{
+	d_left = rhs.d_left;
+	d_top = rhs.d_top;
+	d_right = rhs.d_right;
+	d_bottom = rhs.d_bottom;
+
+	return *this;
+}
+
 } // End of  CEGUI namespace section

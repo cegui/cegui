@@ -200,6 +200,8 @@ public:
 
 	bool	operator!=(const Rect& rhs) const		{return !operator==(rhs);}
 
+	Rect&	operator=(const Rect& rhs);
+
 
 	/*************************************************************************
 		Data Fields
