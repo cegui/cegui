@@ -47,6 +47,20 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+	/*************************************************************************
+		Returns whether the property is at it's default value.
+	*************************************************************************/
+	bool Property::isDefault(const PropertyReceiver* reciever) const
+	{
+		return (get(reciever) == d_default);
+	}
 
+	/*************************************************************************
+		Returns the default value of the Property as a String.
+	*************************************************************************/
+	String Property::getDefault(const PropertyReceiver* reciever) const
+	{
+		return d_default;
+	}
 
 } // End of  CEGUI namespace section

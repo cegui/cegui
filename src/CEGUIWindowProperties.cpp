@@ -165,6 +165,15 @@ void AbsoluteMaxSize::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Window*>(receiver)->setMaximumSize(msz);
 }
 
+bool AbsoluteMaxSize::isDefault(const PropertyReceiver* receiver) const
+{
+	return get(receiver) == getDefault(receiver);
+}
+
+String	AbsoluteMaxSize::getDefault(const PropertyReceiver* receiver) const
+{
+	return PropertyHelper::sizeToString(System::getSingleton().getRenderer()->getSize());
+}
 
 String MetricsMode::get(const PropertyReceiver* receiver) const
 {
@@ -222,7 +231,14 @@ void Font::set(PropertyReceiver* receiver, const String& value)
 {
 	try
 	{
-		static_cast<Window*>(receiver)->setFont(value);
+		if (value.empty())
+		{
+			static_cast<Window*>(receiver)->setFont(System::getSingleton().getDefaultFont());
+		}
+		else
+		{
+			static_cast<Window*>(receiver)->setFont(value);
+		}
 	}
 	catch (UnknownObjectException)
 	{ }
@@ -259,7 +275,10 @@ String MouseCursorImage::get(const PropertyReceiver* receiver) const
 
 void MouseCursorImage::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper::stringToImage(value));
+	if (!value.empty())
+	{
+		static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper::stringToImage(value));
+	}
 }
 
 

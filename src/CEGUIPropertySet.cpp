@@ -134,4 +134,35 @@ PropertySet::PropertyIterator PropertySet::getIterator(void) const
 }
 
 
+/*************************************************************************
+	Returns whether a Property is at it's default value.
+*************************************************************************/
+bool PropertySet::isPropertyDefault(const String& name) const
+{
+	PropertyRegistry::const_iterator pos = d_properties.find(name);
+
+	if (pos == d_properties.end())
+	{
+		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+	}
+
+	return pos->second->isDefault(this);
+}
+
+
+/*************************************************************************
+	Returns the default value of a Property as a String.	
+*************************************************************************/
+String PropertySet::getPropertyDefault(const String& name) const
+{
+	PropertyRegistry::const_iterator pos = d_properties.find(name);
+
+	if (pos == d_properties.end())
+	{
+		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+	}
+
+	return pos->second->getDefault(this);
+}
+
 } // End of  CEGUI namespace section

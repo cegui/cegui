@@ -55,7 +55,11 @@ namespace ButtonBaseProperties
 class NormalTextColour : public Property
 {
 public:
-	NormalTextColour() : Property((utf8*)"NormalTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for normal state.  Value is \"aarrggbb\" (hex).") {}
+	NormalTextColour() : Property(
+		"NormalTextColour",
+		"Property to get/set the colour to use when rendering label text for normal state.  Value is \"aarrggbb\" (hex).",
+		"00FFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -78,7 +82,11 @@ public:
 class HoverTextColour : public Property
 {
 public:
-	HoverTextColour() : Property((utf8*)"HoverTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for hover/highlight state.  Value is \"aarrggbb\" (hex).") {}
+	HoverTextColour() : Property(
+		"HoverTextColour",
+		"Property to get/set the colour to use when rendering label text for hover/highlight state.  Value is \"aarrggbb\" (hex).",
+		"00FFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -101,7 +109,11 @@ public:
 class PushedTextColour : public Property
 {
 public:
-	PushedTextColour() : Property((utf8*)"PushedTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for pushed state.  Value is \"aarrggbb\" (hex).") {}
+	PushedTextColour() : Property(
+		"PushedTextColour", 
+		"Property to get/set the colour to use when rendering label text for pushed state.  Value is \"aarrggbb\" (hex).",
+		"00FFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -124,7 +136,11 @@ public:
 class DisabledTextColour : public Property
 {
 public:
-	DisabledTextColour() : Property((utf8*)"DisabledTextColour", (utf8*)"Property to get/set the colour to use when rendering label text for disabled state.  Value is \"aarrggbb\" (hex).") {}
+	DisabledTextColour() : Property(
+		"DisabledTextColour",
+		"Property to get/set the colour to use when rendering label text for disabled state.  Value is \"aarrggbb\" (hex).",
+		"007F7F7F")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

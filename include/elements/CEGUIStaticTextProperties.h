@@ -57,7 +57,11 @@ namespace StaticTextProperties
 class TextColours : public Property
 {
 public:
-	TextColours() : Property((utf8*)"TextColours", (utf8*)"Property to get/set the text colours for the StaticText widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
+	TextColours() : Property(
+		"TextColours",
+		"Property to get/set the text colours for the StaticText widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
+		"tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -83,7 +87,11 @@ public:
 class HorzFormatting : public Property
 {
 public:
-	HorzFormatting() : Property((utf8*)"HorzFormatting", (utf8*)"Property to get/set the horizontal formatting mode.  Value is one of the HorzFormatting strings.") {}
+	HorzFormatting() : Property(
+		"HorzFormatting",
+		"Property to get/set the horizontal formatting mode.  Value is one of the HorzFormatting strings.",
+		"LeftAligned")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -106,7 +114,11 @@ public:
 class VertFormatting : public Property
 {
 public:
-	VertFormatting() : Property((utf8*)"VertFormatting", (utf8*)"Property to get/set the vertical formatting mode.  Value is one of the VertFormatting strings.") {}
+	VertFormatting() : Property(
+		"VertFormatting",
+		"Property to get/set the vertical formatting mode.  Value is one of the VertFormatting strings.",
+		"VertCentred")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -128,7 +140,11 @@ public:
 class VertScrollbar : public Property
 {
 public:
-	VertScrollbar() : Property((utf8*)"VertScrollbar", (utf8*)"Property to get/set the setting for the vertical scroll bar.  Value is either \"True\" or \"False\".") {}
+	VertScrollbar() : Property(
+		"VertScrollbar",
+		"Property to get/set the setting for the vertical scroll bar.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -150,7 +166,11 @@ public:
 class HorzScrollbar : public Property
 {
 public:
-	HorzScrollbar() : Property((utf8*)"HorzScrollbar", (utf8*)"Property to get/set the setting for the horizontal scroll bar.  Value is either \"True\" or \"False\".") {}
+	HorzScrollbar() : Property(
+		"HorzScrollbar",
+		"Property to get/set the setting for the horizontal scroll bar.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

@@ -54,7 +54,11 @@ namespace ScrollbarProperties
 class DocumentSize : public Property
 {
 public:
-	DocumentSize() : Property((utf8*)"DocumentSize", (utf8*)"Property to get/set the document size for the Scrollbar.  Value is a float.") {}
+	DocumentSize() : Property(
+		"DocumentSize",
+		"Property to get/set the document size for the Scrollbar.  Value is a float.",
+		"1.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -75,7 +79,11 @@ public:
 class PageSize : public Property
 {
 public:
-	PageSize() : Property((utf8*)"PageSize", (utf8*)"Property to get/set the page size for the Scrollbar.  Value is a float.") {}
+	PageSize() : Property(
+		"PageSize",
+		"Property to get/set the page size for the Scrollbar.  Value is a float.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -96,7 +104,11 @@ public:
 class StepSize : public Property
 {
 public:
-	StepSize() : Property((utf8*)"StepSize", (utf8*)"Property to get/set the step size for the Scrollbar.  Value is a float.") {}
+	StepSize() : Property(
+		"StepSize",
+		"Property to get/set the step size for the Scrollbar.  Value is a float.",
+		"1.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -117,7 +129,11 @@ public:
 class OverlapSize : public Property
 {
 public:
-	OverlapSize() : Property((utf8*)"OverlapSize", (utf8*)"Property to get/set the overlap size for the Scrollbar.  Value is a float.") {}
+	OverlapSize() : Property(
+		"OverlapSize",
+		"Property to get/set the overlap size for the Scrollbar.  Value is a float.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -137,7 +153,11 @@ public:
 class ScrollPosition : public Property
 {
 public:
-	ScrollPosition() : Property((utf8*)"ScrollPosition", (utf8*)"Property to get/set the scroll position of the Scrollbar.  Value is a float.") {}
+	ScrollPosition() : Property(
+		"ScrollPosition",
+		"Property to get/set the scroll position of the Scrollbar.  Value is a float.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

@@ -162,6 +162,33 @@ public:
 	*/
 	void	setProperty(const String& name, const String& value);
 
+
+	/*!
+	\brief
+		Returns whether a Property is at it's default value.
+
+	\param name
+		String containing the name of the Property who's default state is to be tested.
+
+	\return
+		- true if the property has it's default value.
+		- false if the property has been modified from it's default value.
+	*/
+	bool	isPropertyDefault(const String& name) const;
+
+
+	/*!
+	\brief
+		Returns the default value of a Property as a String.
+
+	\param name
+		String containing the name of the Property who's default string is to be returned.
+
+	\return
+		String object containing a textual representation of the default value for this property.
+	*/
+	String	getPropertyDefault(const String& name) const;
+
 private:
 	typedef std::map<String, Property*>	PropertyRegistry;
 	PropertyRegistry	d_properties;

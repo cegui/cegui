@@ -55,7 +55,11 @@ namespace TitlebarProperties
 class DraggingEnabled : public Property
 {
 public:
-	DraggingEnabled() : Property((utf8*)"DraggingEnabled", (utf8*)"Property to get/set the state of the dragging enabled setting for the Titlebar.  Value is either \"True\" or \"False\".") {}
+	DraggingEnabled() : Property(
+		"DraggingEnabled",
+		"Property to get/set the state of the dragging enabled setting for the Titlebar.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -76,7 +80,11 @@ public:
 class CaptionColour : public Property
 {
 public:
-	CaptionColour() : Property((utf8*)"CaptionColour", (utf8*)"Property to get/set the colour used for rendering the caption text.  Value is \"aarrggbb\" (hex).") {}
+	CaptionColour() : Property(
+		"CaptionColour",
+		"Property to get/set the colour used for rendering the caption text.  Value is \"aarrggbb\" (hex).",
+		"FF000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

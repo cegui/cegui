@@ -55,7 +55,11 @@ namespace ListHeaderProperties
 class ColumnsSizable : public Property
 {
 public:
-	ColumnsSizable() : Property((utf8*)"ColumnsSizable", (utf8*)"Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".") {}
+	ColumnsSizable() : Property(
+		"ColumnsSizable",
+		"Property to get/set the setting for user sizing of the column headers.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -77,7 +81,11 @@ public:
 class ColumnsMovable : public Property
 {
 public:
-	ColumnsMovable() : Property((utf8*)"ColumnsMovable", (utf8*)"Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".") {}
+	ColumnsMovable() : Property(
+		"ColumnsMovable",
+		"Property to get/set the setting for user moving of the column headers.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -99,7 +107,11 @@ public:
 class SortSettingEnabled : public Property
 {
 public:
-	SortSettingEnabled() : Property((utf8*)"SortSettingEnabled", (utf8*)"Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".") {}
+	SortSettingEnabled() : Property(
+		"SortSettingEnabled",
+		"Property to get/set the setting for for user modification of the sort column & direction.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -122,7 +134,11 @@ public:
 class SortDirection : public Property
 {
 public:
-	SortDirection() : Property((utf8*)"SortDirection", (utf8*)"Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.") {}
+	SortDirection() : Property(
+		"SortDirection",
+		"Property to get/set the sort direction setting of the header.  Value is the text of one of the SortDirection enumerated value names.",
+		"None")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -143,7 +159,11 @@ public:
 class SortColumnID : public Property
 {
 public:
-	SortColumnID() : Property((utf8*)"SortColumnID", (utf8*)"Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.") {}
+	SortColumnID() : Property(
+		"SortColumnID",
+		"Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.",
+		"0")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

@@ -55,7 +55,11 @@ namespace ThumbProperties
 class HotTracked : public Property
 {
 public:
-	HotTracked() : Property((utf8*)"HotTracked", (utf8*)"Property to get/set the state of the state of the 'hot-tracked' setting for the thumb.  Value is either \"True\" or \"False\".") {}
+	HotTracked() : Property(
+		"HotTracked",
+		"Property to get/set the state of the state of the 'hot-tracked' setting for the thumb.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -77,7 +81,11 @@ public:
 class VertFree : public Property
 {
 public:
-	VertFree() : Property((utf8*)"VertFree", (utf8*)"Property to get/set the state the setting to free the thumb vertically.  Value is either \"True\" or \"False\".") {}
+	VertFree() : Property(
+		"VertFree",
+		"Property to get/set the state the setting to free the thumb vertically.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -99,7 +107,11 @@ public:
 class HorzFree : public Property
 {
 public:
-	HorzFree() : Property((utf8*)"HorzFree", (utf8*)"Property to get/set the state the setting to free the thumb horizontally.  Value is either \"True\" or \"False\".") {}
+	HorzFree() : Property(
+		"HorzFree", 
+		"Property to get/set the state the setting to free the thumb horizontally.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -121,7 +133,11 @@ public:
 class VertRange : public Property
 {
 public:
-	VertRange() : Property((utf8*)"VertRange", (utf8*)"Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".") {}
+	VertRange() : Property(
+		"VertRange",
+		"Property to get/set the vertical movement range for the thumb.  Value is \"min:[float] max:[float]\".",
+		"min:0.000000 max:1.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -143,7 +159,11 @@ public:
 class HorzRange : public Property
 {
 public:
-	HorzRange() : Property((utf8*)"HorzRange", (utf8*)"Property to get/set the horizontal movement range for the thumb.  Value is \"min:[float] max:[float]\".") {}
+	HorzRange() : Property(
+		"HorzRange",
+		"Property to get/set the horizontal movement range for the thumb.  Value is \"min:[float] max:[float]\".",
+		"min:0.000000 max:1.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

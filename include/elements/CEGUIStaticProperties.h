@@ -54,7 +54,11 @@ namespace StaticProperties
 class FrameEnabled : public Property
 {
 public:
-	FrameEnabled() : Property((utf8*)"FrameEnabled", (utf8*)"Property to get/set the state of the frame enabled setting for the Static widget.  Value is either \"True\" or \"False\".") {}
+	FrameEnabled() : Property(
+		"FrameEnabled",
+		"Property to get/set the state of the frame enabled setting for the Static widget.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -76,7 +80,11 @@ public:
 class BackgroundEnabled : public Property
 {
 public:
-	BackgroundEnabled() : Property((utf8*)"BackgroundEnabled", (utf8*)"Property to get/set the state of the frame background setting for the Static widget.  Value is either \"True\" or \"False\".") {}
+	BackgroundEnabled() : Property(
+		"BackgroundEnabled",
+		"Property to get/set the state of the frame background setting for the Static widget.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -100,7 +108,11 @@ public:
 class FrameColours : public Property
 {
 public:
-	FrameColours() : Property((utf8*)"FrameColours", (utf8*)"Property to get/set the frame colours for the Static widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
+	FrameColours() : Property(
+		"FrameColours",
+		"Property to get/set the frame colours for the Static widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
+		"tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -124,7 +136,11 @@ public:
 class BackgroundColours : public Property
 {
 public:
-	BackgroundColours() : Property((utf8*)"BackgroundColours", (utf8*)"Property to get/set the background colours for the Static widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
+	BackgroundColours() : Property(
+		"BackgroundColours",
+		"Property to get/set the background colours for the Static widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
+		"tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -146,7 +162,11 @@ public:
 class BackgroundImage : public Property
 {
 public:
-	BackgroundImage() : Property((utf8*)"BackgroundImage", (utf8*)"Property to get/set the background image for the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	BackgroundImage() : Property(
+		"BackgroundImage",
+		"Property to get/set the background image for the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -168,7 +188,11 @@ public:
 class TopLeftFrameImage : public Property
 {
 public:
-	TopLeftFrameImage() : Property((utf8*)"TopLeftFrameImage", (utf8*)"Property to get/set the top-left image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	TopLeftFrameImage() : Property(
+		"TopLeftFrameImage",
+		"Property to get/set the top-left image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -190,7 +214,11 @@ public:
 class TopRightFrameImage : public Property
 {
 public:
-	TopRightFrameImage() : Property((utf8*)"TopRightFrameImage", (utf8*)"Property to get/set the top-right image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	TopRightFrameImage() : Property(
+		"TopRightFrameImage",
+		"Property to get/set the top-right image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -212,7 +240,11 @@ public:
 class BottomLeftFrameImage : public Property
 {
 public:
-	BottomLeftFrameImage() : Property((utf8*)"BottomLeftFrameImage", (utf8*)"Property to get/set the bottom-left image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	BottomLeftFrameImage() : Property(
+		"BottomLeftFrameImage",
+		"Property to get/set the bottom-left image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -234,7 +266,11 @@ public:
 class BottomRightFrameImage : public Property
 {
 public:
-	BottomRightFrameImage() : Property((utf8*)"BottomRightFrameImage", (utf8*)"Property to get/set the bottom-right image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	BottomRightFrameImage() : Property(
+		"BottomRightFrameImage",
+		"Property to get/set the bottom-right image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -256,7 +292,11 @@ public:
 class LeftFrameImage : public Property
 {
 public:
-	LeftFrameImage() : Property((utf8*)"LeftFrameImage", (utf8*)"Property to get/set the left edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	LeftFrameImage() : Property(
+		"LeftFrameImage",
+		"Property to get/set the left edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -278,7 +318,11 @@ public:
 class RightFrameImage : public Property
 {
 public:
-	RightFrameImage() : Property((utf8*)"RightFrameImage", (utf8*)"Property to get/set the right edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	RightFrameImage() : Property(
+		"RightFrameImage",
+		"Property to get/set the right edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -300,7 +344,11 @@ public:
 class TopFrameImage : public Property
 {
 public:
-	TopFrameImage() : Property((utf8*)"TopFrameImage", (utf8*)"Property to get/set the top edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	TopFrameImage() : Property(
+		"TopFrameImage",
+		"Property to get/set the top edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -322,7 +370,11 @@ public:
 class BottomFrameImage : public Property
 {
 public:
-	BottomFrameImage() : Property((utf8*)"BottomFrameImage", (utf8*)"Property to get/set the bottom edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	BottomFrameImage() : Property(
+		"BottomFrameImage",
+		"Property to get/set the bottom edge image for the frame of the Static widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

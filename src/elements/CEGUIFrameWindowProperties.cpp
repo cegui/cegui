@@ -147,7 +147,14 @@ String	TitlebarFont::get(const PropertyReceiver* receiver) const
 
 void	TitlebarFont::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<FrameWindow*>(receiver)->setTitlebarFont(value);
+	if (value.empty())
+	{
+		static_cast<FrameWindow*>(receiver)->setTitlebarFont(System::getSingleton().getDefaultFont());
+	}
+	else
+	{
+		static_cast<FrameWindow*>(receiver)->setTitlebarFont(value);
+	}
 }
 
 String CaptionColour::get(const PropertyReceiver* receiver) const

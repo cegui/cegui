@@ -54,7 +54,11 @@ namespace SliderProperties
 class CurrentValue : public Property
 {
 public:
-	CurrentValue() : Property((utf8*)"CurrentValue", (utf8*)"Property to get/set the current value of the slider.  Value is a float.") {}
+	CurrentValue() : Property(
+		"CurrentValue",
+		"Property to get/set the current value of the slider.  Value is a float.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -75,7 +79,11 @@ public:
 class MaximumValue : public Property
 {
 public:
-	MaximumValue() : Property((utf8*)"MaximumValue", (utf8*)"Property to get/set the maximum value of the slider.  Value is a float.") {}
+	MaximumValue() : Property(
+		"MaximumValue",
+		"Property to get/set the maximum value of the slider.  Value is a float.",
+		"1.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -96,7 +104,11 @@ public:
 class ClickStepSize : public Property
 {
 public:
-	ClickStepSize() : Property((utf8*)"ClickStepSize", (utf8*)"Property to get/set the click-step size for the slider.  Value is a float.") {}
+	ClickStepSize() : Property(
+		"ClickStepSize",
+		"Property to get/set the click-step size for the slider.  Value is a float.",
+		"0.010000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

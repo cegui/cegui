@@ -55,7 +55,11 @@ namespace ListboxProperties
 class Sort : public Property
 {
 public:
-	Sort() : Property((utf8*)"Sort", (utf8*)"Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".") {}
+	Sort() : Property(
+		"Sort",
+		"Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -77,7 +81,11 @@ public:
 class MultiSelect : public Property
 {
 public:
-	MultiSelect() : Property((utf8*)"MultiSelect", (utf8*)"Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".") {}
+	MultiSelect() : Property(
+		"MultiSelect",
+		"Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -99,7 +107,11 @@ public:
 class ForceVertScrollbar : public Property
 {
 public:
-	ForceVertScrollbar() : Property((utf8*)"ForceVertScrollbar", (utf8*)"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
+	ForceVertScrollbar() : Property(
+		"ForceVertScrollbar",
+		"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -121,7 +133,11 @@ public:
 class ForceHorzScrollbar : public Property
 {
 public:
-	ForceHorzScrollbar() : Property((utf8*)"ForceHorzScrollbar", (utf8*)"Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".") {}
+	ForceHorzScrollbar() : Property(
+		"ForceHorzScrollbar",
+		"Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

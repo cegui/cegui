@@ -57,7 +57,11 @@ namespace WindowProperties
 class RelativeMinSize : public Property
 {
 public:
-	RelativeMinSize() : Property((utf8*)"RelativeMinSize", (utf8*)"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).") {}
+	RelativeMinSize() : Property(
+		"RelativeMinSize",
+		"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).",
+		"w:0.000000 h:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -81,7 +85,11 @@ public:
 class RelativeMaxSize : public Property
 {
 public:
-	RelativeMaxSize() : Property((utf8*)"RelativeMaxSize", (utf8*)"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).") {}
+	RelativeMaxSize() : Property(
+		"RelativeMaxSize",
+		"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).",
+		"w:1.000000 h:1.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -105,7 +113,11 @@ public:
 class AbsoluteMinSize : public Property
 {
 public:
-	AbsoluteMinSize() : Property((utf8*)"AbsoluteMinSize", (utf8*)"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.") {}
+	AbsoluteMinSize() : Property(
+		"AbsoluteMinSize",
+		"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.",
+		"w:0.000000 h:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -129,10 +141,18 @@ public:
 class AbsoluteMaxSize : public Property
 {
 public:
-	AbsoluteMaxSize() : Property((utf8*)"AbsoluteMaxSize", (utf8*)"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.") {}
+	AbsoluteMaxSize() : Property(
+		"AbsoluteMaxSize",
+		"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.",
+		"")
+		{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+
+	// default depends upon current size of display.
+	bool	isDefault(const PropertyReceiver* receiver) const;
+	String	getDefault(const PropertyReceiver* receiver) const;
 };
 
 
@@ -154,7 +174,11 @@ public:
 class MetricsMode : public Property
 {
 public:
-	MetricsMode() : Property((utf8*)"MetricsMode", (utf8*)"Property to get/set the metrics mode for the Window.  Value is \"Relative\", \"Absolute\", or \"Inherited\".") {}
+	MetricsMode() : Property(
+		"MetricsMode",
+		"Property to get/set the metrics mode for the Window.  Value is \"Relative\", \"Absolute\", or \"Inherited\".",
+		"Relative")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -177,7 +201,11 @@ public:
 class ID : public Property
 {
 public:
-	ID() : Property((utf8*)"ID", (utf8*)"Property to get/set the ID value of the Window.  Value is an unsigned integer number.") {}
+	ID() : Property(
+		"ID",
+		"Property to get/set the ID value of the Window.  Value is an unsigned integer number.",
+		"0")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -200,7 +228,11 @@ public:
 class Alpha : public Property
 {
 public:
-	Alpha() : Property((utf8*)"Alpha", (utf8*)"Property to get/set the alpha value of the Window.  Value is floating point number.") {}
+	Alpha() : Property(
+		"Alpha",
+		"Property to get/set the alpha value of the Window.  Value is floating point number.",
+		"1.000000") 
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -223,7 +255,11 @@ public:
 class Font : public Property
 {
 public:
-	Font() : Property((utf8*)"Font", (utf8*)"Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).") {}
+	Font() : Property(
+		"Font",
+		"Property to get/set the font for the Window.  Value is the name of the font to use (must be loaded already).",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -246,7 +282,11 @@ public:
 class Text : public Property
 {
 public:
-	Text() : Property((utf8*)"Text", (utf8*)"Property to get/set the text / caption for the Window.  Value is the text string to use.") {}
+	Text() : Property(
+		"Text", 
+		"Property to get/set the text / caption for the Window.  Value is the text string to use.",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -270,7 +310,11 @@ public:
 class MouseCursorImage : public Property
 {
 public:
-	MouseCursorImage() : Property((utf8*)"MouseCursorImage", (utf8*)"Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".") {}
+	MouseCursorImage() : Property(
+		"MouseCursorImage",
+		"Property to get/set the mouse cursor image for the Window.  Value should be \"set:<imageset name> image:<image name>\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -294,7 +338,11 @@ public:
 class ClippedByParent : public Property
 {
 public:
-	ClippedByParent() : Property((utf8*)"ClippedByParent", (utf8*)"Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	ClippedByParent() : Property(
+		"ClippedByParent",
+		"Property to get/set the 'clipped by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -318,7 +366,11 @@ public:
 class InheritsAlpha : public Property
 {
 public:
-	InheritsAlpha() : Property((utf8*)"InheritsAlpha", (utf8*)"Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	InheritsAlpha() : Property(
+		"InheritsAlpha",
+		"Property to get/set the 'inherits alpha' setting for the Window.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -342,7 +394,11 @@ public:
 class AlwaysOnTop : public Property
 {
 public:
-	AlwaysOnTop() : Property((utf8*)"AlwaysOnTop", (utf8*)"Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	AlwaysOnTop() : Property(
+		"AlwaysOnTop",
+		"Property to get/set the 'always on top' setting for the Window.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -366,7 +422,11 @@ public:
 class Disabled : public Property
 {
 public:
-	Disabled() : Property((utf8*)"Disabled", (utf8*)"Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	Disabled() : Property(
+		"Disabled",
+		"Property to get/set the 'disabled state' setting for the Window.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -390,7 +450,11 @@ public:
 class Visible : public Property
 {
 public:
-	Visible() : Property((utf8*)"Visible", (utf8*)"Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	Visible() : Property(
+		"Visible",
+		"Property to get/set the 'visible state' setting for the Window.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -415,7 +479,11 @@ public:
 class RestoreOldCapture : public Property
 {
 public:
-	RestoreOldCapture() : Property((utf8*)"RestoreOldCapture", (utf8*)"Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	RestoreOldCapture() : Property(
+		"RestoreOldCapture",
+		"Property to get/set the 'restore old capture' setting for the Window.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -439,7 +507,11 @@ public:
 class DestroyedByParent : public Property
 {
 public:
-	DestroyedByParent() : Property((utf8*)"DestroyedByParent", (utf8*)"Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	DestroyedByParent() : Property(
+		"DestroyedByParent",
+		"Property to get/set the 'destroyed by parent' setting for the Window.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -462,7 +534,10 @@ public:
 class Width : public Property
 {
 public:
-	Width() : Property((utf8*)"Width", (utf8*)"Property to get/set the width of the Window.  Value is floating point using the active metrics mode.") {}
+	Width() : Property(
+		"Width",
+		"Property to get/set the width of the Window.  Value is floating point using the active metrics mode.",
+		"0.000000") {}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -485,7 +560,11 @@ public:
 class RelativeWidth : public Property
 {
 public:
-	RelativeWidth() : Property((utf8*)"RelativeWidth", (utf8*)"Property to get/set the width of the Window.  Value is floating point using relative metrics.") {}
+	RelativeWidth() : Property(
+		"RelativeWidth",
+		"Property to get/set the width of the Window.  Value is floating point using relative metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -508,7 +587,11 @@ public:
 class AbsoluteWidth: public Property
 {
 public:
-	AbsoluteWidth() : Property((utf8*)"AbsoluteWidth", (utf8*)"Property to get/set the width of the Window.  Value is floating point using absolute metrics.") {}
+	AbsoluteWidth() : Property(
+		"AbsoluteWidth",
+		"Property to get/set the width of the Window.  Value is floating point using absolute metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -531,7 +614,11 @@ public:
 class Height : public Property
 {
 public:
-	Height() : Property((utf8*)"Height", (utf8*)"Property to get/set the height of the Window.  Value is floating point using the active metrics mode.") {}
+	Height() : Property(
+		"Height",
+		"Property to get/set the height of the Window.  Value is floating point using the active metrics mode.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -554,7 +641,11 @@ public:
 class RelativeHeight : public Property
 {
 public:
-	RelativeHeight() : Property((utf8*)"RelativeHeight", (utf8*)"Property to get/set the height of the Window.  Value is floating point using relative metrics.") {}
+	RelativeHeight() : Property(
+		"RelativeHeight",
+		"Property to get/set the height of the Window.  Value is floating point using relative metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -577,7 +668,11 @@ public:
 class AbsoluteHeight : public Property
 {
 public:
-	AbsoluteHeight() : Property((utf8*)"AbsoluteHeight", (utf8*)"Property to get/set the height of the Window.  Value is floating point using absolute metrics.") {}
+	AbsoluteHeight() : Property(
+		"AbsoluteHeight",
+		"Property to get/set the height of the Window.  Value is floating point using absolute metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -601,7 +696,11 @@ public:
 class Size : public Property
 {
 public:
-	Size() : Property((utf8*)"Size", (utf8*)"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using the active metrics mode.") {}
+	Size() : Property(
+		"Size",
+		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using the active metrics mode.",
+		"w:0.000000 h:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -625,7 +724,11 @@ public:
 class RelativeSize : public Property
 {
 public:
-	RelativeSize() : Property((utf8*)"RelativeSize", (utf8*)"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using relative metrics.") {}
+	RelativeSize() : Property(
+		"RelativeSize",
+		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using relative metrics.",
+		"w:0.000000 h:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -649,7 +752,11 @@ public:
 class AbsoluteSize : public Property
 {
 public:
-	AbsoluteSize() : Property((utf8*)"AbsoluteSize", (utf8*)"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using absolute metrics.") {}
+	AbsoluteSize() : Property(
+		"AbsoluteSize",
+		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using absolute metrics.",
+		"w:0.000000 h:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -672,7 +779,11 @@ public:
 class XPosition : public Property
 {
 public:
-	XPosition() : Property((utf8*)"XPosition", (utf8*)"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.") {}
+	XPosition() : Property(
+		"XPosition",
+		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -695,7 +806,11 @@ public:
 class RelativeXPosition : public Property
 {
 public:
-	RelativeXPosition() : Property((utf8*)"RelativeXPosition", (utf8*)"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using relative metrics.") {}
+	RelativeXPosition() : Property(
+		"RelativeXPosition",
+		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using relative metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -718,7 +833,11 @@ public:
 class AbsoluteXPosition : public Property
 {
 public:
-	AbsoluteXPosition() : Property((utf8*)"AbsoluteXPosition", (utf8*)"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using absolute metrics.") {}
+	AbsoluteXPosition() : Property(
+		"AbsoluteXPosition",
+		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using absolute metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -741,7 +860,11 @@ public:
 class YPosition : public Property
 {
 public:
-	YPosition() : Property((utf8*)"YPosition", (utf8*)"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.") {}
+	YPosition() : Property(
+		"YPosition",
+		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -764,7 +887,11 @@ public:
 class RelativeYPosition : public Property
 {
 public:
-	RelativeYPosition() : Property((utf8*)"RelativeYPosition", (utf8*)"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using relative metrics.") {}
+	RelativeYPosition() : Property(
+		"RelativeYPosition",
+		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using relative metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -787,7 +914,11 @@ public:
 class AbsoluteYPosition : public Property
 {
 public:
-	AbsoluteYPosition() : Property((utf8*)"AbsoluteYPosition", (utf8*)"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using absolute metrics.") {}
+	AbsoluteYPosition() : Property(
+		"AbsoluteYPosition",
+		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using absolute metrics.",
+		"0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -811,7 +942,11 @@ public:
 class Position : public Property
 {
 public:
-	Position() : Property((utf8*)"Position", (utf8*)"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using the active metrics mode.") {}
+	Position() : Property(
+		"Position",
+		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using the active metrics mode.",
+		"x:0.000000 y:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -835,7 +970,11 @@ public:
 class RelativePosition : public Property
 {
 public:
-	RelativePosition() : Property((utf8*)"RelativePosition", (utf8*)"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using relative metrics.") {}
+	RelativePosition() : Property(
+		"RelativePosition",
+		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using relative metrics.",
+		"x:0.000000 y:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -859,7 +998,11 @@ public:
 class AbsolutePosition : public Property
 {
 public:
-	AbsolutePosition() : Property((utf8*)"AbsolutePosition", (utf8*)"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using absolute metrics.") {}
+	AbsolutePosition() : Property(
+		"AbsolutePosition",
+		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using absolute metrics.",
+		"x:0.000000 y:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -885,7 +1028,11 @@ public:
 class Rect : public Property
 {
 public:
-	Rect() : Property((utf8*)"Rect", (utf8*)"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using the active metrics system.") {}
+	Rect() : Property(
+		"Rect",
+		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using the active metrics system.",
+		"l:0.000000 t:0.000000 r:0.000000 b:0.000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -911,7 +1058,11 @@ public:
 class RelativeRect : public Property
 {
 public:
-	RelativeRect() : Property((utf8*)"RelativeRect", (utf8*)"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using relative metrics.") {}
+	RelativeRect() : Property(
+		"RelativeRect",
+		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using relative metrics.",
+		"l:0.000000 t:0.000000 r:0.000000 b:0.000000") 
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -937,7 +1088,11 @@ public:
 class AbsoluteRect : public Property
 {
 public:
-	AbsoluteRect() : Property((utf8*)"AbsoluteRect", (utf8*)"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using absolute metrics.") {}
+	AbsoluteRect() : Property(
+		"AbsoluteRect",
+		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using absolute metrics.",
+		"l:0.000000 t:0.000000 r:0.000000 b:0.000000") 
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -961,7 +1116,11 @@ public:
 class ZOrderChangeEnabled : public Property
 {
 public:
-	ZOrderChangeEnabled() : Property("ZOrderChangeEnabled", "Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".") {}
+	ZOrderChangeEnabled() : Property(
+		"ZOrderChangeEnabled",
+		"Property to get/set the 'z-order changing enabled' setting for the Window.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

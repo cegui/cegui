@@ -46,7 +46,11 @@ namespace TLButtonProperties
 class NormalImage : public Property
 {
 public:
-   NormalImage() : Property((utf8*)"NormalImage", (utf8*)"Property to get/set the normal image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+   NormalImage() : Property(
+	   "NormalImage", 
+	   "Property to get/set the normal image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
 
    String   get(const PropertyReceiver* receiver) const;
    void   set(PropertyReceiver* receiver, const String& value);
@@ -64,7 +68,11 @@ public:
 class PushedImage : public Property
 {
 public:
-   PushedImage() : Property((utf8*)"PushedImage", (utf8*)"Property to get/set the pushed image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+   PushedImage() : Property(
+	   "PushedImage",
+	   "Property to get/set the pushed image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
 
    String   get(const PropertyReceiver* receiver) const;
    void   set(PropertyReceiver* receiver, const String& value);
@@ -82,7 +90,11 @@ public:
 class HoverImage : public Property
 {
 public:
-   HoverImage() : Property((utf8*)"HoverImage", (utf8*)"Property to get/set the hover image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+   HoverImage() : Property(
+	   "HoverImage",
+	   "Property to get/set the hover image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
 
    String   get(const PropertyReceiver* receiver) const;
    void   set(PropertyReceiver* receiver, const String& value);
@@ -100,7 +112,11 @@ public:
 class UseStandardImagery : public Property
 {
 public:
-   UseStandardImagery() : Property((utf8*)"UseStandardImagery", (utf8*)"Property to get/set whether to use the standard imagery for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+   UseStandardImagery() : Property(
+	   "UseStandardImagery",
+	   "Property to get/set whether to use the standard imagery for the TLButton widget.  Value should be \"True\" or \"False\".",
+	   "True")
+   {}
 
    String   get(const PropertyReceiver* receiver) const;
    void   set(PropertyReceiver* receiver, const String& value);
@@ -121,7 +137,11 @@ public:
 class TextXOffset : public Property
 {
 public:
-   TextXOffset() : Property((utf8*)"TextXOffset", (utf8*)"Property to get/set a relative x offset for the button's text") {}
+   TextXOffset() : Property(
+	   "TextXOffset",
+	   "Property to get/set a relative x offset for the button's text",
+	   "0")
+   {}
 
    String get(const PropertyReceiver* receiver) const;
    void set(PropertyReceiver* receiver, const String& value);

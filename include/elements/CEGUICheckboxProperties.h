@@ -57,7 +57,11 @@ namespace CheckboxProperties
 class Selected : public Property
 {
 public:
-	Selected() : Property((utf8*)"Selected", (utf8*)"Property to get/set the selected state of the Checkbox.  Value is either \"True\" or \"False\".") {}
+	Selected() : Property(
+		"Selected",
+		"Property to get/set the selected state of the Checkbox.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

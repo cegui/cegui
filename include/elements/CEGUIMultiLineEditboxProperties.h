@@ -55,7 +55,11 @@ namespace MultiLineEditboxProperties
 class ReadOnly : public Property
 {
 public:
-	ReadOnly() : Property((utf8*)"ReadOnly", (utf8*)"Property to get/set the read-only setting for the edit box.  Value is either \"True\" or \"False\".") {}
+	ReadOnly() : Property(
+		"ReadOnly",
+		"Property to get/set the read-only setting for the edit box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -77,7 +81,11 @@ public:
 class WordWrap : public Property
 {
 public:
-	WordWrap() : Property((utf8*)"WordWrap", (utf8*)"Property to get/set the word-wrap setting of the edit box.  Value is either \"True\" or \"False\".") {}
+	WordWrap() : Property(
+		"WordWrap",
+		"Property to get/set the word-wrap setting of the edit box.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -98,7 +106,11 @@ public:
 class CaratIndex : public Property
 {
 public:
-	CaratIndex() : Property((utf8*)"CaratIndex", (utf8*)"Property to get/set the current carat index.  Value is \"[uint]\".") {}
+	CaratIndex() : Property(
+		"CaratIndex",
+		"Property to get/set the current carat index.  Value is \"[uint]\".",
+		"0")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -119,7 +131,11 @@ public:
 class SelectionStart : public Property
 {
 public:
-	SelectionStart() : Property((utf8*)"SelectionStart", (utf8*)"Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".") {}
+	SelectionStart() : Property(
+		"SelectionStart",
+		"Property to get/set the zero based index of the selection start position within the text.  Value is \"[uint]\".",
+		"0")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -140,7 +156,11 @@ public:
 class SelectionLength : public Property
 {
 public:
-	SelectionLength() : Property((utf8*)"SelectionLength", (utf8*)"Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".") {}
+	SelectionLength() : Property(
+		"SelectionLength",
+		"Property to get/set the length of the selection (as a count of the number of code points selected).  Value is \"[uint]\".",
+		"0")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -161,7 +181,11 @@ public:
 class MaxTextLength : public Property
 {
 public:
-	MaxTextLength() : Property((utf8*)"MaxTextLength", (utf8*)"Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".") {}
+	MaxTextLength() : Property(
+		"MaxTextLength",
+		"Property to get/set the the maximum allowed text length (as a count of code points).  Value is \"[uint]\".",
+		"1073741824")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -182,7 +206,11 @@ public:
 class NormalTextColour : public Property
 {
 public:
-	NormalTextColour() : Property((utf8*)"NormalTextColour", (utf8*)"Property to get/set the normal, unselected, text colour used for rendering text.  Value is \"aarrggbb\" (hex).") {}
+	NormalTextColour() : Property(
+		"NormalTextColour",
+		"Property to get/set the normal, unselected, text colour used for rendering text.  Value is \"aarrggbb\" (hex).",
+		"FFFFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -203,7 +231,11 @@ public:
 class SelectedTextColour : public Property
 {
 public:
-	SelectedTextColour() : Property((utf8*)"SelectedTextColour", (utf8*)"Property to get/set the colour used for rendering text within the selection area.  Value is \"aarrggbb\" (hex).") {}
+	SelectedTextColour() : Property(
+		"SelectedTextColour",
+		"Property to get/set the colour used for rendering text within the selection area.  Value is \"aarrggbb\" (hex).",
+		"FF000000")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -224,7 +256,11 @@ public:
 class ActiveSelectionColour : public Property
 {
 public:
-	ActiveSelectionColour() : Property((utf8*)"ActiveSelectionColour", (utf8*)"Property to get/set the colour used for rendering the selection highlight when the edit box is active.  Value is \"aarrggbb\" (hex).") {}
+	ActiveSelectionColour() : Property(
+		"ActiveSelectionColour",
+		"Property to get/set the colour used for rendering the selection highlight when the edit box is active.  Value is \"aarrggbb\" (hex).",
+		"FF6060FF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -245,7 +281,11 @@ public:
 class InactiveSelectionColour : public Property
 {
 public:
-	InactiveSelectionColour() : Property((utf8*)"InactiveSelectionColour", (utf8*)"Property to get/set the colour used for rendering the selection highlight when the edit box is inactive.  Value is \"aarrggbb\" (hex).") {}
+	InactiveSelectionColour() : Property(
+		"InactiveSelectionColour",
+		"Property to get/set the colour used for rendering the selection highlight when the edit box is inactive.  Value is \"aarrggbb\" (hex).",
+		"FF808080")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

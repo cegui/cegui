@@ -67,7 +67,12 @@ public:
 	\param help
 		String containing a description of the Property and it's usage.
 	*/
-	Property(const String& name, const String& help) : d_name(name), d_help(help) {}
+	Property(const String& name, const String& help, const String& defaultValue = "") : 
+	  d_name(name),
+	  d_help(help),
+	  d_default(defaultValue)
+	{
+	}
 
 
 	/*!
@@ -128,9 +133,36 @@ public:
 	virtual void	set(PropertyReceiver* receiver, const String& value) = 0;
 
 
+	/*!
+	\brief
+		Returns whether the property is at it's default value.
+
+	\param receiver
+		Pointer to the target object.
+
+	\return
+		- true if the property has it's default value.
+		- false if the property has been modified from it's default value.
+	*/
+	virtual bool	isDefault(const PropertyReceiver* reciever) const;
+
+
+	/*!
+	\brief
+		Returns the default value of the Property as a String.
+
+	\param receiver
+		Pointer to the target object.
+
+	\return
+		String object containing a textual representation of the default value for this property.
+	*/
+	virtual String	getDefault(const PropertyReceiver* reciever) const;
+
 protected:
 	String	d_name;		//!< String that stores the Property name.
 	String	d_help;		//!< String that stores the Property help text.
+	String	d_default;	//!< String that stores the Property default value string.
 };
 
 } // End of  CEGUI namespace section

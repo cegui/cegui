@@ -55,7 +55,11 @@ namespace ListHeaderSegmentProperties
 class Sizable : public Property
 {
 public:
-	Sizable() : Property((utf8*)"Sizable", (utf8*)"Property to get/set the sizable setting of the header segment.  Value is either \"True\" or \"False\".") {}
+	Sizable() : Property(
+		"Sizable",
+		"Property to get/set the sizable setting of the header segment.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -77,7 +81,11 @@ public:
 class Clickable : public Property
 {
 public:
-	Clickable() : Property((utf8*)"Clickable", (utf8*)"Property to get/set the click-able setting of the header segment.  Value is either \"True\" or \"False\".") {}
+	Clickable() : Property(
+		"Clickable",
+		"Property to get/set the click-able setting of the header segment.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -99,7 +107,11 @@ public:
 class Dragable : public Property
 {
 public:
-	Dragable() : Property((utf8*)"Dragable", (utf8*)"Property to get/set the drag-able setting of the header segment.  Value is either \"True\" or \"False\".") {}
+	Dragable() : Property(
+		"Dragable",
+		"Property to get/set the drag-able setting of the header segment.  Value is either \"True\" or \"False\".",
+		"True")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -122,7 +134,11 @@ public:
 class SortDirection : public Property
 {
 public:
-	SortDirection() : Property((utf8*)"SortDirection", (utf8*)"Property to get/set the sort direction setting of the header segment.  Value is the text of one of the SortDirection enumerated value names.") {}
+	SortDirection() : Property(
+		"SortDirection",
+		"Property to get/set the sort direction setting of the header segment.  Value is the text of one of the SortDirection enumerated value names.",
+		"None")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);

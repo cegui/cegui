@@ -55,7 +55,11 @@ namespace StaticImageProperties
 class Image : public Property
 {
 public:
-	Image() : Property((utf8*)"Image", (utf8*)"Property to get/set the image for the StaticImage widget.  Value should be \"set:[imageset name] image:[image name]\".") {}
+	Image() : Property(
+		"Image",
+		"Property to get/set the image for the StaticImage widget.  Value should be \"set:[imageset name] image:[image name]\".",
+		"")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -79,7 +83,11 @@ public:
 class ImageColours : public Property
 {
 public:
-	ImageColours() : Property((utf8*)"ImageColours", (utf8*)"Property to get/set the text colours for the StaticImage widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".") {}
+	ImageColours() : Property(
+		"ImageColours",
+		"Property to get/set the text colours for the StaticImage widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
+		"tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -104,7 +112,11 @@ public:
 class HorzFormatting : public Property
 {
 public:
-	HorzFormatting() : Property((utf8*)"HorzFormatting", (utf8*)"Property to get/set the horizontal formatting mode.  Value is one of the HorzFormatting strings.") {}
+	HorzFormatting() : Property(
+		"HorzFormatting",
+		"Property to get/set the horizontal formatting mode.  Value is one of the HorzFormatting strings.",
+		"HorzStretched")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -129,7 +141,11 @@ public:
 class VertFormatting : public Property
 {
 public:
-	VertFormatting() : Property((utf8*)"VertFormatting", (utf8*)"Property to get/set the vertical formatting mode.  Value is one of the VertFormatting strings.") {}
+	VertFormatting() : Property(
+		"VertFormatting",
+		"Property to get/set the vertical formatting mode.  Value is one of the VertFormatting strings.",
+		"VertStretched")
+	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
