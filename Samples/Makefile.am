@@ -1,1 +1,2 @@
-SUBDIRS = common
+SUBDIRS = common \
+          FirstWindow

@@ -67,6 +67,9 @@ AC_CONFIG_FILES([Makefile \
                  Samples/common/Makefile \
                  Samples/common/include/Makefile \
                  Samples/common/src/Makefile \
+                 Samples/FirstWindow/Makefile \
+                 Samples/FirstWindow/include/Makefile \
+                 Samples/FirstWindow/src/Makefile \
                  CEGUI-OPENGL.pc \
                  CEGUI.spec \
                  CEGUI.pc])
