@@ -1358,9 +1358,10 @@ public:
 		Captures input to this window
 
 	\return
-		Nothing
+		- true if input was successfully captured to this window.
+		- false if input could not be captured to this window (maybe because the window is not active).
 	*/
-	void	captureInput(void);
+	bool	captureInput(void);
 
 
 	/*!

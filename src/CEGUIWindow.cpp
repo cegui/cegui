@@ -1127,11 +1127,11 @@ void Window::moveToBack()
 /*************************************************************************
 	Captures input to this window
 *************************************************************************/
-void Window::captureInput(void)
+bool Window::captureInput(void)
 {
 	// we can only capture if we are the active window
 	if (!isActive()) {
-		return;
+		return false;
 	}
 
 	Window* current_capture = d_captureWindow;
@@ -1148,6 +1148,8 @@ void Window::captureInput(void)
 	}
 
 	onCaptureGained(args);
+
+	return true;
 }
 
 
