@@ -58,6 +58,7 @@ AC_CONFIG_FILES([Makefile \
                  WidgetSets/TaharezLook/src/Makefile \
                  WidgetSets/WindowsLook/Makefile \
                  WidgetSets/WindowsLook/src/Makefile \
-                 CEGUI.pc])
+                 CEGUI.pc \
+                 CEGUI-OGRE.pc])
 
 AC_OUTPUT
