@@ -581,6 +581,18 @@ public:
 	const String& getAvailableGlyphs(void) const;
 
 
+	/*!
+	\brief
+		Return the point size of a dynamic (ttf based) font.
+
+	\return
+		uint value indicating the point size specified when the dynamic font was created.
+
+	\exception InvalidRequestException		thrown if the font is a static (bitmap based) font which do not support point sizes.
+	*/
+	uint	getPointSize(void) const;
+
+
 private:
 	/*************************************************************************
 		Implementation Constants

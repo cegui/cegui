@@ -1195,4 +1195,20 @@ const String& Font::getAvailableGlyphs(void) const
 	return d_glyphset;
 }
 
+
+/*************************************************************************
+	Return the point size of a dynamic (ttf based) font.
+*************************************************************************/
+uint Font::getPointSize(void) const
+{
+	if (d_freetype)
+	{
+		return d_ptSize;
+	}
+	else
+	{
+		throw InvalidRequestException("Font::getPointSize - unable to return point size for a static (bitmap based) font.");
+	}
+}
+
 } // End of  CEGUI namespace section
