@@ -28,9 +28,11 @@
 #include "CEGUIExceptions.h"
 #include "OgreArchiveManager.h"
 
+#include "OgreNoMemoryMacros.h"
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/framework/MemoryManager.hpp>
 #include <memory.h>
+#include "OgreMemoryMacros.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -65,10 +67,11 @@ namespace CEGUI
                 "Scheme::Scheme - Filename supplied for Scheme loading must be valid");
         }
 
-        size_t buffsz = input->size();
-        unsigned char* mem = reinterpret_cast<unsigned char*>(XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
-        memcpy(mem, input.getPointer()->getAsString().c_str(), buffsz);
-        input.setNull();
+		Ogre::String buf = input->getAsString();
+		size_t buffsz = buf.length();
+        unsigned char* mem = reinterpret_cast<unsigned char*>
+			(XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgArrayMemoryManager->allocate(buffsz));
+        memcpy(mem, buf.c_str(), buffsz);
 
         output.setData(mem);
         output.setSize(buffsz);
