@@ -88,12 +88,12 @@ void Scrollbar::initialise(void)
 	// set up Increase button
 	d_increase = createIncreaseButton();
 	addChildWindow(d_increase);
-	d_increase->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
+	d_increase->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
 
 	// set up Decrease button
 	d_decrease = createDecreaseButton();
 	addChildWindow(d_decrease);
-	d_decrease->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
+	d_decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 
 	// do initial layout
 	layoutComponentWidgets();
@@ -311,10 +311,18 @@ bool Scrollbar::handleThumbMoved(const EventArgs& e)
 *************************************************************************/
 bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
-	// adjust scroll bar position as required.
-	setScrollPosition(d_position + d_stepSize);
+	if (((const MouseEventArgs&)e).button == LeftButton)
+	{
+		// adjust scroll bar position as required.
+		setScrollPosition(d_position + d_stepSize);
 
-	return true;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
 }
 
 
@@ -323,10 +331,17 @@ bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 *************************************************************************/
 bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
-	// adjust scroll bar position as required.
-	setScrollPosition(d_position - d_stepSize);
+	if (((const MouseEventArgs&)e).button == LeftButton)
+	{
+		// adjust scroll bar position as required.
+		setScrollPosition(d_position - d_stepSize);
 
-	return true;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
