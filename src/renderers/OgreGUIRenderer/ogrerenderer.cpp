@@ -416,6 +416,7 @@ void OgreRenderer::sortQuads(void)
 	if (!d_sorted)
 	{
 		std::stable_sort(d_quadList, d_quadList + d_quadBuffPos, quadsorter());
+		d_sorted = true;
 	}
 
 }
