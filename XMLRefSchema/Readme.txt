@@ -129,3 +129,40 @@ WindowFactory attributes
 ------------------------
 Name		- Name of the factory / window type which is to be added.
 
+
+
+==============
++ GUI Layout +
+==============
+A GUI Layout defines a hierachy of Window based objects to be created and a property settings for each window.
+The root element is GUILayout.
+
+
+GUILayout Element
+=================
+GUILayout is the root element.
+The GUILayout must contain a single Window element only.
+There are currently no attributes defined for GUILayout.
+
+
+Window Element
+==============
+The Window element is used to specify a new window object to be created.
+The Window element has attributes as described below and may contain any number of nested Window elements and any number of Property elements.
+
+Window attributes
+-----------------
+Type		- Specifies the type of Window object to be created (required).
+Name		- Specifies the unique name for the Window.  If such a window already exists, an exception will be thrown. (required).
+
+
+Property Element
+================
+The Property element is used to set properties on the Window created by the containing Window element.
+Property has no sub-elements, but has attributes as described below.
+
+Property attributes
+-------------------
+Name		- The name of the property to be set.  If no such property exists for the target window, an exception may be thrown.  (required).
+Value		- The value to be assigned to the property.  This must be in a format expected by the property or an exception may be thrown.  (required).
+
