@@ -238,16 +238,16 @@ void Scheme::unloadResources(void)
 
 	std::vector<LoadableUIElement>::const_iterator	pos;
 
-	// check Imagesets
-	for (pos = d_imagesets.begin(); pos != d_imagesets.end(); ++pos)
-	{
-		ismgr.destroyImageset((*pos).name);
-	}
-
 	// check fonts
 	for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
 	{
 		fntmgr.destroyFont((*pos).name);
+	}
+
+	// check Imagesets
+	for (pos = d_imagesets.begin(); pos != d_imagesets.end(); ++pos)
+	{
+		ismgr.destroyImageset((*pos).name);
 	}
 
 	// check factories

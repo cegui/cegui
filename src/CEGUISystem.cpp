@@ -114,12 +114,21 @@ System::~System(void)
 	XERCES_CPP_NAMESPACE_USE
 	XMLPlatformUtils::Terminate();
 
+	//
+	// perform cleanup in correct sequence
+	//
+	// destroy windows so it's safe to destroy factories
+	WindowManager::getSingleton().destroyAllWindows();
+
+	// destroy factories so it's safe to unload GUI modules
+	WindowFactoryManager::getSingleton().removeAllFactories();
+
 	// cleanup singletons
-	delete	MouseCursor::getSingletonPtr();
 	delete	SchemeManager::getSingletonPtr();
 	delete	WindowManager::getSingletonPtr();
 	delete	WindowFactoryManager::getSingletonPtr();
 	delete	FontManager::getSingletonPtr();
+	delete	MouseCursor::getSingletonPtr();
 	delete	ImagesetManager::getSingletonPtr();
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton destroyed.");
