@@ -64,8 +64,6 @@
 		0867D69AFE84028FC02AAC07 = {
 			children = (
 				5B088AD30724B07400E1FF63,
-				5B7CD860070DD12E00FE8C88,
-				5B7CD861070DD12E00FE8C88,
 				5B7CD858070DD0FE00FE8C88,
 				08FB77AAFE841565C02AAC07,
 				5B7CDAEE070DEB9F00FE8C88,
@@ -147,7 +145,6 @@
 				5B7CD881070DD19000FE8C88,
 				5B7CD882070DD19000FE8C88,
 				5B7CD883070DD19000FE8C88,
-				5B49ABC40765FAB900E684D3,
 				5B7CD885070DD19000FE8C88,
 				5B7CD884070DD19000FE8C88,
 				5B7CD886070DD19000FE8C88,
@@ -166,6 +163,7 @@
 				5B7CD893070DD19000FE8C88,
 				5B7CD894070DD19000FE8C88,
 				5B7CDAE8070DD69700FE8C88,
+				5B4AD6F60777154400FDB530,
 			);
 			isa = PBXGroup;
 			name = Source;
@@ -386,23 +384,8 @@
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
-		5B49ABC40765FAB900E684D3 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
-			name = CEGUIResourceProvider.cpp;
-			path = ../../../../src/CEGUIResourceProvider.cpp;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
 		5B49ABC50765FAB900E684D3 = {
 			fileRef = 5B49ABC30765FAB900E684D3;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B49ABC60765FAB900E684D3 = {
-			fileRef = 5B49ABC40765FAB900E684D3;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -438,6 +421,9 @@
 			fileRef = 5B49ABCB0765FADD00E684D3;
 			isa = PBXBuildFile;
 			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
 			};
 		};
 		5B49ABCF0765FADD00E684D3 = {
@@ -493,6 +479,200 @@
 		};
 		5B49AC000765FF8300E684D3 = {
 			fileRef = 5B7CD858070DD0FE00FE8C88;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6E80777153C00FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = chartables.c;
+			path = ../../../../src/pcre/chartables.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6E90777153C00FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = get.c;
+			path = ../../../../src/pcre/get.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6EA0777153C00FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = maketables.c;
+			path = ../../../../src/pcre/maketables.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6EB0777153C00FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = pcre.c;
+			path = ../../../../src/pcre/pcre.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6EC0777153C00FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = pcreposix.c;
+			path = ../../../../src/pcre/pcreposix.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6ED0777153C00FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = study.c;
+			path = ../../../../src/pcre/study.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6EE0777153C00FDB530 = {
+			fileRef = 5B4AD6E80777153C00FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6EF0777153C00FDB530 = {
+			fileRef = 5B4AD6E90777153C00FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6F00777153C00FDB530 = {
+			fileRef = 5B4AD6EA0777153C00FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6F10777153C00FDB530 = {
+			fileRef = 5B4AD6EB0777153C00FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6F20777153C00FDB530 = {
+			fileRef = 5B4AD6EC0777153C00FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6F30777153C00FDB530 = {
+			fileRef = 5B4AD6ED0777153C00FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD6F60777154400FDB530 = {
+			children = (
+				5B4AD6E80777153C00FDB530,
+				5B4AD6E90777153C00FDB530,
+				5B4AD6EA0777153C00FDB530,
+				5B4AD6EB0777153C00FDB530,
+				5B4AD6EC0777153C00FDB530,
+				5B4AD6ED0777153C00FDB530,
+			);
+			isa = PBXGroup;
+			name = pcre;
+			path = ../../../../src/pcre;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6F90777156500FDB530 = {
+			children = (
+				5B4AD6FC077715A600FDB530,
+				5B4AD6FD077715A600FDB530,
+				5B4AD6FE077715A700FDB530,
+				5B4AD6FF077715A700FDB530,
+				5B4AD700077715A700FDB530,
+			);
+			isa = PBXGroup;
+			name = pcre;
+			path = ../../../../src/pcre;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6FC077715A600FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = pcre.h;
+			path = ../../../../src/pcre/pcre.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6FD077715A600FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = pcreconfig.h;
+			path = ../../../../src/pcre/pcreconfig.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6FE077715A700FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = pcreposix.h;
+			path = ../../../../src/pcre/pcreposix.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD6FF077715A700FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ucp.h;
+			path = ../../../../src/pcre/ucp.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD700077715A700FDB530 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ucpinternal.h;
+			path = ../../../../src/pcre/ucpinternal.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B4AD701077715A700FDB530 = {
+			fileRef = 5B4AD6FC077715A600FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD702077715A700FDB530 = {
+			fileRef = 5B4AD6FD077715A600FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD703077715A700FDB530 = {
+			fileRef = 5B4AD6FE077715A700FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD704077715A700FDB530 = {
+			fileRef = 5B4AD6FF077715A700FDB530;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B4AD705077715A700FDB530 = {
+			fileRef = 5B4AD700077715A700FDB530;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -716,6 +896,7 @@
 				32BAE0B70371A74B00C91783,
 				5B7CD94F070DD1EF00FE8C88,
 				5B7CDAEB070DD6B800FE8C88,
+				5B4AD6F90777156500FDB530,
 			);
 			isa = PBXGroup;
 			name = Headers;
@@ -1073,6 +1254,11 @@
 				5B49ABCE0765FADD00E684D3,
 				5B49ABCF0765FADD00E684D3,
 				5B49ABD00765FADD00E684D3,
+				5B4AD701077715A700FDB530,
+				5B4AD702077715A700FDB530,
+				5B4AD703077715A700FDB530,
+				5B4AD704077715A700FDB530,
+				5B4AD705077715A700FDB530,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1182,7 +1368,12 @@
 				5B78EBD407173D5D00DB5B0A,
 				5B088AC20724AED100E1FF63,
 				5B49ABC50765FAB900E684D3,
-				5B49ABC60765FAB900E684D3,
+				5B4AD6EE0777153C00FDB530,
+				5B4AD6EF0777153C00FDB530,
+				5B4AD6F00777153C00FDB530,
+				5B4AD6F10777153C00FDB530,
+				5B4AD6F20777153C00FDB530,
+				5B4AD6F30777153C00FDB530,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1191,8 +1382,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B7CD859070DD0FE00FE8C88,
-				5B7CD862070DD12E00FE8C88,
-				5B7CD863070DD12E00FE8C88,
 				5B088AD40724B07400E1FF63,
 			);
 			isa = PBXFrameworksBuildPhase;
@@ -1489,7 +1678,7 @@
 				GCC_WARN_UNUSED_LABEL = NO;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				HEADER_SEARCH_PATHS = ../../../../include;
+				HEADER_SEARCH_PATHS = "/Library/Frameworks/Xerces.framework/Headers /usr/include/malloc ../../../../include";
 				INFOPLIST_FILE = "CEGUITaharezLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_CFLAGS = "";
@@ -1629,7 +1818,7 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				HEADER_SEARCH_PATHS = ../../../../include;
+				HEADER_SEARCH_PATHS = "/Library/Frameworks/Xerces.framework/Headers /usr/include/malloc ../../../../include";
 				INFOPLIST_FILE = "CEGUIWindowsLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_CFLAGS = "";
@@ -1688,34 +1877,6 @@
 		};
 		5B7CD859070DD0FE00FE8C88 = {
 			fileRef = 5B7CD858070DD0FE00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B7CD860070DD12E00FE8C88 = {
-			isa = PBXFileReference;
-			lastKnownFileType = archive.ar;
-			name = libboost_regex.a;
-			path = /sw/lib/libboost_regex.a;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		5B7CD861070DD12E00FE8C88 = {
-			isa = PBXFileReference;
-			lastKnownFileType = archive.ar;
-			name = libboost_signals.a;
-			path = /sw/lib/libboost_signals.a;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		5B7CD862070DD12E00FE8C88 = {
-			fileRef = 5B7CD860070DD12E00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B7CD863070DD12E00FE8C88 = {
-			fileRef = 5B7CD861070DD12E00FE8C88;
 			isa = PBXBuildFile;
 			settings = {
 			};
