@@ -355,6 +355,8 @@ void OgreRenderer::initRenderStates(void)
 	d_render_sys->_setCullingMode(CULL_NONE);
 	d_render_sys->_setFog(FOG_NONE);
 	d_render_sys->_setColourBufferWriteEnabled(true, true, true, true);
+	d_render_sys->unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
+	d_render_sys->unbindGpuProgram(GPT_VERTEX_PROGRAM); 
 
 	// initialise texture settings
 	d_render_sys->_setTextureCoordCalculation(0, TEXCALC_NONE);
