@@ -1,0 +1,41 @@
+SUBDIRS = . elements renderers
+pkginclude_HEADERS = CEGUI.h \
+                 CEGUIBase.h \
+                 CEGUIColourRect.h \
+                 CEGUIEvent.h \
+                 CEGUIEventArgs.h \
+                 CEGUIEventSet.h \
+                 CEGUIExceptions.h \
+                 CEGUIFactoryModule.h \
+                 CEGUIFont.h \
+                 CEGUIFontManager.h \
+                 CEGUIFont_xmlHandler.h \
+                 CEGUIForwardRefs.h \
+                 CEGUIImage.h \
+                 CEGUIImageset.h \
+                 CEGUIImagesetManager.h \
+                 CEGUIImageset_xmlHandler.h \
+                 CEGUIInputEvent.h \
+                 CEGUILogger.h \
+                 CEGUIMouseCursor.h \
+                 CEGUIProperty.h \
+                 CEGUIPropertySet.h \
+                 CEGUIRect.h \
+                 CEGUIRenderableElement.h \
+                 CEGUIRenderableFrame.h \
+                 CEGUIRenderableImage.h \
+                 CEGUIRenderer.h \
+                 CEGUIScheme.h \
+                 CEGUISchemeManager.h \
+                 CEGUIScheme_xmlHandler.h \
+                 CEGUISingleton.h \
+                 CEGUISize.h \
+                 CEGUIString.h \
+                 CEGUISystem.h \
+                 CEGUITextUtils.h \
+                 CEGUITexture.h \
+                 CEGUIVector.h \
+                 CEGUIWindow.h \
+                 CEGUIWindowFactory.h \
+                 CEGUIWindowFactoryManager.h \
+                 CEGUIWindowManager.h 
