@@ -1,0 +1,60 @@
+Crazy Eddie's GUI System Mk-2
+http://crayzedsgui.sourceforge.net
+
+Copyright ©2004 Paul D Turner & Contributing Authors
+
+
+This is Crazy Eddie's GUI System Mk-2; a free library providing windowing and
+widgets for graphics APIs and engines where such functionality is not natively
+available or is severely lacking. The library is written in C++, is object
+orientated, and is primarily targeted at games developers who should be spending
+their time creating great games, not building GUI sub-systems...
+
+Note: In various documentation and online, the system is additionally referred
+to as both CEGUI (which is the main namespace name), and cegui_mk2 (which is the
+CVS module name of the Mk2 version of the system).
+
+
+Documentation
+=============
+See also the following files:
+COPYING   - Contains the license terms for using the library.
+AUTHORS   - Contains a list of authors and contributors.
+
+The main start point for system documentation is the Readme.html file (still
+TODO).  API documentation built from the source by Doxygen
+(http://www.doxygen.org) is available, and can be found online at
+http://www.chaendaer.net/code/cegui/api_reference/.  For the very latest
+information and help, visit the project home page at
+http://crayzedsgui.sourceforge.net.
+
+
+Supported Systems
+=================
+Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
+following systems:
+
+Various flavors of Linux using gcc.
+Microsoft Windows running VC++6 (sp6), VC++7.0, or VC++7.1.
+Apple Mac OS X running Xcode.
+
+It is very possible that the system will compile and run on other systems and
+compilers, though the above systems have been tested.
+
+
+Requirements
+============
+As well as one of the above supported systems, Crazy Eddie's GUI System Mk-2
+also requires the use of some third party external libraries.  These libraries
+are as follows:
+
+boost::regex and boost::timer libraries (http://www.boost.org)
+Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
+Freetype2 (http://www.freetype.org)
+
+For Linux and Macintosh systems you also currently require the Ogre engine
+(http://www.ogre3d.org), although other renderer modules, for example OpenGL,
+will be available in the future.
+
+Have Fun!
+
