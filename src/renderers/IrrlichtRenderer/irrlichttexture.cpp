@@ -21,7 +21,7 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "renderers/IrrlichtRenderer//irrlichttexture.h"
+#include "renderers/IrrlichtRenderer/irrlichttexture.h"
 
 namespace CEGUI
 {
@@ -59,9 +59,13 @@ namespace CEGUI
 /************************************************************************/
 	void IrrlichtTexture::freeTexture()
 	{
-		if(tex!=NULL)driver->removeTexture(tex);
-		tex=NULL;
-
+		if(tex!=0) 
+		{
+			tex->drop();
+			driver->removeTexture(tex);
+		}
+		
+		tex=0;
 	}
 /************************************************************************/
 	ushort IrrlichtTexture::getWidth(void) const
@@ -79,16 +83,23 @@ namespace CEGUI
 	void IrrlichtTexture::loadFromFile(const String& filename)
 	{
 		freeTexture();
+		driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS,true);
 		tex=driver->getTexture(filename.c_str());
+		
+		tex->grab();
 	}
 /************************************************************************/
 	void IrrlichtTexture::loadFromMemory(const void* buffPtr, 
 		uint buffWidth, uint buffHeight)
 	{
 		freeTexture();
+		
 		irr::core::dimension2d<irr::s32> dim(buffWidth,buffHeight);
 		irr::core::stringc name=getUniqueName();
+
+		driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS,true);
 		tex=driver->addTexture(dim,name.c_str(),irr::video::ECF_A8R8G8B8);
+		
 		if(irr::video::ECF_A8R8G8B8==tex->getColorFormat()) // paranoid!
 		{
 			irr::u32* tt=(irr::u32*)tex->lock(); 
@@ -96,6 +107,7 @@ namespace CEGUI
 			memcpy(tt,buffPtr,d.Width*d.Height*sizeof(CEGUI::ulong));
 			tex->unlock();
 		}
+		tex->grab();
 	}
 
 

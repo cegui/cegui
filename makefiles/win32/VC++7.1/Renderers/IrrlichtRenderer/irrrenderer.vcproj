@@ -132,6 +132,9 @@
 				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichtrenderer.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtResourceProvider.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichttexture.cpp">
 			</File>
 		</Filter>
@@ -140,10 +143,16 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtEventPusher.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichtrenderer.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtRendererDef.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtResourceProvider.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichttexture.h">

@@ -26,6 +26,7 @@
 
 #include "IrrlichtRendererDef.h"
 #include "irrlichttexture.h"
+#include "IrrlichtResourceProvider.h"
 
 #include "CEGUIRenderer.h"
 #include "CEGUIInputEvent.h"
@@ -35,9 +36,16 @@
 #include <vector>
 #include <algorithm>
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
 
 namespace CEGUI
 {
+
+	class EventPusher;
+
 	/*!
 	\brief
 	class implementing the interface for Renderer objects with 
@@ -51,19 +59,16 @@ namespace CEGUI
 		IrrlichtRenderer(irr::IrrlichtDevice* dev);
 
 		/*!	destructor */
-		virtual ~IrrlichtRenderer(){};
+		virtual ~IrrlichtRenderer();
 
-		/*! translate the irrlicht keycode to cegui keycode 
-			\param kc
-			the irrlicht keycode
-
-			\return 
-			the cegui keycode
+		
+		/*! get an irrlicht resource provider
+		\return irrlicht resourceprovider
 		*/
-		uchar getKeyCode(irr::EKEY_CODE kc)
-		{
-			return irr2ceCODE[kc];
-		}
+		virtual ResourceProvider* createResourceProvider(void);
+
+		/*! forward event to CEGUI system */
+		bool OnEvent(irr::SEvent& event);
 
 
 		/*************************************************************************
@@ -304,9 +309,11 @@ namespace CEGUI
 			// quad structure used for rendering the gui
 			struct RenderQuad
 			{
+				RenderQuad(){};
+
 				RenderQuad(float zVal, 
-					irr::core::rect<irr::s32> target,
-					irr::core::rect<irr::s32> source,
+					const irr::core::rect<irr::s32>& target,
+					const irr::core::rect<irr::s32>& source,
 					ColourRect col,const Texture*t)
 					:z(zVal),dst(target),src(source),colours(col){
 						tex=(IrrlichtTexture*)t;
@@ -318,6 +325,8 @@ namespace CEGUI
 				ColourRect colours;
 				IrrlichtTexture* tex;
 			};
+
+			RenderQuad dummyQuad;
 
 			// std sorting RenderQuad class
 			struct quadsorter
@@ -343,15 +352,19 @@ namespace CEGUI
 			void print(RenderQuad& quad);
 
 			// convert cegui colour to irrlicht scolor
-			irr::video::SColor toIrrlichtColor(CEGUI::colour cecolor);
+			inline irr::video::SColor toIrrlichtColor(CEGUI::ulong cecolor);
+			irr::video::SColor colors[4];
 
-			unsigned char irr2ceCODE[irr::KEY_KEY_CODES_COUNT];
 
-			void initCodes();
+
+			EventPusher* eventpusher;
 
 	};
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif

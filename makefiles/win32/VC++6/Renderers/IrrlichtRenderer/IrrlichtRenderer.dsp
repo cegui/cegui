@@ -106,6 +106,10 @@ SOURCE=..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichtrenderer.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtResourceProvider.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichttexture.cpp
 # End Source File
 # End Group
@@ -114,11 +118,19 @@ SOURCE=..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichttexture.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtEventPusher.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichtrenderer.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtRendererDef.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtResourceProvider.h
 # End Source File
 # Begin Source File
 

@@ -1,13 +1,10 @@
 /************************************************************************
-filename: 	IrrlichtRendererDef.h
-created:	20/7/2004
+filename: 	IrrlichtResourceProvider.h
+created:	12/22/2004
 author:		Thomas Suter
 
-changes: 
-- Irrlicht patching not needed anymore
-- using the irrlicht filesystem to load config files etc.
+purpose:	DImplements the Resource Provider common functionality
 *************************************************************************/
-
 /*************************************************************************
 Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
 Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
@@ -26,23 +23,31 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#ifndef _CEGUIIrrlichtResourceProvider_h_
+#define _CEGUIIrrlichtResourceProvider_h_
 
-/*
-	Beginning from version 0.7 Irrlicht does NOT need any changes for the GUI-renderer.
-	Thanks to Nikolaus Gebhardt for including the missing methods in the renderer.
-*/
+#include "IrrlichtRendererDef.h"
+#include "CEGUIResourceProvider.h"
+#include <IFileSystem.h>
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+	class IRRLICHT_GUIRENDERER_API IrrlichtResourceProvider : public ResourceProvider
+	{
+	protected:
+		irr::io::IFileSystem* fsys;
+	public:
+		/*************************************************************************
+		Construction and Destruction
+		*************************************************************************/
+		IrrlichtResourceProvider(irr::io::IFileSystem* fsys_);
 
-#ifndef IRRLICHTRENDERERDEF_H_INCLUDED
-#define IRRLICHTRENDERERDEF_H_INCLUDED
+		~IrrlichtResourceProvider(void) ;
 
-#if defined( __WIN32__ ) || defined( _WIN32 ) || defined (WIN32)
-#   ifdef IRRRENDERER_EXPORTS
-#       define IRRLICHT_GUIRENDERER_API __declspec(dllexport)
-#   else
-#       define IRRLICHT_GUIRENDERER_API __declspec(dllimport)
-#   endif
-#else
-#   define IRRLICHT_GUIRENDERER_API
-#endif
+		void loadInputSourceContainer(const String& filename, InputSourceContainer& output);
+		void loadRawDataContainer(const String& filename, RawDataContainer& output);
+	};
 
-#endif
+} // End of  CEGUI namespace section
+
+#endif	// end of guard _CEGUIIrrlichtResourceProvider_h_
