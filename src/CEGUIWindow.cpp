@@ -1184,17 +1184,26 @@ void Window::setAlpha(float alpha)
 *************************************************************************/
 void Window::setInheritsAlpha(bool setting)
 {
-	d_inheritsAlpha = setting;
-    WindowEventArgs args(this);
-
-	// if alpha is now inherited, we need to see if this results in a new effective alpha
-	if (d_inheritsAlpha && (d_alpha != getEffectiveAlpha()))
+	if (d_inheritsAlpha != setting)
 	{
-		onAlphaChanged(args);
+		// store old effective alpha so we can test if alpha value changes due to new setting.
+		float oldAlpha = getEffectiveAlpha();
+
+		// notify about the setting change.
+		d_inheritsAlpha = setting;
+
+		WindowEventArgs args(this);
+		onInheritsAlphaChanged(args);
+
+		// if effective alpha has changed fire notification about that too
+		if (oldAlpha != getEffectiveAlpha())
+		{
+			args.handled = false;
+			onAlphaChanged(args);
+		}
+
 	}
 
-	// notify about the setting change.
-	onInheritsAlphaChanged(args);
 }
 
 
