@@ -161,14 +161,17 @@ public:
 
 	\param bottom_right_colour
 		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of the Image.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF) const
+	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
 		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, 
-			ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
+			ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
 	}
 
 
@@ -202,13 +205,16 @@ public:
 
 	\param bottom_right_colour
 		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of the Image.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF) const
+	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
-		draw(dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
+		draw(dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
 	}
 
 
@@ -233,13 +239,16 @@ public:
 
 	\param colours
 		ColourRect object that describes the colour values to use for each corner of the Image.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const ColourRect& colours) const
+	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, colours);
+		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, colours, quad_split_mode);
 	}
 
 
@@ -264,13 +273,16 @@ public:
 
 	\param colours
 		ColourRect object that describes the colour values to use for each corner of the Image.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Vector3& position, const Rect& clip_rect, const ColourRect& colours) const
+	void	draw(const Vector3& position, const Rect& clip_rect, const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, colours);
+		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, colours, quad_split_mode);
 	}
 
 
@@ -301,13 +313,16 @@ public:
 
 	\param bottom_right_colour
 		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of the Image.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Vector3& position, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF) const
+	void	draw(const Vector3& position, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
+		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
 	}
 
 
@@ -332,11 +347,14 @@ public:
 
 	\param colours
 		ColourRect object that describes the colour values to use for each corner of the Image.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours) const;
+	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const;
 
 
 

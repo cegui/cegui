@@ -97,7 +97,7 @@ public:
 	virtual ~DirectX81Renderer(void);
 
 	// add's a quad to the list to be rendered
-	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// perform final rendering for all queued renderable quads.
 	virtual	void	doRender(void);
@@ -300,6 +300,8 @@ private:
 		ulong				bottomLeftCol;
 		ulong				bottomRightCol;
 
+        QuadSplitMode       splitMode;
+
 		bool operator<(const QuadInfo& other) const
 		{
 			// this is intentionally reversed.
@@ -321,7 +323,7 @@ private:
 	void	sortQuads(void);
 
 	// render a quad directly to the display
-	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// return size of device view port (if possible)
 	Size	getViewportSize(void);

@@ -148,12 +148,12 @@ DirectX81Renderer::~DirectX81Renderer(void)
 /*************************************************************************
 	add's a quad to the list to be rendered
 *************************************************************************/
-void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 {
 	// if not queueing, render directly (as in, right now!)
 	if (!d_queueing)
 	{
-		renderQuadDirect(dest_rect, z, tex, texture_rect, colours);
+		renderQuadDirect(dest_rect, z, tex, texture_rect, colours, quad_split_mode);
 	}
 	else
 	{
@@ -170,6 +170,9 @@ void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* t
 
 		// offset destination to get correct texel to pixel mapping from Direct3D
 		quad.position.offset(Point(-0.5f, -0.5f));
+
+        // set quad split mode
+        quad.splitMode = quad_split_mode;
 
 		d_quadlist.insert(quad);
 	}
@@ -232,14 +235,30 @@ void DirectX81Renderer::doRender(void)
 		++buffmem;
 
 		// setup Vertex 2...
-		buffmem->x = quad.position.d_right;
-		buffmem->y = quad.position.d_top;
-		buffmem->z = quad.z;
-		buffmem->rhw = 1.0f;
-		buffmem->diffuse = quad.topRightCol;
-		buffmem->tu1 = quad.texPosition.d_right;
-		buffmem->tv1 = quad.texPosition.d_top;
-		++buffmem;
+
+        // top-left to bottom-right diagonal
+        if (quad.splitMode == TopLeftToBottomRight)
+        {
+            buffmem->x = quad.position.d_right;
+            buffmem->y = quad.position.d_bottom;
+            buffmem->z = quad.z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = quad.bottomRightCol;
+            buffmem->tu1 = quad.texPosition.d_right;
+            buffmem->tv1 = quad.texPosition.d_bottom;
+        }
+        // bottom-left to top-right diagonal
+        else
+        {
+            buffmem->x = quad.position.d_right;
+            buffmem->y = quad.position.d_top;
+            buffmem->z = quad.z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = quad.topRightCol;
+            buffmem->tu1 = quad.texPosition.d_right;
+            buffmem->tv1 = quad.texPosition.d_top;
+        }
+        ++buffmem;
 
 		// setup Vertex 3...
 		buffmem->x = quad.position.d_left;
@@ -272,13 +291,29 @@ void DirectX81Renderer::doRender(void)
 		++buffmem;
 
 		// setup Vertex 6...
-		buffmem->x = quad.position.d_left;
-		buffmem->y = quad.position.d_bottom;
-		buffmem->z = quad.z;
-		buffmem->rhw = 1.0f;
-		buffmem->diffuse = quad.bottomLeftCol;
-		buffmem->tu1 = quad.texPosition.d_left;
-		buffmem->tv1 = quad.texPosition.d_bottom;
+
+        // top-left to bottom-right diagonal
+        if (quad.splitMode == TopLeftToBottomRight)
+        {
+            buffmem->x = quad.position.d_left;
+            buffmem->y = quad.position.d_top;
+            buffmem->z = quad.z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = quad.topLeftCol;
+            buffmem->tu1 = quad.texPosition.d_left;
+            buffmem->tv1 = quad.texPosition.d_top;
+        }
+        // bottom-left to top-right diagonal
+        else
+        {
+            buffmem->x = quad.position.d_left;
+            buffmem->y = quad.position.d_bottom;
+            buffmem->z = quad.z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = quad.bottomLeftCol;
+            buffmem->tu1 = quad.texPosition.d_left;
+            buffmem->tv1 = quad.texPosition.d_bottom;
+        }
 		++buffmem;
 
 		// update buffer level
@@ -450,7 +485,7 @@ void DirectX81Renderer::sortQuads(void)
 /*************************************************************************
 	render a quad directly to the display
 *************************************************************************/
-void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 {
 	// ensure offset destination to ensure proper texel to pixel mapping from D3D.
 	Rect final_rect(dest_rect);
@@ -474,13 +509,29 @@ void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const T
 		++buffmem;
 
 		// setup Vertex 2...
-		buffmem->x = final_rect.d_right;
-		buffmem->y = final_rect.d_top;
-		buffmem->z = z;
-		buffmem->rhw = 1.0f;
-		buffmem->diffuse = colours.d_top_right.getARGB();
-		buffmem->tu1 = texture_rect.d_right;
-		buffmem->tv1 = texture_rect.d_top;
+
+        // top-left to bottom-right diagonal
+        if (quad_split_mode == TopLeftToBottomRight)
+        {
+            buffmem->x = final_rect.d_right;
+            buffmem->y = final_rect.d_bottom;
+            buffmem->z = z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = colours.d_bottom_right.getARGB();
+            buffmem->tu1 = texture_rect.d_right;
+            buffmem->tv1 = texture_rect.d_bottom;
+        }
+        // bottom-left to top-right diagonal
+        else
+        {
+            buffmem->x = final_rect.d_right;
+            buffmem->y = final_rect.d_top;
+            buffmem->z = z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = colours.d_top_right.getARGB();
+            buffmem->tu1 = texture_rect.d_right;
+            buffmem->tv1 = texture_rect.d_top;
+        }
 		++buffmem;
 
 		// setup Vertex 3...
@@ -514,13 +565,29 @@ void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const T
 		++buffmem;
 
 		// setup Vertex 6...
-		buffmem->x = final_rect.d_left;
-		buffmem->y = final_rect.d_bottom;
-		buffmem->z = z;
-		buffmem->rhw = 1.0f;
-		buffmem->diffuse = colours.d_bottom_left.getARGB();
-		buffmem->tu1 = texture_rect.d_left;
-		buffmem->tv1 = texture_rect.d_bottom;
+
+        // top-left to bottom-right diagonal
+        if (quad_split_mode == TopLeftToBottomRight)
+        {
+            buffmem->x = final_rect.d_left;
+            buffmem->y = final_rect.d_top;
+            buffmem->z = z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = colours.d_top_left.getARGB();
+            buffmem->tu1 = texture_rect.d_left;
+            buffmem->tv1 = texture_rect.d_top;
+        }
+        // bottom-left to top-right diagonal
+        else
+        {
+            buffmem->x = final_rect.d_left;
+            buffmem->y = final_rect.d_bottom;
+            buffmem->z = z;
+            buffmem->rhw = 1.0f;
+            buffmem->diffuse = colours.d_bottom_left.getARGB();
+            buffmem->tu1 = texture_rect.d_left;
+            buffmem->tv1 = texture_rect.d_bottom;
+        }
 
 		d_buffer->Unlock();
 		d_bufferPos = VERTEX_PER_QUAD;

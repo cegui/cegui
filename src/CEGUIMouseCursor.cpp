@@ -113,9 +113,8 @@ void MouseCursor::draw(void) const
 {
 	if (d_visible && (d_cursorImage != NULL))
 	{
-		d_cursorImage->draw(d_position, System::getSingleton().getRenderer()->getRect());
+		d_cursorImage->draw( d_position, System::getSingleton().getRenderer()->getRect() );
 	}
-
 }
 
 

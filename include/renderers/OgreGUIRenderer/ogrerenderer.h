@@ -151,7 +151,7 @@ public:
 
 
 	// add's a quad to the list to be rendered
-	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// perform final rendering for all queued renderable quads.
 	virtual	void	doRender(void);
@@ -383,6 +383,8 @@ private:
         Ogre::uint32		topRightCol;
         Ogre::uint32		bottomLeftCol;
         Ogre::uint32		bottomRightCol;
+        
+        QuadSplitMode		splitMode;
 
 		bool operator<(const QuadInfo& other) const
 		{
@@ -405,7 +407,7 @@ private:
 	void	sortQuads(void);
 
 	// render a quad directly to the display
-	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// convert colour value to whatever the Ogre render system is expecting.
     Ogre::uint32    colourToOgre(const colour& col) const;

@@ -133,6 +133,19 @@ public:
 	*/
 	void	setVertFormatting(VertFormatting formatting)			{d_vertFormat = formatting;}
 	
+	
+	/*!
+	\brief
+		Set the required quad split mode
+
+	\param formatting
+		One of the QuadSplitMode values specifying the way quads are split into triangles.
+
+	\return
+		Nothing
+	*/
+	void	setQuadSplitMode(QuadSplitMode split_mode)				{d_quadSplitMode = split_mode;}
+
 
 	/*!
 	\brief
@@ -162,6 +175,16 @@ public:
 		One of the VertFormatting values specifying the formatting set.
 	*/
 	VertFormatting	getVertFormatting(void) const				{return d_vertFormat;}
+	
+	
+	/*!
+	\brief
+		Return current quad split mode setting.
+
+	\return
+		One of the QuadSplitMode values specifying the way quads are split into triangles.
+	*/
+	QuadSplitMode	getQuadSplitMode(void) const				{return d_quadSplitMode;}
 
 
 protected:
@@ -189,6 +212,7 @@ protected:
 	*************************************************************************/
 	HorzFormatting	d_horzFormat;		//!< Currently set horizontal formatting option.
 	VertFormatting	d_vertFormat;		//!< Currently set vertical formatting option.
+	QuadSplitMode	d_quadSplitMode;	//!< Currently set quad split mode
 	const Image*	d_image;			//!< Pointer to the actual Image to be displayed.
 };
 

@@ -345,11 +345,14 @@ public:
 
 	\param colours
 		ColourRect object holding the ARGB colours to be applied to the four corners of the rendered imagery.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours) const;
+	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode) const;
 
 
 	/*!
@@ -379,13 +382,16 @@ public:
 
 	\param bottom_right_colour
 		colour to be applied to the bottom right corner of the rendered imagery.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = -1, const colour& top_right_colour = -1,  const colour& bottom_left_colour = -1, const colour& bottom_right_colour = -1) const
+	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = -1, const colour& top_right_colour = -1,  const colour& bottom_left_colour = -1, const colour& bottom_right_colour = -1, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
 	{
-		draw(source_rect, dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
+		draw(source_rect, dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
 	}
 
 

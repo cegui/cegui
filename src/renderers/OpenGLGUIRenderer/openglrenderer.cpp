@@ -89,12 +89,12 @@ OpenGLRenderer::~OpenGLRenderer(void)
 /*************************************************************************
 	add's a quad to the list to be rendered
 *************************************************************************/
-void OpenGLRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+void OpenGLRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 {
 	// if not queuing, render directly (as in, right now!)
 	if (!d_queueing)
 	{
-		renderQuadDirect(dest_rect, z, tex, texture_rect, colours);
+		renderQuadDirect(dest_rect, z, tex, texture_rect, colours, quad_split_mode);
 	}
 	else
 	{
@@ -109,6 +109,9 @@ void OpenGLRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex,
 		quad.topRightCol	= colourToOGL(colours.d_top_right);
 		quad.bottomLeftCol	= colourToOGL(colours.d_bottom_left);
 		quad.bottomRightCol	= colourToOGL(colours.d_bottom_right);
+
+        // set quad split mode
+        quad.splitMode = quad_split_mode;
 
 		d_quadlist.insert(quad);
 	}
@@ -158,12 +161,27 @@ void OpenGLRenderer::doRender(void)
 		++d_bufferPos;
 
 		//vert2
-		myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
-		myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
-		myBuff[d_bufferPos].vertex[2]	= quad.z;
-		myBuff[d_bufferPos].color		= quad.bottomRightCol;
-		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;         
+
+        // top-left to bottom-right diagonal
+        if (quad.splitMode == TopLeftToBottomRight)
+        {
+            myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
+            myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
+            myBuff[d_bufferPos].vertex[2]	= quad.z;
+            myBuff[d_bufferPos].color		= quad.bottomRightCol;
+            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;         
+        }
+        // bottom-left to top-right diagonal
+        else
+        {
+            myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
+            myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
+            myBuff[d_bufferPos].vertex[2]	= quad.z;
+            myBuff[d_bufferPos].color		= quad.topRightCol;
+            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;         
+        }
 		++d_bufferPos;
 
 		//vert3
@@ -176,12 +194,27 @@ void OpenGLRenderer::doRender(void)
 		++d_bufferPos;
 
 		//vert4
-		myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
-		myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
-		myBuff[d_bufferPos].vertex[2]	= quad.z;
-		myBuff[d_bufferPos].color		= quad.topLeftCol;
-		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;         
+
+        // top-left to bottom-right diagonal
+        if (quad.splitMode == TopLeftToBottomRight)
+        {
+            myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
+            myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
+            myBuff[d_bufferPos].vertex[2]	= quad.z;
+            myBuff[d_bufferPos].color		= quad.topLeftCol;
+            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;         
+        }
+        // bottom-left to top-right diagonal
+        else
+        {
+            myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
+            myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
+            myBuff[d_bufferPos].vertex[2]	= quad.z;
+            myBuff[d_bufferPos].color		= quad.bottomLeftCol;
+            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;         
+        }
 		++d_bufferPos;
 
 		//vert 5
@@ -354,7 +387,7 @@ void OpenGLRenderer::sortQuads(void)
 /*************************************************************************
 	render a quad directly to the display
 *************************************************************************/
-void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 {
 	QuadInfo quad;
 	quad.position.d_left	= dest_rect.d_left;
@@ -391,12 +424,27 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 	myquad[1].tex[1]    = quad.texPosition.d_bottom;
 
 	//vert2
-	myquad[2].vertex[0] = quad.position.d_right;
-	myquad[2].vertex[1] = quad.position.d_bottom;
-	myquad[2].vertex[2] = z;
-	myquad[2].color     = quad.bottomRightCol;
-	myquad[2].tex[0]    = quad.texPosition.d_right;
-	myquad[2].tex[1]    = quad.texPosition.d_bottom;
+
+    // top-left to bottom-right diagonal
+    if (quad_split_mode == TopLeftToBottomRight)
+    {
+        myquad[2].vertex[0] = quad.position.d_right;
+        myquad[2].vertex[1] = quad.position.d_bottom;
+        myquad[2].vertex[2] = z;
+        myquad[2].color     = quad.bottomRightCol;
+        myquad[2].tex[0]    = quad.texPosition.d_right;
+        myquad[2].tex[1]    = quad.texPosition.d_bottom;
+    }
+    // bottom-left to top-right diagonal
+    else
+    {
+        myquad[2].vertex[0] = quad.position.d_right;
+        myquad[2].vertex[1] = quad.position.d_top;
+        myquad[2].vertex[2] = z;
+        myquad[2].color     = quad.topRightCol;
+        myquad[2].tex[0]    = quad.texPosition.d_right;
+        myquad[2].tex[1]    = quad.texPosition.d_top;
+    }
 
 	//vert3
 	myquad[3].vertex[0] = quad.position.d_right;
@@ -407,12 +455,27 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 	myquad[3].tex[1]    = quad.texPosition.d_top;
 
 	//vert4
-	myquad[4].vertex[0] = quad.position.d_left;
-	myquad[4].vertex[1] = quad.position.d_top;
-	myquad[4].vertex[2] = z;
-	myquad[4].color     = quad.topLeftCol;
-	myquad[4].tex[0]    = quad.texPosition.d_left;
-	myquad[4].tex[1]    = quad.texPosition.d_top;
+
+    // top-left to bottom-right diagonal
+    if (quad_split_mode == TopLeftToBottomRight)
+    {
+        myquad[4].vertex[0] = quad.position.d_left;
+        myquad[4].vertex[1] = quad.position.d_top;
+        myquad[4].vertex[2] = z;
+        myquad[4].color     = quad.topLeftCol;
+        myquad[4].tex[0]    = quad.texPosition.d_left;
+        myquad[4].tex[1]    = quad.texPosition.d_top;
+    }
+    // bottom-left to top-right diagonal
+    else
+    {
+        myquad[4].vertex[0] = quad.position.d_left;
+        myquad[4].vertex[1] = quad.position.d_bottom;
+        myquad[4].vertex[2] = z;
+        myquad[4].color     = quad.bottomLeftCol;
+        myquad[4].tex[0]    = quad.texPosition.d_left;
+        myquad[4].tex[1]    = quad.texPosition.d_bottom;
+    }
 
 	//vert5
 	myquad[5].vertex[0] = quad.position.d_right;

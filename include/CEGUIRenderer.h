@@ -82,11 +82,14 @@ public:
 
 	\param colours
 		ColourRect object describing the colour values that are to be applied when rendering.
+	
+	\param quad_split_mode
+		One of the QuadSplitMode values specifying the way quads are split into triangles
 
 	\return
 		Nothing
 	*/
-	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours) = 0;
+	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode) = 0;
 
 
 	/*!

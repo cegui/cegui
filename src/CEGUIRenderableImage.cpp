@@ -37,6 +37,7 @@ namespace CEGUI
 RenderableImage::RenderableImage(void) :
 	d_horzFormat(LeftAligned),
 	d_vertFormat(TopAligned),
+	d_quadSplitMode(TopLeftToBottomRight),
 	d_image(NULL)
 {
 }
@@ -149,7 +150,7 @@ void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) 
 				final_colours = d_colours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
 			}
 
-			d_image->draw(drawpos, imgSize, final_clipper, final_colours);
+			d_image->draw(drawpos, imgSize, final_clipper, final_colours, d_quadSplitMode);
 			drawpos.d_x += imgSize.d_width;
 		}
 

@@ -102,7 +102,7 @@ void Image::setVertScaling(float factor)
 /*************************************************************************
 	Clip and then queue the image to be rendered.
 *************************************************************************/
-void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const ColourRect& colours) const
+void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const ColourRect& colours, QuadSplitMode quad_split_mode) const
 {
 	Rect dest(dest_rect);
 
@@ -110,7 +110,7 @@ void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const Co
 	dest.offset(d_scaledOffset);
 
 	// draw
-	d_owner->draw(d_area, dest, z, clip_rect, colours);
+	d_owner->draw(d_area, dest, z, clip_rect, colours, quad_split_mode);
 }
 
 

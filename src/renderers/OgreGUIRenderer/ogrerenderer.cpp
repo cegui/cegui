@@ -91,12 +91,12 @@ OgreRenderer::~OgreRenderer(void)
 /*************************************************************************
 	add's a quad to the list to be rendered
 *************************************************************************/
-void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 {
 	// if not queueing, render directly (as in, right now!)
 	if (!d_queueing)
 	{
-		renderQuadDirect(dest_rect, z, tex, texture_rect, colours);
+		renderQuadDirect(dest_rect, z, tex, texture_rect, colours, quad_split_mode);
 	}
 	else
 	{
@@ -126,6 +126,9 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 		quad.topRightCol	= colourToOgre(colours.d_bottom_right);
 		quad.bottomLeftCol	= colourToOgre(colours.d_top_left);
 		quad.bottomRightCol	= colourToOgre(colours.d_top_right);
+		
+		// set quad split mode
+		quad.splitMode = quad_split_mode;
 
 		d_quadlist.insert(quad);
 	}
@@ -176,7 +179,7 @@ void OgreRenderer::doRender(void)
 				buffmem = (QuadVertex*)d_buffer->lock(Ogre::HardwareVertexBuffer::HBL_DISCARD);
 				locked = true;
 			}
-
+				
 			// setup Vertex 1...
 			buffmem->x = quad.position.d_left;
 			buffmem->y = quad.position.d_bottom;
@@ -187,13 +190,28 @@ void OgreRenderer::doRender(void)
 			++buffmem;
 
 			// setup Vertex 2...
-			buffmem->x = quad.position.d_right;
-			buffmem->y = quad.position.d_bottom;
-			buffmem->z = quad.z;
-			buffmem->diffuse = quad.topRightCol;
-			buffmem->tu1 = quad.texPosition.d_right;
-			buffmem->tv1 = quad.texPosition.d_bottom;
-			++buffmem;
+			
+			// top-left to bottom-right diagonal
+			if (quad.splitMode == TopLeftToBottomRight)
+			{
+				buffmem->x = quad.position.d_right;
+				buffmem->y = quad.position.d_bottom;
+				buffmem->z = quad.z;
+				buffmem->diffuse = quad.topRightCol;
+				buffmem->tu1 = quad.texPosition.d_right;
+				buffmem->tv1 = quad.texPosition.d_bottom;
+			}
+			// bottom-left to top-right diagonal
+			else
+			{
+				buffmem->x = quad.position.d_right;
+				buffmem->y = quad.position.d_top;
+				buffmem->z = quad.z;
+				buffmem->diffuse = quad.bottomRightCol;
+				buffmem->tu1 = quad.texPosition.d_right;
+				buffmem->tv1 = quad.texPosition.d_top;
+			}
+            ++buffmem;
 
 			// setup Vertex 3...
 			buffmem->x = quad.position.d_left;
@@ -223,13 +241,28 @@ void OgreRenderer::doRender(void)
 			++buffmem;
 
 			// setup Vertex 6...
-			buffmem->x = quad.position.d_left;
-			buffmem->y = quad.position.d_top;
-			buffmem->z = quad.z;
-			buffmem->diffuse = quad.bottomLeftCol;
-			buffmem->tu1 = quad.texPosition.d_left;
-			buffmem->tv1 = quad.texPosition.d_top;
-			++buffmem;
+			
+			// top-left to bottom-right diagonal
+			if (quad.splitMode == TopLeftToBottomRight)
+			{
+				buffmem->x = quad.position.d_left;
+				buffmem->y = quad.position.d_top;
+				buffmem->z = quad.z;
+				buffmem->diffuse = quad.bottomLeftCol;
+				buffmem->tu1 = quad.texPosition.d_left;
+				buffmem->tv1 = quad.texPosition.d_top;
+			}
+			// bottom-left to top-right diagonal
+			else
+			{
+				buffmem->x = quad.position.d_left;
+				buffmem->y = quad.position.d_bottom;
+				buffmem->z = quad.z;
+				buffmem->diffuse = quad.topLeftCol;
+				buffmem->tu1 = quad.texPosition.d_left;
+				buffmem->tv1 = quad.texPosition.d_bottom;
+			}
+            ++buffmem;
 
 			// update position within buffer for next time
 			d_bufferPos += VERTEX_PER_QUAD;
@@ -408,7 +441,7 @@ void OgreRenderer::sortQuads(void)
 /*************************************************************************
 render a quad directly to the display
 *************************************************************************/
-void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
+void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 {
 	if (d_render_sys->_getViewport()->getOverlaysEnabled())
 	{
@@ -453,13 +486,29 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		++buffmem;
 
 		// setup Vertex 2...
-		buffmem->x	= final_rect.d_right;
-		buffmem->y	= final_rect.d_bottom;
-		buffmem->z	= z;
-		buffmem->diffuse = topRightCol;
-		buffmem->tu1	= texture_rect.d_right;
-		buffmem->tv1	= texture_rect.d_bottom;
-		++buffmem;
+		
+		// top-left to bottom-right diagonal
+		if (quad_split_mode == TopLeftToBottomRight)
+		{
+			buffmem->x	= final_rect.d_right;
+			buffmem->y = final_rect.d_bottom;
+			buffmem->z	= z;
+			buffmem->diffuse = topRightCol;
+			buffmem->tu1	= texture_rect.d_right;
+			buffmem->tv1	= texture_rect.d_bottom;
+			++buffmem;
+		}
+		// bottom-left to top-right diagonal
+		else
+		{
+			buffmem->x	= final_rect.d_right;
+			buffmem->y = final_rect.d_top;
+			buffmem->z	= z;
+			buffmem->diffuse = bottomRightCol;
+			buffmem->tu1	= texture_rect.d_right;
+			buffmem->tv1	= texture_rect.d_top;
+			++buffmem;
+		}
 
 		// setup Vertex 3...
 		buffmem->x	= final_rect.d_left;
@@ -489,12 +538,27 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		++buffmem;
 
 		// setup Vertex 6...
-		buffmem->x	= final_rect.d_left;
-		buffmem->y	= final_rect.d_top;
-		buffmem->z	= z;
-		buffmem->diffuse = bottomLeftCol;
-		buffmem->tu1	= texture_rect.d_left;
-		buffmem->tv1	= texture_rect.d_top;
+		
+		// top-left to bottom-right diagonal
+		if (quad_split_mode == TopLeftToBottomRight)
+		{
+			buffmem->x	= final_rect.d_left;
+			buffmem->y = final_rect.d_top;
+			buffmem->z	= z;
+			buffmem->diffuse = bottomLeftCol;
+			buffmem->tu1	= texture_rect.d_left;
+			buffmem->tv1	= texture_rect.d_top;
+		}
+		// bottom-left to top-right diagonal
+		else
+		{
+			buffmem->x	= final_rect.d_left;
+			buffmem->y = final_rect.d_bottom;
+			buffmem->z	= z;
+			buffmem->diffuse = topLeftCol;
+			buffmem->tu1	= texture_rect.d_left;
+			buffmem->tv1	= texture_rect.d_bottom;
+		}
 
 		d_buffer->unlock();
 		d_bufferPos = VERTEX_PER_QUAD;
