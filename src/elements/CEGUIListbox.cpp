@@ -935,6 +935,13 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 			// update last selected item
 			d_lastSelected = item->isSelected() ? item : NULL;
 		}
+
+		// fire event if needed
+		if (modified)
+		{
+			WindowEventArgs args(this);
+			onSelectionChanged(args);
+		}
 		
 		e.handled = true;
 	}
