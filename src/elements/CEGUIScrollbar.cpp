@@ -24,10 +24,212 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "elements/CEGUIScrollbar.h"
+#include "elements/CEGUIThumb.h"
+#include <boost/bind.hpp>
+
+
+/*************************************************************************
+	TODO:
+	Mouse wheel support
+*************************************************************************/
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Event name constants
+*************************************************************************/
+const utf8	Scrollbar::ScrollPositionChanged[]		= "ScrollPosChanged";
 
+
+/*************************************************************************
+	Constructor for Scrollbar objects
+*************************************************************************/
+Scrollbar::Scrollbar(const String& type, const String& name) :
+	Window(type, name)
+{
+	addScrollbarEvents();
+}
+
+
+/*************************************************************************
+	Destructor for Scrollbar objects
+*************************************************************************/
+Scrollbar::~Scrollbar(void)
+{
+}
+
+
+/*************************************************************************
+	Initialises the Scrollbar object ready for use.
+*************************************************************************/
+void Scrollbar::initialise(void)
+{
+	// Set up thumb
+	d_thumb = createThumb();
+	addChildWindow(d_thumb);
+	d_thumb->subscribeEvent(Thumb::ThumbPositionChanged, boost::bind(&CEGUI::Scrollbar::handleThumbMoved, this, _1));
+
+	// set up Increase button
+	d_increase = createIncreaseButton();
+	addChildWindow(d_increase);
+	d_increase->subscribeEvent(PushButton::Clicked, boost::bind(&CEGUI::Scrollbar::handleIncreaseClicked, this, _1));
+
+	// set up Decrease button
+	d_decrease = createDecreaseButton();
+	addChildWindow(d_decrease);
+	d_decrease->subscribeEvent(PushButton::Clicked, boost::bind(&CEGUI::Scrollbar::handleDecreaseClicked, this, _1));
+
+	// do initial layout
+	layoutComponentWidgets();
+}
+
+
+/*************************************************************************
+	Set the size of the document or data.
+*************************************************************************/
+void Scrollbar::setDocumentSize(float document_size)
+{
+	d_documentSize = document_size;
+	updateThumb();
+}
+
+
+/*************************************************************************
+	Set the page size for this scroll bar.
+*************************************************************************/
+void Scrollbar::setPageSize(float page_size)
+{
+	d_pageSize = page_size;
+	updateThumb();
+}
+
+
+/*************************************************************************
+	Set the step size for this scroll bar.
+*************************************************************************/
+void Scrollbar::setStepSize(float step_size)
+{
+	d_stepSize = step_size;
+}
+
+
+/*************************************************************************
+	Set the overlap size for this scroll bar.
+*************************************************************************/
+void Scrollbar::setOverlapSize(float overlap_size)
+{
+	d_overlapSize = overlap_size;
+}
+
+
+/*************************************************************************
+	Set the current position of scroll bar within the document.
+*************************************************************************/
+void Scrollbar::setCurrentPosition(float position)
+{
+	float old_pos = d_position;
+
+	// max position is (docSize - pageSize), but must be at least 0 (in case doc size is very small)
+	float max_pos = std::max((d_documentSize - d_pageSize), 0.0f);
+
+	// limit position to valid range:  0 <= position <= max_pos
+	d_position = (position >= 0) ? ((position <= max_pos) ? position : max_pos) : 0.0f;
+
+	updateThumb();
+
+	// notification if required
+	if (d_position != old_pos)
+	{
+		onScrollPositionChanged(WindowEventArgs(this));
+	}
+
+}
+
+
+/*************************************************************************
+	Add scroll bar specific events
+*************************************************************************/
+void Scrollbar::addScrollbarEvents(void)
+{
+	addEvent(ScrollPositionChanged);
+}
+
+
+/*************************************************************************
+	Handler triggered when the scroll position changes
+*************************************************************************/
+void Scrollbar::onScrollPositionChanged(WindowEventArgs& e)
+{
+	fireEvent(ScrollPositionChanged, e);
+}
+
+
+/*************************************************************************
+	Handler for when mouse button is clicked within the container
+*************************************************************************/
+void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
+{
+	// base class processing
+	Window::onMouseButtonDown(e);
+
+	if (e.button == LeftButton)
+	{
+		float adj = getAdjustDirectionFromPoint(e.position);
+
+		// adjust scroll bar position in whichever direction as required.
+		if (adj != 0)
+		{
+			setCurrentPosition(d_position + ((d_pageSize - d_overlapSize) * adj));
+		}
+
+		e.handled = true;
+	}
+
+}
+
+
+/*************************************************************************
+	Handler for when widget is re-sized
+*************************************************************************/
+void Scrollbar::onSized(EventArgs& e)
+{
+	// base class processing
+	Window::onSized(e);
+
+	layoutComponentWidgets();
+
+	e.handled = true;
+}
+
+
+/*************************************************************************
+	handler function for when thumb moves.
+*************************************************************************/
+void Scrollbar::handleThumbMoved(const EventArgs& e)
+{
+	// adjust scroll bar position as required.
+	setCurrentPosition(getValueFromThumb());
+}
+
+
+/*************************************************************************
+	handler function for when the increase button is clicked.
+*************************************************************************/
+void Scrollbar::handleIncreaseClicked(const EventArgs& e)
+{
+	// adjust scroll bar position as required.
+	setCurrentPosition(d_position + d_stepSize);
+}
+
+
+/*************************************************************************
+	handler function for when the decrease button is clicked.
+*************************************************************************/
+void Scrollbar::handleDecreaseClicked(const EventArgs& e)
+{
+	// adjust scroll bar position as required.
+	setCurrentPosition(d_position - d_stepSize);
+}
 
 } // End of  CEGUI namespace section
