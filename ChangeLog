@@ -9,6 +9,7 @@ The following is a high-level view of changes made to the system between release
 
 Release 0.2.0
 =============
+Added: Support for resource provider resource groups to loading & parsing methods.
 Added: MouseButtonDown event auto-repeat feature.
 Added: System::getSystemKeys method to return current system keys value.
 Added: New setting in Window to receive muliple mouse down events instead of double/triple clicks.
@@ -32,10 +33,7 @@ Added: OpenGL renderer.
 Added: uint32 and uint16 datatypes.
 
 Modified: Layout loading code to properly throw CEGUI errors out of xercesc parser.
-Modified: Switched HBU_DYNAMIC_WRITE_ONLY for HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE in Ogre renderer to improve performance under D3D.
 Modified: Fixed font support under AMD64.
-Modified: OGRE renderer to work under AMD64.
-Modified: OgreGUIRenderer modified to compile against OGRE 1.0 (Ogre >= 1.0.0 is now required)
 Modified: Changed all const strings in the base library to be of type CEGUI::String instead of UTF-8 buffers.
 Modified: Removed public dependency on xerces-c (still required for base library itself though).
 Modified: Replaced dependency boost::regex with embedded copy of pcre.
@@ -58,8 +56,13 @@ Bug Fix: removed use of void* in properties system to ensure correct casting beh
 Bug Fix: All imagery aligned to whole pixels resolving twinkling and blurring issues.
 Bug Fix: Constructor overload and support methods to allow successful use of 'pure' D3D devices.
 Bug Fix: Made sure events were added to the EventSet in Window before making any calls that may fire an event.
-Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer added.
 Bug Fix: Various other minor tweaks & fixes.
+
+OgreGUIRenderer moved from CEGUI codebase into Ogre codebase (with the following initial changes):
+Modified: Switched HBU_DYNAMIC_WRITE_ONLY for HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE in Ogre renderer to improve performance under D3D.
+Modified: OGRE renderer to work under AMD64.
+Modified: Ogre renderer to compile against OGRE 1.0 (Ogre >= 1.0.0 is now required)
+Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer added.
 
 
 Release 0.1.1

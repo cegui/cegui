@@ -41,6 +41,7 @@ Gerald Lindsly:
 
 Jose A Milan:
 - Refactoring of XML handling classes to remove public dependency on Xerces-C++.
+- Initial updates to Ogre renderer to support Ogre 1.0.
 
 Magnus Osterlind:
 - Direct3D 9 GUI renderer module.
@@ -71,8 +72,13 @@ Geoff Carlton
 Paul Downey
 Jeff Doyle
 Jan Eickmann
+Erik Hjortsberg
 Peter Newman
 Chris Weaver
+Christopher Wedman
+armaduck
+genva
+Te'ja
 
 
 Special Thanks
