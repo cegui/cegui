@@ -357,6 +357,7 @@ void OgreRenderer::initRenderStates(void)
 	d_render_sys->_setColourBufferWriteEnabled(true, true, true, true);
 
 	// initialise texture settings
+	d_render_sys->_setTextureCoordCalculation(0, TEXCALC_NONE);
 	d_render_sys->_setTextureCoordSet(0, 0);
 	d_render_sys->_setTextureUnitFiltering(0, FO_LINEAR, FO_LINEAR, FO_POINT);
 	d_render_sys->_setTextureAddressingMode(0, TextureUnitState::TAM_CLAMP);

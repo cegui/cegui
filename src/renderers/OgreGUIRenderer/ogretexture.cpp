@@ -175,7 +175,14 @@ void OgreTexture::freeOgreTexture(void)
 Ogre::String OgreTexture::getUniqueName(void)
 {
 	Ogre::String str;
+
+#ifdef CEGUI_USEOLDOGRESTRING
 	str << "_cegui_ogre_" << d_texturenumber;
+#else
+	Ogre::StringUtil::StrStreamType strstream;
+	strstream << "_cegui_ogre_" << d_texturenumber;
+	str = strstream.str();
+#endif
 
 	++d_texturenumber;
 
