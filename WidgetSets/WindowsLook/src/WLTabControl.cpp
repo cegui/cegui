@@ -73,7 +73,7 @@ WLTabControl::~WLTabControl(void)
 TabPane* WLTabControl::createTabContentPane(void) const
 {
     // construct name
-    String newName = getName() + (utf8*)"__TabPane__Content";
+    String newName = getName() + (utf8*)"__auto_TabPane__";
     return static_cast<TabPane*>(
         WindowManager::getSingleton().createWindow(
             TabContentPaneType, 

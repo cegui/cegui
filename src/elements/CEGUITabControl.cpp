@@ -389,7 +389,7 @@ Remove tab button
 String TabControl::makeButtonName(Window* wnd)
 {
     // derive button name
-    String buttonName = (utf8*)"btn";
+    String buttonName = (utf8*)"__auto_btn";
     buttonName.append(wnd->getName());
     return buttonName;
 }
@@ -442,8 +442,8 @@ Internal version of adding a child window
 *************************************************************************/
 void TabControl::addChild_impl(Window* wnd)
 {
-    // Look for __TabPane__ in the name (hopefully no-one will use this!)
-    if (wnd->getName().find((const utf8*)"__TabPane__") != String::npos)
+    // Look for __auto_TabPane__ in the name (hopefully no-one will use this!)
+    if (wnd->getName().find((const utf8*)"__auto_TabPane__") != String::npos)
     {
         // perform normal addChild
         Window::addChild_impl(wnd);
@@ -528,7 +528,7 @@ Create tab button pane
 Window*	TabControl::createTabButtonPane(void) const
 {
     // Generate name based on own name
-    String newName = getName() + (utf8*)"__TabPane__Buttons";
+    String newName = getName() + (utf8*)"__auto_TabPane__Buttons";
 	return WindowManager::getSingleton().createWindow(GUISheet::WidgetTypeName, newName);
 }
 /*************************************************************************
