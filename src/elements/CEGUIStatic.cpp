@@ -376,6 +376,30 @@ const Image* Static::getBackgroundImage(void) const
 void Static::setImageForFrameLocation(FrameLocation location, const Image* image)
 {
 	d_frame.setImageForLocation(location, image);
+
+	// update our record of image size
+	switch (location)
+	{
+	case LeftEdge:
+		d_left_width = (image != NULL) ? image->getWidth() : 0;
+		break;
+
+	case RightEdge:
+		d_right_width = (image != NULL) ? image->getWidth() : 0;
+		break;
+
+	case TopEdge:
+		d_top_height = (image != NULL) ? image->getHeight() : 0;
+		break;
+
+	case BottomEdge:
+		d_bottom_height = (image != NULL) ? image->getHeight() : 0;
+		break;
+
+	default:
+		break;
+	}
+
 }
 
 /*************************************************************************
