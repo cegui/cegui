@@ -64,6 +64,15 @@ const double	System::DefaultSingleClickTimeout	= 0.2;
 const double	System::DefaultMultiClickTimeout	= 0.33;
 const Size		System::DefaultMultiClickAreaSize(12,12);
 
+// event names
+const utf8	System::GUISheetChanged[]			= "GUISheetChanged";
+const utf8	System::SingleClickTimeoutChanged[]	= "SingleClickTimeoutChanged";
+const utf8	System::MultiClickTimeoutChanged[]	= "MultiClickTimeoutChanged";
+const utf8	System::MultiClickAreaSizeChanged[]	= "MultiClickAreaSizeChanged";
+const utf8	System::DefaultFontChanged[]		= "DefaultFontChanged";
+const utf8	System::DefaultMouseCursorChanged[]	= "DefaultMouseCursorChanged";
+const utf8	System::MouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
+
 
 /*************************************************************************
 	Constructor
@@ -107,6 +116,9 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	d_scriptModule		 = scriptModule;
 
 	d_mouseScalingFactor = 1.0f;
+
+	// add events for Sytem object
+	addSystemEvents();
 
 	// initialise Xerces-C XML system
 	XERCES_CPP_NAMESPACE_USE
@@ -383,6 +395,11 @@ Window* System::setGUISheet(Window* sheet)
 {
 	Window* old = d_activeSheet;
 	d_activeSheet = sheet;
+
+	// fire event
+	WindowEventArgs args(old);
+	onDefaultFontChanged(args);
+
 	return old;
 }
 
@@ -411,7 +428,9 @@ void System::setDefaultFont(Font* font)
 {
 	d_defaultFont = font;
 	
-	// TODO: Add a 'system default font' changed event and fire it here.
+	// fire event
+	EventArgs args;
+	onDefaultFontChanged(args);
 }
 
 
@@ -426,6 +445,10 @@ void System::setDefaultMouseCursor(const Image* image)
 	}
 
 	d_defaultMouseCursor = image;
+
+	// fire off event.
+	EventArgs args;
+	onDefaultMouseCursorChanged(args);
 }
 
 
@@ -434,7 +457,7 @@ void System::setDefaultMouseCursor(const Image* image)
 *************************************************************************/
 void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
 {
-	d_defaultMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name);
+	setDefaultMouseCursor(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name));
 }
 
 
@@ -515,6 +538,10 @@ float System::getMouseMoveScaling(void) const
 void System::setMouseMoveScaling(float scaling)
 {
 	d_mouseScalingFactor = scaling;
+
+	// fire off event.
+	EventArgs args;
+	onMouseMoveScalingChanged(args);
 }
 
 
@@ -919,5 +946,124 @@ System*	System::getSingletonPtr(void)
 	return Singleton<System>::getSingletonPtr();
 }
 
+
+
+/*************************************************************************
+	Set the timeout to be used for the generation of single-click events.	
+*************************************************************************/
+void System::setSingleClickTimeout(double timeout)
+{
+	d_click_timeout = timeout;
+
+	// fire off event.
+	EventArgs args;
+	onSingleClickTimeoutChanged(args);
+}
+
+
+/*************************************************************************
+	Set the timeout to be used for the generation of multi-click events.	
+*************************************************************************/
+void System::setMultiClickTimeout(double timeout)
+{
+	d_dblclick_timeout = timeout;
+
+	// fire off event.
+	EventArgs args;
+	onMultiClickTimeoutChanged(args);
+}
+
+
+/*************************************************************************
+	Set the size of the allowable mouse movement tolerance used when
+	generating multi-click events.	
+*************************************************************************/
+void System::setMultiClickToleranceAreaSize(const Size&	sz)
+{
+	d_dblclick_size = sz;
+
+	// fire off event.
+	EventArgs args;
+	onMultiClickAreaSizeChanged(args);
+}
+
+
+/*************************************************************************
+	add events for the System object	
+*************************************************************************/
+void System::addSystemEvents(void)
+{
+	addEvent(GUISheetChanged);
+	addEvent(SingleClickTimeoutChanged);
+	addEvent(MultiClickTimeoutChanged);
+	addEvent(MultiClickAreaSizeChanged);
+	addEvent(DefaultFontChanged);
+	addEvent(DefaultMouseCursorChanged);
+	addEvent(MouseMoveScalingChanged);
+}
+
+
+/*************************************************************************
+	Handler called when the main system GUI Sheet (or root window) is changed
+*************************************************************************/
+void System::onGUISheetChanged(WindowEventArgs& e)
+{
+	fireEvent(GUISheetChanged, e);
+}
+
+
+/*************************************************************************
+	Handler called when the single-click timeout value is changed.
+*************************************************************************/
+void System::onSingleClickTimeoutChanged(EventArgs& e)
+{
+	fireEvent(SingleClickTimeoutChanged, e);
+}
+
+
+/*************************************************************************
+	Handler called when the multi-click timeout value is changed.
+*************************************************************************/
+void System::onMultiClickTimeoutChanged(EventArgs& e)
+{
+	fireEvent(MultiClickTimeoutChanged, e);
+}
+
+
+/*************************************************************************
+	Handler called when the size of the multi-click tolerance area is
+	changed.
+*************************************************************************/
+void System::onMultiClickAreaSizeChanged(EventArgs& e)
+{
+	fireEvent(MultiClickAreaSizeChanged, e);
+}
+
+
+/*************************************************************************
+	Handler called when the default system font is changed.	
+*************************************************************************/
+void System::onDefaultFontChanged(EventArgs& e)
+{
+	fireEvent(DefaultFontChanged, e);
+}
+
+
+/*************************************************************************
+	Handler called when the default system mouse cursor image is changed.	
+*************************************************************************/
+void System::onDefaultMouseCursorChanged(EventArgs& e)
+{
+	fireEvent(DefaultMouseCursorChanged, e);
+}
+
+
+/*************************************************************************
+	Handler called when the mouse movement scaling factor is changed.	
+*************************************************************************/
+void System::onMouseMoveScalingChanged(EventArgs& e)
+{
+	fireEvent(MouseMoveScalingChanged, e);
+}
 
 } // End of  CEGUI namespace section

@@ -55,7 +55,7 @@ namespace CEGUI
 	an initialised Renderer object which it can use to interface to whatever rendering system will be
 	used to display the GUI imagery.
 */
-class CEGUIBASE_API System : public Singleton<System>
+class CEGUIBASE_API System : public Singleton<System>, public EventSet
 {
 public:
 	/*************************************************************************
@@ -64,6 +64,15 @@ public:
 	static const double		DefaultSingleClickTimeout;		//!< Default timeout for generation of single click events.
 	static const double		DefaultMultiClickTimeout;		//!< Default timeout for generation of multi-click events.
 	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
+
+	// event names
+	static const utf8	GUISheetChanged[];					//!< Name of event fired whenever the GUI sheet is changed.
+	static const utf8	SingleClickTimeoutChanged[];		//!< Name of event fired when the single-click timeout is changed.
+	static const utf8	MultiClickTimeoutChanged[];			//!< Name of event fired when the multi-click timeout is changed.
+	static const utf8	MultiClickAreaSizeChanged[];		//!< Name of event fired when the size of the multi-click tolerance area is changed.
+	static const utf8	DefaultFontChanged[];				//!< Name of event fired when the default font changes.
+	static const utf8	DefaultMouseCursorChanged[];		//!< Name of event fired when the default mouse cursor changes.
+	static const utf8	MouseMoveScalingChanged[];			//!< Name of event fired when the mouse move scaling factor changes.
 
 
 	/*************************************************************************
@@ -267,7 +276,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setSingleClickTimeout(double timeout)		{d_click_timeout = timeout;}
+	void	setSingleClickTimeout(double timeout);
 
 
 	/*!
@@ -284,7 +293,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void setMultiClickTimeout(double timeout)			{d_dblclick_timeout = timeout;}
+	void setMultiClickTimeout(double timeout);
 
 
 	/*!
@@ -300,7 +309,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void setMultiClickToleranceAreaSize(const Size&	sz)		{d_dblclick_size = sz;}
+	void setMultiClickToleranceAreaSize(const Size&	sz);
 
 
 	/*!
@@ -582,6 +591,67 @@ private:
 		Method to do the work of the constructor
 	*/
 	void	constructor_impl(Renderer* renderer, ScriptModule* scriptModule, const String& configFile, const String& logFile);
+
+
+	/*!
+	\brief
+		add events for the System object
+	*/
+	void	addSystemEvents(void);
+
+
+	/*************************************************************************
+		Handlers for System events
+	*************************************************************************/
+	/*!
+	\brief
+		Handler called when the main system GUI Sheet (or root window) is changed.
+
+		\a e is a WindowEventArgs with 'window' set to the old root window.
+	*/
+	void	onGUISheetChanged(WindowEventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the single-click timeout value is changed.
+	*/
+	void	onSingleClickTimeoutChanged(EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the multi-click timeout value is changed.
+	*/
+	void	onMultiClickTimeoutChanged(EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the size of the multi-click tolerance area is changed.
+	*/
+	void	onMultiClickAreaSizeChanged(EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the default system font is changed.
+	*/
+	void	onDefaultFontChanged(EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the default system mouse cursor image is changed.
+	*/
+	void	onDefaultMouseCursorChanged(EventArgs& e);
+
+
+	/*!
+	\brief
+		Handler called when the mouse movement scaling factor is changed.
+	*/
+	void	onMouseMoveScalingChanged(EventArgs& e);
 
 
 	/*************************************************************************
