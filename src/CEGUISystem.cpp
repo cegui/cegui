@@ -254,6 +254,9 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	// add default GUISheet factory - the only UI element we can create "out of the box".
 	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
 
+	// GUISheet's name was changed, register an alias so both can be used
+	WindowFactoryManager::getSingleton().addWindowTypeAlias((utf8*)"DefaultGUISheet", GUISheet::WidgetTypeName);
+
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
