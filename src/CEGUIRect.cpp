@@ -32,10 +32,10 @@ namespace CEGUI
 	Constructor
 *************************************************************************/
 Rect::Rect(float left, float top, float right, float bottom) :
-	d_left(left),
 	d_top(top),
-	d_right(right),
-	d_bottom(bottom)
+	d_bottom(bottom),
+	d_left(left),
+	d_right(right)
 {
 }
 

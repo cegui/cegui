@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\..\..\Widget Sets\Taharez Look\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
+				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\TaharezLook\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -73,7 +73,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\..\..\Widget Sets\Taharez Look\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
+				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\TaharezLook\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
 				RuntimeLibrary="2"
 				DisableLanguageExtensions="FALSE"
@@ -128,64 +128,67 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLAlternateProgressBar.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLAlternateProgressBar.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLButton.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLButton.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLCheckbox.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCheckbox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLCloseButton.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCloseButton.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLEditbox.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLCombobox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLFrameWindow.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLEditbox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLListbox.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLFrameWindow.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniHorzScrollbar.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLListbox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniHorzScrollbarThumb.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLMiniHorzScrollbar.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniVertScrollbar.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLMiniHorzScrollbarThumb.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLMiniVertScrollbarThumb.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLMiniVertScrollbar.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLModule.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLMiniVertScrollbarThumb.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLProgressBar.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLModule.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLRadioButton.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLProgressBar.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLSlider.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLRadioButton.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLSliderThumb.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLSlider.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLStatic.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLSliderThumb.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLTitlebar.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLStatic.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLVertScrollbar.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLTitlebar.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLVertScrollbarThumb.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLVertScrollbar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLVertScrollbarThumb.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -193,64 +196,67 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLAlternateProgressBar.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLAlternateProgressBar.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLButton.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLButton.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLCheckbox.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCheckbox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLCloseButton.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCloseButton.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLEditbox.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLCombobox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLFrameWindow.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLEditbox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLListbox.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLFrameWindow.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniHorzScrollbar.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLListbox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniHorzScrollbarThumb.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLMiniHorzScrollbar.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniVertScrollbar.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLMiniHorzScrollbarThumb.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLMiniVertScrollbarThumb.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLMiniVertScrollbar.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLModule.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLMiniVertScrollbarThumb.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLProgressBar.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLModule.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLRadioButton.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLProgressBar.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLSlider.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLRadioButton.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLSliderThumb.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLSlider.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLStatic.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLSliderThumb.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLTitlebar.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLStatic.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLVertScrollbar.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLTitlebar.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLVertScrollbarThumb.h">
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLVertScrollbar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLVertScrollbarThumb.h">
 			</File>
 		</Filter>
 		<Filter

@@ -62,8 +62,8 @@ const float	TLAlternateProgressBar::FirstLightPaddingRatio		= 0.0f;
 TLAlternateProgressBar::TLAlternateProgressBar(const String& type, const String& name) :
 	ProgressBar(type, name),
 	d_lightCount(0),
-	d_lightsSize(0),
-	d_lights(NULL)
+	d_lights(NULL),
+	d_lightsSize(0)
 {
 	// cache images
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);

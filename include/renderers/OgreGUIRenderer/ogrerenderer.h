@@ -29,10 +29,14 @@
 #ifndef _ogrerenderer_h_
 #define _ogrerenderer_h_
 
-#ifdef OGRE_GUIRENDERER_EXPORTS
-#define OGRE_GUIRENDERER_API __declspec(dllexport)
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef OGRE_GUIRENDERER_EXPORTS
+#       define OGRE_GUIRENDERER_API __declspec(dllexport)
+#   else
+#       define OGRE_GUIRENDERER_API __declspec(dllimport)
+#   endif
 #else
-#define OGRE_GUIRENDERER_API __declspec(dllimport)
+#   define OGRE_GUIRENDERER_API
 #endif
 
 #include "CEGUIBase.h"

@@ -28,7 +28,9 @@
 
 #include "CEGUIBase.h"
 #include <string>
-
+#if defined(linux)
+#   include <stdexcept>
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI

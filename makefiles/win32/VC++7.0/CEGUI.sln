@@ -5,7 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX81Renderer", "Render
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreGUIRenderer", "Renderers\OgreRenderer\OgreGUIRenderer.vcproj", "{2250CA22-7F4D-4BC0-A8E7-B4400D209B33}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Taharez Look", "Widget Sets\Taharez Look\Taharez Look.vcproj", "{AF07C5D2-23BB-4777-A042-18F2A1CE508D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Taharez Look", "WidgetSets\TaharezLook\TaharezLook.vcproj", "{AF07C5D2-23BB-4777-A042-18F2A1CE508D}"
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution

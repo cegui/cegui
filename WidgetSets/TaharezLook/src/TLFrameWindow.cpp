@@ -27,8 +27,8 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
-#include "../Widget Sets/Taharez Look/include/TLTitlebar.h"
-#include "../Widget Sets/Taharez Look/include/TLButton.h"
+#include "TLTitlebar.h"
+#include "TLButton.h"
 #include "CEGUIFont.h"
 
 #include <boost/bind.hpp>

@@ -338,7 +338,7 @@ private:
 		Friends (allows us to ensure only the GUI system creates Image objects)
 	*************************************************************************/
 	friend class Imageset;
-	friend class std::map;
+	friend class std::map<String, Image>;
 	friend struct std::pair<const String, Image>;
 
 

@@ -50,11 +50,11 @@ const int	OgreRenderer::VERTEXBUFFER_CAPACITY		= 4096;
 	Constructor
 *************************************************************************/
 OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads) :
-	d_queue_id(queue_id),
-	d_post_queue(post_queue),
 	d_quadBuffSize(max_quads),
 	d_queueing(true),
+	d_queue_id(queue_id),
 	d_currTexture(NULL),
+	d_post_queue(post_queue),
 	d_bufferPos(0),
 	d_sorted(true)
 {

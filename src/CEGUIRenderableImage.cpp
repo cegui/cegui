@@ -35,9 +35,9 @@ namespace CEGUI
 	Constructor		
 *************************************************************************/
 RenderableImage::RenderableImage(void) :
-	d_image(NULL),
 	d_horzFormat(LeftAligned),
-	d_vertFormat(TopAligned)
+	d_vertFormat(TopAligned),
+	d_image(NULL)
 {
 }
 

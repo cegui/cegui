@@ -31,10 +31,14 @@
 /*************************************************************************
 	Import / Export control macros
 *************************************************************************/
-#ifdef TAHAREZLOOK_EXPORTS
-#define TAHAREZLOOK_API __declspec(dllexport)
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef TAHAREZLOOK_EXPORTS
+#       define TAHAREZLOOK_API __declspec(dllexport)
+#   else
+#       define TAHAREZLOOK_API __declspec(dllimport)
+#   endif
 #else
-#define TAHAREZLOOK_API __declspec(dllimport)
+#   define TAHAREZLOOK_API
 #endif
 
 /*************************************************************************

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIRenderableElement.cpp
-	created:	14/4/2004
+	filename: 	TLCombobox.cpp
+	created:	12/6/2004
 	author:		Paul D Turner
 	
-	purpose:	Implements RenderableElement base class
+	purpose:	Implementation of Taharez look Combo box class
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,61 +23,56 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "CEGUIRenderableElement.h"
+#include "TLCombobox.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Constants
+*************************************************************************/
 
 /*************************************************************************
-	Constructor
+	Constructor for Taharez Combobox
 *************************************************************************/
-RenderableElement::RenderableElement(void) :
-	d_next(NULL),
-	d_colours(-1, -1, -1, -1),
-	d_area(0, 0, 0, 0)
+TLCombobox::TLCombobox(const String& type, const String& name) :
+	Combobox(type, name)
 {
 }
 
 
 /*************************************************************************
-	Destructor
+	Destructor for Taharez Combobox
 *************************************************************************/
-RenderableElement::~RenderableElement(void)
+TLCombobox::~TLCombobox(void)
 {
 }
 
 
 /*************************************************************************
-	Sets the colours to be applied when rendering the element.
+	Perform rendering for this widget
 *************************************************************************/
-void RenderableElement::setColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void TLCombobox::drawSelf(float z)
 {
-	d_colours.d_top_left		= top_left_colour;
-	d_colours.d_top_right		= top_right_colour;
-	d_colours.d_bottom_left		= bottom_left_colour;
-	d_colours.d_bottom_right	= bottom_right_colour;
 }
 
 
+//////////////////////////////////////////////////////////////////////////
 /*************************************************************************
-	Draw the element chain starting with this element.
+
+	Factory Methods
+
 *************************************************************************/
-void RenderableElement::draw(const Vector3& position, const Rect& clip_rect)
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	Create, initialise and return a TLCombobox
+*************************************************************************/
+Window* TLComboboxFactory::createWindow(const String& name)
 {
-	Vector3	final_pos(position);
-	final_pos.d_x += d_area.d_left;
-	final_pos.d_y += d_area.d_top;
+	TLCombobox* wnd = new TLCombobox(d_type, name);
+	wnd->initialise();
 
-	// call implementation function to perform actual rendering
-	draw_impl(final_pos, clip_rect);
-
-	// render next element in the chain if any.
-	if (d_next != NULL)
-	{
-		d_next->draw(position, clip_rect);
-	}
-
+	return wnd;
 }
 
 } // End of  CEGUI namespace section

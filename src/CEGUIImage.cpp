@@ -61,10 +61,10 @@ Image::Image(const Image& image) :
 	d_owner(image.d_owner),
 	d_area(image.d_area),
 	d_offset(image.d_offset),
-	d_name(image.d_name),
-	d_scaledOffset(image.d_scaledOffset),
 	d_scaledWidth(image.d_scaledWidth),
-	d_scaledHeight(image.d_scaledHeight)
+	d_scaledHeight(image.d_scaledHeight),
+	d_scaledOffset(image.d_scaledOffset),
+	d_name(image.d_name)
 {
 }
 

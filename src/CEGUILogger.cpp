@@ -41,8 +41,8 @@ template<> Logger* Singleton<Logger>::ms_Singleton	= NULL;
 	Constructor
 *************************************************************************/
 Logger::Logger(const String& filename, bool append /* = false */) :
-	d_ostream(filename.c_str(), std::ios_base::out | (append ? std::ios_base::app : std::ios_base::trunc)),
-	d_level(Standard)
+	d_level(Standard),
+	d_ostream(filename.c_str(), std::ios_base::out | (append ? std::ios_base::app : std::ios_base::trunc))
 {
 	// initialise width for date & time alignment.
 	d_ostream.width(2);

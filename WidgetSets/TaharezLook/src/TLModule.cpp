@@ -45,6 +45,7 @@
 #include "TLMiniHorzScrollbar.h"
 #include "TLStatic.h"
 #include "TLListbox.h"
+#include "TLCombobox.h"
 
 /*************************************************************************
 	Static factory objects
@@ -69,6 +70,7 @@ static CEGUI::TLMiniHorzScrollbarThumbFactory	s_MiniHorzScrollbarThumbFactory;
 static CEGUI::TLStaticImageFactory		s_StaticImageFactory;
 static CEGUI::TLStaticTextFactory		s_StaticTextFactory;
 static CEGUI::TLListboxFactory			s_ListboxFactory;
+static CEGUI::TLComboboxFactory			s_ComboboxFactory;
 
 
 /*************************************************************************
@@ -176,6 +178,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez Listbox")
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListboxFactory);
+		return;
+	}
+	else if (type_name == "Taharez Combobox")
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_ComboboxFactory);
 		return;
 	}
 

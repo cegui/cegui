@@ -37,12 +37,15 @@
 \brief
 	Macro which is used to control import / export of CEGUIBase elements
 */
-#ifdef CEGUIBASE_EXPORTS
-#define CEGUIBASE_API __declspec(dllexport)
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUIBASE_EXPORTS
+#       define CEGUIBASE_API __declspec(dllexport)
+#   else
+#       define CEGUIBASE_API __declspec(dllimport)
+#   endif
 #else
-#define CEGUIBASE_API __declspec(dllimport)
+#       define CEGUIBASE_API
 #endif
-
 
 /*************************************************************************
 	Documentation for the CEGUI namespace itself
