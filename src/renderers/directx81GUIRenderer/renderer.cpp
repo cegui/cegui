@@ -119,10 +119,10 @@ void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* t
 
 		// ensure co-ordinates are whole numbers (fixes distortion issues)
 		Rect final_rect;
-		final_rect.d_left		= (float)((int)dest_rect.d_left);		
-		final_rect.d_right		= (float)((int)dest_rect.d_right);		
-		final_rect.d_top		= (float)((int)dest_rect.d_top);		
-		final_rect.d_bottom		= (float)((int)dest_rect.d_bottom);
+		final_rect.d_left		= dest_rect.d_left;		
+		final_rect.d_right		= dest_rect.d_right;		
+		final_rect.d_top		= dest_rect.d_top;		
+		final_rect.d_bottom		= dest_rect.d_bottom;
 
 		quad.position		= dest_rect;
 		quad.z				= z;
@@ -345,14 +345,40 @@ void DirectX81Renderer::destroyAllTextures(void)
 *************************************************************************/
 void DirectX81Renderer::initPerFrameStates(void)
 {
-	// set standard states
-	d_device->SetTextureStageState(0, D3DTSS_COLOROP,   D3DTOP_MODULATE);
-	d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-	d_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-
 	// setup vertex stream
 	d_device->SetStreamSource(0, d_buffer, sizeof(QuadVertex));
 	d_device->SetVertexShader(VERTEX_FVF);
+
+	// set device states
+	d_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+	d_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	d_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	d_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	d_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
+
+
+	// setup texture addressing settings
+	d_device->SetTextureStageState(0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
+	d_device->SetTextureStageState(0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
+
+	// setup colour calculations
+	d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	d_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+	d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+
+	// setup alpha calculations
+	d_device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	d_device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+	d_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+
+	// setup filtering
+	d_device->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTEXF_LINEAR);
+	d_device->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTEXF_LINEAR);
+
+	// setup scene alpha blending
+	d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	d_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
 
@@ -396,10 +422,10 @@ void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const T
 {
 	// ensure co-ordinates are whole numbers (fixes distortion issues)
 	Rect final_rect;
-	final_rect.d_left		= (float)((int)dest_rect.d_left);		
-	final_rect.d_right		= (float)((int)dest_rect.d_right);		
-	final_rect.d_top		= (float)((int)dest_rect.d_top);		
-	final_rect.d_bottom		= (float)((int)dest_rect.d_bottom);
+	final_rect.d_left		= dest_rect.d_left;		
+	final_rect.d_right		= dest_rect.d_right;		
+	final_rect.d_top		= dest_rect.d_top;		
+	final_rect.d_bottom		= dest_rect.d_bottom;
 
 	final_rect.offset(Point(-0.5f, -0.5f));
 
