@@ -289,7 +289,7 @@ public:
 
 	/*!
 	\brief
-		Removes the given item from the list box.
+		Removes the given item from the list box.  If the item is has the auto delete state set, the item will be deleted.
 
 	\param item
 		Pointer to the ListboxItem that is to be removed.  If \a item is not attached to this list box then nothing
@@ -603,6 +603,20 @@ protected:
 		item is under that position.
 	*/
 	ListboxItem*	getItemAtPoint(const Point& pt) const;
+
+
+	/*!
+	\brief
+		Remove all items from the list.
+
+	\note
+		Note that this will cause 'AutoDelete' items to be deleted.
+
+	\return
+		- true if the list contents were changed.
+		- false if the list contents were not changed (list already empty).
+	*/
+	bool	resetList_impl(void);
 
 
 	/*************************************************************************

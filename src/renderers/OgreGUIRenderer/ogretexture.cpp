@@ -164,6 +164,7 @@ void OgreTexture::freeOgreTexture(void)
 	if (d_ogre_texture != NULL)
 	{
 		Ogre::TextureManager::getSingleton().unload(d_ogre_texture->getName());
+		d_ogre_texture->destroy();
 		d_ogre_texture = NULL;
 	}
 }

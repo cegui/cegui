@@ -1295,6 +1295,20 @@ protected:
 	void	moveColumn_impl(uint col_idx, uint position);
 
 
+	/*!
+	\brief
+		Remove all items from the list.
+
+	\note
+		Note that this will cause 'AutoDelete' items to be deleted.
+
+	\return
+		- true if the list contents were changed.
+		- false if the list contents were not changed (list already empty).
+	*/
+	bool	resetList_impl(void);
+
+
 	/*************************************************************************
 		New event handlers for multi column list
 	*************************************************************************/

@@ -77,6 +77,7 @@ Listbox::Listbox(const String& type, const String& name)
 *************************************************************************/
 Listbox::~Listbox(void)
 {
+	resetList_impl();
 }
 
 
@@ -249,25 +250,12 @@ bool Listbox::isListboxItemInList(const ListboxItem* item) const
 *************************************************************************/
 void Listbox::resetList(void)
 {
-	// delete any items we are supposed to
-	for (uint i = 0; i < getItemCount(); ++i)
+	if (resetList_impl())
 	{
-		// if item is supposed to be deleted by us
-		if (d_listItems[i]->isAutoDeleted())
-		{
-			// clean up this item.
-			delete d_listItems[i];
-		}
-
+		WindowEventArgs args(this);
+		onListContentsChanged(args);
 	}
 
-	// clear out the list.
-	d_listItems.clear();
-
-	d_lastSelected = NULL;
-
-	WindowEventArgs args(this);
-	onListContentsChanged(args);
 }
 
 
@@ -1059,6 +1047,42 @@ void Listbox::addListboxProperties(void)
 	addProperty(&d_multiSelectProperty);
 	addProperty(&d_forceHorzProperty);
 	addProperty(&d_forceVertProperty);
+}
+
+
+/*************************************************************************
+	Remove all items from the list.
+*************************************************************************/
+bool Listbox::resetList_impl(void)
+{
+	// just return false if the list is already empty
+	if (getItemCount() == 0)
+	{
+		return false;
+	}
+	// we have items to be removed and possible deleted
+	else
+	{
+		// delete any items we are supposed to
+		for (uint i = 0; i < getItemCount(); ++i)
+		{
+			// if item is supposed to be deleted by us
+			if (d_listItems[i]->isAutoDeleted())
+			{
+				// clean up this item.
+				delete d_listItems[i];
+			}
+
+		}
+
+		// clear out the list.
+		d_listItems.clear();
+
+		d_lastSelected = NULL;
+
+		return true;
+	}
+
 }
 
 

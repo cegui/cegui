@@ -636,27 +636,12 @@ void MultiColumnList::initialise(void)
 *************************************************************************/
 void MultiColumnList::resetList(void)
 {
-	for (uint i = 0; i < getRowCount(); ++i)
+	if (resetList_impl())
 	{
-		for (uint j = 0; j < getColumnCount(); ++j)
-		{
-			ListboxItem* item = d_grid[i][j];
-
-			// delete item as needed.
-			if ((item != NULL) && item->isAutoDeleted())
-			{
-				delete item;
-			}
-
-		}
-
+		WindowEventArgs args(this);
+		onListContentsChanged(args);
 	}
 
-	// clear all items from the grid.
-	d_grid.clear();
-
-	// reset other affected fields
-	d_nominatedSelectRow = 0;
 }
 
 
@@ -2199,6 +2184,48 @@ void MultiColumnList::addMultiColumnListProperties(void)
 	addProperty(&d_sortColumnIDProperty);
 	addProperty(&d_sortDirectionProperty);
 	addProperty(&d_sortSettingProperty);
+}
+
+
+/*************************************************************************
+	Remove all items from the list.
+*************************************************************************/
+bool MultiColumnList::resetList_impl(void)
+{
+	// just return false if the list is already empty (no rows == empty)
+	if (getRowCount() == 0)
+	{
+		return false;
+	}
+	// we have items to be removed and possible deleted
+	else
+	{
+		for (uint i = 0; i < getRowCount(); ++i)
+		{
+			for (uint j = 0; j < getColumnCount(); ++j)
+			{
+				ListboxItem* item = d_grid[i][j];
+
+				// delete item as needed.
+				if ((item != NULL) && item->isAutoDeleted())
+				{
+					delete item;
+				}
+
+			}
+
+		}
+
+		// clear all items from the grid.
+		d_grid.clear();
+
+		// reset other affected fields
+		d_nominatedSelectRow = 0;
+		d_lastSelected = NULL;
+
+		return true;
+	}
+
 }
 
 
