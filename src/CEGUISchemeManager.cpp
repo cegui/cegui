@@ -55,11 +55,7 @@ SchemeManager::~SchemeManager(void)
 {
 	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of GUI Scheme system ----");
 
-	// unload all schemes
-	while (!d_schemes.empty())
-	{
-		unloadScheme(d_schemes.begin()->first);
-	}
+	unloadAllSchemes();
 
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::SchemeManager singleton destroyed.");
 }
@@ -135,5 +131,20 @@ SchemeManager::SchemeIterator SchemeManager::getIterator(void) const
 {
 	return SchemeIterator(d_schemes.begin(), d_schemes.end());
 }
+
+
+/*************************************************************************
+	Unload all schemes currently defined within the system.
+*************************************************************************/
+void SchemeManager::unloadAllSchemes(void)
+{
+	// unload all schemes
+	while (!d_schemes.empty())
+	{
+		unloadScheme(d_schemes.begin()->first);
+	}
+
+}
+
 
 } // End of  CEGUI namespace section

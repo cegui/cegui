@@ -135,6 +135,21 @@ public:
 	*/
 	Scheme*	getScheme(const String& name) const;
 
+
+	/*!
+	\brief
+		Unload all schemes currently defined within the system.
+
+	\note
+		Calling this method has the potential to be very dangerous; if any of the
+		data that forms part of the scheme is still in use, you can expect
+		fireworks shortly after!
+
+	\return
+		Nothing.
+	*/
+	void	unloadAllSchemes(void);
+
 private:
 	/*************************************************************************
 		Implementation Data
