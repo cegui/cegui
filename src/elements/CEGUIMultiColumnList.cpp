@@ -604,6 +604,7 @@ void MultiColumnList::initialise(void)
 	d_header->subscribeEvent(ListHeader::SegmentSized, boost::bind(&CEGUI::MultiColumnList::handleColumnSizeChange, this, _1));
 	d_header->subscribeEvent(ListHeader::SortColumnChanged , boost::bind(&CEGUI::MultiColumnList::handleSortColumnChange, this, _1));
 	d_header->subscribeEvent(ListHeader::SortDirectionChanged, boost::bind(&CEGUI::MultiColumnList::handleSortDirectionChange, this, _1));
+	d_header->subscribeEvent(ListHeader::SplitterDoubleClicked, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this, _1));
 	d_horzScrollbar->subscribeEvent(Scrollbar::ScrollPositionChanged, boost::bind(&CEGUI::MultiColumnList::handleHorzScrollbar, this, _1));
 
 	// complete set up operations
@@ -677,7 +678,7 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, float width,
 	}
 
 	// update stored nominated selection column if that has changed.
-	if (d_nominatedSelectCol <= position)
+	if ((d_nominatedSelectCol >= position) && (getColumnCount() > 1))
 	{
 		d_nominatedSelectCol++;
 	}
@@ -1671,6 +1672,14 @@ void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
 		{
 			d_nominatedSelectCol = position;
 		}
+		else if ((col_idx < d_nominatedSelectCol) && (position >= d_nominatedSelectCol))
+		{
+			d_nominatedSelectCol--;
+		}
+		else if ((col_idx > d_nominatedSelectCol) && (position <= d_nominatedSelectCol))
+		{
+			d_nominatedSelectCol++;
+		}
 
 		// move column entry in each row.
 		for (uint i = 0; i < getRowCount(); ++i)
@@ -2049,6 +2058,28 @@ void MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onSortDirectionChanged(args);
+}
+
+
+/*************************************************************************
+	Handler for when user double-clicks on header segment splitter
+*************************************************************************/
+void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
+{
+	// get the column index for the segment that was double-clicked
+	uint col = d_header->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
+
+	// get the width of the widest item in the column.
+	float width = getWidestColumnItemWidth(col);
+
+	// perform metrics conversion if needed
+	if (getMetricsMode() == Relative)
+	{
+		width = absoluteToRelativeX(width);
+	}
+
+	// set new column width
+	setColumnHeaderWidth(col, width);
 }
 
 

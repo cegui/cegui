@@ -1307,6 +1307,7 @@ protected:
 	void	handleHorzScrollbar(const EventArgs& e);
 	void	handleSortColumnChange(const EventArgs& e);
 	void	handleSortDirectionChange(const EventArgs& e);
+	void	handleHeaderSegDblClick(const EventArgs& e);
 
 
 	/*************************************************************************
