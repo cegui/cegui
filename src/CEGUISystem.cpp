@@ -271,6 +271,9 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
             throw;
 		}
 
+        // set the logging level
+        Logger::getSingleton().setLoggingLevel(handler.getLoggingLevel());
+
         // get the strings read
         configLogname		= handler.getLogFilename();
         configSchemeName	= handler.getSchemeFilename();

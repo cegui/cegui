@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUILogger.h"
 #include "CEGUIXMLHandler.h"
 
 #include <vector>
@@ -117,6 +118,12 @@ public:
 	*/
 	const String&	getDefaultResourceGroup(void) const		{return d_defaultResourceGroup;}
 
+    /*!
+    \brief
+        Return logging level which was read from the config file.
+    */
+    LoggingLevel getLoggingLevel(void) const     {return d_logLevel;}
+
 
 private:
 	/*************************************************************************
@@ -130,6 +137,7 @@ private:
 	static const char	ConfigInitScriptAttribute[];		//!< Attribute name that stores the filename of an initialisation script to run.
 	static const char	ConfigTerminateScriptAttribute[];	//!< Attribute name that stores the filename of a termination script to run.
     static const char   ConfigDefaultResourceGroupAttribute[]; //!< Attribute name that stores the default resource group (also used when loading config resources).
+    static const char   ConfigLoggingLevelAttribute[];      //!< Attribute name that stores the logging level to be used.
 
 	/*************************************************************************
 		Implementation Data
@@ -141,6 +149,7 @@ private:
 	String		d_termScriptFilename;	//!< filename for the script to run before system shutdown.
 	String		d_defaultFontName;		//!< Holds name of default font to set.
     String      d_defaultResourceGroup; //!< Holds default resource group name.
+    LoggingLevel    d_logLevel;         //!< Holds the logging level read from the config.
 };
 
 

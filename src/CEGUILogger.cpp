@@ -70,67 +70,63 @@ namespace CEGUI
     *************************************************************************/
     void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */)
     {
-        // only log the message if the current logging level is >= the level for the message
-        if (d_level >= level)
+        using namespace std;
+
+        time_t  et;
+        time(&et);
+        tm* etm = gmtime(&et);
+
+        if (etm != NULL)
         {
-            using namespace std;
+            // clear sting stream
+            d_workstream.str("");
 
-            time_t  et;
-            time(&et);
-            tm* etm = gmtime(&et);
+            // write date
+            d_workstream << setfill('0') << setw(2) << etm->tm_mday << '/' <<
+            setfill('0') << setw(2) << 1 + etm->tm_mon << '/' <<
+            setw(4) << (1900 + etm->tm_year) << ' ';
 
-            if (etm != NULL)
+            // wite time
+            d_workstream << setfill('0') << setw(2) << etm->tm_hour << ':' <<
+            setfill('0') << setw(2) << etm->tm_min << ':' <<
+            setfill('0') << setw(2) << etm->tm_sec << ' ';
+
+            // write event type code
+            switch(level)
             {
-                // clear sting stream
-                d_workstream.str("");
-                
-                // write date
-                d_workstream << setfill('0') << setw(2) << etm->tm_mday << '/' <<
-                setfill('0') << setw(2) << 1 + etm->tm_mon << '/' <<
-                setw(4) << (1900 + etm->tm_year) << ' ';
+            case Errors:
+                d_workstream << "(Error)\t";
+                break;
 
-                // wite time
-                d_workstream << setfill('0') << setw(2) << etm->tm_hour << ':' <<
-                setfill('0') << setw(2) << etm->tm_min << ':' <<
-                setfill('0') << setw(2) << etm->tm_sec << ' ';
+            case Standard:
+                d_workstream << "(InfL1)\t";
+                break;
 
-                // write event type code
-                switch(level)
-                {
-                case Errors:
-                    d_workstream << "(Error)\t";
-                    break;
+            case Informative:
+                d_workstream << "(InfL2)\t";
+                break;
 
-                case Standard:
-                    d_workstream << "(InfL1)\t";
-                    break;
+            case Insane:
+                d_workstream << "(InfL3)\t";
+                break;
 
-                case Informative:
-                    d_workstream << "(InfL2)\t";
-                    break;
+            default:
+                d_workstream << "(Unkwn)\t";
+                break;
+            }
 
-                case Insane:
-                    d_workstream << "(InfL3)\t";
-                    break;
+            d_workstream << message << endl;
 
-                default:
-                    d_workstream << "(Unkwn)\t";
-                    break;
-                }
-
-                d_workstream << message << endl;
-
-                if (d_caching)
-                {
-                    d_cache.push_back(d_workstream.str());
-                }
-                else
-                {
-                    // write message
-                    d_ostream << d_workstream.str();
-                    // ensure new event is written to the file, rather than just being buffered.
-                    d_ostream.flush();
-                }
+            if (d_caching)
+            {
+                d_cache.push_back(std::make_pair(d_workstream.str(), level));
+            }
+            else if (d_level >= level)
+            {
+                // write message
+                d_ostream << d_workstream.str();
+                // ensure new event is written to the file, rather than just being buffered.
+                d_ostream.flush();
             }
         }
     }
@@ -158,11 +154,18 @@ namespace CEGUI
         {
             d_caching = false;
 
-            std::vector<String>::iterator iter = d_cache.begin();
+            std::vector<std::pair<String, LoggingLevel> >::iterator iter = d_cache.begin();
 
             while (iter != d_cache.end())
             {
-                d_ostream << (*iter);
+                if (d_level >= (*iter).second)
+                {
+                    // write message
+                    d_ostream << (*iter).first;
+                    // ensure new event is written to the file, rather than just being buffered.
+                    d_ostream.flush();
+                }
+
                 ++iter;
             }
 

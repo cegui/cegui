@@ -31,6 +31,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <utility>
 #include "CEGUISingleton.h"
 
 
@@ -146,7 +147,7 @@ protected:
 	*************************************************************************/
 	LoggingLevel	d_level;		//!< Holds current logging level
 	std::ofstream	d_ostream;		//!< Stream used to implement the logger
-    std::vector<String> d_cache;    //!< Used to cache log entries before log file is created.
+    std::vector<std::pair<String, LoggingLevel> > d_cache;    //!< Used to cache log entries before log file is created.
     std::ostringstream d_workstream;//!< Used to build log entry strings. 
     bool d_caching;                 //!< true while log entries are beign cached (prior to logfile creation)
     

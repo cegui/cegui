@@ -43,6 +43,7 @@ namespace CEGUI
     const char  Config_xmlHandler::ConfigInitScriptAttribute[]      = "InitScript";
     const char  Config_xmlHandler::ConfigTerminateScriptAttribute[] = "TerminateScript";
     const char  Config_xmlHandler::ConfigDefaultResourceGroupAttribute[] = "DefaultResourceGroup";
+    const char  Config_xmlHandler::ConfigLoggingLevelAttribute[]    = "LoggingLevel";
 
     void Config_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
     {
@@ -56,6 +57,26 @@ namespace CEGUI
             d_termScriptFilename    = attributes.getValueAsString(ConfigTerminateScriptAttribute);
             d_defaultFontName       = attributes.getValueAsString(ConfigDefaultFontAttribute);
             d_defaultResourceGroup  = attributes.getValueAsString(ConfigDefaultResourceGroupAttribute);
+
+            // handle logging level
+            String logLevelStr = attributes.getValueAsString(ConfigLoggingLevelAttribute, "Standard");
+
+            if (logLevelStr == "Errors")
+            {
+                d_logLevel = Errors;
+            }
+            else if (logLevelStr == "Informative")
+            {
+                d_logLevel = Informative;
+            }
+            else if (logLevelStr == "Insane")
+            {
+                d_logLevel = Insane;
+            }
+            else
+            {
+                d_logLevel = Standard;
+            }
         }
         // anything else is an error which *should* have already been caught by XML validation
         else
