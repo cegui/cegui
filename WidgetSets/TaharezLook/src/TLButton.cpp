@@ -49,13 +49,6 @@ const utf8	TLButton::MiddlePushedImageName[]		= "ButtonMiddlePushed";
 const utf8	TLButton::RightPushedImageName[]		= "ButtonRightPushed";
 const utf8  TLButton::MouseCursorImageName[]		= "MouseArrow";
 
-TLButtonProperties::NormalImage TLButton::d_normalImageProperty;
-TLButtonProperties::PushedImage TLButton::d_pushedImageProperty;
-TLButtonProperties::HoverImage  TLButton::d_hoverImageProperty;
-TLButtonProperties::UseStandardImagery TLButton::d_useStandardImageryProperty;
-TLButtonProperties::TextXOffset TLButton::d_textXOffsetProperty;
-
-
 /*************************************************************************
 	Constructor
 *************************************************************************/
@@ -63,14 +56,6 @@ TLButton::TLButton(const String& type, const String& name) :
 	PushButton(type, name)
 {
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
-
-	// default options
-	d_autoscaleImages		= true;
-	d_useStandardImagery	= true;
-	d_useNormalImage		= false;
-	d_useHoverImage			= false;
-	d_usePushedImage		= false;
-	d_useDisabledImage		= false;
 
 	// setup cache of image pointers
 	d_leftSectionNormal		= &iset->getImage(LeftNormalImageName);
@@ -85,11 +70,7 @@ TLButton::TLButton(const String& type, const String& name) :
 	d_middleSectionPushed	= &iset->getImage(MiddlePushedImageName);
 	d_rightSectionPushed	= &iset->getImage(RightPushedImageName);
 
-	d_textXOffset = 0.0f;
-
 	setMouseCursor(&iset->getImage(MouseCursorImageName));
-
-	addTLButtonProperties();
 }
 
 
@@ -98,115 +79,6 @@ TLButton::TLButton(const String& type, const String& name) :
 *************************************************************************/
 TLButton::~TLButton(void)
 {
-}
-
-
-
-/*************************************************************************
-	set whether or not to render the standard imagery for the button	
-*************************************************************************/
-void TLButton::setStandardImageryEnabled(bool setting)
-{
-	if (d_useStandardImagery != setting)
-	{
-		d_useStandardImagery = setting;
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	set the image to render for the button (normal state) - use NULL to
-	disable drawing of image	
-*************************************************************************/
-void TLButton::setNormalImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_useNormalImage = false;
-	}
-	else
-	{
-		d_useNormalImage = true;
-		d_normalImage = *image;
-		d_normalImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	set the image to render for the button (hover state)  - use NULL to
-	disable drawing of image
-*************************************************************************/
-void TLButton::setHoverImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_useHoverImage = false;
-	}
-	else
-	{
-		d_useHoverImage = true;
-		d_hoverImage = *image;
-		d_hoverImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	set the image to render for the button (pushed state)  - use NULL to
-	disable drawing of image	
-*************************************************************************/
-void TLButton::setPushedImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_usePushedImage = false;
-	}
-	else
-	{
-		d_usePushedImage = true;
-		d_pushedImage = *image;
-		d_pushedImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	set the image to render for the button (disabled state)  - use NULL
-	to disable drawing of image	
-*************************************************************************/
-void TLButton::setDisabledImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_useDisabledImage = false;
-	}
-	else
-	{
-		d_useDisabledImage = true;
-		d_disabledImage = *image;
-		d_disabledImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-float TLButton::getTextXOffset() const
-{
-   return d_textXOffset;
-}
-
-void TLButton::setTextXOffset(float offset)
-{
-   d_textXOffset = offset;
 }
 
 
@@ -467,62 +339,6 @@ void TLButton::drawDisabled(float z)
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
-}
-
-
-/*************************************************************************
-	Set whether to auto re-size custom image areas when the button is
-	sized.	
-*************************************************************************/
-void TLButton::setCustomImageryAutoSized(bool setting)
-{
-	// if we are enabling auto-sizing, scale images for current size
-	if ((setting == true) && (setting != d_autoscaleImages))
-	{
-		Rect area(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());
-
-		d_normalImage.setRect(area);
-		d_hoverImage.setRect(area);
-		d_pushedImage.setRect(area);
-		d_disabledImage.setRect(area);
-
-		requestRedraw();
-	}
-
-	d_autoscaleImages = setting;
-}
-
-
-/*************************************************************************
-	Handler for when button size is changed
-*************************************************************************/
-void TLButton::onSized(WindowEventArgs& e)
-{
-	// default processing
-	PushButton::onSized(e);
-
-	// scale images if required.
-	if (d_autoscaleImages)
-	{
-		Rect area(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());
-
-		d_normalImage.setRect(area);
-		d_hoverImage.setRect(area);
-		d_pushedImage.setRect(area);
-		d_disabledImage.setRect(area);
-
-		e.handled = true;
-	}
-
-}
-
-void TLButton::addTLButtonProperties(void)
-{
-   addProperty(&d_normalImageProperty);
-   addProperty(&d_pushedImageProperty);
-   addProperty(&d_hoverImageProperty);
-   addProperty(&d_useStandardImageryProperty);
-   addProperty(&d_textXOffsetProperty);
 }
 
 

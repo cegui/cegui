@@ -80,14 +80,6 @@ const colour	WLButton::DisabledTextLabelColour	= 0x888888;
 WLButton::WLButton(const String& type, const String& name) :
 	PushButton(type, name)
 {
-	// default options
-	d_autoscaleImages		= true;
-	d_useStandardImagery	= true;
-	d_useNormalImage		= false;
-	d_useHoverImage			= false;
-	d_usePushedImage		= false;
-	d_useDisabledImage		= false;
-
 	storeFrameSizes();
 
 	// setup frames & image pointers
@@ -147,105 +139,6 @@ WLButton::~WLButton(void)
 }
 
 
-
-/*************************************************************************
-	set whether or not to render the standard imagery for the button	
-*************************************************************************/
-void WLButton::setStandardImageryEnabled(bool setting)
-{
-	if (d_useStandardImagery != setting)
-	{
-		d_useStandardImagery = setting;
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	set the image to render for the button (normal state) - use NULL to
-	disable drawing of image	
-*************************************************************************/
-void WLButton::setNormalImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_useNormalImage = false;
-	}
-	else
-	{
-		d_useNormalImage = true;
-		d_normalImage = *image;
-		d_normalImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	set the image to render for the button (hover state)  - use NULL to
-	disable drawing of image
-*************************************************************************/
-void WLButton::setHoverImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_useHoverImage = false;
-	}
-	else
-	{
-		d_useHoverImage = true;
-		d_hoverImage = *image;
-		d_hoverImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	set the image to render for the button (pushed state)  - use NULL to
-	disable drawing of image	
-*************************************************************************/
-void WLButton::setPushedImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_usePushedImage = false;
-	}
-	else
-	{
-		d_usePushedImage = true;
-		d_pushedImage = *image;
-		d_pushedImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	set the image to render for the button (disabled state)  - use NULL
-	to disable drawing of image	
-*************************************************************************/
-void WLButton::setDisabledImage(const RenderableImage* image)
-{
-	if (image == NULL)
-	{
-		d_useDisabledImage = false;
-	}
-	else
-	{
-		d_useDisabledImage = true;
-		d_disabledImage = *image;
-		d_disabledImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
-	}
-
-	requestRedraw();
-}
-
-
 /*************************************************************************
 	render Widget in normal state	
 *************************************************************************/
@@ -298,6 +191,7 @@ void WLButton::drawNormal(float z)
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+    absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -354,6 +248,7 @@ void WLButton::drawHover(float z)
 	colours.setColours(d_hoverColour);
 	colours.setAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+    absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -410,6 +305,7 @@ void WLButton::drawPushed(float z)
 	colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+    absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -466,30 +362,8 @@ void WLButton::drawDisabled(float z)
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+    absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
-}
-
-
-/*************************************************************************
-	Set whether to auto re-size custom image areas when the button is
-	sized.	
-*************************************************************************/
-void WLButton::setCustomImageryAutoSized(bool setting)
-{
-	// if we are enabling auto-sizing, scale images for current size
-	if ((setting == true) && (setting != d_autoscaleImages))
-	{
-		Rect area(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());
-
-		d_normalImage.setRect(area);
-		d_hoverImage.setRect(area);
-		d_pushedImage.setRect(area);
-		d_disabledImage.setRect(area);
-
-		requestRedraw();
-	}
-
-	d_autoscaleImages = setting;
 }
 
 
@@ -521,17 +395,6 @@ void WLButton::onSized(WindowEventArgs& e)
 	d_normalFrame.setSize(absSize);
 	d_hoverFrame.setSize(absSize);
 	d_pushedFrame.setSize(absSize);
-
-	// scale user images if required.
-	if (d_autoscaleImages)
-	{
-		Rect area(0, 0, absSize.d_width, absSize.d_height);
-
-		d_normalImage.setRect(area);
-		d_hoverImage.setRect(area);
-		d_pushedImage.setRect(area);
-		d_disabledImage.setRect(area);
-	}
 
 	e.handled = true;
 }

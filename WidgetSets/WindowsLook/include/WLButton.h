@@ -109,118 +109,6 @@ public:
 	virtual ~WLButton(void);
 
 	
-	/*************************************************************************
-		Accessors
-	*************************************************************************/
-	/*!
-	\brief
-		return whether or not rendering of the standard imagery is enabled.
-
-	\return
-		true if the standard button imagery will be rendered, false if no standard rendering will be performed.
-	*/
-	bool	isStandardImageryEnabled(void) const	{return d_useStandardImagery;}
-
-
-	/*!
-	\brief
-		Return whether of not custom button image areas are auto-scaled to the size of the button.
-
-	\return
-		true if client specified custom image areas are re-sized when the button size changes.  false if image areas will
-		remain unchanged when the button is sized.
-	*/
-	bool	isCustomImageryAutoSized(void) const	{return d_autoscaleImages;}
-
-
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
-	/*!
-	\brief
-		set whether or not to render the standard imagery for the button
-
-	\param setting
-		true to have the standard button imagery drawn, false to have no standard imagery drawn.
-
-	\return
-		Nothing.
-	*/
-	void	setStandardImageryEnabled(bool setting);
-
-
-	/*!
-	\brief
-		Set whether to auto re-size custom image areas when the button is sized.
-
-	\param setting
-		true to have custom image areas auto-sized.  false to have system leave image areas untouched.
-
-	\return
-		Nothing.
-	*/
-	void	setCustomImageryAutoSized(bool setting);
-
-	/*!
-	\brief
-		set the details of the image to render for the button in the normal state.
-
-	\param image
-		RenderableImage object with all the details for the image.  Note that an internal copy of the Renderable image is made and
-		ownership of \a image remains with client code.  If this parameter is NULL, rendering of an image for this button state is
-		disabled.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalImage(const RenderableImage* image);
-
-
-	/*!
-	\brief
-		set the details of the image to render for the button in the highlighted state.
-
-	\param image
-		RenderableImage object with all the details for the image.  Note that an internal copy of the Renderable image is made and
-		ownership of \a image remains with client code.  If this parameter is NULL, rendering of an image for this button state is
-		disabled.
-
-	\return
-		Nothing.
-	*/
-	void	setHoverImage(const RenderableImage* image);
-
-
-	/*!
-	\brief
-		set the details of the image to render for the button in the pushed state.
-
-	\param image
-		RenderableImage object with all the details for the image.  Note that an internal copy of the Renderable image is made and
-		ownership of \a image remains with client code.  If this parameter is NULL, rendering of an image for this button state is
-		disabled.
-
-	\return
-		Nothing.
-	*/
-	void	setPushedImage(const RenderableImage* image);
-
-
-	/*!
-	\brief
-		set the details of the image to render for the button in the disabled state.
-
-	\param image
-		RenderableImage object with all the details for the image.  Note that an internal copy of the Renderable image is made and
-		ownership of \a image remains with client code.  If this parameter is NULL, rendering of an image for this button state is
-		disabled.
-
-	\return
-		Nothing.
-	*/
-	void	setDisabledImage(const RenderableImage* image);
-
-
 protected:
 	/*************************************************************************
 		Overridden Event Handling Functions
@@ -269,20 +157,6 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	// flags stating which imagery is to be rendered and how.
-	bool	d_autoscaleImages;				//!< when true custom images will be scaled to the same size as the button
-	bool	d_useStandardImagery;			//!< true if button standard imagery should be drawn.
-	bool	d_useNormalImage;				//!< true if an image should be drawn for the normal state.
-	bool	d_useHoverImage;				//!< true if an image should be drawn for the highlighted state.
-	bool	d_usePushedImage;				//!< true if an image should be drawn for the pushed state.
-	bool	d_useDisabledImage;				//!< true if an image should be drawn for the disabled state.
-
-	// custom button renderable image objects
-	RenderableImage		d_normalImage;		//!< RenderableImage used when rendering an image in the normal state.
-	RenderableImage		d_hoverImage;		//!< RenderableImage used when rendering an image in the highlighted state.
-	RenderableImage		d_pushedImage;		//!< RenderableImage used when rendering an image in the pushed state.
-	RenderableImage		d_disabledImage;	//!< RenderableImage used when rendering an image in the disabled state.
-
 	// frames
 	RenderableFrame		d_normalFrame;
 	RenderableFrame		d_hoverFrame;

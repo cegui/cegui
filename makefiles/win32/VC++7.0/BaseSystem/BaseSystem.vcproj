@@ -347,6 +347,9 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIPushButton.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIPushButtonProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIRadioButton.cpp">
 				</File>
 				<File
@@ -693,6 +696,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIPushButton.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIPushButtonProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIRadioButton.h">

@@ -5,7 +5,6 @@ lib_LTLIBRARIES=libCEGUITaharezLook.la
 
 libCEGUITaharezLook_la_SOURCES = TLAlternateProgressBar.cpp \
                                  TLButton.cpp \
-                                 TLButtonProperties.cpp \
                                  TLCheckbox.cpp \
                                  TLCloseButton.cpp \
                                  TLComboDropList.cpp \

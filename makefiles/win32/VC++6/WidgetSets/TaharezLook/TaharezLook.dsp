@@ -112,10 +112,6 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLButton.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLButtonProperties.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLCheckbox.cpp
 # End Source File
 # Begin Source File
@@ -245,10 +241,6 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLAlternateProgressBar.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLButton.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLButtonProperties.h
 # End Source File
 # Begin Source File
 

@@ -1,15 +1,15 @@
 pkgincludedir=$(prefix)/include/CEGUI/elements
 pkginclude_HEADERS = CEGUIButtonBase.h \
-		     CEGUIButtonBaseProperties.h \
+                     CEGUIButtonBaseProperties.h \
                      CEGUICheckbox.h \
-		     CEGUICheckboxProperties.h \
+                     CEGUICheckboxProperties.h \
                      CEGUIComboDropList.h \
                      CEGUICombobox.h \
                      CEGUIComboboxProperties.h \
                      CEGUIDragContainer.h \
                      CEGUIDragContainerProperties.h \
                      CEGUIEditbox.h \
-		     CEGUIEditboxProperties.h \
+                     CEGUIEditboxProperties.h \
                      CEGUIFrameWindow.h \
                      CEGUIFrameWindowProperties.h \
                      CEGUIGUISheet.h \
@@ -25,11 +25,12 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIListHeaderSegmentProperties.h \
                      CEGUIMultiColumnList.h \
                      CEGUIMultiColumnListProperties.h \
-		     CEGUIMultiLineEditbox.h \
-		     CEGUIMultiLineEditboxProperties.h \
+                     CEGUIMultiLineEditbox.h \
+                     CEGUIMultiLineEditboxProperties.h \
                      CEGUIProgressBar.h \
                      CEGUIProgressBarProperties.h \
                      CEGUIPushButton.h \
+                     CEGUIPushButtonProperties.h \
                      CEGUIRadioButton.h \
                      CEGUIRadioButtonProperties.h \
                      CEGUIScrollbar.h \
@@ -44,10 +45,10 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIStaticProperties.h \
                      CEGUIStaticText.h \
                      CEGUIStaticTextProperties.h \
-		     CEGUITabButton.h \
-		     CEGUITabControl.h \
-		     CEGUITabControlProperties.h \
-		     CEGUITabPane.h \
+                     CEGUITabButton.h \
+                     CEGUITabControl.h \
+                     CEGUITabControlProperties.h \
+                     CEGUITabPane.h \
                      CEGUIThumb.h \
                      CEGUIThumbProperties.h \
                      CEGUITitlebar.h \

@@ -120,7 +120,6 @@ public:
 	*/
 	colour	getDisabledTextColour(void) const		{return d_disabledColour;}
 
-
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
@@ -174,7 +173,6 @@ public:
 		Nothing.
 	*/
 	void	setDisabledTextColour(const colour& colour);
-
 
 	/*************************************************************************
 		Construction and Destruction

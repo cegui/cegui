@@ -1,3 +1,8 @@
+/************************************************************************
+	filename: 	CEGUIPushButtonProperties.h
+	created:	22/2/2005
+	author:		Paul D Turner
+*************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
     Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
@@ -16,8 +21,8 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUITLButtonProperties_h_
-#define _CEGUITLButtonProperties_h_
+#ifndef _CEGUIPushButtonProperties_h_
+#define _CEGUIPushButtonProperties_h_
 
 #include "CEGUIProperty.h"
 
@@ -26,12 +31,13 @@
 namespace CEGUI
 {
 
-// Start of TLButtonProperties namespace section
+// Start of PushButtonProperties namespace section
 /*!
 \brief
-   Namespace containing all classes that make up the properties interface for the TLButton class
+   Namespace containing all classes that make up the properties
+   interface for the PushButton class
 */
-namespace TLButtonProperties
+namespace PushButtonProperties
 {
 
 /*!
@@ -48,7 +54,7 @@ class NormalImage : public Property
 public:
    NormalImage() : Property(
 	   "NormalImage", 
-	   "Property to get/set the normal image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "Property to get/set the normal image for the PushButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
 	   "")
    {}
 
@@ -70,7 +76,7 @@ class PushedImage : public Property
 public:
    PushedImage() : Property(
 	   "PushedImage",
-	   "Property to get/set the pushed image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "Property to get/set the pushed image for the PushButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
 	   "")
    {}
 
@@ -92,7 +98,29 @@ class HoverImage : public Property
 public:
    HoverImage() : Property(
 	   "HoverImage",
-	   "Property to get/set the hover image for the TLButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "Property to get/set the hover image for the PushButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+   Property to access the disabled image of the button
+
+   \par Usage:
+      - Name: DisabledImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class DisabledImage : public Property
+{
+public:
+   DisabledImage() : Property(
+	   "DisabledImage",
+	   "Property to get/set the disabled image for the PushButton widget.  Value should be \"set:[imageset name] image:[image name]\".",
 	   "")
    {}
 
@@ -114,7 +142,7 @@ class UseStandardImagery : public Property
 public:
    UseStandardImagery() : Property(
 	   "UseStandardImagery",
-	   "Property to get/set whether to use the standard imagery for the TLButton widget.  Value should be \"True\" or \"False\".",
+	   "Property to get/set whether to use the standard imagery for the PushButton widget.  Value should be \"True\" or \"False\".",
 	   "True")
    {}
 

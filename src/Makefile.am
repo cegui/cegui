@@ -13,12 +13,12 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIEventSignal.cpp \
                       CEGUIEventSignalSet.cpp \
                       CEGUIExceptions.cpp \
-		      CEGUIFactoryModule.cpp \
+                      CEGUIFactoryModule.cpp \
                       CEGUIFont.cpp \
                       CEGUIFontManager.cpp \
                       CEGUIFont_xmlHandler.cpp \
                       CEGUIGlobalEventSet.cpp \
-		      CEGUIGUILayout_xmlHandler.cpp \
+                      CEGUIGUILayout_xmlHandler.cpp \
                       CEGUIImage.cpp \
                       CEGUIImageset.cpp \
                       CEGUIImagesetManager.cpp \
@@ -26,10 +26,10 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
                       CEGUIProperty.cpp \
-		      CEGUIPropertyHelper.cpp \
+                      CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
-		      CEGUIRefPtr.cpp \
+                      CEGUIRefPtr.cpp \
                       CEGUIRenderableElement.cpp \
                       CEGUIRenderableFrame.cpp \
                       CEGUIRenderableImage.cpp \
@@ -37,7 +37,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \
-		      CEGUIScriptModule.cpp \
+                      CEGUIScriptModule.cpp \
                       CEGUISize.cpp \
                       CEGUIString.cpp \
                       CEGUISystem.cpp \
@@ -48,23 +48,23 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIWindowFactory.cpp \
                       CEGUIWindowFactoryManager.cpp \
                       CEGUIWindowManager.cpp \
-		      CEGUIWindowProperties.cpp \
-		      CEGUIXmlHandlerHelper.cpp\
-		      CEGUIcolour.cpp \
+                      CEGUIWindowProperties.cpp \
+                      CEGUIXmlHandlerHelper.cpp\
+                      CEGUIcolour.cpp \
                       elements/CEGUIButtonBase.cpp \
-		      elements/CEGUIButtonBaseProperties.cpp \
+                      elements/CEGUIButtonBaseProperties.cpp \
                       elements/CEGUICheckbox.cpp \
-		      elements/CEGUICheckboxProperties.cpp \
+                      elements/CEGUICheckboxProperties.cpp \
                       elements/CEGUICombobox.cpp \
                       elements/CEGUIComboboxProperties.cpp \
                       elements/CEGUIComboDropList.cpp \
                       elements/CEGUIDragContainer.cpp \
                       elements/CEGUIDragContainerProperties.cpp \
                       elements/CEGUIEditbox.cpp \
-		      elements/CEGUIEditboxProperties.cpp \
+                      elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
                       elements/CEGUIFrameWindowProperties.cpp \
-		      elements/CEGUIGUISheet.cpp \
+                      elements/CEGUIGUISheet.cpp \
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \
                       elements/CEGUIListboxProperties.cpp \
@@ -75,11 +75,12 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIListHeaderSegmentProperties.cpp \
                       elements/CEGUIMultiColumnList.cpp \
                       elements/CEGUIMultiColumnListProperties.cpp \
-		      elements/CEGUIMultiLineEditbox.cpp \
-		      elements/CEGUIMultiLineEditboxProperties.cpp \
+                      elements/CEGUIMultiLineEditbox.cpp \
+                      elements/CEGUIMultiLineEditboxProperties.cpp \
                       elements/CEGUIProgressBar.cpp \
                       elements/CEGUIProgressBarProperties.cpp \
                       elements/CEGUIPushButton.cpp \
+                      elements/CEGUIPushButtonProperties.cpp \
                       elements/CEGUIRadioButton.cpp \
                       elements/CEGUIRadioButtonProperties.cpp \
                       elements/CEGUIScrollbar.cpp \
@@ -94,9 +95,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIStaticProperties.cpp \
                       elements/CEGUIStaticText.cpp \
                       elements/CEGUIStaticTextProperties.cpp \
-		      elements/CEGUITabButton.cpp \
-		      elements/CEGUITabControl.cpp \
-		      elements/CEGUITabControlProperties.cpp \
+                      elements/CEGUITabButton.cpp \
+                      elements/CEGUITabControl.cpp \
+                      elements/CEGUITabControlProperties.cpp \
                       elements/CEGUIThumb.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
@@ -113,7 +114,7 @@ noinst_HEADERS =      pcre/internal.h \
                       pcre/pcre.h \
                       pcre/pcreposix.h \
                       pcre/ucp.h \
-		      pcre/pcreconfig.h
+                      pcre/pcreconfig.h
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 libCEGUIBase_la_LIBADD = $(freetype2_LIBS)

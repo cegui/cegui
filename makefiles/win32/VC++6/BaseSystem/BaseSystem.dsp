@@ -251,6 +251,10 @@ SOURCE=..\..\..\..\src\elements\CEGUIPushButton.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUIPushButtonProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIRadioButton.cpp
 # End Source File
 # Begin Source File
@@ -672,6 +676,10 @@ SOURCE=..\..\..\..\include\elements\CEGUIProgressBarProperties.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUIPushButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUIPushButtonProperties.h
 # End Source File
 # Begin Source File
 
