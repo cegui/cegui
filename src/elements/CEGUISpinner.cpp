@@ -25,7 +25,7 @@
 #include "elements/CEGUIPushButton.h"
 #include "elements/CEGUIEditbox.h"
 #include "CEGUIExceptions.h"
-#include <cstdio>
+#include <stdio.h>
 #include <sstream>
 #include <iomanip>
 
@@ -236,18 +236,18 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case FloatingPoint:
-            res = std::sscanf(d_editbox->getText().c_str(), "%f", &val);
+            res = sscanf(d_editbox->getText().c_str(), "%f", &val);
             break;
         case Integer:
-            res = std::sscanf(d_editbox->getText().c_str(), "%d", &tmp);
+            res = sscanf(d_editbox->getText().c_str(), "%d", &tmp);
             val = static_cast<float>(tmp);
             break;
         case Hexadecimal:
-            res = std::sscanf(d_editbox->getText().c_str(), "%x", &utmp);
+            res = sscanf(d_editbox->getText().c_str(), "%x", &utmp);
             val = static_cast<float>(utmp);
             break;
         case Octal:
-            res = std::sscanf(d_editbox->getText().c_str(), "%o", &utmp);
+            res = sscanf(d_editbox->getText().c_str(), "%o", &utmp);
             val = static_cast<float>(utmp);
             break;
         default:
