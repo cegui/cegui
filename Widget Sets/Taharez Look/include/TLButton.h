@@ -92,46 +92,6 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		return text colour used for normal rendering
-
-	\return
-		colour value that is used for the button text when rendering in the normal state.
-	*/
-	colour	getNormalTextColour(void) const			{return d_normalColour;}
-
-
-	/*!
-	\brief
-		return text colour used for hover / highlight rendering
-
-	\return
-		colour value that is used for the button text when rendering in the hover / highlighted states.
-	*/
-	colour	getHoverTextColour(void) const			{return d_hoverColour;}
-
-
-	/*!
-	\brief
-		return text colour used for pushed rendering
-
-	\return
-		colour value that is used for the button text when rendering in the pushed state.
-	*/
-	colour	getPushedTextColour(void) const			{return d_pushedColour;}
-
-
-	/*!
-	\brief
-		return text colour used for disabled rendering
-
-	\return
-		colour value that is used for the button text when rendering in the disabled state.
-	*/
-	colour	getDisabledTextColour(void) const		{return d_disabledColour;}
-
-
-	/*!
-	\brief
 		return whether or not rendering of the standard imagery is enabled.
 
 	\return
@@ -239,58 +199,6 @@ public:
 	void	setDisabledImage(const RenderableImage* image);
 
 
-	/*!
-	\brief
-		Set the colour to use for the button text when rendering in the normal state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalTextColour(colour colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the button text when rendering in the hover / highlighted states.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setHoverTextColour(colour colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the button text when rendering in the pushed state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setPushedTextColour(colour colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the button text when rendering in the disabled state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setDisabledTextColour(colour colour);
-
-
 protected:
 	/*************************************************************************
 		Overridden Event Handling Functions
@@ -329,12 +237,6 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	// text rendering colours
-	colour	d_normalColour;					//!< Colour used for text when rendering in normal state
-	colour	d_hoverColour;					//!< Colour used for text when rendering in highlighted state
-	colour	d_pushedColour;					//!< Colour used for text when rendering in pushed state
-	colour	d_disabledColour;				//!< Colour used for text when rendering in disabled state
-
 	// flags stating which imagery is to be rendered and how.
 	bool	d_autoscaleImages;				//!< when true custom images will be scaled to the same size as the button
 	bool	d_useStandardImagery;			//!< true if button standard imagery should be drawn.

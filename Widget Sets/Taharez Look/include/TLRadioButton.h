@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	TLCheckbox.h
+	filename: 	TLRadioButton.h
 	created:	21/5/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to Taharez Checkbox widget
+	purpose:	Interface to Taharez look Radio Button widget.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,12 +23,12 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _TLCheckbox_h_
-#define _TLCheckbox_h_
+#ifndef _TLRadioButton_h_
+#define _TLRadioButton_h_
 
 #include "TLModule.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUICheckbox.h"
+#include "elements/CEGUIRadioButton.h"
 
 
 // Start of CEGUI namespace section
@@ -36,9 +36,9 @@ namespace CEGUI
 {
 /*!
 \brief
-	Checkbox class for the TaharezLook GUI scheme
+	Radio Button class for the TaharezLook GUI scheme
 */
-class TAHAREZLOOK_API TLCheckbox : public Checkbox
+class TAHAREZLOOK_API TLRadioButton : public RadioButton
 {
 public:
 	/*************************************************************************
@@ -47,7 +47,7 @@ public:
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	NormalImageName[];			//!< Name of the image to use for the normal state.
 	static const utf8	HighlightImageName[];		//!< Name of the image to use for the highlighted state.
-	static const utf8	CheckMarkImageName[];		//!< Name of the image to use for the check / selected mark.
+	static const utf8	SelectMarkImageName[];		//!< Name of the image to use for the check / selected mark.
 
 	static const float	LabelPadding;				//!< Pixel padding value for text label (space between image and text label).
 
@@ -57,7 +57,7 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for Taharez Look Checkbox objects.
+		Constructor for Taharez Look Radio Button objects.
 
 	\param type
 		String object that specifies a type for this window, usually provided by a factory class.
@@ -65,14 +65,14 @@ public:
 	\param name
 		String object that specifies a unique name that will be used to identify the new Window object
 	*/
-	TLCheckbox(const String& type, const String& name);
+	TLRadioButton(const String& type, const String& name);
 
 
 	/*!
 	\brief
-		Destructor for TLCheckbox objects.
+		Destructor for TLRadioButton objects.
 	*/
-	virtual ~TLCheckbox(void);
+	virtual ~TLRadioButton(void);
 
 	
 	/*!
@@ -88,25 +88,25 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		render the Checkbox in the normal state.
+		render the Radio Button in the normal state.
 	*/
 	virtual void	drawNormal(float z);
 
 	/*!
 	\brief
-		render the Checkbox in the hover / highlighted state.
+		render the Radio Button in the hover / highlighted state.
 	*/
 	virtual void	drawHover(float z);
 
 	/*!
 	\brief
-		render the Checkbox in the pushed state.
+		render the Radio Button in the pushed state.
 	*/
 	virtual void	drawPushed(float z);
 
 	/*!
 	\brief
-		render the Checkbox in the disabled state
+		render the Radio Button in the disabled state
 	*/
 	virtual void	drawDisabled(float z);
 
@@ -117,22 +117,22 @@ protected:
 	// rendering images
 	const Image*	d_normalImage;			//!< Image to use when rendering in normal state.
 	const Image*	d_hoverImage;			//!< Image to use when rendering in hover  / highlighted state.
-	const Image*	d_checkMarkImage;		//!< Image to use when rendering the check-mark.
+	const Image*	d_selectMarkImage;		//!< Image to use when rendering the select / check-mark.
 };
 
 
 /*!
 \brief
-	Factory class for producing TLCheckbox objects
+	Factory class for producing TLRadioButton objects
 */
-class TAHAREZLOOK_API TLCheckboxFactory : public WindowFactory
+class TAHAREZLOOK_API TLRadioButtonFactory : public WindowFactory
 {
 public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLCheckboxFactory(void) : WindowFactory((utf8*)"Taharez Checkbox") { }
-	~TLCheckboxFactory(void){}
+	TLRadioButtonFactory(void) : WindowFactory((utf8*)"Taharez RadioButton") { }
+	~TLRadioButtonFactory(void){}
 
 
 	/*!
@@ -162,8 +162,7 @@ public:
 };
 
 
-
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _TLCheckbox_h_
+#endif	// end of guard _TLRadioButton_h_

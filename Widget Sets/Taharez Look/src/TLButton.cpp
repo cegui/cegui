@@ -62,12 +62,6 @@ TLButton::TLButton(const String& type, const String& name) :
 	d_usePushedImage		= false;
 	d_useDisabledImage		= false;
 
-	// default colours
-	d_normalColour		= 0x00FFFFFF;
-	d_hoverColour		= 0x00FFFFFF;
-	d_pushedColour		= 0x00FFFFFF;
-	d_disabledColour	= 0x007F7F7F;
-
 	// setup cache of image pointers
 	d_leftSectionNormal		= &iset->getImage(LeftNormalImageName);
 	d_middleSectionNormal	= &iset->getImage(MiddleNormalImageName);
@@ -177,66 +171,6 @@ void TLButton::setDisabledImage(const RenderableImage* image)
 	{
 		d_useDisabledImage = true;
 		d_disabledImage = *image;
-	}
-
-}
-
-
-/*************************************************************************
-	set the text colour to use for normal rendering	
-*************************************************************************/
-void TLButton::setNormalTextColour(colour colour)
-{
-	if (d_normalColour != colour)
-	{
-		// alpha part comes from window alpha
-		d_normalColour = (colour & 0x00FFFFFF);
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	set the text colour to use for hover rendering
-*************************************************************************/
-void TLButton::setHoverTextColour(colour colour)
-{
-	if (d_hoverColour != colour)
-	{
-		// alpha part comes from window alpha
-		d_hoverColour = (colour & 0x00FFFFFF);
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	set the text colour to use for pushed rendering	
-*************************************************************************/
-void TLButton::setPushedTextColour(colour colour)
-{
-	if (d_pushedColour != colour)
-	{
-		// alpha part comes from window alpha
-		d_pushedColour = (colour & 0x00FFFFFF);
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	set the text colour to use for pressed rendering	
-*************************************************************************/
-void TLButton::setDisabledTextColour(colour colour)
-{
-	if (d_disabledColour != colour)
-	{
-		// alpha part comes from window alpha
-		d_disabledColour = (colour & 0x00FFFFFF);
-		requestRedraw();
 	}
 
 }

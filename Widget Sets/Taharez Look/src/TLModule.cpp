@@ -31,6 +31,7 @@
 #include "../../Widget Sets/Taharez Look/include/TLButton.h"
 #include "../../Widget Sets/Taharez Look/include/TLCloseButton.h"
 #include "../../Widget Sets/Taharez Look/include/TLCheckbox.h"
+#include "../../Widget Sets/Taharez Look/include/TLRadioButton.h"
 
 
 /*************************************************************************
@@ -63,6 +64,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez Checkbox")
 	{
 		WindowFactoryManager::getSingleton().addFactory(new TLCheckboxFactory());
+		return;
+	}
+	else if (type_name == "Taharez RadioButton")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLRadioButtonFactory());
 		return;
 	}
 

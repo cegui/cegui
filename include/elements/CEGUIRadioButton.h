@@ -35,10 +35,120 @@ namespace CEGUI
 {
 /*!
 \brief
+	Base class to provide the logic for Radio Button widgets.
 
 */
-class RadioButton : public ButtonBase
+class CEGUIBASE_API RadioButton : public ButtonBase
 {
+public:
+	/*************************************************************************
+		Event name constants
+	*************************************************************************/
+	// generated internally by Window
+	static const utf8	SelectStateChanged[];			//!< The selected state of the widget has changed.
+
+
+	/*************************************************************************
+		Accessor Functions
+	*************************************************************************/ 
+	/*!
+	\brief
+		return true if the radio button is selected (has the checkmark)
+
+	\return
+		true if this widget is selected, false if the widget is not selected.
+	*/
+	bool	isSelected(void) const				{return d_selected;}
+
+	
+	/*!
+	\brief
+		return the groupID assigned to this radio button
+
+	\return
+		ulong value that identifies the Radio Button group this widget belongs to.
+	*/
+	ulong	getGroupID(void) const				{return d_groupID;}
+
+
+	/*************************************************************************
+		Manipulator Functions
+	*************************************************************************/
+	/*!
+	\brief
+		set whether the radio button is selected or not
+
+	\param select
+		true to put the radio button in the selected state, false to put the radio button in the
+		deselected state.  If changing to the selected state, any previously selected radio button
+		within the same group is automatically deselected.
+
+	\return
+		Nothing.
+	*/
+	void	setSelected(bool select);
+
+	
+	/*!
+	\brief
+		set the groupID for this radio button
+
+	\param group
+		ulong value specifying the radio button group that this widget belongs to.
+
+	\return	
+		Nothing.
+	*/
+	void	setGroupID(ulong group);
+
+
+protected:
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	RadioButton(const String& type, const String& name);
+	virtual ~RadioButton(void);
+
+
+	/*************************************************************************
+		Implementation Functions
+	*************************************************************************/
+	/*!
+	\brief
+		Add radio button specific events
+	*/
+	void	addRadioButtonEvents(void);
+
+
+	/*!
+	\brief
+		Deselect any selected radio buttons attached to the same parent within the same group
+		(but not do not deselect 'this').
+	*/
+	void	deselectOtherButtonsInGroup(void) const;
+
+
+	/*************************************************************************
+		New Radio Button Events
+	*************************************************************************/
+	/*!
+	\brief
+		event triggered internally when the select state of the button changes.
+	*/
+	virtual void	onSelectStateChanged(WindowEventArgs& e);
+
+
+	/*************************************************************************
+		Overridden Event handlers
+	*************************************************************************/
+	virtual void	onMouseButtonUp(MouseEventArgs& e);
+
+
+	/*************************************************************************
+		Implementation Data
+	*************************************************************************/
+	bool		d_selected;				// true when radio button is selected (has checkmark)
+	ulong		d_groupID;				// radio button group ID
 };
 
 

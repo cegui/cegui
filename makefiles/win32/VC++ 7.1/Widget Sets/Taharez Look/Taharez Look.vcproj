@@ -143,6 +143,9 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLModule.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLRadioButton.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLTitlebar.cpp">
 			</File>
 		</Filter>
@@ -164,6 +167,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLModule.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLRadioButton.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLTitlebar.h">

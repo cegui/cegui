@@ -30,12 +30,26 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Constants
+*************************************************************************/
+// default colours for text label rendering
+const colour	ButtonBase::DefaultNormalLabelColour	= 0x00FFFFFF;
+const colour	ButtonBase::DefaultHoverLabelColour		= 0x00FFFFFF;
+const colour	ButtonBase::DefaultPushedLabelColour	= 0x00FFFFFF;
+const colour	ButtonBase::DefaultDisabledLabelColour	= 0x007F7F7F;
+
+
+/*************************************************************************
 	Constructor
 *************************************************************************/
 ButtonBase::ButtonBase(const String& type, const String& name) :
 	Window(type, name),
 	d_pushed(false),
-	d_hovering(false)
+	d_hovering(false),
+	d_normalColour(DefaultNormalLabelColour),
+	d_hoverColour(DefaultHoverLabelColour),
+	d_pushedColour(DefaultPushedLabelColour),
+	d_disabledColour(DefaultDisabledLabelColour)
 {
 }
 
@@ -80,6 +94,70 @@ void ButtonBase::updateInternalState(const Point& mouse_pos)
 	// if state has changed, trigger a re-draw
 	if (oldstate != d_hovering)
 	{
+		requestRedraw();
+	}
+
+}
+
+
+/*************************************************************************
+	Set the colour to use for the label text when rendering in the
+	normal state.	
+*************************************************************************/
+void ButtonBase::setNormalTextColour(colour colour)
+{
+	if (d_normalColour != colour)
+	{
+		// alpha part comes from window alpha
+		d_normalColour = (colour & 0x00FFFFFF);
+		requestRedraw();
+	}
+
+}
+
+
+/*************************************************************************
+	Set the colour to use for the label text when rendering in the
+	hover / highlighted states.	
+*************************************************************************/
+void ButtonBase::setHoverTextColour(colour colour)
+{
+	if (d_hoverColour != colour)
+	{
+		// alpha part comes from window alpha
+		d_hoverColour = (colour & 0x00FFFFFF);
+		requestRedraw();
+	}
+
+}
+
+
+/*************************************************************************
+	Set the colour to use for the label text when rendering in the
+	pushed state.
+*************************************************************************/
+void ButtonBase::setPushedTextColour(colour colour)
+{
+	if (d_pushedColour != colour)
+	{
+		// alpha part comes from window alpha
+		d_pushedColour = (colour & 0x00FFFFFF);
+		requestRedraw();
+	}
+
+}
+
+
+/*************************************************************************
+	Set the colour to use for the label text when rendering in the
+	disabled state.	
+*************************************************************************/
+void ButtonBase::setDisabledTextColour(colour colour)
+{
+	if (d_disabledColour != colour)
+	{
+		// alpha part comes from window alpha
+		d_disabledColour = (colour & 0x00FFFFFF);
 		requestRedraw();
 	}
 

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	TLCheckbox.cpp
+	filename: 	TLRadioButton.cpp
 	created:	21/5/2004
 	author:		Paul D Turner
 	
-	purpose:	Implementation of Taharez Checkbox
+	purpose:	Implementation of Taharez look Radio Button widget
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -23,7 +23,7 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "TLCheckbox.h"
+#include "TLRadioButton.h"
 #include "CEGUIImageset.h"
 #include "CEGUIFont.h"
 
@@ -34,41 +34,41 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLCheckbox::ImagesetName[]			= "TaharezImagery";
-const utf8	TLCheckbox::NormalImageName[]		= "CheckboxNormal";
-const utf8	TLCheckbox::HighlightImageName[]	= "CheckboxHover";
-const utf8	TLCheckbox::CheckMarkImageName[]	= "CheckboxMark";
+const utf8	TLRadioButton::ImagesetName[]			= "TaharezImagery";
+const utf8	TLRadioButton::NormalImageName[]		= "RadioButtonNormal";
+const utf8	TLRadioButton::HighlightImageName[]		= "RadioButtonHover";
+const utf8	TLRadioButton::SelectMarkImageName[]	= "RadioButtonMark";
 
-const float	TLCheckbox::LabelPadding			= 4.0f;
+const float	TLRadioButton::LabelPadding				= 4.0f;
 
 
 /*************************************************************************
-	Constructor for Taharez Look Checkbox objects.
+	Constructor for Taharez Look Radio Button objects.
 *************************************************************************/
-TLCheckbox::TLCheckbox(const String& type, const String& name) :
-	Checkbox(type, name)
+TLRadioButton::TLRadioButton(const String& type, const String& name) :
+	RadioButton(type, name)
 {
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
 
 	// setup cache of image pointers
 	d_normalImage		= &iset->getImage(NormalImageName);
 	d_hoverImage		= &iset->getImage(HighlightImageName);
-	d_checkMarkImage	= &iset->getImage(CheckMarkImageName);
+	d_selectMarkImage	= &iset->getImage(SelectMarkImageName);
 }
 
 
 /*************************************************************************
-	Destructor for TLCheckbox objects.
+	Destructor for TLRadioButton objects.
 *************************************************************************/
-TLCheckbox::~TLCheckbox(void)
+TLRadioButton::~TLRadioButton(void)
 {
 }
 
 
 /*************************************************************************
-	render the Checkbox in the normal state.	
+	render the radio button in the normal state.	
 *************************************************************************/
-void TLCheckbox::drawNormal(float z)
+void TLRadioButton::drawNormal(float z)
 {
 	Rect clipper(getPixelRect());
 
@@ -94,7 +94,7 @@ void TLCheckbox::drawNormal(float z)
 
 	if (d_selected)
 	{
-		d_checkMarkImage->draw(pos, clipper, colours);
+		d_selectMarkImage->draw(pos, clipper, colours);
 	}
 
 	//
@@ -108,9 +108,9 @@ void TLCheckbox::drawNormal(float z)
 
 
 /*************************************************************************
-	render the Checkbox in the hover / highlighted state.
+	render the radio button in the hover / highlighted state.
 *************************************************************************/
-void TLCheckbox::drawHover(float z)
+void TLRadioButton::drawHover(float z)
 {
 	Rect clipper(getPixelRect());
 
@@ -136,7 +136,7 @@ void TLCheckbox::drawHover(float z)
 
 	if (d_selected)
 	{
-		d_checkMarkImage->draw(pos, clipper, colours);
+		d_selectMarkImage->draw(pos, clipper, colours);
 	}
 
 	//
@@ -150,9 +150,9 @@ void TLCheckbox::drawHover(float z)
 
 
 /*************************************************************************
-	render the Checkbox in the pushed state.	
+	render the radio button in the pushed state.	
 *************************************************************************/
-void TLCheckbox::drawPushed(float z)
+void TLRadioButton::drawPushed(float z)
 {
 	Rect clipper(getPixelRect());
 
@@ -178,7 +178,7 @@ void TLCheckbox::drawPushed(float z)
 
 	if (d_selected)
 	{
-		d_checkMarkImage->draw(pos, clipper, colours);
+		d_selectMarkImage->draw(pos, clipper, colours);
 	}
 
 	//
@@ -192,9 +192,9 @@ void TLCheckbox::drawPushed(float z)
 
 
 /*************************************************************************
-	render the Checkbox in the disabled state	
+	render the radio button in the disabled state	
 *************************************************************************/
-void TLCheckbox::drawDisabled(float z)
+void TLRadioButton::drawDisabled(float z)
 {
 	Rect clipper(getPixelRect());
 
@@ -220,7 +220,7 @@ void TLCheckbox::drawDisabled(float z)
 
 	if (d_selected)
 	{
-		d_checkMarkImage->draw(pos, clipper, colours);
+		d_selectMarkImage->draw(pos, clipper, colours);
 	}
 
 	//
@@ -241,11 +241,11 @@ void TLCheckbox::drawDisabled(float z)
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
-	Create, initialise and return a TLCheckbox
+	Create, initialise and return a TLRadioButton
 *************************************************************************/
-Window* TLCheckboxFactory::createWindow(const String& name)
+Window* TLRadioButtonFactory::createWindow(const String& name)
 {
-	TLCheckbox* wnd = new TLCheckbox(d_type, name);
+	TLRadioButton* wnd = new TLRadioButton(d_type, name);
 	wnd->initialise();
 
 	return wnd;
