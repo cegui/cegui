@@ -22,7 +22,6 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include;..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
-				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				DisableLanguageExtensions="FALSE"
@@ -38,12 +37,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xerces-c_2D.lib freetype214MT_D.lib"
+				AdditionalDependencies="xerces-c_2D.lib freetype219_D.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\dependencies\lib"
+				IgnoreDefaultLibraryNames="LIBCMTD"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
 				TargetMachine="1"/>
@@ -91,7 +90,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="xerces-c_2.lib freetype214MT.lib"
+				AdditionalDependencies="xerces-c_2.lib freetype219.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\dependencies\lib"
