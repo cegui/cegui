@@ -783,6 +783,18 @@ void Window::setVisible(bool setting)
 *************************************************************************/
 void Window::activate(void)
 {
+	// force complete release of input capture.
+	// NB: This is not done via releaseCapture() because that has
+	// different behaviour depending on the restoreOldCapture setting.
+	if ((d_captureWindow != NULL) && (d_captureWindow != this))
+	{
+		Window* tmpCapture = d_captureWindow;
+		d_captureWindow = NULL;
+
+		WindowEventArgs args(NULL);
+		tmpCapture->onCaptureLost(args);
+	}
+
 	moveToFront();
 }
 
