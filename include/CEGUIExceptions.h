@@ -46,6 +46,16 @@ public:
 	Exception(const String& message);
 	virtual ~Exception(void);
 
+	/*!
+	\brief
+		Return a reference to the String object describing the reason for the exception being thrown.
+
+	\return
+		String object containing a message describing the reason for the exception.
+	*/
+	const String&	getMessage(void) const		{return d_message;}
+
+
 protected:
 	String	d_message;
 };
