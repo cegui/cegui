@@ -45,6 +45,9 @@ public:
     /*************************************************************************
     Constants
     *************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];			//!< The unique typename of this widget
+
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	LeftImageName[];		    //!< Name of the image to use for the left end of the button.
 	static const utf8	MiddleImageName[];		    //!< Name of the image to use for the middle of the button.
@@ -124,7 +127,7 @@ public:
 	\brief
 		Constructor for Taharez Tab Button factory class.
 	*/
-	TLTabPaneFactory(void) : WindowFactory((utf8*)"Taharez Tab Pane") { }
+	TLTabPaneFactory(void) : WindowFactory(TLTabPane::WidgetTypeName) { }
 
 
 	/*

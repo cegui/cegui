@@ -52,8 +52,8 @@ FrameWindowProperties::CaptionColour			FrameWindow::d_captionColourProperty;
 	Constants
 *************************************************************************/
 // additional event names for this window
-const utf8	FrameWindow::RollupToggled[]	= "RollupToggled";
-const utf8	FrameWindow::CloseClicked[]		= "CloseClicked";
+const utf8	FrameWindow::EventRollupToggled[]	= "RollupToggled";
+const utf8	FrameWindow::EventCloseClicked[]		= "CloseClicked";
 
 // other bits
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;
@@ -110,7 +110,7 @@ void FrameWindow::initialise(void)
 		addChildWindow(d_closeButton);
 
 		// bind handler to close button 'Click' event
-		d_closeButton->subscribeEvent(PushButton::Clicked, boost::bind(&CEGUI::FrameWindow::closeClickHandler, this, _1));
+		d_closeButton->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::FrameWindow::closeClickHandler, this, _1));
 	}
 
 	layoutComponentWidgets();
@@ -457,18 +457,20 @@ void FrameWindow::moveBottomEdge(float delta)
 *************************************************************************/
 void FrameWindow::addFrameWindowEvents(void)
 {
-	addEvent(RollupToggled);
-	addEvent(CloseClicked);
+	addEvent(EventRollupToggled);
+	addEvent(EventCloseClicked);
 }
 
 
 /*************************************************************************
 	Handler to map close button clicks to FrameWindow 'CloseCliked' events
 *************************************************************************/
-void FrameWindow::closeClickHandler(const EventArgs& e)
+bool FrameWindow::closeClickHandler(const EventArgs& e)
 {
     WindowEventArgs args(this);
 	onCloseClicked(args);
+
+	return true;
 }
 
 
@@ -514,7 +516,7 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
-	fireEvent(RollupToggled, e);
+	fireEvent(EventRollupToggled, e);
 }
 
 
@@ -523,7 +525,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
 *************************************************************************/
 void FrameWindow::onCloseClicked(WindowEventArgs& e)
 {
-	fireEvent(CloseClicked, e);
+	fireEvent(EventCloseClicked, e);
 }
 
 

@@ -87,44 +87,44 @@ Window*	Window::d_captureWindow		= NULL;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Window::ParentSized[]					= "ParentSized";
-const utf8	Window::SizedEvent[]					= "Sized";
-const utf8	Window::MovedEvent[]					= "Moved";
-const utf8	Window::TextChangedEvent[]				= "TextChanged";
-const utf8	Window::FontChangedEvent[]				= "FontChanged";
-const utf8	Window::AlphaChangedEvent[]				= "AlphaChanged";
-const utf8	Window::IDChangedEvent[]				= "IDChanged";
-const utf8	Window::ActivatedEvent[]				= "Activated";
-const utf8	Window::DeactivatedEvent[]				= "Deactivated";
-const utf8	Window::ShownEvent[]					= "Shown";
-const utf8	Window::HiddenEvent[]					= "Hidden";
-const utf8	Window::EnabledEvent[]					= "Enabled";
-const utf8	Window::DisabledEvent[]					= "Disabled";
-const utf8	Window::MetricsChangedEvent[]			= "MetricsChanged";
-const utf8	Window::ClippingChangedEvent[]			= "ClippingChanged";
-const utf8	Window::ParentDestroyChangedEvent[]		= "DestroyedByParentChanged";
-const utf8	Window::InheritsAlphaChangedEvent[]		= "InheritAlphaChanged";
-const utf8	Window::AlwaysOnTopChangedEvent[]		= "AlwaysOnTopChanged";
-const utf8	Window::CaptureGainedEvent[]			= "CaptureGained";
-const utf8	Window::CaptureLostEvent[]				= "CaptureLost";
-const utf8	Window::RenderingStartedEvent[]			= "StartRender";
-const utf8	Window::RenderingEndedEvent[]			= "EndRender";
-const utf8	Window::ChildAddedEvent[]				= "AddedChild";
-const utf8	Window::ChildRemovedEvent[]				= "RemovedChild";
-const utf8	Window::DestructionStartedEvent[]		= "DestructStart";
-const utf8	Window::ZChangedEvent[]					= "ZChanged";
-const utf8	Window::MouseEntersEvent[]				= "MouseEnter";
-const utf8	Window::MouseLeavesEvent[]				= "MouseLeave";
-const utf8	Window::MouseMoveEvent[]				= "MouseMove";
-const utf8	Window::MouseWheelEvent[]				= "MouseWheel";
-const utf8	Window::MouseButtonDownEvent[]			= "MouseButtonDown";
-const utf8	Window::MouseButtonUpEvent[]			= "MouseButtonUp";
-const utf8	Window::MouseClickEvent[]				= "MouseClick";
-const utf8	Window::MouseDoubleClickEvent[]			= "MouseDoubleClick";
-const utf8	Window::MouseTripleClickEvent[]			= "MouseTripleClick";
-const utf8	Window::KeyDownEvent[]					= "KeyDown";
-const utf8	Window::KeyUpEvent[]					= "KeyUp";
-const utf8	Window::CharacterEvent[]				= "CharacterKey";
+const utf8	Window::EventParentSized[]					= "ParentSized";
+const utf8	Window::EventSized[]					= "Sized";
+const utf8	Window::EventMoved[]					= "Moved";
+const utf8	Window::EventTextChanged[]				= "TextChanged";
+const utf8	Window::EventFontChanged[]				= "FontChanged";
+const utf8	Window::EventAlphaChanged[]				= "AlphaChanged";
+const utf8	Window::EventIDChanged[]				= "IDChanged";
+const utf8	Window::EventActivated[]				= "Activated";
+const utf8	Window::EventDeactivated[]				= "Deactivated";
+const utf8	Window::EventShown[]					= "Shown";
+const utf8	Window::EventHidden[]					= "Hidden";
+const utf8	Window::EventEnabled[]					= "Enabled";
+const utf8	Window::EventDisabled[]					= "Disabled";
+const utf8	Window::EventMetricsModeChanged[]			= "MetricsChanged";
+const utf8	Window::EventClippedByParentChanged[]			= "ClippingChanged";
+const utf8	Window::EventDestroyedByParentChanged[]		= "DestroyedByParentChanged";
+const utf8	Window::EventInheritsAlphaChanged[]		= "InheritAlphaChanged";
+const utf8	Window::EventAlwaysOnTopChanged[]		= "AlwaysOnTopChanged";
+const utf8	Window::EventInputCaptureGained[]			= "CaptureGained";
+const utf8	Window::EventInputCaptureLost[]				= "CaptureLost";
+const utf8	Window::EventRenderingStarted[]			= "StartRender";
+const utf8	Window::EventRenderingEnded[]			= "EndRender";
+const utf8	Window::EventChildAdded[]				= "AddedChild";
+const utf8	Window::EventChildRemoved[]				= "RemovedChild";
+const utf8	Window::EventDestructionStarted[]		= "DestructStart";
+const utf8	Window::EventZOrderChanged[]					= "ZChanged";
+const utf8	Window::EventMouseEnters[]				= "MouseEnter";
+const utf8	Window::EventMouseLeaves[]				= "MouseLeave";
+const utf8	Window::EventMouseMove[]				= "MouseMove";
+const utf8	Window::EventMouseWheel[]				= "MouseWheel";
+const utf8	Window::EventMouseButtonDown[]			= "MouseButtonDown";
+const utf8	Window::EventMouseButtonUp[]			= "MouseButtonUp";
+const utf8	Window::EventMouseClick[]				= "MouseClick";
+const utf8	Window::EventMouseDoubleClick[]			= "MouseDoubleClick";
+const utf8	Window::EventMouseTripleClick[]			= "MouseTripleClick";
+const utf8	Window::EventKeyDown[]					= "KeyDown";
+const utf8	Window::EventKeyUp[]					= "KeyUp";
+const utf8	Window::EventCharacterKey[]				= "CharacterKey";
 	
 	
 /*************************************************************************
@@ -173,6 +173,8 @@ Window::Window(const String& type, const String& name) :
 *************************************************************************/
 Window::~Window(void)
 {
+	releaseInput();
+
 	// signal our imminent destruction
 	WindowEventArgs args(this);
 	onDestructionStarted(args);
@@ -791,7 +793,8 @@ void Window::activate(void)
 *************************************************************************/
 void Window::deactivate(void)
 {
-	WindowEventArgs args(NULL);
+	ActivationEventArgs args(this);
+	args.otherWindow = NULL;
 	onDeactivated(args);
 }
 
@@ -1014,7 +1017,8 @@ void Window::moveToFront()
 		// perform initial activation if required.
 		if (!isActive())
 		{
-            WindowEventArgs args(NULL);
+            ActivationEventArgs args(this);
+			args.otherWindow = NULL;
 			onActivated(args);
 		}
 
@@ -1047,14 +1051,16 @@ void Window::moveToFront()
 	// notify ourselves that we have become active
 	if (activeWnd != this)
 	{
-        WindowEventArgs args(activeWnd);
+        ActivationEventArgs args(this);
+		args.otherWindow = activeWnd;
 		onActivated(args);
 	}
 
 	// notify previously active window that it is no longer active
 	if ((activeWnd != NULL) && (activeWnd != this))
 	{
-        WindowEventArgs args(this);
+        ActivationEventArgs args(activeWnd);
+		args.otherWindow = this;
 		activeWnd->onDeactivated(args);
 	}
 
@@ -1070,7 +1076,8 @@ void Window::moveToBack()
 	// if the window is active, de-activate it.
 	if (isActive())
 	{
-        WindowEventArgs args(NULL);
+        ActivationEventArgs args(this);
+		args.otherWindow = NULL;
 		onDeactivated(args);
 	}
 
@@ -1632,21 +1639,21 @@ Size Window::getParentSize(void) const
 void Window::addStandardEvents(void)
 {
 	// window events
-	addEvent(SizedEvent);					addEvent(MovedEvent);					addEvent(TextChangedEvent);
-	addEvent(FontChangedEvent);				addEvent(AlphaChangedEvent);			addEvent(IDChangedEvent);
-	addEvent(ActivatedEvent);				addEvent(DeactivatedEvent);				addEvent(ShownEvent);
-	addEvent(HiddenEvent);					addEvent(EnabledEvent);					addEvent(DisabledEvent);
-	addEvent(MetricsChangedEvent);			addEvent(ClippingChangedEvent);			addEvent(ParentDestroyChangedEvent);
-	addEvent(InheritsAlphaChangedEvent);	addEvent(AlwaysOnTopChangedEvent);		addEvent(CaptureGainedEvent);
-	addEvent(CaptureLostEvent);				addEvent(RenderingStartedEvent);		addEvent(RenderingEndedEvent);
-	addEvent(ChildAddedEvent);				addEvent(ChildRemovedEvent);			addEvent(DestructionStartedEvent);
-	addEvent(ZChangedEvent);				addEvent(ParentSized);
+	addEvent(EventSized);					addEvent(EventMoved);					addEvent(EventTextChanged);
+	addEvent(EventFontChanged);				addEvent(EventAlphaChanged);			addEvent(EventIDChanged);
+	addEvent(EventActivated);				addEvent(EventDeactivated);				addEvent(EventShown);
+	addEvent(EventHidden);					addEvent(EventEnabled);					addEvent(EventDisabled);
+	addEvent(EventMetricsModeChanged);		addEvent(EventClippedByParentChanged);	addEvent(EventDestroyedByParentChanged);
+	addEvent(EventInheritsAlphaChanged);	addEvent(EventAlwaysOnTopChanged);		addEvent(EventInputCaptureGained);
+	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
+	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
+	addEvent(EventZOrderChanged);			addEvent(EventParentSized);
 
 	// general input handling
-	addEvent(MouseEntersEvent);				addEvent(MouseLeavesEvent);				addEvent(MouseMoveEvent);
-	addEvent(MouseWheelEvent);				addEvent(MouseButtonDownEvent);			addEvent(MouseButtonUpEvent);
-	addEvent(MouseClickEvent);				addEvent(MouseDoubleClickEvent);		addEvent(MouseTripleClickEvent);
-	addEvent(KeyDownEvent);					addEvent(KeyUpEvent);					addEvent(CharacterEvent);
+	addEvent(EventMouseEnters);				addEvent(EventMouseLeaves);				addEvent(EventMouseMove);
+	addEvent(EventMouseWheel);				addEvent(EventMouseButtonDown);			addEvent(EventMouseButtonUp);
+	addEvent(EventMouseClick);				addEvent(EventMouseDoubleClick);		addEvent(EventMouseTripleClick);
+	addEvent(EventKeyDown);					addEvent(EventKeyUp);					addEvent(EventCharacterKey);
 }
 
 
@@ -2508,28 +2515,28 @@ void Window::onSized(WindowEventArgs& e)
 
 	requestRedraw();
 
-	fireEvent(SizedEvent, e);
+	fireEvent(EventSized, e);
 }
 
 
 void Window::onMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(MovedEvent, e);
+	fireEvent(EventMoved, e);
 }
 
 
 void Window::onTextChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(TextChangedEvent, e);
+	fireEvent(EventTextChanged, e);
 }
 
 
 void Window::onFontChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(FontChangedEvent, e);
+	fireEvent(EventFontChanged, e);
 }
 
 
@@ -2549,80 +2556,80 @@ void Window::onAlphaChanged(WindowEventArgs& e)
 	}
 
 	requestRedraw();
-	fireEvent(AlphaChangedEvent, e);
+	fireEvent(EventAlphaChanged, e);
 }
 
 
 void Window::onIDChanged(WindowEventArgs& e)
 {
-	fireEvent(IDChangedEvent, e);
+	fireEvent(EventIDChanged, e);
 }
 
 
 void Window::onShown(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ShownEvent, e);
+	fireEvent(EventShown, e);
 }
 
 
 void Window::onHidden(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(HiddenEvent, e);
+	fireEvent(EventHidden, e);
 }
 
 
 void Window::onEnabled(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(EnabledEvent, e);
+	fireEvent(EventEnabled, e);
 }
 
 
 void Window::onDisabled(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(DisabledEvent, e);
+	fireEvent(EventDisabled, e);
 }
 
 
 void Window::onMetricsChanged(WindowEventArgs& e)
 {
-	fireEvent(MetricsChangedEvent, e);
+	fireEvent(EventMetricsModeChanged, e);
 }
 
 
 void Window::onClippingChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ClippingChangedEvent, e);
+	fireEvent(EventClippedByParentChanged, e);
 }
 
 
 void Window::onParentDestroyChanged(WindowEventArgs& e)
 {
-	fireEvent(ParentDestroyChangedEvent, e);
+	fireEvent(EventDestroyedByParentChanged, e);
 }
 
 
 void Window::onInheritsAlphaChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(InheritsAlphaChangedEvent, e);
+	fireEvent(EventInheritsAlphaChanged, e);
 }
 
 
 void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(AlwaysOnTopChangedEvent, e);
+	fireEvent(EventAlwaysOnTopChanged, e);
 }
 
 
 void Window::onCaptureGained(WindowEventArgs& e)
 {
-	fireEvent(CaptureGainedEvent, e);
+	fireEvent(EventInputCaptureGained, e);
 }
 
 
@@ -2638,44 +2645,44 @@ void Window::onCaptureLost(WindowEventArgs& e)
 	// (this is a bit of a hack that uses the mouse input injector to handle this for us).
 	System::getSingleton().injectMouseMove(0, 0);
 
-	fireEvent(CaptureLostEvent, e);
+	fireEvent(EventInputCaptureLost, e);
 }
 
 
 void Window::onRenderingStarted(WindowEventArgs& e)
 {
-	fireEvent(RenderingStartedEvent, e);
+	fireEvent(EventRenderingStarted, e);
 }
 
 
 void Window::onRenderingEnded(WindowEventArgs& e)
 {
-	fireEvent(RenderingEndedEvent, e);
+	fireEvent(EventRenderingEnded, e);
 }
 
 
 void Window::onZChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ZChangedEvent, e);
+	fireEvent(EventZOrderChanged, e);
 }
 
 
 void Window::onDestructionStarted(WindowEventArgs& e)
 {
-	fireEvent(DestructionStartedEvent, e);
+	fireEvent(EventDestructionStarted, e);
 }
 
 
-void Window::onActivated(WindowEventArgs& e)
+void Window::onActivated(ActivationEventArgs& e)
 {
 	d_active = true;
 	requestRedraw();
-	fireEvent(ActivatedEvent, e);
+	fireEvent(EventActivated, e);
 }
 
 
-void Window::onDeactivated(WindowEventArgs& e)
+void Window::onDeactivated(ActivationEventArgs& e)
 {
 	// first de-activate all children
 	uint child_count = getChildCount();
@@ -2690,7 +2697,7 @@ void Window::onDeactivated(WindowEventArgs& e)
 
 	d_active = false;
 	requestRedraw();
-	fireEvent(DeactivatedEvent, e);
+	fireEvent(EventDeactivated, e);
 }
 
 
@@ -2718,21 +2725,21 @@ void Window::onParentSized(WindowEventArgs& e)
 		d_rel_area = absoluteToRelative_impl(d_parent, d_abs_area);
 	}
 
-	fireEvent(ParentSized, e);
+	fireEvent(EventParentSized, e);
 }
 
 
 void Window::onChildAdded(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ChildAddedEvent, e);
+	fireEvent(EventChildAdded, e);
 }
 
 
 void Window::onChildRemoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ChildRemovedEvent, e);
+	fireEvent(EventChildRemoved, e);
 }
 
 
@@ -2741,25 +2748,25 @@ void Window::onMouseEnters(MouseEventArgs& e)
 	// set the mouse cursor
 	MouseCursor::getSingleton().setImage(getMouseCursor());
 
-	fireEvent(MouseEntersEvent, e);
+	fireEvent(EventMouseEnters, e);
 }
 
 
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
-	fireEvent(MouseLeavesEvent, e);
+	fireEvent(EventMouseLeaves, e);
 }
 
 
 void Window::onMouseMove(MouseEventArgs& e)
 {
-	fireEvent(MouseMoveEvent, e);
+	fireEvent(EventMouseMove, e);
 }
 
 
 void Window::onMouseWheel(MouseEventArgs& e)
 {
-	fireEvent(MouseWheelEvent, e);
+	fireEvent(EventMouseWheel, e);
 }
 
 
@@ -2770,49 +2777,49 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 		moveToFront();
 	}
 
-	fireEvent(MouseButtonDownEvent, e);
+	fireEvent(EventMouseButtonDown, e);
 }
 
 
 void Window::onMouseButtonUp(MouseEventArgs& e)
 {
-	fireEvent(MouseButtonUpEvent, e);
+	fireEvent(EventMouseButtonUp, e);
 }
 
 
 void Window::onMouseClicked(MouseEventArgs& e)
 {
-	fireEvent(MouseClickEvent, e);
+	fireEvent(EventMouseClick, e);
 }
 
 
 void Window::onMouseDoubleClicked(MouseEventArgs& e)
 {
-	fireEvent(MouseDoubleClickEvent, e);
+	fireEvent(EventMouseDoubleClick, e);
 }
 
 
 void Window::onMouseTripleClicked(MouseEventArgs& e)
 {
-	fireEvent(MouseTripleClickEvent, e);
+	fireEvent(EventMouseTripleClick, e);
 }
 
 
 void Window::onKeyDown(KeyEventArgs& e)
 {
-	fireEvent(KeyDownEvent, e);
+	fireEvent(EventKeyDown, e);
 }
 
 
 void Window::onKeyUp(KeyEventArgs& e)
 {
-	fireEvent(KeyUpEvent, e);
+	fireEvent(EventKeyUp, e);
 }
 
 
 void Window::onCharacter(KeyEventArgs& e)
 {
-	fireEvent(CharacterEvent, e);
+	fireEvent(EventCharacterKey, e);
 }
 
 } // End of  CEGUI namespace section

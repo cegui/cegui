@@ -75,17 +75,17 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	SelectionModeChanged[];			//!< Event fired when the selection mode for the list box changes.
-	static const utf8	NominatedSelectColumnChanged[];	//!< Event fired when the nominated select column changes.
-	static const utf8	NominatedSelectRowChanged[];	//!< Event fired when the nominated select row changes.
-	static const utf8	VertScrollbarModeChanged[];		//!< Event fired when the vertical scroll bar 'force' setting changes.
-	static const utf8	HorzScrollbarModeChanged[];		//!< Event fired when the horizontal scroll bar 'force' setting changes.
-	static const utf8	SelectionChanged[];				//!< Event fired when the current selection(s) within the list box changes.
-	static const utf8	ListContentsChanged[];			//!< Event fired when the contents of the list box changes.
-	static const utf8	SortColumnChanged[];			//!< Event fired when the sort column changes.
-	static const utf8	SortDirectionChanged[];			//!< Event fired when the sort direction changes.
-	static const utf8	ListColumnSized[];				//!< Event fired when the width of a column in the list changes.
-	static const utf8	ListColumnMoved[];				//!< Event fired when the column order changes.
+	static const utf8	EventSelectionModeChanged[];		//!< Event fired when the selection mode for the list box changes.
+	static const utf8	EventNominatedSelectColumnChanged[];//!< Event fired when the nominated select column changes.
+	static const utf8	EventNominatedSelectRowChanged[];	//!< Event fired when the nominated select row changes.
+	static const utf8	EventVertScrollbarModeChanged[];	//!< Event fired when the vertical scroll bar 'force' setting changes.
+	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event fired when the horizontal scroll bar 'force' setting changes.
+	static const utf8	EventSelectionChanged[];			//!< Event fired when the current selection(s) within the list box changes.
+	static const utf8	EventListContentsChanged[];			//!< Event fired when the contents of the list box changes.
+	static const utf8	EventSortColumnChanged[];			//!< Event fired when the sort column changes.
+	static const utf8	EventSortDirectionChanged[];		//!< Event fired when the sort direction changes.
+	static const utf8	EventListColumnSized[];				//!< Event fired when the width of a column in the list changes.
+	static const utf8	EventListColumnMoved[];				//!< Event fired when the column order changes.
 
 
 	/*************************************************************************
@@ -1400,13 +1400,13 @@ protected:
 	/*************************************************************************
 		Handlers for subscribed events
 	*************************************************************************/
-	void	handleHeaderScroll(const EventArgs& e);
-	void	handleHeaderSegMove(const EventArgs& e);
-	void	handleColumnSizeChange(const EventArgs& e);
-	void	handleHorzScrollbar(const EventArgs& e);
-	void	handleSortColumnChange(const EventArgs& e);
-	void	handleSortDirectionChange(const EventArgs& e);
-	void	handleHeaderSegDblClick(const EventArgs& e);
+	bool	handleHeaderScroll(const EventArgs& e);
+	bool	handleHeaderSegMove(const EventArgs& e);
+	bool	handleColumnSizeChange(const EventArgs& e);
+	bool	handleHorzScrollbar(const EventArgs& e);
+	bool	handleSortColumnChange(const EventArgs& e);
+	bool	handleSortDirectionChange(const EventArgs& e);
+	bool	handleHeaderSegDblClick(const EventArgs& e);
 
 
 	/*************************************************************************

@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLComboEditbox::WidgetTypeName[]	= "TaharezLook/ComboEditbox";
+
 // image name constants
-const utf8	TLComboEditbox::ImagesetName[]				= "TaharezImagery";
+const utf8	TLComboEditbox::ImagesetName[]				= "TaharezLook";
 const utf8	TLComboEditbox::ContainerLeftImageName[]	= "ComboboxEditLeft";
 const utf8	TLComboEditbox::ContainerMiddleImageName[]	= "ComboboxEditMiddle";
 const utf8	TLComboEditbox::CaratImageName[]			= "EditBoxCarat";
@@ -140,9 +143,8 @@ void TLComboEditbox::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	bool hasFocus = hasInputFocus();
 
@@ -237,21 +239,24 @@ void TLComboEditbox::drawSelf(float z)
 
 	// draw pre-highlight text
 	String sect = editText.substr(0, getSelectionStartIndex());
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalTextColour | alpha_comp);
+	colours.setColours(d_normalTextColour);
+	colours.setAlpha(alpha_comp);
 	fnt->drawText(sect, text_rect, renderer->getZLayer(TextLayer), clipper, LeftAligned, colours);
 
 	text_rect.d_left += fnt->getTextExtent(sect);
 
 	// draw highlight text
 	sect = editText.substr(getSelectionStartIndex(), getSelectionLength());
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_selectTextColour | alpha_comp);
+	colours.setColours(d_selectTextColour);
+	colours.setAlpha(alpha_comp);
 	fnt->drawText(sect, text_rect, renderer->getZLayer(TextLayer), clipper, LeftAligned, colours);
 
 	text_rect.d_left += fnt->getTextExtent(sect);
 
 	// draw post-highlight text
 	sect = editText.substr(getSelectionEndIndex());
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalTextColour | alpha_comp);
+	colours.setColours(d_normalTextColour);
+	colours.setAlpha(alpha_comp);
 	fnt->drawText(sect, text_rect, renderer->getZLayer(TextLayer), clipper, LeftAligned, colours);
 
 
@@ -265,14 +270,8 @@ void TLComboEditbox::drawSelf(float z)
 		float selEndOffset		= fnt->getTextExtent(editText.substr(0, getSelectionEndIndex()));
 
 		// setup colours
-		if (hasFocus && (!isReadOnly()))
-		{
-			colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_selectBrushColour | alpha_comp);
-		}
-		else
-		{
-			colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_inactiveSelectBrushColour | alpha_comp);
-		}
+		colours.setColours((hasFocus && (!isReadOnly())) ? d_selectBrushColour : d_inactiveSelectBrushColour);
+		colours.setAlpha(alpha_comp);
 
 		// calculate highlight area
 		Rect hlarea;

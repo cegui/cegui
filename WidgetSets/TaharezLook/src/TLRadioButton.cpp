@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLRadioButton::ImagesetName[]			= "TaharezImagery";
+// type name for this widget
+const utf8	TLRadioButton::WidgetTypeName[]	= "TaharezLook/RadioButton";
+
+const utf8	TLRadioButton::ImagesetName[]			= "TaharezLook";
 const utf8	TLRadioButton::NormalImageName[]		= "RadioButtonNormal";
 const utf8	TLRadioButton::HighlightImageName[]		= "RadioButtonHover";
 const utf8	TLRadioButton::SelectMarkImageName[]	= "RadioButtonMark";
@@ -82,9 +85,8 @@ void TLRadioButton::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -102,7 +104,8 @@ void TLRadioButton::drawNormal(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_normalImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
+	colours.setColours(d_normalColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -124,9 +127,8 @@ void TLRadioButton::drawHover(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -144,7 +146,8 @@ void TLRadioButton::drawHover(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_hoverImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_hoverColour | alpha_comp);
+	colours.setColours(d_hoverColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -166,9 +169,8 @@ void TLRadioButton::drawPushed(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -186,7 +188,8 @@ void TLRadioButton::drawPushed(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_normalImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
+	colours.setColours(d_pushedColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -208,9 +211,8 @@ void TLRadioButton::drawDisabled(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -228,7 +230,8 @@ void TLRadioButton::drawDisabled(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_normalImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_disabledColour | alpha_comp);
+	colours.setColours(d_disabledColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 

@@ -43,6 +43,7 @@ const utf8	GUILayout_xmlHandler::GUILayoutElement[]		= "GUILayout";
 const utf8	GUILayout_xmlHandler::WindowElement[]			= "Window";
 const utf8	GUILayout_xmlHandler::PropertyElement[]			= "Property";
 const utf8	GUILayout_xmlHandler::LayoutImportElement[]		= "LayoutImport";
+const utf8	GUILayout_xmlHandler::EventElement[]			= "Event";
 const char	GUILayout_xmlHandler::WindowTypeAttribute[]		= "Type";
 const char	GUILayout_xmlHandler::WindowNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::PropertyNameAttribute[]	= "Name";
@@ -50,7 +51,6 @@ const char	GUILayout_xmlHandler::PropertyValueAttribute[]	= "Value";
 const char	GUILayout_xmlHandler::LayoutParentAttribute[]	= "Parent";
 const char	GUILayout_xmlHandler::LayoutImportFilenameAttribute[]	= "Filename";
 const char	GUILayout_xmlHandler::LayoutImportPrefixAttribute[]		= "Prefix";
-const char	GUILayout_xmlHandler::EventElement[]			= "Event";
 const char	GUILayout_xmlHandler::EventNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::EventFunctionAttribute[]	= "Function";
 

@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
-
+#include "CEGUILogger.h"
 #include "CEGUIXmlHandlerHelper.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
@@ -86,6 +86,8 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 	{
 		d_imageset->d_name = XmlHandlerHelper::getAttributeValueAsString(attrs, ImagesetNameAttribute);
 
+		Logger::getSingleton().logEvent("Started creation of Imageset '" + d_imageset->d_name + "' via XML file.", Informative);
+
 		//
 		// load auto-scaling configuration
 		//
@@ -134,6 +136,18 @@ void Imageset_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* cons
 	}
 
 }
+
+void Imageset_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+{
+	XERCES_CPP_NAMESPACE_USE
+	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
+
+	if (element == ImagesetElement)
+	{
+		Logger::getSingleton().logEvent("Finished creation of Imageset '" + d_imageset->d_name + "' via XML file.", Informative);
+	}
+}
+
 
 void Imageset_xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
 {

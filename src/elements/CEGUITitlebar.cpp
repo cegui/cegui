@@ -246,7 +246,7 @@ colour	Titlebar::getCaptionColour(void) const
 /*************************************************************************
 	Sets the colour to be used for rendering the caption text.
 *************************************************************************/
-void Titlebar::setCaptionColour(colour col)
+void Titlebar::setCaptionColour(const colour& col)
 {
 	d_captionColour = col;
 	requestRedraw();

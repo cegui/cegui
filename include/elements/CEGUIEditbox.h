@@ -64,17 +64,17 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const utf8	ReadOnlyChanged[];					//!< The read-only mode for the edit box has been changed.
-	static const utf8	MaskedRenderingModeChanged[];		//!< The masked rendering mode (password mode) has been changed.
-	static const utf8	MaskCodePointChanged[];				//!< The code point (character) to use for masked text has been changed.
-	static const utf8	ValidationStringChanged[];			//!< The validation string has been changed.
-	static const utf8	MaximumTextLengthChanged[];			//!< The maximum allowable string length has been changed.
-	static const utf8	TextInvalidatedEvent[];				//!< Some operation has made the current text invalid with regards to the validation string.
-	static const utf8	InvalidEntryAttempted[];			//!< The user attempted to modify the text in a way that would have made it invalid.
-	static const utf8	CaratMoved[];						//!< The text carat (insert point) has changed.
-	static const utf8	TextSelectionChanged[];				//!< The current text selection has changed.
-	static const utf8	EditboxFullEvent[];					//!< The number of characters in the edit box has reached the current maximum.
-	static const utf8	TextAcceptedEvent[];				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
+	static const utf8	EventReadOnlyModeChanged[];			//!< The read-only mode for the edit box has been changed.
+	static const utf8	EventMaskedRenderingModeChanged[];	//!< The masked rendering mode (password mode) has been changed.
+	static const utf8	EventMaskCodePointChanged[];		//!< The code point (character) to use for masked text has been changed.
+	static const utf8	EventValidationStringChanged[];		//!< The validation string has been changed.
+	static const utf8	EventMaximumTextLengthChanged[];	//!< The maximum allowable string length has been changed.
+	static const utf8	EventTextInvalidated[];				//!< Some operation has made the current text invalid with regards to the validation string.
+	static const utf8	EventInvalidEntryAttempted[];		//!< The user attempted to modify the text in a way that would have made it invalid.
+	static const utf8	EventCaratMoved[];					//!< The text carat (insert point) has changed.
+	static const utf8	EventTextSelectionChanged[];		//!< The current text selection has changed.
+	static const utf8	EventEditboxFull[];					//!< The number of characters in the edit box has reached the current maximum.
+	static const utf8	EventTextAccepted[];				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
 
 
 	/*************************************************************************
@@ -377,7 +377,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalTextColour(colour col);
+	void	setNormalTextColour(const colour& col);
 
 
 	/*!
@@ -388,7 +388,7 @@ public:
 	\return
 		colour value describing the ARGB colour that is currently set.
 	*/
-	void	setSelectedTextColour(colour col);
+	void	setSelectedTextColour(const colour& col);
 
 
 	/*!
@@ -402,7 +402,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalSelectBrushColour(colour col);
+	void	setNormalSelectBrushColour(const colour& col);
 
 
 	/*!
@@ -416,7 +416,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setInactiveSelectBrushColour(colour col);
+	void	setInactiveSelectBrushColour(const colour& col);
 
 
 	/*************************************************************************

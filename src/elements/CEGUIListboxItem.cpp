@@ -85,7 +85,9 @@ ColourRect ListboxItem::getModulateAlphaColourRect(const ColourRect& cols, float
 *************************************************************************/
 colour ListboxItem::calculateModulatedAlphaColour(colour col, float alpha) const
 {
-	return ((col & 0x00FFFFFF) | (((colour)(((float)(col >> 24)) * alpha)) << 24));
+	colour temp(col);
+	temp.setAlpha(temp.getAlpha() * alpha);
+	return temp;
 }
 
 

@@ -236,9 +236,18 @@ void WLMultiLineEditbox::renderEditboxBaseImagery(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | (isReadOnly() ? ReadOnlyBackgroundColour : ReadWriteBackgroundColour);
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours;
+
+	if (isReadOnly())
+	{
+		colours.setColours(ReadOnlyBackgroundColour);
+	}
+	else
+	{
+		colours.setColours(ReadWriteBackgroundColour);
+	}
+	
+	colours.setAlpha(getEffectiveAlpha());
 
 	//
 	// render container
@@ -275,8 +284,7 @@ void WLMultiLineEditbox::renderCarat(float baseX, float baseY, const Rect& clipp
 		float ypos = caratLine * fnt->getLineSpacing();
 		float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));
 
-		colour col = ((colour)(getEffectiveAlpha() * 255.0f) << 24) | 0xFFFFFF;
-
+		colour col(1, 1, 1, getEffectiveAlpha());
 		d_carat->draw(Vector3(baseX + xpos, baseY + ypos, System::getSingleton().getRenderer()->getZLayer(7)), Size(d_carat->getWidth(), fnt->getLineSpacing()), clipper, ColourRect(col));
 	}
 
@@ -320,11 +328,10 @@ void WLMultiLineEditbox::onAlphaChanged(WindowEventArgs& e)
 	MultiLineEditbox::onAlphaChanged(e);
 
 	// update alpha values for the frame and background brush
-	float alpha = getEffectiveAlpha();
-
 	ColourRect cr;
+
 	cr = d_frame.getColours();
-	cr.setAlpha(alpha);
+	cr.setAlpha(getEffectiveAlpha());
 	d_frame.setColours(cr);
 }
 

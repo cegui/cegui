@@ -66,13 +66,13 @@ const double	System::DefaultMultiClickTimeout	= 0.33;
 const Size		System::DefaultMultiClickAreaSize(12,12);
 
 // event names
-const utf8	System::GUISheetChanged[]			= "GUISheetChanged";
-const utf8	System::SingleClickTimeoutChanged[]	= "SingleClickTimeoutChanged";
-const utf8	System::MultiClickTimeoutChanged[]	= "MultiClickTimeoutChanged";
-const utf8	System::MultiClickAreaSizeChanged[]	= "MultiClickAreaSizeChanged";
-const utf8	System::DefaultFontChanged[]		= "DefaultFontChanged";
-const utf8	System::DefaultMouseCursorChanged[]	= "DefaultMouseCursorChanged";
-const utf8	System::MouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
+const utf8	System::EventGUISheetChanged[]			= "GUISheetChanged";
+const utf8	System::EventSingleClickTimeoutChanged[]	= "SingleClickTimeoutChanged";
+const utf8	System::EventMultiClickTimeoutChanged[]	= "MultiClickTimeoutChanged";
+const utf8	System::EventMultiClickAreaSizeChanged[]	= "MultiClickAreaSizeChanged";
+const utf8	System::EventDefaultFontChanged[]		= "DefaultFontChanged";
+const utf8	System::EventDefaultMouseCursorChanged[]	= "DefaultMouseCursorChanged";
+const utf8	System::EventMouseMoveScalingChanged[]	= "MouseMoveScalingChanged";
 
 
 /*************************************************************************
@@ -254,12 +254,15 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	// add default GUISheet factory - the only UI element we can create "out of the box".
 	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
 
+	// GUISheet's name was changed, register an alias so both can be used
+	WindowFactoryManager::getSingleton().addWindowTypeAlias((utf8*)"DefaultGUISheet", GUISheet::WidgetTypeName);
+
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
 
 	// subscribe to hear about display mode changes
-	d_renderer->subscribeEvent(Renderer::ModeChangedEvent, boost::bind(&CEGUI::System::handleDisplaySizeChange, this, _1));
+	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, boost::bind(&CEGUI::System::handleDisplaySizeChange, this, _1));
 
 	// load base scheme
 	if (!configSchemeName.empty())
@@ -333,7 +336,7 @@ System::~System(void)
 	WindowManager::getSingleton().destroyAllWindows();
 
 	// get pointer to the GUI sheet factory we added
-	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory((utf8*)"DefaultGUISheet");
+	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
 
 	// remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
@@ -552,7 +555,7 @@ void System::setMouseMoveScaling(float scaling)
 /*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
-void System::injectMouseMove(float delta_x, float delta_y)
+bool System::injectMouseMove(float delta_x, float delta_y)
 {
 	MouseEventArgs ma(NULL);
 	MouseCursor& mouse = MouseCursor::getSingleton();
@@ -596,13 +599,14 @@ void System::injectMouseMove(float delta_x, float delta_y)
 
 	}
 
+	return ma.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a mouse button down event into the system.
 *************************************************************************/
-void System::injectMouseButtonDown(MouseButton button)
+bool System::injectMouseButtonDown(MouseButton button)
 {
 	// update system keys
 	d_sysKeys |= mouseButtonToSyskey(button);
@@ -663,13 +667,15 @@ void System::injectMouseButtonDown(MouseButton button)
 
 	// reset timer for this button.
 	d_click_trackers[button].d_timer.restart();
+
+	return ma.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a mouse button up event into the system.
 *************************************************************************/
-void System::injectMouseButtonUp(MouseButton button)
+bool System::injectMouseButtonUp(MouseButton button)
 {
 	// update system keys
 	d_sysKeys &= ~mouseButtonToSyskey(button);
@@ -707,20 +713,22 @@ void System::injectMouseButtonUp(MouseButton button)
 
 	}
 
+	return ma.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a key down event into the system.
 *************************************************************************/
-void System::injectKeyDown(uint key_code)
+bool System::injectKeyDown(uint key_code)
 {
 	// update system keys
 	d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
 
+	KeyEventArgs args(NULL);
+
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args(NULL);
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
@@ -736,20 +744,22 @@ void System::injectKeyDown(uint key_code)
 
 	}
 
+	return args.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a key up event into the system.
 *************************************************************************/
-void System::injectKeyUp(uint key_code)
+bool System::injectKeyUp(uint key_code)
 {
 	// update system keys
 	d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
 
+	KeyEventArgs args(NULL);
+
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args(NULL);
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
@@ -765,17 +775,19 @@ void System::injectKeyUp(uint key_code)
 
 	}
 
+	return args.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a typed character event into the system.	
 *************************************************************************/
-void System::injectChar(utf32 code_point)
+bool System::injectChar(utf32 code_point)
 {
+	KeyEventArgs args(NULL);
+
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args(NULL);
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
 
@@ -791,13 +803,14 @@ void System::injectChar(utf32 code_point)
 		
 	}
 
+	return args.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a mouse-wheel / scroll-wheel event into the system.	
 *************************************************************************/
-void System::injectMouseWheelChange(float delta)
+bool System::injectMouseWheelChange(float delta)
 {
 	MouseEventArgs ma(NULL);
 	ma.position = MouseCursor::getSingleton().getPosition();
@@ -816,6 +829,7 @@ void System::injectMouseWheelChange(float delta)
 		dest_window = dest_window->getParent();
 	}
 
+	return ma.handled;
 }
 
 
@@ -997,13 +1011,13 @@ void System::setMultiClickToleranceAreaSize(const Size&	sz)
 *************************************************************************/
 void System::addSystemEvents(void)
 {
-	addEvent(GUISheetChanged);
-	addEvent(SingleClickTimeoutChanged);
-	addEvent(MultiClickTimeoutChanged);
-	addEvent(MultiClickAreaSizeChanged);
-	addEvent(DefaultFontChanged);
-	addEvent(DefaultMouseCursorChanged);
-	addEvent(MouseMoveScalingChanged);
+	addEvent(EventGUISheetChanged);
+	addEvent(EventSingleClickTimeoutChanged);
+	addEvent(EventMultiClickTimeoutChanged);
+	addEvent(EventMultiClickAreaSizeChanged);
+	addEvent(EventDefaultFontChanged);
+	addEvent(EventDefaultMouseCursorChanged);
+	addEvent(EventMouseMoveScalingChanged);
 }
 
 
@@ -1012,7 +1026,7 @@ void System::addSystemEvents(void)
 *************************************************************************/
 void System::onGUISheetChanged(WindowEventArgs& e)
 {
-	fireEvent(GUISheetChanged, e);
+	fireEvent(EventGUISheetChanged, e);
 }
 
 
@@ -1021,7 +1035,7 @@ void System::onGUISheetChanged(WindowEventArgs& e)
 *************************************************************************/
 void System::onSingleClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(SingleClickTimeoutChanged, e);
+	fireEvent(EventSingleClickTimeoutChanged, e);
 }
 
 
@@ -1030,7 +1044,7 @@ void System::onSingleClickTimeoutChanged(EventArgs& e)
 *************************************************************************/
 void System::onMultiClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(MultiClickTimeoutChanged, e);
+	fireEvent(EventMultiClickTimeoutChanged, e);
 }
 
 
@@ -1040,7 +1054,7 @@ void System::onMultiClickTimeoutChanged(EventArgs& e)
 *************************************************************************/
 void System::onMultiClickAreaSizeChanged(EventArgs& e)
 {
-	fireEvent(MultiClickAreaSizeChanged, e);
+	fireEvent(EventMultiClickAreaSizeChanged, e);
 }
 
 
@@ -1049,7 +1063,7 @@ void System::onMultiClickAreaSizeChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
 {
-	fireEvent(DefaultFontChanged, e);
+	fireEvent(EventDefaultFontChanged, e);
 }
 
 
@@ -1058,7 +1072,7 @@ void System::onDefaultFontChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultMouseCursorChanged(EventArgs& e)
 {
-	fireEvent(DefaultMouseCursorChanged, e);
+	fireEvent(EventDefaultMouseCursorChanged, e);
 }
 
 
@@ -1067,14 +1081,14 @@ void System::onDefaultMouseCursorChanged(EventArgs& e)
 *************************************************************************/
 void System::onMouseMoveScalingChanged(EventArgs& e)
 {
-	fireEvent(MouseMoveScalingChanged, e);
+	fireEvent(EventMouseMoveScalingChanged, e);
 }
 
 
 /*************************************************************************
 	Handler method for display size change notifications
 *************************************************************************/
-void System::handleDisplaySizeChange(const EventArgs& e)
+bool System::handleDisplaySizeChange(const EventArgs& e)
 {
 	// notify gui sheet / root if size change, event propagation will ensure everything else
 	// gets updated as required.
@@ -1084,6 +1098,7 @@ void System::handleDisplaySizeChange(const EventArgs& e)
 		d_activeSheet->onParentSized(args);
 	}
 
+	return true;
 }
 
 

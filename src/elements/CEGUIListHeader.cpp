@@ -47,18 +47,18 @@ ListHeaderProperties::SortDirection			ListHeader::d_sortDirectionProperty;
 	Constants
 *************************************************************************/
 // Event names
-const utf8	ListHeader::SortColumnChanged[]			= "SortColumnChanged";
-const utf8	ListHeader::SortDirectionChanged[]		= "SortDirectionChanged";
-const utf8	ListHeader::SegmentSized[]				= "SegmentSized";
-const utf8	ListHeader::SegmentClicked[]			= "SegmentClicked";
-const utf8	ListHeader::SplitterDoubleClicked[]		= "SplitterDoubleClicked";
-const utf8	ListHeader::SegmentSequenceChanged[]	= "SegmentSequenceChanged";
-const utf8	ListHeader::SegmentAdded[]				= "SegmentAdded";
-const utf8	ListHeader::SegmentRemoved[]			= "SegmentRemoved";
-const utf8	ListHeader::SortSettingChanged[]		= "SortSettingChanged";
-const utf8	ListHeader::DragMoveSettingChanged[]	= "DragMoveSettingChanged";
-const utf8	ListHeader::DragSizeSettingChanged[]	= "DragSizeSettingChanged";
-const utf8	ListHeader::SegmentOffsetChanged[]		= "SegmentOffsetChanged";
+const utf8	ListHeader::EventSortColumnChanged[]			= "SortColumnChanged";
+const utf8	ListHeader::EventSortDirectionChanged[]		= "SortDirectionChanged";
+const utf8	ListHeader::EventSegmentSized[]				= "SegmentSized";
+const utf8	ListHeader::EventSegmentClicked[]			= "SegmentClicked";
+const utf8	ListHeader::EventSplitterDoubleClicked[]		= "SplitterDoubleClicked";
+const utf8	ListHeader::EventSegmentSequenceChanged[]	= "SegmentSequenceChanged";
+const utf8	ListHeader::EventSegmentAdded[]				= "SegmentAdded";
+const utf8	ListHeader::EventSegmentRemoved[]			= "SegmentRemoved";
+const utf8	ListHeader::EventSortSettingChanged[]		= "SortSettingChanged";
+const utf8	ListHeader::EventDragMoveSettingChanged[]	= "DragMoveSettingChanged";
+const utf8	ListHeader::EventDragSizeSettingChanged[]	= "DragSizeSettingChanged";
+const utf8	ListHeader::EventSegmentRenderOffsetChanged[]		= "SegmentOffsetChanged";
 
 // values
 const float	ListHeader::ScrollSpeed	= 8.0f;
@@ -714,11 +714,11 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	newseg->setID(id);
 
 	// subscribe events we listen to
-	newseg->subscribeEvent(ListHeaderSegment::SegmentSized, boost::bind(&CEGUI::ListHeader::segmentSizedHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::SegmentDragStop, boost::bind(&CEGUI::ListHeader::segmentMovedHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::SegmentClicked, boost::bind(&CEGUI::ListHeader::segmentClickedHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::SplitterDoubleClicked, boost::bind(&CEGUI::ListHeader::segmentDoubleClickHandler, this, _1));
-	newseg->subscribeEvent(ListHeaderSegment::SegmentDragPositionChanged, boost::bind(&CEGUI::ListHeader::segmentDragHandler, this, _1));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentSized, boost::bind(&CEGUI::ListHeader::segmentSizedHandler, this, _1));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentDragStop, boost::bind(&CEGUI::ListHeader::segmentMovedHandler, this, _1));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentClicked, boost::bind(&CEGUI::ListHeader::segmentClickedHandler, this, _1));
+	newseg->subscribeEvent(ListHeaderSegment::EventSplitterDoubleClicked, boost::bind(&CEGUI::ListHeader::segmentDoubleClickHandler, this, _1));
+	newseg->subscribeEvent(ListHeaderSegment::EventSegmentDragPositionChanged, boost::bind(&CEGUI::ListHeader::segmentDragHandler, this, _1));
 
 	return newseg;
 }
@@ -745,7 +745,7 @@ void ListHeader::layoutSegments(void)
 *************************************************************************/
 void ListHeader::onSortColumnChanged(WindowEventArgs& e)
 {
-	fireEvent(SortColumnChanged, e);
+	fireEvent(EventSortColumnChanged, e);
 }
 
 
@@ -754,7 +754,7 @@ void ListHeader::onSortColumnChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSortDirectionChanged(WindowEventArgs& e)
 {
-	fireEvent(SortDirectionChanged, e);
+	fireEvent(EventSortDirectionChanged, e);
 }
 
 
@@ -764,7 +764,7 @@ void ListHeader::onSortDirectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentSized(WindowEventArgs& e)
 {
-	fireEvent(SegmentSized, e);
+	fireEvent(EventSegmentSized, e);
 }
 
 
@@ -774,7 +774,7 @@ void ListHeader::onSegmentSized(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentClicked(WindowEventArgs& e)
 {
-	fireEvent(SegmentClicked, e);
+	fireEvent(EventSegmentClicked, e);
 }
 
 
@@ -784,7 +784,7 @@ void ListHeader::onSegmentClicked(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSplitterDoubleClicked(WindowEventArgs& e)
 {
-	fireEvent(SplitterDoubleClicked, e);
+	fireEvent(EventSplitterDoubleClicked, e);
 }
 
 
@@ -793,7 +793,7 @@ void ListHeader::onSplitterDoubleClicked(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentSequenceChanged(WindowEventArgs& e)
 {
-	fireEvent(SegmentSequenceChanged, e);
+	fireEvent(EventSegmentSequenceChanged, e);
 }
 
 
@@ -802,7 +802,7 @@ void ListHeader::onSegmentSequenceChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentAdded(WindowEventArgs& e)
 {
-	fireEvent(SegmentAdded, e);
+	fireEvent(EventSegmentAdded, e);
 }
 
 
@@ -811,7 +811,7 @@ void ListHeader::onSegmentAdded(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentRemoved(WindowEventArgs& e)
 {
-	fireEvent(SegmentRemoved, e);
+	fireEvent(EventSegmentRemoved, e);
 }
 
 
@@ -821,7 +821,7 @@ void ListHeader::onSegmentRemoved(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSortSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(SortSettingChanged, e);
+	fireEvent(EventSortSettingChanged, e);
 }
 
 
@@ -831,7 +831,7 @@ void ListHeader::onSortSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onDragMoveSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(DragMoveSettingChanged, e);
+	fireEvent(EventDragMoveSettingChanged, e);
 }
 
 
@@ -841,7 +841,7 @@ void ListHeader::onDragMoveSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onDragSizeSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(DragSizeSettingChanged, e);
+	fireEvent(EventDragSizeSettingChanged, e);
 }
 
 
@@ -851,27 +851,29 @@ void ListHeader::onDragSizeSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeader::onSegmentOffsetChanged(WindowEventArgs& e)
 {
-	fireEvent(SegmentOffsetChanged, e);
+	fireEvent(EventSegmentRenderOffsetChanged, e);
 }
 
 
 /*************************************************************************
 	Handler method for when a segment is sized.
 *************************************************************************/
-void ListHeader::segmentSizedHandler(const EventArgs& e)
+bool ListHeader::segmentSizedHandler(const EventArgs& e)
 {
 	layoutSegments();
 
 	// Fire segment sized event.
 	WindowEventArgs args(((WindowEventArgs&)e).window);
 	onSegmentSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler method for when a segment is dragged & dropped.
 *************************************************************************/
-void ListHeader::segmentMovedHandler(const EventArgs& e)
+bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
 	Point mousePos(MouseCursor::getSingleton().getPosition());
 
@@ -913,13 +915,14 @@ void ListHeader::segmentMovedHandler(const EventArgs& e)
 		moveColumn(curcol, col);
 	}
 
+	return true;
 }
 
 
 /*************************************************************************
 	Hanlder for when a segment is clicked (to change sort segment / direction)
 *************************************************************************/
-void ListHeader::segmentClickedHandler(const EventArgs& e)
+bool ListHeader::segmentClickedHandler(const EventArgs& e)
 {
 	// double-check we allow this action
 	if (d_sortingEnabled)
@@ -960,23 +963,26 @@ void ListHeader::segmentClickedHandler(const EventArgs& e)
 		onSegmentClicked(args);
 	}
 
+	return true;
 }
 
 
 /*************************************************************************
 	Handler called when a segment splitter is double-clicked.
 *************************************************************************/
-void ListHeader::segmentDoubleClickHandler(const EventArgs& e)
+bool ListHeader::segmentDoubleClickHandler(const EventArgs& e)
 {
 	WindowEventArgs args(((WindowEventArgs&)e).window);
 	onSplitterDoubleClicked(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler called whenever the mouse moves while dragging a segment
 *************************************************************************/
-void ListHeader::segmentDragHandler(const EventArgs& e)
+bool ListHeader::segmentDragHandler(const EventArgs& e)
 {
 	// what we do here is monitor the position and scroll if we can when mouse is outside area.
 
@@ -1031,6 +1037,7 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 
 	}
 
+	return true;
 }
 
 
@@ -1039,18 +1046,18 @@ void ListHeader::segmentDragHandler(const EventArgs& e)
 *************************************************************************/
 void ListHeader::addListHeaderEvents(void)
 {
-	addEvent(SortColumnChanged);
-	addEvent(SortDirectionChanged);
-	addEvent(SegmentSized);
-	addEvent(SegmentClicked);
-	addEvent(SplitterDoubleClicked);
-	addEvent(SegmentSequenceChanged);
-	addEvent(SegmentAdded);
-	addEvent(SegmentRemoved);
-	addEvent(SortSettingChanged);
-	addEvent(DragMoveSettingChanged);
-	addEvent(DragSizeSettingChanged);
-	addEvent(SegmentOffsetChanged);
+	addEvent(EventSortColumnChanged);
+	addEvent(EventSortDirectionChanged);
+	addEvent(EventSegmentSized);
+	addEvent(EventSegmentClicked);
+	addEvent(EventSplitterDoubleClicked);
+	addEvent(EventSegmentSequenceChanged);
+	addEvent(EventSegmentAdded);
+	addEvent(EventSegmentRemoved);
+	addEvent(EventSortSettingChanged);
+	addEvent(EventDragMoveSettingChanged);
+	addEvent(EventDragSizeSettingChanged);
+	addEvent(EventSegmentRenderOffsetChanged);
 }
 
 /*************************************************************************

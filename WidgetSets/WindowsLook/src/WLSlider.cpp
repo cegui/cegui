@@ -165,9 +165,7 @@ void WLSlider::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	// render track
 	float leftWidth		= d_trackLeftImage->getWidth();

@@ -160,14 +160,15 @@ public:
 		String object holding the name of the Event that is to be fired (triggered)
 
 	\param args
-		The EventArgs (or derived) object that is to be bassed to each subscriber of the Event.
+		The EventArgs (or derived) object that is to be bassed to each subscriber of the Event.  Once all subscribers
+		have been called the 'handled' field of the event is updated appropriately.
 
 	\return
 		Nothing.
 
 	\exception UnknownObjectException	Thrown if no Event named \a name was found in the EventSet.
 	*/
-	void	fireEvent(const String& name, const EventArgs& args);
+	void	fireEvent(const String& name, EventArgs& args);
 
 
 	/*!

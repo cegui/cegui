@@ -43,6 +43,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	LeftEndSectionImageName[];		//!< Name of the image to use for the left section of the title bar.
 	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the middle section of the title bar.
@@ -139,7 +142,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLTitlebarFactory(void) : WindowFactory((utf8*)"Taharez Titlebar") { }
+	TLTitlebarFactory(void) : WindowFactory(TLTitlebar::WidgetTypeName) { }
 	~TLTitlebarFactory(void){}
 
 

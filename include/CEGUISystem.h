@@ -66,13 +66,13 @@ public:
 	static const Size		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
 
 	// event names
-	static const utf8	GUISheetChanged[];					//!< Name of event fired whenever the GUI sheet is changed.
-	static const utf8	SingleClickTimeoutChanged[];		//!< Name of event fired when the single-click timeout is changed.
-	static const utf8	MultiClickTimeoutChanged[];			//!< Name of event fired when the multi-click timeout is changed.
-	static const utf8	MultiClickAreaSizeChanged[];		//!< Name of event fired when the size of the multi-click tolerance area is changed.
-	static const utf8	DefaultFontChanged[];				//!< Name of event fired when the default font changes.
-	static const utf8	DefaultMouseCursorChanged[];		//!< Name of event fired when the default mouse cursor changes.
-	static const utf8	MouseMoveScalingChanged[];			//!< Name of event fired when the mouse move scaling factor changes.
+	static const utf8	EventGUISheetChanged[];				//!< Name of event fired whenever the GUI sheet is changed.
+	static const utf8	EventSingleClickTimeoutChanged[];	//!< Name of event fired when the single-click timeout is changed.
+	static const utf8	EventMultiClickTimeoutChanged[];	//!< Name of event fired when the multi-click timeout is changed.
+	static const utf8	EventMultiClickAreaSizeChanged[];	//!< Name of event fired when the size of the multi-click tolerance area is changed.
+	static const utf8	EventDefaultFontChanged[];			//!< Name of event fired when the default font changes.
+	static const utf8	EventDefaultMouseCursorChanged[];	//!< Name of event fired when the default mouse cursor changes.
+	static const utf8	EventMouseMoveScalingChanged[];		//!< Name of event fired when the mouse move scaling factor changes.
 
 
 	/*************************************************************************
@@ -460,9 +460,10 @@ public:
 		amount the mouse moved on the y axis.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseMove(float delta_x, float delta_y);
+	bool	injectMouseMove(float delta_x, float delta_y);
 
 
 	/*!
@@ -473,9 +474,10 @@ public:
 		One of the MouseButton values indicating which button was pressed.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseButtonDown(MouseButton button);
+	bool	injectMouseButtonDown(MouseButton button);
 
 
 	/*!
@@ -486,9 +488,10 @@ public:
 		One of the MouseButton values indicating which button was released.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseButtonUp(MouseButton button);
+	bool	injectMouseButtonUp(MouseButton button);
 
 
 	/*!
@@ -499,9 +502,10 @@ public:
 		uint value indicating which key was pressed.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectKeyDown(uint key_code);
+	bool	injectKeyDown(uint key_code);
 
 
 	/*!
@@ -512,9 +516,10 @@ public:
 		uint value indicating which key was released.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectKeyUp(uint key_code);
+	bool	injectKeyUp(uint key_code);
 
 
 	/*!
@@ -525,9 +530,10 @@ public:
 		Unicode code point of the character that was typed.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectChar(utf32 code_point);
+	bool	injectChar(utf32 code_point);
 
 
 	/*!
@@ -538,9 +544,10 @@ public:
 		float value representing the amount the wheel moved.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseWheelChange(float delta);
+	bool	injectMouseWheelChange(float delta);
 
 
 private:
@@ -615,7 +622,7 @@ private:
 	\brief
 		Handler method for display size change notifications
 	*/
-	void	handleDisplaySizeChange(const EventArgs& e);
+	bool	handleDisplaySizeChange(const EventArgs& e);
 
 
 	/*************************************************************************

@@ -50,6 +50,7 @@ Logger::Logger(const String& filename, bool append /* = false */) :
 	// create log header
 	logEvent((utf8*)"+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 	logEvent((utf8*)"+                     Crazy Eddie's GUI System - Event log                    +");
+	logEvent((utf8*)"+                     (http://crayzedsgui.sourceforge.net)                    +");
 	logEvent((utf8*)"+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 	logEvent((utf8*)"CEGUI::Logger singleton created.");
 }

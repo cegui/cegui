@@ -29,6 +29,7 @@
 #include "CEGUIRenderer.h"
 #include "CEGUISystem.h"
 #include "CEGUIImageset_xmlHandler.h"
+#include "CEGUILogger.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -212,6 +213,8 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 
 	// add the Image definition
 	d_images[name] = Image(this, name, image_rect, render_offset, hscale, vscale);
+
+	CEGUI_LOGINSANE("Image '" + name + "' has been defined for Imageset '" + d_name + "'.")
 }
 
 
@@ -335,6 +338,22 @@ void Imageset::notifyScreenResolution(const Size& size)
 Imageset::ImageIterator Imageset::getIterator(void) const
 {
 	return ImageIterator(d_images.begin(), d_images.end());
+}
+
+
+void Imageset::undefineImage(const String& name)
+{
+	d_images.erase(name);
+
+	CEGUI_LOGINSANE("Image '" + name + "' has been removed from Imageset '" + d_name + "'.")
+}
+
+
+void Imageset::undefineAllImages(void)
+{
+	d_images.clear();
+
+	CEGUI_LOGINSANE("All images have been removed from Imageset '" + d_name + "'.")
 }
 
 } // End of  CEGUI namespace section

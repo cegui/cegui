@@ -81,46 +81,46 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const utf8	ParentSized[];					//!< Parent of this Window has been re-sized.
-	static const utf8	SizedEvent[];					//!< Window size has changed
-	static const utf8	MovedEvent[];					//!< Window position has changed
-	static const utf8	TextChangedEvent[];				//!< Text string for the Window has changed
-	static const utf8	FontChangedEvent[];				//!< Font object for the Window has been changed
-	static const utf8	AlphaChangedEvent[];			//!< Alpha blend value for the Window has changed
-	static const utf8	IDChangedEvent[];				//!< Client assigned ID code for the Window has changed
-	static const utf8	ActivatedEvent[];				//!< Window has been activated (has input focus)
-	static const utf8	DeactivatedEvent[];				//!< Window has been deactivated (loses input focus)
-	static const utf8	ShownEvent[];					//!< Window has been made visible
-	static const utf8	HiddenEvent[];					//!< Window has been hidden from view
-	static const utf8	EnabledEvent[];					//!< Window has been enabled (interaction is possible)
-	static const utf8	DisabledEvent[];				//!< Window has been disabled (interaction is no longer possible)
-	static const utf8	MetricsChangedEvent[];			//!< Active metrics mode has been modified
-	static const utf8	ClippingChangedEvent[];			//!< Clipping by parent mode has been modified
-	static const utf8	ParentDestroyChangedEvent[];	//!< Destruction by parent mode has been modified
-	static const utf8	InheritsAlphaChangedEvent[];	//!< Alpha inherited from parent mode has been modified.
-	static const utf8	AlwaysOnTopChangedEvent[];		//!< Always on top mode has been modified
-	static const utf8	CaptureGainedEvent[];			//!< Window has captured all inputs
-	static const utf8	CaptureLostEvent[];				//!< Window has lost it's capture on inputs
-	static const utf8	RenderingStartedEvent[];		//!< Rendering of the Window has started
-	static const utf8	RenderingEndedEvent[];			//!< Rendering for the Window has finished
-	static const utf8	ChildAddedEvent[];				//!< A child Window has been added
-	static const utf8	ChildRemovedEvent[];			//!< A child window has been removed
-	static const utf8	DestructionStartedEvent[];		//!< Destruction of the Window is about to begin.
-	static const utf8	ZChangedEvent[];				//!< The z-order of the window has changed
+	static const utf8	EventParentSized[];				//!< Parent of this Window has been re-sized.
+	static const utf8	EventSized[];					//!< Window size has changed
+	static const utf8	EventMoved[];					//!< Window position has changed
+	static const utf8	EventTextChanged[];				//!< Text string for the Window has changed
+	static const utf8	EventFontChanged[];				//!< Font object for the Window has been changed
+	static const utf8	EventAlphaChanged[];			//!< Alpha blend value for the Window has changed
+	static const utf8	EventIDChanged[];				//!< Client assigned ID code for the Window has changed
+	static const utf8	EventActivated[];				//!< Window has been activated (has input focus)
+	static const utf8	EventDeactivated[];				//!< Window has been deactivated (loses input focus)
+	static const utf8	EventShown[];					//!< Window has been made visible
+	static const utf8	EventHidden[];					//!< Window has been hidden from view
+	static const utf8	EventEnabled[];					//!< Window has been enabled (interaction is possible)
+	static const utf8	EventDisabled[];				//!< Window has been disabled (interaction is no longer possible)
+	static const utf8	EventMetricsModeChanged[];		//!< Active metrics mode has been modified
+	static const utf8	EventClippedByParentChanged[];	//!< Clipping by parent mode has been modified
+	static const utf8	EventDestroyedByParentChanged[];//!< Destruction by parent mode has been modified
+	static const utf8	EventInheritsAlphaChanged[];	//!< Alpha inherited from parent mode has been modified.
+	static const utf8	EventAlwaysOnTopChanged[];		//!< Always on top mode has been modified
+	static const utf8	EventInputCaptureGained[];		//!< Window has captured all inputs
+	static const utf8	EventInputCaptureLost[];		//!< Window has lost it's capture on inputs
+	static const utf8	EventRenderingStarted[];		//!< Rendering of the Window has started
+	static const utf8	EventRenderingEnded[];			//!< Rendering for the Window has finished
+	static const utf8	EventChildAdded[];				//!< A child Window has been added
+	static const utf8	EventChildRemoved[];			//!< A child window has been removed
+	static const utf8	EventDestructionStarted[];		//!< Destruction of the Window is about to begin.
+	static const utf8	EventZOrderChanged[];			//!< The z-order of the window has changed
 
 	// generated externally (inputs)
-	static const utf8	MouseEntersEvent[];				//!< Mouse cursor has entered the Window.
-	static const utf8	MouseLeavesEvent[];				//!< Mouse cursor has left the Window.
-	static const utf8	MouseMoveEvent[];				//!< Mouse cursor was moved within the area of the Window.
-	static const utf8	MouseWheelEvent[];				//!< Mouse wheel was scrolled within the Window.
-	static const utf8	MouseButtonDownEvent[];			//!< A mouse button was pressed down within the Window.
-	static const utf8	MouseButtonUpEvent[];			//!< A mouse button was released within the Window.
-	static const utf8	MouseClickEvent[];				//!< A mouse button was clicked (down then up) within the Window.
-	static const utf8	MouseDoubleClickEvent[];		//!< A mouse button was double-clicked within the Window.
-	static const utf8	MouseTripleClickEvent[];		//!< A mouse button was triple-clicked within the Window.
-	static const utf8	KeyDownEvent[];					//!< A key on the keyboard was pressed.
-	static const utf8	KeyUpEvent[];					//!< A key on the keyboard was released.
-	static const utf8	CharacterEvent[];				//!< A text character was typed on the keyboard.
+	static const utf8	EventMouseEnters[];				//!< Mouse cursor has entered the Window.
+	static const utf8	EventMouseLeaves[];				//!< Mouse cursor has left the Window.
+	static const utf8	EventMouseMove[];				//!< Mouse cursor was moved within the area of the Window.
+	static const utf8	EventMouseWheel[];				//!< Mouse wheel was scrolled within the Window.
+	static const utf8	EventMouseButtonDown[];			//!< A mouse button was pressed down within the Window.
+	static const utf8	EventMouseButtonUp[];			//!< A mouse button was released within the Window.
+	static const utf8	EventMouseClick[];				//!< A mouse button was clicked (down then up) within the Window.
+	static const utf8	EventMouseDoubleClick[];		//!< A mouse button was double-clicked within the Window.
+	static const utf8	EventMouseTripleClick[];		//!< A mouse button was triple-clicked within the Window.
+	static const utf8	EventKeyDown[];					//!< A key on the keyboard was pressed.
+	static const utf8	EventKeyUp[];					//!< A key on the keyboard was released.
+	static const utf8	EventCharacterKey[];			//!< A text character was typed on the keyboard.
 
 
 	/*************************************************************************
@@ -2162,9 +2162,9 @@ protected:
 		Handler called when this window has become the active window.
 
 	\param e
-		WindowEventArgs class whose 'window' pointer field is set to the window that previously was active, or NULL for none.
+		ActivationEventArgs class whose 'otherWindow' field is set to the window that previously was active, or NULL for none.
 	*/
-	virtual void	onActivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
 
 
 	/*!
@@ -2172,9 +2172,9 @@ protected:
 		Handler called when this window has lost input focus and has been deactivated.
 
 	\param e
-		WindowEventArgs object whose 'window' pointer field is set to the window that has now become active, or NULL for none.
+		ActivationEventArgs object whose 'otherWindow' field is set to the window that has now become active, or NULL for none.
 	*/
-	virtual void	onDeactivated(WindowEventArgs& e);
+	virtual void	onDeactivated(ActivationEventArgs& e);
 
 
 	/*!

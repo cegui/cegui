@@ -31,7 +31,7 @@ namespace CEGUI
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	TabButton::Clicked[]				= "Clicked";
+const utf8	TabButton::EventClicked[]				= "Clicked";
 
 
 /*************************************************************************
@@ -60,7 +60,7 @@ TabButton::~TabButton(void)
 *************************************************************************/
 void TabButton::addTabButtonEvents(void)
 {
-	addEvent(Clicked);
+	addEvent(EventClicked);
 }
 
 
@@ -69,7 +69,7 @@ void TabButton::addTabButtonEvents(void)
 *************************************************************************/
 void TabButton::onClicked(WindowEventArgs& e)
 {
-	fireEvent(Clicked, e);
+	fireEvent(EventClicked, e);
 }
 
 

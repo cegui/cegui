@@ -263,8 +263,9 @@ void WLButton::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | NormalPrimaryColour, alpha_comp | NormalSecondaryColour, alpha_comp | NormalSecondaryColour, alpha_comp | NormalPrimaryColour);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(NormalPrimaryColour, NormalSecondaryColour, NormalSecondaryColour, NormalPrimaryColour);
+	colours.setAlpha(alpha_comp);
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -284,9 +285,9 @@ void WLButton::drawNormal(float z)
 	// render clients custom image if that is required.
 	if (d_useNormalImage)
 	{
-		ColourRect imgcols = d_normalImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_normalImage.setColours(imgcols);
+		colours = d_normalImage.getColours();
+		colours.setAlpha(getEffectiveAlpha());
+		d_normalImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_normalImage.draw(imgpos, clipper);
 	}
@@ -294,8 +295,9 @@ void WLButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
+	colours.setColours(d_normalColour);
+	colours.setAlpha(alpha_comp);
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -317,8 +319,9 @@ void WLButton::drawHover(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | HoverPrimaryColour, alpha_comp | HoverSecondaryColour, alpha_comp | HoverSecondaryColour, alpha_comp | HoverPrimaryColour);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(HoverPrimaryColour, HoverSecondaryColour, HoverSecondaryColour, HoverPrimaryColour);
+	colours.setAlpha(alpha_comp);
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -338,9 +341,9 @@ void WLButton::drawHover(float z)
 	// render clients custom image if that is required.
 	if (d_useHoverImage)
 	{
-		ColourRect imgcols = d_hoverImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_hoverImage.setColours(imgcols);
+		colours = d_hoverImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_hoverImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_hoverImage.draw(imgpos, clipper);
 	}
@@ -348,8 +351,9 @@ void WLButton::drawHover(float z)
 	//
 	// Draw label text
 	//
+	colours.setColours(d_hoverColour);
+	colours.setAlpha(alpha_comp);
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_hoverColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -371,8 +375,9 @@ void WLButton::drawPushed(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | PushedPrimaryColour, alpha_comp | PushedSecondaryColour, alpha_comp | PushedSecondaryColour, alpha_comp | PushedPrimaryColour);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(PushedPrimaryColour, PushedSecondaryColour, PushedSecondaryColour, PushedPrimaryColour);
+	colours.setAlpha(alpha_comp);
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -392,9 +397,9 @@ void WLButton::drawPushed(float z)
 	// render clients custom image if that is required.
 	if (d_usePushedImage)
 	{
-		ColourRect imgcols = d_pushedImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_pushedImage.setColours(imgcols);
+		colours = d_pushedImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_pushedImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_pushedImage.draw(imgpos, clipper);
 	}
@@ -402,8 +407,9 @@ void WLButton::drawPushed(float z)
 	//
 	// Draw label text
 	//
+	colours.setColours(d_pushedColour);
+	colours.setAlpha(alpha_comp);
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -425,8 +431,9 @@ void WLButton::drawDisabled(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | DisabledPrimaryColour, alpha_comp | DisabledSecondaryColour, alpha_comp | DisabledSecondaryColour, alpha_comp | DisabledPrimaryColour);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(DisabledPrimaryColour, DisabledSecondaryColour, DisabledSecondaryColour, DisabledPrimaryColour);
+	colours.setAlpha(alpha_comp);
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -446,9 +453,9 @@ void WLButton::drawDisabled(float z)
 	// render clients custom image if that is required.
 	if (d_useDisabledImage)
 	{
-		ColourRect imgcols = d_disabledImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_disabledImage.setColours(imgcols);
+		colours = d_disabledImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_disabledImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_disabledImage.draw(imgpos, clipper);
 	}
@@ -456,8 +463,9 @@ void WLButton::drawDisabled(float z)
 	//
 	// Draw label text
 	//
+	colours.setColours(d_disabledColour);
+	colours.setAlpha(alpha_comp);
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_disabledColour | alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 

@@ -43,15 +43,18 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// image / imageset related
 	static const utf8	ImagesetName[];				//!< Name of the imageset to use for rendering.
 	static const utf8	ButtonNormalImageName[];	//!< Name of the image to use for rendering the button normally
 	static const utf8	ButtonHighlightedImageName[];	//!< Name of the image to use for rendering the button highlighted.
 
 	// component widget type names
-	static const utf8	EditboxTypeName[];			//!< Type name of widget to be created as the edit box.
-	static const utf8	DropListTypeName[];			//!< Type name of widget to be created as the drop list.
-	static const utf8	ButtonTypeName[];			//!< Type name of widget to be created as the push button.
+	static const utf8*	EditboxTypeName;			//!< Type name of widget to be created as the edit box.
+	static const utf8*	DropListTypeName;			//!< Type name of widget to be created as the drop list.
+	static const utf8*	ButtonTypeName;				//!< Type name of widget to be created as the push button.
 
 
 	/*************************************************************************
@@ -143,7 +146,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLComboboxFactory(void) : WindowFactory((utf8*)"Taharez Combobox") { }
+	TLComboboxFactory(void) : WindowFactory(TLCombobox::WidgetTypeName) { }
 	~TLComboboxFactory(void){}
 
 

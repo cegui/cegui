@@ -42,9 +42,9 @@ ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const utf8	Thumb::ThumbPositionChanged[]		= "ThumbPosChanged";
-const utf8	Thumb::ThumbTrackStarted[]			= "ThumbTrackStarted";
-const utf8	Thumb::ThumbTrackEnded[]			= "ThumbTrackEnded";
+const utf8	Thumb::EventThumbPositionChanged[]		= "ThumbPosChanged";
+const utf8	Thumb::EventThumbTrackStarted[]			= "ThumbTrackStarted";
+const utf8	Thumb::EventThumbTrackEnded[]			= "ThumbTrackEnded";
 
 
 /*************************************************************************
@@ -141,9 +141,9 @@ void Thumb::setHorzRange(float min, float max)
 *************************************************************************/
 void Thumb::addThumbEvents(void)
 {
-	addEvent(ThumbPositionChanged);
-	addEvent(ThumbTrackStarted);
-	addEvent(ThumbTrackEnded);
+	addEvent(EventThumbPositionChanged);
+	addEvent(EventThumbTrackStarted);
+	addEvent(EventThumbTrackEnded);
 }
 
 
@@ -152,7 +152,7 @@ void Thumb::addThumbEvents(void)
 *************************************************************************/
 void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 {
-	fireEvent(ThumbPositionChanged, e);
+	fireEvent(EventThumbPositionChanged, e);
 }
 
 
@@ -161,7 +161,7 @@ void Thumb::onThumbPositionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Thumb::onThumbTrackStarted(WindowEventArgs& e)
 {
-	fireEvent(ThumbTrackStarted, e);
+	fireEvent(EventThumbTrackStarted, e);
 }
 
 
@@ -170,7 +170,7 @@ void Thumb::onThumbTrackStarted(WindowEventArgs& e)
 *************************************************************************/
 void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 {
-	fireEvent(ThumbTrackEnded, e);
+	fireEvent(EventThumbTrackEnded, e);
 }
 
 

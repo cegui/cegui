@@ -50,8 +50,8 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const utf8	ProgressChanged[];		//!< Event fired whenever the progress value changes.
-	static const utf8	ProgressDone[];			//!< Event fired when the progress bar reaches 100%.	
+	static const utf8	EventProgressChanged[];		//!< Event fired whenever the progress value changes.
+	static const utf8	EventProgressDone[];		//!< Event fired when the progress bar reaches 100%.	
 
 
 	/************************************************************************

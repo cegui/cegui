@@ -92,9 +92,8 @@ void WLRadioButton::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -112,7 +111,8 @@ void WLRadioButton::drawNormal(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_normalImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
+	colours.setColours(d_normalColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -134,9 +134,8 @@ void WLRadioButton::drawHover(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -154,7 +153,8 @@ void WLRadioButton::drawHover(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_hoverImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_hoverColour | alpha_comp);
+	colours.setColours(d_hoverColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -176,9 +176,8 @@ void WLRadioButton::drawPushed(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -196,7 +195,8 @@ void WLRadioButton::drawPushed(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_normalImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
+	colours.setColours(d_pushedColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -218,9 +218,8 @@ void WLRadioButton::drawDisabled(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	//
 	// draw the images
@@ -238,7 +237,8 @@ void WLRadioButton::drawDisabled(float z)
 	//
 	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left	+= d_normalImage->getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_disabledColour | alpha_comp);
+	colours.setColours(d_disabledColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 

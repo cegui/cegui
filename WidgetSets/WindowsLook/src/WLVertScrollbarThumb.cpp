@@ -154,8 +154,8 @@ void WLVertScrollbarThumb::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | NormalPrimaryColour, alpha_comp | NormalSecondaryColour, alpha_comp | NormalSecondaryColour, alpha_comp | NormalPrimaryColour);
+	ColourRect colours(NormalPrimaryColour, NormalSecondaryColour, NormalSecondaryColour, NormalPrimaryColour);
+	colours.setAlpha(getEffectiveAlpha());
 
 	// draw background image
 	Rect bkRect(absrect);
@@ -172,8 +172,8 @@ void WLVertScrollbarThumb::drawNormal(float z)
 	if (absrect.getHeight() >= d_gripperImage->getHeight() * MinimumHeightWithGripRatio)
 	{
 		Vector3 gripPos(
-			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) / 2),
-			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) / 2),
+			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) * 0.5f),
+			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) * 0.5f),
 			z
 		);
 
@@ -200,8 +200,8 @@ void WLVertScrollbarThumb::drawHover(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | HoverPrimaryColour, alpha_comp | HoverSecondaryColour, alpha_comp | HoverSecondaryColour, alpha_comp | HoverPrimaryColour);
+	ColourRect colours(HoverPrimaryColour, HoverSecondaryColour, HoverSecondaryColour, HoverPrimaryColour);
+	colours.setAlpha(getEffectiveAlpha());
 
 	// draw background image
 	Rect bkRect(absrect);
@@ -218,8 +218,8 @@ void WLVertScrollbarThumb::drawHover(float z)
 	if (absrect.getHeight() >= d_gripperImage->getHeight() * MinimumHeightWithGripRatio)
 	{
 		Vector3 gripPos(
-			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) / 2),
-			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) / 2),
+			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) * 0.5f),
+			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) * 0.5f),
 			z
 		);
 
@@ -246,8 +246,8 @@ void WLVertScrollbarThumb::drawPushed(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | PushedPrimaryColour, alpha_comp | PushedSecondaryColour, alpha_comp | PushedSecondaryColour, alpha_comp | PushedPrimaryColour);
+	ColourRect colours(PushedPrimaryColour, PushedSecondaryColour, PushedSecondaryColour, PushedPrimaryColour);
+	colours.setAlpha(getEffectiveAlpha());
 
 	// draw background image
 	Rect bkRect(absrect);
@@ -264,8 +264,8 @@ void WLVertScrollbarThumb::drawPushed(float z)
 	if (absrect.getHeight() >= d_gripperImage->getHeight() * MinimumHeightWithGripRatio)
 	{
 		Vector3 gripPos(
-			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) / 2),
-			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) / 2),
+			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) * 0.5f),
+			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) * 0.5f),
 			z
 		);
 
@@ -292,8 +292,8 @@ void WLVertScrollbarThumb::drawDisabled(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	ColourRect colours(alpha_comp | DisabledPrimaryColour, alpha_comp | DisabledSecondaryColour, alpha_comp | DisabledSecondaryColour, alpha_comp | DisabledPrimaryColour);
+	ColourRect colours(DisabledPrimaryColour, DisabledSecondaryColour, DisabledSecondaryColour, DisabledPrimaryColour);
+	colours.setAlpha(getEffectiveAlpha());
 
 	// draw background image
 	Rect bkRect(absrect);
@@ -310,8 +310,8 @@ void WLVertScrollbarThumb::drawDisabled(float z)
 	if (absrect.getHeight() >= d_gripperImage->getHeight() * MinimumHeightWithGripRatio)
 	{
 		Vector3 gripPos(
-			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) / 2),
-			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) / 2),
+			absrect.d_left + ((absrect.getWidth() - d_gripperImage->getWidth()) * 0.5f),
+			absrect.d_top + ((absrect.getHeight() - d_gripperImage->getHeight()) * 0.5f),
 			z
 		);
 

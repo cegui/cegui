@@ -52,28 +52,27 @@ public:
 		Constants
 	*************************************************************************/
 	// event names from edit box
-	static const utf8	ReadOnlyChanged[];				//!< The read-only mode for the edit box has been changed.
-	static const utf8	ValidationStringChanged[];		//!< The validation string has been changed.
-	static const utf8	MaximumTextLengthChanged[];		//!< The maximum allowable string length has been changed.
-	static const utf8	TextInvalidatedEvent[];			//!< Some operation has made the current text invalid with regards to the validation string.
-	static const utf8	InvalidEntryAttempted[];		//!< The user attempted to modify the text in a way that would have made it invalid.
-	static const utf8	CaratMoved[];					//!< The text carat (insert point) has changed.
-	static const utf8	TextSelectionChanged[];			//!< The current text selection has changed.
-	static const utf8	EditboxFullEvent[];				//!< The number of characters in the edit box has reached the current maximum.
-	static const utf8	TextAcceptedEvent[];			//!< The user has accepted the current text by pressing Return, Enter, or Tab.
+	static const utf8	EventReadOnlyModeChanged[];			//!< The read-only mode for the edit box has been changed.
+	static const utf8	EventValidationStringChanged[];		//!< The validation string has been changed.
+	static const utf8	EventMaximumTextLengthChanged[];	//!< The maximum allowable string length has been changed.
+	static const utf8	EventTextInvalidated[];				//!< Some operation has made the current text invalid with regards to the validation string.
+	static const utf8	EventInvalidEntryAttempted[];		//!< The user attempted to modify the text in a way that would have made it invalid.
+	static const utf8	EventCaratMoved[];					//!< The text carat (insert point) has changed.
+	static const utf8	EventTextSelectionChanged[];		//!< The current text selection has changed.
+	static const utf8	EventEditboxFull[];					//!< The number of characters in the edit box has reached the current maximum.
+	static const utf8	EventTextAccepted[];				//!< The user has accepted the current text by pressing Return, Enter, or Tab.
 
 	// event names from list box
-	static const utf8	ListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
-	static const utf8	ListSelectionChanged[];			//!< Event triggered when there is a change to the currently selected item(s).
-	static const utf8	SortModeChanged[];				//!< Event triggered when the sort mode setting changes.
-	static const utf8	VertScrollbarModeChanged[];		//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const utf8	HorzScrollbarModeChanged[];		//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+	static const utf8	EventListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
+	static const utf8	EventListSelectionChanged[];		//!< Event triggered when there is a change to the currently selected item(s).
+	static const utf8	EventSortModeChanged[];				//!< Event triggered when the sort mode setting changes.
+	static const utf8	EventVertScrollbarModeChanged[];	//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 	// events we produce / generate ourselves
-	static const utf8	DropListDisplayed[];			//!< Event triggered when the drop-down list is displayed
-	static const utf8	DropListRemoved[];				//!< Event triggered when the drop-down list is removed / hidden.
-	static const utf8	ListSelectionAccepted[];		//!< Event triggered when the user accepts a selection from the drop-down list
-
+	static const utf8	EventDropListDisplayed[];			//!< Event triggered when the drop-down list is displayed
+	static const utf8	EventDropListRemoved[];				//!< Event triggered when the drop-down list is removed / hidden.
+	static const utf8	EventListSelectionAccepted[];		//!< Event triggered when the user accepts a selection from the drop-down list
 
 
 	/*!
@@ -803,41 +802,41 @@ protected:
 	\brief
 		Handler function for button clicks.
 	*/
-	void	button_ClickHandler(const EventArgs& e);
+	bool	button_ClickHandler(const EventArgs& e);
 
 
 	/*!
 	\brief
 		Handler for selections made in the drop-list
 	*/
-	void	droplist_SelectionAcceptedHandler(const EventArgs& e);
+	bool	droplist_SelectionAcceptedHandler(const EventArgs& e);
 
 
 	/*!
 	\brief
 		Handler for when drop-list hides itself
 	*/
-	void	droplist_HiddenHandler(const EventArgs& e);
+	bool	droplist_HiddenHandler(const EventArgs& e);
 
 
 	/*************************************************************************
 		Handlers to relay child widget events so they appear to come from us
 	*************************************************************************/
-	void editbox_ReadOnlyChangedHandler(const EventArgs& e);
-	void editbox_ValidationStringChangedHandler(const EventArgs& e);
-	void editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
-	void editbox_TextInvalidatedEventHandler(const EventArgs& e);
-	void editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
-	void editbox_CaratMovedHandler(const EventArgs& e);
-	void editbox_TextSelectionChangedHandler(const EventArgs& e);
-	void editbox_EditboxFullEventHandler(const EventArgs& e);
-	void editbox_TextAcceptedEventHandler(const EventArgs& e);
-	void editbox_TextChangedEventHandler(const EventArgs& e);
-	void listbox_ListContentsChangedHandler(const EventArgs& e);
-	void listbox_ListSelectionChangedHandler(const EventArgs& e);
-	void listbox_SortModeChangedHandler(const EventArgs& e);
-	void listbox_VertScrollModeChangedHandler(const EventArgs& e);
-	void listbox_HorzScrollModeChangedHandler(const EventArgs& e);
+	bool editbox_ReadOnlyChangedHandler(const EventArgs& e);
+	bool editbox_ValidationStringChangedHandler(const EventArgs& e);
+	bool editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
+	bool editbox_TextInvalidatedEventHandler(const EventArgs& e);
+	bool editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
+	bool editbox_CaratMovedHandler(const EventArgs& e);
+	bool editbox_TextSelectionChangedHandler(const EventArgs& e);
+	bool editbox_EditboxFullEventHandler(const EventArgs& e);
+	bool editbox_TextAcceptedEventHandler(const EventArgs& e);
+	bool editbox_TextChangedEventHandler(const EventArgs& e);
+	bool listbox_ListContentsChangedHandler(const EventArgs& e);
+	bool listbox_ListSelectionChangedHandler(const EventArgs& e);
+	bool listbox_SortModeChangedHandler(const EventArgs& e);
+	bool listbox_VertScrollModeChangedHandler(const EventArgs& e);
+	bool listbox_HorzScrollModeChangedHandler(const EventArgs& e);
 
 	
 	/*************************************************************************
@@ -971,7 +970,7 @@ protected:
 	virtual	void	onFontChanged(WindowEventArgs& e);
     virtual	void	onSized(WindowEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
-	virtual void	onActivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
 
 
 	/*************************************************************************

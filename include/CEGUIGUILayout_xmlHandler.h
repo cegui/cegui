@@ -104,6 +104,7 @@ private:
 	static const utf8	WindowElement[];				//!< Tag name for Window elements.
 	static const utf8	PropertyElement[];				//!< Tag name for Property elements.
 	static const utf8	LayoutImportElement[];			//!< Tag name for LayoutImport elements.
+	static const utf8	EventElement[];					//!< Tag name for Event elements.
 	static const char	WindowTypeAttribute[];			//!< Attribute name that stores the type of Window to create.
 	static const char	WindowNameAttribute[];			//!< Attribute name that stores the name of the window to create.
 	static const char	PropertyNameAttribute[];		//!< Attribute name that stores the name of the property to set.
@@ -111,7 +112,6 @@ private:
 	static const char	LayoutParentAttribute[];		//!< Attribute name that stores the name of the window to attach the layout to.
 	static const char	LayoutImportFilenameAttribute[];//!< Attribute name that stores the file name of the layout to import.
 	static const char	LayoutImportPrefixAttribute[];	//!< Attribute name that stores the prefix to use when loading the imported layout.
-	static const char	EventElement[];					//!< Tag name for Event elements.
 	static const char	EventNameAttribute[];			//!< Attribute name that stores the event name to be subscribed.
 	static const char	EventFunctionAttribute[];		//!< Attribute name that stores the name of the scripted function to be bound.
 

@@ -29,14 +29,14 @@
 #ifndef _CEGUIBase_h_
 #define _CEGUIBase_h_
 
+// bring in configuration options
+#include "CEGUIConfig.h"
+
+
 /*************************************************************************
 	Dynamic Library import / export control conditional
 	(Define CEGUIBASE_EXPORTS to export symbols, else they are imported)
 *************************************************************************/
-/*!
-\brief
-	Macro which is used to control import / export of CEGUIBase elements
-*/
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef CEGUIBASE_EXPORTS
 #       define CEGUIBASE_API __declspec(dllexport)
@@ -83,11 +83,6 @@ typedef	unsigned long	ulong;
 typedef unsigned short	ushort;
 typedef unsigned int	uint;
 typedef unsigned char	uchar;
-
-/*************************************************************************
-	Some other types used within the system
-*************************************************************************/
-typedef	ulong	colour;
 
 
 /*************************************************************************

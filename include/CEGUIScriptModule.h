@@ -28,6 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
+#include "CEGUIEvent.h"
 
 
 // Start of CEGUI namespace section
@@ -98,9 +99,10 @@ public:
 		EventArgs based object that should be passed, by any appropriate means, to the scripted function.
 
 	\return
-		Nothing.
+		- true if the event was handled.
+		- false if the event was not handled.
 	*/
-	virtual	void	executeScriptedEventHandler(const String& handler_name, const EventArgs& e)		= 0;
+	virtual	bool	executeScriptedEventHandler(const String& handler_name, const EventArgs& e)		= 0;
 };
 
 
@@ -112,7 +114,7 @@ class ScriptFunctor
 {
 public:
 	ScriptFunctor(const String functionName) : scriptFunctionName(functionName) {}
-	void	operator()(const EventArgs& e);
+	bool	operator()(const EventArgs& e) const;
 
 private:
 	const String	scriptFunctionName;

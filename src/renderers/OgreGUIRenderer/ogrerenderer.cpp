@@ -75,6 +75,8 @@ OgreRenderer::OgreRenderer(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID 
 *************************************************************************/
 OgreRenderer::~OgreRenderer(void)
 {
+	setTargetSceneManager(NULL);
+
 	if (d_ourlistener)
 	{
 		delete d_ourlistener;
@@ -131,10 +133,10 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 		quad.texPosition	= texture_rect;
 
 		// covert colours for ogre, note that top / bottom are switched.
-		quad.colours.d_top_left		= colourToOgre(colours.d_bottom_left);
-		quad.colours.d_top_right	= colourToOgre(colours.d_bottom_right);
-		quad.colours.d_bottom_left	= colourToOgre(colours.d_top_left);
-		quad.colours.d_bottom_right	= colourToOgre(colours.d_top_right);
+		quad.topLeftCol		= colourToOgre(colours.d_bottom_left);
+		quad.topRightCol	= colourToOgre(colours.d_bottom_right);
+		quad.bottomLeftCol	= colourToOgre(colours.d_top_left);
+		quad.bottomRightCol	= colourToOgre(colours.d_top_right);
 
 		d_quadList[d_quadBuffPos] = &quad;
 		d_quadBuffPos++;
@@ -144,7 +146,7 @@ void OgreRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, c
 
 
 /*************************************************************************
-	perform final rendering for all queued renderable quads.
+perform final rendering for all queued renderable quads.
 *************************************************************************/
 void OgreRenderer::doRender(void)
 {
@@ -193,7 +195,7 @@ void OgreRenderer::doRender(void)
 			(&buffmem[0])->x	= quad->position.d_left;
 			(&buffmem[0])->y	= quad->position.d_bottom;
 			(&buffmem[0])->z	= quad->z;
-			(&buffmem[0])->diffuse = (quad->colours.d_top_left);
+			(&buffmem[0])->diffuse = quad->topLeftCol;
 			(&buffmem[0])->tu1	= quad->texPosition.d_left;
 			(&buffmem[0])->tv1	= quad->texPosition.d_bottom;
 
@@ -201,7 +203,7 @@ void OgreRenderer::doRender(void)
 			(&buffmem[1])->x	= quad->position.d_right;
 			(&buffmem[1])->y	= quad->position.d_bottom;
 			(&buffmem[1])->z	= quad->z;
-			(&buffmem[1])->diffuse = (quad->colours.d_top_right);
+			(&buffmem[1])->diffuse = quad->topRightCol;
 			(&buffmem[1])->tu1	= quad->texPosition.d_right;
 			(&buffmem[1])->tv1	= quad->texPosition.d_bottom;
 
@@ -209,7 +211,7 @@ void OgreRenderer::doRender(void)
 			(&buffmem[2])->x	= quad->position.d_left;
 			(&buffmem[2])->y	= quad->position.d_top;
 			(&buffmem[2])->z	= quad->z;
-			(&buffmem[2])->diffuse = (quad->colours.d_bottom_left);
+			(&buffmem[2])->diffuse = quad->bottomLeftCol;
 			(&buffmem[2])->tu1	= quad->texPosition.d_left;
 			(&buffmem[2])->tv1	= quad->texPosition.d_top;
 
@@ -217,7 +219,7 @@ void OgreRenderer::doRender(void)
 			(&buffmem[3])->x	= quad->position.d_right;
 			(&buffmem[3])->y	= quad->position.d_bottom;
 			(&buffmem[3])->z	= quad->z;
-			(&buffmem[3])->diffuse = (quad->colours.d_top_right);
+			(&buffmem[3])->diffuse = quad->topRightCol;
 			(&buffmem[3])->tu1	= quad->texPosition.d_right;
 			(&buffmem[3])->tv1	= quad->texPosition.d_bottom;
 
@@ -225,7 +227,7 @@ void OgreRenderer::doRender(void)
 			(&buffmem[4])->x	= quad->position.d_right;
 			(&buffmem[4])->y	= quad->position.d_top;
 			(&buffmem[4])->z	= quad->z;
-			(&buffmem[4])->diffuse = (quad->colours.d_bottom_right);
+			(&buffmem[4])->diffuse = quad->bottomRightCol;
 			(&buffmem[4])->tu1	= quad->texPosition.d_right;
 			(&buffmem[4])->tv1	= quad->texPosition.d_top;
 
@@ -233,7 +235,7 @@ void OgreRenderer::doRender(void)
 			(&buffmem[5])->x	= quad->position.d_left;
 			(&buffmem[5])->y	= quad->position.d_top;
 			(&buffmem[5])->z	= quad->z;
-			(&buffmem[5])->diffuse = (quad->colours.d_bottom_left);
+			(&buffmem[5])->diffuse = quad->bottomLeftCol;
 			(&buffmem[5])->tu1	= quad->texPosition.d_left;
 			(&buffmem[5])->tv1	= quad->texPosition.d_top;
 
@@ -265,6 +267,7 @@ void OgreRenderer::doRender(void)
 		// send any remaining data to be rendered.
 		renderVBuffer();
 	}
+
 }
 
 
@@ -411,7 +414,7 @@ void OgreRenderer::sortQuads(void)
 
 
 /*************************************************************************
-	render a quad directly to the display
+render a quad directly to the display
 *************************************************************************/
 void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours)
 {
@@ -436,11 +439,10 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		final_rect.offset(Point(-1.0f, -1.0f));
 
 		// convert colours for ogre, note that top / bottom are switched.
-		ColourRect final_colours;
-		final_colours.d_top_left	 = colourToOgre(colours.d_bottom_left);
-		final_colours.d_top_right	 = colourToOgre(colours.d_bottom_right);
-		final_colours.d_bottom_left	 = colourToOgre(colours.d_top_left);
-		final_colours.d_bottom_right = colourToOgre(colours.d_top_right);
+		ulong topLeftCol	= colourToOgre(colours.d_bottom_left);
+		ulong topRightCol	= colourToOgre(colours.d_bottom_right);
+		ulong bottomLeftCol	= colourToOgre(colours.d_top_left);
+		ulong bottomRightCol= colourToOgre(colours.d_top_right);
 
 		//
 		// perform rendering...
@@ -453,7 +455,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		(&buffmem[0])->x	= final_rect.d_left;
 		(&buffmem[0])->y	= final_rect. d_bottom;
 		(&buffmem[0])->z	= z;
-		(&buffmem[0])->diffuse = (final_colours.d_top_left);
+		(&buffmem[0])->diffuse = topLeftCol;
 		(&buffmem[0])->tu1	= texture_rect.d_left;
 		(&buffmem[0])->tv1	= texture_rect.d_bottom;
 
@@ -461,7 +463,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		(&buffmem[1])->x	= final_rect.d_right;
 		(&buffmem[1])->y	= final_rect.d_bottom;
 		(&buffmem[1])->z	= z;
-		(&buffmem[1])->diffuse = (final_colours.d_top_right);
+		(&buffmem[1])->diffuse = topRightCol;
 		(&buffmem[1])->tu1	= texture_rect.d_right;
 		(&buffmem[1])->tv1	= texture_rect.d_bottom;
 
@@ -469,7 +471,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		(&buffmem[2])->x	= final_rect.d_left;
 		(&buffmem[2])->y	= final_rect.d_top;
 		(&buffmem[2])->z	= z;
-		(&buffmem[2])->diffuse = (final_colours.d_bottom_left);
+		(&buffmem[2])->diffuse = bottomLeftCol;
 		(&buffmem[2])->tu1	= texture_rect.d_left;
 		(&buffmem[2])->tv1	= texture_rect.d_top;
 
@@ -477,7 +479,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		(&buffmem[3])->x	= final_rect.d_right;
 		(&buffmem[3])->y	= final_rect.d_bottom;
 		(&buffmem[3])->z	= z;
-		(&buffmem[3])->diffuse = (final_colours.d_top_right);
+		(&buffmem[3])->diffuse = topRightCol;
 		(&buffmem[3])->tu1	= texture_rect.d_right;
 		(&buffmem[3])->tv1	= texture_rect.d_bottom;
 
@@ -485,7 +487,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		(&buffmem[4])->x	= final_rect.d_right;
 		(&buffmem[4])->y	= final_rect.d_top;
 		(&buffmem[4])->z	= z;
-		(&buffmem[4])->diffuse = (final_colours.d_bottom_right);
+		(&buffmem[4])->diffuse = bottomRightCol;
 		(&buffmem[4])->tu1	= texture_rect.d_right;
 		(&buffmem[4])->tv1	= texture_rect.d_top;
 
@@ -493,7 +495,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 		(&buffmem[5])->x	= final_rect.d_left;
 		(&buffmem[5])->y	= final_rect.d_top;
 		(&buffmem[5])->z	= z;
-		(&buffmem[5])->diffuse = (final_colours.d_bottom_left);
+		(&buffmem[5])->diffuse = bottomLeftCol;
 		(&buffmem[5])->tu1	= texture_rect.d_left;
 		(&buffmem[5])->tv1	= texture_rect.d_top;
 
@@ -502,6 +504,7 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 
 		renderVBuffer();
 	}
+
 }
 
 
@@ -509,13 +512,9 @@ void OgreRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Textur
 	convert ARGB colour value to whatever the Ogre render system is
 	expecting.	
 *************************************************************************/
-ulong OgreRenderer::colourToOgre(colour col) const
+ulong OgreRenderer::colourToOgre(const colour& col) const
 {
-	Ogre::ColourValue cv(
-		(((col & 0x00FF0000) >> 16) / 255.0f),
-		(((col & 0x0000FF00) >> 8) / 255.0f),
-		((col & 0x000000FF) / 255.0f),
-		((col >> 24) / 255.0f));
+	Ogre::ColourValue cv(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha());
 
 	ulong final;
 	d_render_sys->convertColourValue(cv, &final);

@@ -186,21 +186,21 @@ public:
 		Sets the colours to be applied when rendering the text.
 
 	\param top_left_colour
-		Colour (as ARGB value) to be applied to the top-left corner of each text glyph rendered.
+		Colour to be applied to the top-left corner of each text glyph rendered.
 
 	\param top_right_colour
-		Colour (as ARGB value) to be applied to the top-right corner of each text glyph rendered.
+		Colour to be applied to the top-right corner of each text glyph rendered.
 
 	\param bottom_left_colour
-		Colour (as ARGB value) to be applied to the bottom-left corner of each text glyph rendered.
+		Colour to be applied to the bottom-left corner of each text glyph rendered.
 
 	\param bottom_right_colour
-		Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
+		Colour to be applied to the bottom-right corner of each text glyph rendered.
 
 	\return 
 		Nothing.
 	*/
-	void	setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void	setTextColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour);
 
 
 	/*!
@@ -213,7 +213,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setTextColours(colour col)		{setTextColours(col, col, col, col);}
+	void	setTextColours(const colour& col)		{setTextColours(col, col, col, col);}
 
 
 	/*!
@@ -363,7 +363,7 @@ protected:
 	/*************************************************************************
 		Event subscribers
 	*************************************************************************/
-	void	handleScrollbarChange(const EventArgs& e);
+	bool	handleScrollbarChange(const EventArgs& e);
 
 
 	/*************************************************************************

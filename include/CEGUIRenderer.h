@@ -51,12 +51,12 @@ public:
 		Event name constants
 	*************************************************************************/
 	/*!
-		event that fires when the underlying display mode had changed.
+		event that fires when the underlying display size had changed.
 		
 		It is important that all Renderer implementers fire this properly as the
 		system itself subscribes to this event.
 	*/
-	static const utf8	ModeChangedEvent[];
+	static const utf8	EventDisplaySizeChanged[];
 
 
 	/*************************************************************************

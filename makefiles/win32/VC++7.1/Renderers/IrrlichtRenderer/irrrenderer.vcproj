@@ -13,7 +13,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -35,19 +35,20 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CEGUIBase.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
+				AdditionalDependencies="CEGUIBase_d.lib"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/irrrenderer.pdb"
 				SubSystem="2"
-				ImportLibrary="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -67,7 +68,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -90,47 +91,18 @@
 				AdditionalDependencies="CEGUIBase.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="..\..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\..\lib\$(ProjectName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="Irrtest|Win32"
-			ConfigurationType="1">
-			<Tool
-				Name="VCCLCompilerTool"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -184,5 +156,8 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="DevPartner_IsInstrumented"
+			Value="1"/>
 	</Globals>
 </VisualStudioProject>

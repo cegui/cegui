@@ -53,12 +53,12 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const utf8	ListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
-	static const utf8	SelectionChanged[];				//!< Event triggered when there is a change to the currently selected item(s).
-	static const utf8	SortModeChanged[];				//!< Event triggered when the sort mode setting changes.
-	static const utf8	MultiselectModeChanged[];		//!< Event triggered when the multi-select mode setting changes.
-	static const utf8	VertScrollbarModeChanged[];		//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const utf8	HorzScrollbarModeChanged[];		//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+	static const utf8	EventListContentsChanged[];			//!< Event triggered when the contents of the list is changed.
+	static const utf8	EventSelectionChanged[];			//!< Event triggered when there is a change to the currently selected item(s).
+	static const utf8	EventSortModeChanged[];				//!< Event triggered when the sort mode setting changes.
+	static const utf8	EventMultiselectModeChanged[];		//!< Event triggered when the multi-select mode setting changes.
+	static const utf8	EventVertScrollbarModeChanged[];	//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 
 	/*************************************************************************

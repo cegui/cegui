@@ -81,6 +81,8 @@ FontManager::~FontManager(void)
 *************************************************************************/
 Font* FontManager::createFont(const String& filename)
 {
+	Logger::getSingleton().logEvent((utf8*)"Attempting to create Font from the information specified in file '" + filename + "'.");
+
 	Font* temp = new Font(filename, new Font::FontImplData(d_implData->d_ftlib));
 
 	String name = temp->getName();
@@ -94,8 +96,6 @@ Font* FontManager::createFont(const String& filename)
 
 	d_fonts[name] = temp;
 
-	Logger::getSingleton().logEvent((utf8*)"Font '" + name + "' has been created from the information specified in file '" + filename + "'.", Informative);
-
 	return temp; 
 }
 
@@ -105,6 +105,10 @@ Font* FontManager::createFont(const String& filename)
 *************************************************************************/
 Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags)
 {
+	char strbuf[16];
+	sprintf(strbuf, "%d", size);
+	Logger::getSingleton().logEvent((utf8*)"Attempting to create Font '" + name + "' using the font file '" + fontname + "' and a size of " + strbuf + ".");
+
 	// first ensure name uniqueness
 	if (isFontPresent(name))
 	{
@@ -113,11 +117,6 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint s
 
 	Font* temp = new Font(name, fontname, size, flags, new Font::FontImplData(d_implData->d_ftlib));
 	d_fonts[name] = temp;
-
-	char strbuf[16];
-	sprintf(strbuf, "%d", size);
-
-	Logger::getSingleton().logEvent((utf8*)"Font '" + name + "' has been created using the font file '" + fontname + "' and a size of " + strbuf + ".");
 
 	return temp; 
 }
@@ -132,10 +131,12 @@ void FontManager::destroyFont(const String& name)
 
 	if (pos != d_fonts.end())
 	{
-		Logger::getSingleton().logEvent((utf8*)"Font '" + name +"' has been destroyed.", Informative);
+		String tmpName(name);
 
 		delete pos->second;
 		d_fonts.erase(pos);
+
+		Logger::getSingleton().logEvent((utf8*)"Font '" + tmpName +"' has been destroyed.");
 	}
 
 }

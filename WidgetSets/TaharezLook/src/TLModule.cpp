@@ -99,157 +99,157 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 {
 	using namespace CEGUI;
 
-	if (type_name == "Taharez Frame Window")
+	if (type_name == TLFrameWindow::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_FrameWindowFactory);
 		return;
 	}
-	else if (type_name == "Taharez Titlebar")
+	else if (type_name == TLTitlebar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_TitlebarFactory);
 		return;
 	}
-	else if (type_name == "Taharez Button")
+	else if (type_name == TLButton::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ButtonFactory);
 		return;
 	}
-	else if (type_name == "Taharez Close Button")
+	else if (type_name == TLCloseButton::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_CloseButtonFactory);
 		return;
 	}
-	else if (type_name == "Taharez Checkbox")
+	else if (type_name == TLCheckbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_CheckboxFactory);
 		return;
 	}
-	else if (type_name == "Taharez RadioButton")
+	else if (type_name == TLRadioButton::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_RadioButtonFactory);
 		return;
 	}
-	else if (type_name == "Taharez Slider Thumb")
+	else if (type_name == TLSliderThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_SliderThumbFactory);
 		return;
 	}
-	else if (type_name == "Taharez Slider")
+	else if (type_name == TLSlider::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_SliderFactory);
 		return;
 	}
-	else if (type_name == "Taharez ProgressBar")
+	else if (type_name == TLProgressBar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ProgressBarFactory);
 		return;
 	}
-	else if (type_name == "Taharez AltProgressBar")
+	else if (type_name == TLAlternateProgressBar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_AltProgressBarFactory);
 		return;
 	}
-	else if (type_name == "Taharez Editbox")
+	else if (type_name == TLEditbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_EditboxFactory);
 		return;
 	}
-	else if (type_name == "Taharez VertScrollbar")
+	else if (type_name == TLVertScrollbar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarFactory);
 		return;
 	}
-	else if (type_name == "Taharez VertScrollbarThumb")
+	else if (type_name == TLVertScrollbarThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarThumbFactory);
 		return;
 	}
-	else if (type_name == "Taharez MiniVertScrollbar")
+	else if (type_name == TLMiniVertScrollbar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MiniVertScrollbarFactory);
 		return;
 	}
-	else if (type_name == "Taharez MiniVertScrollbarThumb")
+	else if (type_name == TLMiniVertScrollbarThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MiniVertScrollbarThumbFactory);
 		return;
 	}
-	else if (type_name == "Taharez MiniHorzScrollbar")
+	else if (type_name == TLMiniHorzScrollbar::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MiniHorzScrollbarFactory);
 		return;
 	}
-	else if (type_name == "Taharez MiniHorzScrollbarThumb")
+	else if (type_name == TLMiniHorzScrollbarThumb::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MiniHorzScrollbarThumbFactory);
 		return;
 	}
-	else if (type_name == "Taharez StaticImage")
+	else if (type_name == TLStaticImage::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_StaticImageFactory);
 		return;
 	}
-	else if (type_name == "Taharez StaticText")
+	else if (type_name == TLStaticText::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_StaticTextFactory);
 		return;
 	}
-	else if (type_name == "Taharez Listbox")
+	else if (type_name == TLListbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListboxFactory);
 		return;
 	}
-	else if (type_name == "Taharez Combobox")
+	else if (type_name == TLCombobox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboboxFactory);
 		return;
 	}
-	else if (type_name == "Taharez ComboDropList")
+	else if (type_name == TLComboDropList::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboDropListFactory);
 		return;
 	}
-	else if (type_name == "Taharez ComboEditbox")
+	else if (type_name == TLComboEditbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ComboEditboxFactory);
 		return;
 	}
-	else if (type_name == "Taharez ListHeaderSegment")
+	else if (type_name == TLListHeaderSegment::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderSegmentFactory);
 		return;
 	}
-	else if (type_name == "Taharez ListHeader")
+	else if (type_name == TLListHeader::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderFactory);
 		return;
 	}
-	else if (type_name == "Taharez MultiColumnList")
+	else if (type_name == TLMultiColumnList::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
 		return;
 	}
-	else if (type_name == "Taharez MultiLineEditbox")
+	else if (type_name == TLMultiLineEditbox::WidgetTypeName)
 	{
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiLineEditboxFactory);
 		return;
 	}
-    else if (type_name == "Taharez Tab Control")
+	else if (type_name == TLTabControl::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_TabControlFactory);
         return;
     }
-    else if (type_name == "Taharez Tab Button")
+	else if (type_name == TLTabButton::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_TabButtonFactory);
         return;
     }
-    else if (type_name == "Taharez Tab Pane")
+	else if (type_name == TLTabPane::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
         return;
     }
-	
+
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
 	return;

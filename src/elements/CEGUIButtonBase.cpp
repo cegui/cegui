@@ -114,7 +114,7 @@ void ButtonBase::updateInternalState(const Point& mouse_pos)
 	Set the colour to use for the label text when rendering in the
 	normal state.	
 *************************************************************************/
-void ButtonBase::setNormalTextColour(colour colour)
+void ButtonBase::setNormalTextColour(const colour& colour)
 {
 	if (d_normalColour != colour)
 	{
@@ -130,7 +130,7 @@ void ButtonBase::setNormalTextColour(colour colour)
 	Set the colour to use for the label text when rendering in the
 	hover / highlighted states.	
 *************************************************************************/
-void ButtonBase::setHoverTextColour(colour colour)
+void ButtonBase::setHoverTextColour(const colour& colour)
 {
 	if (d_hoverColour != colour)
 	{
@@ -146,7 +146,7 @@ void ButtonBase::setHoverTextColour(colour colour)
 	Set the colour to use for the label text when rendering in the
 	pushed state.
 *************************************************************************/
-void ButtonBase::setPushedTextColour(colour colour)
+void ButtonBase::setPushedTextColour(const colour& colour)
 {
 	if (d_pushedColour != colour)
 	{
@@ -162,7 +162,7 @@ void ButtonBase::setPushedTextColour(colour colour)
 	Set the colour to use for the label text when rendering in the
 	disabled state.	
 *************************************************************************/
-void ButtonBase::setDisabledTextColour(colour colour)
+void ButtonBase::setDisabledTextColour(const colour& colour)
 {
 	if (d_disabledColour != colour)
 	{

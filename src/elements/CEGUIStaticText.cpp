@@ -78,7 +78,7 @@ void StaticText::setTextColours(const ColourRect& colours)
 /*************************************************************************
 	Sets the colours to be applied when rendering the text.	
 *************************************************************************/
-void StaticText::setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void StaticText::setTextColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour)
 {
 	d_textCols.d_top_left		= top_left_colour;
 	d_textCols.d_top_right		= top_right_colour;
@@ -231,8 +231,8 @@ void StaticText::initialise(void)
 	layoutComponentWidgets();
 
 	// event subscription
-	d_vertScrollbar->subscribeEvent(Scrollbar::ScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
-	d_horzScrollbar->subscribeEvent(Scrollbar::ScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
+	d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
+	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&StaticText::handleScrollbarChange, this, _1));
 }
 
 
@@ -490,9 +490,11 @@ void StaticText::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	Handler called when the scroll bar positions change
 *************************************************************************/
-void StaticText::handleScrollbarChange(const EventArgs& e)
+bool StaticText::handleScrollbarChange(const EventArgs& e)
 {
 	requestRedraw();
+
+	return true;
 }
 
 /*************************************************************************

@@ -38,8 +38,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	TLVertScrollbar::WidgetTypeName[]	= "TaharezLook/LargeVerticalScrollbar";
+
 // Progress bar image names
-const utf8	TLVertScrollbar::ImagesetName[]					= "TaharezImagery";
+const utf8	TLVertScrollbar::ImagesetName[]					= "TaharezLook";
 const utf8	TLVertScrollbar::ContainerTopImageName[]		= "VertScrollTop";
 const utf8	TLVertScrollbar::ContainerMiddleImageName[]		= "VertScrollMiddle";
 const utf8	TLVertScrollbar::ContainerBottomImageName[]		= "VertScrollBottom";
@@ -59,9 +61,9 @@ const float	TLVertScrollbar::ButtonPositionX	= 0.25f;
 const float	TLVertScrollbar::ButtonOffsetYRatio	= 0.5f;
 
 // type names for the component widgets
-const utf8	TLVertScrollbar::ThumbWidgetType[]			= "Taharez VertScrollbarThumb";
-const utf8	TLVertScrollbar::IncreaseButtonWidgetType[]	= "Taharez Button";
-const utf8	TLVertScrollbar::DecreaseButtonWidgetType[]	= "Taharez Button";
+const utf8*	TLVertScrollbar::ThumbWidgetType			= TLVertScrollbarThumb::WidgetTypeName;
+const utf8*	TLVertScrollbar::IncreaseButtonWidgetType	= TLButton::WidgetTypeName;
+const utf8*	TLVertScrollbar::DecreaseButtonWidgetType	= TLButton::WidgetTypeName;
 
 
 /*************************************************************************
@@ -268,9 +270,7 @@ void TLVertScrollbar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	float mid_height = absrect.getHeight() - d_containerTop->getHeight() - d_containerBottom->getHeight();
 

@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLMiniVertScrollbarThumb::WidgetTypeName[]	= "TaharezLook/VerticalScrollbarThumb";
+
 // Image names
-const utf8	TLMiniVertScrollbarThumb::ImagesetName[]				= "TaharezImagery";
+const utf8	TLMiniVertScrollbarThumb::ImagesetName[]				= "TaharezLook";
 const utf8	TLMiniVertScrollbarThumb::NormalImageName[]				= "MiniVertScrollThumbNormal";
 const utf8	TLMiniVertScrollbarThumb::NormalTopImageName[]			= "MiniVertScrollThumbTopNormal";
 const utf8	TLMiniVertScrollbarThumb::NormalMiddleImageName[]		= "MiniVertScrollThumbMiddleNormal";
@@ -88,9 +91,7 @@ void TLMiniVertScrollbarThumb::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	// calculate segment sizes
 	float minHeight		= absrect.getHeight() * 0.5f;
@@ -131,9 +132,7 @@ void TLMiniVertScrollbarThumb::drawHover(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	// calculate segment sizes
 	float minHeight		= absrect.getHeight() * 0.5f;
@@ -174,9 +173,7 @@ void TLMiniVertScrollbarThumb::drawDisabled(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0x7F7F7F;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(0.5f, 0.5f, 0.5f, getEffectiveAlpha()));
 
 	// calculate segment sizes
 	float minHeight		= absrect.getHeight() * 0.5f;

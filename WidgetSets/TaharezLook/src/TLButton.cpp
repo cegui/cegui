@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLButton::ImagesetName[]				= "TaharezImagery";
+// type name for this widget
+const utf8	TLButton::WidgetTypeName[]				= "TaharezLook/Button";
+
+const utf8	TLButton::ImagesetName[]				= "TaharezLook";
 const utf8	TLButton::LeftNormalImageName[]			= "ButtonLeftNormal";
 const utf8	TLButton::MiddleNormalImageName[]		= "ButtonMiddleNormal";
 const utf8	TLButton::RightNormalImageName[]		= "ButtonRightNormal";
@@ -224,9 +227,8 @@ void TLButton::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -255,9 +257,9 @@ void TLButton::drawNormal(float z)
 	// render clients custom image if that is required.
 	if (d_useNormalImage)
 	{
-		ColourRect imgcols = d_normalImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_normalImage.setColours(imgcols);
+		colours = d_normalImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_normalImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_normalImage.draw(imgpos, clipper);
 	}
@@ -265,9 +267,10 @@ void TLButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left += d_textXOffset * absrect.getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
+	colours.setColours(d_normalColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -289,9 +292,8 @@ void TLButton::drawHover(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -320,9 +322,9 @@ void TLButton::drawHover(float z)
 	// render clients custom image if that is required.
 	if (d_useHoverImage)
 	{
-		ColourRect imgcols = d_hoverImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_hoverImage.setColours(imgcols);
+		colours = d_hoverImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_hoverImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_hoverImage.draw(imgpos, clipper);
 	}
@@ -330,9 +332,10 @@ void TLButton::drawHover(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left += d_textXOffset * absrect.getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_hoverColour | alpha_comp);
+	colours.setColours(d_hoverColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -354,9 +357,8 @@ void TLButton::drawPushed(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -385,9 +387,9 @@ void TLButton::drawPushed(float z)
 	// render clients custom image if that is required.
 	if (d_usePushedImage)
 	{
-		ColourRect imgcols = d_pushedImage.getColours();
-		imgcols.setAlpha(getEffectiveAlpha());
-		d_pushedImage.setColours(imgcols);
+		colours = d_pushedImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_pushedImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_pushedImage.draw(imgpos, clipper);
 	}
@@ -395,9 +397,10 @@ void TLButton::drawPushed(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left += d_textXOffset * absrect.getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
+	colours.setColours(d_pushedColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -419,9 +422,8 @@ void TLButton::drawDisabled(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0x7F7F7F;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(0.5f, 0.5f, 0.5f, alpha_comp));
 
 	// render standard button imagery if required.
 	if (d_useStandardImagery)
@@ -450,6 +452,9 @@ void TLButton::drawDisabled(float z)
 	// render clients custom image if that is required.
 	if (d_useDisabledImage)
 	{
+		colours = d_disabledImage.getColours();
+		colours.setAlpha(alpha_comp);
+		d_disabledImage.setColours(colours);
 		Vector3 imgpos(absrect.d_left, absrect.d_top, System::getSingleton().getRenderer()->getZLayer(1));
 		d_disabledImage.draw(imgpos, clipper);
 	}
@@ -457,9 +462,10 @@ void TLButton::drawDisabled(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
+	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
 	absrect.d_left += d_textXOffset * absrect.getWidth();
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_disabledColour | alpha_comp);
+	colours.setColours(d_disabledColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 

@@ -56,9 +56,9 @@ public:
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const utf8	ThumbPositionChanged[];			//!< The position of the thumb widget has changed.
-	static const utf8	ThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
-	static const utf8	ThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
+	static const utf8	EventThumbPositionChanged[];		//!< The position of the thumb widget has changed.
+	static const utf8	EventThumbTrackStarted[];			//!< Name of the event fired when the user begins dragging the thumb.
+	static const utf8	EventThumbTrackEnded[];				//!< Name of the event fired when the user releases the thumb.
 
 
 	/*************************************************************************

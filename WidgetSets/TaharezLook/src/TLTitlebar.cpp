@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLTitlebar::ImagesetName[]				= "TaharezImagery";
+// type name for this widget
+const utf8	TLTitlebar::WidgetTypeName[]	= "TaharezLook/Titlebar";
+
+const utf8	TLTitlebar::ImagesetName[]				= "TaharezLook";
 const utf8	TLTitlebar::LeftEndSectionImageName[]	= "NewTitlebarLeft";
 const utf8	TLTitlebar::MiddleSectionImageName[]	= "NewTitlebarMiddle";
 const utf8	TLTitlebar::RightEndSectionImageName[]	= "NewTitlebarRight";
@@ -62,7 +65,7 @@ TLTitlebar::TLTitlebar(const String& type, const String& name) :
 	d_sysRightImage = &iset->getImage(SysAreaRightImageName);
 
 	// default text colour
-	d_captionColour = 0x00FFFFFF;
+	d_captionColour = CaptionColour;
 
 	// set cursor
 	setMouseCursor(&iset->getImage(NormalCursorImageName));
@@ -116,8 +119,8 @@ void TLTitlebar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour colval = ((colour)(getEffectiveAlpha() * 255.0f) << 24) | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha));
 
 	// calculate widths for the title bar segments
 	float leftWidth		= d_leftImage->getWidth();
@@ -160,14 +163,14 @@ void TLTitlebar::drawSelf(float z)
 	// Draw the title text
 	//
 	// calculate colours to use for caption text
-	colval = ((colval & 0xFF000000) | (d_captionColour & 0x00FFFFFF));
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = colval;
+	colours.setColours(d_captionColour);
+	colours.setAlpha(alpha);
 
 	Rect textClipper(clipper);
 	textClipper.setWidth(midWidth);
 	textClipper = clipper.getIntersection(textClipper);
 	pos.d_x = absrect.d_left + leftWidth;
-	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 	getFont()->drawText(d_parent->getText(), pos, textClipper, colours);
 }

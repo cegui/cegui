@@ -270,6 +270,19 @@ public:
 };
 
 
+/*!
+\brief
+	EventArgs based class that is used for Activated and Deactivated window events
+*/
+class CEGUIBASE_API ActivationEventArgs : public WindowEventArgs
+{
+public:
+	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
+	Window*	otherWindow;	//!< Pointer to the other window involved in the activation change.
+};
+
+
 } // End of  CEGUI namespace section
 
 

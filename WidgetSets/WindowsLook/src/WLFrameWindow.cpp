@@ -339,7 +339,7 @@ void WLFrameWindow::onAlphaChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when window is activated
 *************************************************************************/
-void WLFrameWindow::onActivated(WindowEventArgs& e)
+void WLFrameWindow::onActivated(ActivationEventArgs& e)
 {
 	Window::onActivated(e);
 	updateFrameColours();
@@ -350,7 +350,7 @@ void WLFrameWindow::onActivated(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when window is deactivated
 *************************************************************************/
-void WLFrameWindow::onDeactivated(WindowEventArgs& e)
+void WLFrameWindow::onDeactivated(ActivationEventArgs& e)
 {
 	Window::onDeactivated(e);
 	updateFrameColours();
@@ -399,19 +399,19 @@ void WLFrameWindow::initialise(void)
 	FrameWindow::initialise();
 
 	// subscribe to enable/disable events on title bar since we need something a little more than that.
-	d_titlebar->subscribeEvent(Window::DisabledEvent, boost::bind(&CEGUI::WLFrameWindow::componentDisabledHandler, this, _1));
-	d_titlebar->subscribeEvent(Window::EnabledEvent, boost::bind(&CEGUI::WLFrameWindow::componentEnabledHandler, this, _1));
+	d_titlebar->subscribeEvent(Window::EventDisabled, boost::bind(&CEGUI::WLFrameWindow::componentDisabledHandler, this, _1));
+	d_titlebar->subscribeEvent(Window::EventEnabled, boost::bind(&CEGUI::WLFrameWindow::componentEnabledHandler, this, _1));
 
 	// subscribe to enable/disable events on close button since we need something a little more than that.
-	d_closeButton->subscribeEvent(Window::DisabledEvent, boost::bind(&CEGUI::WLFrameWindow::componentDisabledHandler, this, _1));
-	d_closeButton->subscribeEvent(Window::EnabledEvent, boost::bind(&CEGUI::WLFrameWindow::componentEnabledHandler, this, _1));
+	d_closeButton->subscribeEvent(Window::EventDisabled, boost::bind(&CEGUI::WLFrameWindow::componentDisabledHandler, this, _1));
+	d_closeButton->subscribeEvent(Window::EventEnabled, boost::bind(&CEGUI::WLFrameWindow::componentEnabledHandler, this, _1));
 }
 
 
 /*************************************************************************
 	handler used for when the title bar or close button are disabled.	
 *************************************************************************/
-void WLFrameWindow::componentDisabledHandler(const EventArgs& e)
+bool WLFrameWindow::componentDisabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->hide();
 
@@ -429,13 +429,15 @@ void WLFrameWindow::componentDisabledHandler(const EventArgs& e)
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler used for when the title bar or close button are enabled.
 *************************************************************************/
-void WLFrameWindow::componentEnabledHandler(const EventArgs& e)
+bool WLFrameWindow::componentEnabledHandler(const EventArgs& e)
 {
 	((WindowEventArgs&)e).window->show();
 
@@ -453,6 +455,8 @@ void WLFrameWindow::componentEnabledHandler(const EventArgs& e)
 	// update for possible changed frame size and layout
 	WindowEventArgs args(this);
 	onSized(args);
+
+	return true;
 }
 
 
@@ -462,7 +466,8 @@ void WLFrameWindow::componentEnabledHandler(const EventArgs& e)
 void WLFrameWindow::updateFrameColours(void)
 {
 	// set active colours
-	colour colval = ((colour)(getEffectiveAlpha() * 255.0f) << 24) | (isActive() ? ActiveColour : InactiveColour);
+	colour colval(isActive() ? ActiveColour : InactiveColour);
+	colval.setAlpha(getEffectiveAlpha());
 
 	d_frame.setColours(colval, colval, colval, colval);
 }

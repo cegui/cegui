@@ -34,7 +34,10 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const utf8	TLTabButton::ImagesetName[]				    = "TaharezImagery";
+// type name for this widget
+const utf8	TLTabButton::WidgetTypeName[]	= "TaharezLook/TabButton";
+
+const utf8	TLTabButton::ImagesetName[]				    = "TaharezLook";
 const utf8	TLTabButton::LeftNormalImageName[]		    = "TabButtonLeftNormal";
 const utf8	TLTabButton::MiddleNormalImageName[]	    = "TabButtonMiddleNormal";
 const utf8	TLTabButton::RightNormalImageName[]		    = "TabButtonRightNormal";
@@ -107,9 +110,8 @@ void TLTabButton::drawNormal(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
 	// calculate widths for the button segments
 	float leftWidth		= d_leftSectionNormal->getWidth();
@@ -176,7 +178,8 @@ void TLTabButton::drawNormal(float z)
 	// Draw label text
 	//
 	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_normalColour | alpha_comp);
+	colours.setColours(d_normalColour);
+	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -196,10 +199,9 @@ void TLTabButton::drawPushed(float z)
     // get the destination screen rect for this window
     Rect absrect(getUnclippedPixelRect());
 
-    // calculate colours to use.
-    colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-    colour colval = alpha_comp | 0xFFFFFF;
-    ColourRect colours(colval, colval, colval, colval);
+	// calculate colours to use.
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(colour(1, 1, 1, alpha_comp));
 
     // calculate widths for the button segments
     float leftWidth		= d_leftSectionSelected->getWidth();
@@ -256,7 +258,8 @@ void TLTabButton::drawPushed(float z)
     // Draw label text
     //
     absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) / 2;
-    colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = (d_pushedColour | alpha_comp);
+    colours.setColours(d_pushedColour);
+	colours.setAlpha(alpha_comp);
     getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 

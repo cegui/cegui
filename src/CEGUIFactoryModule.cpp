@@ -27,60 +27,82 @@
 #include "CEGUIString.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIFactoryModule.h"
-#include <iostream>
 
-#include <dlfcn.h>
+#if defined(__WIN32__) || defined(_WIN32)
+#	if defined(_MSC_VER)
+#		pragma warning(disable : 4552)	// warning: operator has no effect; expected operator with side-effect
+#	endif
+#   define WIN32_LEAN_AND_MEAN
+#   include <windows.h>
+#endif
+
+#if defined(__APPLE_CC__)
+#   include "macPlugins.h"
+#endif
+
+#if defined(__linux__)
+#   include "dlfcn.h"
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
 /*************************************************************************
-	ImplDat based class we use to store some data in
+	Constants
 *************************************************************************/
-class ModuleDat : public FactoryModuleImplDat
-{
-public:
-	typedef void (*FactoryRegFunc)(const String&); 
+const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactory";
 
-	void* handle;
-	FactoryRegFunc	regFunc;
-
-};
 
 /*************************************************************************
 	Construct the FactoryModule object by loading the dynamic loadable
 	module specified.
 *************************************************************************/
-FactoryModule::FactoryModule(const String& filename)
+FactoryModule::FactoryModule(const String& filename) :
+	d_moduleName(filename)
 {
-	ModuleDat* data = new ModuleDat;
+#if defined(__linux__)
+	// dlopen() does not add .so to the filename, like windows does for .dll
+	if (d_moduleName.substr(d_moduleName.length() - 3, 3) != (utf8*)".so")
+	{
+		d_moduleName += (utf8*)".so";
+	}
 
-	data->handle = dlopen(filename.c_str(), RTLD_LAZY);
+	// see if we need to add the leading 'lib'
+	if (d_moduleName.substr(0, 3) != (utf8*)"lib")
+	{
+		d_moduleName.insert(0, (utf8*)"lib");
+	}
+#endif
+
+	/// This optionally adds a _d to the loaded module name under the debug config for Win32
+#if defined(__WIN32__) || defined(_WIN32)
+#	if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
+	// if name has .dll extension, assume it's complete and do not touch it.
+	if (d_moduleName.substr(d_moduleName.length() - 4, 4) != (utf8*)".dll")
+	{
+		d_moduleName += (utf8*)CEGUI_LOAD_MODULE_DEBUG_SUFFIX;
+	}
+#	endif
+#endif
+
+	d_handle = DYNLIB_LOAD(d_moduleName.c_str());
 
 	// check for library load failure
-	if (data->handle == NULL)
+	if (d_handle == NULL)
 	{
-        const char* error = dlerror();
-		throw	GenericException(
-            (utf8*)"FactoryModule::FactoryModule - Failed to load module '" + 
-            filename + "' " + error + ".");
+		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Failed to load module '" + d_moduleName + "'.");
 	}
 
-	data->regFunc = (ModuleDat::FactoryRegFunc)dlsym(data->handle, "registerFactory");
+	d_regFunc = (FactoryRegisterFunction)DYNLIB_GETSYM(d_handle, RegisterFactoryFunctionName);
 
 	// check for failure to find required function export
-	if (data->regFunc == NULL)
+	if (d_regFunc == NULL)
 	{
-        const char* error = dlerror();
-		dlclose(data->handle);
-		delete data;
+		DYNLIB_UNLOAD(d_handle);
 
-		throw	GenericException(
-            (utf8*)"FactoryModule::FactoryModule - Required function export 'registerFactory' was not found in module '" + filename + 
-            "' " + error + ".");
+		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Required function export 'registerFactory' was not found in module '" + d_moduleName + "'.");
 	}
 
-	d_data = data;
 }
 
 
@@ -89,8 +111,7 @@ FactoryModule::FactoryModule(const String& filename)
 *************************************************************************/
 FactoryModule::~FactoryModule(void)
 {
-	dlclose(((ModuleDat*)d_data)->handle);
-	delete (ModuleDat*)d_data;
+	DYNLIB_UNLOAD(d_handle);
 }
 
 
@@ -99,7 +120,7 @@ FactoryModule::~FactoryModule(void)
 *************************************************************************/
 void FactoryModule::registerFactory(const String& type) const
 {
-	((ModuleDat*)d_data)->regFunc(type);
+	d_regFunc(type);
 }
 
 } // End of  CEGUI namespace section

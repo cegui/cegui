@@ -46,7 +46,9 @@ The Root element must be Font.
 
 Font Element
 ============
-Font is the root element, it has some attributes and zero or more 'Mapping' elements.  Mapping elements are only of importance for static / bitmap fonts, any Mapping elements defined for a dynamic font should be ignored.
+Font is the root element, it has some attributes and optional 'Mapping', 'GlyphSet', 'GlyphRange', and 'Glyph' elements.
+Mapping elements are only of importance for static / bitmap fonts, any Mapping elements defined for a dynamic font should be ignored.
+GlyphSet, GlyphRange, and Glyph elements are only valid for dynamic fonts.
 
 Font attributes
 ---------------
@@ -65,13 +67,44 @@ AntiAliased	- Boolean, states whether the font should be anti-aliased, applies t
 Mapping Element
 ===============
 Used for static fonts only, defines a mapping between a code-point and a Image on the associated Imageset.
-A Mapping must be supplied for every codepoint that the font is to have available.  A Mapping has attributes bu no sub-elements.
+A Mapping must be supplied for every codepoint that the font is to have available.  A Mapping has attributes but no sub-elements.
 
 Mapping attributes
 ------------------
 Codepoint	- Unicode codepoint which should be mapped. (required).
 Image		- Name of the image to map.  This image shold be defined for the Imageset specified in Filename for the Font.
 HorzAdvance	- Number of pixels to advance the 'pen' position after rendering.  -1 indicates the values should be auto-calculated.  (optional, default=-1).
+
+
+GlyphSet Element
+================
+Used for dynamic fonts only.  Defines a set of codepoints for which glyphs should be made available in the font.
+Multiple GlyphSet elements may be specified.  A GlyphSet element has attributes but no sub-elements.
+
+GlyphSet attributes
+-------------------
+Glyphs		- String defining the character / codepoint glyphs to be available.
+
+
+GlyphRange Element
+==================
+Used for dynamic fonts only.  Defines a range of codepoints for which glyphs should be made available in the font.
+Multiple GlyphRange elements may be specified.  A GlyphRange element has attributes but no sub-elements.
+
+GlyphRange attributes
+---------------------
+StartCodepoint	- U+ codepoint of the first glyph that is part of this range.
+EndCodepoint	- U+ codepoint of the last glyph that is part of this range.
+
+
+Glyph Element
+=============
+Used for dynamic fonts only.  Defines a singal codepoint for which a glyph should be made available in the font.
+Multiple Glyph elements may be specified.  A Glyph element has attributes but no sub-elements.
+
+Glyph attributes
+----------------
+Codepoint	- U+ codepoint of the glyph to be added to the font.
 
 
 

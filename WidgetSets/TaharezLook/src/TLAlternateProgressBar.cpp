@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLAlternateProgressBar::WidgetTypeName[]			= "TaharezLook/AlternateProgressBar";
+
 // Progress bar image names
-const utf8	TLAlternateProgressBar::ImagesetName[]				= "TaharezImagery";
+const utf8	TLAlternateProgressBar::ImagesetName[]				= "TaharezLook";
 const utf8	TLAlternateProgressBar::ContainerLeftImageName[]	= "AltProgressLeft";
 const utf8	TLAlternateProgressBar::ContainerMiddleImageName[]	= "AltProgressMiddle";
 const utf8	TLAlternateProgressBar::ContainerRightImageName[]	= "AltProgressRight";
@@ -145,9 +148,7 @@ void TLAlternateProgressBar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	//
 	// Rendering of the container

@@ -25,7 +25,8 @@
 *************************************************************************/
 #include "TLTabControl.h"
 #include "CEGUIWindowManager.h"
-#include "elements/CEGUITabButton.h"
+#include "TLTabButton.h"
+#include "TLTabPane.h"
 #include "CEGUIImageset.h"
 
 
@@ -35,11 +36,14 @@ namespace CEGUI
     /*************************************************************************
     Constants
     *************************************************************************/
-    const utf8	TLTabControl::ImagesetName[]				    = "TaharezImagery";
-    const utf8	TLTabControl::FillerImageName[]		        = "TabControlButtonPaneFiller";
+	// type name for this widget
+	const utf8	TLTabControl::WidgetTypeName[]	= "TaharezLook/TabControl";
+
+    const utf8	TLTabControl::ImagesetName[]		= "TaharezLook";
+    const utf8	TLTabControl::FillerImageName[]		= "TabControlButtonPaneFiller";
     // window type stuff
-    const utf8	TLTabControl::TabContentPaneType[]	= "Taharez Tab Pane";
-    const utf8	TLTabControl::TabButtonType[]	    = "Taharez Tab Button";
+	const utf8*	TLTabControl::TabContentPaneType	= TLTabPane::WidgetTypeName;
+	const utf8*	TLTabControl::TabButtonType		    = TLTabButton::WidgetTypeName;
 
     /*************************************************************************
     Constructor
@@ -131,10 +135,8 @@ namespace CEGUI
         // get the destination screen rect for this window
         Rect absrect(getUnclippedPixelRect());
 
-        // calculate colours to use.
-        colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-        colour colval = alpha_comp | 0xFFFFFF;
-        ColourRect colours(colval, colval, colval, colval);
+		// calculate colours to use.
+		ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
         // Do filler section
         Vector3 pos = d_fillerPos;

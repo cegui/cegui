@@ -96,7 +96,7 @@ void StaticImage::setImageColours(const ColourRect& colours)
 /*************************************************************************
 	Sets the colours to be applied when rendering the image.	
 *************************************************************************/
-void StaticImage::setImageColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
+void StaticImage::setImageColours(const colour& top_left_colour, const colour& top_right_colour, const colour& bottom_left_colour, const colour& bottom_right_colour)
 {
 	d_imageCols.d_top_left		= top_left_colour;
 	d_imageCols.d_top_right		= top_right_colour;

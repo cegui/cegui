@@ -35,8 +35,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLListHeaderSegment::WidgetTypeName[]	= "TaharezLook/ListHeaderSegment";
+
 // image / imageset related
-const utf8	TLListHeaderSegment::ImagesetName[]				= "TaharezImagery";
+const utf8	TLListHeaderSegment::ImagesetName[]				= "TaharezLook";
 const utf8	TLListHeaderSegment::BackdropNormalImageName[]	= "HeaderBarBackdropNormal";
 const utf8	TLListHeaderSegment::BackdropHoverImageName[]	= "HeaderBarBackdropHover";
 const utf8	TLListHeaderSegment::SplitterNormalImageName[]	= "HeaderBarSplitterNormal";
@@ -118,9 +121,7 @@ void TLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	Rect destrect(absrect);
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(alpha * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, alpha));
 
 	//
 	// draw the main images

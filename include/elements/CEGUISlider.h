@@ -54,9 +54,9 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-	static const utf8	ValueChanged[];			//!< Event fired when the slider value changes.
-	static const utf8	ThumbTrackStarted[];	//!< Name of the event fired when the user begins dragging the thumb.
-	static const utf8	ThumbTrackEnded[];		//!< Name of the event fired when the user releases the thumb.
+	static const utf8	EventValueChanged[];		//!< Event fired when the slider value changes.
+	static const utf8	EventThumbTrackStarted[];	//!< Name of the event fired when the user begins dragging the thumb.
+	static const utf8	EventThumbTrackEnded[];		//!< Name of the event fired when the user releases the thumb.
 
 
 	/*************************************************************************
@@ -232,21 +232,21 @@ protected:
 	\brief
 		handler function for when thumb moves.
 	*/
-	void	handleThumbMoved(const EventArgs& e);
+	bool	handleThumbMoved(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler function for when thumb tracking begins
 	*/
-	void	handleThumbTrackStarted(const EventArgs& e);
+	bool	handleThumbTrackStarted(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler function for when thumb tracking begins
 	*/
-	void	handleThumbTrackEnded(const EventArgs& e);
+	bool	handleThumbTrackEnded(const EventArgs& e);
 
 
 	/*************************************************************************

@@ -44,6 +44,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Progress bar image names
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	ScrollbarBodyImageName[];		//!< Name of image to use for the main body of the scroll bar
@@ -59,9 +62,9 @@ public:
 	static const float	BodyWidth;				//!< Relative width for the body imagery.
 
 	// type names for the component widgets
-	static const utf8	ThumbWidgetType[];			//!< Type of widget to create for the scroll bar thumb;
-	static const utf8	IncreaseButtonWidgetType[];	//!< Type of widget to create for the increase button (down arrow).
-	static const utf8	DecreaseButtonWidgetType[];	//!< Type of widget to create for the decrease button (up arrow).
+	static const utf8*	ThumbWidgetType;			//!< Type of widget to create for the scroll bar thumb;
+	static const utf8*	IncreaseButtonWidgetType;	//!< Type of widget to create for the increase button (down arrow).
+	static const utf8*	DecreaseButtonWidgetType;	//!< Type of widget to create for the decrease button (up arrow).
 
 
 	/*************************************************************************
@@ -173,7 +176,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLMiniVertScrollbarFactory(void) : WindowFactory((utf8*)"Taharez MiniVertScrollbar") { }
+	TLMiniVertScrollbarFactory(void) : WindowFactory(TLMiniVertScrollbar::WidgetTypeName) { }
 	~TLMiniVertScrollbarFactory(void){}
 
 

@@ -47,6 +47,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	LeftNormalImageName[];			//!< Name of the image to use for the left end of the button (normal).
 	static const utf8	MiddleNormalImageName[];		//!< Name of the image to use for the middle of the button (normal).
@@ -306,7 +309,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLButtonFactory(void) : WindowFactory((utf8*)"Taharez Button") { }
+	TLButtonFactory(void) : WindowFactory(TLButton::WidgetTypeName) { }
 	~TLButtonFactory(void){}
 
 

@@ -43,16 +43,16 @@ ListHeaderSegmentProperties::SortDirection	ListHeaderSegment::d_sortDirectionPro
 	Constants
 *************************************************************************/
 // Event names
-const utf8	ListHeaderSegment::SegmentClicked[]			= "SegmentClicked";
-const utf8	ListHeaderSegment::SplitterDoubleClicked[]	= "SplitterDoubleClicked";
-const utf8	ListHeaderSegment::SizingSettingChanged[]	= "SizingSettingChanged";
-const utf8	ListHeaderSegment::SortDirectionChanged[]	= "SortDirectionChanged";
-const utf8	ListHeaderSegment::MovableSettingChanged[]	= "MovableSettingChanged";
-const utf8	ListHeaderSegment::SegmentDragStart[]		= "SegmentDragStart";
-const utf8	ListHeaderSegment::SegmentDragStop[]		= "SegmentDragStop";
-const utf8	ListHeaderSegment::SegmentDragPositionChanged[]	= "SegmentDragPositionChanged";
-const utf8	ListHeaderSegment::SegmentSized[]			= "SegmentSized";
-const utf8	ListHeaderSegment::ClickableSettingChanged[]	= "ClickableSettingChanged";
+const utf8	ListHeaderSegment::EventSegmentClicked[]			= "SegmentClicked";
+const utf8	ListHeaderSegment::EventSplitterDoubleClicked[]	= "SplitterDoubleClicked";
+const utf8	ListHeaderSegment::EventSizingSettingChanged[]	= "SizingSettingChanged";
+const utf8	ListHeaderSegment::EventSortDirectionChanged[]	= "SortDirectionChanged";
+const utf8	ListHeaderSegment::EventMovableSettingChanged[]	= "MovableSettingChanged";
+const utf8	ListHeaderSegment::EventSegmentDragStart[]		= "SegmentDragStart";
+const utf8	ListHeaderSegment::EventSegmentDragStop[]		= "SegmentDragStop";
+const utf8	ListHeaderSegment::EventSegmentDragPositionChanged[]	= "SegmentDragPositionChanged";
+const utf8	ListHeaderSegment::EventSegmentSized[]			= "SegmentSized";
+const utf8	ListHeaderSegment::EventClickableSettingChanged[]	= "ClickableSettingChanged";
 
 // Defaults
 const float	ListHeaderSegment::DefaultSizingArea	= 8.0f;
@@ -168,16 +168,16 @@ void ListHeaderSegment::setClickable(bool setting)
 *************************************************************************/
 void ListHeaderSegment::addHeaderSegmentEvents(void)
 {
-	addEvent(SortDirectionChanged);
-	addEvent(SizingSettingChanged);
-	addEvent(SplitterDoubleClicked);
-	addEvent(SegmentClicked);
-	addEvent(SegmentDragStart);
-	addEvent(SegmentDragStop);
-	addEvent(SegmentDragPositionChanged);
-	addEvent(MovableSettingChanged);
-	addEvent(SegmentSized);
-	addEvent(ClickableSettingChanged);
+	addEvent(EventSortDirectionChanged);
+	addEvent(EventSizingSettingChanged);
+	addEvent(EventSplitterDoubleClicked);
+	addEvent(EventSegmentClicked);
+	addEvent(EventSegmentDragStart);
+	addEvent(EventSegmentDragStop);
+	addEvent(EventSegmentDragPositionChanged);
+	addEvent(EventMovableSettingChanged);
+	addEvent(EventSegmentSized);
+	addEvent(EventClickableSettingChanged);
 }
 
 
@@ -187,7 +187,7 @@ void ListHeaderSegment::addHeaderSegmentEvents(void)
 *************************************************************************/
 void ListHeaderSegment::onSegmentClicked(WindowEventArgs& e)
 {
-	fireEvent(SegmentClicked, e);
+	fireEvent(EventSegmentClicked, e);
 }
 
 
@@ -196,7 +196,7 @@ void ListHeaderSegment::onSegmentClicked(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSplitterDoubleClicked(WindowEventArgs& e)
 {
-	fireEvent(SplitterDoubleClicked, e);
+	fireEvent(EventSplitterDoubleClicked, e);
 }
 
 
@@ -205,7 +205,7 @@ void ListHeaderSegment::onSplitterDoubleClicked(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSizingSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(SizingSettingChanged, e);
+	fireEvent(EventSizingSettingChanged, e);
 }
 
 
@@ -214,7 +214,8 @@ void ListHeaderSegment::onSizingSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSortDirectionChanged(WindowEventArgs& e)
 {
-	fireEvent(SortDirectionChanged, e);
+	requestRedraw();
+	fireEvent(EventSortDirectionChanged, e);
 }
 
 
@@ -223,7 +224,7 @@ void ListHeaderSegment::onSortDirectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onMovableSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(MovableSettingChanged, e);
+	fireEvent(EventMovableSettingChanged, e);
 }
 
 
@@ -232,7 +233,7 @@ void ListHeaderSegment::onMovableSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSegmentDragStart(WindowEventArgs& e)
 {
-	fireEvent(SegmentDragStart, e);
+	fireEvent(EventSegmentDragStart, e);
 }
 
 
@@ -242,7 +243,7 @@ void ListHeaderSegment::onSegmentDragStart(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSegmentDragStop(WindowEventArgs& e)
 {
-	fireEvent(SegmentDragStop, e);
+	fireEvent(EventSegmentDragStop, e);
 }
 
 
@@ -252,7 +253,7 @@ void ListHeaderSegment::onSegmentDragStop(WindowEventArgs& e)
 void ListHeaderSegment::onSegmentDragPositionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SegmentDragPositionChanged, e);
+	fireEvent(EventSegmentDragPositionChanged, e);
 }
 
 
@@ -262,7 +263,7 @@ void ListHeaderSegment::onSegmentDragPositionChanged(WindowEventArgs& e)
 void ListHeaderSegment::onSegmentSized(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SegmentSized, e);
+	fireEvent(EventSegmentSized, e);
 }
 
 
@@ -271,7 +272,7 @@ void ListHeaderSegment::onSegmentSized(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 {
-	fireEvent(ClickableSettingChanged, e);
+	fireEvent(EventClickableSettingChanged, e);
 }
 
 

@@ -78,17 +78,17 @@ const ulong	Editbox::DefaultInactiveSelectionColour		= 0x00808080;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Editbox::ReadOnlyChanged[]				= "ReadOnlyChanged";
-const utf8	Editbox::MaskedRenderingModeChanged[]	= "MaskRenderChanged";
-const utf8	Editbox::MaskCodePointChanged[]			= "MaskCPChanged";
-const utf8	Editbox::ValidationStringChanged[]		= "ValidatorChanged";
-const utf8	Editbox::MaximumTextLengthChanged[]		= "MaxTextLenChanged";
-const utf8	Editbox::TextInvalidatedEvent[]			= "TextInvalidated";
-const utf8	Editbox::InvalidEntryAttempted[]		= "InvalidInputAttempt";
-const utf8	Editbox::CaratMoved[]					= "TextCaratMoved";
-const utf8	Editbox::TextSelectionChanged[]			= "TextSelectChanged";
-const utf8	Editbox::EditboxFullEvent[]				= "EditboxFull";
-const utf8	Editbox::TextAcceptedEvent[]			= "TextAccepted";
+const utf8	Editbox::EventReadOnlyModeChanged[]				= "ReadOnlyChanged";
+const utf8	Editbox::EventMaskedRenderingModeChanged[]	= "MaskRenderChanged";
+const utf8	Editbox::EventMaskCodePointChanged[]			= "MaskCPChanged";
+const utf8	Editbox::EventValidationStringChanged[]		= "ValidatorChanged";
+const utf8	Editbox::EventMaximumTextLengthChanged[]		= "MaxTextLenChanged";
+const utf8	Editbox::EventTextInvalidated[]			= "TextInvalidated";
+const utf8	Editbox::EventInvalidEntryAttempted[]		= "InvalidInputAttempt";
+const utf8	Editbox::EventCaratMoved[]					= "TextCaratMoved";
+const utf8	Editbox::EventTextSelectionChanged[]			= "TextSelectChanged";
+const utf8	Editbox::EventEditboxFull[]				= "EditboxFull";
+const utf8	Editbox::EventTextAccepted[]			= "TextAccepted";
 
 
 /*************************************************************************
@@ -895,12 +895,12 @@ void Editbox::handleEnd(uint sysKeys)
 *************************************************************************/
 void Editbox::addEditboxEvents(void)
 {
-	addEvent(ReadOnlyChanged);				addEvent(MaskedRenderingModeChanged);
-	addEvent(MaskCodePointChanged);			addEvent(ValidationStringChanged);
-	addEvent(MaximumTextLengthChanged);		addEvent(TextInvalidatedEvent);
-	addEvent(InvalidEntryAttempted);		addEvent(CaratMoved);
-	addEvent(TextSelectionChanged);			addEvent(EditboxFullEvent);
-	addEvent(TextAcceptedEvent);
+	addEvent(EventReadOnlyModeChanged);				addEvent(EventMaskedRenderingModeChanged);
+	addEvent(EventMaskCodePointChanged);			addEvent(EventValidationStringChanged);
+	addEvent(EventMaximumTextLengthChanged);		addEvent(EventTextInvalidated);
+	addEvent(EventInvalidEntryAttempted);			addEvent(EventCaratMoved);
+	addEvent(EventTextSelectionChanged);			addEvent(EventEditboxFull);
+	addEvent(EventTextAccepted);
 }
 
 
@@ -911,7 +911,7 @@ void Editbox::addEditboxEvents(void)
 void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ReadOnlyChanged, e);
+	fireEvent(EventReadOnlyModeChanged, e);
 }
 
 
@@ -922,7 +922,7 @@ void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 void Editbox::onMaskedRenderingModeChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(MaskedRenderingModeChanged , e);
+	fireEvent(EventMaskedRenderingModeChanged , e);
 }
 
 
@@ -938,7 +938,7 @@ void Editbox::onMaskCodePointChanged(WindowEventArgs& e)
 		requestRedraw();
 	}
 
-	fireEvent(MaskCodePointChanged , e);
+	fireEvent(EventMaskCodePointChanged , e);
 }
 
 
@@ -947,7 +947,7 @@ void Editbox::onMaskCodePointChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onValidationStringChanged(WindowEventArgs& e)
 {
-	fireEvent(ValidationStringChanged , e);
+	fireEvent(EventValidationStringChanged , e);
 }
 
 
@@ -957,7 +957,7 @@ void Editbox::onValidationStringChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
-	fireEvent(MaximumTextLengthChanged , e);
+	fireEvent(EventMaximumTextLengthChanged , e);
 }
 
 
@@ -967,7 +967,7 @@ void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onTextInvalidatedEvent(WindowEventArgs& e)
 {
-	fireEvent(TextInvalidatedEvent , e);
+	fireEvent(EventTextInvalidated, e);
 }
 
 
@@ -977,7 +977,7 @@ void Editbox::onTextInvalidatedEvent(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
 {
-	fireEvent(InvalidEntryAttempted , e);
+	fireEvent(EventInvalidEntryAttempted , e);
 }
 
 
@@ -987,7 +987,7 @@ void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
 void Editbox::onCaratMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(CaratMoved , e);
+	fireEvent(EventCaratMoved , e);
 }
 
 
@@ -997,7 +997,7 @@ void Editbox::onCaratMoved(WindowEventArgs& e)
 void Editbox::onTextSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(TextSelectionChanged , e);
+	fireEvent(EventTextSelectionChanged , e);
 }
 
 
@@ -1007,7 +1007,7 @@ void Editbox::onTextSelectionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onEditboxFullEvent(WindowEventArgs& e)
 {
-	fireEvent(EditboxFullEvent , e);
+	fireEvent(EventEditboxFull, e);
 }
 
 
@@ -1017,7 +1017,7 @@ void Editbox::onEditboxFullEvent(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 {
-	fireEvent(TextAcceptedEvent , e);
+	fireEvent(EventTextAccepted, e);
 }
 
 
@@ -1025,7 +1025,7 @@ void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 	Set the colour to be used for rendering Editbox text in the normal,
 	unselected state.	
 *************************************************************************/
-void Editbox::setNormalTextColour(colour col)
+void Editbox::setNormalTextColour(const colour& col)
 {
 	d_normalTextColour = col;
 	requestRedraw();
@@ -1036,7 +1036,7 @@ void Editbox::setNormalTextColour(colour col)
 	Set the colour to be used for rendering the Editbox text when within
 	the selected region.
 *************************************************************************/
-void Editbox::setSelectedTextColour(colour col)
+void Editbox::setSelectedTextColour(const colour& col)
 {
 	d_selectTextColour = col;
 	requestRedraw();
@@ -1047,7 +1047,7 @@ void Editbox::setSelectedTextColour(colour col)
 	Set the colour to be used for rendering the Editbox selection highlight
 	when the Editbox is active.
 *************************************************************************/
-void Editbox::setNormalSelectBrushColour(colour col)
+void Editbox::setNormalSelectBrushColour(const colour& col)
 {
 	d_selectBrushColour = col;
 	requestRedraw();
@@ -1058,7 +1058,7 @@ void Editbox::setNormalSelectBrushColour(colour col)
 	Set the colour to be used for rendering the Editbox selection highlight
 	when the Editbox is inactive.
 *************************************************************************/
-void Editbox::setInactiveSelectBrushColour(colour col)
+void Editbox::setInactiveSelectBrushColour(const colour& col)
 {
 	d_inactiveSelectBrushColour = col;
 	requestRedraw();

@@ -28,6 +28,7 @@
 #define _CEGUIColourRect_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIcolour.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -42,16 +43,23 @@ class CEGUIBASE_API ColourRect
 public:
 	/*!
 	\brief
+		Default constructor
+	*/
+	ColourRect(void);
+
+
+	/*!
+	\brief
 		Constructor for ColourRect objects (via single colour).  Also handles default construction.
 	*/
-	ColourRect(colour col = 0xFF000000);
+	ColourRect(const colour& col);
 
 
 	/*!
 	\brief
 		Constructor for ColourRect objects
 	*/
-	ColourRect(colour top_left, colour top_right, colour bottom_left, colour bottom_right);
+	ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right);
 
 
 	/*!
@@ -157,6 +165,16 @@ public:
 		The colour at the specified point.
 	*/
 	colour getColourAtPoint( float x, float y ) const;
+
+
+	/*!
+	\brief
+		Set the colour of all four corners simultaneously.
+
+	\param col
+		colour that is to be set for all four corners of the ColourRect;
+	*/
+	void	setColours(const colour& col);
 
 
 	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours

@@ -34,8 +34,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLSliderThumb::WidgetTypeName[]	= "TaharezLook/SliderThumb";
+
 // Image names
-const utf8	TLSliderThumb::ImagesetName[]			= "TaharezImagery";
+const utf8	TLSliderThumb::ImagesetName[]			= "TaharezLook";
 const utf8	TLSliderThumb::NormalImageName[]		= "VertSliderThumbNormal";
 const utf8	TLSliderThumb::HighlightImageName[]		= "VertSliderThumbHover";
 
@@ -68,22 +71,13 @@ void TLSliderThumb::drawNormal(float z)
 {
 	Rect clipper(getPixelRect());
 
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
+	// if the widget is not totally clipped.
+	if (clipper.getWidth() != 0)
 	{
-		return;
+		// draw the image
+		d_normalImage->draw(getUnclippedPixelRect(), z, clipper, colour(1, 1, 1, getEffectiveAlpha()));
 	}
 
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
-	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
-
-	// draw the image
-	d_normalImage->draw(absrect, z, clipper, colours);
 }
 
 
@@ -94,22 +88,13 @@ void TLSliderThumb::drawHover(float z)
 {
 	Rect clipper(getPixelRect());
 
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
+	// if the widget is not totally clipped.
+	if (clipper.getWidth() != 0)
 	{
-		return;
+		// draw the image
+		d_highlightImage->draw(getUnclippedPixelRect(), z, clipper, colour(1, 1, 1, getEffectiveAlpha()));
 	}
 
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
-	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
-
-	// draw the image
-	d_highlightImage->draw(absrect, z, clipper, colours);
 }
 
 
@@ -120,22 +105,13 @@ void TLSliderThumb::drawDisabled(float z)
 {
 	Rect clipper(getPixelRect());
 
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
+	// if the widget is not totally clipped.
+	if (clipper.getWidth() != 0)
 	{
-		return;
+		// draw the image
+		d_normalImage->draw(getUnclippedPixelRect(), z, clipper, colour(0.5f, 0.5f, 0.5f, getEffectiveAlpha()));
 	}
 
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
-	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0x7F7F7F;
-	ColourRect colours(colval, colval, colval, colval);
-
-	// draw the image
-	d_normalImage->draw(absrect, z, clipper, colours);
 }
 
 

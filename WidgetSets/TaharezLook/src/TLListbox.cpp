@@ -27,7 +27,9 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
-#include "elements/CEGUIScrollbar.h"
+#include "TLMiniHorzScrollbar.h"
+#include "TLMiniVertScrollbar.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -35,8 +37,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLListbox::WidgetTypeName[]		= "TaharezLook/Listbox";
+
 // image / imageset related
-const utf8	TLListbox::ImagesetName[]				= "TaharezImagery";
+const utf8	TLListbox::ImagesetName[]				= "TaharezLook";
 const utf8	TLListbox::TopLeftImageName[]			= "ListboxTopLeft";
 const utf8	TLListbox::TopRightImageName[]			= "ListboxTopRight";
 const utf8	TLListbox::BottomLeftImageName[]		= "ListboxBottomLeft";
@@ -50,8 +55,8 @@ const utf8	TLListbox::SelectionBrushImageName[]	= "ListboxSelectionBrush";
 const utf8	TLListbox::MouseCursorImageName[]		= "MouseTarget";
 
 // component widget type names
-const utf8	TLListbox::HorzScrollbarTypeName[]		= "Taharez MiniHorzScrollbar";
-const utf8	TLListbox::VertScrollbarTypeName[]		= "Taharez MiniVertScrollbar";
+const utf8*	TLListbox::HorzScrollbarTypeName		= TLMiniHorzScrollbar::WidgetTypeName;
+const utf8*	TLListbox::VertScrollbarTypeName		= TLMiniVertScrollbar::WidgetTypeName;
 
 
 /*************************************************************************

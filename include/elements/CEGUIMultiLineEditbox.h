@@ -54,14 +54,14 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-	static const utf8	ReadOnlyChanged[];					//!< The read-only mode for the edit box has been changed.
-	static const utf8	WordWrapModeChanged[];				//!< The word wrap mode of the text box has been changed.
-	static const utf8	MaximumTextLengthChanged[];			//!< The maximum allowable string length has been changed.
-	static const utf8	CaratMoved[];						//!< The text carat (insert point) has changed.
-	static const utf8	TextSelectionChanged[];				//!< The current text selection has changed.
-	static const utf8	EditboxFullEvent[];					//!< The number of characters in the edit box has reached the current maximum.
-	static const utf8	VertScrollbarModeChanged[];			//!< Event triggered when the vertical scroll bar 'force' setting changes.
-	static const utf8	HorzScrollbarModeChanged[];			//!< Event triggered when the horizontal scroll bar 'force' setting changes.
+	static const utf8	EventReadOnlyModeChanged[];			//!< The read-only mode for the edit box has been changed.
+	static const utf8	EventWordWrapModeChanged[];			//!< The word wrap mode of the text box has been changed.
+	static const utf8	EventMaximumTextLengthChanged[];	//!< The maximum allowable string length has been changed.
+	static const utf8	EventCaratMoved[];					//!< The text carat (insert point) has changed.
+	static const utf8	EventTextSelectionChanged[];		//!< The current text selection has changed.
+	static const utf8	EventEditboxFull[];					//!< The number of characters in the edit box has reached the current maximum.
+	static const utf8	EventVertScrollbarModeChanged[];	//!< Event triggered when the vertical scroll bar 'force' setting changes.
+	static const utf8	EventHorzScrollbarModeChanged[];	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
 	// default colours
 	static const ulong	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
@@ -287,7 +287,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalTextColour(colour col);
+	void	setNormalTextColour(const colour& col);
 
 
 	/*!
@@ -298,7 +298,7 @@ public:
 	\return
 		colour value describing the ARGB colour that is currently set.
 	*/
-	void	setSelectedTextColour(colour col);
+	void	setSelectedTextColour(const colour& col);
 
 
 	/*!
@@ -312,7 +312,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setNormalSelectBrushColour(colour col);
+	void	setNormalSelectBrushColour(const colour& col);
 
 
 	/*!
@@ -326,7 +326,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setInactiveSelectBrushColour(colour col);
+	void	setInactiveSelectBrushColour(const colour& col);
 
 
 	/*!

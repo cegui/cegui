@@ -142,8 +142,8 @@ protected:
 	*************************************************************************/
 	virtual void	onSized(WindowEventArgs& e);
 	virtual void	onAlphaChanged(WindowEventArgs& e);
-	virtual void	onActivated(WindowEventArgs& e);
-	virtual void	onDeactivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
+	virtual void	onDeactivated(ActivationEventArgs& e);
 
 
 	/*************************************************************************
@@ -210,14 +210,14 @@ protected:
 	\brief
 		handler used for when the title bar or close button are disabled.
 	*/
-	void	componentDisabledHandler(const EventArgs& e);
+	bool	componentDisabledHandler(const EventArgs& e);
 
 
 	/*!
 	\brief
 		handler used for when the title bar or close button are enabled.
 	*/
-	void	componentEnabledHandler(const EventArgs& e);
+	bool	componentEnabledHandler(const EventArgs& e);
 
 
 	/*!

@@ -176,7 +176,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	undefineImage(const String& name)				{d_images.erase(name);}
+	void	undefineImage(const String& name);
 
 
 	/*!
@@ -186,7 +186,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	undefineAllImages(void)							{d_images.clear();}
+	void	undefineAllImages(void);
 
 
 	/*!
@@ -369,21 +369,21 @@ public:
 		Rect object describing a 'clipping rectangle' that will be applied when drawing the requested imagery
 
 	\param top_left_colour
-		ARGB colour to be applied to the top left corner of the rendered imagery.
+		colour to be applied to the top left corner of the rendered imagery.
 
 	\param top_right_colour
-		ARGB colour to be applied to the top right corner of the rendered imagery.
+		colour to be applied to the top right corner of the rendered imagery.
 
 	\param bottom_left_colour
-		ARGB colour to be applied to the bottom left corner of the rendered imagery.
+		colour to be applied to the bottom left corner of the rendered imagery.
 
 	\param bottom_right_colour
-		ARGB colour to be applied to the bottom right corner of the rendered imagery.
+		colour to be applied to the bottom right corner of the rendered imagery.
 
 	\return
 		Nothing
 	*/
-	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, colour top_left_colour = -1, colour top_right_colour = -1,  colour bottom_left_colour = -1, colour bottom_right_colour = -1) const
+	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = -1, const colour& top_right_colour = -1,  const colour& bottom_left_colour = -1, const colour& bottom_right_colour = -1) const
 	{
 		draw(source_rect, dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour));
 	}

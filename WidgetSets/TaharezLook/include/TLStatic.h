@@ -29,6 +29,8 @@
 #include "TLModule.h"
 #include "CEGUIWindowFactory.h"
 #include "elements/CEGUIStaticText.h"
+#include "elements/CEGUIStaticImage.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -51,17 +53,19 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	// component widget type names
-	static const utf8	HorzScrollbarTypeName[];	//!< Type name of widget to be created as horizontal scroll bar.
-	static const utf8	VertScrollbarTypeName[];	//!< Type name of widget to be created as vertical scroll bar.
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
 
+	// component widget type names
+	static const utf8*	HorzScrollbarTypeName;		//!< Type name of widget to be created as horizontal scroll bar.
+	static const utf8*	VertScrollbarTypeName;		//!< Type name of widget to be created as vertical scroll bar.
 
 	/*************************************************************************
 		Construction / Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for TaharezLook StaticText objects.
+		Constructor for Taharez Look StaticText objects.
 
 	\param type
 		String object that specifies a type for this window, usually provided by a factory class.
@@ -74,9 +78,22 @@ public:
 
 	/*!
 	\brief
-		Destructor for WLStaticText objects.
+		Destructor for TLStaticText objects.
 	*/
 	virtual ~TLStaticText(void) {}
+
+
+	/*!
+	\brief
+		Initialises the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
 
 
 protected:
@@ -104,6 +121,58 @@ protected:
 };
 
 
+
+/*!
+\brief
+	StaticImage class for the TaharezLook Gui Scheme
+*/
+class TAHAREZLOOK_API TLStaticImage : public StaticImage
+{
+public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+	/*************************************************************************
+		Construction / Destruction
+	*************************************************************************/
+	/*!
+	\brief
+		Constructor for Taharez Look StaticImage objects.
+
+	\param type
+		String object that specifies a type for this window, usually provided by a factory class.
+
+	\param name
+		String object that specifies a unique name that will be used to identify the new Window object
+	*/
+	TLStaticImage(const String& type, const String& name) : StaticImage(type, name) {}
+
+
+	/*!
+	\brief
+		Destructor for TLStaticImage objects.
+	*/
+	virtual ~TLStaticImage(void) {}
+
+
+	/*!
+	\brief
+		Initialises the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
+};
+
+
+
 /*!
 \brief
 	Factory class for producing StaticText objects for the Taharez GUI Scheme
@@ -114,7 +183,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLStaticTextFactory(void) : WindowFactory((utf8*)"Taharez StaticText") { }
+	TLStaticTextFactory(void) : WindowFactory(TLStaticText::WidgetTypeName) { }
 	~TLStaticTextFactory(void){}
 
 
@@ -155,7 +224,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLStaticImageFactory(void) : WindowFactory((utf8*)"Taharez StaticImage") { }
+	TLStaticImageFactory(void) : WindowFactory(TLStaticImage::WidgetTypeName) { }
 	~TLStaticImageFactory(void){}
 
 

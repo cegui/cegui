@@ -116,9 +116,9 @@ void WLTitlebar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | (((d_parent != NULL) && d_parent->isActive()) ? ActiveColour : InactiveColour );
-	ColourRect colours(colval, colval, colval, colval);
+	float alpha_comp = getEffectiveAlpha();
+	ColourRect colours(((d_parent != NULL) && d_parent->isActive()) ? ActiveColour : InactiveColour);
+	colours.setAlpha(alpha_comp);
 
 	// calculate widths for the title bar segments
 	float leftWidth		= d_leftImage->getWidth();
@@ -143,16 +143,15 @@ void WLTitlebar::drawSelf(float z)
 	//
 	// Draw the title text
 	//
-	// calculate colours to use for caption text
-	colval = ((colval & 0xFF000000) | (d_captionColour & 0x00FFFFFF));
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = colval;
+	colours.setColours(CaptionColour);
+	colours.setAlpha(alpha_comp);
 
 	Rect textClipper(clipper);
 	textClipper.setWidth(midWidth);
 	textClipper = clipper.getIntersection(textClipper);
 
 	pos.d_x = absrect.d_left + leftWidth;
-	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
+	pos.d_y = absrect.d_top + ((absrect.getHeight() - getFont()->getLineSpacing()) *0.5f);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 
 	getFont()->drawText(d_parent->getText(), pos, textClipper, colours);

@@ -28,7 +28,9 @@
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIFont.h"
-#include "elements/CEGUIScrollbar.h"
+#include "TLMiniHorzScrollbar.h"
+#include "TLMiniVertScrollbar.h"
+#include "TLListHeader.h"
 
 
 // Start of CEGUI namespace section
@@ -37,8 +39,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLMultiColumnList::WidgetTypeName[]	= "TaharezLook/MultiColumnList";
+
 // image / imageset related
-const utf8	TLMultiColumnList::ImagesetName[]				= "TaharezImagery";
+const utf8	TLMultiColumnList::ImagesetName[]				= "TaharezLook";
 const utf8	TLMultiColumnList::TopLeftImageName[]			= "MultiListTopLeft";
 const utf8	TLMultiColumnList::TopRightImageName[]			= "MultiListTopRight";
 const utf8	TLMultiColumnList::BottomLeftImageName[]		= "MultiListBottomLeft";
@@ -52,9 +57,9 @@ const utf8	TLMultiColumnList::SelectionBrushImageName[]	= "MultiListSelectionBru
 const utf8	TLMultiColumnList::MouseCursorImageName[]		= "MouseTarget";
 
 // component widget type names
-const utf8	TLMultiColumnList::HorzScrollbarTypeName[]		= "Taharez MiniHorzScrollbar";
-const utf8	TLMultiColumnList::VertScrollbarTypeName[]		= "Taharez MiniVertScrollbar";
-const utf8	TLMultiColumnList::ListHeaderTypeName[]			= "Taharez ListHeader";
+const utf8*	TLMultiColumnList::HorzScrollbarTypeName		= TLMiniHorzScrollbar::WidgetTypeName;
+const utf8*	TLMultiColumnList::VertScrollbarTypeName		= TLMiniVertScrollbar::WidgetTypeName;
+const utf8*	TLMultiColumnList::ListHeaderTypeName			= TLListHeader::WidgetTypeName;
 
 	
 /*************************************************************************

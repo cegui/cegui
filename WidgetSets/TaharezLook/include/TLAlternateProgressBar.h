@@ -49,6 +49,9 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
 	// Progress bar image names
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
 	static const utf8	ContainerLeftImageName[];		//!< Name of image to use for left end of container.
@@ -147,7 +150,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	TLAlternateProgressBarFactory(void) : WindowFactory((utf8*)"Taharez AltProgressBar") { }
+	TLAlternateProgressBarFactory(void) : WindowFactory(TLAlternateProgressBar::WidgetTypeName) { }
 	~TLAlternateProgressBarFactory(void){}
 
 

@@ -49,10 +49,10 @@ ScrollbarProperties::ScrollPosition	Scrollbar::d_scrollPositionProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const utf8	Scrollbar::ScrollPositionChanged[]		= "ScrollPosChanged";
-const utf8	Scrollbar::ThumbTrackStarted[]			= "ThumbTrackStarted";
-const utf8	Scrollbar::ThumbTrackEnded[]			= "ThumbTrackEnded";
-const utf8	Scrollbar::ScrollConfigChanged[]		= "ScrollConfigChanged";
+const utf8	Scrollbar::EventScrollPositionChanged[]		= "ScrollPosChanged";
+const utf8	Scrollbar::EventThumbTrackStarted[]			= "ThumbTrackStarted";
+const utf8	Scrollbar::EventThumbTrackEnded[]			= "ThumbTrackEnded";
+const utf8	Scrollbar::EventScrollConfigChanged[]		= "ScrollConfigChanged";
 
 
 /*************************************************************************
@@ -87,19 +87,19 @@ void Scrollbar::initialise(void)
 	// Set up thumb
 	d_thumb = createThumb();
 	addChildWindow(d_thumb);
-	d_thumb->subscribeEvent(Thumb::ThumbPositionChanged, boost::bind(&CEGUI::Scrollbar::handleThumbMoved, this, _1));
-	d_thumb->subscribeEvent(Thumb::ThumbTrackStarted, boost::bind(&CEGUI::Scrollbar::handleThumbTrackStarted, this, _1));
-	d_thumb->subscribeEvent(Thumb::ThumbTrackEnded, boost::bind(&CEGUI::Scrollbar::handleThumbTrackEnded, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, boost::bind(&CEGUI::Scrollbar::handleThumbMoved, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, boost::bind(&CEGUI::Scrollbar::handleThumbTrackStarted, this, _1));
+	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, boost::bind(&CEGUI::Scrollbar::handleThumbTrackEnded, this, _1));
 
 	// set up Increase button
 	d_increase = createIncreaseButton();
 	addChildWindow(d_increase);
-	d_increase->subscribeEvent(PushButton::Clicked, boost::bind(&CEGUI::Scrollbar::handleIncreaseClicked, this, _1));
+	d_increase->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::Scrollbar::handleIncreaseClicked, this, _1));
 
 	// set up Decrease button
 	d_decrease = createDecreaseButton();
 	addChildWindow(d_decrease);
-	d_decrease->subscribeEvent(PushButton::Clicked, boost::bind(&CEGUI::Scrollbar::handleDecreaseClicked, this, _1));
+	d_decrease->subscribeEvent(PushButton::EventClicked, boost::bind(&CEGUI::Scrollbar::handleDecreaseClicked, this, _1));
 
 	// do initial layout
 	layoutComponentWidgets();
@@ -202,10 +202,10 @@ void Scrollbar::setScrollPosition(float position)
 *************************************************************************/
 void Scrollbar::addScrollbarEvents(void)
 {
-	addEvent(ScrollPositionChanged);
-	addEvent(ThumbTrackStarted);
-	addEvent(ThumbTrackEnded);
-	addEvent(ScrollConfigChanged);
+	addEvent(EventScrollPositionChanged);
+	addEvent(EventThumbTrackStarted);
+	addEvent(EventThumbTrackEnded);
+	addEvent(EventScrollConfigChanged);
 }
 
 
@@ -214,7 +214,7 @@ void Scrollbar::addScrollbarEvents(void)
 *************************************************************************/
 void Scrollbar::onScrollPositionChanged(WindowEventArgs& e)
 {
-	fireEvent(ScrollPositionChanged, e);
+	fireEvent(EventScrollPositionChanged, e);
 }
 
 
@@ -223,7 +223,7 @@ void Scrollbar::onScrollPositionChanged(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onThumbTrackStarted(WindowEventArgs& e)
 {
-	fireEvent(ThumbTrackStarted, e);
+	fireEvent(EventThumbTrackStarted, e);
 }
 
 
@@ -232,7 +232,7 @@ void Scrollbar::onThumbTrackStarted(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 {
-	fireEvent(ThumbTrackEnded, e);
+	fireEvent(EventThumbTrackEnded, e);
 }
 
 
@@ -241,7 +241,7 @@ void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 {
-	fireEvent(ScrollConfigChanged, e);
+	fireEvent(EventScrollConfigChanged, e);
 }
 
 
@@ -303,52 +303,62 @@ void Scrollbar::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	handler function for when thumb moves.
 *************************************************************************/
-void Scrollbar::handleThumbMoved(const EventArgs& e)
+bool Scrollbar::handleThumbMoved(const EventArgs& e)
 {
 	// adjust scroll bar position as required.
 	setScrollPosition(getValueFromThumb());
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler function for when the increase button is clicked.
 *************************************************************************/
-void Scrollbar::handleIncreaseClicked(const EventArgs& e)
+bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
 	// adjust scroll bar position as required.
 	setScrollPosition(d_position + d_stepSize);
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler function for when the decrease button is clicked.
 *************************************************************************/
-void Scrollbar::handleDecreaseClicked(const EventArgs& e)
+bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
 	// adjust scroll bar position as required.
 	setScrollPosition(d_position - d_stepSize);
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler function for when thumb tracking begins
 *************************************************************************/
-void Scrollbar::handleThumbTrackStarted(const EventArgs& e)
+bool Scrollbar::handleThumbTrackStarted(const EventArgs& e)
 {
 	// simply trigger our own version of this event
 	WindowEventArgs args(this);
 	onThumbTrackStarted(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	handler function for when thumb tracking begins
 *************************************************************************/
-void Scrollbar::handleThumbTrackEnded(const EventArgs& e)
+bool Scrollbar::handleThumbTrackEnded(const EventArgs& e)
 {
 	// simply trigger our own version of this event
 	WindowEventArgs args(this);
 	onThumbTrackEnded(args);
+
+	return true;
 }
 
 

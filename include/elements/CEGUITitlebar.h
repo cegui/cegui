@@ -91,7 +91,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setCaptionColour(colour col);
+	void	setCaptionColour(const colour& col);
 
 
 	/*************************************************************************

@@ -56,17 +56,17 @@ MultiColumnListProperties::SortSettingEnabled			MultiColumnList::d_sortSettingPr
 	Constants
 *************************************************************************/
 // Event names
-const utf8	MultiColumnList::SelectionModeChanged[]			= "SelectModeChanged";
-const utf8	MultiColumnList::NominatedSelectColumnChanged[]	= "NomSelColChanged";
-const utf8	MultiColumnList::NominatedSelectRowChanged[]	= "NomSelRowChanged";
-const utf8	MultiColumnList::VertScrollbarModeChanged[]		= "VertBarModeChanged";
-const utf8	MultiColumnList::HorzScrollbarModeChanged[]		= "HorzBarModeChanged";
-const utf8	MultiColumnList::SelectionChanged[]				= "SelectionChanged";
-const utf8	MultiColumnList::ListContentsChanged[]			= "ContentsChanged";
-const utf8	MultiColumnList::SortColumnChanged[]			= "SortColChanged";
-const utf8	MultiColumnList::SortDirectionChanged[]			= "SortDirChanged";
-const utf8	MultiColumnList::ListColumnSized[]				= "ColSized";
-const utf8	MultiColumnList::ListColumnMoved[]				= "ColMoved";
+const utf8	MultiColumnList::EventSelectionModeChanged[]			= "SelectModeChanged";
+const utf8	MultiColumnList::EventNominatedSelectColumnChanged[]	= "NomSelColChanged";
+const utf8	MultiColumnList::EventNominatedSelectRowChanged[]	= "NomSelRowChanged";
+const utf8	MultiColumnList::EventVertScrollbarModeChanged[]		= "VertBarModeChanged";
+const utf8	MultiColumnList::EventHorzScrollbarModeChanged[]		= "HorzBarModeChanged";
+const utf8	MultiColumnList::EventSelectionChanged[]				= "SelectionChanged";
+const utf8	MultiColumnList::EventListContentsChanged[]			= "ContentsChanged";
+const utf8	MultiColumnList::EventSortColumnChanged[]			= "SortColChanged";
+const utf8	MultiColumnList::EventSortDirectionChanged[]			= "SortDirChanged";
+const utf8	MultiColumnList::EventListColumnSized[]				= "ColSized";
+const utf8	MultiColumnList::EventListColumnMoved[]				= "ColMoved";
 
 	
 /*************************************************************************
@@ -617,13 +617,13 @@ void MultiColumnList::initialise(void)
 	addChildWindow(d_header);
 
 	// subscribe some events
-	d_header->subscribeEvent(ListHeader::SegmentOffsetChanged, boost::bind(&CEGUI::MultiColumnList::handleHeaderScroll, this, _1));
-	d_header->subscribeEvent(ListHeader::SegmentSequenceChanged, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegMove, this, _1));
-	d_header->subscribeEvent(ListHeader::SegmentSized, boost::bind(&CEGUI::MultiColumnList::handleColumnSizeChange, this, _1));
-	d_header->subscribeEvent(ListHeader::SortColumnChanged , boost::bind(&CEGUI::MultiColumnList::handleSortColumnChange, this, _1));
-	d_header->subscribeEvent(ListHeader::SortDirectionChanged, boost::bind(&CEGUI::MultiColumnList::handleSortDirectionChange, this, _1));
-	d_header->subscribeEvent(ListHeader::SplitterDoubleClicked, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this, _1));
-	d_horzScrollbar->subscribeEvent(Scrollbar::ScrollPositionChanged, boost::bind(&CEGUI::MultiColumnList::handleHorzScrollbar, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSegmentRenderOffsetChanged, boost::bind(&CEGUI::MultiColumnList::handleHeaderScroll, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSegmentSequenceChanged, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegMove, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSegmentSized, boost::bind(&CEGUI::MultiColumnList::handleColumnSizeChange, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSortColumnChanged , boost::bind(&CEGUI::MultiColumnList::handleSortColumnChange, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSortDirectionChanged, boost::bind(&CEGUI::MultiColumnList::handleSortDirectionChange, this, _1));
+	d_header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, boost::bind(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this, _1));
+	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, boost::bind(&CEGUI::MultiColumnList::handleHorzScrollbar, this, _1));
 
 	// complete set up operations
 	configureScrollbars();
@@ -1261,12 +1261,12 @@ void MultiColumnList::setColumnHeaderWidth(uint col_idx, float width)
 *************************************************************************/
 void MultiColumnList::addMultiColumnListboxEvents(void)
 {
-	addEvent(SelectionModeChanged);				addEvent(NominatedSelectColumnChanged);
-	addEvent(NominatedSelectRowChanged);		addEvent(VertScrollbarModeChanged);
-	addEvent(HorzScrollbarModeChanged);			addEvent(SelectionChanged);
-	addEvent(ListContentsChanged);				addEvent(SortColumnChanged);
-	addEvent(SortDirectionChanged);				addEvent(ListColumnMoved);
-	addEvent(ListColumnSized);
+	addEvent(EventSelectionModeChanged);			addEvent(EventNominatedSelectColumnChanged);
+	addEvent(EventNominatedSelectRowChanged);		addEvent(EventVertScrollbarModeChanged);
+	addEvent(EventHorzScrollbarModeChanged);		addEvent(EventSelectionChanged);
+	addEvent(EventListContentsChanged);				addEvent(EventSortColumnChanged);
+	addEvent(EventSortDirectionChanged);			addEvent(EventListColumnMoved);
+	addEvent(EventListColumnSized);
 }
 
 
@@ -1782,7 +1782,7 @@ void MultiColumnList::drawSelf(float z)
 *************************************************************************/
 void MultiColumnList::onSelectionModeChanged(WindowEventArgs& e)
 {
-	fireEvent(SelectionModeChanged, e);
+	fireEvent(EventSelectionModeChanged, e);
 }
 
 
@@ -1791,7 +1791,7 @@ void MultiColumnList::onSelectionModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onNominatedSelectColumnChanged(WindowEventArgs& e)
 {
-	fireEvent(NominatedSelectColumnChanged, e);
+	fireEvent(EventNominatedSelectColumnChanged, e);
 }
 
 
@@ -1800,7 +1800,7 @@ void MultiColumnList::onNominatedSelectColumnChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onNominatedSelectRowChanged(WindowEventArgs& e)
 {
-	fireEvent(NominatedSelectRowChanged, e);
+	fireEvent(EventNominatedSelectRowChanged, e);
 }
 
 
@@ -1809,7 +1809,7 @@ void MultiColumnList::onNominatedSelectRowChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
-	fireEvent(VertScrollbarModeChanged, e);
+	fireEvent(EventVertScrollbarModeChanged, e);
 }
 
 
@@ -1818,7 +1818,7 @@ void MultiColumnList::onVertScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
-	fireEvent(HorzScrollbarModeChanged, e);
+	fireEvent(EventHorzScrollbarModeChanged, e);
 }
 
 
@@ -1828,7 +1828,7 @@ void MultiColumnList::onHorzScrollbarModeChanged(WindowEventArgs& e)
 void MultiColumnList::onSelectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SelectionChanged, e);
+	fireEvent(EventSelectionChanged, e);
 }
 
 
@@ -1839,7 +1839,7 @@ void MultiColumnList::onListContentsChanged(WindowEventArgs& e)
 {
 	configureScrollbars();
 	requestRedraw();
-	fireEvent(ListContentsChanged, e);
+	fireEvent(EventListContentsChanged, e);
 }
 
 
@@ -1849,7 +1849,7 @@ void MultiColumnList::onListContentsChanged(WindowEventArgs& e)
 void MultiColumnList::onSortColumnChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SortColumnChanged, e);
+	fireEvent(EventSortColumnChanged, e);
 }
 
 
@@ -1859,7 +1859,7 @@ void MultiColumnList::onSortColumnChanged(WindowEventArgs& e)
 void MultiColumnList::onSortDirectionChanged(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(SortDirectionChanged, e);
+	fireEvent(EventSortDirectionChanged, e);
 }
 
 
@@ -1870,7 +1870,7 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 {
 	configureScrollbars();
 	requestRedraw();
-	fireEvent(ListColumnSized, e);
+	fireEvent(EventListColumnSized, e);
 }
 
 
@@ -1880,7 +1880,7 @@ void MultiColumnList::onListColumnSized(WindowEventArgs& e)
 void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 {
 	requestRedraw();
-	fireEvent(ListColumnMoved, e);
+	fireEvent(EventListColumnMoved, e);
 }
 
 
@@ -1981,23 +1981,27 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 /*************************************************************************
 	Event handler for header offset changes (scrolling)
 *************************************************************************/
-void MultiColumnList::handleHeaderScroll(const EventArgs& e)
+bool MultiColumnList::handleHeaderScroll(const EventArgs& e)
 {
 	// grab the header scroll value, convert to pixels, and set the scroll bar to match.
 	d_horzScrollbar->setScrollPosition(d_header->relativeToAbsoluteX(d_header->getSegmentOffset()));
+
+	return true;
 }
 
 
 /*************************************************************************
 	Event handler for drag & drop of header segments
 *************************************************************************/
-void MultiColumnList::handleHeaderSegMove(const EventArgs& e)
+bool MultiColumnList::handleHeaderSegMove(const EventArgs& e)
 {
 	moveColumn_impl(((HeaderSequenceEventArgs&)e).d_oldIdx, ((HeaderSequenceEventArgs&)e).d_newIdx);
 
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onListColumnMoved(args);
+
+	return true;
 }
 
 
@@ -2005,30 +2009,34 @@ void MultiColumnList::handleHeaderSegMove(const EventArgs& e)
 /*************************************************************************
 	Event handler for when header segment size (column width) changes
 *************************************************************************/
-void MultiColumnList::handleColumnSizeChange(const EventArgs& e)
+bool MultiColumnList::handleColumnSizeChange(const EventArgs& e)
 {
 	configureScrollbars();
 
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onListColumnSized(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Event handler for when horizontal scroll bar is moved.
 *************************************************************************/
-void MultiColumnList::handleHorzScrollbar(const EventArgs& e)
+bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
 {
 	// set header offset to match scroll position
 	d_header->setSegmentOffset(d_header->absoluteToRelativeX(d_horzScrollbar->getScrollPosition()));
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when sort column in header is changed
 *************************************************************************/
-void MultiColumnList::handleSortColumnChange(const EventArgs& e)
+bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
 {
 	uint col = getSortColumn();
 
@@ -2055,13 +2063,15 @@ void MultiColumnList::handleSortColumnChange(const EventArgs& e)
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onSortColumnChanged(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when sort direction in header is changed
 *************************************************************************/
-void MultiColumnList::handleSortDirectionChange(const EventArgs& e)
+bool MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 {
 	// re-sort list according to direction
 	ListHeaderSegment::SortDirection dir = getSortDirection();
@@ -2080,13 +2090,15 @@ void MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onSortDirectionChanged(args);
+
+	return true;
 }
 
 
 /*************************************************************************
 	Handler for when user double-clicks on header segment splitter
 *************************************************************************/
-void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
+bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 {
 	// get the column index for the segment that was double-clicked
 	uint col = d_header->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
@@ -2102,6 +2114,8 @@ void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 
 	// set new column width
 	setColumnHeaderWidth(col, width);
+
+	return true;
 }
 
 

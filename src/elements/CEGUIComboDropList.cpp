@@ -34,7 +34,7 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 // Event names
-const utf8	ComboDropList::ListSelectionAccepted[]		= "ListSelectionAccepted";
+const utf8	ComboDropList::EventListSelectionAccepted[]		= "ListSelectionAccepted";
 
 
 /*************************************************************************
@@ -74,7 +74,7 @@ void ComboDropList::initialise(void)
 *************************************************************************/
 void ComboDropList::addComboDropListEvents(void)
 {
-	addEvent(ListSelectionAccepted);
+	addEvent(EventListSelectionAccepted);
 }
 
 
@@ -83,7 +83,7 @@ void ComboDropList::addComboDropListEvents(void)
 *************************************************************************/
 void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 {
-	fireEvent(ListSelectionAccepted, e);
+	fireEvent(EventListSelectionAccepted, e);
 }
 
 
@@ -184,7 +184,7 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when window is activated
 *************************************************************************/
-void ComboDropList::onActivated(WindowEventArgs& e)
+void ComboDropList::onActivated(ActivationEventArgs& e)
 {
 	Listbox::onActivated(e);
 }

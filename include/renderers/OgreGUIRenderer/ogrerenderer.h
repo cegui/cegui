@@ -376,7 +376,10 @@ private:
 		Rect				position;
 		float				z;
 		Rect				texPosition;
-		ColourRect			colours;
+		ulong				topLeftCol;
+		ulong				topRightCol;
+		ulong				bottomLeftCol;
+		ulong				bottomRightCol;
 	};
 
 
@@ -407,8 +410,8 @@ private:
 	// render a quad directly to the display
 	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
 
-	// convert ARGB colour value to whatever the Ogre render system is expecting.
-	ulong	colourToOgre(colour col) const;
+	// convert colour value to whatever the Ogre render system is expecting.
+	ulong	colourToOgre(const colour& col) const;
 
 	// perform main work of the constructor.  This does everything except the final hook into the render system.
 	void	constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueueGroupID queue_id, bool post_queue, uint max_quads);

@@ -29,7 +29,8 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIWindowManager.h"
-#include "elements/CEGUIScrollbar.h"
+#include "TLMiniVertScrollbar.h"
+#include "TLMiniHorzScrollbar.h"
 
 
 // Start of CEGUI namespace section
@@ -38,9 +39,12 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+const utf8	TLStaticText::WidgetTypeName[]		= "TaharezLook/StaticText";
+const utf8	TLStaticImage::WidgetTypeName[]		= "TaharezLook/StaticImage";
+
 // component widget type names
-const utf8	TLStaticText::HorzScrollbarTypeName[]		= "Taharez MiniHorzScrollbar";
-const utf8	TLStaticText::VertScrollbarTypeName[]		= "Taharez MiniVertScrollbar";
+const utf8*	TLStaticText::HorzScrollbarTypeName	= TLMiniHorzScrollbar::WidgetTypeName;
+const utf8*	TLStaticText::VertScrollbarTypeName	= TLMiniVertScrollbar::WidgetTypeName;
 
 
 /*************************************************************************
@@ -48,7 +52,7 @@ const utf8	TLStaticText::VertScrollbarTypeName[]		= "Taharez MiniVertScrollbar";
 *************************************************************************/
 void initTaharezStatic(Static* s)
 {
-	Imageset* iset = ImagesetManager::getSingleton().getImageset((utf8*)"TaharezImagery");
+	Imageset* iset = ImagesetManager::getSingleton().getImageset((utf8*)"TaharezLook");
 	
 	s->setFrameImages(
 		&iset->getImage((utf8*)"StaticTopLeft"),
@@ -108,6 +112,34 @@ Scrollbar* TLStaticText::createHorzScrollbar(void) const
 }
 
 
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void TLStaticText::initialise(void)
+{
+	StaticText::initialise();
+	initTaharezStatic(this);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	
+	TLStaticImage methods
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void TLStaticImage::initialise(void)
+{
+	StaticImage::initialise();
+	initTaharezStatic(this);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -123,8 +155,6 @@ Window* TLStaticTextFactory::createWindow(const String& name)
 	TLStaticText* wnd = new TLStaticText(d_type, name);
 	wnd->initialise();
 
-	initTaharezStatic(wnd);
-
 	return wnd;
 }
 
@@ -136,8 +166,6 @@ Window* TLStaticImageFactory::createWindow(const String& name)
 {
 	StaticImage* wnd = new StaticImage(d_type, name);
 	wnd->initialise();
-
-	initTaharezStatic(wnd);
 
 	return wnd;
 }

@@ -51,16 +51,16 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	SegmentClicked[];			//!< Event fired when the segment is clicked.
-	static const utf8	SplitterDoubleClicked[];	//!< Event fired when the sizer/splitter is double-clicked.
-	static const utf8	SizingSettingChanged[];		//!< Event fired when the sizing setting changes.
-	static const utf8	SortDirectionChanged[];		//!< Event fired when the sort direction value changes.
-	static const utf8	MovableSettingChanged[];	//!< Event fired when the movable setting changes.
-	static const utf8	SegmentDragStart[];			//!< Event fired when the segment has started to be dragged.
-	static const utf8	SegmentDragStop[];			//!< Event fired when segment dragging has stopped (via mouse release).
-	static const utf8	SegmentDragPositionChanged[];	//!< Event fired when the segment drag position has changed.
-	static const utf8	SegmentSized[];				//!< Event fired when the segment is sized.
-	static const utf8	ClickableSettingChanged[];	//!< Event fired when the clickable state of the segment changes.
+	static const utf8	EventSegmentClicked[];				//!< Event fired when the segment is clicked.
+	static const utf8	EventSplitterDoubleClicked[];		//!< Event fired when the sizer/splitter is double-clicked.
+	static const utf8	EventSizingSettingChanged[];		//!< Event fired when the sizing setting changes.
+	static const utf8	EventSortDirectionChanged[];		//!< Event fired when the sort direction value changes.
+	static const utf8	EventMovableSettingChanged[];		//!< Event fired when the movable setting changes.
+	static const utf8	EventSegmentDragStart[];			//!< Event fired when the segment has started to be dragged.
+	static const utf8	EventSegmentDragStop[];				//!< Event fired when segment dragging has stopped (via mouse release).
+	static const utf8	EventSegmentDragPositionChanged[];	//!< Event fired when the segment drag position has changed.
+	static const utf8	EventSegmentSized[];				//!< Event fired when the segment is sized.
+	static const utf8	EventClickableSettingChanged[];		//!< Event fired when the clickable state of the segment changes.
 
 	// Defaults
 	static const float	DefaultSizingArea;		//!< Default size of the sizing area.

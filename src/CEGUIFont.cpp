@@ -284,6 +284,7 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 		}
 
 		lineCount += thisCount;
+
 	}
 
 	return lineCount;
@@ -297,6 +298,8 @@ void Font::defineFontGlyphs(const String& glyph_set)
 {
 	d_glyphset = glyph_set;
 	defineFontGlyphs_impl();
+
+	Logger::getSingleton().logEvent("Font '" + d_name + "' now has the following glyphs defined: '" + d_glyphset + "'.", Informative);
 }
 
 
@@ -1155,6 +1158,16 @@ float Font::getWrappedTextExtent(const String& text, float wrapWidth) const
 	}
 
 	return widest;
+}
+
+
+/*************************************************************************
+	Return a String object that contains the code-points that the font
+	is currently configured to render.
+*************************************************************************/
+const String& Font::getAvailableGlyphs(void) const
+{
+	return d_glyphset;
 }
 
 } // End of  CEGUI namespace section

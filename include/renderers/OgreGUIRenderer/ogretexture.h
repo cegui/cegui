@@ -123,7 +123,6 @@ public:
 	Ogre::Texture*	getOgreTexture(void) const		{return d_ogre_texture;}
 
 
-	// 
 	/*!
 	\brief
 		set the size of the internal Ogre texture.  Previous Ogre texture is lost.
@@ -140,9 +139,6 @@ public:
 	/*!
 	\brief
 		Set the internal Ogre::Texture object.
-
-		Any previous Ogre::Texture is no longer associated with the CEGUI::OgreTexture.  If the previous
-		Ogre::Texture was created by CEGUI, it will be destroyed.
 
 	\param texture
 		Reference to an Ogre::Texture object that is to be used by this Texture object.

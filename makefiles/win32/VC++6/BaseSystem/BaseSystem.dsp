@@ -38,7 +38,7 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "../../../../bin/win32/release"
+# PROP Output_Dir "../../../../bin"
 # PROP Intermediate_Dir "Output/release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
@@ -54,8 +54,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 xerces-c_2.lib freetype219MTVC6.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../bin/win32/release/CEGUIBase.dll" /implib:"../../../../lib/win32/release/CEGUIBase.lib" /libpath:"..\..\..\..\lib\win32\release" /libpath:"..\..\..\..\dependencies\lib"
+# ADD LINK32 xerces-c_2.lib freetype219MTVC6.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../bin/CEGUIBase.dll" /implib:"../../../../lib/CEGUIBase.lib" /libpath:"..\..\..\..\lib" /libpath:"..\..\..\..\dependencies\lib"
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy "..\..\..\..\bin\CEGUIBase.dll" "..\..\..\..\Samples\bin"
+# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "CEGUIBase - Win32 Debug"
 
@@ -66,7 +70,7 @@ LINK32=link.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "../../../../bin/win32/debug"
+# PROP Output_Dir "../../../../bin"
 # PROP Intermediate_Dir "Output/debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
@@ -82,8 +86,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 xerces-c_2D.lib freetype219MTVC6_D.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /nodefaultlib:"LIBCMTD" /out:"../../../../bin/win32/debug/CEGUIBase.dll" /implib:"../../../../lib/win32/debug/CEGUIBase.lib" /pdbtype:sept /libpath:"..\..\..\..\lib\win32\debug" /libpath:"..\..\..\..\dependencies\lib"
+# ADD LINK32 xerces-c_2D.lib freetype219MTVC6_D.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /nodefaultlib:"LIBCMTD" /out:"../../../../bin/CEGUIBase_d.dll" /implib:"../../../../lib/CEGUIBase_d.lib" /pdbtype:sept /libpath:"..\..\..\..\lib" /libpath:"..\..\..\..\dependencies\lib"
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy "..\..\..\..\bin\CEGUIBase_d.dll" "..\..\..\..\Samples\bin"
+# End Special Build Tool
 
 !ENDIF 
 
@@ -140,6 +148,10 @@ SOURCE=..\..\..\..\src\elements\CEGUIFrameWindow.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\elements\CEGUIFrameWindowProperties.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUIGUISheet.cpp
 # End Source File
 # Begin Source File
 
@@ -284,7 +296,7 @@ SOURCE=..\..\..\..\src\CEGUIBase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\CEGUIColourManipulator.cpp
+SOURCE=..\..\..\..\src\CEGUIcolour.cpp
 # End Source File
 # Begin Source File
 
@@ -320,7 +332,7 @@ SOURCE=..\..\..\..\src\CEGUIExceptions.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\implementations\win32\CEGUIFactoryModule.cpp
+SOURCE=..\..\..\..\src\CEGUIFactoryModule.cpp
 # End Source File
 # Begin Source File
 
@@ -664,11 +676,15 @@ SOURCE=..\..\..\..\include\CEGUIBase.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\CEGUIColourManipulator.h
+SOURCE=..\..\..\..\include\CEGUIcolour.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIColourRect.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIConfig.h
 # End Source File
 # Begin Source File
 

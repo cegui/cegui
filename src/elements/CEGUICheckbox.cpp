@@ -38,7 +38,7 @@ CheckboxProperties::Selected	Checkbox::d_selectedProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const utf8	Checkbox::CheckStateChanged[]		= "CheckStateChanged";
+const utf8	Checkbox::EventCheckStateChanged[]		= "CheckStateChanged";
 
 
 /*************************************************************************
@@ -85,7 +85,7 @@ void Checkbox::setSelected(bool select)
 *************************************************************************/
 void Checkbox::onSelectStateChange(WindowEventArgs& e)
 {
-	fireEvent(CheckStateChanged, e);
+	fireEvent(EventCheckStateChanged, e);
 }
 
 
@@ -122,7 +122,7 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 *************************************************************************/
 void Checkbox::addCheckboxEvents(void)
 {
-	addEvent(CheckStateChanged);
+	addEvent(EventCheckStateChanged);
 }
 
 /*************************************************************************

@@ -1,5 +1,10 @@
+/************************************************************************
+	filename: 	CEGUIGUISheet.cpp
+	created:	28/8/2004
+	author:		Paul D Turner
+*************************************************************************/
 /*************************************************************************
-    Crazy Eddie's GUI System
+    Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
     Copyright (C)2004 Paul D Turner (crayzed@users.sourceforge.net)
 
     This library is free software; you can redistribute it and/or
@@ -16,3 +21,17 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#include "elements/CEGUIGUISheet.h"
+
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+/*************************************************************************
+	Constants
+*************************************************************************/
+// type name for this widget
+const utf8 GUISheet::WidgetTypeName[]	= "DefaultWindow";
+
+
+} // End of  CEGUI namespace section

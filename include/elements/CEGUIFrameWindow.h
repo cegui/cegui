@@ -51,8 +51,8 @@ public:
 		Constants	
 	*************************************************************************/
 	// additional event names for this window
-	static const utf8	RollupToggled[];		//!< Fired when the rollup (shade) state of the window changes
-	static const utf8	CloseClicked[];			//!< Fired when the close button for the window is clicked.
+	static const utf8	EventRollupToggled[];		//!< Fired when the rollup (shade) state of the window changes
+	static const utf8	EventCloseClicked[];		//!< Fired when the close button for the window is clicked.
 
 	// other bits
 	static const float	DefaultSizingBorderSize;	//!< Default size for the sizing border (in pixels)
@@ -511,7 +511,7 @@ protected:
 	\brief
 		Method to respond to close button click events and fire our close event
 	*/
-	void	closeClickHandler(const EventArgs& e);
+	bool	closeClickHandler(const EventArgs& e);
 
 
 	/*!

@@ -66,18 +66,18 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	SortColumnChanged[];		//!< Event fired when the current sort column changes.
-	static const utf8	SortDirectionChanged[];		//!< Event fired when the sort direction changes.
-	static const utf8	SegmentSized[];				//!< Event fired when a segment has been sized by the user (e.window is the segment).
-	static const utf8	SegmentClicked[];			//!< Event fired when a segment has been clicked by the user (e.window is the segment).
-	static const utf8	SplitterDoubleClicked[];	//!< Event fired when a segment splitter has been double-clicked.  (e.window is the segment).
-	static const utf8	SegmentSequenceChanged[];	//!< Event fired when the order of the segments has changed.  ('e' is a HeaderSequenceEventArgs&)
-	static const utf8	SegmentAdded[];				//!< Event fired when a segment is added to the header.
-	static const utf8	SegmentRemoved[];			//!< Event fired when a segment is removed from the header.
-	static const utf8	SortSettingChanged[];		//!< Event fired when setting that controls user modification to sort configuration changes.
-	static const utf8	DragMoveSettingChanged[];	//!< Event fired when setting that controls user drag & drop of segments changes.
-	static const utf8	DragSizeSettingChanged[];	//!< Event fired when setting that controls user sizing of segments changes.
-	static const utf8	SegmentOffsetChanged[];		//!< Event fired when the rendering offset for the segments changes.
+	static const utf8	EventSortColumnChanged[];			//!< Event fired when the current sort column changes.
+	static const utf8	EventSortDirectionChanged[];		//!< Event fired when the sort direction changes.
+	static const utf8	EventSegmentSized[];				//!< Event fired when a segment has been sized by the user (e.window is the segment).
+	static const utf8	EventSegmentClicked[];				//!< Event fired when a segment has been clicked by the user (e.window is the segment).
+	static const utf8	EventSplitterDoubleClicked[];		//!< Event fired when a segment splitter has been double-clicked.  (e.window is the segment).
+	static const utf8	EventSegmentSequenceChanged[];		//!< Event fired when the order of the segments has changed.  ('e' is a HeaderSequenceEventArgs&)
+	static const utf8	EventSegmentAdded[];				//!< Event fired when a segment is added to the header.
+	static const utf8	EventSegmentRemoved[];				//!< Event fired when a segment is removed from the header.
+	static const utf8	EventSortSettingChanged[];			//!< Event fired when setting that controls user modification to sort configuration changes.
+	static const utf8	EventDragMoveSettingChanged[];		//!< Event fired when setting that controls user drag & drop of segments changes.
+	static const utf8	EventDragSizeSettingChanged[];		//!< Event fired when setting that controls user sizing of segments changes.
+	static const utf8	EventSegmentRenderOffsetChanged[];	//!< Event fired when the rendering offset for the segments changes.
 
 	// values
 	static const float	ScrollSpeed;				//!< Speed to scroll at when dragging outside header.
@@ -783,11 +783,11 @@ protected:
 	/*************************************************************************
 		handlers for events we subscribe to from segments
 	*************************************************************************/
-	void	segmentSizedHandler(const EventArgs& e);
-	void	segmentMovedHandler(const EventArgs& e);
-	void	segmentClickedHandler(const EventArgs& e);
-	void	segmentDoubleClickHandler(const EventArgs& e);
-	void	segmentDragHandler(const EventArgs& e);
+	bool	segmentSizedHandler(const EventArgs& e);
+	bool	segmentMovedHandler(const EventArgs& e);
+	bool	segmentClickedHandler(const EventArgs& e);
+	bool	segmentDoubleClickHandler(const EventArgs& e);
+	bool	segmentDragHandler(const EventArgs& e);
 
 
 	/*************************************************************************

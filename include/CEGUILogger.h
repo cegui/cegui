@@ -148,6 +148,16 @@ private:
 
 };
 
+/*************************************************************************
+	This macro is used for 'Insane' level logging so that those items are
+	excluded from non-debug builds
+*************************************************************************/
+#if defined(DEBUG) || defined (_DEBUG)
+#	define CEGUI_LOGINSANE( message )
+#else
+#	define CEGUI_LOGINSANE( message ) CEGUI::Logger::getSingleton().logEvent((message), CEGUI::Insane);
+#endif
+
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

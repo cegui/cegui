@@ -64,7 +64,7 @@ void initWinLookStatic(Static* s)
 		);
 
 	s->setBackgroundImage(&iset->getImage((utf8*)"Background"));
-	s->setBackgroundColours(0xFFDFDFDF);
+	s->setBackgroundColours(colour(0.875f, 0.875f, 0.875f));
 
 	s->setFrameEnabled(true);
 	s->setBackgroundEnabled(true);
@@ -111,6 +111,36 @@ Scrollbar* WLStaticText::createHorzScrollbar(void) const
 }
 
 
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void WLStaticText::initialise(void)
+{
+	StaticText::initialise();
+	initWinLookStatic(this);
+
+	setTextColours(colour(0, 0, 0));
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	
+	WLStaticImage methods
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void WLStaticImage::initialise(void)
+{
+	StaticImage::initialise();
+	initWinLookStatic(this);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -126,9 +156,6 @@ Window* WLStaticTextFactory::createWindow(const String& name)
 	WLStaticText* wnd = new WLStaticText(d_type, name);
 	wnd->initialise();
 
-	initWinLookStatic(wnd);
-	wnd->setTextColours(0xFF000000);
-
 	return wnd;
 }
 
@@ -140,8 +167,6 @@ Window* WLStaticImageFactory::createWindow(const String& name)
 {
 	StaticImage* wnd = new StaticImage(d_type, name);
 	wnd->initialise();
-
-	initWinLookStatic(wnd);
 
 	return wnd;
 }

@@ -3,7 +3,7 @@
 	created:	5/6/2004
 	author:		Paul D Turner
 	
-	purpose:	Interface to a default GUISheet window (blank)
+	purpose:	Interface to a default window
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://crayzedsgui.sourceforge.net)
@@ -35,14 +35,25 @@ namespace CEGUI
 {
 /*!
 \brief
-	Window class intended to be used as a simple GUISheet.
+	Window class intended to be used as a simple, generic Window.
 
-	This class does no rendering of its own and so appears totally transparent.  This window defaults
-	to position 0.0f, 0.0f with a size of 1.0f x 1.0f - and so covers the entire display.
+	This class does no rendering and so appears totally transparent.  This window defaults
+	to position 0.0f, 0.0f with a size of 1.0f x 1.0f.
+
+	/note
+	The C++ name of this class has been retained for backward compatibility reasons.  The intended usage of
+	this window type has now been extended beyond that of a gui-sheet or root window.
 */
 class CEGUIBASE_API GUISheet : public Window
 {
 public:
+	/*************************************************************************
+		Constants
+	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -77,7 +88,7 @@ protected:
 
 /*!
 \brief
-	Factory class for producing default GUISheet windows
+	Factory class for producing default windows
 */
 class GUISheetFactory : public WindowFactory
 {
@@ -85,7 +96,7 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	GUISheetFactory(void) : WindowFactory((utf8*)"DefaultGUISheet") { }
+	GUISheetFactory(void) : WindowFactory(GUISheet::WidgetTypeName) { }
 	~GUISheetFactory(void){}
 
 

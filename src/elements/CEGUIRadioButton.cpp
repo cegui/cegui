@@ -39,7 +39,7 @@ RadioButtonProperties::GroupID	RadioButton::d_groupIDProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const utf8	RadioButton::SelectStateChanged[]		= "SelectStateChanged";
+const utf8	RadioButton::EventSelectStateChanged[]		= "SelectStateChanged";
 
 
 /*************************************************************************
@@ -108,7 +108,7 @@ void RadioButton::setGroupID(ulong group)
 *************************************************************************/
 void RadioButton::addRadioButtonEvents(void)
 {
-	addEvent(SelectStateChanged);
+	addEvent(EventSelectStateChanged);
 }
 
 
@@ -152,7 +152,7 @@ void RadioButton::deselectOtherButtonsInGroup(void) const
 *************************************************************************/
 void RadioButton::onSelectStateChanged(WindowEventArgs& e)
 {
-	fireEvent(SelectStateChanged, e);
+	fireEvent(EventSelectStateChanged, e);
 }
 
 

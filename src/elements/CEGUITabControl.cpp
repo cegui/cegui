@@ -27,6 +27,7 @@
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
 #include "elements/CEGUIStatic.h"
+#include "elements/CEGUIGUISheet.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
 #include <boost/bind.hpp>
@@ -48,7 +49,7 @@ TabControlProperties::RelativeTabTextPadding	TabControl::d_relativeTabTextPaddin
 	Constants
 *************************************************************************/
 // event names
-const utf8	TabControl::SelectionChanged[]			= "TabSelectionChanged";
+const utf8	TabControl::EventSelectionChanged[]			= "TabSelectionChanged";
 
 	
 /*************************************************************************
@@ -254,7 +255,7 @@ void TabControl::addTab(Window* wnd)
     layoutComponentWidgets();
     requestRedraw();
     // Subscribe to text changed event so that we can resize as needed
-    wnd->subscribeEvent(Window::TextChangedEvent, 
+    wnd->subscribeEvent(Window::EventTextChanged, 
         boost::bind(&TabControl::handleContentWindowTextChanged, this, _1));
 
 }
@@ -333,7 +334,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     // add the button
     d_tabButtonPane->addChildWindow(tb);
     // Subscribe to clicked event so that we can change tab
-    tb->subscribeEvent(TabButton::Clicked, 
+    tb->subscribeEvent(TabButton::EventClicked, 
         boost::bind(&TabControl::handleTabButtonClicked, this, _1));
 
 }
@@ -458,7 +459,7 @@ Selection changed event
 void TabControl::onSelectionChanged(WindowEventArgs& e)
 {
     requestRedraw();
-    fireEvent(SelectionChanged, e);
+    fireEvent(EventSelectionChanged, e);
 }
 /*************************************************************************
 Font changed event
@@ -478,7 +479,7 @@ Add events for this class
 *************************************************************************/
 void TabControl::addTabControlEvents(void)
 {
-    addEvent(SelectionChanged);
+    addEvent(EventSelectionChanged);
 }
 /*************************************************************************
 Handler for when widget is re-sized
@@ -527,12 +528,12 @@ Window*	TabControl::createTabButtonPane(void) const
 {
     // Generate name based on own name
     String newName = getName() + (utf8*)"__TabPane__Buttons";
-    return WindowManager::getSingleton().createWindow((utf8*)"DefaultGUISheet", newName);
+	return WindowManager::getSingleton().createWindow(GUISheet::WidgetTypeName, newName);
 }
 /*************************************************************************
 Text changed on a content window
 *************************************************************************/
-void TabControl::handleContentWindowTextChanged(const EventArgs& args)
+bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
 {
     // update text
     const WindowEventArgs& wargs = static_cast<const WindowEventArgs&>(args);
@@ -541,15 +542,19 @@ void TabControl::handleContentWindowTextChanged(const EventArgs& args)
     tabButton->setText(wargs.window->getText());
     // sort out the layout
     layoutComponentWidgets();
-    requestRedraw();
+	requestRedraw();
+
+	return true;
 }
 /*************************************************************************
 Tab button clicked
 *************************************************************************/
-void TabControl::handleTabButtonClicked(const EventArgs& args)
+bool TabControl::handleTabButtonClicked(const EventArgs& args)
 {
     const WindowEventArgs& wargs = static_cast<const WindowEventArgs&>(args);
     TabButton* tabButton = static_cast<TabButton*>(wargs.window);
     setSelectedTab(tabButton->getTargetWindow()->getName());
+
+	return true;
 }
 } // End of  CEGUI namespace section

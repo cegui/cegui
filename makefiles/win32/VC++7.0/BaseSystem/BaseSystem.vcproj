@@ -12,22 +12,24 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm125"
+				AdditionalOptions="/Zm150"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include;..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS;_STLP_DEBUG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				DisableLanguageExtensions="FALSE"
+				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="TRUE"
+				WarnAsError="FALSE"
 				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="4"
 				DisableSpecificWarnings="4251"/>
@@ -36,17 +38,19 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2D.lib freetype219_D.lib"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
+				IgnoreDefaultLibraryNames="LIBCMTD"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
-				ImportLibrary="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -56,21 +60,28 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\..\bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\bin"
 			IntermediateDirectory="Output\$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm125"
+				AdditionalOptions="/Zm150"
 				AdditionalIncludeDirectories="..\..\..\..\include;..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
 				RuntimeLibrary="2"
 				DisableLanguageExtensions="FALSE"
+				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
@@ -84,18 +95,19 @@
 				AdditionalDependencies="xerces-c_2.lib freetype219.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName);..\..\..\..\dependencies\lib"
+				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="..\..\..\..\lib\$(PlatformName)\$(ConfigurationName)\$(ProjectName).lib"
+				ImportLibrary="..\..\..\..\lib\$(ProjectName).lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\Samples\bin&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -105,7 +117,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -116,7 +134,7 @@
 				RelativePath="..\..\..\..\src\CEGUIBase.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIColourManipulator.cpp">
+				RelativePath="..\..\..\..\src\CEGUIcolour.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIColourRect.cpp">
@@ -134,25 +152,19 @@
 				RelativePath="..\..\..\..\src\CEGUIEventSet.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIEventSignal.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\CEGUIEventSignalSet.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\CEGUIExceptions.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\implementations\win32\CEGUIFactoryModule.cpp">
+				RelativePath="..\..\..\..\src\CEGUIFactoryModule.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIFont.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIFontManager.cpp">
+				RelativePath="..\..\..\..\src\CEGUIFont_xmlHandler.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIFont_xmlHandler.cpp">
+				RelativePath="..\..\..\..\src\CEGUIFontManager.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIGUILayout_xmlHandler.cpp">
@@ -164,10 +176,10 @@
 				RelativePath="..\..\..\..\src\CEGUIImageset.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIImagesetManager.cpp">
+				RelativePath="..\..\..\..\src\CEGUIImageset_xmlHandler.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIImageset_xmlHandler.cpp">
+				RelativePath="..\..\..\..\src\CEGUIImagesetManager.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUILogger.cpp">
@@ -203,10 +215,10 @@
 				RelativePath="..\..\..\..\src\CEGUIScheme.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
+				RelativePath="..\..\..\..\src\CEGUIScheme_xmlHandler.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIScheme_xmlHandler.cpp">
+				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIScriptModule.cpp">
@@ -221,10 +233,10 @@
 				RelativePath="..\..\..\..\src\CEGUISystem.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUITextUtils.cpp">
+				RelativePath="..\..\..\..\src\CEGUITexture.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUITexture.cpp">
+				RelativePath="..\..\..\..\src\CEGUITextUtils.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIVector.cpp">
@@ -263,13 +275,13 @@
 					RelativePath="..\..\..\..\src\elements\CEGUICheckboxProperties.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIComboDropList.cpp">
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\elements\CEGUICombobox.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIComboboxProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIComboDropList.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIEditbox.cpp">
@@ -284,16 +296,7 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIFrameWindowProperties.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegment.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegmentProperties.cpp">
+					RelativePath="..\..\..\..\src\elements\CEGUIGUISheet.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListbox.cpp">
@@ -306,6 +309,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListboxTextItem.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegment.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegmentProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiColumnList.cpp">
@@ -397,10 +412,13 @@
 				RelativePath="..\..\..\..\include\CEGUIBase.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIColourManipulator.h">
+				RelativePath="..\..\..\..\include\CEGUIcolour.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIColourRect.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIConfig.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIConfig_xmlHandler.h">
@@ -424,16 +442,16 @@
 				RelativePath="..\..\..\..\include\CEGUIFont.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFontManager.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\CEGUIFontManager_implData.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\include\CEGUIFont_implData.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIFont_xmlHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIFontManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIFontManager_implData.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIForwardRefs.h">
@@ -448,10 +466,10 @@
 				RelativePath="..\..\..\..\include\CEGUIImageset.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
+				RelativePath="..\..\..\..\include\CEGUIImageset_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImageset_xmlHandler.h">
+				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIInputEvent.h">
@@ -493,10 +511,10 @@
 				RelativePath="..\..\..\..\include\CEGUIScheme.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
+				RelativePath="..\..\..\..\include\CEGUIScheme_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIScheme_xmlHandler.h">
+				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIScriptModule.h">
@@ -514,10 +532,10 @@
 				RelativePath="..\..\..\..\include\CEGUISystem.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
+				RelativePath="..\..\..\..\include\CEGUITexture.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUITexture.h">
+				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIVector.h">
@@ -556,13 +574,13 @@
 					RelativePath="..\..\..\..\include\elements\CEGUICheckboxProperties.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIComboDropList.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUICombobox.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIComboboxProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIComboDropList.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIEditbox.h">
@@ -580,18 +598,6 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIGUISheet.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegment.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegmentProperties.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListbox.h">
 				</File>
 				<File
@@ -602,6 +608,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListboxTextItem.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegment.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegmentProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiColumnList.h">

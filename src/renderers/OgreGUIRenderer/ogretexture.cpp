@@ -86,7 +86,7 @@ void OgreTexture::loadFromFile(const String& filename)
 		// texture does not already exist, so load it in
 		else
 		{
-			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), TEX_TYPE_2D, 1, 1.0f, 1);
+			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), TEX_TYPE_2D, 0, 1.0f, 1);
 			d_isLinked = false;
 		}
 
@@ -127,7 +127,7 @@ void OgreTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffH
 	const DataChunk odc(const_cast<void*>(buffPtr), bytesize);
 
 	// try to create a Ogre::Texture from the input data
-	d_ogre_texture = TextureManager::getSingleton().loadRawData(getUniqueName(), odc, buffWidth, buffHeight, PF_A8R8G8B8, TEX_TYPE_2D, 1, 1.0f, 1);
+	d_ogre_texture = TextureManager::getSingleton().loadRawData(getUniqueName(), odc, buffWidth, buffHeight, PF_A8R8G8B8, TEX_TYPE_2D, 0, 1.0f, 1);
 
 	// if we got a pointer cache some details
 	if (d_ogre_texture != NULL)
@@ -156,7 +156,7 @@ void OgreTexture::setOgreTextureSize(uint size)
 	freeOgreTexture();
 
 	// Try to create an empty texture of the given size
-	d_ogre_texture = TextureManager::getSingleton().createManual(getUniqueName(), TEX_TYPE_2D, size, size, 1, PF_A8R8G8B8, TU_DEFAULT);
+	d_ogre_texture = TextureManager::getSingleton().createManual(getUniqueName(), TEX_TYPE_2D, size, size, 0, PF_A8R8G8B8, TU_DEFAULT);
 
 	// if we got a pointer cache some details
 	if (d_ogre_texture != NULL)

@@ -37,8 +37,11 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
+// type name for this widget
+const utf8	TLMiniHorzScrollbar::WidgetTypeName[]	= "TaharezLook/HorizontalScrollbar";
+
 // Progress bar image names
-const utf8	TLMiniHorzScrollbar::ImagesetName[]						= "TaharezImagery";
+const utf8	TLMiniHorzScrollbar::ImagesetName[]						= "TaharezLook";
 const utf8	TLMiniHorzScrollbar::ScrollbarBodyImageName[]			= "MiniHorzScrollBarSegment";
 const utf8	TLMiniHorzScrollbar::LeftButtonNormalImageName[]		= "MiniHorzScrollLeftNormal";
 const utf8	TLMiniHorzScrollbar::LeftButtonHighlightImageName[]		= "MiniHorzScrollLeftHover";
@@ -52,9 +55,9 @@ const float	TLMiniHorzScrollbar::BodyPositionY	= 0.3f;
 const float	TLMiniHorzScrollbar::BodyHeight		= 0.4f;
 
 // type names for the component widgets
-const utf8	TLMiniHorzScrollbar::ThumbWidgetType[]			= "Taharez MiniHorzScrollbarThumb";
-const utf8	TLMiniHorzScrollbar::IncreaseButtonWidgetType[]	= "Taharez Button";
-const utf8	TLMiniHorzScrollbar::DecreaseButtonWidgetType[]	= "Taharez Button";
+const utf8*	TLMiniHorzScrollbar::ThumbWidgetType			= TLMiniHorzScrollbarThumb::WidgetTypeName;
+const utf8*	TLMiniHorzScrollbar::IncreaseButtonWidgetType	= TLButton::WidgetTypeName;
+const utf8*	TLMiniHorzScrollbar::DecreaseButtonWidgetType	= TLButton::WidgetTypeName;
 
 
 /*************************************************************************
@@ -253,9 +256,7 @@ void TLMiniHorzScrollbar::drawSelf(float z)
 	Rect absrect(getUnclippedPixelRect());
 
 	// calculate colours to use.
-	colour alpha_comp = ((colour)(getEffectiveAlpha() * 255.0f) << 24);
-	colour colval = alpha_comp | 0xFFFFFF;
-	ColourRect colours(colval, colval, colval, colval);
+	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	//
 	// Render bar body

@@ -24,7 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUIColourRect.h"
-#include "CEGUIColourManipulator.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -32,7 +32,7 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-ColourRect::ColourRect(colour top_left, colour top_right, colour bottom_left, colour bottom_right) :
+ColourRect::ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right) :
 	d_top_left(top_left),
 	d_top_right(top_right),
 	d_bottom_left(bottom_left),
@@ -43,13 +43,24 @@ ColourRect::ColourRect(colour top_left, colour top_right, colour bottom_left, co
 
 /*************************************************************************
 	Constructor for ColourRect objects (via single colour).
-	Also handles default construction.	
 *************************************************************************/
-ColourRect::ColourRect(colour col) :
+ColourRect::ColourRect(const colour& col) :
 	d_top_left(col),
 	d_top_right(col),
 	d_bottom_left(col),
 	d_bottom_right(col)
+{
+}
+
+
+/*************************************************************************
+	Default constructor
+*************************************************************************/
+ColourRect::ColourRect(void) :
+	d_top_left(0, 0, 0),
+	d_top_right(0, 0, 0),
+	d_bottom_left(0, 0, 0),
+	d_bottom_right(0, 0, 0)
 {
 }
 
@@ -67,19 +78,10 @@ ColourRect::~ColourRect(void)
 *************************************************************************/
 void ColourRect::setAlpha(float alpha)
 {
-	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
-
-	// remove old alpha values
-	d_top_left		&= 0x00FFFFFF;
-	d_top_right		&= 0x00FFFFFF;
-	d_bottom_left	&= 0x00FFFFFF;
-	d_bottom_right	&= 0x00FFFFFF;
-
-	// set new alpha values
-	d_top_left		|= alpha_comp;
-	d_top_right		|= alpha_comp;
-	d_bottom_left	|= alpha_comp;
-	d_bottom_right	|= alpha_comp;
+	d_top_left.setAlpha(alpha);
+	d_top_right.setAlpha(alpha);
+	d_bottom_left.setAlpha(alpha);
+	d_bottom_right.setAlpha(alpha);
 }
 
 
@@ -88,15 +90,8 @@ void ColourRect::setAlpha(float alpha)
 *************************************************************************/
 void ColourRect::setTopAlpha(float alpha)
 {
-	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
-
-	// remove old alpha values
-	d_top_left		&= 0x00FFFFFF;
-	d_top_right		&= 0x00FFFFFF;
-
-	// set new alpha values
-	d_top_left		|= alpha_comp;
-	d_top_right		|= alpha_comp;
+	d_top_left.setAlpha(alpha);
+	d_top_right.setAlpha(alpha);
 }
 
 
@@ -105,15 +100,8 @@ void ColourRect::setTopAlpha(float alpha)
 *************************************************************************/
 void ColourRect::setBottomAlpha(float alpha)
 {
-	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
-
-	// remove old alpha values
-	d_bottom_left	&= 0x00FFFFFF;
-	d_bottom_right	&= 0x00FFFFFF;
-
-	// set new alpha values
-	d_bottom_left	|= alpha_comp;
-	d_bottom_right	|= alpha_comp;
+	d_bottom_left.setAlpha(alpha);
+	d_bottom_right.setAlpha(alpha);
 }
 
 
@@ -122,15 +110,8 @@ void ColourRect::setBottomAlpha(float alpha)
 *************************************************************************/
 void ColourRect::setLeftAlpha(float alpha)
 {
-	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
-
-	// remove old alpha values
-	d_top_left		&= 0x00FFFFFF;
-	d_bottom_left	&= 0x00FFFFFF;
-
-	// set new alpha values
-	d_top_left		|= alpha_comp;
-	d_bottom_left	|= alpha_comp;
+	d_top_left.setAlpha(alpha);
+	d_bottom_left.setAlpha(alpha);
 }
 
 
@@ -139,15 +120,8 @@ void ColourRect::setLeftAlpha(float alpha)
 *************************************************************************/
 void ColourRect::setRightAlpha(float alpha)
 {
-	colour alpha_comp = ((colour)(255.0f * alpha)) << 24;
-
-	// remove old alpha values
-	d_top_right		&= 0x00FFFFFF;
-	d_bottom_right	&= 0x00FFFFFF;
-
-	// set new alpha values
-	d_top_right		|= alpha_comp;
-	d_bottom_left	|= alpha_comp;
+	d_top_right.setAlpha(alpha);
+	d_bottom_right.setAlpha(alpha);
 }
 
 /*************************************************************************
@@ -155,18 +129,9 @@ void ColourRect::setRightAlpha(float alpha)
 *************************************************************************/
 colour ColourRect::getColourAtPoint( float x, float y ) const
 {
-	ColourManipulator topleft( d_top_left );
-	ColourManipulator topright( d_top_right );
-	ColourManipulator bottomleft( d_bottom_left );
-	ColourManipulator bottomright( d_bottom_right );
-	ColourManipulator h1, h2;
-	ColourManipulator ColourAtPoint;
-
-    h1 = (topright - topleft) * x + topleft;
-	h2 = (bottomright - bottomleft) * x + bottomleft;
-	ColourAtPoint = (h2 - h1) * y + h1;
-
-	return static_cast<colour>(ColourAtPoint);
+    colour h1((d_top_right - d_top_left) * x + d_top_left);
+	colour h2((d_bottom_right - d_bottom_left) * x + d_bottom_left);
+	return colour((h2 - h1) * y + h1);
 }
 
 /*************************************************************************
@@ -174,14 +139,22 @@ colour ColourRect::getColourAtPoint( float x, float y ) const
 *************************************************************************/
 ColourRect ColourRect::getSubRectangle( float left, float right, float top, float bottom ) const
 {
-	ColourRect OurRect;
-	
-	OurRect.d_top_left = getColourAtPoint( left, top );
-	OurRect.d_top_right = getColourAtPoint( right, top );
-	OurRect.d_bottom_left = getColourAtPoint( left, bottom );
-	OurRect.d_bottom_right = getColourAtPoint( right, bottom );
-    
-	return OurRect;
+	return ColourRect(
+		getColourAtPoint(left, top),
+		getColourAtPoint(right, top),
+		getColourAtPoint(left, bottom),
+		getColourAtPoint(right, bottom)
+	);
 }
+
+
+/*************************************************************************
+	Set the colour of all four corners simultaneously.	
+*************************************************************************/
+void ColourRect::setColours(const colour& col)
+{
+	d_top_left = d_top_right = d_bottom_left = d_bottom_right = col;
+}
+
 
 } // End of  CEGUI namespace section

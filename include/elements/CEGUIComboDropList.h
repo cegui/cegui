@@ -49,7 +49,7 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-	static const utf8	ListSelectionAccepted[];		//!< Event fired when the user confirms the selection by clicking the mouse.
+	static const utf8	EventListSelectionAccepted[];		//!< Event fired when the user confirms the selection by clicking the mouse.
 
 
 	/*!
@@ -107,7 +107,7 @@ protected:
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onActivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

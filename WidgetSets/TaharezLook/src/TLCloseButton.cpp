@@ -31,6 +31,13 @@
 namespace CEGUI
 {
 /*************************************************************************
+	Constants 
+*************************************************************************/
+// type name for this widget
+const utf8	TLCloseButton::WidgetTypeName[]	= "TaharezLook/CloseButton";
+
+
+/*************************************************************************
 	return a Rect object describing the appropriately clipped Window
 	area in screen space.
 *************************************************************************/

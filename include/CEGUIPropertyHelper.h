@@ -58,7 +58,7 @@ public:
 	static String	rectToString(const Rect& val);
 	static String	metricsModeToString(MetricsMode val);
 	static String	imageToString(const Image* const val);
-	static String	colourToString(colour val);
+	static String	colourToString(const colour& val);
 	static String	colourRectToString(const ColourRect& val);
 };
 

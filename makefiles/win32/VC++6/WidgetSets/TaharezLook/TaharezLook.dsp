@@ -38,7 +38,7 @@ RSC=rc.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "../../../../../bin/win32/release"
+# PROP Output_Dir "../../../../../bin"
 # PROP Intermediate_Dir "Output/release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
@@ -54,8 +54,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"../../../../../bin/win32/release/Taharez Look.dll" /implib:"../../../../../lib/win32/release/Taharez Look.lib" /libpath:"..\..\..\..\..\lib\win32\release" /libpath:"..\..\..\..\..\dependencies\lib"
+# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"../../../../../bin/CEGUITaharezLook.dll" /implib:"../../../../../lib/CEGUITaharezLook.lib" /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy "..\..\..\..\..\bin\CEGUITaharezLook.dll" "..\..\..\..\..\Samples\bin"
+# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "TaharezLook - Win32 Debug"
 
@@ -66,12 +70,12 @@ LINK32=link.exe
 # PROP BASE Target_Dir ""
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "../../../../../bin/win32/debug"
+# PROP Output_Dir "../../../../../bin"
 # PROP Intermediate_Dir "Output/debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TAHAREZLOOK_EXPORTS" /YX /FD /GZ  /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\WidgetSets\TaharezLook\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "TAHAREZLOOK_EXPORTS" /D "_STLP_DEBUG" /FD /GZ  /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TAHAREZLOOK_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\WidgetSets\TaharezLook\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "TAHAREZLOOK_EXPORTS" /D "_STLP_DEBUG" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -82,8 +86,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"../../../../../bin/win32/debug/Taharez Look.dll" /implib:"../../../../../lib/win32/debug/Taharez Look.lib" /pdbtype:sept /libpath:"..\..\..\..\..\lib\win32\debug" /libpath:"..\..\..\..\..\dependencies\lib"
+# ADD LINK32 CEGUIBase_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"../../../../../bin/CEGUITaharezLook_d.dll" /implib:"../../../../../lib/CEGUITaharezLook_d.lib" /pdbtype:sept /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy "..\..\..\..\..\bin\CEGUITaharezLook_d.dll" "..\..\..\..\..\Samples\bin"
+# End Special Build Tool
 
 !ENDIF 
 
