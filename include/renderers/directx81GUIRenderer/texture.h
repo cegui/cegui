@@ -136,6 +136,34 @@ public:
 	void	setD3DTextureSize(uint size);
 
 
+	/*!
+	\brief
+		Direct3D support method that must be called prior to a Reset call on the
+		Direct3DDevice; this is required so that the GUI renderer can release any
+		unmanaged D3D resources as needed for the device reset to succeed.
+
+	\note
+		You do not need to call this on DirectX81Texture objects created via the
+		DirectX81Renderer object; for such textures the method is called by the
+		system when you call the DirectX81Renderer::preD3DReset method.
+	*/
+	virtual	void	preD3DReset(void);
+
+
+	/*!
+	\brief
+		Direct3D support method that must be called after a Reset call on the
+		Direct3DDevice; this is required so that the GUI renderer can rebuild any
+		unmanaged D3D resources after the device has been reset.
+
+	\note
+		You do not need to call this on DirectX81Texture objects created via the
+		DirectX81Renderer object; for such textures the method is called by the
+		system when you call the DirectX81Renderer::postD3DReset method.
+	*/
+	virtual	void	postD3DReset(void);
+
+
 private:
 	/*************************************************************************
 		Implementation Functions
@@ -148,6 +176,8 @@ private:
 		Implementation Data
 	*************************************************************************/
 	LPDIRECT3DTEXTURE8		d_d3dtexture;		//!< The 'real' texture.
+	String					d_filename;			//!< name of file used to create the texture, if any.
+	bool					d_isMemoryTexture;	//!< true if the texture was created from memory (and not a file).
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture

@@ -43,6 +43,9 @@ DirectX9Texture::DirectX9Texture(Renderer* owner) :
 	Texture(owner)
 {
 	d_d3dtexture = NULL;
+
+	// do this mainly to indicate the lack of a filename.
+	d_isMemoryTexture = true;
 }
 
 /*************************************************************************
@@ -74,6 +77,9 @@ void DirectX9Texture::loadFromFile(const String& filename)
 	{
 		d_width		= (ushort)texInfo.Width;
 		d_height	= (ushort)texInfo.Height;
+
+		d_filename = filename;
+		d_isMemoryTexture = false;
 	}
 	else
 	{
@@ -91,11 +97,7 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 	using namespace std;
 
 	// release old texture
-	if (d_d3dtexture != NULL)
-	{
-		d_d3dtexture->Release();
-		d_d3dtexture = NULL;
-	}
+	freeD3DTexture();
 
 	// calculate square size big enough for whole memory buffer
 	uint tex_size = std::max(buffWidth, buffHeight);
@@ -164,6 +166,8 @@ void DirectX9Texture::freeD3DTexture(void)
 		d_d3dtexture = NULL;
 	}
 
+	d_filename.clear();
+	d_isMemoryTexture = true;
 }
 
 
@@ -174,7 +178,7 @@ void DirectX9Texture::setD3DTextureSize(uint size)
 {
 	freeD3DTexture();
 
-	HRESULT hr = D3DXCreateTexture(((DirectX9Renderer*)getRenderer())->getDevice(), size, size, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &d_d3dtexture);
+	HRESULT hr = D3DXCreateTexture(((DirectX9Renderer*)getRenderer())->getDevice(), size, size, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &d_d3dtexture);
 
 	if (FAILED(hr))
 	{
@@ -188,6 +192,53 @@ void DirectX9Texture::setD3DTextureSize(uint size)
 		// store new size;
 		d_width		= (ushort)texdesc.Width;
 		d_height	= (ushort)texdesc.Height;
+	}
+
+}
+
+
+/*************************************************************************
+	Direct3D support method that must be called prior to a Reset call
+	on the Direct3DDevice.
+*************************************************************************/
+void DirectX9Texture::preD3DReset(void)
+{
+	// textures not based on files are in the managed pool, so we do
+	// not worry about those.
+	if (!d_isMemoryTexture)
+	{
+		// release the d3d texture
+		if (d_d3dtexture != NULL)
+		{
+			if (FAILED(d_d3dtexture->Release()))
+			{
+				throw RendererException("DirectX9Texture::preD3DReset - failed to release the Direct3DTexture9 object for this texture.");
+			}
+
+			d_d3dtexture = NULL;
+		}
+
+	}
+
+}
+
+
+/*************************************************************************
+	Direct3D support method that must be called after a Reset call on the
+	Direct3DDevice.
+*************************************************************************/
+void DirectX9Texture::postD3DReset(void)
+{
+	// textures not based on files are in the managed pool, so we do
+	// not worry about those.
+	if (!d_isMemoryTexture)
+	{
+		// The reason this copy is made is that d_filename will be reset once we
+		// call loadFromFile and loading would always fail due to invalid filenames.
+		String name(d_filename);
+
+		// re-load the texture
+		loadFromFile(name);
 	}
 
 }

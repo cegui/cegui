@@ -210,6 +210,23 @@ public:
 	virtual	uint	getVertScreenDPI(void) const	{return 96;}
 
 
+	/*!
+	\brief
+		Direct3D support method that must be called prior to a Reset call on the
+		Direct3DDevice; this is required so that the GUI renderer can release any
+		unmanaged D3D resources as needed for the device reset to succeed.
+	*/
+	virtual	void	preD3DReset(void);
+
+
+	/*!
+	\brief
+		Direct3D support method that must be called after a Reset call on the
+		Direct3DDevice; this is required so that the GUI renderer can rebuild any
+		unmanaged D3D resources after the device has been reset.
+	*/
+	virtual	void	postD3DReset(void);
+
 private:
 	/************************************************************************
 		Implementation Constants

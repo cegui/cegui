@@ -26,6 +26,7 @@
 #include "renderers/directx81GUIRenderer/renderer.h"
 #include "renderers/directx81GUIRenderer/texture.h"
 #include "CEGUIExceptions.h"
+#include "CEGUISystem.h"
 
 #include <d3dx8.h>
 #include <dxerr8.h>
@@ -493,6 +494,59 @@ void DirectX81Renderer::renderQuadDirect(const Rect& dest_rect, float z, const T
 		renderVBuffer();
 	}
 
+}
+
+
+/*************************************************************************
+	Direct3D support method that must be called prior to a Reset call
+	on the Direct3DDevice.
+*************************************************************************/
+void DirectX81Renderer::preD3DReset(void)
+{
+	// release the buffer prior to the reset call (will be re-created later)
+	if (FAILED(d_buffer->Release()))
+	{
+		throw RendererException("DirectX81Renderer::preD3DReset - Failed to release the VertexBuffer used by the DirectX81Renderer object.");
+	}
+
+	d_buffer = 0;
+
+	// perform pre-reset operations on all textures
+	std::list<DirectX81Texture*>::iterator ctex = d_texturelist.begin();
+	std::list<DirectX81Texture*>::iterator endtex = d_texturelist.end();
+
+	for (; ctex != endtex; ++ctex)
+	{
+		(*ctex)->preD3DReset();
+	}
+
+}
+
+
+/*************************************************************************
+	Direct3D support method that must be called after a Reset call on the
+	Direct3DDevice.
+*************************************************************************/
+void DirectX81Renderer::postD3DReset(void)
+{
+	// Recreate a vertex buffer
+	if (FAILED(d_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &d_buffer)))
+	{
+		throw RendererException("DirectX81Renderer::preD3DReset - Failed to create the VertexBuffer for use by the DirectX81Renderer object.");
+	}
+
+	// perform post-reset operations on all textures
+	std::list<DirectX81Texture*>::iterator ctex = d_texturelist.begin();
+	std::list<DirectX81Texture*>::iterator endtex = d_texturelist.end();
+
+	for (; ctex != endtex; ++ctex)
+	{
+		(*ctex)->postD3DReset();
+	}
+
+	// Now we've come back, we MUST ensure a full redraw is done since the
+	// textures in the stored quads will have been invalidated.
+	System::getSingleton().signalRedraw();
 }
 
 } // End of  CEGUI namespace section
