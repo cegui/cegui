@@ -43,6 +43,7 @@
 #include "TLMiniVertScrollbar.h"
 #include "TLMiniHorzScrollbarThumb.h"
 #include "TLMiniHorzScrollbar.h"
+#include "TLStatic.h"
 
 
 /*************************************************************************
@@ -135,6 +136,16 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez MiniHorzScrollbarThumb")
 	{
 		WindowFactoryManager::getSingleton().addFactory(new TLMiniHorzScrollbarThumbFactory());
+		return;
+	}
+	else if (type_name == "Taharez StaticImage")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLStaticImageFactory());
+		return;
+	}
+	else if (type_name == "Taharez StaticText")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLStaticTextFactory());
 		return;
 	}
 

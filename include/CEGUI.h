@@ -73,5 +73,7 @@
 #include "elements/CEGUICombobox.h"
 #include "elements/CEGUIListHeader.h"
 #include "elements/CEGUIMultiColumnList.h"
+#include "elements/CEGUIStaticText.h"
+#include "elements/CEGUIStaticImage.h"
 
 #endif	// end of guard _CEGUI_h_
