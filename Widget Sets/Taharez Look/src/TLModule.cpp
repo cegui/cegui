@@ -34,6 +34,8 @@
 #include "../../Widget Sets/Taharez Look/include/TLRadioButton.h"
 #include "../../Widget Sets/Taharez Look/include/TLSliderThumb.h"
 #include "../../Widget Sets/Taharez Look/include/TLSlider.h"
+#include "../../Widget Sets/Taharez Look/include/TLProgressBar.h"
+#include "../../Widget Sets/Taharez Look/include/TLAlternateProgressBar.h"
 
 
 /*************************************************************************
@@ -81,6 +83,16 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 	else if (type_name == "Taharez Slider")
 	{
 		WindowFactoryManager::getSingleton().addFactory(new TLSliderFactory());
+		return;
+	}
+	else if (type_name == "Taharez ProgressBar")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLProgressBarFactory());
+		return;
+	}
+	else if (type_name == "Taharez AltProgressBar")
+	{
+		WindowFactoryManager::getSingleton().addFactory(new TLAlternateProgressBarFactory());
 		return;
 	}
 

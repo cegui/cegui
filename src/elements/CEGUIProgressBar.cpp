@@ -28,6 +28,82 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Event name constants
+*************************************************************************/
+const utf8	ProgressBar::ProgressChanged[]	= "ProgressChanged";
+const utf8	ProgressBar::ProgressDone[]		= "ProgressDone";
 
+
+/*************************************************************************
+	Constructor for ProgressBar class
+*************************************************************************/
+ProgressBar::ProgressBar(const String& type, const String& name) :
+	Window(type, name),
+	d_step(0.01f),
+	d_progress(0)
+{
+	addProgressBarEvents();
+}
+
+
+/*************************************************************************
+	Destructor for ProgressBar
+*************************************************************************/
+ProgressBar::~ProgressBar(void)
+{
+}
+
+
+/*************************************************************************
+	set the current progress.	
+*************************************************************************/
+void ProgressBar::setProgress(float progress)
+{
+	// legal progress rangeis : 0.0f <= progress <= 1.0f
+	progress = (progress < 0.0f) ? 0.0f : (progress > 1.0f) ? 1.0f : progress;
+
+	if (progress != d_progress)
+	{
+		// update progress and fire off event.
+		d_progress = progress;
+		onProgressChanged(WindowEventArgs(this));
+
+		// if new progress is 100%, fire off the 'done' event as well.
+		if (d_progress == 1.0f)
+		{
+			onProgressDone(WindowEventArgs(this));
+		}
+
+	}
+
+}
+
+
+/*************************************************************************
+	Add progress bar specific events to the window	
+*************************************************************************/
+void ProgressBar::addProgressBarEvents(void)
+{
+	addEvent(ProgressChanged);
+	addEvent(ProgressDone);
+}
+
+/*************************************************************************
+	event triggered when progress changes	
+*************************************************************************/
+void ProgressBar::onProgressChanged(WindowEventArgs& e)
+{
+	fireEvent(ProgressChanged, e);
+}
+
+
+/*************************************************************************
+	event triggered when progress reaches 100%	
+*************************************************************************/
+void ProgressBar::onProgressDone(WindowEventArgs& e)
+{
+	fireEvent(ProgressDone, e);
+}
 
 } // End of  CEGUI namespace section

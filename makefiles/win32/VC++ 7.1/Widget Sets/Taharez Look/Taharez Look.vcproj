@@ -128,6 +128,9 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLAlternateProgressBar.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLButton.cpp">
 			</File>
 			<File
@@ -141,6 +144,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLModule.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLProgressBar.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLRadioButton.cpp">
@@ -160,6 +166,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLAlternateProgressBar.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLButton.h">
 			</File>
 			<File
@@ -173,6 +182,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLModule.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLProgressBar.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLRadioButton.h">
