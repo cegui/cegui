@@ -1,7 +1,7 @@
 /************************************************************************
 	filename: 	CEGUIEvent.h
-	created:	21/2/2004
-	author:		Paul D Turner
+	created:	15/10/2004
+	author:		Gerald Lindsly
 	
 	purpose:	Defines interface for Event class
 *************************************************************************/
@@ -37,12 +37,141 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIEventArgs.h"
-#include "boost/signals.hpp"
+#include "CEGUIRefPtr.h"
+
+#include <map>
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+class CEGUIBASE_API SubscriberInterface
+{
+public:
+	virtual bool operator()(const EventArgs& args) const = 0;
+};
+
+
+template <typename Args>
+class _freeBinder : public SubscriberInterface
+{
+public:
+	virtual bool operator()(Args args) const 
+	{
+		return d_f(args);
+	}
+
+	typedef bool (*SlotFunction)(Args);
+	_freeBinder(SlotFunction f) : d_f(f) {}
+
+protected:
+	SlotFunction d_f;
+};
+
+
+template <class Functor, typename Args>
+class _functorBinder : public SubscriberInterface
+{
+public:
+	virtual bool operator()(Args args) const 
+	{
+		return d_f(args);
+	}
+
+	_functorBinder(const Functor& f) : d_f(f) {}
+
+protected:
+	Functor d_f;
+};
+
+
+template <class T, typename Args>
+class _memberBinder : public SubscriberInterface
+{
+	typedef bool (T::*F)(Args);
+
+public:
+	virtual bool operator()(Args args) const
+	{
+		return (d_t->*d_f)(args);
+	}
+
+	_memberBinder(F f, T* t) : d_f(f), d_t(t) {}
+
+protected:
+	F  d_f;
+	T* d_t;
+};
+
+
+template <typename Args>
+class SubscriberTemplate
+{
+public:
+	bool operator()(Args args) const
+	{
+		return (*d_si)(args);
+	}
+
+	template <class T>
+	SubscriberTemplate(bool (T::*f)(Args), T* target)
+	{
+		d_si = new _memberBinder<T,Args>(f, target);
+	}
+
+	typedef bool (*SlotFunction)(Args);
+
+	SubscriberTemplate(SlotFunction f)
+	{
+		d_si = new _freeBinder<Args>(f);
+	}
+
+	SubscriberTemplate(SubscriberInterface* si) : d_si(si) {}
+
+	template <typename Functor> 
+	SubscriberTemplate(const Functor& f)
+	{
+		d_si = new _functorBinder<Functor,Args>(f);
+	}
+
+	SubscriberTemplate(const SubscriberTemplate<Args>& copy) : d_si(copy.d_si) {}
+
+	bool operator<(const SubscriberTemplate<Args>& rhs) const { return d_si < rhs.d_si; }
+
+	void release() const
+	{
+		delete d_si;
+	}
+
+protected:
+	SubscriberInterface* d_si;
+};
+
+
+template <class Functor, typename Args>
+class _refBinder : public SubscriberInterface
+{
+public:
+	bool operator()(Args args) const
+	{
+		return d_f(args);
+	}
+
+	_refBinder(const Functor& f) : d_f(f) {}
+
+protected:
+	const Functor& d_f;
+};
+
+
+template <class Functor>
+SubscriberInterface* SubscriberRef(const Functor& f)
+{
+  return new _refBinder<Functor,const EventArgs&>(f);
+}
+
+
 /*!
 \brief
 	Defines an 'event' which can be subscribed to by interested parties.
@@ -52,42 +181,29 @@ namespace CEGUI
 	\par
 	<em>bool function_name(const EventArgs& args);</em>
 	\note
-		Currently, this class is effectively a thin wrapper around boost::signals.  You need to have boost::signals
-		available to be able to compile and use this class.  Note also that this may not always be the case, so use
-		the interface defined here unless you want something to break in a later update.
-	\note
 		An Event object may not be copied.
 */
 class CEGUIBASE_API Event
 {
-	/*************************************************************************
-		Combiner used for slot results
-	*************************************************************************/
-	struct bool_result
-	{
-		typedef bool result_type;
+public:
+	class ConnectionInterface : public Referenced {
+	public:
+		virtual bool connected() { return false; }
+		virtual void disconnect() {}
+	};
+	typedef RefPtr<ConnectionInterface> Connection;
 
-		template<typename InputIterator>
-		result_type operator()(InputIterator first, InputIterator last) const
-		{
-			result_type res = false;
 
-			while (first != last)
-			{
-				res |= (*first != 0);
-				++first;
-			}
-
-			return res;
-		}
+	class ScopedConnection {
+	public:
+		ScopedConnection(Connection conn_) : conn(conn_) {}
+		~ScopedConnection() { conn->disconnect(); }
+		Connection conn;
 	};
 
 
-public:
-	typedef	boost::signal1<bool, const EventArgs&, bool_result>	Signal;		//!< Represents the internal signal object
-	typedef const Signal::slot_function_type		Subscriber;				//!< Function / object that can subscribe to an Event
-	typedef Signal::group_type						Group;					//!< Group for subscription (groups are called in ascending sequence)
-	typedef boost::signals::connection				Connection;				//!< An object that is returned from subscribe function that can be used to control the connection / subscription.
+	typedef SubscriberTemplate<const EventArgs&> Subscriber;
+	typedef int Group;
 
 	/*************************************************************************
 		Construction and Destruction
@@ -96,13 +212,13 @@ public:
 	\brief
 		Constructs a new Event object with the specified name
 	*/
-	Event(const String& name) : d_name(name) {}
+	Event(const String& name);
 
 	/*!
 	\brief
 		Destructor for Event objects
 	*/
-	virtual ~Event(void) {}
+	virtual ~Event(void);
 
 
 	/*!
@@ -123,9 +239,9 @@ public:
 		A function, static member function, or function object, with the signature void function_name(const EventArgs& args)
 
 	\return
-		A Connection which can be used to disconnect (unsubscribe) from the Event, and to check the connection state.
+		A Connection pointer which can be used to disconnect (unsubscribe) from the Event, and to check the connection state.
 	*/
-	Connection	subscribe(Subscriber& subscriber)	{return d_sig.connect(subscriber);}
+	Connection subscribe(Subscriber subscriber) { return subscribe(0, subscriber); }
 
 
 	/*!
@@ -140,18 +256,17 @@ public:
 		A function, static member function, or function object, with the signature void function_name(const EventArgs& args)
 
 	\return
-		A Connection which can be used to disconnect (unsubscribe) from the event, and to check the connection state.
+		A Connection which can be used to disconnect (unsubscribe) from the Event, and to check the connection state.
 	*/
-	Connection	subscribe(Group group, Subscriber subscriber)	{return d_sig.connect(group, subscriber);}
-
+	Connection subscribe(Group group, Subscriber subscriber);
+  
 
 	/*
 	\brief
 		Fires the event.  All event subscribers get called in the appropriate sequence.
 
 	\param args
-		An object derived from EventArgs to be passed to each event subscriber.  The handled field of the EventArgs
-		will be appropriately set after the event handlers have been executed.
+		An object derived from EventArgs to be passed to each event subscriber.
 
 	\return
 		Nothing.
@@ -165,12 +280,46 @@ private:
 	Event(const Event& evt)	{}
 	Event& operator=(const Event& evt)	{return *this;}
 
+	/*
+	\brief
+		removes the subscriber from the event.
+
+	\param subscriber
+		A pointer to a SubscriberInterface which is to be removed from the event.
+
+	\return
+		- true, if the subscriber was registered with the event in the specified group and it was removed.
+		- false, if not.
+	*/
+	bool unsubscribe(Subscriber subscriber, Group group=0);
+
+	class GroupSubscriber {
+	public:
+		Group group;
+		Subscriber subscriber;
+		GroupSubscriber(Group group_, Subscriber subscriber_) 
+			: group(group_), subscriber(subscriber_) {}
+	};
+
+	struct ltGroupSubscriber
+	{
+		bool operator()(const GroupSubscriber& gs1, const GroupSubscriber& gs2) const
+		{
+			return gs1.group <  gs2.group ||
+				gs1.group == gs2.group && gs1.subscriber < gs2.subscriber;
+		}
+	};
+	typedef std::map<GroupSubscriber, Connection, ltGroupSubscriber> ConnectionOrdering;
+
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	Signal	d_sig;				//!< boost::signal that implements the signal/slot functionality
 	const String	d_name;		//!< Name of this event
+	ConnectionOrdering connectionOrdering;
+	friend class ConnectionImpl;
 };
+
 
 } // End of  CEGUI namespace section
 
