@@ -99,7 +99,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 			}
 
 			mapDat.d_horz_advance_unscaled = horzAdvance;
-			mapDat.d_horz_advance = (uint)(((float)horzAdvance) * d_font->d_horzScaling);
+            mapDat.d_horz_advance = (uint)(((float)horzAdvance) * (d_font->d_autoScale ? d_font->d_horzScaling : 1.0f));
 			d_font->d_cp_map[codepoint] = mapDat;
 		}
 		else
