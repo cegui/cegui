@@ -1,0 +1,82 @@
+Crazy Eddie's GUI System Mk-2
+http://www.cegui.org.uk
+
+Copyright ©2004 - 2005 Paul D Turner & Contributing Authors
+
+
+The following is a high-level view of changes made to the system between releases.
+
+
+Release 0.2.0
+=============
+Added: MouseButtonDown event auto-repeat feature.
+Added: System::getSystemKeys method to return current system keys value.
+Added: New setting in Window to receive muliple mouse down events instead of double/triple clicks.
+Added: Ability to define split direction of triangles used for quads
+Added: Font::getFontHeight method to return pixel height of largest glyph.
+Added: Error logging for when freetype fails to load a glyph.
+Added: Various new methods to TabCrontrol base class.
+Added: Callback support when setting properties loaded from XML layout files.
+Added: Checking and inspection of default values for Properties system.
+Added: Global events system.
+Added: Vertical VU-Meter style progress bar to Taharez Look.
+Added: Extensions to font system which give support for scaling the text output.
+Added: Support for MSVC++ 6.0 native STL implementation.
+Added: Font::getPointSize() method to return point size of a dynamic font.
+Added: Mechanism for Direct3D renderers to detect display size changes and fire EventDisplaySizeChanged.
+Added: Lost device recovery for both Direct3D renderer modules.
+Added: SchemeManager::unloadAllSchemes method.
+Added: Initial system for time based updates / window automation.
+Added: CEGUI::System constructor overload to allow custom ResourceProvider to be specified when also using a ScriptModule.
+Added: OpenGL renderer.
+Added: uint32 and uint16 datatypes.
+
+Modified: Layout loading code to properly throw CEGUI errors out of xercesc parser.
+Modified: Switched HBU_DYNAMIC_WRITE_ONLY for HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE in Ogre renderer to improve performance under D3D.
+Modified: Fixed font support under AMD64.
+Modified: OGRE renderer to work under AMD64.
+Modified: OgreGUIRenderer modified to compile against OGRE 1.0 (Ogre >= 1.0.0 is now required)
+Modified: Changed all const strings in the base library to be of type CEGUI::String instead of UTF-8 buffers.
+Modified: Removed public dependency on xerces-c (still required for base library itself though).
+Modified: Replaced dependency boost::regex with embedded copy of pcre.
+Modified: Replaced dependency boost::timer with SimpleTimer class.
+Modified: TabCobtrol widget now uses '__auto_' naming scheme for generated child widgets.
+Modified: Global update of website, contact, and copyright information.
+
+Bug Fix: moveToBack was operating upon and adding target window to its own child list instead of its parents.
+Bug Fix: Editbox changed to allow text to be altered in onTextChanged/EventTextChanged without causing carat position to become invalid.
+Bug Fix: Font updated to use correct values for Linespacing and Baseline.
+Bug Fix: Added various missing includes.
+Bug Fix: Minor adjustment to layout in TLComboEditbox to fix text clipping issue.
+Bug Fix: Text alignment within gui elements.
+Bug Fix: Drag-Sizing for segments would be incorrect if they had negative relative 'left' positions.
+Bug Fix: Some component widget layouts were getting incorrect sizes.
+Bug Fix: Fixed minor imagery alignment issue for Taharez frame window imagery.
+Bug Fix: Child windows would sometimes 'jump' slightly upon initial activation of a parent window.
+Bug Fix: System::setGUISheet updated to trigger re-calculation of relative co-ordinates when a new window is attached as root.
+Bug Fix: removed use of void* in properties system to ensure correct casting behaviour.
+Bug Fix: All imagery aligned to whole pixels resolving twinkling and blurring issues.
+Bug Fix: Constructor overload and support methods to allow successful use of 'pure' D3D devices.
+Bug Fix: Made sure events were added to the EventSet in Window before making any calls that may fire an event.
+Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer added.
+Bug Fix: Various other minor tweaks & fixes.
+
+
+Release 0.1.1
+=============
+Updated TODO file to reflect features already implemented in this branch.
+Bug Fix: Missing shading type and rasterisation mode settings in Ogre renderer
+Bug Fix: Removed erroneous use of D3DLOCK_DISCARD flag in D3D8 renderer (texture.cpp)
+Bug Fix: Dates in the log were using incorrect value for the month.
+Bug Fix: Added missing stdio.h include in CEGUIWindow.cpp.
+Bug Fix: Font attribute "AntiAlias" was incorrectly documented as "AntiAliased".
+Bug Fix: d_resourceProvider member in Renderer base class was not being initialised
+Bug Fix: corrected version information in configure.ac.
+Bug Fix: Resolved assert issues related to the Ogre debug memory manager.
+Bug Fix: Y Spacing calculation on certain ttf fonts was incorrect.
+Bug Fix: Added missing _STLP_DEBUG defines in the MSVC++ 7.0 projects.
+
+
+Release 0.1.0
+=============
+Initial release.
