@@ -1086,4 +1086,23 @@ void System::handleDisplaySizeChange(const EventArgs& e)
 
 }
 
+
+/*************************************************************************
+	Internal method used to inform the System object whenever a window is
+	destroyed, so that System can perform any required housekeeping.
+*************************************************************************/
+void System::notifyWindowDestroyed(const Window* window)
+{
+	if (d_wndWithMouse == window)
+	{
+		d_wndWithMouse = NULL;
+	}
+
+	if (d_activeSheet == window)
+	{
+		d_activeSheet = NULL;
+	}
+
+}
+
 } // End of  CEGUI namespace section

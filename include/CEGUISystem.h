@@ -435,6 +435,17 @@ public:
 	void	setMouseMoveScaling(float scaling);
 
 
+	/*!
+	\brief
+		Internal method used to inform the System object whenever a window is destroyed, so that System can perform any required
+		housekeeping.
+
+	\note
+		This method is not intended for client code usage.  If you use this method anything can, and probably will, go wrong!
+	*/
+	void	notifyWindowDestroyed(const Window* window);
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/

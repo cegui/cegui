@@ -114,6 +114,11 @@ void WindowManager::destroyWindow(const String& window)
 	{
 		WindowFactory* factory = WindowFactoryManager::getSingleton().getFactory(wndpos->second->getType());
 		factory->destroyWindow(wndpos->second);
+
+		// notify system object of the window destruction
+		System::getSingleton().notifyWindowDestroyed(wndpos->second);
+
+		// remove entry from the WindowRegistry.
 		d_windowRegistry.erase(wndpos);
 
 		Logger::getSingleton().logEvent((utf8*)"Window '" + window + "' has been destroyed.", Informative);
