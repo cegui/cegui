@@ -31,6 +31,8 @@
 #include "CEGUISingleton.h"
 #include "CEGUIVector.h"
 #include "CEGUIRect.h"
+#include "CEGUIEventSet.h"
+#include "CEGUIInputEvent.h"
 
 
 #if defined(_MSC_VER)
@@ -61,9 +63,16 @@ enum MouseCursorImage
 
 	The MouseCursor provides functionality to access the position and imagery of the mouse cursor / pointer
 */
-class CEGUIBASE_API MouseCursor : public Singleton<MouseCursor>
+class CEGUIBASE_API MouseCursor : public EventSet, public Singleton<MouseCursor>
 {
 public:
+	/*************************************************************************
+		Event name constants
+	*************************************************************************/
+	// generated internally by MouseCursor
+	static const utf8	EventImageChanged[];			//!< The cursor image of the widget has changed.
+
+
 	/*!
 	\brief
 		Constructor for MouseCursor objects
@@ -120,7 +129,7 @@ public:
 	\brief
 		Set the current mouse cursor image
 	*/
-	void	setImage(const Image* image)		{d_cursorImage = image;}
+	void	setImage(const Image* image);
 
 
 	/*!
@@ -231,6 +240,27 @@ public:
 		represents the right-most and bottom-most positions.
 	*/
 	Point	getDisplayIndependantPosition(void) const;
+
+
+protected:
+	/*************************************************************************
+		New event handlers
+	*************************************************************************/
+	/*!
+	\brief
+		event triggered internally when image of mouse cursor changes
+	*/
+	virtual void	onImageChanged(MouseCursorEventArgs& e);
+
+
+	/*************************************************************************
+		Implementation Functions
+	*************************************************************************/
+	/*!
+	\brief
+		Add mouse cursor specific events
+	*/
+	void	addMouseCursorEvents(void);
 
 
 private:

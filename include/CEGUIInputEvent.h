@@ -257,6 +257,21 @@ public:
 /*!
 \brief
 	EventArgs based class that is used for objects passed to input event handlers
+	concerning mouse cursor events.
+*/
+class CEGUIBASE_API MouseCursorEventArgs : public EventArgs
+{
+public:
+	MouseCursorEventArgs(MouseCursor* cursor) : mouseCursor(cursor) {}
+
+	MouseCursor* mouseCursor;	//!< pointer to a MouseCursor object of relevance to the event.
+	const Image* image;			//!< pointer to an Image object of relevance to the event.
+};
+
+
+/*!
+\brief
+	EventArgs based class that is used for objects passed to input event handlers
 	concerning keyboard input.
 */
 class CEGUIBASE_API KeyEventArgs : public WindowEventArgs

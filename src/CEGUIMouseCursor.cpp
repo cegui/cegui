@@ -42,6 +42,11 @@ namespace CEGUI
 template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= NULL;
 
 
+/*************************************************************************
+	Event name constants
+*************************************************************************/
+const utf8	MouseCursor::EventImageChanged[]	= "ImageChanged";
+
 
 /*************************************************************************
 	constructor
@@ -62,6 +67,9 @@ MouseCursor::MouseCursor(void)
 	// no default image though
 	d_cursorImage = NULL;
 
+	// add events
+	addMouseCursorEvents();
+
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::MouseCursor singleton created.");
 }
 
@@ -72,6 +80,18 @@ MouseCursor::MouseCursor(void)
 MouseCursor::~MouseCursor(void)
 {
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::MouseCursor singleton destroyed.");
+}
+
+
+/*************************************************************************
+	Set the current mouse cursor image
+*************************************************************************/
+void MouseCursor::setImage(const Image* image)
+{
+	d_cursorImage = image;
+	MouseCursorEventArgs args(this);
+	args.image = image;
+	onImageChanged(args);
 }
 
 
@@ -168,6 +188,30 @@ Point MouseCursor::getDisplayIndependantPosition(void) const
 	Size dsz(System::getSingleton().getRenderer()->getSize());
 
 	return Point(d_position.d_x / (dsz.d_width - 1.0f), d_position.d_y / (dsz.d_height - 1.0f));
+}
+
+
+/*************************************************************************
+	Add MouseCursor events
+*************************************************************************/
+void MouseCursor::addMouseCursorEvents(void)
+{
+	// mouse cursor events
+	addEvent(EventImageChanged);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+
+	Begin event triggers section
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+
+void MouseCursor::onImageChanged(MouseCursorEventArgs& e)
+{
+	fireEvent(EventImageChanged, e);
 }
 
 
