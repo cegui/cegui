@@ -550,6 +550,23 @@ public:
 	bool	injectMouseWheelChange(float delta);
 
 
+	/*!
+	\brief
+		Method that injects a new position for the mouse cursor.
+
+	\param x_pos
+		New absolute pixel position of the mouse cursor on the x axis.
+
+	\param y_pos
+		New absolute pixel position of the mouse cursoe in the y axis.
+
+	\return
+		- true if the generated mouse move event was handled.
+		- false if the generated mouse move event was not handled.
+	*/
+	bool	injectMousePosition(float x_pos, float y_pos);
+
+
 private:
 	/*************************************************************************
 		Implementation Constants

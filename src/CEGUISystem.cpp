@@ -836,6 +836,19 @@ bool System::injectMouseWheelChange(float delta)
 
 
 /*************************************************************************
+	Method that injects a new position for the mouse cursor.
+*************************************************************************/
+bool System::injectMousePosition(float x_pos, float y_pos)
+{
+	// set new mouse position
+	MouseCursor::getSingleton().setPosition(Point(x_pos, y_pos));
+
+	// do the real work
+	return injectMouseMove(0, 0);
+}
+
+
+/*************************************************************************
 	Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
 Window*	System::getTargetWindow(const Point& pt) const
