@@ -63,9 +63,9 @@
 		};
 		0867D69AFE84028FC02AAC07 = {
 			children = (
+				5B088AD30724B07400E1FF63,
 				5B7CD860070DD12E00FE8C88,
 				5B7CD861070DD12E00FE8C88,
-				5B7CD85C070DD11200FE8C88,
 				5B7CD858070DD0FE00FE8C88,
 				08FB77AAFE841565C02AAC07,
 				5B7CDAEE070DEB9F00FE8C88,
@@ -142,6 +142,7 @@
 				5B7CD87D070DD19000FE8C88,
 				5B7CD87E070DD19000FE8C88,
 				5B7CD87F070DD19000FE8C88,
+				5B088AC10724AED100E1FF63,
 				5B7CD880070DD19000FE8C88,
 				5B7CD881070DD19000FE8C88,
 				5B7CD882070DD19000FE8C88,
@@ -231,6 +232,73 @@
 //5B2
 //5B3
 //5B4
+		5B088AC10724AED100E1FF63 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CEGUIRefPtr.cpp;
+			path = /Users/pauly/Projects/Frameworks/cegui_mk2/src/CEGUIRefPtr.cpp;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		5B088AC20724AED100E1FF63 = {
+			fileRef = 5B088AC10724AED100E1FF63;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B088AC50724AEEC00E1FF63 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CEGUIRefPtr.h;
+			path = /Users/pauly/Projects/Frameworks/cegui_mk2/include/CEGUIRefPtr.h;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		5B088AC60724AEEC00E1FF63 = {
+			fileRef = 5B088AC50724AEEC00E1FF63;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B088AD30724B07400E1FF63 = {
+			isa = PBXFileReference;
+			lastKnownFileType = "compiled.mach-o.dylib";
+			name = libfreetype.dylib;
+			path = /usr/X11R6/lib/libfreetype.dylib;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		5B088AD40724B07400E1FF63 = {
+			fileRef = 5B088AD30724B07400E1FF63;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B6CB7B6071B60800037CC69 = {
+			buildActionMask = 2147483647;
+			dstPath = Headers/renderers/OgreGUIRenderer;
+			dstSubfolderSpec = 1;
+			files = (
+				5B6CB7BA071B60D40037CC69,
+				5B6CB7BB071B60D40037CC69,
+			);
+			isa = PBXCopyFilesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B6CB7BA071B60D40037CC69 = {
+			fileRef = 5B7CD9FA070DD28500FE8C88;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B6CB7BB071B60D40037CC69 = {
+			fileRef = 5B7CD9FB070DD28500FE8C88;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		5B78EBCA07173D1100DB5B0A = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -400,6 +468,7 @@
 				5B7CD937070DD1EF00FE8C88,
 				5B7CD938070DD1EF00FE8C88,
 				5B7CD939070DD1EF00FE8C88,
+				5B088AC50724AEEC00E1FF63,
 				5B7CD93A070DD1EF00FE8C88,
 				5B7CD93B070DD1EF00FE8C88,
 				5B7CD93C070DD1EF00FE8C88,
@@ -770,6 +839,7 @@
 				5B78EBD907173D8500DB5B0A,
 				5B78EBDA07173D8500DB5B0A,
 				5B78EC300717A66500DB5B0A,
+				5B088AC60724AEEC00E1FF63,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -877,6 +947,7 @@
 				5B78EBCC07173D1100DB5B0A,
 				5B78EBCD07173D1100DB5B0A,
 				5B78EBD407173D5D00DB5B0A,
+				5B088AC20724AED100E1FF63,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -885,9 +956,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B7CD859070DD0FE00FE8C88,
-				5B7CD85D070DD11200FE8C88,
 				5B7CD862070DD12E00FE8C88,
 				5B7CD863070DD12E00FE8C88,
+				5B088AD40724B07400E1FF63,
 			);
 			isa = PBXFrameworksBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -909,10 +980,16 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = "/Library/Frameworks/freetype.framework/Headers /Library/Frameworks/Xerces.framework/Headers /usr/local/include ../../../../include";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				HEADER_SEARCH_PATHS = "/usr/X11R6/include/freetype2 /Library/Frameworks/Xerces.framework/Headers /usr/local/include ../../../../include";
 				INFOPLIST_FILE = "CEGUIBase-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LIBRARY_SEARCH_PATHS = /sw/lib;
+				LIBRARY_SEARCH_PATHS = "/usr/X11R6/lib /sw/lib";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-framework Carbon";
 				OTHER_REZFLAGS = "";
@@ -1006,6 +1083,7 @@
 				5B7CD840070DD09100FE8C88,
 				5B7CD841070DD09100FE8C88,
 				5B7CD842070DD09100FE8C88,
+				5B6CB7B6071B60800037CC69,
 			);
 			buildRules = (
 			);
@@ -1166,6 +1244,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = ../../../../include;
 				INFOPLIST_FILE = "CEGUITaharezLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
@@ -1295,6 +1377,11 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = ../../../../include;
 				INFOPLIST_FILE = "CEGUIWindowsLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
@@ -1354,20 +1441,6 @@
 		};
 		5B7CD859070DD0FE00FE8C88 = {
 			fileRef = 5B7CD858070DD0FE00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B7CD85C070DD11200FE8C88 = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
-			name = freetype.framework;
-			path = /Library/Frameworks/freetype.framework;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		5B7CD85D070DD11200FE8C88 = {
-			fileRef = 5B7CD85C070DD11200FE8C88;
 			isa = PBXBuildFile;
 			settings = {
 			};
