@@ -162,23 +162,30 @@ Font::~Font(void)
 *************************************************************************/
 float Font::getTextExtent(const String& text, float x_scale) const
 {
-	float cur_extent = 0;
+    float cur_extent = 0, adv_extent = 0, width;
 
-	size_t char_count = text.length();
-	CodepointMap::const_iterator	pos, end = d_cp_map.end();
+    size_t char_count = text.length();
+    CodepointMap::const_iterator pos, end = d_cp_map.end();
 
-	for (size_t c = 0; c < char_count; ++c)
-	{
-		pos = d_cp_map.find(text[c]);
+    for (size_t c = 0; c < char_count; ++c)
+    {
+        pos = d_cp_map.find(text[c]);
 
-		if (pos != end)
-		{
-			cur_extent += (float)pos->second.d_horz_advance * x_scale;
-		}
+        if (pos != end)
+        {
+            width = (pos->second.d_image->getWidth() + pos->second.d_image->getOffsetX()) * x_scale;
+            
+            if (adv_extent + width > cur_extent)
+            {
+                cur_extent = adv_extent + width;
+            }
+            
+            adv_extent += (float)pos->second.d_horz_advance * x_scale;
+        }
 
-	}
+    }
 
-	return cur_extent;
+    return cur_extent;
 }
 
 
