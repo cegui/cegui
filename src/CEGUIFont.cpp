@@ -51,7 +51,7 @@ namespace CEGUI
 /*************************************************************************
 	static data definitions
 *************************************************************************/
-const ulong Font::DefaultColour					= 0xFFFFFFFF;
+const uint32 Font::DefaultColour					= 0xFFFFFFFF;
 const uint	Font::InterGlyphPadSpace			= 2;
 
 // XML related strings
@@ -373,7 +373,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 	Render a set of glyph images into the given memory buffer.
 	pixels will be in A8R8G8B8 format
 *************************************************************************/
-void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
+void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer)
 {
 	String	imageName;
 	Rect	rect;
@@ -407,7 +407,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 		}
 
 		// calculate offset into buffer for this glyph
-		ulong* dest_buff = buffer + (cur_y * size) + cur_x;
+		uint32* dest_buff = buffer + (cur_y * size) + cur_x;
 
 		// draw glyph into buffer
 		drawGlyphToBuffer(dest_buff, size);
@@ -445,7 +445,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 	Render a range of glyph images into the given memory buffer.
 	pixels will be in A8R8G8B8 format
 *************************************************************************/
-void Font::createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, ulong* buffer)
+void Font::createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, uint32* buffer)
 {
 	String tmp;
 
@@ -495,7 +495,7 @@ void Font::defineFontGlyphs(utf32 first_code_point, utf32 last_code_point)
 /*************************************************************************
 	Copy the FreeType glyph bitmap into the given memory buffer
 *************************************************************************/
-void Font::drawGlyphToBuffer(ulong* buffer, uint buf_width)
+void Font::drawGlyphToBuffer(uint32* buffer, uint buf_width)
 {
 	FT_Bitmap* glyph_bitmap = &d_impldat->fontFace->glyph->bitmap;
 
@@ -834,11 +834,11 @@ void Font::defineFontGlyphs_impl(void)
 	}
 
 	// allocate memory buffer where we will define the imagery
-	ulong* mem_buffer;
+	uint32* mem_buffer;
 
 	try
 	{
-		mem_buffer = new ulong[texture_size * texture_size];
+		mem_buffer = new uint32[texture_size * texture_size];
 	}
 	catch (std::bad_alloc)
 	{
@@ -846,7 +846,7 @@ void Font::defineFontGlyphs_impl(void)
 	}
 
 	// initialise background to transparent black.
-	memset(mem_buffer, 0, ((texture_size * texture_size) * sizeof(ulong)));
+	memset(mem_buffer, 0, ((texture_size * texture_size) * sizeof(uint32)));
 
 	// clear old data about glyphs and images
 	d_cp_map.clear();

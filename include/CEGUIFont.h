@@ -51,7 +51,7 @@ namespace CEGUI
 enum CEGUIBASE_API FontFlag
 {
 	Default,			//!< Default / None.
-	NoAntiAlias,		//!< Fonts generated from TrueType files should not be anti-aliased.
+	NoAntiAlias 		//!< Fonts generated from TrueType files should not be anti-aliased.
 };
 
 
@@ -66,7 +66,7 @@ enum CEGUIBASE_API TextFormatting
 	Centred,				//!< All text is printed on a single line.  The text is centred horizontally in the formatting Rect.
 	WordWrapLeftAligned,	//!< Text is broken into multiple lines no wider than the formatting Rect.  The left-most character of each line is aligned with the left edge of the formatting Rect.
 	WordWrapRightAligned,	//!< Text is broken into multiple lines no wider than the formatting Rect.  The right-most character of each line is aligned with the right edge of the formatting Rect.
-	WordWrapCentred,		//!< Text is broken into multiple lines no wider than the formatting Rect.  Each line is centred horizontally in the formatting Rect.
+	WordWrapCentred 		//!< Text is broken into multiple lines no wider than the formatting Rect.  Each line is centred horizontally in the formatting Rect.
 };
 
 /*!
@@ -84,7 +84,7 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	static const ulong		DefaultColour;			//!< Colour value used whenever a colour is not specified.
+	static const uint32		DefaultColour;			//!< Colour value used whenever a colour is not specified.
 
 
 	/*************************************************************************
@@ -866,7 +866,7 @@ private:
 	\return
 		Nothing.
 	*/
-	void	createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer);
+	void	createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer);
 
 
 	/*!
@@ -890,7 +890,7 @@ private:
 	\return
 		Nothing.
 	*/
-	void	createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, ulong* buffer);
+	void	createFontGlyphSet(utf32 first_code_point, utf32 last_code_point, uint size, uint32* buffer);
 
 
 	/*!
@@ -901,12 +901,12 @@ private:
 		Memory buffer large enough to receive the imagery for the currently loaded glyph.
 
 	\param buf_width
-		Width of \a buffer in pixels (where each pixel is a ulong).
+		Width of \a buffer in pixels (where each pixel is a uint32).
 
 	\return
 		Nothing.
 	*/
-	void	drawGlyphToBuffer(ulong* buffer, uint buf_width);
+	void	drawGlyphToBuffer(uint32* buffer, uint buf_width);
 
 
 	/*!
