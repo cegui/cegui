@@ -29,6 +29,11 @@
 
 #include <d3dx9.h>
 #include <dxerr9.h>
+
+// remove Microsoft idiocy
+#undef max
+#undef min
+
 #include <algorithm>
 
 
