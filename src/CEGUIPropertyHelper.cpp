@@ -57,7 +57,7 @@ uint PropertyHelper::stringToUint(const String& str)
 
 bool PropertyHelper::stringToBool(const String& str)
 {
-	if (str == (utf8*)"True")
+	if ((str == (utf8*)"True") || (str == (utf8*)"true"))
 	{
 		return true;
 	}
