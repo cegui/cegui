@@ -234,17 +234,17 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_MultiLineEditboxFactory);
 		return;
 	}
-    else if (type_name == "Taharez Tab Control")
+	else if (type_name == TLTabControl::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_TabControlFactory);
         return;
     }
-    else if (type_name == "Taharez Tab Button")
+	else if (type_name == TLTabButton::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_TabButtonFactory);
         return;
     }
-    else if (type_name == "Taharez Tab Pane")
+	else if (type_name == TLTabPane::WidgetTypeName)
     {
         WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
         return;

@@ -45,12 +45,15 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
+	// type name for this widget
+	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
+
     static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
     static const utf8	FillerImageName[];			    //!< Name of the image to use for filling the top edge where there are no buttons
 
 	// window type stuff
-	static const utf8	TabContentPaneType[];				//!< Window type to create for the tab pane.
-    static const utf8	TabButtonType[];				    //!< Window type to create for the tab button.
+	static const utf8*	TabContentPaneType;				//!< Window type to create for the tab pane.
+    static const utf8*	TabButtonType;				    //!< Window type to create for the tab button.
 
 	/*************************************************************************
 		Construction and Destruction
@@ -144,7 +147,7 @@ public:
 	\brief
 		Constructor for Taharez Frame Window factory class.
 	*/
-	TLTabControlFactory(void) : WindowFactory((utf8*)"Taharez Tab Control") { }
+	TLTabControlFactory(void) : WindowFactory(TLTabControl::WidgetTypeName) { }
 
 
 	/*

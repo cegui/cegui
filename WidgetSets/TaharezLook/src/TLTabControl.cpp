@@ -25,7 +25,8 @@
 *************************************************************************/
 #include "TLTabControl.h"
 #include "CEGUIWindowManager.h"
-#include "elements/CEGUITabButton.h"
+#include "TLTabButton.h"
+#include "TLTabPane.h"
 #include "CEGUIImageset.h"
 
 
@@ -35,11 +36,14 @@ namespace CEGUI
     /*************************************************************************
     Constants
     *************************************************************************/
-    const utf8	TLTabControl::ImagesetName[]				    = "TaharezImagery";
+	// type name for this widget
+	const utf8	TLTabControl::WidgetTypeName[]	= "TaharezLook/TabControl";
+
+    const utf8	TLTabControl::ImagesetName[]				= "TaharezLook";
     const utf8	TLTabControl::FillerImageName[]		        = "TabControlButtonPaneFiller";
     // window type stuff
-    const utf8	TLTabControl::TabContentPaneType[]	= "Taharez Tab Pane";
-    const utf8	TLTabControl::TabButtonType[]	    = "Taharez Tab Button";
+	const utf8*	TLTabControl::TabContentPaneType	= TLTabPane::WidgetTypeName;
+	const utf8*	TLTabControl::TabButtonType		    = TLTabButton::WidgetTypeName;
 
     /*************************************************************************
     Constructor
