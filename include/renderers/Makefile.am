@@ -1,1 +1,1 @@
-SUBDIRS = OgreGUIRenderer OpenGLGUIRenderer
+SUBDIRS = OpenGLGUIRenderer

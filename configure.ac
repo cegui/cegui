@@ -34,7 +34,6 @@ AC_HEADER_STDC
 AC_CHECK_FUNCS([memmove memset])
 
 # check for renderers
-CEGUI_ENABLE_OGRE_RENDERER
 CEGUI_ENABLE_OPENGL_RENDERER
 
 dnl versioning info for libtool
