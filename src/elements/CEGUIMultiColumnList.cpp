@@ -1405,7 +1405,7 @@ float MultiColumnList::getTotalRowsHeight(void) const
 *************************************************************************/
 float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 {
-	if (col_idx >= getRowCount())
+	if (col_idx >= getColumnCount())
 	{
 		throw InvalidRequestException((utf8*)"MultiColumnList::getWidestColumnItemWidth - specified column is out of range.");
 	}
@@ -2092,7 +2092,7 @@ void MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 	uint col = d_header->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
 
 	// get the width of the widest item in the column.
-	float width = getWidestColumnItemWidth(col);
+	float width = std::max(getWidestColumnItemWidth(col), ListHeader::MinimumSegmentPixelWidth);
 
 	// perform metrics conversion if needed
 	if (getMetricsMode() == Relative)

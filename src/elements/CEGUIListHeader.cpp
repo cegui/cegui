@@ -62,6 +62,7 @@ const utf8	ListHeader::SegmentOffsetChanged[]		= "SegmentOffsetChanged";
 
 // values
 const float	ListHeader::ScrollSpeed	= 8.0f;
+const float	ListHeader::MinimumSegmentPixelWidth	= 20.0f;
 
 
 /*************************************************************************
@@ -679,12 +680,7 @@ void ListHeader::setColumnPixelWidth(uint column, float width)
 	}
 	else
 	{
-		if (d_segments[column]->getMetricsMode() == Relative)
-		{
-			width = absoluteToRelativeX(width);
-		}
-
-		d_segments[column]->setWidth(width);
+		d_segments[column]->setWidth(Absolute, width);
 
 		layoutSegments();
 
@@ -713,7 +709,7 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	// setup segment;
 	newseg->setMetricsMode(Relative);
 	newseg->setSize(Size(width, 1.0f));
-	newseg->setMinimumSize(absoluteToRelative(Size(5.0f, 0.0f)));
+	newseg->setMinimumSize(absoluteToRelative_impl(NULL, Size(MinimumSegmentPixelWidth, 0.0f)));
 	newseg->setText(text);
 	newseg->setID(id);
 

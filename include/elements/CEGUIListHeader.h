@@ -81,6 +81,7 @@ public:
 
 	// values
 	static const float	ScrollSpeed;				//!< Speed to scroll at when dragging outside header.
+	static const float	MinimumSegmentPixelWidth;	//!< Miniumum width of a segment in pixels.
 
 
 	/*************************************************************************
