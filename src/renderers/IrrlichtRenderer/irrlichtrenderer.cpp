@@ -149,10 +149,10 @@ namespace CEGUI
 		return t;
 	}
 /************************************************************************/
-	Texture* IrrlichtRenderer::createTexture(const String& filename)
+	Texture* IrrlichtRenderer::createTexture(const String& filename, const String& resourceGroup)
 	{
 		IrrlichtTexture* t=(IrrlichtTexture*)createTexture();
-		t->loadFromFile(filename);
+		t->loadFromFile(filename, resourceGroup);
 		return t;
 	}
 /************************************************************************/	
