@@ -319,6 +319,29 @@ public:
 	const Font*	getTitlebarFont(void) const;
 
 
+	/*!
+	\brief
+		Return the current colour used for rendering the caption text
+
+	\return
+		colour value that specifies the colour used when rendering the title bar caption text.
+	*/
+	colour	getCaptionColour(void) const;
+
+
+	/*!
+	\brief
+		Sets the colour to be used for rendering the caption text.
+
+	\param col
+		colour value that specifies the colour to be used when rendering the title bar caption text.
+
+	\return
+		Nothing.
+	*/
+	void	setCaptionColour(colour col);
+
+
 	/*************************************************************************
 		Construction / Destruction
 	*************************************************************************/
@@ -578,6 +601,7 @@ private:
 	static FrameWindowProperties::DragMovingEnabled	d_dragMovingEnabledProperty;
 	static FrameWindowProperties::SizingBorderThickness d_sizingBorderThicknessProperty;
 	static FrameWindowProperties::TitlebarFont		d_titlebarFontProperty;
+	static FrameWindowProperties::CaptionColour		d_captionColourProperty;
 
 
 	/*************************************************************************

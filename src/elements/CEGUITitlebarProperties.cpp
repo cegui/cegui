@@ -47,6 +47,16 @@ void DraggingEnabled::set(void* receiver, const String& value)
 }
 
 
+String CaptionColour::get(const void* receiver) const
+{
+	return PropertyHelper::colourToString(static_cast<const Titlebar*>(receiver)->getCaptionColour());
+}
+
+void CaptionColour::set(void* receiver, const String& value)
+{
+	static_cast<Titlebar*>(receiver)->setCaptionColour(PropertyHelper::stringToColour(value));
+}
+
 } // End of  TitlebarProperties namespace section
 
 } // End of  CEGUI namespace section

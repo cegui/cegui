@@ -61,6 +61,9 @@ WLTitlebar::WLTitlebar(const String& type, const String& name) :
 	d_middleImage	= &iset->getImage(MiddleSectionImageName);
 	d_rightImage	= &iset->getImage(RightEndSectionImageName);
 
+	// default text colour
+	d_captionColour = CaptionColour;
+
 	// set cursor
 	setMouseCursor(&iset->getImage(NormalCursorImageName));
 
@@ -140,7 +143,9 @@ void WLTitlebar::drawSelf(float z)
 	//
 	// Draw the title text
 	//
-	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = alpha_comp | CaptionColour;
+	// calculate colours to use for caption text
+	colval = ((colval & 0xFF000000) | (d_captionColour & 0x00FFFFFF));
+	colours.d_top_left = colours.d_top_right = colours.d_bottom_left = colours.d_bottom_right = colval;
 
 	Rect textClipper(clipper);
 	textClipper.setWidth(midWidth);

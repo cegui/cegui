@@ -45,6 +45,7 @@ FrameWindowProperties::RollUpEnabled			FrameWindow::d_rollUpEnabledProperty;
 FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProperty;
 FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
 FrameWindowProperties::TitlebarFont				FrameWindow::d_titlebarFontProperty;
+FrameWindowProperties::CaptionColour			FrameWindow::d_captionColourProperty;
 
 
 /*************************************************************************
@@ -745,6 +746,25 @@ void FrameWindow::addFrameWindowProperties(void)
 	addProperty(&d_dragMovingEnabledProperty);
 	addProperty(&d_sizingBorderThicknessProperty);
 	addProperty(&d_titlebarFontProperty);
+	addProperty(&d_captionColourProperty);
+}
+
+
+/*************************************************************************
+	Return the current colour used for rendering the caption text
+*************************************************************************/
+colour FrameWindow::getCaptionColour(void) const
+{
+	return d_titlebar->getCaptionColour();
+}
+
+
+/*************************************************************************
+	Sets the colour to be used for rendering the caption text.
+*************************************************************************/
+void FrameWindow::setCaptionColour(colour col)
+{
+	d_titlebar->setCaptionColour(col);
 }
 
 

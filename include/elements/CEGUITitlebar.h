@@ -71,6 +71,29 @@ public:
 	void	setDraggingEnabled(bool setting);
 
 
+	/*!
+	\brief
+		Return the current colour used for rendering the caption text
+
+	\return
+		colour value that specifies the colour used when rendering the title bar caption text.
+	*/
+	colour	getCaptionColour(void) const;
+
+
+	/*!
+	\brief
+		Sets the colour to be used for rendering the caption text.
+
+	\param col
+		colour value that specifies the colour to be used when rendering the title bar caption text.
+
+	\return
+		Nothing.
+	*/
+	void	setCaptionColour(colour col);
+
+
 	/*************************************************************************
 		Construction / Destruction
 	*************************************************************************/
@@ -121,12 +144,15 @@ protected:
 
 	Rect	d_oldCursorArea;	//!< Used to backup cursor restraint area.
 
+	colour	d_captionColour;	//!< Colour used when rendering the title caption.
+
 
 private:
 	/*************************************************************************
 		Static Properties for this class
 	*************************************************************************/
 	static TitlebarProperties::DraggingEnabled	d_dragEnabledProperty;
+	static TitlebarProperties::CaptionColour	d_captionColourProperty;
 
 
 	/*************************************************************************

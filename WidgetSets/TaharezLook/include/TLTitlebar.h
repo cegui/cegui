@@ -52,6 +52,9 @@ public:
 	static const utf8	NormalCursorImageName[];		//!< Name of the image to use as the mouse cursor for this window.
 	static const utf8	NoDragCursorImageName[];		//!< Name of the image to use as mouse cursor when dragging is disabled.
 
+	// colours
+	static const colour	CaptionColour;			//!< Colour used when rendering the caption text.
+
 
 	/*************************************************************************
 		Construction and Destruction

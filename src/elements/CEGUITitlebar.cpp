@@ -34,6 +34,7 @@ namespace CEGUI
 	Definition of Properties for this class
 *************************************************************************/
 TitlebarProperties::DraggingEnabled	Titlebar::d_dragEnabledProperty;
+TitlebarProperties::CaptionColour	Titlebar::d_captionColourProperty;
 
 
 /*************************************************************************
@@ -229,6 +230,26 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
 void Titlebar::addTitlebarProperties(void)
 {
 	addProperty(&d_dragEnabledProperty);
+	addProperty(&d_captionColourProperty);
+}
+
+
+/*************************************************************************
+	Return the current colour used for rendering the caption text
+*************************************************************************/
+colour	Titlebar::getCaptionColour(void) const
+{
+	return d_captionColour;
+}
+
+
+/*************************************************************************
+	Sets the colour to be used for rendering the caption text.
+*************************************************************************/
+void Titlebar::setCaptionColour(colour col)
+{
+	d_captionColour = col;
+	requestRedraw();
 }
 
 } // End of  CEGUI namespace section

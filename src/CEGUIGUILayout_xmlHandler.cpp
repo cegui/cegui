@@ -48,6 +48,7 @@ const char	GUILayout_xmlHandler::PropertyNameAttribute[]	= "Name";
 const char	GUILayout_xmlHandler::PropertyValueAttribute[]	= "Value";
 const char	GUILayout_xmlHandler::LayoutParentAttribute[]	= "Parent";
 const char	GUILayout_xmlHandler::LayoutImportFilenameAttribute[]	= "Filename";
+const char	GUILayout_xmlHandler::LayoutImportPrefixAttribute[]		= "Prefix";
 
 
 
@@ -85,7 +86,7 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		// attempt to create window
 		try
 		{
-			Window* wnd = WindowManager::getSingleton().createWindow(windowType, windowName);
+			Window* wnd = WindowManager::getSingleton().createWindow(windowType, d_namingPrefix + windowName);
 
 			// add this window to the current parent (if any)
 			if (!d_stack.empty())
@@ -144,7 +145,10 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 	// handle layout import element (attach a layout to the window at the top of the stack)
 	else if (element == LayoutImportElement)
 	{
-		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute));
+		String prefixName(d_namingPrefix);
+		prefixName += XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportPrefixAttribute);
+
+		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute), prefixName);
 
 		if ((subLayout != NULL) && (!d_stack.empty()))
 		{

@@ -150,6 +150,15 @@ void	TitlebarFont::set(void* receiver, const String& value)
 	static_cast<FrameWindow*>(receiver)->setTitlebarFont(value);
 }
 
+String CaptionColour::get(const void* receiver) const
+{
+	return PropertyHelper::colourToString(static_cast<const FrameWindow*>(receiver)->getCaptionColour());
+}
+
+void CaptionColour::set(void* receiver, const String& value)
+{
+	static_cast<FrameWindow*>(receiver)->setCaptionColour(PropertyHelper::stringToColour(value));
+}
 
 } // End of  FrameWindowProperties namespace section
 

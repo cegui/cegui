@@ -199,13 +199,17 @@ public:
 	\param filename
 		String object holding the filename of the XML file to be processed.
 
+	\param name_prefix
+		String object holding the prefix that is to be used when creating the windows in the layout file, this
+		function allows a layout to be loaded multiple times without having name clashes.
+
 	\return
 		Pointer to the root Window object defined in the layout.
 
 	\exception FileIOException			thrown if something goes wrong while processing the file \a filename.
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
-	Window*	loadWindowLayout(const String& filename);
+	Window*	loadWindowLayout(const String& filename, const String& name_prefix = (utf8*)"");
 
 
 private:

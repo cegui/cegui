@@ -28,6 +28,7 @@
 
 	<xsd:complexType name="LayoutImportType">
 		<xsd:attribute name="Filename" type="xsd:string" use="required"/>
+		<xsd:attribute name="Prefix" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
 
 </xsd:schema>
