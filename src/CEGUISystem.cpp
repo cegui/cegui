@@ -267,7 +267,7 @@ void System::setDefaultMouseCursor(const String& imageset, const String& image_n
 *************************************************************************/
 void System::injectMouseMove(float delta_x, float delta_y)
 {
-	MouseEventArgs ma;
+	MouseEventArgs ma(NULL);
 	MouseCursor& mouse = MouseCursor::getSingleton();
 
 	ma.moveDelta.d_x = (float)delta_x;
@@ -286,15 +286,22 @@ void System::injectMouseMove(float delta_x, float delta_y)
 		{
 			if (d_wndWithMouse != NULL)
 			{
+				ma.window = d_wndWithMouse;
 				d_wndWithMouse->onMouseLeaves(ma);
 			}
 
 			d_wndWithMouse = dest_window;
+			ma.window = dest_window;
 			dest_window->onMouseEnters(ma);
 		}
 
+		// ensure event starts as 'not handled'
+		ma.handled = false;
+
+		// loop backwards until event is handled or we run out of windows.
 		while ((!ma.handled) && (dest_window != NULL))
 		{
+			ma.window = dest_window;
 			dest_window->onMouseMove(ma);
 			dest_window = dest_window->getParent();
 		}
@@ -312,7 +319,7 @@ void System::injectMouseButtonDown(MouseButton button)
 	// update system keys
 	d_sysKeys |= mouseButtonToSyskey(button);
 
-	MouseEventArgs ma;
+	MouseEventArgs ma(NULL);
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
@@ -322,8 +329,10 @@ void System::injectMouseButtonDown(MouseButton button)
 
 	Window*	event_wnd = dest_window;
 
+	// loop backwards until event is handled or we run out of windows.
 	while ((!ma.handled) && (event_wnd != NULL))
 	{
+		ma.window = event_wnd;
 		event_wnd->onMouseButtonDown(ma);
 		event_wnd = event_wnd->getParent();
 	}
@@ -359,8 +368,10 @@ void System::injectMouseButtonDown(MouseButton button)
 	case 2:
 		event_wnd = dest_window;
 
+		// loop backwards until event is handled or we run out of windows.
 		while ((!ma.handled) && (event_wnd != NULL))
 		{
+			ma.window = event_wnd;
 			event_wnd->onMouseDoubleClicked(ma);
 			event_wnd = event_wnd->getParent();
 		}
@@ -369,8 +380,10 @@ void System::injectMouseButtonDown(MouseButton button)
 	case 3:
 		event_wnd = dest_window;
 
+		// loop backwards until event is handled or we run out of windows.
 		while ((!ma.handled) && (event_wnd != NULL))
 		{
+			ma.window = event_wnd;
 			event_wnd->onMouseTripleClicked(ma);
 			event_wnd = event_wnd->getParent();
 		}
@@ -379,7 +392,6 @@ void System::injectMouseButtonDown(MouseButton button)
 
 	// reset timer for this button.
 	d_click_trackers[button].d_timer.restart();
-
 }
 
 
@@ -391,7 +403,7 @@ void System::injectMouseButtonUp(MouseButton button)
 	// update system keys
 	d_sysKeys &= ~mouseButtonToSyskey(button);
 
-	MouseEventArgs ma;
+	MouseEventArgs ma(NULL);
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
@@ -399,8 +411,10 @@ void System::injectMouseButtonUp(MouseButton button)
 
 	Window* dest_window = getTargetWindow(ma.position);
 
+	// loop backwards until event is handled or we run out of windows.
 	while ((!ma.handled) && (dest_window != NULL))
 	{
+		ma.window = dest_window;
 		dest_window->onMouseButtonUp(ma);
 		dest_window = dest_window->getParent();
 	}
@@ -411,8 +425,10 @@ void System::injectMouseButtonUp(MouseButton button)
 		ma.handled = false;
 		dest_window = getTargetWindow(ma.position);
 
+		// loop backwards until event is handled or we run out of windows.
 		while ((!ma.handled) && (dest_window != NULL))
 		{
+			ma.window = dest_window;
 			dest_window->onMouseClicked(ma);
 			dest_window = dest_window->getParent();
 		}
@@ -432,14 +448,16 @@ void System::injectKeyDown(uint key_code)
 
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args;
+		KeyEventArgs args(NULL);
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
 		Window* dest = d_activeSheet->getActiveChild();
 
+		// loop backwards until event is handled or we run out of windows.
 		while ((dest != NULL) && (!args.handled))
 		{
+			args.window = dest;
 			dest->onKeyDown(args);
 			dest = dest->getParent();
 		}
@@ -459,14 +477,16 @@ void System::injectKeyUp(uint key_code)
 
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args;
+		KeyEventArgs args(NULL);
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
 		Window* dest = d_activeSheet->getActiveChild();
 
+		// loop backwards until event is handled or we run out of windows.
 		while ((dest != NULL) && (!args.handled))
 		{
+			args.window = dest;
 			dest->onKeyUp(args);
 			dest = dest->getParent();
 		}
@@ -483,14 +503,16 @@ void System::injectChar(utf32 code_point)
 {
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args;
+		KeyEventArgs args(NULL);
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
 
 		Window* dest = d_activeSheet->getActiveChild();
 
+		// loop backwards until event is handled or we run out of windows.
 		while ((dest != NULL) && (!args.handled))
 		{
+			args.window = dest;
 			dest->onCharacter(args);
 			dest = dest->getParent();
 		}

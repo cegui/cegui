@@ -241,9 +241,11 @@ public:
 	EventArgs based class that is used for objects passed to input event handlers
 	concerning mouse input.
 */
-class CEGUIBASE_API MouseEventArgs : public EventArgs
+class CEGUIBASE_API MouseEventArgs : public WindowEventArgs
 {
 public:
+	MouseEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
 	Point		position;		//!< holds current mouse position.
 	Vector2		moveDelta;		//!< holds variation of mouse position from last mouse input
 	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
@@ -256,9 +258,11 @@ public:
 	EventArgs based class that is used for objects passed to input event handlers
 	concerning keyboard input.
 */
-class CEGUIBASE_API KeyEventArgs : public EventArgs
+class CEGUIBASE_API KeyEventArgs : public WindowEventArgs
 {
 public:
+	KeyEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
 	utf32		codepoint;		//!< utf32 codepoint for the key (only used for Character inputs).
 	Key::Scan	scancode;		//!< Scan code of key that caused event (only used for key up & down inputs.
 	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
