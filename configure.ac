@@ -35,6 +35,7 @@ AC_CHECK_FUNCS([memmove memset])
 
 # check for renderers
 CEGUI_ENABLE_OGRE_RENDERER
+CEGUI_ENABLE_OPENGL_RENDERER
 
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library ver sion

@@ -1,4 +1,7 @@
 if BUILD_OGRE_RENDERER
 OGRE=OgreGUIRenderer
 endif
-SUBDIRS = . $(OGRE)
+if BUILD_OPENGL_RENDERER
+OPENGL=OpenGLGUIRenderer
+endif
+SUBDIRS = . $(OGRE) $(OPENGL)
