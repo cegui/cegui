@@ -71,28 +71,170 @@ namespace CEGUI
         /*************************************************************************
         	Public Interface to DragContainer
         *************************************************************************/
+        /*!
+        \brief
+            Return whether dragging is currently enabled for this DragContainer.
+
+        \return
+            - true if dragging is enabled and the DragContainer may be dragged.
+            - false if dragging is disabled and the DragContainer may not be dragged.
+        */
         bool isDraggingEnabled(void) const;
 
+        /*!
+        \brief
+            Set whether dragging is currently enabled for this DragContainer.
+
+        \param setting
+            - true to enable dragging so that the DragContainer may be dragged.
+            - false to disabled dragging so that the DragContainer may not be dragged.
+
+        \return
+            Nothing.
+        */
         void setDraggingEnabled(bool setting);
 
+        /*!
+        \brief
+            Return whether the DragContainer is currently being dragged.
+
+        \return
+            - true if the DragContainer is being dragged.
+            - false if te DragContainer is not being dragged.
+        */
         bool isBeingDragged(void) const;
 
+        /*!
+        \brief
+            Return the current drag threshold in pixels.
+
+            The drag threshold is the number of pixels that the mouse must be
+            moved with the left button held down in order to commence a drag
+            operation.
+        
+        \return
+            float value indicating the current drag threshold value.
+        */
         float getPixelDragThreshold(void) const;
 
+        /*!
+        \brief
+            Set the current drag threshold in pixels.
+
+            The drag threshold is the number of pixels that the mouse must be
+            moved with the left button held down in order to commence a drag
+            operation.
+
+        \param pixels
+            float value indicating the new drag threshold value.
+
+        \return
+            Nothing.
+        */
         void setPixelDragThreshold(float pixels);
 
+        /*!
+        \brief
+            Return the alpha value that will be set on the DragContainer while a drag operation is
+            in progress.
+
+        \return
+            Current alpha value to use whilst dragging.
+        */
         float getDragAlpha(void) const;
 
+        /*!
+        \brief
+            Set the alpha value to be set on the DragContainer when a drag operation is
+            in progress.
+
+            This method can be used while a drag is in progress to update the alpha.  Note that
+            the normal setAlpha method does not affect alpha while a drag is in progress, but
+            once the drag operation has ended, any value set via setAlpha will be restored.
+
+        \param alpha
+            Alpha value to use whilst dragging.
+
+        \return
+            Nothing.
+        */
         void setDragAlpha(float alpha);
 
+        /*!
+        \brief
+            Return the Image currently set to be used for the mouse cursor when a
+            drag operation is in progress.
+
+        \return
+            Image object currently set to be used as the mouse cursor when dragging.
+        */
         const Image* getDragCursorImage(void) const;
 
+        /*!
+        \brief
+            Set the Image to be used for the mouse cursor when a drag operation is
+            in progress.
+
+            This method may be used during a drag operation to update the current mouse
+            cursor image.
+
+        \param image
+            Image object to be used as the mouse cursor while dragging.
+
+        \return
+            Nothing.
+        */
         void setDragCursorImage(const Image* image);
 
+        /*!
+        \brief
+            Set the Image to be used for the mouse cursor when a drag operation is
+            in progress.
+
+            This method may be used during a drag operation to update the current mouse
+            cursor image.
+
+        \param image
+            One of the MouseCursorImage enumerated values.
+
+        \return
+            Nothing.
+        */
         void setDragCursorImage(MouseCursorImage image);
 
+        /*!
+        \brief
+            Set the Image to be used for the mouse cursor when a drag operation is
+            in progress.
+
+            This method may be used during a drag operation to update the current mouse
+            cursor image.
+
+        \param imageset
+            String holding the name of the Imageset that contains the Image to be used.
+
+        \param image
+            Image defined for the Imageset \a imageset to be used as the mouse cursor
+            when dragging.
+
+        \return
+            Nothing.
+
+        \exception UnknownObjectException   thrown if either \a imageset or \a image are unknown.
+        */
         void setDragCursorImage(const String& imageset, const String& image);
 
+        /*!
+        \brief
+            Return the Window object that is the current drop target for the DragContainer.
+
+            The drop target for a DragContainer is basically the Window that the DragContainer
+            is within while being dragged.  The drop target may be 0 to indicate no target.
+
+        \return
+            Pointer to a Window object that contains the DragContainer whilst being dragged, or
+            0 to indicate no current target.
+        */
         Window* getCurrentDropTarget(void) const;
 
     protected:
