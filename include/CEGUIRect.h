@@ -35,7 +35,7 @@ namespace CEGUI
 {
 /*!
 \brief
-	Class encapsulation operations on a Rectangle
+	Class encapsulating operations on a Rectangle
 */
 class CEGUIBASE_API Rect
 {
@@ -54,7 +54,7 @@ public:
 	\brief
 		Destructor for Rect objects.
 	*/
-	virtual ~Rect(void) {}
+	~Rect(void) {}
 
 
 	/*!
