@@ -212,7 +212,7 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	colours.setColours(colour(0, 0, 0, alpha));
 
 	// centre text vertically
-	destrect.d_top += PixelAligned((destrect.getHeight() - fnt->getBaseline()) * 0.5f);
+	destrect.d_top += PixelAligned((destrect.getHeight() - fnt->getFontHeight()) * 0.5f);
 	fnt->drawText(getText(), destrect, pos.d_z, inner_clip, LeftAligned, colours);
 }
 

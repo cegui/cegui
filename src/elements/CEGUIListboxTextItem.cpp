@@ -92,7 +92,7 @@ Size ListboxTextItem::getPixelSize(void) const
 
 	if (fnt != NULL)
 	{
-		tmp.d_height	= fnt->getLineSpacing();
+		tmp.d_height	= fnt->getFontHeight();
 		tmp.d_width		= fnt->getTextExtent(d_itemText);
 	}
 

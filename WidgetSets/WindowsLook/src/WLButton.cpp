@@ -297,7 +297,7 @@ void WLButton::drawNormal(float z)
 	//
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getBaseline()) / 2);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) / 2);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -353,7 +353,7 @@ void WLButton::drawHover(float z)
 	//
 	colours.setColours(d_hoverColour);
 	colours.setAlpha(alpha_comp);
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getBaseline()) / 2);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) / 2);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -409,7 +409,7 @@ void WLButton::drawPushed(float z)
 	//
 	colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getBaseline()) / 2);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) / 2);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -465,7 +465,7 @@ void WLButton::drawDisabled(float z)
 	//
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);
-	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getBaseline()) / 2);
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getFontHeight()) / 2);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
