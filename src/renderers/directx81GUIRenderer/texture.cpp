@@ -125,7 +125,7 @@ void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint 
 
 		// lock the D3D texture
 		D3DLOCKED_RECT	rect;
-		hr = d_d3dtexture->LockRect(0, &rect, NULL, D3DLOCK_DISCARD);
+		hr = d_d3dtexture->LockRect(0, &rect, NULL, 0);
 
 		if (FAILED(hr))
 		{
