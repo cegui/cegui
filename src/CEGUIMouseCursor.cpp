@@ -158,4 +158,17 @@ void MouseCursor::setConstraintArea(const Rect* area)
 	constrainPosition();
 }
 
+
+/*************************************************************************
+	Return the current mouse cursor position in display resolution
+	independant values.	
+*************************************************************************/
+Point MouseCursor::getDisplayIndependantPosition(void) const
+{
+	Size dsz(System::getSingleton().getRenderer()->getSize());
+
+	return Point(d_position.d_x / dsz.d_width, d_position.d_y / dsz.d_height);
+}
+
+
 } // End of  CEGUI namespace section

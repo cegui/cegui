@@ -1073,12 +1073,14 @@ public:
 	*/
 	size_type	utf8_stream_len(size_type num = npos, size_type idx = 0)
 	{
+		using namespace std;
+
 		if (d_cplength < idx)
-			throw std::out_of_range("Index was out of range for CEGUI::String object");
+			throw out_of_range("Index was out of range for CEGUI::String object");
 
 		size_type	maxlen = d_cplength - idx;
 
-		return encoded_size(&ptr()[idx], std::min(num, maxlen));
+		return encoded_size(&ptr()[idx], min(num, maxlen));
 	}
 
 	//////////////////////////////////////////////////////////////////////////

@@ -107,6 +107,26 @@ public:
 
 	/*!
 	\brief
+		Return the name of this Image object.
+
+	\return
+		String object containing the name of this Image
+	*/
+	const String&	getName(void) const;
+
+
+	/*!
+	\brief
+		Return the name of the Imageset that contains this Image
+
+	\return
+		String object containing the name of the Imageset which this Image is a part of.
+	*/
+	const String&	getImagesetName(void) const;
+
+
+	/*!
+	\brief
 		Queue the image to be drawn. 
 		
 	\note
@@ -341,7 +361,7 @@ private:
 
 	\exception NullObjectException	Thrown if \a owner was NULL.
 	*/
-	Image(const Imageset* owner, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
+	Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
 
 
 	/*!
@@ -395,6 +415,7 @@ private:
 	float	d_scaledWidth;		//!< scaled image width.
 	float	d_scaledHeight;		//!< scaled image height.
 	Point	d_scaledOffset;		//!< scaled rendering offset.
+	String	d_name;				//!< name of this image.
 };
 
 } // End of  CEGUI namespace section

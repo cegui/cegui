@@ -36,10 +36,11 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-Image::Image(const Imageset* owner, const Rect& area, const Point& render_offset, float horzScaling, float vertScaling) : 
+Image::Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling, float vertScaling) :
 	d_owner(owner),
 	d_area(area),
-	d_offset(render_offset)
+	d_offset(render_offset),
+	d_name(name)
 {
 	if (d_owner == NULL)
 	{
@@ -60,6 +61,7 @@ Image::Image(const Image& image) :
 	d_owner(image.d_owner),
 	d_area(image.d_area),
 	d_offset(image.d_offset),
+	d_name(image.d_name),
 	d_scaledOffset(image.d_scaledOffset),
 	d_scaledWidth(image.d_scaledWidth),
 	d_scaledHeight(image.d_scaledHeight)
@@ -106,6 +108,24 @@ void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const Co
 
 	// draw
 	d_owner->draw(d_area, dest, z, clip_rect, colours);
+}
+
+
+/*************************************************************************
+	String object containing the name of this Image	
+*************************************************************************/
+const String& Image::getName(void) const
+{
+	return d_name;
+}
+
+
+/*************************************************************************
+	Return the name of the Imageset that contains this Image	
+*************************************************************************/
+const String& Image::getImagesetName(void) const
+{
+	return d_owner->getName();
 }
 
 } // End of  CEGUI namespace section

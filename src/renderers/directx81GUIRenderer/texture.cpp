@@ -83,6 +83,8 @@ void DirectX81Texture::loadFromFile(const String& filename)
 *************************************************************************/
 void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight)
 {
+	using namespace std;
+
 	// release old texture
 	if (d_d3dtexture != NULL)
 	{
@@ -91,7 +93,7 @@ void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint 
 	}
 
 	// calculate square size big enough for whole memory buffer
-	uint tex_size = std::max(buffWidth, buffHeight);
+	uint tex_size = max(buffWidth, buffHeight);
 
 	// create a texture
 	// TODO: Check resulting pixel format and react appropriately.

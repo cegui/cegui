@@ -180,12 +180,14 @@ void TLMiniHorzScrollbar::layoutComponentWidgets(void)
 *************************************************************************/
 void TLMiniHorzScrollbar::updateThumb(void)
 {
+	using namespace std;
+
 	// calculate actual padding values to use.
 	float slideTrackXPadding = d_decrease->getAbsoluteWidth();
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= std::max(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
+	float slideExtent	= max(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setHorzRange(absoluteToRelativeX(slideTrackXPadding), absoluteToRelativeX(slideTrackXPadding + slideExtent));

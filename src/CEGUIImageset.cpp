@@ -209,7 +209,7 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 	float vscale = d_autoScale ? d_vertScaling : 1.0f;
 
 	// add the Image definition
-	d_images[name] = Image(this, image_rect, render_offset, hscale, vscale);
+	d_images[name] = Image(this, name, image_rect, render_offset, hscale, vscale);
 }
 
 

@@ -195,10 +195,10 @@ public:
 
 	/*!
 	\brief
-		Return the current mouse cursor position
+		Return the current mouse cursor position as a pixel offset from the top-left corner of the display.
 
 	\return
-		Point object describing the mouse cursor position
+		Point object describing the mouse cursor position in screen pixels.
 	*/
 	Point	getPosition(void) const		{return Point(d_position.d_x, d_position.d_y);}
 
@@ -211,6 +211,19 @@ public:
 		Rect object describing the active area that the mouse cursor is constrained to.
 	*/
 	Rect	getConstraintArea(void) const		{return d_constraints;}
+
+
+	/*!
+	\brief
+		Return the current mouse cursor position as display resolution independant values.
+
+	\return
+		Point object describing the current mouse cursor position as resolution independant values that
+		range from 0.0f to 1.0f, where 0.0f represents the left-most and top-most positions, and 1.0f
+		represents the right-most and bottom-most positions.
+	*/
+	Point	getDisplayIndependantPosition(void) const;
+
 
 private:
 	/*************************************************************************

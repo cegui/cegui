@@ -133,10 +133,12 @@ void Scrollbar::setOverlapSize(float overlap_size)
 *************************************************************************/
 void Scrollbar::setScrollPosition(float position)
 {
+	using namespace std;
+
 	float old_pos = d_position;
 
 	// max position is (docSize - pageSize), but must be at least 0 (in case doc size is very small)
-	float max_pos = std::max((d_documentSize - d_pageSize), 0.0f);
+	float max_pos = max((d_documentSize - d_pageSize), 0.0f);
 
 	// limit position to valid range:  0 <= position <= max_pos
 	d_position = (position >= 0) ? ((position <= max_pos) ? position : max_pos) : 0.0f;
