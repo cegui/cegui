@@ -24,10 +24,133 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "elements/CEGUIButtonBase.h"
+#include "CEGUIMouseCursor.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Constructor
+*************************************************************************/
+ButtonBase::ButtonBase(const String& type, const String& name) :
+	Window(type, name),
+	d_pushed(false)
+{
+}
 
+
+/*************************************************************************
+	Destructor
+*************************************************************************/
+ButtonBase::~ButtonBase(void)
+{
+}
+
+
+/*************************************************************************
+	return true if user is hovering over this widget (or it's pushed
+	and user is not over it for highlight)	
+*************************************************************************/
+bool ButtonBase::isHovering(void) const
+{
+	// if input is captured, but not by 'this', then we never hover highlight
+	const Window* capture_wnd = getCaptureWindow();
+
+	if ((capture_wnd != NULL) && (capture_wnd != this)) {
+		return false;
+	}
+
+
+	Window* sheet = System::getSingleton().getGUISheet();
+
+	if (sheet != NULL)
+	{
+		// if widget is pushed and we are over widget, return false
+		if (this == sheet->getChildAtPosition(MouseCursor::getSingleton().getPosition())) {
+			return d_pushed ? false : true;
+		}
+		// else, we are not over widget, but widget is pushed, return true (to highlight widget with capture)
+		else {
+			return d_pushed ? true : false;
+		}
+
+	}
+	else
+	{
+		return false;
+	}
+
+}
+
+
+/*************************************************************************
+	Perform the rendering for this widget.	
+*************************************************************************/
+void ButtonBase::drawSelf(float z)
+{
+	if (isHovering()) {
+		drawHover(z);
+	}
+	else if (isPushed()) {
+		drawPushed(z);
+	}
+	else {
+		drawNormal(z);
+	}
+
+}
+
+
+/*************************************************************************
+	Handler for mouse button pressed events
+*************************************************************************/
+void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
+{
+	// default processing
+	Window::onMouseButtonDown(e);
+
+	if (e.button == LeftButton)
+	{
+		captureInput();
+		d_pushed = true;
+
+		// event was handled by us.
+		e.handled = true;
+	}
+
+}
+
+
+/*************************************************************************
+	Handler for mouse button release events
+*************************************************************************/
+void ButtonBase::onMouseButtonUp(MouseEventArgs& e)
+{
+	// default processing
+	Window::onMouseButtonUp(e);
+
+	if (e.button == LeftButton)
+	{
+		releaseInput();
+
+		// event was handled by us.
+		e.handled = true;
+	}
+
+}
+
+/*************************************************************************
+	Handler for when mouse capture is lost
+*************************************************************************/
+void ButtonBase::onCaptureLost(EventArgs& e)
+{
+	// Default processing
+	Window::onCaptureLost(e);
+
+	d_pushed = false;
+
+	// event was handled by us.
+	e.handled = true;
+}
 
 } // End of  CEGUI namespace section
