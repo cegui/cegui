@@ -23,7 +23,7 @@
 *************************************************************************/
 #include "elements/CEGUIDragContainer.h"
 #include "CEGUIImageset.h"
-#include <cmath>
+#include <math.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -177,8 +177,8 @@ namespace CEGUI
     bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)
     {
         // calculate amount mouse has moved.
-        float	deltaX = std::fabs(local_mouse.d_x - d_dragPoint.d_x);
-        float	deltaY = std::fabs(local_mouse.d_y - d_dragPoint.d_y);
+        float	deltaX = fabs(local_mouse.d_x - d_dragPoint.d_x);
+        float	deltaY = fabs(local_mouse.d_y - d_dragPoint.d_y);
 
         // see if mouse has moved far enough to start dragging operation
         return (deltaX > d_dragThreshold || deltaY > d_dragThreshold) ? true : false;
