@@ -515,32 +515,34 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		// ensure all inputs come to us for now
-		captureInput();
-
-		// get position of mouse as co-ordinates local to this window.
-		Point localPos(screenToWindow(e.position));
-
-		if (getMetricsMode() == Relative)
+		if (captureInput())
 		{
-			localPos = relativeToAbsolute(localPos);
-		}
+			// get position of mouse as co-ordinates local to this window.
+			Point localPos(screenToWindow(e.position));
 
-		// store drag point for possible sizing or moving operation.
-		d_dragPoint = localPos;
-
-		// if the mouse is in the sizing area
-		if (d_splitterHover)
-		{
-			if (isSizingEnabled())
+			if (getMetricsMode() == Relative)
 			{
-				// setup the 'dragging' state variables
-				d_dragSizing = true;
+				localPos = relativeToAbsolute(localPos);
 			}
 
-		}
-		else
-		{
-			d_segmentPushed = true;
+			// store drag point for possible sizing or moving operation.
+			d_dragPoint = localPos;
+
+			// if the mouse is in the sizing area
+			if (d_splitterHover)
+			{
+				if (isSizingEnabled())
+				{
+					// setup the 'dragging' state variables
+					d_dragSizing = true;
+				}
+
+			}
+			else
+			{
+				d_segmentPushed = true;
+			}
+
 		}
 
 		e.handled = true;

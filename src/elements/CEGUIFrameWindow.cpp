@@ -616,11 +616,13 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 			if (getSizingBorderAtPoint(localPos) != SizingNone)
 			{
 				// ensure all inputs come to us for now
-				captureInput();
+				if (captureInput())
+				{
+					// setup the 'dragging' state variables
+					d_beingSized = true;
+					d_dragPoint = localPos;
+				}
 
-				// setup the 'dragging' state variables
-				d_beingSized = true;
-				d_dragPoint = localPos;
 			}
 
 		}

@@ -416,13 +416,14 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		// grab inputs
-		captureInput();
-
-		// handle mouse down
-		clearSelection();
-		d_dragging = true;
-		d_dragAnchorIdx = getTextIndexFromPosition(e.position);
-		setCaratIndex(d_dragAnchorIdx);
+		if (captureInput())
+		{
+			// handle mouse down
+			clearSelection();
+			d_dragging = true;
+			d_dragAnchorIdx = getTextIndexFromPosition(e.position);
+			setCaratIndex(d_dragAnchorIdx);
+		}
 
 		e.handled = true;
 	}

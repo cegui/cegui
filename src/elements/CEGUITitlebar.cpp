@@ -133,33 +133,34 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 		if ((d_parent != NULL) && d_dragEnabled)
 		{
 			// we want all mouse inputs from now on
-			captureInput();
-
-			// initialise the dragging state
-			d_dragging = true;
-			d_dragPoint = screenToWindow(e.position);
-
-			if (getMetricsMode() == Relative)
+			if (captureInput())
 			{
-				d_dragPoint = relativeToAbsolute(d_dragPoint);
-			}
+				// initialise the dragging state
+				d_dragging = true;
+				d_dragPoint = screenToWindow(e.position);
 
-			// store old constraint area
-			d_oldCursorArea = MouseCursor::getSingleton().getConstraintArea();
+				if (getMetricsMode() == Relative)
+				{
+					d_dragPoint = relativeToAbsolute(d_dragPoint);
+				}
 
-			// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
-			Rect constrainArea;
-			
-			if ((d_parent == NULL) || (d_parent->getParent() == NULL))
-			{
-				constrainArea = System::getSingleton().getRenderer()->getRect().getIntersection(d_oldCursorArea);
-			}
-			else 
-			{
-				constrainArea = d_parent->getParent()->getInnerRect().getIntersection(d_oldCursorArea);
-			}
+				// store old constraint area
+				d_oldCursorArea = MouseCursor::getSingleton().getConstraintArea();
 
-			MouseCursor::getSingleton().setConstraintArea(&constrainArea);
+				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
+				Rect constrainArea;
+
+				if ((d_parent == NULL) || (d_parent->getParent() == NULL))
+				{
+					constrainArea = System::getSingleton().getRenderer()->getRect().getIntersection(d_oldCursorArea);
+				}
+				else 
+				{
+					constrainArea = d_parent->getParent()->getInnerRect().getIntersection(d_oldCursorArea);
+				}
+
+				MouseCursor::getSingleton().setConstraintArea(&constrainArea);
+			}
 
 		}
 

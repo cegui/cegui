@@ -228,10 +228,12 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		captureInput();
-		d_pushed = true;
-		updateInternalState(e.position);
-		requestRedraw();
+		if (captureInput())
+		{
+			d_pushed = true;
+			updateInternalState(e.position);
+			requestRedraw();
+		}
 
 		// event was handled by us.
 		e.handled = true;
