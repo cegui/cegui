@@ -715,7 +715,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 
 	}
 
-	return wasUpHandled;
+	return (ma.handled | wasUpHandled);
 }
 
 
