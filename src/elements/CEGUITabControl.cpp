@@ -117,7 +117,7 @@ Get the tab for the given index
 *************************************************************************/
 Window*	TabControl::getTabContentsAtIndex(uint index) const
 {
-	return d_tabContentPane->getChildAtIdx(index);
+    return d_tabButtonIndexMap.find(index)->second->getTargetWindow();
 }
 
 /*************************************************************************
@@ -134,15 +134,16 @@ Return whether the tab content window is currently selected.
 *************************************************************************/
 uint TabControl::getSelectedTabIndex() const
 {
-	uint index = 0;
+    uint index;
     TabButtonIndexMap::const_iterator i, iend;
     iend = d_tabButtonIndexMap.end();
-    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++index)
+    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
     {
         // get corresponding tab button and content window
         TabButton* tb = i->second;
         if (tb->isSelected())
         {
+            index = i->first;
 			break;
         }
 	}
