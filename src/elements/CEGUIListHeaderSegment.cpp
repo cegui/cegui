@@ -300,7 +300,7 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
 	d_abs_area.d_right += deltaX;
 	d_dragPoint.d_x += deltaX;
 
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+	d_rel_area.d_right = absoluteToRelativeX_impl(getParent(), d_abs_area.d_right);
 
 	WindowEventArgs args(this);
 	onSized(args);
