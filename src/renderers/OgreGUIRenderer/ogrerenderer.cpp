@@ -621,7 +621,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 	d_quadList = new QuadInfo*[max_quads];
 
 	// initialise required texel offset
-	d_texelOffset = Point((float)d_render_sys->getHorizontalTexelOffset(), (float)d_render_sys->getVerticalTexelOffset());
+	d_texelOffset = Point((float)d_render_sys->getHorizontalTexelOffset(), -(float)d_render_sys->getVerticalTexelOffset());
 
 	// create listener which will handler the rendering side of things for us.
 	d_ourlistener = new OgreRQListener(this, queue_id, post_queue);
