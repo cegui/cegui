@@ -51,6 +51,7 @@ const float	Renderer::GuiZLayerStep			= 0.0001f;		// provides space for 10 layer
 	Constructor
 *************************************************************************/
 Renderer::Renderer(void)
+    : d_resourceProvider(0)
 {
 	// setup standard events available
 	addEvent(EventDisplaySizeChanged);

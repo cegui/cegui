@@ -1,20 +1,18 @@
 Crazy Eddie's GUI System Mk-2
-http://crayzedsgui.sourceforge.net
+http://www.cegui.org.uk
 
-Copyright ©2004 Paul D Turner & Contributing Authors
+Copyright ©2004 - 2005 Paul D Turner & Contributing Authors
 
 
 The following is an incomplete list of the remaining jobs to be done on Crazy
 Eddie's GUI System Mk-2:
 
 - Renderer and OS independent samples (in progress).
-- Resource management system (in progress).
 - Tutorials and other additional documentation.
 - Make gui renderers fire EventDisplaySizeChanged event.
 - Update OgreRenderer to report true max texture size.
 - Add lost device recovery to Direct3D renderers.
 - Update OpenGL renderer and add to CVS.
-- TabControl classes for the WindowsLook scheme.
 - Add example scripting module(s).
 - Add clipboard (cut, copy, paste) support.
 - Add undo support to editbox widgets.
