@@ -83,6 +83,10 @@ OgreRenderer::~OgreRenderer(void)
 	// cleanup vertex data we allocated in constructor
 	delete d_render_op.vertexData;
 
+	// cleanup quad buffers allocated in constructor
+	delete[] d_quadBuff;
+	delete[] d_quadList;
+
 	destroyAllTextures();
 }
 
