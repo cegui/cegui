@@ -51,6 +51,7 @@ enum MouseButton
 	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
 };
 
+
 /*!
 \brief
 	The System class is the CEGUI class that provides access to all other elements in this system.
@@ -288,6 +289,49 @@ public:
 	void setMultiClickToleranceAreaSize(const Size&	sz)		{d_dblclick_size = sz;}
 
 
+	/*!
+	\brief
+		Return the currently set default mouse cursor image
+
+	\return
+		Pointer to the current default image used for the mouse cursor.  May return NULL if default cursor has not been set,
+		or has intentionally been set to NULL - which results in a blank default cursor.
+	*/
+	const Image*	getDefaultMouseCursor(void) const	{return d_defaultMouseCursor;}
+
+
+	/*!
+	\brief
+		Set the image to be used as the default mouse cursor.
+
+	\param image
+		Pointer to an image object that is to be used as the default mouse cursor.  To have no cursor rendered by default, you
+		can specify NULL here.
+
+	\return
+		Nothing.
+	*/
+	void	setDefaultMouseCursor(const Image* image);
+
+
+	/*!
+	\brief
+		Set the image to be used as the default mouse cursor.
+
+	\param imageset
+		String object that contains the name of the Imageset  that contains the image to be used.
+
+	\param image_name
+		String object that contains the name of the Image on \a imageset that is to be used.
+
+	\return
+		Nothing.
+
+	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	*/
+	void	setDefaultMouseCursor(const String& imageset, const String& image_name);
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -402,7 +446,11 @@ private:
 	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
 	Size		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
 
-	// Struct with data used for generation of clicks, double-clicks, and treble-clicks from simple button up & down events
+	/*!
+	\brief
+		Internal structure used in tracking up & down mouse button inputs in order to generate click, double-click,
+		and triple-click events.
+	*/
 	struct MouseClickTracker
 	{
 		MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
@@ -413,6 +461,9 @@ private:
 	};
 
 	MouseClickTracker	d_click_trackers[MouseButtonCount];		//!< Structs used to keep track of mouse button click generation
+
+	// mouse cursor related
+	const Image*	d_defaultMouseCursor;		//!< Image to be used as the default mouse cursor.
 };
 
 } // End of  CEGUI namespace section

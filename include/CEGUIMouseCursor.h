@@ -35,6 +35,18 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+/*!
+\brief
+	Enumeration of special values used for mouse cursor settings in Window objects.
+*/
+enum MouseCursorImage
+{		
+	BlankMouseCursor	= 0,		//!< No image should be displayed for the mouse cursor.
+	DefaultMouseCursor	= -1,		//!< The default mouse cursor image should be displayed.
+};
+
+
 /*!
 \brief
 	Class that allows access to the GUI system mouse cursor.

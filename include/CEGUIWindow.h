@@ -722,6 +722,16 @@ public:
 	Size	getMinimumSize(void) const;
 
 
+	/*!
+	\brief
+		Return a pointer to the mouse cursor image to use when the mouse is within this window.
+
+	\return
+		Pointer to the mouse cursor image that will be used when the mouse enters this window.  May return NULL indicating no cursor.
+	*/
+	const Image*	getMouseCursor(void) const;
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1219,6 +1229,37 @@ public:
 	void	setMaximumSize(const Size& sz);
 
 
+	/*!
+	\brief
+		Set the mouse cursor image to be used when the mouse enters this window.
+
+	\param image
+		Pointer to the Image object to use as the mouse cursor image when the mouse enters the area for this Window.
+
+	\return
+		Nothing.
+	*/
+	void	setMouseCursor(const Image* image)		{d_mouseCursor = image;}
+
+
+	/*!
+	\brief
+		Set the mouse cursor image to be used when the mouse enters this window.
+
+	\param imageset
+		String object that contains the name of the Imageset that contains the image to be used.
+
+	\param image_name
+		String object that contains the name of the Image on \a imageset that is to be used.
+
+	\return
+		Nothing.
+
+	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
+	*/
+	void	setMouseCursor(const String& imageset, const String& image_name);
+
+
 	/*************************************************************************
 		Co-ordinate and Size Conversion Functions
 	*************************************************************************/
@@ -1674,6 +1715,7 @@ protected:
 	float			d_alpha;			//!< Alpha transparency setting for the Window
 	Rect			d_abs_area;			//!< This Window objects area (pixels relative to parent)
 	Rect			d_rel_area;			//!< This Window objects area (decimal fractions relative to parent)
+	const Image*	d_mouseCursor;		//!< Holds pointer to the Window objects current mouse cursor image.
 
 	// maximum and minimum sizes
 	Size	d_minSize;					//!< current minimum size for the window (this is always stored in pixels).

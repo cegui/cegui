@@ -28,6 +28,9 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUISystem.h"
 #include "CEGUIFontManager.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIImageset.h"
+#include "CEGUIMouseCursor.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -95,6 +98,7 @@ Window::Window(const String& type, const String& name) :
 	d_font			= NULL;
 	d_ID			= 0;
 	d_alpha			= 1.0f;
+	d_mouseCursor	= (const Image*)DefaultMouseCursor;
 
 	// basic settings
 	d_enabled			= true;
@@ -1894,6 +1898,34 @@ void Window::setMaximumSize(const Size& sz)
 }
 
 
+/*************************************************************************
+	Return a pointer to the mouse cursor image to use when the mouse is
+	within this window.
+*************************************************************************/
+const Image* Window::getMouseCursor(void) const
+{
+	if (d_mouseCursor != (const Image*)DefaultMouseCursor)
+	{
+		return d_mouseCursor;
+	}
+	else
+	{
+		return System::getSingleton().getDefaultMouseCursor();
+	}
+
+}
+
+
+/*************************************************************************
+	Set the mouse cursor image to be used when the mouse enters this
+	window.	
+*************************************************************************/
+void Window::setMouseCursor(const String& imageset, const String& image_name)
+{
+	d_mouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -2127,6 +2159,9 @@ void Window::onChildRemoved(WindowEventArgs& e)
 
 void Window::onMouseEnters(MouseEventArgs& e)
 {
+	// set the mouse cursor
+	MouseCursor::getSingleton().setImage(getMouseCursor());
+
 	fireEvent(MouseEntersEvent, e);
 }
 

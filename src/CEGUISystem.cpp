@@ -32,6 +32,7 @@
 #include "CEGUISchemeManager.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindow.h"
+#include "CEGUIImageset.h"
 #include "xercesc/util/PlatformUtils.hpp"
 #include "xercesc/util/Janitor.hpp"
 #include "xercesc/sax2/DefaultHandler.hpp"
@@ -62,7 +63,8 @@ System::System(Renderer* renderer) :
 	d_gui_redraw(false),
 	d_click_timeout(DefaultSingleClickTimeout),
 	d_dblclick_timeout(DefaultMultiClickTimeout),
-	d_dblclick_size(DefaultMultiClickAreaSize)
+	d_dblclick_size(DefaultMultiClickAreaSize),
+	d_defaultMouseCursor(NULL)
 {
 	// first thing to do is create logger
 	new Logger((utf8*)"CEGUI.log");
@@ -218,6 +220,29 @@ void System::setDefaultFont(Font* font)
 	d_defaultFont = font;
 	
 	// TODO: Add a 'system default font' changed event and fire it here.
+}
+
+
+/*************************************************************************
+	Set the image to be used as the default mouse cursor.
+*************************************************************************/
+void System::setDefaultMouseCursor(const Image* image)
+{
+	if (image == (const Image*)DefaultMouseCursor)
+	{
+		image = NULL;
+	}
+
+	d_defaultMouseCursor = image;
+}
+
+
+/*************************************************************************
+	Set the image to be used as the default mouse cursor.
+*************************************************************************/
+void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
+{
+	d_defaultMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name);
 }
 
 
