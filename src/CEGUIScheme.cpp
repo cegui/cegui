@@ -36,10 +36,7 @@
 #include "CEGUIScheme_xmlHandler.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUISystem.h"
-
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
-#include "xercesc/framework/MemBufInputSource.hpp"
+#include "CEGUIXmlHandlerHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -64,86 +61,19 @@ Scheme::Scheme(const String& filename, const String& resourceGroup)
 		throw InvalidRequestException((utf8*)"Scheme::Scheme - Filename supplied for Scheme loading must be valid");
 	}
 
-	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
+    // create handler object
+    Scheme_xmlHandler handler(this);
 
-	// set basic settings we want from parser
-	parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-	parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
-	parser->setFeature(XMLUni::fgXercesSchema, true);
-	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
-
-//    InputSourceContainer schemeSchemaData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUISchemeSchemaName, schemeSchemaData);
-//
-//    parser->loadGrammar(*(schemeSchemaData.getDataPtr()),
-//            Grammar::SchemaGrammarType, true);
-
-    RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUISchemeSchemaName, rawSchemaData, resourceGroup);
-    MemBufInputSource  schemeSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), GUISchemeSchemaName, false);
-    parser->loadGrammar(schemeSchemaData, Grammar::SchemaGrammarType, true);
-
-    // enable grammar reuse
-    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
-
-	// setup schema for Scheme data
-	XMLCh* pval = XMLString::transcode(GUISchemeSchemaName);
-	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-	XMLString::release(&pval);
-
-	// setup handler object
-	Scheme_xmlHandler handler(this);
-	parser->setContentHandler(&handler);
-	parser->setErrorHandler(&handler);
-
-//    InputSourceContainer schemeData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, schemeData);
-
-    RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-    MemBufInputSource  schemeData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
-
-	// do parse (which uses handler to create actual data)
+    // do parse (which uses handler to create actual data)
 	try
 	{
-//        parser->parse(*(schemeData.getDataPtr()));
-        parser->parse(schemeData);
-	}
-	catch(const XMLException& exc)
-	{
-		if (exc.getCode() != XMLExcepts::NoError)
-		{
-			delete parser;
-
-			char* excmsg = XMLString::transcode(exc.getMessage());
-			String message((utf8*)"Scheme::Scheme - An error occurred while parsing Scheme file '" + filename + "'.  Additional information: ");
-			message += excmsg;
-			XMLString::release(&excmsg);
-
-			throw FileIOException(message);
-		}
-
-	}
-	catch(const SAXParseException& exc)
-	{
-		delete parser;
-
-		char* excmsg = XMLString::transcode(exc.getMessage());
-		String message((utf8*)"Scheme::Scheme - An error occurred while parsing Scheme file '" + filename + "'.  Additional information: ");
-		message += excmsg;
-		XMLString::release(&excmsg);
-
-		throw FileIOException(message);
+        XmlHandlerHelper::parseXMLFile(handler, GUISchemeSchemaName, filename, resourceGroup);
 	}
 	catch(...)
 	{
-		delete parser;
-
-		throw FileIOException((utf8*)"Scheme::Scheme - An unexpected error occurred while parsing Scheme file '" + filename + "'.");
+        Logger::getSingleton().logEvent("Scheme::Scheme - loading of Scheme from file '" + filename +"' failed.", Errors);
+        throw;
 	}
-
-	// cleanup
-	delete parser;
 
 	Logger::getSingleton().logEvent((utf8*)"Loaded GUI scheme '" + d_name + "' from data in file '" + filename + "'.", Informative);
 

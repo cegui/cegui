@@ -20,10 +20,16 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/TransService.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/sax2/SAX2XMLReader.hpp>
+#include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/framework/MemBufInputSource.hpp>
 
 #include "CEGUIString.h"
 #include "CEGUIXmlHandlerHelper.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIResourceProvider.h"
+#include "CEGUISystem.h"
+#include "CEGUILogger.h"
 
 using XERCES_CPP_NAMESPACE::XMLString;
 using XERCES_CPP_NAMESPACE::XMLTransService;
@@ -90,6 +96,111 @@ String XmlHandlerHelper::transcodeXmlCharToString(const XMLCh* const xmlch_str)
 		throw GenericException((utf8*)"XmlHandlerHelper::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder.");
 	}
 
+}
+
+void XmlHandlerHelper::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const String& schemaName, const String& xmlFilename, const String& resourceGroup)
+{
+    XERCES_CPP_NAMESPACE_USE;
+
+    // enable schema use and set validation options
+    parser->setFeature(XMLUni::fgXercesSchema, true);
+    parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
+    parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
+
+    // load in the raw schema data
+    RawDataContainer rawSchemaData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, resourceGroup);
+    // wrap schema data in a xerces MemBufInputSource object
+    MemBufInputSource  schemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), schemaName.c_str(), false);
+    parser->loadGrammar(schemaData, Grammar::SchemaGrammarType, true);
+    // enable grammar reuse
+    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+
+    // set schema for usage
+    XMLCh* pval = XMLString::transcode(schemaName.c_str());
+    parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
+    XMLString::release(&pval);
+}
+
+XERCES_CPP_NAMESPACE::SAX2XMLReader* XmlHandlerHelper::createParser(XERCES_CPP_NAMESPACE::DefaultHandler& handler)
+{
+    XERCES_CPP_NAMESPACE_USE;
+
+    SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
+
+    // set basic settings we want from parser
+    parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
+
+    // set handlers
+    parser->setContentHandler(&handler);
+    parser->setErrorHandler(&handler);
+
+    return parser;
+}
+
+void XmlHandlerHelper::parseXMLFile(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const String& xmlFilename, const String& resourceGroup)
+{
+    XERCES_CPP_NAMESPACE_USE;
+
+    // use resource provider to load file data
+    RawDataContainer rawXMLData;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(xmlFilename, rawXMLData, resourceGroup);
+    MemBufInputSource  fileData(rawXMLData.getDataPtr(), rawXMLData.getSize(), xmlFilename.c_str(), false);
+
+    // perform parse
+    parser->parse(fileData);
+}
+
+void XmlHandlerHelper::parseXMLFile(XERCES_CPP_NAMESPACE::DefaultHandler& handler, const String& schemaName, const String& xmlFilename, const String& resourceGroup)
+{
+    XERCES_CPP_NAMESPACE_USE;
+
+    // create parser
+    SAX2XMLReader* parser = XmlHandlerHelper::createParser(handler);
+    // set up schema
+    XmlHandlerHelper::initialiseSchema(parser, schemaName, xmlFilename, resourceGroup);
+
+    // do parse
+    try
+    {
+        XmlHandlerHelper::parseXMLFile(parser, xmlFilename, resourceGroup);
+    }
+    catch(const XMLException& exc)
+    {
+        if (exc.getCode() != XMLExcepts::NoError)
+        {
+            delete parser;
+
+            char* excmsg = XMLString::transcode(exc.getMessage());
+            String message((utf8*)"XmlHandlerHelper::parse - An error occurred while parsing XML file '" + xmlFilename + "'.  Additional information: ");
+            message += excmsg;
+            XMLString::release(&excmsg);
+
+            throw FileIOException(message);
+        }
+
+    }
+    catch(const SAXParseException& exc)
+    {
+        delete parser;
+
+        char* excmsg = XMLString::transcode(exc.getMessage());
+        String message((utf8*)"XmlHandlerHelper::parse - An error occurred while parsing XML file '" + xmlFilename + "'.  Additional information: ");
+        message += excmsg;
+        XMLString::release(&excmsg);
+
+        throw FileIOException(message);
+    }
+    catch(...)
+    {
+        delete parser;
+
+        Logger::getSingleton().logEvent("XmlHandlerHelper::parse - An unexpected error occurred while parsing XML file '" + xmlFilename + "'.", Errors);
+        throw;
+    }
+
+    // cleanup
+    delete parser;
 }
 
 }

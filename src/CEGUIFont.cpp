@@ -35,10 +35,8 @@
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIFont_implData.h"
 #include "CEGUIResourceProvider.h"
+#include "CEGUIXmlHandlerHelper.h"
 
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
-#include "xercesc/framework/MemBufInputSource.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -711,86 +709,22 @@ void Font::load(const String& filename, const String& resourceGroup)
 		throw InvalidRequestException((utf8*)"Font::load - Filename supplied for Font loading must be valid");
 	}
 
-	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-
-	// set basic settings we want from parser
-	parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-	parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
-	parser->setFeature(XMLUni::fgXercesSchema, true);
-	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
-
-//    InputSourceContainer fontSchemaData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(FontSchemaName, fontSchemaData);
-//    parser->loadGrammar(*(fontSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
-
-    RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(FontSchemaName, rawSchemaData, resourceGroup);
-    MemBufInputSource  fontSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), FontSchemaName, false);
-    parser->loadGrammar(fontSchemaData, Grammar::SchemaGrammarType, true);
-    // enable grammar reuse
-    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
-
-	// setup schema for Font data
-	XMLCh* pval = XMLString::transcode(FontSchemaName);
-	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-	XMLString::release(&pval);
-
-	// setup handler object
-	Font_xmlHandler handler(this);
-	parser->setContentHandler(&handler);
-	parser->setErrorHandler(&handler);
-
-//    InputSourceContainer fontData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, fontData);
-
-    RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-    MemBufInputSource  fontData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
+    // create handler object
+    Font_xmlHandler handler(this);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-//        parser->parse(*(fontData.getDataPtr()));
-        parser->parse(fontData);
-	}
-	catch(const XMLException& exc)
-	{
-		if (exc.getCode() != XMLExcepts::NoError)
-		{
-			unload();
-			delete parser;
-
-			char* excmsg = XMLString::transcode(exc.getMessage());
-			String message((utf8*)"Font::load - An error occurred while parsing Font file '" + filename + "'.  Additional information: ");
-			message += excmsg;
-			XMLString::release(&excmsg);
-
-			throw FileIOException(message);
-		}
-
-	}
-	catch(const SAXParseException& exc)
-	{
-		unload();
-		delete parser;
-
-		char* excmsg = XMLString::transcode(exc.getMessage());
-		String message((utf8*)"Font::load - An error occurred while parsing Font file '" + filename + "'.  Additional information: ");
-		message += excmsg;
-		XMLString::release(&excmsg);
-
-		throw FileIOException(message);
+        XmlHandlerHelper::parseXMLFile(handler, FontSchemaName, filename, resourceGroup);
 	}
 	catch(...)
 	{
 		unload();
-		delete parser;
 
-		throw FileIOException((utf8*)"Font::load - An unexpected error occurred while parsing Font file '" + filename + "'.");
+        Logger::getSingleton().logEvent("Font::load - loading of Font from file '" + filename +"' failed.", Errors);
+		throw;
 	}
 
-	// cleanup
-	delete parser;
 }
 
 
@@ -901,7 +835,7 @@ void Font::calculateStaticVertSpacing(void)
 		d_max_bearingY *= scale;
 		d_lineHeight *= scale;
 		d_lineSpacing = d_lineHeight;
-        d_maxGlyphHeight = d_lineHeight;
+        d_maxGlyphHeight = static_cast<uint>(d_lineHeight);
 	}
 
 }

@@ -38,15 +38,10 @@
 #include "elements/CEGUIDragContainer.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
-#include "xercesc/util/PlatformUtils.hpp"
-#include "xercesc/util/Janitor.hpp"
-#include "xercesc/sax2/DefaultHandler.hpp"
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
-#include "xercesc/framework/MemBufInputSource.hpp"
 #include "CEGUIDataContainer.h"
 #include "CEGUIResourceProvider.h"
 #include "CEGUIGlobalEventSet.h"
+#include "CEGUIXmlHandlerHelper.h"
 #include <time.h>
 
 
@@ -211,115 +206,36 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	// now XML is available, read the configuration file (if any)
 	if (!configFile.empty())
 	{
-		SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-
-		// set basic settings we want from parser
-		parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-		parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
-		parser->setFeature(XMLUni::fgXercesSchema, true);
-		parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
-
-
-//        InputSourceContainer configSchemaData;
-//        System::getSingleton().getResourceProvider()->loadInputSourceContainer(CEGUIConfigSchemaName, configSchemaData);
-//        parser->loadGrammar(*(configSchemaData.getDataPtr()), 
-//                Grammar::SchemaGrammarType, true);
-
-        RawDataContainer rawSchemaData;
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(CEGUIConfigSchemaName, rawSchemaData, "");
-        MemBufInputSource  configSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), CEGUIConfigSchemaName, false);
-        parser->loadGrammar(configSchemaData, Grammar::SchemaGrammarType, true);
-
-        // enable grammar reuse
-        parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
-
-		// setup schema for Scheme data
-		XMLCh* pval = XMLString::transcode(CEGUIConfigSchemaName);
-		parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-		XMLString::release(&pval);
-
-		// setup handler object
-		Config_xmlHandler handler;
-		parser->setContentHandler(&handler);
-		parser->setErrorHandler(&handler);
-
-//        InputSourceContainer configData;
-//        d_resourceProvider->loadInputSourceContainer(configFile, configData);
-
-        RawDataContainer rawXMLData;
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(configFile, rawXMLData, "");
-        MemBufInputSource  configData(rawXMLData.getDataPtr(), rawXMLData.getSize(), configFile.c_str(), false);
+        // create handler object
+        Config_xmlHandler handler;
 
 		// do parsing of xml file
 		try
 		{
-//            parser->parse(*(configData.getDataPtr()));
-            parser->parse(configData);
-
-			// get the strings read
-			configLogname		= handler.getLogFilename();
-			configSchemeName	= handler.getSchemeFilename();
-			configLayoutName	= handler.getLayoutFilename();
-			defaultFontName		= handler.getDefaultFontName();
-			configInitScript	= handler.getInitScriptFilename();
-			d_termScriptName	= handler.getTermScriptFilename();
-
-            // set default resource group if it was specified.
-            if (!handler.getDefaultResourceGroup().empty())
-            {
-                d_resourceProvider->setDefaultResourceGroup(handler.getDefaultResourceGroup());
-            }
-		}
-		catch(const XMLException& exc)
-		{
-			if (exc.getCode() != XMLExcepts::NoError)
-			{
-				delete parser;
-
-				char* excmsg = XMLString::transcode(exc.getMessage());
-				String message((utf8*)"System::System - An error occurred while parsing configuration file '" + configFile + "'.  Additional information: ");
-				message += excmsg;
-				XMLString::release(&excmsg);
-
-				// cleanup XML stuff
-				XERCES_CPP_NAMESPACE_USE
-				XMLPlatformUtils::Terminate();
-
-				// throw a std::exception (because it won't try and use logger)
-				throw message.c_str();
-			}
-
-		}
-		catch(const SAXParseException& exc)
-		{
-			delete parser;
-
-			char* excmsg = XMLString::transcode(exc.getMessage());
-			String message((utf8*)"System::System - An error occurred while parsing configuration file '" + configFile + "'.  Additional information: ");
-			message += excmsg;
-			XMLString::release(&excmsg);
-
-			// cleanup XML stuff
-			XERCES_CPP_NAMESPACE_USE
-			XMLPlatformUtils::Terminate();
-
-			// throw a std::exception (because it won't try and use logger)
-			throw message.c_str();
+            XmlHandlerHelper::parseXMLFile(handler, CEGUIConfigSchemaName, configFile, "");
 		}
 		catch(...)
 		{
-			delete parser;
-
 			// cleanup XML stuff
 			XERCES_CPP_NAMESPACE_USE
 			XMLPlatformUtils::Terminate();
 
-			// throw a std::exception (because it won't try and use logger)
-			throw String((utf8*)"System::System - An unexpected error occurred while parsing configuration file '" + configFile + "'.").c_str();
+			throw;
 		}
 
-		// cleanup parser
-		delete parser;
+        // get the strings read
+        configLogname		= handler.getLogFilename();
+        configSchemeName	= handler.getSchemeFilename();
+        configLayoutName	= handler.getLayoutFilename();
+        defaultFontName		= handler.getDefaultFontName();
+        configInitScript	= handler.getInitScriptFilename();
+        d_termScriptName	= handler.getTermScriptFilename();
+
+        // set default resource group if it was specified.
+        if (!handler.getDefaultResourceGroup().empty())
+        {
+            d_resourceProvider->setDefaultResourceGroup(handler.getDefaultResourceGroup());
+        }
 	}
 
 	// Start up the logger:

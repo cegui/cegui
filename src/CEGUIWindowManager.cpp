@@ -29,12 +29,7 @@
 #include "CEGUIWindow.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIGUILayout_xmlHandler.h"
-
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
-#include "xercesc/framework/MemBufInputSource.hpp"
-
-
+#include "CEGUIXmlHandlerHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -190,92 +185,22 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	// log the fact we are about to load a layout
 	Logger::getSingleton().logEvent((utf8*)"---- Beginning loading of GUI layout from '" + filename + "' ----", Informative);
 
-	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-
-	// set basic settings we want from parser
-	parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-	parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
-	parser->setFeature(XMLUni::fgXercesSchema, true);
-	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
-
-//    InputSourceContainer layoutSchemaData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUILayoutSchemaName, layoutSchemaData);
-//    parser->loadGrammar(*(layoutSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
-
-    RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUILayoutSchemaName, rawSchemaData, resourceGroup);
-    MemBufInputSource  layoutSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), GUILayoutSchemaName, false);
-    parser->loadGrammar(layoutSchemaData, Grammar::SchemaGrammarType, true);
-
-    // enable grammar reuse
-    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
-
-	// setup schema for gui-layout data
-	XMLCh* pval = XMLString::transcode(GUILayoutSchemaName);
-	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-	XMLString::release(&pval);
-
-	// setup handler object
-	GUILayout_xmlHandler handler(name_prefix, callback, userdata);
-	parser->setContentHandler(&handler);
-	parser->setErrorHandler(&handler);
-
-//    InputSourceContainer layoutData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, layoutData);
-
-    RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-    MemBufInputSource  layoutData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
+    // create handler object
+    GUILayout_xmlHandler handler(name_prefix, callback, userdata);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-//        parser->parse(*(layoutData.getDataPtr()));
-        parser->parse(layoutData);
-
-		// log the completion of loading
-		Logger::getSingleton().logEvent((utf8*)"---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);
-	}
-	catch(const XMLException& exc)
-	{
-		if (exc.getCode() != XMLExcepts::NoError)
-		{
-			delete parser;
-
-			char* excmsg = XMLString::transcode(exc.getMessage());
-			String message((utf8*)"WindowManager::loadWindowLayout - An error occurred while parsing gui-layout file '" + filename + "'.  Additional information: ");
-			message += (utf8*)excmsg;
-			XMLString::release(&excmsg);
-
-			throw FileIOException(message);
-		}
-
-	}
-	catch(const SAXParseException& exc)
-	{
-		delete parser;
-
-		char* excmsg = XMLString::transcode(exc.getMessage());
-		String message((utf8*)"WindowManager::loadWindowLayout - An error occurred while parsing gui-layout file '" + filename + "'.  Additional information: ");
-		message += (utf8*)excmsg;
-		XMLString::release(&excmsg);
-
-		throw FileIOException(message);
-	}
-	catch(const CEGUI::Exception&)
-	{
-		delete parser;
-		throw;
+        XmlHandlerHelper::parseXMLFile(handler, GUILayoutSchemaName, filename, resourceGroup);
 	}
 	catch(...)
 	{
-		delete parser;
-
-		throw FileIOException((utf8*)"WindowManager::loadWindowLayout - An unexpected error occurred while parsing gui-layout file '" + filename + "'.");
+        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from file '" + filename +"' failed.", Errors);
+        throw;
 	}
 
-	// cleanup
-	delete parser;
+    // log the completion of loading
+    Logger::getSingleton().logEvent((utf8*)"---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);
 
 	return handler.getLayoutRootWindow();
 }

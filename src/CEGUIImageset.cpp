@@ -31,10 +31,7 @@
 #include "CEGUIImageset_xmlHandler.h"
 #include "CEGUILogger.h"
 #include "CEGUIDataContainer.h"
-
-#include "xercesc/sax2/SAX2XMLReader.hpp"
-#include "xercesc/sax2/XMLReaderFactory.hpp"
-#include "xercesc/framework/MemBufInputSource.hpp"
+#include "CEGUIXmlHandlerHelper.h"
 
 #include <iostream>
 #include <cmath>
@@ -120,86 +117,22 @@ void Imageset::load(const String& filename, const String& resourceGroup)
 		throw InvalidRequestException((utf8*)"Imageset::load - Filename supplied for Imageset loading must be valid");
 	}
 
-	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-
-	// set basic settings we want from parser
-	parser->setFeature(XMLUni::fgSAX2CoreValidation, true);
-	parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);
-	parser->setFeature(XMLUni::fgXercesSchema, true);
-	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
-
-//    InputSourceContainer imagesetSchemaData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(ImagesetSchemaName, imagesetSchemaData);
-//    parser->loadGrammar(*(imagesetSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
-
-    RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(ImagesetSchemaName, rawSchemaData, resourceGroup);
-    MemBufInputSource  imagesetSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), ImagesetSchemaName, false);
-    parser->loadGrammar(imagesetSchemaData, Grammar::SchemaGrammarType, true);
-    // enable grammar reuse
-    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
-
-	// setup schema for Imageset data
-	XMLCh* pval = XMLString::transcode(ImagesetSchemaName);
-	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
-	XMLString::release(&pval);
-
-	// setup handler object
-	Imageset_xmlHandler handler(this);
-	parser->setContentHandler(&handler);
-	parser->setErrorHandler(&handler);
-
-//    InputSourceContainer imagesetData;
-//    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename,imagesetData);
-
-    RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
-    MemBufInputSource  imagesetData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
+    // create handler object
+    Imageset_xmlHandler handler(this);
 
 	// do parse (which uses handler to create actual data)
 	try
 	{
-//        parser->parse(*(imagesetData.getDataPtr()));
-        parser->parse(imagesetData);
-	}
-	catch(const XMLException& exc)
-	{
-		if (exc.getCode() != XMLExcepts::NoError)
-		{
-			unload();
-			delete parser;
-
-			char* excmsg = XMLString::transcode(exc.getMessage());
-			String message((utf8*)"Imageset::load - An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
-			message += (utf8*)excmsg;
-			XMLString::release(&excmsg);
-
-			throw FileIOException(message);
-		}
-
-	}
-	catch(const SAXParseException& exc)
-	{
-		unload();
-		delete parser;
-
-		char* excmsg = XMLString::transcode(exc.getMessage());
-		String message((utf8*)"Imageset::load - An error occurred while parsing Imageset file '" + filename + "'.  Additional information: ");
-		message += (utf8*)excmsg;
-		XMLString::release(&excmsg);
-
-		throw FileIOException(message);
+        XmlHandlerHelper::parseXMLFile(handler, ImagesetSchemaName, filename, resourceGroup);
 	}
 	catch(...)
 	{
 		unload();
-		delete parser;
 
-		throw FileIOException((utf8*)"Imageset::load - An unexpected error occurred while parsing Imageset file '" + filename + "'.");
+        Logger::getSingleton().logEvent("Imageset::load - loading of Imageset from file '" + filename +"' failed.", Errors);
+        throw;
 	}
 
-	// cleanup
-	delete parser;
 }
 
  

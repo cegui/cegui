@@ -19,6 +19,9 @@
 #ifndef _CEGUIXmlHandlerHelper_h_
 #define _CEGUIXmlHandlerHelper_h_
 
+#include "xercesc/sax2/SAX2XMLReader.hpp"
+#include "xercesc/sax2/XMLReaderFactory.hpp"
+#include "xercesc/sax2/DefaultHandler.hpp"
 
 namespace CEGUI 
 {
@@ -29,7 +32,88 @@ namespace CEGUI
 class XmlHandlerHelper
 {
 public:
-	/*!
+    /*!
+    \brief
+        Parses a file using the given handler object.
+
+    \param handler
+        Xerces-C++ DefaultHandler based object which will process the parsed xml data.
+
+    \param schemaName
+        String holding the name of the .xsd schema which should be used for validation of the
+        xml data.
+
+    \param xmlFilename
+        String holding the name of the xml file which is to be parsed.
+
+    \param resourceGroup
+        String holding the resource group identifer which will be passed to the ResourceProvider
+        when loading the xml and schema files.
+
+    \return
+        Nothing.
+    */
+    static void parseXMLFile(XERCES_CPP_NAMESPACE::DefaultHandler& handler, const String& schemaName, const String& xmlFilename, const String& resourceGroup);
+
+    /*!
+    \brief
+        Parses a file using the given, pre initialised, SAX2XMLReader object.
+
+    \param parser
+        Pointer to a correctly initialised Xerces-C++ SAX2XMLReader object which will
+        control the xml parse operation.
+
+    \param xmlFilename
+        String holding the name of the xml file which is to be parsed.
+
+    \param resourceGroup
+        String holding the resource group identifer which will be passed to the ResourceProvider
+        when loading the xml file.
+
+    \return
+        Nothing.
+    */
+    static void parseXMLFile(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const String& xmlFilename, const String& resourceGroup);
+
+    /*!
+    \brief
+        Creates and initialises a xerces SAX2XMLReader for use by the xml parsing methods
+        in CEGUI.
+
+    \param handler
+        Xerces-C++ DefaultHandler based object which will process the parsed xml data.
+
+    \return
+        Pointer to a SAX2XMLReader initialised to use the given handler object.
+    */
+    static XERCES_CPP_NAMESPACE::SAX2XMLReader* createParser(XERCES_CPP_NAMESPACE::DefaultHandler& handler);
+
+    /*!
+    brief
+        Loads and initialises the schema to be used for the next parse.
+
+    \param parser
+        Pointer to a Xerces-C++ SAX2XMLReader object which will have its schema initialised.
+
+    \param schemaName
+        String holding the name of the .xsd schema which is to be initialised for use with
+        the parser.
+
+    \param xmlFilename
+        String holding the name of the xml file which is to be parsed.  This is technically
+        optional and is used to extract a possible alternate path where the .xsd schema file
+        may be located.
+
+    \param resourceGroup
+        String holding the resource group identifer which will be passed to the ResourceProvider
+        when loading the schema file.
+
+    \return
+        Nothing.
+    */
+    static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* parser, const String& schemaName, const String& xmlFilename, const String& resourceGroup);
+    
+    /*!
 	\brief
 		Return a pointer to a character array that contains the value of the requested attribute from the given attributes collection.
 
