@@ -32,6 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIIteratorBase.h"
 #include <map>
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -50,6 +51,53 @@ namespace CEGUI
 class CEGUIBASE_API WindowFactoryManager : public Singleton<WindowFactoryManager>
 {
 public:
+	/*************************************************************************
+		Class used to track active alias targets
+	*************************************************************************/
+	class CEGUIBASE_API AliasTargetStack
+	{
+	public:
+		/*!
+		\brief
+			Constructor for WindowAliasTargetStack objects
+		*/
+		AliasTargetStack(void) {}
+
+
+		/*!
+		\brief
+			Destructor for WindowAliasTargetStack objects
+		*/
+		~AliasTargetStack(void) {}
+
+
+		/*!
+		\brief
+			Return a String holding the current target type for this stack
+
+		\return
+			reference to a String object holding the currently active target type name for this stack.
+		*/
+		const String&	getActiveTarget(void) const;
+
+		/*!
+		\brief
+			Return the number of stacked target types in the stack
+
+		\return
+			number of target types stacked for this alias.
+		*/
+		uint	getStackedTargetCount(void) const;
+
+
+	private:
+		friend class WindowFactoryManager;
+		typedef std::vector<String>	TargetTypeStack;		//!< Type used to implement stack of target type names.
+
+		TargetTypeStack	d_targetStack;		//!< Container holding the target types.
+	};
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -72,7 +120,7 @@ public:
 		Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowFactoryManager singleton destroyed");
 	}
 
-public:
+
 	/*************************************************************************
 		Public Interface
 	*************************************************************************/
@@ -184,26 +232,83 @@ public:
 	bool	isFactoryPresent(const String& name) const;
 
 
+	/*!
+	\brief
+		Adds an alias for a current window type.
+
+		This method allows you to create an alias for a specified window type.  This means that you can then use
+		either name as the type parameter when creating a window.
+
+	\note
+		You need to be careful using this system.  Creating an alias using a name that already exists will replace the previous
+		mapping for that alias.  Each alias name maintains a stack, which means that it is possible to remove an alias and have the
+		previous alias restored.  The windows created via an alias use the real type, so removing an alias after window creation is always
+		safe (i.e. it is not the same as removing a real factory, which would cause an exception when trying to destroy a window with a missing
+		factory).
+
+	\param aliasName
+		String object holding the alias name.  That is the name that \a targetType will also be known as from no on.
+
+	\param targetName
+		String object holding the type window type name that is to be aliased.  This must exist.
+
+	\return
+		Nothing.
+
+	\exception UnknownObjectException	thrown if \a targetType is not known within the system.
+	*/
+	void	addWindowTypeAlias(const String& aliasName, const String& targetType);
+
+
+	/*!
+	\brief
+		Remove the specified alias mapping.  If the alias mapping does not exist, nothing happens.
+
+	\note
+		You are required to supply both the alias and target names because there may exist more than one entry for a given
+		alias - therefore you are required to be explicit about which alias is to be removed.
+
+	\param aliasName
+		String object holding the alias name.
+
+	\param targetName
+		String object holding the type window type name that was aliased.
+
+	\return
+		Nothing.
+	*/
+	void	removeWindowTypeAlias(const String& aliasName, const String& targetType);
+
+
 private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	typedef	std::map<String, WindowFactory*>	WindowFactoryRegistry;		//!< Type used to implement registry of WindowFactory objects
+	typedef std::map<String, AliasTargetStack>	TypeAliasRegistry;		//!< Type used to implement registry of window type aliases.
 
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
-
+	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.
 
 public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
 	typedef	ConstBaseIterator<WindowFactoryRegistry>	WindowFactoryIterator;
+	typedef ConstBaseIterator<TypeAliasRegistry>		TypeAliasIterator;
 
 	/*!
 	\brief
 		Return a WindowFactoryManager::WindowFactoryIterator object to iterate over the available WindowFactory types.
 	*/
 	WindowFactoryIterator	getIterator(void) const;
+
+
+	/*!
+	\brief
+		Return a WindowFactoryManager::TypeAliasIterator object to iterate over the defined aliases for window types.
+	*/
+	TypeAliasIterator	getAliasIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

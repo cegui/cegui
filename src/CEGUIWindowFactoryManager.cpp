@@ -91,23 +91,52 @@ void WindowFactoryManager::removeFactory(WindowFactory* factory)
 *************************************************************************/
 WindowFactory* WindowFactoryManager::getFactory(const String& type) const
 {
+	// first try for a 'real' type
 	WindowFactoryRegistry::const_iterator pos = d_factoryRegistry.find(type);
 
-	if (pos == d_factoryRegistry.end())
+	// found an actual factory for this type
+	if (pos != d_factoryRegistry.end())
 	{
-		throw UnknownObjectException((utf8*)"WindowFactoryManager::getFactory - A WindowFactory object for '" + type + (utf8*)"' Window objects is not registered with the system.");
+		return pos->second;
+	}
+	// no real type exists with that type, see if we have an appropriate alias instead.
+	else
+	{
+		TypeAliasRegistry::const_iterator aliasPos = d_aliasRegistry.find(type);
+
+		// no alias either, throw an exception
+		if (aliasPos == d_aliasRegistry.end())
+		{
+			throw UnknownObjectException((utf8*)"WindowFactoryManager::getFactory - A WindowFactory object (or an alias) for '" + type + (utf8*)"' Window objects is not registered with the system.");
+		}
+		else
+		{
+			// recursively call getFactory, for the alias target type (allows aliasing of aliased names)
+			return getFactory(aliasPos->second.getActiveTarget());
+		}
+
 	}
 
-	return pos->second;
 }
 
 
 /*************************************************************************
-	Returns true if a WindowFactory for a specified type is present
+	Returns true if a WindowFactory (or an alias) for a specified type
+	is present
 *************************************************************************/
 bool WindowFactoryManager::isFactoryPresent(const String& name) const
 {
-	return (d_factoryRegistry.find(name) != d_factoryRegistry.end());
+	// first try for a 'real' type
+	if (d_factoryRegistry.find(name) != d_factoryRegistry.end())
+	{
+		return true;
+	}
+	// no real type exists with that type, see if we have an appropriate alias instead.
+	else
+	{
+		return (d_aliasRegistry.find(name) != d_aliasRegistry.end());
+	}
+
 }
 
 
@@ -131,5 +160,98 @@ WindowFactoryManager::WindowFactoryIterator	WindowFactoryManager::getIterator(vo
 {
 	return WindowFactoryIterator(d_factoryRegistry.begin(), d_factoryRegistry.end());
 }
+
+
+/*************************************************************************
+	Return a WindowFactoryManager::TypeAliasIterator object to iterate
+	over the defined aliases for window types.
+*************************************************************************/
+WindowFactoryManager::TypeAliasIterator WindowFactoryManager::getAliasIterator(void) const
+{
+	return TypeAliasIterator(d_aliasRegistry.begin(), d_aliasRegistry.end());
+}
+
+
+/*************************************************************************
+	Add a window type alias mapping
+*************************************************************************/
+void WindowFactoryManager::addWindowTypeAlias(const String& aliasName, const String& targetType)
+{
+	// throw if target type does not exist
+	if (!isFactoryPresent(targetType))
+	{
+		throw UnknownObjectException((utf8*)"WindowFactoryManager::addWindowTypeAlias - alias '" + aliasName + "' could not be created because the target type '" + targetType + "' is unknown within the system.");
+	}
+
+	TypeAliasRegistry::iterator pos = d_aliasRegistry.find(aliasName);
+
+	if (pos == d_aliasRegistry.end())
+	{
+		d_aliasRegistry[aliasName].d_targetStack.push_back(targetType);
+	}
+	// alias already exists, add our new entry to the list already there
+	else
+	{
+		pos->second.d_targetStack.push_back(targetType);
+	}
+
+	Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' added for window type '" + targetType +"'.", Informative);
+}
+
+
+/*************************************************************************
+	Remove a window type alias mapping
+*************************************************************************/
+void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const String& targetType)
+{
+	// find alias name
+	TypeAliasRegistry::iterator pos = d_aliasRegistry.find(aliasName);
+
+	// if alias name exists
+	if (pos != d_aliasRegistry.end())
+	{
+		// find the specified target for this alias
+		std::vector<String>::iterator aliasPos = std::find(pos->second.d_targetStack.begin(), pos->second.d_targetStack.end(), targetType);
+		
+		// if the target exists for this alias
+		if (aliasPos != pos->second.d_targetStack.end())
+		{
+			// erase the target mapping
+			pos->second.d_targetStack.erase(aliasPos);
+
+			Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' removed for window type '" + targetType +"'.", Informative);
+
+			// if the list of targets for this alias is now empty
+			if (pos->second.d_targetStack.empty())
+			{
+				// erase the alias name also
+				d_aliasRegistry.erase(aliasName);
+
+				Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' has no more targets and has been removed.", Informative);
+			}
+
+		}
+
+	}
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	Methods for AliasTargetStack class
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+const String& WindowFactoryManager::AliasTargetStack::getActiveTarget(void) const
+{
+	return d_targetStack.back();
+}
+
+
+uint WindowFactoryManager::AliasTargetStack::getStackedTargetCount(void) const
+{
+	return (uint)d_targetStack.size();
+}
+
 
 } // End of  CEGUI namespace section
