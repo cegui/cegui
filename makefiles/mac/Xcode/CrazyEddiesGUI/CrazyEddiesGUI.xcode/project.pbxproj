@@ -185,13 +185,13 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)/../../../../src/implementations/mac\" \"$(SOURCE_ROOT)/../../../../include\" /Library/Frameworks/Xerces.framework/Headers /Library/Frameworks/freetype.framework/Headers /Library/Frameworks/Ogre.framework/Headers /usr/local/include";
-				LIBRARY_SEARCH_PATHS = "/usr/local/lib /sw/lib";
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "";
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "-DDEBUG";
 				ZERO_LINK = YES;
@@ -202,7 +202,11 @@
 		4F0BB7ED011F40E904CA0E50 = {
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = NO;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)/../../../../src/implementations/mac\" \"$(SOURCE_ROOT)/../../../../include\" /Library/Frameworks/Xerces.framework/Headers /Library/Frameworks/freetype.framework/Headers /Library/Frameworks/Ogre.framework/Headers /usr/local/include";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib /sw/lib";
 				ZERO_LINK = NO;
 			};
 			isa = PBXBuildStyle;
@@ -3605,11 +3609,14 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)/../../../../src/implementations/mac\" \"$(SOURCE_ROOT)/../../../../include\" /Library/Frameworks/Xerces.framework/Headers /Library/Frameworks/freetype.framework/Headers /Library/Frameworks/Ogre.framework/Headers /usr/local/include";
 				INFOPLIST_FILE = "CEGUIOgreRenderer-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LIBRARY_SEARCH_PATHS = /sw/lib;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-framework Carbon";
 				OTHER_REZFLAGS = "";
@@ -5480,7 +5487,7 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -5489,7 +5496,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)/../../../../src/implementations/mac\" \"$(SOURCE_ROOT)/../../../../include\" /Library/Frameworks/Xerces.framework/Headers /Library/Frameworks/freetype.framework/Headers /usr/local/include";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				LIBRARY_SEARCH_PATHS = /sw/lib;

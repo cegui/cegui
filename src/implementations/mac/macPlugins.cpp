@@ -34,7 +34,7 @@ namespace CEGUI
      CFBundleRef mac_loadExeBundle(const char* name) 
      {
           Logger::getSingleton().logEvent((utf8*)"---- Beginning exe bundle loading ----");
-          Logger::getSingleton().logEvent((utf8*)"Bundle name: " + name);
+          Logger::getSingleton().logEvent((utf8*)name);
           
           Logger::getSingleton().logEvent((utf8*)"Get reference to base bundle", Insane);
           CFBundleRef baseBundle = CFBundleGetBundleWithIdentifier(CFSTR("net.sourceforge.crayzedsgui.CEGUIBase"));
@@ -113,7 +113,8 @@ namespace CEGUI
           Logger::getSingleton().logEvent((utf8*)"---- Getting bundle symbol ----", Insane);
           CFStringRef nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
           
-          Logger::getSingleton().logEvent((utf8*)"Find function pointer for name: " + name, Insane);
+          Logger::getSingleton().logEvent((utf8*)"Find function pointer for name: ", Insane);
+          Logger::getSingleton().logEvent((utf8*)name, Insane);
           void* sym = CFBundleGetFunctionPointerForName(bundle, nameRef);
           
           Logger::getSingleton().logEvent((utf8*)"Release bundle name", Insane);
