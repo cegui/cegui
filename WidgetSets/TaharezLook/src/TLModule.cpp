@@ -56,6 +56,7 @@
 #include "TLTabButton.h"
 #include "TLTabPane.h"
 #include "TLVUMeter.h"
+#include "TLSpinner.h"
 
 
 /*************************************************************************
@@ -92,6 +93,7 @@ static CEGUI::TLTabControlFactory	    s_TabControlFactory;
 static CEGUI::TLTabButtonFactory	    s_TabButtonFactory;
 static CEGUI::TLTabPaneFactory	        s_TabPaneFactory;
 static CEGUI::TLVUMeterFactory			s_VUMeterFactory;
+static CEGUI::TLSpinnerFactory          s_SpinnerFactory;
 
 
 /*************************************************************************
@@ -256,6 +258,11 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 		WindowFactoryManager::getSingleton().addFactory(&s_VUMeterFactory);
 		return;
 	}
+    else if (type_name == TLSpinner::WidgetTypeName)
+    {
+        WindowFactoryManager::getSingleton().addFactory(&s_SpinnerFactory);
+        return;
+    }
 
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 }

@@ -204,6 +204,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLSliderThumb.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLSpinner.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\src\TLStatic.cpp">
 			</File>
 			<File
@@ -303,6 +306,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLSliderThumb.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLSpinner.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\TaharezLook\include\TLStatic.h">

@@ -200,6 +200,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLSliderThumb.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLSpinner.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\src\TLStatic.cpp
 # End Source File
 # Begin Source File
@@ -329,6 +333,10 @@ SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSlider.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSliderThumb.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\TaharezLook\include\TLSpinner.h
 # End Source File
 # Begin Source File
 
