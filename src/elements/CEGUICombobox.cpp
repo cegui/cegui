@@ -916,6 +916,15 @@ bool Combobox::getSingleClickEnabled(void) const
 
 
 /*************************************************************************
+	Return whether drop-list is visible.
+*************************************************************************/
+bool Combobox::isDropDownListVisible(void) const
+{
+	return d_droplist->isVisible();
+}
+
+
+/*************************************************************************
 	Set the operation mode for the combo box.
 *************************************************************************/
 void Combobox::setSingleClickEnabled(bool setting)

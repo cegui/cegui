@@ -99,6 +99,16 @@ public:
 	bool	getSingleClickEnabled(void) const;
 
 
+	/*!
+	\brief
+		returns true if the drop down list is visible.
+
+	\return
+		true if the drop down list is visible, false otherwise.
+	*/
+	bool	isDropDownListVisible(void) const;
+
+
 	/*************************************************************************
 		Editbox Accessors
 	*************************************************************************/
