@@ -249,8 +249,8 @@ public:
 	\param aliasName
 		String object holding the alias name.  That is the name that \a targetType will also be known as from no on.
 
-	\param targetName
-		String object holding the type window type name that is to be aliased.  This must exist.
+	\param targetType
+		String object holding the type window type name that is to be aliased.  This type must already exist.
 
 	\return
 		Nothing.
@@ -271,7 +271,7 @@ public:
 	\param aliasName
 		String object holding the alias name.
 
-	\param targetName
+	\param targetType
 		String object holding the type window type name that was aliased.
 
 	\return

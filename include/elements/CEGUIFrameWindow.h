@@ -445,7 +445,7 @@ protected:
 		One of the SizingLocation enumerated values that describe which part of
 		the sizing border that \a pt corresponded to, if any.
 	*/
-	SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt) const;
+	SizingLocation	getSizingBorderAtPoint(const Point& pt) const;
 
  
 	/*!

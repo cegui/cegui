@@ -455,7 +455,7 @@ protected:
 		Point object describing a position on the screen in pixels.
 
 	\return
-		Code point index into the text that is rendered closest to screen position \pt.
+		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
 	virtual	ulong	getTextIndexFromPosition(const Point& pt) const		= 0;
 

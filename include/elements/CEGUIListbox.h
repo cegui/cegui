@@ -396,7 +396,7 @@ public:
 		multi-select mode setting.  It is possible to modify the setting on ListboxItems directly, but that approach
 		does not respect the settings of the list box.
 
-	\param item
+	\param item_index
 		The zero based index of the ListboxItem to be affected.  This must be a valid index (0 <= index < getItemCount())
 
 	\param state

@@ -1287,8 +1287,8 @@ protected:
 
 	/*!
 	\brief
-		Move the column at index \acol_idx so it is at index \a position.  Implementation version which does not move the
-		header segment (since that may have already happned).
+		Move the column at index \a col_idx so it is at index \a position.  Implementation version which does not move the
+		header segment (since that may have already happened).
 
 	\exception InvalidRequestException	thrown if \a col_idx is invalid.
 	*/

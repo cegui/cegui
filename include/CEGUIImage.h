@@ -360,6 +360,21 @@ public:
 
 	\param owner
 		Pointer to a Imageset object that owns this Image.  This must not be NULL.
+		
+	\param name
+		String object describing the name of the image being created.
+		
+	\param area
+		Rect object describing an area that will be associated with this image.
+		
+	\param render_offset
+		Point object that describes the offset to be applied when rendering this image.
+		
+	\param horzScaling
+		float value indicating the initial horizontal scaling to be applied to this image.
+
+	\param vertScaling
+		float value indicating the initial vertical scaling to be applied to this image.
 
 	\exception NullObjectException	Thrown if \a owner was NULL.
 	*/

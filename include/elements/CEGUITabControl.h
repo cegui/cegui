@@ -119,7 +119,7 @@ public:
     \brief
         Return the Window which is the tab content with the given ID.
 
-    \param name
+    \param ID
         ID of the Window which was attached as a tab content.
 
     \return

@@ -77,8 +77,6 @@ public:
 
 	\return
 		Nothing.
-
-	\exception
 	*/
 	virtual void	loadFromFile(const String& filename) = 0;
 
@@ -98,8 +96,6 @@ public:
 
 	\return
 		Nothing.
-
-	\exception
 	*/
 	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight) = 0;
 

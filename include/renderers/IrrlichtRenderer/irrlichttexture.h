@@ -80,8 +80,6 @@ namespace CEGUI
 
 		\return
 		Nothing.
-
-		\exception
 		*/
 		virtual void	loadFromFile(const String& filename);
 
@@ -101,8 +99,6 @@ namespace CEGUI
 
 		\return
 		Nothing.
-
-		\exception
 		*/
 		virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight);
 
