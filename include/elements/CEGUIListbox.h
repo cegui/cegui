@@ -396,6 +396,35 @@ public:
 	void	handleUpdatedItemData(void);
 
 
+	/*!
+	\brief
+		Ensure the item at the specified index is visible within the list box.
+
+	\param item_index
+		Zero based index of the item to be made visible in the list box.  If this value is out of range, the
+		list is always scrolled to the bottom.
+
+	\return
+		Nothing.
+	*/
+	void	ensureItemIsVisible(uint item_index);
+
+
+	/*!
+	\brief
+		Ensure the item at the specified index is visible within the list box.
+
+	\param item
+		Pointer to the ListboxItem to be made visible in the list box.
+
+	\return
+		Nothing.
+
+	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
+	*/
+	void	ensureItemIsVisible(const ListboxItem* item);
+
+
 protected:
 	/*************************************************************************
 		Construction and Destruction

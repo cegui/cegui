@@ -942,6 +942,64 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 }
 
 
+/*************************************************************************
+	Ensure the item at the specified index is visible within the list box.	
+*************************************************************************/
+void Listbox::ensureItemIsVisible(uint item_index)
+{
+	// handle simple "scroll to the bottom" case
+	if (item_index >= getItemCount())
+	{
+		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getDocumentSize() - d_vertScrollbar->getPageSize());
+	}
+	else
+	{
+		float bottom;
+		float listHeight = getListRenderArea().getHeight();
+		float top = 0;
+
+		// get height to top of item
+		uint i;
+		for (i = 0; i < item_index; ++i)
+		{
+			top += d_listItems[i]->getPixelSize().d_height;
+		}
+
+		// calculate height to bottom of item
+		bottom = top + d_listItems[i]->getPixelSize().d_height;
+
+		// account for current scrollbar value
+		float currPos = d_vertScrollbar->getScrollPosition();
+		top		-= currPos;
+		bottom	-= currPos;
+
+		// if top is above the view area, or if item is too big to fit
+		if ((top < 0.0f) || ((bottom - top) > listHeight))
+		{
+			// scroll top of item to top of box.
+			d_vertScrollbar->setScrollPosition(currPos + top);
+		}
+		// if bottom is below the view area
+		else if (bottom >= listHeight)
+		{
+			// position bottom of item at the bottom of the list
+			d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);		
+		}
+		
+		// Item is already fully visible - nothing more to do.
+	}
+
+}
+
+
+/*************************************************************************
+	Ensure the item at the specified index is visible within the list box.
+*************************************************************************/
+void Listbox::ensureItemIsVisible(const ListboxItem* item)
+{
+	ensureItemIsVisible(getItemIndex(item));
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
