@@ -208,7 +208,7 @@ void WLHorzScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= std::max(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding));
+	float slideExtent	= ceguimax(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding));
 	float thumbWidth	= (d_documentSize <= d_pageSize) ? slideExtent : slideExtent * d_pageSize / d_documentSize;
 	slideExtent -= thumbWidth;
 
@@ -235,7 +235,7 @@ float WLHorzScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= std::max(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
+	float slideExtent	= ceguimax(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
 
 	return	(d_thumb->getAbsoluteXPosition() - slideTrackXPadding) / (slideExtent / posExtent);
 }

@@ -100,7 +100,7 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 	freeD3DTexture();
 
 	// calculate square size big enough for whole memory buffer
-	uint tex_size = std::max(buffWidth, buffHeight);
+	uint tex_size = ceguimax(buffWidth, buffHeight);
 
 	// create a texture
 	// TODO: Check resulting pixel format and react appropriately.

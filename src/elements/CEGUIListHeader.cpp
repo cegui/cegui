@@ -1008,7 +1008,7 @@ bool ListHeader::segmentDragHandler(const EventArgs& e)
 				adjust = absoluteToRelativeX(adjust);
 			}
 			
-			setSegmentOffset(std::max(0.0f, d_segmentOffset - adjust));
+			setSegmentOffset(ceguimax(0.0f, d_segmentOffset - adjust));
 		}
 
 	}
@@ -1017,7 +1017,7 @@ bool ListHeader::segmentDragHandler(const EventArgs& e)
 	{
 		float adjust	= ScrollSpeed;
 		float pixOffset = d_segmentOffset;
-		float maxOffset = std::max(0.0f, getTotalSegmentsPixelExtent() - getAbsoluteWidth());
+		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - getAbsoluteWidth());
 
 		// convert values as required so calculations can be done in a consistent way
 		if (mmode == Relative)
@@ -1031,7 +1031,7 @@ bool ListHeader::segmentDragHandler(const EventArgs& e)
 		if (d_segmentOffset < maxOffset)
 		{
 			// scroll, but never beyond the limit
-			setSegmentOffset(std::min(maxOffset, d_segmentOffset + adjust));
+			setSegmentOffset(ceguimin(maxOffset, d_segmentOffset + adjust));
 		}
 
 	}

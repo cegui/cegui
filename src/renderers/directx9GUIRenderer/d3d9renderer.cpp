@@ -97,7 +97,7 @@ void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& di
 	}
 
 	// set max texture size the the smaller of max width and max height.
-	d_maxTextureSize = std::min(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
+	d_maxTextureSize = ceguimin(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
 
 	d_device->AddRef();
 }

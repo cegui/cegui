@@ -96,8 +96,8 @@ void TLMiniHorzScrollbarThumb::drawNormal(float z)
 
 	// calculate segment sizes
 	float minWidth		= PixelAligned(absrect.getWidth() * 0.5f);
-	float leftWidth		= std::min(d_normalLeftImage->getWidth(), minWidth);
-	float rightWidth	= std::min(d_normalRightImage->getWidth(), minWidth);
+	float leftWidth		= ceguimin(d_normalLeftImage->getWidth(), minWidth);
+	float rightWidth	= ceguimin(d_normalRightImage->getWidth(), minWidth);
 	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
 
 
@@ -137,8 +137,8 @@ void TLMiniHorzScrollbarThumb::drawHover(float z)
 
 	// calculate segment sizes
 	float minWidth		= PixelAligned(absrect.getWidth() * 0.5f);
-	float leftWidth		= std::min(d_highlightLeftImage->getWidth(), minWidth);
-	float rightWidth	= std::min(d_highlightRightImage->getWidth(), minWidth);
+	float leftWidth		= ceguimin(d_highlightLeftImage->getWidth(), minWidth);
+	float rightWidth	= ceguimin(d_highlightRightImage->getWidth(), minWidth);
 	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
 
 
@@ -178,8 +178,8 @@ void TLMiniHorzScrollbarThumb::drawDisabled(float z)
 
 	// calculate segment sizes
 	float minWidth		= PixelAligned(absrect.getWidth() * 0.5f);
-	float leftWidth		= std::min(d_normalLeftImage->getWidth(), minWidth);
-	float rightWidth	= std::min(d_normalRightImage->getWidth(), minWidth);
+	float leftWidth		= ceguimin(d_normalLeftImage->getWidth(), minWidth);
+	float rightWidth	= ceguimin(d_normalRightImage->getWidth(), minWidth);
 	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
 
 

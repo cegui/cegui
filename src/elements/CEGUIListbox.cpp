@@ -573,7 +573,7 @@ void Listbox::drawSelf(float z)
 		itemSize.d_height = d_listItems[i]->getPixelSize().d_height;
 
 		// allow item to have full width of box if this is wider than items
-		itemSize.d_width = std::max(absarea.getWidth(), widest);
+		itemSize.d_width = ceguimax(absarea.getWidth(), widest);
 
 		// calculate clipper for this item.
 		itemClipper.d_left	= itemPos.d_x;
@@ -659,12 +659,12 @@ void Listbox::configureScrollbars(void)
 
 	d_vertScrollbar->setDocumentSize(totalHeight);
 	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
+	d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
 	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
 
 	d_horzScrollbar->setDocumentSize(widestItem);
 	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
+	d_horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
 	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
 }
 

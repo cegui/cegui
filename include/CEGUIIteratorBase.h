@@ -43,6 +43,12 @@ template<class T>
 class ConstBaseIterator
 {
 public:
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && !defined(_STLPORT_VERSION)
+	typedef typename T::referent_type	mapped_type;
+#else
+	typedef typename T::mapped_type		mapped_type;
+#endif
+
 	/*!
 	\brief
 		ConstBaseIterator constructor
@@ -110,7 +116,7 @@ public:
 	\brief
 		Return the value for the item at the current iterator position.
 	*/
-	typename T::mapped_type	getCurrentValue(void) const
+	mapped_type	getCurrentValue(void) const
 	{
 		return d_currIter->second;
 	}
@@ -224,7 +230,7 @@ public:
 	\brief
 		Return the value for the current iterator position.
 	*/
-	typename T::mapped_type	operator*() const
+	mapped_type	operator*() const
 	{
 		return d_currIter->second;
 	}

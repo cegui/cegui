@@ -77,8 +77,8 @@ float colour::getHue(void) const
 	float pGreen = d_green;
 	float pBlue = d_blue;
 
-	float pMax = std::max(std::max(d_red, d_green), d_blue);
-	float pMin = std::min(std::min(d_red, d_green), d_blue);
+	float pMax = ceguimax(ceguimax(d_red, d_green), d_blue);
+	float pMin = ceguimin(ceguimin(d_red, d_green), d_blue);
 
 	float pHue;
 
@@ -116,8 +116,8 @@ float colour::getSaturation(void) const
 	float pGreen = d_green;
 	float pBlue = d_blue;
 
-	float pMax = std::max(std::max(d_red, d_green), d_blue);
-	float pMin = std::min(std::min(d_red, d_green), d_blue);
+	float pMax = ceguimax(ceguimax(d_red, d_green), d_blue);
+	float pMin = ceguimin(ceguimin(d_red, d_green), d_blue);
 
 	float pLum = (pMax + pMin) / 2;
 	float pSat;
@@ -144,8 +144,8 @@ float colour::getLumination(void) const
 	float pGreen = d_green;
 	float pBlue = d_blue;
 
-	float pMax = std::max(std::max(d_red, d_green), d_blue);
-	float pMin = std::min(std::min(d_red, d_green), d_blue);
+	float pMax = ceguimax(ceguimax(d_red, d_green), d_blue);
+	float pMin = ceguimin(ceguimin(d_red, d_green), d_blue);
 
 	float pLum = (pMax + pMin) / 2;
 	return pLum;

@@ -1336,12 +1336,12 @@ void MultiColumnList::configureScrollbars(void)
 
 	d_vertScrollbar->setDocumentSize(totalHeight);
 	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(std::max(1.0f, renderArea.getHeight() / 10.0f));
+	d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
 	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
 
 	d_horzScrollbar->setDocumentSize(fullWidth);
 	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(std::max(1.0f, renderArea.getWidth() / 10.0f));
+	d_horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
 	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
 }
 
@@ -2252,7 +2252,7 @@ void MultiColumnList::autoSizeColumnHeader(uint col_idx)
 	else
 	{
 		// get the width of the widest item in the column.
-		float width = std::max(getWidestColumnItemWidth(col_idx), ListHeader::MinimumSegmentPixelWidth);
+		float width = ceguimax(getWidestColumnItemWidth(col_idx), ListHeader::MinimumSegmentPixelWidth);
 
 		// perform metrics conversion if needed
 		if (getMetricsMode() == Relative)

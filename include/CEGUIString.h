@@ -88,7 +88,11 @@ public:
 	\brief
 		Constant forward iterator class for String objects
 	*/
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+	class const_iterator : public std::iterator<std::random_access_iterator_tag, utf32>
+#else
 	class const_iterator : public std::iterator<std::random_access_iterator_tag, utf32, std::ptrdiff_t, const utf32*, const utf32&>
+#endif
 	{
 
 	public:
@@ -324,7 +328,7 @@ public:
 	\brief
 		Constant reverse iterator class for String objects
 	*/
-#if defined(_MSC_VER) && (_MSC_VER <= 1300) && defined(_STLPORT_VERSION)
+#if defined(_MSC_VER) && ((_MSC_VER <= 1200) || ((_MSC_VER <= 1300) && defined(_STLPORT_VERSION)))
 	typedef	std::reverse_iterator<const_iterator, const_pointer, const_reference, difference_type>	const_reverse_iterator;
 #else
 	typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
@@ -334,7 +338,7 @@ public:
 	\brief
 		Reverse iterator class for String objects
 	*/
-#if defined(_MSC_VER) && (_MSC_VER <= 1300) && defined(_STLPORT_VERSION)
+#if defined(_MSC_VER) && ((_MSC_VER <= 1200) || ((_MSC_VER <= 1300) && defined(_STLPORT_VERSION)))
 	typedef std::reverse_iterator<iterator, pointer, reference, difference_type>			reverse_iterator;
 #else
 	typedef std::reverse_iterator<iterator>			reverse_iterator;
@@ -1245,7 +1249,7 @@ public:
 
 		size_type	maxlen = d_cplength - idx;
 
-		return encoded_size(&ptr()[idx], std::min(num, maxlen));
+		return encoded_size(&ptr()[idx], ceguimin(num, maxlen));
 	}
 
 	//////////////////////////////////////////////////////////////////////////

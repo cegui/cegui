@@ -208,7 +208,7 @@ void WLVertScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= std::max(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding));
+	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding));
 	float thumbHeight	= (d_documentSize <= d_pageSize) ? slideExtent : slideExtent * d_pageSize / d_documentSize;
 	slideExtent -= thumbHeight;
 
@@ -235,7 +235,7 @@ float WLVertScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= std::max(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
+	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
 
 	return	(d_thumb->getAbsoluteYPosition() - slideTrackYPadding) / (slideExtent / posExtent);
 }
