@@ -50,7 +50,7 @@ const ulong Font::DefaultColour					= 0xFFFFFFFF;
 const uint	Font::InterGlyphPadSpace			= 2;
 
 // XML related strings
-const char	Font::FontSchemaName[]							= "Font.xsd";
+const char	Font::FontSchemaName[]				= "Font.xsd";
 
 
 /*************************************************************************
@@ -272,7 +272,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 {
 	uint	texSize = 32;			// start with a texture this size
 
-	uint	height = ((d_face->bbox.yMax - d_face->bbox.yMin) / d_face->units_per_EM) * (d_face->size->metrics.y_ppem) + 1;
+	uint	height = ((d_face->bbox.yMax - d_face->bbox.yMin) / d_face->units_per_EM) * (d_face->size->metrics.y_ppem) + InterGlyphPadSpace;
 	uint	width;
 
 	uint	cur_x = 0;
@@ -332,7 +332,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 	uint	glyph_set_length = glyph_set.length();
 	uint	cur_x = 0;
 	uint	cur_y = 0;
-	uint	height = ((d_face->bbox.yMax - d_face->bbox.yMin) / d_face->units_per_EM) * (d_face->size->metrics.y_ppem) + 1;
+	uint	height = ((d_face->bbox.yMax - d_face->bbox.yMin) / d_face->units_per_EM) * (d_face->size->metrics.y_ppem) + InterGlyphPadSpace;
 	uint	width;
 
 	for (uint i = 0; i < glyph_set_length; ++i)
@@ -363,8 +363,8 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, ulong* buffer)
 		imageName		= glyph_set[i];
 		rect.d_left		= (float)cur_x;
 		rect.d_top		= (float)cur_y;
-		rect.d_right	= (float)(cur_x + width);
-		rect.d_bottom	= (float)(cur_y + height);
+		rect.d_right	= (float)(cur_x + width - InterGlyphPadSpace);
+		rect.d_bottom	= (float)(cur_y + height - InterGlyphPadSpace);
 		offset.d_x		= (float)(glyph->metrics.horiBearingX >> 6);
 		offset.d_y		= -(float)(glyph->metrics.horiBearingY >> 6);
 
