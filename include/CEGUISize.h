@@ -39,7 +39,7 @@ namespace CEGUI
 class CEGUIBASE_API Size
 {
 public:
-	Size(void);
+	Size(void) {}
 	Size(float width, float height) : d_width(width), d_height(height) {}
 	virtual ~Size(void) {}
 
