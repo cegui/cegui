@@ -865,7 +865,7 @@ void Font::defineFontGlyphs_impl(void)
 
 	delete[] mem_buffer;
 
-	d_lineHeight = d_maxGlyphHeight;
+	d_lineHeight = (float)d_maxGlyphHeight;
 
 	// calculate a spacing value based upon the size of the glyphs defined.
 	float ils = ((float)d_impldat->fontFace->height / (float)d_impldat->fontFace->units_per_EM) * (float)d_impldat->fontFace->size->metrics.y_ppem;
