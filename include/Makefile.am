@@ -31,6 +31,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIScheme.h \
                  CEGUISchemeManager.h \
                  CEGUIScheme_xmlHandler.h \
+		 CEGUIScriptModule.h \
                  CEGUISingleton.h \
                  CEGUISize.h \
                  CEGUIString.h \

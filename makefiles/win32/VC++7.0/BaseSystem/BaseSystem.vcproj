@@ -206,6 +206,9 @@
 				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIScriptModule.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUISize.cpp">
 			</File>
 			<File
@@ -476,6 +479,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIScriptModule.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUISingleton.h">

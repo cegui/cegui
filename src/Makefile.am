@@ -33,6 +33,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \
+		      CEGUIScriptModule.cpp \
                       CEGUISize.cpp \
                       CEGUIString.cpp \
                       CEGUISystem.cpp \

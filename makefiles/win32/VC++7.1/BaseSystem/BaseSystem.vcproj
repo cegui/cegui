@@ -27,6 +27,7 @@
 				RuntimeLibrary="3"
 				DisableLanguageExtensions="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				WarnAsError="TRUE"
@@ -222,6 +223,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUISchemeManager.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIScriptModule.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUISize.cpp">
@@ -495,6 +499,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIScriptModule.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUISingleton.h">
