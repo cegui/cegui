@@ -427,12 +427,13 @@ bool Editbox::isStringValid(const String& str) const
 
 	const char* utf8str = str.c_str();
 	int	match[3];
-	int result = pcre_exec(d_validator->d_regex, NULL, utf8str, strlen(utf8str), 0, 0, match, 3);
+	int len = strlen(utf8str);
+	int result = pcre_exec(d_validator->d_regex, NULL, utf8str, len, 0, 0, match, 3);
 
 	if (result >= 0)
 	{
 		// this ensures that any regex match is for the entire string
-		return ((unsigned int)(match[1] - match[0]) == str.length());
+		return (match[1] - match[0] == len);
 	}
 	// invalid string if there's no match or if string or regex is NULL.
 	else if ((result == PCRE_ERROR_NOMATCH) || (result == PCRE_ERROR_NULL))
