@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<GUIScheme Name="WindowsLook">
+	<Imageset Name="WindowsLook" Filename="../datafiles/imagesets/WindowsLook.imageset" />
+	<WindowSet Filename="CEGUIWindowsLook">
+		<WindowFactory Name="WindowsLook/Button" />
+		<WindowFactory Name="WindowsLook/Checkbox" />
+		<WindowFactory Name="WindowsLook/CloseButton" />
+		<WindowFactory Name="WindowsLook/Combobox" />
+		<WindowFactory Name="WindowsLook/ComboDropList" />
+		<WindowFactory Name="WindowsLook/Editbox" />
+		<WindowFactory Name="WindowsLook/FrameWindow" />
+		<WindowFactory Name="WindowsLook/HorizontalScrollbar" />
+		<WindowFactory Name="WindowsLook/HorizontalScrollbarThumb" />
+		<WindowFactory Name="WindowsLook/Listbox" />
+		<WindowFactory Name="WindowsLook/ListHeader" />
+		<WindowFactory Name="WindowsLook/ListHeaderSegment" />
+		<WindowFactory Name="WindowsLook/MultiColumnList" />
+		<WindowFactory Name="WindowsLook/MultiLineEditbox" />
+		<WindowFactory Name="WindowsLook/ProgressBar" />
+		<WindowFactory Name="WindowsLook/RadioButton" />
+		<WindowFactory Name="WindowsLook/Slider" />
+		<WindowFactory Name="WindowsLook/SliderThumb" />
+		<WindowFactory Name="WindowsLook/StaticImage" />
+		<WindowFactory Name="WindowsLook/StaticText" />
+		<WindowFactory Name="WindowsLook/Titlebar" />
+		<WindowFactory Name="WindowsLook/VerticalScrollbar" />
+		<WindowFactory Name="WindowsLook/VerticalScrollbarThumb" />
+	</WindowSet>
+</GUIScheme>
