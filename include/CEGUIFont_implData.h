@@ -29,7 +29,7 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
+#include "CEGUIDataContainer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,6 +40,7 @@ struct Font::FontImplData
 
 	FT_Library	library;
 	FT_Face		fontFace;
+    RawDataContainer fontData;
 };
 
 } // End of  CEGUI namespace section

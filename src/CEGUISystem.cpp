@@ -193,6 +193,14 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 		parser->setFeature(XMLUni::fgXercesSchema, true);
 		parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
+
+        InputSourceContainer configSchemaData;
+        System::getSingleton().getResourceProvider()->loadInputSourceContainer(CEGUIConfigSchemaName, configSchemaData);
+        parser->loadGrammar(*(configSchemaData.getDataPtr()), 
+                Grammar::SchemaGrammarType, true);
+        // enable grammar reuse
+        parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+
 		// setup schema for Scheme data
 		XMLCh* pval = XMLString::transcode(CEGUIConfigSchemaName);
 		parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);

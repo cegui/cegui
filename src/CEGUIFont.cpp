@@ -34,6 +34,7 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIFont_xmlHandler.h"
 #include "CEGUIFont_implData.h"
+#include "CEGUIResourceProvider.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -624,8 +625,11 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 	uint		vertdpi		= System::getSingleton().getRenderer()->getVertScreenDPI();
 	String		errMsg;
 
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(fontname, d_impldat->fontData);
+
 	// create face using input font
-	if (FT_New_Face(d_impldat->library, fontname.c_str(), 0, &d_impldat->fontFace) == 0)
+	if (FT_New_Memory_Face(d_impldat->library, d_impldat->fontData.getDataPtr(), 
+                (FT_Long)d_impldat->fontData.getSize(), 0, &d_impldat->fontFace) == 0)
 	{
 		// check that default Unicode character map is available
 		if (d_impldat->fontFace->charmap != NULL)	
@@ -697,6 +701,12 @@ void Font::load(const String& filename)
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
+    InputSourceContainer fontSchemaData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(FontSchemaName, fontSchemaData);
+    parser->loadGrammar(*(fontSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+    // enable grammar reuse
+    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+
 	// setup schema for Font data
 	XMLCh* pval = XMLString::transcode(FontSchemaName);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
@@ -707,10 +717,13 @@ void Font::load(const String& filename)
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
+    InputSourceContainer fontData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, fontData);
+
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(filename.c_str());
+		parser->parse(*(fontData.getDataPtr()));
 	}
 	catch(const XMLException& exc)
 	{
