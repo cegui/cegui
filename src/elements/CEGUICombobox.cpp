@@ -745,6 +745,9 @@ void Combobox::onFontChanged(WindowEventArgs& e)
     // Propagate to children
     d_editbox->setFont(getFont());
     d_droplist->setFont(getFont());
+
+    // Call base class handler
+    Window::onFontChanged(e);
 }
 
 /*************************************************************************
