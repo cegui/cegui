@@ -60,7 +60,7 @@ namespace CEGUI
                CFRelease(nameTempRef);
           }
           
-          // Assume relative to Resources/ directory of Main bundle.
+          // Assume relative to Resources/ directory of application's bundle.
           Logger::getSingleton().logEvent((utf8*)"Create bundle URL", Insane);
           bundleURL = CFBundleCopyResourceURL(mainBundle, nameRef, CFSTR("bundle"), NULL);
           if(bundleURL)
@@ -72,7 +72,7 @@ namespace CEGUI
                CFRelease(bundleURL);
           }
           
-          // Otherwise, try Resources/ directory of Ogre Framework bundle.
+          // Otherwise, try Resources/ directory of CEGUI Framework bundle.
           if(!bundle) 
           {
                Logger::getSingleton().logEvent((utf8*)"Couldn't get bundle from main bundle reference; try base");
