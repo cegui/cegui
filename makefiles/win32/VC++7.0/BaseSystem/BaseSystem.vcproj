@@ -359,6 +359,12 @@
 					RelativePath="..\..\..\..\src\elements\CEGUISliderProperties.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUISpinner.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUISpinnerProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIStatic.cpp">
 				</File>
 				<File
@@ -693,6 +699,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUISliderProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUISpinner.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUISpinnerProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIStatic.h">

@@ -84,5 +84,6 @@
 #include "elements/CEGUITabButton.h"
 #include "elements/CEGUITabPane.h"
 #include "elements/CEGUITabControl.h"
+#include "elements/CEGUISpinner.h"
 
 #endif	// end of guard _CEGUI_h_

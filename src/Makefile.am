@@ -84,6 +84,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIScrollbarProperties.cpp \
                       elements/CEGUISlider.cpp \
                       elements/CEGUISliderProperties.cpp \
+                      elements/CEGUISpinner.cpp \
+                      elements/CEGUISpinnerProperties.cpp \
                       elements/CEGUIStatic.cpp \
                       elements/CEGUIStaticImage.cpp \
                       elements/CEGUIStaticImageProperties.cpp \

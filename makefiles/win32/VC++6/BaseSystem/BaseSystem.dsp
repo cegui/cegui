@@ -267,6 +267,14 @@ SOURCE=..\..\..\..\src\elements\CEGUISliderProperties.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\elements\CEGUISpinner.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\elements\CEGUISpinnerProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\elements\CEGUIStatic.cpp
 # End Source File
 # Begin Source File
@@ -672,6 +680,14 @@ SOURCE=..\..\..\..\include\elements\CEGUISlider.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUISliderProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUISpinner.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\elements\CEGUISpinnerProperties.h
 # End Source File
 # Begin Source File
 

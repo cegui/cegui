@@ -34,6 +34,8 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIScrollbarProperties.h \
                      CEGUISlider.h \
                      CEGUISliderProperties.h \
+                     CEGUISpinner.h \
+                     CEGUISpinnerProperties.h \
                      CEGUIStatic.h \
                      CEGUIStaticImage.h \
                      CEGUIStaticImageProperties.h \
