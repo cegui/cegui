@@ -298,6 +298,8 @@ void Font::defineFontGlyphs(const String& glyph_set)
 {
 	d_glyphset = glyph_set;
 	defineFontGlyphs_impl();
+
+	Logger::getSingleton().logEvent("Font '" + d_name + "' now has the following glyphs defined: '" + d_glyphset + "'.", Informative);
 }
 
 

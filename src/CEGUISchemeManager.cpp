@@ -70,6 +70,8 @@ SchemeManager::~SchemeManager(void)
 *************************************************************************/
 Scheme* SchemeManager::loadScheme(const String& scheme_filename)
 {
+	Logger::getSingleton().logEvent((utf8*)"Attempting to load Scheme from file '" + scheme_filename + "'.");
+
 	Scheme* tmp = new Scheme(scheme_filename);
 	String name = tmp->getName();
 	d_schemes[name] = tmp;
@@ -86,8 +88,12 @@ void SchemeManager::unloadScheme(const String& scheme_name)
 
 	if (pos != d_schemes.end())
 	{
+		String tmpName(scheme_name);
+
 		delete pos->second;
 		d_schemes.erase(pos);
+
+		Logger::getSingleton().logEvent((utf8*)"Scheme '" + tmpName + "' has been unloaded.");
 	}
 
 }

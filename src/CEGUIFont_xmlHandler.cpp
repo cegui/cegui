@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "CEGUIExceptions.h"
 #include "CEGUIImageset.h"
-
+#include "CEGUILogger.h"
 #include "CEGUIXmlHandlerHelper.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
@@ -86,26 +86,33 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
 
 	// handle a Mapping element
-	if ((element == MappingElement) && !d_font->d_freetype)
+	if (element == MappingElement)
 	{
-		String	image_name(XmlHandlerHelper::getAttributeValueAsString(attrs, MappingImageAttribute));
-
-		utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, MappingCodepointAttribute);
-
-		int horzAdvance = XmlHandlerHelper::getAttributeValueAsInteger(attrs, MappingHorzAdvanceAttribute);
-
-		Font::glyphDat	mapDat;
-		mapDat.d_image = &d_font->d_glyph_images->getImage(image_name);
-
-		// calculate advance width if it was not specified
-		if (horzAdvance == AutoGenerateHorzAdvance)
+		if (!d_font->d_freetype)
 		{
-			horzAdvance = (int)(mapDat.d_image->getWidth() + mapDat.d_image->getOffsetX());
-		}
+			String	image_name(XmlHandlerHelper::getAttributeValueAsString(attrs, MappingImageAttribute));
 
-		mapDat.d_horz_advance_unscaled = horzAdvance;
-		mapDat.d_horz_advance = (uint)(((float)horzAdvance) * d_font->d_horzScaling);
-		d_font->d_cp_map[codepoint] = mapDat;
+			utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, MappingCodepointAttribute);
+
+			int horzAdvance = XmlHandlerHelper::getAttributeValueAsInteger(attrs, MappingHorzAdvanceAttribute);
+
+			Font::glyphDat	mapDat;
+			mapDat.d_image = &d_font->d_glyph_images->getImage(image_name);
+
+			// calculate advance width if it was not specified
+			if (horzAdvance == AutoGenerateHorzAdvance)
+			{
+				horzAdvance = (int)(mapDat.d_image->getWidth() + mapDat.d_image->getOffsetX());
+			}
+
+			mapDat.d_horz_advance_unscaled = horzAdvance;
+			mapDat.d_horz_advance = (uint)(((float)horzAdvance) * d_font->d_horzScaling);
+			d_font->d_cp_map[codepoint] = mapDat;
+		}
+		else
+		{
+			Logger::getSingleton().logEvent((utf8*)"Mapping element encountered.  This element is invalid for dynamic fonts.", Informative);
+		}
 	}
 	// handle root Font element
 	else if (element == FontElement)
@@ -115,6 +122,8 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 
 		// get filename for the font
 		String filename(XmlHandlerHelper::getAttributeValueAsString(attrs, FontFilenameAttribute));
+
+		Logger::getSingleton().logEvent("Started creation of Font '" + font_name + "' via XML file.", Informative);
 
 		//
 		// load auto-scaling configuration
@@ -186,45 +195,65 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	// Glyph element
 	else if (element == GlyphElement)
 	{
-		utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphCodepointAttribute);
-
-		if (d_glyphSet.find(codepoint) == String::npos)
+		if (d_font->d_freetype)
 		{
-			d_glyphSet.append(1, codepoint);
-		}
+			utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphCodepointAttribute);
 
+			if (d_glyphSet.find(codepoint) == String::npos)
+			{
+				d_glyphSet.append(1, codepoint);
+			}
+		}
+		else
+		{
+			Logger::getSingleton().logEvent((utf8*)"Glyph element encountered.  This element is invalid for static fonts.", Informative);
+		}
 	}
 	// GlyphRange element
 	else if (element == GlyphRangeElement)
 	{
-		utf32 start = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeStartCodepointAttribute);
-		utf32 end	= (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeEndCodepointAttribute);
-
-		for (utf32 codepoint = start; codepoint <= end; ++codepoint)
+		if (d_font->d_freetype)
 		{
-			if (d_glyphSet.find(codepoint) == String::npos)
-			{
-				d_glyphSet.append(1, codepoint);
-			}
-		}
+			utf32 start = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeStartCodepointAttribute);
+			utf32 end	= (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeEndCodepointAttribute);
 
+			for (utf32 codepoint = start; codepoint <= end; ++codepoint)
+			{
+				if (d_glyphSet.find(codepoint) == String::npos)
+				{
+					d_glyphSet.append(1, codepoint);
+				}
+			}
+
+		}
+		else
+		{
+			Logger::getSingleton().logEvent((utf8*)"GlyphRange element encountered.  This element is invalid for static fonts.", Informative);
+		}
 	}
 	// GlyphSet element
 	else if (element == GlyphSetElement)
 	{
-		String glyphs(XmlHandlerHelper::getAttributeValueAsString(attrs, GlyphSetGlyphsAttribute));
-
-		for (String::size_type i = 0; i < glyphs.length(); ++i)
+		if (d_font->d_freetype)
 		{
-			utf32 codepoint = glyphs[i];
+			String glyphs(XmlHandlerHelper::getAttributeValueAsString(attrs, GlyphSetGlyphsAttribute));
 
-			if (d_glyphSet.find(codepoint) == String::npos)
+			for (String::size_type i = 0; i < glyphs.length(); ++i)
 			{
-				d_glyphSet.append(1, codepoint);
+				utf32 codepoint = glyphs[i];
+
+				if (d_glyphSet.find(codepoint) == String::npos)
+				{
+					d_glyphSet.append(1, codepoint);
+				}
+
 			}
 
 		}
-
+		else
+		{
+			Logger::getSingleton().logEvent((utf8*)"GlyphSet element encountered.  This element is invalid for static fonts.", Informative);
+		}
 	}
 	// anything else is an error which *should* have already been caught by XML validation
 	else
@@ -247,6 +276,7 @@ void Font_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const loca
 			d_font->defineFontGlyphs(d_glyphSet);
 		}
 
+		Logger::getSingleton().logEvent("Finished creation of Font '" + d_font->d_name + "' via XML file.", Informative);
 	}
 
 }

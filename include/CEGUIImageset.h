@@ -176,7 +176,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	undefineImage(const String& name)				{d_images.erase(name);}
+	void	undefineImage(const String& name);
 
 
 	/*!
@@ -186,7 +186,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	undefineAllImages(void)							{d_images.clear();}
+	void	undefineAllImages(void);
 
 
 	/*!

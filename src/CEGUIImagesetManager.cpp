@@ -66,6 +66,8 @@ ImagesetManager::~ImagesetManager(void)
 *************************************************************************/
 Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 {
+	Logger::getSingleton().logEvent((utf8*)"Attempting to create Imageset '" + name +"' with texture only.");
+
 	if (isImagesetPresent(name))
 	{
 		throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
@@ -73,8 +75,6 @@ Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 
 	Imageset* temp = new Imageset(name, texture);
 	d_imagesets[name] = temp;
-
-	Logger::getSingleton().logEvent((utf8*)"Imageset '" + name +"' has been created with texture only.", Informative);
 
 	return temp;
 }
@@ -85,6 +85,8 @@ Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 *************************************************************************/
 Imageset* ImagesetManager::createImageset(const String& filename)
 {
+	Logger::getSingleton().logEvent((utf8*)"Attempting to create an Imageset from the information specified in file '" + filename + "'.");
+
 	Imageset* temp = new Imageset(filename);
 
 	String	name = temp->getName();
@@ -97,8 +99,6 @@ Imageset* ImagesetManager::createImageset(const String& filename)
 	}
 
 	d_imagesets[name] = temp;
-
-	Logger::getSingleton().logEvent((utf8*)"Imageset '" + name +"' has been created from the information specified in file '" + filename + "'.", Informative);
 
 	return temp;
 }
@@ -113,10 +113,12 @@ void ImagesetManager::destroyImageset(const String& name)
 
 	if (pos != d_imagesets.end())
 	{
-		Logger::getSingleton().logEvent((utf8*)"Imageset '" + name +"' has been destroyed.", Informative);
+		String tmpName(name);
 
 		delete pos->second;
 		d_imagesets.erase(pos);
+
+		Logger::getSingleton().logEvent((utf8*)"Imageset '" + tmpName +"' has been destroyed.", Informative);
 	}
 
 }

@@ -58,7 +58,7 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// add the factory to the registry
 	d_factoryRegistry[factory->getTypeName()] = factory;
 
-	Logger::getSingleton().logEvent((utf8*)"WindowFactory for '" + factory->getTypeName() +"' windows added.", Informative);
+	Logger::getSingleton().logEvent((utf8*)"WindowFactory for '" + factory->getTypeName() +"' windows added.");
 }
 
 
@@ -69,7 +69,7 @@ void WindowFactoryManager::removeFactory(const String& name)
 {
 	d_factoryRegistry.erase(name);
 
-	Logger::getSingleton().logEvent((utf8*)"WindowFactory for '" + name +"' windows removed.", Informative);
+	Logger::getSingleton().logEvent((utf8*)"WindowFactory for '" + name +"' windows removed.");
 }
 
 
@@ -195,7 +195,7 @@ void WindowFactoryManager::addWindowTypeAlias(const String& aliasName, const Str
 		pos->second.d_targetStack.push_back(targetType);
 	}
 
-	Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' added for window type '" + targetType +"'.", Informative);
+	Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' added for window type '" + targetType +"'.");
 }
 
 
@@ -219,7 +219,7 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 			// erase the target mapping
 			pos->second.d_targetStack.erase(aliasPos);
 
-			Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' removed for window type '" + targetType +"'.", Informative);
+			Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' removed for window type '" + targetType +"'.");
 
 			// if the list of targets for this alias is now empty
 			if (pos->second.d_targetStack.empty())

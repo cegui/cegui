@@ -70,6 +70,7 @@ public:
 	document processing (only care about elements, schema validates format)
 	*/
 	virtual void	startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
+	virtual void	endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname);
 
 	/*!
 	\brief
