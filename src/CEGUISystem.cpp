@@ -106,6 +106,8 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	d_defaultMouseCursor = NULL;
 	d_scriptModule		 = scriptModule;
 
+	d_mouseScalingFactor = 1.0f;
+
 	// initialise Xerces-C XML system
 	XERCES_CPP_NAMESPACE_USE
 	try
@@ -499,6 +501,24 @@ int	System::executeScriptGloabl(const String& function_name) const
 
 
 /*************************************************************************
+	return the current mouse movement scaling factor.	
+*************************************************************************/
+float System::getMouseMoveScaling(void) const
+{
+	return d_mouseScalingFactor;
+}
+
+
+/*************************************************************************
+	Set the current mouse movement scaling factor	
+*************************************************************************/
+void System::setMouseMoveScaling(float scaling)
+{
+	d_mouseScalingFactor = scaling;
+}
+
+
+/*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
 void System::injectMouseMove(float delta_x, float delta_y)
@@ -506,8 +526,9 @@ void System::injectMouseMove(float delta_x, float delta_y)
 	MouseEventArgs ma(NULL);
 	MouseCursor& mouse = MouseCursor::getSingleton();
 
-	ma.moveDelta.d_x = (float)delta_x;
-	ma.moveDelta.d_y = (float)delta_y;
+	ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
+	ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
+	ma.wheelChange = 0;
 
 	// move the mouse cursor & update position in args.
 	mouse.offsetPosition(ma.moveDelta);
@@ -560,6 +581,7 @@ void System::injectMouseButtonDown(MouseButton button)
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
 	ma.sysKeys = d_sysKeys;
+	ma.wheelChange = 0;
 
 	//
 	// Handling for multi-click generation
@@ -626,6 +648,7 @@ void System::injectMouseButtonUp(MouseButton button)
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
 	ma.sysKeys = d_sysKeys;
+	ma.wheelChange = 0;
 
 	Window* dest_window = getTargetWindow(ma.position);
 
@@ -735,6 +758,31 @@ void System::injectChar(utf32 code_point)
 			dest = dest->getParent();
 		}
 		
+	}
+
+}
+
+
+/*************************************************************************
+	Method that injects a mouse-wheel / scroll-wheel event into the system.	
+*************************************************************************/
+void System::injectMouseWheelChange(float delta)
+{
+	MouseEventArgs ma(NULL);
+	ma.position = MouseCursor::getSingleton().getPosition();
+	ma.moveDelta = Vector2(0.0f, 0.0f);
+	ma.button = NoButton;
+	ma.sysKeys = d_sysKeys;
+	ma.wheelChange = delta;
+
+	Window* dest_window = getTargetWindow(ma.position);
+
+	// loop backwards until event is handled or we run out of windows.
+	while ((!ma.handled) && (dest_window != NULL))
+	{
+		ma.window = dest_window;
+		dest_window->onMouseWheel(ma);
+		dest_window = dest_window->getParent();
 	}
 
 }

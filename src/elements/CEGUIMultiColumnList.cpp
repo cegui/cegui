@@ -1973,6 +1973,27 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
+	Handler for mouse wheel changes
+*************************************************************************/
+void MultiColumnList::onMouseWheel(MouseEventArgs& e)
+{
+	// base class processing.
+	Window::onMouseWheel(e);
+
+	if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+	{
+		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+	}
+	else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+	{
+		d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+	}
+
+	e.handled = true;
+}
+
+
+/*************************************************************************
 	Event handler for header offset changes (scrolling)
 *************************************************************************/
 void MultiColumnList::handleHeaderScroll(const EventArgs& e)

@@ -449,6 +449,7 @@ protected:
 	*************************************************************************/
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onSized(WindowEventArgs& e);
+	virtual	void	onMouseWheel(MouseEventArgs& e);
 
 
 	/*************************************************************************

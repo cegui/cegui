@@ -285,6 +285,22 @@ void Scrollbar::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
+	Handler for scroll wheel changes
+*************************************************************************/
+void Scrollbar::onMouseWheel(MouseEventArgs& e)
+{
+	// base class processing
+	Window::onMouseWheel(e);
+
+	// scroll by e.wheelChange * stepSize
+	setScrollPosition(d_position + d_stepSize * -e.wheelChange);
+
+	// ensure the message does not go to our parent.
+	e.handled = true;
+}
+
+
+/*************************************************************************
 	handler function for when thumb moves.
 *************************************************************************/
 void Scrollbar::handleThumbMoved(const EventArgs& e)

@@ -769,6 +769,7 @@ void Combobox::button_ClickHandler(const EventArgs& e)
 	if (item != NULL)
 	{
 		d_droplist->setItemSelectState(item, true);
+		d_droplist->ensureItemIsVisible(item);
 	}
 
 }

@@ -954,6 +954,27 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
+	Handler for mouse wheel changes
+*************************************************************************/
+void Listbox::onMouseWheel(MouseEventArgs& e)
+{
+	// base class processing.
+	Window::onMouseWheel(e);
+
+	if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+	{
+		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+	}
+	else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+	{
+		d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+	}
+
+	e.handled = true;
+}
+
+
+/*************************************************************************
 	Ensure the item at the specified index is visible within the list box.	
 *************************************************************************/
 void Listbox::ensureItemIsVisible(uint item_index)

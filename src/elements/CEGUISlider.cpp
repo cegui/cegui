@@ -213,6 +213,22 @@ void Slider::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
+	Handler for scroll wheel changes
+*************************************************************************/
+void Slider::onMouseWheel(MouseEventArgs& e)
+{
+	// base class processing
+	Window::onMouseWheel(e);
+
+	// scroll by e.wheelChange * stepSize
+	setCurrentValue(d_value + d_step * -e.wheelChange);
+
+	// ensure the message does not go to our parent.
+	e.handled = true;
+}
+
+
+/*************************************************************************
 	handler function for when thumb moves.	
 *************************************************************************/
 void Slider::handleThumbMoved(const EventArgs& e)

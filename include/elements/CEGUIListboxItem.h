@@ -392,14 +392,14 @@ public:
 	\brief
 		Less-than operator, compares item texts.
 	*/
-	bool	operator<(const ListboxItem& rhs) const		{return d_itemText < rhs.getText();}
+	virtual	bool	operator<(const ListboxItem& rhs) const		{return d_itemText < rhs.getText();}
 
 
 	/*!
 	\brief
 		Greater-than operator, compares item texts.
 	*/
-	bool	operator>(const ListboxItem& rhs) const		{return d_itemText > rhs.getText();}
+	virtual	bool	operator>(const ListboxItem& rhs) const		{return d_itemText > rhs.getText();}
 
 
 protected:

@@ -696,6 +696,7 @@ protected:
 	virtual void	onKeyDown(KeyEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 	virtual void	onSized(WindowEventArgs& e);
+	virtual	void	onMouseWheel(MouseEventArgs& e);
 
 
 	/*************************************************************************

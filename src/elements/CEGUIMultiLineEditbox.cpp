@@ -1522,6 +1522,27 @@ void MultiLineEditbox::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
+	Handler for mouse wheel changes
+*************************************************************************/
+void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
+{
+	// base class processing.
+	Window::onMouseWheel(e);
+
+	if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+	{
+		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+	}
+	else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+	{
+		d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+	}
+
+	e.handled = true;
+}
+
+
+/*************************************************************************
 	Handler called when the read-only state of the edit box changes	
 *************************************************************************/
 void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)

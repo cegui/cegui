@@ -403,6 +403,29 @@ public:
 	int		executeScriptGloabl(const String& function_name) const;
 
 
+	/*!
+	\brief
+		return the current mouse movement scaling factor.
+
+	\return
+		float value that is equal to the currently set mouse movement scaling factor.  Defaults to 1.0f.
+	*/
+	float	getMouseMoveScaling(void) const;
+
+
+	/*!
+	\brief
+		Set the current mouse movement scaling factor
+
+	\param scaling
+		float value specifying the scaling to be applied to mouse movement inputs.
+
+	\return
+		nothing.
+	*/
+	void	setMouseMoveScaling(float scaling);
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -485,6 +508,20 @@ public:
 		Nothing.
 	*/
 	void	injectChar(utf32 code_point);
+
+
+	/*!
+	\brief
+		Method that injects a mouse-wheel / scroll-wheel event into the system.
+
+	\param delta
+		float value representing the amount the wheel moved.
+
+	\return
+		Nothing.
+	*/
+	void	injectMouseWheelChange(float delta);
+
 
 private:
 	/*************************************************************************
@@ -589,6 +626,8 @@ private:
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
 	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
+
+	float	d_mouseScalingFactor;			//!< Scaling applied to mouse movement inputs.
 };
 
 } // End of  CEGUI namespace section

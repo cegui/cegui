@@ -201,8 +201,8 @@ enum MouseButton
 	MiddleButton,
 	X1Button,
 	X2Button,
-	// TODO:  This should be a #define for compiler compatibility reasons.
 	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
+	NoButton				//!< Value set for no mouse button.  NB: This is not 0, do not assume! 
 };
 
 
@@ -250,6 +250,7 @@ public:
 	Vector2		moveDelta;		//!< holds variation of mouse position from last mouse input
 	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
 	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
+	float		wheelChange;	//!< Holds the amount the scroll wheel has changed.
 };
 
 

@@ -1918,6 +1918,7 @@ protected:
 	friend	void System::injectChar(utf32 code_point);
 	friend	void System::injectKeyDown(uint key_code);
 	friend	void System::injectKeyUp(uint key_code);
+	friend	void System::injectMouseWheelChange(float delta);
 
 
 	/*************************************************************************
