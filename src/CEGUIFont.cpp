@@ -43,7 +43,7 @@
 #include FT_FREETYPE_H
 
 #include <algorithm>
-
+#include <sstream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -393,7 +393,12 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, uint32* buffer
 		// load-up required glyph
 		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|(d_antiAliased ? 0 : FT_LOAD_MONOCHROME)))
 		{
-			// skip errors
+			// skip errors (but now we log them!)
+			std::stringstream err;
+			err << "Font::createFontGlyphSet - Failed to load glyph for codepoint: ";
+			err << static_cast<unsigned int>(glyph_set[i]);
+			Logger::getSingleton().logEvent(err.str(), Errors);
+
 			continue;
 		}
 
