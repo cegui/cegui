@@ -109,7 +109,26 @@ void XmlHandlerHelper::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* par
 
     // load in the raw schema data
     RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, resourceGroup);
+    // try base filename first
+    try
+    {
+        Logger::getSingleton().logEvent("XmlHandlerHelper::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.", Informative);
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, resourceGroup);
+    }
+    // oops, no file.  Try an alternative instead...
+    catch(InvalidRequestException)
+    {
+        // get path from filename
+        String schemaFilename;
+        size_t pos = xmlFilename.rfind("/");
+        if (pos == String::npos) pos = xmlFilename.rfind("\\");
+        if (pos != String::npos) schemaFilename.assign(xmlFilename, 0, pos + 1);
+        // append schema filename
+        schemaFilename += schemaName;
+        // re-try the load operation.
+        Logger::getSingleton().logEvent("XmlHandlerHelper::initialiseSchema - Attempting to load schema from file '" + schemaFilename + "'.", Informative);
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaFilename, rawSchemaData, resourceGroup);
+    }
     // wrap schema data in a xerces MemBufInputSource object
     MemBufInputSource  schemaData(
         rawSchemaData.getDataPtr(),
@@ -124,6 +143,7 @@ void XmlHandlerHelper::initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* par
     XMLCh* pval = XMLString::transcode(schemaName.c_str());
     parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
     XMLString::release(&pval);
+    Logger::getSingleton().logEvent("XmlHandlerHelper::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.", Informative);
 }
 
 XERCES_CPP_NAMESPACE::SAX2XMLReader* XmlHandlerHelper::createParser(XERCES_CPP_NAMESPACE::DefaultHandler& handler)
