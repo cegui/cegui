@@ -27,6 +27,10 @@ public:
 	void createBindings(void);
 	void destroyBindings(void);
 
+
+
+	lua_State* getLuaState(void) const	{return d_state;}
+
 private:
 	bool d_ownsState;
 	lua_State* d_state;
