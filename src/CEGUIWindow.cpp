@@ -86,6 +86,7 @@ WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
 WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
 WindowProperties::AutoRepeatDelay   Window::d_autoRepeatDelayProperty;
 WindowProperties::AutoRepeatRate    Window::d_autoRepeatRateProperty;
+WindowProperties::DistributeCapturedInputs Window::d_distInputsProperty;
 
 
 /*************************************************************************
@@ -164,6 +165,7 @@ Window::Window(const String& type, const String& name) :
 	d_restoreOldCapture	= false;
 	d_zOrderingEnabled	= true;
     d_wantsMultiClicks  = true;
+    d_distCapturedInputs = false;
 
     // initialise mouse button auto-repeat state
     d_repeatButton = NoButton;
@@ -2581,6 +2583,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_autoRepeatProperty);
     addProperty(&d_autoRepeatDelayProperty);
     addProperty(&d_autoRepeatRateProperty);
+    addProperty(&d_distInputsProperty);
 }
 
 
@@ -2755,6 +2758,21 @@ void Window::updateSelf(float elapsed)
                 generateAutoRepeatEvent(d_repeatButton);
             }
         }
+    }
+}
+
+bool Window::distributesCapturedInputs(void) const
+{
+    return d_distCapturedInputs;
+}
+
+void Window::setDistributesCapturedInputs(bool setting)
+{
+    if (d_distCapturedInputs != setting)
+    {
+        d_distCapturedInputs = setting;
+
+        // TODO: Maybe add a 'setting changed' event for this?
     }
 }
 

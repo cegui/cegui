@@ -50,6 +50,9 @@ ComboDropList::ComboDropList(const String& type, const String& name) :
 
 	addComboDropListEvents();
 	hide();
+
+    // pass captured inputs to children to enable scrollbars
+    setDistributesCapturedInputs(true);
 }
 
 

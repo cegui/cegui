@@ -35,6 +35,7 @@
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
 #include "elements/CEGUIGUISheet.h"
+#include "elements/CEGUIDragContainer.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
 #include "xercesc/util/PlatformUtils.hpp"
@@ -345,8 +346,10 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	new MouseCursor();
 	new GlobalEventSet();
 
-	// add default GUISheet factory - the only UI element we can create "out of the box".
-	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
+    // Add factories for types that the system supports natively
+    // (mainly because they do no rendering)
+    WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
+    WindowFactoryManager::getSingleton().addFactory(new DragContainerFactory);
 
 	// GUISheet's name was changed, register an alias so both can be used
 	WindowFactoryManager::getSingleton().addWindowTypeAlias((utf8*)"DefaultGUISheet", GUISheet::WidgetTypeName);
@@ -429,14 +432,19 @@ System::~System(void)
 	// destroy windows so it's safe to destroy factories
 	WindowManager::getSingleton().destroyAllWindows();
 
-	// get pointer to the GUI sheet factory we added
-	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
+	// get pointers to the factories we added
+	WindowFactory* guiSheetFactory =
+        WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
 
-	// remove factories so it's safe to unload GUI modules
+    WindowFactory* dragContainerFactory =
+        WindowFactoryManager::getSingleton().getFactory(DragContainer::WidgetTypeName);
+
+    // remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
 
-	// destroy GUI sheet factory
-	delete factory;
+	// destroy factories we created
+	delete guiSheetFactory;
+    delete dragContainerFactory;
 
 	// cleanup singletons
 	delete	SchemeManager::getSingletonPtr();
@@ -1034,12 +1042,16 @@ Window*	System::getTargetWindow(const Point& pt) const
 		}
 		else
 		{
-			Window* child_window = dest_window->getChildAtPosition(pt);
+            if (dest_window->distributesCapturedInputs())
+            {
+                Window* child_window = dest_window->getChildAtPosition(pt);
 
-			if (child_window != NULL)
-			{
-				dest_window = child_window;
-			}
+                if (child_window != NULL)
+                {
+                    dest_window = child_window;
+                }
+
+            }
 
 		}
 

@@ -677,6 +677,18 @@ void AutoRepeatRate::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->setAutoRepeatRate(PropertyHelper::stringToFloat(value));
 }
 
+
+String DistributeCapturedInputs::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->distributesCapturedInputs());
+}
+
+
+void DistributeCapturedInputs::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setDistributesCapturedInputs(PropertyHelper::stringToBool(value));
+}
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

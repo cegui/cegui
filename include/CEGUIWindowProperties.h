@@ -1238,6 +1238,32 @@ public:
     void    set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+	Property to access whether inputs are passed to child windows when
+    input is captured to this window.
+
+	\par Usage:
+		- Name: DistributeCapturedInputs
+		- Format: "[text]".
+
+	\par Where [Text] is:
+		- "True" to indicate 'captured' inputs should be passed to attached child windows.
+		- "False" to indicate 'captured' inputs should be passed to this window only.
+*/
+class DistributeCapturedInputs : public Property
+{
+public:
+	DistributeCapturedInputs() : Property(
+		"DistributeCapturedInputs",
+		"Property to get/set whether captured inputs are passed to child windows.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
+
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
+};
+
 
 } // End of  WindowProperties namespace section
 

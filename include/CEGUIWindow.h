@@ -1018,6 +1018,17 @@ public:
     float   getAutoRepeatRate(void) const;
 
 
+    /*!
+    \brief
+        Return whether the window wants inputs passed to its attached
+        child windows when the window has inputs captured.
+
+    \return
+        - true if System should pass captured input events to child windows.
+        - false if System should pass captured input events to this window only.
+    */
+    bool    distributesCapturedInputs(void) const;
+
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1762,6 +1773,18 @@ public:
         Nothing.
     */
     void   setAutoRepeatRate(float rate);
+
+
+    /*!
+    \brief
+        Set whether the window wants inputs passed to its attached
+        child windows when the window has inputs captured.
+
+    \param setting
+        - true if System should pass captured input events to child windows.
+        - false if System should pass captured input events to this window only.
+    */
+    void    setDistributesCapturedInputs(bool setting);
 
 
 	/*************************************************************************
@@ -2644,6 +2667,7 @@ protected:
 	bool	d_restoreOldCapture;		//!< true if the Window restores capture to the previous window when it releases capture.
 	bool	d_zOrderingEnabled;			//!< true if the Window responds to z-order change requests.
     bool    d_wantsMultiClicks;         //!< true if the Window wishes to hear about multi-click mouse events.
+    bool    d_distCapturedInputs;       //!< true if unhandled captured inputs should be distributed to child windows.
 
     // mouse button autorepeat data
     bool    d_autoRepeat;       //!< true if button will auto-repeat mouse button down events while mouse button is held down,
@@ -2700,6 +2724,7 @@ protected:
     static  WindowProperties::MouseButtonDownAutoRepeat d_autoRepeatProperty;
     static  WindowProperties::AutoRepeatDelay   d_autoRepeatDelayProperty;
     static  WindowProperties::AutoRepeatRate    d_autoRepeatRateProperty;
+    static  WindowProperties::DistributeCapturedInputs d_distInputsProperty;
 
 
 	/*************************************************************************
