@@ -258,6 +258,12 @@
 				RelativePath="..\..\..\..\src\elements\CEGUIStatic.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\elements\CEGUIStaticImage.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\elements\CEGUIStaticText.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIString.cpp">
 			</File>
 			<File
@@ -429,6 +435,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\elements\CEGUIStatic.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\elements\CEGUIStaticImage.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\elements\CEGUIStaticText.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIString.h">
