@@ -1355,7 +1355,7 @@ public:
 
 		while(str_num--)
 		{
-			((*this)[str_num]) = (utf32)(std_str[str_num + str_idx]);
+			((*this)[str_num]) = static_cast<utf32>(static_cast<unsigned char>(std_str[str_num + str_idx]));
 		}
 
 		return *this;
@@ -1545,7 +1545,7 @@ public:
 
 		for (size_type i = 0; i < chars_len; ++i)
 		{
-			*pt++ = static_cast<utf32>(*chars++);
+			*pt++ = static_cast<utf32>(static_cast<unsigned char>(*chars++));
 		}
 
 		setlen(chars_len);
@@ -1701,7 +1701,7 @@ public:
 		utf32* pt = &ptr()[newsze-1];
 
 		while(str_num--)
-			*pt-- = (utf32)(std_str[str_num]);
+			*pt-- = static_cast<utf32>(static_cast<unsigned char>(std_str[str_num]));
 
 		setlen(newsze);
 		return *this;
@@ -1943,7 +1943,7 @@ public:
 		utf32* pt = &ptr()[newsz-1];
 
 		while(chars_len--)
-			*pt-- = static_cast<utf32>(chars[chars_len]);
+			*pt-- = static_cast<utf32>(static_cast<unsigned char>(chars[chars_len]));
 
 		setlen(newsz);
 
@@ -2084,7 +2084,7 @@ public:
 		utf32* pt = &ptr()[idx + str_num - 1];
 		
 		while(str_num--)
-			*pt-- = (utf32)(std_str[str_idx + str_num]);
+			*pt-- = static_cast<utf32>(static_cast<unsigned char>(std_str[str_idx + str_num]));
 
 		setlen(newsz);
 
@@ -2197,7 +2197,7 @@ public:
 		utf32* pt = &ptr()[idx + num - 1];
 
 		while(num--)
-			*pt-- = (utf32)(code_point);
+			*pt-- = code_point;
 
 		setlen(newsz);
 
@@ -2329,7 +2329,7 @@ public:
 		utf32* pt = &ptr()[idx + chars_len - 1];
 
 		while(chars_len--)
-			*pt-- = static_cast<utf32>(chars[chars_len]);
+			*pt-- = static_cast<utf32>(static_cast<unsigned char>(chars[chars_len]));
 
 		setlen(newsz);
 
@@ -2708,7 +2708,7 @@ public:
 		utf32* pt = &ptr()[idx + str_num - 1];
 
 		while (str_num--)
-			*pt-- = (utf32)(std_str[str_idx + str_num]);
+			*pt-- = static_cast<utf32>(static_cast<unsigned char>(std_str[str_idx + str_num]));
 
 		setlen(newsz);
 
@@ -3095,7 +3095,7 @@ public:
 		utf32* pt = &ptr()[idx + chars_len - 1];
 
 		while (chars_len--)
-			*pt-- = static_cast<utf32>(chars[chars_len]);
+			*pt-- = static_cast<utf32>(static_cast<unsigned char>(chars[chars_len]));
 
 		setlen(newsz);
 		return *this;
@@ -5096,10 +5096,10 @@ private:
 		if (!cp_count)
 			return 0;
 
-		while ((--cp_count) && (*buf1 == (utf32)(*buf2)))
+		while ((--cp_count) && (*buf1 == static_cast<utf32>(static_cast<unsigned char>(*buf2))))
 			buf1++, buf2++;
 
-		return *buf1 - (utf32)(*buf2);
+		return *buf1 - static_cast<utf32>(static_cast<unsigned char>(*buf2));
 	}
 
 	// compare utf32 buffer with encoded utf8 data
@@ -5150,7 +5150,7 @@ private:
 
 		while (idx != sze)
 		{
-			if (code_point == (utf32)(str[idx]))
+			if (code_point == static_cast<utf32>(static_cast<unsigned char>(str[idx])))
 				return idx;
 
 			++idx;
@@ -5208,7 +5208,7 @@ private:
 	{
 		for (size_type idx = 0; idx != chars_len; ++idx)
 		{
-			if (code_point == static_cast<utf32>(chars[idx]))
+			if (code_point == static_cast<utf32>(static_cast<unsigned char>(chars[idx])))
 				return idx;
 		}
 
