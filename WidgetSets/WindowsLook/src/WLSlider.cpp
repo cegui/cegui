@@ -171,7 +171,7 @@ void WLSlider::drawSelf(float z)
 	float leftWidth		= d_trackLeftImage->getWidth();
 	float rightWidth	= d_trackRightImage->getWidth();
 	float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
-	float trackY		= absrect.d_bottom - (d_thumb->getAbsoluteHeight() * 0.5f);
+	float trackY		= absrect.d_bottom - PixelAligned(d_thumb->getAbsoluteHeight() * 0.5f);
 
 	Vector3 pos(absrect.d_left, trackY, z);
 	Size	sz(leftWidth, d_trackMiddleImage->getHeight());
@@ -188,10 +188,10 @@ void WLSlider::drawSelf(float z)
 	// render calibration / tick marks
 	if (d_calibrationFreq > 0)
 	{
-		float spacing	= (((getAbsoluteWidth() - d_thumb->getAbsoluteWidth()) / d_maxValue) * d_step) * d_calibrationFreq;
+		float spacing	= PixelAligned((((getAbsoluteWidth() - d_thumb->getAbsoluteWidth()) / d_maxValue) * d_step) * d_calibrationFreq);
 		uint  tickcount = (uint)(getAbsoluteWidth() / spacing);
 
-		pos.d_x = absrect.d_left + (d_thumb->getAbsoluteWidth() * 0.5f);
+		pos.d_x = absrect.d_left + PixelAligned(d_thumb->getAbsoluteWidth() * 0.5f);
 		pos.d_y = absrect.d_top + (d_thumb->getAbsoluteYPosition() - d_calibrationTickImage->getHeight());
 
 		for (uint lc = 0; lc <= tickcount; ++lc)

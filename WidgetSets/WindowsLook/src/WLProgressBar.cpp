@@ -132,7 +132,7 @@ void WLProgressBar::drawSelf(float z)
 	d_background->draw(absrect, pos.d_z, clipper, colours);
 
 	// adjust rect area according to current progress
-	absrect.setWidth(absrect.getWidth() * getProgress());
+	absrect.setWidth(PixelAligned(absrect.getWidth() * getProgress()));
 
 	// calculate colours for progress bar itself
 	colours.setColours(d_progressColour);

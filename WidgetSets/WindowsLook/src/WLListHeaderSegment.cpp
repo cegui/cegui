@@ -172,7 +172,7 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	destrect.d_right = destrect.d_left;
 
 	// pad left by half the width of the 'sort' icon.
-	destrect.d_left = absrect.d_left + d_sortAscendImage->getWidth() * 0.5f;
+	destrect.d_left = absrect.d_left + PixelAligned(d_sortAscendImage->getWidth() * 0.5f);
 	Rect inner_clip(destrect.getIntersection(clipper));
 
 	//
@@ -182,13 +182,13 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 
 	if (d_sortDir == Ascending)
 	{
-		d_sortAscendImage->draw(Vector3(destrect.d_left, destrect.d_top + d_sortAscendImage->getHeight() * 0.5f, pos.d_z), inner_clip, colours);
-		destrect.d_left += d_sortAscendImage->getWidth() * 1.5f;
+		d_sortAscendImage->draw(Vector3(destrect.d_left, destrect.d_top + PixelAligned(d_sortAscendImage->getHeight() * 0.5f), pos.d_z), inner_clip, colours);
+		destrect.d_left += PixelAligned(d_sortAscendImage->getWidth() * 1.5f);
 	}
 	else if (d_sortDir == Descending)
 	{
-		d_sortDescendImage->draw(Vector3(destrect.d_left, destrect.d_top + d_sortDescendImage->getHeight() * 0.5f, pos.d_z), inner_clip, colours);
-		destrect.d_left += d_sortDescendImage->getWidth() * 1.5f;
+		d_sortDescendImage->draw(Vector3(destrect.d_left, destrect.d_top + PixelAligned(d_sortDescendImage->getHeight() * 0.5f), pos.d_z), inner_clip, colours);
+		destrect.d_left += PixelAligned(d_sortDescendImage->getWidth() * 1.5f);
 	}
 
 	//
@@ -212,7 +212,7 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 	colours.setColours(colour(0, 0, 0, alpha));
 
 	// centre text vertically
-	destrect.d_top += ((destrect.getHeight() - fnt->getLineSpacing()) * 0.5f);
+	destrect.d_top += PixelAligned((destrect.getHeight() - fnt->getLineSpacing()) * 0.5f);
 	fnt->drawText(getText(), destrect, pos.d_z, inner_clip, LeftAligned, colours);
 }
 

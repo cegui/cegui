@@ -263,8 +263,8 @@ void TLMiniHorzScrollbar::drawSelf(float z)
 	//
 	float button_width = d_decrease->getAbsoluteWidth();
 
-	Vector3 pos(absrect.d_left + button_width, absrect.d_top + (absrect.getHeight() * BodyPositionY), z);
-	Size	sz(absrect.getWidth() - (button_width * 0.5f), absrect.getHeight() * BodyHeight);
+	Vector3 pos(absrect.d_left + button_width, absrect.d_top + PixelAligned(absrect.getHeight() * BodyPositionY), z);
+	Size	sz(absrect.getWidth() - PixelAligned(button_width * 0.5f), PixelAligned(absrect.getHeight() * BodyHeight));
 
 	d_body->draw(pos, sz, clipper, colours);
 }

@@ -121,7 +121,7 @@ ulong TLEditbox::getTextIndexFromPosition(const Point& pt) const
 *************************************************************************/
 float TLEditbox::getTextPaddingPixels(void) const
 {
-	return d_left->getWidth() * TextPaddingRatio;
+	return PixelAligned(d_left->getWidth() * TextPaddingRatio);
 }
 
 
@@ -242,7 +242,7 @@ void TLEditbox::drawSelf(float z)
 	//
 	// setup initial rect for text formatting
 	Rect text_rect(absrect);
-	text_rect.d_top  += (text_rect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
+	text_rect.d_top  += PixelAligned((text_rect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	text_rect.d_left += textOffset;
 
 	// draw pre-highlight text

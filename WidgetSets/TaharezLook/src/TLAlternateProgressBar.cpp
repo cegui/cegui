@@ -110,10 +110,10 @@ void TLAlternateProgressBar::setupLightsInfo(void)
 	// work out how many lights we are going to have
 	//
 	float lightWidth = d_lightImages[0]->getWidth();
-	float availWidth = d_abs_area.getWidth() - ((d_left->getWidth() * FirstLightPaddingRatio) * 2);
+	float availWidth = d_abs_area.getWidth() - PixelAligned((d_left->getWidth() * FirstLightPaddingRatio) * 2);
 
 	d_lightCount = (int)(availWidth / (lightWidth + 1));
-	d_lightSpacing = lightWidth + ((availWidth - (d_lightCount * lightWidth)) / d_lightCount);
+	d_lightSpacing = lightWidth + PixelAligned((availWidth - (d_lightCount * lightWidth)) / d_lightCount);
 
 	// Allocate a bigger array if needed
 	if (d_lightsSize < d_lightCount) {
@@ -177,16 +177,16 @@ void TLAlternateProgressBar::drawSelf(float z)
 	d_right->draw(pos, sz, clipper, colours);
 
 	// halves marker
-	pos.d_x = absrect.d_left + (absrect.getWidth() * 0.5f);
+	pos.d_x = absrect.d_left + PixelAligned(absrect.getWidth() * 0.5f);
 	pos.d_y = marksY;
 	d_halvesMark->draw(pos, clipper, colours);
 
 	// first quarter mark
-	pos.d_x = absrect.d_left + (absrect.getWidth() * 0.25f);
+	pos.d_x = absrect.d_left + PixelAligned(absrect.getWidth() * 0.25f);
 	d_quarterMark->draw(pos, clipper, colours);
 
 	// third quarter mark
-	pos.d_x = absrect.d_left + (absrect.getWidth() * 0.75f);
+	pos.d_x = absrect.d_left + PixelAligned(absrect.getWidth() * 0.75f);
 	d_quarterMark->draw(pos, clipper, colours);
 
 	//
@@ -194,16 +194,16 @@ void TLAlternateProgressBar::drawSelf(float z)
 	//
 	// set up size to render lights at.
 	sz.d_width	= d_lightImages[0]->getWidth();
-	sz.d_height	= (containerHeight / d_middle->getHeight()) * d_lightImages[0]->getHeight();
+	sz.d_height	= PixelAligned(containerHeight / d_middle->getHeight()) * d_lightImages[0]->getHeight();
 
 	// set up initial position
-	pos.d_x = absrect.d_left + (leftWidth * FirstLightPaddingRatio);
-	pos.d_y = absrect.d_top + ((containerHeight - sz.d_height) * 0.5f);
+	pos.d_x = absrect.d_left + PixelAligned(leftWidth * FirstLightPaddingRatio);
+	pos.d_y = absrect.d_top + PixelAligned((containerHeight - sz.d_height) * 0.5f);
 
 	// construct rect for segment area
 	Rect	segClipper;
 	segClipper.setPosition(Point(pos.d_x, pos.d_y));
-	segClipper.setSize(Size((absrect.getWidth() - ((leftWidth * FirstLightPaddingRatio) * 2.0f)) * d_progress, absrect.getHeight()));
+	segClipper.setSize(Size(PixelAligned((absrect.getWidth() - ((leftWidth * FirstLightPaddingRatio) * 2.0f)) * d_progress), absrect.getHeight()));
 
 	// clip the clipper to the 'light area'
 	clipper = segClipper.getIntersection(clipper);

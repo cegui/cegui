@@ -87,7 +87,7 @@ void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) 
 			break;
 
 		case HorzCentred:
-			baseX = position.d_x + ((d_area.getWidth() - imgSize.d_width) / 2);
+			baseX = position.d_x + PixelAligned((d_area.getWidth() - imgSize.d_width) / 2);
 			break;
 
 		case RightAligned:
@@ -113,7 +113,7 @@ void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) 
 			break;
 
 		case VertCentred:
-			baseY = position.d_y + ((d_area.getHeight() - imgSize.d_height) / 2);
+			baseY = position.d_y + PixelAligned((d_area.getHeight() - imgSize.d_height) / 2);
 			break;
 
 		case BottomAligned:

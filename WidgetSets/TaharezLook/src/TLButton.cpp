@@ -267,8 +267,8 @@ void TLButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left += d_textXOffset * absrect.getWidth();
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -332,8 +332,8 @@ void TLButton::drawHover(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left += d_textXOffset * absrect.getWidth();
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_hoverColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -397,8 +397,8 @@ void TLButton::drawPushed(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left += d_textXOffset * absrect.getWidth();
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -462,8 +462,8 @@ void TLButton::drawDisabled(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left += d_textXOffset * absrect.getWidth();
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);

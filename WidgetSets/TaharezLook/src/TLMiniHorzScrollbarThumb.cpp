@@ -95,7 +95,7 @@ void TLMiniHorzScrollbarThumb::drawNormal(float z)
 	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	// calculate segment sizes
-	float minWidth		= absrect.getWidth() * 0.5f;
+	float minWidth		= PixelAligned(absrect.getWidth() * 0.5f);
 	float leftWidth		= std::min(d_normalLeftImage->getWidth(), minWidth);
 	float rightWidth	= std::min(d_normalRightImage->getWidth(), minWidth);
 	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
@@ -136,7 +136,7 @@ void TLMiniHorzScrollbarThumb::drawHover(float z)
 	ColourRect colours(colour(1, 1, 1, getEffectiveAlpha()));
 
 	// calculate segment sizes
-	float minWidth		= absrect.getWidth() * 0.5f;
+	float minWidth		= PixelAligned(absrect.getWidth() * 0.5f);
 	float leftWidth		= std::min(d_highlightLeftImage->getWidth(), minWidth);
 	float rightWidth	= std::min(d_highlightRightImage->getWidth(), minWidth);
 	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;
@@ -177,7 +177,7 @@ void TLMiniHorzScrollbarThumb::drawDisabled(float z)
 	ColourRect colours(colour(0.5f, 0.5f, 0.5f, getEffectiveAlpha()));
 
 	// calculate segment sizes
-	float minWidth		= absrect.getWidth() * 0.5f;
+	float minWidth		= PixelAligned(absrect.getWidth() * 0.5f);
 	float leftWidth		= std::min(d_normalLeftImage->getWidth(), minWidth);
 	float rightWidth	= std::min(d_normalRightImage->getWidth(), minWidth);
 	float middleWidth	= absrect.getWidth() - leftWidth - rightWidth;

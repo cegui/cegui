@@ -54,4 +54,13 @@ Each item in here has a comment to describe what it's for.
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_LOAD_MODULE_DEBUG_SUFFIX	"_d"
 
+
+//////////////////////////////////////////////////////////////////////////
+// Comment this line to remove the alignment of elements to pixel
+// boundaries.  This may give you a performance boost at the expense
+// of visual quality
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_ALIGN_ELEMENTS_TO_PIXELS 1
+
+
 #endif	// end of guard _CEGUIConfig_h_

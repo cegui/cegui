@@ -292,7 +292,7 @@ void TLVertScrollbar::drawSelf(float z)
 	//
 	// render slide-track
 	//
-	float slideTrackYPadding = d_decrease->getAbsoluteHeight() + (d_containerTop->getHeight() * 0.5f);
+	float slideTrackYPadding = d_decrease->getAbsoluteHeight() + PixelAligned(d_containerTop->getHeight() * 0.5f);
 
 	// calculate a new clipper for the slide track area
 	absrect.d_top		+= slideTrackYPadding;

@@ -183,7 +183,7 @@ void WLTabButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top += (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
+	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);

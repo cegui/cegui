@@ -173,7 +173,7 @@ void StaticText::drawSelf(float z)
 		// no scroll bar, so centre text instead.
 		else
 		{
-			absarea.d_top += ((absarea.getHeight() - textHeight) * 0.5f);
+			absarea.d_top += PixelAligned((absarea.getHeight() - textHeight) * 0.5f);
 		}
 
 		break;

@@ -263,8 +263,8 @@ void TLMiniVertScrollbar::drawSelf(float z)
 	//
 	float button_height = d_decrease->getAbsoluteHeight();
 
-	Vector3 pos(absrect.d_left + (absrect.getWidth() * BodyPositionX), absrect.d_top + button_height, z);
-	Size	sz(absrect.getWidth() * BodyWidth, absrect.getHeight() - (button_height * 0.5f));
+	Vector3 pos(absrect.d_left + PixelAligned(absrect.getWidth() * BodyPositionX), absrect.d_top + button_height, z);
+	Size	sz(PixelAligned(absrect.getWidth() * BodyWidth), absrect.getHeight() - PixelAligned(button_height * 0.5f));
 
 	d_body->draw(pos, sz, clipper, colours);
 }

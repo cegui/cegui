@@ -150,7 +150,7 @@ ulong WLEditbox::getTextIndexFromPosition(const Point& pt) const
 *************************************************************************/
 float WLEditbox::getTextPaddingPixels(void) const
 {
-	return d_frameLeftSize * TextPaddingRatio;
+	return PixelAligned(d_frameLeftSize * TextPaddingRatio);
 }
 
 
@@ -253,7 +253,7 @@ void WLEditbox::drawSelf(float z)
 	//
 	// setup initial rect for text formatting
 	Rect text_rect(absrect);
-	text_rect.d_top  += (text_rect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
+	text_rect.d_top  += PixelAligned((text_rect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	text_rect.d_left += textOffset;
 
 	// draw pre-highlight text

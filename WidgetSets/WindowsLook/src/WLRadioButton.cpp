@@ -98,7 +98,7 @@ void WLRadioButton::drawNormal(float z)
 	//
 	// draw the images
 	//
-	Vector3 pos(absrect.d_left, absrect.d_top + ((absrect.getHeight() - d_normalImage->getHeight()) * 0.5f), z);
+	Vector3 pos(absrect.d_left, absrect.d_top + PixelAligned((absrect.getHeight() - d_normalImage->getHeight()) * 0.5f), z);
 	d_normalImage->draw(pos, clipper, colours);
 
 	if (d_selected)
@@ -109,8 +109,8 @@ void WLRadioButton::drawNormal(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left	+= d_normalImage->getWidth();
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_normalColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
@@ -140,7 +140,7 @@ void WLRadioButton::drawHover(float z)
 	//
 	// draw the images
 	//
-	Vector3 pos(absrect.d_left, absrect.d_top + ((absrect.getHeight() - d_hoverImage->getHeight()) * 0.5f), z);
+	Vector3 pos(absrect.d_left, absrect.d_top + PixelAligned((absrect.getHeight() - d_hoverImage->getHeight()) * 0.5f), z);
 	d_hoverImage->draw(pos, clipper, colours);
 
 	if (d_selected)
@@ -151,8 +151,8 @@ void WLRadioButton::drawHover(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left	+= d_hoverImage->getWidth();
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left	+= d_hoverImage->getWidth() + LabelPadding;
 	colours.setColours(d_hoverColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
@@ -182,7 +182,7 @@ void WLRadioButton::drawPushed(float z)
 	//
 	// draw the images
 	//
-	Vector3 pos(absrect.d_left, absrect.d_top + ((absrect.getHeight() - d_normalImage->getHeight()) * 0.5f), z);
+	Vector3 pos(absrect.d_left, absrect.d_top + PixelAligned((absrect.getHeight() - d_normalImage->getHeight()) * 0.5f), z);
 	d_normalImage->draw(pos, clipper, colours);
 
 	if (d_selected)
@@ -193,8 +193,8 @@ void WLRadioButton::drawPushed(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left	+= d_normalImage->getWidth();
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_pushedColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
@@ -224,7 +224,7 @@ void WLRadioButton::drawDisabled(float z)
 	//
 	// draw the images
 	//
-	Vector3 pos(absrect.d_left, absrect.d_top + ((absrect.getHeight() - d_normalImage->getHeight()) * 0.5f), z);
+	Vector3 pos(absrect.d_left, absrect.d_top + PixelAligned((absrect.getHeight() - d_normalImage->getHeight()) * 0.5f), z);
 	d_normalImage->draw(pos, clipper, colours);
 
 	if (d_selected)
@@ -235,8 +235,8 @@ void WLRadioButton::drawDisabled(float z)
 	//
 	// Draw label text
 	//
-	absrect.d_top	+= (absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f;
-	absrect.d_left	+= d_normalImage->getWidth();
+	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
+	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_disabledColour);
 	colours.setAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);

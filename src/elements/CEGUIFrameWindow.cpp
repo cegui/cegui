@@ -263,7 +263,10 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 {
 	// update window state
 	Point pos = d_abs_area.getPosition();
-	pos += offset;
+
+	pos.d_x += PixelAligned(offset.d_x);
+	pos.d_y += PixelAligned(offset.d_y);
+
 	d_abs_area.setPosition(pos);
 
 	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
@@ -349,6 +352,8 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
+	delta = PixelAligned(delta);
+
 	float width = d_abs_area.getWidth();
 
 	// limit size to within max/min values
@@ -376,6 +381,8 @@ void FrameWindow::moveLeftEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveRightEdge(float delta)
 {
+	delta = PixelAligned(delta);
+
 	float width = d_abs_area.getWidth();
 
 	// limit size to within max/min values
@@ -403,6 +410,8 @@ void FrameWindow::moveRightEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveTopEdge(float delta)
 {
+	delta = PixelAligned(delta);
+
 	float height = d_abs_area.getHeight();
 
 	// limit size to within max/min values
@@ -430,6 +439,8 @@ void FrameWindow::moveTopEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveBottomEdge(float delta)
 {
+	delta = PixelAligned(delta);
+
 	float height = d_abs_area.getHeight();
 
 	// limit size to within max/min values

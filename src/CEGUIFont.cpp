@@ -231,7 +231,13 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 
 	float	y_base = draw_area.d_top + d_max_bearingY;
 
-	Rect tmpDrawArea(draw_area);
+	Rect tmpDrawArea(
+		PixelAligned(draw_area.d_left),
+		PixelAligned(draw_area.d_top),
+		PixelAligned(draw_area.d_right),
+		PixelAligned(draw_area.d_bottom)
+		);
+
 	uint lineStart = 0, lineEnd = 0;
 	String	currLine;
 
@@ -260,7 +266,7 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 			break;
 
 		case Centred:
-			drawTextLine(currLine, Vector3(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine)) / 2.0f), y_base, z), clip_rect, colours);
+			drawTextLine(currLine, Vector3(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine)) / 2.0f)), y_base, z), clip_rect, colours);
 			thisCount = 1;
 			y_base += getLineSpacing();
 			break;

@@ -36,6 +36,7 @@
 #include "xercesc/sax2/XMLReaderFactory.hpp"
 
 #include <iostream>
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -251,6 +252,11 @@ void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, con
 			(source_rect.d_top + ((final_rect.d_top - dest_rect.d_top) * tex_per_pix_y)) * y_scale,
 			(source_rect.d_right + ((final_rect.d_right - dest_rect.d_right) * tex_per_pix_x)) * x_scale,
 			(source_rect.d_bottom + ((final_rect.d_bottom - dest_rect.d_bottom) * tex_per_pix_y)) * y_scale);
+
+		final_rect.d_left	= PixelAligned(final_rect.d_left);
+		final_rect.d_right	= PixelAligned(final_rect.d_right);
+		final_rect.d_top	= PixelAligned(final_rect.d_top);
+		final_rect.d_bottom	= PixelAligned(final_rect.d_bottom);
 
 		// queue a quad to be rendered
 		d_texture->getRenderer()->addQuad(final_rect, z, d_texture, tex_rect, colours);

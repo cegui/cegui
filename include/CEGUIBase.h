@@ -94,6 +94,26 @@ static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical
 }  // end of CEGUI namespace section
 
 
+/*!
+\brief
+	Macro used to return a float value rounded to the nearest integer.
+
+	This macro is used throughout the library to ensure that elements are
+	kept at integer pixel positions on the display.
+
+\param x
+	Expression to be rounded to nearest whole number
+
+\return
+	\a x after having been rounded
+*/
+#if defined(CEGUI_ALIGN_ELEMENTS_TO_PIXELS)
+#	define PixelAligned(x)	( (float)(int)(( x ) + 0.5f) )
+#else
+#	define PixelAligned(x)	( x )
+#endif
+
+
 /*************************************************************************
 	Bring in forward references to all GUI base system classes
 *************************************************************************/

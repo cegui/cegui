@@ -32,6 +32,7 @@
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
 #include <algorithm>
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -1801,8 +1802,8 @@ Rect Window::absoluteToRelative_impl(const Window* window, const Rect& rect) con
 
 	if (sz.d_width)
 	{
-		tmp.d_left	= rect.d_left / sz.d_width;
-		tmp.d_right = rect.d_right / sz.d_width;
+		tmp.d_left	= PixelAligned(rect.d_left) / sz.d_width;
+		tmp.d_right = PixelAligned(rect.d_right) / sz.d_width;
 	}
 	else
 	{
@@ -1811,8 +1812,8 @@ Rect Window::absoluteToRelative_impl(const Window* window, const Rect& rect) con
 
 	if (sz.d_height)
 	{
-		tmp.d_top		= rect.d_top / sz.d_height;
-		tmp.d_bottom	= rect.d_bottom / sz.d_height;
+		tmp.d_top		= PixelAligned(rect.d_top) / sz.d_height;
+		tmp.d_bottom	= PixelAligned(rect.d_bottom) / sz.d_height;
 	}
 	else
 	{
@@ -1835,7 +1836,7 @@ Size Window::absoluteToRelative_impl(const Window* window, const Size& sz) const
 
 	if (wndsz.d_width)
 	{
-		tmp.d_width = sz.d_width / wndsz.d_width;
+		tmp.d_width = PixelAligned(sz.d_width) / wndsz.d_width;
 	}
 	else
 	{
@@ -1844,7 +1845,7 @@ Size Window::absoluteToRelative_impl(const Window* window, const Size& sz) const
 
 	if (wndsz.d_height)
 	{
-		tmp.d_height = sz.d_height / wndsz.d_height;
+		tmp.d_height = PixelAligned(sz.d_height) / wndsz.d_height;
 	}
 	else
 	{
@@ -1867,7 +1868,7 @@ Point Window::absoluteToRelative_impl(const Window* window, const Point& pt) con
 
 	if (sz.d_width)
 	{
-		tmp.d_x = pt.d_x / sz.d_width;
+		tmp.d_x = PixelAligned(pt.d_x) / sz.d_width;
 	}
 	else
 	{
@@ -1876,7 +1877,7 @@ Point Window::absoluteToRelative_impl(const Window* window, const Point& pt) con
 
 	if (sz.d_height)
 	{
-		tmp.d_y = pt.d_y / sz.d_height;
+		tmp.d_y = PixelAligned(pt.d_y) / sz.d_height;
 	}
 	else
 	{
@@ -1897,7 +1898,7 @@ float Window::absoluteToRelativeX_impl(const Window* window, float x) const
 
 	if (sz.d_width)
 	{
-		return x / sz.d_width;
+		return PixelAligned(x) / sz.d_width;
 	}
 	else
 	{
@@ -1916,7 +1917,7 @@ float Window::absoluteToRelativeY_impl(const Window* window, float y) const
 
 	if (sz.d_height)
 	{
-		return y / sz.d_height;
+		return PixelAligned(y) / sz.d_height;
 	}
 	else
 	{
@@ -1933,7 +1934,12 @@ Rect Window::relativeToAbsolute_impl(const Window* window, const Rect& rect) con
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return Rect(rect.d_left * sz.d_width, rect.d_top * sz.d_height, rect.d_right * sz.d_width, rect.d_bottom * sz.d_height);
+	return Rect(
+		PixelAligned(rect.d_left * sz.d_width),
+		PixelAligned(rect.d_top * sz.d_height),
+		PixelAligned(rect.d_right * sz.d_width),
+		PixelAligned(rect.d_bottom * sz.d_height)
+		);
 }
 
 
@@ -1945,7 +1951,10 @@ Size Window::relativeToAbsolute_impl(const Window* window, const Size& sz) const
 	// get size object for whatever we are using as a base for the conversion
 	Size wndsz = getWindowSize_impl(window);
 
-	return Size(sz.d_width * wndsz.d_width, sz.d_height * wndsz.d_height);
+	return Size(
+		PixelAligned(sz.d_width * wndsz.d_width),
+		PixelAligned(sz.d_height * wndsz.d_height)
+		);
 }
 
 
@@ -1957,7 +1966,10 @@ Point Window::relativeToAbsolute_impl(const Window* window, const Point& pt) con
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return Point(pt.d_x * sz.d_width, pt.d_y * sz.d_height);
+	return Point(
+		PixelAligned(pt.d_x * sz.d_width),
+		PixelAligned(pt.d_y * sz.d_height)
+		);
 }
 
 
@@ -1969,7 +1981,7 @@ float Window::relativeToAbsoluteX_impl(const Window* window, float x) const
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return x * sz.d_width;
+	return PixelAligned(x * sz.d_width);
 }
 
 
@@ -1981,7 +1993,7 @@ float Window::relativeToAbsoluteY_impl(const Window* window, float y) const
 	// get size object for whatever we are using as a base for the conversion
 	Size sz = getWindowSize_impl(window);
 
-	return y * sz.d_height;
+	return PixelAligned(y * sz.d_height);
 }
 
 
@@ -2043,7 +2055,8 @@ void Window::setMinimumSize(const Size& sz)
 {
 	if (getMetricsMode() == Absolute)
 	{
-		d_minSize = sz;
+		d_minSize.d_width = PixelAligned(sz.d_width);
+		d_minSize.d_height = PixelAligned(sz.d_height);
 	}
 	else
 	{
@@ -2073,7 +2086,8 @@ void Window::setMaximumSize(const Size& sz)
 {
 	if (getMetricsMode() == Absolute)
 	{
-		d_maxSize = sz;
+		d_maxSize.d_width = PixelAligned(sz.d_width);
+		d_maxSize.d_height = PixelAligned(sz.d_height);
 	}
 	else
 	{
@@ -2386,7 +2400,9 @@ void Window::setPosition(MetricsMode mode, const Point& position)
 	}
 	else
 	{
-		d_abs_area.setPosition(position);
+		Point intPos(PixelAligned(position.d_x), PixelAligned(position.d_y));
+
+		d_abs_area.setPosition(intPos);
 		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
 	}
 
@@ -2433,7 +2449,9 @@ void Window::setSize(MetricsMode mode, const Size& size)
 	}
 	else
 	{
-		d_abs_area.setSize(size);
+		Size intSize(PixelAligned(size.d_width), PixelAligned(size.d_height));
+
+		d_abs_area.setSize(intSize);
 		d_abs_area.constrainSize(d_maxSize, d_minSize);
 
 		// update Rect for the other metrics system.
@@ -2465,7 +2483,14 @@ void Window::setRect(MetricsMode mode, const Rect& area)
 	}
 	else
 	{
-		d_abs_area = area;
+		Rect intArea(
+			PixelAligned(area.d_left),
+			PixelAligned(area.d_top),
+			PixelAligned(area.d_right),
+			PixelAligned(area.d_bottom)
+			);
+
+		d_abs_area = intArea;
 		d_abs_area.constrainSize(d_maxSize, d_minSize);
 
 		d_rel_area = absoluteToRelative_impl(d_parent, area);

@@ -29,6 +29,9 @@
 #include "CEGUIImageset.h"
 #include "CEGUIRenderer.h"
 
+#include <cmath>
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -81,8 +84,8 @@ Image::~Image(void)
 *************************************************************************/
 void Image::setHorzScaling(float factor)
 {
-	d_scaledWidth		= d_area.getWidth() * factor;
-	d_scaledOffset.d_x	= d_offset.d_x * factor;
+	d_scaledWidth		= PixelAligned(d_area.getWidth() * factor);
+	d_scaledOffset.d_x	= PixelAligned(d_offset.d_x * factor);
 }
 
 
@@ -91,8 +94,8 @@ void Image::setHorzScaling(float factor)
 *************************************************************************/
 void Image::setVertScaling(float factor)
 {
-	d_scaledHeight		= d_area.getHeight() * factor;
-	d_scaledOffset.d_y	= d_offset.d_y * factor;
+	d_scaledHeight		= PixelAligned(d_area.getHeight() * factor);
+	d_scaledOffset.d_y	= PixelAligned(d_offset.d_y * factor);
 }
 
 
