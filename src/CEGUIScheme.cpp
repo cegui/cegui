@@ -34,6 +34,8 @@
 #include "CEGUIWindowFactoryManager.h"
 #include "CEGUIFactoryModule.h"
 #include "CEGUIScheme_xmlHandler.h"
+#include "CEGUIDataContainer.h"
+#include "CEGUISystem.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -69,6 +71,14 @@ Scheme::Scheme(const String& filename)
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
+    InputSourceContainer schemeSchemaData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUISchemeSchemaName, schemeSchemaData);
+
+    parser->loadGrammar(*(schemeSchemaData.getDataPtr()),
+            Grammar::SchemaGrammarType, true);
+    // enable grammar reuse
+    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+
 	// setup schema for Scheme data
 	XMLCh* pval = XMLString::transcode(GUISchemeSchemaName);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
@@ -79,10 +89,13 @@ Scheme::Scheme(const String& filename)
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
+    InputSourceContainer schemeData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, schemeData);
+
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(filename.c_str());
+		parser->parse(*(schemeData.getDataPtr()));
 	}
 	catch(const XMLException& exc)
 	{

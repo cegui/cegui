@@ -30,6 +30,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIImageset_xmlHandler.h"
 #include "CEGUILogger.h"
+#include "CEGUIDataContainer.h"
 
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
@@ -125,6 +126,12 @@ void Imageset::load(const String& filename)
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
+    InputSourceContainer imagesetSchemaData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(ImagesetSchemaName, imagesetSchemaData);
+    parser->loadGrammar(*(imagesetSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+    // enable grammar reuse
+    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+
 	// setup schema for Imageset data
 	XMLCh* pval = XMLString::transcode(ImagesetSchemaName);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
@@ -135,10 +142,13 @@ void Imageset::load(const String& filename)
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
+    InputSourceContainer imagesetData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename,imagesetData);
+
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(filename.c_str());
+		parser->parse(*(imagesetData.getDataPtr()));
 	}
 	catch(const XMLException& exc)
 	{

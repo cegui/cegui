@@ -191,6 +191,12 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	parser->setFeature(XMLUni::fgXercesSchema, true);
 	parser->setFeature(XMLUni::fgXercesValidationErrorAsFatal, true);
 
+    InputSourceContainer layoutSchemaData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(GUILayoutSchemaName, layoutSchemaData);
+    parser->loadGrammar(*(layoutSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
+    // enable grammar reuse
+    parser->setFeature(XMLUni::fgXercesUseCachedGrammarInParse, true);
+
 	// setup schema for gui-layout data
 	XMLCh* pval = XMLString::transcode(GUILayoutSchemaName);
 	parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
@@ -201,10 +207,13 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	parser->setContentHandler(&handler);
 	parser->setErrorHandler(&handler);
 
+    InputSourceContainer layoutData;
+    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, layoutData);
+
 	// do parse (which uses handler to create actual data)
 	try
 	{
-		parser->parse(filename.c_str());
+		parser->parse(*(layoutData.getDataPtr()));
 
 		// log the completion of loading
 		Logger::getSingleton().logEvent((utf8*)"---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);
