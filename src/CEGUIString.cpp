@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "CEGUIString.h"
 
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI

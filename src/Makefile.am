@@ -1,6 +1,6 @@
 SUBDIRS = . renderers
 
-INCLUDES = -I$(top_srcdir)/include 
+INCLUDES = -I$(top_srcdir)/include $(freetype2_CFLAGS)
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
@@ -64,4 +64,4 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       implementations/linux/CEGUIFactoryModule.cpp
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
-libCEGUIBase_la_LIBADD = -lboost_regex-gcc -lboost_signals-gcc
+libCEGUIBase_la_LIBADD = -lboost_regex -lboost_signals $(freetype2_LIBS)

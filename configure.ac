@@ -10,12 +10,17 @@ AC_PROG_CC
 AM_PROG_LIBTOOL
 
 # Checks for libraries.
-AC_CHECK_LIB([xerces-c], [main],, AC_MSG_ERROR([cannot find xerces library]))
+AC_CHECK_LIB([dl], [main])
+AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
+AC_CHECK_LIB([xerces-c], [main],, AC_MSG_ERROR([cannot find xerces library]), -lpthread)
 #AC_HAVE_LIBRARY(boost_signals-gcc,[main] , [AC_MSG_ERROR([cannot find boost libraries])])
 PKG_CHECK_MODULES(OGRE, OGRE >= 0.14.0)
 AC_SUBST(OGRE_CFLAGS)
 AC_SUBST(OGRE_LIBS)
 
+PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
+AC_SUBST(freetype2_CFLAGS)
+AC_SUBST(freetype2_LIBS)
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
