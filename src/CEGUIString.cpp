@@ -35,6 +35,108 @@ namespace CEGUI
 const String::size_type String::npos = (String::size_type)(-1);
 
 
+//////////////////////////////////////////////////////////////////////////
+// Destructor
+//////////////////////////////////////////////////////////////////////////
+String::~String(void)
+{
+	if (d_reserve > STR_QUICKBUFF_SIZE)
+	{
+		delete[] d_buffer;
+	}
+		if (d_encodedbufflen > 0)
+	{
+		delete[] d_encodedbuff;
+	}
+}
+
+bool String::grow(size_type new_size)
+{
+    // check for too big
+    if (max_size() <= new_size)
+        std::length_error("Resulting CEGUI::String would be too big");
+
+    // increase, as we always null-terminate the buffer.
+    ++new_size;
+
+    if (new_size > d_reserve)
+    {
+        utf32* temp = new utf32[new_size];
+
+        if (d_reserve > STR_QUICKBUFF_SIZE)
+        {
+            memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
+            delete[] d_buffer;
+        }
+        else
+        {
+            memcpy(temp, d_quickbuff, (d_cplength + 1) * sizeof(utf32));
+        }
+
+        d_buffer = temp;
+        d_reserve = new_size;
+
+        return true;
+    }
+
+    return false;
+}
+
+// perform re-allocation to remove wasted space.
+void String::trim(void)
+{
+    size_type min_size = d_cplength + 1;
+
+    // only re-allocate when not using quick-buffer, and when size can be trimmed
+    if ((d_reserve > STR_QUICKBUFF_SIZE) && (d_reserve > min_size))
+    {
+            // see if we can trim to quick-buffer
+        if (min_size <= STR_QUICKBUFF_SIZE)
+        {
+            memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
+            delete[] d_buffer;
+            d_reserve = STR_QUICKBUFF_SIZE;
+        }
+        // re-allocate buffer
+        else
+        {
+            utf32* temp = new utf32[min_size];
+            memcpy(temp, d_buffer, min_size * sizeof(utf32));
+            delete[] d_buffer;
+            d_buffer = temp;
+            d_reserve = min_size;
+        }
+
+    }
+
+}
+
+// build an internal buffer with the string encoded as utf8 (remains valid until string is modified).
+utf8* String::build_utf8_buff(void) const
+{
+    size_type buffsize = encoded_size(ptr(), d_cplength) + 1;
+
+    if (buffsize > d_encodedbufflen) {
+
+        if (d_encodedbufflen > 0)
+        {
+            delete[] d_encodedbuff;
+        }
+
+        d_encodedbuff = new utf8[buffsize];
+        d_encodedbufflen = buffsize;
+    }
+
+    encode(ptr(), d_encodedbuff, buffsize, d_cplength);
+
+    // always add a null at end
+    d_encodedbuff[buffsize-1] = ((utf8)0);
+    d_encodeddatlen = buffsize;
+
+    return d_encodedbuff;
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // Comparison operators

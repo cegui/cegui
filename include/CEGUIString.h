@@ -38,9 +38,9 @@ namespace CEGUI
 	/*************************************************************************
 		Basic Types
 	*************************************************************************/
-	typedef		uchar	utf8;
-	//typedef		ushort	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
-	typedef		ulong	utf32;
+	typedef		uint8	utf8;
+	//typedef		uint16	utf16;  // removed typedef to prevent usage, as utf16 is not supported (yet)
+	typedef		uint32	utf32;
 
 /*!
 \brief
@@ -361,19 +361,7 @@ public:
 	\brief
 		Destructor for String objects
 	*/
-	~String(void)
-	{
-		if (d_reserve > STR_QUICKBUFF_SIZE)
-		{
-			delete[] d_buffer;
-		}
-
-		if (d_encodedbufflen > 0)
-		{
-			delete[] d_encodedbuff;
-		}
-
-	}
+	~String(void);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Construction via CEGUI::String
@@ -4754,66 +4742,10 @@ private:
 	// change size of allocated buffer so it is at least 'new_size'.
 	// May or may not cause re-allocation and copy of buffer if size is larger
 	// will never re-allocate to make size smaller.  (see trim())
-	bool	grow(size_type new_size)
-	{
-		// check for too big
-		if (max_size() <= new_size)
-			std::length_error("Resulting CEGUI::String would be too big");
-
-		// increase, as we always null-terminate the buffer.
-		++new_size;
-
-		if (new_size > d_reserve)
-		{
-			utf32* temp = new utf32[new_size];
-
-			if (d_reserve > STR_QUICKBUFF_SIZE)
-			{
-				memcpy(temp, d_buffer, (d_cplength + 1) * sizeof(utf32));
-				delete[] d_buffer;
-			}
-			else
-			{
-				memcpy(temp, d_quickbuff, (d_cplength + 1) * sizeof(utf32));
-			}
-
-			d_buffer = temp;
-			d_reserve = new_size;
-
-			return true;
-		}
-
-		return false;
-	}
+    bool	grow(size_type new_size);
 
 	// perform re-allocation to remove wasted space.
-	void	trim(void)
-	{
-		size_type min_size = d_cplength + 1;
-
-		// only re-allocate when not using quick-buffer, and when size can be trimmed
-		if ((d_reserve > STR_QUICKBUFF_SIZE) && (d_reserve > min_size))
-		{
-			// see if we can trim to quick-buffer
-			if (min_size <= STR_QUICKBUFF_SIZE)
-			{
-				memcpy(d_quickbuff, d_buffer, min_size * sizeof(utf32));
-				delete d_buffer;
-				d_reserve = STR_QUICKBUFF_SIZE;
-			}
-			// re-allocate buffer
-			else
-			{
-				utf32* temp = new utf32[min_size];
-				memcpy(temp, d_buffer, min_size * sizeof(utf32));
-				delete d_buffer;
-				d_buffer = temp;
-				d_reserve = min_size;
-			}
-
-		}
-
-	}
+    void	trim(void);
 
 	// set the length of the string, and terminate it, according to the given value (will not re-allocate, use grow() first).
 	void	setlen(size_type len)
@@ -5057,30 +4989,7 @@ private:
 	}
 
 	// build an internal buffer with the string encoded as utf8 (remains valid until string is modified).
-	utf8* build_utf8_buff(void) const
-	{
-		size_type buffsize = encoded_size(ptr(), d_cplength) + 1;
-
-		if (buffsize > d_encodedbufflen) {
-
-			if (d_encodedbufflen > 0)
-			{
-				delete[] d_encodedbuff;
-			}
-
-			d_encodedbuff = new utf8[buffsize];
-			d_encodedbufflen = buffsize;
-		}
-
-		encode(ptr(), d_encodedbuff, buffsize, d_cplength);
-
-		// always add a null at end
-		d_encodedbuff[buffsize-1] = ((utf8)0);
-
-		d_encodeddatlen = buffsize;
-
-		return d_encodedbuff;
-	}
+    utf8* build_utf8_buff(void) const;
 
 	// compare two utf32 buffers
 	int	utf32_comp_utf32(const utf32* buf1, const utf32* buf2, size_type cp_count) const
