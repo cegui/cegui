@@ -88,5 +88,6 @@
 #include "elements/CEGUIDragContainer.h"
 #include "elements/CEGUIScrolledContainer.h"
 #include "elements/CEGUIScrollablePane.h"
+#include "elements/CEGUITooltip.h"
 
 #endif	// end of guard _CEGUI_h_
