@@ -104,8 +104,8 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 
 	addMultiLineEditboxProperties();
 
-	// we always need a terminating /n
-	d_text.append(1, '/n');
+	// we always need a terminating \n
+	d_text.append(1, '\n');
 }
 
 
