@@ -126,6 +126,25 @@ public:
 
 	/*!
 	\brief
+		Construct a new System object
+
+	\param renderer
+		Pointer to the valid Renderer object that will be used to render GUI imagery
+
+	\param scriptModule
+		Pointer to a ScriptModule object.  may be NULL.
+
+	\param resourceProvider
+		Pointer to a ResourceProvider object.
+
+	\param configFile
+		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
+	*/
+	System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, utf8* configFile = (utf8*)"cegui.config");
+
+
+	/*!
+	\brief
 		Destructor for System objects.
 	*/
 	~System(void);

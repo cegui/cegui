@@ -141,10 +141,19 @@ System::System(Renderer* renderer, ScriptModule* scriptModule, utf8* configFile)
 
 
 /*************************************************************************
+	Construct a new System object
+*************************************************************************/
+System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, utf8* configFile) :
+	d_clickTrackerPimpl(new MouseClickTrackerImpl)
+{
+	constructor_impl(renderer, resourceProvider, scriptModule, configFile, (utf8*)"CEGUI.log");
+}
+
+
+/*************************************************************************
 	Method to do the work of the constructor
 *************************************************************************/
 void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, ScriptModule* scriptModule, const String& configFile, const String& logFile)
-
 {
 	d_renderer		= renderer;
 	d_gui_redraw	= false;
