@@ -169,7 +169,7 @@ public:
     virtual	Texture*	createTexture(void);
 
     // create a texture and load it with the specified file.
-    virtual	Texture*	createTexture(const String& filename);
+    virtual	Texture*	createTexture(const String& filename, const String& resourceGroup);
 
     // create a texture and set it to the specified size
     virtual	Texture*	createTexture(float size);

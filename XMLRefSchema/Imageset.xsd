@@ -8,6 +8,7 @@
 			<xsd:element name="Image" type="ImageType" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="Imagefile" type="xsd:string" use="required"/>
+		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
 		<xsd:attribute name="Name" type="xsd:string" use="required"/>
 		<xsd:attribute name="NativeHorzRes" type="xsd:nonNegativeInteger" use="optional" default="640" />
 		<xsd:attribute name="NativeVertRes" type="xsd:nonNegativeInteger" use="optional" default="480" />

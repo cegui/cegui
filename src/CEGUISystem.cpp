@@ -225,7 +225,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 //                Grammar::SchemaGrammarType, true);
 
         RawDataContainer rawSchemaData;
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(CEGUIConfigSchemaName, rawSchemaData);
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(CEGUIConfigSchemaName, rawSchemaData, "");
         MemBufInputSource  configSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), CEGUIConfigSchemaName, false);
         parser->loadGrammar(configSchemaData, Grammar::SchemaGrammarType, true);
 
@@ -246,7 +246,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 //        d_resourceProvider->loadInputSourceContainer(configFile, configData);
 
         RawDataContainer rawXMLData;
-        System::getSingleton().getResourceProvider()->loadRawDataContainer(configFile, rawXMLData);
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(configFile, rawXMLData, "");
         MemBufInputSource  configData(rawXMLData.getDataPtr(), rawXMLData.getSize(), configFile.c_str(), false);
 
 		// do parsing of xml file
@@ -262,6 +262,12 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 			defaultFontName		= handler.getDefaultFontName();
 			configInitScript	= handler.getInitScriptFilename();
 			d_termScriptName	= handler.getTermScriptFilename();
+
+            // set default resource group if it was specified.
+            if (!handler.getDefaultResourceGroup().empty())
+            {
+                d_resourceProvider->setDefaultResourceGroup(handler.getDefaultResourceGroup());
+            }
 		}
 		catch(const XMLException& exc)
 		{
@@ -357,7 +363,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	{
 		try
 		{
-			SchemeManager::getSingleton().loadScheme(configSchemeName);
+			SchemeManager::getSingleton().loadScheme(configSchemeName, d_resourceProvider->getDefaultResourceGroup());
 
 			// set default font if that was specified also
 			if (!defaultFontName.empty())

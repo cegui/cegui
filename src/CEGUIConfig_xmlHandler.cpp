@@ -45,6 +45,7 @@ const char	Config_xmlHandler::ConfigLayoutAttribute[]			= "Layout";
 const char	Config_xmlHandler::ConfigDefaultFontAttribute[]		= "DefaultFont";
 const char	Config_xmlHandler::ConfigInitScriptAttribute[]		= "InitScript";
 const char	Config_xmlHandler::ConfigTerminateScriptAttribute[]	= "TerminateScript";
+const char  Config_xmlHandler::ConfigDefaultResourceGroupAttribute[] = "DefaultResourceGroup";
 
 void Config_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
 {
@@ -59,7 +60,8 @@ void Config_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 		d_layoutFilename		= XmlHandlerHelper::getAttributeValueAsString(attrs, ConfigLayoutAttribute);
 		d_initScriptFilename	= XmlHandlerHelper::getAttributeValueAsString(attrs, ConfigInitScriptAttribute);
 		d_termScriptFilename	= XmlHandlerHelper::getAttributeValueAsString(attrs, ConfigTerminateScriptAttribute);
-		d_defaultFontName		= XmlHandlerHelper::getAttributeValueAsString(attrs, ConfigDefaultFontAttribute);
+        d_defaultFontName		= XmlHandlerHelper::getAttributeValueAsString(attrs, ConfigDefaultFontAttribute);
+        d_defaultResourceGroup  = XmlHandlerHelper::getAttributeValueAsString(attrs, ConfigDefaultResourceGroupAttribute);
 	}
 	// anything else is an error which *should* have already been caught by XML validation
 	else

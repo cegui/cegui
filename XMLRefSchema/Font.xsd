@@ -29,6 +29,7 @@
 	<xsd:attributeGroup name="FontAttrs">
 		<xsd:attribute name="Name" type="xsd:string" use="required" />
 		<xsd:attribute name="Filename" type="xsd:string" use="required" />
+		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
 		<xsd:attribute name="Type" use="required">
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">

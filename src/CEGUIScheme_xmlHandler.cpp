@@ -52,6 +52,7 @@ const char	Scheme_xmlHandler::NameAttribute[]				= "Name";
 const char	Scheme_xmlHandler::FilenameAttribute[]			= "Filename";
 const char	Scheme_xmlHandler::AliasAttribute[]				= "Alias";
 const char	Scheme_xmlHandler::TargetAttribute[]			= "Target";
+const char	Scheme_xmlHandler::ResourceGroupAttribute[]     = "ResourceGroup";
 
 /*************************************************************************
 SAX2 Handler methods
@@ -77,6 +78,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 
 		imageset.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
 		imageset.filename = XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
+        imageset.resourceGroup = XmlHandlerHelper::getAttributeValueAsString(attrs, ResourceGroupAttribute);
 
 		d_scheme->d_imagesets.push_back(imageset);
 	}
@@ -87,6 +89,7 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 
 		font.name = XmlHandlerHelper::getAttributeValueAsString(attrs, NameAttribute);
 		font.filename = XmlHandlerHelper::getAttributeValueAsString(attrs, FilenameAttribute);
+        font.resourceGroup = XmlHandlerHelper::getAttributeValueAsString(attrs, ResourceGroupAttribute);
 
 		d_scheme->d_fonts.push_back(font);
 	}

@@ -45,7 +45,7 @@ private:
 		Friends (to allow construction and destruction)
 	*************************************************************************/
 	friend	Texture* OgreRenderer::createTexture(void);
-	friend	Texture* OgreRenderer::createTexture(const String& filename);
+	friend	Texture* OgreRenderer::createTexture(const String& filename, const String& resourceGroup);
 	friend	Texture* OgreRenderer::createTexture(float size);
 	friend	void	 OgreRenderer::destroyTexture(Texture* texture);
 
@@ -87,7 +87,7 @@ public:
 	\return
 		Nothing.
 	*/
-	virtual void	loadFromFile(const String& filename);
+	virtual void	loadFromFile(const String& filename, const String& resourceGroup);
 
 
 	/*!

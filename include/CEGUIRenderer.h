@@ -171,6 +171,9 @@ public:
 	\param filename
 		String object that specifies the path and filename of the image file to use when creating the texture.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource provider when loading the texture file.
+
 	\return
 		a newly created Texture object.  The initial contents of the texture memory is the requested image file.
 
@@ -180,7 +183,7 @@ public:
 		size is governed by the larger of the width and height of the specified file.  You can check the ultimate sizes
 		by querying the texture after creation.
 	*/
-	virtual	Texture*	createTexture(const String& filename) = 0;
+	virtual	Texture*	createTexture(const String& filename, const String& resourceGroup) = 0;
 
 
 	/*!

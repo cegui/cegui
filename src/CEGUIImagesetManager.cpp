@@ -83,11 +83,11 @@ Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 /*************************************************************************
 	Create an Imageset object from the specified file
 *************************************************************************/
-Imageset* ImagesetManager::createImageset(const String& filename)
+Imageset* ImagesetManager::createImageset(const String& filename, const String& resourceGroup)
 {
 	Logger::getSingleton().logEvent((utf8*)"Attempting to create an Imageset from the information specified in file '" + filename + "'.");
 
-	Imageset* temp = new Imageset(filename);
+	Imageset* temp = new Imageset(filename, resourceGroup);
 
 	String	name = temp->getName();
 

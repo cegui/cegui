@@ -71,14 +71,14 @@ Imageset::Imageset(const String& name, Texture* texture) :
 /*************************************************************************
 	construct and initialise Imageset from the specified file.
 *************************************************************************/
-Imageset::Imageset(const String& filename)
+Imageset::Imageset(const String& filename, const String& resourceGroup)
 {
 	// defaults for scaling options
 	d_autoScale = false;
 	setNativeResolution(Size(DefaultNativeHorzRes, d_nativeVertRes));
 
 	d_texture = NULL;
-	load(filename);
+	load(filename, resourceGroup);
 }
 
 
@@ -108,7 +108,7 @@ void Imageset::setTexture(Texture* texture)
 /*************************************************************************
 	load Imageset data from the specified file
 *************************************************************************/
-void Imageset::load(const String& filename)
+void Imageset::load(const String& filename, const String& resourceGroup)
 {
 	XERCES_CPP_NAMESPACE_USE
 
@@ -133,7 +133,7 @@ void Imageset::load(const String& filename)
 //    parser->loadGrammar(*(imagesetSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
 
     RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(ImagesetSchemaName, rawSchemaData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(ImagesetSchemaName, rawSchemaData, resourceGroup);
     MemBufInputSource  imagesetSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), ImagesetSchemaName, false);
     parser->loadGrammar(imagesetSchemaData, Grammar::SchemaGrammarType, true);
     // enable grammar reuse
@@ -153,7 +153,7 @@ void Imageset::load(const String& filename)
 //    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename,imagesetData);
 
     RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
     MemBufInputSource  imagesetData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)

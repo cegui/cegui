@@ -319,10 +319,10 @@ Texture* OgreRenderer::createTexture(void)
 /*************************************************************************
 	create a texture and load it with the specified file.
 *************************************************************************/
-Texture* OgreRenderer::createTexture(const String& filename)
+Texture* OgreRenderer::createTexture(const String& filename, const String& resourceGroup)
 {
 	OgreTexture* tex = (OgreTexture*)createTexture();
-	tex->loadFromFile(filename);
+	tex->loadFromFile(filename, resourceGroup);
 
 	return tex;
 }

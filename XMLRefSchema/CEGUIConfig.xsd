@@ -10,6 +10,7 @@
 		<xsd:attribute name="Layout" type="xsd:string" use="optional" default=""/>
 		<xsd:attribute name="InitScript" type="xsd:string" use="optional" default=""/>
 		<xsd:attribute name="TerminateScript" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="DefaultResourceGroup" type="xsd:string" use="optional"  default="" />
 	</xsd:complexType>
 	
 </xsd:schema>

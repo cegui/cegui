@@ -38,12 +38,12 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	OgreResourceProvider() : ResourceProvider() {}
+	OgreResourceProvider();
 
 	~OgreResourceProvider(void) {}
 
 //    void loadInputSourceContainer(const String& filename, InputSourceContainer& output);
-    void loadRawDataContainer(const String& filename, RawDataContainer& output);
+    void loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup);
 };
 
 } // End of  CEGUI namespace section

@@ -93,6 +93,7 @@ private:
 	static const String ImageElement;					//!< Tag name for Image elements.
 	static const char	ImagesetNameAttribute[];		//!< Attribute name that stores the name of the Imageset
 	static const char	ImagesetImageFileAttribute[];	//!< Attribute name that stores the filename for the image file.
+    static const char	ImagesetResourceGroupAttribute[];   //!< Attribute name that stores the resource group identifier used when loading image file.
 	static const char	ImagesetNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.
 	static const char	ImagesetNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Imageset.
 	static const char	ImagesetAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Imageset should be auto-scaled.

@@ -64,13 +64,13 @@ DirectX81Texture::~DirectX81Texture(void)
 	Load texture from file.  Texture is made to be same size as image in
 	file.
 *************************************************************************/
-void DirectX81Texture::loadFromFile(const String& filename)
+void DirectX81Texture::loadFromFile(const String& filename, const String& resourceGroup)
 {
 	freeD3DTexture();
 
 	// load the file via the resource provider
 	RawDataContainer texFile;
-	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile);
+	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile, resourceGroup);
 	
 	D3DXIMAGE_INFO texInfo;
 	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX81Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(), texFile.getSize(),
@@ -83,6 +83,7 @@ void DirectX81Texture::loadFromFile(const String& filename)
 		d_height	= texInfo.Height;
 
 		d_filename = filename;
+        d_resourceGroup = resourceGroup;
 		d_isMemoryTexture = false;
 	}
 	else
@@ -242,7 +243,7 @@ void DirectX81Texture::postD3DReset(void)
 		String name(d_filename);
 
 		// re-load the texture
-		loadFromFile(name);
+		loadFromFile(name, d_resourceGroup);
 	}
 
 }

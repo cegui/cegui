@@ -61,7 +61,7 @@ const char	Font::FontSchemaName[]				= "Font.xsd";
 /*************************************************************************
 	Constructs a new Font object from a font definition file
 *************************************************************************/
-Font::Font(const String& filename, FontImplData* dat)
+Font::Font(const String& filename, const String& resourceGroup, FontImplData* dat)
 {
 	d_antiAliased = false;
 	d_impldat = dat;
@@ -72,7 +72,7 @@ Font::Font(const String& filename, FontImplData* dat)
 	d_autoScale = false;
 	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
 
-	load(filename);
+	load(filename, resourceGroup);
 
 	// complete y spacing set-up for bitmap / static fonts
 	calculateStaticVertSpacing();
@@ -84,7 +84,7 @@ Font::Font(const String& filename, FontImplData* dat)
 	'glyph-set' describes the set of code points to be available via
 	this font
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set, FontImplData* dat)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set, FontImplData* dat)
 {
 	d_impldat = dat;
 	d_freetype = false;
@@ -94,7 +94,7 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, co
 	d_autoScale = false;
 	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
 
-	constructor_impl(name, fontname, size, flags, glyph_set);
+	constructor_impl(name, fontname, resourceGroup, size, flags, glyph_set);
 }
 
 
@@ -103,7 +103,7 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, co
 	[first_code_point, last_code_point] describes the range of code
 	points to be available via this font
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat)
 {
 	d_impldat = dat;
 	d_freetype = false;
@@ -120,7 +120,7 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, ut
 		tmp += cp;
 	}
 
-	constructor_impl(name, fontname, size, flags, tmp);
+	constructor_impl(name, fontname, resourceGroup, size, flags, tmp);
 }
 
 
@@ -128,7 +128,7 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, ut
 	Constructs a new Font object (via FreeType & a true-type font file)
 	The font file will provide support for 7-bit ASCII characters only
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, uint size, uint flags, FontImplData* dat)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, FontImplData* dat)
 {
 	d_impldat = dat;
 	d_freetype = false;
@@ -145,7 +145,7 @@ Font::Font(const String& name, const String& fontname, uint size, uint flags, Fo
 		tmp += cp;
 	}
 
-	constructor_impl(name, fontname, size, flags, tmp);
+	constructor_impl(name, fontname, resourceGroup, size, flags, tmp);
 }
 
 
@@ -628,7 +628,7 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 /*************************************************************************
 	Function to do real work of constructor
 *************************************************************************/
-void Font::constructor_impl(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set)
+void Font::constructor_impl(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set)
 {
 	FontManager&	 fman	= FontManager::getSingleton();
 	ImagesetManager& ismgr	= ImagesetManager::getSingleton();
@@ -643,7 +643,7 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 	uint		vertdpi		= System::getSingleton().getRenderer()->getVertScreenDPI();
 	String		errMsg;
 
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(fontname, d_impldat->fontData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(fontname, d_impldat->fontData, resourceGroup);
 
 	// create face using input font
 	if (FT_New_Memory_Face(d_impldat->library, d_impldat->fontData.getDataPtr(), 
@@ -699,7 +699,7 @@ void Font::constructor_impl(const String& name, const String& fontname, uint siz
 /*************************************************************************
 	Load and complete construction of 'this' via an XML file
 *************************************************************************/
-void Font::load(const String& filename)
+void Font::load(const String& filename, const String& resourceGroup)
 {
 	XERCES_CPP_NAMESPACE_USE
 
@@ -724,7 +724,7 @@ void Font::load(const String& filename)
 //    parser->loadGrammar(*(fontSchemaData.getDataPtr()), Grammar::SchemaGrammarType, true);
 
     RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(FontSchemaName, rawSchemaData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(FontSchemaName, rawSchemaData, resourceGroup);
     MemBufInputSource  fontSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), FontSchemaName, false);
     parser->loadGrammar(fontSchemaData, Grammar::SchemaGrammarType, true);
     // enable grammar reuse
@@ -744,7 +744,7 @@ void Font::load(const String& filename)
 //    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, fontData);
 
     RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
     MemBufInputSource  fontData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)

@@ -366,10 +366,10 @@ Texture* DirectX81Renderer::createTexture(void)
 /*************************************************************************
 	Create a new Texture object and load a file into it.
 *************************************************************************/
-Texture* DirectX81Renderer::createTexture(const String& filename)
+Texture* DirectX81Renderer::createTexture(const String& filename, const String& resourceGroup)
 {
 	DirectX81Texture* tex = (DirectX81Texture*)createTexture();
-	tex->loadFromFile(filename);
+	tex->loadFromFile(filename, resourceGroup);
 
 	return tex;
 }

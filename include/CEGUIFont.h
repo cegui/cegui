@@ -704,6 +704,10 @@ private:
 	\param filename
 		The filename of the "font definition file" to be used in creating this font.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource provider to load the font
+        definition file.
+
 	\exception	FileIOException				thrown if there was some problem accessing or parsing the file \a filename
 	\exception	InvalidRequestException		thrown if an invalid filename was provided.
 	\exception	AlreadyExistsException		thrown if a Font Imageset clashes with one already defined in the system.
@@ -711,7 +715,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& filename, FontImplData* dat);
+	Font(const String& filename, const String& resourceGroup, FontImplData* dat);
 
 
 	/*!
@@ -724,6 +728,10 @@ private:
 	\param fontname
 		filename of the true-type font to be loaded.
 
+    \param resourceGroup
+        Resource group identifier to pass to the resource provider when loading the true-type
+        font file.
+
 	\param size
 		Point size of the new font.
 
@@ -735,7 +743,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& name, const String& fontname, uint size, uint flags, FontImplData* dat);
+	Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, FontImplData* dat);
 
 
 	/*!
@@ -747,6 +755,10 @@ private:
 
 	\param fontname
 		filename of the true-type font to be loaded.
+
+    \param resourceGroup
+        Resource group identifier to pass to the resource provider when loading the true-type
+        font file.
 
 	\param size
 		Point size of the new font.
@@ -762,7 +774,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set, FontImplData* dat);
+	Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set, FontImplData* dat);
 
 
 	/*!
@@ -774,6 +786,10 @@ private:
 
 	\param fontname
 		filename of the true-type font to be loaded.
+
+    \param resourceGroup
+        Resource group identifier to pass to the resource provider when loading the true-type
+        font file.
 
 	\param size
 		Point size of the new font.
@@ -792,7 +808,7 @@ private:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font(const String& name, const String& fontname, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat);
+	Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat);
 
 
 public:		// For luabind support
@@ -814,10 +830,14 @@ private:
 	\param filename
 		String object holding the name of the XML file that holds details about the font to create.
 
+    \param resourceGroup
+        Resource group identifier to be passed to the resource provider when loading the font
+        definition file.
+
 	\return
 		Nothing.
 	*/
-	void	load(const String& filename);
+	void	load(const String& filename, const String& resourceGroup);
 
 
 	/*!
@@ -967,7 +987,7 @@ private:
 	\brief
 		Function to do real work of constructor.  Used to save duplication in the various constructor overloads.
 	*/
-	void	constructor_impl(const String& name, const String& fontname, uint size, uint flags, const String& glyph_set);
+	void	constructor_impl(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set);
 
 
 	/*!

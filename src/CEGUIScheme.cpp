@@ -55,7 +55,7 @@ const char Scheme::GUISchemeSchemaName[]					= "GUIScheme.xsd";
 /*************************************************************************
 	Constructor for scheme objects
 *************************************************************************/
-Scheme::Scheme(const String& filename)
+Scheme::Scheme(const String& filename, const String& resourceGroup)
 {
 	XERCES_CPP_NAMESPACE_USE
 
@@ -79,7 +79,7 @@ Scheme::Scheme(const String& filename)
 //            Grammar::SchemaGrammarType, true);
 
     RawDataContainer rawSchemaData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUISchemeSchemaName, rawSchemaData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(GUISchemeSchemaName, rawSchemaData, resourceGroup);
     MemBufInputSource  schemeSchemaData(rawSchemaData.getDataPtr(), rawSchemaData.getSize(), GUISchemeSchemaName, false);
     parser->loadGrammar(schemeSchemaData, Grammar::SchemaGrammarType, true);
 
@@ -100,7 +100,7 @@ Scheme::Scheme(const String& filename)
 //    System::getSingleton().getResourceProvider()->loadInputSourceContainer(filename, schemeData);
 
     RawDataContainer rawXMLData;
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
     MemBufInputSource  schemeData(rawXMLData.getDataPtr(), rawXMLData.getSize(), filename.c_str(), false);
 
 	// do parse (which uses handler to create actual data)
@@ -181,7 +181,7 @@ void Scheme::loadResources(void)
 	{
 		if (!ismgr.isImagesetPresent((*pos).name))
 		{
-			Imageset* iset = ismgr.createImageset((*pos).filename);
+			Imageset* iset = ismgr.createImageset((*pos).filename, (*pos).resourceGroup);
 
 			// check for wrong imageset for specified name
 			String realname = iset->getName();
@@ -202,7 +202,7 @@ void Scheme::loadResources(void)
 	{
 		if (!fntmgr.isFontPresent((*pos).name))
 		{
-			Font* font = fntmgr.createFont((*pos).filename);
+			Font* font = fntmgr.createFont((*pos).filename, (*pos).resourceGroup);
 
 			// check for wrong font for specified name
 			String realname = font->getName();

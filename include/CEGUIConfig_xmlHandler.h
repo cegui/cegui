@@ -121,6 +121,13 @@ public:
 	const String&	getDefaultFontName(void) const		{return d_defaultFontName;}
 
 
+	/*!
+	\brief
+		Return name of default resource group.
+	*/
+	const String&	getDefaultResourceGroup(void) const		{return d_defaultResourceGroup;}
+
+
 private:
 	/*************************************************************************
 		Implementation Constants
@@ -132,7 +139,7 @@ private:
 	static const char	ConfigDefaultFontAttribute[];		//!< Attribute name that stores the name of the default font to set (as loaded by scheme)
 	static const char	ConfigInitScriptAttribute[];		//!< Attribute name that stores the filename of an initialisation script to run.
 	static const char	ConfigTerminateScriptAttribute[];	//!< Attribute name that stores the filename of a termination script to run.
-
+    static const char   ConfigDefaultResourceGroupAttribute[]; //!< Attribute name that stores the default resource group (also used when loading config resources).
 
 	/*************************************************************************
 		Implementation Data
@@ -143,6 +150,7 @@ private:
 	String		d_initScriptFilename;	//!< filename for the script to run after system init.
 	String		d_termScriptFilename;	//!< filename for the script to run before system shutdown.
 	String		d_defaultFontName;		//!< Holds name of default font to set.
+    String      d_defaultResourceGroup; //!< Holds default resource group name.
 };
 
 

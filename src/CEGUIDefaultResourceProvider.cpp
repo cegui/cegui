@@ -49,7 +49,7 @@ namespace CEGUI
 //        output.setData(mInputSource);
 //    }
 
-    void DefaultResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output)
+    void DefaultResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup)
     {
         if (filename.empty() || (filename == (utf8*)""))
         {

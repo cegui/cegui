@@ -51,6 +51,7 @@ const char	GUILayout_xmlHandler::PropertyValueAttribute[]	= "Value";
 const char	GUILayout_xmlHandler::LayoutParentAttribute[]	= "Parent";
 const char	GUILayout_xmlHandler::LayoutImportFilenameAttribute[]	= "Filename";
 const char	GUILayout_xmlHandler::LayoutImportPrefixAttribute[]		= "Prefix";
+const char	GUILayout_xmlHandler::LayoutImportResourceGroupAttribute[] = "ResourceGroup";
 const char	GUILayout_xmlHandler::EventNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::EventFunctionAttribute[]	= "Function";
 
@@ -163,6 +164,7 @@ void GUILayout_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* con
 		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
 				XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportFilenameAttribute), 
 				prefixName,
+                XmlHandlerHelper::getAttributeValueAsString(attrs, LayoutImportResourceGroupAttribute), 
 				d_propertyCallback,
 				d_userData);
 
