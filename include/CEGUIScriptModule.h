@@ -2,7 +2,7 @@
 	filename: 	CEGUIScriptModule.h
 	created:	16/7/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Abstract class interface for scripting support
 *************************************************************************/
 /*************************************************************************
@@ -103,6 +103,42 @@ public:
 		- false if the event was not handled.
 	*/
 	virtual	bool	executeScriptedEventHandler(const String& handler_name, const EventArgs& e)		= 0;
+
+
+    /*!
+    \brief
+        Execute script code contained in the given CEGUI::String object.
+
+    \param str
+        String object holding the valid script code that should be executed.
+
+    \return
+        Nothing.
+    */
+    virtual void executeString(const String& str) = 0;
+
+
+    /*!
+    \brief
+        Method called during system initialisation, prior to running any scripts via the ScriptModule, to enable the ScriptModule
+        to perform any operations required to complete initialisation or binding of the script language to the gui system objects.
+
+    \return
+        Nothing.
+    */
+    virtual void createBindings(void) {}
+
+
+    /*!
+    \brief
+        Method called during system destruction, after all scripts have been run via the ScriptModule, to enable the ScriptModule
+        to perform any operations required to cleanup bindings of the script language to the gui system objects, as set-up in the
+        earlier createBindings call.
+
+    \return
+        Nothing.
+    */
+    virtual void destroyBindings(void) {}
 };
 
 

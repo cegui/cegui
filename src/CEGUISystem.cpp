@@ -2,7 +2,7 @@
 	filename: 	CEGUISystem.cpp
 	created:	20/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of main system object
 *************************************************************************/
 /*************************************************************************
@@ -65,7 +65,7 @@ public:
 	void	restart()	{ d_baseTime = clock(); }
 	double	elapsed()	{ return static_cast<double>(clock() - d_baseTime) / CLOCKS_PER_SEC; }
 };
-	
+
 /*!
 \brief
 	Implementation structure used in tracking up & down mouse button inputs in order to generate click, double-click,
@@ -250,7 +250,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	{
 		new Logger(logFile);
 	}
-	
+
 	// beginning main init
 	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System initialisation ----");
 
@@ -308,6 +308,12 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 
 	}
 
+    // Create script module bindings
+    if (d_scriptModule)
+    {
+        d_scriptModule->createBindings();
+    }
+
 	// execute start up script
 	if (!configInitScript.empty())
 	{
@@ -339,6 +345,12 @@ System::~System(void)
 		catch (...) {}  // catch all exceptions and continue system shutdown
 
 	}
+
+    // Cleanup script module bindings
+    if (d_scriptModule)
+    {
+        d_scriptModule->destroyBindings();
+    }
 
 	// cleanup XML stuff
 	XERCES_CPP_NAMESPACE_USE
@@ -400,7 +412,7 @@ void System::renderGUI(void)
 	// short-circuit the above optimisation, the mouse is not queued, but is
 	// drawn directly to the display every frame.
 	//////////////////////////////////////////////////////////////////////////
-	
+
 	if (d_gui_redraw)
 	{
 		d_renderer->resetZValue();
@@ -427,7 +439,7 @@ void System::renderGUI(void)
 
 
 /*************************************************************************
-	Set the active GUI sheet (root) window.	
+	Set the active GUI sheet (root) window.
 *************************************************************************/
 Window* System::setGUISheet(Window* sheet)
 {
@@ -437,11 +449,11 @@ Window* System::setGUISheet(Window* sheet)
     // Force and update for the area Rects for 'sheet' so they're correct according
     // to the screen size.
     if (sheet != 0)
-    {    
+    {
         WindowEventArgs sheetargs(0);
         sheet->onParentSized(sheetargs);
     }
-    
+
 	// fire event
 	WindowEventArgs args(old);
 	onGUISheetChanged(args);
@@ -451,7 +463,7 @@ Window* System::setGUISheet(Window* sheet)
 
 
 /*************************************************************************
-	Set the default font to be used by the system	
+	Set the default font to be used by the system
 *************************************************************************/
 void System::setDefaultFont(const String& name)
 {
@@ -468,12 +480,12 @@ void System::setDefaultFont(const String& name)
 
 
 /*************************************************************************
-	Set the default font to be used by the system	
+	Set the default font to be used by the system
 *************************************************************************/
 void System::setDefaultFont(Font* font)
 {
 	d_defaultFont = font;
-	
+
 	// fire event
 	EventArgs args;
 	onDefaultFontChanged(args);
@@ -517,7 +529,7 @@ ScriptModule* System::getScriptingModule(void) const
 }
 
 /*************************************************************************
-	Return a pointer to the ResourceProvider being used for within the GUI 
+	Return a pointer to the ResourceProvider being used for within the GUI
     system.
 *************************************************************************/
 ResourceProvider* System::getResourceProvider(void) const
@@ -526,7 +538,7 @@ ResourceProvider* System::getResourceProvider(void) const
 }
 
 /*************************************************************************
-	Execute a script file if possible.	
+	Execute a script file if possible.
 *************************************************************************/
 void System::executeScriptFile(const String& filename) const
 {
@@ -578,7 +590,32 @@ int	System::executeScriptGloabl(const String& function_name) const
 
 
 /*************************************************************************
-	return the current mouse movement scaling factor.	
+    If possible, execute script code contained in the given
+    CEGUI::String object.
+*************************************************************************/
+void System::executeScriptString(const String& str) const
+{
+    if (d_scriptModule != NULL)
+    {
+        try
+        {
+            d_scriptModule->executeString(str);
+        }
+        catch(...)
+        {
+            throw GenericException((utf8*)"System::executeScriptString - An exception was thrown during execution of the script code.");
+        }
+
+    }
+    else
+    {
+        Logger::getSingleton().logEvent((utf8*)"System::executeScriptString - the script code could not be executed as no ScriptModule is available.", Errors);
+    }
+}
+
+
+/*************************************************************************
+	return the current mouse movement scaling factor.
 *************************************************************************/
 float System::getMouseMoveScaling(void) const
 {
@@ -587,7 +624,7 @@ float System::getMouseMoveScaling(void) const
 
 
 /*************************************************************************
-	Set the current mouse movement scaling factor	
+	Set the current mouse movement scaling factor
 *************************************************************************/
 void System::setMouseMoveScaling(float scaling)
 {
@@ -864,7 +901,7 @@ bool System::injectKeyUp(uint key_code)
 
 
 /*************************************************************************
-	Method that injects a typed character event into the system.	
+	Method that injects a typed character event into the system.
 *************************************************************************/
 bool System::injectChar(utf32 code_point)
 {
@@ -884,7 +921,7 @@ bool System::injectChar(utf32 code_point)
 			dest->onCharacter(args);
 			dest = dest->getParent();
 		}
-		
+
 	}
 
 	return args.handled;
@@ -892,7 +929,7 @@ bool System::injectChar(utf32 code_point)
 
 
 /*************************************************************************
-	Method that injects a mouse-wheel / scroll-wheel event into the system.	
+	Method that injects a mouse-wheel / scroll-wheel event into the system.
 *************************************************************************/
 bool System::injectMouseWheelChange(float delta)
 {
@@ -931,7 +968,7 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 
 
 /*************************************************************************
-	Method to inject time pulses into the system.	
+	Method to inject time pulses into the system.
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
@@ -988,7 +1025,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 
 
 /*************************************************************************
-	Translate a MouseButton value into the corresponding SystemKey value	
+	Translate a MouseButton value into the corresponding SystemKey value
 *************************************************************************/
 SystemKey System::mouseButtonToSyskey(MouseButton btn) const
 {
@@ -1016,7 +1053,7 @@ SystemKey System::mouseButtonToSyskey(MouseButton btn) const
 
 
 /*************************************************************************
-	Translate a Key::Scan value into the corresponding SystemKey value	
+	Translate a Key::Scan value into the corresponding SystemKey value
 *************************************************************************/
 SystemKey System::keyCodeToSyskey(Key::Scan key, bool direction)
 {
@@ -1082,7 +1119,7 @@ System*	System::getSingletonPtr(void)
 
 
 /*************************************************************************
-	Set the timeout to be used for the generation of single-click events.	
+	Set the timeout to be used for the generation of single-click events.
 *************************************************************************/
 void System::setSingleClickTimeout(double timeout)
 {
@@ -1095,7 +1132,7 @@ void System::setSingleClickTimeout(double timeout)
 
 
 /*************************************************************************
-	Set the timeout to be used for the generation of multi-click events.	
+	Set the timeout to be used for the generation of multi-click events.
 *************************************************************************/
 void System::setMultiClickTimeout(double timeout)
 {
@@ -1109,7 +1146,7 @@ void System::setMultiClickTimeout(double timeout)
 
 /*************************************************************************
 	Set the size of the allowable mouse movement tolerance used when
-	generating multi-click events.	
+	generating multi-click events.
 *************************************************************************/
 void System::setMultiClickToleranceAreaSize(const Size&	sz)
 {
@@ -1122,7 +1159,7 @@ void System::setMultiClickToleranceAreaSize(const Size&	sz)
 
 
 /*************************************************************************
-	add events for the System object	
+	add events for the System object
 *************************************************************************/
 void System::addSystemEvents(void)
 {
@@ -1174,7 +1211,7 @@ void System::onMultiClickAreaSizeChanged(EventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the default system font is changed.	
+	Handler called when the default system font is changed.
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
 {
@@ -1183,7 +1220,7 @@ void System::onDefaultFontChanged(EventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the default system mouse cursor image is changed.	
+	Handler called when the default system mouse cursor image is changed.
 *************************************************************************/
 void System::onDefaultMouseCursorChanged(EventArgs& e)
 {
@@ -1192,7 +1229,7 @@ void System::onDefaultMouseCursorChanged(EventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the mouse movement scaling factor is changed.	
+	Handler called when the mouse movement scaling factor is changed.
 *************************************************************************/
 void System::onMouseMoveScalingChanged(EventArgs& e)
 {

@@ -2,7 +2,7 @@
 	filename: 	CEGUISystem.h
 	created:	20/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines interface for main GUI system class
 *************************************************************************/
 /*************************************************************************
@@ -227,7 +227,7 @@ public:
 	*/
 	void	signalRedraw()		{d_gui_redraw = true;}
 
-	
+
 	/*!
 	\brief
 		Return a boolean value to indicate whether a full re-draw is requested next time renderGUI() is called.
@@ -468,7 +468,20 @@ public:
 	int		executeScriptGloabl(const String& function_name) const;
 
 
-	/*!
+    /*!
+    \brief
+        If possible, execute script code contained in the given CEGUI::String object.
+
+    \param str
+        String object holding the valid script code that should be executed.
+
+    \return
+        Nothing.
+    */
+    void executeScriptString(const String& str) const;
+
+
+    /*!
 	\brief
 		return the current mouse movement scaling factor.
 
@@ -700,7 +713,7 @@ private:
 	/*!
 	\brief
 		Translate a Key::Scan value into the corresponding SystemKey value.
-		
+
 		This takes key direction into account, since we map two keys onto one value.
 
 	\param key
