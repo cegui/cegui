@@ -84,7 +84,7 @@ The root element must be GUIScheme.
 
 GUIScheme Element
 =================
-Root element.  Has a name attribute, and a collection of sub-elements which can be Imageset, Font, and WindowSet elements.
+Root element.  Has a name attribute, and a collection of sub-elements which can be Imageset, Font, WindowSet, and WindowAlias elements.
 
 GUIScheme attributes
 --------------------
@@ -129,6 +129,16 @@ Specifies the factory name (GUI window type name) from the loadable module that 
 WindowFactory attributes
 ------------------------
 Name		- Name of the factory / window type which is to be added.
+
+
+WindowAlias Element
+===================
+Specifies an alias for a given window factory type.  Has attributes but no sub-elements.
+
+WindowAlias attributes
+----------------------
+Alias		- Name of the alias.  This is the alternative name that 'Target' will be known by.
+Target		- Name of the window factory type or existing alias that is to also be known as 'Alias'.
 
 
 

@@ -156,6 +156,12 @@ private:
 		std::vector<UIElementFactory>	factories;
 	};
 
+	struct AliasMapping
+	{
+		String aliasName;
+		String targetName;
+	};
+
 
 	/*************************************************************************
 		Implementation Data
@@ -165,6 +171,7 @@ private:
 	std::vector<LoadableUIElement>		d_imagesets;
 	std::vector<LoadableUIElement>		d_fonts;
 	std::vector<UIModule>				d_widgetModules;
+	std::vector<AliasMapping>			d_aliasMappings;
 };
 
 } // End of  CEGUI namespace section

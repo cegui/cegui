@@ -47,8 +47,11 @@ const utf8	Scheme_xmlHandler::ImagesetElement[]			= "Imageset";
 const utf8	Scheme_xmlHandler::FontElement[]				= "Font";
 const utf8	Scheme_xmlHandler::WindowSetElement[]			= "WindowSet";
 const utf8	Scheme_xmlHandler::WindowFactoryElement[]		= "WindowFactory";
+const utf8	Scheme_xmlHandler::WindowAliasElement[]			= "WindowAlias";
 const char	Scheme_xmlHandler::NameAttribute[]				= "Name";
 const char	Scheme_xmlHandler::FilenameAttribute[]			= "Filename";
+const char	Scheme_xmlHandler::AliasAttribute[]				= "Alias";
+const char	Scheme_xmlHandler::TargetAttribute[]			= "Target";
 
 /*************************************************************************
 SAX2 Handler methods
@@ -58,8 +61,17 @@ void Scheme_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const 
 	XERCES_CPP_NAMESPACE_USE
 	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
 
+	// handle alias element
+	if (element == WindowAliasElement)
+	{
+		Scheme::AliasMapping	alias;
+
+		alias.aliasName	 = XmlHandlerHelper::getAttributeValueAsString(attrs, AliasAttribute);
+		alias.targetName = XmlHandlerHelper::getAttributeValueAsString(attrs, TargetAttribute);
+		d_scheme->d_aliasMappings.push_back(alias);
+	}
 	// handle an Imageset element
-	if (element == ImagesetElement)
+	else if (element == ImagesetElement)
 	{
 		Scheme::LoadableUIElement	imageset;
 

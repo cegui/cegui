@@ -215,6 +215,33 @@ void Scheme::loadResources(void)
 
 	}
 
+	// check aliases
+	std::vector<AliasMapping>::iterator alias = d_aliasMappings.begin();
+	for (;alias != d_aliasMappings.end(); ++alias)
+	{
+		// get iterator 
+		WindowFactoryManager::TypeAliasIterator iter = wfmgr.getAliasIterator();
+
+		// look for this alias
+		while (!iter.isAtEnd() && (iter.getCurrentKey() != (*alias).aliasName))
+			++iter;
+
+		// if the alias exists
+		if (!iter.isAtEnd())
+		{
+			// if the current target type matches
+			if (iter.getCurrentValue().getActiveTarget() == (*alias).targetName)
+			{
+				// assume this mapping is ours and skip to next alias
+				continue;
+			}
+
+		}
+
+		// create a new alias entry
+		wfmgr.addWindowTypeAlias((*alias).aliasName, (*alias).targetName);
+	}
+
 	Logger::getSingleton().logEvent((utf8*)"---- Resource loading for GUI scheme '" + d_name + "' completed ----", Informative);
 }
 
@@ -259,6 +286,26 @@ void Scheme::unloadResources(void)
 		{
 			delete (*cmod).module;
 			(*cmod).module = NULL;
+		}
+
+	}
+
+	// check aliases
+	std::vector<AliasMapping>::iterator alias = d_aliasMappings.begin();
+	for (;alias != d_aliasMappings.end(); ++alias)
+	{
+		// get iterator 
+		WindowFactoryManager::TypeAliasIterator iter = wfmgr.getAliasIterator();
+
+		// look for this alias
+		while (!iter.isAtEnd() && (iter.getCurrentKey() != (*alias).aliasName))
+			++iter;
+
+		// if the alias exists
+		if (!iter.isAtEnd())
+		{
+			// create a new alias entry
+			wfmgr.removeWindowTypeAlias((*alias).aliasName, (*alias).targetName);
 		}
 
 	}
@@ -313,6 +360,33 @@ bool Scheme::resourcesLoaded(void) const
 
 		}
 
+	}
+
+	// check aliases
+	std::vector<AliasMapping>::const_iterator alias = d_aliasMappings.begin();
+	for (;alias != d_aliasMappings.end(); ++alias)
+	{
+		// get iterator 
+		WindowFactoryManager::TypeAliasIterator iter = wfmgr.getAliasIterator();
+
+		// look for this alias
+		while (!iter.isAtEnd() && (iter.getCurrentKey() != (*alias).aliasName))
+			++iter;
+
+		// if the alias exists
+		if (!iter.isAtEnd())
+		{
+			// if the current target type matches
+			if (iter.getCurrentValue().getActiveTarget() == (*alias).targetName)
+			{
+				// target matches, assume we set it and continue to next alias
+				continue;
+			}
+
+		}
+
+		// no alias or target type does not match
+		return false;
 	}
 
 	return true;

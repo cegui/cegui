@@ -86,8 +86,11 @@ private:
 	static const utf8	FontElement[];					//!< Element specifying a Font
 	static const utf8	WindowSetElement[];				//!< Element specifying a module and set of WindowFactory elements.
 	static const utf8	WindowFactoryElement[];			//!< Element specifying a WindowFactory type.
+	static const utf8	WindowAliasElement[];			//!< Element specifying a WindowFactory type alias
 	static const char	NameAttribute[];				//!< Attribute specifying the name of some object.
 	static const char	FilenameAttribute[];			//!< Attribute specifying the name of some file.
+	static const char	AliasAttribute[];				//!< Attribute specifying an alias name.
+	static const char	TargetAttribute[];				//!< Attribute specifying target for an alias.
 
 
 	/*************************************************************************
