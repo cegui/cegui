@@ -866,9 +866,9 @@ private:
 		static const char	FontSizeAttribute[];			//!< Attribute name that stores the point size for a dynamic font.
 		static const char	FontFirstCodepointAttribute[];	//!< Attribute name that stores the first code-point for a dynamic font.
 		static const char	FontLastCodepointAttribute[];	//!< Attribute name that stores the last code-point for a dynamic font.
-		static const char	FontNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.
-		static const char	FontNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Imageset.
-		static const char	FontAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Imageset should be auto-scaled.
+		static const char	FontNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Font.
+		static const char	FontNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Font.
+		static const char	FontAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Font should be auto-scaled.
 		static const char	MappingCodepointAttribute[];	//!< Attribute name that stores the Unicode code-point for a mapping.
 		static const char	MappingImageAttribute[];		//!< Attribute name that stores the Image name for a mapping.
 		static const char	MappingHorzAdvanceAttribute[];	//!< Attribute name that stores the horizontal advance for a glyph.
