@@ -107,7 +107,7 @@ public:
 	//
 	// Conversion operators
 	//
-	operator ulong() const		{return d_argb;}
+	operator ulong() const		{return getARGB();}
 
 private:
 	/*************************************************************************
