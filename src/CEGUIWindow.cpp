@@ -33,6 +33,7 @@
 #include "CEGUIMouseCursor.h"
 #include <algorithm>
 #include <cmath>
+#include <stdio.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
