@@ -99,6 +99,7 @@ Window::Window(const String& type, const String& name) :
 	d_ID			= 0;
 	d_alpha			= 1.0f;
 	d_mouseCursor	= (const Image*)DefaultMouseCursor;
+	d_userData		= NULL;
 
 	// basic settings
 	d_enabled			= true;

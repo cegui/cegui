@@ -34,6 +34,7 @@
 #include "CEGUIWindow.h"
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
+#include "elements/CEGUIGUISheet.h"
 #include "xercesc/util/PlatformUtils.hpp"
 #include "xercesc/util/Janitor.hpp"
 #include "xercesc/sax2/DefaultHandler.hpp"
@@ -114,6 +115,9 @@ System::System(Renderer* renderer) :
 		throw std::exception(message.c_str());
 	}
 
+	// add default GUISheet factory - the only UI element we can create "out of the box".
+	WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
+
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
@@ -136,8 +140,14 @@ System::~System(void)
 	// destroy windows so it's safe to destroy factories
 	WindowManager::getSingleton().destroyAllWindows();
 
-	// destroy factories so it's safe to unload GUI modules
+	// get pointer to the GUI sheet factory we added
+	GUISheetFactory* factory = (GUISheetFactory*)WindowFactoryManager::getSingleton().getFactory((utf8*)"DefaultGUISheet");
+
+	// remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
+
+	// destroy GUI sheet factory
+	delete factory;
 
 	// cleanup singletons
 	delete	SchemeManager::getSingletonPtr();

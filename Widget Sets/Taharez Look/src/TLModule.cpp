@@ -45,6 +45,29 @@
 #include "TLMiniHorzScrollbar.h"
 #include "TLStatic.h"
 
+/*************************************************************************
+	Static factory objects
+*************************************************************************/
+static CEGUI::TLFrameWindowFactory		s_FrameWindowFactory;
+static CEGUI::TLTitlebarFactory			s_TitlebarFactory;
+static CEGUI::TLCloseButtonFactory		s_CloseButtonFactory;
+static CEGUI::TLButtonFactory			s_ButtonFactory;
+static CEGUI::TLCheckboxFactory			s_CheckboxFactory;
+static CEGUI::TLRadioButtonFactory		s_RadioButtonFactory;
+static CEGUI::TLSliderThumbFactory		s_SliderThumbFactory;
+static CEGUI::TLSliderFactory			s_SliderFactory;
+static CEGUI::TLProgressBarFactory		s_ProgressBarFactory;
+static CEGUI::TLAlternateProgressBarFactory s_AltProgressBarFactory;
+static CEGUI::TLEditboxFactory			s_EditboxFactory;
+static CEGUI::TLVertScrollbarFactory	s_VertScrollbarFactory;
+static CEGUI::TLVertScrollbarThumbFactory	s_VertScrollbarThumbFactory;
+static CEGUI::TLMiniVertScrollbarFactory	s_MiniVertScrollbarFactory;
+static CEGUI::TLMiniVertScrollbarThumbFactory	s_MiniVertScrollbarThumbFactory;
+static CEGUI::TLMiniHorzScrollbarFactory		s_MiniHorzScrollbarFactory;
+static CEGUI::TLMiniHorzScrollbarThumbFactory	s_MiniHorzScrollbarThumbFactory;
+static CEGUI::TLStaticImageFactory		s_StaticImageFactory;
+static CEGUI::TLStaticTextFactory		s_StaticTextFactory;
+
 
 /*************************************************************************
 	Plugin access interface
@@ -55,97 +78,97 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
 
 	if (type_name == "Taharez Frame Window")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLFrameWindowFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_FrameWindowFactory);
 		return;
 	}
 	else if (type_name == "Taharez Titlebar")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLTitlebarFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_TitlebarFactory);
 		return;
 	}
 	else if (type_name == "Taharez Button")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLButtonFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_ButtonFactory);
 		return;
 	}
 	else if (type_name == "Taharez Close Button")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLCloseButtonFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_CloseButtonFactory);
 		return;
 	}
 	else if (type_name == "Taharez Checkbox")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLCheckboxFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_CheckboxFactory);
 		return;
 	}
 	else if (type_name == "Taharez RadioButton")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLRadioButtonFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_RadioButtonFactory);
 		return;
 	}
 	else if (type_name == "Taharez Slider Thumb")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLSliderThumbFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_SliderThumbFactory);
 		return;
 	}
 	else if (type_name == "Taharez Slider")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLSliderFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_SliderFactory);
 		return;
 	}
 	else if (type_name == "Taharez ProgressBar")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLProgressBarFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_ProgressBarFactory);
 		return;
 	}
 	else if (type_name == "Taharez AltProgressBar")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLAlternateProgressBarFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_AltProgressBarFactory);
 		return;
 	}
 	else if (type_name == "Taharez Editbox")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLEditboxFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_EditboxFactory);
 		return;
 	}
 	else if (type_name == "Taharez VertScrollbar")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLVertScrollbarFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarFactory);
 		return;
 	}
 	else if (type_name == "Taharez VertScrollbarThumb")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLVertScrollbarThumbFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarThumbFactory);
 		return;
 	}
 	else if (type_name == "Taharez MiniVertScrollbar")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLMiniVertScrollbarFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_MiniVertScrollbarFactory);
 		return;
 	}
 	else if (type_name == "Taharez MiniVertScrollbarThumb")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLMiniVertScrollbarThumbFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_MiniVertScrollbarThumbFactory);
 		return;
 	}
 	else if (type_name == "Taharez MiniHorzScrollbar")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLMiniHorzScrollbarFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_MiniHorzScrollbarFactory);
 		return;
 	}
 	else if (type_name == "Taharez MiniHorzScrollbarThumb")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLMiniHorzScrollbarThumbFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_MiniHorzScrollbarThumbFactory);
 		return;
 	}
 	else if (type_name == "Taharez StaticImage")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLStaticImageFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_StaticImageFactory);
 		return;
 	}
 	else if (type_name == "Taharez StaticText")
 	{
-		WindowFactoryManager::getSingleton().addFactory(new TLStaticTextFactory());
+		WindowFactoryManager::getSingleton().addFactory(&s_StaticTextFactory);
 		return;
 	}
 

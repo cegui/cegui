@@ -838,6 +838,19 @@ public:
 	float	getAbsoluteHeight(void) const			{return d_abs_area.getHeight();}
 
 
+	/*!
+	\brief
+		Return the user data set for this Window.
+
+		Each Window can have some client assigned data attached to it, this data is not used by the GUI system
+		in any way.  Interpretation of the data is entirely application specific.
+
+	\return
+		pointer to the user data that is currently set for this window.
+	*/
+	void*	getUserData(void) const			{return d_userData;}
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1377,6 +1390,22 @@ public:
 	\exception UnknownObjectException	thrown if \a imageset is not known, or if \a imageset contains no Image named \a image_name.
 	*/
 	void	setMouseCursor(const String& imageset, const String& image_name);
+
+
+	/*!
+	\brief
+		Set the user data set for this Window.
+
+		Each Window can have some client assigned data attached to it, this data is not used by the GUI system
+		in any way.  Interpretation of the data is entirely application specific.
+
+	\param user_data
+		pointer to the user data that is to be set for this window.
+
+	\return
+		Nothing.
+	*/
+	void	setUserData(void* user_data)		{d_userData = user_data;}
 
 
 	/*************************************************************************
@@ -2201,6 +2230,7 @@ protected:
 	Rect			d_abs_area;			//!< This Window objects area (pixels relative to parent)
 	Rect			d_rel_area;			//!< This Window objects area (decimal fractions relative to parent)
 	const Image*	d_mouseCursor;		//!< Holds pointer to the Window objects current mouse cursor image.
+	void*			d_userData;			//!< Holds pointer to some user assigned data.
 
 	// maximum and minimum sizes
 	Size	d_minSize;					//!< current minimum size for the window (this is always stored in pixels).

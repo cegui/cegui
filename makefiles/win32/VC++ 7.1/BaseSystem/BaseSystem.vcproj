@@ -353,6 +353,9 @@
 				RelativePath="..\..\..\..\include\elements\CEGUIFrameWindow.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\elements\CEGUIGUISheet.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIImage.h">
 			</File>
 			<File

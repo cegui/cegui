@@ -75,5 +75,6 @@
 #include "elements/CEGUIMultiColumnList.h"
 #include "elements/CEGUIStaticText.h"
 #include "elements/CEGUIStaticImage.h"
+#include "elements/CEGUIGUISheet.h"
 
 #endif	// end of guard _CEGUI_h_
