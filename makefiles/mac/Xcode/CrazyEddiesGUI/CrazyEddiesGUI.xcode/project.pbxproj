@@ -8,7 +8,6 @@
 		034768DDFF38A45A11DB9C8B = {
 			children = (
 				5B7CD83B070DD05B00FE8C88,
-				5B7CD844070DD09100FE8C88,
 				5B4A494B078D8E3C0078734B,
 				5B7CD84C070DD0A100FE8C88,
 				5B7CD854070DD0AD00FE8C88,
@@ -43,7 +42,6 @@
 			targets = (
 				5B7CD833070DD04B00FE8C88,
 				5B7CD83A070DD05B00FE8C88,
-				5B7CD843070DD09100FE8C88,
 				5B4A494A078D8E3C0078734B,
 				5B7CD84B070DD0A100FE8C88,
 				5B7CD853070DD0AD00FE8C88,
@@ -65,11 +63,9 @@
 		};
 		0867D69AFE84028FC02AAC07 = {
 			children = (
-				5B0FB54B07B9586000F0933D,
 				5B088AD30724B07400E1FF63,
 				5B7CD858070DD0FE00FE8C88,
 				08FB77AAFE841565C02AAC07,
-				5B7CDAEE070DEB9F00FE8C88,
 				5B4A4963078D96470078734B,
 			);
 			isa = PBXGroup;
@@ -287,20 +283,6 @@
 		};
 		5B088AD40724B07400E1FF63 = {
 			fileRef = 5B088AD30724B07400E1FF63;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B0FB54B07B9586000F0933D = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
-			name = zzip.framework;
-			path = /Library/Frameworks/zzip.framework;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		5B0FB54C07B9586000F0933D = {
-			fileRef = 5B0FB54B07B9586000F0933D;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -593,12 +575,6 @@
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
-		5B49ABD60765FB0A00E684D3 = {
-			fileRef = 5B49ABD50765FB0A00E684D3;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		5B49ABDB0765FB2C00E684D3 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -607,21 +583,6 @@
 			path = ../../../../include/renderers/OgreGUIRenderer/OgreResourceProvider.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
-		};
-		5B49ABDC0765FB2C00E684D3 = {
-			fileRef = 5B49ABDB0765FB2C00E684D3;
-			isa = PBXBuildFile;
-			settings = {
-				ATTRIBUTES = (
-					Public,
-				);
-			};
-		};
-		5B49AC000765FF8300E684D3 = {
-			fileRef = 5B7CD858070DD0FE00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		5B4A4940078D8E060078734B = {
 			fileEncoding = 30;
@@ -1026,25 +987,62 @@
 			settings = {
 			};
 		};
-		5B6CB7B6071B60800037CC69 = {
-			buildActionMask = 2147483647;
-			dstPath = Headers/renderers/OgreGUIRenderer;
-			dstSubfolderSpec = 1;
-			files = (
-				5B6CB7BA071B60D40037CC69,
-				5B6CB7BB071B60D40037CC69,
-			);
-			isa = PBXCopyFilesBuildPhase;
-			runOnlyForDeploymentPostprocessing = 0;
+		5B53DFA007CA2DC700B950FC = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CEGUIDragContainer.cpp;
+			path = ../../../../src/elements/CEGUIDragContainer.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
 		};
-		5B6CB7BA071B60D40037CC69 = {
-			fileRef = 5B7CD9FA070DD28500FE8C88;
+		5B53DFA107CA2DC800B950FC = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = CEGUIDragContainerProperties.cpp;
+			path = ../../../../src/elements/CEGUIDragContainerProperties.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B53DFA207CA2DC800B950FC = {
+			fileRef = 5B53DFA007CA2DC700B950FC;
 			isa = PBXBuildFile;
 			settings = {
 			};
 		};
-		5B6CB7BB071B60D40037CC69 = {
-			fileRef = 5B7CD9FB070DD28500FE8C88;
+		5B53DFA307CA2DC800B950FC = {
+			fileRef = 5B53DFA107CA2DC800B950FC;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B53DFAA07CA2DE500B950FC = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CEGUIDragContainer.h;
+			path = ../../../../include/elements/CEGUIDragContainer.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B53DFAB07CA2DE500B950FC = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CEGUIDragContainerProperties.h;
+			path = ../../../../include/elements/CEGUIDragContainerProperties.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		5B53DFAC07CA2DE500B950FC = {
+			fileRef = 5B53DFAA07CA2DE500B950FC;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		5B53DFAD07CA2DE500B950FC = {
+			fileRef = 5B53DFAB07CA2DE500B950FC;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1152,12 +1150,6 @@
 		};
 		5B78EC850717BA0F00DB5B0A = {
 			fileRef = 5B7CD83C070DD05B00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B78EC870717BA2100DB5B0A = {
-			fileRef = 5B7CD845070DD09100FE8C88;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1496,7 +1488,6 @@
 			};
 			dependencies = (
 				5B7CDBB9070DEE3C00FE8C88,
-				5B7CDBBB070DEE3C00FE8C88,
 				5B4A495D078D95240078734B,
 				5B7CDBBD070DEE3C00FE8C88,
 				5B7CDBBF070DEE3C00FE8C88,
@@ -1620,6 +1611,8 @@
 				5BFAC15707A1A86500F13D4C,
 				5B157B1B07B7E3E6000E78CF,
 				5B157B1C07B7E3E6000E78CF,
+				5B53DFAC07CA2DE500B950FC,
+				5B53DFAD07CA2DE500B950FC,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1738,6 +1731,8 @@
 				5BFAC15D07A1A89700F13D4C,
 				5B157B1507B7E3D1000E78CF,
 				5B157B1607B7E3D1000E78CF,
+				5B53DFA207CA2DC800B950FC,
+				5B53DFA307CA2DC800B950FC,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1781,10 +1776,11 @@
 				INFOPLIST_FILE = "CEGUIBase-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = "/usr/X11R6/lib /sw/lib";
+				LIBRARY_STYLE = DYNAMIC;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-framework Carbon";
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = CEGUIBase;
+				PRODUCT_NAME = CEGUI;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 			};
@@ -1821,7 +1817,7 @@
 			explicitFileType = wrapper.framework;
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = CEGUIBase.framework;
+			path = CEGUI.framework;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1831,108 +1827,6 @@
 			path = "CEGUIBase-Info.plist";
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
-		};
-		5B7CD83F070DD09100FE8C88 = {
-			buildActionMask = 2147483647;
-			files = (
-				5B7CD9FC070DD28500FE8C88,
-				5B7CD9FD070DD28500FE8C88,
-				5B49ABDC0765FB2C00E684D3,
-			);
-			isa = PBXHeadersBuildPhase;
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5B7CD840070DD09100FE8C88 = {
-			buildActionMask = 2147483647;
-			files = (
-				5B78EC870717BA2100DB5B0A,
-			);
-			isa = PBXResourcesBuildPhase;
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5B7CD841070DD09100FE8C88 = {
-			buildActionMask = 2147483647;
-			files = (
-				5B7CD9F8070DD26A00FE8C88,
-				5B7CD9F9070DD26A00FE8C88,
-				5B49ABD60765FB0A00E684D3,
-			);
-			isa = PBXSourcesBuildPhase;
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5B7CD842070DD09100FE8C88 = {
-			buildActionMask = 2147483647;
-			files = (
-				5B7CD864070DD14400FE8C88,
-				5B7CDAEF070DEB9F00FE8C88,
-				5B49AC000765FF8300E684D3,
-				5B0FB54C07B9586000F0933D,
-			);
-			isa = PBXFrameworksBuildPhase;
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5B7CD843070DD09100FE8C88 = {
-			buildPhases = (
-				5B7CD83F070DD09100FE8C88,
-				5B7CD840070DD09100FE8C88,
-				5B7CD841070DD09100FE8C88,
-				5B7CD842070DD09100FE8C88,
-				5B6CB7B6071B60800037CC69,
-			);
-			buildRules = (
-			);
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = "/Library/Frameworks/Ogre.framework/Headers /Library/Frameworks/Xerces.framework/Headers ../../../../include /usr/include/malloc";
-				INFOPLIST_FILE = "OgreGUIRenderer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "-framework Carbon";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = OgreGUIRenderer;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
-			};
-			dependencies = (
-			);
-			isa = PBXNativeTarget;
-			name = OgreGUIRenderer;
-			productName = OgreGUIRenderer;
-			productReference = 5B7CD844070DD09100FE8C88;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>OgreGUIRenderer</string>
-	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.crayzedsgui.OgreGUIRenderer</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>FMWK</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1.0</string>
-</dict>
-</plist>
-";
-			productType = "com.apple.product-type.framework";
-		};
-		5B7CD844070DD09100FE8C88 = {
-			explicitFileType = wrapper.framework;
-			includeInIndex = 0;
-			isa = PBXFileReference;
-			path = OgreGUIRenderer.framework;
-			refType = 3;
-			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5B7CD845070DD09100FE8C88 = {
 			isa = PBXFileReference;
@@ -2246,12 +2140,6 @@
 		};
 		5B7CD859070DD0FE00FE8C88 = {
 			fileRef = 5B7CD858070DD0FE00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B7CD864070DD14400FE8C88 = {
-			fileRef = 5B7CD83B070DD05B00FE8C88;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -2652,6 +2540,8 @@
 				5B7CD899070DD19000FE8C88,
 				5B7CD89A070DD19000FE8C88,
 				5B7CD89B070DD19000FE8C88,
+				5B53DFA007CA2DC700B950FC,
+				5B53DFA107CA2DC800B950FC,
 				5B7CD89C070DD19000FE8C88,
 				5B7CD89D070DD19000FE8C88,
 				5B7CD89E070DD19000FE8C88,
@@ -4083,6 +3973,8 @@
 				5B7CD954070DD1EF00FE8C88,
 				5B7CD955070DD1EF00FE8C88,
 				5B7CD956070DD1EF00FE8C88,
+				5B53DFAA07CA2DE500B950FC,
+				5B53DFAB07CA2DE500B950FC,
 				5B7CD957070DD1EF00FE8C88,
 				5B7CD958070DD1EF00FE8C88,
 				5B7CD959070DD1EF00FE8C88,
@@ -5378,18 +5270,6 @@
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
-		5B7CD9F8070DD26A00FE8C88 = {
-			fileRef = 5B7CD9F6070DD26A00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		5B7CD9F9070DD26A00FE8C88 = {
-			fileRef = 5B7CD9F7070DD26A00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		5B7CD9FA070DD28500FE8C88 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -5407,24 +5287,6 @@
 			path = ../../../../include/renderers/OgreGUIRenderer/ogretexture.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
-		};
-		5B7CD9FC070DD28500FE8C88 = {
-			fileRef = 5B7CD9FA070DD28500FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-				ATTRIBUTES = (
-					Public,
-				);
-			};
-		};
-		5B7CD9FD070DD28500FE8C88 = {
-			fileRef = 5B7CD9FB070DD28500FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-				ATTRIBUTES = (
-					Public,
-				);
-			};
 		};
 		5B7CD9FE070DD2AB00FE8C88 = {
 			fileEncoding = 30;
@@ -7094,20 +6956,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		5B7CDAEE070DEB9F00FE8C88 = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
-			name = Ogre.framework;
-			path = /Library/Frameworks/Ogre.framework;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		5B7CDAEF070DEB9F00FE8C88 = {
-			fileRef = 5B7CDAEE070DEB9F00FE8C88;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		5B7CDBB7070DEE1600FE8C88 = {
 			fileRef = 5B7CD83B070DD05B00FE8C88;
 			isa = PBXBuildFile;
@@ -7125,18 +6973,6 @@
 			isa = PBXTargetDependency;
 			target = 5B7CD83A070DD05B00FE8C88;
 			targetProxy = 5B7CDBB8070DEE3C00FE8C88;
-		};
-		5B7CDBBA070DEE3C00FE8C88 = {
-			containerPortal = 0867D690FE84028FC02AAC07;
-			isa = PBXContainerItemProxy;
-			proxyType = 1;
-			remoteGlobalIDString = 5B7CD843070DD09100FE8C88;
-			remoteInfo = OgreGUIRenderer;
-		};
-		5B7CDBBB070DEE3C00FE8C88 = {
-			isa = PBXTargetDependency;
-			target = 5B7CD843070DD09100FE8C88;
-			targetProxy = 5B7CDBBA070DEE3C00FE8C88;
 		};
 		5B7CDBBC070DEE3C00FE8C88 = {
 			containerPortal = 0867D690FE84028FC02AAC07;
