@@ -358,6 +358,8 @@ void OgreRenderer::initRenderStates(void)
 	d_render_sys->_setTextureAddressingMode(0, TextureUnitState::TAM_CLAMP);
 	d_render_sys->_setTextureMatrix(0, Matrix4::IDENTITY);
 	d_render_sys->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0);
+	d_render_sys->_setTextureBlendMode(0, d_colourBlendMode);
+	d_render_sys->_setTextureBlendMode(0, d_alphaBlendMode);
 	d_render_sys->_disableTextureUnitsFrom(1);
 
 	// enable alpha blending
@@ -616,6 +618,17 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 
 	// create listener which will handler the rendering side of things for us.
 	d_ourlistener = new OgreRQListener(this, queue_id, post_queue);
+
+	// Initialise blending modes to be used.
+	d_colourBlendMode.blendType	= Ogre::LBT_COLOUR;
+	d_colourBlendMode.source1	= Ogre::LBS_TEXTURE;
+	d_colourBlendMode.source2	= Ogre::LBS_DIFFUSE;
+	d_colourBlendMode.operation	= Ogre::LBX_MODULATE;
+
+	d_alphaBlendMode.blendType	= Ogre::LBT_ALPHA;
+	d_alphaBlendMode.source1	= Ogre::LBS_TEXTURE;
+	d_alphaBlendMode.source2	= Ogre::LBS_DIFFUSE;
+	d_alphaBlendMode.operation	= Ogre::LBX_MODULATE;
 }
 
 

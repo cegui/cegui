@@ -415,6 +415,8 @@ private:
 	Ogre::RenderOperation		d_render_op;		//!< Ogre render operation we use to do our stuff.
 	Ogre::HardwareVertexBufferSharedPtr	d_buffer;	//!< vertex buffer to queue sprite rendering
 	Ogre::SceneManager*			d_sceneMngr;		//!< The scene manager we are hooked into.
+	Ogre::LayerBlendModeEx		d_colourBlendMode;	//!< Controls colour blending mode used.
+	Ogre::LayerBlendModeEx		d_alphaBlendMode;	//!< Controls alpha blending mode used.
 
 	OgreRQListener*				d_ourlistener;
 	bool						d_post_queue;		//!< true if we render after everything else in our queue.
