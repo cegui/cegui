@@ -2399,7 +2399,8 @@ void Window::setPosition(MetricsMode mode, const Point& position)
 	if (mode == Relative)
 	{
 		d_rel_area.setPosition(position);
-        d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
+		d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{
