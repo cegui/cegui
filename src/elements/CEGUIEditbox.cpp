@@ -597,11 +597,11 @@ void Editbox::onCharacter(KeyEventArgs& e)
 				// erase selection using mode that does not modify d_text (we just want to update state)
 				eraseSelectedText(false);
 
-				// set text to the newly modified string
-				setText(tmp);
+                // advance carat (done first so we can "do stuff" in event handlers!)
+                d_caratPos++;
 
-				// advance carat;
-				d_caratPos++;
+                // set text to the newly modified string
+				setText(tmp);
 			}
 			else
 			{
