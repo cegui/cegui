@@ -65,10 +65,11 @@ public:
     \brief
         Load XML data using InputSource objects.
 
-    \param
+    \param filename
         String containing a filename of the resource to be loaded.
-        Reference to a InputSourceContainer object to load the data into.
-ialized.
+
+	\param output
+		Reference to a InputSourceContainer object to load the data into.
     */
     virtual void loadInputSourceContainer(const String& filename, InputSourceContainer& output) = 0;
 
@@ -76,12 +77,13 @@ ialized.
     \brief
         Load raw binary data.
 
-    \param
+    \param filename
         String containing a filename of the resource to be loaded.
+
+	\param output
         Reference to a RawDataContainer object to load the data into.
-ialized.
     */
-    virtual void loadRawDataContainer(const String& filename, RawDataContainer&) = 0;
+    virtual void loadRawDataContainer(const String& filename, RawDataContainer& output) = 0;
 };
 
 } // End of  CEGUI namespace section

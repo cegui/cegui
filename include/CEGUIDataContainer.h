@@ -68,7 +68,7 @@ public:
 	\brief
 		Set a pointer to the external data.
 
-	\param
+	\param data
         Pointer to a object of type T, where T defined when the template is specialized.
 	*/
     void setData(T* data) { mData = data; }
@@ -86,7 +86,7 @@ public:
 	\brief
 	    Set the size of the external data.  This maybe zero depending on the type of T.
 
-	\param
+	\param size
 	    size_t containing the size of the external data
 	*/
     void setSize(size_t size) { mSize = size; }
