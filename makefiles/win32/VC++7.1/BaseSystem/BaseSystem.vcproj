@@ -191,6 +191,9 @@
 				RelativePath="..\..\..\..\src\CEGUIProperty.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIPropertyHelper.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIPropertySet.cpp">
 			</File>
 			<File
@@ -246,6 +249,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIWindowManager.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIWindowProperties.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIXmlHandlerHelper.cpp">
@@ -398,6 +404,9 @@
 				RelativePath="..\..\..\..\include\CEGUIProperty.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIPropertyHelper.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIPropertySet.h">
 			</File>
 			<File
@@ -456,6 +465,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIWindowManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIWindowProperties.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIXmlHandlerHelper.h">

@@ -11,6 +11,7 @@
 	
 	<xsd:complexType name="WindowType">
 		<xsd:sequence>
+			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Window" type="WindowType"  minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>

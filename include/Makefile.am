@@ -20,7 +20,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUILogger.h \
                  CEGUIMouseCursor.h \
                  CEGUIProperty.h \
-                 CEGUIPropertySet.h \
+		 CEGUIPropertyHelper.h \
+		 CEGUIPropertySet.h \
                  CEGUIRect.h \
                  CEGUIRenderableElement.h \
                  CEGUIRenderableFrame.h \
@@ -39,4 +40,5 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIWindow.h \
                  CEGUIWindowFactory.h \
                  CEGUIWindowFactoryManager.h \
-                 CEGUIWindowManager.h 
+                 CEGUIWindowManager.h \
+		 CEGUIWindowProperties.h 

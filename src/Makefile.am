@@ -22,6 +22,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
                       CEGUIProperty.cpp \
+		      CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
                       CEGUIRenderableElement.cpp \
@@ -41,6 +42,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIWindowFactory.cpp \
                       CEGUIWindowFactoryManager.cpp \
                       CEGUIWindowManager.cpp \
+		      CEGUIWindowProperties.cpp \
 		      CEGUIXmlHandlerHelper.cpp\
                       elements/CEGUIButtonBase.cpp \
                       elements/CEGUICheckbox.cpp \

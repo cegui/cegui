@@ -35,6 +35,48 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Definitions for Window base class Properties
+*************************************************************************/
+WindowProperties::AbsoluteHeight	Window::d_absHeightProperty;
+WindowProperties::AbsoluteMaxSize	Window::d_absMaxSizeProperty;
+WindowProperties::AbsoluteMinSize	Window::d_absMinSizeProperty;
+WindowProperties::AbsolutePosition	Window::d_absPositionProperty;
+WindowProperties::AbsoluteRect		Window::d_absRectProperty;
+WindowProperties::AbsoluteSize		Window::d_absSizeProperty;
+WindowProperties::AbsoluteWidth		Window::d_absWidthProperty;
+WindowProperties::AbsoluteXPosition	Window::d_absXPosProperty;
+WindowProperties::AbsoluteYPosition	Window::d_absYPosProperty;
+WindowProperties::Alpha				Window::d_alphaProperty;
+WindowProperties::AlwaysOnTop		Window::d_alwaysOnTopProperty;
+WindowProperties::ClippedByParent	Window::d_clippedByParentProperty;
+WindowProperties::DestroyedByParent	Window::d_destroyedByParentProperty;
+WindowProperties::Disabled			Window::d_disabledProperty;
+WindowProperties::Font				Window::d_fontProperty;
+WindowProperties::Height			Window::d_heightProperty;
+WindowProperties::ID				Window::d_IDProperty;
+WindowProperties::InheritsAlpha		Window::d_inheritsAlphaProperty;
+WindowProperties::MetricsMode		Window::d_metricsModeProperty;
+WindowProperties::MouseCursorImage	Window::d_mouseCursorProperty;
+WindowProperties::Position			Window::d_positionProperty;
+WindowProperties::Rect				Window::d_rectProperty;
+WindowProperties::RelativeHeight	Window::d_relHeightProperty;
+WindowProperties::RelativeMaxSize	Window::d_relMaxSizeProperty;
+WindowProperties::RelativeMinSize	Window::d_relMinSizeProperty;
+WindowProperties::RelativePosition	Window::d_relPositionProperty;
+WindowProperties::RelativeRect		Window::d_relRectProperty;
+WindowProperties::RelativeSize		Window::d_relSizeProperty;
+WindowProperties::RelativeWidth		Window::d_relWidthProperty;
+WindowProperties::RelativeXPosition	Window::d_relXPosProperty;
+WindowProperties::RelativeYPosition	Window::d_relYPosProperty;
+WindowProperties::RestoreOldCapture	Window::d_restoreOldCaptureProperty;
+WindowProperties::Size				Window::d_sizeProperty;
+WindowProperties::Text				Window::d_textProperty;
+WindowProperties::Visible			Window::d_visibleProperty;
+WindowProperties::Width				Window::d_widthProperty;
+WindowProperties::XPosition			Window::d_xPosProperty;
+WindowProperties::YPosition			Window::d_yPosProperty;
+
 
 /*************************************************************************
 	static data definitions
@@ -121,6 +163,9 @@ Window::Window(const String& type, const String& name) :
 
 	// add events
 	addStandardEvents();
+
+	// add properties
+	addStandardProperties();
 }
 
 /*************************************************************************
@@ -792,25 +837,7 @@ void Window::setHeight(float height)
 *************************************************************************/
 void Window::setSize(const Size& size)
 {
-	if (getMetricsMode() == Relative)
-	{
-		d_rel_area.setSize(size);
-
-		// update Rect for the other metrics system
-		d_abs_area.setSize(relativeToAbsolute_impl(d_parent, size));
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-	}
-	else
-	{
-		d_abs_area.setSize(size);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-		// update Rect for the other metrics system.
-		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
-	}
-
-    WindowEventArgs args(this);
-	onSized(args);
+	setSize(getMetricsMode(), size);
 }
 
 
@@ -842,19 +869,7 @@ void Window::setYPosition(float y)
 *************************************************************************/
 void Window::setPosition(const Point& position)
 {
-	if (getMetricsMode() == Relative)
-	{
-		d_rel_area.setPosition(position);
-		d_abs_area.setPosition(relativeToAbsolute_impl(d_parent, position));
-	}
-	else
-	{
-		d_abs_area.setPosition(position);
-		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
-	}
-
-    WindowEventArgs args(this);
-	onMoved(args);
+	setPosition(getMetricsMode(), position);
 }
 
 
@@ -865,24 +880,7 @@ void Window::setPosition(const Point& position)
 *************************************************************************/
 void Window::setAreaRect(const Rect& area)
 {
-	if (getMetricsMode() == Relative)
-	{
-		d_rel_area = area;
-
-		d_abs_area = relativeToAbsolute_impl(d_parent, area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-	}
-	else
-	{
-		d_abs_area = area;
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-		d_rel_area = absoluteToRelative_impl(d_parent, area);
-	}
-
-    WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+	setRect(getMetricsMode(), area);
 }
 
 
@@ -2297,6 +2295,178 @@ Rect Window::getRect(MetricsMode mode) const
 }
 
 
+/*************************************************************************
+	set the x position of the window using the specified metrics system.	
+*************************************************************************/
+void Window::setXPosition(MetricsMode mode, float x)
+{
+	setPosition(mode, Point(x, getYPosition(mode)));
+}
+
+
+/*************************************************************************
+	set the y position of the window using the specified metrics system.	
+*************************************************************************/
+void Window::setYPosition(MetricsMode mode, float y)
+{
+	setPosition(mode, Point(getXPosition(mode), y));
+}
+
+
+/*************************************************************************
+	set the position of the window using the specified metrics system.	
+*************************************************************************/
+void Window::setPosition(MetricsMode mode, const Point& position)
+{
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Relative)
+	{
+		d_rel_area.setPosition(position);
+		d_abs_area.setPosition(relativeToAbsolute_impl(d_parent, position));
+	}
+	else
+	{
+		d_abs_area.setPosition(position);
+		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
+	}
+
+	WindowEventArgs args(this);
+	onMoved(args);
+}
+
+
+/*************************************************************************
+	set the width of the Window using the specified metrics system.	
+*************************************************************************/
+void Window::setWidth(MetricsMode mode, float width)
+{
+	setSize(mode, Size(width, getHeight(mode)));
+}
+
+
+/*************************************************************************
+	set the height of the Window using the specified metrics system.	
+*************************************************************************/
+void Window::setHeight(MetricsMode mode, float height)
+{
+	setSize(mode, Size(getWidth(mode), height));
+}
+
+
+/*************************************************************************
+	set the size of the Window using the specified metrics system.	
+*************************************************************************/
+void Window::setSize(MetricsMode mode, const Size& size)
+{
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Relative)
+	{
+		d_rel_area.setSize(size);
+
+		// update Rect for the other metrics system
+		d_abs_area.setSize(relativeToAbsolute_impl(d_parent, size));
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+	}
+	else
+	{
+		d_abs_area.setSize(size);
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+
+		// update Rect for the other metrics system.
+		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
+	}
+
+	WindowEventArgs args(this);
+	onSized(args);
+}
+
+
+/*************************************************************************
+	set the Rect that describes the Window area using the specified
+	metrics system.	
+*************************************************************************/
+void Window::setRect(MetricsMode mode, const Rect& area)
+{
+	if (mode == Inherited)
+	{
+		mode = getInheritedMetricsMode();
+	}
+
+	if (mode == Relative)
+	{
+		d_rel_area = area;
+
+		d_abs_area = relativeToAbsolute_impl(d_parent, area);
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+	}
+	else
+	{
+		d_abs_area = area;
+		d_abs_area.constrainSize(d_maxSize, d_minSize);
+
+		d_rel_area = absoluteToRelative_impl(d_parent, area);
+	}
+
+	WindowEventArgs args(this);
+	onMoved(args);
+	onSized(args);
+}
+
+
+/*************************************************************************
+	Add standard CEGUI::Window properties.
+*************************************************************************/
+void Window::addStandardProperties(void)
+{
+	addProperty(&d_absHeightProperty);
+	addProperty(&d_absMaxSizeProperty);
+	addProperty(&d_absMinSizeProperty);
+	addProperty(&d_absPositionProperty);
+	addProperty(&d_absRectProperty);
+	addProperty(&d_absSizeProperty);
+	addProperty(&d_absWidthProperty);
+	addProperty(&d_absXPosProperty);
+	addProperty(&d_absYPosProperty);
+	addProperty(&d_alphaProperty);
+	addProperty(&d_alwaysOnTopProperty);
+	addProperty(&d_clippedByParentProperty);
+	addProperty(&d_destroyedByParentProperty);
+	addProperty(&d_disabledProperty);
+	addProperty(&d_fontProperty);
+	addProperty(&d_heightProperty);
+	addProperty(&d_IDProperty);
+	addProperty(&d_inheritsAlphaProperty);
+	addProperty(&d_metricsModeProperty);
+	addProperty(&d_mouseCursorProperty);
+	addProperty(&d_positionProperty);
+	addProperty(&d_rectProperty);
+	addProperty(&d_relHeightProperty);
+	addProperty(&d_relMaxSizeProperty);
+	addProperty(&d_relMinSizeProperty);
+	addProperty(&d_relPositionProperty);
+	addProperty(&d_relRectProperty);
+	addProperty(&d_relSizeProperty);
+	addProperty(&d_relWidthProperty);
+	addProperty(&d_relXPosProperty);
+	addProperty(&d_relYPosProperty);
+	addProperty(&d_restoreOldCaptureProperty);
+	addProperty(&d_sizeProperty);
+	addProperty(&d_textProperty);
+	addProperty(&d_visibleProperty);
+	addProperty(&d_widthProperty);
+	addProperty(&d_xPosProperty);
+	addProperty(&d_yPosProperty);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -2623,6 +2793,5 @@ void Window::onCharacter(KeyEventArgs& e)
 {
 	fireEvent(CharacterEvent, e);
 }
-
 
 } // End of  CEGUI namespace section

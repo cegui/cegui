@@ -35,6 +35,7 @@
 #include "CEGUIPropertySet.h"
 #include "CEGUISystem.h"
 #include "CEGUIInputEvent.h"
+#include "CEGUIWindowProperties.h"
 #include <vector>
 
 // Start of CEGUI namespace section
@@ -66,7 +67,7 @@ enum CEGUIBASE_API MetricsMode
 	common functionality required by all UI objects, and specifies the minimal interface required to be implemented by
 	derived classes.
 */
-class CEGUIBASE_API Window : public EventSet, public PropertySet
+class CEGUIBASE_API Window : public PropertySet, public EventSet
 {
 public:
 	/*************************************************************************
@@ -942,6 +943,19 @@ public:
 	Rect	getRect(MetricsMode mode) const;
 
 
+	/*!
+	\brief
+		Return whether this window is set to restore old input capture when it loses input capture.
+
+		This is only really useful for certain sub-components for widget writers.
+
+	\return
+		- true if the window will restore the previous capture window when it loses input capture.
+		- false if the window will set the capture window to NULL when it loses input capture (this is the default behaviour).
+	*/
+	bool	restoresOldCapture(void) const		{return d_restoreOldCapture;}
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1497,6 +1511,118 @@ public:
 		Nothing.
 	*/
 	void	setUserData(void* user_data)		{d_userData = user_data;}
+
+
+	/*!
+	\brief
+		set the x position of the window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param x
+		float value that specifies the x position of the Window relative to it's parent, using the specified MetricsMode.
+
+	\return
+		Nothing.
+	*/
+	void	setXPosition(MetricsMode mode, float x);
+
+
+	/*!
+	\brief
+		set the y position of the window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param y
+		float value that specifies the y position of the Window relative to it's parent,  using the specified MetricsMode.
+
+	\return
+		Nothing.
+	*/
+	void	setYPosition(MetricsMode mode, float y);
+
+
+	/*!
+	\brief
+		set the position of the window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param position
+		Point object that describes the position of the Window relative to it's parent, using the specified MetricsMode.
+
+	\return
+		Nothing
+	*/
+	void	setPosition(MetricsMode mode, const Point& position);
+
+
+	/*!
+	\brief
+		set the width of the Window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param width
+		float value that specifies the width of the Window using the specified MetricsMode.
+
+	\return
+		Nothing.
+	*/
+	void	setWidth(MetricsMode mode, float width);
+
+
+	/*!
+	\brief
+		set the height of the Window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param height
+		float value that specifies the height of the Window using the specified MetricsMode.
+
+	\return
+		Nothing.
+	*/
+	void	setHeight(MetricsMode mode, float height);
+
+
+	/*!
+	\brief
+		set the size of the Window using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param size
+		Size object that describes the dimensions of the Window using the specified MetricsMode.
+
+	\return
+		Nothing.
+	*/
+	void	setSize(MetricsMode mode, const Size& size);
+
+
+	/*!
+	\brief
+		set the Rect that describes the Window area using the specified metrics system.
+
+	\param mode
+		One of the MetricsMode enumerated values specifying the metrics system to be used for the return value.
+
+	\param area
+		Rect object that describes the area to be covered by the Window using the specified MetricsMode.
+
+	\return
+		Nothing.
+	*/
+	void	setRect(MetricsMode mode, const Rect& area);
 
 
 	/*************************************************************************
@@ -2347,6 +2473,49 @@ protected:
 
 private:
 	/*************************************************************************
+		Properties for Window base class
+	*************************************************************************/
+	static	WindowProperties::AbsoluteHeight	d_absHeightProperty;
+	static	WindowProperties::AbsoluteMaxSize	d_absMaxSizeProperty;
+	static	WindowProperties::AbsoluteMinSize	d_absMinSizeProperty;
+	static	WindowProperties::AbsolutePosition	d_absPositionProperty;
+	static	WindowProperties::AbsoluteRect		d_absRectProperty;
+	static	WindowProperties::AbsoluteSize		d_absSizeProperty;
+	static	WindowProperties::AbsoluteWidth		d_absWidthProperty;
+	static	WindowProperties::AbsoluteXPosition	d_absXPosProperty;
+	static	WindowProperties::AbsoluteYPosition	d_absYPosProperty;
+	static	WindowProperties::Alpha				d_alphaProperty;
+	static	WindowProperties::AlwaysOnTop		d_alwaysOnTopProperty;
+	static	WindowProperties::ClippedByParent	d_clippedByParentProperty;
+	static	WindowProperties::DestroyedByParent	d_destroyedByParentProperty;
+	static	WindowProperties::Disabled			d_disabledProperty;
+	static	WindowProperties::Font				d_fontProperty;
+	static	WindowProperties::Height			d_heightProperty;
+	static	WindowProperties::ID				d_IDProperty;
+	static	WindowProperties::InheritsAlpha		d_inheritsAlphaProperty;
+	static	WindowProperties::MetricsMode		d_metricsModeProperty;
+	static	WindowProperties::MouseCursorImage	d_mouseCursorProperty;
+	static	WindowProperties::Position			d_positionProperty;
+	static	WindowProperties::Rect				d_rectProperty;
+	static	WindowProperties::RelativeHeight	d_relHeightProperty;
+	static	WindowProperties::RelativeMaxSize	d_relMaxSizeProperty;
+	static	WindowProperties::RelativeMinSize	d_relMinSizeProperty;
+	static	WindowProperties::RelativePosition	d_relPositionProperty;
+	static	WindowProperties::RelativeRect		d_relRectProperty;
+	static	WindowProperties::RelativeSize		d_relSizeProperty;
+	static	WindowProperties::RelativeWidth		d_relWidthProperty;
+	static	WindowProperties::RelativeXPosition	d_relXPosProperty;
+	static	WindowProperties::RelativeYPosition	d_relYPosProperty;
+	static	WindowProperties::RestoreOldCapture	d_restoreOldCaptureProperty;
+	static	WindowProperties::Size				d_sizeProperty;
+	static	WindowProperties::Text				d_textProperty;
+	static	WindowProperties::Visible			d_visibleProperty;
+	static	WindowProperties::Width				d_widthProperty;
+	static	WindowProperties::XPosition			d_xPosProperty;
+	static	WindowProperties::YPosition			d_yPosProperty;
+
+
+	/*************************************************************************
 		Private implementation functions
 	*************************************************************************/
 	/*!
@@ -2378,6 +2547,13 @@ private:
 		Notify 'this' and all siblings of a ZOrder change event
 	*/
 	void	onZChange_impl(void);
+
+
+	/*!
+	\brief
+		Add standard CEGUI::Window properties.
+	*/
+	void	addStandardProperties(void);
 
 	
 	/*************************************************************************
