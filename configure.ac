@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
-AC_INIT([CEGUI], [0.1.0])
-AM_INIT_AUTOMAKE([CEGUI], 0.1.0)
+AC_INIT([CEGUI], [0.2.0])
+AM_INIT_AUTOMAKE([CEGUI], 0.2.0)
 AC_CONFIG_HEADER([include/config.h])
 
 # Checks for programs.
