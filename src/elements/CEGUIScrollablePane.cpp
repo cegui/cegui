@@ -256,7 +256,6 @@ namespace CEGUI
 
         // finalise setup
         configureScrollbars();
-        layoutComponentWidgets();
     }
 
     void ScrollablePane::addScrollablePaneEvents(void)
@@ -285,6 +284,8 @@ namespace CEGUI
         {
             d_vertScrollbar->setVisible(isVertScrollbarNeeded());
         }
+
+        layoutComponentWidgets();
 
         // get viewable area
         Rect viewableArea(getViewableArea());
@@ -459,7 +460,6 @@ namespace CEGUI
     {
         Window::onSized(e);
         configureScrollbars();
-        layoutComponentWidgets();
         updateContainerPosition();
 
         e.handled = true;
