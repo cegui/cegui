@@ -70,7 +70,7 @@ protected:
 	\brief
 		handler invoked internally when the button is clicked.
 	*/
-	virtual void	onClicked(EventArgs& e);
+	virtual void	onClicked(WindowEventArgs& e);
 
 
 	/*************************************************************************

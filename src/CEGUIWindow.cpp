@@ -112,7 +112,7 @@ Window::Window(const String& type, const String& name) :
 
 	// position and size
 	d_abs_area = Rect(0, 0, 0, 0);
-	d_rel_area = absoluteToRelative(d_abs_area);
+	d_rel_area = Rect(0, 0, 0, 0);
 
 	// TODO: Change these to named constants.
 	d_minSize = Size(0, 0);
@@ -996,7 +996,7 @@ void Window::moveToFront()
 	// get our sibling window which is currently active (if any)
 	Window* activeWnd = NULL;
 
-	uint idx = getChildCount();
+	uint idx = d_parent->getChildCount();
 
 	while (idx-- > 0)
 	{
@@ -1679,7 +1679,7 @@ void Window::onZChange_impl(void)
 	{
 		EventArgs	nullArgs;
 
-		uint child_count = getChildCount();
+		uint child_count = d_parent->getChildCount();
 
 		for (uint i = 0; i < child_count; ++i)
 		{

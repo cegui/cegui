@@ -65,7 +65,7 @@ void PushButton::addPushButtonEvents(void)
 /*************************************************************************
 	handler invoked internally when the button is clicked.	
 *************************************************************************/
-void PushButton::onClicked(EventArgs& e)
+void PushButton::onClicked(WindowEventArgs& e)
 {
 	fireEvent(Clicked, e);
 }

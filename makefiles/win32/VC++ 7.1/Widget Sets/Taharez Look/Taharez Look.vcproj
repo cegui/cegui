@@ -131,6 +131,9 @@
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLCheckbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\src\TLCloseButton.cpp">
 			</File>
 			<File
@@ -149,6 +152,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLCheckbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\Widget Sets\Taharez Look\include\TLCloseButton.h">

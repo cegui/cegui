@@ -28,6 +28,90 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*************************************************************************
+	Event name constants
+*************************************************************************/
+// generated internally by Window
+const utf8	Checkbox::CheckStateChanged[]		= "CheckStateChanged";
+
+
+/*************************************************************************
+	Constructor
+*************************************************************************/
+Checkbox::Checkbox(const String& type, const String& name) :
+	ButtonBase(type, name),
+	d_selected(false)
+{
+	// add events for this widget
+	addCheckboxEvents();
+}
+
+
+/*************************************************************************
+	Destructor
+*************************************************************************/
+Checkbox::~Checkbox(void)
+{
+}
+
+
+/*************************************************************************
+	set whether the check-box is selected or not	
+*************************************************************************/
+void Checkbox::setSelected(bool select)
+{
+	if (select != d_selected)
+	{
+		d_selected = select;
+		requestRedraw();
+
+		onSelectStateChange(WindowEventArgs(this));
+	}
+
+}
+
+
+/*************************************************************************
+	event triggered internally when state of check-box changes	
+*************************************************************************/
+void Checkbox::onSelectStateChange(WindowEventArgs& e)
+{
+	fireEvent(CheckStateChanged, e);
+}
+
+
+/*************************************************************************
+	Handler for mouse button up events
+*************************************************************************/
+void Checkbox::onMouseButtonUp(MouseEventArgs& e)
+{
+	// default handling
+	ButtonBase::onMouseButtonUp(e);
+
+	Window* sheet = System::getSingleton().getGUISheet();
+
+	if (sheet != NULL)
+	{
+		// if mouse was released over this widget
+		if (this == sheet->getChildAtPosition(e.position))
+		{
+			// toggle selected state
+			setSelected(d_selected ^ true);
+		}
+
+	}
+
+	e.handled = true;
+}
+
+
+/*************************************************************************
+	Add check-box specific events
+*************************************************************************/
+void Checkbox::addCheckboxEvents(void)
+{
+	addEvent(CheckStateChanged);
+}
 
 
 } // End of  CEGUI namespace section
