@@ -336,8 +336,6 @@ void Scheme::xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const
 	XERCES_CPP_NAMESPACE_USE
 	std::string element(XMLString::transcode(localname));
 
-	UIModule	module;
-
 	// handle an Imageset element
 	if (element == ImagesetElement)
 	{
@@ -371,6 +369,7 @@ void Scheme::xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const
 	// handle a WindowSet element
 	else if (element == WindowSetElement)
 	{
+		UIModule	module;
 		ArrayJanitor<XMLCh>	attr_name(XMLString::transcode(FilenameAttribute));
 		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
 		module.name		= (utf8*)val_str.get();
@@ -388,7 +387,7 @@ void Scheme::xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const
 		ArrayJanitor<char>  val_str(XMLString::transcode(attrs.getValue(attr_name.get())));
 		factory.name = (utf8*)val_str.get();
 
-        module.factories.push_back(factory);
+		d_scheme->d_widgetModules[d_scheme->d_widgetModules.size() - 1].factories.push_back(factory);
 	}
 	// handle root Scheme element
 	else if (element == GUISchemeElement)
