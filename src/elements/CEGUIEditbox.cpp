@@ -27,10 +27,21 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
+#include <boost/regex.hpp>
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*!
+\brief
+	Internal struct to contain boost::regex
+*/
+struct RegexValidator
+{
+	boost::regex	d_regex;
+};
+
 /*************************************************************************
 	TODO:
 
@@ -98,6 +109,8 @@ Editbox::Editbox(const String& type, const String& name) :
 	d_selectBrushColour(DefaultNormalSelectionColour),
 	d_inactiveSelectBrushColour(DefaultInactiveSelectionColour)
 {
+	d_validator = new RegexValidator;
+
 	addEditboxEvents();
 	addEditboxProperties();
 
@@ -111,6 +124,7 @@ Editbox::Editbox(const String& type, const String& name) :
 *************************************************************************/
 Editbox::~Editbox(void)
 {
+	delete d_validator;
 }
 
 
@@ -204,7 +218,7 @@ void Editbox::setValidationString(const String& validation_string)
 
 		try
 		{
-			d_validator = validation_string.c_str();
+			d_validator->d_regex = validation_string.c_str();
 		}
 		catch (boost::bad_expression x)
 		{
@@ -387,7 +401,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 bool Editbox::isStringValid(const String& str) const
 {
 	// TODO: update for unicode
-	return boost::regex_match(str.c_str(), d_validator);
+	return boost::regex_match(str.c_str(), d_validator->d_regex);
 }
 
 
