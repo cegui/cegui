@@ -21,7 +21,7 @@
 				AdditionalOptions="/Zm125"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\TaharezLook\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TAHAREZLOOK_EXPORTS;_STLP_DEBUG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
