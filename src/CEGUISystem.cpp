@@ -753,20 +753,29 @@ bool System::injectMouseButtonDown(MouseButton button)
 	{
 		ma.window = dest_window;
 
-		switch (tkr.d_click_count)
-		{
-		case 1:
-			dest_window->onMouseButtonDown(ma);
-			break;
+        if (dest_window->wantsMultiClickEvents())
+        {
+            switch (tkr.d_click_count)
+            {
+            case 1:
+                dest_window->onMouseButtonDown(ma);
+                break;
 
-		case 2:
-			dest_window->onMouseDoubleClicked(ma);
-			break;
+            case 2:
+                dest_window->onMouseDoubleClicked(ma);
+                break;
 
-		case 3:
-			dest_window->onMouseTripleClicked(ma);
-			break;
-		}
+            case 3:
+                dest_window->onMouseTripleClicked(ma);
+                break;
+            }
+        }
+        // current target window does not want multi-clicks,
+        // so just send a mouse down event instead.
+        else
+        {
+            dest_window->onMouseButtonDown(ma);
+        }
 
 		dest_window = dest_window->getParent();
 	}

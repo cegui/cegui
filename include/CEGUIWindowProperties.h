@@ -1127,6 +1127,34 @@ public:
 };
 
 
+/*!
+\brief
+    Property to control whether the window will receive double/triple-click events.
+
+    This property offers access to the setting that controls whether a window will receive double-click and
+    triple-click events, or whether the window will receive multiple single mouse button down events instead.
+
+    \par Usage:
+        - Name: WantsMultiClickEvents
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate the Window wants double-click and triple-click events.
+        - "False" to indicate the Window wants multiple single mouse button down events.
+*/
+class WantsMultiClickEvents : public Property
+{
+public:
+    WantsMultiClickEvents() : Property(
+        "WantsMultiClickEvents",
+        "Property to get/set whether the window will receive double-click and triple-click events.  Value is either \"True\" or \"False\".",
+        "True")
+    {}
+
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  WindowProperties namespace section
 
 

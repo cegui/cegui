@@ -976,6 +976,17 @@ public:
 	bool	isZOrderingEnabled(void) const;
 
 
+    /*!
+    \brief
+        Return whether this window will receive multi-click events or multiple 'down' events instead.
+
+    \return
+        - true if the Window will receive double-click and triple-click events.
+        - false if the Window will receive multiple mouse button down events instead of double/triple click events.
+    */
+    bool    wantsMultiClickEvents(void) const;
+
+
 	/*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1666,6 +1677,20 @@ public:
 		Nothing.
 	*/
 	void	setZOrderingEnabled(bool setting);
+
+
+    /*!
+    \brief
+        Set whether this window will receive multi-click events or multiple 'down' events instead.
+
+    \param setting
+        - true if the Window will receive double-click and triple-click events.
+        - false if the Window will receive multiple mouse button down events instead of double/triple click events.
+
+    \return
+        Nothing.
+    */
+    void setWantsMultiClickEvents(bool setting);
 
 
 	/*************************************************************************
@@ -2540,6 +2565,7 @@ protected:
 	bool	d_inheritsAlpha;			//!< true if the Window inherits alpha from the parent Window
 	bool	d_restoreOldCapture;		//!< true if the Window restores capture to the previous window when it releases capture.
 	bool	d_zOrderingEnabled;			//!< true if the Window responds to z-order change requests.
+    bool    d_wantsMultiClicks;         //!< true if the Window wishes to hear about multi-click mouse events.
 
 protected:
 	/*************************************************************************
@@ -2584,6 +2610,7 @@ protected:
 	static	WindowProperties::XPosition			d_xPosProperty;
 	static	WindowProperties::YPosition			d_yPosProperty;
 	static	WindowProperties::ZOrderChangeEnabled	d_zOrderChangeProperty;
+    static  WindowProperties::WantsMultiClickEvents d_wantsMultiClicksProperty;
 
 
 	/*************************************************************************

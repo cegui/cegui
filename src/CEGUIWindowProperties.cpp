@@ -630,6 +630,18 @@ void ZOrderChangeEnabled::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String WantsMultiClickEvents::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->wantsMultiClickEvents());
+}
+
+
+void WantsMultiClickEvents::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWantsMultiClickEvents(PropertyHelper::stringToBool(value));
+}
+
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

@@ -82,6 +82,7 @@ WindowProperties::Width				Window::d_widthProperty;
 WindowProperties::XPosition			Window::d_xPosProperty;
 WindowProperties::YPosition			Window::d_yPosProperty;
 WindowProperties::ZOrderChangeEnabled	Window::d_zOrderChangeProperty;
+WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
 
 
 /*************************************************************************
@@ -159,6 +160,7 @@ Window::Window(const String& type, const String& name) :
 	d_inheritsAlpha		= true;
 	d_restoreOldCapture	= false;
 	d_zOrderingEnabled	= true;
+    d_wantsMultiClicks  = true;
 
 	// position and size
 	d_abs_area = Rect(0, 0, 0, 0);
@@ -2550,6 +2552,7 @@ void Window::addStandardProperties(void)
 	addProperty(&d_xPosProperty);
 	addProperty(&d_yPosProperty);
 	addProperty(&d_zOrderChangeProperty);
+    addProperty(&d_wantsMultiClicksProperty);
 }
 
 
@@ -2571,6 +2574,32 @@ void Window::setZOrderingEnabled(bool setting)
 	{
 		d_zOrderingEnabled = setting;
 	}
+
+}
+
+
+/*************************************************************************
+    Return whether this window will receive multi-click events or
+    multiple 'down' events instead.
+*************************************************************************/
+bool Window::wantsMultiClickEvents(void) const
+{
+    return d_wantsMultiClicks;
+}
+
+
+/*************************************************************************
+    Set whether this window will receive multi-click events or
+    multiple 'down' events instead.	
+*************************************************************************/
+void Window::setWantsMultiClickEvents(bool setting)
+{
+    if (d_wantsMultiClicks != setting)
+    {
+        d_wantsMultiClicks = setting;
+
+        // TODO: Maybe add a 'setting changed' event for this?
+    }
 
 }
 
