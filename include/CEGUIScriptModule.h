@@ -81,6 +81,24 @@ public:
 		The integer value returned from the script function.
 	*/
 	virtual int	executeScriptGloabl(const String& function_name)	= 0;
+
+
+	/*!
+	\brief
+		Execute a scripted global 'event handler' function.  The function should take some kind of EventArgs like parameter
+		that the concrete implementation of this function can create from the passed EventArgs based object.  The function
+		should not return anything.
+
+	\param handler_name
+		String object holding the name of the scripted handler function.
+
+	\param e
+		EventArgs based object that should be passed, by any appropriate means, to the scripted function.
+
+	\return
+		Nothing.
+	*/
+	virtual	void	executeScriptedEventHandler(const String& handler_name, const EventArgs& e)		= 0;
 };
 
 } // End of  CEGUI namespace section
