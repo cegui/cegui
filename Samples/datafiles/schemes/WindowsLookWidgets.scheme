@@ -19,6 +19,7 @@
 		<WindowFactory Name="WindowsLook/RadioButton" />
 		<WindowFactory Name="WindowsLook/Slider" />
 		<WindowFactory Name="WindowsLook/SliderThumb" />
+		<WindowFactory Name="WindowsLook/Spinner" />
 		<WindowFactory Name="WindowsLook/StaticImage" />
 		<WindowFactory Name="WindowsLook/StaticText" />
 		<WindowFactory Name="WindowsLook/TabButton" />
