@@ -203,9 +203,6 @@
 				RelativePath="..\..\..\..\src\CEGUIRenderer.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIResourceProvider.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\CEGUIScheme.cpp">
 			</File>
 			<File

@@ -416,10 +416,6 @@ SOURCE=..\..\..\..\src\CEGUIRenderer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\CEGUIResourceProvider.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\src\CEGUIScheme.cpp
 # End Source File
 # Begin Source File
