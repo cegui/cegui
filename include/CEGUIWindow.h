@@ -1919,6 +1919,7 @@ protected:
 	friend	void System::injectKeyDown(uint key_code);
 	friend	void System::injectKeyUp(uint key_code);
 	friend	void System::injectMouseWheelChange(float delta);
+	friend	void System::handleDisplaySizeChange(const EventArgs& e);
 
 
 	/*************************************************************************

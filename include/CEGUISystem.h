@@ -600,6 +600,13 @@ private:
 	void	addSystemEvents(void);
 
 
+	/*!
+	\brief
+		Handler method for display size change notifications
+	*/
+	void	handleDisplaySizeChange(const EventArgs& e);
+
+
 	/*************************************************************************
 		Handlers for System events
 	*************************************************************************/

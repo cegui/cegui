@@ -42,6 +42,7 @@
 #include "xercesc/sax2/DefaultHandler.hpp"
 #include "xercesc/sax2/SAX2XMLReader.hpp"
 #include "xercesc/sax2/XMLReaderFactory.hpp"
+#include <boost/bind.hpp>
 
 
 // Start of CEGUI namespace section
@@ -256,6 +257,9 @@ void System::constructor_impl(Renderer* renderer, ScriptModule* scriptModule, co
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
+
+	// subscribe to hear about display mode changes
+	d_renderer->subscribeEvent(Renderer::ModeChangedEvent, boost::bind(&CEGUI::System::handleDisplaySizeChange, this, _1));
 
 	// load base scheme
 	if (!configSchemeName.empty())
@@ -1064,6 +1068,22 @@ void System::onDefaultMouseCursorChanged(EventArgs& e)
 void System::onMouseMoveScalingChanged(EventArgs& e)
 {
 	fireEvent(MouseMoveScalingChanged, e);
+}
+
+
+/*************************************************************************
+	Handler method for display size change notifications
+*************************************************************************/
+void System::handleDisplaySizeChange(const EventArgs& e)
+{
+	// notify gui sheet / root if size change, event propagation will ensure everything else
+	// gets updated as required.
+	if (d_activeSheet != NULL)
+	{
+		WindowEventArgs args(NULL);
+		d_activeSheet->onParentSized(args);
+	}
+
 }
 
 } // End of  CEGUI namespace section
