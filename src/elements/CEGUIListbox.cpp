@@ -559,8 +559,8 @@ void Listbox::drawSelf(float z)
 	Rect clipper(absarea.getIntersection(getPixelRect()));
 
 	// set up some initial positional details for items
-	itemPos.d_x = absarea.d_left - d_horzScrollbar->getScrollPosition();
-	itemPos.d_y = absarea.d_top - d_vertScrollbar->getScrollPosition();
+	itemPos.d_x = PixelAligned(absarea.d_left - d_horzScrollbar->getScrollPosition());
+	itemPos.d_y = PixelAligned(absarea.d_top - d_vertScrollbar->getScrollPosition());
 	itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3);
 
 	float alpha = getEffectiveAlpha();
@@ -592,7 +592,7 @@ void Listbox::drawSelf(float z)
 		d_listItems[i]->draw(itemPos, alpha, itemClipper);
 
 		// update position ready for next item
-		itemPos.d_y += itemSize.d_height;
+		itemPos.d_y += PixelAligned(itemSize.d_height);
 	}
 
 }

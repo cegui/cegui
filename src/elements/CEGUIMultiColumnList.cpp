@@ -1729,7 +1729,7 @@ void MultiColumnList::drawSelf(float z)
 	Rect clipper(absarea.getIntersection(getPixelRect()));
 
 	// set up initial positional details for items
-	itemPos.d_y = absarea.d_top - d_vertScrollbar->getScrollPosition();
+	itemPos.d_y = PixelAligned(absarea.d_top - d_vertScrollbar->getScrollPosition());
 	itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3);
 
 	float alpha = getEffectiveAlpha();
@@ -1738,7 +1738,7 @@ void MultiColumnList::drawSelf(float z)
 	for (uint i = 0; i < getRowCount(); ++i)
 	{
 		// set initial x position for this row.
-		itemPos.d_x = absarea.d_left - d_horzScrollbar->getScrollPosition();
+		itemPos.d_x = PixelAligned(absarea.d_left - d_horzScrollbar->getScrollPosition());
 
 		// calculate height for this row.
 		itemSize.d_height = getHighestRowItemHeight(i);
@@ -1763,7 +1763,7 @@ void MultiColumnList::drawSelf(float z)
 				// skip this item if totally clipped
 				if (itemClipper.getWidth() == 0)
 				{
-					itemPos.d_x += itemSize.d_width;
+					itemPos.d_x += PixelAligned(itemSize.d_width);
 					continue;
 				}
 
@@ -1772,11 +1772,11 @@ void MultiColumnList::drawSelf(float z)
 			}
 
 			// update position for next column.
-			itemPos.d_x += itemSize.d_width;
+			itemPos.d_x += PixelAligned(itemSize.d_width);
 		}
 
 		// update position ready for next row
-		itemPos.d_y += itemSize.d_height;
+		itemPos.d_y += PixelAligned(itemSize.d_height);
 	}
 
 }
