@@ -50,6 +50,9 @@ const utf8	Font_xmlHandler::FontElement[]					= "Font";
 const utf8	Font_xmlHandler::MappingElement[]				= "Mapping";
 const utf8	Font_xmlHandler::FontTypeStatic[]				= "Static";
 const utf8	Font_xmlHandler::FontTypeDynamic[]				= "Dynamic";
+const utf8	Font_xmlHandler::GlyphElement[]					= "Glyph";
+const utf8	Font_xmlHandler::GlyphRangeElement[]			= "GlyphRange";
+const utf8	Font_xmlHandler::GlyphSetElement[]				= "GlyphSet";
 const char	Font_xmlHandler::FontNameAttribute[]			= "Name";
 const char	Font_xmlHandler::FontFilenameAttribute[]		= "Filename";
 const char	Font_xmlHandler::FontTypeAttribute[]			= "Type";
@@ -63,6 +66,10 @@ const char	Font_xmlHandler::FontAntiAliasedAttribute[]		= "AntiAlias";
 const char	Font_xmlHandler::MappingCodepointAttribute[]	= "Codepoint";
 const char	Font_xmlHandler::MappingImageAttribute[]		= "Image";
 const char	Font_xmlHandler::MappingHorzAdvanceAttribute[]	= "HorzAdvance";
+const char	Font_xmlHandler::GlyphCodepointAttribute[]		= "Codepoint";
+const char	Font_xmlHandler::GlyphRangeStartCodepointAttribute[]	= "StartCodepoint";
+const char	Font_xmlHandler::GlyphRangeEndCodepointAttribute[]	= "EndCodepoint";
+const char	Font_xmlHandler::GlyphSetGlyphsAttribute[]		= "Glyphs";
 
 // General constants
 const int	Font_xmlHandler::AutoGenerateHorzAdvance		= -1;
@@ -141,18 +148,21 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 			utf32 last_codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, FontLastCodepointAttribute);
 
 			// build string containing the required code-points.
-			String glyph_set;
 			for (;first_codepoint <= last_codepoint; ++first_codepoint)
-				glyph_set += first_codepoint;
+			{
+				d_glyphSet += first_codepoint;
+			}
 
 			String antiAlias(XmlHandlerHelper::getAttributeValueAsString(attrs, FontAntiAliasedAttribute));
 			uint flags = ((antiAlias == (utf8*)"true") || (antiAlias == (utf8*)"1")) ? 0 : NoAntiAlias;
 
-
-			// perform construction
+			// perform pre-initialisation
 			d_font->setNativeResolution(Size(hres, vres));
 			d_font->setAutoScalingEnabled(auto_scale);
-			d_font->constructor_impl(font_name, filename, size, flags, glyph_set);
+
+			// Finalise construction of font without glyphs.
+			// Glyphs will defined after we know which ones we need.
+			d_font->constructor_impl(font_name, filename, size, flags, String(""));
 		}
 		// static (Imageset based) font
 		else if (font_type == FontTypeStatic)
@@ -173,6 +183,49 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 		}
 
 	}
+	// Glyph element
+	else if (element == GlyphElement)
+	{
+		utf32 codepoint = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphCodepointAttribute);
+
+		if (d_glyphSet.find(codepoint) == String::npos)
+		{
+			d_glyphSet.append(1, codepoint);
+		}
+
+	}
+	// GlyphRange element
+	else if (element == GlyphRangeElement)
+	{
+		utf32 start = (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeStartCodepointAttribute);
+		utf32 end	= (utf32)XmlHandlerHelper::getAttributeValueAsInteger(attrs, GlyphRangeEndCodepointAttribute);
+
+		for (utf32 codepoint = start; codepoint <= end; ++codepoint)
+		{
+			if (d_glyphSet.find(codepoint) == String::npos)
+			{
+				d_glyphSet.append(1, codepoint);
+			}
+		}
+
+	}
+	// GlyphSet element
+	else if (element == GlyphSetElement)
+	{
+		String glyphs(XmlHandlerHelper::getAttributeValueAsString(attrs, GlyphSetGlyphsAttribute));
+
+		for (String::size_type i = 0; i < glyphs.length(); ++i)
+		{
+			utf32 codepoint = glyphs[i];
+
+			if (d_glyphSet.find(codepoint) == String::npos)
+			{
+				d_glyphSet.append(1, codepoint);
+			}
+
+		}
+
+	}
 	// anything else is an error which *should* have already been caught by XML validation
 	else
 	{
@@ -180,6 +233,24 @@ void Font_xmlHandler::startElement(const XMLCh* const uri, const XMLCh* const lo
 	}
 
 }
+
+void Font_xmlHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
+{
+	XERCES_CPP_NAMESPACE_USE
+	String element(XmlHandlerHelper::transcodeXmlCharToString(localname));
+
+	if (element == FontElement)
+	{
+		// if this is a freetype based font, perform glyph definition
+		if (d_font->d_freetype)
+		{
+			d_font->defineFontGlyphs(d_glyphSet);
+		}
+
+	}
+
+}
+
 
 void Font_xmlHandler::warning(const XERCES_CPP_NAMESPACE::SAXParseException &exc)
 {

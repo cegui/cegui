@@ -460,9 +460,10 @@ public:
 		amount the mouse moved on the y axis.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseMove(float delta_x, float delta_y);
+	bool	injectMouseMove(float delta_x, float delta_y);
 
 
 	/*!
@@ -473,9 +474,10 @@ public:
 		One of the MouseButton values indicating which button was pressed.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseButtonDown(MouseButton button);
+	bool	injectMouseButtonDown(MouseButton button);
 
 
 	/*!
@@ -486,9 +488,10 @@ public:
 		One of the MouseButton values indicating which button was released.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseButtonUp(MouseButton button);
+	bool	injectMouseButtonUp(MouseButton button);
 
 
 	/*!
@@ -499,9 +502,10 @@ public:
 		uint value indicating which key was pressed.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectKeyDown(uint key_code);
+	bool	injectKeyDown(uint key_code);
 
 
 	/*!
@@ -512,9 +516,10 @@ public:
 		uint value indicating which key was released.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectKeyUp(uint key_code);
+	bool	injectKeyUp(uint key_code);
 
 
 	/*!
@@ -525,9 +530,10 @@ public:
 		Unicode code point of the character that was typed.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectChar(utf32 code_point);
+	bool	injectChar(utf32 code_point);
 
 
 	/*!
@@ -538,9 +544,10 @@ public:
 		float value representing the amount the wheel moved.
 
 	\return
-		Nothing.
+		- true if the input was processed by the gui system.
+		- false if the input was not processed by the gui system.
 	*/
-	void	injectMouseWheelChange(float delta);
+	bool	injectMouseWheelChange(float delta);
 
 
 private:

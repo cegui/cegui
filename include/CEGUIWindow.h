@@ -2162,9 +2162,9 @@ protected:
 		Handler called when this window has become the active window.
 
 	\param e
-		WindowEventArgs class whose 'window' pointer field is set to the window that previously was active, or NULL for none.
+		ActivationEventArgs class whose 'otherWindow' field is set to the window that previously was active, or NULL for none.
 	*/
-	virtual void	onActivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
 
 
 	/*!
@@ -2172,9 +2172,9 @@ protected:
 		Handler called when this window has lost input focus and has been deactivated.
 
 	\param e
-		WindowEventArgs object whose 'window' pointer field is set to the window that has now become active, or NULL for none.
+		ActivationEventArgs object whose 'otherWindow' field is set to the window that has now become active, or NULL for none.
 	*/
-	virtual void	onDeactivated(WindowEventArgs& e);
+	virtual void	onDeactivated(ActivationEventArgs& e);
 
 
 	/*!

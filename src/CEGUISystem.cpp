@@ -552,7 +552,7 @@ void System::setMouseMoveScaling(float scaling)
 /*************************************************************************
 	Method that injects a mouse movement event into the system
 *************************************************************************/
-void System::injectMouseMove(float delta_x, float delta_y)
+bool System::injectMouseMove(float delta_x, float delta_y)
 {
 	MouseEventArgs ma(NULL);
 	MouseCursor& mouse = MouseCursor::getSingleton();
@@ -596,13 +596,14 @@ void System::injectMouseMove(float delta_x, float delta_y)
 
 	}
 
+	return ma.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a mouse button down event into the system.
 *************************************************************************/
-void System::injectMouseButtonDown(MouseButton button)
+bool System::injectMouseButtonDown(MouseButton button)
 {
 	// update system keys
 	d_sysKeys |= mouseButtonToSyskey(button);
@@ -663,13 +664,15 @@ void System::injectMouseButtonDown(MouseButton button)
 
 	// reset timer for this button.
 	d_click_trackers[button].d_timer.restart();
+
+	return ma.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a mouse button up event into the system.
 *************************************************************************/
-void System::injectMouseButtonUp(MouseButton button)
+bool System::injectMouseButtonUp(MouseButton button)
 {
 	// update system keys
 	d_sysKeys &= ~mouseButtonToSyskey(button);
@@ -707,20 +710,22 @@ void System::injectMouseButtonUp(MouseButton button)
 
 	}
 
+	return ma.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a key down event into the system.
 *************************************************************************/
-void System::injectKeyDown(uint key_code)
+bool System::injectKeyDown(uint key_code)
 {
 	// update system keys
 	d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
 
+	KeyEventArgs args(NULL);
+
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args(NULL);
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
@@ -736,20 +741,22 @@ void System::injectKeyDown(uint key_code)
 
 	}
 
+	return args.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a key up event into the system.
 *************************************************************************/
-void System::injectKeyUp(uint key_code)
+bool System::injectKeyUp(uint key_code)
 {
 	// update system keys
 	d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
 
+	KeyEventArgs args(NULL);
+
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args(NULL);
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
@@ -765,17 +772,19 @@ void System::injectKeyUp(uint key_code)
 
 	}
 
+	return args.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a typed character event into the system.	
 *************************************************************************/
-void System::injectChar(utf32 code_point)
+bool System::injectChar(utf32 code_point)
 {
+	KeyEventArgs args(NULL);
+
 	if (d_activeSheet != NULL)
 	{
-		KeyEventArgs args(NULL);
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
 
@@ -791,13 +800,14 @@ void System::injectChar(utf32 code_point)
 		
 	}
 
+	return args.handled;
 }
 
 
 /*************************************************************************
 	Method that injects a mouse-wheel / scroll-wheel event into the system.	
 *************************************************************************/
-void System::injectMouseWheelChange(float delta)
+bool System::injectMouseWheelChange(float delta)
 {
 	MouseEventArgs ma(NULL);
 	ma.position = MouseCursor::getSingleton().getPosition();
@@ -816,6 +826,7 @@ void System::injectMouseWheelChange(float delta)
 		dest_window = dest_window->getParent();
 	}
 
+	return ma.handled;
 }
 
 

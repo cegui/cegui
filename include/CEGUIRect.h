@@ -54,7 +54,7 @@ public:
 	\brief
 		Destructor for Rect objects.
 	*/
-	virtual ~Rect(void) {}
+	~Rect(void) {}
 
 
 	/*!

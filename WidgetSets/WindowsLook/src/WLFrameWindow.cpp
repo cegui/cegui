@@ -339,7 +339,7 @@ void WLFrameWindow::onAlphaChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when window is activated
 *************************************************************************/
-void WLFrameWindow::onActivated(WindowEventArgs& e)
+void WLFrameWindow::onActivated(ActivationEventArgs& e)
 {
 	Window::onActivated(e);
 	updateFrameColours();
@@ -350,7 +350,7 @@ void WLFrameWindow::onActivated(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when window is deactivated
 *************************************************************************/
-void WLFrameWindow::onDeactivated(WindowEventArgs& e)
+void WLFrameWindow::onDeactivated(ActivationEventArgs& e)
 {
 	Window::onDeactivated(e);
 	updateFrameColours();

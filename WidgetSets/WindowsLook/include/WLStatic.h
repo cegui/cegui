@@ -81,6 +81,19 @@ public:
 	virtual ~WLStaticText(void) {}
 
 
+	/*!
+	\brief
+		Initialises the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
+
+
 protected:
 	/*************************************************************************
 		Implementation Methods (abstract)
@@ -140,6 +153,19 @@ public:
 		Destructor for WLStaticImage objects.
 	*/
 	virtual ~WLStaticImage(void) {}
+
+
+	/*!
+	\brief
+		Initialises the Window based object ready for use.
+
+	\note
+		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+	\return
+		Nothing
+	*/
+	virtual void	initialise(void);
 };
 
 

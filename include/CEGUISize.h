@@ -41,7 +41,6 @@ class CEGUIBASE_API Size
 public:
 	Size(void) {}
 	Size(float width, float height) : d_width(width), d_height(height) {}
-	virtual ~Size(void) {}
 
 	float d_width, d_height;
 };

@@ -889,7 +889,7 @@ void Combobox::activateEditbox(void)
 /*************************************************************************
 	Widget activation handler
 *************************************************************************/
-void Combobox::onActivated(WindowEventArgs& e)
+void Combobox::onActivated(ActivationEventArgs& e)
 {
 	if (!isActive())
 	{

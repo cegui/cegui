@@ -791,7 +791,8 @@ void Window::activate(void)
 *************************************************************************/
 void Window::deactivate(void)
 {
-	WindowEventArgs args(NULL);
+	ActivationEventArgs args(this);
+	args.otherWindow = NULL;
 	onDeactivated(args);
 }
 
@@ -1014,7 +1015,8 @@ void Window::moveToFront()
 		// perform initial activation if required.
 		if (!isActive())
 		{
-            WindowEventArgs args(NULL);
+            ActivationEventArgs args(this);
+			args.otherWindow = NULL;
 			onActivated(args);
 		}
 
@@ -1047,14 +1049,16 @@ void Window::moveToFront()
 	// notify ourselves that we have become active
 	if (activeWnd != this)
 	{
-        WindowEventArgs args(activeWnd);
+        ActivationEventArgs args(this);
+		args.otherWindow = activeWnd;
 		onActivated(args);
 	}
 
 	// notify previously active window that it is no longer active
 	if ((activeWnd != NULL) && (activeWnd != this))
 	{
-        WindowEventArgs args(this);
+        ActivationEventArgs args(activeWnd);
+		args.otherWindow = this;
 		activeWnd->onDeactivated(args);
 	}
 
@@ -1070,7 +1074,8 @@ void Window::moveToBack()
 	// if the window is active, de-activate it.
 	if (isActive())
 	{
-        WindowEventArgs args(NULL);
+        ActivationEventArgs args(this);
+		args.otherWindow = NULL;
 		onDeactivated(args);
 	}
 
@@ -2667,7 +2672,7 @@ void Window::onDestructionStarted(WindowEventArgs& e)
 }
 
 
-void Window::onActivated(WindowEventArgs& e)
+void Window::onActivated(ActivationEventArgs& e)
 {
 	d_active = true;
 	requestRedraw();
@@ -2675,7 +2680,7 @@ void Window::onActivated(WindowEventArgs& e)
 }
 
 
-void Window::onDeactivated(WindowEventArgs& e)
+void Window::onDeactivated(ActivationEventArgs& e)
 {
 	// first de-activate all children
 	uint child_count = getChildCount();

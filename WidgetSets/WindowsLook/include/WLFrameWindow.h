@@ -142,8 +142,8 @@ protected:
 	*************************************************************************/
 	virtual void	onSized(WindowEventArgs& e);
 	virtual void	onAlphaChanged(WindowEventArgs& e);
-	virtual void	onActivated(WindowEventArgs& e);
-	virtual void	onDeactivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
+	virtual void	onDeactivated(ActivationEventArgs& e);
 
 
 	/*************************************************************************

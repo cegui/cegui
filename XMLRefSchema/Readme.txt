@@ -46,7 +46,9 @@ The Root element must be Font.
 
 Font Element
 ============
-Font is the root element, it has some attributes and zero or more 'Mapping' elements.  Mapping elements are only of importance for static / bitmap fonts, any Mapping elements defined for a dynamic font should be ignored.
+Font is the root element, it has some attributes and optional 'Mapping', 'GlyphSet', 'GlyphRange', and 'Glyph' elements.
+Mapping elements are only of importance for static / bitmap fonts, any Mapping elements defined for a dynamic font should be ignored.
+GlyphSet, GlyphRange, and Glyph elements are only valid for dynamic fonts.
 
 Font attributes
 ---------------
@@ -65,13 +67,44 @@ AntiAliased	- Boolean, states whether the font should be anti-aliased, applies t
 Mapping Element
 ===============
 Used for static fonts only, defines a mapping between a code-point and a Image on the associated Imageset.
-A Mapping must be supplied for every codepoint that the font is to have available.  A Mapping has attributes bu no sub-elements.
+A Mapping must be supplied for every codepoint that the font is to have available.  A Mapping has attributes but no sub-elements.
 
 Mapping attributes
 ------------------
 Codepoint	- Unicode codepoint which should be mapped. (required).
 Image		- Name of the image to map.  This image shold be defined for the Imageset specified in Filename for the Font.
 HorzAdvance	- Number of pixels to advance the 'pen' position after rendering.  -1 indicates the values should be auto-calculated.  (optional, default=-1).
+
+
+GlyphSet Element
+================
+Used for dynamic fonts only.  Defines a set of codepoints for which glyphs should be made available in the font.
+Multiple GlyphSet elements may be specified.  A GlyphSet element has attributes but no sub-elements.
+
+GlyphSet attributes
+-------------------
+Glyphs		- String defining the character / codepoint glyphs to be available.
+
+
+GlyphRange Element
+==================
+Used for dynamic fonts only.  Defines a range of codepoints for which glyphs should be made available in the font.
+Multiple GlyphRange elements may be specified.  A GlyphRange element has attributes but no sub-elements.
+
+GlyphRange attributes
+---------------------
+StartCodepoint	- U+ codepoint of the first glyph that is part of this range.
+EndCodepoint	- U+ codepoint of the last glyph that is part of this range.
+
+
+Glyph Element
+=============
+Used for dynamic fonts only.  Defines a singal codepoint for which a glyph should be made available in the font.
+Multiple Glyph elements may be specified.  A Glyph element has attributes but no sub-elements.
+
+Glyph attributes
+----------------
+Codepoint	- U+ codepoint of the glyph to be added to the font.
 
 
 
@@ -159,21 +192,11 @@ GUILayout attributes
 Parent		- Specifies the name of an existing window that this gui layout should be attached to (optional).
 
 
-LayoutImport Element
-====================
-The LayoutImport element is used to reference (import) a layout file into another.  The root window of the imported layout is attached to the Window where the import occurrs.
-The LayoutImport element has attributes but no sub-elements.
-
-LayoutImport attributes
------------------------
-Filename	- Specifies the filename of the layout XML file to be imported.
-Prefix		- Specifies a name prefix (or namespace) that will be used when naming created windows (optional).
-
-
 Window Element
 ==============
 The Window element is used to specify a new window object to be created.
-The Window element has attributes as described below and may contain any number of nested Window elements, any number of Property elements, and any number of LayoutImport elements.
+The Window element has attributes as described below and may contain any number of nested Window elements, any number of Property elements,
+any number of LayoutImport elements, and any number of Event elements.
 
 Window attributes
 -----------------
@@ -191,3 +214,23 @@ Property attributes
 Name		- The name of the property to be set.  If no such property exists for the target window, an exception may be thrown.  (required).
 Value		- The value to be assigned to the property.  This must be in a format expected by the property or an exception may be thrown.  (required).
 
+
+LayoutImport Element
+====================
+The LayoutImport element is used to reference (import) a layout file into another.  The root window of the imported layout is attached to the Window where the import occurrs.
+The LayoutImport element has attributes but no sub-elements.
+
+LayoutImport attributes
+-----------------------
+Filename	- Specifies the filename of the layout XML file to be imported.
+
+
+Event Element
+=============
+The Event element is used to create bindings between Gui elements and script functions.
+The Event element has attributes but no sub-elements.
+
+Event attributes
+----------------
+Name		- Specifies the name of the target event.
+Function	- Specifies the name of the script function that is to be bound to the event.

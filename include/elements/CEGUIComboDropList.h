@@ -107,7 +107,7 @@ protected:
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onActivated(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

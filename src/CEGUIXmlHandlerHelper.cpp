@@ -18,11 +18,19 @@
 *************************************************************************/
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/util/XMLString.hpp>
+#include <xercesc/util/TransService.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
 
 #include "CEGUIString.h"
 #include "CEGUIXmlHandlerHelper.h"
+#include "CEGUIExceptions.h"
 
 using XERCES_CPP_NAMESPACE::XMLString;
+using XERCES_CPP_NAMESPACE::XMLTransService;
+using XERCES_CPP_NAMESPACE::XMLPlatformUtils;
+using XERCES_CPP_NAMESPACE::XMLTranscoder;
+using XERCES_CPP_NAMESPACE::XMLRecognizer;
+
 
 namespace CEGUI 
 {
@@ -53,11 +61,35 @@ String XmlHandlerHelper::getAttributeValueAsString(const XERCES_CPP_NAMESPACE::A
 
 String XmlHandlerHelper::transcodeXmlCharToString(const XMLCh* const xmlch_str)
 {
-	char* tmpVal = XMLString::transcode(xmlch_str);
-	String tmp((utf8*)tmpVal);
-	XMLString::release(&tmpVal);
+	XMLTransService::Codes	res;
+	XMLTranscoder* transcoder = XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XMLRecognizer::UTF_8, res, 4096);
 
-	return tmp;
+	if (res == XMLTransService::Ok)
+	{
+		String out;
+		utf8 outBuff[128];
+		unsigned int outputLength;
+		unsigned int eaten = 0;
+		unsigned int offset = 0;
+		unsigned int inputLength = XMLString::stringLen(xmlch_str);
+
+		while (inputLength)
+		{
+			outputLength = transcoder->transcodeTo(xmlch_str + offset, inputLength, outBuff, 128, eaten, XMLTranscoder::UnRep_RepChar);
+			out.append(outBuff, outputLength);
+			offset += eaten;
+			inputLength -= eaten;
+		}
+
+		delete transcoder;
+
+		return out;
+	}
+	else
+	{
+		throw GenericException((utf8*)"XmlHandlerHelper::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder.");
+	}
+
 }
 
 }

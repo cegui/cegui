@@ -37,7 +37,7 @@ namespace TLButtonProperties
 String NormalImage::get(const void *receiver) const
 {
    //TLButton currently has no getter for this...
-   return "";//PropertyHelper::imageToString(static_cast<const TLButton*>(receiver)->getNormal());
+   return String("");//PropertyHelper::imageToString(static_cast<const TLButton*>(receiver)->getNormal());
 }
 
 void NormalImage::set(void *receiver, const String &value)
@@ -52,7 +52,7 @@ void NormalImage::set(void *receiver, const String &value)
 String PushedImage::get(const void *receiver) const
 {
    //TLButton currently has no getter for this...
-   return "";//PropertyHelper::imageToString(static_cast<const TLButton*>(receiver)->getNormal());
+   return String("");//PropertyHelper::imageToString(static_cast<const TLButton*>(receiver)->getNormal());
 }
 
 void PushedImage::set(void *receiver, const String &value)
@@ -67,7 +67,7 @@ void PushedImage::set(void *receiver, const String &value)
 String HoverImage::get(const void *receiver) const
 {
    //TLButton currently has no getter for this...
-   return "";//PropertyHelper::imageToString(static_cast<const TLButton*>(receiver)->getNormal());
+   return String("");//PropertyHelper::imageToString(static_cast<const TLButton*>(receiver)->getNormal());
 }
 
 void HoverImage::set(void *receiver, const String &value)

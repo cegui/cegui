@@ -112,6 +112,34 @@ Scrollbar* TLStaticText::createHorzScrollbar(void) const
 }
 
 
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void TLStaticText::initialise(void)
+{
+	StaticText::initialise();
+	initTaharezStatic(this);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	
+	TLStaticImage methods
+
+*************************************************************************/
+//////////////////////////////////////////////////////////////////////////
+
+/*************************************************************************
+	Initialises the Window based object ready for use.
+*************************************************************************/
+void TLStaticImage::initialise(void)
+{
+	StaticImage::initialise();
+	initTaharezStatic(this);
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -127,8 +155,6 @@ Window* TLStaticTextFactory::createWindow(const String& name)
 	TLStaticText* wnd = new TLStaticText(d_type, name);
 	wnd->initialise();
 
-	initTaharezStatic(wnd);
-
 	return wnd;
 }
 
@@ -140,8 +166,6 @@ Window* TLStaticImageFactory::createWindow(const String& name)
 {
 	StaticImage* wnd = new StaticImage(d_type, name);
 	wnd->initialise();
-
-	initTaharezStatic(wnd);
 
 	return wnd;
 }

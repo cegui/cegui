@@ -184,7 +184,7 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when window is activated
 *************************************************************************/
-void ComboDropList::onActivated(WindowEventArgs& e)
+void ComboDropList::onActivated(ActivationEventArgs& e)
 {
 	Listbox::onActivated(e);
 }

@@ -67,6 +67,7 @@ public:
 	document processing (only care about elements, schema validates format)
 	*/
 	virtual void	startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
+	virtual void	endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname);
 
 	/*!
 	\brief
@@ -85,6 +86,9 @@ private:
 	static const utf8	MappingElement[];				//!< Tag name for Mapping elements.
 	static const utf8	FontTypeStatic[];				//!< Value used for FontTypeAttribute for a static (bitmapped) font.
 	static const utf8	FontTypeDynamic[];				//!< Value used for FontTypeAttribute for a dynamic (true-type) font.
+	static const utf8	GlyphElement[];					//!< Tag name for Glyph elements.
+	static const utf8	GlyphRangeElement[];			//!< Tag name for GlyphRange elements.
+	static const utf8	GlyphSetElement[];				//!< Tag name for GlyphSet elements.
 	static const char	FontNameAttribute[];			//!< Attribute name that stores the name of the Font
 	static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
 	static const char	FontTypeAttribute[];			//!< Attribute name that stores the type of font being defined (either static or dynamic).
@@ -98,6 +102,10 @@ private:
 	static const char	MappingCodepointAttribute[];	//!< Attribute name that stores the Unicode code-point for a mapping.
 	static const char	MappingImageAttribute[];		//!< Attribute name that stores the Image name for a mapping.
 	static const char	MappingHorzAdvanceAttribute[];	//!< Attribute name that stores the horizontal advance for a glyph.
+	static const char	GlyphCodepointAttribute[];				//!< Attribute name that stores the U+ codepoint to add to the set.
+	static const char	GlyphRangeStartCodepointAttribute[];	//!< Attribute name that stores the U+ codepoint for the start of a range.
+	static const char	GlyphRangeEndCodepointAttribute[];		//!< Attribute name that stores the U+ codepoint for the end of a range.
+	static const char	GlyphSetGlyphsAttribute[];				//!< Attribute name that stores the UTF8 encoded codepoint set.
 
 	// general constants
 	static const int	AutoGenerateHorzAdvance;		//!< Horizontal advance value that tells the parser to auto-calculate some reasonable value.
@@ -105,7 +113,8 @@ private:
 	/*************************************************************************
 	Implementation Data
 	*************************************************************************/
-	Font* d_font;			//!< Font object that we are helping to build
+	Font*	d_font;			//!< Font object that we are helping to build
+	String	d_glyphSet;		//!< String holding the set of codepoints to be available.
 };
 
 } // End of  CEGUI namespace section

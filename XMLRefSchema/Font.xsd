@@ -1,9 +1,13 @@
 <?xml version="1.0" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	<xsd:element name="Font" type="FontType" />
+
 	<xsd:complexType name="FontType">
 		<xsd:sequence>
 			<xsd:element name="Mapping" type="MapType" maxOccurs="unbounded" minOccurs="0" />
+			<xsd:element name="GlyphSet" type="GlyphSetType" maxOccurs="unbounded" minOccurs="0" />
+			<xsd:element name="GlyphRange" type="GlyphRangeType" maxOccurs="unbounded" minOccurs="0" />
+			<xsd:element name="Glyph" type="GlyphType" maxOccurs="unbounded" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attributeGroup ref="FontAttrs" />
 	</xsd:complexType>
@@ -11,6 +15,16 @@
 		<xsd:attribute name="Codepoint" type="xsd:nonNegativeInteger" use="required" />
 		<xsd:attribute name="Image" type="xsd:string" use="required" />
 		<xsd:attribute name="HorzAdvance" type="xsd:integer" use="optional" default="-1" />
+	</xsd:complexType>
+	<xsd:complexType name="GlyphType">
+		<xsd:attribute name="Codepoint" type="xsd:nonNegativeInteger" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="GlyphRangeType">
+		<xsd:attribute name="StartCodepoint" type="xsd:nonNegativeInteger" use="required" />
+		<xsd:attribute name="EndCodepoint" type="xsd:nonNegativeInteger" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="GlyphSetType">
+		<xsd:attribute name="Glyphs" type="xsd:string" use="required" />
 	</xsd:complexType>
 	<xsd:attributeGroup name="FontAttrs">
 		<xsd:attribute name="Name" type="xsd:string" use="required" />
