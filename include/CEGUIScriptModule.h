@@ -83,7 +83,7 @@ public:
 	\return
 		The integer value returned from the script function.
 	*/
-	virtual int	executeScriptGloabl(const String& function_name)	= 0;
+	virtual int	executeScriptGlobal(const String& function_name)	= 0;
 
 
 	/*!

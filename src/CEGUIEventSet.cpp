@@ -26,6 +26,7 @@
 #include "CEGUIEventSet.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIGlobalEventSet.h"
+#include "CEGUIScriptModule.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -101,6 +102,24 @@ void EventSet::removeAllEvents(void)
 bool EventSet::isEventPresent(const String& name)
 {
 	return (d_events.find(name) != d_events.end());
+}
+
+
+/*************************************************************************
+	Subscribe to a scripted event (no group)
+*************************************************************************/
+Event::Connection EventSet::subscribeScriptedEvent(const String& name, const String& subscriber_name)
+{
+	return subscribeEvent(name, Event::Subscriber(ScriptFunctor(subscriber_name)));
+}
+
+
+/*************************************************************************
+	Subscribe to a scripted event
+*************************************************************************/
+Event::Connection EventSet::subscribeScriptedEvent(const String& name, Event::Group group, const String& subscriber_name)
+{
+	return subscribeEvent(name, group, Event::Subscriber(ScriptFunctor(subscriber_name)));
 }
 
 

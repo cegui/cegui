@@ -620,23 +620,23 @@ void System::executeScriptFile(const String& filename) const
 	Execute a scripted global function if possible.  The function should
 	not take any parameters and should return an integer.
 *************************************************************************/
-int	System::executeScriptGloabl(const String& function_name) const
+int	System::executeScriptGlobal(const String& function_name) const
 {
 	if (d_scriptModule != NULL)
 	{
 		try
 		{
-			return d_scriptModule->executeScriptGloabl(function_name);
+			return d_scriptModule->executeScriptGlobal(function_name);
 		}
 		catch(...)
 		{
-			throw GenericException((utf8*)"System::executeScriptGloabl - An exception was thrown during execution of the scripted function.");
+			throw GenericException((utf8*)"System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
 		}
 
 	}
 	else
 	{
-		Logger::getSingleton().logEvent((utf8*)"System::executeScriptGloabl - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
+		Logger::getSingleton().logEvent((utf8*)"System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
 	}
 
 	return 0;

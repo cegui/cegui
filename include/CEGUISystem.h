@@ -541,7 +541,7 @@ public:
 	\return
 		The integer value returned from the script function.
 	*/
-	int		executeScriptGloabl(const String& function_name) const;
+	int		executeScriptGlobal(const String& function_name) const;
 
 
     /*!

@@ -115,7 +115,7 @@ public:
 
 	/*!
 	\brief
-		Subscribes the the named Event.
+		Subscribes the named Event.
 
 	\param name
 		String object containing the name of the Event to subscribe to.
@@ -133,7 +133,7 @@ public:
 
 	/*!
 	\brief
-		Subscribes the the specified group of the named Event.
+		Subscribes the specified group of the named Event.
 
 	\param name
 		String object containing the name of the Event to subscribe to.
@@ -150,6 +150,45 @@ public:
 	\exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
 	*/
 	virtual Event::Connection	subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber);
+	
+	
+	/*!
+	\brief
+		Subscribes the named Event to a scripted funtion
+
+	\param name
+		String object containing the name of the Event to subscribe to.
+
+	\param subscriber_name
+		String object containing the name of the script funtion that is to be subscribed to the Event.
+
+	\return
+		Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
+
+	\exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
+	*/
+	virtual Event::Connection	subscribeScriptedEvent(const String& name, const String& subscriber_name);
+	
+	
+	/*!
+	\brief
+		Subscribes the specified group of the named Event to a scripted funtion.
+
+	\param name
+		String object containing the name of the Event to subscribe to.
+
+	\param group
+		Group which is to be subscribed to.  Subscription groups are called in ascending order.
+
+	\param subscriber_name
+		String object containing the name of the script funtion that is to be subscribed to the Event.
+
+	\return
+		Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
+
+	\exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
+	*/
+	virtual Event::Connection	subscribeScriptedEvent(const String& name, Event::Group group, const String& subscriber_name);
 
 
 	/*!
