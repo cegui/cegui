@@ -18,6 +18,7 @@
 		<WindowFactory Name="WindowsLook/MultiLineEditbox" />
 		<WindowFactory Name="WindowsLook/ProgressBar" />
 		<WindowFactory Name="WindowsLook/RadioButton" />
+		<WindowFactory Name="WindowsLook/ScrollablePane" />
 		<WindowFactory Name="WindowsLook/Slider" />
 		<WindowFactory Name="WindowsLook/SliderThumb" />
 		<WindowFactory Name="WindowsLook/Spinner" />

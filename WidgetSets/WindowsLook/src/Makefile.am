@@ -20,6 +20,7 @@ libCEGUIWindowsLook_la_SOURCES = WLButton.cpp \
 				 WLMultiLineEditbox.cpp \
 				 WLProgressBar.cpp \
 				 WLRadioButton.cpp \
+				 WLScrollablePane.cpp \
 				 WLSlider.cpp \
 				 WLSliderThumb.cpp \
 				 WLSpinner.cpp \

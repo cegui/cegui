@@ -172,6 +172,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLRadioButton.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLScrollablePane.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLSlider.cpp
 # End Source File
 # Begin Source File
@@ -281,6 +285,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLProgressBar.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLRadioButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLScrollablePane.h
 # End Source File
 # Begin Source File
 

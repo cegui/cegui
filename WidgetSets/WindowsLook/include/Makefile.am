@@ -1,27 +1,28 @@
-noinst_HEADERS = WLTabPane.h \
-WLTabControl.h \
-WLTabButton.h \
-WLStatic.h \
-WLFrameWindow.h \
-WLVertScrollbarThumb.h \
-WLVertScrollbar.h \
-WLTitlebar.h \
-WLSliderThumb.h \
-WLSlider.h \
-WLRadioButton.h \
-WLProgressBar.h \
-WLMultiLineEditbox.h \
-WLMultiColumnList.h \
-WLListHeaderSegment.h \
-WLListHeader.h \
-WLListbox.h \
-WLHorzScrollbarThumb.h \
-WLHorzScrollbar.h \
-WLEditbox.h \
-WLComboDropList.h \
-WLCombobox.h \
-WLCloseButton.h \
-WLCheckbox.h \
-WLButton.h \
-WLModule.h \
-WLSpinner.h
+noinst_HEADERS = WLButton.h \
+             WLCheckbox.h \
+             WLCloseButton.h \
+             WLComboDropList.h \
+             WLCombobox.h \
+             WLEditbox.h \
+             WLFrameWindow.h \
+             WLHorzScrollbar.h \
+             WLHorzScrollbarThumb.h \
+             WLListHeader.h \
+             WLListHeaderSegment.h \
+             WLListbox.h \
+             WLModule.h \
+             WLMultiColumnList.h \
+             WLMultiLineEditbox.h \
+             WLProgressBar.h \
+             WLRadioButton.h \
+             WLScrollablePane.h \
+             WLSlider.h \
+             WLSliderThumb.h \
+             WLSpinner.h \
+             WLStatic.h \
+             WLTabButton.h \
+             WLTabControl.h \
+             WLTabPane.h \
+             WLTitlebar.h \
+             WLVertScrollbar.h \
+             WLVertScrollbarThumb.h
