@@ -646,6 +646,23 @@ void OgreRenderer::constructor_impl(Ogre::RenderWindow* window, Ogre::RenderQueu
 
 
 /*************************************************************************
+	Create a texture from an existing Ogre::Texture object	
+*************************************************************************/
+Texture* OgreRenderer::createTexture(Ogre::Texture* texture)
+{
+	OgreTexture* t = (OgreTexture*)createTexture();
+
+	if (texture != NULL)
+	{
+		t->setOgreTexture(*texture);
+	}
+
+	return t;
+
+}
+
+
+/*************************************************************************
 	Callback from Ogre invoked before other stuff in our target queue
 	is rendered
 *************************************************************************/

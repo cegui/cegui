@@ -45,6 +45,7 @@ OgreTexture::OgreTexture(Renderer* owner) :
 	Texture(owner)
 {
 	d_ogre_texture = NULL;
+	d_isLinked = false;
 }
 
 
@@ -71,7 +72,24 @@ void OgreTexture::loadFromFile(const String& filename)
 	// create / load a new ogre texture from the specified image
 	try
 	{
-		d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), TEX_TYPE_2D, 1, 1.0f, 1);
+		TextureManager& textureManager = TextureManager::getSingleton();
+
+		// see if texture already exists
+		Ogre::Texture* ogreTexture = (Ogre::Texture*)textureManager.getByName(filename.c_str());
+
+		if (ogreTexture)
+		{
+			// texture already exists, so create a 'linked' texture (ensures texture is not destroyed twice)
+			d_ogre_texture = ogreTexture;
+			d_isLinked = true;
+		}
+		// texture does not already exist, so load it in
+		else
+		{
+			d_ogre_texture = TextureManager::getSingleton().load(filename.c_str(), TEX_TYPE_2D, 1, 1.0f, 1);
+			d_isLinked = false;
+		}
+
 	}
 	catch(Ogre::Exception e)
 	{
@@ -188,6 +206,20 @@ Ogre::String OgreTexture::getUniqueName(void)
 	++d_texturenumber;
 
 	return str;
+}
+
+
+/*************************************************************************
+	Set the internal Ogre::Texture object.
+*************************************************************************/
+void OgreTexture::setOgreTexture(Ogre::Texture& texture)
+{
+	freeOgreTexture();
+
+	d_ogre_texture = &texture;
+	d_width	 = d_ogre_texture->getWidth();
+	d_height = d_ogre_texture->getHeight();
+	d_isLinked = true;
 }
 
 

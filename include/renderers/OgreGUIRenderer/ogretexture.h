@@ -137,6 +137,22 @@ public:
 	void	setOgreTextureSize(uint size);
 
 
+	/*!
+	\brief
+		Set the internal Ogre::Texture object.
+
+		Any previous Ogre::Texture is no longer associated with the CEGUI::OgreTexture.  If the previous
+		Ogre::Texture was created by CEGUI, it will be destroyed.
+
+	\param texture
+		Reference to an Ogre::Texture object that is to be used by this Texture object.
+
+	\return
+		Nothing.
+	*/
+	void	setOgreTexture(Ogre::Texture& texture);
+
+
 private:
 	/*************************************************************************
 		Implementation Functions
@@ -157,6 +173,8 @@ private:
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture
+
+	bool	d_isLinked;		//!< True if we are linked to a texture we did not actually create.
 };
 
 
