@@ -48,15 +48,30 @@ const ulong			DirectX9Renderer::VERTEX_FVF				= (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3
 /*************************************************************************
 	Constructor
 *************************************************************************/
-DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads) :
-	d_device(device),
-	d_queueing(true)
+DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads)
 {
-	d_device->AddRef();
+	d_device = device;
+	Size size(getViewportSize());
 
-	d_currTexture	= NULL;
-	d_buffer		= NULL;
-	d_bufferPos		= 0;
+	constructor_impl(device, size);
+}
+
+
+/*************************************************************************
+	method to do work of constructor
+*************************************************************************/
+void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& display_size)
+{
+	d_device        = device;
+	d_queueing      = true;
+	d_currTexture   = NULL;
+	d_buffer        = NULL;
+	d_bufferPos     = 0;
+
+	// initialise renderer display area
+	d_display_area.d_left	= 0;
+	d_display_area.d_top	= 0;
+	d_display_area.setSize(display_size);
 
 	// Create a vertex buffer
 	if (FAILED(d_device->CreateVertexBuffer(
@@ -72,20 +87,6 @@ DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads) :
 		throw std::exception("Creation of VertexBuffer for Renderer object failed");
 	}
 
-	// initialise renderer size
-	D3DVIEWPORT9	vp;
-	if (FAILED(device->GetViewport(&vp)))
-	{
-		// release allocated vertex buffer
-		d_buffer->Release();
-		throw std::exception("Unable to access required viewport information from Direct3DDevice9.");
-	}
-
-	d_display_area.d_left	= 0;
-	d_display_area.d_top	= 0;
-	d_display_area.d_right	= (float)vp.Width;
-	d_display_area.d_bottom	= (float)vp.Height;
-
 	// get the maximum available texture size.
 	D3DCAPS9	devCaps;
 	if (FAILED(device->GetDeviceCaps(&devCaps)))
@@ -97,6 +98,8 @@ DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, uint max_quads) :
 
 	// set max texture size the the smaller of max width and max height.
 	d_maxTextureSize = std::min(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
+
+	d_device->AddRef();
 }
 
 
@@ -546,10 +549,49 @@ void DirectX9Renderer::postD3DReset(void)
 		(*ctex)->postD3DReset();
 	}
 
+	// update display size
+	setDisplaySize(getViewportSize());
+
 	// Now we've come back, we MUST ensure a full redraw is done since the
 	// textures in the stored quads will have been invalidated.
 	System::getSingleton().signalRedraw();
 }
+
+/*************************************************************************
+	return size of device view port (if possible)	
+*************************************************************************/
+Size DirectX9Renderer::getViewportSize(void)
+{
+	// initialise renderer size
+	D3DVIEWPORT9	vp;
+
+	if (FAILED(d_device->GetViewport(&vp)))
+	{
+		throw std::exception("Unable to access required view port information from Direct3DDevice9.");
+	}
+	else
+	{
+		return Size((float)vp.Width, (float)vp.Height);
+	}
+
+}
+
+
+/*************************************************************************
+	Set the size of the display in pixels.	
+*************************************************************************/
+void DirectX9Renderer::setDisplaySize(const Size& sz)
+{
+	if (d_display_area.getSize() != sz)
+	{
+		d_display_area.setSize(sz);
+
+		EventArgs args;
+		fireEvent(EventDisplaySizeChanged, args);
+	}
+
+}
+
 
 } // End of  CEGUI namespace section
 

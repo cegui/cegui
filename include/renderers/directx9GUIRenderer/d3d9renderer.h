@@ -227,6 +227,27 @@ public:
 	*/
 	virtual	void	postD3DReset(void);
 
+
+	/*!
+	\brief
+		Set the size of the display in pixels.
+
+		You do not have to call this method under normal operation as the system
+		will automatically extract the size from the current view port.
+
+	\note
+		This method will cause the EventDisplaySizeChanged event to fire if the
+		display size has changed.
+
+	\param sz
+		Size object describing the size of the display.
+
+	\return
+		Nothing.
+	*/
+	void	setDisplaySize(const Size& sz);
+
+
 private:
 	/************************************************************************
 		Implementation Constants
@@ -286,6 +307,13 @@ private:
 
 	// render a quad directly to the display
 	void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours);
+
+	// return size of device view port (if possible)
+	Size	getViewportSize(void);
+
+	// method to do work of constructor
+	void	constructor_impl(LPDIRECT3DDEVICE9 device, const Size& display_size);
+
 
 	/*************************************************************************
 	    Implementation Data
