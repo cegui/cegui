@@ -97,7 +97,7 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 MultiColumnList::~MultiColumnList(void)
 {
 	// delete any items we are supposed to
-	resetList();
+	resetList_impl();
 }
 
 
