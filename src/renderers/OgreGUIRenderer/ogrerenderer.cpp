@@ -353,7 +353,9 @@ void OgreRenderer::initRenderStates(void)
 	d_render_sys->_setFog(FOG_NONE);
 	d_render_sys->_setColourBufferWriteEnabled(true, true, true, true);
 	d_render_sys->unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
-	d_render_sys->unbindGpuProgram(GPT_VERTEX_PROGRAM); 
+	d_render_sys->unbindGpuProgram(GPT_VERTEX_PROGRAM);
+	d_render_sys->setShadingType(SO_GOURAUD);
+	d_render_sys->_setRasterisationMode(SDL_SOLID);
 
 	// initialise texture settings
 	d_render_sys->_setTextureCoordCalculation(0, TEXCALC_NONE);
