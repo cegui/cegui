@@ -1,5 +1,5 @@
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
-    PKG_CHECK_MODULES(OGRE, OGRE >= 0.14.0, [
+    PKG_CHECK_MODULES(OGRE, OGRE >= 1.0.0, [
         AC_ARG_ENABLE([ogre-renderer],
             AC_HELP_STRING([--disable-ogre-renderer], 
             [Disable the ogre renderer]),
