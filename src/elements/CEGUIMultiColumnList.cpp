@@ -944,7 +944,9 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	}
 
 	// set new item.
-	item->setOwnerWindow(this);
+	if (item != NULL)
+		item->setOwnerWindow(this);
+
 	d_grid[position.row][position.column] = item;
 
 
