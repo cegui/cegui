@@ -938,7 +938,7 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	// delete old item as required
 	ListboxItem* oldItem = d_grid[position.row][position.column];
 
-	if ((oldItem != NULL) && item->isAutoDeleted())
+	if ((oldItem != NULL) && oldItem->isAutoDeleted())
 	{
 		delete oldItem;
 	}
