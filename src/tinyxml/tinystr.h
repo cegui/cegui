@@ -107,6 +107,7 @@ class TiXmlString
 		return *this;
     }
     bool operator == (const TiXmlString & compare) const;
+    bool operator == (const char* compare) const;
     bool operator < (const TiXmlString & compare) const;
     bool operator > (const TiXmlString & compare) const;
 
@@ -213,6 +214,16 @@ class TiXmlString
     }
 
 } ;
+
+inline bool TiXmlString::operator == (const char* compare) const
+{
+	if ( allocated )
+	{
+		assert( cstring );
+		return ( strcmp( cstring, compare ) == 0 );
+ 	}
+	return false;
+}
 
 /* 
    TiXmlOutStream is an emulation of std::ostream. It is based on TiXmlString.

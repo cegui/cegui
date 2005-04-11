@@ -279,6 +279,7 @@ bool TiXmlString::operator == (const TiXmlString & compare) const
 }
 
 
+
 bool TiXmlString::operator < (const TiXmlString & compare) const
 {
 	if ( allocated && compare.allocated )

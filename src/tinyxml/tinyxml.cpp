@@ -318,7 +318,7 @@ const TiXmlNode* TiXmlNode::FirstChild( const char * _value ) const
 	const TiXmlNode* node;
 	for ( node = firstChild; node; node = node->next )
 	{
-		if ( node->SValue() == TIXML_STRING( _value ))
+		if ( node->SValue() == TIXML_CAST_STRING( _value ))
 			return node;
 	}
 	return 0;
@@ -330,7 +330,7 @@ TiXmlNode* TiXmlNode::FirstChild( const char * _value )
 	TiXmlNode* node;
 	for ( node = firstChild; node; node = node->next )
 	{
-		if ( node->SValue() == TIXML_STRING( _value ))
+		if ( node->SValue() == TIXML_CAST_STRING( _value ))
 			return node;
 	}
 	return 0;
@@ -342,7 +342,7 @@ const TiXmlNode* TiXmlNode::LastChild( const char * _value ) const
 	const TiXmlNode* node;
 	for ( node = lastChild; node; node = node->prev )
 	{
-		if ( node->SValue() == TIXML_STRING (_value))
+		if ( node->SValue() == TIXML_CAST_STRING(_value))
 			return node;
 	}
 	return 0;
@@ -353,7 +353,7 @@ TiXmlNode* TiXmlNode::LastChild( const char * _value )
 	TiXmlNode* node;
 	for ( node = lastChild; node; node = node->prev )
 	{
-		if ( node->SValue() == TIXML_STRING (_value))
+		if ( node->SValue() == TIXML_CAST_STRING(_value))
 			return node;
 	}
 	return 0;
@@ -416,7 +416,7 @@ const TiXmlNode* TiXmlNode::NextSibling( const char * _value ) const
 	const TiXmlNode* node;
 	for ( node = next; node; node = node->next )
 	{
-		if ( node->SValue() == TIXML_STRING (_value))
+		if ( node->SValue() == TIXML_CAST_STRING(_value))
 			return node;
 	}
 	return 0;
@@ -427,7 +427,7 @@ TiXmlNode* TiXmlNode::NextSibling( const char * _value )
 	TiXmlNode* node;
 	for ( node = next; node; node = node->next )
 	{
-		if ( node->SValue() == TIXML_STRING (_value))
+		if ( node->SValue() == TIXML_CAST_STRING(_value))
 			return node;
 	}
 	return 0;
@@ -438,7 +438,7 @@ const TiXmlNode* TiXmlNode::PreviousSibling( const char * _value ) const
 	const TiXmlNode* node;
 	for ( node = prev; node; node = node->prev )
 	{
-		if ( node->SValue() == TIXML_STRING (_value))
+		if ( node->SValue() == TIXML_CAST_STRING(_value))
 			return node;
 	}
 	return 0;
@@ -449,7 +449,7 @@ TiXmlNode* TiXmlNode::PreviousSibling( const char * _value )
 	TiXmlNode* node;
 	for ( node = prev; node; node = node->prev )
 	{
-		if ( node->SValue() == TIXML_STRING (_value))
+		if ( node->SValue() == TIXML_CAST_STRING(_value))
 			return node;
 	}
 	return 0;
