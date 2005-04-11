@@ -302,7 +302,8 @@ uint Font::drawText(const String& text, const Rect& draw_area, float z, const Re
 
 	}
 
-	return lineCount;
+    // should not return 0
+    return ceguimax(lineCount, (uint)1);
 }
 
 
