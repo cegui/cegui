@@ -313,7 +313,8 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
 
 	}
 
-	return lineCount;
+    // should not return 0
+    return ceguimax(lineCount, (size_t)1);
 }
 
 
