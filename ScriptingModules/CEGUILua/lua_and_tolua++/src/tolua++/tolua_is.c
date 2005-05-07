@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* a fast check if a is b, without parameter validation 
+/* a fast check if a is b, without parameter validation
  i.e. if b is equal to a or a superclass of a. */
 TOLUA_API int tolua_fast_isa(lua_State *L, int mt_indexa, int mt_indexb)
 {
@@ -27,7 +27,7 @@ TOLUA_API int tolua_fast_isa(lua_State *L, int mt_indexa, int mt_indexb)
 		result = 1;
 	else
 	{
-		lua_pushliteral(L,"tolua_super");  
+		lua_pushliteral(L,"tolua_super");
 		lua_rawget(L,LUA_REGISTRYINDEX);  /* stack: super */
 		lua_pushvalue(L,mt_indexa);       /* stack: super mta */
 		lua_rawget(L,-2);                 /* stack: super super[mta] */
@@ -141,7 +141,7 @@ static int lua_isusertype (lua_State* L, int lo, const char* type)
 	{
 		/* check if it is of the same type */
 		int r;
-	 const char *tn;
+		const char *tn;
 		if (lua_getmetatable(L,lo))        /* if metatable? */
 		{
 		 lua_rawget(L,LUA_REGISTRYINDEX);  /* get registry[mt] */
@@ -160,11 +160,11 @@ static int lua_isusertype (lua_State* L, int lo, const char* type)
 				if (lua_istable(L,-1))
 				{
 					int b;
-				 lua_pushstring(L,type);
-				 lua_rawget(L,-2);                /* get super[mt][type] */
-     b = lua_toboolean(L,-1);
-				 lua_pop(L,3);
-				 if (b)
+					lua_pushstring(L,type);
+					lua_rawget(L,-2);                /* get super[mt][type] */
+					b = lua_toboolean(L,-1);
+					lua_pop(L,3);
+					if (b)
 					 return 1;
 				}
 			}

@@ -115,14 +115,21 @@ static void mapinheritance (lua_State* L, const char* name, const char* base)
 {
 	/* set metatable inheritance */
 	luaL_getmetatable(L,name);
+
 	if (base && *base)
-	 luaL_getmetatable(L,base);
-	else
+		luaL_getmetatable(L,base);
+	else {
+
+		if (lua_getmetatable(L, -1)) { /* already has a mt, we don't overwrite it */
+			lua_pop(L, 2);
+			return;
+		};
 		luaL_getmetatable(L,"tolua_commonclass");
+	};
 
 	set_ubox(L);
 
- lua_setmetatable(L,-2);
+	lua_setmetatable(L,-2);
 	lua_pop(L,1);
 }
 
@@ -184,7 +191,20 @@ static int tolua_bnd_releaseownership (lua_State* L)
 */
 static int tolua_bnd_cast (lua_State* L)
 {
-	void* v = tolua_tousertype(L,1,NULL);
+
+/*	// old code
+    void* v = tolua_tousertype(L,1,NULL);
+    const char* s = tolua_tostring(L,2,NULL);
+    if (v && s)
+     tolua_pushusertype(L,v,s);
+    else
+     lua_pushnil(L);
+    return 1;
+*/
+
+	// new code
+	void* v = ((lua_getmetatable(L, 1)) ? tolua_tousertype(L,1,NULL) : tolua_touserdata(L, 1, NULL));
+
 	const char* s = tolua_tostring(L,2,NULL);
 	if (v && s)
 	 tolua_pushusertype(L,v,s);
@@ -445,9 +465,10 @@ TOLUA_API void tolua_function (lua_State* L, char* name, lua_CFunction func)
 }
 
 /* sets the __call event for the class (expects the class' main table on top) */
-TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func) {
+TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func, char* type) {
 
 	lua_getmetatable(L, -1);
+	/*luaL_getmetatable(L, type);*/
 	lua_pushstring(L,"__call");
 	lua_pushcfunction(L,func);
 	lua_rawset(L,-3);

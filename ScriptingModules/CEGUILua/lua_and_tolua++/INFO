@@ -1,3 +1,6 @@
-the source code included in this package is the unmodified lua-5.0.2 and tolua++-1.0.4.
- 
+the source code included in this package is the unmodified lua-5.0.2.
+
+the tolua++1.0.5 source code has been modified cosmetically to compile with MSVC7.1.
+the original versions of the modified source files are included with a '_original' filename suffix
+
 release by Tomas Lindquist Olsen (tomas@helix.dk)

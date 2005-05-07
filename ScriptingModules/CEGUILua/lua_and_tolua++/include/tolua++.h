@@ -16,11 +16,13 @@
 #ifndef TOLUA_H
 #define TOLUA_H
 
+
 #ifndef TOLUA_API
 #define TOLUA_API extern
 #endif
 
-#define TOLUA_VERSION "tolua++-1.0.4"
+
+#define TOLUA_VERSION "tolua++-1.0.5"
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,7 +83,7 @@ TOLUA_API void tolua_module (lua_State* L, char* name, int hasvar);
 TOLUA_API void tolua_class (lua_State* L, char* name, char* base);
 TOLUA_API void tolua_cclass (lua_State* L, char* lname, char* name, char* base, lua_CFunction col);
 TOLUA_API void tolua_function (lua_State* L, char* name, lua_CFunction func);
-TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func);
+TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func, char* type);
 TOLUA_API void tolua_constant (lua_State* L, char* name, double value);
 TOLUA_API void tolua_variable (lua_State* L, char* name, lua_CFunction get, lua_CFunction set);
 TOLUA_API void tolua_array (lua_State* L,char* name, lua_CFunction get, lua_CFunction set);

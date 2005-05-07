@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.4 on 03/17/05 18:08:59.
+** Generated automatically by tolua++-1.0.5 on 05/07/05 18:10:43.
 */
 
 #ifndef __cplusplus
@@ -14321,10 +14321,10 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Vector2__eq00);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector2_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector2_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Vector2_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Vector2_new00_local, "CEGUI::Vector2");
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Vector2_new01);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Vector2_new01_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Vector2_new01_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Vector2_new01_local, "CEGUI::Vector2");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"Point","CEGUI::Point","",tolua_collect_CEGUI__Point);
@@ -14340,10 +14340,10 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Point__eq00);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Point_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Point_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Point_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Point_new00_local, "CEGUI::Point");
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Point_new01);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Point_new01_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Point_new01_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Point_new01_local, "CEGUI::Point");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"Size","CEGUI::Size","",tolua_collect_CEGUI__Size);
@@ -14356,10 +14356,10 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Size__eq00);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Size_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Size_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Size_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Size_new00_local, "CEGUI::Size");
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Size_new01);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Size_new01_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Size_new01_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Size_new01_local, "CEGUI::Size");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"Rect","CEGUI::Rect","",tolua_collect_CEGUI__Rect);
@@ -14388,10 +14388,10 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_Rect__eq00);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Rect_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Rect_new00_local, "CEGUI::Rect");
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_Rect_new01);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Rect_new01_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Rect_new01_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_Rect_new01_local, "CEGUI::Rect");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"colour","CEGUI::colour","",tolua_collect_CEGUI__colour);
@@ -14401,10 +14401,10 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_beginmodule(tolua_S,"colour");
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_colour_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_colour_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_colour_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_colour_new00_local, "CEGUI::colour");
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_colour_new01);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_colour_new01_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_colour_new01_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_colour_new01_local, "CEGUI::colour");
  tolua_function(tolua_S,"getAlpha",tolua_CEGUI_CEGUI_colour_getAlpha00);
  tolua_function(tolua_S,"getRed",tolua_CEGUI_CEGUI_colour_getRed00);
  tolua_function(tolua_S,"getGreen",tolua_CEGUI_CEGUI_colour_getGreen00);
@@ -14694,7 +14694,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"handled",tolua_get_CEGUI__EventArgs_handled,tolua_set_CEGUI__EventArgs_handled);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_EventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_EventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_EventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_EventArgs_new00_local, "CEGUI::EventArgs");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"MouseCursorEventArgs","CEGUI::MouseCursorEventArgs","CEGUI::EventArgs",tolua_collect_CEGUI__MouseCursorEventArgs);
@@ -14706,7 +14706,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"image",tolua_get_CEGUI__MouseCursorEventArgs_image_ptr,NULL);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_MouseCursorEventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_MouseCursorEventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_MouseCursorEventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_MouseCursorEventArgs_new00_local, "CEGUI::MouseCursorEventArgs");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"WindowEventArgs","CEGUI::WindowEventArgs","CEGUI::EventArgs",tolua_collect_CEGUI__WindowEventArgs);
@@ -14717,7 +14717,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"window",tolua_get_CEGUI__WindowEventArgs_window_ptr,tolua_set_CEGUI__WindowEventArgs_window_ptr);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_WindowEventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_WindowEventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_WindowEventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_WindowEventArgs_new00_local, "CEGUI::WindowEventArgs");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"ActivationEventArgs","CEGUI::ActivationEventArgs","CEGUI::WindowEventArgs",tolua_collect_CEGUI__ActivationEventArgs);
@@ -14728,7 +14728,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"otherWindow",tolua_get_CEGUI__ActivationEventArgs_otherWindow_ptr,tolua_set_CEGUI__ActivationEventArgs_otherWindow_ptr);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_ActivationEventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_ActivationEventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_ActivationEventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_ActivationEventArgs_new00_local, "CEGUI::ActivationEventArgs");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"HeaderSequenceEventArgs","CEGUI::HeaderSequenceEventArgs","CEGUI::WindowEventArgs",tolua_collect_CEGUI__HeaderSequenceEventArgs);
@@ -14740,7 +14740,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"newIdx",tolua_get_CEGUI__HeaderSequenceEventArgs_unsigned_newIdx,tolua_set_CEGUI__HeaderSequenceEventArgs_unsigned_newIdx);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_HeaderSequenceEventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_HeaderSequenceEventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_HeaderSequenceEventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_HeaderSequenceEventArgs_new00_local, "CEGUI::HeaderSequenceEventArgs");
  tolua_endmodule(tolua_S);
  tolua_constant(tolua_S,"LeftButton",CEGUI::LeftButton);
  tolua_constant(tolua_S,"RightButton",CEGUI::RightButton);
@@ -14762,7 +14762,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"wheelChange",tolua_get_CEGUI__MouseEventArgs_wheelChange,tolua_set_CEGUI__MouseEventArgs_wheelChange);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_MouseEventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_MouseEventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_MouseEventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_MouseEventArgs_new00_local, "CEGUI::MouseEventArgs");
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus
  tolua_cclass(tolua_S,"KeyEventArgs","CEGUI::KeyEventArgs","CEGUI::WindowEventArgs",tolua_collect_CEGUI__KeyEventArgs);
@@ -14775,7 +14775,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_variable(tolua_S,"sysKeys",tolua_get_CEGUI__KeyEventArgs_unsigned_sysKeys,tolua_set_CEGUI__KeyEventArgs_unsigned_sysKeys);
  tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_KeyEventArgs_new00);
  tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_KeyEventArgs_new00_local);
- tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_KeyEventArgs_new00_local);
+ tolua_set_call_event(tolua_S,tolua_CEGUI_CEGUI_KeyEventArgs_new00_local, "CEGUI::KeyEventArgs");
  tolua_endmodule(tolua_S);
  tolua_function(tolua_S,"toMouseCursorEventArgs",tolua_CEGUI_CEGUI_toMouseCursorEventArgs00);
  tolua_function(tolua_S,"toWindowEventArgs",tolua_CEGUI_CEGUI_toWindowEventArgs00);
