@@ -167,20 +167,20 @@ static int tolua_bnd_releaseownership (lua_State* L)
 	int done = 0;
 	if (lua_isuserdata(L,1))
 	{
-	 void* u = *((void**)lua_touserdata(L,1));
+		void* u = *((void**)lua_touserdata(L,1));
 		/* force garbage collection to avoid releasing a to-be-collected address */
 		lua_setgcthreshold(L,0);
-  lua_pushstring(L,"tolua_gc");
-  lua_rawget(L,LUA_REGISTRYINDEX);
-	 lua_pushlightuserdata(L,u);
-	 lua_rawget(L,-2);
-	 lua_getmetatable(L,1);
-	 if (lua_rawequal(L,-1,1))  /* check that we are releasing the correct type */
-	 {
-	  lua_pushlightuserdata(L,u);
-		 lua_pushnil(L);
-		 lua_rawset(L,-4);
-   done = 1;
+		lua_pushstring(L,"tolua_gc");
+		lua_rawget(L,LUA_REGISTRYINDEX);
+		lua_pushlightuserdata(L,u);
+		lua_rawget(L,-2);
+		lua_getmetatable(L,1);
+		if (lua_rawequal(L,-1,-2))  /* check that we are releasing the correct type */
+		{
+			lua_pushlightuserdata(L,u);
+			lua_pushnil(L);
+			lua_rawset(L,-5);
+			done = 1;
 		}
 	}
 	lua_pushboolean(L,done!=0);
@@ -192,20 +192,26 @@ static int tolua_bnd_releaseownership (lua_State* L)
 static int tolua_bnd_cast (lua_State* L)
 {
 
-/*	// old code
-    void* v = tolua_tousertype(L,1,NULL);
-    const char* s = tolua_tostring(L,2,NULL);
-    if (v && s)
-     tolua_pushusertype(L,v,s);
-    else
-     lua_pushnil(L);
-    return 1;
+/* // old code
+        void* v = tolua_tousertype(L,1,NULL);
+        const char* s = tolua_tostring(L,2,NULL);
+        if (v && s)
+         tolua_pushusertype(L,v,s);
+        else
+         lua_pushnil(L);
+        return 1;
 */
 
-	// new code
-	void* v = ((lua_getmetatable(L, 1)) ? tolua_tousertype(L,1,NULL) : tolua_touserdata(L, 1, NULL));
+	void* v;
+	const char* s;
+	if (lua_getmetatable(L, 1)) {
+		/* lua_pop(L, 1); */
+		v = tolua_tousertype(L,1,NULL);
+	} else {
+		v = tolua_touserdata(L, 1, NULL);
+	};
 
-	const char* s = tolua_tostring(L,2,NULL);
+	s = tolua_tostring(L,2,NULL);
 	if (v && s)
 	 tolua_pushusertype(L,v,s);
 	else
