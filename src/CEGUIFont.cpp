@@ -442,6 +442,7 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, argb_t* buffer
 		rect.d_top		= (float)cur_y;
 		rect.d_right	= (float)(cur_x + width - InterGlyphPadSpace);
 		rect.d_bottom	= (float)(cur_y + d_maxGlyphHeight - InterGlyphPadSpace);
+
 		offset.d_x		= (float)(glyph->metrics.horiBearingX >> 6);
 		offset.d_y		= -(float)(glyph->metrics.horiBearingY >> 6);
 
@@ -663,14 +664,15 @@ void Font::drawTextLineJustified(const String& text, const Rect& draw_area, cons
 
 	// The number of spaces and tabs in the current line
 	uint space_count = 0;
-	for (size_t c = 0; c < char_count; ++c)
+    size_t c;
+	for (c = 0; c < char_count; ++c)
 		if ((text[c] == ' ') || (text[c] == '\t')) ++space_count;
 
 	// The width that must be added to each space character in order to transform the left aligned text in justified text
 	float shared_lost_space = 0.0;
 	if (space_count > 0) shared_lost_space = lost_space / (float)space_count;
 
-	for (size_t c = 0; c < char_count; ++c)
+	for (c = 0; c < char_count; ++c)
 	{
 		pos = d_cp_map.find(text[c]);
 
