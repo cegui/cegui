@@ -26,6 +26,8 @@
 
 #include "WLModule.h"
 #include "elements/CEGUITitlebar.h"
+#include "CEGUIRenderableFrame.h"
+#include "CEGUIRenderableImage.h"
 #include "CEGUIWindowFactory.h"
 
 
@@ -46,9 +48,15 @@ public:
 	static const utf8	WidgetTypeName[];				//!< The unique typename of this widget
 
 	static const utf8	ImagesetName[];					//!< Name of the imageset to use for rendering.
-	static const utf8	LeftEndSectionImageName[];		//!< Name of the image to use for the left section of the title bar.
-	static const utf8	MiddleSectionImageName[];		//!< Name of the image to use for the middle section of the title bar.
-	static const utf8	RightEndSectionImageName[];		//!< Name of the image to use for the right section of the title bar.
+	static const utf8	TopLeftFrameImageName[];		//!< Name of the image to use for the top-left corner of the titlebar.
+	static const utf8	TopRightFrameImageName[];		//!< Name of the image to use for the top-right corner of the titlebar.
+	static const utf8	BottomLeftFrameImageName[];		//!< Name of the image to use for the bottom-left corner of the titlebar.
+	static const utf8	BottomRightFrameImageName[];	//!< Name of the image to use for the bottom-right corner of the titlebar.
+	static const utf8	LeftFrameImageName[];			//!< Name of the image to use for the left edge of the titlebar.
+	static const utf8	RightFrameImageName[];			//!< Name of the image to use for the right edge of the titlebar.
+	static const utf8	TopFrameImageName[];			//!< Name of the image to use for the top edge of the titlebar.
+	static const utf8	BottomFrameImageName[];			//!< Name of the image to use for the bottom edge of the titlebar.
+	static const utf8	FillImageName[];				//!< Name of the image to use to fill the titlebar.
 	static const utf8	NormalCursorImageName[];		//!< Name of the image to use as the mouse cursor for this window.
 	static const utf8	NoDragCursorImageName[];		//!< Name of the image to use as mouse cursor when dragging is disabled.
 
@@ -112,6 +120,13 @@ protected:
 	virtual	void	drawSelf(float z);
 
 
+	/*!
+	\brief
+		Store the sizes for the frame edges
+	*/
+	void	storeFrameSizes(void);
+
+
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
@@ -121,10 +136,14 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	// cache image objects used for rendering
-	const Image*	d_leftImage;		//!< Image object used for the left edge of the title bar.
-	const Image*	d_middleImage;		//!< Image object used for the middle section of the title bar.
-	const Image*	d_rightImage;		//!< Image object used for the right edge of the title bar.
+	RenderableFrame		d_frame;		//!< Handles the frame for the titlebar.
+	RenderableImage		d_fill;			//!< Handles the client clearing brush for the window.
+
+	// stored sizes of frame regions
+	float	d_frameLeftSize;			//!< Width of the left frame edge in pixels.
+	float	d_frameRightSize;			//!< Width of the right frame edge in pixels.
+	float	d_frameTopSize;				//!< Height of the top frame edge in pixels.
+	float	d_frameBottomSize;			//!< Height of the bottom frame edge in pixels.
 };
 
 

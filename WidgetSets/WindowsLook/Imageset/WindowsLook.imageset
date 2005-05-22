@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset Name="WindowsLook" Imagefile="WindowsLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+<Imageset Name="WindowsLook" Imagefile="../datafiles/imagesets/WindowsLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
 	<Image Name="Background" XPos="9" YPos="9" Width="2" Height="2" />
 	<Image Name="WindowFrameLeft" XPos="2" YPos="9" Width="4" Height="2" />
 	<Image Name="WindowFrameRight" XPos="14" YPos="9" Width="4" Height="2" />
@@ -52,9 +52,15 @@
 	<Image Name="CloseButtonNormal" XPos="2" YPos="20" Width="13" Height="13" />
 	<Image Name="CloseButtonHover" XPos="2" YPos="35" Width="13" Height="13" />
 	<Image Name="CloseButtonPushed" XPos="2" YPos="50" Width="13" Height="13" />
-	<Image Name="TitlebarLeft" XPos="17" YPos="20" Width="7" Height="15" />
-	<Image Name="TitlebarMiddle" XPos="28" YPos="20" Width="6" Height="15" />
-	<Image Name="TitlebarRight" XPos="38" YPos="20" Width="7" Height="15" />
+	<Image Name="TitlebarTopLeft" XPos="87" YPos="103" Width="8" Height="4" />
+	<Image Name="TitlebarTopRight" XPos="109" YPos="103" Width="8" Height="4" />
+	<Image Name="TitlebarBottomLeft" XPos="87" YPos="123" Width="8" Height="2" />
+	<Image Name="TitlebarBottomRight" XPos="109" YPos="123" Width="8" Height="2" />
+	<Image Name="TitlebarLeft" XPos="87" YPos="110" Width="8" Height="10" />
+	<Image Name="TitlebarRight" XPos="109" YPos="110" Width="8" Height="10" />
+	<Image Name="TitlebarTop" XPos="98" YPos="103" Width="8" Height="4" />
+	<Image Name="TitlebarBottom" XPos="98" YPos="123" Width="8" Height="2" />
+	<Image Name="TitlebarFill" XPos="98" YPos="110" Width="8" Height="10" />
 	<Image Name="CheckboxNormal" XPos="17" YPos="37" Width="10" Height="10" />
 	<Image Name="CheckboxHover" XPos="17" YPos="49" Width="10" Height="10" />
 	<Image Name="CheckboxMark" XPos="17" YPos="61" Width="10" Height="10" />
@@ -122,4 +128,25 @@
 	<Image Name="TooltipTopEdge" XPos="81" YPos="38" Width="2" Height="3" />
 	<Image Name="TooltipBottomEdge" XPos="81" YPos="51" Width="2" Height="4" />
 	<Image Name="TooltipMiddle" XPos="81" YPos="45" Width="2" Height="2" />
+
+	<Image Name="MenuTopLeft" XPos="61" YPos="57" Width="2" Height="2" />
+	<Image Name="MenuTopRight" XPos="70" YPos="57" Width="2" Height="2" />
+	<Image Name="MenuBottomLeft" XPos="61" YPos="66" Width="2" Height="2" />
+	<Image Name="MenuBottomRight" XPos="70" YPos="66" Width="2" Height="2" />
+	<Image Name="MenuLeft" XPos="61" YPos="62" Width="2" Height="1" />
+	<Image Name="MenuRight" XPos="70" YPos="62" Width="2" Height="1" />
+	<Image Name="MenuTop" XPos="66" YPos="57" Width="1" Height="2" />
+	<Image Name="MenuBottom" XPos="66" YPos="66" Width="1" Height="2" />
+	
+	<Image Name="PopupMenuFrameTopLeft" XPos="74" YPos="57" Width="3" Height="3" />
+	<Image Name="PopupMenuFrameTopRight" XPos="87" YPos="57" Width="3" Height="3" />
+	<Image Name="PopupMenuFrameBottomLeft" XPos="74" YPos="70" Width="3" Height="3" />
+	<Image Name="PopupMenuFrameBottomRight" XPos="87" YPos="70" Width="3" Height="3" />
+	<Image Name="PopupMenuFrameLeft" XPos="74" YPos="64" Width="3" Height="2" />
+	<Image Name="PopupMenuFrameRight" XPos="87" YPos="64" Width="3" Height="2" />
+	<Image Name="PopupMenuFrameTop" XPos="81" YPos="57" Width="2" Height="3" />
+	<Image Name="PopupMenuFrameBottom" XPos="81" YPos="70" Width="2" Height="3" />
+	<Image Name="PopupMenuArrowRight" XPos="61" YPos="75" Width="5" Height="9" />
+	<Image Name="PopupMenuArrowLeft" XPos="68" YPos="75" Width="5" Height="9" />
+
 </Imageset>

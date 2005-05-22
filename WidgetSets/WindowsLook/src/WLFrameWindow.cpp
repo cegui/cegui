@@ -217,7 +217,7 @@ PushButton* WLFrameWindow::createCloseButton(void) const
 *************************************************************************/
 void WLFrameWindow::layoutComponentWidgets()
 {
-	// TODO: Magic number removal
+	ImagesetManager& ismgr = ImagesetManager::getSingleton();
 
 	// calculate and set size of title bar
 	Size titleSz;
@@ -225,12 +225,13 @@ void WLFrameWindow::layoutComponentWidgets()
 	titleSz.d_width	 = isRolledup() ? d_abs_openSize.d_width : d_abs_area.getWidth();
 	d_titlebar->setSize(titleSz);
 
-	// set size of close button to be the same as the height for the title bar.
-	float closeSize = titleSz.d_height * 0.75f;
+	// set size of close button to be the same as the size of the imagery used to render it.
+	float closeSize = ismgr.getImageset(ImagesetName)->getImage(CloseButtonNormalImageName).getWidth();
 	d_closeButton->setSize(Size(closeSize, closeSize));
 
 	// calculate position for close button (somewhere over the end of the titlbar)
-	float closeX = titleSz.d_width - closeSize - titleSz.d_height * 0.125f;
+	float closeX = titleSz.d_width - closeSize - 
+		ismgr.getImageset(WLTitlebar::ImagesetName)->getImage(WLTitlebar::RightFrameImageName).getWidth();
 
 	float closeY = TitlebarYOffset + ((titleSz.d_height - closeSize) / 2);
 

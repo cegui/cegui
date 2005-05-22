@@ -36,9 +36,15 @@ namespace CEGUI
 const utf8	WLTitlebar::WidgetTypeName[]			= "WindowsLook/Titlebar";
 
 const utf8	WLTitlebar::ImagesetName[]				= "WindowsLook";
-const utf8	WLTitlebar::LeftEndSectionImageName[]	= "TitlebarLeft";
-const utf8	WLTitlebar::MiddleSectionImageName[]	= "TitlebarMiddle";
-const utf8	WLTitlebar::RightEndSectionImageName[]	= "TitlebarRight";
+const utf8	WLTitlebar::TopLeftFrameImageName[]		= "TitlebarTopLeft";
+const utf8	WLTitlebar::TopRightFrameImageName[]	= "TitlebarTopRight";
+const utf8	WLTitlebar::BottomLeftFrameImageName[]	= "TitlebarBottomLeft";
+const utf8	WLTitlebar::BottomRightFrameImageName[]	= "TitlebarBottomRight";
+const utf8	WLTitlebar::LeftFrameImageName[]		= "TitlebarLeft";
+const utf8	WLTitlebar::RightFrameImageName[]		= "TitlebarRight";
+const utf8	WLTitlebar::TopFrameImageName[]			= "TitlebarTop";
+const utf8	WLTitlebar::BottomFrameImageName[]		= "TitlebarBottom";
+const utf8	WLTitlebar::FillImageName[]				= "TitlebarFill";
 const utf8	WLTitlebar::NormalCursorImageName[]		= "MouseMoveCursor";
 const utf8	WLTitlebar::NoDragCursorImageName[]		= "MouseArrow";
 
@@ -56,10 +62,24 @@ WLTitlebar::WLTitlebar(const String& type, const String& name) :
 {
 	// get images
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+	
+	// store framesizes
+	storeFrameSizes();
 
-	d_leftImage		= &iset->getImage(LeftEndSectionImageName);
-	d_middleImage	= &iset->getImage(MiddleSectionImageName);
-	d_rightImage	= &iset->getImage(RightEndSectionImageName);
+	d_frame.setImages(
+		&iset->getImage(TopLeftFrameImageName),
+		&iset->getImage(TopRightFrameImageName),
+		&iset->getImage(BottomLeftFrameImageName),
+		&iset->getImage(BottomRightFrameImageName),
+		&iset->getImage(LeftFrameImageName),
+		&iset->getImage(TopFrameImageName),
+		&iset->getImage(RightFrameImageName),
+		&iset->getImage(BottomFrameImageName)
+	);
+		
+	d_fill.setImage(&iset->getImage(FillImageName));
+	d_fill.setHorzFormatting(RenderableImage::HorzStretched);
+	d_fill.setVertFormatting(RenderableImage::VertStretched);
 
 	// default text colour
 	d_captionColour = CaptionColour;
@@ -119,25 +139,26 @@ void WLTitlebar::drawSelf(float z)
 	ColourRect colours(((d_parent != NULL) && d_parent->isActive()) ? ActiveColour : InactiveColour);
 	colours.setAlpha(alpha_comp);
 
-	// calculate widths for the title bar segments
-	float leftWidth		= d_leftImage->getWidth();
-	float rightWidth	= d_rightImage->getWidth();
-	float midWidth		= absrect.getWidth() - leftWidth - rightWidth;
-
 	//
-	// draw the title bar images
+	// draw the title bar frame
 	//
 	Vector3 pos(absrect.d_left, absrect.d_top, z);
-	Size	sz(leftWidth, absrect.getHeight());
-	d_leftImage->draw(pos, sz, clipper, colours);
-	pos.d_x += sz.d_width;
+	d_frame.setSize(absrect.getSize());
+	d_frame.setColours(colours);
+	d_frame.draw(pos, clipper);
 
-	sz.d_width = midWidth;
-	d_middleImage->draw(pos, sz, clipper, colours);
-	pos.d_x += sz.d_width;
+	// calculate size for middle title bar segment
+	float midWidth		= absrect.getWidth() - d_frameLeftSize - d_frameRightSize;
+	float midHeight		= absrect.getHeight() - d_frameTopSize - d_frameBottomSize;
 
-	sz.d_width = rightWidth;
-	d_rightImage->draw(pos, sz, clipper, colours);
+	//
+	// draw title bar frame fill
+	//
+	d_fill.setSize(Size(midWidth, midHeight));
+	d_fill.setColours(colours);
+	pos.d_x += d_frameLeftSize;
+	pos.d_y += d_frameTopSize;
+	d_fill.draw(pos, clipper);
 
 	//
 	// Draw the title text
@@ -149,11 +170,33 @@ void WLTitlebar::drawSelf(float z)
 	textClipper.setWidth(midWidth);
 	textClipper = clipper.getIntersection(textClipper);
 
-	pos.d_x = absrect.d_left + leftWidth;
+	pos.d_x = absrect.d_left + d_frameLeftSize;
 	pos.d_y = absrect.d_top + PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	pos.d_z = System::getSingleton().getRenderer()->getZLayer(1);
 
 	getFont()->drawText(d_parent->getText(), pos, textClipper, colours);
+}
+
+
+/*************************************************************************
+	Store the sizes for the frame edges
+*************************************************************************/
+void WLTitlebar::storeFrameSizes(void)
+{
+	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
+
+	const Image* img;
+	img = &iset->getImage(LeftFrameImageName);
+	d_frameLeftSize = img->getWidth();
+
+	img = &iset->getImage(RightFrameImageName);
+	d_frameRightSize = img->getWidth();
+
+	img = &iset->getImage(TopFrameImageName);
+	d_frameTopSize = img->getHeight();
+
+	img = &iset->getImage(BottomFrameImageName);
+	d_frameBottomSize = img->getHeight();
 }
 
 

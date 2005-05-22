@@ -52,6 +52,10 @@
 #include "WLSpinner.h"
 #include "WLScrollablePane.h"
 #include "WLTooltip.h"
+#include "WLTextItem.h"
+#include "WLMenuItem.h"
+#include "WLMenubar.h"
+#include "WLPopupMenu.h"
 
 /*************************************************************************
 	Static factory objects
@@ -85,6 +89,11 @@ static CEGUI::WLTabPaneFactory				s_TabPaneFactory;
 static CEGUI::WLSpinnerFactory              s_SpinnerFactory;
 static CEGUI::WLScrollablePaneFactory       s_ScrollablePaneFactory;
 static CEGUI::WLTooltipFactory              s_TooltipFactory;
+static CEGUI::WLTextItemFactory				s_TextItemFactory;
+static CEGUI::WLMenubarItemFactory			s_MenubarItemFactory;
+static CEGUI::WLPopupMenuItemFactory		s_PopupMenuItemFactory;
+static CEGUI::WLMenubarFactory				s_MenubarFactory;
+static CEGUI::WLPopupMenuFactory			s_PopupMenuFactory;
 
 
 /*************************************************************************
@@ -239,6 +248,31 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
         WindowFactoryManager::getSingleton().addFactory(&s_TooltipFactory);
         return;
     }
+    else if (type_name == WLTextItem::WidgetTypeName)
+    {
+		WindowFactoryManager::getSingleton().addFactory(&s_TextItemFactory);
+		return;
+	}
+	else if (type_name == WLMenubarItem::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_MenubarItemFactory);
+		return;
+	}
+	else if (type_name == WLPopupMenuItem::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_PopupMenuItemFactory);
+		return;
+	}
+	else if (type_name == WLMenubar::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_MenubarFactory);
+		return;
+	}
+	else if (type_name == WLPopupMenu::WidgetTypeName)
+	{
+		WindowFactoryManager::getSingleton().addFactory(&s_PopupMenuFactory);
+		return;
+	}
 
 	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 
