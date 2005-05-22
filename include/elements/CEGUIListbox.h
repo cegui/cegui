@@ -286,6 +286,8 @@ public:
 
 	\return
 		Nothing.
+	
+	\exception InvalidRequestException	thrown if no ListboxItem \a position is attached to this list box.
 	*/
 	void	insertItem(ListboxItem* item, const ListboxItem* position);
 
@@ -620,6 +622,23 @@ protected:
 		- false if the list contents were not changed (list already empty).
 	*/
 	bool	resetList_impl(void);
+
+
+	/*!
+	\brief
+		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
+
+	\param class_name
+		The class name that is to be checked.
+
+	\return
+		true if this window was inherited from \a class_name. false if not.
+	*/
+	virtual bool	testClassName_impl(const String& class_name) const
+	{
+		if (class_name==(const utf8*)"Listbox")	return true;
+		return Window::testClassName_impl(class_name);
+	}
 
 
 	/*************************************************************************

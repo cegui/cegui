@@ -252,6 +252,23 @@ protected:
 	bool	handleThumbTrackEnded(const EventArgs& e);
 
 
+	/*!
+	\brief
+		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
+
+	\param class_name
+		The class name that is to be checked.
+
+	\return
+		true if this window was inherited from \a class_name. false if not.
+	*/
+	virtual bool	testClassName_impl(const String& class_name) const
+	{
+		if (class_name==(const utf8*)"Slider")	return true;
+		return Window::testClassName_impl(class_name);
+	}
+
+
 	/*************************************************************************
 		New event handlers for slider widget
 	*************************************************************************/

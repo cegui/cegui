@@ -89,5 +89,12 @@
 #include "elements/CEGUIScrolledContainer.h"
 #include "elements/CEGUIScrollablePane.h"
 #include "elements/CEGUITooltip.h"
+#include "elements/CEGUIItemEntry.h"
+#include "elements/CEGUITextItem.h"
+#include "elements/CEGUIMenuItem.h"
+#include "elements/CEGUIItemListBase.h"
+#include "elements/CEGUIMenuBase.h"
+#include "elements/CEGUIMenubar.h"
+#include "elements/CEGUIPopupMenu.h"
 
 #endif	// end of guard _CEGUI_h_

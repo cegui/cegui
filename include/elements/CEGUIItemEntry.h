@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUITabPane.h
-	created:	8/8/2004
-	author:		Steve Streeting
+	filename: 	CEGUIItemEntry.h
+	created:	31/3/2005
+	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
 	
-	purpose:	Defines interface for the content area of a tab control
+	purpose:	Interface to base class for ItemEntry widget
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -23,10 +23,11 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUITabPane_h_
-#define _CEGUITabPane_h_
+#ifndef _CEGUIItemEntry_h_
+#define _CEGUIItemEntry_h_
 
-#include "elements/CEGUIStatic.h"
+#include "CEGUIBase.h"
+#include "CEGUIWindow.h"
 
 
 #if defined(_MSC_VER)
@@ -38,46 +39,68 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
-	Base class for a tab pane.
+	Base class for item type widgets.
 */
-class CEGUIBASE_API TabPane : public Static
+class CEGUIBASE_API ItemEntry : public Window
 {
 public:
+	/*************************************************************************
+		Abstract Implementation Functions (must be provided by derived class)
+	*************************************************************************/
+	/*!
+	\brief
+		Return the "optimal" size for the item
+	
+	\return
+		Size describing the size in pixel that this ItemEntry's content requires
+		for non-clipped rendering
+	*/
+	virtual Size getItemPixelSize(void) = 0;
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for tab pane widgets.
+		Constructor for ItemEntry objects
 	*/
-    TabPane(const String& type, const String& name) : Static(type, name) {}
+	ItemEntry(const String& type, const String& name);
 
 
 	/*!
 	\brief
-		Destructor for tab pane widgets.
+		Destructor for ItemEntry objects
 	*/
-    virtual ~TabPane(void) {}
+	virtual ~ItemEntry(void);
 
-
-	/*************************************************************************
-		Accessors
-	*************************************************************************/
-
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
 
 protected:
 	/*************************************************************************
-		Overridden from base class
+		Implementation Functions
 	*************************************************************************/
+	/*!
+	\brief
+		Add itementry specific events
+	*/
+	void	addItemEntryEvents(void);
 
-    /*************************************************************************
-		Implementation methods
-	*************************************************************************/
+
+	/*!
+    \brief
+        Perform the actual rendering for this Window.
+
+    \param z
+        float value specifying the base Z co-ordinate that should be used when rendering
+
+    \return
+        Nothing
+    */
+    virtual void    drawSelf(float z) {};
+
+
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
@@ -90,29 +113,18 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Tabpane")	return true;
-		return Static::testClassName_impl(class_name);
+		if (class_name==(const utf8*)"ItemEntry")	return true;
+		return Window::testClassName_impl(class_name);
 	}
-
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-
-private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-
-
-	/*************************************************************************
-		Private methods
-	*************************************************************************/
+   
 };
 
 } // End of  CEGUI namespace section
+
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUITabPane_h_
+
+#endif	// end of guard _CEGUIItemEntry_h_

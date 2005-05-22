@@ -179,6 +179,16 @@ public:
 	void	setColours(const colour& col);
 
 
+	/*!
+	\brief
+		Module the alpha components of each corner's colour by a constant.
+
+	\param alpha
+		The constant factor to modulate all alpha colour components by.
+	*/
+	void	modulateAlpha(float alpha);
+
+
 	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
 };
 

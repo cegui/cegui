@@ -101,6 +101,13 @@ class DragContainer;
 class ScrollablePane;
 class ScrolledContainer;
 class Tooltip;
+class ItemEntry;
+class TextItem;
+class MenuItem;
+class ItemListBase;
+class MenuBase;
+class Menubar;
+class PopupMenu;
 
 } // End of  CEGUI namespace section
 

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUITabPane.h
-	created:	8/8/2004
-	author:		Steve Streeting
+	filename: 	CEGUIMenubar.h
+	created:	27/3/2005
+	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
 	
-	purpose:	Defines interface for the content area of a tab control
+	purpose:	Interface to base class for Menubar widget
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -23,10 +23,12 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUITabPane_h_
-#define _CEGUITabPane_h_
+#ifndef _CEGUIMenubar_h_
+#define _CEGUIMenubar_h_
 
-#include "elements/CEGUIStatic.h"
+#include "CEGUIBase.h"
+#include "CEGUIWindow.h"
+#include "elements/CEGUIMenuBase.h"
 
 
 #if defined(_MSC_VER)
@@ -38,46 +40,57 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
-	Base class for a tab pane.
+	Base class for menu bars.
 */
-class CEGUIBASE_API TabPane : public Static
+class CEGUIBASE_API Menubar : public MenuBase
 {
 public:
+	static const String EventNamespace;				//!< Namespace for global events
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for tab pane widgets.
+		Constructor for Menubar objects
 	*/
-    TabPane(const String& type, const String& name) : Static(type, name) {}
+	Menubar(const String& type, const String& name);
 
 
 	/*!
 	\brief
-		Destructor for tab pane widgets.
+		Destructor for Menubar objects
 	*/
-    virtual ~TabPane(void) {}
+	virtual ~Menubar(void);
 
-
-	/*************************************************************************
-		Accessors
-	*************************************************************************/
-
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
 
 protected:
 	/*************************************************************************
-		Overridden from base class
+		Implementation Functions
 	*************************************************************************/
+	/*!
+	\brief
+		Setup size and position for the item widgets attached to this Menubar
 
-    /*************************************************************************
-		Implementation methods
-	*************************************************************************/
+	\return
+		Nothing.
+	*/
+	virtual void	layoutItemWidgets();
+
+
+	/*!
+	\brief
+		Resizes the menubar to exactly fit the content that is attached to it.
+
+	\return
+		Nothing.
+	*/
+	virtual Size getContentSize();
+
+
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
@@ -90,29 +103,17 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Tabpane")	return true;
-		return Static::testClassName_impl(class_name);
+		if (class_name==(const utf8*)"Menubar")	return true;
+		return MenuBase::testClassName_impl(class_name);
 	}
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-
-private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-
-
-	/*************************************************************************
-		Private methods
-	*************************************************************************/
 };
 
 } // End of  CEGUI namespace section
+
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUITabPane_h_
+#endif	// end of guard _CEGUIMenubar_h_

@@ -133,6 +133,8 @@ public:
 
 	void	setHSL(float hue, float saturation, float luminance, float alpha = 1.0f);
 
+	void	invertColour(void);
+	void	invertColourWithAlpha(void);
 
 	/*************************************************************************
 		Operators
