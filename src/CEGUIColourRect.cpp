@@ -159,4 +159,15 @@ void ColourRect::setColours(const colour& col)
 }
 
 
+/*************************************************************************
+	Module the alpha components of each corner's colour by a constant.
+*************************************************************************/
+void ColourRect::modulateAlpha(float alpha)
+{
+	d_top_left.setAlpha(d_top_left.getAlpha()*alpha);
+	d_top_right.setAlpha(d_top_right.getAlpha()*alpha);
+	d_bottom_left.setAlpha(d_bottom_left.getAlpha()*alpha);
+	d_bottom_right.setAlpha(d_bottom_right.getAlpha()*alpha);
+}
+
 } // End of  CEGUI namespace section

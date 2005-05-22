@@ -239,4 +239,21 @@ argb_t colour::calculateARGB(void) const
 	);
 }
 
+
+void colour::invertColour(void)
+{
+	d_red	= 1.0f - d_red;
+	d_green	= 1.0f - d_green;
+	d_blue	= 1.0f - d_blue;
+}
+
+
+void colour::invertColourWithAlpha(void)
+{
+	d_alpha	= 1.0f - d_alpha;
+	d_red	= 1.0f - d_red;
+	d_green	= 1.0f - d_green;
+	d_blue	= 1.0f - d_blue;
+}
+
 } // End of  CEGUI namespace section
