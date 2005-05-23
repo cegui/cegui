@@ -450,6 +450,42 @@
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUITooltipProperties.cpp">
 				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemEntry.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemListBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemListBaseProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenubar.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuBaseProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuItem.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuItemProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenu.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenuProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITextItem.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITextItemProperties.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="pcre"
@@ -928,6 +964,42 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITooltipProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemEntry.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemListBase.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemListBaseProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenubar.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuBase.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuBaseProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuItem.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuItemProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenu.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenuProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITextItem.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITextItemProperties.h">
 				</File>
 			</Filter>
 			<Filter

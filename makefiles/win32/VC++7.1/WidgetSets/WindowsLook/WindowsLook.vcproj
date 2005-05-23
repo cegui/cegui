@@ -214,6 +214,18 @@
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLVertScrollbarThumb.cpp">
 			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenubar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenuItem.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLPopupMenu.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTextItem.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -305,6 +317,18 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLVertScrollbarThumb.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenubar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenuItem.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLPopupMenu.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTextItem.h">
 			</File>
 		</Filter>
 		<Filter
