@@ -26,8 +26,6 @@
 #include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIExceptions.h"
 
-#include <xercesc/framework/LocalFileInputSource.hpp>
-#include <xercesc/util/XMLString.hpp>
 #include <fstream>
 
 // Start of CEGUI namespace section
