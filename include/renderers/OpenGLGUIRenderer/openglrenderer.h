@@ -279,7 +279,7 @@ private:
     */
     struct QuadInfo
     {
-        uint		texid;  
+        GLuint		texid;  
         Rect		position;
         float		z;
         Rect		texPosition;
@@ -337,7 +337,7 @@ private:
 	bool		d_sorted;			//!< true when data in quad list is sorted.
 
 	std::list<OpenGLTexture*>	d_texturelist;		//!< List used to track textures.
-	int	d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
+	GLint       d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
 };
 
 } // End of  CEGUI namespace section
