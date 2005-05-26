@@ -96,6 +96,12 @@ Font* FontManager::createFont(const String& filename, const String& resourceGrou
 
 	d_fonts[name] = temp;
 
+    // if this was the first font created, set it as the default font
+    if (d_fonts.size() == 1)
+    {
+        System::getSingleton().setDefaultFont(temp);
+    }
+
 	return temp; 
 }
 
@@ -117,6 +123,12 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint s
 
 	Font* temp = new Font(name, fontname, resourceGroup, size, flags, new Font::FontImplData(d_implData->d_ftlib));
 	d_fonts[name] = temp;
+
+    // if this was the first font created, set it as the default font
+    if (d_fonts.size() == 1)
+    {
+        System::getSingleton().setDefaultFont(temp);
+    }
 
 	return temp; 
 }
