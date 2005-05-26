@@ -29,6 +29,7 @@
 #include "CEGUIFont.h"
 #include "CEGUIFontManager_implData.h"
 #include "CEGUIFont_implData.h"
+#include "CEGUISystem.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
