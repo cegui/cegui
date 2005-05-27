@@ -67,6 +67,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIFrameWindow.cpp \
                       elements/CEGUIFrameWindowProperties.cpp \
                       elements/CEGUIGUISheet.cpp \
+                      elements/CEGUIItemEntry.cpp \
+                      elements/CEGUIItemListBase.cpp \
+                      elements/CEGUIItemListBaseProperties.cpp \
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \
                       elements/CEGUIListboxProperties.cpp \
@@ -75,10 +78,17 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIListHeaderProperties.cpp \
                       elements/CEGUIListHeaderSegment.cpp \
                       elements/CEGUIListHeaderSegmentProperties.cpp \
+                      elements/CEGUIMenubar.cpp \
+                      elements/CEGUIMenuBase.cpp \
+                      elements/CEGUIMenuBaseProperties.cpp \
+                      elements/CEGUIMenuItem.cpp \
+                      elements/CEGUIMenuItemProperties.cpp \
                       elements/CEGUIMultiColumnList.cpp \
                       elements/CEGUIMultiColumnListProperties.cpp \
                       elements/CEGUIMultiLineEditbox.cpp \
                       elements/CEGUIMultiLineEditboxProperties.cpp \
+                      elements/CEGUIPopupMenu.cpp \
+                      elements/CEGUIPopupMenuProperties.cpp \
                       elements/CEGUIProgressBar.cpp \
                       elements/CEGUIProgressBarProperties.cpp \
                       elements/CEGUIPushButton.cpp \
@@ -104,6 +114,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITabButton.cpp \
                       elements/CEGUITabControl.cpp \
                       elements/CEGUITabControlProperties.cpp \
+                      elements/CEGUITextItem.cpp \
+                      elements/CEGUITextItemProperties.cpp \
                       elements/CEGUIThumb.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \

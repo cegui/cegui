@@ -15,9 +15,12 @@ libCEGUIWindowsLook_la_SOURCES = WLButton.cpp \
 				 WLListbox.cpp \
 				 WLListHeader.cpp \
 				 WLListHeaderSegment.cpp \
+                 WLMenubar.cpp \
+                 WLMenuItem.cpp \
 				 WLModule.cpp \
 				 WLMultiColumnList.cpp \
 				 WLMultiLineEditbox.cpp \
+				 WLPopupMenu.cpp \
 				 WLProgressBar.cpp \
 				 WLRadioButton.cpp \
 				 WLScrollablePane.cpp \
@@ -28,6 +31,7 @@ libCEGUIWindowsLook_la_SOURCES = WLButton.cpp \
 				 WLTabButton.cpp \
 				 WLTabControl.cpp \
 				 WLTabPane.cpp \
+				 WLTextItem.cpp \
 				 WLTitlebar.cpp \
 				 WLTooltip.cpp \
 				 WLVertScrollbar.cpp \

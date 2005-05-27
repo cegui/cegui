@@ -10,9 +10,12 @@ noinst_HEADERS = WLButton.h \
              WLListHeader.h \
              WLListHeaderSegment.h \
              WLListbox.h \
+             WLMenubar.h \
+             WLMenuItem.h \
              WLModule.h \
              WLMultiColumnList.h \
              WLMultiLineEditbox.h \
+             WLPopupMenu.h \
              WLProgressBar.h \
              WLRadioButton.h \
              WLScrollablePane.h \
@@ -23,6 +26,7 @@ noinst_HEADERS = WLButton.h \
              WLTabButton.h \
              WLTabControl.h \
              WLTabPane.h \
+             WLTextItem.h \
              WLTitlebar.h \
              WLTooltip.h \
              WLVertScrollbar.h \
