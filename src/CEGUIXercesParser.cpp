@@ -224,6 +224,9 @@ namespace CEGUI
         reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
         XMLString::release(&pval);
         Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.", Informative);
+
+        // use resource provider to release loaded schema data (if it supports this)
+        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawSchemaData);
     }
 
     XERCES_CPP_NAMESPACE::SAX2XMLReader* XercesParser::createReader(XERCES_CPP_NAMESPACE::DefaultHandler& handler)
@@ -257,6 +260,9 @@ namespace CEGUI
 
         // perform parse
         parser->parse(fileData);
+        
+        // use resource provider to release loaded XML source (if it supports this)
+        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
 
     

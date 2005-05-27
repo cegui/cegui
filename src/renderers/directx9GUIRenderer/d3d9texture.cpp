@@ -73,6 +73,8 @@ void DirectX9Texture::loadFromFile(const String& filename, const String& resourc
             static_cast<UINT>(texFile.getSize()), D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT,
             D3DX_DEFAULT, D3DX_DEFAULT, 0, &texInfo, NULL, &d_d3dtexture);
 	
+	System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
+	
 	if (SUCCEEDED(hr))
 	{
 		d_width		= (ushort)texInfo.Width;

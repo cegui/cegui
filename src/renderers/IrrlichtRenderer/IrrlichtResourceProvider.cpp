@@ -67,4 +67,14 @@ namespace CEGUI
 			output.setSize(input_size);
 		}
 	}
+
+    void IrrlichtResourceProvider::unloadRawDataContainer(RawDataContainer& data)
+    {
+        if (data.getDataPtr())
+        {
+            delete[] data.getDataPtr();
+            data.setData(0);
+            data.setSize(0);
+        }
+    }
 } // End of  CEGUI namespace section

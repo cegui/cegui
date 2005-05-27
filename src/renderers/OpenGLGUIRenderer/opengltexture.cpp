@@ -163,6 +163,9 @@ void OpenGLTexture::loadFromFile(const String& filename, const String& resourceG
 	}
 
 # endif
+    // unload file data buffer
+	System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
+
 }
 
 

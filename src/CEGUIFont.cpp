@@ -816,6 +816,8 @@ void Font::unload(void)
 		d_freetype = false;
 	}
 
+	System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_impldat->fontData);
+
 }
 
 

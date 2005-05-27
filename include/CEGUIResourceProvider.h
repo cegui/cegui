@@ -92,6 +92,18 @@ public:
 
     /*!
     \brief
+        Unload raw binary data. This gives the resource provider a change to unload the data
+        in its own way before the data container object is destroyed.  If it does nothing,
+        then the object will release its memory.
+
+	\param data
+        Reference to a RawDataContainer object that is about to be destroyed.
+
+    */
+    virtual void unloadRawDataContainer(RawDataContainer& data)  { }
+
+    /*!
+    \brief
         Return the current default resource group identifier.
 
     \return

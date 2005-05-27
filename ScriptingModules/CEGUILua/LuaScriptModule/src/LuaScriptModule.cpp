@@ -98,6 +98,8 @@ void LuaScriptModule::executeScriptFile(const String& filename, const String& re
 	// load code into lua and call it
 	int error =	luaL_loadbuffer(d_state, (char*)raw.getDataPtr(), raw.getSize(), filename.c_str()) || lua_pcall(d_state,0,0,0);
 
+	System::getSingleton().getResourceProvider()->unloadRawDataContainer( raw );
+
 	// handle errors
 	if ( error )
 	{

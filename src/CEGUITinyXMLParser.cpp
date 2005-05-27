@@ -55,6 +55,8 @@ namespace CEGUI
             // function called recursively to parse xml data
             processElement(currElement);
         }        
+
+		System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
 
     void TinyXMLParser::processElement(const TiXmlElement* element)

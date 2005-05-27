@@ -45,6 +45,7 @@ namespace CEGUI
 		~IrrlichtResourceProvider(void) ;
 
 		void loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup);
+        void unloadRawDataContainer(RawDataContainer& data);
 	};
 
 } // End of  CEGUI namespace section
