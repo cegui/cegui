@@ -575,6 +575,36 @@ public:
 	uint	getColumnID(uint col_idx) const;
 
 
+	/*!
+	\brief
+		Return the ID code assigned to the requested row.
+
+	\param row_idx
+		Zero based index of the row who's ID code is to be returned.
+
+	\return
+		Current ID code assigned to the row at the requested index.
+
+	\exception InvalidRequestException	thrown if \a row_idx is out of range
+	*/
+	uint	getRowID(uint row_idx) const;
+
+
+	/*!
+	\brief
+		Return the zero based row index of the row with the specified ID.
+
+	\param row_id
+		ID code of the row who's index is to be returned.
+
+	\return
+		Zero based row index of the first row who's ID matches \a row_id.
+
+	\exception	InvalidRequestException		thrown if no row has the requested ID.
+	*/
+	uint	getRowWithID(uint row_id) const;
+
+
 	/*************************************************************************
 		Manipulator Methods
 	*************************************************************************/
@@ -712,6 +742,9 @@ public:
 	\brief
 		Add an empty row to the list box.
 
+	\param row_id
+		ID code to be assigned to the new row.
+
 	\note
 		If the list is being sorted, the new row will appear at an appropriate position according to the sorting being
 		applied.  If no sorting is being done, the new row will appear at the bottom of the list.
@@ -719,7 +752,7 @@ public:
 	\return
 		Initial zero based index of the new row.
 	*/
-	uint	addRow(void);
+	uint	addRow(uint row_id = 0);
 
 
 	/*!
@@ -736,12 +769,15 @@ public:
 	\param col_id
 		ID code of the column whos initial item is to be set to \a item.
 
+	\param row_id
+		ID code to be assigned to the new row.
+
 	\return
 		Initial zero based index of the new row.
 
 	\exception InvalidRequestException	thrown if no column with the specified ID is attached to the list box.
 	*/
-	uint	addRow(ListboxItem* item, uint col_id);
+	uint	addRow(ListboxItem* item, uint col_id, uint row_id = 0);
 
 
 	/*!
@@ -756,10 +792,13 @@ public:
 		Zero based index where the row should be inserted.  If this is greater than the current number of rows, the row is
 		appended to the list.
 
+	\param row_id
+		ID code to be assigned to the new row.
+
 	\return
 		Zero based index where the row was actually inserted.
 	*/
-	uint	insertRow(uint row_idx);
+	uint	insertRow(uint row_idx, uint row_id = 0);
 
 
 	/*!
@@ -780,12 +819,15 @@ public:
 		Zero based index where the row should be inserted.  If this is greater than the current number of rows, the row is
 		appended to the list.
 
+	\param row_id
+		ID code to be assigned to the new row.
+
 	\return
 		Zero based index where the row was actually inserted.
 
 	\exception InvalidRequestException	thrown if no column with the specified ID is attached to the list box.
 	*/
-	uint	insertRow(ListboxItem* item, uint col_id, uint row_idx);
+	uint	insertRow(ListboxItem* item, uint col_id, uint row_idx, uint row_id = 0);
 
 
 	/*!
@@ -1111,6 +1153,24 @@ public:
 	\exception InvalidRequestException	thrown if \a col_idx is out of range.
 	*/
 	void	autoSizeColumnHeader(uint col_idx);
+
+
+	/*!
+	\brief
+		Set the ID code assigned to a given row.
+
+	\param row_idx
+		Zero based index of the row who's ID code is to be set.
+
+	\param row_id
+		ID code to be assigned to the row at the requested index.
+
+	\return
+		Nothing.
+
+	\exception InvalidRequestException	thrown if \a row_idx is out of range
+	*/
+	void	setRowID(uint row_idx, uint row_id);
 
 
 	/*************************************************************************
@@ -1453,6 +1513,7 @@ protected:
 		typedef	std::vector<ListboxItem*>	RowItems;
 		RowItems	d_items;
 		uint		d_sortColumn;
+		uint		d_rowID;
 
 		// operators
 		ListboxItem* const& operator[](uint idx) const	{return d_items[idx];}
@@ -1509,6 +1570,8 @@ private:
 	static MultiColumnListProperties::SortColumnID					d_sortColumnIDProperty;
 	static MultiColumnListProperties::SortDirection					d_sortDirectionProperty;
 	static MultiColumnListProperties::SortSettingEnabled			d_sortSettingProperty;
+	static MultiColumnListProperties::ColumnHeader					d_columnHeaderProperty;
+	static MultiColumnListProperties::RowCount						d_rowCountProperty;
 
 
 	/*************************************************************************

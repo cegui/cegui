@@ -51,7 +51,8 @@ MultiColumnListProperties::SelectionMode				MultiColumnList::d_selectModePropert
 MultiColumnListProperties::SortColumnID					MultiColumnList::d_sortColumnIDProperty;
 MultiColumnListProperties::SortDirection				MultiColumnList::d_sortDirectionProperty;
 MultiColumnListProperties::SortSettingEnabled			MultiColumnList::d_sortSettingProperty;
-
+MultiColumnListProperties::ColumnHeader					MultiColumnList::d_columnHeaderProperty;
+MultiColumnListProperties::RowCount						MultiColumnList::d_rowCountProperty;
 
 /*************************************************************************
 	Constants
@@ -776,16 +777,16 @@ void MultiColumnList::moveColumnWithID(uint col_id, uint position)
 /*************************************************************************
 	Add a row to the bottom of the table
 *************************************************************************/
-uint MultiColumnList::addRow(void)
+uint MultiColumnList::addRow(uint row_id)
 {
-	return addRow(NULL, 0);
+	return addRow(NULL, 0, row_id);
 }
 
 
 /*************************************************************************
 	Add a row to the bottom of the table
 *************************************************************************/
-uint MultiColumnList::addRow(ListboxItem* item, uint col_id)
+uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 {
 	uint col_idx = 0;
 
@@ -793,6 +794,7 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id)
 	ListRow row;
 	row.d_sortColumn = getSortColumn();
 	row.d_items.resize(getColumnCount(), NULL);
+	row.d_rowID = row_id;
 
 	if (item != NULL)
 	{
@@ -834,16 +836,16 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id)
 /*************************************************************************
 	Insert a row into the table
 *************************************************************************/
-uint MultiColumnList::insertRow(uint row_idx)
+uint MultiColumnList::insertRow(uint row_idx, uint row_id)
 {
-	return insertRow(NULL, 0, row_idx);
+	return insertRow(NULL, 0, row_idx, row_id);
 }
 
 
 /*************************************************************************
 	Insert a row into the table
 *************************************************************************/
-uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx)
+uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx, uint row_id)
 {
 	// if sorting is enabled, use add instead of insert
 	if (getSortDirection() != ListHeaderSegment::None)
@@ -856,6 +858,7 @@ uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx)
 		ListRow row;
 		row.d_sortColumn = getSortColumn();
 		row.d_items.resize(getColumnCount(), NULL);
+		row.d_rowID = row_id;
 
 		// if row index is too big, just insert at end.
 		if (row_idx > getRowCount())
@@ -2158,6 +2161,41 @@ uint MultiColumnList::getColumnID(uint col_idx) const
 
 
 /*************************************************************************
+	Return the ID code assigned to the requested row.
+*************************************************************************/
+uint MultiColumnList::getRowID(uint row_idx) const
+{
+	// check for invalid index
+	if (row_idx >= getRowCount())
+	{
+		throw InvalidRequestException((utf8*)"MultiColumnList::getRowID - the row index given is out of range.");
+	}
+	else
+	{
+		return d_grid[row_idx].d_rowID;
+	}
+}
+
+
+/*************************************************************************
+	Return the zero based row index of the row with the specified ID.
+*************************************************************************/
+uint MultiColumnList::getRowWithID(uint row_id) const
+{
+	for (uint i = 0; i < getRowCount(); ++i)
+	{
+		if (d_grid[i].d_rowID == row_id)
+		{
+			return i;
+		}
+	}
+
+	// No such row found, throw exception
+	throw InvalidRequestException((utf8*)"MultiColumnList::getRowWithID - no row with the requested ID is present.");
+}
+
+
+/*************************************************************************
 	std algorithm predicate used for sorting in descending order (static)
 *************************************************************************/
 bool MultiColumnList::pred_descend(const ListRow& a, const ListRow& b)
@@ -2199,6 +2237,8 @@ void MultiColumnList::addMultiColumnListProperties(void)
 	addProperty(&d_sortColumnIDProperty);
 	addProperty(&d_sortDirectionProperty);
 	addProperty(&d_sortSettingProperty);
+	addProperty(&d_columnHeaderProperty);
+	addProperty(&d_rowCountProperty);
 }
 
 
@@ -2270,6 +2310,23 @@ void MultiColumnList::autoSizeColumnHeader(uint col_idx)
 		setColumnHeaderWidth(col_idx, width);
 	}
 
+}
+
+
+/*************************************************************************
+	Set the ID code assigned to a given row.
+*************************************************************************/
+void MultiColumnList::setRowID(uint row_idx, uint row_id)
+{
+	// check for invalid index
+	if (row_idx >= getRowCount())
+	{
+		throw InvalidRequestException((utf8*)"MultiColumnList::setRowID - the row index given is out of range.");
+	}
+	else
+	{
+		d_grid[row_idx].d_rowID = row_id;
+	}
 }
 
 

@@ -26,7 +26,7 @@
 #include "elements/CEGUIMultiColumnListProperties.h"
 #include "elements/CEGUIMultiColumnList.h"
 #include "CEGUIPropertyHelper.h"
-
+#include "CEGUILogger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -267,6 +267,49 @@ void	SelectionMode::set(PropertyReceiver* receiver, const String& value)
 
 	static_cast<MultiColumnList*>(receiver)->setSelectionMode(mode);
 }
+
+
+String ColumnHeader::get(const PropertyReceiver* receiver) const
+{
+	return String("");
+}
+
+
+void ColumnHeader::set(PropertyReceiver* receiver, const String& value)
+{
+	// extract data from the value string
+
+	size_t wstart = value.find("width:");
+	size_t idstart = value.find("id:");
+
+	String caption(value.substr(0, wstart));
+	caption = caption.substr(caption.find_first_of(":") + 1);
+
+	String width(value.substr(wstart, idstart));
+	width = width.substr(width.find_first_of(":") + 1);
+
+	String id(value.substr(idstart));
+	id = id.substr(id.find_first_of(":") + 1);
+
+	static_cast<MultiColumnList*>(receiver)->addColumn(
+		caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToFloat(width));
+}
+
+
+String RowCount::get(const PropertyReceiver* receiver) const
+{
+	return PropertyHelper::uintToString(static_cast<const MultiColumnList*>(receiver)->getRowCount());
+}
+
+
+void RowCount::set(PropertyReceiver* receiver, const String& value)
+{
+	// property is read only.
+	Logger::getSingleton().logEvent(
+		"Attempt to set read only property 'RowCount' on MultiColumnListbox '" + 
+		static_cast<const MultiColumnList*>(receiver)->getName() + "'.", Errors);
+}
+
 
 } // End of  MultiColumnListProperties namespace section
 

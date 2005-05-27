@@ -306,7 +306,52 @@ public:
 };
 
 
+/*!
+\brief
+	Property to access a column.
 
+	\par Usage:
+		- Name: ColumnHeader
+		- Format: "text:[caption] width:[float] id:[uint]"
+
+	\par where:
+		- [caption] is the column header caption text.
+		- [float] is the width of the column.
+		- [uint] is the unique ID for the column.
+*/
+class ColumnHeader : public Property
+{
+public:
+	ColumnHeader() : Property(
+		"ColumnHeader",
+		"Property to set up a column (there is no getter for this property)",
+		"")
+	{}
+
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+	Property to access the number of rows in the list (read-only)
+
+	\par Usage:
+		- Name: RowCount
+		- Format: "" (property is read-only).
+*/
+class RowCount : public Property
+{
+public:
+	RowCount() : Property(
+		"RowCount",
+		"Property to access the number of rows in the list (read only)",
+		"")
+	{}
+
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
+};
 
 
 } // End of  MultiColumnListProperties namespace section
