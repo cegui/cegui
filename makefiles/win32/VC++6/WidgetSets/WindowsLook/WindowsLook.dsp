@@ -152,6 +152,14 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLListHeaderSegment.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenubar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenuItem.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLModule.cpp
 # End Source File
 # Begin Source File
@@ -161,6 +169,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLMultiColumnList.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLMultiLineEditbox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLPopupMenu.cpp
 # End Source File
 # Begin Source File
 
@@ -201,6 +213,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabControl.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabPane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\src\WLTextItem.cpp
 # End Source File
 # Begin Source File
 
@@ -272,6 +288,14 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLListHeaderSegment.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenubar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenuItem.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLModule.h
 # End Source File
 # Begin Source File
@@ -281,6 +305,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLMultiColumnList.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLMultiLineEditbox.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLPopupMenu.h
 # End Source File
 # Begin Source File
 
@@ -321,6 +349,10 @@ SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabControl.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\WindowsLook\include\WLTextItem.h
 # End Source File
 # Begin Source File
 
