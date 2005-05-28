@@ -63,12 +63,12 @@ Each item in here has a comment to describe what it's for.
 #define CEGUI_ALIGN_ELEMENTS_TO_PIXELS 1
 
 //////////////////////////////////////////////////////////////////////////
-// The following are intended for MSVC++ users.
+// The following are intended for MSVC++ and X-Code users.
 // 
 // The Linux build can both auto-configure itself, and also take
 // configure parameters which control the settings presented below.
 //////////////////////////////////////////////////////////////////////////
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__APPLE__)
 
 //////////////////////////////////////////////////////////////////////////
 // Comment this line if you wish to remove the Xerces-C++ dependency.
@@ -78,12 +78,12 @@ Each item in here has a comment to describe what it's for.
 
 //////////////////////////////////////////////////////////////////////////
 // Comment/Uncomment these lines to control renderer use in samples where
-// MSVC is used (since it can't auto-detect things for itself).
+// MSVC/XCode are used (since they don't auto-detect such things).
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_SAMPLES_USE_OPENGL
 //#define CEGUI_SAMPLES_USE_OGRE
 //#define CEGUI_SAMPLES_USE_IRRLICHT
 
-#endif // defined(_MSC_VER)
+#endif // defined(_MSC_VER) || defined(__APPLE__)
 
 #endif	// end of guard _CEGUIConfig_h_

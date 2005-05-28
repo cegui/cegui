@@ -97,17 +97,17 @@
 			sourceTree = "<group>";
 		};
 		089C1667FE841158C02AAC07 = {
+			expectedFileType = text.plist.strings;
 			fileEncoding = 10;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.strings;
 			name = English;
 			path = English.lproj/InfoPlist.strings;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		08FB77AAFE841565C02AAC07 = {
+			expectedFileType = wrapper.framework;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = Carbon.framework;
 			path = /System/Library/Frameworks/Carbon.framework;
 			refType = 0;
@@ -138,9 +138,9 @@
 //323
 //324
 		32BAE0B70371A74B00C91783 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			path = CrazyEddiesGUI_Prefix.pch;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
@@ -195,9 +195,9 @@
 //5B3
 //5B4
 		5B088AC10724AED100E1FF63 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRefPtr.cpp;
 			path = ../../../../src/CEGUIRefPtr.cpp;
 			refType = 2;
@@ -210,9 +210,9 @@
 			};
 		};
 		5B088AC50724AEEC00E1FF63 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRefPtr.h;
 			path = ../../../../include/CEGUIRefPtr.h;
 			refType = 2;
@@ -228,8 +228,8 @@
 			};
 		};
 		5B088AD30724B07400E1FF63 = {
+			expectedFileType = file;
 			isa = PBXFileReference;
-			lastKnownFileType = "compiled.mach-o.dylib";
 			name = libfreetype.dylib;
 			path = /usr/X11R6/lib/libfreetype.dylib;
 			refType = 0;
@@ -242,18 +242,18 @@
 			};
 		};
 		5B157B1307B7E3D1000E78CF = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISpinner.cpp;
 			path = ../../../../src/elements/CEGUISpinner.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B157B1407B7E3D1000E78CF = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISpinnerProperties.cpp;
 			path = ../../../../src/elements/CEGUISpinnerProperties.cpp;
 			refType = 2;
@@ -272,18 +272,18 @@
 			};
 		};
 		5B157B1907B7E3E6000E78CF = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISpinner.h;
 			path = ../../../../include/elements/CEGUISpinner.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B157B1A07B7E3E6000E78CF = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISpinnerProperties.h;
 			path = ../../../../include/elements/CEGUISpinnerProperties.h;
 			refType = 2;
@@ -302,9 +302,9 @@
 			};
 		};
 		5B157B1F07B7E406000E78CF = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLSpinner.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLSpinner.cpp;
 			refType = 2;
@@ -317,9 +317,9 @@
 			};
 		};
 		5B157B2307B7E41D000E78CF = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLSpinner.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLSpinner.h;
 			refType = 2;
@@ -332,9 +332,9 @@
 			};
 		};
 		5B157B2F07B7E4DF000E78CF = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLSpinner.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLSpinner.cpp;
 			refType = 2;
@@ -347,9 +347,9 @@
 			};
 		};
 		5B157B3507B7E509000E78CF = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLSpinner.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLSpinner.h;
 			refType = 2;
@@ -362,27 +362,27 @@
 			};
 		};
 		5B49ABAF0765FA4F00E684D3 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLTabButton.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLTabButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B49ABB00765FA4F00E684D3 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLTabControl.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLTabControl.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B49ABB10765FA4F00E684D3 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLTabPane.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLTabPane.cpp;
 			refType = 2;
@@ -407,27 +407,27 @@
 			};
 		};
 		5B49ABB90765FA7B00E684D3 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLTabButton.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLTabButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B49ABBA0765FA7B00E684D3 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLTabControl.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLTabControl.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B49ABBB0765FA7B00E684D3 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLTabPane.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLTabPane.h;
 			refType = 2;
@@ -452,9 +452,9 @@
 			};
 		};
 		5B49ABC30765FAB900E684D3 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIDefaultResourceProvider.cpp;
 			path = ../../../../src/CEGUIDefaultResourceProvider.cpp;
 			refType = 2;
@@ -467,27 +467,27 @@
 			};
 		};
 		5B49ABCB0765FADD00E684D3 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIDataContainer.h;
 			path = ../../../../include/CEGUIDataContainer.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B49ABCC0765FADD00E684D3 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIDefaultResourceProvider.h;
 			path = ../../../../include/CEGUIDefaultResourceProvider.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B49ABCD0765FADD00E684D3 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIResourceProvider.h;
 			path = ../../../../include/CEGUIResourceProvider.h;
 			refType = 2;
@@ -521,18 +521,18 @@
 			};
 		};
 		5B4A4940078D8E060078734B = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = openglrenderer.h;
 			path = ../../../../include/renderers/OpenGLGUIRenderer/openglrenderer.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4A4941078D8E060078734B = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = opengltexture.h;
 			path = ../../../../include/renderers/OpenGLGUIRenderer/opengltexture.h;
 			refType = 2;
@@ -628,7 +628,7 @@
 			productType = "com.apple.product-type.framework";
 		};
 		5B4A494B078D8E3C0078734B = {
-			explicitFileType = wrapper.framework;
+			expectedFileType = wrapper.framework;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = OpenGLRenderer.framework;
@@ -636,26 +636,25 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5B4A494C078D8E3C0078734B = {
+			expectedFileType = text.plist;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
-			name = "OpenGLRenderer-Info.plist";
-			path = "/Users/pauly/Projects/Frameworks/cegui/cegui_mk2/makefiles/mac/Xcode/CrazyEddiesGUI/OpenGLRenderer-Info.plist";
-			refType = 0;
-			sourceTree = "<absolute>";
+			path = "OpenGLRenderer-Info.plist";
+			refType = 4;
+			sourceTree = "<group>";
 		};
 		5B4A4950078D8EA00078734B = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = openglrenderer.cpp;
 			path = ../../../../src/renderers/OpenGLGUIRenderer/openglrenderer.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4A4951078D8EA00078734B = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = opengltexture.cpp;
 			path = ../../../../src/renderers/OpenGLGUIRenderer/opengltexture.cpp;
 			refType = 2;
@@ -704,8 +703,8 @@
 			targetProxy = 5B4A495C078D95240078734B;
 		};
 		5B4A4963078D96470078734B = {
+			expectedFileType = wrapper.framework;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = OpenGL.framework;
 			path = /System/Library/Frameworks/OpenGL.framework;
 			refType = 0;
@@ -730,54 +729,54 @@
 			};
 		};
 		5B4AD6E80777153C00FDB530 = {
+			expectedFileType = sourcecode.c.c;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
 			name = chartables.c;
 			path = ../../../../src/pcre/chartables.c;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6E90777153C00FDB530 = {
+			expectedFileType = sourcecode.c.c;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
 			name = get.c;
 			path = ../../../../src/pcre/get.c;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6EA0777153C00FDB530 = {
+			expectedFileType = sourcecode.c.c;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
 			name = maketables.c;
 			path = ../../../../src/pcre/maketables.c;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6EB0777153C00FDB530 = {
+			expectedFileType = sourcecode.c.c;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
 			name = pcre.c;
 			path = ../../../../src/pcre/pcre.c;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6EC0777153C00FDB530 = {
+			expectedFileType = sourcecode.c.c;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
 			name = pcreposix.c;
 			path = ../../../../src/pcre/pcreposix.c;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6ED0777153C00FDB530 = {
+			expectedFileType = sourcecode.c.c;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
 			name = study.c;
 			path = ../../../../src/pcre/study.c;
 			refType = 2;
@@ -849,45 +848,45 @@
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6FC077715A600FDB530 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = pcre.h;
 			path = ../../../../src/pcre/pcre.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6FD077715A600FDB530 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = pcreconfig.h;
 			path = ../../../../src/pcre/pcreconfig.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6FE077715A700FDB530 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = pcreposix.h;
 			path = ../../../../src/pcre/pcreposix.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD6FF077715A700FDB530 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = ucp.h;
 			path = ../../../../src/pcre/ucp.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B4AD700077715A700FDB530 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = ucpinternal.h;
 			path = ../../../../src/pcre/ucpinternal.h;
 			refType = 2;
@@ -924,18 +923,18 @@
 			};
 		};
 		5B53DFA007CA2DC700B950FC = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIDragContainer.cpp;
 			path = ../../../../src/elements/CEGUIDragContainer.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B53DFA107CA2DC800B950FC = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIDragContainerProperties.cpp;
 			path = ../../../../src/elements/CEGUIDragContainerProperties.cpp;
 			refType = 2;
@@ -954,18 +953,18 @@
 			};
 		};
 		5B53DFAA07CA2DE500B950FC = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIDragContainer.h;
 			path = ../../../../include/elements/CEGUIDragContainer.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B53DFAB07CA2DE500B950FC = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIDragContainerProperties.h;
 			path = ../../../../include/elements/CEGUIDragContainerProperties.h;
 			refType = 2;
@@ -984,31 +983,31 @@
 			};
 		};
 		5B63B96407ECA1790024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIXMLAttributes.cpp;
 			path = ../../../../src/CEGUIXMLAttributes.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B96507ECA1790024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIXMLHandler.cpp;
 			path = ../../../../src/CEGUIXMLHandler.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B96607ECA1790024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIXMLParser.cpp;
-			path = /Users/pauly/Projects/Frameworks/cegui/head/src/CEGUIXMLParser.cpp;
-			refType = 0;
-			sourceTree = "<absolute>";
+			path = ../../../../src/CEGUIXMLParser.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
 		};
 		5B63B96707ECA1790024EC39 = {
 			fileRef = 5B63B96407ECA1790024EC39;
@@ -1023,27 +1022,27 @@
 			};
 		};
 		5B63B96C07ECA1B70024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIXMLAttributes.h;
 			path = ../../../../include/CEGUIXMLAttributes.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B96D07ECA1B70024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIXMLHandler.h;
 			path = ../../../../include/CEGUIXMLHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B96E07ECA1B70024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIXMLParser.h;
 			path = ../../../../include/CEGUIXMLParser.h;
 			refType = 2;
@@ -1074,63 +1073,63 @@
 			};
 		};
 		5B63B97607ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIPushButtonProperties.cpp;
 			path = ../../../../src/elements/CEGUIPushButtonProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B97707ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScrollablePane.cpp;
 			path = ../../../../src/elements/CEGUIScrollablePane.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B97807ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScrollablePaneProperties.cpp;
 			path = ../../../../src/elements/CEGUIScrollablePaneProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B97907ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScrolledContainer.cpp;
 			path = ../../../../src/elements/CEGUIScrolledContainer.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B97A07ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScrolledContainerProperties.cpp;
 			path = ../../../../src/elements/CEGUIScrolledContainerProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B97B07ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITooltip.cpp;
 			path = ../../../../src/elements/CEGUITooltip.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B97C07ECA2010024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITooltipProperties.cpp;
 			path = ../../../../src/elements/CEGUITooltipProperties.cpp;
 			refType = 2;
@@ -1179,63 +1178,63 @@
 			};
 		};
 		5B63B98807ECA2300024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIPushButtonProperties.h;
 			path = ../../../../include/elements/CEGUIPushButtonProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B98907ECA2300024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScrollablePane.h;
 			path = ../../../../include/elements/CEGUIScrollablePane.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B98A07ECA2310024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScrollablePaneProperties.h;
 			path = ../../../../include/elements/CEGUIScrollablePaneProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B98B07ECA2310024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScrolledContainer.h;
 			path = ../../../../include/elements/CEGUIScrolledContainer.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B98C07ECA2310024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScrolledContainerProperties.h;
 			path = ../../../../include/elements/CEGUIScrolledContainerProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B98D07ECA2310024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITooltip.h;
 			path = ../../../../include/elements/CEGUITooltip.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B63B98E07ECA2310024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITooltipProperties.h;
 			path = ../../../../include/elements/CEGUITooltipProperties.h;
 			refType = 2;
@@ -1284,9 +1283,9 @@
 			};
 		};
 		5B63B9A007ECA2C70024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLScrollablePane.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLScrollablePane.cpp;
 			refType = 2;
@@ -1299,9 +1298,9 @@
 			};
 		};
 		5B63B9AE07ECA35D0024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLScrollablePane.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLScrollablePane.h;
 			refType = 2;
@@ -1314,9 +1313,9 @@
 			};
 		};
 		5B63B9B407ECA38D0024EC39 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLScrollablePane.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLScrollablePane.cpp;
 			refType = 2;
@@ -1329,9 +1328,9 @@
 			};
 		};
 		5B63B9BA07ECA3AC0024EC39 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLScrollablePane.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLScrollablePane.h;
 			refType = 2;
@@ -1344,18 +1343,18 @@
 			};
 		};
 		5B78EBCA07173D1100DB5B0A = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIcolour.cpp;
 			path = ../../../../src/CEGUIcolour.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B78EBCB07173D1100DB5B0A = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIFactoryModule.cpp;
 			path = ../../../../src/CEGUIFactoryModule.cpp;
 			refType = 2;
@@ -1374,9 +1373,9 @@
 			};
 		};
 		5B78EBD307173D5D00DB5B0A = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIGUISheet.cpp;
 			path = ../../../../src/elements/CEGUIGUISheet.cpp;
 			refType = 2;
@@ -1389,18 +1388,18 @@
 			};
 		};
 		5B78EBD707173D8500DB5B0A = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIcolour.h;
 			path = ../../../../include/CEGUIcolour.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B78EBD807173D8500DB5B0A = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIConfig.h;
 			path = ../../../../include/CEGUIConfig.h;
 			refType = 2;
@@ -1431,9 +1430,9 @@
 			};
 		};
 		5B78EC830717B9EF00DB5B0A = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = "CEGUITaharezLook-Info.plist";
 			refType = 4;
 			sourceTree = "<group>";
@@ -1451,9 +1450,9 @@
 			};
 		};
 		5B78EC8A0717BA6600DB5B0A = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = "CEGUIWindowsLook-Info.plist";
 			refType = 4;
 			sourceTree = "<group>";
@@ -1564,9 +1563,12 @@
 				5B7CDA83070DD2DE00FE8C88,
 				5B7CDA84070DD2DE00FE8C88,
 				5B7CDA85070DD2DE00FE8C88,
+				DA19FEB60848BCF800029120,
+				DA19FEB70848BCF800029120,
 				5B7CDA86070DD2DE00FE8C88,
 				5B7CDA87070DD2DE00FE8C88,
 				5B7CDA88070DD2DE00FE8C88,
+				DA19FEB80848BCF800029120,
 				5B7CDA89070DD2DE00FE8C88,
 				5B7CDA8A070DD2DE00FE8C88,
 				5B63B9B407ECA38D0024EC39,
@@ -1577,6 +1579,7 @@
 				5B49ABAF0765FA4F00E684D3,
 				5B49ABB00765FA4F00E684D3,
 				5B49ABB10765FA4F00E684D3,
+				DA19FEB90848BCF800029120,
 				5B7CDA8E070DD2DE00FE8C88,
 				5BE85E1E07F70D4700368B80,
 				5B7CDA8F070DD2DE00FE8C88,
@@ -1601,9 +1604,12 @@
 				5B7CDAB1070DD2F400FE8C88,
 				5B7CDAB2070DD2F400FE8C88,
 				5B7CDAB3070DD2F400FE8C88,
+				DA19FEC80848BD5F00029120,
+				DA19FEC90848BD5F00029120,
 				5B7CDAB4070DD2F400FE8C88,
 				5B7CDAB5070DD2F400FE8C88,
 				5B7CDAB6070DD2F400FE8C88,
+				DA19FECA0848BD5F00029120,
 				5B7CDAB7070DD2F400FE8C88,
 				5B7CDAB8070DD2F400FE8C88,
 				5B63B9BA07ECA3AC0024EC39,
@@ -1614,6 +1620,7 @@
 				5B49ABB90765FA7B00E684D3,
 				5B49ABBA0765FA7B00E684D3,
 				5B49ABBB0765FA7B00E684D3,
+				DA19FECB0848BD5F00029120,
 				5B7CDABC070DD2F400FE8C88,
 				5BE85E2207F70D5E00368B80,
 				5B7CDABD070DD2F400FE8C88,
@@ -1989,11 +1996,23 @@
 				5B63B98207ECA2010024EC39,
 				5B63B98307ECA2010024EC39,
 				5BE8614907F710A000368B80,
-				5BE8615107F7145C00368B80,
 				5BE8615207F7145D00368B80,
 				5BE8615307F7145E00368B80,
 				5BE8615407F7145E00368B80,
 				5BE8615507F7145F00368B80,
+				DA0F95AF084898A8008920E7,
+				DA0F95B0084898A8008920E7,
+				DA0F95B1084898A8008920E7,
+				DA0F95B2084898A8008920E7,
+				DA0F95B3084898A8008920E7,
+				DA0F95B4084898A8008920E7,
+				DA0F95B5084898A8008920E7,
+				DA0F95B6084898A8008920E7,
+				DA0F95B7084898A8008920E7,
+				DA0F95B8084898A8008920E7,
+				DA0F95B9084898A8008920E7,
+				DA0F95BA084898A8008920E7,
+				DA0F95D208489A47008920E7,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2074,7 +2093,7 @@
 			productType = "com.apple.product-type.framework";
 		};
 		5B7CD83B070DD05B00FE8C88 = {
-			explicitFileType = wrapper.framework;
+			expectedFileType = wrapper.framework;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = CEGUI.framework;
@@ -2082,15 +2101,15 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5B7CD83C070DD05B00FE8C88 = {
+			expectedFileType = text.plist;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = "CEGUIBase-Info.plist";
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD845070DD09100FE8C88 = {
+			expectedFileType = text.plist;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = "OgreGUIRenderer-Info.plist";
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
@@ -2243,7 +2262,7 @@
 			productType = "com.apple.product-type.bundle";
 		};
 		5B7CD84C070DD0A100FE8C88 = {
-			explicitFileType = wrapper.cfbundle;
+			expectedFileType = wrapper.cfbundle;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = CEGUITaharezLook.bundle;
@@ -2319,6 +2338,10 @@
 				5B157B3007B7E4DF000E78CF,
 				5B63B9B507ECA38D0024EC39,
 				5BE85E1F07F70D4700368B80,
+				DA19FEBA0848BCF800029120,
+				DA19FEBB0848BCF800029120,
+				DA19FEBC0848BCF800029120,
+				DA19FEBD0848BCF800029120,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2389,7 +2412,7 @@
 			productType = "com.apple.product-type.bundle";
 		};
 		5B7CD854070DD0AD00FE8C88 = {
-			explicitFileType = wrapper.cfbundle;
+			expectedFileType = wrapper.cfbundle;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = CEGUIWindowsLook.bundle;
@@ -2397,386 +2420,386 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5B7CD858070DD0FE00FE8C88 = {
+			expectedFileType = file;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = Xerces.framework;
 			path = /Library/Frameworks/Xerces.framework;
 			refType = 0;
 			sourceTree = "<absolute>";
 		};
 		5B7CD868070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIBase.cpp;
 			path = ../../../../src/CEGUIBase.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD86A070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIColourRect.cpp;
 			path = ../../../../src/CEGUIColourRect.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD86B070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIConfig_xmlHandler.cpp;
 			path = ../../../../src/CEGUIConfig_xmlHandler.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD86C070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEvent.cpp;
 			path = ../../../../src/CEGUIEvent.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD86D070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEventArgs.cpp;
 			path = ../../../../src/CEGUIEventArgs.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD86E070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEventSet.cpp;
 			path = ../../../../src/CEGUIEventSet.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD86F070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEventSignal.cpp;
 			path = ../../../../src/CEGUIEventSignal.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD870070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEventSignalSet.cpp;
 			path = ../../../../src/CEGUIEventSignalSet.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD871070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIExceptions.cpp;
 			path = ../../../../src/CEGUIExceptions.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD872070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIFont_xmlHandler.cpp;
 			path = ../../../../src/CEGUIFont_xmlHandler.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD873070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIFont.cpp;
 			path = ../../../../src/CEGUIFont.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD874070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIFontManager.cpp;
 			path = ../../../../src/CEGUIFontManager.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD875070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIGUILayout_xmlHandler.cpp;
 			path = ../../../../src/CEGUIGUILayout_xmlHandler.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD876070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIImage.cpp;
 			path = ../../../../src/CEGUIImage.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD877070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIImageset_xmlHandler.cpp;
 			path = ../../../../src/CEGUIImageset_xmlHandler.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD878070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIImageset.cpp;
 			path = ../../../../src/CEGUIImageset.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD879070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIImagesetManager.cpp;
 			path = ../../../../src/CEGUIImagesetManager.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD87A070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUILogger.cpp;
 			path = ../../../../src/CEGUILogger.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD87B070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIMouseCursor.cpp;
 			path = ../../../../src/CEGUIMouseCursor.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD87C070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIProperty.cpp;
 			path = ../../../../src/CEGUIProperty.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD87D070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIPropertyHelper.cpp;
 			path = ../../../../src/CEGUIPropertyHelper.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD87E070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIPropertySet.cpp;
 			path = ../../../../src/CEGUIPropertySet.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD87F070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRect.cpp;
 			path = ../../../../src/CEGUIRect.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD880070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRenderableElement.cpp;
 			path = ../../../../src/CEGUIRenderableElement.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD881070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRenderableFrame.cpp;
 			path = ../../../../src/CEGUIRenderableFrame.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD882070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRenderableImage.cpp;
 			path = ../../../../src/CEGUIRenderableImage.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD883070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRenderer.cpp;
 			path = ../../../../src/CEGUIRenderer.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD884070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScheme_xmlHandler.cpp;
 			path = ../../../../src/CEGUIScheme_xmlHandler.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD885070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScheme.cpp;
 			path = ../../../../src/CEGUIScheme.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD886070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISchemeManager.cpp;
 			path = ../../../../src/CEGUISchemeManager.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD887070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScriptModule.cpp;
 			path = ../../../../src/CEGUIScriptModule.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD888070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISize.cpp;
 			path = ../../../../src/CEGUISize.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD889070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIString.cpp;
 			path = ../../../../src/CEGUIString.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD88A070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISystem.cpp;
 			path = ../../../../src/CEGUISystem.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD88B070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITexture.cpp;
 			path = ../../../../src/CEGUITexture.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD88C070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITextUtils.cpp;
 			path = ../../../../src/CEGUITextUtils.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD88D070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIVector.cpp;
 			path = ../../../../src/CEGUIVector.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD88E070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIWindow.cpp;
 			path = ../../../../src/CEGUIWindow.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD88F070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIWindowFactory.cpp;
 			path = ../../../../src/CEGUIWindowFactory.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD890070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIWindowFactoryManager.cpp;
 			path = ../../../../src/CEGUIWindowFactoryManager.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD891070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIWindowManager.cpp;
 			path = ../../../../src/CEGUIWindowManager.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD892070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIWindowProperties.cpp;
 			path = ../../../../src/CEGUIWindowProperties.cpp;
 			refType = 2;
@@ -2798,6 +2821,9 @@
 				5B7CD89E070DD19000FE8C88,
 				5B7CD89F070DD19000FE8C88,
 				5B78EBD307173D5D00DB5B0A,
+				DA0F95A3084898A7008920E7,
+				DA0F95A4084898A7008920E7,
+				DA0F95A5084898A7008920E7,
 				5B7CD8A0070DD19000FE8C88,
 				5B7CD8A1070DD19000FE8C88,
 				5B7CD8A2070DD19000FE8C88,
@@ -2806,10 +2832,17 @@
 				5B7CD8A5070DD19000FE8C88,
 				5B7CD8A6070DD19000FE8C88,
 				5B7CD8A7070DD19000FE8C88,
+				DA0F95A6084898A7008920E7,
+				DA0F95A7084898A7008920E7,
+				DA0F95A8084898A7008920E7,
+				DA0F95A9084898A7008920E7,
+				DA0F95AA084898A7008920E7,
 				5B7CD8A8070DD19000FE8C88,
 				5B7CD8A9070DD19000FE8C88,
 				5B7CD8AA070DD19000FE8C88,
 				5B7CD8AB070DD19000FE8C88,
+				DA0F95AB084898A7008920E7,
+				DA0F95AC084898A8008920E7,
 				5B7CD8AC070DD19000FE8C88,
 				5B7CD8AD070DD19000FE8C88,
 				5B7CD8AE070DD19000FE8C88,
@@ -2835,6 +2868,8 @@
 				5B7CD8BB070DD19000FE8C88,
 				5B7CD8BC070DD19000FE8C88,
 				5B7CD8BD070DD19000FE8C88,
+				DA0F95AD084898A8008920E7,
+				DA0F95AE084898A8008920E7,
 				5B7CD8BE070DD19000FE8C88,
 				5B7CD8BF070DD19000FE8C88,
 				5B7CD8C0070DD19000FE8C88,
@@ -2849,405 +2884,405 @@
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD895070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIButtonBase.cpp;
 			path = ../../../../src/elements/CEGUIButtonBase.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD896070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIButtonBaseProperties.cpp;
 			path = ../../../../src/elements/CEGUIButtonBaseProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD897070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUICheckbox.cpp;
 			path = ../../../../src/elements/CEGUICheckbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD898070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUICheckboxProperties.cpp;
 			path = ../../../../src/elements/CEGUICheckboxProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD899070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUICombobox.cpp;
 			path = ../../../../src/elements/CEGUICombobox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD89A070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIComboboxProperties.cpp;
 			path = ../../../../src/elements/CEGUIComboboxProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD89B070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIComboDropList.cpp;
 			path = ../../../../src/elements/CEGUIComboDropList.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD89C070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEditbox.cpp;
 			path = ../../../../src/elements/CEGUIEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD89D070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIEditboxProperties.cpp;
 			path = ../../../../src/elements/CEGUIEditboxProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD89E070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIFrameWindow.cpp;
 			path = ../../../../src/elements/CEGUIFrameWindow.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD89F070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIFrameWindowProperties.cpp;
 			path = ../../../../src/elements/CEGUIFrameWindowProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A0070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListbox.cpp;
 			path = ../../../../src/elements/CEGUIListbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A1070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListboxItem.cpp;
 			path = ../../../../src/elements/CEGUIListboxItem.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A2070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListboxProperties.cpp;
 			path = ../../../../src/elements/CEGUIListboxProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A3070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListboxTextItem.cpp;
 			path = ../../../../src/elements/CEGUIListboxTextItem.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A4070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListHeader.cpp;
 			path = ../../../../src/elements/CEGUIListHeader.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A5070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListHeaderProperties.cpp;
 			path = ../../../../src/elements/CEGUIListHeaderProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A6070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListHeaderSegment.cpp;
 			path = ../../../../src/elements/CEGUIListHeaderSegment.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A7070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIListHeaderSegmentProperties.cpp;
 			path = ../../../../src/elements/CEGUIListHeaderSegmentProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A8070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIMultiColumnList.cpp;
 			path = ../../../../src/elements/CEGUIMultiColumnList.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8A9070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIMultiColumnListProperties.cpp;
 			path = ../../../../src/elements/CEGUIMultiColumnListProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8AA070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIMultiLineEditbox.cpp;
 			path = ../../../../src/elements/CEGUIMultiLineEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8AB070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIMultiLineEditboxProperties.cpp;
 			path = ../../../../src/elements/CEGUIMultiLineEditboxProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8AC070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIProgressBar.cpp;
 			path = ../../../../src/elements/CEGUIProgressBar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8AD070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIProgressBarProperties.cpp;
 			path = ../../../../src/elements/CEGUIProgressBarProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8AE070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIPushButton.cpp;
 			path = ../../../../src/elements/CEGUIPushButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8AF070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRadioButton.cpp;
 			path = ../../../../src/elements/CEGUIRadioButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B0070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIRadioButtonProperties.cpp;
 			path = ../../../../src/elements/CEGUIRadioButtonProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B1070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScrollbar.cpp;
 			path = ../../../../src/elements/CEGUIScrollbar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B2070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIScrollbarProperties.cpp;
 			path = ../../../../src/elements/CEGUIScrollbarProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B3070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISlider.cpp;
 			path = ../../../../src/elements/CEGUISlider.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B4070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUISliderProperties.cpp;
 			path = ../../../../src/elements/CEGUISliderProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B5070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIStatic.cpp;
 			path = ../../../../src/elements/CEGUIStatic.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B6070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIStaticImage.cpp;
 			path = ../../../../src/elements/CEGUIStaticImage.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B7070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIStaticImageProperties.cpp;
 			path = ../../../../src/elements/CEGUIStaticImageProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B8070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIStaticProperties.cpp;
 			path = ../../../../src/elements/CEGUIStaticProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8B9070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIStaticText.cpp;
 			path = ../../../../src/elements/CEGUIStaticText.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8BA070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIStaticTextProperties.cpp;
 			path = ../../../../src/elements/CEGUIStaticTextProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8BB070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITabButton.cpp;
 			path = ../../../../src/elements/CEGUITabButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8BC070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITabControl.cpp;
 			path = ../../../../src/elements/CEGUITabControl.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8BD070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITabControlProperties.cpp;
 			path = ../../../../src/elements/CEGUITabControlProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8BE070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIThumb.cpp;
 			path = ../../../../src/elements/CEGUIThumb.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8BF070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIThumbProperties.cpp;
 			path = ../../../../src/elements/CEGUIThumbProperties.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8C0070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITitlebar.cpp;
 			path = ../../../../src/elements/CEGUITitlebar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD8C1070DD19000FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITitlebarProperties.cpp;
 			path = ../../../../src/elements/CEGUITitlebarProperties.cpp;
 			refType = 2;
@@ -3776,432 +3811,432 @@
 			};
 		};
 		5B7CD91D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUI.h;
 			path = ../../../../include/CEGUI.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD91E070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIBase.h;
 			path = ../../../../include/CEGUIBase.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD920070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIColourRect.h;
 			path = ../../../../include/CEGUIColourRect.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD921070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIConfig_xmlHandler.h;
 			path = ../../../../include/CEGUIConfig_xmlHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD922070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIEvent.h;
 			path = ../../../../include/CEGUIEvent.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD923070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIEventArgs.h;
 			path = ../../../../include/CEGUIEventArgs.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD924070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIEventSet.h;
 			path = ../../../../include/CEGUIEventSet.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD925070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIExceptions.h;
 			path = ../../../../include/CEGUIExceptions.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD926070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFactoryModule.h;
 			path = ../../../../include/CEGUIFactoryModule.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD927070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFont_implData.h;
 			path = ../../../../include/CEGUIFont_implData.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD928070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFont_xmlHandler.h;
 			path = ../../../../include/CEGUIFont_xmlHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD929070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFont.h;
 			path = ../../../../include/CEGUIFont.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD92A070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFontManager_implData.h;
 			path = ../../../../include/CEGUIFontManager_implData.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD92B070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFontManager.h;
 			path = ../../../../include/CEGUIFontManager.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD92C070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIForwardRefs.h;
 			path = ../../../../include/CEGUIForwardRefs.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD92D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIGUILayout_xmlHandler.h;
 			path = ../../../../include/CEGUIGUILayout_xmlHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD92E070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIImage.h;
 			path = ../../../../include/CEGUIImage.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD92F070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIImageset_xmlHandler.h;
 			path = ../../../../include/CEGUIImageset_xmlHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD930070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIImageset.h;
 			path = ../../../../include/CEGUIImageset.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD931070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIImagesetManager.h;
 			path = ../../../../include/CEGUIImagesetManager.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD932070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIInputEvent.h;
 			path = ../../../../include/CEGUIInputEvent.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD933070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIIteratorBase.h;
 			path = ../../../../include/CEGUIIteratorBase.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD934070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUILogger.h;
 			path = ../../../../include/CEGUILogger.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD935070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIMouseCursor.h;
 			path = ../../../../include/CEGUIMouseCursor.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD936070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIProperty.h;
 			path = ../../../../include/CEGUIProperty.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD937070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIPropertyHelper.h;
 			path = ../../../../include/CEGUIPropertyHelper.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD938070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIPropertySet.h;
 			path = ../../../../include/CEGUIPropertySet.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD939070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRect.h;
 			path = ../../../../include/CEGUIRect.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD93A070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRenderableElement.h;
 			path = ../../../../include/CEGUIRenderableElement.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD93B070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRenderableFrame.h;
 			path = ../../../../include/CEGUIRenderableFrame.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD93C070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRenderableImage.h;
 			path = ../../../../include/CEGUIRenderableImage.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD93D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRenderer.h;
 			path = ../../../../include/CEGUIRenderer.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD93E070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScheme_xmlHandler.h;
 			path = ../../../../include/CEGUIScheme_xmlHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD93F070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScheme.h;
 			path = ../../../../include/CEGUIScheme.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD940070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISchemeManager.h;
 			path = ../../../../include/CEGUISchemeManager.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD941070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScriptModule.h;
 			path = ../../../../include/CEGUIScriptModule.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD942070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISingleton.h;
 			path = ../../../../include/CEGUISingleton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD943070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISize.h;
 			path = ../../../../include/CEGUISize.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD944070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIString.h;
 			path = ../../../../include/CEGUIString.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD945070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISystem.h;
 			path = ../../../../include/CEGUISystem.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD946070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITexture.h;
 			path = ../../../../include/CEGUITexture.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD947070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITextUtils.h;
 			path = ../../../../include/CEGUITextUtils.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD948070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIVector.h;
 			path = ../../../../include/CEGUIVector.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD949070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIWindow.h;
 			path = ../../../../include/CEGUIWindow.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD94A070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIWindowFactory.h;
 			path = ../../../../include/CEGUIWindowFactory.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD94B070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIWindowFactoryManager.h;
 			path = ../../../../include/CEGUIWindowFactoryManager.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD94C070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIWindowManager.h;
 			path = ../../../../include/CEGUIWindowManager.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD94D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIWindowProperties.h;
 			path = ../../../../include/CEGUIWindowProperties.h;
 			refType = 2;
@@ -4223,6 +4258,9 @@
 				5B7CD959070DD1EF00FE8C88,
 				5B7CD95A070DD1EF00FE8C88,
 				5B7CD95B070DD1EF00FE8C88,
+				DA0F95BF08489930008920E7,
+				DA0F95C008489930008920E7,
+				DA0F95C108489930008920E7,
 				5B7CD95C070DD1EF00FE8C88,
 				5B7CD95D070DD1EF00FE8C88,
 				5B7CD95E070DD1EF00FE8C88,
@@ -4231,10 +4269,17 @@
 				5B7CD961070DD1EF00FE8C88,
 				5B7CD962070DD1EF00FE8C88,
 				5B7CD963070DD1EF00FE8C88,
+				DA0F95C208489930008920E7,
+				DA0F95C308489930008920E7,
+				DA0F95C408489930008920E7,
+				DA0F95C508489930008920E7,
+				DA0F95C608489930008920E7,
 				5B7CD964070DD1EF00FE8C88,
 				5B7CD965070DD1EF00FE8C88,
 				5B7CD966070DD1EF00FE8C88,
 				5B7CD967070DD1EF00FE8C88,
+				DA0F95C708489930008920E7,
+				DA0F95C808489930008920E7,
 				5B7CD968070DD1EF00FE8C88,
 				5B7CD969070DD1EF00FE8C88,
 				5B7CD96A070DD1EF00FE8C88,
@@ -4261,6 +4306,8 @@
 				5B7CD978070DD1EF00FE8C88,
 				5B7CD979070DD1EF00FE8C88,
 				5B7CD97A070DD1EF00FE8C88,
+				DA0F95C908489930008920E7,
+				DA0F95CA08489930008920E7,
 				5B7CD97B070DD1EF00FE8C88,
 				5B7CD97C070DD1EF00FE8C88,
 				5B7CD97D070DD1EF00FE8C88,
@@ -4275,423 +4322,423 @@
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD950070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIButtonBase.h;
 			path = ../../../../include/elements/CEGUIButtonBase.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD951070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIButtonBaseProperties.h;
 			path = ../../../../include/elements/CEGUIButtonBaseProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD952070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUICheckbox.h;
 			path = ../../../../include/elements/CEGUICheckbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD953070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUICheckboxProperties.h;
 			path = ../../../../include/elements/CEGUICheckboxProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD954070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUICombobox.h;
 			path = ../../../../include/elements/CEGUICombobox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD955070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIComboboxProperties.h;
 			path = ../../../../include/elements/CEGUIComboboxProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD956070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIComboDropList.h;
 			path = ../../../../include/elements/CEGUIComboDropList.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD957070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIEditbox.h;
 			path = ../../../../include/elements/CEGUIEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD958070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIEditboxProperties.h;
 			path = ../../../../include/elements/CEGUIEditboxProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD959070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFrameWindow.h;
 			path = ../../../../include/elements/CEGUIFrameWindow.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD95A070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIFrameWindowProperties.h;
 			path = ../../../../include/elements/CEGUIFrameWindowProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD95B070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIGUISheet.h;
 			path = ../../../../include/elements/CEGUIGUISheet.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD95C070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListbox.h;
 			path = ../../../../include/elements/CEGUIListbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD95D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListboxItem.h;
 			path = ../../../../include/elements/CEGUIListboxItem.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD95E070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListboxProperties.h;
 			path = ../../../../include/elements/CEGUIListboxProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD95F070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListboxTextItem.h;
 			path = ../../../../include/elements/CEGUIListboxTextItem.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD960070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListHeader.h;
 			path = ../../../../include/elements/CEGUIListHeader.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD961070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListHeaderProperties.h;
 			path = ../../../../include/elements/CEGUIListHeaderProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD962070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListHeaderSegment.h;
 			path = ../../../../include/elements/CEGUIListHeaderSegment.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD963070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIListHeaderSegmentProperties.h;
 			path = ../../../../include/elements/CEGUIListHeaderSegmentProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD964070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIMultiColumnList.h;
 			path = ../../../../include/elements/CEGUIMultiColumnList.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD965070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIMultiColumnListProperties.h;
 			path = ../../../../include/elements/CEGUIMultiColumnListProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD966070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIMultiLineEditbox.h;
 			path = ../../../../include/elements/CEGUIMultiLineEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD967070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIMultiLineEditboxProperties.h;
 			path = ../../../../include/elements/CEGUIMultiLineEditboxProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD968070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIProgressBar.h;
 			path = ../../../../include/elements/CEGUIProgressBar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD969070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIProgressBarProperties.h;
 			path = ../../../../include/elements/CEGUIProgressBarProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD96A070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIPushButton.h;
 			path = ../../../../include/elements/CEGUIPushButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD96B070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRadioButton.h;
 			path = ../../../../include/elements/CEGUIRadioButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD96C070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIRadioButtonProperties.h;
 			path = ../../../../include/elements/CEGUIRadioButtonProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD96D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScrollbar.h;
 			path = ../../../../include/elements/CEGUIScrollbar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD96E070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIScrollbarProperties.h;
 			path = ../../../../include/elements/CEGUIScrollbarProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD96F070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISlider.h;
 			path = ../../../../include/elements/CEGUISlider.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD970070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUISliderProperties.h;
 			path = ../../../../include/elements/CEGUISliderProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD971070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIStatic.h;
 			path = ../../../../include/elements/CEGUIStatic.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD972070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIStaticImage.h;
 			path = ../../../../include/elements/CEGUIStaticImage.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD973070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIStaticImageProperties.h;
 			path = ../../../../include/elements/CEGUIStaticImageProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD974070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIStaticProperties.h;
 			path = ../../../../include/elements/CEGUIStaticProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD975070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIStaticText.h;
 			path = ../../../../include/elements/CEGUIStaticText.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD976070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIStaticTextProperties.h;
 			path = ../../../../include/elements/CEGUIStaticTextProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD977070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITabButton.h;
 			path = ../../../../include/elements/CEGUITabButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD978070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITabControl.h;
 			path = ../../../../include/elements/CEGUITabControl.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD979070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITabControlProperties.h;
 			path = ../../../../include/elements/CEGUITabControlProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD97A070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITabPane.h;
 			path = ../../../../include/elements/CEGUITabPane.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD97B070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIThumb.h;
 			path = ../../../../include/elements/CEGUIThumb.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD97C070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIThumbProperties.h;
 			path = ../../../../include/elements/CEGUIThumbProperties.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD97D070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITitlebar.h;
 			path = ../../../../include/elements/CEGUITitlebar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD97E070DD1EF00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUITitlebarProperties.h;
 			path = ../../../../include/elements/CEGUITitlebarProperties.h;
 			refType = 2;
@@ -5471,270 +5518,270 @@
 			sourceTree = "<group>";
 		};
 		5B7CD9FE070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLAlternateProgressBar.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLAlternateProgressBar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CD9FF070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLButton.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA01070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLCheckbox.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLCheckbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA02070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLCloseButton.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLCloseButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA03070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLCombobox.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLCombobox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA04070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLComboDropList.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLComboDropList.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA05070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLComboEditbox.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLComboEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA06070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLEditbox.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA07070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLFrameWindow.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLFrameWindow.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA08070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLListbox.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLListbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA09070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLListHeader.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLListHeader.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA0A070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLListHeaderSegment.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLListHeaderSegment.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA0B070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLMiniHorzScrollbar.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLMiniHorzScrollbar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA0C070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLMiniHorzScrollbarThumb.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLMiniHorzScrollbarThumb.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA0D070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLMiniVertScrollbar.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLMiniVertScrollbar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA0E070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLMiniVertScrollbarThumb.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLMiniVertScrollbarThumb.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA0F070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLModule.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLModule.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA10070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLMultiColumnList.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLMultiColumnList.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA11070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLMultiLineEditbox.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLMultiLineEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA12070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLProgressBar.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLProgressBar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA13070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLRadioButton.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLRadioButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA14070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLSlider.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLSlider.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA15070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLSliderThumb.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLSliderThumb.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA16070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLStatic.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLStatic.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA17070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLTabButton.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLTabButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA18070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLTabControl.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLTabControl.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA19070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLTabPane.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLTabPane.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA1A070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLTitlebar.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLTitlebar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA1B070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLVertScrollbar.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLVertScrollbar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA1C070DD2AB00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLVertScrollbarThumb.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLVertScrollbarThumb.cpp;
 			refType = 2;
@@ -5921,270 +5968,270 @@
 			};
 		};
 		5B7CDA3C070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLAlternateProgressBar.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLAlternateProgressBar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA3D070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLButton.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA3F070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLCheckbox.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLCheckbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA40070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLCloseButton.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLCloseButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA41070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLCombobox.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLCombobox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA42070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLComboDropList.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLComboDropList.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA43070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLComboEditbox.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLComboEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA44070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLEditbox.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA45070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLFrameWindow.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLFrameWindow.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA46070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLListbox.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLListbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA47070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLListHeader.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLListHeader.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA48070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLListHeaderSegment.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLListHeaderSegment.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA49070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLMiniHorzScrollbar.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLMiniHorzScrollbar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA4A070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLMiniHorzScrollbarThumb.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLMiniHorzScrollbarThumb.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA4B070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLMiniVertScrollbar.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLMiniVertScrollbar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA4C070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLMiniVertScrollbarThumb.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLMiniVertScrollbarThumb.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA4D070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLModule.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLModule.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA4E070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLMultiColumnList.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLMultiColumnList.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA4F070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLMultiLineEditbox.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLMultiLineEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA50070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLProgressBar.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLProgressBar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA51070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLRadioButton.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLRadioButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA52070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLSlider.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLSlider.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA53070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLSliderThumb.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLSliderThumb.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA54070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLStatic.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLStatic.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA55070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLTabButton.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLTabButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA56070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLTabControl.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLTabControl.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA57070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLTabPane.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLTabPane.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA58070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLTitlebar.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLTitlebar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA59070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLVertScrollbar.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLVertScrollbar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA5A070DD2C500FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLVertScrollbarThumb.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLVertScrollbarThumb.h;
 			refType = 2;
@@ -6371,207 +6418,207 @@
 			};
 		};
 		5B7CDA7A070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLButton.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA7B070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLCheckbox.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLCheckbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA7C070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLCloseButton.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLCloseButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA7D070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLCombobox.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLCombobox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA7E070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLComboDropList.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLComboDropList.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA7F070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLEditbox.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA80070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLFrameWindow.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLFrameWindow.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA81070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLHorzScrollbar.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLHorzScrollbar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA82070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLHorzScrollbarThumb.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLHorzScrollbarThumb.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA83070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLListbox.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLListbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA84070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLListHeader.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLListHeader.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA85070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLListHeaderSegment.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLListHeaderSegment.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA86070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLModule.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLModule.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA87070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLMultiColumnList.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLMultiColumnList.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA88070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLMultiLineEditbox.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLMultiLineEditbox.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA89070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLProgressBar.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLProgressBar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA8A070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLRadioButton.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLRadioButton.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA8B070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLSlider.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLSlider.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA8C070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLSliderThumb.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLSliderThumb.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA8D070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLStatic.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLStatic.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA8E070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLTitlebar.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLTitlebar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA8F070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLVertScrollbar.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLVertScrollbar.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDA90070DD2DE00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLVertScrollbarThumb.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLVertScrollbarThumb.cpp;
 			refType = 2;
@@ -6716,207 +6763,207 @@
 			};
 		};
 		5B7CDAA8070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLButton.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAA9070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLCheckbox.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLCheckbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAAA070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLCloseButton.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLCloseButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAAB070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLCombobox.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLCombobox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAAC070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLComboDropList.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLComboDropList.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAAD070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLEditbox.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAAE070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLFrameWindow.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLFrameWindow.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAAF070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLHorzScrollbar.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLHorzScrollbar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB0070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLHorzScrollbarThumb.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLHorzScrollbarThumb.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB1070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLListbox.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLListbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB2070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLListHeader.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLListHeader.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB3070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLListHeaderSegment.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLListHeaderSegment.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB4070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLModule.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLModule.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB5070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLMultiColumnList.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLMultiColumnList.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB6070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLMultiLineEditbox.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLMultiLineEditbox.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB7070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLProgressBar.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLProgressBar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB8070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLRadioButton.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLRadioButton.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAB9070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLSlider.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLSlider.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDABA070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLSliderThumb.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLSliderThumb.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDABB070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLStatic.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLStatic.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDABC070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLTitlebar.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLTitlebar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDABD070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLVertScrollbar.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLVertScrollbar.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDABE070DD2F400FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLVertScrollbarThumb.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLVertScrollbarThumb.h;
 			refType = 2;
@@ -7061,18 +7108,18 @@
 			};
 		};
 		5B7CDAE1070DD68B00FE8C88 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = macPlugins.cpp;
 			path = ../../../../src/implementations/mac/macPlugins.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5B7CDAE2070DD68B00FE8C88 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = macPlugins.h;
 			path = ../../../../src/implementations/mac/macPlugins.h;
 			refType = 2;
@@ -7170,27 +7217,28 @@
 			shellScript = "INCDEST=elements\n\nmkdir -p \"$BUILD_ROOT/$PUBLIC_HEADERS_FOLDER_PATH/$INCDEST\"\n/Developer/Tools/pbxcp -V -exclude CVS ../../../../include/$INCDEST/*.h \"$BUILD_ROOT/$PUBLIC_HEADERS_FOLDER_PATH/$INCDEST/\"";
 		};
 		5BE85DEE07F70C0D00368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUITinyXMLParser.cpp;
 			path = ../../../../src/CEGUITinyXMLParser.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5BE85DEF07F70C0D00368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIXercesParser.cpp;
-			path = /Users/pauly/Projects/Frameworks/cegui/head/src/CEGUIXercesParser.cpp;
-			refType = 0;
-			sourceTree = "<absolute>";
+			path = ../../../../src/CEGUIXercesParser.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
 		};
 		5BE85DF607F70C2000368B80 = {
 			children = (
 				5BE85DEE07F70C0D00368B80,
 				5BE85DEF07F70C0D00368B80,
+				DA0F95D108489A47008920E7,
 				5BE85DFD07F70C6800368B80,
 				5BE85DFF07F70C6800368B80,
 				5BE85E0107F70C6800368B80,
@@ -7202,54 +7250,54 @@
 			sourceTree = "<group>";
 		};
 		5BE85DFD07F70C6800368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = tinystr.cpp;
 			path = ../../../../src/tinyxml/tinystr.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5BE85DFE07F70C6800368B80 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = tinystr.h;
 			path = ../../../../src/tinyxml/tinystr.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5BE85DFF07F70C6800368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = tinyxml.cpp;
 			path = ../../../../src/tinyxml/tinyxml.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5BE85E0007F70C6800368B80 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = tinyxml.h;
 			path = ../../../../src/tinyxml/tinyxml.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5BE85E0107F70C6800368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = tinyxmlerror.cpp;
 			path = ../../../../src/tinyxml/tinyxmlerror.cpp;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		5BE85E0207F70C6800368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = tinyxmlparser.cpp;
 			path = ../../../../src/tinyxml/tinyxmlparser.cpp;
 			refType = 2;
@@ -7278,9 +7326,9 @@
 			sourceTree = "<group>";
 		};
 		5BE85E1407F70D0900368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLTooltip.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLTooltip.cpp;
 			refType = 2;
@@ -7293,9 +7341,9 @@
 			};
 		};
 		5BE85E1A07F70D2700368B80 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLTooltip.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLTooltip.h;
 			refType = 2;
@@ -7308,9 +7356,9 @@
 			};
 		};
 		5BE85E1E07F70D4700368B80 = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = WLTooltip.cpp;
 			path = ../../../../WidgetSets/WindowsLook/src/WLTooltip.cpp;
 			refType = 2;
@@ -7323,9 +7371,9 @@
 			};
 		};
 		5BE85E2207F70D5E00368B80 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = WLTooltip.h;
 			path = ../../../../WidgetSets/WindowsLook/include/WLTooltip.h;
 			refType = 2;
@@ -7387,8 +7435,8 @@
 				5B7CD891070DD19000FE8C88,
 				5B7CD892070DD19000FE8C88,
 				5B63B96407ECA1790024EC39,
-				5B63B96607ECA1790024EC39,
 				5B63B96507ECA1790024EC39,
+				5B63B96607ECA1790024EC39,
 			);
 			isa = PBXGroup;
 			name = base;
@@ -7468,12 +7516,6 @@
 			settings = {
 			};
 		};
-		5BE8615107F7145C00368B80 = {
-			fileRef = 5BE85DEE07F70C0D00368B80;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		5BE8615207F7145D00368B80 = {
 			fileRef = 5BE85DFD07F70C6800368B80;
 			isa = PBXBuildFile;
@@ -7499,9 +7541,9 @@
 			};
 		};
 		5BFAC14A07A1A80400F13D4C = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = TLVUMeter.cpp;
 			path = ../../../../WidgetSets/TaharezLook/src/TLVUMeter.cpp;
 			refType = 2;
@@ -7514,9 +7556,9 @@
 			};
 		};
 		5BFAC14E07A1A81D00F13D4C = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = TLVUMeter.h;
 			path = ../../../../WidgetSets/TaharezLook/include/TLVUMeter.h;
 			refType = 2;
@@ -7529,9 +7571,9 @@
 			};
 		};
 		5BFAC15607A1A86500F13D4C = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = CEGUIGlobalEventSet.h;
 			path = ../../../../include/CEGUIGlobalEventSet.h;
 			refType = 2;
@@ -7547,9 +7589,9 @@
 			};
 		};
 		5BFAC15C07A1A89700F13D4C = {
+			expectedFileType = sourcecode.cpp.cpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.cpp;
 			name = CEGUIGlobalEventSet.cpp;
 			path = ../../../../src/CEGUIGlobalEventSet.cpp;
 			refType = 2;
@@ -7560,6 +7602,403 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+//5B0
+//5B1
+//5B2
+//5B3
+//5B4
+//DA0
+//DA1
+//DA2
+//DA3
+//DA4
+		DA0F95A3084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIItemEntry.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95A4084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIItemListBase.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95A5084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIItemListBaseProperties.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95A6084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIMenubar.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95A7084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIMenuBase.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95A8084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIMenuBaseProperties.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95A9084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIMenuItem.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95AA084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIMenuItemProperties.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95AB084898A7008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIPopupMenu.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95AC084898A8008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUIPopupMenuProperties.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95AD084898A8008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUITextItem.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95AE084898A8008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = CEGUITextItemProperties.cpp;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		DA0F95AF084898A8008920E7 = {
+			fileRef = DA0F95A3084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B0084898A8008920E7 = {
+			fileRef = DA0F95A4084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B1084898A8008920E7 = {
+			fileRef = DA0F95A5084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B2084898A8008920E7 = {
+			fileRef = DA0F95A6084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B3084898A8008920E7 = {
+			fileRef = DA0F95A7084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B4084898A8008920E7 = {
+			fileRef = DA0F95A8084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B5084898A8008920E7 = {
+			fileRef = DA0F95A9084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B6084898A8008920E7 = {
+			fileRef = DA0F95AA084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B7084898A8008920E7 = {
+			fileRef = DA0F95AB084898A7008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B8084898A8008920E7 = {
+			fileRef = DA0F95AC084898A8008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95B9084898A8008920E7 = {
+			fileRef = DA0F95AD084898A8008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95BA084898A8008920E7 = {
+			fileRef = DA0F95AE084898A8008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA0F95BF08489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIItemEntry.h;
+			path = ../../../../include/elements/CEGUIItemEntry.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C008489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIItemListBase.h;
+			path = ../../../../include/elements/CEGUIItemListBase.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C108489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIItemListBaseProperties.h;
+			path = ../../../../include/elements/CEGUIItemListBaseProperties.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C208489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIMenubar.h;
+			path = ../../../../include/elements/CEGUIMenubar.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C308489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIMenuBase.h;
+			path = ../../../../include/elements/CEGUIMenuBase.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C408489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIMenuBaseProperties.h;
+			path = ../../../../include/elements/CEGUIMenuBaseProperties.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C508489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIMenuItem.h;
+			path = ../../../../include/elements/CEGUIMenuItem.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C608489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIMenuItemProperties.h;
+			path = ../../../../include/elements/CEGUIMenuItemProperties.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C708489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIPopupMenu.h;
+			path = ../../../../include/elements/CEGUIPopupMenu.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C808489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIPopupMenuProperties.h;
+			path = ../../../../include/elements/CEGUIPopupMenuProperties.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95C908489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUITextItem.h;
+			path = ../../../../include/elements/CEGUITextItem.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95CA08489930008920E7 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUITextItemProperties.h;
+			path = ../../../../include/elements/CEGUITextItemProperties.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95D108489A47008920E7 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = CEGUIWin32XMLSelectHack.cpp;
+			path = ../../../../src/CEGUIWin32XMLSelectHack.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA0F95D208489A47008920E7 = {
+			fileRef = DA0F95D108489A47008920E7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA19FEB60848BCF800029120 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLMenubar.cpp;
+			path = ../../../../WidgetSets/WindowsLook/src/WLMenubar.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FEB70848BCF800029120 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLMenuItem.cpp;
+			path = ../../../../WidgetSets/WindowsLook/src/WLMenuItem.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FEB80848BCF800029120 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLPopupMenu.cpp;
+			path = ../../../../WidgetSets/WindowsLook/src/WLPopupMenu.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FEB90848BCF800029120 = {
+			expectedFileType = sourcecode.cpp.cpp;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLTextItem.cpp;
+			path = ../../../../WidgetSets/WindowsLook/src/WLTextItem.cpp;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FEBA0848BCF800029120 = {
+			fileRef = DA19FEB60848BCF800029120;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA19FEBB0848BCF800029120 = {
+			fileRef = DA19FEB70848BCF800029120;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA19FEBC0848BCF800029120 = {
+			fileRef = DA19FEB80848BCF800029120;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA19FEBD0848BCF800029120 = {
+			fileRef = DA19FEB90848BCF800029120;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		DA19FEC80848BD5F00029120 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLMenubar.h;
+			path = ../../../../WidgetSets/WindowsLook/include/WLMenubar.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FEC90848BD5F00029120 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLMenuItem.h;
+			path = ../../../../WidgetSets/WindowsLook/include/WLMenuItem.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FECA0848BD5F00029120 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLPopupMenu.h;
+			path = ../../../../WidgetSets/WindowsLook/include/WLPopupMenu.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA19FECB0848BD5F00029120 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = WLTextItem.h;
+			path = ../../../../WidgetSets/WindowsLook/include/WLTextItem.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
 		};
 	};
 	rootObject = 0867D690FE84028FC02AAC07;

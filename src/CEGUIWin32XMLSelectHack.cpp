@@ -30,10 +30,12 @@
 #include "CEGUIConfig.h"
 
 #ifdef CEGUI_WITH_XERCES
-#   if defined (DEBUG) || defined (_DEBUG)
-#      pragma comment(lib,"xerces-c_2D.lib")
-#   else
-#      pragma comment(lib,"xerces-c_2.lib")
+#   if defined (_MSC_VER)
+#       if defined (DEBUG) || defined (_DEBUG)
+#           pragma comment(lib,"xerces-c_2D.lib")
+#       else
+#           pragma comment(lib,"xerces-c_2.lib")
+#       endif
 #   endif
 #   include "CEGUIXercesParser.cpp"
 #else
