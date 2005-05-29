@@ -1101,7 +1101,7 @@ public:
 	\return
 		true if this window was inherited from \a class_name. false if not.
 	*/
-	bool testClassName(const String& class_name)		{return testClassName_impl(class_name);}
+	bool testClassName(const String& class_name) const		{return testClassName_impl(class_name);}
 
     /*************************************************************************
 		Manipulator functions
