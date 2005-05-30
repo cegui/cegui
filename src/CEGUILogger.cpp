@@ -80,7 +80,7 @@ void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */
 
 		time_t	et;
 		time(&et);
-		tm* etm = gmtime(&et);
+		tm* etm = localtime(&et);
 
 		if (etm != NULL)
 		{
