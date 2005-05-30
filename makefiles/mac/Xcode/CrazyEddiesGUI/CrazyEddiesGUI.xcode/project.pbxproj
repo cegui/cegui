@@ -1647,7 +1647,7 @@
 				GCC_WARN_UNUSED_LABEL = NO;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
-				HEADER_SEARCH_PATHS = "../../../../src/implementations/mac ../../../../include /usr/X11R6/include/freetype2 /Library/Frameworks/Xerces.framework/Headers /usr/local/include /usr/include/malloc";
+				HEADER_SEARCH_PATHS = "../../../../src/implementations/mac ../../../../include /usr/X11R6/include /usr/X11R6/include/freetype2 /Library/Frameworks/Xerces.framework/Headers /usr/local/include /usr/include/malloc";
 				INFOPLIST_FILE = "CEGUIBase-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = "/usr/X11R6/lib /sw/lib";
