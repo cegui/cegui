@@ -46,6 +46,9 @@ CEGUI_ENABLE_OPENGL_RENDERER
 CEGUI_ENABLE_OGRE_RENDERER
 CEGUI_ENABLE_IRRLICHT_RENDERER
 
+# decide whether to use gtk dialog in samples
+CEGUI_CHECK_GTK_FOR_SAMPLES
+
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library ver sion
 CEGUI_CURRENT=0

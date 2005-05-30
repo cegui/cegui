@@ -5,11 +5,15 @@ lib_LTLIBRARIES=libCEGUISampleHelper.la
 libCEGUISampleHelper_la_SOURCES = CEGuiRendererSelector.cpp \
                                   CEGuiSample.cpp \
                                   CLICEGuiRendererSelector.cpp
-##                                GTK2CEGuiRendererSelector.cpp
 
 libCEGUISampleHelper_la_LIBADD =
 libCEGUISampleHelper_la_LDFLAGS =
 
+if CEGUI_USING_GTK2
+    INCLUDES += $(GTK_CFLAGS)
+    libCEGUISampleHelper_la_LIBADD += $(GTK_LIBS)
+    libCEGUISampleHelper_la_SOURCES += GTK2CEGuiRendererSelector.cpp
+endif
 if CEGUI_SAMPLES_USE_OGRE
     INCLUDES += $(CEGUIOGRE_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiOgreBaseApplication.cpp

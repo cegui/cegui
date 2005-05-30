@@ -1,3 +1,20 @@
+AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
+    PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4, [cegui_found_gtk=yes], [cegui_found_gtk=no])
+    AC_ARG_WITH([gtk2], AC_HELP_STRING([--with-gtk2], [Enables the use of a GTK2 based dialog to select a renderer in the samples]),
+                [cegui_with_gtk=$withval], [cegui_with_gtk=no])
+
+    if test x$cegui_found_gtk = xyes && test x$cegui_with_gtk = xyes; then
+        AC_DEFINE(CEGUI_SAMPLES_USE_GTK2, [], [Define to have a GTK2 based dialog used for renderer selection in the samples])
+        AC_MSG_NOTICE([GTK2 renderer selection dialog in samples is enabled])
+    else        
+        AC_MSG_NOTICE([GTK2 renderer selection dialog in samples is disabled])
+    fi
+
+    AM_CONDITIONAL([CEGUI_USING_GTK2], [test x$cegui_found_gtk = xyes && test x$cegui_with_gtk = xyes])
+    AC_SUBST(GTK_CFLAGS)
+    AC_SUBST(GTK_LIBS)
+])
+
 AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     AC_ARG_WITH([xerces-c], AC_HELP_STRING([--without-xerces-c], [Disables the use of the external Xerces-C++ XML Parser (will use embedded TinyXML instead)]),
                 [cegui_with_xerces=$withval], [cegui_with_xerces=yes])
