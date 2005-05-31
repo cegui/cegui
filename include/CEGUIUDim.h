@@ -138,6 +138,9 @@ namespace CEGUI
             d_max = d_min + sz;
         }
 
+        void setWidth(const UDim& w)        { d_max.d_x = d_min.d_x + w; }
+        void setHeight(const UDim& h)       { d_max.d_y = d_min.d_y + h; }
+
         void offset(const UVector2& sz)
         {
             d_min += sz;

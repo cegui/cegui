@@ -222,7 +222,7 @@ void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 	}
 
 	// install new width values.
-	setWidth(Absolute, prefWidth);
+    d_area.setWidth(UDim(0,prefWidth));
 
 	// base class processing.
 	Thumb::onSized(e);

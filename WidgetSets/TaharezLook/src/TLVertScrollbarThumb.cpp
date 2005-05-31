@@ -123,7 +123,7 @@ void TLVertScrollbarThumb::onSized(WindowEventArgs& e)
 	// changes, we modify the height in relation to the width (since that is
 	// known, but the height is not).
 	float ratio = getAbsoluteWidth() / d_normalImage->getWidth();
-	setHeight(Absolute, d_normalImage->getHeight() * ratio);
+    d_area.setHeight(UDim(0, d_normalImage->getHeight() * ratio));
 
 	// base class processing.
 	Thumb::onSized(e);

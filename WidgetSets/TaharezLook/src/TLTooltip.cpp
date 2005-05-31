@@ -114,7 +114,7 @@ namespace CEGUI
         sz.d_width += PixelAligned(d_left_width + d_right_width);
         sz.d_height += PixelAligned(d_top_height + d_bottom_height);
 
-        setSize(Absolute, sz);
+        d_area.setSize(UVector2(UDim(0,sz.d_width), UDim(0,sz.d_height)));
 
         // TODO: Fix size constraints
 //        d_abs_area.constrainSize(d_maxSize, d_minSize);
