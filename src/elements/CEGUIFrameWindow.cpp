@@ -193,8 +193,8 @@ void FrameWindow::toggleRollup(void)
 		else
 		{
 			// store original sizes for window
-			d_abs_openSize = d_abs_area.getSize();
-			d_rel_openSize = d_rel_area.getSize();
+			d_abs_openSize = getAbsoluteSize();
+			d_rel_openSize = getRelativeSize();
 
 			// get the current size of the title bar (if any)
 			Size titleSize;
@@ -203,15 +203,17 @@ void FrameWindow::toggleRollup(void)
 				titleSize = d_titlebar->getSize();
 			}
 
-			// work-around minimum size setting
-			Size orgmin(d_minSize);
-			d_minSize.d_width = d_minSize.d_height = 0;
+            // TODO: Fix this
+
+// 			// work-around minimum size setting
+// 			Size orgmin(d_minSize);
+// 			d_minSize.d_width = d_minSize.d_height = 0;
 
 			// set size of this window to 0x0, since the title/close controls are not clipped by us, they will still be visible
 			setSize(Size(0.0f, 0.0f));
 
 			// restore original min size;
-			d_minSize = orgmin;
+// 			d_minSize = orgmin;
 
 			// re-set the size of the title bar
 			if (d_titlebar != NULL)
@@ -264,14 +266,12 @@ void FrameWindow::setTitlebarFont(Font* font)
 void FrameWindow::offsetPixelPosition(const Vector2& offset)
 {
 	// update window state
-	Point pos = d_abs_area.getPosition();
+	Point pos = getAbsolutePosition();
 
 	pos.d_x += PixelAligned(offset.d_x);
 	pos.d_y += PixelAligned(offset.d_y);
 
-	d_abs_area.setPosition(pos);
-
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+	setPosition(Absolute, pos);
 
     WindowEventArgs args(this);
 	onMoved(args);
@@ -356,20 +356,19 @@ void FrameWindow::moveLeftEdge(float delta)
 {
 	delta = PixelAligned(delta);
 
-	float width = d_abs_area.getWidth();
+	float width = getAbsoluteWidth();
 
-	// limit size to within max/min values
-	if ((width - delta) < d_minSize.d_width) {
-		delta = width - d_minSize.d_width;
-	}
-	else if ((width - delta) > d_maxSize.d_width) {
-		delta = width - d_maxSize.d_width;
-	}
+    // TODO: Fix constraints
+// 	// limit size to within max/min values
+// 	if ((width - delta) < d_minSize.d_width) {
+// 		delta = width - d_minSize.d_width;
+// 	}
+// 	else if ((width - delta) > d_maxSize.d_width) {
+// 		delta = width - d_maxSize.d_width;
+// 	}
 
 	// update window state
-	d_abs_area.d_left += delta;
-
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+    setXPosition(Absolute, getAbsoluteXPosition() + delta);
 
     WindowEventArgs args(this);
 	onMoved(args);
@@ -385,21 +384,20 @@ void FrameWindow::moveRightEdge(float delta)
 {
 	delta = PixelAligned(delta);
 
-	float width = d_abs_area.getWidth();
+	float width = getAbsoluteWidth();
 
-	// limit size to within max/min values
-	if ((width + delta) < d_minSize.d_width) {
-		delta = d_minSize.d_width - width;
-	}
-	else if ((width + delta) > d_maxSize.d_width) {
-		delta = d_maxSize.d_width - width;
-	}
+    // TODO: Fix constraints
+// 	// limit size to within max/min values
+// 	if ((width + delta) < d_minSize.d_width) {
+// 		delta = d_minSize.d_width - width;
+// 	}
+// 	else if ((width + delta) > d_maxSize.d_width) {
+// 		delta = d_maxSize.d_width - width;
+// 	}
 
 	// update window state
-	d_abs_area.d_right += delta;
+    d_area.d_max.d_x.d_offset += delta;
 	d_dragPoint.d_x += delta;
-
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
     WindowEventArgs args(this);
 	onSized(args);
@@ -414,20 +412,19 @@ void FrameWindow::moveTopEdge(float delta)
 {
 	delta = PixelAligned(delta);
 
-	float height = d_abs_area.getHeight();
+	float height = getAbsoluteHeight();
 
-	// limit size to within max/min values
-	if ((height - delta) < d_minSize.d_height) {
-		delta = height - d_minSize.d_height;
-	}
-	else if ((height - delta) > d_maxSize.d_height) {
-		delta = height - d_maxSize.d_height;
-	}
+    // TODO: Fix constraints
+// 	// limit size to within max/min values
+// 	if ((height - delta) < d_minSize.d_height) {
+// 		delta = height - d_minSize.d_height;
+// 	}
+// 	else if ((height - delta) > d_maxSize.d_height) {
+// 		delta = height - d_maxSize.d_height;
+// 	}
 
 	// update window state
-	d_abs_area.d_top += delta;
-
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+	d_area.d_min.d_y.d_offset += delta;
 
     WindowEventArgs args(this);
 	onMoved(args);
@@ -443,21 +440,20 @@ void FrameWindow::moveBottomEdge(float delta)
 {
 	delta = PixelAligned(delta);
 
-	float height = d_abs_area.getHeight();
+	float height = getAbsoluteHeight();
 
-	// limit size to within max/min values
-	if ((height + delta) < d_minSize.d_height) {
-		delta = d_minSize.d_height - height;
-	}
-	else if ((height + delta) > d_maxSize.d_height) {
-		delta = d_maxSize.d_height - height;
-	}
+    // TODO: Fix constraints
+// 	// limit size to within max/min values
+// 	if ((height + delta) < d_minSize.d_height) {
+// 		delta = d_minSize.d_height - height;
+// 	}
+// 	else if ((height + delta) > d_maxSize.d_height) {
+// 		delta = d_maxSize.d_height - height;
+// 	}
 
 	// update window state
-	d_abs_area.d_bottom += delta;
+    d_area.d_max.d_y.d_offset += delta;
 	d_dragPoint.d_y += delta;
-
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
 
     WindowEventArgs args(this);
 	onSized(args);
@@ -687,13 +683,12 @@ void FrameWindow::onSized(WindowEventArgs& e)
 	if (isRolledup())
 	{
 		// capture changed size(s)
-		d_rel_openSize = d_rel_area.getSize();
-		d_abs_openSize = d_abs_area.getSize();
+		d_rel_openSize = getRelativeSize();
+		d_abs_openSize = getAbsoluteSize();
 
 		// re-set window size to 0x0
 		Size nullsz(0,0);
-		d_abs_area.setSize(nullsz);
-		d_rel_area.setSize(nullsz);
+		setSize(nullsz);
 	}
 
 	layoutComponentWidgets();
@@ -712,8 +707,7 @@ void FrameWindow::onParentSized(WindowEventArgs& e)
 	// that the required calculations can occur when our parent is sized.
 	if (isRolledup() && (getMetricsMode() == Relative))
 	{
-		d_rel_area.setSize(d_rel_openSize);
-		d_abs_area.setSize(d_abs_openSize);
+		setSize(Absolute, d_abs_openSize);
 	}
 
 	Window::onParentSized(e);

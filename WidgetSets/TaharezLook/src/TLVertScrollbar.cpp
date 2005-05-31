@@ -173,7 +173,7 @@ void TLVertScrollbar::layoutComponentWidgets(void)
 {
 	// calculate button sizes
 	Size bsz;
-	bsz.d_width = d_abs_area.getWidth() * ButtonWidth;
+	bsz.d_width = getAbsoluteWidth() * ButtonWidth;
 
 	float ratio = bsz.d_width / d_upNormal->getWidth();
 
@@ -186,7 +186,7 @@ void TLVertScrollbar::layoutComponentWidgets(void)
 	// position buttons
 	float ySpacing = d_containerTop->getHeight() * ButtonOffsetYRatio;
 	d_decrease->setPosition(Point(ButtonPositionX, absoluteToRelativeY(ySpacing)));
-	d_increase->setPosition(Point(ButtonPositionX, absoluteToRelativeY(d_abs_area.getHeight() - bsz.d_height - ySpacing)));
+	d_increase->setPosition(Point(ButtonPositionX, absoluteToRelativeY(getAbsoluteHeight() - bsz.d_height - ySpacing)));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -204,7 +204,7 @@ void TLVertScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setVertRange(absoluteToRelativeY(slideTrackYPadding), absoluteToRelativeY(slideTrackYPadding + slideExtent));
@@ -223,7 +223,7 @@ float TLVertScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight();
+	float slideExtent	= getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight();
 
 	return	(d_thumb->getAbsoluteYPosition() - slideTrackYPadding) / (slideExtent / posExtent);
 }

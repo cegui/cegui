@@ -182,7 +182,7 @@ Thumb* WLVertScrollbar::createThumb(void) const
 void WLVertScrollbar::layoutComponentWidgets(void)
 {
 	Size bsz;
-	bsz.d_width = bsz.d_height = d_abs_area.getWidth() - d_frameLeftSize - d_frameRightSize;
+	bsz.d_width = bsz.d_height = getAbsoluteWidth() - d_frameLeftSize - d_frameRightSize;
 
 	// install button sizes
 	d_increase->setSize(absoluteToRelative(bsz));
@@ -190,7 +190,7 @@ void WLVertScrollbar::layoutComponentWidgets(void)
 
 	// position buttons
 	d_decrease->setPosition(absoluteToRelative(Point(d_frameLeftSize, d_frameTopSize)));
-	d_increase->setPosition(absoluteToRelative(Point(d_frameLeftSize, d_abs_area.getHeight() - bsz.d_height - d_frameBottomSize)));
+	d_increase->setPosition(absoluteToRelative(Point(d_frameLeftSize, getAbsoluteHeight() - bsz.d_height - d_frameBottomSize)));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -208,7 +208,7 @@ void WLVertScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding));
+	float slideExtent	= ceguimax(0.0f, getAbsoluteHeight() - (2 * slideTrackYPadding));
 	float thumbHeight	= (d_documentSize <= d_pageSize) ? slideExtent : slideExtent * d_pageSize / d_documentSize;
 	slideExtent -= thumbHeight;
 
@@ -235,7 +235,7 @@ float WLVertScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
 
 	return	(d_thumb->getAbsoluteYPosition() - slideTrackYPadding) / (slideExtent / posExtent);
 }

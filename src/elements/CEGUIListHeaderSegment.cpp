@@ -286,21 +286,20 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
 	// calculate sizing delta.
 	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
 
-	// limit size to within max/min values
-	float width = d_abs_area.getWidth();
-
-	if ((width + deltaX) < d_minSize.d_width) {
-		deltaX = d_minSize.d_width - width;
-	}
-	else if ((width + deltaX) > d_maxSize.d_width) {
-		deltaX = d_maxSize.d_width - width;
-	}
+    // TODO: Fix constraints
+// 	// limit size to within max/min values
+// 	float width = d_abs_area.getWidth();
+// 
+// 	if ((width + deltaX) < d_minSize.d_width) {
+// 		deltaX = d_minSize.d_width - width;
+// 	}
+// 	else if ((width + deltaX) > d_maxSize.d_width) {
+// 		deltaX = d_maxSize.d_width - width;
+// 	}
 
 	// update window state
-	d_abs_area.d_right += deltaX;
+	d_area.d_max.d_x.d_offset += deltaX;
 	d_dragPoint.d_x += deltaX;
-
-	d_rel_area.d_right = absoluteToRelativeX_impl(getParent(), d_abs_area.d_right);
 
 	WindowEventArgs args(this);
 	onSized(args);

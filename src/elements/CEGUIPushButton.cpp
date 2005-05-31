@@ -123,7 +123,7 @@ void PushButton::setCustomImageryAutoSized(bool setting)
     // if we are enabling auto-sizing, scale images for current size
     if (setting && setting != d_autoscaleImages)
     {
-        Rect area(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());
+        Rect area(0, 0, getAbsoluteWidth(), getAbsoluteHeight());
         d_normalImage.setRect(area);
         d_hoverImage.setRect(area);
         d_pushedImage.setRect(area);
@@ -141,7 +141,7 @@ void PushButton::setNormalImage(const RenderableImage* image)
     {
         d_useNormalImage = true;
         d_normalImage = *image;
-        d_normalImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+        d_normalImage.setRect(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
     }
     else
     {
@@ -157,7 +157,7 @@ void PushButton::setHoverImage(const RenderableImage* image)
     {
         d_useHoverImage = true;
         d_hoverImage = *image;
-        d_hoverImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+        d_hoverImage.setRect(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
     }
     else
     {
@@ -173,7 +173,7 @@ void PushButton::setPushedImage(const RenderableImage* image)
     {
         d_usePushedImage = true;
         d_pushedImage = *image;
-        d_pushedImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+        d_pushedImage.setRect(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
     }
     else
     {
@@ -189,7 +189,7 @@ void PushButton::setDisabledImage(const RenderableImage* image)
     {
         d_useDisabledImage = true;
         d_disabledImage = *image;
-        d_disabledImage.setRect(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+        d_disabledImage.setRect(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
     }
     else
     {
@@ -258,7 +258,7 @@ void PushButton::onSized(WindowEventArgs& e)
     // scale images if required.
     if (d_autoscaleImages)
     {
-        Rect area(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());
+        Rect area(0, 0, getAbsoluteWidth(), getAbsoluteHeight());
         d_normalImage.setRect(area);
         d_hoverImage.setRect(area);
         d_pushedImage.setRect(area);

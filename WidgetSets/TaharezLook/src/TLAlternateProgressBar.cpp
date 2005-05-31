@@ -110,7 +110,7 @@ void TLAlternateProgressBar::setupLightsInfo(void)
 	// work out how many lights we are going to have
 	//
 	float lightWidth = d_lightImages[0]->getWidth();
-	float availWidth = d_abs_area.getWidth() - PixelAligned((d_left->getWidth() * FirstLightPaddingRatio) * 2);
+	float availWidth = getAbsoluteWidth() - PixelAligned((d_left->getWidth() * FirstLightPaddingRatio) * 2);
 
 	d_lightCount = (int)(availWidth / (lightWidth + 1));
 	d_lightSpacing = lightWidth + PixelAligned((availWidth - (d_lightCount * lightWidth)) / d_lightCount);

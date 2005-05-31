@@ -76,9 +76,9 @@ namespace CEGUI
         // set desired size for horizontal scroll-bar
         Size h_sz(1.0f, 0.0f);
 
-        if (d_abs_area.getHeight() != 0.0f)
+        if (getAbsoluteHeight() != 0.0f)
         {
-            h_sz.d_height = (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight();
+            h_sz.d_height = (getAbsoluteWidth() * v_sz.d_width) / getAbsoluteHeight();
         }
 
         // adjust length to consider width of vertical scroll bar if that is visible

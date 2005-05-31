@@ -221,8 +221,7 @@ void TLMiniVertScrollbarThumb::onSized(WindowEventArgs& e)
 	}
 
 	// install new height values.
-	d_abs_area.setHeight(prefHeight);
-	d_rel_area.setHeight(absoluteToRelativeY_impl(getParent(), prefHeight));
+	setHeight(Absolute, prefHeight);
 
 	// base class processing.
 	Thumb::onSized(e);

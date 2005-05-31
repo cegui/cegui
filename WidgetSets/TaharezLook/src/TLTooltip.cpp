@@ -114,11 +114,10 @@ namespace CEGUI
         sz.d_width += PixelAligned(d_left_width + d_right_width);
         sz.d_height += PixelAligned(d_top_height + d_bottom_height);
 
-        d_abs_area.setSize(sz);
-        d_abs_area.constrainSize(d_maxSize, d_minSize);
+        setSize(Absolute, sz);
 
-        // update Rect for the other metrics system.
-        d_rel_area.setSize(absoluteToRelative_impl(d_parent, sz));
+        // TODO: Fix size constraints
+//        d_abs_area.constrainSize(d_maxSize, d_minSize);
 
         // update frame size.
         d_frame.setSize(sz);

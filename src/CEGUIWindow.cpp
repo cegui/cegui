@@ -189,8 +189,7 @@ Window::Window(const String& type, const String& name) :
     d_inheritsTipText = false;
 
 	// position and size
-	d_abs_area = Rect(0, 0, 0, 0);
-	d_rel_area = Rect(0, 0, 0, 0);
+    d_area = URect(UDim(0,0), UDim(0,0), UDim(0,0), UDim(0,0));
 
 	// add events
 	addStandardEvents();
@@ -492,15 +491,7 @@ float Window::getEffectiveAlpha(void) const
 *************************************************************************/
 Rect Window::getRect(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area;
-	}
-	else
-	{
-		return d_abs_area;
-	}
-
+    return (getMetricsMode() == Relative) ? getRelativeRect() : getAbsoluteRect();
 }
 
 
@@ -554,7 +545,7 @@ Rect Window::getUnclippedPixelRect(void) const
 	}
 	else
 	{
-		return windowToScreen(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+		return windowToScreen(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
 	}
 }
 
@@ -653,12 +644,7 @@ MetricsMode Window::getMetricsMode(void) const
 *************************************************************************/
 float Window::getXPosition(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.d_left;
-	}
-
-	return d_abs_area.d_left;
+    return (getMetricsMode() == Relative) ? getRelativeXPosition() : getAbsoluteXPosition();
 }
 
 
@@ -668,12 +654,7 @@ float Window::getXPosition(void) const
 *************************************************************************/
 float Window::getYPosition(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.d_top;
-	}
-
-	return d_abs_area.d_top;
+    return (getMetricsMode() == Relative) ? getRelativeYPosition() : getAbsoluteYPosition();
 }
 
 
@@ -683,12 +664,7 @@ float Window::getYPosition(void) const
 *************************************************************************/
 Point Window::getPosition(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getPosition();
-	}
-
-	return d_abs_area.getPosition();
+    return (getMetricsMode() == Relative) ? getRelativePosition() : getAbsolutePosition();
 }
 
 
@@ -698,12 +674,7 @@ Point Window::getPosition(void) const
 *************************************************************************/
 float Window::getWidth(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getWidth();
-	}
-
-	return d_abs_area.getWidth();
+    return (getMetricsMode() == Relative) ? getRelativeWidth() : getAbsoluteWidth();
 }
 
 
@@ -713,12 +684,7 @@ float Window::getWidth(void) const
 *************************************************************************/
 float Window::getHeight(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getHeight();
-	}
-
-	return d_abs_area.getHeight();
+    return (getMetricsMode() == Relative) ? getRelativeHeight() : getAbsoluteHeight();
 }
 
 
@@ -728,12 +694,7 @@ float Window::getHeight(void) const
 *************************************************************************/
 Size Window::getSize(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getSize();
-	}
-
-	return d_abs_area.getSize();
+    return (getMetricsMode() == Relative) ? getRelativeSize() : getAbsoluteSize();
 }
 
 
@@ -1394,7 +1355,7 @@ float Window::windowToScreenX(float x) const
 
 	while (wnd != NULL)
 	{
-		baseX += wnd->d_abs_area.d_left;
+        baseX += wnd->getAbsoluteXPosition();
 		wnd = wnd->d_parent;
 	}
 
@@ -1421,7 +1382,7 @@ float Window::windowToScreenY(float y) const
 
 	while (wnd != NULL)
 	{
-		baseY += wnd->d_abs_area.d_top;
+        baseY += wnd->getAbsoluteYPosition();
 		wnd = wnd->d_parent;
 	}
 
@@ -1448,8 +1409,8 @@ Point Window::windowToScreen(const Point& pt) const
 
 	while (wnd != NULL)
 	{
-		base.d_x += wnd->d_abs_area.d_left;
-		base.d_y += wnd->d_abs_area.d_top;
+        base.d_x += wnd->getAbsoluteXPosition();
+		base.d_y += wnd->getAbsoluteYPosition();
 		wnd = wnd->d_parent;
 	}
 
@@ -1473,7 +1434,7 @@ Size Window::windowToScreen(const Size& sze) const
 {
 	if (getMetricsMode() == Relative)
 	{
-		return Size(sze.d_width * d_abs_area.getWidth(), sze.d_height * d_abs_area.getHeight());
+		return Size(sze.d_width * getAbsoluteWidth(), sze.d_height * getAbsoluteHeight());
 	}
 	else
 	{
@@ -1494,8 +1455,8 @@ Rect Window::windowToScreen(const Rect& rect) const
 
 	while (wnd != NULL)
 	{
-		base.d_x += wnd->d_abs_area.d_left;
-		base.d_y += wnd->d_abs_area.d_top;
+		base.d_x += wnd->getAbsoluteXPosition();
+		base.d_y += wnd->getAbsoluteYPosition();
 		wnd = wnd->d_parent;
 	}
 
@@ -1522,7 +1483,7 @@ float Window::screenToWindowX(float x) const
 
 	if (getMetricsMode() == Relative)
 	{
-		x /= d_abs_area.getWidth();
+		x /= getAbsoluteWidth();
 	}
 
 	return x;
@@ -1539,7 +1500,7 @@ float Window::screenToWindowY(float y) const
 
 	if (getMetricsMode() == Relative)
 	{
-		y /= d_abs_area.getHeight();
+		y /= getAbsoluteHeight();
 	}
 
 	return y;
@@ -1559,8 +1520,8 @@ Point Window::screenToWindow(const Point& pt) const
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_x /= d_abs_area.getWidth();
-		tmp.d_y /= d_abs_area.getHeight();
+		tmp.d_x /= getAbsoluteWidth();
+		tmp.d_y /= getAbsoluteHeight();
 	}
 
 	return tmp;
@@ -1576,8 +1537,8 @@ Size Window::screenToWindow(const Size& sze) const
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_width		/= d_abs_area.getWidth();
-		tmp.d_height	/= d_abs_area.getHeight();
+		tmp.d_width		/= getAbsoluteWidth();
+		tmp.d_height	/= getAbsoluteHeight();
 	}
 
 	return tmp;
@@ -1599,10 +1560,10 @@ Rect Window::screenToWindow(const Rect& rect) const
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_left		/= d_abs_area.getWidth();
-		tmp.d_top		/= d_abs_area.getHeight();
-		tmp.d_right		/= d_abs_area.getWidth();
-		tmp.d_bottom	/= d_abs_area.getHeight();
+		tmp.d_left		/= getAbsoluteWidth();
+		tmp.d_top		/= getAbsoluteHeight();
+		tmp.d_right		/= getAbsoluteWidth();
+		tmp.d_bottom	/= getAbsoluteHeight();
 	}
 
 	return tmp;
@@ -1661,7 +1622,7 @@ float Window::getParentWidth(void) const
 		return System::getSingleton().getRenderer()->getWidth();
 	}
 
-	return d_parent->d_abs_area.getWidth();
+	return d_parent->getAbsoluteWidth();
 }
 
 
@@ -1676,7 +1637,7 @@ float Window::getParentHeight(void) const
 		return System::getSingleton().getRenderer()->getHeight();
 	}
 
-	return d_parent->d_abs_area.getHeight();
+	return d_parent->getAbsoluteHeight();
 }
 
 
@@ -2037,7 +1998,7 @@ Size Window::getWindowSize_impl(const Window* window) const
 	}
 	else
 	{
-		return window->d_abs_area.getSize();
+        return window->getAbsoluteSize();
 	}
 
 }
@@ -2050,12 +2011,12 @@ Size Window::getMaximumSize(void) const
 {
 	if (getMetricsMode() == Absolute)
 	{
-		return d_maxSize;
+        return d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()).asSize();
 	}
 	else
 	{
-		return absoluteToRelative_impl(NULL, d_maxSize);
-	}
+        return d_maxSize.asRelative(System::getSingleton().getRenderer()->getSize()).asSize();
+    }
 
 }
 
@@ -2066,13 +2027,13 @@ Size Window::getMaximumSize(void) const
 Size Window::getMinimumSize(void) const
 {
 	if (getMetricsMode() == Absolute)
-	{
-		return d_minSize;
-	}
-	else
-	{
-		return absoluteToRelative_impl(NULL, d_minSize);
-	}
+    {
+        return d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()).asSize();
+    }
+    else
+    {
+        return d_minSize.asRelative(System::getSingleton().getRenderer()->getSize()).asSize();
+    }
 
 }
 
@@ -2084,26 +2045,28 @@ void Window::setMinimumSize(const Size& sz)
 {
 	if (getMetricsMode() == Absolute)
 	{
-		d_minSize.d_width = PixelAligned(sz.d_width);
-		d_minSize.d_height = PixelAligned(sz.d_height);
+        d_minSize.d_x = UDim(0,PixelAligned(sz.d_width));
+        d_minSize.d_y = UDim(0,PixelAligned(sz.d_height));
 	}
 	else
 	{
-		d_minSize = relativeToAbsolute_impl(NULL, sz);
+        d_minSize.d_x = UDim(sz.d_width,0);
+        d_minSize.d_y = UDim(sz.d_height,0);
 	}
 
-	// store old size.
-	Rect old_sz(d_abs_area);
-
-	// limit size as required
-	d_abs_area.constrainSizeMin(d_minSize);
-
-	// if size has changed, trigger notifications
-	if (old_sz != d_abs_area)
-	{
-        WindowEventArgs args(this);
-		onSized(args);
-	}
+    // TODO: Fix this
+// 	// store old size.
+// 	Rect old_sz(d_abs_area);
+// 
+// 	// limit size as required
+// 	d_abs_area.constrainSizeMin(d_minSize);
+// 
+// 	// if size has changed, trigger notifications
+// 	if (old_sz != d_abs_area)
+// 	{
+//         WindowEventArgs args(this);
+// 		onSized(args);
+// 	}
 
 }
 
@@ -2114,27 +2077,29 @@ void Window::setMinimumSize(const Size& sz)
 void Window::setMaximumSize(const Size& sz)
 {
 	if (getMetricsMode() == Absolute)
-	{
-		d_maxSize.d_width = PixelAligned(sz.d_width);
-		d_maxSize.d_height = PixelAligned(sz.d_height);
-	}
-	else
-	{
-		d_maxSize = relativeToAbsolute_impl(NULL, sz);
-	}
+    {
+        d_maxSize.d_x = UDim(0,PixelAligned(sz.d_width));
+        d_maxSize.d_y = UDim(0,PixelAligned(sz.d_height));
+    }
+    else
+    {
+        d_maxSize.d_x = UDim(sz.d_width,0);
+        d_maxSize.d_y = UDim(sz.d_height,0);
+    }
 
-	// store old size.
-	Rect old_sz(d_abs_area);
-
-	// limit size as required
-	d_abs_area.constrainSizeMax(d_maxSize);
-
-	// if size has changed, trigger notifications
-	if (old_sz != d_abs_area)
-	{
-        WindowEventArgs args(this);
-		onSized(args);
-	}
+    // TODO: Fix this
+// 	// store old size.
+// 	Rect old_sz(d_abs_area);
+// 
+// 	// limit size as required
+// 	d_abs_area.constrainSizeMax(d_maxSize);
+// 
+// 	// if size has changed, trigger notifications
+// 	if (old_sz != d_abs_area)
+// 	{
+//         WindowEventArgs args(this);
+// 		onSized(args);
+// 	}
 
 }
 
@@ -2243,15 +2208,7 @@ float Window::getXPosition(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.d_left;
-	}
-	else
-	{
-		return d_rel_area.d_left;
-	}
-
+    return (mode == Relative) ? getRelativeXPosition() : getAbsoluteXPosition();
 }
 
 
@@ -2266,15 +2223,7 @@ float Window::getYPosition(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.d_top;
-	}
-	else
-	{
-		return d_rel_area.d_top;
-	}
-
+    return (mode == Relative) ? getRelativeYPosition() : getAbsoluteYPosition();
 }
 
 
@@ -2289,15 +2238,7 @@ Point Window::getPosition(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getPosition();
-	}
-	else
-	{
-		return d_rel_area.getPosition();
-	}
-
+    return (mode == Relative) ? getRelativePosition() : getAbsolutePosition();
 }
 
 
@@ -2312,15 +2253,7 @@ float Window::getWidth(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getWidth();
-	}
-	else
-	{
-		return d_rel_area.getWidth();
-	}
-
+    return (mode == Relative) ? getRelativeWidth() : getAbsoluteWidth();
 }
 
 
@@ -2335,15 +2268,7 @@ float Window::getHeight(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getHeight();
-	}
-	else
-	{
-		return d_rel_area.getHeight();
-	}
-
+    return (mode == Relative) ? getRelativeHeight() : getAbsoluteHeight();
 }
 
 
@@ -2358,15 +2283,7 @@ Size Window::getSize(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getSize();
-	}
-	else
-	{
-		return d_rel_area.getSize();
-	}
-
+    return (mode == Relative) ? getRelativeSize() : getAbsoluteSize();
 }
 
 
@@ -2382,15 +2299,7 @@ Rect Window::getRect(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area;
-	}
-	else
-	{
-		return d_rel_area;
-	}
-
+    return (mode == Relative) ? getRelativeRect() : getAbsoluteRect();
 }
 
 
@@ -2424,16 +2333,14 @@ void Window::setPosition(MetricsMode mode, const Point& position)
 
 	if (mode == Relative)
 	{
-		d_rel_area.setPosition(position);
-		d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+        d_area.setPosition(UVector2(UDim(position.d_x,0), UDim(position.d_y,0)));
+
+        // TODO: Fix size constraining (is this even needed?)
+//		d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{
-		Point intPos(PixelAligned(position.d_x), PixelAligned(position.d_y));
-
-		d_abs_area.setPosition(intPos);
-		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
+        d_area.setPosition(UVector2(UDim(0,PixelAligned(position.d_x)), UDim(0,PixelAligned(position.d_y))));
 	}
 
 	WindowEventArgs args(this);
@@ -2471,22 +2378,16 @@ void Window::setSize(MetricsMode mode, const Size& size)
 
 	if (mode == Relative)
 	{
-		d_rel_area.setSize(size);
+        d_area.setSize(UVector2(UDim(size.d_width,0), UDim(size.d_height,0)));
 
-		// update Rect for the other metrics system
-        d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+        // TODO: Fix constraining of size        
+//		d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{
-		Size intSize(PixelAligned(size.d_width), PixelAligned(size.d_height));
-
-		d_abs_area.setSize(intSize);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-		// update Rect for the other metrics system.
-		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
-	}
+        // TODO: Fix constraining of size        
+        d_area.setSize(UVector2(UDim(0,PixelAligned(size.d_width)), UDim(0,PixelAligned(size.d_height))));
+    }
 
 	WindowEventArgs args(this);
 	onSized(args);
@@ -2506,25 +2407,28 @@ void Window::setRect(MetricsMode mode, const Rect& area)
 
 	if (mode == Relative)
 	{
-		d_rel_area = area;
+        d_area = URect(
+                UDim(area.d_left,0),
+                UDim(area.d_top,0),
+                UDim(area.d_right,0),
+                UDim(area.d_bottom,0)
+                      );
 
-		d_abs_area = relativeToAbsolute_impl(d_parent, area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+        // TODO: Fix constraining of size        
+//        d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{
-		Rect intArea(
-			PixelAligned(area.d_left),
-			PixelAligned(area.d_top),
-			PixelAligned(area.d_right),
-			PixelAligned(area.d_bottom)
-			);
+        d_area = URect(
+                UDim(0, PixelAligned(area.d_left)),
+                UDim(0, PixelAligned(area.d_top)),
+                UDim(0, PixelAligned(area.d_right)),
+                UDim(0, PixelAligned(area.d_bottom))
+                      );
 
-		d_abs_area = intArea;
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-		d_rel_area = absoluteToRelative_impl(d_parent, area);
-	}
+        // TODO: Fix constraining of size        
+//        d_abs_area.constrainSize(d_maxSize, d_minSize);
+    }
 
 	WindowEventArgs args(this);
 	onMoved(args);
@@ -3165,11 +3069,10 @@ void Window::onParentSized(WindowEventArgs& e)
 	// synchronise area rects for new parent size
 	if (getMetricsMode() == Relative)
 	{
-		d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
-
+        // TODO: Fix size constraints (If we switch the meaning of Min/Max sizes, this is no longer required.)
 		// Check new absolute size and limit to currently set max/min values.  This does not affect relative co-ordinates
 		// which must 'recover' after window is again sized so normal relativity can take over.
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+//		d_abs_area.constrainSize(d_maxSize, d_minSize);
 
 		// perform notifications
         WindowEventArgs args(this); 
@@ -3181,7 +3084,6 @@ void Window::onParentSized(WindowEventArgs& e)
 	}
 	else
 	{
-		d_rel_area = absoluteToRelative_impl(d_parent, d_abs_area);
 	}
 
 	fireEvent(EventParentSized, e, EventNamespace);

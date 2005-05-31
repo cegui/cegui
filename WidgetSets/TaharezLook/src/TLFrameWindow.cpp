@@ -201,7 +201,7 @@ void TLFrameWindow::layoutComponentWidgets()
 	// calculate and set size of title bar
 	Size titleSz;
 	titleSz.d_height = d_titlebar->getFont()->getLineSpacing() + TitlebarTextPadding;
-	titleSz.d_width	 = isRolledup() ? d_abs_openSize.d_width : d_abs_area.getWidth();
+	titleSz.d_width	 = isRolledup() ? d_abs_openSize.d_width : getAbsoluteWidth();
 	d_titlebar->setSize(titleSz);
 
 	// set size of close button to be the same as the height for the title bar.

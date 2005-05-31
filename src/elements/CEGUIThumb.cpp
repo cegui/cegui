@@ -216,7 +216,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 		//
 		// Calculate new (pixel) position for thumb
 		//
-		Point newPos(d_abs_area.getPosition());
+		Point newPos(getAbsolutePosition());
 
 		if (d_horzFree)
 		{
@@ -235,7 +235,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 		}
 
 		// update thumb position if needed
-		if (newPos != d_abs_area.getPosition())
+		if (newPos != getAbsolutePosition())
 		{
 			if (getMetricsMode() == Relative)
 			{

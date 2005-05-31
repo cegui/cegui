@@ -195,6 +195,9 @@ public:
 
 	Rect&	operator=(const Rect& rhs);
 
+    Rect operator*(float scalar) const      { return Rect(d_left * scalar, d_top * scalar, d_right * scalar, d_bottom * scalar); }
+    const Rect& operator*=(float scalar)    { d_left *= scalar; d_top *= scalar; d_right *= scalar; d_bottom *= scalar; return *this; }
+
 
 	/*************************************************************************
 		Data Fields

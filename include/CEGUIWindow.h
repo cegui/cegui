@@ -36,6 +36,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIInputEvent.h"
 #include "CEGUIWindowProperties.h"
+#include "CEGUIUDim.h"
 #include <vector>
 
 
@@ -718,7 +719,7 @@ public:
 	\return
 		Rect object describing this windows area, relative to the parent window, in parent relative metrics.
 	*/
-	Rect	getRelativeRect(void) const				{return d_rel_area;}
+    Rect	getRelativeRect(void) const				{ return d_area.asRelative(getParentSize()); }
 
 
 	/*!
@@ -728,7 +729,7 @@ public:
 	\return
 		Point object describing this windows position, relative to the parent window, in parent relative metrics.
 	*/
-	Point	getRelativePosition(void) const			{return d_rel_area.getPosition();}
+	Point	getRelativePosition(void) const			{ return d_area.getPosition().asRelative(getParentSize()); }
 
 
 	/*!
@@ -738,7 +739,7 @@ public:
 	\return
 		float value describing this windows X position, relative to the parent window, in parent relative metrics.
 	*/
-	float	getRelativeXPosition(void) const		{return d_rel_area.d_left;}
+	float	getRelativeXPosition(void) const		{ return d_area.d_min.d_x.asRelative(getParentWidth()); }
 
 
 	/*!
@@ -748,7 +749,7 @@ public:
 	\return
 		float value describing this windows Y position, relative to the parent window, in parent relative metrics.
 	*/
-	float	getRelativeYPosition(void) const		{return d_rel_area.d_top;}
+	float	getRelativeYPosition(void) const		{ return d_area.d_min.d_y.asRelative(getParentHeight()); }
 
 
 	/*!
@@ -758,7 +759,7 @@ public:
 	\return
 		Size object describing this windows size in parent relative metrics.
 	*/
-	Size	getRelativeSize(void) const				{return d_rel_area.getSize();}
+    Size	getRelativeSize(void) const				{ return d_area.getSize().asRelative(getParentSize()).asSize(); }
 
 
 	/*!
@@ -768,7 +769,7 @@ public:
 	\return
 		float value describing this windows width in parent relative metrics.
 	*/
-	float	getRelativeWidth(void) const			{return d_rel_area.getWidth();}
+	float	getRelativeWidth(void) const			{ return d_area.getWidth().asRelative(getParentWidth()); }
 
 
 	/*!
@@ -778,7 +779,7 @@ public:
 	\return
 		float value describing this windows height in parent relative metrics.
 	*/
-	float	getRelativeHeight(void) const			{return d_rel_area.getHeight();}
+	float	getRelativeHeight(void) const			{ return d_area.getHeight().asRelative(getParentHeight()); }
 
 
 	/*!
@@ -788,7 +789,7 @@ public:
 	\return
 		Rect object describing this windows area, relative to the parent window, in absolute metrics
 	*/
-	Rect	getAbsoluteRect(void) const				{return d_abs_area;}
+	Rect	getAbsoluteRect(void) const				{ return d_area.asAbsolute(getParentSize()); }
 
 
 	/*!
@@ -798,7 +799,7 @@ public:
 	\return
 		Point object describing this windows position, relative to the parent window, in absolute metrics.
 	*/
-	Point	getAbsolutePosition(void) const			{return d_abs_area.getPosition();}
+	Point	getAbsolutePosition(void) const			{ return d_area.getPosition().asAbsolute(getParentSize()); }
 
 
 	/*!
@@ -808,7 +809,7 @@ public:
 	\return
 		float value describing this windows X position, relative to the parent window, in absolute metrics.
 	*/
-	float	getAbsoluteXPosition(void) const		{return d_abs_area.d_left;}
+	float	getAbsoluteXPosition(void) const		{ return d_area.d_min.d_x.asAbsolute(getParentWidth()); }
 
 
 	/*!
@@ -818,7 +819,7 @@ public:
 	\return
 		float value describing this windows Y position, relative to the parent window, in absolute metrics.
 	*/
-	float	getAbsoluteYPosition(void) const		{return d_abs_area.d_top;}
+	float	getAbsoluteYPosition(void) const		{ return d_area.d_min.d_y.asAbsolute(getParentHeight()); }
 
 
 	/*!
@@ -828,7 +829,7 @@ public:
 	\return
 		Size object describing this windows size in absolute metrics.
 	*/
-	Size	getAbsoluteSize(void) const				{return d_abs_area.getSize();}
+	Size	getAbsoluteSize(void) const				{ return d_area.getSize().asAbsolute(getParentSize()).asSize(); }
 
 
 	/*!
@@ -838,7 +839,7 @@ public:
 	\return
 		float value describing this windows width in absolute metrics.
 	*/
-	float	getAbsoluteWidth(void) const			{return d_abs_area.getWidth();}
+	float	getAbsoluteWidth(void) const			{ return d_area.getWidth().asAbsolute(getParentWidth()); }
 
 
 	/*!
@@ -848,7 +849,7 @@ public:
 	\return
 	float value describing this windows height in absolute metrics.
 	*/
-	float	getAbsoluteHeight(void) const			{return d_abs_area.getHeight();}
+	float	getAbsoluteHeight(void) const			{ return d_area.getHeight().asAbsolute(getParentHeight()); }
 
 
 	/*!
@@ -2879,14 +2880,13 @@ protected:
 	String			d_text;				//!< Holds the text / label / caption for this Window.
 	uint			d_ID;				//!< User ID assigned to this Window
 	float			d_alpha;			//!< Alpha transparency setting for the Window
-	Rect			d_abs_area;			//!< This Window objects area (pixels relative to parent)
-	Rect			d_rel_area;			//!< This Window objects area (decimal fractions relative to parent)
+    URect			d_area;             //!< This Window objects area as defined by a URect.
 	const Image*	d_mouseCursor;		//!< Holds pointer to the Window objects current mouse cursor image.
 	void*			d_userData;			//!< Holds pointer to some user assigned data.
 
 	// maximum and minimum sizes
-	Size	d_minSize;					//!< current minimum size for the window (this is always stored in pixels).
-	Size	d_maxSize;					//!< current maximum size for the window (this is always stored in pixels).
+	UVector2       d_minSize;          //!< current minimum size for the window.
+	UVector2       d_maxSize;          //!< current maximum size for the window.
 
 	// settings
 	bool	d_enabled;					//!< true when Window is enabled

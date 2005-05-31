@@ -27,6 +27,7 @@
 #define _CEGUIVector_h_
 
 #include "CEGUIBase.h"
+#include "CEGUISize.h"
 
 
 // Start of CEGUI namespace section
@@ -99,6 +100,8 @@ public:
 	{
 		return !(operator==(vec));
 	}
+
+    Size asSize() const     { return Size(d_x, d_y); }
 
 	float d_x, d_y;
 };

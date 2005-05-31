@@ -164,7 +164,7 @@ Thumb* TLMiniHorzScrollbar::createThumb(void) const
 void TLMiniHorzScrollbar::layoutComponentWidgets(void)
 {
 	Size bsz;
-	bsz.d_width = bsz.d_height = d_abs_area.getHeight();
+	bsz.d_width = bsz.d_height = getAbsoluteHeight();
 
 	// install button sizes
 	d_increase->setSize(absoluteToRelative(bsz));
@@ -172,7 +172,7 @@ void TLMiniHorzScrollbar::layoutComponentWidgets(void)
 
 	// position buttons
 	d_decrease->setPosition(Point(0.0f, 0.0f));
-	d_increase->setPosition(Point(absoluteToRelativeX(d_abs_area.getWidth() - bsz.d_width), 0.0f));
+	d_increase->setPosition(Point(absoluteToRelativeX(getAbsoluteWidth() - bsz.d_width), 0.0f));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -190,7 +190,7 @@ void TLMiniHorzScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setHorzRange(absoluteToRelativeX(slideTrackXPadding), absoluteToRelativeX(slideTrackXPadding + slideExtent));
@@ -209,7 +209,7 @@ float TLMiniHorzScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth();
+	float slideExtent	= getAbsoluteWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth();
 
 	return	(d_thumb->getAbsoluteXPosition() - slideTrackXPadding) / (slideExtent / posExtent);
 }
