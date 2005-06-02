@@ -344,6 +344,9 @@ public:
 	*/
 	void	setCaptionColour(colour col);
 
+    // overridden from Window class
+    bool    isHit(const Point& position) const      { return Window::isHit(position) && !d_rolledup; }
+
 
 	/*************************************************************************
 		Construction / Destruction
@@ -574,7 +577,6 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onSized(WindowEventArgs& e);
-	virtual void	onParentSized(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -586,8 +588,6 @@ protected:
 	// window roll-up data
 	bool	d_rollupEnabled;	//!< true if roll-up of window is allowed.
 	bool	d_rolledup;			//!< true if window is rolled up.
-	Size	d_abs_openSize;		//!< stores original size of window when rolled-up.
-	Size	d_rel_openSize;		//!< stores original size of window when rolled-up.
 
 	// drag-sizing data
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.

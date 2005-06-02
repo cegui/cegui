@@ -221,8 +221,10 @@ void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 		}
 	}
 
-	// install new width values.
-    d_area.setWidth(UDim(0,prefWidth));
+	// install new size.
+    UVector2 sze(d_area.getSize());
+    sze.d_x = cegui_absdim(prefWidth);
+    setWindowArea_impl(d_area.getPosition(), sze, false, false);
 
 	// base class processing.
 	Thumb::onSized(e);

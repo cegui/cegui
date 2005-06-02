@@ -283,27 +283,20 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::doDragSizing(const Point& local_mouse)
 {
-	// calculate sizing delta.
-	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
+    float delta = local_mouse.d_x - d_dragPoint.d_x;
 
-    // TODO: Fix constraints
-// 	// limit size to within max/min values
-// 	float width = d_abs_area.getWidth();
-// 
-// 	if ((width + deltaX) < d_minSize.d_width) {
-// 		deltaX = d_minSize.d_width - width;
-// 	}
-// 	else if ((width + deltaX) > d_maxSize.d_width) {
-// 		deltaX = d_maxSize.d_width - width;
-// 	}
+    // store this so we can work out how much size actually changed
+    float orgWidth = getAbsoluteWidth();
 
-	// update window state
-	d_area.d_max.d_x.d_offset += deltaX;
-	d_dragPoint.d_x += deltaX;
+    // update segment area rect
+    URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
+    setWindowArea_impl(area.d_min, area.getSize());
 
-	WindowEventArgs args(this);
-	onSized(args);
-	onSegmentSized(args);
+    // move the dragging point so mouse remains 'attached' to edge of segment
+    d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
+
+    WindowEventArgs args(this);
+    onSegmentSized(args);
 }
 
 

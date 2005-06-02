@@ -122,6 +122,9 @@ TLFrameWindow::~TLFrameWindow(void)
 *************************************************************************/
 Rect TLFrameWindow::getUnclippedInnerRect(void) const
 {
+    if (d_rolledup)
+        return Rect(0,0,0,0);
+    
 	Rect tmp(getUnclippedPixelRect());
 
 	if (isFrameEnabled())
@@ -201,7 +204,7 @@ void TLFrameWindow::layoutComponentWidgets()
 	// calculate and set size of title bar
 	Size titleSz;
 	titleSz.d_height = d_titlebar->getFont()->getLineSpacing() + TitlebarTextPadding;
-	titleSz.d_width	 = isRolledup() ? d_abs_openSize.d_width : getAbsoluteWidth();
+	titleSz.d_width	 = getAbsoluteWidth();
 	d_titlebar->setSize(titleSz);
 
 	// set size of close button to be the same as the height for the title bar.
@@ -223,6 +226,10 @@ void TLFrameWindow::layoutComponentWidgets()
 *************************************************************************/
 void TLFrameWindow::drawSelf(float z)
 {
+    // do nothing if rolled up
+    if (d_rolledup)
+        return;
+    
 	// get the destination screen rect for this window
 	Rect absrect(getUnclippedPixelRect());
 

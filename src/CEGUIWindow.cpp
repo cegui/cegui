@@ -188,15 +188,15 @@ Window::Window(const String& type, const String& name) :
     d_weOwnTip = false;
     d_inheritsTipText = false;
 
-	// position and size
-    d_area = URect(UDim(0,0), UDim(0,0), UDim(0,0), UDim(0,0));
+    // add events
+    addStandardEvents();
 
-	// add events
-	addStandardEvents();
+    // set initial window area.
+    setWindowArea(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0));
 
 	// set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
-	setMinimumSize(Size(0.0f, 0.0f));
-	setMaximumSize(Size(1.0f, 1.0f));
+    setWindowMinSize(UVector2(cegui_reldim(0), cegui_reldim(0)));
+    setWindowMaxSize(UVector2(cegui_reldim(1), cegui_reldim(1)));
 
 	// add properties
 	addStandardProperties();
@@ -2043,31 +2043,20 @@ Size Window::getMinimumSize(void) const
 *************************************************************************/
 void Window::setMinimumSize(const Size& sz)
 {
-	if (getMetricsMode() == Absolute)
-	{
-        d_minSize.d_x = UDim(0,PixelAligned(sz.d_width));
-        d_minSize.d_y = UDim(0,PixelAligned(sz.d_height));
-	}
-	else
-	{
-        d_minSize.d_x = UDim(sz.d_width,0);
-        d_minSize.d_y = UDim(sz.d_height,0);
-	}
+    UVector2 usz;
+    
+    if (getMetricsMode() == Absolute)
+    {
+        usz.d_x = cegui_absdim(PixelAligned(sz.d_width));
+        usz.d_y = cegui_absdim(PixelAligned(sz.d_height));
+    }
+    else
+    {
+        usz.d_x = cegui_reldim(sz.d_width);
+        usz.d_y = cegui_reldim(sz.d_height);
+    }
 
-    // TODO: Fix this
-// 	// store old size.
-// 	Rect old_sz(d_abs_area);
-// 
-// 	// limit size as required
-// 	d_abs_area.constrainSizeMin(d_minSize);
-// 
-// 	// if size has changed, trigger notifications
-// 	if (old_sz != d_abs_area)
-// 	{
-//         WindowEventArgs args(this);
-// 		onSized(args);
-// 	}
-
+    setWindowMinSize(usz);
 }
 
 
@@ -2076,31 +2065,20 @@ void Window::setMinimumSize(const Size& sz)
 *************************************************************************/
 void Window::setMaximumSize(const Size& sz)
 {
-	if (getMetricsMode() == Absolute)
+    UVector2 usz;
+
+    if (getMetricsMode() == Absolute)
     {
-        d_maxSize.d_x = UDim(0,PixelAligned(sz.d_width));
-        d_maxSize.d_y = UDim(0,PixelAligned(sz.d_height));
+        usz.d_x = cegui_absdim(PixelAligned(sz.d_width));
+        usz.d_y = cegui_absdim(PixelAligned(sz.d_height));
     }
     else
     {
-        d_maxSize.d_x = UDim(sz.d_width,0);
-        d_maxSize.d_y = UDim(sz.d_height,0);
+        usz.d_x = cegui_reldim(sz.d_width);
+        usz.d_y = cegui_reldim(sz.d_height);
     }
 
-    // TODO: Fix this
-// 	// store old size.
-// 	Rect old_sz(d_abs_area);
-// 
-// 	// limit size as required
-// 	d_abs_area.constrainSizeMax(d_maxSize);
-// 
-// 	// if size has changed, trigger notifications
-// 	if (old_sz != d_abs_area)
-// 	{
-//         WindowEventArgs args(this);
-// 		onSized(args);
-// 	}
-
+    setWindowMaxSize(usz);
 }
 
 
@@ -2333,18 +2311,12 @@ void Window::setPosition(MetricsMode mode, const Point& position)
 
 	if (mode == Relative)
 	{
-        d_area.setPosition(UVector2(UDim(position.d_x,0), UDim(position.d_y,0)));
-
-        // TODO: Fix size constraining (is this even needed?)
-//		d_abs_area.constrainSize(d_maxSize, d_minSize);
+        setWindowPosition(UVector2(cegui_reldim(position.d_x), cegui_reldim(position.d_y)));
 	}
 	else
 	{
-        d_area.setPosition(UVector2(UDim(0,PixelAligned(position.d_x)), UDim(0,PixelAligned(position.d_y))));
+        setWindowPosition(UVector2(cegui_absdim(PixelAligned(position.d_x)), cegui_absdim(PixelAligned(position.d_y))));
 	}
-
-	WindowEventArgs args(this);
-	onMoved(args);
 }
 
 
@@ -2376,21 +2348,9 @@ void Window::setSize(MetricsMode mode, const Size& size)
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Relative)
-	{
-        d_area.setSize(UVector2(UDim(size.d_width,0), UDim(size.d_height,0)));
+    UVector2 usz(((mode == Relative) ? UVector2(cegui_reldim(size.d_width), cegui_reldim(size.d_height)) : UVector2(cegui_absdim(PixelAligned(size.d_width)), cegui_absdim(PixelAligned(size.d_height)))));
 
-        // TODO: Fix constraining of size        
-//		d_abs_area.constrainSize(d_maxSize, d_minSize);
-	}
-	else
-	{
-        // TODO: Fix constraining of size        
-        d_area.setSize(UVector2(UDim(0,PixelAligned(size.d_width)), UDim(0,PixelAligned(size.d_height))));
-    }
-
-	WindowEventArgs args(this);
-	onSized(args);
+    setWindowSize(usz);
 }
 
 
@@ -2405,34 +2365,28 @@ void Window::setRect(MetricsMode mode, const Rect& area)
 		mode = getInheritedMetricsMode();
 	}
 
+    URect uarea;
+    
 	if (mode == Relative)
 	{
-        d_area = URect(
-                UDim(area.d_left,0),
-                UDim(area.d_top,0),
-                UDim(area.d_right,0),
-                UDim(area.d_bottom,0)
+        uarea = URect(
+                cegui_reldim(area.d_left),
+                cegui_reldim(area.d_top),
+                cegui_reldim(area.d_right),
+                cegui_reldim(area.d_bottom)
                       );
-
-        // TODO: Fix constraining of size        
-//        d_abs_area.constrainSize(d_maxSize, d_minSize);
 	}
 	else
 	{
-        d_area = URect(
-                UDim(0, PixelAligned(area.d_left)),
-                UDim(0, PixelAligned(area.d_top)),
-                UDim(0, PixelAligned(area.d_right)),
-                UDim(0, PixelAligned(area.d_bottom))
+        uarea = URect(
+                cegui_absdim(PixelAligned(area.d_left)),
+                cegui_absdim(PixelAligned(area.d_top)),
+                cegui_absdim(PixelAligned(area.d_right)),
+                cegui_absdim(PixelAligned(area.d_bottom))
                       );
-
-        // TODO: Fix constraining of size        
-//        d_abs_area.constrainSize(d_maxSize, d_minSize);
     }
 
-	WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+    setWindowArea(uarea);
 }
 
 
@@ -2854,6 +2808,186 @@ void Window::doRiseOnClick(void)
     }
 }
 
+void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)
+{
+    // notes of what we did
+    bool moved = false, sized = false;
+    
+    // save original size so we can work out how to behave later on
+    UVector2 oldSize(d_area.getSize());
+    // somewhere to store the ultimate position we will be using.
+    UVector2 finalPos(pos);
+    // somewhere to store the ultimate size we will be using
+    UVector2 finalSize(size);
+
+    // calculate pixel sizes for everything, so we have a common format for comparisons.
+    Vector2 absMax(d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+    Vector2 absMin(d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+    Vector2 absSze(size.asAbsolute(getParentSize()));
+
+    // FIXME: This is not right, min/max scales are relative to display so these can't simply
+    // FIXME: be plugged into the window size and have things work.
+    // limit new size to: minSize <= newSize <= maxSize
+//     if (absSze.d_x < absMin.d_x)
+//         finalSize.d_x = d_minSize.d_x;
+//     else if (absSze.d_x > absMax.d_x)
+//         finalSize.d_x = d_maxSize.d_x;
+//     if (absSze.d_y < absMin.d_y)
+//         finalSize.d_y = d_minSize.d_y;
+//     else if (absSze.d_y > absMax.d_y)
+//         finalSize.d_y = d_maxSize.d_y;
+
+    // set new size if final result for size is different.
+    if (finalSize != oldSize)
+    {
+        d_area.setSize(finalSize);
+        sized = true;
+
+        if (topLeftSizing)
+        {
+            UVector2 adj(size - finalSize);
+
+            finalPos += adj;
+        }
+    }
+
+    // If this is a top/left edge sizing op, only modify position if the size actually changed.
+    // If it is not a sizing op, then position may always change.
+    if (!topLeftSizing || sized)
+    {
+        // only update position if a change has occurred.
+        if (finalPos != d_area.d_min)
+        {
+            d_area.setPosition(finalPos);
+            moved = true;
+        }
+    }
+
+    // fire events as required
+    if (fireEvents)
+    {
+        WindowEventArgs args(this);
+
+        if (moved)
+        {
+            onMoved(args);
+            // reset handled so 'sized' event can re-use (since  wo do not care about it)
+            args.handled = false;
+        }
+    
+        if (sized)
+        {
+            onSized(args);
+        }
+    }
+}
+
+void Window::setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
+{
+    setWindowArea(UVector2(xpos, ypos), UVector2(width, height));
+}
+
+void Window::setWindowArea(const UVector2& pos, const UVector2& size)
+{
+    setWindowArea_impl(pos, size);
+}
+
+void Window::setWindowArea(const URect& area)
+{
+    setWindowArea(area.d_min, area.getSize());
+}
+
+void Window::setWindowPosition(const UVector2& pos)
+{
+    setWindowArea_impl(pos, d_area.getSize());
+}
+
+void Window::setWindowXPosition(const UDim& x)
+{
+    setWindowArea_impl(UVector2(x, d_area.d_min.d_y), d_area.getSize());
+}
+
+void Window::setWindowYPosition(const UDim& y)
+{
+    setWindowArea_impl(UVector2(d_area.d_min.d_x, y), d_area.getSize());
+}
+
+void Window::setWindowSize(const UVector2& size)
+{
+    setWindowArea_impl(d_area.getPosition(), size);
+}
+
+void Window::setWindowWidth(const UDim& width)
+{
+    setWindowArea_impl(d_area.getPosition(), UVector2(width, d_area.getSize().d_y));
+}
+
+void Window::setWindowHeight(const UDim& height)
+{
+    setWindowArea_impl(d_area.getPosition(), UVector2(d_area.getSize().d_x, height));
+}
+
+void Window::setWindowMaxSize(const UVector2& size)
+{
+    d_maxSize = size;
+
+    // set window area back on itself to cause new maximum size to be applied if required.
+    setWindowArea(d_area);
+}
+
+void Window::setWindowMinSize(const UVector2& size)
+{
+    d_minSize = size;
+
+    // set window area back on itself to cause new minimum size to be applied if required.
+    setWindowArea(d_area);
+}
+
+const URect& Window::getWindowArea() const
+{
+    return d_area;
+}
+
+const UVector2& Window::getWindowPosition() const
+{
+    return d_area.d_min;
+}
+
+const UDim& Window::getWindowXPosition() const
+{
+    return d_area.d_min.d_x;
+}
+
+const UDim& Window::getWindowYPosition() const
+{
+    return d_area.d_min.d_y;
+}
+
+UVector2 Window::getWindowSize() const
+{
+    return d_area.getSize();
+}
+
+UDim Window::getWindowWidth() const
+{
+    return d_area.getSize().d_x;
+}
+
+UDim Window::getWindowHeight() const
+{
+    return d_area.getSize().d_y;
+}
+
+const UVector2& Window::getWindowMaxSize() const
+{
+    return d_maxSize;
+}
+
+const UVector2& Window::getWindowMinSize() const
+{
+    return d_minSize;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -3066,27 +3200,24 @@ void Window::onDeactivated(ActivationEventArgs& e)
 
 void Window::onParentSized(WindowEventArgs& e)
 {
-	// synchronise area rects for new parent size
-	if (getMetricsMode() == Relative)
-	{
-        // TODO: Fix size constraints (If we switch the meaning of Min/Max sizes, this is no longer required.)
-		// Check new absolute size and limit to currently set max/min values.  This does not affect relative co-ordinates
-		// which must 'recover' after window is again sized so normal relativity can take over.
-//		d_abs_area.constrainSize(d_maxSize, d_minSize);
+    // set window area back on itself to cause minimum and maximum size
+    // constraints to be applied as required.  (fire no events though)
+    setWindowArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
-		// perform notifications
-        WindowEventArgs args(this); 
-		onMoved(args);
-		onSized(args);
+    // now see if events should be fired.
+    if ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0))
+    {
+        WindowEventArgs args(this);
+        onMoved(args);
+    }
 
-		// call for a redraw
-		requestRedraw();
-	}
-	else
-	{
-	}
-
-	fireEvent(EventParentSized, e, EventNamespace);
+    if ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0))
+    {
+        WindowEventArgs args(this);
+        onSized(args);
+    }
+    
+    fireEvent(EventParentSized, e, EventNamespace);
 }
 
 

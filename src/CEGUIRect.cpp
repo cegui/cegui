@@ -39,6 +39,15 @@ Rect::Rect(float left, float top, float right, float bottom) :
 {
 }
 
+Rect::Rect(Point pos, Size sz) :
+    d_top(pos.d_y),
+    d_bottom(pos.d_y + sz.d_height),
+    d_left(pos.d_x),
+    d_right(pos.d_x + sz.d_width)
+{
+}
+
+
 /*************************************************************************
 	Return a Rect object that is the intersection of 'this' with 'rect'
 *************************************************************************/

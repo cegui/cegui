@@ -183,53 +183,14 @@ void FrameWindow::setRollupEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::toggleRollup(void)
 {
-	if (isRollupEnabled())
-	{
-		if (isRolledup())
-		{
-			d_rolledup = false;
-			setSize((getMetricsMode()== Relative) ? d_rel_openSize : d_abs_openSize);
-		}
-		else
-		{
-			// store original sizes for window
-			d_abs_openSize = getAbsoluteSize();
-			d_rel_openSize = getRelativeSize();
-
-			// get the current size of the title bar (if any)
-			Size titleSize;
-			if (d_titlebar != NULL)
-			{
-				titleSize = d_titlebar->getSize();
-			}
-
-            // TODO: Fix this
-
-// 			// work-around minimum size setting
-// 			Size orgmin(d_minSize);
-// 			d_minSize.d_width = d_minSize.d_height = 0;
-
-			// set size of this window to 0x0, since the title/close controls are not clipped by us, they will still be visible
-			setSize(Size(0.0f, 0.0f));
-
-			// restore original min size;
-// 			d_minSize = orgmin;
-
-			// re-set the size of the title bar
-			if (d_titlebar != NULL)
-			{
-				d_titlebar->setSize(titleSize);
-			}
-
-			// this must be done last so onSize does not store 0x0 as our original size
-			d_rolledup = true;
-			layoutComponentWidgets();
-		}
-
-		// event notification.
+    if (isRollupEnabled())
+    {
+        d_rolledup ^= true;
+        
+        // event notification.
         WindowEventArgs args(this);
-		onRollupToggled(args);
-	}
+        onRollupToggled(args);
+    }
 
 }
 
@@ -354,25 +315,20 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    URect area(d_area);
 
-	float width = getAbsoluteWidth();
-
-    // TODO: Fix constraints
-// 	// limit size to within max/min values
-// 	if ((width - delta) < d_minSize.d_width) {
-// 		delta = width - d_minSize.d_width;
-// 	}
-// 	else if ((width - delta) > d_maxSize.d_width) {
-// 		delta = width - d_maxSize.d_width;
-// 	}
-
-	// update window state
-    setXPosition(Absolute, getAbsoluteXPosition() + delta);
-
-    WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentWidth();
+        area.d_min.d_x.d_scale += (base != 0) ? delta / base : 0;
+    }
+    else
+    {
+        area.d_min.d_x.d_offset += PixelAligned(delta);
+    }
+    
+    setWindowArea_impl(area.d_min, area.getSize(), true);
 }
 
 
@@ -382,25 +338,27 @@ void FrameWindow::moveLeftEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveRightEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    // store this so we can work out how much size actually changed
+    float orgWidth = getAbsoluteWidth();
 
-	float width = getAbsoluteWidth();
+    // update window area rect
+    URect area(d_area);
 
-    // TODO: Fix constraints
-// 	// limit size to within max/min values
-// 	if ((width + delta) < d_minSize.d_width) {
-// 		delta = d_minSize.d_width - width;
-// 	}
-// 	else if ((width + delta) > d_maxSize.d_width) {
-// 		delta = d_maxSize.d_width - width;
-// 	}
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentWidth();
+        area.d_max.d_x.d_scale += (base != 0) ? delta / base : 0;
+    }
+    else
+    {
+        area.d_max.d_x.d_offset += PixelAligned(delta);
+    }
 
-	// update window state
-    d_area.d_max.d_x.d_offset += delta;
-	d_dragPoint.d_x += delta;
+    setWindowArea_impl(area.d_min, area.getSize());
 
-    WindowEventArgs args(this);
-	onSized(args);
+    // move the dragging point so mouse remains 'attached' to edge of window
+    d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
 }
 
 
@@ -410,25 +368,20 @@ void FrameWindow::moveRightEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveTopEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    URect area(d_area);
 
-	float height = getAbsoluteHeight();
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentHeight();
+        area.d_min.d_y.d_scale += (base != 0) ? delta / base : 0;
+    }
+    else
+    {
+        area.d_min.d_y.d_offset += PixelAligned(delta);
+    }
 
-    // TODO: Fix constraints
-// 	// limit size to within max/min values
-// 	if ((height - delta) < d_minSize.d_height) {
-// 		delta = height - d_minSize.d_height;
-// 	}
-// 	else if ((height - delta) > d_maxSize.d_height) {
-// 		delta = height - d_maxSize.d_height;
-// 	}
-
-	// update window state
-	d_area.d_min.d_y.d_offset += delta;
-
-    WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+    setWindowArea_impl(area.d_min, area.getSize(), true);
 }
 
 
@@ -438,25 +391,27 @@ void FrameWindow::moveTopEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveBottomEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    // store this so we can work out how much size actually changed
+    float orgHeight = getAbsoluteHeight();
 
-	float height = getAbsoluteHeight();
+    // update window area rect
+    URect area(d_area);
 
-    // TODO: Fix constraints
-// 	// limit size to within max/min values
-// 	if ((height + delta) < d_minSize.d_height) {
-// 		delta = d_minSize.d_height - height;
-// 	}
-// 	else if ((height + delta) > d_maxSize.d_height) {
-// 		delta = d_maxSize.d_height - height;
-// 	}
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentHeight();
+        area.d_max.d_y.d_scale += (base != 0) ? delta / base : 0;
+    }
+    else
+    {
+        area.d_max.d_y.d_offset += PixelAligned(delta);
+    }
 
-	// update window state
-    d_area.d_max.d_y.d_offset += delta;
-	d_dragPoint.d_y += delta;
+    setWindowArea_impl(area.d_min, area.getSize());
 
-    WindowEventArgs args(this);
-	onSized(args);
+    // move the dragging point so mouse remains 'attached' to edge of window
+    d_dragPoint.d_y += getAbsoluteHeight() - orgHeight;
 }
 
 
@@ -524,6 +479,8 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
+    requestRedraw();
+
 	fireEvent(EventRollupToggled, e, EventNamespace);
 }
 
@@ -680,37 +637,10 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 *************************************************************************/
 void FrameWindow::onSized(WindowEventArgs& e)
 {
-	if (isRolledup())
-	{
-		// capture changed size(s)
-		d_rel_openSize = getRelativeSize();
-		d_abs_openSize = getAbsoluteSize();
-
-		// re-set window size to 0x0
-		Size nullsz(0,0);
-		setSize(nullsz);
-	}
-
 	layoutComponentWidgets();
 
 	// MUST call base class handler no matter what.  This is now required 100%
 	Window::onSized(e);
-}
-
-
-/*************************************************************************
-	Handler for when a frame windows parent is sized.
-*************************************************************************/
-void FrameWindow::onParentSized(WindowEventArgs& e)
-{
-	// if we are rolled up we temporarily need to restore the original sizes so
-	// that the required calculations can occur when our parent is sized.
-	if (isRolledup() && (getMetricsMode() == Relative))
-	{
-		setSize(Absolute, d_abs_openSize);
-	}
-
-	Window::onParentSized(e);
 }
 
 

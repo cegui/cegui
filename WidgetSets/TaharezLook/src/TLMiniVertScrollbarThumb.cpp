@@ -221,7 +221,9 @@ void TLMiniVertScrollbarThumb::onSized(WindowEventArgs& e)
 	}
 
 	// install new height values.
-    d_area.setHeight(UDim(0,prefHeight));
+    UVector2 sze(d_area.getSize());
+    sze.d_y = cegui_absdim(prefHeight);
+    setWindowArea_impl(d_area.getPosition(), sze, false, false);
 
 	// base class processing.
 	Thumb::onSized(e);

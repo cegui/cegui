@@ -2231,6 +2231,346 @@ public:
 	Rect	screenToWindow(const Rect& rect) const;
 
 
+    /*************************************************************************
+        Interface to unified co-ordinate system
+    *************************************************************************/
+    /*!
+    \brief
+        Set the window area.
+
+        Sets the area occupied by this window.  The defined area is offset from the
+        top-left corner of this windows parent window or from the top-left corner of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param xpos
+        UDim describing the new x co-ordinate (left edge) of the window area.
+    
+    \param ypos
+        UDim describing the new y co-ordinate (top-edge) of the window area.
+    
+    \param width
+        UDim describing the new width of the window area.
+    
+    \param height
+        UDim describing the new height of the window area.
+     */
+    void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
+    
+    /*!
+    \brief
+        Set the window area.
+
+        Sets the area occupied by this window.  The defined area is offset from the
+        top-left corner of this windows parent window or from the top-left corner of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param pos
+        UVector2 describing the new position (top-left corner) of the window area.
+        
+    \param size
+        UVector2 describing the new size of the window area.
+     */
+    void setWindowArea(const UVector2& pos, const UVector2& size);
+    
+    /*!
+    \brief
+        Set the window area.
+
+        Sets the area occupied by this window.  The defined area is offset from the
+        top-left corner of this windows parent window or from the top-left corner of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param area
+        URect describing the new area rectangle of the window area.
+     */
+    void setWindowArea(const URect& area);
+    
+    /*!
+    \brief
+        Set the window's position.
+
+        Sets the position of the area occupied by this window.  The position is offset from the
+        top-left corner of this windows parent window or from the top-left corner of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param pos
+        UVector2 describing the new position (top-left corner) of the window area.
+     */
+    void setWindowPosition(const UVector2& pos);
+
+    /*!
+    \brief
+        Set the window's X position.
+
+        Sets the x position (left edge) of the area occupied by this window.  The position is
+        offset from the left edge of this windows parent window or from the left edge of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param x
+        UDim describing the new x position of the window area.
+     */
+    void setWindowXPosition(const UDim& x);
+
+    /*!
+    \brief
+        Set the window's Y position.
+
+        Sets the y position (top edge) of the area occupied by this window.  The position is
+        offset from the top edge of this windows parent window or from the top edge of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param y
+        UDim describing the new y position of the window area.
+     */
+    void setWindowYPosition(const UDim& y);
+
+    /*!
+    \brief
+        Set the window's size.
+
+        Sets the size of the area occupied by this window.
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param size
+        UVector2 describing the new size of the window area.
+     */
+    void setWindowSize(const UVector2& size);
+
+    /*!
+    \brief
+        Set the window's width.
+
+        Sets the width of the area occupied by this window.
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param width
+        UDim describing the new width of the window area.
+     */
+    void setWindowWidth(const UDim& width);
+
+    /*!
+    \brief
+        Set the window's height.
+
+        Sets the height of the area occupied by this window.
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param height
+        UDim describing the new height of the window area.
+     */
+    void setWindowHeight(const UDim& height);
+
+    /*!
+    \brief
+        Set the window's maximum size.
+
+        Sets the maximum size that this windows area may occupy (whether size changes occur by user
+        interaction, general system operation, or by direct setting by client code).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param size
+        UVector2 describing the new maximum size of the window area.
+     */
+    void setWindowMaxSize(const UVector2& size);
+
+    /*!
+    \brief
+        Set the window's minimum size.
+
+        Sets the minimum size that this windows area may occupy (whether size changes occur by user
+        interaction, general system operation, or by direct setting by client code).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \param size
+        UVector2 describing the new minimum size of the window area.
+     */
+    void setWindowMinSize(const UVector2& size);
+
+    /*!
+    \brief
+        Return the windows area.
+
+        Returns the area occupied by this window.  The defined area is offset from the
+        top-left corner of this windows parent window or from the top-left corner of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        URect describing the rectangle of the window area.
+     */
+    const URect& getWindowArea() const;
+
+    /*!
+    \brief
+        Get the window's position.
+
+        Gets the position of the area occupied by this window.  The position is offset from the
+        top-left corner of this windows parent window or from the top-left corner of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UVector2 describing the position (top-left corner) of the window area.
+     */
+    const UVector2& getWindowPosition() const;
+
+    /*!
+    \brief
+        Get the window's X position.
+
+        Gets the x position (left edge) of the area occupied by this window.  The position is
+        offset from the left edge of this windows parent window or from the left edge of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UDim describing the x position of the window area.
+     */
+    const UDim& getWindowXPosition() const;
+
+    /*!
+    \brief
+        Get the window's Y position.
+
+        Gets the y position (top edge) of the area occupied by this window.  The position is
+        offset from the top edge of this windows parent window or from the top edge of
+        the display if this window has no parent (i.e. it is the root window).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UDim describing the y position of the window area.
+     */
+    const UDim& getWindowYPosition() const;
+
+    /*!
+    \brief
+        Get the window's size.
+
+        Gets the size of the area occupied by this window.
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UVector2 describing the size of the window area.
+     */
+    UVector2 getWindowSize() const;
+
+    /*!
+    \brief
+        Get the window's width.
+
+        Gets the width of the area occupied by this window.
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UDim describing the width of the window area.
+     */
+    UDim getWindowWidth() const;
+
+    /*!
+    \brief
+        Get the window's height.
+
+        Gets the height of the area occupied by this window.
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UDim describing the height of the window area.
+     */
+    UDim getWindowHeight() const;
+
+    /*!
+    \brief
+        Get the window's maximum size.
+
+        Gets the maximum size that this windows area may occupy (whether size changes occur by user
+        interaction, general system operation, or by direct setting by client code).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UVector2 describing the maximum size of the window area.
+     */
+    const UVector2& getWindowMaxSize() const;
+
+    /*!
+    \brief
+        Get the window's minimum size.
+
+        Gets the minimum size that this windows area may occupy (whether size changes occur by user
+        interaction, general system operation, or by direct setting by client code).
+
+    \note
+        This method makes use of "Unified Dimensions".  These contain both parent relative and
+        absolute pixel components, which are used in determining the final value used.
+
+    \return
+        UVector2 describing the minimum size of the window area.
+     */
+    const UVector2& getWindowMinSize() const;
+
+
 	/*************************************************************************
 		Main render function.
 	*************************************************************************/
@@ -3023,6 +3363,36 @@ protected:
         Implementation of rise on click functionality.
      */
     void doRiseOnClick(void);
+
+    
+    /*!
+    \brief
+        Implementation method to modify window area while correctly applying min / max size processing, and
+        firing any appropriate events.
+
+    /note
+        This is the implementation function for setting size and position.
+        In order to simplify area management, from this point on, all modifications to window size and
+        position (area rect) should come through here.
+
+    /param pos
+        UVector2 object describing the new area position.
+
+    /param size
+        UVector2 object describing the new area size.
+
+    /param topLeftSizing
+        - true to indicate the the operation is a sizing operation on the top and/or left edges of the area,
+            and so window movement should be inhibited if size is at max or min.
+        - false to indicate the operation is not a strict sizing operation on the top and/or left edges and
+            that the window position may change as required
+    
+    /param fireEvents
+        - true if events should be fired as normal.
+        - false to inhibit firing of events (required, for example, if you need to call this from
+            the onSize/onMove handlers).
+     */
+    void setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing = false, bool fireEvents = true);
 
 	
 	/*************************************************************************

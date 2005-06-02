@@ -27,6 +27,11 @@
 #include "CEGUIRect.h"
 #include "CEGUIVector.h"
 
+// some macros to aid in the creation of UDims
+#define cegui_absdim(x)     UDim(0,(x))
+#define cegui_reldim(x)     UDim((x),0)
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -37,8 +42,8 @@ namespace CEGUI
         UDim(float scale, float offset) : d_scale(scale), d_offset(offset) {}
         ~UDim() {}
 
-        float asAbsolute(float base) const    { return base * d_scale + d_offset; }
-        float asRelative(float base) const    { return d_offset / base + d_scale; }
+        float asAbsolute(float base) const    { return PixelAligned(base * d_scale) + d_offset; }
+        float asRelative(float base) const    { return (base != 0.0f) ? d_offset / base + d_scale : 0.0f; }
 
         UDim operator+(const UDim& other) const     { return UDim(d_scale + other.d_scale, d_offset + other.d_offset); }
         UDim operator-(const UDim& other) const     { return UDim(d_scale - other.d_scale, d_offset - other.d_offset); }
@@ -52,7 +57,7 @@ namespace CEGUI
 
         bool operator==(const UDim& other) const    { return d_scale == other.d_scale && d_offset == other.d_offset; }
         bool operator!=(const UDim& other) const    { return !operator==(other); }
-       
+
         float d_scale, d_offset;
     };
 
@@ -149,7 +154,7 @@ namespace CEGUI
         
         UVector2 d_min, d_max;
     };
-    
+
 } // End of  CEGUI namespace section
 
 
