@@ -74,7 +74,7 @@ namespace CEGUI
 
         time_t  et;
         time(&et);
-        tm* etm = gmtime(&et);
+        tm* etm = localtime(&et);
 
         if (etm != NULL)
         {
