@@ -226,16 +226,22 @@ void FrameWindow::setTitlebarFont(Font* font)
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const Vector2& offset)
 {
-	// update window state
-	Point pos = getAbsolutePosition();
+    UVector2 uOffset;
 
-	pos.d_x += PixelAligned(offset.d_x);
-	pos.d_y += PixelAligned(offset.d_y);
+    if (getMetricsMode() == Relative)
+    {
+        Size sz = getParentSize();
 
-	setPosition(Absolute, pos);
+        uOffset.d_x = cegui_reldim((sz.d_width != 0) ? offset.d_x / sz.d_width : 0);
+        uOffset.d_y = cegui_reldim((sz.d_height != 0) ? offset.d_y / sz.d_height : 0);
+    }
+    else
+    {
+        uOffset.d_x = cegui_absdim(PixelAligned(offset.d_x));
+        uOffset.d_y = cegui_absdim(PixelAligned(offset.d_y));
+    }
 
-    WindowEventArgs args(this);
-	onMoved(args);
+    setWindowPosition(d_area.getPosition() + uOffset);
 }
 
 
@@ -315,23 +321,42 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
+    float adjustment;
+    float* minDim;
+    float* maxDim;
     URect area(d_area);
 
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
     {
         float base = getParentWidth();
-        area.d_min.d_x.d_scale += (base != 0) ? delta / base : 0;
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_x.d_scale;
+        maxDim = &area.d_max.d_x.d_scale;
     }
     else
     {
-        area.d_min.d_x.d_offset += PixelAligned(delta);
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_x.d_offset;
+        maxDim = &area.d_max.d_x.d_offset;
     }
-    
-    setWindowArea_impl(area.d_min, area.getSize(), true);
+
+    if (d_horzAlign == HA_RIGHT)
+    {
+        *maxDim -= adjustment;
+    }
+    else if (d_horzAlign == HA_CENTRE)
+    {
+        *maxDim -= adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
+    }
+    else
+    {
+        *minDim += adjustment;
+    }
+
+    setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_LEFT);
 }
-
-
 /*************************************************************************
 	move the window's right edge by 'delta'.  The rest of the window
 	does not move, thus this changes the size of the Window.
@@ -340,27 +365,44 @@ void FrameWindow::moveRightEdge(float delta)
 {
     // store this so we can work out how much size actually changed
     float orgWidth = getAbsoluteWidth();
-
-    // update window area rect
+    float adjustment;
+    float* minDim;
+    float* maxDim;
     URect area(d_area);
 
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
     {
         float base = getParentWidth();
-        area.d_max.d_x.d_scale += (base != 0) ? delta / base : 0;
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_x.d_scale;
+        maxDim = &area.d_max.d_x.d_scale;
     }
     else
     {
-        area.d_max.d_x.d_offset += PixelAligned(delta);
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_x.d_offset;
+        maxDim = &area.d_max.d_x.d_offset;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize());
+    *maxDim += adjustment;
+
+    if (d_horzAlign == HA_RIGHT)
+    {
+        *maxDim += adjustment;
+        *minDim += adjustment;
+    }
+    else if (d_horzAlign == HA_CENTRE)
+    {
+        *maxDim += adjustment * 0.5;
+        *minDim += adjustment * 0.5;
+    }
+
+    setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
 
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
 }
-
 
 /*************************************************************************
 	move the window's top edge by 'delta'.  The rest of the window
@@ -368,20 +410,41 @@ void FrameWindow::moveRightEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveTopEdge(float delta)
 {
+    float adjustment;
+    float* minDim;
+    float* maxDim;
     URect area(d_area);
 
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
     {
         float base = getParentHeight();
-        area.d_min.d_y.d_scale += (base != 0) ? delta / base : 0;
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_y.d_scale;
+        maxDim = &area.d_max.d_y.d_scale;
     }
     else
     {
-        area.d_min.d_y.d_offset += PixelAligned(delta);
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_y.d_offset;
+        maxDim = &area.d_max.d_y.d_offset;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize(), true);
+    if (d_vertAlign == VA_BOTTOM)
+    {
+        *maxDim -= adjustment;
+    }
+    else if (d_vertAlign == VA_CENTRE)
+    {
+        *maxDim -= adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
+    }
+    else
+    {
+        *minDim += adjustment;
+    }
+
+    setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_TOP);
 }
 
 
@@ -393,22 +456,40 @@ void FrameWindow::moveBottomEdge(float delta)
 {
     // store this so we can work out how much size actually changed
     float orgHeight = getAbsoluteHeight();
-
-    // update window area rect
+    float adjustment;
+    float* minDim;
+    float* maxDim;
     URect area(d_area);
 
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
     {
         float base = getParentHeight();
-        area.d_max.d_y.d_scale += (base != 0) ? delta / base : 0;
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_y.d_scale;
+        maxDim = &area.d_max.d_y.d_scale;
     }
     else
     {
-        area.d_max.d_y.d_offset += PixelAligned(delta);
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_y.d_offset;
+        maxDim = &area.d_max.d_y.d_offset;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize());
+    *maxDim += adjustment;
+
+    if (d_vertAlign == VA_BOTTOM)
+    {
+        *maxDim += adjustment;
+        *minDim += adjustment;
+    }
+    else if (d_vertAlign == VA_CENTRE)
+    {
+        *maxDim += adjustment * 0.5;
+        *minDim += adjustment * 0.5;
+    }
+
+    setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);
 
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_y += getAbsoluteHeight() - orgHeight;

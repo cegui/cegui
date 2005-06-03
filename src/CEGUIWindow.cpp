@@ -92,6 +92,8 @@ WindowProperties::CustomTooltipType Window::d_tooltipTypeProperty;
 WindowProperties::Tooltip           Window::d_tooltipProperty;
 WindowProperties::InheritsTooltipText Window::d_inheritsTooltipProperty;
 WindowProperties::RiseOnClick       Window::d_riseOnClickProperty;
+WindowProperties::VerticalAlignment   Window::d_vertAlignProperty;
+WindowProperties::HorizontalAlignment Window::d_horzAlignProperty;
 
 
 /*************************************************************************
@@ -132,6 +134,8 @@ const String Window::EventZOrderChanged( (utf8*)"ZChanged" );
 const String Window::EventDragDropItemEnters("DragDropItemEnters");
 const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
+const String Window::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
+const String Window::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
 const String Window::EventMouseEnters( (utf8*)"MouseEnter" );
 const String Window::EventMouseLeaves( (utf8*)"MouseLeave" );
 const String Window::EventMouseMove( (utf8*)"MouseMove" );
@@ -193,6 +197,10 @@ Window::Window(const String& type, const String& name) :
 
     // set initial window area.
     setWindowArea(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0));
+
+    // set initial alignments
+    d_horzAlign = HA_LEFT;
+    d_vertAlign = VA_TOP;
 
 	// set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
     setWindowMinSize(UVector2(cegui_reldim(0), cegui_reldim(0)));
@@ -1350,14 +1358,25 @@ Rect Window::relativeToAbsolute(const Rect& rect) const
 *************************************************************************/
 float Window::windowToScreenX(float x) const
 {
-	const Window* wnd = this;
-	float baseX = 0;
+    float baseX = 0;
 
-	while (wnd != NULL)
-	{
-        baseX += wnd->getAbsoluteXPosition();
-		wnd = wnd->d_parent;
-	}
+    if (d_parent)
+    {
+        baseX = d_parent->windowToScreenX(baseX);
+    }
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            baseX += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
+            break;
+        case HA_RIGHT:
+            baseX += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
+            break;
+        default:
+            baseX += getAbsoluteXPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1377,14 +1396,25 @@ float Window::windowToScreenX(float x) const
 *************************************************************************/
 float Window::windowToScreenY(float y) const
 {
-	const Window* wnd = this;
-	float baseY = 0;
+    float baseY = 0;
 
-	while (wnd != NULL)
-	{
-        baseY += wnd->getAbsoluteYPosition();
-		wnd = wnd->d_parent;
-	}
+    if (d_parent)
+    {
+        baseY = d_parent->windowToScreenY(baseY);
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            baseY += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
+            break;
+        case VA_BOTTOM:
+            baseY += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
+            break;
+        default:
+            baseY += getAbsoluteYPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1404,15 +1434,38 @@ float Window::windowToScreenY(float y) const
 *************************************************************************/
 Point Window::windowToScreen(const Point& pt) const
 {
-	const Window* wnd = this;
 	Point base(0, 0);
+    
+    if (d_parent)
+    {
+        base = d_parent->windowToScreen(base);
+    }
 
-	while (wnd != NULL)
-	{
-        base.d_x += wnd->getAbsoluteXPosition();
-		base.d_y += wnd->getAbsoluteYPosition();
-		wnd = wnd->d_parent;
-	}
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            base.d_x += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
+            break;
+        case HA_RIGHT:
+            base.d_x += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
+            break;
+        default:
+            base.d_x += getAbsoluteXPosition();
+            break;
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            base.d_y += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
+            break;
+        case VA_BOTTOM:
+            base.d_y += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
+            break;
+        default:
+            base.d_y += getAbsoluteYPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1450,15 +1503,38 @@ Size Window::windowToScreen(const Size& sze) const
 *************************************************************************/
 Rect Window::windowToScreen(const Rect& rect) const
 {
-	const Window* wnd = this;
-	Point base(0, 0);
+    Point base(0, 0);
 
-	while (wnd != NULL)
-	{
-		base.d_x += wnd->getAbsoluteXPosition();
-		base.d_y += wnd->getAbsoluteYPosition();
-		wnd = wnd->d_parent;
-	}
+    if (d_parent)
+    {
+        base = d_parent->windowToScreen(base);
+    }
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            base.d_x += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
+            break;
+        case HA_RIGHT:
+            base.d_x += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
+            break;
+        default:
+            base.d_x += getAbsoluteXPosition();
+            break;
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            base.d_y += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
+            break;
+        case VA_BOTTOM:
+            base.d_y += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
+            break;
+        default:
+            base.d_y += getAbsoluteYPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1666,7 +1742,8 @@ void Window::addStandardEvents(void)
 	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
 	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
 	addEvent(EventZOrderChanged);			addEvent(EventParentSized);             addEvent(EventDragDropItemEnters);
-    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);
+    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);     addEvent(EventVerticalAlignmentChanged);
+    addEvent(EventHorizontalAlignmentChanged);
 
 	// general input handling
 	addEvent(EventMouseEnters);				addEvent(EventMouseLeaves);				addEvent(EventMouseMove);
@@ -2458,6 +2535,8 @@ void Window::addStandardProperties(void)
     addProperty(&d_tooltipProperty);
     addProperty(&d_inheritsTooltipProperty);
     addProperty(&d_riseOnClickProperty);
+    addProperty(&d_vertAlignProperty);
+    addProperty(&d_horzAlignProperty);
 }
 
 
@@ -2988,6 +3067,28 @@ const UVector2& Window::getWindowMinSize() const
     return d_minSize;
 }
 
+void Window::setVerticalAlignment(const VerticalAlignment alignment)
+{
+    if (d_vertAlign != alignment)
+    {
+        d_vertAlign = alignment;
+
+        WindowEventArgs args(this);
+        onVerticalAlignmentChanged(args);
+    }
+}
+
+void Window::setHorizontalAlignment(const HorizontalAlignment alignment)
+{
+    if (d_horzAlign != alignment)
+    {
+        d_horzAlign = alignment;
+
+        WindowEventArgs args(this);
+        onHorizontalAlignmentChanged(args);
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -3368,6 +3469,16 @@ void Window::onDragDropItemLeaves(DragDropEventArgs& e)
 void Window::onDragDropItemDropped(DragDropEventArgs& e)
 {
     fireEvent(EventDragDropItemDropped, e, EventNamespace);
+}
+
+void Window::onVerticalAlignmentChanged(WindowEventArgs& e)
+{
+    fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
+}
+
+void Window::onHorizontalAlignmentChanged(WindowEventArgs& e)
+{
+    fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section

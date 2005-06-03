@@ -65,6 +65,27 @@ enum MetricsMode
 	Inherited		//!< Metrics are inherited from parent.
 };
 
+/*!
+\brief
+    Enumerated type used when specifying vertical alignments.
+ */
+enum VerticalAlignment
+{
+    VA_TOP,        //!< Elements position specifies an offset of it's top edge from the top edge of it's parent.
+    VA_CENTRE,     //!< Elements position specifies an offset of it's vertical centre from the vertical centre of it's parent.
+    VA_BOTTOM      //!< Elements position specifies an offset of it's bottom edge from the bottom edge of it's parent.
+};
+
+/*!
+\brief
+    Enumerated type used when specifying horizontal alignments.
+ */
+enum HorizontalAlignment
+{
+    HA_LEFT,        //!< Elements position specifies an offset of it's left edge from the left edge of it's parent.
+    HA_CENTRE,      //!< Elements position specifies an offset of it's horizontal centre from the horizontal centre of it's parent.
+    HA_RIGHT        //!< Elements position specifies an offset of it's right edge from the right edge of it's parent.
+};
 
 /*!
 \brief
@@ -113,6 +134,8 @@ public:
 	static const String EventDragDropItemEnters;	//!< A DragContainer has been dragged over this window.
 	static const String EventDragDropItemLeaves;	//!< A DragContainer has left this window.
 	static const String EventDragDropItemDropped;	//!< A DragContainer was dropped on this Window.
+    static const String EventVerticalAlignmentChanged;    //!< The vertical alignment of the window has changed.
+    static const String EventHorizontalAlignmentChanged;  //!< The vertical alignment of the window has changed.
 
 	// generated externally (inputs)
 	static const String EventMouseEnters;				//!< Mouse cursor has entered the Window.
@@ -1104,6 +1127,31 @@ public:
 	*/
 	bool testClassName(const String& class_name) const		{return testClassName_impl(class_name);}
 
+    /*!
+    \brief
+        Get the vertical alignment.
+
+        Returns the vertical alignment for the window.  This setting affects how the windows position is
+        interpreted relative to its parent.
+
+    \return
+        One of the VerticalAlignment enumerated values.
+     */
+    VerticalAlignment getVerticalAlignment() const  {return d_vertAlign;}
+
+    /*!
+    \brief
+        Get the horizontal alignment.
+
+        Returns the horizontal alignment for the window.  This setting affects how the windows position is
+        interpreted relative to its parent.
+
+    \return
+        One of the HorizontalAlignment enumerated values.
+     */
+    HorizontalAlignment getHorizontalAlignment() const  {return d_horzAlign;}
+
+
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1967,7 +2015,37 @@ public:
      */
     void setRiseOnClickEnabled(bool setting)    { d_riseOnClick = setting; }
 
+    /*!
+    \brief
+        Set the vertical alignment.
 
+        Modifies the vertical alignment for the window.  This setting affects how the windows position is
+        interpreted relative to its parent.
+
+    \param alignment
+        One of the VerticalAlignment enumerated values.
+
+    \return
+        Nothing.
+     */
+    void setVerticalAlignment(const VerticalAlignment alignment);
+
+    /*!
+    \brief
+        Set the horizontal alignment.
+
+        Modifies the horizontal alignment for the window.  This setting affects how the windows position is
+        interpreted relative to its parent.
+
+    \param alignment
+        One of the HorizontalAlignment enumerated values.
+
+    \return
+        Nothing.
+     */
+    void setHorizontalAlignment(const HorizontalAlignment alignment);
+
+    
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
 	*************************************************************************/
@@ -3055,7 +3133,29 @@ protected:
     */
     virtual void    onDragDropItemDropped(DragDropEventArgs& e);
 
+    
+    /*!
+    \brief
+        Handler called when the vertical alignment setting for the window is changed.
 
+    \param e
+        WindowEventArgs object initialised as follows:
+        - window field is set to point to the Window object whos alignment has changed (typically 'this').
+    */
+    virtual void    onVerticalAlignmentChanged(WindowEventArgs& e);
+
+    
+    /*!
+    \brief
+        Handler called when the horizontal alignment setting for the window is changed.
+
+    \param e
+        WindowEventArgs object initialised as follows:
+        - window field is set to point to the Window object whos alignment has changed (typically 'this').
+    */
+    virtual void    onHorizontalAlignmentChanged(WindowEventArgs& e);
+
+    
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
@@ -3224,6 +3324,10 @@ protected:
 	const Image*	d_mouseCursor;		//!< Holds pointer to the Window objects current mouse cursor image.
 	void*			d_userData;			//!< Holds pointer to some user assigned data.
 
+    // positional alignments
+    HorizontalAlignment d_horzAlign;    //!< Specifies the base for horizontal alignment.
+    VerticalAlignment   d_vertAlign;    //!< Specifies the base for vertical alignment.
+    
 	// maximum and minimum sizes
 	UVector2       d_minSize;          //!< current minimum size for the window.
 	UVector2       d_maxSize;          //!< current maximum size for the window.
@@ -3308,10 +3412,12 @@ protected:
     static  WindowProperties::Tooltip           d_tooltipProperty;
     static  WindowProperties::InheritsTooltipText d_inheritsTooltipProperty;
     static  WindowProperties::RiseOnClick       d_riseOnClickProperty;
+    static  WindowProperties::VerticalAlignment   d_vertAlignProperty;
+    static  WindowProperties::HorizontalAlignment d_horzAlignProperty;
 
 
 	/*************************************************************************
-		Private implementation functions
+		implementation functions
 	*************************************************************************/
 	/*!
 	\brief

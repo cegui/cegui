@@ -1364,6 +1364,60 @@ public:
 };
 
 
+/*!
+\brief
+    Property to access the vertical alignment setting for the window.
+
+    \par Usage:
+        - Name: VerticalAlignment
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "Top" to indicate the windows position is an offset of its top edge from its parents top edge.
+        - "Centre" to indicate the windows position is an offset of its centre point from its parents centre point.
+        - "Bottom" to indicate the windows position is an offset of its bottom edge from its parents bottom edge.
+*/
+class VerticalAlignment : public Property
+{
+    public:
+        VerticalAlignment() : Property(
+        "VerticalAlignment",
+        "Property to get/set the windows vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
+        "Top")
+        {}
+
+        String	get(const PropertyReceiver* receiver) const;
+        void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*!
+\brief
+    Property to access the horizontal alignment setting for the window.
+
+    \par Usage:
+        - Name: HorizontalAlignment
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "Left" to indicate the windows position is an offset of its left edge from its parents left edge.
+        - "Centre" to indicate the windows position is an offset of its centre point from its parents centre point.
+        - "Right" to indicate the windows position is an offset of its right edge from its parents right edge.
+*/
+class HorizontalAlignment : public Property
+{
+    public:
+        HorizontalAlignment() : Property(
+        "HorizontalAlignment",
+        "Property to get/set the windows horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
+        "Left")
+        {}
+
+        String	get(const PropertyReceiver* receiver) const;
+        void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 

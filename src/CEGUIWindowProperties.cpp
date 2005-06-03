@@ -746,6 +746,82 @@ void RiseOnClick::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String VerticalAlignment::get(const PropertyReceiver* receiver) const
+{
+    switch(static_cast<const Window*>(receiver)->getVerticalAlignment())
+    {
+        case VA_CENTRE:
+            return String("Centre");
+            break;
+
+        case VA_BOTTOM:
+            return String("Bottom");
+            break;
+
+        default:
+            return String("Top");
+    }
+}
+
+void VerticalAlignment::set(PropertyReceiver* receiver, const String& value)
+{
+    CEGUI::VerticalAlignment align;
+
+    if (value == "Centre")
+    {
+        align = VA_CENTRE;
+    }
+    else if (value == "Bottom")
+    {
+        align = VA_BOTTOM;
+    }
+    else
+    {
+        align = VA_TOP;
+    }
+    
+    static_cast<Window*>(receiver)->setVerticalAlignment(align);
+}
+
+
+String HorizontalAlignment::get(const PropertyReceiver* receiver) const
+{
+    switch(static_cast<const Window*>(receiver)->getHorizontalAlignment())
+    {
+        case HA_CENTRE:
+            return String("Centre");
+            break;
+
+        case HA_RIGHT:
+            return String("Right");
+            break;
+
+        default:
+            return String("Left");
+    }
+}
+
+void HorizontalAlignment::set(PropertyReceiver* receiver, const String& value)
+{
+    CEGUI::HorizontalAlignment align;
+
+    if (value == "Centre")
+    {
+        align = HA_CENTRE;
+    }
+    else if (value == "Right")
+    {
+        align = HA_RIGHT;
+    }
+    else
+    {
+        align = HA_LEFT;
+    }
+    
+    static_cast<Window*>(receiver)->setHorizontalAlignment(align);
+}
+
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section
