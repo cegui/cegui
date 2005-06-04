@@ -321,10 +321,25 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
+    float orgWidth = getAbsoluteWidth();
     float adjustment;
     float* minDim;
     float* maxDim;
     URect area(d_area);
+
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float newWidth = orgWidth - delta;
+
+    if (newWidth > maxWidth)
+        delta = orgWidth - maxWidth;
+    else if (newWidth < minWidth)
+        delta = orgWidth - minWidth;
 
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
@@ -370,6 +385,20 @@ void FrameWindow::moveRightEdge(float delta)
     float* maxDim;
     URect area(d_area);
 
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float newWidth = orgWidth + delta;
+
+    if (newWidth > maxWidth)
+        delta = maxWidth - orgWidth;
+    else if (newWidth < minWidth)
+        delta = minWidth - orgWidth;
+    
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
     {
@@ -410,10 +439,25 @@ void FrameWindow::moveRightEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveTopEdge(float delta)
 {
+    float orgHeight = getAbsoluteHeight();
     float adjustment;
     float* minDim;
     float* maxDim;
     URect area(d_area);
+
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float newHeight = orgHeight - delta;
+
+    if (newHeight > maxHeight)
+        delta = orgHeight - maxHeight;
+    else if (newHeight < minHeight)
+        delta = orgHeight - minHeight;
 
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
@@ -461,6 +505,20 @@ void FrameWindow::moveBottomEdge(float delta)
     float* maxDim;
     URect area(d_area);
 
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float newHeight = orgHeight + delta;
+
+    if (newHeight > maxHeight)
+        delta = maxHeight - orgHeight;
+    else if (newHeight < minHeight)
+        delta = minHeight - orgHeight;
+    
     // we use the active metrics mode to decide which component of the window edge to modify
     if (getMetricsMode() == Relative)
     {

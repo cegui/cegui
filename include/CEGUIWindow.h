@@ -812,7 +812,7 @@ public:
 	\return
 		Rect object describing this windows area, relative to the parent window, in absolute metrics
 	*/
-	Rect	getAbsoluteRect(void) const				{ return d_area.asAbsolute(getParentSize()); }
+    Rect	getAbsoluteRect(void) const				{ return Rect(d_area.getPosition().asAbsolute(getParentSize()), d_pixelSize); }
 
 
 	/*!
@@ -852,7 +852,7 @@ public:
 	\return
 		Size object describing this windows size in absolute metrics.
 	*/
-	Size	getAbsoluteSize(void) const				{ return d_area.getSize().asAbsolute(getParentSize()).asSize(); }
+	Size	getAbsoluteSize(void) const				{ return d_pixelSize; }
 
 
 	/*!
@@ -862,7 +862,7 @@ public:
 	\return
 		float value describing this windows width in absolute metrics.
 	*/
-	float	getAbsoluteWidth(void) const			{ return d_area.getWidth().asAbsolute(getParentWidth()); }
+	float	getAbsoluteWidth(void) const			{ return d_pixelSize.d_width; }
 
 
 	/*!
@@ -872,7 +872,7 @@ public:
 	\return
 	float value describing this windows height in absolute metrics.
 	*/
-	float	getAbsoluteHeight(void) const			{ return d_area.getHeight().asAbsolute(getParentHeight()); }
+	float	getAbsoluteHeight(void) const			{ return d_pixelSize.d_height; }
 
 
 	/*!
@@ -3321,6 +3321,7 @@ protected:
 	uint			d_ID;				//!< User ID assigned to this Window
 	float			d_alpha;			//!< Alpha transparency setting for the Window
     URect			d_area;             //!< This Window objects area as defined by a URect.
+    Size            d_pixelSize;        //!< Current constrained pixel size of the window.
 	const Image*	d_mouseCursor;		//!< Holds pointer to the Window objects current mouse cursor image.
 	void*			d_userData;			//!< Holds pointer to some user assigned data.
 

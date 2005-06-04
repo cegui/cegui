@@ -2890,54 +2890,37 @@ void Window::doRiseOnClick(void)
 void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)
 {
     // notes of what we did
-    bool moved = false, sized = false;
+    bool moved = false, sized;
     
     // save original size so we can work out how to behave later on
-    UVector2 oldSize(d_area.getSize());
-    // somewhere to store the ultimate position we will be using.
-    UVector2 finalPos(pos);
-    // somewhere to store the ultimate size we will be using
-    UVector2 finalSize(size);
+    Size oldSize(d_pixelSize);
 
     // calculate pixel sizes for everything, so we have a common format for comparisons.
     Vector2 absMax(d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
     Vector2 absMin(d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
-    Vector2 absSze(size.asAbsolute(getParentSize()));
+    d_pixelSize = size.asAbsolute(getParentSize()).asSize();
 
-    // FIXME: This is not right, min/max scales are relative to display so these can't simply
-    // FIXME: be plugged into the window size and have things work.
-    // limit new size to: minSize <= newSize <= maxSize
-//     if (absSze.d_x < absMin.d_x)
-//         finalSize.d_x = d_minSize.d_x;
-//     else if (absSze.d_x > absMax.d_x)
-//         finalSize.d_x = d_maxSize.d_x;
-//     if (absSze.d_y < absMin.d_y)
-//         finalSize.d_y = d_minSize.d_y;
-//     else if (absSze.d_y > absMax.d_y)
-//         finalSize.d_y = d_maxSize.d_y;
+    // limit new pixel size to: minSize <= newSize <= maxSize
+    if (d_pixelSize.d_width < absMin.d_x)
+        d_pixelSize.d_width = absMin.d_x;
+    else if (d_pixelSize.d_width > absMax.d_x)
+        d_pixelSize.d_width = absMax.d_x;
+    if (d_pixelSize.d_height < absMin.d_y)
+        d_pixelSize.d_height = absMin.d_y;
+    else if (d_pixelSize.d_height > absMax.d_y)
+        d_pixelSize.d_height = absMax.d_y;
 
-    // set new size if final result for size is different.
-    if (finalSize != oldSize)
-    {
-        d_area.setSize(finalSize);
-        sized = true;
-
-        if (topLeftSizing)
-        {
-            UVector2 adj(size - finalSize);
-
-            finalPos += adj;
-        }
-    }
+    d_area.setSize(size);
+    sized = (d_pixelSize != oldSize);
 
     // If this is a top/left edge sizing op, only modify position if the size actually changed.
     // If it is not a sizing op, then position may always change.
     if (!topLeftSizing || sized)
     {
         // only update position if a change has occurred.
-        if (finalPos != d_area.d_min)
+        if (pos != d_area.d_min)
         {
-            d_area.setPosition(finalPos);
+            d_area.setPosition(pos);
             moved = true;
         }
     }

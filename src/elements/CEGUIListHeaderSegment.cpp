@@ -288,6 +288,20 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
     // store this so we can work out how much size actually changed
     float orgWidth = getAbsoluteWidth();
 
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float newWidth = orgWidth + delta;
+
+    if (newWidth > maxWidth)
+        delta = maxWidth - orgWidth;
+    else if (newWidth < minWidth)
+        delta = minWidth - orgWidth;
+    
     // update segment area rect
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
     setWindowArea_impl(area.d_min, area.getSize());

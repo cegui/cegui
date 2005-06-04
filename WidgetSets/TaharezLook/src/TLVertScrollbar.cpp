@@ -171,7 +171,9 @@ Thumb* TLVertScrollbar::createThumb(void) const
 *************************************************************************/
 void TLVertScrollbar::layoutComponentWidgets(void)
 {
-	// calculate button sizes
+    d_thumb->setXPosition(ThumbPositionX);
+	
+    // calculate button sizes
 	Size bsz;
 	bsz.d_width = getAbsoluteWidth() * ButtonWidth;
 
