@@ -41,7 +41,7 @@ namespace CEGUI
 	formatting.  It is possible to specify the Image that is to be rendered, as well as the horizontal and vertical formatting
 	required.
 */
-class CEGUIBASE_API RenderableImage : public RenderableElement
+class CEGUIEXPORT RenderableImage : public RenderableElement
 {
 public:
 	/*************************************************************************

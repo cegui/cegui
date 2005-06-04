@@ -46,7 +46,7 @@ namespace CEGUI
 \brief
 	Base class for standard Listbox widget.
 */
-class CEGUIBASE_API Listbox : public Window
+class CEGUIEXPORT Listbox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

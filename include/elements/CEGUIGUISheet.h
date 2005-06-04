@@ -44,7 +44,7 @@ namespace CEGUI
     The C++ name of this class has been retained for backward compatibility reasons.  The intended usage of
     this window type has now been extended beyond that of a gui-sheet or root window.
 */
-class CEGUIBASE_API GUISheet : public Window
+class CEGUIEXPORT GUISheet : public Window
 {
 public:
     /*************************************************************************

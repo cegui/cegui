@@ -57,7 +57,7 @@ struct MouseClickTrackerImpl;
 	an initialised Renderer object which it can use to interface to whatever rendering system will be
 	used to display the GUI imagery.
 */
-class CEGUIBASE_API System : public Singleton<System>, public EventSet
+class CEGUIEXPORT System : public Singleton<System>, public EventSet
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

@@ -41,12 +41,14 @@
 *************************************************************************/
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef CEGUIBASE_EXPORTS
-#       define CEGUIBASE_API __declspec(dllexport)
+#       define CEGUIEXPORT __declspec(dllexport)
 #   else
-#       define CEGUIBASE_API __declspec(dllimport)
+#       define CEGUIEXPORT __declspec(dllimport)
 #   endif
+#       define CEGUIPRIVATE
 #else
-#       define CEGUIBASE_API
+#       define CEGUIEXPORT
+#       define CEGUIPRIVATE
 #endif
 
 

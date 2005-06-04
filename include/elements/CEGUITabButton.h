@@ -36,7 +36,7 @@ namespace CEGUI
 \brief
 
 */
-class CEGUIBASE_API TabButton : public ButtonBase
+class CEGUIEXPORT TabButton : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
 	Text utility support class.  This class is all static members.  You do not create instances of this class.
 */
-class CEGUIBASE_API TextUtils
+class CEGUIEXPORT TextUtils
 {
 public:
 	/*************************************************************************

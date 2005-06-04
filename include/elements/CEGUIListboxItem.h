@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
 	Base class for list box items
 */
-class CEGUIBASE_API ListboxItem
+class CEGUIEXPORT ListboxItem
 {
 public:
 	/*************************************************************************

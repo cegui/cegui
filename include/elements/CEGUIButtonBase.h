@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
 	Base class for all the 'button' type widgets (push button, radio button, check-box, etc)
 */
-class CEGUIBASE_API ButtonBase : public Window
+class CEGUIEXPORT ButtonBase : public Window
 {
 public:
 	/*************************************************************************

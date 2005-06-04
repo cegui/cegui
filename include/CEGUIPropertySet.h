@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
 	Class that contains a collection of Property objects.
 */
-class CEGUIBASE_API PropertySet : public PropertyReceiver
+class CEGUIEXPORT PropertySet : public PropertyReceiver
 {
 public:
 	/*!

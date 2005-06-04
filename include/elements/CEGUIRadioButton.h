@@ -45,7 +45,7 @@ namespace CEGUI
 	Base class to provide the logic for Radio Button widgets.
 
 */
-class CEGUIBASE_API RadioButton : public ButtonBase
+class CEGUIEXPORT RadioButton : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

@@ -42,7 +42,7 @@ namespace CEGUI
 \brief
 	Base class for the combo box drop down list.  This is a specialisation of the Listbox class.
 */
-class CEGUIBASE_API ComboDropList : public Listbox
+class CEGUIEXPORT ComboDropList : public Listbox
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

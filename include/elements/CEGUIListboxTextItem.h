@@ -35,7 +35,7 @@ namespace CEGUI
 \brief
 	Class used for textual items in a list box.
 */
-class CEGUIBASE_API ListboxTextItem : public ListboxItem
+class CEGUIEXPORT ListboxTextItem : public ListboxItem
 {
 public:
 	/*************************************************************************

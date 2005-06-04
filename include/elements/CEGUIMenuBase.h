@@ -46,7 +46,7 @@ namespace CEGUI
 \brief
 	Abstract base class for menus.
 */
-class CEGUIBASE_API MenuBase : public ItemListBase
+class CEGUIEXPORT MenuBase : public ItemListBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

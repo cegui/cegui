@@ -43,7 +43,7 @@ namespace CEGUI
 	must be an associated WindowFactory registered with the WindowManager so that the system
 	knows how to create and destroy those types of Window base object.
 */
-class CEGUIBASE_API WindowFactory
+class CEGUIEXPORT WindowFactory
 {
 public:
 	/*!

@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIBASE_API DefaultResourceProvider : public ResourceProvider
+class CEGUIEXPORT DefaultResourceProvider : public ResourceProvider
 {
 public:
 	/*************************************************************************

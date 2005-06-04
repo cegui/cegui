@@ -44,7 +44,7 @@ namespace CEGUI
 \brief
 	Abstract base class for a movable, sizable, window with a title-bar and a frame.
 */
-class CEGUIBASE_API FrameWindow : public Window
+class CEGUIEXPORT FrameWindow : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

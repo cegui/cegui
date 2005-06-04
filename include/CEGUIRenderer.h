@@ -65,7 +65,7 @@ enum QuadSplitMode
 	with specific rendering technologies.  To use a rendering system or API to draw
 	CEGUI imagery requires that an appropriate Renderer object be available.
 */
-class CEGUIBASE_API Renderer : public EventSet
+class CEGUIEXPORT Renderer : public EventSet
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

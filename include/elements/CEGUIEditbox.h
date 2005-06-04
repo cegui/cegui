@@ -48,7 +48,7 @@ struct RegexValidator;
 \brief
 	Base class for an Editbox widget
 */
-class CEGUIBASE_API Editbox : public Window
+class CEGUIEXPORT Editbox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
 	Base class providing logic for Check-box widgets
 */
-class CEGUIBASE_API Checkbox : public ButtonBase
+class CEGUIEXPORT Checkbox : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

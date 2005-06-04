@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
 	Base class for static widgets.
 */
-class CEGUIBASE_API Static : public Window
+class CEGUIEXPORT Static : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

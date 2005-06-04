@@ -42,7 +42,7 @@ namespace CEGUI
 \brief
 	Base class for a tab pane.
 */
-class CEGUIBASE_API TabPane : public Static
+class CEGUIEXPORT TabPane : public Static
 {
 public:
 	/*************************************************************************

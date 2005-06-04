@@ -48,7 +48,7 @@ namespace CEGUI
 	The EventSet used to collect Event objects together, and allow access
 	to them by a unique name
 */
-class CEGUIBASE_API EventSet
+class CEGUIEXPORT EventSet
 {
 public:
 	/*!

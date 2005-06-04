@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
 	Class that holds details of colours for the four corners of a rectangle.
 */
-class CEGUIBASE_API ColourRect
+class CEGUIEXPORT ColourRect
 {
 public:
 	/*!

@@ -49,7 +49,7 @@ namespace CEGUI
  */
 
 
-template <typename T> class CEGUIBASE_API Singleton
+template <typename T> class CEGUIEXPORT Singleton
 {
 protected:
     static T* ms_Singleton;

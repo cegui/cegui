@@ -62,7 +62,7 @@ enum FrameLocation
 	frame (usually stretched over the entire area of the element) then a better choice would be to use a RenderableImage, or perform the
 	rendering directly instead.
 */
-class CEGUIBASE_API RenderableFrame : public RenderableElement
+class CEGUIEXPORT RenderableFrame : public RenderableElement
 {
 public:
 	/*************************************************************************

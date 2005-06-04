@@ -199,7 +199,7 @@ SubscriberRef(const Functor& f)
 	\note
 		An Event object may not be copied.
 */
-class CEGUIBASE_API Event
+class CEGUIEXPORT Event
 {
 public:
 	class ConnectionInterface : public Referenced {

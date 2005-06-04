@@ -62,7 +62,7 @@ enum LoggingLevel
 \brief
 	Class that implements logging for the GUI system
 */
-class CEGUIBASE_API Logger : public Singleton <Logger>
+class CEGUIEXPORT Logger : public Singleton <Logger>
 {
 public:
 	/*!

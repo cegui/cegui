@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
 	Class encapsulating operations on a Rectangle
 */
-class CEGUIBASE_API Rect
+class CEGUIEXPORT Rect
 {
 public:
 	Rect(void) {}

@@ -39,7 +39,7 @@ namespace CEGUI
 \brief
 	struct to give scope to scan code enumeration.
 */
-struct CEGUIBASE_API Key
+struct CEGUIEXPORT Key
 {
 	// enumeration of scan codes.  Customised from table taken from Ogre, which took them from DirectInput...
 	enum Scan
@@ -231,7 +231,7 @@ enum SystemKey
 	EventArgs based class that is used for objects passed to handlers triggered for events
 	concerning some Window object.
 */
-class CEGUIBASE_API WindowEventArgs : public EventArgs
+class CEGUIEXPORT WindowEventArgs : public EventArgs
 {
 public:
 	WindowEventArgs(Window* wnd) : window(wnd) {}
@@ -245,7 +245,7 @@ public:
 	EventArgs based class that is used for objects passed to input event handlers
 	concerning mouse input.
 */
-class CEGUIBASE_API MouseEventArgs : public WindowEventArgs
+class CEGUIEXPORT MouseEventArgs : public WindowEventArgs
 {
 public:
 	MouseEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
@@ -263,7 +263,7 @@ public:
 	EventArgs based class that is used for objects passed to input event handlers
 	concerning mouse cursor events.
 */
-class CEGUIBASE_API MouseCursorEventArgs : public EventArgs
+class CEGUIEXPORT MouseCursorEventArgs : public EventArgs
 {
 public:
 	MouseCursorEventArgs(MouseCursor* cursor) : mouseCursor(cursor) {}
@@ -278,7 +278,7 @@ public:
 	EventArgs based class that is used for objects passed to input event handlers
 	concerning keyboard input.
 */
-class CEGUIBASE_API KeyEventArgs : public WindowEventArgs
+class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
 {
 public:
 	KeyEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
@@ -293,7 +293,7 @@ public:
 \brief
 	EventArgs based class that is used for Activated and Deactivated window events
 */
-class CEGUIBASE_API ActivationEventArgs : public WindowEventArgs
+class CEGUIEXPORT ActivationEventArgs : public WindowEventArgs
 {
 public:
 	ActivationEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
@@ -305,7 +305,7 @@ public:
 \brief
 	EventArgs based class used for certain drag/drop notifications
 */
-class CEGUIBASE_API DragDropEventArgs : public WindowEventArgs
+class CEGUIEXPORT DragDropEventArgs : public WindowEventArgs
 {
 public:
 	DragDropEventArgs(Window* wnd) : WindowEventArgs(wnd) {}

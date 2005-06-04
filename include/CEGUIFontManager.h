@@ -51,7 +51,7 @@ namespace CEGUI
 	and that those Font objects can be accessed, via a unique name, by any interested party within
 	the system.
 */
-class CEGUIBASE_API FontManager : public Singleton<FontManager>
+class CEGUIEXPORT FontManager : public Singleton<FontManager>
 {
 public:
 	/*!

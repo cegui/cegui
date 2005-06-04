@@ -44,7 +44,7 @@ namespace CEGUI
 \brief
 	Base class for list header segment window
 */
-class CEGUIBASE_API ListHeaderSegment : public Window
+class CEGUIEXPORT ListHeaderSegment : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

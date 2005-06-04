@@ -46,7 +46,7 @@ namespace CEGUI
 \brief
 	Simple grid index structure.
 */
-struct CEGUIBASE_API MCLGridRef
+struct CEGUIEXPORT MCLGridRef
 {
 	MCLGridRef(uint r, uint c) : row(r), column(c) {}
 
@@ -68,7 +68,7 @@ struct CEGUIBASE_API MCLGridRef
 \brief
 	Base class for the multi column list widget.
 */
-class CEGUIBASE_API MultiColumnList : public Window
+class CEGUIEXPORT MultiColumnList : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

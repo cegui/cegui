@@ -44,7 +44,7 @@ namespace CEGUI
 \brief
 	Base class for item type widgets.
 */
-class CEGUIBASE_API ItemEntry : public Window
+class CEGUIEXPORT ItemEntry : public Window
 {
 public:
 	/*************************************************************************

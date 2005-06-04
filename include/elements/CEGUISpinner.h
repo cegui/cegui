@@ -45,7 +45,7 @@ namespace CEGUI
         and two buttons which may be used to increase or decrease the
         value in the text area by a user specified amount.
     */
-    class CEGUIBASE_API Spinner : public Window
+    class CEGUIEXPORT Spinner : public Window
     {
     public:
         /*!

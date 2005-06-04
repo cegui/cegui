@@ -43,7 +43,7 @@ namespace CEGUI
 \brief
 	Base class for a static text widget.
 */
-class CEGUIBASE_API StaticText : public Static
+class CEGUIEXPORT StaticText : public Static
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

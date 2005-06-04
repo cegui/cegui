@@ -48,13 +48,13 @@ namespace CEGUI
 \brief
 	Class that manages WindowFactory objects
 */
-class CEGUIBASE_API WindowFactoryManager : public Singleton<WindowFactoryManager>
+class CEGUIEXPORT WindowFactoryManager : public Singleton<WindowFactoryManager>
 {
 public:
 	/*************************************************************************
 		Class used to track active alias targets
 	*************************************************************************/
-	class CEGUIBASE_API AliasTargetStack
+	class CEGUIEXPORT AliasTargetStack
 	{
 	public:
 		/*!

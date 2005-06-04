@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
 	EventArgs class used for segment move (sequence changed) events.
 */
-class CEGUIBASE_API HeaderSequenceEventArgs : public WindowEventArgs
+class CEGUIEXPORT HeaderSequenceEventArgs : public WindowEventArgs
 {
 public:
 	HeaderSequenceEventArgs(Window* wnd, uint old_idx, uint new_idx) : WindowEventArgs(wnd), d_oldIdx(old_idx), d_newIdx(new_idx) {};
@@ -59,7 +59,7 @@ public:
 \brief
 	Base class for the multi column list header widget.
 */
-class CEGUIBASE_API ListHeader : public Window
+class CEGUIEXPORT ListHeader : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

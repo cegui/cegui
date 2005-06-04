@@ -48,7 +48,7 @@ namespace CEGUI
 	The slider widget has a default range of 0.0f - 1.0f.  This enables use of the slider value to scale
 	any value needed by way of a simple multiplication.
 */
-class CEGUIBASE_API Slider : public Window
+class CEGUIEXPORT Slider : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

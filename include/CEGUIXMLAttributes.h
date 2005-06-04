@@ -35,7 +35,7 @@ namespace CEGUI
     \brief
         Class representing a block of attributes associated with an XML element.
      */
-    class CEGUIBASE_API XMLAttributes
+    class CEGUIEXPORT XMLAttributes
     {
     public:
         /*!

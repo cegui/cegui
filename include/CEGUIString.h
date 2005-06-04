@@ -50,7 +50,7 @@ namespace CEGUI
 	current locale, and also comparisons do not take into account the Unicode data tables, so are not 'correct'
 	as such.
 */
-class CEGUIBASE_API String
+class CEGUIEXPORT String
 {
 public:
 	/*************************************************************************
@@ -5138,253 +5138,253 @@ private:
 \brief
 	Return true if String \a str1 is equal to String \a str2
 */
-bool CEGUIBASE_API	operator==(const String& str1, const String& str2);
+bool CEGUIEXPORT	operator==(const String& str1, const String& str2);
 
 /*!
 \brief
 	Return true if String \a str is equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator==(const String& str, const std::string& std_str);
+bool CEGUIEXPORT	operator==(const String& str, const std::string& std_str);
 
 /*!
 \brief
 	Return true if String \a str is equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator==(const std::string& std_str, const String& str);
+bool CEGUIEXPORT	operator==(const std::string& std_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator==(const String& str, const utf8* utf8_str);
+bool CEGUIEXPORT	operator==(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
 	Return true if String \a str is equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator==(const utf8* utf8_str, const String& str);
+bool CEGUIEXPORT	operator==(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str1 is not equal to String \a str2
 */
-bool CEGUIBASE_API	operator!=(const String& str1, const String& str2);
+bool CEGUIEXPORT	operator!=(const String& str1, const String& str2);
 
 /*!
 \brief
 	Return true if String \a str is not equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator!=(const String& str, const std::string& std_str);
+bool CEGUIEXPORT	operator!=(const String& str, const std::string& std_str);
 
 /*!
 \brief
 	Return true if String \a str is not equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator!=(const std::string& std_str, const String& str);
+bool CEGUIEXPORT	operator!=(const std::string& std_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is not equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator!=(const String& str, const utf8* utf8_str);
+bool CEGUIEXPORT	operator!=(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
 	Return true if String \a str is not equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator!=(const utf8* utf8_str, const String& str);
+bool CEGUIEXPORT	operator!=(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str1 is lexicographically less than String \a str2
 */
-bool CEGUIBASE_API	operator<(const String& str1, const String& str2);
+bool CEGUIEXPORT	operator<(const String& str1, const String& str2);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than std::string \a std_str
 */
-bool CEGUIBASE_API	operator<(const String& str, const std::string& std_str);
+bool CEGUIEXPORT	operator<(const String& str, const std::string& std_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than std::string \a std_str
 */
-bool CEGUIBASE_API	operator<(const std::string& std_str, const String& str);
+bool CEGUIEXPORT	operator<(const std::string& std_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator<(const String& str, const utf8* utf8_str);
+bool CEGUIEXPORT	operator<(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator<(const utf8* utf8_str, const String& str);
+bool CEGUIEXPORT	operator<(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str1 is lexicographically greater than String \a str2
 */
-bool CEGUIBASE_API	operator>(const String& str1, const String& str2);
+bool CEGUIEXPORT	operator>(const String& str1, const String& str2);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than std::string \a std_str
 */
-bool CEGUIBASE_API	operator>(const String& str, const std::string& std_str);
+bool CEGUIEXPORT	operator>(const String& str, const std::string& std_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than std::string \a std_str
 */
-bool CEGUIBASE_API	operator>(const std::string& std_str, const String& str);
+bool CEGUIEXPORT	operator>(const std::string& std_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator>(const String& str, const utf8* utf8_str);
+bool CEGUIEXPORT	operator>(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator>(const utf8* utf8_str, const String& str);
+bool CEGUIEXPORT	operator>(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str1 is lexicographically less than or equal to String \a str2
 */
-bool CEGUIBASE_API	operator<=(const String& str1, const String& str2);
+bool CEGUIEXPORT	operator<=(const String& str1, const String& str2);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than or equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator<=(const String& str, const std::string& std_str);
+bool CEGUIEXPORT	operator<=(const String& str, const std::string& std_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than or equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator<=(const std::string& std_str, const String& str);
+bool CEGUIEXPORT	operator<=(const std::string& std_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than or equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator<=(const String& str, const utf8* utf8_str);
+bool CEGUIEXPORT	operator<=(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than or equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator<=(const utf8* utf8_str, const String& str);
+bool CEGUIEXPORT	operator<=(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str1 is lexicographically greater than or equal to String \a str2
 */
-bool CEGUIBASE_API	operator>=(const String& str1, const String& str2);
+bool CEGUIEXPORT	operator>=(const String& str1, const String& str2);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than or equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator>=(const String& str, const std::string& std_str);
+bool CEGUIEXPORT	operator>=(const String& str, const std::string& std_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than or equal to std::string \a std_str
 */
-bool CEGUIBASE_API	operator>=(const std::string& std_str, const String& str);
+bool CEGUIEXPORT	operator>=(const std::string& std_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than or equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator>=(const String& str, const utf8* utf8_str);
+bool CEGUIEXPORT	operator>=(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than or equal to null-terminated utf8 data \a utf8_str
 */
-bool CEGUIBASE_API	operator>=(const utf8* utf8_str, const String& str);
+bool CEGUIEXPORT	operator>=(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is equal to c-string \a c_str
 */
-bool CEGUIBASE_API	operator==(const String& str, const char* c_str);
+bool CEGUIEXPORT	operator==(const String& str, const char* c_str);
 
 /*!
 \brief
 	Return true if c-string \a c_str is equal to String \a str
 */
-bool CEGUIBASE_API	operator==(const char* c_str, const String& str);
+bool CEGUIEXPORT	operator==(const char* c_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is not equal to c-string \a c_str
 */
-bool CEGUIBASE_API	operator!=(const String& str, const char* c_str);
+bool CEGUIEXPORT	operator!=(const String& str, const char* c_str);
 
 /*!
 \brief
 	Return true if c-string \a c_str is not equal to String \a str
 */
-bool CEGUIBASE_API	operator!=(const char* c_str, const String& str);
+bool CEGUIEXPORT	operator!=(const char* c_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than c-string \a c_str
 */
-bool CEGUIBASE_API	operator<(const String& str, const char* c_str);
+bool CEGUIEXPORT	operator<(const String& str, const char* c_str);
 
 /*!
 \brief
 	Return true if c-string \a c_str is lexicographically less than String \a str
 */
-bool CEGUIBASE_API	operator<(const char* c_str, const String& str);
+bool CEGUIEXPORT	operator<(const char* c_str, const String& str);
 
 /*!
 \brief
 Return true if String \a str is lexicographically greater than c-string \a c_str
 */
-bool CEGUIBASE_API	operator>(const String& str, const char* c_str);
+bool CEGUIEXPORT	operator>(const String& str, const char* c_str);
 
 /*!
 \brief
 Return true if c-string \a c_str is lexicographically greater than String \a str
 */
-bool CEGUIBASE_API	operator>(const char* c_str, const String& str);
+bool CEGUIEXPORT	operator>(const char* c_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically less than or equal to c-string \a c_str
 */
-bool CEGUIBASE_API	operator<=(const String& str, const char* c_str);
+bool CEGUIEXPORT	operator<=(const String& str, const char* c_str);
 
 /*!
 \brief
 	Return true if c-string \a c_str is lexicographically less than or equal to String \a str
 */
-bool CEGUIBASE_API	operator<=(const char* c_str, const String& str);
+bool CEGUIEXPORT	operator<=(const char* c_str, const String& str);
 
 /*!
 \brief
 	Return true if String \a str is lexicographically greater than or equal to c-string \a c_str
 */
-bool CEGUIBASE_API	operator>=(const String& str, const char* c_str);
+bool CEGUIEXPORT	operator>=(const String& str, const char* c_str);
 
 /*!
 \brief
 	Return true if c-string \a c_str is lexicographically greater than or equal to String \a str
 */
-bool CEGUIBASE_API	operator>=(const char* c_str, const String& str);
+bool CEGUIEXPORT	operator>=(const char* c_str, const String& str);
 
 //////////////////////////////////////////////////////////////////////////
 // Concatenation operator functions
@@ -5404,7 +5404,7 @@ bool CEGUIBASE_API	operator>=(const char* c_str, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const String str1, const String& str2);
+String CEGUIEXPORT	operator+(const String str1, const String& str2);
 
 /*!
 \brief
@@ -5421,7 +5421,7 @@ String CEGUIBASE_API	operator+(const String str1, const String& str2);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const String str, const std::string& std_str);
+String CEGUIEXPORT	operator+(const String str, const std::string& std_str);
 
 /*!
 \brief
@@ -5438,7 +5438,7 @@ String CEGUIBASE_API	operator+(const String str, const std::string& std_str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const std::string& std_str, const String& str);
+String CEGUIEXPORT	operator+(const std::string& std_str, const String& str);
 
 /*!
 \brief
@@ -5455,7 +5455,7 @@ String CEGUIBASE_API	operator+(const std::string& std_str, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const String str, const utf8* utf8_str);
+String CEGUIEXPORT	operator+(const String str, const utf8* utf8_str);
 
 /*!
 \brief
@@ -5472,7 +5472,7 @@ String CEGUIBASE_API	operator+(const String str, const utf8* utf8_str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const utf8* utf8_str, const String& str);
+String CEGUIEXPORT	operator+(const utf8* utf8_str, const String& str);
 
 /*!
 \brief
@@ -5489,7 +5489,7 @@ String CEGUIBASE_API	operator+(const utf8* utf8_str, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const String str, utf32 code_point);
+String CEGUIEXPORT	operator+(const String str, utf32 code_point);
 
 /*!
 \brief
@@ -5506,7 +5506,7 @@ String CEGUIBASE_API	operator+(const String str, utf32 code_point);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(utf32 code_point, const String& str);
+String CEGUIEXPORT	operator+(utf32 code_point, const String& str);
 
 /*!
 \brief
@@ -5523,7 +5523,7 @@ String CEGUIBASE_API	operator+(utf32 code_point, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const String str, const char* c_str);
+String CEGUIEXPORT	operator+(const String str, const char* c_str);
 
 /*!
 \brief
@@ -5540,7 +5540,7 @@ String CEGUIBASE_API	operator+(const String str, const char* c_str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIBASE_API	operator+(const char* c_str, const String& str);
+String CEGUIEXPORT	operator+(const char* c_str, const String& str);
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -5565,7 +5565,7 @@ std::ostream& operator<<(std::ostream& s, const String& str);
 \return
 	Nothing
 */
-void CEGUIBASE_API swap(String& str1, String& str2);
+void CEGUIEXPORT swap(String& str1, String& str2);
 
 
 } // End of  CEGUI namespace section

@@ -55,7 +55,7 @@ namespace CEGUI
 	of 'components' which can later be accessed via name.  The components of an Imageset can queried for
 	various details, and sent to the Renderer object for drawing.
 */
-class CEGUIBASE_API Imageset
+class CEGUIEXPORT Imageset
 {
 	friend class Imageset_xmlHandler;
 private:

@@ -50,7 +50,7 @@ namespace CEGUI
 \brief
 	Base class for standard Tab Control widget.
 */
-class CEGUIBASE_API TabControl : public Window
+class CEGUIEXPORT TabControl : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

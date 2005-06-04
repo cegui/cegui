@@ -36,7 +36,7 @@ namespace CEGUI
 {
 
 template <class T>
-class CEGUIBASE_API DataContainer
+class CEGUIEXPORT DataContainer
 {
 public:
 	/*************************************************************************

@@ -45,7 +45,7 @@ namespace CEGUI
 	Class representing the title bar for Frame Windows.
 
 */
-class CEGUIBASE_API Titlebar : public Window
+class CEGUIEXPORT Titlebar : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

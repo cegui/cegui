@@ -47,7 +47,7 @@ namespace CEGUI
 	This base class performs it's own rendering.  There is no need to override this widget to perform rendering
 	of static images.
 */
-class CEGUIBASE_API StaticImage : public Static
+class CEGUIEXPORT StaticImage : public Static
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

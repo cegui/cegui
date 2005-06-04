@@ -79,7 +79,7 @@ enum TextFormatting
 	methods for loading typefaces from various sources, and then for outputting text via
 	the Renderer object.
 */
-class CEGUIBASE_API Font
+class CEGUIEXPORT Font
 {
 	friend class Font_xmlHandler;
 public:

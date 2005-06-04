@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
 	Class used as a two dimensional vector (aka a Point)
 */
-class CEGUIBASE_API Vector2
+class CEGUIEXPORT Vector2
 {
 public:
 	Vector2(void) {}
@@ -114,7 +114,7 @@ typedef	Vector2		Point;
 \brief
 	Class used as a three dimensional vector
 */
-class CEGUIBASE_API Vector3
+class CEGUIEXPORT Vector3
 {
 public:
 	Vector3(void) {}

@@ -38,7 +38,7 @@ typedef uint32 argb_t;    //!< 32 bit ARGB representation of a colour.
 \brief
 	Class representing colour values within the system.
 */
-class CEGUIBASE_API colour
+class CEGUIEXPORT colour
 {
 public:
 	/*************************************************************************

@@ -37,7 +37,7 @@ namespace CEGUI
 \brief
 	Root exception class used within the GUI system.
 */
-class  CEGUIBASE_API Exception
+class  CEGUIEXPORT Exception
 {
 public:
 	/*************************************************************************
@@ -64,7 +64,7 @@ protected:
 \brief
 	Exception class used when none of the other classes are applicable
 */
-class CEGUIBASE_API GenericException : public Exception
+class CEGUIEXPORT GenericException : public Exception
 {
 public:
 	/*************************************************************************
@@ -77,7 +77,7 @@ public:
 \brief
 	Exception class used when a request was made using a name of an unknown object
 */
-class CEGUIBASE_API UnknownObjectException : public Exception
+class CEGUIEXPORT UnknownObjectException : public Exception
 {
 public:
 	/*************************************************************************
@@ -90,7 +90,7 @@ public:
 \brief
 	Exception class used when some impossible request was made for the current system state
 */
-class CEGUIBASE_API InvalidRequestException : public Exception
+class CEGUIEXPORT InvalidRequestException : public Exception
 {
 public:
 	/*************************************************************************
@@ -103,7 +103,7 @@ public:
 \brief
 	Exception class used when a file handling problem occurs
 */
-class CEGUIBASE_API FileIOException : public Exception
+class CEGUIEXPORT FileIOException : public Exception
 {
 public:
 	/*************************************************************************
@@ -116,7 +116,7 @@ public:
 \brief
 	Exception class used when an problem is detected within the Renderer or related objects
 */
-class CEGUIBASE_API RendererException : public Exception
+class CEGUIEXPORT RendererException : public Exception
 {
 public:
 	/*************************************************************************
@@ -129,7 +129,7 @@ public:
 \brief
 	Exception class used when an attempt is made to use an object name that is already in use within the system
 */
-class CEGUIBASE_API AlreadyExistsException : public Exception
+class CEGUIEXPORT AlreadyExistsException : public Exception
 {
 public:
 	/*************************************************************************
@@ -142,7 +142,7 @@ public:
 \brief
 	Exception class used when a memory handling error is detected
 */
-class CEGUIBASE_API MemoryException : public Exception
+class CEGUIEXPORT MemoryException : public Exception
 {
 public:
 	/*************************************************************************
@@ -155,7 +155,7 @@ public:
 \brief
 	Exception class used when some required object or parameter is null
 */
-class CEGUIBASE_API NullObjectException : public Exception
+class CEGUIEXPORT NullObjectException : public Exception
 {
 public:
 	/*************************************************************************
@@ -168,7 +168,7 @@ public:
 \brief
 	Exception class used when some attempt to delete, remove, or otherwise invalidate some object that is still in use occurs.
 */
-class CEGUIBASE_API ObjectInUseException : public Exception
+class CEGUIEXPORT ObjectInUseException : public Exception
 {
 public:
 	/*************************************************************************

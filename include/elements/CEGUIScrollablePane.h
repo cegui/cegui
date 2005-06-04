@@ -39,7 +39,7 @@ namespace CEGUI
         larger than the ScrollablePane itself and these child windows can be scrolled into
         view using the scrollbars of the scrollable pane.
     */
-    class CEGUIBASE_API ScrollablePane : public Window
+    class CEGUIEXPORT ScrollablePane : public Window
     {
     public:
         /*************************************************************************

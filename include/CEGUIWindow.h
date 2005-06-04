@@ -74,7 +74,7 @@ enum MetricsMode
 	common functionality required by all UI objects, and specifies the minimal interface required to be implemented by
 	derived classes.
 */
-class CEGUIBASE_API Window : public PropertySet, public EventSet
+class CEGUIEXPORT Window : public PropertySet, public EventSet
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

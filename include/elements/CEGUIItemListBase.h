@@ -48,7 +48,7 @@ namespace CEGUI
 \brief
 	Base class for item list widgets.
 */
-class CEGUIBASE_API ItemListBase : public Window
+class CEGUIEXPORT ItemListBase : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

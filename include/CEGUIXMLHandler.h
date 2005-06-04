@@ -30,7 +30,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class CEGUIBASE_API XMLHandler
+    class CEGUIEXPORT XMLHandler
     {
     public:
         /*!

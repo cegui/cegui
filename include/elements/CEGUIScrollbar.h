@@ -48,7 +48,7 @@ namespace CEGUI
 	add whatever meaning is appropriate according to what that derived class
 	represents to the user.
 */
-class CEGUIBASE_API Scrollbar : public Window
+class CEGUIEXPORT Scrollbar : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

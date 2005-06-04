@@ -49,7 +49,7 @@ namespace CEGUI
 \brief
 	Class that represents a single Image of an Imageset.
 */
-class CEGUIBASE_API Image
+class CEGUIEXPORT Image
 {
 public:
 	/*!

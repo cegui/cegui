@@ -47,7 +47,7 @@ namespace CEGUI
 \brief
 	Base class for all the TextItem widgets.
 */
-class CEGUIBASE_API TextItem : public ItemEntry
+class CEGUIEXPORT TextItem : public ItemEntry
 {
 public:
 	/*************************************************************************

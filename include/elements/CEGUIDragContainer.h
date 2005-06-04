@@ -36,7 +36,7 @@ namespace CEGUI
     \brief
         Generic drag & drop enabled window class
     */
-    class CEGUIBASE_API DragContainer : public Window
+    class CEGUIEXPORT DragContainer : public Window
     {
     public:
         /*************************************************************************

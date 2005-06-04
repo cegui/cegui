@@ -46,7 +46,7 @@ namespace CEGUI
 \brief
 	Base class for popup menus
 */
-class CEGUIBASE_API PopupMenu : public MenuBase
+class CEGUIEXPORT PopupMenu : public MenuBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

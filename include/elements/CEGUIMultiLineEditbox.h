@@ -47,7 +47,7 @@ namespace CEGUI
 \brief
 	Base class for the multi-line edit box widget.
 */
-class CEGUIBASE_API MultiLineEditbox : public Window
+class CEGUIEXPORT MultiLineEditbox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

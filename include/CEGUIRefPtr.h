@@ -28,7 +28,7 @@
 
 namespace CEGUI {
 
-class CEGUIBASE_API Referenced
+class CEGUIEXPORT Referenced
 {
 public:
   Referenced() : d_refCount(0) {}

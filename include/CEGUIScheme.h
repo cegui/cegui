@@ -51,7 +51,7 @@ namespace CEGUI
 	Imageset objects, some Font objects, and register a collection of WindowFactory objects within
 	the system which would then be in a state to serve those elements to client code.
 */
-class CEGUIBASE_API Scheme
+class CEGUIEXPORT Scheme
 {
 	friend class Scheme_xmlHandler;
 public:

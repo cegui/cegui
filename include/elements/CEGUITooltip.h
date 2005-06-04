@@ -30,7 +30,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class CEGUIBASE_API Tooltip : public Window
+    class CEGUIEXPORT Tooltip : public Window
     {
     public:
         /*************************************************************************

@@ -39,7 +39,7 @@ namespace CEGUI
 	Abstract interface required for all scripting support modules to be used with
 	the CEGUI system.
 */
-class CEGUIBASE_API ScriptModule
+class CEGUIEXPORT ScriptModule
 {
 public:
 	/*************************************************************************

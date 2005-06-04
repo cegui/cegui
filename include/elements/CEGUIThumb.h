@@ -49,7 +49,7 @@ namespace CEGUI
 	The thumb widget is used to compose other widgets (like sliders and scroll bars).  You would
 	not normally need to use this widget directly unless you are making a new widget of some type.
 */
-class CEGUIBASE_API Thumb : public PushButton
+class CEGUIEXPORT Thumb : public PushButton
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

@@ -47,7 +47,7 @@ namespace CEGUI
 \brief
 	A class that manages the creation of, access to, and destruction of GUI Scheme objects
 */
-class CEGUIBASE_API SchemeManager : public Singleton<SchemeManager>
+class CEGUIEXPORT SchemeManager : public Singleton<SchemeManager>
 {
 public:
 	/*!

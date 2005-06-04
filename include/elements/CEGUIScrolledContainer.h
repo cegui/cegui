@@ -37,7 +37,7 @@ namespace CEGUI
         Helper container window class which is used in the implementation of the
         ScrollablePane widget class.
     */
-    class CEGUIBASE_API ScrolledContainer : public Window
+    class CEGUIEXPORT ScrolledContainer : public Window
     {
     public:
         /*************************************************************************

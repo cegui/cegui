@@ -39,7 +39,7 @@ namespace CEGUI
 \brief
 
 */
-class CEGUIBASE_API RenderableElement
+class CEGUIEXPORT RenderableElement
 {
 public:
 	/*************************************************************************

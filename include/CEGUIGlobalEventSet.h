@@ -32,7 +32,7 @@
 namespace CEGUI
 {
 
-class CEGUIBASE_API GlobalEventSet : public EventSet, public Singleton<GlobalEventSet>
+class CEGUIEXPORT GlobalEventSet : public EventSet, public Singleton<GlobalEventSet>
 {
 public:
 	GlobalEventSet();

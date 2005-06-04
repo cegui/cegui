@@ -44,7 +44,7 @@ namespace CEGUI
 \brief
 	Base class for progress bars.
 */
-class CEGUIBASE_API ProgressBar : public Window
+class CEGUIEXPORT ProgressBar : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

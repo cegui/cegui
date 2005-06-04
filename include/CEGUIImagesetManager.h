@@ -51,7 +51,7 @@ namespace CEGUI
 	the ImagesetManager will function as a central repository for imagery used within the GUI system,
 	and that such imagery can be accessed, via a unique name, by any interested party within the system.
 */
-class CEGUIBASE_API ImagesetManager : public Singleton<ImagesetManager>
+class CEGUIEXPORT ImagesetManager : public Singleton<ImagesetManager>
 {
 public:
 	/*!

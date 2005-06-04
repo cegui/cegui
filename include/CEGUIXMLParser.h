@@ -33,7 +33,7 @@ namespace CEGUI
     \brief
         This is an abstract class that is used by CEGUI to interface with XML parser libraries.
      */
-    class CEGUIBASE_API XMLParser
+    class CEGUIEXPORT XMLParser
     {
     public:
         /*!

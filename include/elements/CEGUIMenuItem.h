@@ -46,7 +46,7 @@ namespace CEGUI
 \brief
 	Base class for menu items.
 */
-class CEGUIBASE_API MenuItem : public TextItem
+class CEGUIEXPORT MenuItem : public TextItem
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

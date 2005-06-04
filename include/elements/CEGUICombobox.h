@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
 	Base class for the Combobox widget
 */
-class CEGUIBASE_API Combobox : public Window
+class CEGUIEXPORT Combobox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events

@@ -39,7 +39,7 @@ namespace CEGUI
 \brief
 	Dummy base class to ensure correct casting of receivers.
 */
-class CEGUIBASE_API PropertyReceiver
+class CEGUIEXPORT PropertyReceiver
 {
 public:
 	PropertyReceiver() {}
@@ -54,7 +54,7 @@ public:
 	Property objects allow (via a PropertySet) access to certain properties of objects
 	by using simple get/set functions and the name of the property to be accessed.
 */
-class CEGUIBASE_API Property
+class CEGUIEXPORT Property
 {
 public:
 	/*!
