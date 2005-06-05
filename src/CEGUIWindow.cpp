@@ -94,7 +94,15 @@ WindowProperties::InheritsTooltipText Window::d_inheritsTooltipProperty;
 WindowProperties::RiseOnClick       Window::d_riseOnClickProperty;
 WindowProperties::VerticalAlignment   Window::d_vertAlignProperty;
 WindowProperties::HorizontalAlignment Window::d_horzAlignProperty;
-
+WindowProperties::UnifiedAreaRect	Window::d_unifiedAreaRectProperty;
+WindowProperties::UnifiedPosition	Window::d_unifiedPositionProperty;
+WindowProperties::UnifiedXPosition	Window::d_unifiedXPositionProperty;
+WindowProperties::UnifiedYPosition	Window::d_unifiedYPositionProperty;
+WindowProperties::UnifiedSize		Window::d_unifiedSizeProperty;
+WindowProperties::UnifiedWidth		Window::d_unifiedWidthProperty;
+WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
+WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
+WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 
 /*************************************************************************
 	static data definitions
@@ -2537,6 +2545,15 @@ void Window::addStandardProperties(void)
     addProperty(&d_riseOnClickProperty);
     addProperty(&d_vertAlignProperty);
     addProperty(&d_horzAlignProperty);
+    addProperty(&d_unifiedAreaRectProperty);
+    addProperty(&d_unifiedPositionProperty);
+    addProperty(&d_unifiedXPositionProperty);
+    addProperty(&d_unifiedYPositionProperty);
+    addProperty(&d_unifiedSizeProperty);
+    addProperty(&d_unifiedWidthProperty);
+    addProperty(&d_unifiedHeightProperty);
+    addProperty(&d_unifiedMinSizeProperty);
+    addProperty(&d_unifiedMaxSizeProperty);
 }
 
 

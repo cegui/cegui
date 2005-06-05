@@ -144,6 +144,46 @@ const Image* PropertyHelper::stringToImage(const String& str)
 }
 
 
+UDim PropertyHelper::stringToUDim(const String& str)
+{
+	using namespace std;
+
+	UDim ud;
+	sscanf(str.c_str()," {%f,%f}", &ud.d_scale, &ud.d_offset);
+
+	return ud;
+}
+
+
+UVector2 PropertyHelper::stringToUVector2(const String& str)
+{
+	using namespace std;
+
+	UVector2 uv;
+	sscanf(str.c_str(), " {{%f,%f},{%f,%f}}", &uv.d_x.d_scale,&uv.d_x.d_offset, &uv.d_y.d_scale,&uv.d_y.d_offset);
+
+	return uv;
+}
+
+
+URect PropertyHelper::stringToURect(const String& str)
+{
+	using namespace std;
+
+	URect ur;
+	sscanf(
+		str.c_str(),
+		" {{%f,%f},{%f,%f},{%f,%f},{%f,%f}}",
+		&ur.d_min.d_x.d_scale, &ur.d_min.d_x.d_offset,
+		&ur.d_min.d_y.d_scale, &ur.d_min.d_y.d_offset,
+		&ur.d_max.d_x.d_scale, &ur.d_max.d_x.d_offset,
+		&ur.d_max.d_y.d_scale, &ur.d_max.d_y.d_offset
+	);
+
+	return ur;
+}
+
+
 String PropertyHelper::floatToString(float val)
 {
 	using namespace std;
@@ -239,6 +279,46 @@ String PropertyHelper::imageToString(const Image* const val)
 	}
 
 	return String((utf8*)"");
+}
+
+
+String PropertyHelper::udimToString(const UDim& val)
+{
+	using namespace std;
+
+	char buff[128];
+	sprintf(buff, "{%f,%f}", val.d_scale, val.d_offset);
+
+	return String((utf8*)buff);
+}
+
+
+String PropertyHelper::uvector2ToString(const UVector2& val)
+{
+	using namespace std;
+
+	char buff[256];
+	sprintf(buff, "{{%f,%f},{%f,%f}}", val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
+
+	return String((utf8*)buff);
+}
+
+
+String PropertyHelper::urectToString(const URect& val)
+{
+	using namespace std;
+
+	char buff[512];
+	sprintf(
+		buff,
+		"{{%f,%f},{%f,%f},{%f,%f},{%f,%f}}",
+		val.d_min.d_x.d_scale,val.d_min.d_x.d_offset,
+		val.d_min.d_y.d_scale,val.d_min.d_y.d_offset,
+		val.d_max.d_x.d_scale,val.d_max.d_x.d_offset,
+		val.d_max.d_y.d_scale,val.d_max.d_y.d_offset
+	);
+
+	return String((utf8*)buff);
 }
 
 

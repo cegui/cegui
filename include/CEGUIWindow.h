@@ -3415,6 +3415,15 @@ protected:
     static  WindowProperties::RiseOnClick       d_riseOnClickProperty;
     static  WindowProperties::VerticalAlignment   d_vertAlignProperty;
     static  WindowProperties::HorizontalAlignment d_horzAlignProperty;
+    static	WindowProperties::UnifiedAreaRect	d_unifiedAreaRectProperty;
+    static	WindowProperties::UnifiedPosition	d_unifiedPositionProperty;
+    static	WindowProperties::UnifiedXPosition	d_unifiedXPositionProperty;
+    static	WindowProperties::UnifiedYPosition	d_unifiedYPositionProperty;
+    static	WindowProperties::UnifiedSize		d_unifiedSizeProperty;
+    static	WindowProperties::UnifiedWidth		d_unifiedWidthProperty;
+    static	WindowProperties::UnifiedHeight		d_unifiedHeightProperty;
+    static	WindowProperties::UnifiedMinSize	d_unifiedMinSizeProperty;
+    static	WindowProperties::UnifiedMaxSize	d_unifiedMaxSizeProperty;
 
 
 	/*************************************************************************
