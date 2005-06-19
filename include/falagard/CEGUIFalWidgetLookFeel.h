@@ -27,6 +27,7 @@
 #include "falagard/CEGUIFalStateImagery.h"
 #include "falagard/CEGUIFalWidgetComponent.h"
 #include "falagard/CEGUIFalImagerySection.h"
+#include "falagard/CEGUIFalPropertyInitialiser.h"
 #include <map>
 
 // Start of CEGUI namespace section
@@ -104,6 +105,17 @@ namespace CEGUI
 
         /*!
         \brief
+            Add a property initialiser to the WidgetLookFeel.
+
+        \param initialiser
+            PropertyInitialiser object to be added.
+
+        \return Nothing.
+        */
+        void addPropertyInitialiser(const PropertyInitialiser& initialiser);
+
+        /*!
+        \brief
             Clear all ImagerySections from the WidgetLookFeel.
 
         \return
@@ -131,6 +143,15 @@ namespace CEGUI
 
         /*!
         \brief
+            Clear all PropertyInitialiser objects from the WidgetLookFeel.
+
+        \return
+            Nothing.
+        */
+        void clearPropertyInitialisers();
+
+        /*!
+        \brief
             Initialise the given window using PropertyInitialsers and component widgets
             specified for this WidgetLookFeel.
 
@@ -146,13 +167,13 @@ namespace CEGUI
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;
         typedef std::map<String, WidgetComponent> WidgetList;
+        typedef std::vector<PropertyInitialiser>   PropertyList;
 
         CEGUI::String   d_lookName;         //!< Name of this WidgetLookFeel.
         ImageryList     d_imagerySections;  //!< Collection of ImagerySection objects.
         WidgetList      d_childWidgets;     //!< Collection of WidgetComponent objects.
         StateList       d_stateImagery;     //!< Collection of StateImagery objects.
-
-        // TODO: Add collection of PropertyInitialser obs for immediate target.
+        PropertyList    d_properties;       //!< Collection of PropertyInitialser objects.
     };
 
 

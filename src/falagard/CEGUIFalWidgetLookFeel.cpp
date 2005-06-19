@@ -96,6 +96,11 @@ namespace CEGUI
         d_stateImagery[state.getName()] = state;
     }
 
+    void WidgetLookFeel::addPropertyInitialiser(const PropertyInitialiser& initialiser)
+    {
+        d_properties.push_back(initialiser);
+    }
+
     void WidgetLookFeel::clearImagerySections()
     {
         d_imagerySections.clear();
@@ -111,8 +116,20 @@ namespace CEGUI
         d_stateImagery.clear();
     }
 
+    void WidgetLookFeel::clearPropertyInitialisers()
+    {
+        d_properties.clear();
+    }
+
     void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
+        // apply properties to the parent window first
+        for(PropertyList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
+        {
+            (*prop).apply(widget);
+        }
+
+        // add required child widgets
         for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
         {
             (*curr).second.create(widget);

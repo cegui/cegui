@@ -184,11 +184,20 @@ namespace CEGUI
         }
         else if (element == PropertyElement)
         {
-            assert(d_childcomponent != 0);
+            assert(d_widgetlook != 0);
             PropertyInitialiser prop(attributes.getValueAsString(NameAttribute), attributes.getValueAsString(ValueAttribute));
-            d_childcomponent->addPropertyInitialiser(prop);
 
-            Logger::getSingleton().logEvent("-------> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue(), Informative);
+            if (d_childcomponent)
+            {
+                d_childcomponent->addPropertyInitialiser(prop);
+                Logger::getSingleton().logEvent("-------> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue(), Informative);
+            }
+            else
+            {
+                d_widgetlook->addPropertyInitialiser(prop);
+                Logger::getSingleton().logEvent("---> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue(), Informative);
+            }
+
         }
         else if (element == VertAlignmentElement)
         {

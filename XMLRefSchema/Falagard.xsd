@@ -8,6 +8,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="widgetLookType">
 		<xsd:sequence>
+            <xsd:element name="Property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Child" type="widgetComponentType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="ImagerySection" type="imagerySectionType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="StateImagery" type="stateType" minOccurs="0" maxOccurs="unbounded" />
