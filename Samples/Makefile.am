@@ -1,2 +1,3 @@
 SUBDIRS = common \
-          FirstWindow
+          FirstWindow \
+          FalagardDemo1

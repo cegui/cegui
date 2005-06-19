@@ -11,4 +11,4 @@ pkginclude_HEADERS = CEGUIFalEnums.h \
                      CEGUIFalWidgetLookFeel.h \
                      CEGUIFalWidgetLookManager.h
 
-noinst_HEADERS = CEGUIFal_xmlHandler.h
+noinst_HEADERS = CEGUIFalagard_xmlHandler.h

@@ -59,6 +59,9 @@ AC_SUBST(CEGUI_VERSION_INFO)
 
 dnl Create the makefiles
 AC_CONFIG_FILES([Makefile
+                 Samples/FalagardDemo1/Makefile
+                 Samples/FalagardDemo1/include/Makefile
+                 Samples/FalagardDemo1/src/Makefile
                  Samples/FirstWindow/Makefile
                  Samples/FirstWindow/include/Makefile
                  Samples/FirstWindow/src/Makefile
