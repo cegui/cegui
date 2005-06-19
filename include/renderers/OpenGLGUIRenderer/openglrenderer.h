@@ -261,6 +261,26 @@ public:
     virtual	uint	getVertScreenDPI(void) const	{return 96;}
 
 
+	/*!
+	\brief
+		Set the size of the display in pixels.
+
+		If your viewport size changes, you can call this function with the new size
+		in pixels to update the rendering area.
+
+	\note
+		This method will cause the EventDisplaySizeChanged event to fire if the
+		display size has changed.
+
+	\param sz
+		Size object describing the size of the display.
+
+	\return
+		Nothing.
+	*/
+	void	setDisplaySize(const Size& sz);
+
+
 private:
     /************************************************************************
 		Implementation Constants

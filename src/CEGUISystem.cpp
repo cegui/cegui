@@ -1321,6 +1321,11 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 *************************************************************************/
 bool System::handleDisplaySizeChange(const EventArgs& e)
 {
+	// notify the imageset/font manager of the size change
+	Size new_sz = getRenderer()->getSize();
+	ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
+	FontManager::getSingleton().notifyScreenResolution(new_sz);
+
 	// notify gui sheet / root if size change, event propagation will ensure everything else
 	// gets updated as required.
 	if (d_activeSheet != NULL)

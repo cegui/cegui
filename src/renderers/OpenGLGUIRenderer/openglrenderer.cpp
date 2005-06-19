@@ -505,5 +505,21 @@ long OpenGLRenderer::colourToOGL(const colour& col) const
 	return cval;
 }
 
+
+/*************************************************************************
+	Set the size of the display in pixels.	
+*************************************************************************/
+void OpenGLRenderer::setDisplaySize(const Size& sz)
+{
+	if (d_display_area.getSize() != sz)
+	{
+		d_display_area.setSize(sz);
+
+		EventArgs args;
+		fireEvent(EventDisplaySizeChanged, args, EventNamespace);
+	}
+
+}
+
 } // End of  CEGUI namespace section
 

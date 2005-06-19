@@ -24,6 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUIExceptions.h"
+#include "CEGUIWindowManager.h"
 #include "elements/CEGUIItemListBase.h"
 #include "elements/CEGUIItemEntry.h"
 
@@ -237,7 +238,7 @@ void ItemListBase::removeItem(ItemEntry* item)
 			d_listItems.erase(pos);
 
 			removeChildWindow(item);
-			item->destroy();
+			WindowManager::getSingleton().destroyWindow(item);
 
 			WindowEventArgs args(this);
 			onListContentsChanged(args);
@@ -329,11 +330,11 @@ bool ItemListBase::resetList_impl(void)
 	// we have items to be removed and possible deleted
 	else
 	{
-		// delete any items we are supposed to ---------- ALL ITEMS RIGHT NOW !!!
+		// delete any items we are supposed to ---------- DESTROYS ALL ITEMS !!!
 		for (size_t i = 0; i < getItemCount(); ++i)
 		{
 			removeChildWindow(d_listItems[i]);
-			d_listItems[i]->destroy();
+			WindowManager::getSingleton().destroyWindow(d_listItems[i]);
 		}
 
 		// clear out the list.
@@ -345,6 +346,9 @@ bool ItemListBase::resetList_impl(void)
 }
 
 
+/*************************************************************************
+	Add ItemListBase specific properties
+*************************************************************************/
 void ItemListBase::addItemListBaseProperties(void)
 {
     addProperty(&d_autoResizeEnabledProperty);

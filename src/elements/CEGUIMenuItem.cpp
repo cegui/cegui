@@ -501,6 +501,9 @@ void MenuItem::addChild_impl(Window* wnd)
 }
 
 
+/*************************************************************************
+	Add MenuItem specific properties
+*************************************************************************/
 void MenuItem::addMenuItemProperties(void)
 {
 	addProperty(&d_hoverColourProperty);

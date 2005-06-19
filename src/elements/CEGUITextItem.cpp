@@ -118,6 +118,9 @@ Size TextItem::getItemPixelSize()
 }
 
 
+/*************************************************************************
+	Add TextItem specific properties
+*************************************************************************/
 void TextItem::addTextItemProperties(void)
 {
 	addProperty(&d_textColourProperty);

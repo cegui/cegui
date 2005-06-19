@@ -31,7 +31,7 @@ namespace CEGUI
 {
 
 /*************************************************************************
-Definition of Properties for this class
+	Definition of Properties for this class
 *************************************************************************/
 PopupMenuProperties::FadeInTime		PopupMenu::d_fadeInTimeProperty;
 PopupMenuProperties::FadeOutTime	PopupMenu::d_fadeOutTimeProperty;
@@ -49,8 +49,8 @@ const String PopupMenu::EventNamespace("PopupMenu");
 PopupMenu::PopupMenu(const String& type, const String& name)
 	: MenuBase(type, name),
 	d_origAlpha(d_alpha),
-	d_fadeInTime(0),
 	d_fadeOutTime(0),
+	d_fadeInTime(0),
 	d_fading(false),
 	d_fadingOut(false)
 {
@@ -69,9 +69,6 @@ PopupMenu::PopupMenu(const String& type, const String& name)
 
 	// hide by default
 	hide();
-
-	// default is absolute metrics
-	setMetricsMode(Absolute);
 }
 
 
@@ -310,6 +307,9 @@ Size PopupMenu::getContentSize()
 }
 
 
+/*************************************************************************
+	Handler for when window alpha changes
+*************************************************************************/
 void PopupMenu::onAlphaChanged(WindowEventArgs& e)
 {
 	ItemListBase::onAlphaChanged(e);
@@ -322,6 +322,9 @@ void PopupMenu::onAlphaChanged(WindowEventArgs& e)
 }
 
 
+/*************************************************************************
+	Add PopupMenu specific properties
+*************************************************************************/
 void PopupMenu::addPopupMenuProperties(void)
 {
 	addProperty(&d_fadeInTimeProperty);
