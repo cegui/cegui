@@ -39,11 +39,15 @@ namespace CEGUI
         FalagardButton(const String& type, const String& name);
         ~FalagardButton();
 
-        void drawSelf(float z)  { Window::drawSelf(z); }
+        // HACK: This was done to work around the fact that PushButton does not
+        // HACK: currently know about the RenderCache, so we use this little hack
+        // HACK: and some other bits elsewhere to tie this together.  Eventually
+        // HACK: this kind of thing will be handled much cleaner.
+        void drawSelf(float z)  { PushButton::drawSelf(z); Window::drawSelf(z); }
 
-        void drawNormal(float z) {}
-
-        void populateRenderCache();
+        void drawNormal(float z);
+        void drawHover(float z);
+        void drawPushed(float z);
     };
 
 

@@ -39,11 +39,57 @@ namespace CEGUI
     {
     }
 
-    void FalagardButton::populateRenderCache()
+    void FalagardButton::drawNormal(float z)
     {
-        const WidgetLookFeel& wl = WidgetLookManager::getSingleton().getWidgetLook("ButtonTest");
-        wl.getStateImagery("Normal").render(*this);
+        if (d_needsRedraw)
+        {
+            d_renderCache.clearCachedImagery();
+            d_needsRedraw = false;
+
+            try
+            {
+                WidgetLookManager::getSingleton().getWidgetLook("ButtonTest").getStateImagery("Normal").render(*this);
+            }
+            // catch exceptions, but do not exit.
+            catch (UnknownObjectException)
+            {}
+        }
     }
+
+    void FalagardButton::drawHover(float z)
+    {
+        if (d_needsRedraw)
+        {
+            d_renderCache.clearCachedImagery();
+            d_needsRedraw = false;
+
+            try
+            {
+                WidgetLookManager::getSingleton().getWidgetLook("ButtonTest").getStateImagery("Hover").render(*this);
+            }
+            // catch exceptions, but do not exit.
+            catch (UnknownObjectException)
+            {}
+        }
+    }
+
+    void FalagardButton::drawPushed(float z)
+    {
+        if (d_needsRedraw)
+        {
+            d_renderCache.clearCachedImagery();
+            d_needsRedraw = false;
+
+            try
+            {
+                WidgetLookManager::getSingleton().getWidgetLook("ButtonTest").getStateImagery("Pushed").render(*this);
+            }
+            // catch exceptions, but do not exit.
+            catch (UnknownObjectException)
+            {}
+        }
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     /*************************************************************************
