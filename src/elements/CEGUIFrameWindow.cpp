@@ -423,8 +423,8 @@ void FrameWindow::moveRightEdge(float delta)
     }
     else if (d_horzAlign == HA_CENTRE)
     {
-        *maxDim += adjustment * 0.5;
-        *minDim += adjustment * 0.5;
+        *maxDim += adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
     }
 
     setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
@@ -543,8 +543,8 @@ void FrameWindow::moveBottomEdge(float delta)
     }
     else if (d_vertAlign == VA_CENTRE)
     {
-        *maxDim += adjustment * 0.5;
-        *minDim += adjustment * 0.5;
+        *maxDim += adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
     }
 
     setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);

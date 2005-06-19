@@ -173,6 +173,7 @@ Window::Window(const String& type, const String& name) :
 	d_alpha			= 1.0f;
 	d_mouseCursor	= (const Image*)DefaultMouseCursor;
 	d_userData		= NULL;
+	d_needsRedraw   = true;
 
 	// basic settings
 	d_enabled			= true;
@@ -1266,6 +1267,7 @@ void Window::setInheritsAlpha(bool setting)
 *************************************************************************/
 void Window::requestRedraw(void) const
 {
+    d_needsRedraw = true;
 	System::getSingleton().signalRedraw();
 }
 
@@ -1683,6 +1685,37 @@ void Window::render(void)
 
 	// signal rendering ended
 	onRenderingEnded(args);
+}
+
+
+/*************************************************************************
+    Perform the actual rendering for this Window.
+*************************************************************************/
+void Window::drawSelf(float z)
+{
+    if (d_needsRedraw)
+    {
+        // dispose of already cached imagery.
+        d_renderCache.clearCachedImagery();
+        // get derived class to re-populate cache.
+        populateRenderCache();
+        // mark ourselves as no longer needed a redraw.
+        d_needsRedraw = false;
+    }
+
+    // if render cache contains imagery.
+    if (d_renderCache.hasCachedImagery())
+    {
+		Point absPos(getUnclippedPixelRect().getPosition());
+        // calculate clipping area for this window
+        Rect clipper(getPixelRect());
+        // If window is not totally clipped.
+        if (clipper.getWidth())
+        {
+            // send cached imagery to the renderer.
+            d_renderCache.render(absPos, z, clipper);
+        }
+    }
 }
 
 

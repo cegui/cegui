@@ -188,6 +188,12 @@ public:
 	*/
 	void	modulateAlpha(float alpha);
 
+    /*!
+    \brief
+        Modulate all components of this colour rect with corresponding components from another colour rect.
+    */
+    ColourRect& operator*=(const ColourRect& other);
+
 
 	colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
 };

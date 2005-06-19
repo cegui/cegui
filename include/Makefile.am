@@ -1,4 +1,4 @@
-SUBDIRS = . elements renderers
+SUBDIRS = . elements renderers falagard
 pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
                  CEGUIColourRect.h \
@@ -16,20 +16,21 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFont_xmlHandler.h \
                  CEGUIForwardRefs.h \
                  CEGUIGlobalEventSet.h \
-		 CEGUIGUILayout_xmlHandler.h \
+                 CEGUIGUILayout_xmlHandler.h \
                  CEGUIImage.h \
                  CEGUIImageset.h \
                  CEGUIImagesetManager.h \
                  CEGUIImageset_xmlHandler.h \
                  CEGUIInputEvent.h \
-		 CEGUIIteratorBase.h \
-		 CEGUILogger.h \
+                 CEGUIIteratorBase.h \
+                 CEGUILogger.h \
                  CEGUIMouseCursor.h \
                  CEGUIProperty.h \
-		 CEGUIPropertyHelper.h \
-		 CEGUIPropertySet.h \
+                 CEGUIPropertyHelper.h \
+                 CEGUIPropertySet.h \
                  CEGUIRect.h \
-		 CEGUIRefPtr.h \
+                 CEGUIRefPtr.h \
+                 CEGUIRenderCache.h \
                  CEGUIRenderableElement.h \
                  CEGUIRenderableFrame.h \
                  CEGUIRenderableImage.h \
@@ -38,24 +39,25 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIScheme.h \
                  CEGUISchemeManager.h \
                  CEGUIScheme_xmlHandler.h \
-		 CEGUIScriptModule.h \
+                 CEGUIScriptModule.h \
                  CEGUISingleton.h \
                  CEGUISize.h \
                  CEGUIString.h \
                  CEGUISystem.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
+                 CEGUIUDim.h \
                  CEGUIVector.h \
                  CEGUIWindow.h \
                  CEGUIWindowFactory.h \
                  CEGUIWindowFactoryManager.h \
                  CEGUIWindowManager.h \
-		 CEGUIWindowProperties.h \
+                 CEGUIWindowProperties.h \
                  CEGUIXMLAttributes.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \
                  CEGUIcolour.h 
-		 
+
 noinst_HEADERS = CEGUIFontManager_implData.h \
              CEGUIFont_implData.h
 

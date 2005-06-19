@@ -37,6 +37,7 @@
 #include "CEGUIInputEvent.h"
 #include "CEGUIWindowProperties.h"
 #include "CEGUIUDim.h"
+#include "CEGUIRenderCache.h"
 #include <vector>
 
 
@@ -1150,6 +1151,15 @@ public:
         One of the HorizontalAlignment enumerated values.
      */
     HorizontalAlignment getHorizontalAlignment() const  {return d_horzAlign;}
+
+    /*!
+    \brief
+        Return the RenderCache object for this Window.
+
+    \return
+        Reference to the RenderCache object for this Window.
+    */
+    RenderCache& getRenderCache()   { return d_renderCache; }
 
 
     /*************************************************************************
@@ -3182,7 +3192,16 @@ protected:
 	\return
 		Nothing
 	*/
-	virtual	void	drawSelf(float z)	= 0;
+	virtual	void	drawSelf(float z);
+
+
+	/*!
+	\brief
+	   Update the rendering cache.
+
+	   Populates the Window's RenderCache with imagery to be sent to the renderer.
+    */
+    virtual void populateRenderCache()  {}
 
 
 	/*!
@@ -3360,6 +3379,10 @@ protected:
     Tooltip* d_customTip;       //!< Possible custom Tooltip for this window.
     bool     d_weOwnTip;        //!< true if this Window created the custom Tooltip.
     bool     d_inheritsTipText; //!< true if the Window inherits tooltip text from its parent (when none set for itself).
+
+    // rendering
+    RenderCache d_renderCache;  //!< Object which acts as a cache for Images to be drawn by this Window.
+    mutable bool d_needsRedraw;      //!< true if window image cache needs to be regenerated.
 
 protected:
 	/*************************************************************************

@@ -362,14 +362,14 @@ bool operator>=(const char* c_str, const String& str)
 //////////////////////////////////////////////////////////////////////////
 // Concatenation operator functions
 //////////////////////////////////////////////////////////////////////////
-String	operator+(const String str1, const String& str2)
+String	operator+(const String& str1, const String& str2)
 {
 	String temp(str1);
 	temp.append(str2);
 	return temp;
 }
 
-String	operator+(const String str, const std::string& std_str)
+String	operator+(const String& str, const std::string& std_str)
 {
 	String temp(str);
 	temp.append(std_str);
@@ -383,7 +383,7 @@ String	operator+(const std::string& std_str, const String& str)
 	return temp;
 }
 
-String	operator+(const String str, const utf8* utf8_str)
+String	operator+(const String& str, const utf8* utf8_str)
 {
 	String temp(str);
 	temp.append(utf8_str);
@@ -397,7 +397,7 @@ String	operator+(const utf8* utf8_str, const String& str)
 	return temp;
 }
 
-String	operator+(const String str, utf32 code_point)
+String	operator+(const String& str, utf32 code_point)
 {
 	String temp(str);
 	temp.append(1, code_point);
@@ -411,7 +411,7 @@ String	operator+(utf32 code_point, const String& str)
 	return temp;
 }
 
-String operator+(const String str, const char* c_str)
+String operator+(const String& str, const char* c_str)
 {
 	String tmp(str);
 	tmp.append(c_str);

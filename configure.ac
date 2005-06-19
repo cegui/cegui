@@ -84,6 +84,7 @@ AC_CONFIG_FILES([Makefile
                  WidgetSets/WindowsLook/src/Makefile
                  include/Makefile
                  include/elements/Makefile
+                 include/falagard/Makefile
                  include/renderers/IrrlichtRenderer/Makefile
                  include/renderers/Makefile
                  include/renderers/OpenGLGUIRenderer/Makefile
