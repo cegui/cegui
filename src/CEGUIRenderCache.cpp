@@ -41,17 +41,28 @@ namespace CEGUI
     {
         Rect finalRect;
 
-        for(ImageryList::const_iterator curr = d_cachedImages.begin(); curr != d_cachedImages.end(); ++curr)
+        // Send all cached images to renderer.
+        for(ImageryList::const_iterator image = d_cachedImages.begin(); image != d_cachedImages.end(); ++image)
         {
-            finalRect = (*curr).target_area;
+            finalRect = (*image).target_area;
             finalRect.offset(basePos);
-            (*curr).source_image->draw(finalRect, baseZ + (*curr).z_offset, clipper, (*curr).colours);
+            (*image).source_image->draw(finalRect, baseZ + (*image).z_offset, clipper, (*image).colours);
         }
+
+        // send all cached texts to renderer.
+        for(TextList::const_iterator text = d_cachedTexts.begin(); text != d_cachedTexts.end(); ++text)
+        {
+            finalRect = (*text).target_area;
+            finalRect.offset(basePos);
+            (*text).source_font->drawText((*text).text, finalRect, baseZ + (*text).z_offset, clipper, (*text).formatting, (*text).colours);
+        }
+
     }
 
     void RenderCache::clearCachedImagery()
     {
         d_cachedImages.clear();
+        d_cachedTexts.clear();
     }
 
     void RenderCache::cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols)
@@ -64,5 +75,19 @@ namespace CEGUI
 
         d_cachedImages.push_back(imginf);
     }
+
+    void RenderCache::cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols)
+    {
+        TextInfo txtinf;
+        txtinf.text         = text;
+        txtinf.source_font  = font;
+        txtinf.formatting   = format;
+        txtinf.target_area  = destArea;
+        txtinf.z_offset     = zOffset;
+        txtinf.colours      = cols;
+
+        d_cachedTexts.push_back(txtinf);
+    }
+
 
 } // End of  CEGUI namespace section

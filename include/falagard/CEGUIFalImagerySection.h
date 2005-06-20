@@ -25,6 +25,7 @@
 #define _CEGUIFalImagerySection_h_
 
 #include "falagard/CEGUIFalImageryComponent.h"
+#include "falagard/CEGUIFalTextComponent.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -92,6 +93,27 @@ namespace CEGUI
 
         /*!
         \brief
+            Add a TextComponent to this ImagerySection.
+
+        \param text
+            TextComponent to be added to the section (a copy is made)
+
+        \return
+            Nothing
+        */
+        void addTextComponent(const TextComponent& text);
+
+        /*!
+        \brief
+            Clear all TextComponents from this ImagerySection.
+
+        \return
+            Nothing
+        */
+        void clearTextComponents();
+
+        /*!
+        \brief
             Return the current master colours set for this ImagerySection.
 
         \return
@@ -134,10 +156,12 @@ namespace CEGUI
 
     private:
         typedef std::vector<ImageryComponent> ImageryList;
+        typedef std::vector<TextComponent> TextList;
 
         CEGUI::String       d_name;             //!< Holds the name of the ImagerySection.
         CEGUI::ColourRect   d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).
         ImageryList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
+        TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
     };
 
 } // End of  CEGUI namespace section

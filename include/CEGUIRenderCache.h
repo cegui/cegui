@@ -27,6 +27,7 @@
 #include "CEGUIVector.h"
 #include "CEGUIRect.h"
 #include "CEGUIImage.h"
+#include "CEGUIFont.h"
 #include <vector>
 
 // Start of CEGUI namespace section
@@ -47,10 +48,6 @@ namespace CEGUI
     \par
         As another example, when a window is simply moved, there is no need to perform a total imagery
         recalculation; we can still use the imagery cached here since it is position independant.
-
-    \todo
-        This needs to be extended to support caching of text.  This might be done by caching individual
-        glyphs, or it might be done by caching strings, fonts, and positions; not entirely sure yet.
     */
     class CEGUIBASE_API RenderCache
     {
@@ -124,6 +121,35 @@ namespace CEGUI
         */
         void cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols);
 
+        /*!
+        \brief
+            Add a text to the cache.
+
+        \param text
+            String object to be cached.
+
+        \param font
+            Font to be used when rendering.
+
+        \param format
+            TextFormatting value specifying the formatting to use when rendering.
+
+        \param destArea
+            Destination area over which the Image object will be rendered.  This area should be position
+            independant; so position (0,0) will be to top-left corner of whatever it is you're rendering
+            (like a Window for example).
+
+        \param zOffset
+            Zero based z offset for this image.  Allows imagery to be layered.
+
+        \param cols
+            ColourRect object describing the colours to be applied when rendering this image.
+
+        \return
+            Nothing
+        */
+        void cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols);
+
     private:
         /*!
         \brief
@@ -137,9 +163,25 @@ namespace CEGUI
             ColourRect colours;
         };
 
+        /*!
+        \brief
+            internal struct that holds info about text to be drawn.
+        */
+        struct TextInfo
+        {
+            String text;
+            const Font* source_font;
+            TextFormatting formatting;
+            Rect target_area;
+            float z_offset;
+            ColourRect colours;
+        };
+
         typedef std::vector<ImageInfo>  ImageryList;
+        typedef std::vector<TextInfo>   TextList;
 
         ImageryList d_cachedImages;     //!< Collection of ImageInfo structs.
+        TextList d_cachedTexts;         //!< Collection of TextInfo structs.
     };
 
 } // End of  CEGUI namespace section

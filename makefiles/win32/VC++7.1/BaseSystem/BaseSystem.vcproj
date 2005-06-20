@@ -304,6 +304,9 @@
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalStateImagery.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalTextComponent.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalWidgetComponent.cpp">
 				</File>
 				<File
@@ -860,6 +863,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalStateImagery.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalTextComponent.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalWidgetComponent.h">

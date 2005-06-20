@@ -46,9 +46,14 @@ namespace CEGUI
         ColourRect* finalColsPtr = (finalCols.isMonochromatic() && finalCols.d_top_left.getARGB() == 0xFFFFFFFF) ? 0 : &finalCols;
 
         // render all image components in this section
-        for(ImageryList::const_iterator curr = d_images.begin(); curr != d_images.end(); ++curr)
+        for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*curr).render(srcWindow, base_z, finalColsPtr);
+            (*image).render(srcWindow, base_z, finalColsPtr);
+        }
+        // render all text components in this section
+        for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
+        {
+            (*text).render(srcWindow, base_z, finalColsPtr);
         }
     }
 
@@ -60,6 +65,16 @@ namespace CEGUI
     void ImagerySection::clearImageryComponents()
     {
         d_images.clear();
+    }
+
+    void ImagerySection::addTextComponent(const TextComponent& text)
+    {
+        d_texts.push_back(text);
+    }
+
+    void ImagerySection::clearTextComponents()
+    {
+        d_texts.clear();
     }
 
     const ColourRect& ImagerySection::getMasterColours() const
@@ -82,6 +97,7 @@ namespace CEGUI
         d_name = other.d_name;
         d_masterColours = other.d_masterColours;
         d_images = other.d_images;
+        d_texts = other.d_texts;
 
 		return *this;
     }
@@ -91,6 +107,7 @@ namespace CEGUI
         d_name = other.d_name;
         d_masterColours = other.d_masterColours;
         d_images = other.d_images;
+        d_texts = other.d_texts;
     }
 
 } // End of  CEGUI namespace section

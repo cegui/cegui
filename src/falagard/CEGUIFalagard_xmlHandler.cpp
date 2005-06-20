@@ -25,6 +25,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "falagard/CEGUIFalWidgetComponent.h"
+#include "falagard/CEGUIFalTextComponent.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
 #include <sstream>
@@ -42,6 +43,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::LayerElement("Layer");
     const String Falagard_xmlHandler::SectionElement("Section");
     const String Falagard_xmlHandler::ImageryComponentElement("ImageryComponent");
+    const String Falagard_xmlHandler::TextComponentElement("TextComponent");
     const String Falagard_xmlHandler::AreaElement("Area");
     const String Falagard_xmlHandler::ImageElement("Image");
     const String Falagard_xmlHandler::ColoursElement("Colours");
@@ -55,6 +57,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::AbsoluteDimElement("AbsoluteDim");
     const String Falagard_xmlHandler::ImageDimElement("ImageDim");
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
+    const String Falagard_xmlHandler::TextElement("Text");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -73,6 +76,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::ValueAttribute("value");
     const String Falagard_xmlHandler::DimensionAttribute("dimension");
     const String Falagard_xmlHandler::WidgetAttribute("widget");
+    const String Falagard_xmlHandler::StringAttribute("string");
+    const String Falagard_xmlHandler::FontAttribute("font");
     ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -85,7 +90,8 @@ namespace CEGUI
         d_layer(0),
         d_section(0),
         d_imagerycomponent(0),
-        d_area(0)
+        d_area(0),
+        d_textcomponent(0)
     {
     }
 
@@ -152,6 +158,13 @@ namespace CEGUI
 
             Logger::getSingleton().logEvent("-------> Image component definition...", Informative);
         }
+        else if (element == TextComponentElement)
+        {
+            assert(d_textcomponent == 0);
+            d_textcomponent = new TextComponent();
+
+            Logger::getSingleton().logEvent("-------> Text component definition...", Informative);
+        }
         else if (element == AreaElement)
         {
             assert(d_area == 0);
@@ -171,6 +184,10 @@ namespace CEGUI
             if (d_imagerycomponent)
             {
                 d_imagerycomponent->setColours(cols);
+            }
+            else if (d_textcomponent)
+            {
+                d_textcomponent->setColours(cols);
             }
             else if (d_imagerysection)
             {
@@ -211,13 +228,25 @@ namespace CEGUI
         }
         else if (element == VertFormatElement)
         {
-            assert(d_imagerycomponent != 0);
-            d_imagerycomponent->setVerticalFormatting(stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+            if (d_imagerycomponent)
+            {
+                d_imagerycomponent->setVerticalFormatting(stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+            }
+            else if (d_textcomponent)
+            {
+                d_textcomponent->setVerticalFormatting(stringToVertTextFormat(attributes.getValueAsString(TypeAttribute)));
+            }
         }
         else if (element == HorzFormatElement)
         {
-            assert(d_imagerycomponent != 0);
-            d_imagerycomponent->setHorizontalFormatting(stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+            if (d_imagerycomponent)
+            {
+                d_imagerycomponent->setHorizontalFormatting(stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+            }
+            else if (d_textcomponent)
+            {
+                d_textcomponent->setHorizontalFormatting(stringToHorzTextFormat(attributes.getValueAsString(TypeAttribute)));
+            }
         }
         else if (element == ImageElement)
         {
@@ -257,6 +286,12 @@ namespace CEGUI
 			d_dimension.setBaseDimension(base);
 
 			assignAreaDimension(d_dimension);
+        }
+        else if (element == TextElement)
+        {
+            assert (d_textcomponent != 0);
+            d_textcomponent->setText(attributes.getValueAsString(StringAttribute));
+            d_textcomponent->setFont(attributes.getValueAsString(FontAttribute));
         }
         else
         {
@@ -358,10 +393,22 @@ namespace CEGUI
                 d_imagerycomponent = 0;
             }
         }
+        // ending a Text component specification
+        else if (element == TextComponentElement)
+        {
+            assert(d_imagerysection != 0);
+
+            if (d_textcomponent)
+            {
+                d_imagerysection->addTextComponent(*d_textcomponent);
+                delete d_textcomponent;
+                d_textcomponent = 0;
+            }
+        }
         // component area end
         else if (element == AreaElement)
         {
-            assert((d_childcomponent != 0) || (d_imagerycomponent != 0));
+            assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0));
             assert(d_area != 0);
 
             if (d_childcomponent)
@@ -371,6 +418,10 @@ namespace CEGUI
             else if (d_imagerycomponent)
             {
                 d_imagerycomponent->setComponentArea(*d_area);
+            }
+            else if (d_textcomponent)
+            {
+                d_textcomponent->setComponentArea(*d_area);
             }
 
             delete d_area;
@@ -540,5 +591,58 @@ namespace CEGUI
             ++d_dimIdx;
         }
     }
+
+    VerticalTextFormatting Falagard_xmlHandler::stringToVertTextFormat(const String& str)
+    {
+        if (str == "CentreAligned")
+        {
+            return VTF_CENTRE_ALIGNED;
+        }
+        else if (str == "BottomAligned")
+        {
+            return VTF_BOTTOM_ALIGNED;
+        }
+        else
+        {
+            return VTF_TOP_ALIGNED;
+        }
+    }
+
+    HorizontalTextFormatting Falagard_xmlHandler::stringToHorzTextFormat(const String& str)
+    {
+        if (str == "CentreAligned")
+        {
+            return HTF_CENTRE_ALIGNED;
+        }
+        else if (str == "RightAligned")
+        {
+            return HTF_RIGHT_ALIGNED;
+        }
+        else if (str == "Justified")
+        {
+            return HTF_JUSTIFIED;
+        }
+        else if (str == "WordWrapLeftAligned")
+        {
+            return HTF_WORDWRAP_LEFT_ALIGNED;
+        }
+        else if (str == "WordWrapCentreAligned")
+        {
+            return HTF_WORDWRAP_CENTRE_ALIGNED;
+        }
+        else if (str == "WordWrapRightAligned")
+        {
+            return HTF_WORDWRAP_RIGHT_ALIGNED;
+        }
+        else if (str == "WordWrapJustified")
+        {
+            return HTF_WORDWRAP_JUSTIFIED;
+        }
+        else
+        {
+            return HTF_LEFT_ALIGNED;
+        }
+    }
+
 
 } // End of  CEGUI namespace section

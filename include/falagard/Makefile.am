@@ -8,6 +8,7 @@ pkginclude_HEADERS = CEGUIFalEnums.h \
                      CEGUIFalSectionSpecification.h \
                      CEGUIFalLayerSpecification.h \
                      CEGUIFalStateImagery.h \
+                     CEGUIFalTextComponent.h \
                      CEGUIFalWidgetLookFeel.h \
                      CEGUIFalWidgetLookManager.h
 

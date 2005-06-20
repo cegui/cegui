@@ -43,6 +43,7 @@ namespace CEGUI
     class ImageryComponent;
     class ComponentArea;
     class Dimension;
+    class TextComponent;
 
     /*!
     \brief
@@ -82,6 +83,7 @@ namespace CEGUI
         static const String LayerElement;               //!< Tag name for Layer elements.
         static const String SectionElement;             //!< Tag name for Section elements.
         static const String ImageryComponentElement;    //!< Tag name for ImageryComponent elements.
+        static const String TextComponentElement;       //!< Tag name for TextComponent elements.
         static const String AreaElement;                //!< Tag name for Area elements.
         static const String ImageElement;               //!< Tag name for Image elements.
         static const String ColoursElement;             //!< Tag name for Colours elements.
@@ -95,6 +97,7 @@ namespace CEGUI
         static const String AbsoluteDimElement;         //!< Tag name for absolute dimension elements.
         static const String ImageDimElement;            //!< Tag name for image dimension elements.
         static const String WidgetDimElement;           //!< Tag name for widget dimension elements.
+        static const String TextElement;                //!< Tag name for text component text elements..
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -113,6 +116,8 @@ namespace CEGUI
         static const String ValueAttribute;             //!< Attribute name that stores a property value string.
         static const String DimensionAttribute;         //!< Attribute name that stores a dimension type.
         static const String WidgetAttribute;            //!< Attribute name that stores the name of a widget (suffix).
+        static const String StringAttribute;            //!< Attribute name that stores a string of text.
+        static const String FontAttribute;              //!< Attribute name that stores the name of a font.
 
         /*************************************************************************
             helper methods
@@ -123,6 +128,8 @@ namespace CEGUI
         static VerticalAlignment stringToVertAlignment(const String& str);
         static HorizontalAlignment stringToHorzAlignment(const String& str);
         static DimensionType stringToDimensionType(const String& str);
+        static VerticalTextFormatting stringToVertTextFormat(const String& str);
+        static HorizontalTextFormatting stringToHorzTextFormat(const String& str);
 
         /*************************************************************************
             implementation methods
@@ -144,6 +151,7 @@ namespace CEGUI
         ImageryComponent*   d_imagerycomponent;
         ComponentArea*   d_area;
         Dimension       d_dimension;
+        TextComponent*  d_textcomponent;
         int d_dimIdx;
     };
 

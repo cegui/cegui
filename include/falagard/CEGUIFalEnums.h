@@ -72,6 +72,33 @@ namespace CEGUI
         HF_TILED                //!< Image should be tiled horizontally to fill the destination area (right-most tile may be clipped).
     };
 
+    /*!
+    \brief
+        Enumeration of possible values to indicate the vertical formatting to be used for a text component.
+    */
+    enum VerticalTextFormatting
+    {
+        VTF_TOP_ALIGNED,         //!< Top of text should be aligned with the top of the destination area.
+        VTF_CENTRE_ALIGNED,      //!< text should be vertically centred within the destination area.
+        VTF_BOTTOM_ALIGNED,      //!< Bottom of text should be aligned with the bottom of the destination area.
+    };
+
+    /*!
+    \brief
+        Enumeration of possible values to indicate the horizontal formatting to be used for a text component.
+    */
+    enum HorizontalTextFormatting
+    {
+        HTF_LEFT_ALIGNED,        //!< Left of text should be aligned with the left of the destination area (single line of text only).
+        HTF_RIGHT_ALIGNED,       //!< Right of text should be aligned with the right of the destination area  (single line of text only).
+        HTF_CENTRE_ALIGNED,      //!< text should be horizontally centred within the destination area  (single line of text only).
+        HTF_JUSTIFIED,           //!< text should be spaced so that it takes the full width of the destination area (single line of text only).
+        HTF_WORDWRAP_LEFT_ALIGNED,    //!< Left of text should be aligned with the left of the destination area (word wrapped to multiple lines as needed).
+        HTF_WORDWRAP_RIGHT_ALIGNED,   //!< Right of text should be aligned with the right of the destination area  (word wrapped to multiple lines as needed).
+        HTF_WORDWRAP_CENTRE_ALIGNED,  //!< text should be horizontally centred within the destination area  (word wrapped to multiple lines as needed).
+        HTF_WORDWRAP_JUSTIFIED        //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
+    };
+
 } // End of  CEGUI namespace section
 
 

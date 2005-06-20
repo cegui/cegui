@@ -130,6 +130,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalPropertyInitialiser.cpp \
                       falagard/CEGUIFalSectionSpecification.cpp \
                       falagard/CEGUIFalStateImagery.cpp \
+                      falagard/CEGUIFalTextComponent.cpp \
                       falagard/CEGUIFalWidgetComponent.cpp \
                       falagard/CEGUIFalWidgetLookFeel.cpp \
                       falagard/CEGUIFalWidgetLookManager.cpp \

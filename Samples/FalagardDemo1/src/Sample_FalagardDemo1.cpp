@@ -103,6 +103,7 @@ bool FalagardDemo1Sample::initialiseSample()
     wnd->addChildWindow(fbtn);
     fbtn->setPosition(Point(0.25f, 0.25f));
     fbtn->setSize(Size(0.5f, 0.125f));
+    fbtn->setText("Test Button!");
 
     // success!
     return true;
