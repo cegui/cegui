@@ -18,7 +18,7 @@
                     </Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
-                <HorzFormat type="CentreAligned" />
+                <HorzFormat type="WordWrapCentreAligned" />
             </TextComponent>
         </ImagerySection>
 		<ImagerySection name="button_normal">

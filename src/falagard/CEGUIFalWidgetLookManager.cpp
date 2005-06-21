@@ -37,6 +37,16 @@ namespace CEGUI
     const String WidgetLookManager::FalagardSchemaName("Falagard.xsd");
     ////////////////////////////////////////////////////////////////////////////////
 
+    WidgetLookManager::WidgetLookManager()
+    {
+        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton created.");
+    }
+
+    WidgetLookManager::~ WidgetLookManager()
+    {
+        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton destroyed.");
+    }
+
     void WidgetLookManager::parseLookNFeelSpecification(const String& filename, const String& resourceGroup)
     {
         // valid filenames are required!

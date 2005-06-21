@@ -91,12 +91,9 @@ bool FalagardDemo1Sample::initialiseSample()
     // map a name such as "NewLook/PushButton" to a widget type and a 'look' loaded from XML.
     WindowFactoryManager::getSingleton().addFactory(new FalagardButtonFactory());
 
-    // here we instantiate the WidgetLookManager.  This is actually a singleton, though at the moment
-    // it's not instantiated automatically by System.
-    WidgetLookManager* wlm = new WidgetLookManager();
-
-    // load the test look and feel file
-    wlm->parseLookNFeelSpecification("../datafiles/looknfeel/test.xml");
+    // load the test look and feel file via WidgetLookManager singleton.
+    // I will extend schemes to support the loading of loolnfeel xml data shortly.
+    WidgetLookManager::getSingleton().parseLookNFeelSpecification("../datafiles/looknfeel/test.xml");
 
     // create an instance of the test window and add it to the frame window so we'll be able to see it.
     Window* fbtn = winMgr.createWindow("FalagardButton", "testbutton");

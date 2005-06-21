@@ -42,6 +42,18 @@ namespace CEGUI
     public:
         /*!
         \brief
+            Constructor.
+        */
+        WidgetLookManager();
+
+        /*!
+        \brief
+            Destructor
+        */
+        ~WidgetLookManager();
+
+        /*!
+        \brief
             Parses a file containing window look & feel specifications (in the form of XML).
 
         \note
