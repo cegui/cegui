@@ -67,7 +67,10 @@ bool FalagardDemo1Sample::initialiseSample()
 
     // do usual simple setup stuff
     Logger::getSingleton().setLoggingLevel(Informative);
-    SchemeManager::getSingleton().loadScheme("../datafiles/schemes/TaharezLook.scheme");
+
+    // Note the loading of a test scheme...
+    SchemeManager::getSingleton().loadScheme("../datafiles/schemes/FalagardTest.scheme");
+
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     FontManager::getSingleton().createFont("../datafiles/fonts/Commonwealth-10.font");
     WindowManager& winMgr = WindowManager::getSingleton();
@@ -87,16 +90,19 @@ bool FalagardDemo1Sample::initialiseSample()
     // this is falagard related stuff from now onwards
     //
     // First I'm registering a factory for a simple test window class (based on PushButton currently)
-    // eventually we'll be able to use the scheme files to create mappings in WindowManager which will
-    // map a name such as "NewLook/PushButton" to a widget type and a 'look' loaded from XML.
+    // Shortly I'll start coding the CEGUIFalagardBase module, then we can load via a scheme as usual.
     WindowFactoryManager::getSingleton().addFactory(new FalagardButtonFactory());
 
-    // load the test look and feel file via WidgetLookManager singleton.
-    // I will extend schemes to support the loading of loolnfeel xml data shortly.
-    WidgetLookManager::getSingleton().parseLookNFeelSpecification("../datafiles/looknfeel/test.xml");
+    // "MyFalButton" is a type created by mapping the required name "MyFalButton" to a base type ("FalagardButton")
+    // and a window look/feel ("ButtonTest"); the FalagardTest.scheme contains this mapping.
+    // (Also note that I removed the requirement to register factories individually, you can now register all
+    // factories in a modules by specifying no names explicitly; this new feature complements, but does not replace,
+    // the old system which offers more power for advanced uses).
 
     // create an instance of the test window and add it to the frame window so we'll be able to see it.
-    Window* fbtn = winMgr.createWindow("FalagardButton", "testbutton");
+    Window* fbtn = winMgr.createWindow("MyFalButton", "testbutton");
+
+    // usual stuff to link button to parent window and set some options...
     wnd->addChildWindow(fbtn);
     fbtn->setPosition(Point(0.25f, 0.25f));
     fbtn->setSize(Size(0.5f, 0.125f));

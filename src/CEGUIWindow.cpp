@@ -3122,6 +3122,28 @@ void Window::setHorizontalAlignment(const HorizontalAlignment alignment)
     }
 }
 
+const String& Window::getLookNFeel()
+{
+    return d_lookName;
+}
+
+void Window::setLookNFeel(const String& look)
+{
+    if (d_lookName.empty())
+    {
+        d_lookName = look;
+        Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
+
+        // TODO: Work to initialse the look and feel...
+        // TODO: Apply properties from look n feel.
+        // TODO: Create child widgets
+        // TODO: Create look n feel defined properties (not supported yet!)
+    }
+    else
+    {
+        throw InvalidRequestException("Window::setLookNFeel - The window '" + d_name + "' already has a look assigned (" + d_lookName + ").");
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************

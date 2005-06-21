@@ -51,6 +51,7 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactory";
+const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories";
 
 
 /*************************************************************************
@@ -93,16 +94,9 @@ FactoryModule::FactoryModule(const String& filename) :
 		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Failed to load module '" + d_moduleName + "'.");
 	}
 
-	d_regFunc = (FactoryRegisterFunction)DYNLIB_GETSYM(d_handle, RegisterFactoryFunctionName);
-
-	// check for failure to find required function export
-	if (d_regFunc == NULL)
-	{
-		DYNLIB_UNLOAD(d_handle);
-
-		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Required function export 'registerFactory' was not found in module '" + d_moduleName + "'.");
-	}
-
+    // functions are now optional, and only throw upon the first attempt to use a missing function.
+    d_regFunc = (FactoryRegisterFunction)DYNLIB_GETSYM(d_handle, RegisterFactoryFunctionName);
+    d_regAllFunc = (RegisterAllFunction)DYNLIB_GETSYM(d_handle, RegisterAllFunctionName);
 }
 
 
@@ -120,7 +114,24 @@ FactoryModule::~FactoryModule(void)
 *************************************************************************/
 void FactoryModule::registerFactory(const String& type) const
 {
+    // are we attempting to use a missing function export
+    if (!d_regFunc)
+    {
+        throw InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" + d_moduleName + "'.");
+    }
+
 	d_regFunc(type);
+}
+
+uint FactoryModule::registerAllFactories() const
+{
+    // are we attempting to use a missing function export
+    if (!d_regAllFunc)
+    {
+        throw InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" + d_moduleName + "'.");
+    }
+
+    return d_regAllFunc();
 }
 
 } // End of  CEGUI namespace section

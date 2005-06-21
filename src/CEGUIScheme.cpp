@@ -37,6 +37,7 @@
 #include "CEGUIDataContainer.h"
 #include "CEGUISystem.h"
 #include "CEGUIXMLParser.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -101,6 +102,7 @@ void Scheme::loadResources(void)
 	ImagesetManager& ismgr		= ImagesetManager::getSingleton();
 	FontManager& fntmgr			= FontManager::getSingleton();
 	WindowFactoryManager& wfmgr = WindowFactoryManager::getSingleton();
+    WidgetLookManager& wlfMgr   = WidgetLookManager::getSingleton();
 
 	std::vector<LoadableUIElement>::const_iterator	pos;
 
@@ -146,6 +148,12 @@ void Scheme::loadResources(void)
 
 	}
 
+    // load look'n'feels (can't actually check these, so just re-parse data; it does no harm except maybe wase a bit of time)
+    for (pos = d_looknfeels.begin(); pos != d_looknfeels.end(); ++pos)
+    {
+        wlfMgr.parseLookNFeelSpecification((*pos).filename, (*pos).resourceGroup);
+    }
+
 	// check factories
 	std::vector<UIModule>::iterator	cmod = d_widgetModules.begin();
 	for (;cmod != d_widgetModules.end(); ++cmod)
@@ -156,16 +164,24 @@ void Scheme::loadResources(void)
 			(*cmod).module = new FactoryModule((*cmod).name);
 		}
 
-		std::vector<UIElementFactory>::const_iterator	elem = (*cmod).factories.begin();
-		for (; elem != (*cmod).factories.end(); ++elem)
-		{
-			if (!wfmgr.isFactoryPresent((*elem).name))
-			{
-				(*cmod).module->registerFactory((*elem).name);
-			}
-
-		}
-
+        // see if we should just register all factories available in the module (i.e. No factories explicitly specified)
+        if ((*cmod).factories.size() == 0)
+        {
+            Logger::getSingleton().logEvent("No window factories specified for module '" + (*cmod).name + "' - adding all available factories...");
+            (*cmod).module->registerAllFactories();
+        }
+        // some names were explicitly given, so only register those.
+        else
+        {
+            std::vector<UIElementFactory>::const_iterator	elem = (*cmod).factories.begin();
+            for (; elem != (*cmod).factories.end(); ++elem)
+            {
+                if (!wfmgr.isFactoryPresent((*elem).name))
+                {
+                    (*cmod).module->registerFactory((*elem).name);
+                }
+            }
+        }
 	}
 
 	// check aliases
@@ -194,6 +210,33 @@ void Scheme::loadResources(void)
 		// create a new alias entry
 		wfmgr.addWindowTypeAlias((*alias).aliasName, (*alias).targetName);
 	}
+
+    // check falagard window mappings.
+    std::vector<FalagardMapping>::iterator falagard = d_falagardMappings.begin();
+    for (;falagard != d_falagardMappings.end(); ++falagard)
+    {
+        // get iterator
+        WindowFactoryManager::FalagardMappingIterator iter = wfmgr.getFalagardMappingIterator();
+
+        // look for this mapping
+        while (!iter.isAtEnd() && (iter.getCurrentKey() != (*falagard).windowName))
+            ++iter;
+
+        // if the alias exists
+        if (!iter.isAtEnd())
+        {
+            // if the current target and looks match
+            if ((iter.getCurrentValue().d_baseType == (*falagard).targetName) &&
+                (iter.getCurrentValue().d_lookName == (*falagard).lookName))
+            {
+                // assume this mapping is ours and skip to next
+                continue;
+            }
+        }
+
+        // create a new mapping entry
+        wfmgr.addFalagardWindowMapping((*falagard).windowName, (*falagard).targetName, (*falagard).lookName);
+    }
 
 	Logger::getSingleton().logEvent((utf8*)"---- Resource loading for GUI scheme '" + d_name + "' completed ----", Informative);
 }

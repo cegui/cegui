@@ -104,15 +104,28 @@ public:
 	*/
 	void	registerFactory(const String& type) const;
 
+
+    /*!
+    \brief
+        Register all factories available in this module.
+
+    \return
+        uint value indicating the number of factories registered.
+    */
+    uint registerAllFactories() const;
+
 private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	static const char	RegisterFactoryFunctionName[];
+    static const char   RegisterAllFunctionName[];
 
 	typedef void (*FactoryRegisterFunction)(const String&); 
+    typedef uint (*RegisterAllFunction)(void);
 
 	FactoryRegisterFunction	d_regFunc;	//!< Pointer to the function called to register factories.
+    RegisterAllFunction d_regAllFunc;   //!< Pointer to a function called to register all factories in a module.
 	String			d_moduleName;		//!< Holds the name of the loaded module.
 	DYNLIB_HANDLE	d_handle;			//!< Pointer to a ImplDat derived class that can hold any required implementation data
 };

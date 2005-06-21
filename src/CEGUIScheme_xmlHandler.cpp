@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "CEGUIImageset.h"
 #include "CEGUILogger.h"
 #include "CEGUIXMLAttributes.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -39,17 +40,22 @@ Static Data definitions
 *************************************************************************/
 
 // xml file elements and attributes
-const String Scheme_xmlHandler::GUISchemeElement( (utf8*)"GUIScheme" );
-const String Scheme_xmlHandler::ImagesetElement( (utf8*)"Imageset" );
-const String Scheme_xmlHandler::FontElement( (utf8*)"Font" );
-const String Scheme_xmlHandler::WindowSetElement( (utf8*)"WindowSet" );
-const String Scheme_xmlHandler::WindowFactoryElement( (utf8*)"WindowFactory" );
-const String Scheme_xmlHandler::WindowAliasElement( (utf8*)"WindowAlias" );
-const char	Scheme_xmlHandler::NameAttribute[]				= "Name";
-const char	Scheme_xmlHandler::FilenameAttribute[]			= "Filename";
-const char	Scheme_xmlHandler::AliasAttribute[]				= "Alias";
-const char	Scheme_xmlHandler::TargetAttribute[]			= "Target";
-const char	Scheme_xmlHandler::ResourceGroupAttribute[]     = "ResourceGroup";
+const String Scheme_xmlHandler::GUISchemeElement( "GUIScheme" );
+const String Scheme_xmlHandler::ImagesetElement( "Imageset" );
+const String Scheme_xmlHandler::FontElement( "Font" );
+const String Scheme_xmlHandler::WindowSetElement( "WindowSet" );
+const String Scheme_xmlHandler::WindowFactoryElement( "WindowFactory" );
+const String Scheme_xmlHandler::WindowAliasElement( "WindowAlias" );
+const String Scheme_xmlHandler::FalagardMappingElement( "FalagardMapping" );
+const String Scheme_xmlHandler::LookNFeelElement( "LookNFeel" );
+const String Scheme_xmlHandler::NameAttribute( "Name" );
+const String Scheme_xmlHandler::FilenameAttribute( "Filename" );
+const String Scheme_xmlHandler::AliasAttribute( "Alias" );
+const String Scheme_xmlHandler::TargetAttribute( "Target" );
+const String Scheme_xmlHandler::ResourceGroupAttribute( "ResourceGroup" );
+const String Scheme_xmlHandler::WindowTypeAttribute( "WindowType" );
+const String Scheme_xmlHandler::TargetTypeAttribute( "TargetType" );
+const String Scheme_xmlHandler::LookNFeelAttribute( "LookNFeel" );
 
 /*************************************************************************
 Handler methods
@@ -120,6 +126,23 @@ void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes&
 		}
 
 	}
+    else if (element == FalagardMappingElement)
+    {
+        Scheme::FalagardMapping fmap;
+        fmap.windowName = attributes.getValueAsString(WindowTypeAttribute);
+        fmap.targetName = attributes.getValueAsString(TargetTypeAttribute);
+        fmap.lookName   = attributes.getValueAsString(LookNFeelAttribute);
+
+        d_scheme->d_falagardMappings.push_back(fmap);
+    }
+    else if (element == LookNFeelElement)
+    {
+        Scheme::LoadableUIElement lnf;
+        lnf.filename      = attributes.getValueAsString(FilenameAttribute);
+        lnf.resourceGroup = attributes.getValueAsString(ResourceGroupAttribute);
+
+        d_scheme->d_looknfeels.push_back(lnf);
+    }
 	// anything else is an error which *should* have already been caught by XML validation
 	else
 	{

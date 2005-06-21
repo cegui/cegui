@@ -1161,6 +1161,15 @@ public:
     */
     RenderCache& getRenderCache()   { return d_renderCache; }
 
+    /*!
+    \brief
+        Get the name of the LookNFeel assigned to this window.
+
+    \return
+        String object holding the name of the look assigned to this window.
+        Returns the empty string if no look is assigned.
+    */
+    const String& getLookNFeel();
 
     /*************************************************************************
 		Manipulator functions
@@ -2055,7 +2064,20 @@ public:
      */
     void setHorizontalAlignment(const HorizontalAlignment alignment);
 
-    
+    /*!
+    \brief
+        Set the LookNFeel that shoule be used for this window.
+
+    \param look
+        String object holding the name of the look to be assigned to the window.
+
+    \return
+        Nothing.
+
+    \exception InvalidRequestException thrown if the window already has a look assigned to it.
+    */
+    void setLookNFeel(const String& look);
+
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
 	*************************************************************************/
@@ -3383,6 +3405,9 @@ protected:
     // rendering
     RenderCache d_renderCache;  //!< Object which acts as a cache for Images to be drawn by this Window.
     mutable bool d_needsRedraw;      //!< true if window image cache needs to be regenerated.
+
+    // Look'N'Feel stuff
+    String  d_lookName;         //!< Name of the Look assigned to this window (if any).
 
 protected:
 	/*************************************************************************

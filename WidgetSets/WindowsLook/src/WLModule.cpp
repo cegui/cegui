@@ -95,186 +95,86 @@ static CEGUI::WLPopupMenuItemFactory		s_PopupMenuItemFactory;
 static CEGUI::WLMenubarFactory				s_MenubarFactory;
 static CEGUI::WLPopupMenuFactory			s_PopupMenuFactory;
 
+using namespace CEGUI;
+
+struct mapEntry
+{
+    const CEGUI::utf8* d_name;
+    CEGUI::WindowFactory* d_factory;
+};
+
+mapEntry factoriesMap[] =
+{
+    {WLButton::WidgetTypeName, &s_ButtonFactory},
+    {WLCheckbox::WidgetTypeName, &s_CheckboxFactory},
+    {WLCloseButton::WidgetTypeName, &s_CloseButtonFactory},
+    {WLCombobox::WidgetTypeName, &s_ComboboxFactory},
+    {WLComboDropList::WidgetTypeName, &s_ComboDropListFactory},
+    {WLEditbox::WidgetTypeName, &s_EditboxFactory},
+    {WLFrameWindow::WidgetTypeName, &s_FrameWindowFactory},
+    {WLListbox::WidgetTypeName, &s_ListboxFactory},
+    {WLListHeader::WidgetTypeName, &s_ListHeaderFactory},
+    {WLListHeaderSegment::WidgetTypeName, &s_ListHeaderSegmentFactory},
+    {WLHorzScrollbar::WidgetTypeName, &s_HorzScrollbarFactory},
+    {WLHorzScrollbarThumb::WidgetTypeName, &s_HorzScrollbarThumbFactory},
+    {WLMultiColumnList::WidgetTypeName, &s_MultiColumnListFactory},
+    {WLMultiLineEditbox::WidgetTypeName, &s_MultiLineEditboxFactory},
+    {WLProgressBar::WidgetTypeName, &s_ProgressBarFactory},
+    {WLRadioButton::WidgetTypeName, &s_RadioButtonFactory},
+    {WLScrollablePane::WidgetTypeName, &s_ScrollablePaneFactory},
+    {WLSlider::WidgetTypeName, &s_SliderFactory},
+    {WLSliderThumb::WidgetTypeName, &s_SliderThumbFactory},
+    {WLSpinner::WidgetTypeName, &s_SpinnerFactory},
+    {WLStaticImage::WidgetTypeName, &s_StaticImageFactory},
+    {WLStaticText::WidgetTypeName, &s_StaticTextFactory},
+    {WLTabButton::WidgetTypeName, &s_TabButtonFactory},
+    {WLTabControl::WidgetTypeName, &s_TabControlFactory},
+    {WLTabPane::WidgetTypeName, &s_TabPaneFactory},
+    {WLTitlebar::WidgetTypeName, &s_TitlebarFactory},
+    {WLTooltip::WidgetTypeName, &s_TooltipFactory},
+    {WLVertScrollbar::WidgetTypeName, &s_VertScrollbarFactory},
+    {WLVertScrollbarThumb::WidgetTypeName, &s_VertScrollbarThumbFactory},
+    {WLTextItem::WidgetTypeName, &s_TextItemFactory},
+    {WLMenubarItem::WidgetTypeName, &s_MenubarItemFactory},
+    {WLPopupMenuItem::WidgetTypeName, &s_PopupMenuItemFactory},
+    {WLMenubar::WidgetTypeName, &s_MenubarFactory},
+    {WLPopupMenu::WidgetTypeName, &s_PopupMenuFactory},
+    {0,0}
+};
 
 /*************************************************************************
 	Plugin access interface
 *************************************************************************/
 extern "C" void registerFactory(const CEGUI::String& type_name)
 {
-	using namespace CEGUI;
+    mapEntry* entry = factoriesMap;
 
-	if (type_name == WLStaticText::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_StaticTextFactory);
-		return;
-	}
-	else if (type_name == WLStaticImage::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_StaticImageFactory);
-		return;
-	}
-	else if (type_name == WLButton::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ButtonFactory);
-		return;
-	}
-	else if (type_name == WLTitlebar::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_TitlebarFactory);
-		return;
-	}
-	else if (type_name == WLCloseButton::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_CloseButtonFactory);
-		return;
-	}
-	else if (type_name == WLFrameWindow::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_FrameWindowFactory);
-		return;
-	}
-	else if (type_name == WLEditbox::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_EditboxFactory);
-		return;
-	}
-	else if (type_name == WLCheckbox::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_CheckboxFactory);
-		return;
-	}
-	else if (type_name == WLRadioButton::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_RadioButtonFactory);
-		return;
-	}
-	else if (type_name == WLProgressBar::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ProgressBarFactory);
-		return;
-	}
-	else if (type_name == WLSliderThumb::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_SliderThumbFactory);
-		return;
-	}
-	else if (type_name == WLSlider::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_SliderFactory);
-		return;
-	}
-	else if (type_name == WLVertScrollbarThumb::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarThumbFactory);
-		return;
-	}
-	else if (type_name == WLVertScrollbar::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_VertScrollbarFactory);
-		return;
-	}
-	else if (type_name == WLHorzScrollbarThumb::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_HorzScrollbarThumbFactory);
-		return;
-	}
-	else if (type_name == WLHorzScrollbar::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_HorzScrollbarFactory);
-		return;
-	}
-	else if (type_name == WLListbox::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ListboxFactory);
-		return;
-	}
-	else if (type_name == WLComboDropList::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ComboDropListFactory);
-		return;
-	}
-	else if (type_name == WLCombobox::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ComboboxFactory);
-		return;
-	}
-	else if (type_name == WLMultiLineEditbox::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_MultiLineEditboxFactory);
-		return;
-	}
-	else if (type_name == WLListHeaderSegment::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderSegmentFactory);
-		return;
-	}
-	else if (type_name == WLListHeader::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_ListHeaderFactory);
-		return;
-	}
-	else if (type_name == WLMultiColumnList::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_MultiColumnListFactory);
-		return;
-	}
-	else if (type_name == WLTabControl::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_TabControlFactory);
-		return;
-	}
-	else if (type_name == WLTabButton::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_TabButtonFactory);
-		return;
-	}
-	else if (type_name == WLTabPane::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_TabPaneFactory);
-		return;
-	}
-    else if (type_name == WLSpinner::WidgetTypeName)
+    while (entry->d_name)
     {
-        WindowFactoryManager::getSingleton().addFactory(&s_SpinnerFactory);
-        return;
-    }
-    else if (type_name == WLScrollablePane::WidgetTypeName)
-    {
-        WindowFactoryManager::getSingleton().addFactory(&s_ScrollablePaneFactory);
-        return;
-    }
-    else if (type_name == WLTooltip::WidgetTypeName)
-    {
-        WindowFactoryManager::getSingleton().addFactory(&s_TooltipFactory);
-        return;
-    }
-    else if (type_name == WLTextItem::WidgetTypeName)
-    {
-		WindowFactoryManager::getSingleton().addFactory(&s_TextItemFactory);
-		return;
-	}
-	else if (type_name == WLMenubarItem::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_MenubarItemFactory);
-		return;
-	}
-	else if (type_name == WLPopupMenuItem::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_PopupMenuItemFactory);
-		return;
-	}
-	else if (type_name == WLMenubar::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_MenubarFactory);
-		return;
-	}
-	else if (type_name == WLPopupMenu::WidgetTypeName)
-	{
-		WindowFactoryManager::getSingleton().addFactory(&s_PopupMenuFactory);
-		return;
-	}
+        if (entry->d_name == type_name)
+        {
+            WindowFactoryManager::getSingleton().addFactory(entry->d_factory);
+            return;
+        }
 
-	throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
+        ++entry;
+    }
 
-	return;
+    throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
+}
+
+extern "C" CEGUI::uint registerAllFactories(void)
+{
+    CEGUI::uint count = 0;
+    mapEntry* entry = factoriesMap;
+
+    while (entry->d_name)
+    {
+        WindowFactoryManager::getSingleton().addFactory(entry->d_factory);
+
+        ++entry;
+        ++count;
+    }
+
+    return count;
 }

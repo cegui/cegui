@@ -48,7 +48,7 @@ namespace CEGUI
 
             try
             {
-                WidgetLookManager::getSingleton().getWidgetLook("ButtonTest").getStateImagery("Normal").render(*this);
+                WidgetLookManager::getSingleton().getWidgetLook(d_lookName).getStateImagery("Normal").render(*this);
             }
             // catch exceptions, but do not exit.
             catch (UnknownObjectException)
@@ -65,7 +65,7 @@ namespace CEGUI
 
             try
             {
-                WidgetLookManager::getSingleton().getWidgetLook("ButtonTest").getStateImagery("Hover").render(*this);
+                WidgetLookManager::getSingleton().getWidgetLook(d_lookName).getStateImagery("Hover").render(*this);
             }
             // catch exceptions, but do not exit.
             catch (UnknownObjectException)
@@ -82,7 +82,7 @@ namespace CEGUI
 
             try
             {
-                WidgetLookManager::getSingleton().getWidgetLook("ButtonTest").getStateImagery("Pushed").render(*this);
+                WidgetLookManager::getSingleton().getWidgetLook(d_lookName).getStateImagery("Pushed").render(*this);
             }
             // catch exceptions, but do not exit.
             catch (UnknownObjectException)
