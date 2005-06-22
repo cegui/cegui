@@ -52,7 +52,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_FalagardDemo1", "Sam
 	ProjectSection(ProjectDependencies) = postProject
 		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
 		{A15FD3A6-EC2C-485E-8065-1F1B3E17CE87} = {A15FD3A6-EC2C-485E-8065-1F1B3E17CE87}
-		{D054D8E6-FAED-49F1-B83C-A2CC2635BCA6} = {D054D8E6-FAED-49F1-B83C-A2CC2635BCA6}
+		{04e4a944-225a-4bfb-b7b5-f23aee884989} = {04e4a944-225a-4bfb-b7b5-f23aee884989}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_and_tolua++", "ScriptingModules\CEGUILua\lua_and_tolua++.vcproj", "{06DB0C07-2CF7-4A39-86F1-B106F26E5A42}"
@@ -61,6 +61,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_and_tolua++", "Scriptin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaScriptModule", "ScriptingModules\CEGUILua\LuaScriptModule.vcproj", "{12DCE788-FF61-43AC-B827-6986777A3A01}"
 	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FalagardBase", "WidgetSets\Falagard\Falagard.vcproj", "{04e4a944-225a-4bfb-b7b5-f23aee884989}"
+	ProjectSection(ProjectDependencies) = postProject
+		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
 	EndProjectSection
 EndProject
 Global
@@ -115,6 +120,10 @@ Global
 		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Debug.Build.0 = Debug|Win32
 		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Release.ActiveCfg = Release|Win32
 		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Release.Build.0 = Release|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Debug.ActiveCfg = Debug|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Debug.Build.0 = Debug|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Release.ActiveCfg = Release|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
