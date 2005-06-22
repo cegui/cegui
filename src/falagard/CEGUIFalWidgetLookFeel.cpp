@@ -136,4 +136,9 @@ namespace CEGUI
         }
     }
 
+    bool WidgetLookFeel::isStateImageryPresent(const String& state) const
+    {
+        return d_stateImagery.find(state) != d_stateImagery.end();
+    }
+
 } // End of  CEGUI namespace section

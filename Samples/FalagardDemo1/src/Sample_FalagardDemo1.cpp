@@ -23,7 +23,6 @@
 *************************************************************************/
 #include "Sample_FalagardDemo1.h"
 #include "CEGUI.h"
-#include "TESTFalagardButton.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -77,33 +76,21 @@ bool FalagardDemo1Sample::initialiseSample()
     DefaultWindow* root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
     System::getSingleton().setGUISheet(root);
 
-    // create a frame window (this is non falagard currently, just uses normal TaharezLook)
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Demo Window");
-    root->addChildWindow(wnd);
-    wnd->setPosition(Point(0.25f, 0.25f));
-    wnd->setSize(Size(0.5f, 0.5f));
-    wnd->setMaximumSize(Size(1.0f, 1.0f));
-    wnd->setMinimumSize(Size(0.1f, 0.1f));
-    wnd->setText("Falagard system - Test application");
-
     //
     // this is falagard related stuff from now onwards
     //
-    // First I'm registering a factory for a simple test window class (based on PushButton currently)
-    // Shortly I'll start coding the CEGUIFalagardBase module, then we can load via a scheme as usual.
-    WindowFactoryManager::getSingleton().addFactory(new FalagardButtonFactory());
-
-    // "MyFalButton" is a type created by mapping the required name "MyFalButton" to a base type ("FalagardButton")
-    // and a window look/feel ("ButtonTest"); the FalagardTest.scheme contains this mapping.
+    // "TaharezLook/Button" in this test app is a type created by mapping the required name "TaharezLook/Button" to
+    // a base type ("Falagard/Button") and a window look/feel ("TaharezLook/Button"); the FalagardTest.scheme
+    // contains this mapping.
     // (Also note that I removed the requirement to register factories individually, you can now register all
     // factories in a modules by specifying no names explicitly; this new feature complements, but does not replace,
     // the old system which offers more power for advanced uses).
 
     // create an instance of the test window and add it to the frame window so we'll be able to see it.
-    Window* fbtn = winMgr.createWindow("MyFalButton", "testbutton");
+    Window* fbtn = winMgr.createWindow("TaharezLook/Button", "testbutton");
 
     // usual stuff to link button to parent window and set some options...
-    wnd->addChildWindow(fbtn);
+    root->addChildWindow(fbtn);
     fbtn->setPosition(Point(0.25f, 0.25f));
     fbtn->setSize(Size(0.5f, 0.125f));
     fbtn->setText("Test Button!");

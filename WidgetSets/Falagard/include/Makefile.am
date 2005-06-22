@@ -1,2 +1,3 @@
 SUBDIRS = .
-noinst_HEADERS = FalModule.h
+noinst_HEADERS = FalButton.h \
+                 FalModule.h

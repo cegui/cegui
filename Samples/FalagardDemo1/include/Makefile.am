@@ -1,1 +1,1 @@
-noinst_HEADERS =  Sample_FalagardDemo1.h TESTFalagardButton.h
+noinst_HEADERS =  Sample_FalagardDemo1.h

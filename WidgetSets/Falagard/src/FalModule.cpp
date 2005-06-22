@@ -24,10 +24,13 @@
 #include "FalModule.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowFactoryManager.h"
+// includes for types we create
+#include "FalButton.h"
 
 /*************************************************************************
     Static factory objects
 *************************************************************************/
+static CEGUI::FalagardButtonFactory             s_ButtonFactory;
 
 
 using namespace CEGUI;
@@ -40,6 +43,7 @@ struct mapEntry
 
 mapEntry factoriesMap[] =
 {
+    {FalagardButton::WidgetTypeName, &s_ButtonFactory},
     {0,0}
 };
 

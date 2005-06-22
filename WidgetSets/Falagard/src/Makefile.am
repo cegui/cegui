@@ -3,4 +3,5 @@ INCLUDES = -I$(top_srcdir)/include \
 
 lib_LTLIBRARIES=libCEGUIFalagardBase.la
 
-libCEGUIFalagardBase_la_SOURCES = FalModule.cpp
+libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
+                                  FalModule.cpp

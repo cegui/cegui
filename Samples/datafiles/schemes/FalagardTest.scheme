@@ -2,6 +2,6 @@
 <GUIScheme Name="FalagardTest">
 	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
 	<LookNFeel Filename="../datafiles/looknfeel/test.xml" />
-	<WindowSet Filename="CEGUITaharezLook" />
-	<FalagardMapping WindowType="MyFalButton" TargetType="FalagardButton" LookNFeel="ButtonTest" />
+	<WindowSet Filename="CEGUIFalagardBase" />
+	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />
 </GUIScheme>

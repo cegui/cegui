@@ -1,100 +1,60 @@
 <?xml version="1.0" ?>
 <Falagard>
-	<WidgetLook name="ButtonTest">
-        <ImagerySection name="button_label">
+    <WidgetLook name="TaharezLook/Button">
+        <ImagerySection name="label">
             <TextComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <UnifiedDim scale="1" type="Width" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
                 <HorzFormat type="WordWrapCentreAligned" />
             </TextComponent>
         </ImagerySection>
-		<ImagerySection name="button_normal">
-			<ImageryComponent>
-				<Area>
-					<Dim type="LeftEdge" >
-						<AbsoluteDim value="0" />
-					</Dim>
-					<Dim type="TopEdge" >
-						<AbsoluteDim value="0" />
-					</Dim>
-					<Dim type="Width" >
-						<AbsoluteDim value="15" />
-					</Dim>
-					<Dim type="Height" >
-						<UnifiedDim scale="1.0" type="Height" />
-					</Dim>
-				</Area>
-				<Image imageset="TaharezLook" image="ButtonLeftNormal" />
-				<VertFormat type="Stretched" />
-                <HorzFormat type="Stretched" />
-			</ImageryComponent>
-			<ImageryComponent>
-				<Area>
-					<Dim type="LeftEdge" >
-						<UnifiedDim scale="1" offset="-15" type="LeftEdge" />
-					</Dim>
-					<Dim type="TopEdge" >
-						<AbsoluteDim value="0" />
-					</Dim>
-                    <Dim type="Width" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-					<Dim type="Height" >
-						<UnifiedDim scale="1.0" type="Height" />
-					</Dim>
-				</Area>
-				<Image imageset="TaharezLook" image="ButtonRightNormal" />
-				<VertFormat type="Stretched" />
-                <HorzFormat type="Stretched" />
-			</ImageryComponent>
-			<ImageryComponent>
-				<Area>
-					<Dim type="LeftEdge" >
-						<AbsoluteDim value="15" />
-					</Dim>
-					<Dim type="TopEdge" >
-						<AbsoluteDim value="0" />
-					</Dim>
-					<Dim type="Width" >
-						<UnifiedDim scale="1" offset="-30" type="Width" />
-					</Dim>
-					<Dim type="Height" >
-						<UnifiedDim scale="1" type="Height" />
-					</Dim>
-				</Area>
-				<Image imageset="TaharezLook" image="ButtonMiddleNormal" />
-				<VertFormat type="Stretched" />
-				<HorzFormat type="Stretched" />
-			</ImageryComponent>
-		</ImagerySection>
-        <ImagerySection name="button_hover">
+        <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1.0" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ButtonLeftNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-15" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ButtonRightNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-30" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ButtonMiddleNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ButtonLeftHighlight" />
                 <VertFormat type="Stretched" />
@@ -102,18 +62,10 @@
             </ImageryComponent>
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <UnifiedDim scale="1" offset="-15" type="LeftEdge" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1.0" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-15" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ButtonRightHighlight" />
                 <VertFormat type="Stretched" />
@@ -121,39 +73,23 @@
             </ImageryComponent>
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <UnifiedDim scale="1" offset="-30" type="Width" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-30" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ButtonMiddleHighlight" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <ImagerySection name="button_pushed">
+        <ImagerySection name="pushed">
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1.0" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ButtonLeftPushed" />
                 <VertFormat type="Stretched" />
@@ -161,18 +97,10 @@
             </ImageryComponent>
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <UnifiedDim scale="1" offset="-15" type="LeftEdge" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1.0" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-15" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ButtonRightPushed" />
                 <VertFormat type="Stretched" />
@@ -180,41 +108,33 @@
             </ImageryComponent>
             <ImageryComponent>
                 <Area>
-                    <Dim type="LeftEdge" >
-                        <AbsoluteDim value="15" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <AbsoluteDim value="0" />
-                    </Dim>
-                    <Dim type="Width" >
-                        <UnifiedDim scale="1" offset="-30" type="Width" />
-                    </Dim>
-                    <Dim type="Height" >
-                        <UnifiedDim scale="1" type="Height" />
-                    </Dim>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-30" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ButtonMiddlePushed" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-		<StateImagery name="Normal">
-			<Layer>
-				<Section section="button_normal" />
-                <Section section="button_label" />
-			</Layer>
-		</StateImagery>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Hover">
             <Layer>
-                <Section section="button_hover" />
-                <Section section="button_label" />
+                <Section section="hover" />
+                <Section section="label" />
             </Layer>
         </StateImagery>
         <StateImagery name="Pushed">
             <Layer>
-                <Section section="button_pushed" />
-                <Section section="button_label" />
+                <Section section="pushed" />
+                <Section section="label" />
             </Layer>
         </StateImagery>
-	</WidgetLook>
+    </WidgetLook>
 </Falagard>

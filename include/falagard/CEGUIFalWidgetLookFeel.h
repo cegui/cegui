@@ -163,6 +163,19 @@ namespace CEGUI
         */
         void initialiseWidget(Window& widget) const;
 
+        /*!
+        \brief
+            Return whether imagery is defined for the given state.
+
+        \param state
+            String object containing name of state to look for.
+
+        \return
+            - true if imagery exists for the specified state,
+            - false if no imagery exists for the specified state.
+        */
+        bool isStateImageryPresent(const String& state) const;
+
     private:
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;
