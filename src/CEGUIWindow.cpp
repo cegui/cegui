@@ -32,6 +32,8 @@
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
 #include "elements/CEGUITooltip.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "falagard/CEGUIFalWidgetLookFeel.h"
 #include <algorithm>
 #include <cmath>
 #include <stdio.h>
@@ -3134,9 +3136,11 @@ void Window::setLookNFeel(const String& look)
         d_lookName = look;
         Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
 
-        // TODO: Work to initialse the look and feel...
-        // TODO: Apply properties from look n feel.
-        // TODO: Create child widgets
+        // Work to initialse the look and feel...
+        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(look);
+        // Apply property initialisers and create child widgets.
+        wlf.initialiseWidget(*this);
+
         // TODO: Create look n feel defined properties (not supported yet!)
     }
     else
@@ -3171,7 +3175,9 @@ void Window::onSized(WindowEventArgs& e)
 
 void Window::onMoved(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventMoved, e, EventNamespace);
 }
 
