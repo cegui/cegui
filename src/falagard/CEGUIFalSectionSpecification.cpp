@@ -50,8 +50,13 @@ namespace CEGUI
             // get the imagery section object with the name we're set up to use
 			const ImagerySection* sect =
 				&WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
+
+            // decide what colours are to be used
+            ColourRect modColours(d_usingColourOverride ? d_coloursOverride : colour(1,1,1,1));
+            modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+
             // render the imagery section
-            sect->render(srcWindow, base_z, d_usingColourOverride ? &d_coloursOverride : 0);
+            sect->render(srcWindow, base_z, &modColours);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception)
