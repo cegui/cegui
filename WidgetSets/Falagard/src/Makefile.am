@@ -4,4 +4,6 @@ INCLUDES = -I$(top_srcdir)/include \
 lib_LTLIBRARIES=libCEGUIFalagardBase.la
 
 libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
-                                  FalModule.cpp
+                                  FalCheckbox.cpp \
+                                  FalModule.cpp \
+                                  FalRadioButton.cpp

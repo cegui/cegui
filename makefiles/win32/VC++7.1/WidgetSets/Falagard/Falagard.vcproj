@@ -133,7 +133,13 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalCheckbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalModule.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalRadioButton.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -144,7 +150,13 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalButton.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalCheckbox.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalModule.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalRadioButton.h">
 			</File>
 		</Filter>
 	</Files>

@@ -26,11 +26,15 @@
 #include "CEGUIWindowFactoryManager.h"
 // includes for types we create
 #include "FalButton.h"
+#include "FalCheckbox.h"
+#include "FalRadioButton.h"
 
 /*************************************************************************
     Static factory objects
 *************************************************************************/
 static CEGUI::FalagardButtonFactory             s_ButtonFactory;
+static CEGUI::FalagardCheckboxFactory           s_CheckboxFactory;
+static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
 
 
 using namespace CEGUI;
@@ -44,6 +48,8 @@ struct mapEntry
 mapEntry factoriesMap[] =
 {
     {FalagardButton::WidgetTypeName, &s_ButtonFactory},
+    {FalagardCheckbox::WidgetTypeName, &s_CheckboxFactory},
+    {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
     {0,0}
 };
 

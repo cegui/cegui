@@ -79,21 +79,14 @@ bool FalagardDemo1Sample::initialiseSample()
     //
     // this is falagard related stuff from now onwards
     //
-    // "TaharezLook/Button" in this test app is a type created by mapping the required name "TaharezLook/Button" to
-    // a base type ("Falagard/Button") and a window look/feel ("TaharezLook/Button"); the FalagardTest.scheme
-    // contains this mapping.
-    // (Also note that I removed the requirement to register factories individually, you can now register all
-    // factories in a modules by specifying no names explicitly; this new feature complements, but does not replace,
-    // the old system which offers more power for advanced uses).
-
-    // create an instance of the test window and add it to the frame window so we'll be able to see it.
-    Window* fbtn = winMgr.createWindow("TaharezLook/Button", "testbutton");
-
-    // usual stuff to link button to parent window and set some options...
+    // create an instance of the test widget and add it to the root so we'll be able to see it.
+    Window* fbtn = winMgr.createWindow("TaharezLook/Checkbox", "testWidget");
     root->addChildWindow(fbtn);
+
+    // set some basic things for the widget.
     fbtn->setPosition(Point(0.25f, 0.25f));
     fbtn->setSize(Size(0.5f, 0.125f));
-    fbtn->setText("Test Button!");
+    fbtn->setText("Test Option!");
 
     // success!
     return true;

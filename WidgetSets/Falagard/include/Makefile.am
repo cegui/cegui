@@ -1,3 +1,5 @@
 SUBDIRS = .
 noinst_HEADERS = FalButton.h \
-                 FalModule.h
+                 FalCheckbox.h \
+                 FalModule.h \
+                 FalRadioButton.h
