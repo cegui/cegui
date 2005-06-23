@@ -41,12 +41,22 @@ namespace CEGUI
         String widgetName = parent.getName() + d_nameSuffix;
         Window* widget = WindowManager::getSingleton().createWindow(d_baseType, widgetName);
 
-        // TODO: Code to set the widget look
+        // set the widget look
+        widget->setLookNFeel(d_imageryName);
 
         // add the new widget to its parent
         parent.addChildWindow(widget);
 
-        // initialise properties
+        // set alignment options
+        widget->setVerticalAlignment(d_vertAlign);
+        widget->setHorizontalAlignment(d_horzAlign);
+
+        // TODO: We still need code to specify position and size.  Due to the advanced
+        // TODO: possibilities, this is better handled via a 'layout' method instead of
+        // TODO: setting this once and forgetting about it.
+
+        // initialise properties.  This is done last so that these properties can
+        // override properties specified in the look assigned to the created widget.
         for(PropertiesList::const_iterator curr = d_properties.begin(); curr != d_properties.end(); ++curr)
         {
             (*curr).apply(*widget);
