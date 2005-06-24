@@ -27,16 +27,22 @@
 		</xsd:sequence>
 		<xsd:attribute name="priority" type="xsd:integer" use="optional" default="0" />
 	</xsd:complexType>
-	<xsd:complexType name="sectionSpecType">
-		<xsd:sequence>
-			<xsd:element name="Colours" type="colourRectType" minOccurs="0" maxOccurs="1" />
-		</xsd:sequence>
-		<xsd:attribute name="look" type="xsd:string" use="optional" default="" />
+    <xsd:complexType name="sectionSpecType">
+        <xsd:choice  minOccurs="0" maxOccurs="1">
+            <xsd:element name="Colours" type="colourRectType" />
+            <xsd:element name="ColourProperty" type="settingByPropertyType" />
+            <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
+        </xsd:choice>
+        <xsd:attribute name="look" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="section" type="xsd:string" use="required" />
-	</xsd:complexType>
+    </xsd:complexType>
 	<xsd:complexType name="imagerySectionType">
 		<xsd:sequence>
-			<xsd:element name="Colours" type="colourRectType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colours" type="colourRectType" />
+                <xsd:element name="ColourProperty" type="settingByPropertyType" />
+                <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
+            </xsd:choice>
 			<xsd:element name="ImageryComponent" type="imageryComponentType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="TextComponent" type="textComponentType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
@@ -46,7 +52,11 @@
         <xsd:sequence>
             <xsd:element name="Area" type="componentAreaType" />
             <xsd:element name="Text" type="textStringType" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="Colours" type="colourRectType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colours" type="colourRectType" />
+                <xsd:element name="ColourProperty" type="settingByPropertyType" />
+                <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
+            </xsd:choice>
             <xsd:element name="VertFormat" type="vertTextFormatType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="HorzFormat" type="horzTextFormatType" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
@@ -55,7 +65,11 @@
 		<xsd:sequence>
 			<xsd:element name="Area" type="componentAreaType" />
 			<xsd:element name="Image" type="imageType" />
-			<xsd:element name="Colours" type="colourRectType" minOccurs="0" maxOccurs="1" />
+            <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colours" type="colourRectType" />
+                <xsd:element name="ColourProperty" type="settingByPropertyType" />
+                <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
+            </xsd:choice>
 			<xsd:element name="VertFormat" type="vertFormatType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="HorzFormat" type="horzFormatType" minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
@@ -122,6 +136,9 @@
 		<xsd:attribute name="widget" type="xsd:string" use="required" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
+    <xsd:complexType name="settingByPropertyType">
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
 	<xsd:complexType name="colourRectType">
 		<xsd:attribute name="topLeft" type="colourValType" use="required" />
 		<xsd:attribute name="topRight" type="colourValType" use="required" />
@@ -200,6 +217,11 @@
             <xsd:enumeration value="TopAligned" />
             <xsd:enumeration value="BottomAligned" />
             <xsd:enumeration value="CentreAligned" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="propertyTypeEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Generic" />
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>

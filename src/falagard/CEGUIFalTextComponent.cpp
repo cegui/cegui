@@ -24,6 +24,7 @@
 #include "falagard/CEGUIFalTextComponent.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -31,7 +32,8 @@ namespace CEGUI
     TextComponent::TextComponent() :
         d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
         d_vertFormatting(VTF_TOP_ALIGNED),
-        d_horzFormatting(HTF_LEFT_ALIGNED)
+        d_horzFormatting(HTF_LEFT_ALIGNED),
+        d_colourProperyIsRect(false)
     {}
 
     void TextComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
@@ -56,7 +58,8 @@ namespace CEGUI
         Rect destRect(d_area.getPixelRect(srcWindow));
 
         // calculate final colours to be used
-        ColourRect finalColours(d_colours);
+        ColourRect finalColours;
+        initColoursRect(srcWindow, finalColours);
         if (modColours)
         {
             finalColours *= *modColours;
@@ -142,6 +145,43 @@ namespace CEGUI
     void TextComponent::setHorizontalFormatting(HorizontalTextFormatting fmt)
     {
         d_horzFormatting = fmt;
+    }
+
+    void TextComponent::setColoursPropertySource(const String& property)
+    {
+        d_colourPropertyName = property;
+    }
+
+    void TextComponent::setColoursPropertyIsColourRect(bool setting)
+    {
+        d_colourProperyIsRect = setting;
+    }
+
+    void TextComponent::initColoursRect(const Window& wnd, ColourRect& cr) const
+    {
+        // if colours come via a colour property
+        if (!d_colourPropertyName.empty())
+        {
+            // if property accesses a ColourRect
+            if (d_colourProperyIsRect)
+            {
+                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+            }
+            // property accesses a colour
+            else
+            {
+                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                cr.d_top_left     = val;
+                cr.d_top_right    = val;
+                cr.d_bottom_left  = val;
+                cr.d_bottom_right = val;
+            }
+        }
+        // use explicit ColourRect.
+        else
+        {
+            cr = d_colours;
+        }
     }
 
 } // End of  CEGUI namespace section

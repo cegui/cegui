@@ -26,6 +26,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include "CEGUIPropertyHelper.h"
 
 // void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours);
 
@@ -36,14 +37,16 @@ namespace CEGUI
         d_image(0),
 		d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
         d_vertFormatting(VF_TOP_ALIGNED),
-        d_horzFormatting(HF_LEFT_ALIGNED)
+        d_horzFormatting(HF_LEFT_ALIGNED),
+        d_colourProperyIsRect(false)
     {}
 
     ImageryComponent::ImageryComponent(const ComponentArea& area, const String& imageset, const String& image, const ColourRect& cols, VerticalFormatting vFmt, HorizontalFormatting hFmt) :
         d_area(area),
         d_colours(cols),
         d_vertFormatting(vFmt),
-        d_horzFormatting(hFmt)
+        d_horzFormatting(hFmt),
+        d_colourProperyIsRect(false)
     {
         setImage(imageset, image);
     }
@@ -53,7 +56,8 @@ namespace CEGUI
         d_image(image),
         d_colours(cols),
         d_vertFormatting(vFmt),
-        d_horzFormatting(hFmt)
+        d_horzFormatting(hFmt),
+        d_colourProperyIsRect(false)
     {}
 
     void ImageryComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
@@ -69,7 +73,8 @@ namespace CEGUI
         Size imgSz(d_image->getSize());
 
         // calculate final colours to be used
-        ColourRect finalColours(d_colours);
+        ColourRect finalColours;
+        initColoursRect(srcWindow, finalColours);
         if (modColours)
         {
             finalColours *= *modColours;
@@ -225,6 +230,43 @@ namespace CEGUI
     void ImageryComponent::setHorizontalFormatting(HorizontalFormatting fmt)
     {
         d_horzFormatting = fmt;
+    }
+
+    void ImageryComponent::setColoursPropertySource(const String& property)
+    {
+        d_colourPropertyName = property;
+    }
+
+    void ImageryComponent::setColoursPropertyIsColourRect(bool setting)
+    {
+        d_colourProperyIsRect = setting;
+    }
+
+    void ImageryComponent::initColoursRect(const Window& wnd, ColourRect& cr) const
+    {
+        // if colours come via a colour property
+        if (!d_colourPropertyName.empty())
+        {
+            // if property accesses a ColourRect
+            if (d_colourProperyIsRect)
+            {
+                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+            }
+            // property accesses a colour
+            else
+            {
+                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                cr.d_top_left     = val;
+                cr.d_top_right    = val;
+                cr.d_bottom_left  = val;
+                cr.d_bottom_right = val;
+            }
+        }
+        // use explicit ColourRect.
+        else
+        {
+            cr = d_colours;
+        }
     }
 
 } // End of  CEGUI namespace section

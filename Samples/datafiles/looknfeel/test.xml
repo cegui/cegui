@@ -121,19 +121,25 @@
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Hover">
             <Layer>
                 <Section section="hover" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Pushed">
             <Layer>
                 <Section section="pushed" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="PushedTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
     </WidgetLook>
@@ -193,27 +199,35 @@
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Hover">
             <Layer>
                 <Section section="hover" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="SelectedNormal">
             <Layer>
                 <Section section="normal" />
                 <Section section="select_mark" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="SelectedHover">
             <Layer>
                 <Section section="hover" />
                 <Section section="select_mark" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
     </WidgetLook>
@@ -273,29 +287,36 @@
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Hover">
             <Layer>
                 <Section section="hover" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="SelectedNormal">
             <Layer>
                 <Section section="normal" />
                 <Section section="select_mark" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="SelectedHover">
             <Layer>
                 <Section section="hover" />
                 <Section section="select_mark" />
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
     </WidgetLook>
-
 </Falagard>

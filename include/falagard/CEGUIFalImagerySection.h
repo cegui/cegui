@@ -154,6 +154,43 @@ namespace CEGUI
         */
         ImagerySection(const ImagerySection& other);
 
+        /*!
+        \brief
+            Set the name of the property where master colour values can be obtained.
+
+        \param property
+            String containing the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setMasterColoursPropertySource(const String& property);
+
+        /*!
+        \brief
+            Set whether the master colours property source represents a full ColourRect.
+
+        \param setting
+            - true if the master colours property will access a ColourRect object.
+            - false if the master colours property will access a colour object.
+
+        \return
+            Nothing.
+        */
+        void setMasterColoursPropertyIsColourRect(bool setting = true);
+
+    protected:
+        /*!
+        \brief
+            Helper method to initialise a ColourRect with appropriate values according to the way the
+            ImagerySection is set up.
+
+            This will try and get values from multiple places:
+                - a property attached to \a wnd
+                - or the integral d_masterColours value.
+        */
+        void initMasterColourRect(const Window& wnd, ColourRect& cr) const;
+
     private:
         typedef std::vector<ImageryComponent> ImageryList;
         typedef std::vector<TextComponent> TextList;
@@ -162,6 +199,8 @@ namespace CEGUI
         CEGUI::ColourRect   d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).
         ImageryList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
         TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
+        String              d_colourPropertyName;   //!< name of property to fetch colours from.
+        bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
     };
 
 } // End of  CEGUI namespace section

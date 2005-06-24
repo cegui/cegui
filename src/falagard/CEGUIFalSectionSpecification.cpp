@@ -26,6 +26,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -33,14 +34,16 @@ namespace CEGUI
     SectionSpecification::SectionSpecification(const String& owner, const String& sectionName) :
         d_owner(owner),
         d_sectionName(sectionName),
-        d_usingColourOverride(false)
+        d_usingColourOverride(false),
+        d_colourProperyIsRect(false)
     {}
 
     SectionSpecification::SectionSpecification(const String& owner, const String& sectionName, const ColourRect& cols) :
         d_owner(owner),
         d_sectionName(sectionName),
         d_coloursOverride(cols),
-        d_usingColourOverride(true)
+        d_usingColourOverride(true),
+        d_colourProperyIsRect(false)
     {}
 
     void SectionSpecification::render(Window& srcWindow, float base_z) const
@@ -52,7 +55,8 @@ namespace CEGUI
 				&WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
 
             // decide what colours are to be used
-            ColourRect modColours(d_usingColourOverride ? d_coloursOverride : colour(1,1,1,1));
+            ColourRect modColours;
+            initColourRectForOverride(srcWindow, modColours);
             modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             // render the imagery section
@@ -91,6 +95,52 @@ namespace CEGUI
     void SectionSpecification::setUsingOverrideColours(bool setting)
     {
         d_usingColourOverride = setting;
+    }
+
+    void SectionSpecification::setOverrideColoursPropertySource(const String& property)
+    {
+        d_colourPropertyName = property;
+    }
+
+    void SectionSpecification::initColourRectForOverride(const Window& wnd, ColourRect& cr) const
+    {
+        // if no override set
+        if (!d_usingColourOverride)
+        {
+            colour val(1,1,1,1);
+            cr.d_top_left     = val;
+            cr.d_top_right    = val;
+            cr.d_bottom_left  = val;
+            cr.d_bottom_right = val;
+        }
+        // if override comes via a colour property
+        else if (!d_colourPropertyName.empty())
+        {
+            // if property accesses a ColourRect
+            if (d_colourProperyIsRect)
+            {
+                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+            }
+            // property accesses a colour
+            else
+            {
+                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                cr.d_top_left     = val;
+                cr.d_top_right    = val;
+                cr.d_bottom_left  = val;
+                cr.d_bottom_right = val;
+            }
+        }
+        // override is an explicitly defined ColourRect.
+        else
+        {
+            cr = d_coloursOverride;
+        }
+    }
+
+    void SectionSpecification::setOverrideColoursPropertyIsColourRect(bool setting)
+    {
+        d_colourProperyIsRect = setting;
     }
 
 } // End of  CEGUI namespace section

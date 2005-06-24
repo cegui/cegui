@@ -148,11 +148,51 @@ namespace CEGUI
         */
         void setUsingOverrideColours(bool setting = true);
 
+        /*!
+        \brief
+            Set the name of the property where override colour values can be obtained.
+
+        \param property
+            String containing the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setOverrideColoursPropertySource(const String& property);
+
+        /*!
+        \brief
+            Set whether the override colours property source represents a full ColourRect.
+
+        \param setting
+            - true if the override colours property will access a ColourRect object.
+            - false if the override colours property will access a colour object.
+
+        \return
+            Nothing.
+        */
+        void setOverrideColoursPropertyIsColourRect(bool setting = true);
+
+    protected:
+        /*!
+        \brief
+            Helper method to initialise a ColourRect with appropriate values according to the way the
+            section sepcification is set up.
+
+            This will try and get values from multiple places:
+                - a property attached to \a wnd
+                - the integral d_coloursOverride values.
+                - or default to colour(1,1,1,1);
+        */
+        void initColourRectForOverride(const Window& wnd, ColourRect& cr) const;
+
     private:
         String          d_owner;                //!< Name of the WidgetLookFeel containing the required section.
         String          d_sectionName;          //!< Name of the required section within the specified WidgetLookFeel.
         ColourRect      d_coloursOverride;      //!< Colours to use when override is enabled.
         bool            d_usingColourOverride;  //!< true if colour override is enabled.
+        String          d_colourPropertyName;   //!< name of property to fetch colours from.
+        bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
     };
 
 

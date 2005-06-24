@@ -58,7 +58,7 @@ public:
 	NormalTextColour() : Property(
 		"NormalTextColour",
 		"Property to get/set the colour to use when rendering label text for normal state.  Value is \"aarrggbb\" (hex).",
-		"00FFFFFF")
+		"FFFFFFFF")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -85,7 +85,7 @@ public:
 	HoverTextColour() : Property(
 		"HoverTextColour",
 		"Property to get/set the colour to use when rendering label text for hover/highlight state.  Value is \"aarrggbb\" (hex).",
-		"00FFFFFF")
+		"FFFFFFFF")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -112,7 +112,7 @@ public:
 	PushedTextColour() : Property(
 		"PushedTextColour", 
 		"Property to get/set the colour to use when rendering label text for pushed state.  Value is \"aarrggbb\" (hex).",
-		"00FFFFFF")
+		"FFFFFFFF")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -139,7 +139,7 @@ public:
 	DisabledTextColour() : Property(
 		"DisabledTextColour",
 		"Property to get/set the colour to use when rendering label text for disabled state.  Value is \"aarrggbb\" (hex).",
-		"007F7F7F")
+		"FF7F7F7F")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;

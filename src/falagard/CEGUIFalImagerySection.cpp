@@ -22,23 +22,27 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalImagerySection.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     ImagerySection::ImagerySection() :
-        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+        d_colourProperyIsRect(false)
     {}
 
     ImagerySection::ImagerySection(const String& name) :
         d_name(name),
-        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
+        d_colourProperyIsRect(false)
     {}
 
     void ImagerySection::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
     {
         // decide what to do as far as colours go
-        ColourRect finalCols(d_masterColours);
+        ColourRect finalCols;
+        initMasterColourRect(srcWindow, finalCols);
 
         if (modColours)
             finalCols *= *modColours;
@@ -98,6 +102,8 @@ namespace CEGUI
         d_masterColours = other.d_masterColours;
         d_images = other.d_images;
         d_texts = other.d_texts;
+        d_colourPropertyName = other.d_colourPropertyName;
+        d_colourProperyIsRect = other.d_colourProperyIsRect;
 
 		return *this;
     }
@@ -108,6 +114,46 @@ namespace CEGUI
         d_masterColours = other.d_masterColours;
         d_images = other.d_images;
         d_texts = other.d_texts;
+        d_colourPropertyName = other.d_colourPropertyName;
+        d_colourProperyIsRect = other.d_colourProperyIsRect;
     }
+
+    void ImagerySection::setMasterColoursPropertySource(const String& property)
+    {
+        d_colourPropertyName = property;
+    }
+
+    void ImagerySection::setMasterColoursPropertyIsColourRect(bool setting)
+    {
+        d_colourProperyIsRect = setting;
+    }
+
+    void ImagerySection::initMasterColourRect(const Window& wnd, ColourRect& cr) const
+    {
+        // if colours come via a colour property
+        if (!d_colourPropertyName.empty())
+        {
+            // if property accesses a ColourRect
+            if (d_colourProperyIsRect)
+            {
+                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
+            }
+            // property accesses a colour
+            else
+            {
+                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
+                cr.d_top_left     = val;
+                cr.d_top_right    = val;
+                cr.d_bottom_left  = val;
+                cr.d_bottom_right = val;
+            }
+        }
+        // use explicit ColourRect.
+        else
+        {
+            cr = d_masterColours;
+        }
+    }
+
 
 } // End of  CEGUI namespace section

@@ -192,13 +192,52 @@ namespace CEGUI
         */
         void setHorizontalFormatting(HorizontalTextFormatting fmt);
 
-    public:
+        /*!
+        \brief
+            Set the name of the property where colour values can be obtained.
+
+        \param property
+            String containing the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setColoursPropertySource(const String& property);
+
+        /*!
+        \brief
+            Set whether the colours property source represents a full ColourRect.
+
+        \param setting
+            - true if the colours property will access a ColourRect object.
+            - false if the colours property will access a colour object.
+
+        \return
+            Nothing.
+        */
+        void setColoursPropertyIsColourRect(bool setting = true);
+
+    protected:
+        /*!
+        \brief
+            Helper method to initialise a ColourRect with appropriate values according to the way the
+            TextComponent is set up.
+
+            This will try and get values from multiple places:
+                - a property attached to \a wnd
+                - or the integral d_colours value.
+        */
+        void initColoursRect(const Window& wnd, ColourRect& cr) const;
+
+    private:
         ComponentArea        d_area;            //!< Destination area for this component.
         String               d_text;            //!< text rendered by this component.
         String               d_font;            //!< name of font to use.
         ColourRect           d_colours;         //!< base colours to be applied when rendering the component.
         VerticalTextFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the component.
         HorizontalTextFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the component.
+        String              d_colourPropertyName;   //!< name of property to fetch colours from.
+        bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
     };
 
 } // End of  CEGUI namespace section

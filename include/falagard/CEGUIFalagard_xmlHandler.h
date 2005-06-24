@@ -97,7 +97,9 @@ namespace CEGUI
         static const String AbsoluteDimElement;         //!< Tag name for absolute dimension elements.
         static const String ImageDimElement;            //!< Tag name for image dimension elements.
         static const String WidgetDimElement;           //!< Tag name for widget dimension elements.
-        static const String TextElement;                //!< Tag name for text component text elements..
+        static const String TextElement;                //!< Tag name for text component text elements
+        static const String ColourPropertyElement;      //!< Tag name for property colour elements (fetches cols from a colour property)
+        static const String ColourRectPropertyElement;  //!< Tag name for property colour elements (fetches cols from a ColourRect property)
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.

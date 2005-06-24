@@ -58,6 +58,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::ImageDimElement("ImageDim");
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
     const String Falagard_xmlHandler::TextElement("Text");
+    const String Falagard_xmlHandler::ColourPropertyElement("ColourProperty");
+    const String Falagard_xmlHandler::ColourRectPropertyElement("ColourRectProperty");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -197,6 +199,31 @@ namespace CEGUI
             {
                 d_section->setOverrideColours(cols);
 				d_section->setUsingOverrideColours(true);
+            }
+        }
+        else if ((element == ColourPropertyElement) || (element == ColourRectPropertyElement))
+        {
+            // need to decide what to apply colours to
+            if (d_imagerycomponent)
+            {
+                d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+                d_imagerycomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
+            }
+            else if (d_textcomponent)
+            {
+                d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+                d_textcomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
+            }
+            else if (d_imagerysection)
+            {
+                d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
+                d_imagerysection->setMasterColoursPropertyIsColourRect(element == ColourRectPropertyElement);
+            }
+            else if (d_section)
+            {
+                d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
+                d_section->setOverrideColoursPropertyIsColourRect(element == ColourRectPropertyElement);
+                d_section->setUsingOverrideColours(true);
             }
         }
         else if (element == PropertyElement)
