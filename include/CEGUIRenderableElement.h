@@ -31,6 +31,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIColourRect.h"
 #include "CEGUIVector.h"
+#include "CEGUIRenderCache.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -58,6 +59,17 @@ public:
 	*/
 	void	draw(const Vector3& position, const Rect& clip_rect);
 
+    /*!
+    \brief
+        Draw the element chain into the given RenderCache
+
+    \param renderCache
+        RenderCache object where element imagery is to be queued.
+
+    \return
+        Nothing.
+    */
+    void draw(RenderCache& renderCache) const;
 
 	/*************************************************************************
 		Accessors
@@ -270,6 +282,18 @@ protected:
 		Nothing.
 	*/
 	virtual void	draw_impl(const Vector3& position, const Rect& clip_rect) const = 0;
+
+    /*!
+    \brief
+        Implementation method to draw the element into the given RenderCache
+
+    \param renderCache
+        RenderCache object where element imagery is to be queued.
+
+    \return
+        Nothing.
+    */
+    virtual void draw_impl(RenderCache& renderCache) const = 0;
 
 
 	/*************************************************************************

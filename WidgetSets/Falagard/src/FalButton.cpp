@@ -54,22 +54,74 @@ namespace CEGUI
 
     void FalagardButton::drawNormal(float z)
     {
-        doButtonRender("Normal");
+        // this conditional is just here to respect old legacy settings
+        if (d_useStandardImagery)
+        {
+            doButtonRender("Normal");
+        }
+
+        // Support for legacy custom image setting
+        if (d_useNormalImage)
+        {
+            ColourRect colours(d_normalImage.getColours());
+            colours.setAlpha(getEffectiveAlpha());
+            d_normalImage.setColours(colours);
+            d_normalImage.draw(d_renderCache);
+        }
     }
 
     void FalagardButton::drawHover(float z)
     {
-        doButtonRender("Hover");
+        // this conditional is just here to respect old legacy settings
+        if (d_useStandardImagery)
+        {
+            doButtonRender("Hover");
+        }
+
+        // Support for legacy custom image setting
+        if (d_useHoverImage)
+        {
+            ColourRect colours(d_hoverImage.getColours());
+            colours.setAlpha(getEffectiveAlpha());
+            d_hoverImage.setColours(colours);
+            d_hoverImage.draw(d_renderCache);
+        }
     }
 
     void FalagardButton::drawPushed(float z)
     {
-        doButtonRender("Pushed");
+        // this conditional is just here to respect old legacy settings
+        if (d_useStandardImagery)
+        {
+            doButtonRender("Pushed");
+        }
+
+        // Support for legacy custom image setting
+        if (d_usePushedImage)
+        {
+            ColourRect colours(d_pushedImage.getColours());
+            colours.setAlpha(getEffectiveAlpha());
+            d_pushedImage.setColours(colours);
+            d_pushedImage.draw(d_renderCache);
+        }
     }
 
     void FalagardButton::drawDisabled(float z)
     {
-        doButtonRender("Disabled");
+        // this conditional is just here to respect old legacy settings
+        if (d_useStandardImagery)
+        {
+            doButtonRender("Disabled");
+        }
+
+        // Support for legacy custom image setting
+        if (d_useDisabledImage)
+        {
+            ColourRect colours(d_disabledImage.getColours());
+            colours.setAlpha(getEffectiveAlpha());
+            d_disabledImage.setColours(colours);
+            d_disabledImage.draw(d_renderCache);
+        }
     }
 
     void FalagardButton::doButtonRender(const String& state)

@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "CEGUIRenderableFrame.h"
 #include "CEGUIImage.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -395,5 +396,10 @@ const Image* RenderableFrame::getImageForLocation(FrameLocation location) const
 
 }
 
+void RenderableFrame::draw_impl(RenderCache& renderCache) const
+{
+    // TODO: Code this!
+    throw InvalidRequestException("Call to unimplemented method 'void RenderableFrame::draw_impl(RenderCache& renderCache) const'.");
+}
 
 } // End of  CEGUI namespace section
