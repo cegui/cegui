@@ -13,8 +13,11 @@
 		<WindowFactory Name="WindowsLook/Listbox" />
 		<WindowFactory Name="WindowsLook/ListHeader" />
 		<WindowFactory Name="WindowsLook/ListHeaderSegment" />
+		<WindowFactory Name="WindowsLook/Menubar" />
+		<WindowFactory Name="WindowsLook/MenubarItem" />
 		<WindowFactory Name="WindowsLook/MultiColumnList" />
 		<WindowFactory Name="WindowsLook/MultiLineEditbox" />
+		<WindowFactory Name="WindowsLook/PopupMenu" />
 		<WindowFactory Name="WindowsLook/ProgressBar" />
 		<WindowFactory Name="WindowsLook/RadioButton" />
 		<WindowFactory Name="WindowsLook/ScrollablePane" />
@@ -26,6 +29,7 @@
 		<WindowFactory Name="WindowsLook/TabButton" />
 		<WindowFactory Name="WindowsLook/TabControl" />
 		<WindowFactory Name="WindowsLook/TabPane" />
+		<WindowFactory Name="WindowsLook/TextItem" />
 		<WindowFactory Name="WindowsLook/Titlebar" />
         <WindowFactory Name="WindowsLook/Tooltip" />
 		<WindowFactory Name="WindowsLook/VerticalScrollbar" />
