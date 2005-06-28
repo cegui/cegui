@@ -19,6 +19,7 @@
 		<WindowFactory Name="WindowsLook/MultiColumnList" />
 		<WindowFactory Name="WindowsLook/MultiLineEditbox" />
 		<WindowFactory Name="WindowsLook/PopupMenu" />
+		<WindowFactory Name="WindowsLook/PopupMenuItem" />
 		<WindowFactory Name="WindowsLook/ProgressBar" />
 		<WindowFactory Name="WindowsLook/RadioButton" />
 		<WindowFactory Name="WindowsLook/ScrollablePane" />
