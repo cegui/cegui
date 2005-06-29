@@ -5,7 +5,11 @@ Copyright ©2004 - 2005 Paul D Turner & Contributing Authors
 
 
 The following is a high-level view of changes made to the system between releases.
-
+Release 0.3.0
+=============
+Added: Menu widget set.
+Added: Generic drag/drop support widgets.
+Added: tinyXML support.
 
 Release 0.2.0
 =============
