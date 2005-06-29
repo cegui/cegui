@@ -21,6 +21,10 @@ Paul D Turner:
 Lars Rinde:
 - Original TaharezLook graphics design.
 
+CEGUI Team
+---------
+James O'Sullivan (_mental_)
+Tomas Lindquist Olsen (lindquist)
 
 Main Contributors
 -----------------
@@ -45,10 +49,6 @@ Jose A Milan:
 
 Magnus Osterlind:
 - Direct3D 9 GUI renderer module.
-
-James O'Sullivan:
-- Linux build system and maintenance.
-- Resource provider system.
 
 Paul Schifferer:
 - Mac OS X build system and maintenance.
