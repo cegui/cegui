@@ -144,6 +144,9 @@
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalRadioButton.cpp">
 			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalTitlebar.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -163,6 +166,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalRadioButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalTitlebar.h">
 			</File>
 		</Filter>
 	</Files>

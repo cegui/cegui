@@ -7,4 +7,5 @@
 	<FalagardMapping WindowType="TaharezLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="TaharezLook/Checkbox" />
 	<FalagardMapping WindowType="TaharezLook/Editbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/Editbox" />
 	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="Falagard/RadioButton" LookNFeel="TaharezLook/RadioButton" />
+	<FalagardMapping WindowType="TaharezLook/Titlebar" TargetType="Falagard/Titlebar" LookNFeel="TaharezLook/Titlebar" />
 </GUIScheme>
