@@ -54,11 +54,7 @@ namespace CEGUI
 
     void FalagardButton::drawNormal(float z)
     {
-        // this conditional is just here to respect old legacy settings
-        if (d_useStandardImagery)
-        {
-            doButtonRender("Normal");
-        }
+        doButtonRender("Normal");
 
         // Support for legacy custom image setting
         if (d_useNormalImage)
@@ -72,11 +68,7 @@ namespace CEGUI
 
     void FalagardButton::drawHover(float z)
     {
-        // this conditional is just here to respect old legacy settings
-        if (d_useStandardImagery)
-        {
-            doButtonRender("Hover");
-        }
+        doButtonRender("Hover");
 
         // Support for legacy custom image setting
         if (d_useHoverImage)
@@ -90,11 +82,7 @@ namespace CEGUI
 
     void FalagardButton::drawPushed(float z)
     {
-        // this conditional is just here to respect old legacy settings
-        if (d_useStandardImagery)
-        {
-            doButtonRender("Pushed");
-        }
+        doButtonRender("Pushed");
 
         // Support for legacy custom image setting
         if (d_usePushedImage)
@@ -108,11 +96,7 @@ namespace CEGUI
 
     void FalagardButton::drawDisabled(float z)
     {
-        // this conditional is just here to respect old legacy settings
-        if (d_useStandardImagery)
-        {
-            doButtonRender("Disabled");
-        }
+        doButtonRender("Disabled");
 
         // Support for legacy custom image setting
         if (d_useDisabledImage)
@@ -133,32 +117,36 @@ namespace CEGUI
         // do we need to update the cache?
         if (d_needsRedraw)
         {
-            const StateImagery* imagery;
-
             // remove old cached imagery
             d_renderCache.clearCachedImagery();
             // signal that we'll no loger need a redraw.
             d_needsRedraw = false;
 
-            try
+            // this conditional is just here to respect old legacy settings
+            if (d_useStandardImagery)
             {
-                // get WidgetLookFeel for the assigned look.
-                const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-                // try and get imagery for the state we were given, though default to Normal state if the
-                // desired state does not exist
-                imagery = wlf.isStateImageryPresent(state) ? &wlf.getStateImagery(state) : &wlf.getStateImagery("Normal");
-            }
-            // catch exceptions, but do not exit.
-            catch (UnknownObjectException)
-            {
-                // don't try and draw using missing imagery!
-                return;
-            }
+                const StateImagery* imagery;
 
-            // peform the rendering operation.
-            // NB: This is not in the above try block since we want UnknownObjectException exceptions to be emitted from
-            // the rendering code for conditions such as missing Imagesets and/or Images.
-            imagery->render(*this);
+                try
+                {
+                    // get WidgetLookFeel for the assigned look.
+                    const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+                    // try and get imagery for the state we were given, though default to Normal state if the
+                    // desired state does not exist
+                    imagery = wlf.isStateImageryPresent(state) ? &wlf.getStateImagery(state) : &wlf.getStateImagery("Normal");
+                }
+                // catch exceptions, but do not exit.
+                catch (UnknownObjectException)
+                {
+                    // don't try and draw using missing imagery!
+                    return;
+                }
+
+                // peform the rendering operation.
+                // NB: This is not in the above try block since we want UnknownObjectException exceptions to be emitted from
+                // the rendering code for conditions such as missing Imagesets and/or Images.
+                imagery->render(*this);
+            }
         }
     }
 
