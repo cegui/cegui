@@ -96,13 +96,29 @@ bool FalagardDemo1Sample::initialiseSample()
     button->setSize(Size(0.5f, 0.1f));
     button->setText("Button 1");
 
-    button = winMgr.createWindow("TaharezLook/Button", "button2");
-    wid->addChildWindow(button);
+    Window* progress = winMgr.createWindow("TaharezLook/ProgressBar", "progbar");
+    wid->addChildWindow(progress);
 
     // set some basic things for the widget.
-    button->setPosition(Point(0.25f, 0.4f));
-    button->setSize(Size(0.5f, 0.1f));
-    button->setText("Button 2");
+    progress->setPosition(Point(0.25f, 0.4f));
+    progress->setSize(Size(0.5f, 0.1f));
+    ((ProgressBar*)progress)->setProgress(0.5f);
+
+    progress = winMgr.createWindow("TaharezLook/AltProgressBar", "progbar2");
+    wid->addChildWindow(progress);
+
+    // set some basic things for the widget.
+    progress->setPosition(Point(0.25f, 0.6f));
+    progress->setSize(Size(0.5f, 0.1f));
+    ((ProgressBar*)progress)->setProgress(0.75f);
+
+    progress = winMgr.createWindow("TaharezLook/VUMeter", "progbar3");
+    wid->addChildWindow(progress);
+
+    // set some basic things for the widget.
+    progress->setPosition(Point(0.07f, 0.1f));
+    progress->setSize(Size(0.035f, 0.2f));
+    ((ProgressBar*)progress)->setProgress(1.0f);
 
     // success!
     return true;

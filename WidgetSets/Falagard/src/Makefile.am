@@ -8,5 +8,7 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalEditbox.cpp \
                                   FalFrameWindow.cpp \
                                   FalModule.cpp \
+                                  FalProgressBar.cpp \
+                                  FalProgressBarProperties.cpp \
                                   FalRadioButton.cpp \
                                   FalTitlebar.cpp

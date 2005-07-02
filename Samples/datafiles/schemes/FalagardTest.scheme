@@ -3,10 +3,13 @@
 	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
 	<LookNFeel Filename="../datafiles/looknfeel/test.xml" />
 	<WindowSet Filename="CEGUIFalagardBase" />
+	<FalagardMapping WindowType="TaharezLook/AltProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
 	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="TaharezLook/Checkbox" />
 	<FalagardMapping WindowType="TaharezLook/Editbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/Editbox" />
 	<FalagardMapping WindowType="TaharezLook/FrameWindow" TargetType="Falagard/FrameWindow" LookNFeel="TaharezLook/FrameWindow" />
+	<FalagardMapping WindowType="TaharezLook/ProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/ProgressBar" />
 	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="Falagard/RadioButton" LookNFeel="TaharezLook/RadioButton" />
 	<FalagardMapping WindowType="TaharezLook/Titlebar" TargetType="Falagard/Titlebar" LookNFeel="TaharezLook/Titlebar" />
+	<FalagardMapping WindowType="TaharezLook/VUMeter" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/VUMeter" />
 </GUIScheme>

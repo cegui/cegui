@@ -145,6 +145,12 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalModule.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalProgressBar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalProgressBarProperties.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalRadioButton.cpp">
 			</File>
 			<File
@@ -169,6 +175,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalModule.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalProgressBar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalProgressBarProperties.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalRadioButton.h">
