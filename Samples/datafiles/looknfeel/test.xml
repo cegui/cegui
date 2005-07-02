@@ -319,4 +319,102 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+
+    <WidgetLook name="TaharezLook/Editbox">
+        <Property name="MouseCursorImage" value="set:TaharezLook image:MouseTextBar" />
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-7" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-7" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="container_normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="EditBoxLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-15" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="EditBoxRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-30" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="EditBoxMiddle" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selection">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TextSelectionBrush" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="Carat">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="EditBoxCarat" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="ActiveSelectionColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="InactiveSelectionColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>

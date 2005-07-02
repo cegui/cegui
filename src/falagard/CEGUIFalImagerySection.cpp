@@ -61,6 +61,29 @@ namespace CEGUI
         }
     }
 
+    void ImagerySection::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours) const
+    {
+        // decide what to do as far as colours go
+        ColourRect finalCols;
+        initMasterColourRect(srcWindow, finalCols);
+
+        if (modColours)
+            finalCols *= *modColours;
+
+        ColourRect* finalColsPtr = (finalCols.isMonochromatic() && finalCols.d_top_left.getARGB() == 0xFFFFFFFF) ? 0 : &finalCols;
+
+        // render all image components in this section
+        for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
+        {
+            (*image).render(srcWindow, baseRect, base_z, finalColsPtr);
+        }
+        // render all text components in this section
+        for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
+        {
+            (*text).render(srcWindow, baseRect, base_z, finalColsPtr);
+        }
+    }
+
     void ImagerySection::addImageryComponent(const ImageryComponent& img)
     {
         d_images.push_back(img);
@@ -94,28 +117,6 @@ namespace CEGUI
     const String& ImagerySection::getName() const
     {
         return d_name;
-    }
-
-    ImagerySection& ImagerySection::operator=(const ImagerySection& other)
-    {
-        d_name = other.d_name;
-        d_masterColours = other.d_masterColours;
-        d_images = other.d_images;
-        d_texts = other.d_texts;
-        d_colourPropertyName = other.d_colourPropertyName;
-        d_colourProperyIsRect = other.d_colourProperyIsRect;
-
-		return *this;
-    }
-
-    ImagerySection::ImagerySection(const ImagerySection& other)
-    {
-        d_name = other.d_name;
-        d_masterColours = other.d_masterColours;
-        d_images = other.d_images;
-        d_texts = other.d_texts;
-        d_colourPropertyName = other.d_colourPropertyName;
-        d_colourProperyIsRect = other.d_colourProperyIsRect;
     }
 
     void ImagerySection::setMasterColoursPropertySource(const String& property)
@@ -155,5 +156,62 @@ namespace CEGUI
         }
     }
 
+    Rect ImagerySection::getBoundingRect(const Window& wnd) const
+    {
+        Rect compRect;
+        Rect bounds(0, 0, 0, 0);
+
+        // measure all imagery components
+        for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
+        {
+            compRect = (*image).getComponentArea().getPixelRect(wnd);
+
+            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
+            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
+            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
+            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+        }
+        // measure all text components
+        for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
+        {
+            compRect = (*text).getComponentArea().getPixelRect(wnd);
+
+            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
+            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
+            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
+            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+        }
+
+        return bounds;
+    }
+
+    Rect ImagerySection::getBoundingRect(const Window& wnd, const Rect& rect) const
+    {
+        Rect compRect;
+        Rect bounds(0, 0, 0, 0);
+
+        // measure all imagery components
+        for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
+        {
+            compRect = (*image).getComponentArea().getPixelRect(wnd, rect);
+
+            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
+            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
+            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
+            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+        }
+        // measure all text components
+        for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
+        {
+            compRect = (*text).getComponentArea().getPixelRect(wnd, rect);
+
+            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
+            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
+            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
+            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+        }
+
+        return bounds;
+    }
 
 } // End of  CEGUI namespace section

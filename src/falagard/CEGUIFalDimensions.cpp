@@ -47,6 +47,11 @@ namespace CEGUI
         return d_val;
     }
 
+    float AbsoluteDim::getValue(const Window& wnd, const Rect& container) const
+    {
+        return d_val;
+    }
+
     BaseDim* AbsoluteDim::clone() const
     {
         AbsoluteDim* ndim = new AbsoluteDim(d_val);
@@ -119,6 +124,13 @@ namespace CEGUI
                 break;
         }
     }
+
+    float ImageDim::getValue(const Window& wnd, const Rect& container) const
+    {
+        // This dimension type does not alter when whithin a container Rect.
+        return getValue(wnd);
+    }
+
 
     BaseDim* ImageDim::clone() const
     {
@@ -202,6 +214,12 @@ namespace CEGUI
         }
     }
 
+    float WidgetDim::getValue(const Window& wnd, const Rect& container) const
+    {
+        // This dimension type does not alter when whithin a container Rect.
+        return getValue(wnd);
+    }
+
     BaseDim* WidgetDim::clone() const
     {
         WidgetDim* ndim = new WidgetDim(d_widgetName, d_what);
@@ -230,13 +248,13 @@ namespace CEGUI
 
     Dimension::Dimension(const Dimension& other)
     {
-        d_value = other.d_value->clone();
+        d_value = other.d_value ? other.d_value->clone() : 0;
         d_type = other.d_type;
     }
 
     Dimension& Dimension::operator=(const Dimension& other)
     {
-        d_value = other.d_value->clone();
+        d_value = other.d_value ? other.d_value->clone() : 0;
         d_type = other.d_type;
 
 		return *this;
@@ -297,6 +315,32 @@ namespace CEGUI
         }
     }
 
+    float UnifiedDim::getValue(const Window& wnd, const Rect& container) const
+    {
+        switch (d_what)
+        {
+            case DT_LEFT_EDGE:
+            case DT_RIGHT_EDGE:
+            case DT_X_POSITION:
+            case DT_X_OFFSET:
+            case DT_WIDTH:
+                return d_value.asAbsolute(container.getWidth());
+                break;
+
+            case DT_TOP_EDGE:
+            case DT_BOTTOM_EDGE:
+            case DT_Y_POSITION:
+            case DT_Y_OFFSET:
+            case DT_HEIGHT:
+                return d_value.asAbsolute(container.getHeight());
+                break;
+
+            default:
+                throw InvalidRequestException("UnifiedDim::getValue - unknown or unsupported DimensionType encountered.");
+                break;
+        }
+    }
+
     BaseDim* UnifiedDim::clone() const
     {
         UnifiedDim* ndim = new UnifiedDim(d_value, d_what);
@@ -326,6 +370,31 @@ namespace CEGUI
             pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd));
         else
             pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd);
+
+        return pixelRect;
+    }
+
+    Rect ComponentArea::getPixelRect(const Window& wnd, const Rect& container) const
+    {
+        // sanity check, we mus be able to form a Rect from what we represent.
+        assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
+        assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
+        assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
+        assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
+
+        Rect pixelRect;
+        pixelRect.d_left = d_left.getBaseDimension().getValue(wnd, container) + container.d_left;
+        pixelRect.d_top = d_top.getBaseDimension().getValue(wnd, container) + container.d_top;
+
+        if (d_right_or_width.getDimensionType() == DT_WIDTH)
+            pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd, container));
+        else
+            pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd, container) + container.d_left;
+
+        if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
+            pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd, container));
+        else
+            pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.d_top;
 
         return pixelRect;
     }

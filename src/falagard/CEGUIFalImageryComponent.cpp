@@ -62,112 +62,14 @@ namespace CEGUI
 
     void ImageryComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
     {
-        // do not draw anything if image is not set.
-        if (!d_image)
-            return;
-
-        uint horzTiles, vertTiles;
-        float xpos, ypos;
-
         Rect destRect(d_area.getPixelRect(srcWindow));
-        Size imgSz(d_image->getSize());
+        render_impl(srcWindow, destRect, base_z, modColours);
+    }
 
-        // calculate final colours to be used
-        ColourRect finalColours;
-        initColoursRect(srcWindow, finalColours);
-        if (modColours)
-        {
-            finalColours *= *modColours;
-        }
-
-        // calculate initial x co-ordinate and horizontal tile count according to formatting options
-        switch (d_horzFormatting)
-        {
-            case HF_STRETCHED:
-                imgSz.d_width = destRect.getWidth();
-                xpos = destRect.d_left;
-                horzTiles = 1;
-                break;
-
-            case HF_TILED:
-                xpos = destRect.d_left;
-                horzTiles = (uint)((destRect.getWidth() + (imgSz.d_width - 1)) / imgSz.d_width);
-                break;
-
-            case HF_LEFT_ALIGNED:
-                xpos = destRect.d_left;
-                horzTiles = 1;
-                break;
-
-            case HF_CENTRE_ALIGNED:
-                xpos = destRect.d_left + PixelAligned((destRect.getWidth() - imgSz.d_width) * 0.5f);
-                horzTiles = 1;
-                break;
-
-            case HF_RIGHT_ALIGNED:
-                xpos = destRect.d_right - imgSz.d_width;
-                horzTiles = 1;
-                break;
-
-            default:
-                throw InvalidRequestException("ImageryComponent::render - An unknown HorizontalFormatting value was specified.");
-        }
-
-        // calculate initial y co-ordinate and vertical tile count according to formatting options
-        switch (d_vertFormatting)
-        {
-            case VF_STRETCHED:
-                imgSz.d_height = destRect.getHeight();
-                ypos = destRect.d_top;
-                vertTiles = 1;
-                break;
-
-            case VF_TILED:
-                ypos = destRect.d_top;
-                vertTiles = (uint)((destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height);
-                break;
-
-            case VF_TOP_ALIGNED:
-                ypos = destRect.d_top;
-                vertTiles = 1;
-                break;
-
-            case VF_CENTRE_ALIGNED:
-                ypos = destRect.d_top + PixelAligned((destRect.getHeight() - imgSz.d_height) * 0.5f);
-                vertTiles = 1;
-                break;
-
-            case VF_BOTTOM_ALIGNED:
-                ypos = destRect.d_bottom - imgSz.d_height;
-                vertTiles = 1;
-                break;
-
-            default:
-                throw InvalidRequestException("ImageryComponent::render - An unknown VerticalFormatting value was specified.");
-        }
-
-        // perform final rendering (actually is now a caching of the images which will be drawn)
-        Rect finalRect;
-        finalRect.d_top = ypos;
-        finalRect.d_bottom = ypos + imgSz.d_height;
-
-        for (uint row = 0; row < vertTiles; ++row)
-        {
-            finalRect.d_left = xpos;
-            finalRect.d_right = xpos + imgSz.d_width;
-
-            for (uint col = 0; col < horzTiles; ++col)
-            {
-                // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours);
-
-                finalRect.d_left += imgSz.d_width;
-                finalRect.d_right += imgSz.d_width;
-            }
-
-            finalRect.d_top += imgSz.d_height;
-            finalRect.d_bottom += imgSz.d_height;
-        }
+    void ImageryComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours) const
+    {
+        Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
+        render_impl(srcWindow, destRect, base_z, modColours);
     }
 
     const ComponentArea& ImageryComponent::getComponentArea() const
@@ -266,6 +168,115 @@ namespace CEGUI
         else
         {
             cr = d_colours;
+        }
+    }
+
+    void ImageryComponent::render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours) const
+    {
+        // do not draw anything if image is not set.
+        if (!d_image)
+            return;
+
+        uint horzTiles, vertTiles;
+        float xpos, ypos;
+
+        Size imgSz(d_image->getSize());
+
+        // calculate final colours to be used
+        ColourRect finalColours;
+        initColoursRect(srcWindow, finalColours);
+        if (modColours)
+        {
+            finalColours *= *modColours;
+        }
+
+        // calculate initial x co-ordinate and horizontal tile count according to formatting options
+        switch (d_horzFormatting)
+        {
+            case HF_STRETCHED:
+                imgSz.d_width = destRect.getWidth();
+                xpos = destRect.d_left;
+                horzTiles = 1;
+                break;
+
+            case HF_TILED:
+                xpos = destRect.d_left;
+                horzTiles = (uint)((destRect.getWidth() + (imgSz.d_width - 1)) / imgSz.d_width);
+                break;
+
+            case HF_LEFT_ALIGNED:
+                xpos = destRect.d_left;
+                horzTiles = 1;
+                break;
+
+            case HF_CENTRE_ALIGNED:
+                xpos = destRect.d_left + PixelAligned((destRect.getWidth() - imgSz.d_width) * 0.5f);
+                horzTiles = 1;
+                break;
+
+            case HF_RIGHT_ALIGNED:
+                xpos = destRect.d_right - imgSz.d_width;
+                horzTiles = 1;
+                break;
+
+            default:
+                throw InvalidRequestException("ImageryComponent::render - An unknown HorizontalFormatting value was specified.");
+        }
+
+        // calculate initial y co-ordinate and vertical tile count according to formatting options
+        switch (d_vertFormatting)
+        {
+            case VF_STRETCHED:
+                imgSz.d_height = destRect.getHeight();
+                ypos = destRect.d_top;
+                vertTiles = 1;
+                break;
+
+            case VF_TILED:
+                ypos = destRect.d_top;
+                vertTiles = (uint)((destRect.getHeight() + (imgSz.d_height - 1)) / imgSz.d_height);
+                break;
+
+            case VF_TOP_ALIGNED:
+                ypos = destRect.d_top;
+                vertTiles = 1;
+                break;
+
+            case VF_CENTRE_ALIGNED:
+                ypos = destRect.d_top + PixelAligned((destRect.getHeight() - imgSz.d_height) * 0.5f);
+                vertTiles = 1;
+                break;
+
+            case VF_BOTTOM_ALIGNED:
+                ypos = destRect.d_bottom - imgSz.d_height;
+                vertTiles = 1;
+                break;
+
+            default:
+                throw InvalidRequestException("ImageryComponent::render - An unknown VerticalFormatting value was specified.");
+        }
+
+        // perform final rendering (actually is now a caching of the images which will be drawn)
+        Rect finalRect;
+        finalRect.d_top = ypos;
+        finalRect.d_bottom = ypos + imgSz.d_height;
+
+        for (uint row = 0; row < vertTiles; ++row)
+        {
+            finalRect.d_left = xpos;
+            finalRect.d_right = xpos + imgSz.d_width;
+
+            for (uint col = 0; col < horzTiles; ++col)
+            {
+                // add image to the rendering cache for the target window.
+                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours);
+
+                finalRect.d_left += imgSz.d_width;
+                finalRect.d_right += imgSz.d_width;
+            }
+
+            finalRect.d_top += imgSz.d_height;
+            finalRect.d_bottom += imgSz.d_height;
         }
     }
 

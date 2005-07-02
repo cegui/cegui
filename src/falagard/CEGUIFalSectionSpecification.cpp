@@ -67,6 +67,27 @@ namespace CEGUI
         {}
     }
 
+    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z) const
+    {
+        try
+        {
+            // get the imagery section object with the name we're set up to use
+            const ImagerySection* sect =
+                &WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
+
+            // decide what colours are to be used
+            ColourRect modColours;
+            initColourRectForOverride(srcWindow, modColours);
+            modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+
+            // render the imagery section
+            sect->render(srcWindow, baseRect, base_z, &modColours);
+        }
+        // do nothing here, errors are non-faltal and are logged for debugging purposes.
+        catch (Exception)
+        {}
+    }
+
     const String& SectionSpecification::getOwnerWidgetLookFeel() const
     {
         return d_owner;

@@ -34,7 +34,7 @@ namespace CEGUI
 
     bool RenderCache::hasCachedImagery() const
     {
-        return !d_cachedImages.empty();
+        return !(d_cachedImages.empty() && d_cachedTexts.empty());
     }
 
     void RenderCache::render(const Point& basePos, float baseZ, const Rect& clipper) const

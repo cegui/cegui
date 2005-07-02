@@ -265,7 +265,7 @@ public:
 	NormalTextColour() : Property(
 		"NormalTextColour",
 		"Property to get/set the normal, unselected, text colour used for rendering text.  Value is \"aarrggbb\" (hex).",
-		"00FFFFFF")
+		"FFFFFFFF")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -290,7 +290,7 @@ public:
 	SelectedTextColour() : Property(
 		"SelectedTextColour",
 		"Property to get/set the colour used for rendering text within the selection area.  Value is \"aarrggbb\" (hex).",
-		"00000000")
+		"FF000000")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -315,7 +315,7 @@ public:
 	ActiveSelectionColour() : Property(
 		"ActiveSelectionColour",
 		"Property to get/set the colour used for rendering the selection highlight when the edit box is active.  Value is \"aarrggbb\" (hex).",
-		"006060FF")
+		"FF6060FF")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -340,7 +340,7 @@ public:
 	InactiveSelectionColour() : Property(
 		"InactiveSelectionColour",
 		"Property to get/set the colour used for rendering the selection highlight when the edit box is inactive.  Value is \"aarrggbb\" (hex).",
-		"00808080")
+		"FF808080")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;

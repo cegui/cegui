@@ -64,6 +64,24 @@ namespace CEGUI
 
         /*!
         \brief
+            Render this layer.
+
+        \param srcWindow
+            Window to use when calculating pixel values from BaseDim values.
+
+        \param baseRect
+            Rect to use when calculating pixel values from BaseDim values.
+
+        \param base_z
+            base level z value to use for all imagery in the layer.
+
+        \return
+            Nothing.
+        */
+        void render(Window& srcWindow, const Rect& baseRect, float base_z) const;
+
+        /*!
+        \brief
             Add a section specification to the layer.
 
             A section specification is a reference to a named ImagerySection within the WidgetLook.

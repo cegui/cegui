@@ -87,6 +87,24 @@ namespace CEGUI
 
         /*!
         \brief
+            Render the section specified by this SectionSpecification.
+
+        \param srcWindow
+            Window object to be used when calculating pixel values from BaseDim values.
+
+        \param baseRect
+            Rect object to be used when calculating pixel values from BaseDim values.
+
+        \param base_z
+            base z co-ordinate to use for all imagery in the linked section.
+
+        \return
+            Nothing.
+        */
+        void render(Window& srcWindow, const Rect& baseRect, float base_z) const;
+
+        /*!
+        \brief
             Return the name of the WidgetLookFeel object containing the target section.
 
         \return

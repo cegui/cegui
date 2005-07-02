@@ -80,7 +80,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // this is falagard related stuff from now onwards
     //
     // create an instance of the test widget and add it to the root so we'll be able to see it.
-    Window* fbtn = winMgr.createWindow("TaharezLook/Checkbox", "testWidget");
+    Window* fbtn = winMgr.createWindow("TaharezLook/Editbox", "testWidget");
     root->addChildWindow(fbtn);
 
     // set some basic things for the widget.

@@ -45,6 +45,19 @@ namespace CEGUI
         }
     }
 
+    void StateImagery::render(Window& srcWindow, const Rect& baseRect) const
+    {
+        float base_z = 0;
+
+        // render all layers defined for this state
+        for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
+        {
+            (*curr).render(srcWindow, baseRect, base_z);
+            // TODO: Magic number removal
+            base_z -= 0.0000001f;
+        }
+    }
+
     void StateImagery::addLayer(const LayerSpecification& layer)
     {
         d_layers.insert(layer);

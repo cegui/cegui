@@ -8,13 +8,26 @@
 	</xsd:complexType>
 	<xsd:complexType name="widgetLookType">
 		<xsd:sequence>
+            <xsd:element name="PropertyDefinition" type="propertyDefinitionType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="Property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="NamedArea" type="namedAreaType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Child" type="widgetComponentType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="ImagerySection" type="imagerySectionType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="StateImagery" type="stateType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="name" type="xsd:string" use="required" />
 	</xsd:complexType>
+    <xsd:complexType name="propertyDefinitionType">
+        <xsd:attribute name="type" type="propertyTypeEnum" use="optional" default="Generic" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="initialValue" type="xsd:string" use="optional" default="" />
+    </xsd:complexType>
+    <xsd:complexType name="namedAreaType">
+        <xsd:sequence>
+            <xsd:element name="Area" type="componentAreaType" />
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
 	<xsd:complexType name="stateType">
 		<xsd:sequence>
 			<xsd:element name="Layer" type="layerType" minOccurs="0" maxOccurs="unbounded" />

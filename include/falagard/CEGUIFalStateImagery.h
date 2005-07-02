@@ -67,6 +67,21 @@ namespace CEGUI
 
         /*!
         \brief
+            Render imagery for this state.
+
+        \param srcWindow
+            Window to use when convering BaseDim values to pixels.
+
+        \param baseRect
+            Rect to use when convering BaseDim values to pixels.
+
+        \return
+            Nothing.
+        */
+        void render(Window& srcWindow, const Rect& baseRect) const;
+
+        /*!
+        \brief
             Add an imagery LayerSpecification to this state.
 
         \param layer

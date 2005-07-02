@@ -127,6 +127,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalImageryComponent.cpp \
                       falagard/CEGUIFalImagerySection.cpp \
                       falagard/CEGUIFalLayerSpecification.cpp \
+                      falagard/CEGUIFalNamedArea.cpp \
+                      falagard/CEGUIFalPropertyDefinition.cpp \
                       falagard/CEGUIFalPropertyInitialiser.cpp \
                       falagard/CEGUIFalSectionSpecification.cpp \
                       falagard/CEGUIFalStateImagery.cpp \

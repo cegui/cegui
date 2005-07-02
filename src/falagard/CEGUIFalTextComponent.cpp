@@ -38,53 +38,16 @@ namespace CEGUI
 
     void TextComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
     {
-        // get font to use
-        const Font* font;
-
-        try
-        {
-            font = d_font.empty() ? srcWindow.getFont() : FontManager::getSingleton().getFont(d_font);
-        }
-        catch (UnknownObjectException)
-        {
-            font = 0;
-        }
-
-        // exit if we have no font to use.
-        if (!font)
-            return;
-
         // calculate area to render to
         Rect destRect(d_area.getPixelRect(srcWindow));
+        render_impl(srcWindow, destRect, base_z, modColours);
+    }
 
-        // calculate final colours to be used
-        ColourRect finalColours;
-        initColoursRect(srcWindow, finalColours);
-        if (modColours)
-        {
-            finalColours *= *modColours;
-        }
-
-        // decide which string to render.
-        const String& renderString = d_text.empty() ? srcWindow.getText() : d_text;
-
-        // calculate height of formatted text
-        float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)d_horzFormatting) * font->getLineSpacing();
-
-        // handle dest area adjustments for vertical formatting.
-        switch(d_vertFormatting)
-        {
-        case VTF_CENTRE_ALIGNED:
-            destRect.d_top += (destRect.getHeight() - textHeight) * 0.5f;
-            break;
-
-        case VTF_BOTTOM_ALIGNED:
-            destRect.d_top = destRect.d_bottom - textHeight;
-            break;
-        }
-
-        // add text to the rendering cache for the target window.
-        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)d_horzFormatting, destRect, base_z, finalColours);
+    void TextComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours) const
+    {
+        // calculate area to render to
+        Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
+        render_impl(srcWindow, destRect, base_z, modColours);
     }
 
     const ComponentArea& TextComponent::getComponentArea() const
@@ -184,4 +147,51 @@ namespace CEGUI
         }
     }
 
+    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours) const
+    {
+        // get font to use
+        const Font* font;
+
+        try
+        {
+            font = d_font.empty() ? srcWindow.getFont() : FontManager::getSingleton().getFont(d_font);
+        }
+        catch (UnknownObjectException)
+        {
+            font = 0;
+        }
+
+        // exit if we have no font to use.
+        if (!font)
+            return;
+
+        // calculate final colours to be used
+        ColourRect finalColours;
+        initColoursRect(srcWindow, finalColours);
+        if (modColours)
+        {
+            finalColours *= *modColours;
+        }
+
+        // decide which string to render.
+        const String& renderString = d_text.empty() ? srcWindow.getText() : d_text;
+
+        // calculate height of formatted text
+        float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)d_horzFormatting) * font->getLineSpacing();
+
+        // handle dest area adjustments for vertical formatting.
+        switch(d_vertFormatting)
+        {
+        case VTF_CENTRE_ALIGNED:
+            destRect.d_top += (destRect.getHeight() - textHeight) * 0.5f;
+            break;
+
+        case VTF_BOTTOM_ALIGNED:
+            destRect.d_top = destRect.d_bottom - textHeight;
+            break;
+        }
+
+        // add text to the rendering cache for the target window.
+        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)d_horzFormatting, destRect, base_z, finalColours);
+    }
 } // End of  CEGUI namespace section

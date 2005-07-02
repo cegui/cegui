@@ -28,6 +28,8 @@
 #include "falagard/CEGUIFalWidgetComponent.h"
 #include "falagard/CEGUIFalImagerySection.h"
 #include "falagard/CEGUIFalPropertyInitialiser.h"
+#include "falagard/CEGUIFalPropertyDefinition.h"
+#include "falagard/CEGUIFalNamedArea.h"
 #include <map>
 
 // Start of CEGUI namespace section
@@ -176,17 +178,26 @@ namespace CEGUI
         */
         bool isStateImageryPresent(const String& state) const;
 
+        void addNamedArea(const NamedArea& area);
+        void clearNamedAreas();
+        const NamedArea& getNamedArea(const String& name) const;
+        bool isNamedAreaDefined(const String& name) const;
+
     private:
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;
         typedef std::map<String, WidgetComponent> WidgetList;
-        typedef std::vector<PropertyInitialiser>   PropertyList;
+        typedef std::map<String, NamedArea>       NamedAreaList;
+        typedef std::vector<PropertyInitialiser>  PropertyList;
+        typedef std::vector<PropertyDefinition>   PropertyDefinitionList;
 
         CEGUI::String   d_lookName;         //!< Name of this WidgetLookFeel.
         ImageryList     d_imagerySections;  //!< Collection of ImagerySection objects.
         WidgetList      d_childWidgets;     //!< Collection of WidgetComponent objects.
         StateList       d_stateImagery;     //!< Collection of StateImagery objects.
         PropertyList    d_properties;       //!< Collection of PropertyInitialser objects.
+        NamedAreaList   d_namedAreas;       //!< Collection of NamedArea objects.
+        PropertyDefinitionList  d_propertyDefinitions;  //!< Collection of PropertyDefinition objects.
     };
 
 

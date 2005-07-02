@@ -123,7 +123,13 @@ namespace CEGUI
 
     void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
-        // apply properties to the parent window first
+//        // add new property definitions first
+//        for(PropertyDefinitionList::const_iterator propdef = d_propertyDefinitions.begin(); propdef != d_propertyDefinitions.end(); ++propdef)
+//        {
+//            (*propdef).apply(widget);
+//        }
+
+        // apply properties to the parent window
         for(PropertyList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
         {
             (*prop).apply(widget);
@@ -139,6 +145,39 @@ namespace CEGUI
     bool WidgetLookFeel::isStateImageryPresent(const String& state) const
     {
         return d_stateImagery.find(state) != d_stateImagery.end();
+    }
+
+    void WidgetLookFeel::addNamedArea(const NamedArea& area)
+    {
+        if (d_namedAreas.find(area.getName()) != d_namedAreas.end())
+        {
+            Logger::getSingleton().logEvent(
+                "WidgetLookFeel::addNamedArea - Defintion for area '" + area.getName() + "' already exists.  Replacing previous definition.");
+        }
+
+        d_namedAreas[area.getName()] = area;
+    }
+
+    void WidgetLookFeel::clearNamedAreas()
+    {
+        d_namedAreas.clear();
+    }
+
+    const NamedArea& WidgetLookFeel::getNamedArea(const String& name) const
+    {
+        NamedAreaList::const_iterator area = d_namedAreas.find(name);
+
+        if (area == d_namedAreas.end())
+        {
+            throw UnknownObjectException("WidgetLookFeel::getNamedArea - unknown named area: '" + name + "'.");
+        }
+
+        return (*area).second;
+    }
+
+    bool WidgetLookFeel::isNamedAreaDefined(const String& name) const
+    {
+        return d_namedAreas.find(name) != d_namedAreas.end();
     }
 
 } // End of  CEGUI namespace section

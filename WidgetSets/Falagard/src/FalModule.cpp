@@ -27,6 +27,7 @@
 // includes for types we create
 #include "FalButton.h"
 #include "FalCheckbox.h"
+#include "FalEditbox.h"
 #include "FalRadioButton.h"
 
 /*************************************************************************
@@ -34,6 +35,7 @@
 *************************************************************************/
 static CEGUI::FalagardButtonFactory             s_ButtonFactory;
 static CEGUI::FalagardCheckboxFactory           s_CheckboxFactory;
+static CEGUI::FalagardEditboxFactory            s_EditboxFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
 
 
@@ -49,6 +51,7 @@ mapEntry factoriesMap[] =
 {
     {FalagardButton::WidgetTypeName, &s_ButtonFactory},
     {FalagardCheckbox::WidgetTypeName, &s_CheckboxFactory},
+    {FalagardEditbox::WidgetTypeName, &s_EditboxFactory},
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
     {0,0}
 };

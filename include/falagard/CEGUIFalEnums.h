@@ -80,7 +80,7 @@ namespace CEGUI
     {
         VTF_TOP_ALIGNED,         //!< Top of text should be aligned with the top of the destination area.
         VTF_CENTRE_ALIGNED,      //!< text should be vertically centred within the destination area.
-        VTF_BOTTOM_ALIGNED,      //!< Bottom of text should be aligned with the bottom of the destination area.
+        VTF_BOTTOM_ALIGNED       //!< Bottom of text should be aligned with the bottom of the destination area.
     };
 
     /*!

@@ -26,6 +26,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "falagard/CEGUIFalWidgetComponent.h"
 #include "falagard/CEGUIFalTextComponent.h"
+#include "falagard/CEGUIFalNamedArea.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
 #include <sstream>
@@ -60,6 +61,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::TextElement("Text");
     const String Falagard_xmlHandler::ColourPropertyElement("ColourProperty");
     const String Falagard_xmlHandler::ColourRectPropertyElement("ColourRectProperty");
+    const String Falagard_xmlHandler::NamedAreaElement("NamedArea");
+    const String Falagard_xmlHandler::PropertyDefinitionElement("PropertyDefinition");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -80,6 +83,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::WidgetAttribute("widget");
     const String Falagard_xmlHandler::StringAttribute("string");
     const String Falagard_xmlHandler::FontAttribute("font");
+    const String Falagard_xmlHandler::InitialValueAttribute("initialValue");
+
     ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -93,7 +98,8 @@ namespace CEGUI
         d_section(0),
         d_imagerycomponent(0),
         d_area(0),
-        d_textcomponent(0)
+        d_textcomponent(0),
+        d_namedArea(0)
     {
     }
 
@@ -320,6 +326,13 @@ namespace CEGUI
             d_textcomponent->setText(attributes.getValueAsString(StringAttribute));
             d_textcomponent->setFont(attributes.getValueAsString(FontAttribute));
         }
+        else if (element == NamedAreaElement)
+        {
+            assert(d_namedArea == 0);
+            d_namedArea = new NamedArea(attributes.getValueAsString(NameAttribute));
+
+            Logger::getSingleton().logEvent("-----> Creating named area: " + d_namedArea->getName(), Informative);
+        }
         else
         {
             throw FileIOException("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.");
@@ -435,7 +448,7 @@ namespace CEGUI
         // component area end
         else if (element == AreaElement)
         {
-            assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0));
+            assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0) || d_namedArea != 0);
             assert(d_area != 0);
 
             if (d_childcomponent)
@@ -450,9 +463,25 @@ namespace CEGUI
             {
                 d_textcomponent->setComponentArea(*d_area);
             }
+            else if (d_namedArea)
+            {
+                d_namedArea->setArea(*d_area);
+            }
 
             delete d_area;
             d_area = 0;
+        }
+        // NamedArea end
+        else if (element == NamedAreaElement)
+        {
+            assert(d_widgetlook != 0);
+
+            if (d_namedArea)
+            {
+                d_widgetlook->addNamedArea(*d_namedArea);
+                delete d_namedArea;
+                d_namedArea = 0;
+            }
         }
     }
 

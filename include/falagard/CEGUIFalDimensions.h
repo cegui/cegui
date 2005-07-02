@@ -38,6 +38,8 @@ namespace CEGUI
     class CEGUIBASE_API BaseDim
     {
     public:
+        virtual ~BaseDim() {}
+
         /*!
         \brief
             Return a value that represents this dimension as absolute pixels.
@@ -50,6 +52,25 @@ namespace CEGUI
             float value which represents, in pixels, the same value as this BaseDim.
         */
         virtual float getValue(const Window& wnd) const = 0;
+
+        /*!
+        \brief
+            Return a value that represents this dimension as absolute pixels.
+
+        \param wnd
+            Window object that may be used by the specialised class to aid in
+            calculating the final value (typically would be used to obtain
+            window/widget dimensions).
+
+        \param container
+            Rect object which describes an area to be considered as the base area
+            when calculating the final value.  Basically this means that relative values
+            are calculated from the dimensions of this Rect.
+
+        \return
+            float value which represents, in pixels, the same value as this BaseDim.
+        */
+        virtual float getValue(const Window& wnd, const Rect& container) const = 0;
 
         /*!
         \brief
@@ -91,6 +112,8 @@ namespace CEGUI
 
         // Implementation of the base class interface
         float getValue(const Window& wnd) const;
+        float getValue(const Window& wnd, const Rect& container) const;
+
         BaseDim* clone() const;
 
     private:
@@ -151,6 +174,7 @@ namespace CEGUI
 
         // Implementation of the base class interface
         float getValue(const Window& wnd) const;
+        float getValue(const Window& wnd, const Rect& container) const;
         BaseDim* clone() const;
 
     private:
@@ -212,6 +236,7 @@ namespace CEGUI
 
         // Implementation of the base class interface
         float getValue(const Window& wnd) const;
+        float getValue(const Window& wnd, const Rect& container) const;
         BaseDim* clone() const;
 
     private:
@@ -243,6 +268,7 @@ namespace CEGUI
 
         // Implementation of the base class interface
         float getValue(const Window& wnd) const;
+        float getValue(const Window& wnd, const Rect& container) const;
         BaseDim* clone() const;
 
     private:
@@ -370,6 +396,22 @@ namespace CEGUI
             as a reference for calculating the final pixel dimensions.
         */
         Rect getPixelRect(const Window& wnd) const;
+
+        /*!
+        \brief
+            Return a Rect describing the absolute pixel area represented by this ComponentArea.
+
+        \param wnd
+            Window object to be used when calculating final pixel area.
+
+        \param container
+            Rect object to be used as a base or container when converting relative dimensions.
+
+        \return
+            Rect object describing the pixels area represented by this ComponentArea when using \a wnd
+            and \a container as a reference for calculating the final pixel dimensions.
+        */
+        Rect getPixelRect(const Window& wnd, const Rect& container) const;
 
         Dimension d_left;   //!< Left edge of the area.
         Dimension d_top;    //!< Top edge of the area.

@@ -5,5 +5,6 @@
 	<WindowSet Filename="CEGUIFalagardBase" />
 	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="TaharezLook/Checkbox" />
+	<FalagardMapping WindowType="TaharezLook/Editbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/Editbox" />
 	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="Falagard/RadioButton" LookNFeel="TaharezLook/RadioButton" />
 </GUIScheme>

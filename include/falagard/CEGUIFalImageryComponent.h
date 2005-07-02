@@ -110,6 +110,29 @@ namespace CEGUI
 
         /*!
         \brief
+            Render this ImageryComponent.  More correctly, the ImageryComponent is cached for rendering.
+
+        \param srcWindow
+            Window to use as the base for translating the ImageryComponent's ComponentArea into pixel values.
+
+        \param baseRect
+            Rect to use as the base for translating the ImageryComponent's ComponentArea into pixel values.
+
+        \param base_z
+            The z value to use for rendering the image.  Note that this is not the final z value to use, but
+            some z offset from a currently unknown starting value.
+
+        \param modColours
+            ColourRect describing colours that are to be modulated with the ImageryComponent's stored colour values
+            to calculate a set of 'final' colour values to be used.  May be 0.
+
+        \return
+            Nothing.
+        */
+        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0) const;
+
+        /*!
+        \brief
             Return the ComponentArea of this ImageryComponent.
 
         \return
@@ -261,6 +284,12 @@ namespace CEGUI
                 - or the integral d_colours value.
         */
         void initColoursRect(const Window& wnd, ColourRect& cr) const;
+
+        /*!
+        \brief
+            Method to do main render caching work.
+        */
+        void render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours) const;
 
     public:
         ComponentArea        d_area;            //!< Destination area for this image component.
