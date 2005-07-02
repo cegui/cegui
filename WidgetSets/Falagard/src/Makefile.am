@@ -6,6 +6,7 @@ lib_LTLIBRARIES=libCEGUIFalagardBase.la
 libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalCheckbox.cpp \
                                   FalEditbox.cpp \
+                                  FalFrameWindow.cpp \
                                   FalModule.cpp \
                                   FalRadioButton.cpp \
                                   FalTitlebar.cpp

@@ -27,7 +27,8 @@
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIPushButton.h"
 #include "CEGUIMouseCursor.h"
-
+#include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -96,8 +97,8 @@ FrameWindow::~FrameWindow(void)
 void FrameWindow::initialise(void)
 {
 	// create child windows
-	d_titlebar		= createTitlebar();
-	d_closeButton	= createCloseButton();
+	d_titlebar		= createTitlebar(getName() + "__auto_titlebar__");
+	d_closeButton	= createCloseButton(getName() + "__auto_closebutton__");
 
 	// add child controls
 	if (d_titlebar != NULL)
@@ -142,11 +143,12 @@ void FrameWindow::setFrameEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::setTitleBarEnabled(bool setting)
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setEnabled(setting);
-	}
-
+    try
+    {
+        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setEnabled(setting);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -155,11 +157,12 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::setCloseButtonEnabled(bool setting)
 {
-	if (d_closeButton != NULL)
-	{
-		d_closeButton->setEnabled(setting);
-	}
-
+    try
+    {
+        WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__")->setEnabled(setting);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -200,11 +203,12 @@ void FrameWindow::toggleRollup(void)
 *************************************************************************/
 void FrameWindow::setTitlebarFont(const String& name)
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setFont(name);
-	}
-
+    try
+    {
+        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setFont(name);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -213,11 +217,12 @@ void FrameWindow::setTitlebarFont(const String& name)
 *************************************************************************/
 void FrameWindow::setTitlebarFont(Font* font)
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setFont(font);
-	}
-
+    try
+    {
+        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setFont(font);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -792,12 +797,13 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 	{
 		d_dragMovable = setting;
 
-		if (d_titlebar != NULL)
-		{
-			d_titlebar->setDraggingEnabled(setting);
-		}
-
-	}
+        try
+        {
+            static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setDraggingEnabled(setting);
+        }
+        catch (UnknownObjectException)
+        {}
+    }
 
 }
 
@@ -807,7 +813,14 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 *************************************************************************/
 const Font* FrameWindow::getTitlebarFont(void) const
 {
-	return (d_titlebar != NULL) ? d_titlebar->getFont() : NULL;
+    try
+    {
+        return WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->getFont();
+    }
+    catch (UnknownObjectException)
+    {
+        return 0;
+    }
 }
 
 
@@ -834,7 +847,7 @@ void FrameWindow::addFrameWindowProperties(void)
 *************************************************************************/
 colour FrameWindow::getCaptionColour(void) const
 {
-	return d_titlebar->getCaptionColour();
+    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->getCaptionColour();
 }
 
 
@@ -843,7 +856,7 @@ colour FrameWindow::getCaptionColour(void) const
 *************************************************************************/
 void FrameWindow::setCaptionColour(colour col)
 {
-	d_titlebar->setCaptionColour(col);
+    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setCaptionColour(col);
 }
 
 

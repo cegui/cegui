@@ -71,6 +71,8 @@ namespace CEGUI
         void addPropertyInitialiser(const PropertyInitialiser& initialiser);
         void clearPropertyInitialisers();
 
+        void layout(const Window& owner) const;
+
     private:
         typedef std::vector<PropertyInitialiser> PropertiesList;
 

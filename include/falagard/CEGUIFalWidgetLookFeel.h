@@ -183,6 +183,8 @@ namespace CEGUI
         const NamedArea& getNamedArea(const String& name) const;
         bool isNamedAreaDefined(const String& name) const;
 
+        void layoutChildWidgets(const Window& owner) const;
+
     private:
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;

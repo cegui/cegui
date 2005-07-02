@@ -80,13 +80,29 @@ bool FalagardDemo1Sample::initialiseSample()
     // this is falagard related stuff from now onwards
     //
     // create an instance of the test widget and add it to the root so we'll be able to see it.
-    Window* wid = winMgr.createWindow("TaharezLook/Titlebar", "testWidget");
+    Window* wid = winMgr.createWindow("TaharezLook/FrameWindow", "testWidget");
     root->addChildWindow(wid);
 
     // set some basic things for the widget.
     wid->setPosition(Point(0.25f, 0.25f));
-    wid->setSize(Size(0.5f, 0.05f));
+    wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
+
+    Window* button = winMgr.createWindow("TaharezLook/Button", "button");
+    wid->addChildWindow(button);
+
+    // set some basic things for the widget.
+    button->setPosition(Point(0.25f, 0.1f));
+    button->setSize(Size(0.5f, 0.1f));
+    button->setText("Button 1");
+
+    button = winMgr.createWindow("TaharezLook/Button", "button2");
+    wid->addChildWindow(button);
+
+    // set some basic things for the widget.
+    button->setPosition(Point(0.25f, 0.4f));
+    button->setSize(Size(0.5f, 0.1f));
+    button->setText("Button 2");
 
     // success!
     return true;

@@ -258,6 +258,8 @@ namespace CEGUI
 
         // perform final rendering (actually is now a caching of the images which will be drawn)
         Rect finalRect;
+        Rect finalClipper;
+        const Rect* clippingRect;
         finalRect.d_top = ypos;
         finalRect.d_bottom = ypos + imgSz.d_height;
 
@@ -268,8 +270,21 @@ namespace CEGUI
 
             for (uint col = 0; col < horzTiles; ++col)
             {
+                // use custom clipping for right and bottom edges when tiling the imagery
+                if (((d_vertFormatting == VF_TILED) && row == vertTiles - 1) ||
+                    ((d_horzFormatting == HF_TILED) && col == horzTiles - 1))
+                {
+                    finalClipper = clipper ? clipper->getIntersection(destRect) : destRect;
+                    clippingRect = &finalClipper;
+                }
+                // not tiliing, or not on far edges, just used passed in clipper (if any).
+                else
+                {
+                    clippingRect = clipper;
+                }
+
                 // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours, clipper);
+                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours, clippingRect);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;

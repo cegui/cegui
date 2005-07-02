@@ -23,6 +23,7 @@
 *************************************************************************/
 #include "falagard/CEGUIFalWidgetComponent.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -42,7 +43,8 @@ namespace CEGUI
         Window* widget = WindowManager::getSingleton().createWindow(d_baseType, widgetName);
 
         // set the widget look
-        widget->setLookNFeel(d_imageryName);
+        if (!d_imageryName.empty())
+            widget->setLookNFeel(d_imageryName);
 
         // add the new widget to its parent
         parent.addChildWindow(widget);
@@ -131,6 +133,16 @@ namespace CEGUI
     void WidgetComponent::clearPropertyInitialisers()
     {
         d_properties.clear();
+    }
+
+    void WidgetComponent::layout(const Window& owner) const
+    {
+        try
+        {
+            WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix)->setRect(Absolute, d_area.getPixelRect(owner));
+        }
+        catch (UnknownObjectException)
+        {}
     }
 
 } // End of  CEGUI namespace section

@@ -76,13 +76,13 @@ namespace CEGUI
 
     void WidgetLookFeel::addWidgetComponent(const WidgetComponent& widget)
     {
-        if (d_childWidgets.find(widget.getWidgetLookName()) != d_childWidgets.end())
+        if (d_childWidgets.find(widget.getWidgetNameSuffix()) != d_childWidgets.end())
         {
             Logger::getSingleton().logEvent(
                 "WidgetLookFeel::addWidgetComponent - Child widget defintion '" + widget.getWidgetLookName() + "' already exists.  Replacing previous definition.");
         }
 
-        d_childWidgets[widget.getWidgetLookName()] = widget;
+        d_childWidgets[widget.getWidgetNameSuffix()] = widget;
     }
 
     void WidgetLookFeel::addStateSpecification(const StateImagery& state)
@@ -178,6 +178,15 @@ namespace CEGUI
     bool WidgetLookFeel::isNamedAreaDefined(const String& name) const
     {
         return d_namedAreas.find(name) != d_namedAreas.end();
+    }
+
+    void WidgetLookFeel::layoutChildWidgets(const Window& owner) const
+    {
+        // apply properties to the parent window
+        for(WidgetList::const_iterator wdgt = d_childWidgets.begin(); wdgt != d_childWidgets.end(); ++wdgt)
+        {
+            (*wdgt).second.layout(owner);
+        }
     }
 
 } // End of  CEGUI namespace section

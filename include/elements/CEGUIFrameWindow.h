@@ -372,20 +372,26 @@ protected:
 	\brief
 		Create a control based upon the Titlebar base class to be used as the title bar for this window.
 
+    \param name
+        String object holding the name that must be used when creating the titlebar.
+
 	\return
 		Pointer to an object who's class derives from Titlebar
 	*/
-	virtual Titlebar*	createTitlebar(void) const		= 0;
+	virtual Titlebar*	createTitlebar(const String& name) const		= 0;
 
 
 	/*!
 	\brief
 		Create a control based upon the PushButton base class, to be used at the close button for the window.
 
+    \param name
+        String object holding the name that must be used when creating the close button.
+
 	\return
 		Pointer to an object who's class derives from PushButton.
 	*/
-	virtual PushButton*	createCloseButton(void) const	= 0;
+	virtual PushButton*	createCloseButton(const String& name) const	= 0;
 
 
 	/*!

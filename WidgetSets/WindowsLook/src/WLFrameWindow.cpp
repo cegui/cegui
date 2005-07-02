@@ -169,9 +169,9 @@ Rect WLFrameWindow::getUnclippedInnerRect(void) const
 	Create a control based upon the Titlebar base class to be used as
 	the title bar for this window.
 *************************************************************************/
-Titlebar* WLFrameWindow::createTitlebar(void) const
+Titlebar* WLFrameWindow::createTitlebar(const String& name) const
 {
-	Titlebar* tbar = (Titlebar*)WindowManager::getSingleton().createWindow(TitlebarType, getName() + "__auto_titlebar__");
+	Titlebar* tbar = (Titlebar*)WindowManager::getSingleton().createWindow(TitlebarType, name);
 	tbar->setMetricsMode(Absolute);
 	tbar->setPosition(Point(TitlebarXOffset, TitlebarYOffset));
 
@@ -183,9 +183,9 @@ Titlebar* WLFrameWindow::createTitlebar(void) const
 	Create a control based upon the PushButton base class, to be used as
 	the close button for the window.
 *************************************************************************/
-PushButton* WLFrameWindow::createCloseButton(void) const
+PushButton* WLFrameWindow::createCloseButton(const String& name) const
 {
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, getName() + "__auto_closebutton__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, name);
 
 	btn->setStandardImageryEnabled(false);
 	btn->setCustomImageryAutoSized(true);

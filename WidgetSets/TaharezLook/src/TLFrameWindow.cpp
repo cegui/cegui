@@ -151,9 +151,9 @@ Rect TLFrameWindow::getUnclippedInnerRect(void) const
 	Create a control based upon the Titlebar base class to be used as
 	the title bar for this window.
 *************************************************************************/
-Titlebar* TLFrameWindow::createTitlebar(void) const
+Titlebar* TLFrameWindow::createTitlebar(const String& name) const
 {
-	TLTitlebar* tbar = (TLTitlebar*)WindowManager::getSingleton().createWindow(TitlebarType, getName() + "__auto_titlebar__");
+	TLTitlebar* tbar = (TLTitlebar*)WindowManager::getSingleton().createWindow(TitlebarType, name);
 	tbar->setMetricsMode(Absolute);
 	tbar->setPosition(Point(TitlebarXOffset, TitlebarYOffset));
 
@@ -165,9 +165,9 @@ Titlebar* TLFrameWindow::createTitlebar(void) const
 	Create a control based upon the PushButton base class, to be used as
 	the close button for the window.
 *************************************************************************/
-PushButton* TLFrameWindow::createCloseButton(void) const
+PushButton* TLFrameWindow::createCloseButton(const String& name) const
 {
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, getName() + "__auto_closebutton__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, name);
 
 	btn->setStandardImageryEnabled(false);
 	btn->setCustomImageryAutoSized(true);

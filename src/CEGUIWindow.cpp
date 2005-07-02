@@ -3278,7 +3278,9 @@ void Window::onInheritsAlphaChanged(WindowEventArgs& e)
 
 void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventAlwaysOnTopChanged, e, EventNamespace);
 }
 
@@ -3322,7 +3324,9 @@ void Window::onRenderingEnded(WindowEventArgs& e)
 
 void Window::onZChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
@@ -3385,14 +3389,18 @@ void Window::onParentSized(WindowEventArgs& e)
 
 void Window::onChildAdded(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventChildAdded, e, EventNamespace);
 }
 
 
 void Window::onChildRemoved(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventChildRemoved, e, EventNamespace);
 }
 
