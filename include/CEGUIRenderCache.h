@@ -119,7 +119,7 @@ namespace CEGUI
         \return
             Nothing
         */
-        void cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols);
+        void cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper = 0);
 
         /*!
         \brief
@@ -148,7 +148,7 @@ namespace CEGUI
         \return
             Nothing
         */
-        void cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols);
+        void cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper = 0);
 
     private:
         /*!
@@ -161,6 +161,8 @@ namespace CEGUI
             Rect target_area;
             float z_offset;
             ColourRect colours;
+            Rect customClipper;
+            bool usingCustomClipper;
         };
 
         /*!
@@ -175,6 +177,8 @@ namespace CEGUI
             Rect target_area;
             float z_offset;
             ColourRect colours;
+            Rect customClipper;
+            bool usingCustomClipper;
         };
 
         typedef std::vector<ImageInfo>  ImageryList;

@@ -54,7 +54,7 @@ namespace CEGUI
         imagery->render(*this);
 
         // get destination area for text
-        Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*this));
+        const Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*this));
 
         //
         // Required preliminary work for text rendering operations
@@ -129,7 +129,7 @@ namespace CEGUI
         String sect = editText->substr(0, getSelectionStartIndex());
         colours.setColours(d_normalTextColour);
         colours.modulateAlpha(alpha_comp);
-        d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours);
+        d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
 
         // adjust rect for next section
         text_part_rect.d_left += font->getTextExtent(sect);
@@ -138,7 +138,7 @@ namespace CEGUI
         sect = editText->substr(getSelectionStartIndex(), getSelectionLength());
         colours.setColours(d_selectTextColour);
         colours.modulateAlpha(alpha_comp);
-        d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours);
+        d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
 
         // adjust rect for next section
         text_part_rect.d_left += font->getTextExtent(sect);
@@ -147,7 +147,7 @@ namespace CEGUI
         sect = editText->substr(getSelectionEndIndex());
         colours.setColours(d_normalTextColour);
         colours.modulateAlpha(alpha_comp);
-        d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours);
+        d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
 
         // remember this for next time.
         d_lastTextOffset = textOffset;
@@ -170,7 +170,7 @@ namespace CEGUI
             hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
 
             // render the selection imagery.
-            wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*this, hlarea);
+            wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*this, hlarea, &textArea);
         }
 
         //
@@ -181,7 +181,7 @@ namespace CEGUI
             Rect caratRect(textArea);
             caratRect.d_left += extentToCarat + textOffset;
 
-            caratImagery.render(*this, caratRect, 0);
+            caratImagery.render(*this, caratRect, 0, 0, &textArea);
         }
     }
 

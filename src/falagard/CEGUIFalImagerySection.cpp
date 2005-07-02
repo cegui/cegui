@@ -38,7 +38,7 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void ImagerySection::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
+    void ImagerySection::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -52,16 +52,16 @@ namespace CEGUI
         // render all image components in this section
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).render(srcWindow, base_z, finalColsPtr);
+            (*image).render(srcWindow, base_z, finalColsPtr, clipper);
         }
         // render all text components in this section
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).render(srcWindow, base_z, finalColsPtr);
+            (*text).render(srcWindow, base_z, finalColsPtr, clipper);
         }
     }
 
-    void ImagerySection::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours) const
+    void ImagerySection::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -75,12 +75,12 @@ namespace CEGUI
         // render all image components in this section
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).render(srcWindow, baseRect, base_z, finalColsPtr);
+            (*image).render(srcWindow, baseRect, base_z, finalColsPtr, clipper);
         }
         // render all text components in this section
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).render(srcWindow, baseRect, base_z, finalColsPtr);
+            (*text).render(srcWindow, baseRect, base_z, finalColsPtr, clipper);
         }
     }
 

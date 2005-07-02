@@ -60,16 +60,16 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void ImageryComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours) const
+    void ImageryComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
     {
         Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, base_z, modColours);
+        render_impl(srcWindow, destRect, base_z, modColours, clipper);
     }
 
-    void ImageryComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours) const
+    void ImageryComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
     {
         Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, base_z, modColours);
+        render_impl(srcWindow, destRect, base_z, modColours, clipper);
     }
 
     const ComponentArea& ImageryComponent::getComponentArea() const
@@ -171,7 +171,7 @@ namespace CEGUI
         }
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours) const
+    void ImageryComponent::render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
     {
         // do not draw anything if image is not set.
         if (!d_image)
@@ -269,7 +269,7 @@ namespace CEGUI
             for (uint col = 0; col < horzTiles; ++col)
             {
                 // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours);
+                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours, clipper);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;

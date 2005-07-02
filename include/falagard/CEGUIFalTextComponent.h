@@ -61,7 +61,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours = 0) const;
+        void render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0) const;
 
         /*!
         \brief
@@ -84,7 +84,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0) const;
+        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0) const;
 
         /*!
         \brief
@@ -256,7 +256,7 @@ namespace CEGUI
         \brief
             Method to perform the main render caching work.
         */
-        void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours) const;
+        void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const;
 
     private:
         ComponentArea        d_area;            //!< Destination area for this component.

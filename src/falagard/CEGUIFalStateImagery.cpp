@@ -32,27 +32,27 @@ namespace CEGUI
         d_stateName(name)
     {}
 
-    void StateImagery::render(Window& srcWindow) const
+    void StateImagery::render(Window& srcWindow, const Rect* clipper) const
     {
         float base_z = 0;
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
         {
-            (*curr).render(srcWindow, base_z);
+            (*curr).render(srcWindow, base_z, clipper);
 			// TODO: Magic number removal
 			base_z -= 0.0000001f;
         }
     }
 
-    void StateImagery::render(Window& srcWindow, const Rect& baseRect) const
+    void StateImagery::render(Window& srcWindow, const Rect& baseRect, const Rect* clipper) const
     {
         float base_z = 0;
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
         {
-            (*curr).render(srcWindow, baseRect, base_z);
+            (*curr).render(srcWindow, baseRect, base_z, clipper);
             // TODO: Magic number removal
             base_z -= 0.0000001f;
         }

@@ -46,7 +46,7 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void SectionSpecification::render(Window& srcWindow, float base_z) const
+    void SectionSpecification::render(Window& srcWindow, float base_z, const Rect* clipper) const
     {
         try
         {
@@ -60,14 +60,14 @@ namespace CEGUI
             modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             // render the imagery section
-            sect->render(srcWindow, base_z, &modColours);
+            sect->render(srcWindow, base_z, &modColours, clipper);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception)
         {}
     }
 
-    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z) const
+    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const Rect* clipper) const
     {
         try
         {
@@ -81,7 +81,7 @@ namespace CEGUI
             modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
             // render the imagery section
-            sect->render(srcWindow, baseRect, base_z, &modColours);
+            sect->render(srcWindow, baseRect, base_z, &modColours, clipper);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception)

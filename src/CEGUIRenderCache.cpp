@@ -39,22 +39,48 @@ namespace CEGUI
 
     void RenderCache::render(const Point& basePos, float baseZ, const Rect& clipper) const
     {
+        Rect custClipper;
+        const Rect* finalClipper;
         Rect finalRect;
 
         // Send all cached images to renderer.
         for(ImageryList::const_iterator image = d_cachedImages.begin(); image != d_cachedImages.end(); ++image)
         {
+            if ((*image).usingCustomClipper)
+            {
+                custClipper = (*image).customClipper;
+                custClipper.offset(basePos);
+                custClipper = clipper.getIntersection(custClipper);
+                finalClipper = &custClipper;
+            }
+            else
+            {
+                finalClipper = &clipper;
+            }
+
             finalRect = (*image).target_area;
             finalRect.offset(basePos);
-            (*image).source_image->draw(finalRect, baseZ + (*image).z_offset, clipper, (*image).colours);
+            (*image).source_image->draw(finalRect, baseZ + (*image).z_offset, *finalClipper, (*image).colours);
         }
 
         // send all cached texts to renderer.
         for(TextList::const_iterator text = d_cachedTexts.begin(); text != d_cachedTexts.end(); ++text)
         {
+            if ((*text).usingCustomClipper)
+            {
+                custClipper = (*text).customClipper;
+                custClipper.offset(basePos);
+                custClipper = clipper.getIntersection(custClipper);
+                finalClipper = &custClipper;
+            }
+            else
+            {
+                finalClipper = &clipper;
+            }
+
             finalRect = (*text).target_area;
             finalRect.offset(basePos);
-            (*text).source_font->drawText((*text).text, finalRect, baseZ + (*text).z_offset, clipper, (*text).formatting, (*text).colours);
+            (*text).source_font->drawText((*text).text, finalRect, baseZ + (*text).z_offset, *finalClipper, (*text).formatting, (*text).colours);
         }
 
     }
@@ -65,7 +91,7 @@ namespace CEGUI
         d_cachedTexts.clear();
     }
 
-    void RenderCache::cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols)
+    void RenderCache::cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper)
     {
         ImageInfo imginf;
         imginf.source_image = &image;
@@ -73,10 +99,20 @@ namespace CEGUI
         imginf.z_offset     = zOffset;
         imginf.colours      = cols;
 
+        if (clipper)
+        {
+            imginf.customClipper = *clipper;
+            imginf.usingCustomClipper = true;
+        }
+        else
+        {
+            imginf.usingCustomClipper = false;
+        }
+
         d_cachedImages.push_back(imginf);
     }
 
-    void RenderCache::cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols)
+    void RenderCache::cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper)
     {
         TextInfo txtinf;
         txtinf.text         = text;
@@ -85,6 +121,16 @@ namespace CEGUI
         txtinf.target_area  = destArea;
         txtinf.z_offset     = zOffset;
         txtinf.colours      = cols;
+
+        if (clipper)
+        {
+            txtinf.customClipper = *clipper;
+            txtinf.usingCustomClipper = true;
+        }
+        else
+        {
+            txtinf.usingCustomClipper = false;
+        }
 
         d_cachedTexts.push_back(txtinf);
     }

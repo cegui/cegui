@@ -63,7 +63,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow) const;
+        void render(Window& srcWindow, const Rect* clipper = 0) const;
 
         /*!
         \brief
@@ -78,7 +78,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect) const;
+        void render(Window& srcWindow, const Rect& baseRect, const Rect* clipper = 0) const;
 
         /*!
         \brief
