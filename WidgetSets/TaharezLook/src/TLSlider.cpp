@@ -70,9 +70,9 @@ TLSlider::~TLSlider(void)
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this slider.	
 *************************************************************************/
-Thumb* TLSlider::createThumb(void) const
+Thumb* TLSlider::createThumb(const String& name) const
 {
-	Thumb* tmb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbType, getName() + "__auto_thumb__");
+	Thumb* tmb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbType, name);
 	tmb->setVertFree(true);
 
 	// set size for thumb

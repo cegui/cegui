@@ -7,4 +7,7 @@ noinst_HEADERS = FalButton.h \
                  FalProgressBar.h \
                  FalProgressBarProperties.h \
                  FalRadioButton.h \
+                 FalSlider.h \
+                 FalSliderProperties.h \
+                 FalThumb.h \
                  FalTitlebar.h

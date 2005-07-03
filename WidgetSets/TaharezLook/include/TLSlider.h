@@ -83,7 +83,7 @@ protected:
 	\brief
 		create a Thumb based widget to use as the thumb for this slider.
 	*/
-	virtual Thumb*	createThumb(void) const;
+	virtual Thumb*	createThumb(const String& name) const;
 
 
 	/*!

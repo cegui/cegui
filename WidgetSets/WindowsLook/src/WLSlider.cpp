@@ -80,9 +80,9 @@ WLSlider::~WLSlider(void)
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this slider.	
 *************************************************************************/
-Thumb* WLSlider::createThumb(void) const
+Thumb* WLSlider::createThumb(const String& name) const
 {
-	Thumb* tmb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbType, getName() + "__auto_thumb__");
+	Thumb* tmb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbType, name);
 	tmb->setHorzFree(true);
 
 	// set size for thumb

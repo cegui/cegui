@@ -120,6 +120,14 @@ bool FalagardDemo1Sample::initialiseSample()
     progress->setSize(Size(0.035f, 0.2f));
     ((ProgressBar*)progress)->setProgress(1.0f);
 
+    Window* slider = winMgr.createWindow("TaharezLook/Slider", "sld");
+    wid->addChildWindow(slider);
+
+    // set some basic things for the widget.
+    slider->setPosition(Point(0.8f, 0.1f));
+    slider->setSize(Size(0.05f, 0.5f));
+    //((Thumb*)thumb)->setProgress(1.0f);
+
     // success!
     return true;
 }
