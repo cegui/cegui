@@ -295,10 +295,7 @@ void TLComboDropList::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLComboDropListFactory::createWindow(const String& name)
 {
-	TLComboDropList* wnd = new TLComboDropList(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLComboDropList(d_type, name);
 }
 
 

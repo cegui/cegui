@@ -354,10 +354,7 @@ void TLButton::drawDisabled(float z)
 *************************************************************************/
 Window* TLButtonFactory::createWindow(const String& name)
 {
-	TLButton* wnd = new TLButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

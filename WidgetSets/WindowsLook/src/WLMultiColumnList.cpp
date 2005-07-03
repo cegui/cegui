@@ -321,10 +321,7 @@ void WLMultiColumnList::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLMultiColumnListFactory::createWindow(const String& name)
 {
-	WLMultiColumnList* wnd = new WLMultiColumnList(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLMultiColumnList(d_type, name);
 }
 
 } // End of  CEGUI namespace section

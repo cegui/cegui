@@ -134,10 +134,7 @@ namespace CEGUI
 
     Window* TLSpinnerFactory::createWindow(const String& name)
     {
-        TLSpinner* wnd = new TLSpinner(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new TLSpinner(d_type, name);
     }
 
 } // End of  CEGUI namespace section

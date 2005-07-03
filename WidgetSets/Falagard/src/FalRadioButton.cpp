@@ -120,10 +120,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardRadioButtonFactory::createWindow(const String& name)
     {
-        FalagardRadioButton* wnd = new FalagardRadioButton(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardRadioButton(d_type, name);
     }
 
     void FalagardRadioButtonFactory::destroyWindow(Window* window)

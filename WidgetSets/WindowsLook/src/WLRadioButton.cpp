@@ -255,10 +255,7 @@ void WLRadioButton::drawDisabled(float z)
 *************************************************************************/
 Window* WLRadioButtonFactory::createWindow(const String& name)
 {
-	WLRadioButton* wnd = new WLRadioButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLRadioButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

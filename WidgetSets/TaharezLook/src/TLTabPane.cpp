@@ -147,10 +147,7 @@ void TLTabPane::drawSelf(float z)
 *************************************************************************/
 Window* TLTabPaneFactory::createWindow(const String& name)
 {
-	TLTabPane* wnd = new TLTabPane(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLTabPane(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -451,10 +451,7 @@ bool TLFrameWindow::componentEnabledHandler(const EventArgs& e)
 *************************************************************************/
 Window* TLFrameWindowFactory::createWindow(const String& name)
 {
-	TLFrameWindow* wnd = new TLFrameWindow(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLFrameWindow(d_type, name);
 }
 
 } // End of  CEGUI namespace section

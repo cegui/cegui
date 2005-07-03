@@ -247,10 +247,7 @@ void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMiniHorzScrollbarThumbFactory::createWindow(const String& name)
 {
-	TLMiniHorzScrollbarThumb* wnd = new TLMiniHorzScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniHorzScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

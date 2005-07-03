@@ -437,10 +437,7 @@ void WLButton::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLButtonFactory::createWindow(const String& name)
 {
-	WLButton* wnd = new WLButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLButton(d_type, name);
 }
 
 

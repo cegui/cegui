@@ -148,10 +148,7 @@ void TLVertScrollbarThumb::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLVertScrollbarThumbFactory::createWindow(const String& name)
 {
-	TLVertScrollbarThumb* wnd = new TLVertScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLVertScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

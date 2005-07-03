@@ -291,10 +291,7 @@ void WLComboDropList::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLComboDropListFactory::createWindow(const String& name)
 {
-	WLComboDropList* wnd = new WLComboDropList(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLComboDropList(d_type, name);
 }
 
 } // End of  CEGUI namespace section

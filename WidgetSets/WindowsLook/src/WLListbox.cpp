@@ -291,10 +291,7 @@ void WLListbox::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLListboxFactory::createWindow(const String& name)
 {
-	WLListbox* wnd = new WLListbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLListbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -254,10 +254,7 @@ void WLCheckbox::drawDisabled(float z)
 *************************************************************************/
 Window* WLCheckboxFactory::createWindow(const String& name)
 {
-	WLCheckbox* wnd = new WLCheckbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLCheckbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

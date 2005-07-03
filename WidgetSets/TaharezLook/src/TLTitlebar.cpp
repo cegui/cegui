@@ -212,10 +212,7 @@ void TLTitlebar::onDraggingModeChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLTitlebarFactory::createWindow(const String& name)
 {
-	TLTitlebar* wnd = new TLTitlebar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+    return new TLTitlebar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

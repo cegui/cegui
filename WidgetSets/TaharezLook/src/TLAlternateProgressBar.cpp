@@ -248,10 +248,7 @@ void TLAlternateProgressBar::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLAlternateProgressBarFactory::createWindow(const String& name)
 {
-	TLAlternateProgressBar* wnd = new TLAlternateProgressBar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLAlternateProgressBar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

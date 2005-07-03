@@ -87,10 +87,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardTitlebarFactory::createWindow(const String& name)
     {
-        FalagardTitlebar* wnd = new FalagardTitlebar(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardTitlebar(d_type, name);
     }
 
     void FalagardTitlebarFactory::destroyWindow(Window* window)

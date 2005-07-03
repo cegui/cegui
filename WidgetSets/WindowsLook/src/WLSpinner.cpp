@@ -134,10 +134,7 @@ namespace CEGUI
 
     Window* WLSpinnerFactory::createWindow(const String& name)
     {
-        WLSpinner* wnd = new WLSpinner(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new WLSpinner(d_type, name);
     }
 
 } // End of  CEGUI namespace section

@@ -127,10 +127,7 @@ void TLSliderThumb::drawDisabled(float z)
 *************************************************************************/
 Window* TLSliderThumbFactory::createWindow(const String& name)
 {
-	TLSliderThumb* wnd = new TLSliderThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLSliderThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

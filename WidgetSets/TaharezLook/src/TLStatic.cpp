@@ -152,10 +152,7 @@ void TLStaticImage::initialise(void)
 *************************************************************************/
 Window* TLStaticTextFactory::createWindow(const String& name)
 {
-	TLStaticText* wnd = new TLStaticText(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLStaticText(d_type, name);
 }
 
 
@@ -164,10 +161,7 @@ Window* TLStaticTextFactory::createWindow(const String& name)
 *************************************************************************/
 Window* TLStaticImageFactory::createWindow(const String& name)
 {
-	TLStaticImage* wnd = new TLStaticImage(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLStaticImage(d_type, name);
 }
 
 } // End of  CEGUI namespace section

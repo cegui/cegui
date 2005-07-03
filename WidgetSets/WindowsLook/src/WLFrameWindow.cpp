@@ -507,10 +507,7 @@ void WLFrameWindow::updateFrameColours(void)
 *************************************************************************/
 Window* WLFrameWindowFactory::createWindow(const String& name)
 {
-	WLFrameWindow* wnd = new WLFrameWindow(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLFrameWindow(d_type, name);
 }
 
 } // End of  CEGUI namespace section

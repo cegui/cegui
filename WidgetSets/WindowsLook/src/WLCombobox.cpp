@@ -178,10 +178,7 @@ ComboDropList* WLCombobox::createDropList(void) const
 *************************************************************************/
 Window* WLComboboxFactory::createWindow(const String& name)
 {
-	WLCombobox* wnd = new WLCombobox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLCombobox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

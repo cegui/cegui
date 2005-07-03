@@ -324,10 +324,7 @@ void TLMultiColumnList::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMultiColumnListFactory::createWindow(const String& name)
 {
-	TLMultiColumnList* wnd = new TLMultiColumnList(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMultiColumnList(d_type, name);
 }
 
 } // End of  CEGUI namespace section

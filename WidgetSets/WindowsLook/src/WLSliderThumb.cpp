@@ -127,10 +127,7 @@ void WLSliderThumb::drawDisabled(float z)
 *************************************************************************/
 Window* WLSliderThumbFactory::createWindow(const String& name)
 {
-	WLSliderThumb* wnd = new WLSliderThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLSliderThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

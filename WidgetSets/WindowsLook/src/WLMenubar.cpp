@@ -100,10 +100,7 @@ void WLMenubar::drawSelf(float z)
 
 Window* WLMenubarFactory::createWindow(const String& name)
 {
-    WLMenubar* wnd = new WLMenubar(d_type, name);
-    wnd->initialise();
-
-    return wnd;
+    return new WLMenubar(d_type, name);
 }
 
 

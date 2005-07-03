@@ -349,10 +349,7 @@ void WLHorzScrollbar::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLHorzScrollbarFactory::createWindow(const String& name)
 {
-	WLHorzScrollbar* wnd = new WLHorzScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLHorzScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

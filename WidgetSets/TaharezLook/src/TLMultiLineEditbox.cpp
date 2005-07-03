@@ -326,10 +326,7 @@ void TLMultiLineEditbox::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMultiLineEditboxFactory::createWindow(const String& name)
 {
-	TLMultiLineEditbox* wnd = new TLMultiLineEditbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMultiLineEditbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

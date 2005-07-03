@@ -221,10 +221,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardEditboxFactory::createWindow(const String& name)
     {
-        FalagardEditbox* wnd = new FalagardEditbox(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardEditbox(d_type, name);
     }
 
     void FalagardEditboxFactory::destroyWindow(Window* window)

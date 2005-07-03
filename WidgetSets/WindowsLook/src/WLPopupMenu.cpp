@@ -198,10 +198,7 @@ void WLPopupMenu::drawSelf(float z)
 
 Window* WLPopupMenuFactory::createWindow(const String& name)
 {
-    WLPopupMenu* wnd = new WLPopupMenu(d_type, name);
-    wnd->initialise();
-
-    return wnd;
+    return new WLPopupMenu(d_type, name);
 }
 
 

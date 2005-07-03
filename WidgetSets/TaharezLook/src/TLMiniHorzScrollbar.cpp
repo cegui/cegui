@@ -282,10 +282,7 @@ void TLMiniHorzScrollbar::drawSelf(float z)
 *************************************************************************/
 Window* TLMiniHorzScrollbarFactory::createWindow(const String& name)
 {
-	TLMiniHorzScrollbar* wnd = new TLMiniHorzScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniHorzScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

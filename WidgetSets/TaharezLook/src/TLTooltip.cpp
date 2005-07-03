@@ -148,10 +148,7 @@ namespace CEGUI
 
     Window* TLTooltipFactory::createWindow(const String& name)
     {
-        TLTooltip* wnd = new TLTooltip(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new TLTooltip(d_type, name);
     }
 
 } // End of  CEGUI namespace section

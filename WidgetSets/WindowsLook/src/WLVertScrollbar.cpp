@@ -349,10 +349,7 @@ void WLVertScrollbar::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLVertScrollbarFactory::createWindow(const String& name)
 {
-	WLVertScrollbar* wnd = new WLVertScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLVertScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

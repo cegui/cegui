@@ -209,10 +209,7 @@ void TLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 *************************************************************************/
 Window* TLListHeaderSegmentFactory::createWindow(const String& name)
 {
-	TLListHeaderSegment* wnd = new TLListHeaderSegment(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLListHeaderSegment(d_type, name);
 }
 
 } // End of  CEGUI namespace section

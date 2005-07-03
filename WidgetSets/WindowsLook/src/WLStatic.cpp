@@ -153,10 +153,7 @@ void WLStaticImage::initialise(void)
 *************************************************************************/
 Window* WLStaticTextFactory::createWindow(const String& name)
 {
-	WLStaticText* wnd = new WLStaticText(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLStaticText(d_type, name);
 }
 
 
@@ -165,10 +162,7 @@ Window* WLStaticTextFactory::createWindow(const String& name)
 *************************************************************************/
 Window* WLStaticImageFactory::createWindow(const String& name)
 {
-	WLStaticImage* wnd = new WLStaticImage(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLStaticImage(d_type, name);
 }
 
 } // End of  CEGUI namespace section

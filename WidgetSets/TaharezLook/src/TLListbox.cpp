@@ -294,10 +294,7 @@ void TLListbox::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLListboxFactory::createWindow(const String& name)
 {
-	TLListbox* wnd = new TLListbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLListbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

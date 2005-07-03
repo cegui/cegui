@@ -63,10 +63,7 @@ WLTextItem::~WLTextItem(void)
 
 Window* WLTextItemFactory::createWindow(const String& name)
 {
-    WLTextItem* wnd = new WLTextItem(d_type, name);
-    wnd->initialise();
-
-    return wnd;
+    return new WLTextItem(d_type, name);
 }
 
 } // End of  CEGUI namespace section

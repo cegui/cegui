@@ -160,10 +160,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardButtonFactory::createWindow(const String& name)
     {
-        FalagardButton* wnd = new FalagardButton(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardButton(d_type, name);
     }
 
     void FalagardButtonFactory::destroyWindow(Window* window)

@@ -300,10 +300,7 @@ void TLComboEditbox::drawSelf(float z)
 *************************************************************************/
 Window* TLComboEditboxFactory::createWindow(const String& name)
 {
-	TLComboEditbox* wnd = new TLComboEditbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLComboEditbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

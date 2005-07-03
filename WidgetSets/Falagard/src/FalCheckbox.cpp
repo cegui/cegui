@@ -120,10 +120,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardCheckboxFactory::createWindow(const String& name)
     {
-        FalagardCheckbox* wnd = new FalagardCheckbox(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardCheckbox(d_type, name);
     }
 
     void FalagardCheckboxFactory::destroyWindow(Window* window)

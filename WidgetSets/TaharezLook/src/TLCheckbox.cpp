@@ -248,10 +248,7 @@ void TLCheckbox::drawDisabled(float z)
 *************************************************************************/
 Window* TLCheckboxFactory::createWindow(const String& name)
 {
-	TLCheckbox* wnd = new TLCheckbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLCheckbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -248,10 +248,7 @@ void TLRadioButton::drawDisabled(float z)
 *************************************************************************/
 Window* TLRadioButtonFactory::createWindow(const String& name)
 {
-	TLRadioButton* wnd = new TLRadioButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLRadioButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

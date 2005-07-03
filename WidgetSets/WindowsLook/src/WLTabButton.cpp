@@ -356,10 +356,7 @@ void WLTabButton::drawHover(float z)
 *************************************************************************/
 Window* WLTabButtonFactory::createWindow(const String& name)
 {
-	WLTabButton* wnd = new WLTabButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLTabButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

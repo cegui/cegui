@@ -96,10 +96,7 @@ void TLListHeader::destroyListSegment(ListHeaderSegment* segment) const
 *************************************************************************/
 Window* TLListHeaderFactory::createWindow(const String& name)
 {
-	TLListHeader* wnd = new TLListHeader(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLListHeader(d_type, name);
 }
 
 

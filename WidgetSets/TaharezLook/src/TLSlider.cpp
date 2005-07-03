@@ -184,10 +184,7 @@ void TLSlider::drawSelf(float z)
 *************************************************************************/
 Window* TLSliderFactory::createWindow(const String& name)
 {
-	TLSlider* wnd = new TLSlider(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLSlider(d_type, name);
 }
 
 } // End of  CEGUI namespace section

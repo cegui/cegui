@@ -172,10 +172,7 @@ void WLTabControl::drawSelf(float z)
 *************************************************************************/
 Window* WLTabControlFactory::createWindow(const String& name)
 {
-	WLTabControl* wnd = new WLTabControl(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLTabControl(d_type, name);
 }
 
 } // End of  CEGUI namespace section

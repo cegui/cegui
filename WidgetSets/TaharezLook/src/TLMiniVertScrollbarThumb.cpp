@@ -245,10 +245,7 @@ void TLMiniVertScrollbarThumb::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMiniVertScrollbarThumbFactory::createWindow(const String& name)
 {
-	TLMiniVertScrollbarThumb* wnd = new TLMiniVertScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniVertScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

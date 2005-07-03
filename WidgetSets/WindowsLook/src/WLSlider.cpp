@@ -217,10 +217,7 @@ void WLSlider::drawSelf(float z)
 *************************************************************************/
 Window* WLSliderFactory::createWindow(const String& name)
 {
-	WLSlider* wnd = new WLSlider(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLSlider(d_type, name);
 }
 
 } // End of  CEGUI namespace section

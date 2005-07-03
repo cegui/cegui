@@ -159,10 +159,7 @@ namespace CEGUI
 *************************************************************************/
 Window* TLTabControlFactory::createWindow(const String& name)
 {
-	TLTabControl* wnd = new TLTabControl(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLTabControl(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -282,10 +282,7 @@ void TLMiniVertScrollbar::drawSelf(float z)
 *************************************************************************/
 Window* TLMiniVertScrollbarFactory::createWindow(const String& name)
 {
-	TLMiniVertScrollbar* wnd = new TLMiniVertScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniVertScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

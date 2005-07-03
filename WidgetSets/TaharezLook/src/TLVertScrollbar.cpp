@@ -331,10 +331,7 @@ void TLVertScrollbar::drawSelf(float z)
 *************************************************************************/
 Window* TLVertScrollbarFactory::createWindow(const String& name)
 {
-	TLVertScrollbar* wnd = new TLVertScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+    return new TLVertScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

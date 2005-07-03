@@ -84,6 +84,9 @@ Window* WindowManager::createWindow(const String& type, const String& name)
         newWindow->setLookNFeel(wfMgr.getMappedLookForType(type));
     }
 
+    // perform initialisation step
+    newWindow->initialise();
+
 	d_windowRegistry[name] = newWindow;
 
 	return newWindow;

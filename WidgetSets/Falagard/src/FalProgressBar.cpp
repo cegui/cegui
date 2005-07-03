@@ -126,10 +126,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardProgressBarFactory::createWindow(const String& name)
     {
-        FalagardProgressBar* wnd = new FalagardProgressBar(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardProgressBar(d_type, name);
     }
 
     void FalagardProgressBarFactory::destroyWindow(Window* window)

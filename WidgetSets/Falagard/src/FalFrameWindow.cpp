@@ -108,10 +108,7 @@ namespace CEGUI
     //////////////////////////////////////////////////////////////////////////
     Window* FalagardFrameWindowFactory::createWindow(const String& name)
     {
-        FalagardFrameWindow* wnd = new FalagardFrameWindow(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new FalagardFrameWindow(d_type, name);
     }
 
     void FalagardFrameWindowFactory::destroyWindow(Window* window)

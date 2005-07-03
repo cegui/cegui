@@ -183,10 +183,7 @@ ComboDropList* TLCombobox::createDropList(void) const
 *************************************************************************/
 Window* TLComboboxFactory::createWindow(const String& name)
 {
-	TLCombobox* wnd = new TLCombobox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLCombobox(d_type, name);
 }
 
 } // End of  CEGUI namespace section
