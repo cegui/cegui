@@ -344,6 +344,162 @@ public:
 	*/
 	void	setCaptionColour(colour col);
 
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the north-south
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getNSSizingCursorImage() const;
+
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the east-west
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getEWSizingCursorImage() const;
+
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the northwest-southeast
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getNWSESizingCursorImage() const;
+
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the northeast-southwest
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getNESWSizingCursorImage() const;
+
+    /*!
+    \brief
+        Set the Image to be used for the north-south sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setNSSizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the Image to be used for the east-west sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setEWSizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the Image to be used for the northwest-southeast sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setNWSESizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the Image to be used for the northeast-southwest sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setNESWSizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the image to be used for the north-south sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setNSSizingCursorImage(const String& imageset, const String& image);
+
+    /*!
+    \brief
+        Set the image to be used for the east-west sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setEWSizingCursorImage(const String& imageset, const String& image);
+
+    /*!
+    \brief
+        Set the image to be used for the northwest-southeast sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setNWSESizingCursorImage(const String& imageset, const String& image);
+
+    /*!
+    \brief
+        Set the image to be used for the northeast-southwest sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setNESWSizingCursorImage(const String& imageset, const String& image);
+
     // overridden from Window class
     bool    isHit(const Point& position) const      { return Window::isHit(position) && !d_rolledup; }
 
@@ -583,6 +739,7 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onSized(WindowEventArgs& e);
+	virtual void    onTextChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -628,6 +785,10 @@ private:
 	static FrameWindowProperties::SizingBorderThickness d_sizingBorderThicknessProperty;
 	static FrameWindowProperties::TitlebarFont		d_titlebarFontProperty;
 	static FrameWindowProperties::CaptionColour		d_captionColourProperty;
+    static FrameWindowProperties::NSSizingCursorImage   d_nsSizingCursorProperty;
+    static FrameWindowProperties::EWSizingCursorImage   d_ewSizingCursorProperty;
+    static FrameWindowProperties::NWSESizingCursorImage d_nwseSizingCursorProperty;
+    static FrameWindowProperties::NESWSizingCursorImage d_neswSizingCursorProperty;
 
 
 	/*************************************************************************

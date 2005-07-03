@@ -167,6 +167,51 @@ void CaptionColour::set(PropertyReceiver* receiver, const String& value)
 	static_cast<FrameWindow*>(receiver)->setCaptionColour(PropertyHelper::stringToColour(value));
 }
 
+String NSSizingCursorImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const FrameWindow*>(receiver)->getNSSizingCursorImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void NSSizingCursorImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<FrameWindow*>(receiver)->setNSSizingCursorImage(PropertyHelper::stringToImage(value));
+}
+
+String EWSizingCursorImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const FrameWindow*>(receiver)->getEWSizingCursorImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void EWSizingCursorImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<FrameWindow*>(receiver)->setEWSizingCursorImage(PropertyHelper::stringToImage(value));
+}
+
+String NWSESizingCursorImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const FrameWindow*>(receiver)->getNWSESizingCursorImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void NWSESizingCursorImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<FrameWindow*>(receiver)->setNWSESizingCursorImage(PropertyHelper::stringToImage(value));
+}
+
+String NESWSizingCursorImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const FrameWindow*>(receiver)->getNESWSizingCursorImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void NESWSizingCursorImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<FrameWindow*>(receiver)->setNESWSizingCursorImage(PropertyHelper::stringToImage(value));
+}
+
+
 } // End of  FrameWindowProperties namespace section
 
 } // End of  CEGUI namespace section

@@ -29,6 +29,8 @@
 #include "CEGUIMouseCursor.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIImageset.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -48,6 +50,10 @@ FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProper
 FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
 FrameWindowProperties::TitlebarFont				FrameWindow::d_titlebarFontProperty;
 FrameWindowProperties::CaptionColour			FrameWindow::d_captionColourProperty;
+FrameWindowProperties::NSSizingCursorImage      FrameWindow::d_nsSizingCursorProperty;
+FrameWindowProperties::EWSizingCursorImage      FrameWindow::d_ewSizingCursorProperty;
+FrameWindowProperties::NWSESizingCursorImage    FrameWindow::d_nwseSizingCursorProperty;
+FrameWindowProperties::NESWSizingCursorImage    FrameWindow::d_neswSizingCursorProperty;
 
 
 /*************************************************************************
@@ -789,6 +795,16 @@ void FrameWindow::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
+    Handler for when text changes
+*************************************************************************/
+void FrameWindow::onTextChanged(WindowEventArgs& e)
+{
+    // pass this onto titlebar component.
+    WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setText(d_text);
+}
+
+
+/*************************************************************************
 	Set whether this FrameWindow can be moved by dragging the title bar.	
 *************************************************************************/
 void FrameWindow::setDragMovingEnabled(bool setting)
@@ -839,6 +855,10 @@ void FrameWindow::addFrameWindowProperties(void)
 	addProperty(&d_sizingBorderThicknessProperty);
 	addProperty(&d_titlebarFontProperty);
 	addProperty(&d_captionColourProperty);
+    addProperty(&d_nsSizingCursorProperty);
+    addProperty(&d_ewSizingCursorProperty);
+    addProperty(&d_nwseSizingCursorProperty);
+    addProperty(&d_neswSizingCursorProperty);
 }
 
 
@@ -847,7 +867,7 @@ void FrameWindow::addFrameWindowProperties(void)
 *************************************************************************/
 colour FrameWindow::getCaptionColour(void) const
 {
-    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->getCaptionColour();
+    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->getCaptionColour();
 }
 
 
@@ -859,5 +879,65 @@ void FrameWindow::setCaptionColour(colour col)
     static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setCaptionColour(col);
 }
 
+
+const Image* FrameWindow::getNSSizingCursorImage() const
+{
+    return d_nsSizingCursor;
+}
+
+const Image* FrameWindow::getEWSizingCursorImage() const
+{
+    return d_ewSizingCursor;
+}
+
+const Image* FrameWindow::getNWSESizingCursorImage() const
+{
+    return d_nwseSizingCursor;
+}
+
+const Image* FrameWindow::getNESWSizingCursorImage() const
+{
+    return d_neswSizingCursor;
+}
+
+void FrameWindow::setNSSizingCursorImage(const Image* image)
+{
+    d_nsSizingCursor = image;
+}
+
+void FrameWindow::setEWSizingCursorImage(const Image* image)
+{
+    d_ewSizingCursor = image;
+}
+
+void FrameWindow::setNWSESizingCursorImage(const Image* image)
+{
+    d_nwseSizingCursor = image;
+}
+
+void FrameWindow::setNESWSizingCursorImage(const Image* image)
+{
+    d_neswSizingCursor = image;
+}
+
+void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
+{
+    d_nsSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
+{
+    d_ewSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
+{
+    d_nwseSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
+{
+    d_neswSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
 
 } // End of  CEGUI namespace section

@@ -24,6 +24,9 @@
 #include "FalFrameWindow.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUIWindowManager.h"
+#include "elements/CEGUITitlebar.h"
+#include "elements/CEGUIPushButton.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -79,12 +82,12 @@ namespace CEGUI
 
     Titlebar* FalagardFrameWindow::createTitlebar(const String& name) const
     {
-        return 0;
+        return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"));
     }
 
     PushButton* FalagardFrameWindow::createCloseButton(const String& name) const
     {
-        return 0;
+        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__"));
     }
 
     void FalagardFrameWindow::layoutComponentWidgets()

@@ -510,6 +510,10 @@
     </WidgetLook>
 
     <WidgetLook name="TaharezLook/FrameWindow">
+        <Property name="NSSizingCursorImage" value="set:TaharezLook image:MouseNoSoCursor" />
+        <Property name="EWSizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
+        <Property name="NWSESizingCursorImage" value="set:TaharezLook image:MouseNwSeCursor" />
+        <Property name="NESWSizingCursorImage" value="set:TaharezLook image:MouseNeSwCursor" />
         <NamedArea name="ClientArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
