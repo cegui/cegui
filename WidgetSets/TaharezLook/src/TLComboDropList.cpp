@@ -135,9 +135,9 @@ Rect TLComboDropList::getListRenderArea(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	vertical scroll bar	
 *************************************************************************/
-Scrollbar* TLComboDropList::createVertScrollbar(void) const
+Scrollbar* TLComboDropList::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -151,9 +151,9 @@ Scrollbar* TLComboDropList::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar	
 *************************************************************************/
-Scrollbar* TLComboDropList::createHorzScrollbar(void) const
+Scrollbar* TLComboDropList::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -208,23 +208,11 @@ void TLComboDropList::layoutComponentWidgets()
 /*************************************************************************
 	Perform rendering of the widget control frame and other 'static' areas.
 *************************************************************************/
-void TLComboDropList::renderListboxBaseImagery(float z)
+void TLComboDropList::cacheListboxBaseImagery()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
 	// draw the box elements
-	Vector3 pos(absrect.d_left, absrect.d_top, z);
-	d_background.draw(pos, clipper);
-	d_frame.draw(pos, clipper);
+	d_background.draw(d_renderCache);
+	d_frame.draw(d_renderCache);
 }
 
 

@@ -121,6 +121,23 @@ void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& cli
 
 }
 
+void ListboxTextItem::draw(RenderCache& cache,const Rect& targetRect, float zBase, float alpha, const Rect* clipper) const
+{
+    if (d_selected && d_selectBrush != 0)
+    {
+        cache.cacheImage(*d_selectBrush, targetRect, zBase, getModulateAlphaColourRect(d_selectCols, alpha), clipper);
+    }
+
+    const Font* font = getFont();
+
+    if (font)
+    {
+        Rect finalPos(targetRect);
+        finalPos.d_top -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
+        cache.cacheText(d_itemText, font, LeftAligned, finalPos, zBase, getModulateAlphaColourRect(d_textCols, alpha), clipper);
+    }
+}
+
 
 /*************************************************************************
 	Set the colours used for text rendering.	

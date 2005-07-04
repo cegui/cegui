@@ -3,6 +3,7 @@ noinst_HEADERS = FalButton.h \
                  FalCheckbox.h \
                  FalEditbox.h \
                  FalFrameWindow.h \
+                 FalListbox.h \
                  FalModule.h \
                  FalProgressBar.h \
                  FalProgressBarProperties.h \

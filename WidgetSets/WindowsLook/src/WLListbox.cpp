@@ -131,9 +131,9 @@ Rect WLListbox::getListRenderArea(void) const
 	create and return a pointer to a Scrollbar widget for use as vertical
 	scroll bar
 *************************************************************************/
-Scrollbar* WLListbox::createVertScrollbar(void) const
+Scrollbar* WLListbox::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -147,9 +147,9 @@ Scrollbar* WLListbox::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar
 *************************************************************************/
-Scrollbar* WLListbox::createHorzScrollbar(void) const
+Scrollbar* WLListbox::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -204,23 +204,11 @@ void WLListbox::layoutComponentWidgets()
 /*************************************************************************
 	Perform the rendering for everything except the items
 *************************************************************************/
-void WLListbox::renderListboxBaseImagery(float z)
+void WLListbox::cacheListboxBaseImagery()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
 	// draw the box elements
-	Vector3 pos(absrect.d_left, absrect.d_top, z);
-	d_background.draw(pos, clipper);
-	d_frame.draw(pos, clipper);
+	d_background.draw(d_renderCache);
+	d_frame.draw(d_renderCache);
 }
 
 

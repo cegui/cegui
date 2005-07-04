@@ -496,20 +496,26 @@ protected:
 	\brief
 		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
 
+	\param name
+	   String holding the name to be given to the created widget component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling the list vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const		= 0;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const		= 0;
  
 
 	/*!
 	\brief
 		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
 
+	\param name
+	   String holding the name to be given to the created widget component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling the list horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const		= 0;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const		= 0;
 
 
 	/*!
@@ -524,18 +530,15 @@ protected:
 
 	/*!
 	\brief
-		Perform rendering of the widget control frame and other 'static' areas.  This
+		Perform caching of the widget control frame and other 'static' areas.  This
 		method should not render the actual items.  Note that the items are typically
 		rendered to layer 3, other layers can be used for rendering imagery behind and
 		infront of the items.
 
-	\param z
-		Z co-ordinate for layer 0.
-
 	\return
 		Nothing.
 	*/
-	virtual	void	renderListboxBaseImagery(float z)		= 0;
+	virtual	void cacheListboxBaseImagery() = 0;
 
 
 	/*************************************************************************
@@ -546,19 +549,6 @@ protected:
 		Add list box specific events
 	*/
 	void	addListboxEvents(void);
-
-
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
 
 
 	/*!
@@ -639,6 +629,15 @@ protected:
 		if (class_name==(const utf8*)"Listbox")	return true;
 		return Window::testClassName_impl(class_name);
 	}
+
+	/*!
+	\brief
+	   Internal handler that is triggered when the user interacts with the scrollbars.
+    */
+    bool handle_scrollChange(const EventArgs& args);
+
+    // overridden from Window base class.
+    void populateRenderCache();
 
 
 	/*************************************************************************

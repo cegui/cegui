@@ -29,6 +29,7 @@
 #include "FalCheckbox.h"
 #include "FalEditbox.h"
 #include "FalFrameWindow.h"
+#include "FalListbox.h"
 #include "FalProgressBar.h"
 #include "FalRadioButton.h"
 #include "FalScrollbar.h"
@@ -43,6 +44,7 @@ static CEGUI::FalagardButtonFactory             s_ButtonFactory;
 static CEGUI::FalagardCheckboxFactory           s_CheckboxFactory;
 static CEGUI::FalagardEditboxFactory            s_EditboxFactory;
 static CEGUI::FalagardFrameWindowFactory        s_FrameWindowFactory;
+static CEGUI::FalagardListboxFactory            s_ListboxFactory;
 static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
 static CEGUI::FalagardScrollbarFactory          s_ScrollbarFactory;
@@ -65,6 +67,7 @@ mapEntry factoriesMap[] =
     {FalagardCheckbox::WidgetTypeName, &s_CheckboxFactory},
     {FalagardEditbox::WidgetTypeName, &s_EditboxFactory},
     {FalagardFrameWindow::WidgetTypeName, &s_FrameWindowFactory},
+    {FalagardListbox::WidgetTypeName, &s_ListboxFactory},
     {FalagardProgressBar::WidgetTypeName, &s_ProgressBarFactory},
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
     {FalagardScrollbar::WidgetTypeName, &s_ScrollbarFactory},

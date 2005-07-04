@@ -88,58 +88,34 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    Window* button = winMgr.createWindow("TaharezLook/Button", "button");
-    wid->addChildWindow(button);
+    Listbox* list = static_cast<Listbox*>(winMgr.createWindow("TaharezLook/Listbox", "list1"));
+    wid->addChildWindow(list);
 
     // set some basic things for the widget.
-    button->setPosition(Point(0.25f, 0.1f));
-    button->setSize(Size(0.5f, 0.1f));
-    button->setText("Button 1");
+    list->setPosition(Point(0.25f, 0.25f));
+    list->setSize(Size(0.5f, 0.5f));
 
-    Window* progress = winMgr.createWindow("TaharezLook/ProgressBar", "progbar");
-    wid->addChildWindow(progress);
+    ListboxTextItem* item;
 
-    // set some basic things for the widget.
-    progress->setPosition(Point(0.25f, 0.4f));
-    progress->setSize(Size(0.5f, 0.1f));
-    ((ProgressBar*)progress)->setProgress(0.5f);
+    item = new ListboxTextItem("This is a test - 1");
+    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+    list->addItem(item);
+    item = new ListboxTextItem("This is a test - 2");
+    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+    list->addItem(item);
+    item = new ListboxTextItem("This is a test - 3");
+    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+    list->addItem(item);
+    item = new ListboxTextItem("This is a test - 4");
+    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+    list->addItem(item);
+    item = new ListboxTextItem("This is a test - 5");
+    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+    list->addItem(item);
+    item = new ListboxTextItem("This is a test - 6");
+    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+    list->addItem(item);
 
-    progress = winMgr.createWindow("TaharezLook/AltProgressBar", "progbar2");
-    wid->addChildWindow(progress);
-
-    // set some basic things for the widget.
-    progress->setPosition(Point(0.25f, 0.6f));
-    progress->setSize(Size(0.5f, 0.1f));
-    ((ProgressBar*)progress)->setProgress(0.75f);
-
-    progress = winMgr.createWindow("TaharezLook/VUMeter", "progbar3");
-    wid->addChildWindow(progress);
-
-    // set some basic things for the widget.
-    progress->setPosition(Point(0.07f, 0.1f));
-    progress->setSize(Size(0.035f, 0.2f));
-    ((ProgressBar*)progress)->setProgress(1.0f);
-
-    Window* slider = winMgr.createWindow("TaharezLook/Slider", "sld");
-    wid->addChildWindow(slider);
-
-    // set some basic things for the widget.
-    slider->setPosition(Point(0.8f, 0.1f));
-    slider->setSize(Size(0.05f, 0.5f));
-
-    Window* sbar = winMgr.createWindow("TaharezLook/HorizontalScrollbar", "sbar1");
-    wid->addChildWindow(sbar);
-
-    // set some basic things for the widget.
-    sbar->setPosition(Point(0.2f, 0.8f));
-    sbar->setSize(Size(0.5f, 0.03f));
-
-    sbar = winMgr.createWindow("TaharezLook/VerticalScrollbar", "sbar2");
-    wid->addChildWindow(sbar);
-
-    // set some basic things for the widget.
-    sbar->setPosition(Point(0.9f, 0.1f));
-    sbar->setSize(Size(0.0275f, 0.5f));
     // success!
     return true;
 }

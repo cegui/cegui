@@ -38,7 +38,7 @@ namespace CEGUI
 
         if (imagery == d_stateImagery.end())
         {
-            throw UnknownObjectException("WidgetLookFeel::getStateImagery - unknown state '" + state + "'.");
+            throw UnknownObjectException("WidgetLookFeel::getStateImagery - unknown state '" + state + "' in look '" + d_lookName + "'.");
         }
 
         return (*imagery).second;
@@ -51,7 +51,7 @@ namespace CEGUI
 
         if (imgSect == d_imagerySections.end())
         {
-            throw UnknownObjectException("WidgetLookFeel::getImagerySection - unknown imagery section '" + section + "'.");
+            throw UnknownObjectException("WidgetLookFeel::getImagerySection - unknown imagery section '" + section +  "' in look '" + d_lookName + "'.");
         }
 
         return (*imgSect).second;
@@ -169,7 +169,7 @@ namespace CEGUI
 
         if (area == d_namedAreas.end())
         {
-            throw UnknownObjectException("WidgetLookFeel::getNamedArea - unknown named area: '" + name + "'.");
+            throw UnknownObjectException("WidgetLookFeel::getNamedArea - unknown named area: '" + name +  "' in look '" + d_lookName + "'.");
         }
 
         return (*area).second;
