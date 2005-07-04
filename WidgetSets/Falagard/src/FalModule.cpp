@@ -27,6 +27,8 @@
 // includes for types we create
 #include "FalButton.h"
 #include "FalCheckbox.h"
+#include "FalComboDropList.h"
+#include "FalCombobox.h"
 #include "FalEditbox.h"
 #include "FalFrameWindow.h"
 #include "FalListbox.h"
@@ -42,6 +44,8 @@
 *************************************************************************/
 static CEGUI::FalagardButtonFactory             s_ButtonFactory;
 static CEGUI::FalagardCheckboxFactory           s_CheckboxFactory;
+static CEGUI::FalagardComboDropListFactory      s_ComboDropListFactory;
+static CEGUI::FalagardComboboxFactory           s_ComboboxFactory;
 static CEGUI::FalagardEditboxFactory            s_EditboxFactory;
 static CEGUI::FalagardFrameWindowFactory        s_FrameWindowFactory;
 static CEGUI::FalagardListboxFactory            s_ListboxFactory;
@@ -65,6 +69,8 @@ mapEntry factoriesMap[] =
 {
     {FalagardButton::WidgetTypeName, &s_ButtonFactory},
     {FalagardCheckbox::WidgetTypeName, &s_CheckboxFactory},
+    {FalagardComboDropList::WidgetTypeName, &s_ComboDropListFactory},
+    {FalagardCombobox::WidgetTypeName, &s_ComboboxFactory},
     {FalagardEditbox::WidgetTypeName, &s_EditboxFactory},
     {FalagardFrameWindow::WidgetTypeName, &s_FrameWindowFactory},
     {FalagardListbox::WidgetTypeName, &s_ListboxFactory},

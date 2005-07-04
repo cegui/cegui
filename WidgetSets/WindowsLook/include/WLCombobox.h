@@ -105,7 +105,7 @@ protected:
 	\return
 		Pointer to an Editbox derived class.
 	*/
-	virtual	Editbox*	createEditbox(void) const;
+	virtual	Editbox*	createEditbox(const String& name) const;
 
 
 	/*!
@@ -116,7 +116,7 @@ protected:
 	\return
 		Pointer to a PushButton derived class.
 	*/
-	virtual	PushButton*	createPushButton(void) const;
+	virtual	PushButton*	createPushButton(const String& name) const;
 
 
 	/*!
@@ -127,7 +127,7 @@ protected:
 	\return
 		Pointer to a ComboDropList derived class.
 	*/
-	virtual	ComboDropList*	createDropList(void) const;
+	virtual	ComboDropList*	createDropList(const String& name) const;
 
 
 	/*************************************************************************

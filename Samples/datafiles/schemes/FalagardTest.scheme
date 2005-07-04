@@ -6,6 +6,9 @@
 	<FalagardMapping WindowType="TaharezLook/AltProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
 	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="TaharezLook/Checkbox" />
+	<FalagardMapping WindowType="TaharezLook/ComboDropList" TargetType="Falagard/ComboDropList" LookNFeel="TaharezLook/ComboDropList" />
+	<FalagardMapping WindowType="TaharezLook/ComboEditbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/ComboEditbox" />
+	<FalagardMapping WindowType="TaharezLook/Combobox" TargetType="Falagard/Combobox" LookNFeel="TaharezLook/Combobox" />
 	<FalagardMapping WindowType="TaharezLook/Editbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/Editbox" />
 	<FalagardMapping WindowType="TaharezLook/FrameWindow" TargetType="Falagard/FrameWindow" LookNFeel="TaharezLook/FrameWindow" />
 	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/HorizontalScrollbar" />

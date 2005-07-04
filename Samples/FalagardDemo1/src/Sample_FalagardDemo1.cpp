@@ -88,7 +88,7 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    Listbox* list = static_cast<Listbox*>(winMgr.createWindow("TaharezLook/Listbox", "list1"));
+    Combobox* list = static_cast<Combobox*>(winMgr.createWindow("TaharezLook/Combobox", "list1"));
     wid->addChildWindow(list);
 
     // set some basic things for the widget.

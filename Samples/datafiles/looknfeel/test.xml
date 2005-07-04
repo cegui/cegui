@@ -1442,4 +1442,264 @@
         </StateImagery>
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/ComboDropList">
+        <NamedArea name="ItemRenderingArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="4" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="4" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1" offset="-4" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-4" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+        </Child>
+        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+        </Child>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListTopLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-8" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListTopRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-8" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-8" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-8" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-8" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListTop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-8" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListBottom" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxListBackdrop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/ComboEditbox">
+        <Property name="MouseCursorImage" value="set:TaharezLook image:MouseTextBar" />
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-7" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-7" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="container_normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxEditLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="15" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-15" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ComboboxEditMiddle" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selection">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TextSelectionBrush" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="Carat">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="EditBoxCarat" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="ActiveSelectionColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="InactiveSelectionColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/Combobox">
+        <Child  type="TaharezLook/ComboEditbox" nameSuffix="__auto_editbox__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-25" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="25" /></Dim>
+            </Area>
+        </Child>
+        <Child  type="TaharezLook/ComboDropList" nameSuffix="__auto_droplist__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><WidgetDim widget="__auto_editbox__" dimension="BottomEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-25" type="Height" /></Dim>
+            </Area>
+        </Child>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_button__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="25" /></Dim>
+                <Dim type="Height" ><WidgetDim widget="__auto_editbox__" dimension="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:ComboboxListButtonHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
+        </Child>
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+    </WidgetLook>
+
 </Falagard>

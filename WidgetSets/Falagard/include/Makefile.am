@@ -1,6 +1,8 @@
 SUBDIRS = .
 noinst_HEADERS = FalButton.h \
                  FalCheckbox.h \
+                 FalComboDropList.h \
+                 FalCombobox.h \
                  FalEditbox.h \
                  FalFrameWindow.h \
                  FalListbox.h \
