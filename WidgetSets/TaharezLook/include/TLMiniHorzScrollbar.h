@@ -92,21 +92,21 @@ protected:
 	\brief
 		create a PushButton based widget to use as the increase button for this scroll bar.
 	*/
-	virtual PushButton*	createIncreaseButton(void) const;
+	virtual PushButton*	createIncreaseButton(const String& name) const;
 
 
 	/*!
 	\brief
 		create a PushButton based widget to use as the decrease button for this scroll bar.
 	*/
-	virtual PushButton*	createDecreaseButton(void) const;
+	virtual PushButton*	createDecreaseButton(const String& name) const;
 
 
 	/*!
 	\brief
 		create a Thumb based widget to use as the thumb for this scroll bar.
 	*/
-	virtual Thumb*	createThumb(void) const;
+	virtual Thumb*	createThumb(const String& name) const;
 
 
 	/*!

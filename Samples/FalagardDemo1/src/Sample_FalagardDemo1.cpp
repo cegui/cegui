@@ -126,8 +126,20 @@ bool FalagardDemo1Sample::initialiseSample()
     // set some basic things for the widget.
     slider->setPosition(Point(0.8f, 0.1f));
     slider->setSize(Size(0.05f, 0.5f));
-    //((Thumb*)thumb)->setProgress(1.0f);
 
+    Window* sbar = winMgr.createWindow("TaharezLook/HorizontalScrollbar", "sbar1");
+    wid->addChildWindow(sbar);
+
+    // set some basic things for the widget.
+    sbar->setPosition(Point(0.2f, 0.8f));
+    sbar->setSize(Size(0.5f, 0.03f));
+
+    sbar = winMgr.createWindow("TaharezLook/VerticalScrollbar", "sbar2");
+    wid->addChildWindow(sbar);
+
+    // set some basic things for the widget.
+    sbar->setPosition(Point(0.9f, 0.1f));
+    sbar->setSize(Size(0.0275f, 0.5f));
     // success!
     return true;
 }

@@ -95,10 +95,10 @@ TLVertScrollbar::~TLVertScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLVertScrollbar::createIncreaseButton(void) const
+PushButton* TLVertScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -124,10 +124,10 @@ PushButton* TLVertScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLVertScrollbar::createDecreaseButton(void) const
+PushButton* TLVertScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -152,10 +152,10 @@ PushButton* TLVertScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* TLVertScrollbar::createThumb(void) const
+Thumb* TLVertScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	TLVertScrollbarThumb* thumb = (TLVertScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	TLVertScrollbarThumb* thumb = (TLVertScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform some initialisation
 	thumb->setVertFree(true);

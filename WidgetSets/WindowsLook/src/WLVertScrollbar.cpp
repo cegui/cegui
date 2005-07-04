@@ -105,10 +105,10 @@ WLVertScrollbar::~WLVertScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* WLVertScrollbar::createIncreaseButton(void) const
+PushButton* WLVertScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(true);
@@ -135,10 +135,10 @@ PushButton* WLVertScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* WLVertScrollbar::createDecreaseButton(void) const
+PushButton* WLVertScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(true);
@@ -164,10 +164,10 @@ PushButton* WLVertScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* WLVertScrollbar::createThumb(void) const
+Thumb* WLVertScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	Thumb* thumb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	Thumb* thumb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform initialisation
 	thumb->setVertFree(true);

@@ -146,7 +146,7 @@
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="widgetDimType">
-		<xsd:attribute name="widget" type="xsd:string" use="required" />
+		<xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="settingByPropertyType">

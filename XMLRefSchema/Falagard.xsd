@@ -96,7 +96,7 @@
 		</xsd:sequence>
 		<xsd:attribute name="type" type="xsd:string" use="required" />
 		<xsd:attribute name="nameSuffix" type="xsd:string" use="required" />
-		<xsd:attribute name="look" type="xsd:string" use="required" />
+		<xsd:attribute name="look" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
 	<xsd:complexType name="horzFormatType">
 		<xsd:attribute name="type" type="horzFormatEnum" use="required" />
@@ -146,7 +146,7 @@
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="widgetDimType">
-		<xsd:attribute name="widget" type="xsd:string" use="required" />
+		<xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="settingByPropertyType">

@@ -85,10 +85,10 @@ TLMiniHorzScrollbar::~TLMiniHorzScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLMiniHorzScrollbar::createIncreaseButton(void) const
+PushButton* TLMiniHorzScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -115,10 +115,10 @@ PushButton* TLMiniHorzScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLMiniHorzScrollbar::createDecreaseButton(void) const
+PushButton* TLMiniHorzScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -144,10 +144,10 @@ PushButton* TLMiniHorzScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* TLMiniHorzScrollbar::createThumb(void) const
+Thumb* TLMiniHorzScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	TLMiniHorzScrollbarThumb* thumb = (TLMiniHorzScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	TLMiniHorzScrollbarThumb* thumb = (TLMiniHorzScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform some initialisation
 	thumb->setHorzFree(true);

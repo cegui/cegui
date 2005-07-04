@@ -1036,6 +1036,8 @@
 
     <WidgetLook name="TaharezLook/Slider">
         <Property name="VerticalSlider" value="True" />
+        <Property name="MouseButtonDownAutoRepeat" value="True" />
+        <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1061,6 +1063,229 @@
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="VertSliderBody" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
+        <Property name="HorzFree" value="True" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MiniHorzScrollThumbNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MiniHorzScrollThumbHover" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/HorizontalScrollbar">
+        <NamedArea name="ThumbTrackArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-12" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+            <Area>
+                <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-12" type="LeftEdge" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:MiniHorzScrollRightNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:MiniHorzScrollRightHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:MiniHorzScrollRightNormal" />
+        </Child>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:MiniHorzScrollLeftNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:MiniHorzScrollLeftHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:MiniHorzScrollLeftNormal" />
+        </Child>
+        <Child  type="TaharezLook/HorizontalScrollbarThumb" nameSuffix="__auto_thumb__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="0.15" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+        </Child>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="12" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="0.25" type="TopEdge" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1" offset="-12" type="RightEdge" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MiniHorzScrollBarSegment" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
+        <Property name="VertFree" value="True" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MiniVertScrollThumbNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MiniVertScrollThumbHover" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/VerticalScrollbar">
+        <Property name="VerticalScrollbar" value="True" />
+        <NamedArea name="ThumbTrackArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-12" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-12" type="TopEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:MiniVertScrollDownNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:MiniVertScrollDownHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:MiniVertScrollDownNormal" />
+        </Child>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:MiniVertScrollUpNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:MiniVertScrollUpHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:MiniVertScrollUpNormal" />
+        </Child>
+        <Child  type="TaharezLook/VerticalScrollbarThumb" nameSuffix="__auto_thumb__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="0.15" type="Height" /></Dim>
+            </Area>
+        </Child>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="0.25" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="12" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="0.5" type="Width" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-12" type="BottomEdge" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MiniVertScrollBarSegment" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
