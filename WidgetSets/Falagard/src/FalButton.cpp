@@ -45,8 +45,16 @@ namespace CEGUI
         // and Window implement things; Soon I'll get to updating things so that this can be replaced
         // with clean code.
 
-        // call PushButton drawSelf method which will call one of the state drawing methods overridden in this class.
-        PushButton::drawSelf(z);
+        // do we need to update the cache?
+        if (d_needsRedraw)
+        {
+            // remove old cached imagery
+            d_renderCache.clearCachedImagery();
+            // signal that we'll no loger need a redraw.
+            d_needsRedraw = false;
+            // call PushButton drawSelf method which will call one of the state drawing methods overridden in this class.
+            PushButton::drawSelf(z);
+        }
 
         // call Window drawSelf to get it to send the cached imagery to the renderer.
         Window::drawSelf(z);
@@ -114,39 +122,30 @@ namespace CEGUI
         // from the Window::drawSelf method to decide whether to actually do anything.  It is likely
         // this will be replaced with cleaner code in the near future...
 
-        // do we need to update the cache?
-        if (d_needsRedraw)
+        // this conditional is just here to respect old legacy settings
+        if (d_useStandardImagery)
         {
-            // remove old cached imagery
-            d_renderCache.clearCachedImagery();
-            // signal that we'll no loger need a redraw.
-            d_needsRedraw = false;
+            const StateImagery* imagery;
 
-            // this conditional is just here to respect old legacy settings
-            if (d_useStandardImagery)
+            try
             {
-                const StateImagery* imagery;
-
-                try
-                {
-                    // get WidgetLookFeel for the assigned look.
-                    const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-                    // try and get imagery for the state we were given, though default to Normal state if the
-                    // desired state does not exist
-                    imagery = wlf.isStateImageryPresent(state) ? &wlf.getStateImagery(state) : &wlf.getStateImagery("Normal");
-                }
-                // catch exceptions, but do not exit.
-                catch (UnknownObjectException)
-                {
-                    // don't try and draw using missing imagery!
-                    return;
-                }
-
-                // peform the rendering operation.
-                // NB: This is not in the above try block since we want UnknownObjectException exceptions to be emitted from
-                // the rendering code for conditions such as missing Imagesets and/or Images.
-                imagery->render(*this);
+                // get WidgetLookFeel for the assigned look.
+                const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+                // try and get imagery for the state we were given, though default to Normal state if the
+                // desired state does not exist
+                imagery = wlf.isStateImageryPresent(state) ? &wlf.getStateImagery(state) : &wlf.getStateImagery("Normal");
             }
+            // catch exceptions, but do not exit.
+            catch (UnknownObjectException)
+            {
+                // don't try and draw using missing imagery!
+                return;
+            }
+
+            // peform the rendering operation.
+            // NB: This is not in the above try block since we want UnknownObjectException exceptions to be emitted from
+            // the rendering code for conditions such as missing Imagesets and/or Images.
+            imagery->render(*this);
         }
     }
 
