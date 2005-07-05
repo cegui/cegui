@@ -36,6 +36,7 @@
 #include "FalRadioButton.h"
 #include "FalScrollbar.h"
 #include "FalSlider.h"
+#include "FalSpinner.h"
 #include "FalThumb.h"
 #include "FalTitlebar.h"
 
@@ -53,6 +54,7 @@ static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
 static CEGUI::FalagardScrollbarFactory          s_ScrollbarFactory;
 static CEGUI::FalagardSliderFactory             s_SliderFactory;
+static CEGUI::FalagardSpinnerFactory            s_SpinnerFactory;
 static CEGUI::FalagardThumbFactory              s_ThumbFactory;
 static CEGUI::FalagardTitlebarFactory           s_TitlebarFactory;
 
@@ -78,6 +80,7 @@ mapEntry factoriesMap[] =
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
     {FalagardScrollbar::WidgetTypeName, &s_ScrollbarFactory},
     {FalagardSlider::WidgetTypeName, &s_SliderFactory},
+    {FalagardSpinner::WidgetTypeName, &s_SpinnerFactory},
     {FalagardThumb::WidgetTypeName, &s_ThumbFactory},
     {FalagardTitlebar::WidgetTypeName, &s_TitlebarFactory},
     {0,0}

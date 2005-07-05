@@ -1702,4 +1702,43 @@
         <StateImagery name="Disabled" />
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/Spinner">
+        <Child  type="TaharezLook/Editbox" nameSuffix="__auto_editbox__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+        </Child>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:VertScrollUpNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:VertScrollUpHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:VertScrollUpNormal" />
+        </Child>
+        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><UnifiedDim scale="0.5" type="TopEdge" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+            <Property name="UseStandardImagery" value="False" />
+            <Property name="NormalImage" value="set:TaharezLook image:VertScrollDownNormal" />
+            <Property name="HoverImage" value="set:TaharezLook image:VertScrollDownHover" />
+            <Property name="PushedImage" value="set:TaharezLook image:VertScrollDownNormal" />
+        </Child>
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+    </WidgetLook>
+
 </Falagard>

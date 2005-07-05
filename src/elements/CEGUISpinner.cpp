@@ -78,11 +78,11 @@ namespace CEGUI
         Window::initialise();
 
         // create all the component widgets
-        d_increaseButton = createIncreaseButton();
+        d_increaseButton = createIncreaseButton(getName() + "__auto_incbtn__");
         addChildWindow(d_increaseButton);
-        d_decreaseButton = createDecreaseButton();
+        d_decreaseButton = createDecreaseButton(getName() + "__auto_decbtn__");
         addChildWindow(d_decreaseButton);
-        d_editbox = createEditbox();
+        d_editbox = createEditbox(getName() + "__auto_editbox__");
         addChildWindow(d_editbox);
 
         // setup component controls

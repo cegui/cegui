@@ -88,33 +88,12 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    Combobox* list = static_cast<Combobox*>(winMgr.createWindow("TaharezLook/Combobox", "list1"));
-    wid->addChildWindow(list);
+    Window* spinner = winMgr.createWindow("TaharezLook/Spinner", "widget1");
+    wid->addChildWindow(spinner);
 
     // set some basic things for the widget.
-    list->setPosition(Point(0.25f, 0.25f));
-    list->setSize(Size(0.5f, 0.5f));
-
-    ListboxTextItem* item;
-
-    item = new ListboxTextItem("This is a test - 1");
-    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
-    list->addItem(item);
-    item = new ListboxTextItem("This is a test - 2");
-    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
-    list->addItem(item);
-    item = new ListboxTextItem("This is a test - 3");
-    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
-    list->addItem(item);
-    item = new ListboxTextItem("This is a test - 4");
-    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
-    list->addItem(item);
-    item = new ListboxTextItem("This is a test - 5");
-    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
-    list->addItem(item);
-    item = new ListboxTextItem("This is a test - 6");
-    item->setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
-    list->addItem(item);
+    spinner->setPosition(Point(0.25f, 0.25f));
+    spinner->setSize(Size(0.5f, 0.075f));
 
     // success!
     return true;

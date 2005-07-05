@@ -78,9 +78,9 @@ namespace CEGUI
         /*************************************************************************
         	Implementation of Spinner abstract methods
         *************************************************************************/
-        PushButton* createIncreaseButton(void) const;
-        PushButton* createDecreaseButton(void) const;
-        Editbox* createEditbox(void) const;
+        PushButton* createIncreaseButton(const String& name) const;
+        PushButton* createDecreaseButton(const String& name) const;
+        Editbox* createEditbox(const String& name) const;
         void layoutComponentWidgets(void);
 
         /*************************************************************************

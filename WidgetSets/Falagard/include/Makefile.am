@@ -14,5 +14,6 @@ noinst_HEADERS = FalButton.h \
                  FalScrollbarProperties.h \
                  FalSlider.h \
                  FalSliderProperties.h \
+                 FalSpinner.h \
                  FalThumb.h \
                  FalTitlebar.h

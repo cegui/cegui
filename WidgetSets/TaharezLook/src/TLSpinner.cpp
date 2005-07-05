@@ -58,10 +58,10 @@ namespace CEGUI
     {
     }
 
-    PushButton* TLSpinner::createIncreaseButton(void) const
+    PushButton* TLSpinner::createIncreaseButton(const String& name) const
     {
         // create the widget
-        TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+        TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
         // perform some initialisation
         btn->setStandardImageryEnabled(false);
@@ -82,10 +82,10 @@ namespace CEGUI
         return btn;
     }
 
-    PushButton* TLSpinner::createDecreaseButton(void) const
+    PushButton* TLSpinner::createDecreaseButton(const String& name) const
     {
         // create the widget
-        TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+        TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
         // perform some initialisation
         btn->setStandardImageryEnabled(false);
@@ -105,10 +105,10 @@ namespace CEGUI
         return btn;
     }
 
-    Editbox* TLSpinner::createEditbox(void) const
+    Editbox* TLSpinner::createEditbox(const String& name) const
     {
         // create the widget
-        Editbox* ebox = (Editbox*)WindowManager::getSingleton().createWindow(EditboxWidgetType, getName() + "__auto_editbox__");
+        Editbox* ebox = (Editbox*)WindowManager::getSingleton().createWindow(EditboxWidgetType, name);
         return ebox;
     }
 
