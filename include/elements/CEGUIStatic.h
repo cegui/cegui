@@ -347,17 +347,7 @@ protected:
 	/*************************************************************************
 		Overridden from base class
 	*************************************************************************/
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
+	virtual	void populateRenderCache();
 
 
 	/*************************************************************************

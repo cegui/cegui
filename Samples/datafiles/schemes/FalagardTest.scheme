@@ -19,6 +19,8 @@
 	<FalagardMapping WindowType="TaharezLook/Slider" TargetType="Falagard/Slider" LookNFeel="TaharezLook/Slider" />
 	<FalagardMapping WindowType="TaharezLook/SliderThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/SliderThumb" />
 	<FalagardMapping WindowType="TaharezLook/Spinner" TargetType="Falagard/Spinner" LookNFeel="TaharezLook/Spinner" />
+	<FalagardMapping WindowType="TaharezLook/StaticImage" TargetType="Falagard/StaticImage" LookNFeel="TaharezLook/StaticImage" />
+	<FalagardMapping WindowType="TaharezLook/StaticText" TargetType="Falagard/StaticText" LookNFeel="TaharezLook/StaticText" />
 	<FalagardMapping WindowType="TaharezLook/Titlebar" TargetType="Falagard/Titlebar" LookNFeel="TaharezLook/Titlebar" />
 	<FalagardMapping WindowType="TaharezLook/VerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/VerticalScrollbar" />
 	<FalagardMapping WindowType="TaharezLook/VerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/VerticalScrollbarThumb" />

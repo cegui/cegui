@@ -1741,4 +1741,188 @@
         <StateImagery name="Disabled" />
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/StaticShared">
+        <ImagerySection name="frame">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="6" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticTopLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-6" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="6" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticTopRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-6" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="6" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-6" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-6" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="6" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-6" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="6" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticTop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-6" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="6" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticBottom" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="background">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="6" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticBackdrop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/StaticImage">
+        <Property name="BackgroundEnabled" value="True" />
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+        <StateImagery name="EnabledFrame">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="frame" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledFrame">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="frame" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledBackground">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="background" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledBackground">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="background" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/StaticText">
+        <Property name="BackgroundEnabled" value="True" />
+        <NamedArea name="TextRenderArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-7" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-7" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+        </Child>
+        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+        </Child>
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+        <StateImagery name="EnabledFrame">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="frame" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledFrame">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="frame" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledBackground">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="background" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledBackground">
+            <Layer>
+                <Section look="TaharezLook/StaticShared" section="background" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>

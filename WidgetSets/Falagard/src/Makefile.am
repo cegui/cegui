@@ -19,5 +19,7 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalSlider.cpp \
                                   FalSliderProperties.cpp \
                                   FalSpinner.cpp \
+                                  FalStaticImage.cpp \
+                                  FalStaticText.cpp \
                                   FalThumb.cpp \
                                   FalTitlebar.cpp

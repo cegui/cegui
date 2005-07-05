@@ -122,16 +122,18 @@ void StaticText::setHorizontalFormatting(HorzFormatting h_fmt)
 /*************************************************************************
 	Perform the actual rendering for this Window.
 *************************************************************************/
-void StaticText::drawSelf(float z)
+void StaticText::populateRenderCache()
 {
 	// get whatever base class needs to render.
-	Static::drawSelf(z);
-
-	// render text.
-	Rect absarea(getTextRenderArea());
-	Rect clipper(absarea.getIntersection(getPixelRect()));
+	Static::populateRenderCache();
 
 	const Font* font = getFont();
+    // can't render text without a font :)
+    if (font == 0)
+        return;
+
+	// get destination area for the text.
+	Rect absarea(getTextRenderArea());
 
 	float textHeight = font->getFormattedLineCount(d_text, absarea, (TextFormatting)d_horzFormatting) * font->getLineSpacing();
 
@@ -188,15 +190,11 @@ void StaticText::drawSelf(float z)
 		break;
 	}
 
-	float alpha = getEffectiveAlpha();
-	ColourRect final_cols(
-		calculateModulatedAlphaColour(d_textCols.d_top_left, alpha),
-		calculateModulatedAlphaColour(d_textCols.d_top_right, alpha),
-		calculateModulatedAlphaColour(d_textCols.d_bottom_left, alpha),
-		calculateModulatedAlphaColour(d_textCols.d_bottom_right, alpha)
-		);
-
-	getFont()->drawText(getText(), absarea, System::getSingleton().getRenderer()->getZLayer(1), clipper, (TextFormatting)d_horzFormatting, final_cols);
+    // calculate final colours
+    ColourRect final_cols(d_textCols);
+    final_cols.modulateAlpha(getEffectiveAlpha());
+    // cache the text for rendering.
+    d_renderCache.cacheText(d_text, font, (TextFormatting)d_horzFormatting, absarea, 0, final_cols);
 }
 
 
@@ -221,8 +219,8 @@ void StaticText::initialise(void)
 	Static::initialise();
 
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar();
-	d_horzScrollbar = createHorzScrollbar();
+	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
+	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
 
 	d_vertScrollbar->hide();
 	d_horzScrollbar->hide();
@@ -244,7 +242,7 @@ void StaticText::initialise(void)
 *************************************************************************/
 Rect StaticText::getTextRenderArea(void) const
 {
-	Rect area(getUnclippedInnerRect());
+	Rect area(getAbsoluteRect());
 
 	if (d_horzScrollbar->isVisible())
 	{
@@ -322,7 +320,25 @@ void StaticText::layoutComponentWidgets()
 *************************************************************************/
 void StaticText::configureScrollbars(void)
 {
+    Scrollbar* vertScrollbar;
+    Scrollbar* horzScrollbar;
+
+    try
+    {
+        vertScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_vscrollbar__"));
+        horzScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_hscrollbar__"));
+    }
+    catch (UnknownObjectException)
+    {
+        // no scrollbars?  Can't configure then!
+        return;
+    }
+
 	const Font* font = getFont();
+
+    // must have a font to measure text!
+	if (font == 0)
+	   return;
 
 	Rect initialArea(getTextRenderArea());
 
@@ -335,16 +351,16 @@ void StaticText::configureScrollbars(void)
 	// show or hide vertical scroll bar as required (or as specified by option)
 	if ((totalHeight > getTextRenderArea().getHeight()) && d_enableVertScrollbar)
 	{
-		d_vertScrollbar->show();
+		vertScrollbar->show();
 
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((widestItem > getTextRenderArea().getWidth()) && d_enableHorzScrollbar)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 		}
 		else
 		{
-			d_horzScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -353,23 +369,23 @@ void StaticText::configureScrollbars(void)
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((widestItem > getTextRenderArea().getWidth()) && d_enableHorzScrollbar)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 
 			// show or hide vertical scroll bar as required (or as specified by option)
 			if ((totalHeight > getTextRenderArea().getHeight()) && d_enableVertScrollbar)
 			{
-				d_vertScrollbar->show();
+				vertScrollbar->show();
 			}
 			else
 			{
-				d_vertScrollbar->hide();
+				vertScrollbar->hide();
 			}
 
 		}
 		else
 		{
-			d_vertScrollbar->hide();
-			d_horzScrollbar->hide();
+			vertScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -379,15 +395,15 @@ void StaticText::configureScrollbars(void)
 	//
 	Rect renderArea(getTextRenderArea());
 
-	d_vertScrollbar->setDocumentSize(totalHeight);
-	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
-	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
+	vertScrollbar->setDocumentSize(totalHeight);
+	vertScrollbar->setPageSize(renderArea.getHeight());
+	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
 
-	d_horzScrollbar->setDocumentSize(widestItem);
-	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
-	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
+	horzScrollbar->setDocumentSize(widestItem);
+	horzScrollbar->setPageSize(renderArea.getWidth());
+	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
 }
 
 

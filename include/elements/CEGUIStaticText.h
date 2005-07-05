@@ -289,17 +289,7 @@ protected:
 	/*************************************************************************
 		Overridden from base class
 	*************************************************************************/
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
+	virtual void populateRenderCache();
 
 
 	/*************************************************************************
@@ -366,20 +356,26 @@ protected:
 	\brief
 		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
 
+	\param name
+	   String containing the name to be given to the created component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const		= 0;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const		= 0;
  
 
 	/*!
 	\brief
 		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
 
+	\param name
+	   String containing the name to be given to the created component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const		= 0;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const		= 0;
 
 
 	/*************************************************************************

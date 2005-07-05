@@ -88,12 +88,13 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    Window* spinner = winMgr.createWindow("TaharezLook/Spinner", "widget1");
-    wid->addChildWindow(spinner);
+    Window* w = winMgr.createWindow("TaharezLook/StaticText", "widget1");
+    wid->addChildWindow(w);
 
     // set some basic things for the widget.
-    spinner->setPosition(Point(0.25f, 0.25f));
-    spinner->setSize(Size(0.5f, 0.075f));
+    w->setPosition(Point(0.25f, 0.25f));
+    w->setSize(Size(0.5f, 0.5f));
+    w->setText("Blah!");
 
     // success!
     return true;

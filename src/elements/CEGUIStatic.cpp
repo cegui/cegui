@@ -285,44 +285,30 @@ colour Static::calculateModulatedAlphaColour(const colour& col, float alpha) con
 /*************************************************************************
 	Perform the actual rendering for this Window.	
 *************************************************************************/
-void Static::drawSelf(float z)
+void Static::populateRenderCache()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
-	Rect absrect(getUnclippedPixelRect());
+	Rect backgroundRect(getAbsoluteRect());
 
 	// draw frame
 	if (d_frameEnabled)
 	{
-		d_frame.draw(Vector3(absrect.d_left, absrect.d_top, z), clipper);
+        d_frame.draw(d_renderCache);
 
-		// adjust absrect and clipper so that later stages of render to not overwite frame
-		absrect.d_left		+= d_left_width;
-		absrect.d_right		-= d_right_width;
-		absrect.d_top		+= d_top_height;
-		absrect.d_bottom	-= d_bottom_height;
-
-		clipper = clipper.getIntersection(absrect);
+        // adjust destination area for backfrop image.
+        backgroundRect.d_left		+= d_left_width;
+        backgroundRect.d_right		-= d_right_width;
+        backgroundRect.d_top		+= d_top_height;
+        backgroundRect.d_bottom	-= d_bottom_height;
 	}
 
 	// draw backdrop
 	if (d_backgroundEnabled && (d_background != NULL))
 	{
-		// factor window alpha into colours to use when rendering background
-		float alpha = getEffectiveAlpha();
-		ColourRect colours;
-		colours.d_top_left		= calculateModulatedAlphaColour(d_backgroundCols.d_top_left, alpha);
-		colours.d_top_right		= calculateModulatedAlphaColour(d_backgroundCols.d_top_right, alpha);
-		colours.d_bottom_left	= calculateModulatedAlphaColour(d_backgroundCols.d_bottom_left, alpha);
-		colours.d_bottom_right	= calculateModulatedAlphaColour(d_backgroundCols.d_bottom_right, alpha);
-
-		d_background->draw(absrect, z, clipper, colours);
+        // factor window alpha into colours to use when rendering background
+        ColourRect colours(d_backgroundCols);
+        colours.modulateAlpha(getEffectiveAlpha());
+        // cache image for drawing
+        d_renderCache.cacheImage(*d_background, backgroundRect, 0, colours);
 	}
 
 }

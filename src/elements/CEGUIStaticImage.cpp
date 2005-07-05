@@ -165,16 +165,16 @@ void StaticImage::updateRenderableImageColours(void)
 /*************************************************************************
 	Perform the actual rendering for this Window.
 *************************************************************************/
-void StaticImage::drawSelf(float z)
+void StaticImage::populateRenderCache()
 {
 	// get whatever base class needs to render.
-	Static::drawSelf(z);
+	Static::populateRenderCache();
 
 	//
 	// Render image.
+	// TODO: Probably needs custom clipping to be added to RenderableImage.
 	//
-	Rect area(getUnclippedInnerRect());
-	d_image.draw(Vector3(area.d_left, area.d_top, z), getPixelRect().getIntersection(area));
+	d_image.draw(d_renderCache);
 }
 
 
