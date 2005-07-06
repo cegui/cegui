@@ -88,13 +88,18 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    Window* w = winMgr.createWindow("TaharezLook/ListHeaderSegment", "widget1");
+    ListHeader* w = static_cast<ListHeader*>(winMgr.createWindow("TaharezLook/ListHeader", "widget1"));
     wid->addChildWindow(w);
 
     // set some basic things for the widget.
     w->setPosition(Point(0.25f, 0.25f));
-    w->setSize(Size(0.25f, 0.15f));
-    w->setText("Blah!");
+    w->setSize(Size(0.5f, 0.15f));
+
+    // add segs
+    w->addColumn("Col.1", 1, 0.33f);
+    w->addColumn("Col.2", 2, 0.33f);
+    w->addColumn("Col.3", 3, 0.33f);
+    w->addColumn("Col.4", 4, 0.33f);
 
     // success!
     return true;

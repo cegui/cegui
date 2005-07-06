@@ -1928,7 +1928,6 @@
     <WidgetLook name="TaharezLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
         <Property name="MovingCursorImage" value="set:TaharezLook image:MouseMoveCursor" />
-        <Property name="SortDirection" value="Ascending" />
         <ImagerySection name="segment_normal">
             <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
             <ImageryComponent>
@@ -2078,6 +2077,12 @@
                 </Section>
             </Layer>
         </StateImagery>
+        <StateImagery name="Disabled" />
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/ListHeader">
+        <Property name="SegmentWidgetType" value="TaharezLook/ListHeaderSegment" />
+        <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
 
