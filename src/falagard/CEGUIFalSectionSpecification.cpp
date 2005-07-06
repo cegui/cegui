@@ -46,7 +46,7 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void SectionSpecification::render(Window& srcWindow, float base_z, const Rect* clipper) const
+    void SectionSpecification::render(Window& srcWindow, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
         try
         {
@@ -55,19 +55,22 @@ namespace CEGUI
 				&WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
 
             // decide what colours are to be used
-            ColourRect modColours;
-            initColourRectForOverride(srcWindow, modColours);
-            modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+            ColourRect finalColours;
+            initColourRectForOverride(srcWindow, finalColours);
+            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+
+            if (modcols)
+                finalColours *= *modcols;
 
             // render the imagery section
-            sect->render(srcWindow, base_z, &modColours, clipper);
+            sect->render(srcWindow, base_z, &finalColours, clipper, clipToDisplay);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception)
         {}
     }
 
-    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const Rect* clipper) const
+    void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
         try
         {
@@ -76,12 +79,15 @@ namespace CEGUI
                 &WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
 
             // decide what colours are to be used
-            ColourRect modColours;
-            initColourRectForOverride(srcWindow, modColours);
-            modColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+            ColourRect finalColours;
+            initColourRectForOverride(srcWindow, finalColours);
+            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+
+            if (modcols)
+                finalColours *= *modcols;
 
             // render the imagery section
-            sect->render(srcWindow, baseRect, base_z, &modColours, clipper);
+            sect->render(srcWindow, baseRect, base_z, &finalColours, clipper, clipToDisplay);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
         catch (Exception)

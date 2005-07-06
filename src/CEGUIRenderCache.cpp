@@ -22,6 +22,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUIRenderCache.h"
+#include "CEGUISystem.h"
+#include "CEGUIRenderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -39,6 +41,7 @@ namespace CEGUI
 
     void RenderCache::render(const Point& basePos, float baseZ, const Rect& clipper) const
     {
+        Rect displayArea(System::getSingleton().getRenderer()->getRect());
         Rect custClipper;
         const Rect* finalClipper;
         Rect finalRect;
@@ -50,12 +53,12 @@ namespace CEGUI
             {
                 custClipper = (*image).customClipper;
                 custClipper.offset(basePos);
-                custClipper = clipper.getIntersection(custClipper);
+                custClipper = (*image).clipToDisplay ? displayArea.getIntersection(custClipper) : clipper.getIntersection(custClipper);
                 finalClipper = &custClipper;
             }
             else
             {
-                finalClipper = &clipper;
+                finalClipper = (*image).clipToDisplay ? &displayArea : &clipper;
             }
 
             finalRect = (*image).target_area;
@@ -70,12 +73,12 @@ namespace CEGUI
             {
                 custClipper = (*text).customClipper;
                 custClipper.offset(basePos);
-                custClipper = clipper.getIntersection(custClipper);
+                custClipper = (*text).clipToDisplay ? displayArea.getIntersection(custClipper) : clipper.getIntersection(custClipper);
                 finalClipper = &custClipper;
             }
             else
             {
-                finalClipper = &clipper;
+                finalClipper = (*text).clipToDisplay ? &displayArea : &clipper;
             }
 
             finalRect = (*text).target_area;
@@ -91,13 +94,14 @@ namespace CEGUI
         d_cachedTexts.clear();
     }
 
-    void RenderCache::cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper)
+    void RenderCache::cacheImage(const Image& image, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper, bool clipToDisplay)
     {
         ImageInfo imginf;
         imginf.source_image = &image;
         imginf.target_area  = destArea;
         imginf.z_offset     = zOffset;
         imginf.colours      = cols;
+        imginf.clipToDisplay = clipToDisplay;
 
         if (clipper)
         {
@@ -112,7 +116,7 @@ namespace CEGUI
         d_cachedImages.push_back(imginf);
     }
 
-    void RenderCache::cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper)
+    void RenderCache::cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper, bool clipToDisplay)
     {
         TextInfo txtinf;
         txtinf.text         = text;
@@ -121,6 +125,7 @@ namespace CEGUI
         txtinf.target_area  = destArea;
         txtinf.z_offset     = zOffset;
         txtinf.colours      = cols;
+        txtinf.clipToDisplay = clipToDisplay;
 
         if (clipper)
         {

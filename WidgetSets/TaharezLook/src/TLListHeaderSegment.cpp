@@ -67,7 +67,7 @@ TLListHeaderSegment::TLListHeaderSegment(const String& type, const String& name)
 	d_sortAscendImage		= &iset->getImage(SortUpImageName);
 	d_sortDescendImage		= &iset->getImage(SortDownImageName);
 
-	d_normalMouseCursor		= &iset->getImage(NormalMouseCursor);
+	d_mouseCursor			= &iset->getImage(NormalMouseCursor);
 	d_sizingMouseCursor		= &iset->getImage(SizingMouseCursor);
 	d_movingMouseCursor		= &iset->getImage(MovingMouseCursor);
 }

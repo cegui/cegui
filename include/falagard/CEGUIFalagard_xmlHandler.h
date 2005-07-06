@@ -124,6 +124,7 @@ namespace CEGUI
         static const String StringAttribute;            //!< Attribute name that stores a string of text.
         static const String FontAttribute;              //!< Attribute name that stores the name of a font.
         static const String InitialValueAttribute;      //!< Attribute name that stores the initial default value for a property definition.
+        static const String ClippedAttribute;           //!< Attribute name that stores whether some component will be clipped.
 
         /*************************************************************************
             helper methods

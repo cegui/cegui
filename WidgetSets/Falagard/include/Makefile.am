@@ -5,6 +5,8 @@ noinst_HEADERS = FalButton.h \
                  FalCombobox.h \
                  FalEditbox.h \
                  FalFrameWindow.h \
+                 FalListHeaderSegment.h \
+                 FalListHeaderSegmentProperties.h \
                  FalListbox.h \
                  FalModule.h \
                  FalProgressBar.h \

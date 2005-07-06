@@ -66,7 +66,6 @@ const float	ListHeaderSegment::SegmentMoveThreshold	= 12.0f;
 *************************************************************************/
 ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	Window(type, name),
-	d_normalMouseCursor(NULL),
 	d_sizingMouseCursor(NULL),
 	d_movingMouseCursor(NULL),
 	d_splitterSize(DefaultSizingArea),
@@ -397,7 +396,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-		MouseCursor::getSingleton().setImage(d_normalMouseCursor);
+		MouseCursor::getSingleton().setImage(getMouseCursor());
 		requestRedraw();
 	}
 
@@ -495,7 +494,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-			MouseCursor::getSingleton().setImage(d_normalMouseCursor);
+			MouseCursor::getSingleton().setImage(getMouseCursor());
 			requestRedraw();
 		}
 
@@ -577,7 +576,7 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-			MouseCursor::getSingleton().setImage(d_normalMouseCursor);
+			MouseCursor::getSingleton().setImage(getMouseCursor());
 			
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);

@@ -63,7 +63,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect* clipper = 0) const;
+        void render(Window& srcWindow, const ColourRect* modcols = 0, const Rect* clipper = 0) const;
 
         /*!
         \brief
@@ -78,7 +78,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, const Rect* clipper = 0) const;
+        void render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols = 0, const Rect* clipper = 0) const;
 
         /*!
         \brief
@@ -110,11 +110,39 @@ namespace CEGUI
         */
         const String& getName() const;
 
+        /*!
+        \brief
+            Return whether this state imagery should be clipped to the display rather than the target window.
+
+            Clipping to the display effectively implies that the imagery should be rendered unclipped.
+
+        /return
+            - true if the imagery will be clipped to the display area.
+            - false if the imagery will be clipped to the target window area.
+        */
+        bool isClippedToDisplay() const;
+
+        /*!
+        \brief
+            Set whether this state imagery should be clipped to the display rather than the target window.
+
+            Clipping to the display effectively implies that the imagery should be rendered unclipped.
+
+        \param setting
+            - true if the imagery should be clipped to the display area.
+            - false if the imagery should be clipped to the target window area.
+
+        \return
+            Nothing.
+        */
+        void setClippedToDisplay(bool setting);
+
     private:
         typedef std::multiset<LayerSpecification> LayersList;
 
         CEGUI::String   d_stateName;    //!< Name of this state.
         LayersList      d_layers;       //!< Collection of LayerSpecification objects to be drawn for this state.
+        bool            d_clipToDisplay; //!< true if Imagery for this state should be clipped to the display instead of winodw (effectively, not clipped).
     };
 
 } // End of  CEGUI namespace section

@@ -84,6 +84,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::StringAttribute("string");
     const String Falagard_xmlHandler::FontAttribute("font");
     const String Falagard_xmlHandler::InitialValueAttribute("initialValue");
+    const String Falagard_xmlHandler::ClippedAttribute("clipped");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -140,6 +141,7 @@ namespace CEGUI
         {
             assert(d_stateimagery == 0);
             d_stateimagery = new StateImagery(attributes.getValueAsString(NameAttribute));
+            d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute));
 
             Logger::getSingleton().logEvent("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.", Informative);
         }

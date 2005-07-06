@@ -94,7 +94,7 @@ namespace CEGUI
         }
 
         // peform the rendering operation.
-        imagery->render(*this, progressRect, &progressClipper);
+        imagery->render(*this, progressRect, 0, &progressClipper);
     }
 
     bool FalagardProgressBar::isVertical() const

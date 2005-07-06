@@ -36,18 +36,18 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void TextComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
+    void TextComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // calculate area to render to
         Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper);
+        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
     }
 
-    void TextComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
+    void TextComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // calculate area to render to
         Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper);
+        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
     }
 
     const ComponentArea& TextComponent::getComponentArea() const
@@ -147,7 +147,7 @@ namespace CEGUI
         }
     }
 
-    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
+    void TextComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // get font to use
         const Font* font;
@@ -192,6 +192,7 @@ namespace CEGUI
         }
 
         // add text to the rendering cache for the target window.
-        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)d_horzFormatting, destRect, base_z, finalColours, clipper);
+        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)d_horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
     }
+
 } // End of  CEGUI namespace section

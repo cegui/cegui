@@ -29,32 +29,33 @@
 namespace CEGUI
 {
     StateImagery::StateImagery(const String& name) :
-        d_stateName(name)
+        d_stateName(name),
+        d_clipToDisplay(false)
     {}
 
-    void StateImagery::render(Window& srcWindow, const Rect* clipper) const
+    void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rect* clipper) const
     {
-        float base_z = 0;
+        float base_z;
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
         {
-            (*curr).render(srcWindow, base_z, clipper);
-			// TODO: Magic number removal
-			base_z -= 0.0000001f;
+            // TODO: Magic number removal
+            base_z = -0.0000001f * static_cast<float>((*curr).getLayerPriority());
+            (*curr).render(srcWindow, base_z, modcols, clipper, d_clipToDisplay);
         }
     }
 
-    void StateImagery::render(Window& srcWindow, const Rect& baseRect, const Rect* clipper) const
+    void StateImagery::render(Window& srcWindow, const Rect& baseRect, const ColourRect* modcols, const Rect* clipper) const
     {
-        float base_z = 0;
+        float base_z;
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
         {
-            (*curr).render(srcWindow, baseRect, base_z, clipper);
             // TODO: Magic number removal
-            base_z -= 0.0000001f;
+            base_z = -0.0000001f * static_cast<float>((*curr).getLayerPriority());
+            (*curr).render(srcWindow, baseRect, base_z, modcols, clipper, d_clipToDisplay);
         }
     }
 
@@ -73,5 +74,13 @@ namespace CEGUI
         return d_stateName;
     }
 
+    bool StateImagery::isClippedToDisplay() const
+    {
+        return d_clipToDisplay;
+    }
 
+    void StateImagery::setClippedToDisplay(bool setting)
+    {
+        d_clipToDisplay = setting;
+    }
 } // End of  CEGUI namespace section

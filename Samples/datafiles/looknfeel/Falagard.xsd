@@ -33,6 +33,7 @@
 			<xsd:element name="Layer" type="layerType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="clipped" type="xsd:boolean" use="optional" default="true" />
 	</xsd:complexType>
 	<xsd:complexType name="layerType">
 		<xsd:sequence>

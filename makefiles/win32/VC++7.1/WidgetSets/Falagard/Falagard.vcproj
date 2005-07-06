@@ -148,6 +148,12 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalFrameWindow.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListHeaderSegment.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListHeaderSegmentProperties.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListbox.cpp">
 			</File>
 			<File
@@ -211,6 +217,12 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalFrameWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListHeaderSegment.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListHeaderSegmentProperties.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListbox.h">

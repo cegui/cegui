@@ -41,35 +41,16 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    ImageryComponent::ImageryComponent(const ComponentArea& area, const String& imageset, const String& image, const ColourRect& cols, VerticalFormatting vFmt, HorizontalFormatting hFmt) :
-        d_area(area),
-        d_colours(cols),
-        d_vertFormatting(vFmt),
-        d_horzFormatting(hFmt),
-        d_colourProperyIsRect(false)
-    {
-        setImage(imageset, image);
-    }
-
-    ImageryComponent::ImageryComponent(const ComponentArea& area, const Image* image, const ColourRect& cols, VerticalFormatting vFmt, HorizontalFormatting hFmt) :
-        d_area(area),
-        d_image(image),
-        d_colours(cols),
-        d_vertFormatting(vFmt),
-        d_horzFormatting(hFmt),
-        d_colourProperyIsRect(false)
-    {}
-
-    void ImageryComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
+    void ImageryComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper);
+        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
     }
 
-    void ImageryComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
+    void ImageryComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper);
+        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
     }
 
     const ComponentArea& ImageryComponent::getComponentArea() const
@@ -171,7 +152,7 @@ namespace CEGUI
         }
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const
+    void ImageryComponent::render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // do not draw anything if image is not set.
         if (!d_image)
@@ -284,7 +265,7 @@ namespace CEGUI
                 }
 
                 // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours, clippingRect);
+                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours, clippingRect, clipToDisplay);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;

@@ -1925,4 +1925,160 @@
         </StateImagery>
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/ListHeaderSegment">
+        <Property name="SizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
+        <Property name="MovingCursorImage" value="set:TaharezLook image:MouseMoveCursor" />
+        <Property name="SortDirection" value="Ascending" />
+        <ImagerySection name="segment_normal">
+            <Colours topLeft="FFDDDDDD" topRight="FFDDDDDD" bottomLeft="FFDDDDDD" bottomRight="FFDDDDDD" />
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-3" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="HeaderBarBackdropNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="segment_hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-3" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="HeaderBarBackdropHover" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="splitter_normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-3" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="HeaderBarSplitterNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="splitter_hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-3" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="HeaderBarSplitterHover" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="ascend_icon">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="HeaderBarSortUp" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="descend_icon">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="8" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="8" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="HeaderBarSortDown" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="WordWrapCentreAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="segment_normal" />
+                <Section section="splitter_normal" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="segment_hover" />
+                <Section section="splitter_normal" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SplitterHover">
+            <Layer>
+                <Section section="segment_normal" />
+                <Section section="splitter_hover" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DragGhost" clipped="false" >
+            <Layer priority="1" >
+                <Section section="segment_normal">
+                    <Colours topLeft="90FFFFFF" topRight="90FFFFFF" bottomLeft="90FFFFFF" bottomRight="90FFFFFF" />
+                </Section>
+                <Section section="splitter_normal">
+                    <Colours topLeft="90FFFFFF" topRight="90FFFFFF" bottomLeft="90FFFFFF" bottomRight="90FFFFFF" />
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="90FFFFFF" topRight="90FFFFFF" bottomLeft="90FFFFFF" bottomRight="90FFFFFF" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="AscendingSortIcon">
+            <Layer>
+                <Section section="ascend_icon" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DescendingSortIcon">
+            <Layer>
+                <Section section="descend_icon" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="GhostAscendingSortIcon" clipped="false">
+            <Layer priority="1" >
+                <Section section="ascend_icon">
+                    <Colours topLeft="90FFFFFF" topRight="90FFFFFF" bottomLeft="90FFFFFF" bottomRight="90FFFFFF" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="GhostDescendingSortIcon" clipped="false">
+            <Layer priority="1" >
+                <Section section="descend_icon">
+                    <Colours topLeft="90FFFFFF" topRight="90FFFFFF" bottomLeft="90FFFFFF" bottomRight="90FFFFFF" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled" />
+    </WidgetLook>
+
 </Falagard>

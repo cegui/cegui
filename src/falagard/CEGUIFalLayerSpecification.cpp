@@ -30,21 +30,21 @@ namespace CEGUI
         d_layerPriority(priority)
     {}
 
-    void LayerSpecification::render(Window& srcWindow, float base_z, const Rect* clipper) const
+    void LayerSpecification::render(Window& srcWindow, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
         // render all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
         {
-            (*curr).render(srcWindow, base_z, clipper);
+            (*curr).render(srcWindow, base_z, modcols, clipper, clipToDisplay);
         }
     }
 
-    void LayerSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const Rect* clipper) const
+    void LayerSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
         // render all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
         {
-            (*curr).render(srcWindow, baseRect, base_z, clipper);
+            (*curr).render(srcWindow, baseRect, base_z, modcols, clipper, clipToDisplay);
         }
     }
 

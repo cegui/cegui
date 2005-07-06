@@ -31,6 +31,7 @@
 #include "FalCombobox.h"
 #include "FalEditbox.h"
 #include "FalFrameWindow.h"
+#include "FalListHeaderSegment.h"
 #include "FalListbox.h"
 #include "FalProgressBar.h"
 #include "FalRadioButton.h"
@@ -51,6 +52,7 @@ static CEGUI::FalagardComboDropListFactory      s_ComboDropListFactory;
 static CEGUI::FalagardComboboxFactory           s_ComboboxFactory;
 static CEGUI::FalagardEditboxFactory            s_EditboxFactory;
 static CEGUI::FalagardFrameWindowFactory        s_FrameWindowFactory;
+static CEGUI::FalagardListHeaderSegmentFactory  s_ListHeaderSegmentFactory;
 static CEGUI::FalagardListboxFactory            s_ListboxFactory;
 static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
@@ -79,6 +81,7 @@ mapEntry factoriesMap[] =
     {FalagardCombobox::WidgetTypeName, &s_ComboboxFactory},
     {FalagardEditbox::WidgetTypeName, &s_EditboxFactory},
     {FalagardFrameWindow::WidgetTypeName, &s_FrameWindowFactory},
+    {FalagardListHeaderSegment::WidgetTypeName, &s_ListHeaderSegmentFactory},
     {FalagardListbox::WidgetTypeName, &s_ListboxFactory},
     {FalagardProgressBar::WidgetTypeName, &s_ProgressBarFactory},
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},

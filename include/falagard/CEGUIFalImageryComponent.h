@@ -43,50 +43,6 @@ namespace CEGUI
         */
         ImageryComponent();
 
-        /*!
-        \brief
-            Constructor
-
-        \param area
-            ComponentArea object describing the target rendering area for the imagery component (relative to some unknown window).
-
-        \param imageset
-            String holding the name of the Imagset that contains the Image to be rendered.
-
-        \param image
-            String holding the name of the Image to be rendered.
-
-        \param cols
-            ColourRect describing the colours to be applied to the image when rendering it.
-
-        \param vFmt
-            One of the VerticalFormatting enumerated values indicating how the image is to be formatted vertically within the perscribed area.
-
-        \param hFmt
-            One of the HorizontalFormatting enumerated values indicating how the image is to be formatted horizontally within the perscribed area.
-        */
-        ImageryComponent(const ComponentArea& area, const String& imageset, const String& image, const ColourRect& cols, VerticalFormatting vFmt = VF_TOP_ALIGNED, HorizontalFormatting hFmt = HF_LEFT_ALIGNED);
-
-        /*!
-        \brief
-            Constructor
-
-        \param area
-            ComponentArea object describing the target rendering area for the imagery component (relative to some unknown window).
-
-        \param image
-            Pointer to the Image object that is to be rendered.
-
-        \param cols
-            ColourRect describing the colours to be applied to the image when rendering it.
-
-        \param vFmt
-            One of the VerticalFormatting enumerated values indicating how the image is to be formatted vertically within the perscribed area.
-
-        \param hFmt
-            One of the HorizontalFormatting enumerated values indicating how the image is to be formatted horizontally within the perscribed area.
-        */
-        ImageryComponent(const ComponentArea& area, const Image* image, const ColourRect& cols, VerticalFormatting vFmt = VF_TOP_ALIGNED, HorizontalFormatting hFmt = HF_LEFT_ALIGNED);
 
         /*!
         \brief
@@ -106,7 +62,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0) const;
+        void render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -129,7 +85,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0) const;
+        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
 
         /*!
         \brief
@@ -289,7 +245,7 @@ namespace CEGUI
         \brief
             Method to do main render caching work.
         */
-        void render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper) const;
+        void render_impl(Window& srcWindow, const Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
 
     public:
         ComponentArea        d_area;            //!< Destination area for this image component.

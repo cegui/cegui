@@ -25,6 +25,8 @@
 *************************************************************************/
 #include "elements/CEGUIStaticText.h"
 #include "CEGUIFont.h"
+#include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
 #include "elements/CEGUIScrollbar.h"
 
 // Start of CEGUI namespace section

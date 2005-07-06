@@ -170,7 +170,7 @@ namespace CEGUI
             hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
 
             // render the selection imagery.
-            wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*this, hlarea, &textArea);
+            wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*this, hlarea, 0, &textArea);
         }
 
         //

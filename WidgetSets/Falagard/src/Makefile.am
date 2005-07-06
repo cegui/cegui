@@ -9,6 +9,8 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalCombobox.cpp \
                                   FalEditbox.cpp \
                                   FalFrameWindow.cpp \
+                                  FalListHeaderSegment.cpp \
+                                  FalListHeaderSegmentProperties.cpp \
                                   FalListbox.cpp \
                                   FalModule.cpp \
                                   FalProgressBar.cpp \
