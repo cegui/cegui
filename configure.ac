@@ -8,6 +8,8 @@ AC_PROG_CXX
 AC_PROG_CC
 
 AM_PROG_LIBTOOL
+# Disable building static library
+AC_DISABLE_STATIC
 
 # Checks for libraries.
 AC_CHECK_LIB([dl], [main])
