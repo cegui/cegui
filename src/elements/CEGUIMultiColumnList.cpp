@@ -612,9 +612,9 @@ MultiColumnList::SelectionMode MultiColumnList::getSelectionMode(void) const
 void MultiColumnList::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar();
-	d_horzScrollbar = createHorzScrollbar();
-	d_header		= createListHeader();
+	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
+	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
+	d_header		= createListHeader(getName() + "__auto_listheader__");
 
 	// add components
 	addChildWindow(d_vertScrollbar);
@@ -629,6 +629,8 @@ void MultiColumnList::initialise(void)
 	d_header->subscribeEvent(ListHeader::EventSortDirectionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleSortDirectionChange, this));
 	d_header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this));
 	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHorzScrollbar, this));
+    d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleVertScrollbar, this));
+
 
 	// final initialisation now widget is complete
 	setSortDirection(ListHeaderSegment::None);
@@ -1718,75 +1720,76 @@ void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
 /*************************************************************************
 	renders the widget
 *************************************************************************/
-void MultiColumnList::drawSelf(float z)
+void MultiColumnList::populateRenderCache()
 {
-	// get the derived class to render general stuff before we handle the items
-	renderListboxBaseImagery(z);
+    // get the derived class to render general stuff before we handle the items
+    cacheListboxBaseImagery();
 
-	//
-	// Render list items
-	//
-	Vector3	itemPos;
-	Size	itemSize;
-	Rect	itemClipper;
+    //
+    // Render list items
+    //
+    Vector3	itemPos;
+    Size	itemSize;
+    Rect	itemClipper, itemRect;;
 
-	// calculate on-screen position of area we have to render into
-	Rect absarea(getListRenderArea());
-	absarea.offset(getUnclippedPixelRect().getPosition());
+    // calculate position of area we have to render into
+    Rect itemsArea(getListRenderArea());
+    
+    //absarea.offset(getUnclippedPixelRect().getPosition());
 
-	// calculate clipper for list rendering area
-	Rect clipper(absarea.getIntersection(getPixelRect()));
+// 	// calculate clipper for list rendering area
+// 	Rect clipper(absarea.getIntersection(getPixelRect()));
 
-	// set up initial positional details for items
-	itemPos.d_y = PixelAligned(absarea.d_top - d_vertScrollbar->getScrollPosition());
-	itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3);
+    // set up initial positional details for items
+    itemPos.d_y = itemsArea.d_top - d_vertScrollbar->getScrollPosition();
+    itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
 
-	float alpha = getEffectiveAlpha();
+    float alpha = getEffectiveAlpha();
 
-	// loop through the items
-	for (uint i = 0; i < getRowCount(); ++i)
-	{
-		// set initial x position for this row.
-		itemPos.d_x = PixelAligned(absarea.d_left - d_horzScrollbar->getScrollPosition());
+    // loop through the items
+    for (uint i = 0; i < getRowCount(); ++i)
+    {
+        // set initial x position for this row.
+        itemPos.d_x = itemsArea.d_left - d_horzScrollbar->getScrollPosition();
 
-		// calculate height for this row.
-		itemSize.d_height = getHighestRowItemHeight(i);
+        // calculate height for this row.
+        itemSize.d_height = getHighestRowItemHeight(i);
 
-		// loop through the columns in this row
-		for (uint j = 0; j < getColumnCount(); ++j)
-		{
-			// allow item to use full width of the column
-			itemSize.d_width = d_header->getColumnPixelWidth(j);
+        // loop through the columns in this row
+        for (uint j = 0; j < getColumnCount(); ++j)
+        {
+            // allow item to use full width of the column
+            itemSize.d_width = d_header->getColumnPixelWidth(j);
 
-			ListboxItem* item = d_grid[i][j];
+            ListboxItem* item = d_grid[i][j];
 
-			// is the item for this column set?
-			if (item != NULL)
-			{
-				// calculate clipper for this item.
-				itemClipper.d_left	= itemPos.d_x;
-				itemClipper.d_top	= itemPos.d_y;
-				itemClipper.setSize(itemSize);
-				itemClipper = itemClipper.getIntersection(clipper);
+            // is the item for this column set?
+            if (item)
+            {
+                // calculate destination area for this item.
+                itemRect.d_left	= itemPos.d_x;
+                itemRect.d_top	= itemPos.d_y;
+                itemRect.setSize(itemSize);
+                itemClipper = itemRect.getIntersection(itemsArea);
 
-				// skip this item if totally clipped
-				if (itemClipper.getWidth() == 0)
-				{
-					itemPos.d_x += PixelAligned(itemSize.d_width);
-					continue;
-				}
+                // skip this item if totally clipped
+                if (itemClipper.getWidth() == 0)
+                {
+                    itemPos.d_x += itemSize.d_width;
+                    continue;
+                }
 
-				// draw this item
-				item->draw(itemPos, alpha, itemClipper);
-			}
+                // draw this item
+                item->draw(d_renderCache, itemRect, itemPos.d_z, alpha, &itemClipper);
+            }
 
-			// update position for next column.
-			itemPos.d_x += PixelAligned(itemSize.d_width);
-		}
+            // update position for next column.
+            itemPos.d_x += itemSize.d_width;
+        }
 
-		// update position ready for next row
-		itemPos.d_y += PixelAligned(itemSize.d_height);
-	}
+        // update position ready for next row
+        itemPos.d_y += itemSize.d_height;
+    }
 
 }
 
@@ -2042,7 +2045,16 @@ bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
 {
 	// set header offset to match scroll position
 	d_header->setSegmentOffset(d_header->absoluteToRelativeX(d_horzScrollbar->getScrollPosition()));
+    requestRedraw();
+	return true;
+}
 
+/*************************************************************************
+	Event handler for when vertical scroll bar is moved.
+*************************************************************************/
+bool MultiColumnList::handleVertScrollbar(const EventArgs& e)
+{
+    requestRedraw();
 	return true;
 }
 

@@ -2086,4 +2086,152 @@
         <StateImagery name="Disabled" />
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/MultiColumnList">
+        <NamedArea name="ItemRenderingArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="19" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1" offset="-6" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-21" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/ListHeader" nameSuffix="__auto_listheader__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="1" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="1" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-2" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="18" /></Dim>
+            </Area>
+        </Child>
+        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+        </Child>
+        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="18" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-30" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+        </Child>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListTopLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListTopRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListTop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListBottom" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MultiListBackdrop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>

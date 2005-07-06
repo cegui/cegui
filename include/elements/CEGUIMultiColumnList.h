@@ -1210,30 +1210,39 @@ protected:
 	\brief
 		create and return a pointer to a ListHeaer widget for use as the column headers.
 
+	\param name
+	   String holding the name to be assigned to the created component.
+
 	\return
 		Pointer to a ListHeader based object.
 	*/
-	virtual ListHeader*	createListHeader(void) const		= 0;
+	virtual ListHeader*	createListHeader(const String& name) const		= 0;
  
 
 	/*!
 	\brief
 		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
 
+	\param name
+	   String holding the name to be assigned to the created component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling the list vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const		= 0;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const		= 0;
  
 
 	/*!
 	\brief
 		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
 
+	\param name
+	   String holding the name to be assigned to the created component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling the list horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const		= 0;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const		= 0;
 
 
 	/*!
@@ -1253,13 +1262,10 @@ protected:
 		rendered to layer 3, other layers can be used for rendering imagery behind and
 		infront of the items.
 
-	\param z
-		Z co-ordinate for layer 0.
-
 	\return
 		Nothing.
 	*/
-	virtual	void	renderListboxBaseImagery(float z)		= 0;
+	virtual	void	cacheListboxBaseImagery()		= 0;
 
 
 	/*************************************************************************
@@ -1271,18 +1277,8 @@ protected:
 	*/
 	void	addMultiColumnListboxEvents(void);
 
-
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
+    // overridden from base class.
+	virtual	void populateRenderCache();
 
 
 	/*!
@@ -1500,6 +1496,7 @@ protected:
 	bool	handleHeaderSegMove(const EventArgs& e);
 	bool	handleColumnSizeChange(const EventArgs& e);
 	bool	handleHorzScrollbar(const EventArgs& e);
+	bool	handleVertScrollbar(const EventArgs& e);
 	bool	handleSortColumnChange(const EventArgs& e);
 	bool	handleSortDirectionChange(const EventArgs& e);
 	bool	handleHeaderSegDblClick(const EventArgs& e);

@@ -1,6 +1,6 @@
 /************************************************************************
-    filename:   FalListbox.h
-    created:    Mon Jul 4 2005
+    filename:   FalMultiColumnList.h
+    created:    Wed Jul 6 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
@@ -21,19 +21,20 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalListbox_h_
-#define _FalListbox_h_
+#ifndef _FalMultiColumnList_h_
+#define _FalMultiColumnList_h_
 
 #include "FalModule.h"
+#include "elements/CEGUIMultiColumnList.h"
+#include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUIListbox.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        Listbox class for the FalagardBase module.
+        MultiColumnList class for the FalagardBase module.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
@@ -47,8 +48,9 @@ namespace CEGUI
         Child Widgets:
             Scrollbar based widget with name suffix "__auto_vscrollbar__"
             Scrollbar based widget with name suffix "__auto_hscrollbar__"
+            ListHeader based widget with name suffix "__auto_listheader__"
     */
-    class FALAGARDBASE_API FalagardListbox : public Listbox
+    class FALAGARDBASE_API FalagardMultiColumnList : public MultiColumnList
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
@@ -57,17 +59,18 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardListbox(const String& type, const String& name);
+        FalagardMultiColumnList(const String& type, const String& name);
 
         /*!
         \brief
             Destructor
         */
-        ~FalagardListbox();
+        ~FalagardMultiColumnList();
 
     protected:
-        // overridden from Listbox base class.
+        // overridden from MultiColumnList base class.
         Rect getListRenderArea(void) const;
+        ListHeader* createListHeader(const String& name) const;
         Scrollbar* createVertScrollbar(const String& name) const;
         Scrollbar* createHorzScrollbar(const String& name) const;
         void layoutComponentWidgets();
@@ -76,13 +79,13 @@ namespace CEGUI
 
     /*!
     \brief
-        WindowFactory for FalagardListbox type Window objects.
+        WindowFactory for FalagardMultiColumnList type Window objects.
     */
-    class FALAGARDBASE_API FalagardListboxFactory : public WindowFactory
+    class FALAGARDBASE_API FalagardMultiColumnListFactory : public WindowFactory
     {
     public:
-        FalagardListboxFactory(void) : WindowFactory(FalagardListbox::WidgetTypeName) { }
-        ~FalagardListboxFactory(void){}
+        FalagardMultiColumnListFactory(void) : WindowFactory(FalagardMultiColumnList::WidgetTypeName) { }
+        ~FalagardMultiColumnListFactory(void){}
         Window* createWindow(const String& name);
         void destroyWindow(Window* window);
     };
@@ -90,4 +93,4 @@ namespace CEGUI
 } // End of  CEGUI namespace section
 
 
-#endif  // end of guard _FalListbox_h_
+#endif  // end of guard _FalMultiColumnList_h_

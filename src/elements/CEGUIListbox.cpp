@@ -557,7 +557,7 @@ void Listbox::populateRenderCache()
     Rect	itemClipper, itemRect;
     float	widest = getWidestItemWidth();
 
-    // calculate on-screen position of area we have to render into
+    // calculate position of area we have to render into
     Rect itemsArea(getListRenderArea());
 
     // set up some initial positional details for items
