@@ -2393,4 +2393,141 @@
         </StateImagery>
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/Tooltip">
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="4" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="4" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-8" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-8" type="Height" /></Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipTopLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipTopRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipLeftEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipRightEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipTopEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipBottomEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TooltipMiddle" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="4" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="4" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-8" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-8" type="Height" /></Dim>
+                </Area>
+                <Colours topLeft="FF000000" topRight="FF000000" bottomLeft="FF000000" bottomRight="FF000000" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="CentreAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>

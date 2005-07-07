@@ -40,14 +40,14 @@ namespace CEGUI
     {
         // calculate area to render to
         Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
+        render_impl(srcWindow, destRect, base_z, modColours, (clipper != 0) ? clipper : &destRect, clipToDisplay);
     }
 
     void TextComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // calculate area to render to
         Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
+        render_impl(srcWindow, destRect, base_z, modColours, (clipper != 0) ? clipper : &destRect, clipToDisplay);
     }
 
     const ComponentArea& TextComponent::getComponentArea() const

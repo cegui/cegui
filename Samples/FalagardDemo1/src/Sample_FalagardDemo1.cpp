@@ -88,12 +88,15 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(winMgr.createWindow("TaharezLook/MultiLineEditbox", "widget1"));
-    wid->addChildWindow(w);
+    System::getSingleton().setTooltip("TaharezLook/Tooltip");
+    wid->setTooltipText("This is a window using Falagard System!");
 
-    // set some basic things for the widget.
-    w->setPosition(Point(0.2f, 0.2f));
-    w->setSize(Size(0.6f, 0.6f));
+//     Tooltip* w = static_cast<Tooltip*>(winMgr.createWindow("TaharezLook/Tooltip", "widget1"));
+//     wid->addChildWindow(w);
+// 
+//     // set some basic things for the widget.
+//     w->setPosition(Point(0.2f, 0.2f));
+//     w->setSize(Size(0.6f, 0.6f));
 
     // success!
     return true;

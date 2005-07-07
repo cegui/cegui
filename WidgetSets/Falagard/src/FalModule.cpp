@@ -45,6 +45,7 @@
 #include "FalStaticText.h"
 #include "FalThumb.h"
 #include "FalTitlebar.h"
+#include "FalTooltip.h"
 
 /*************************************************************************
     Static factory objects
@@ -69,6 +70,7 @@ static CEGUI::FalagardStaticImageFactory        s_StaticImageFactory;
 static CEGUI::FalagardStaticTextFactory         s_StaticTextFactory;
 static CEGUI::FalagardThumbFactory              s_ThumbFactory;
 static CEGUI::FalagardTitlebarFactory           s_TitlebarFactory;
+static CEGUI::FalagardTooltipFactory            s_TooltipFactory;
 
 
 using namespace CEGUI;
@@ -101,6 +103,7 @@ mapEntry factoriesMap[] =
     {FalagardStaticText::WidgetTypeName, &s_StaticTextFactory},
     {FalagardThumb::WidgetTypeName, &s_ThumbFactory},
     {FalagardTitlebar::WidgetTypeName, &s_TitlebarFactory},
+    {FalagardTooltip::WidgetTypeName, &s_TooltipFactory},
     {0,0}
 };
 

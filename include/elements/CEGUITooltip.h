@@ -76,6 +76,15 @@ namespace CEGUI
 
         /*!
         \brief
+            return the current target window for this Tooltip.
+
+        \return
+            Pointer to the target window for this Tooltip or 0 for none.
+        */
+        const Window* getTargetWindow();
+
+        /*!
+        \brief
             Resets the timer on the tooltip when in the Active / Inactive states.  This is used internally
             to control the tooltip, it is not normally necessary to call this method yourself.
 
@@ -194,6 +203,16 @@ namespace CEGUI
 			if (class_name==(const utf8*)"Tooltip")	return true;
 			return Window::testClassName_impl(class_name);
 		}
+
+        /*!
+        \brief
+            Return the size of the area that will be occupied by the tooltip text, given
+            any current formatting options.
+
+        \return
+            Size object describing the size of the rendered tooltip text in pixels.
+        */
+        virtual Size getTextSize() const;
 
         /*************************************************************************
             Event triggers

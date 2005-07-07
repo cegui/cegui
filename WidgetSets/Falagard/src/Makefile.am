@@ -29,4 +29,5 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalStaticImage.cpp \
                                   FalStaticText.cpp \
                                   FalThumb.cpp \
-                                  FalTitlebar.cpp
+                                  FalTitlebar.cpp \
+                                  FalTooltip.cpp
