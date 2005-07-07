@@ -21,6 +21,7 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalProgressBar.cpp \
                                   FalProgressBarProperties.cpp \
                                   FalRadioButton.cpp \
+                                  FalScrollablePane.cpp \
                                   FalScrollbar.cpp \
                                   FalScrollbarProperties.cpp \
                                   FalSlider.cpp \

@@ -38,6 +38,7 @@
 #include "FalMultiLineEditbox.h"
 #include "FalProgressBar.h"
 #include "FalRadioButton.h"
+#include "FalScrollablePane.h"
 #include "FalScrollbar.h"
 #include "FalSlider.h"
 #include "FalSpinner.h"
@@ -63,6 +64,7 @@ static CEGUI::FalagardMultiColumnListFactory    s_MultiColumnListFactory;
 static CEGUI::FalagardMultiLineEditboxFactory   s_MultiLineEditboxFactory;
 static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
+static CEGUI::FalagardScrollablePaneFactory     s_ScrollablePaneFactory;
 static CEGUI::FalagardScrollbarFactory          s_ScrollbarFactory;
 static CEGUI::FalagardSliderFactory             s_SliderFactory;
 static CEGUI::FalagardSpinnerFactory            s_SpinnerFactory;
@@ -96,6 +98,7 @@ mapEntry factoriesMap[] =
     {FalagardMultiLineEditbox::WidgetTypeName, &s_MultiLineEditboxFactory},
     {FalagardProgressBar::WidgetTypeName, &s_ProgressBarFactory},
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
+    {FalagardScrollablePane::WidgetTypeName, &s_ScrollablePaneFactory},
     {FalagardScrollbar::WidgetTypeName, &s_ScrollbarFactory},
     {FalagardSlider::WidgetTypeName, &s_SliderFactory},
     {FalagardSpinner::WidgetTypeName, &s_SpinnerFactory},

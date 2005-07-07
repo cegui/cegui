@@ -184,6 +184,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalRadioButton.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalScrollablePane.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalScrollbar.cpp">
 			</File>
 			<File
@@ -271,6 +274,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalRadioButton.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalScrollablePane.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalScrollbar.h">

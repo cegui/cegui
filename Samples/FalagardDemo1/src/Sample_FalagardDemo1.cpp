@@ -88,15 +88,26 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    System::getSingleton().setTooltip("TaharezLook/Tooltip");
-    wid->setTooltipText("This is a window using Falagard System!");
+    ScrollablePane* w = static_cast<ScrollablePane*>(winMgr.createWindow("TaharezLook/ScrollablePane", "widget1"));
+    wid->addChildWindow(w);
 
-//     Tooltip* w = static_cast<Tooltip*>(winMgr.createWindow("TaharezLook/Tooltip", "widget1"));
-//     wid->addChildWindow(w);
-// 
-//     // set some basic things for the widget.
-//     w->setPosition(Point(0.2f, 0.2f));
-//     w->setSize(Size(0.6f, 0.6f));
+    // set some basic things for the widget.
+    w->setPosition(Point(0.0f, 0.1f));
+    w->setSize(Size(1, 0.9f));
+
+    PushButton* btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "button1"));
+    w->addChildWindow(btn);
+    // set some basic things for the widget.
+    btn->setPosition(Point(0.1f, 0.2f));
+    btn->setSize(Size(0.5f, 0.075f));
+    btn->setText("Don't Push Me!");
+
+    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "button2"));
+    w->addChildWindow(btn);
+    // set some basic things for the widget.
+    btn->setPosition(Point(0.75f, 0.5f));
+    btn->setSize(Size(0.5f, 0.075f));
+    btn->setText("Push Me!");
 
     // success!
     return true;
