@@ -12,6 +12,8 @@ noinst_HEADERS = FalButton.h \
                  FalListbox.h \
                  FalModule.h \
                  FalMultiColumnList.h \
+                 FalMultiLineEditbox.h \
+                 FalMultiLineEditboxProperties.h \
                  FalProgressBar.h \
                  FalProgressBarProperties.h \
                  FalRadioButton.h \

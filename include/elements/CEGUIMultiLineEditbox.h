@@ -389,20 +389,26 @@ protected:
 	\brief
 		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
 
+	\param name
+	   String holding the name to be assigned to the component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const		= 0;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const		= 0;
  
 
 	/*!
 	\brief
 		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
 
+	\param name
+	   String holding the name to be assigned to the component.
+
 	\return
 		Pointer to a Scrollbar to be used for scrolling horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const		= 0;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const		= 0;
 
 
 	/*!
@@ -422,13 +428,10 @@ protected:
 		to layer 4 and the selection brush to layer 3, other layers can be used for
 		rendering imagery behind and infront of the text & selection..
 
-	\param z
-		Z co-ordinate for layer 0.
-
 	\return
 		Nothing.
 	*/
-	virtual	void	renderEditboxBaseImagery(float z)		= 0;
+	virtual	void	cacheEditboxBaseImagery()		= 0;
 
 
 	/*!
@@ -438,7 +441,7 @@ protected:
 	\return
 		Nothing
 	*/
-	virtual void	renderCarat(float baseX, float baseY, const Rect& clipper)	= 0;
+	virtual void	cacheCaratImagery(const Rect& textArea)	= 0;
 
 
 	/*************************************************************************
@@ -455,7 +458,7 @@ protected:
 	\brief
 		Render text lines.
 	*/
-	void	renderTextLines(const Rect& dest_area, const Rect& clipper) const;
+	void	cacheTextLines(const Rect& dest_area);
 
 
 	/*!
@@ -478,17 +481,7 @@ protected:
 	size_t	getNextTokenLength(const String& text, size_t start_idx) const;
 
 
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
+	virtual	void populateRenderCache();
 
 
 	/*!
@@ -642,6 +635,13 @@ protected:
 		if (class_name==(const utf8*)"MultiLineEditBox")	return true;
 		return Window::testClassName_impl(class_name);
 	}
+
+	/*!
+	\brief
+	   Internal handler that is triggered when the user interacts with the scrollbars.
+    */
+    bool handle_scrollChange(const EventArgs& args);
+
 
 	/*************************************************************************
 		New event handlers

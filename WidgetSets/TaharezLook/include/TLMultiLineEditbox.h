@@ -108,7 +108,7 @@ protected:
 	\return
 		Pointer to a Scrollbar to be used for scrolling vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const;
  
 
 	/*!
@@ -118,7 +118,7 @@ protected:
 	\return
 		Pointer to a Scrollbar to be used for scrolling horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const;
 
 
 	/*!
@@ -131,30 +131,8 @@ protected:
 	virtual void	layoutComponentWidgets();
 
 
-	/*!
-	\brief
-		Perform rendering of the widget control frame and other 'static' areas.  This
-		method should not render the actual text.  Note that the text will be rendered
-		to layer 4 and the selection brush to layer 3, other layers can be used for
-		rendering imagery behind and infront of the text & selection..
-
-	\param z
-		Z co-ordinate for layer 0.
-
-	\return
-		Nothing.
-	*/
-	virtual	void	renderEditboxBaseImagery(float z);
-
-
-	/*!
-	\brief
-		Render the carat.
-
-	\return
-		Nothing
-	*/
-	virtual void	renderCarat(float baseX, float baseY, const Rect& clipper);
+	virtual	void	cacheEditboxBaseImagery();
+	virtual void	cacheCaratImagery(const Rect& textArea);
 
 
 	/*!

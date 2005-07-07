@@ -88,23 +88,12 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    MultiColumnList* w = static_cast<MultiColumnList*>(winMgr.createWindow("TaharezLook/MultiColumnList", "widget1"));
+    MultiLineEditbox* w = static_cast<MultiLineEditbox*>(winMgr.createWindow("TaharezLook/MultiLineEditbox", "widget1"));
     wid->addChildWindow(w);
 
     // set some basic things for the widget.
     w->setPosition(Point(0.2f, 0.2f));
     w->setSize(Size(0.6f, 0.6f));
-
-    // add segs
-    w->addColumn("Col.1", 1, 0.33f);
-    w->addColumn("Col.2", 2, 0.33f);
-    w->addColumn("Col.3", 3, 0.33f);
-    w->addColumn("Col.4", 4, 0.33f);
-
-    w->addRow(new ListboxTextItem("Item1.1"), 1, 0);
-    w->setItem(new ListboxTextItem("Item1.2"), 2, 0);
-    w->addRow(new ListboxTextItem("Item2.1"), 1, 1);
-    w->setItem(new ListboxTextItem("Item2.2"), 2, 1);
 
     // success!
     return true;

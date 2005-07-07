@@ -17,6 +17,7 @@
 	<FalagardMapping WindowType="TaharezLook/ListHeaderSegment" TargetType="Falagard/ListHeaderSegment" LookNFeel="TaharezLook/ListHeaderSegment" />
 	<FalagardMapping WindowType="TaharezLook/Listbox" TargetType="Falagard/Listbox" LookNFeel="TaharezLook/Listbox" />
 	<FalagardMapping WindowType="TaharezLook/MultiColumnList" TargetType="Falagard/MultiColumnList" LookNFeel="TaharezLook/MultiColumnList" />
+	<FalagardMapping WindowType="TaharezLook/MultiLineEditbox" TargetType="Falagard/MultiLineEditbox" LookNFeel="TaharezLook/MultiLineEditbox" />
 	<FalagardMapping WindowType="TaharezLook/ProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/ProgressBar" />
 	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="Falagard/RadioButton" LookNFeel="TaharezLook/RadioButton" />
 	<FalagardMapping WindowType="TaharezLook/Slider" TargetType="Falagard/Slider" LookNFeel="TaharezLook/Slider" />

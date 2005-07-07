@@ -35,6 +35,7 @@
 #include "FalListHeaderSegment.h"
 #include "FalListbox.h"
 #include "FalMultiColumnList.h"
+#include "FalMultiLineEditbox.h"
 #include "FalProgressBar.h"
 #include "FalRadioButton.h"
 #include "FalScrollbar.h"
@@ -58,6 +59,7 @@ static CEGUI::FalagardListHeaderFactory         s_ListHeaderFactory;
 static CEGUI::FalagardListHeaderSegmentFactory  s_ListHeaderSegmentFactory;
 static CEGUI::FalagardListboxFactory            s_ListboxFactory;
 static CEGUI::FalagardMultiColumnListFactory    s_MultiColumnListFactory;
+static CEGUI::FalagardMultiLineEditboxFactory   s_MultiLineEditboxFactory;
 static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
 static CEGUI::FalagardScrollbarFactory          s_ScrollbarFactory;
@@ -89,6 +91,7 @@ mapEntry factoriesMap[] =
     {FalagardListHeaderSegment::WidgetTypeName, &s_ListHeaderSegmentFactory},
     {FalagardListbox::WidgetTypeName, &s_ListboxFactory},
     {FalagardMultiColumnList::WidgetTypeName, &s_MultiColumnListFactory},
+    {FalagardMultiLineEditbox::WidgetTypeName, &s_MultiLineEditboxFactory},
     {FalagardProgressBar::WidgetTypeName, &s_ProgressBarFactory},
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
     {FalagardScrollbar::WidgetTypeName, &s_ScrollbarFactory},
