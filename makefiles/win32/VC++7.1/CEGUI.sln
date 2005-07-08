@@ -52,8 +52,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_and_tolua++", "Scriptin
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaScriptModule", "ScriptingModules\CEGUILua\LuaScriptModule.vcproj", "{12DCE788-FF61-43AC-B827-6986777A3A01}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEGUILua", "ScriptingModules\CEGUILua\CEGUILua.vcproj", "{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}"
 	ProjectSection(ProjectDependencies) = postProject
+		{06DB0C07-2CF7-4A39-86F1-B106F26E5A42} = {06DB0C07-2CF7-4A39-86F1-B106F26E5A42}
+		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
 	EndProjectSection
 EndProject
 Global
@@ -100,10 +102,10 @@ Global
 		{06DB0C07-2CF7-4A39-86F1-B106F26E5A42}.Debug.Build.0 = Debug|Win32
 		{06DB0C07-2CF7-4A39-86F1-B106F26E5A42}.Release.ActiveCfg = Release|Win32
 		{06DB0C07-2CF7-4A39-86F1-B106F26E5A42}.Release.Build.0 = Release|Win32
-		{12DCE788-FF61-43AC-B827-6986777A3A01}.Debug.ActiveCfg = Debug|Win32
-		{12DCE788-FF61-43AC-B827-6986777A3A01}.Debug.Build.0 = Debug|Win32
-		{12DCE788-FF61-43AC-B827-6986777A3A01}.Release.ActiveCfg = Release|Win32
-		{12DCE788-FF61-43AC-B827-6986777A3A01}.Release.Build.0 = Release|Win32
+		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Debug.ActiveCfg = Debug|Win32
+		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Debug.Build.0 = Debug|Win32
+		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Release.ActiveCfg = Release|Win32
+		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
