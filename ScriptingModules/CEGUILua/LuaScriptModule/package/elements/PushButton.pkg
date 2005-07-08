@@ -1,0 +1,26 @@
+/***********************************************************************
+	PushButton
+***********************************************************************/
+class PushButton : public ButtonBase
+{
+	bool isStandardImageryEnabled() const;
+	bool isCustomImageryAutoSized() const;
+	
+	void setStandardImageryEnabled(bool setting);
+	void setCustomImageryAutoSized(bool setting);
+
+
+	//const RenderableImage* getNormalImage(void) const;
+	//const RenderableImage* getHoverImage(void) const;
+	//const RenderableImage* getPushedImage(void) const;
+	//const RenderableImage* getDisabledImage(void) const;
+
+	//void setNormalImage(const RenderableImage* ri);
+	//void setHoverImage(const RenderableImage* ri);
+	//void setPushedImage(const RenderableImage* ri);
+	//void setDisabledImage(const RenderableImage* ri);
+
+
+	float getTextXOffset() const;
+	void setTextXOffset(float offset);
+};

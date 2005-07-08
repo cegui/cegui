@@ -1,0 +1,14 @@
+/***********************************************************************
+	Tooltip
+***********************************************************************/
+class Tooltip : public Window
+{
+	void setTargetWindow(Window* wnd);
+	void resetTimer();
+	float getHoverTime() const;
+	void setDisplayTime(float seconds);
+	float getFadeTime() const;
+	void setHoverTime(float seconds);
+	float getDisplayTime() const;
+	void setFadeTime(float seconds);
+};

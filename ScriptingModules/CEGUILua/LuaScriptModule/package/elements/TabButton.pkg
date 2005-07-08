@@ -1,0 +1,16 @@
+/***********************************************************************
+	TabButton
+***********************************************************************/
+class TabButton : public ButtonBase
+{
+	bool isSelected() const;
+	void setSelected(bool select);
+
+	void setRightOfSelected(bool isRight);
+
+	void setTargetWindow(Window* wnd);
+	Window* getTargetWindow();
+
+	void setTabIndex(unsigned int idx);
+	unsigned int getTabIndex();
+};

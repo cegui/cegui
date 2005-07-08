@@ -1,0 +1,13 @@
+/***********************************************************************
+	RadioButton
+***********************************************************************/
+class RadioButton : public ButtonBase
+{
+	bool isSelected() const;
+	void setSelected(bool select);
+
+	unsigned long getGroupID() const;
+	void setGroupID(unsigned long group);
+
+	RadioButton* getSelectedButtonInGroup() const;
+};

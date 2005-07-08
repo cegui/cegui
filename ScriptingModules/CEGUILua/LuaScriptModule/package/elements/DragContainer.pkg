@@ -1,0 +1,23 @@
+/***********************************************************************
+	DragContainer
+***********************************************************************/
+class DragContainer : public Window
+{
+	bool isDraggingEnabled() const;
+	void setDraggingEnabled(bool setting);
+
+	bool isBeingDragged() const;
+
+	float getPixelDragThreshold() const;
+	void setPixelDragThreshold(float pixels);
+
+	float getDragAlpha() const;
+	void setDragAlpha(float alpha);
+
+	const Image* getDragCursorImage() const;
+	void setDragCursorImage(MouseCursorImage image);
+	void setDragCursorImage(string imageset, string image);
+	void setDragCursorImage(const Image* image);
+
+	Window* getCurrentDropTarget() const;
+};

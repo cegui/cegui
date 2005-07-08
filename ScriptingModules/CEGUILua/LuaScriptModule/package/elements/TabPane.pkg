@@ -1,10 +1,6 @@
 /***********************************************************************
-	Scheme
+	TabPane
 ***********************************************************************/
-class Scheme
+class TabPane : public Static
 {
-	void loadResources();
-	void unloadResources();
-	bool resourcesLoaded() const;
-	string getName() const;
 };

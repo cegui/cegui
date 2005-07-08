@@ -1,30 +1,26 @@
-/*
+/***********************************************************************
+	EventSet
+***********************************************************************/
 class EventSet
 {
 	void addEvent(string name);
 	void removeEvent(string name);
 	void removeAllEvents();
 	bool isEventPresent(string name);
-	
+
 	void subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
 	void fireEvent(string name, EventArgs& args, string eventnamespace="");
-	
+
 	bool isMuted() const;
 	void setMutedState(bool setting);
-};*/
+};
 
-class GlobalEventSet
+
+
+/***********************************************************************
+	GlobalEventSet
+***********************************************************************/
+class GlobalEventSet : public EventSet
 {
 	static GlobalEventSet& getSingleton();
-	
-	void addEvent(string name);
-	void removeEvent(string name);
-	void removeAllEvents();
-	bool isEventPresent(string name);
-	
-	void subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
-	void fireEvent(string name, EventArgs& args, string eventnamespace="");
-	
-	bool isMuted() const;
-	void setMutedState(bool setting);
 };

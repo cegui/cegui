@@ -1,10 +1,8 @@
 /***********************************************************************
-	Scheme
+	Checkbox
 ***********************************************************************/
-class Scheme
+class Checkbox : public ButtonBase
 {
-	void loadResources();
-	void unloadResources();
-	bool resourcesLoaded() const;
-	string getName() const;
+	bool isSelected() const;
+	void setSelected(bool select);
 };

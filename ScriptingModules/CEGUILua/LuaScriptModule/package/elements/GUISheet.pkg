@@ -1,10 +1,6 @@
 /***********************************************************************
-	Scheme
+	GUISheet
 ***********************************************************************/
-class Scheme
+class GUISheet : public Window
 {
-	void loadResources();
-	void unloadResources();
-	bool resourcesLoaded() const;
-	string getName() const;
 };

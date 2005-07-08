@@ -1,5 +1,5 @@
 /************************************************************************
-	filename: LuaScriptModule.cpp
+	filename: CEGUILua.cpp
 	created:  16/3/2005
 	author:   Tomas Lindquist Olsen
 	
@@ -25,7 +25,7 @@
 *************************************************************************/
 #include "CEGUI.h"
 
-#include "LuaScriptModule.h"
+#include "CEGUILua.h"
 
 // include Lua libs and tolua++
 extern "C" {
@@ -214,7 +214,7 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
 void LuaScriptModule::executeString(const String& str)
 {
 	// load code into lua and call it
-	int error =	luaL_loadbuffer(d_state, str.c_str(), str.length(), "cegui_execute_string") || lua_pcall(d_state,0,0,0);
+	int error =	luaL_loadbuffer(d_state, str.c_str(), str.length(), str.c_str()) || lua_pcall(d_state,0,0,0);
 
 	// handle errors
 	if ( error )
@@ -243,6 +243,7 @@ void LuaScriptModule::createBindings(void)
 *************************************************************************/
 void LuaScriptModule::destroyBindings(void)
 {
+	CEGUI::Logger::getSingleton().logEvent( "---- Destroying Lua bindings ----" );
 	// is this ok ?
 	lua_pushnil(d_state);
 	lua_setglobal(d_state,"CEGUI");

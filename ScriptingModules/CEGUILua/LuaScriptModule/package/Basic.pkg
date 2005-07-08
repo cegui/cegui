@@ -1,81 +1,105 @@
+/***********************************************************************
+	Vector2
+***********************************************************************/
 class Vector2
 {
+	// rename 'd_x' and 'd_y' to just 'x' and 'y'
 	float d_x @ x;
 	float d_y @ y;
-	
+
 	Vector2 operator+ (const Vector2& vec) const;
 	Vector2 operator- (const Vector2& vec) const;
 	Vector2 operator* (const Vector2& vec) const;
 	bool operator== (const Vector2& vec) const;
-	
+
 	Vector2();
 	Vector2(float x, float y);
 };
 
-// just a typedef only has effect inside the pkg files - not inside lua. so only Vector2 would be available
+
+
+/***********************************************************************
+	Point
+
+	just a typedef only has effect inside the pkg files
+	- not inside lua. so only Vector2 would be available
+***********************************************************************/
 class Point
 {
+	// rename 'd_x' and 'd_y' to just 'x' and 'y'
 	float d_x @ x;
 	float d_y @ y;
-	
+
 	Point operator+ (const Point& vec) const;
 	Point operator- (const Point& vec) const;
 	Point operator* (const Point& vec) const;
 	bool operator== (const Point& vec) const;
-	
+
 	Point();
 	Point(float x, float y);
 };
 
 
+
+/***********************************************************************
+	Size
+***********************************************************************/
 class Size
 {
+	// rename 'd_width' and 'd_height' to just 'width' and 'height'
 	float d_width @ width;
 	float d_height @ height;
-	
+
 	bool operator== (const Size& sz) const;
-	
+
 	Size();
 	Size(float w, float h);
 };
 
 
+
+/***********************************************************************
+	Rect
+***********************************************************************/
 class Rect
 {
+	// remove member variable 'd_' prefix
 	float d_top @ top;
 	float d_bottom @ bottom;
 	float d_left @ left;
 	float d_right @ right;
-	
+
 	Point getPosition() const;
 	float getWidth() const;
 	float getHeight() const;
 	Size getSize() const;
-	
+
 	Rect getIntersection(const Rect& rect) const;
 	bool isPointInRect(const Point& p) const;
-	
+
 	void setPosition(const Point& p);
 	void setWidth(float w);
 	void setHeight(float h);
 	void setSize(const Size& sz);
-	
+
 	Rect& offset(const Point& p);
 	Rect& constrainSizeMax(const Size& sz);
 	Rect& constrainSizeMin(const Size& sz);
 	Rect& constrainSize(const Size& min, const Size& max);
-	
+
 	bool operator== (const Rect& r) const;
-	
+
 	Rect();
 	Rect(float l, float t, float r, float b);
 };
 
+
+
+/***********************************************************************
+	colour
+***********************************************************************/
 class colour
 {
-	colour();
-	colour(float r, float g, float b, float a);
-	
 	float getAlpha() const;
 	float getRed() const;
 	float getGreen() const;
@@ -83,7 +107,7 @@ class colour
 	float getHue() const;
 	float getSaturation() const;
 	float getLumination() const;
-	
+
 	void set(float r, float g, float b, float a);
 	void setAlpha(float a);
 	void setRed(float r);
@@ -91,9 +115,12 @@ class colour
 	void setBlue(float b);
 	void setRGB(float r, float g, float b);
 	void setHSL(float hue, float saturation, float luminance, float alpha=1);
-	
+
 	colour operator+ (const colour& c) const;
 	colour operator- (const colour& c) const;
 	//colour operator* (const colour& c) const; // gives a warning about argb_t to colour conversion
 	bool operator== (const colour& c) const;
+
+	colour();
+	colour(float r, float g, float b, float a);
 };

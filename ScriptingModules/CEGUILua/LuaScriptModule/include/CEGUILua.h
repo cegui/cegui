@@ -1,5 +1,5 @@
 /************************************************************************
-	filename: LuaScriptModule.h
+	filename: CEGUILua.h
 	created:  16/3/2005
 	author:   Tomas Lindquist Olsen
 	
@@ -23,9 +23,23 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+#ifndef _CEGUILua_h_
+#define _CEGUILua_h_
 
-#ifndef LuaScriptModule_h
-#define LuaScriptModule_h
+
+/*************************************************************************
+	Import / Export control macros
+*************************************************************************/
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUILUA_EXPORTS
+#       define CEGUILUA_API __declspec(dllexport)
+#   else
+#       define CEGUILUA_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUILUA_API
+#endif
+
 
 // include Lua
 extern "C" {
@@ -41,7 +55,7 @@ namespace CEGUI
 \brief
 	Interface for the LuaScriptModule class
 */
-class LuaScriptModule : public CEGUI::ScriptModule
+class CEGUILUA_API LuaScriptModule : public CEGUI::ScriptModule
 {
 public:
 	/*************************************************************************
@@ -183,4 +197,4 @@ private:
 
 } // namespace CEGUI
 
-#endif // end of guard _LuaScriptModule_h_
+#endif // end of guard _CEGUILua_h_

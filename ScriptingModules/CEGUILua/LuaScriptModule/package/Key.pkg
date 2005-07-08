@@ -1,3 +1,9 @@
+/***********************************************************************
+	Key::Scan
+
+	This is'nt exactly how it's done in the C++ code, but it works
+	fine anyway :)
+***********************************************************************/
 namespace Key
 {
 
@@ -147,10 +153,16 @@ enum Scan
 	MyComputer		=0xEB,    /* My Computer */
 	Mail			=0xEC,    /* Mail */
 	MediaSelect		=0xED     /* Media Select */
-};
 
-}
+}; // Key::Scan
 
+} // Key
+
+
+
+/***********************************************************************
+	SystemKey
+***********************************************************************/
 enum SystemKey
 {
 	LeftMouse		= 0x01,			//!< The left mouse button.

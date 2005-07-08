@@ -1,3 +1,6 @@
+/***********************************************************************
+	TextFormatting
+***********************************************************************/
 enum TextFormatting
 {
 	LeftAligned,
@@ -10,32 +13,37 @@ enum TextFormatting
 	WordWrapJustified
 };
 
+
+
+/***********************************************************************
+	Font
+***********************************************************************/
 class Font
 {
 	string getName() const;
-	
+
 	void defineFontGlyphs(unsigned long first, unsigned long last);
 	void defineFontGlyphs(string glyph_set);
 	bool isCodepointAvailable(unsigned long cp) const;
 	string getAvailableGlyphs() const;
 	unsigned int getPointSize() const;
-	
+
 	void setNativeResolution(const Size& sz);
 	Size getNativeResolution() const;
 	void notifyScreenResolution(const Size& sz);
-	
+
 	void setAutoScalingEnabled(bool setting);
 	bool isAutoScaled() const;
 	void setAntiAliased(bool setting);
 	bool isAntiAliased() const;
-	
+
 	float getTextExtent(string text, float xscale=1) const;
 	float getLineSpacing(float yscale=1) const;
 	float getFontHeight(float yscale=1) const;
-	
+
 	unsigned long getCharAtPixel(string text, unsigned long start_char, float pixel, float xscale=1) const;
 	unsigned long getCharAtPixel(string text, float pixel, float xscale=1) const;
-	
+
 	unsigned long getFormattedLineCount(string text, const Rect& format_area, TextFormatting fmt, float xscale=1) const;
 	float getFormattedTextExtent(string text, const Rect& format_area, TextFormatting fmt, float xscale=1) const;
 };

@@ -30,37 +30,254 @@
 namespace CEGUI
 {
 
+/*************************************************************************
+	Helper functions for easy casting of the EventArgs class
+*************************************************************************/
 
-const MouseCursorEventArgs& toMouseCursorEventArgs(const EventArgs& e)
+// converts EventArgs to MouseCursorEventArgs
+const MouseCursorEventArgs& ceguiLua_toMouseCursorEventArgs(const EventArgs& e)
 {
 	return (const MouseCursorEventArgs&)e;
 }
 
 
-
-const WindowEventArgs& toWindowEventArgs(const EventArgs& e)
+// converts EventArgs to WindowEventArgs
+const WindowEventArgs& ceguiLua_toWindowEventArgs(const EventArgs& e)
 {
 return (const WindowEventArgs&)e;
 }
 
 
-
-const ActivationEventArgs& toActivationEventArgs(const EventArgs& e)
+// converts EventArgs to ActivationEventArgs
+const ActivationEventArgs& ceguiLua_toActivationEventArgs(const EventArgs& e)
 {
 return (const ActivationEventArgs&)e;
 }
 
 
-
-const HeaderSequenceEventArgs& toHeaderSequenceEventArgs(const EventArgs& e)
+// converts EventArgs to HeaderSequenceEventArgs
+const HeaderSequenceEventArgs& ceguiLua_toHeaderSequenceEventArgs(const EventArgs& e)
 {
 	return (const HeaderSequenceEventArgs&)e;
 }
 
 
-const MouseEventArgs& toMouseEventArgs(const EventArgs& e)
+// converts EventArgs to MouseEventArgs
+const MouseEventArgs& ceguiLua_toMouseEventArgs(const EventArgs& e)
 {
 	return (const MouseEventArgs&)e;
+}
+
+
+/*************************************************************************
+	Helper functions for easy casting of the classes derived from
+	CEGUI::Window (the widgets)
+*************************************************************************/
+
+ButtonBase*			ceguiLua_toButtonBase(Window* w)
+{
+	return (ButtonBase*)w;
+}
+
+
+Checkbox*			ceguiLua_toCheckbox(Window* w)
+{
+	return (Checkbox*)w;
+}
+
+
+Combobox*			ceguiLua_toCombobox(Window* w)
+{
+	return (Combobox*)w;
+}
+
+
+ComboDropList*		ceguiLua_toComboDropList(Window* w)
+{
+	return (ComboDropList*)w;
+}
+
+
+DragContainer*		ceguiLua_toDragContainer(Window* w)
+{
+	return (DragContainer*)w;
+}
+
+
+Editbox*			ceguiLua_toEditbox(Window* w)
+{
+	return (Editbox*)w;
+}
+
+
+FrameWindow*		ceguiLua_toFrameWindow(Window* w)
+{
+	return (FrameWindow*)w;
+}
+
+
+GUISheet*			ceguiLua_toGUISheet(Window* w)
+{
+	return (GUISheet*)w;
+}
+
+
+Listbox*			ceguiLua_toListbox(Window* w)
+{
+	return (Listbox*)w;
+}
+
+
+ListHeader*			ceguiLua_toListHeader(Window* w)
+{
+	return (ListHeader*)w;
+}
+
+
+ListHeaderSegment*	ceguiLua_toListHeaderSegment(Window* w)
+{
+	return (ListHeaderSegment*)w;
+}
+
+
+MultiColumnList*	ceguiLua_toMultiColumnList(Window* w)
+{
+	return (MultiColumnList*)w;
+}
+
+
+MultiLineEditbox*	ceguiLua_toMultiLineEditbox(Window* w)
+{
+	return (MultiLineEditbox*)w;
+}
+
+
+ProgressBar*		ceguiLua_toProgressBar(Window* w)
+{
+	return (ProgressBar*)w;
+}
+
+
+PushButton*			ceguiLua_toPushButton(Window* w)
+{
+	return (PushButton*)w;
+}
+
+
+RadioButton*		ceguiLua_toRadioButton(Window* w)
+{
+	return (RadioButton*)w;
+}
+
+
+ScrollablePane*		ceguiLua_toScrollablePane(Window* w)
+{
+	return (ScrollablePane*)w;
+}
+
+
+Scrollbar*			ceguiLua_toScrollbar(Window* w)
+{
+	return (Scrollbar*)w;
+}
+
+
+ScrolledContainer*	ceguiLua_toScrolledContainer(Window* w)
+{
+	return (ScrolledContainer*)w;
+}
+
+
+Slider*				ceguiLua_toSlider(Window* w)
+{
+	return (Slider*)w;
+}
+
+
+Spinner*			ceguiLua_toSpinner(Window* w)
+{
+	return (Spinner*)w;
+}
+
+
+Static*				ceguiLua_toStatic(Window* w)
+{
+	return (Static*)w;
+}
+
+
+StaticImage*		ceguiLua_toStaticImage(Window* w)
+{
+	return (StaticImage*)w;
+}
+
+
+StaticText*			ceguiLua_toStaticText(Window* w)
+{
+	return (StaticText*)w;
+}
+
+
+TabButton*			ceguiLua_toTabButton(Window* w)
+{
+	return (TabButton*)w;
+}
+
+
+TabControl*			ceguiLua_toTabControl(Window* w)
+{
+	return (TabControl*)w;
+}
+
+
+TabPane*			ceguiLua_toTabPane(Window* w)
+{
+	return (TabPane*)w;
+}
+
+
+Thumb*				ceguiLua_toThumb(Window* w)
+{
+	return (Thumb*)w;
+}
+
+
+Tooltip*			ceguiLua_toTooltip(Window* w)
+{
+	return (Tooltip*)w;
+}
+
+
+/*************************************************************************
+	Functions for getting Thumb range pairs as two return values
+*************************************************************************/
+
+// returns horizontal range as two values for lua
+void ceguiLua_Thumb_getHorzRange(Thumb* wnd, float* min, float* max)
+{
+	std::pair<float,float> range_pair = wnd->getHorzRange();
+	*min = range_pair.first;
+	*max = range_pair.second;
+}
+
+
+// returns vertical range as two values for lua
+void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max)
+{
+	std::pair<float,float> range_pair = wnd->getVertRange();
+	*min = range_pair.first;
+	*max = range_pair.second;
+}
+
+
+/*************************************************************************
+	Functions for creating list box items
+*************************************************************************/
+
+// allocates and returns a new ListboxTextItem
+ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete)
+{
+	return new ListboxTextItem(text,item_id,item_data,disabled,auto_delete);
 }
 
 

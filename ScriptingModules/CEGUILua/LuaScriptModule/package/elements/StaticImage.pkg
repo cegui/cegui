@@ -1,0 +1,38 @@
+/***********************************************************************
+	StaticImage
+***********************************************************************/
+class StaticImage : public Static
+{
+	enum HorzFormatting
+	{
+		LeftAligned,
+		RightAligned,
+		HorzCentred,
+		HorzStretched,
+		HorzTiled
+	};
+
+	enum VertFormatting
+	{
+		TopAligned,
+		BottomAligned,
+		VertCentred,
+		VertStretched,
+		VertTiled
+	};
+
+	const Image* getImage() const;
+	void setImage(string imagesetname, string imagename);
+	void setImage(const Image* image);
+
+	ColourRect getImageColours() const;
+	void setImageColours(const colour& tl, const colour& tr, const colour& bl, const colour& br);
+	void setImageColours(const ColourRect& colurs);
+	void setImageColours(const colour& col);
+
+	HorzFormatting getHorizontalFormatting() const;
+	VertFormatting getVerticalFormatting() const;
+	void setFormatting(HorzFormatting h_fmt, VertFormatting v_fmt);
+	void setHorizontalFormatting(HorzFormatting h_fmt);
+	void setVerticalFormatting(VertFormatting v_fmt);
+};

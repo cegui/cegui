@@ -1,0 +1,34 @@
+/***********************************************************************
+	FrameWindow
+***********************************************************************/
+class FrameWindow : public Window
+{
+	bool isSizingEnabled() const;
+	bool isFrameEnabled() const;
+	bool isTitleBarEnabled() const;
+	bool isCloseButtonEnabled() const;
+	bool isRollupEnabled() const;
+	bool isRolledup() const;
+	bool isDragMovingEnabled() const;
+
+	void setSizingEnabled(bool enabled);
+	void setFrameEnabled(bool enabled);
+	void setTitleBarEnabled(bool enabled);
+	void setCloseButtonEnabled(bool enabled);
+	void setRollupEnabled(bool enabled);
+	void setDragMovingEnabled(bool enabled);
+
+	float getSizingBorderThickness() const;
+	void setSizingBorderThickness(float pixels);
+
+	void toggleRollup();
+
+	void setTitlebarFont(string name);
+	void setTitlebarFont(Font* font);
+	const Font* getTitlebarFont() const;
+
+	colour getCaptionColour() const;
+	void setCaptionColour(const colour& col);
+
+	void offsetPixelPosition(const Vector2& offset);
+};

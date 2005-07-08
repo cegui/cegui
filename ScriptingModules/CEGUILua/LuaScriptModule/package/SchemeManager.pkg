@@ -1,7 +1,10 @@
+/***********************************************************************
+	SchemeManager
+***********************************************************************/
 class SchemeManager
 {
 	static SchemeManager& getSingleton();
-	
+
 	Scheme* loadScheme(string filename, string resourcegroup="");
 	void unloadScheme(string name);
 	bool isSchemePresent(string name) const;

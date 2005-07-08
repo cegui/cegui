@@ -1,0 +1,17 @@
+/***********************************************************************
+	Scrollbar
+***********************************************************************/
+class Scrollbar : public Window
+{
+	float getDocumentSize() const;
+	float getPageSize() const;
+	float getStepSize() const;
+	float getOverlapSize() const;
+	float getScrollPosition() const;
+
+	void setDocumentSize(float document_size);
+	void setPageSize(float page_size);
+	void setStepSize(float step_size);
+	void setOverlapSize(float overlap_size);
+	void setScrollPosition(float position);
+};

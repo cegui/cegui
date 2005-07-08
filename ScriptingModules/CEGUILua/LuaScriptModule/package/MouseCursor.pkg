@@ -1,39 +1,34 @@
+/***********************************************************************
+	MouseCursorImage
+***********************************************************************/
 enum MouseCursorImage
 {
 	BlankMouseCursor	= 0,
 	DefaultMouseCursor	= -1
 };
 
-class MouseCursor
+
+
+/***********************************************************************
+	MouseCursor
+***********************************************************************/
+class MouseCursor : public EventSet
 {
 	static MouseCursor& getSingleton();
-	
+
 	void setImage(const Image* image);
 	void setImage(string imageset, string image);
 	const Image* getImage() const;
-	
+
 	void setPosition(const Point& pos);
 	void offsetPosition(const Point& offset);
 	void setConstraintArea(const Rect* area);
 	Point getPosition() const;
 	Rect getConstraintArea() const;
 	Point getDisplayIndependantPosition() const;
-	
+
 	void hide();
 	void show();
-	
+
 	bool isVisible() const;
-	
-	// EventSet - inheritance crashes
-	//////////////////////////////////
-	void addEvent(string name);
-	void removeEvent(string name);
-	void removeAllEvents();
-	bool isEventPresent(string name);
-	
-	void subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
-	void fireEvent(string name, EventArgs& args, string eventnamespace="");
-	
-	bool isMuted() const;
-	void setMutedState(bool setting);
 };

@@ -1,0 +1,54 @@
+/****************************************************
+	EventArgs casting helper functions.
+	These are not part of the core CEGUI API, merely here for
+	convenience
+*****************************************************/
+const MouseCursorEventArgs&		ceguiLua_toMouseCursorEventArgs @ toMouseCursorEventArgs(const EventArgs& e);
+const WindowEventArgs&			ceguiLua_toWindowEventArgs @ toWindowEventArgs(const EventArgs& e);
+const ActivationEventArgs&		ceguiLua_toActivationEventArgs @ toActivationEventArgs(const EventArgs& e);
+const HeaderSequenceEventArgs&	ceguiLua_toHeaderSequenceEventArgs @ toHeaderSequenceEventArgs(const EventArgs& e);
+const MouseEventArgs&			ceguiLua_toMouseEventArgs @ toMouseEventArgs(const EventArgs& e);
+
+
+/****************************************************
+	Functions for easy casting CEGUI::Window class
+	to the widget classes derived from it.
+	These are not part of the core CEGUI API, merely here for
+	convenience
+*****************************************************/
+ButtonBase*			ceguiLua_toButtonBase @ toButtonBase(Window* w);
+Checkbox*			ceguiLua_toCheckbox @ toCheckbox(Window* w);
+Combobox*			ceguiLua_toCombobox @ toCombobox(Window* w);
+ComboDropList*		ceguiLua_toComboDropList @ toComboDropList(Window* w);
+DragContainer*		ceguiLua_toDragContainer @ toDragContainer(Window* w);
+Editbox*			ceguiLua_toEditbox @ toEditbox(Window* w);
+FrameWindow*		ceguiLua_toFrameWindow @ toFrameWindow(Window* w);
+GUISheet*			ceguiLua_toGUISheet @ toGUISheet(Window* w);
+Listbox*			ceguiLua_toListbox @ toListbox(Window* w);
+ListHeader*			ceguiLua_toListHeader @ toListHeader(Window* w);
+ListHeaderSegment*	ceguiLua_toListHeaderSegment @ toListHeaderSegment(Window* w);
+MultiColumnList*	ceguiLua_toMultiColumnList @ toMultiColumnList(Window* w);
+MultiLineEditbox*	ceguiLua_toMultiLineEditbox @ toMultiLineEditbox(Window* w);
+ProgressBar*		ceguiLua_toProgressBar @ toProgressBar(Window* w);
+PushButton*			ceguiLua_toPushButton @ toPushButton(Window* w);
+RadioButton*		ceguiLua_toRadioButton @ toRadioButton(Window* w);
+ScrollablePane*		ceguiLua_toScrollablePane @ toScrollablePane(Window* w);
+Scrollbar*			ceguiLua_toScrollbar @ toScrollbar(Window* w);
+ScrolledContainer*	ceguiLua_toScrolledContainer @ toScrolledContainer(Window* w);
+Slider*				ceguiLua_toSlider @ toSlider(Window* w);
+Spinner*			ceguiLua_toSpinner @ toSpinner(Window* w);
+Static*				ceguiLua_toStatic @ toStatic(Window* w);
+StaticImage*		ceguiLua_toStaticImage @ toStaticImage(Window* w);
+StaticText*			ceguiLua_toStaticText @ toStaticText(Window* w);
+TabButton*			ceguiLua_toTabButton @ toTabButton(Window* w);
+TabControl*			ceguiLua_toTabControl @ toTabControl(Window* w);
+TabPane*			ceguiLua_toTabPane @ toTabPane(Window* w);
+Thumb*				ceguiLua_toThumb @ toThumb(Window* w);
+Tooltip*			ceguiLua_toTooltip @ toTooltip(Window* w);
+
+
+/****************************************************
+	Helper to create a ListboxTextItem.
+	Mimics the constructor
+*****************************************************/
+ListboxTextItem* ceguiLua_createListboxTextItem @ createListboxTextItem(string text, unsigned int item_id=0, void* item_data=NULL, bool disabled=false, bool auto_delete=true);
