@@ -25,6 +25,10 @@ noinst_HEADERS = FalButton.h \
                  FalSpinner.h \
                  FalStaticImage.h \
                  FalStaticText.h \
+                 FalTabButton.h \
+                 FalTabControl.h \
+                 FalTabControlProperties.h \
+                 FalTabPane.h \
                  FalThumb.h \
                  FalTitlebar.h \
                  FalTooltip.h

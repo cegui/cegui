@@ -88,26 +88,19 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    ScrollablePane* w = static_cast<ScrollablePane*>(winMgr.createWindow("TaharezLook/ScrollablePane", "widget1"));
+    ScrollablePane* w = static_cast<ScrollablePane*>(winMgr.createWindow("TaharezLook/TabControl", "widget1"));
     wid->addChildWindow(w);
 
     // set some basic things for the widget.
-    w->setPosition(Point(0.0f, 0.1f));
-    w->setSize(Size(1, 0.9f));
+    w->setPosition(Point(0.25f, 0.25f));
+    w->setSize(Size(0.5f, 0.5f));
 
-    PushButton* btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "button1"));
-    w->addChildWindow(btn);
-    // set some basic things for the widget.
-    btn->setPosition(Point(0.1f, 0.2f));
-    btn->setSize(Size(0.5f, 0.075f));
-    btn->setText("Don't Push Me!");
-
-    btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "button2"));
-    w->addChildWindow(btn);
-    // set some basic things for the widget.
-    btn->setPosition(Point(0.75f, 0.5f));
-    btn->setSize(Size(0.5f, 0.075f));
-    btn->setText("Push Me!");
+    Window* pane = winMgr.createWindow("DefaultWindow", "p1");
+    pane->setText("Pane.1");
+    w->addChildWindow(pane);
+    pane = winMgr.createWindow("DefaultWindow", "p2");
+    pane->setText("Pane.2");
+    w->addChildWindow(pane);
 
     // success!
     return true;

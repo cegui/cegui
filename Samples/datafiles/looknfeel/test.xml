@@ -2561,4 +2561,361 @@
         <StateImagery name="Disabled" />
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/TabButton">
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="WordWrapCentreAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonUpperLeftNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonUpperRightNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLowerLeftNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLowerRightNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLeftNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonRightNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonUpperNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLowerNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonMiddleNormal" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selected">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonUpperLeftSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonUpperRightSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLowerLeftSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLowerRightSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLeftSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonRightSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonUpperSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonLowerSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-14" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabButtonMiddleSelected" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="selected" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Selected">
+            <Layer>
+                <Section section="selected" />
+                <Section section="label">
+                    <ColourProperty name="PushedTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/TabPane">
+        <Property name="RiseOnClick" value="False" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabPaneLowerLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabPaneLowerRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-7" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabPaneLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-7" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-7" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabPaneRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-7" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="7" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabPaneLower" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="7" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-14" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-7" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabPaneMiddle" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="1" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="TabControlButtonPaneFiller" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/TabControl">
+        <Property name="TabButtonType" value="TaharezLook/TabButton" />
+        <Property name="TabHeight" value="0.14" />
+        <Child  type="TaharezLook/TabPane" nameSuffix="__auto_TabPane__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+        </Child>
+        <Child  type="DefaultWindow" nameSuffix="__auto_TabPane__Buttons">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="1" /></Dim>
+            </Area>
+        </Child>
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+    </WidgetLook>
+
 </Falagard>

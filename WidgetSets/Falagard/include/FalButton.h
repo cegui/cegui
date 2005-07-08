@@ -42,11 +42,6 @@ namespace CEGUI
             - Hover     - Rendering for then the button has the mouse hovering over it.
             - Pushed    - Rendering for when the button is pushed.
             - Disabled  - Rendering for when the button is disabled.
-
-    \note
-        This still needs to be updated to support some of the imagery settings and custom assignable images in
-        the PushButton class.  Now everyone will start to see why I was so reluctant to put the damned settings
-        in to begin with - but nobody would listen :'(
     */
     class FALAGARDBASE_API FalagardButton : public PushButton
     {

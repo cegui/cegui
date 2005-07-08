@@ -398,19 +398,25 @@ protected:
     \brief
     create and return a pointer to a TabPane widget for use as content area
 
+    \param name
+    String holding the name to be given to the new component.
+
     \return
     Pointer to a TabPane to be used for holding the main content.
     */
-    virtual TabPane*	createTabContentPane(void) const		= 0;
+    virtual TabPane*	createTabContentPane(const String& name) const		= 0;
 
     /*!
     \brief
         create and return a pointer to a widget for use as tab button area
 
+    \param name
+    String holding the name to be given to the new component.
+
     \return
         Pointer to a Static to be used for holding the tab buttons.
     */
-    virtual Window*	createTabButtonPane(void) const;
+    virtual Window*	createTabButtonPane(const String& name) const;
 
     /*!
     \brief

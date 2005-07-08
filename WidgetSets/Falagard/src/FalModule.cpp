@@ -44,6 +44,9 @@
 #include "FalSpinner.h"
 #include "FalStaticImage.h"
 #include "FalStaticText.h"
+#include "FalTabButton.h"
+#include "FalTabControl.h"
+#include "FalTabPane.h"
 #include "FalThumb.h"
 #include "FalTitlebar.h"
 #include "FalTooltip.h"
@@ -70,6 +73,9 @@ static CEGUI::FalagardSliderFactory             s_SliderFactory;
 static CEGUI::FalagardSpinnerFactory            s_SpinnerFactory;
 static CEGUI::FalagardStaticImageFactory        s_StaticImageFactory;
 static CEGUI::FalagardStaticTextFactory         s_StaticTextFactory;
+static CEGUI::FalagardTabButtonFactory          s_TabButtonFactory;
+static CEGUI::FalagardTabControlFactory         s_TabControlFactory;
+static CEGUI::FalagardTabPaneFactory          s_TabPaneFactory;
 static CEGUI::FalagardThumbFactory              s_ThumbFactory;
 static CEGUI::FalagardTitlebarFactory           s_TitlebarFactory;
 static CEGUI::FalagardTooltipFactory            s_TooltipFactory;
@@ -104,6 +110,9 @@ mapEntry factoriesMap[] =
     {FalagardSpinner::WidgetTypeName, &s_SpinnerFactory},
     {FalagardStaticImage::WidgetTypeName, &s_StaticImageFactory},
     {FalagardStaticText::WidgetTypeName, &s_StaticTextFactory},
+    {FalagardTabButton::WidgetTypeName, &s_TabButtonFactory},
+    {FalagardTabControl::WidgetTypeName, &s_TabControlFactory},
+    {FalagardTabPane::WidgetTypeName, &s_TabPaneFactory},
     {FalagardThumb::WidgetTypeName, &s_ThumbFactory},
     {FalagardTitlebar::WidgetTypeName, &s_TitlebarFactory},
     {FalagardTooltip::WidgetTypeName, &s_TooltipFactory},

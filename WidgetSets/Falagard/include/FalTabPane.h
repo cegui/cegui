@@ -1,6 +1,6 @@
 /************************************************************************
-    filename:   FalScrollablePane.h
-    created:    Thu Jul 7 2005
+    filename:   FalTabPane.h
+    created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
@@ -21,35 +21,27 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalScrollablePane_h_
-#define _FalScrollablePane_h_
+#ifndef _FalTabPane_h_
+#define _FalTabPane_h_
 
 #include "FalModule.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUIScrollablePane.h"
+#include "elements/CEGUITabPane.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        ScrollablePane class for the FalagardBase module.
+        TabPane class for the FalagardBase module.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States:
             - Enabled
             - Disabled
-
-        Named Areas:
-            ViewableArea
-
-        Child Widgets:
-            Scrollbar based widget with name suffix "__auto_vscrollbar__"
-            Scrollbar based widget with name suffix "__auto_hscrollbar__"
-
     */
-    class FALAGARDBASE_API FalagardScrollablePane : public ScrollablePane
+    class FALAGARDBASE_API FalagardTabPane : public TabPane
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
@@ -58,36 +50,33 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardScrollablePane(const String& type, const String& name);
+        FalagardTabPane(const String& type, const String& name);
 
         /*!
         \brief
             Destructor
         */
-        ~FalagardScrollablePane();
+        ~FalagardTabPane();
 
     protected:
-        // overridden from ScrollablePane base class.
+        // overridden from TabPane base class.
         void populateRenderCache();
-        Scrollbar* createVerticalScrollbar(const String& name) const;
-        Scrollbar* createHorizontalScrollbar(const String& name) const;
-        void layoutComponentWidgets();
-        Rect getViewableArea(void) const;
     };
 
     /*!
     \brief
-        WindowFactory for FalagardScrollablePane type Window objects.
+        WindowFactory for FalagardTabPane type Window objects.
     */
-    class FALAGARDBASE_API FalagardScrollablePaneFactory : public WindowFactory
+    class FALAGARDBASE_API FalagardTabPaneFactory : public WindowFactory
     {
     public:
-        FalagardScrollablePaneFactory(void) : WindowFactory(FalagardScrollablePane::WidgetTypeName) { }
-        ~FalagardScrollablePaneFactory(void){}
+        FalagardTabPaneFactory(void) : WindowFactory(FalagardTabPane::WidgetTypeName) { }
+        ~FalagardTabPaneFactory(void){}
         Window* createWindow(const String& name);
         void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section
 
-#endif
+
+#endif  // end of guard _FalTabPane_h_

@@ -1,6 +1,6 @@
 /************************************************************************
-    filename:   FalScrollablePane.h
-    created:    Thu Jul 7 2005
+    filename:   FalTabButton.h
+    created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
@@ -21,35 +21,29 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalScrollablePane_h_
-#define _FalScrollablePane_h_
+#ifndef _FalTabButton_h_
+#define _FalTabButton_h_
 
 #include "FalModule.h"
+#include "elements/CEGUITabButton.h"
 #include "CEGUIWindowFactory.h"
-#include "elements/CEGUIScrollablePane.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        ScrollablePane class for the FalagardBase module.
+        TabButton class for the FalagardBase module.
 
-        This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
+        This calss requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
-        States:
-            - Enabled
-            - Disabled
-
-        Named Areas:
-            ViewableArea
-
-        Child Widgets:
-            Scrollbar based widget with name suffix "__auto_vscrollbar__"
-            Scrollbar based widget with name suffix "__auto_hscrollbar__"
-
+        States (missing states will default to 'Normal'):
+            - Normal    - Rendering for when the tab button is neither selected nor has the mouse hovering over it.
+            - Hover     - Rendering for then the tab button has the mouse hovering over it.
+            - Selected  - Rendering for when the tab button is the button for the selected tab.
+            - Disabled  - Rendering for when the tab button is disabled.
     */
-    class FALAGARDBASE_API FalagardScrollablePane : public ScrollablePane
+    class FALAGARDBASE_API FalagardTabButton : public TabButton
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
@@ -58,36 +52,41 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardScrollablePane(const String& type, const String& name);
+        FalagardTabButton(const String& type, const String& name);
 
         /*!
         \brief
             Destructor
         */
-        ~FalagardScrollablePane();
+        ~FalagardTabButton();
+
+        // overridden from TabButton base class.
+        void drawSelf(float z);
+
+        // implementation of abstract methods in TabButton base class.
+        void drawNormal(float z);
+        void drawHover(float z);
+        void drawPushed(float z);
+        void drawDisabled(float z);
 
     protected:
-        // overridden from ScrollablePane base class.
-        void populateRenderCache();
-        Scrollbar* createVerticalScrollbar(const String& name) const;
-        Scrollbar* createHorizontalScrollbar(const String& name) const;
-        void layoutComponentWidgets();
-        Rect getViewableArea(void) const;
+        void doTabButtonRender(const String& state);
     };
 
     /*!
     \brief
-        WindowFactory for FalagardScrollablePane type Window objects.
+        WindowFactory for FalagardTabButton type Window objects.
     */
-    class FALAGARDBASE_API FalagardScrollablePaneFactory : public WindowFactory
+    class FALAGARDBASE_API FalagardTabButtonFactory : public WindowFactory
     {
     public:
-        FalagardScrollablePaneFactory(void) : WindowFactory(FalagardScrollablePane::WidgetTypeName) { }
-        ~FalagardScrollablePaneFactory(void){}
+        FalagardTabButtonFactory(void) : WindowFactory(FalagardTabButton::WidgetTypeName) { }
+        ~FalagardTabButtonFactory(void){}
         Window* createWindow(const String& name);
         void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section
 
-#endif
+
+#endif  // end of guard _FalTabButton_h_
