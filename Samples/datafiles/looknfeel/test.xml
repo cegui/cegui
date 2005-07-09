@@ -2918,4 +2918,323 @@
         <StateImagery name="Disabled" />
     </WidgetLook>
 
+    <WidgetLook name="TaharezLook/MenuItem">
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="LeftAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="frame">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="2" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuTopLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-3" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="2" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuTopRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-3" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="3" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-3" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-3" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="3" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-5" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-3" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="3" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-5" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-5" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="2" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuTop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-3" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-5" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="3" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuBottom" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-5" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-5" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="MenuMiddle" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="popup_arrow_right">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-8" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuArrowRight" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="popup_arrow_left">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-8" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuArrowLeft" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="EnabledNormal">
+            <Layer>
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledHover">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledPushed">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledPopupOpen">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNormal">
+            <Layer>
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledHover">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledPushed">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledPopupOpen">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PopupClosedIcon">
+            <Layer>
+                <Section section="popup_arrow_right" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PopupOpenIcon">
+            <Layer>
+                <Section section="popup_arrow_left" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="TaharezLook/PopupMenu">
+        <NamedArea name="ItemRenderArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="3" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="3" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-5" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-5" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="frame">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="2" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameTopLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-3" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="4" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="2" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameTopRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-4" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="4" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-4" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-4" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="4" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="4" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-6" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-4" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="4" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-6" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-6" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="2" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameTop" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-4" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-6" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="4" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuFrameBottom" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-6" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-6" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="PopupMenuMiddle" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="frame" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="frame" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
 </Falagard>

@@ -210,4 +210,24 @@
 	<Image Name="TooltipTopEdge" XPos="72" YPos="160" Width="6" Height="4" />
 	<Image Name="TooltipBottomEdge" XPos="72" YPos="184" Width="6" Height="5" />
 	<Image Name="TooltipMiddle" XPos="72" YPos="171" Width="6" Height="6" />
+	<Image Name="MenuTopLeft" XPos="166" YPos="204" Width="2" Height="2" />
+	<Image Name="MenuTopRight" XPos="175" YPos="204" Width="3" Height="2" />
+	<Image Name="MenuBottomLeft" XPos="166" YPos="213" Width="2" Height="3" />
+	<Image Name="MenuBottomRight" XPos="175" YPos="213" Width="3" Height="3" />
+	<Image Name="MenuLeft" XPos="166" YPos="209" Width="2" Height="1" />
+	<Image Name="MenuRight" XPos="175" YPos="209" Width="3" Height="1" />
+	<Image Name="MenuTop" XPos="171" YPos="204" Width="1" Height="2" />
+	<Image Name="MenuBottom" XPos="171" YPos="213" Width="1" Height="3" />
+	<Image Name="MenuMiddle" XPos="171" YPos="209" Width="1" Height="1" />
+	<Image Name="PopupMenuFrameTopLeft" XPos="186" YPos="204" Width="2" Height="2" />
+	<Image Name="PopupMenuFrameTopRight" XPos="195" YPos="204" Width="4" Height="2" />
+	<Image Name="PopupMenuFrameBottomLeft" XPos="186" YPos="213" Width="2" Height="4" />
+	<Image Name="PopupMenuFrameBottomRight" XPos="195" YPos="213" Width="4" Height="4" />
+	<Image Name="PopupMenuFrameLeft" XPos="186" YPos="209" Width="2" Height="1" />
+	<Image Name="PopupMenuFrameRight" XPos="195" YPos="209" Width="4" Height="1" />
+	<Image Name="PopupMenuFrameTop" XPos="191" YPos="204" Width="1" Height="2" />
+	<Image Name="PopupMenuFrameBottom" XPos="191" YPos="213" Width="1" Height="4" />
+	<Image Name="PopupMenuMiddle" XPos="191" YPos="209" Width="1" Height="1" />
+	<Image Name="PopupMenuArrowRight" XPos="179" YPos="204" Width="5" Height="5" />
+	<Image Name="PopupMenuArrowLeft" XPos="179" YPos="210" Width="5" Height="5" />
 </Imageset>

@@ -14,10 +14,13 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalListHeaderSegment.cpp \
                                   FalListHeaderSegmentProperties.cpp \
                                   FalListbox.cpp \
+                                  FalMenuBar.cpp \
+                                  FalMenuItem.cpp \
                                   FalModule.cpp \
                                   FalMultiColumnList.cpp \
                                   FalMultiLineEditbox.cpp \
                                   FalMultiLineEditboxProperties.cpp \
+                                  FalPopupMenu.cpp \
                                   FalProgressBar.cpp \
                                   FalProgressBarProperties.cpp \
                                   FalRadioButton.cpp \

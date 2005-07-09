@@ -34,8 +34,11 @@
 #include "FalListHeader.h"
 #include "FalListHeaderSegment.h"
 #include "FalListbox.h"
+#include "FalMenuBar.h"
+#include "FalMenuItem.h"
 #include "FalMultiColumnList.h"
 #include "FalMultiLineEditbox.h"
+#include "FalPopupMenu.h"
 #include "FalProgressBar.h"
 #include "FalRadioButton.h"
 #include "FalScrollablePane.h"
@@ -63,8 +66,11 @@ static CEGUI::FalagardFrameWindowFactory        s_FrameWindowFactory;
 static CEGUI::FalagardListHeaderFactory         s_ListHeaderFactory;
 static CEGUI::FalagardListHeaderSegmentFactory  s_ListHeaderSegmentFactory;
 static CEGUI::FalagardListboxFactory            s_ListboxFactory;
+static CEGUI::FalagardMenubarFactory            s_MenubarFactory;
+static CEGUI::FalagardMenuItemFactory           s_MenuItemFactory;
 static CEGUI::FalagardMultiColumnListFactory    s_MultiColumnListFactory;
 static CEGUI::FalagardMultiLineEditboxFactory   s_MultiLineEditboxFactory;
+static CEGUI::FalagardPopupMenuFactory          s_PopupMenuFactory;
 static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
 static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
 static CEGUI::FalagardScrollablePaneFactory     s_ScrollablePaneFactory;
@@ -75,7 +81,7 @@ static CEGUI::FalagardStaticImageFactory        s_StaticImageFactory;
 static CEGUI::FalagardStaticTextFactory         s_StaticTextFactory;
 static CEGUI::FalagardTabButtonFactory          s_TabButtonFactory;
 static CEGUI::FalagardTabControlFactory         s_TabControlFactory;
-static CEGUI::FalagardTabPaneFactory          s_TabPaneFactory;
+static CEGUI::FalagardTabPaneFactory            s_TabPaneFactory;
 static CEGUI::FalagardThumbFactory              s_ThumbFactory;
 static CEGUI::FalagardTitlebarFactory           s_TitlebarFactory;
 static CEGUI::FalagardTooltipFactory            s_TooltipFactory;
@@ -100,8 +106,11 @@ mapEntry factoriesMap[] =
     {FalagardListHeader::WidgetTypeName, &s_ListHeaderFactory},
     {FalagardListHeaderSegment::WidgetTypeName, &s_ListHeaderSegmentFactory},
     {FalagardListbox::WidgetTypeName, &s_ListboxFactory},
+    {FalagardMenubar::WidgetTypeName, &s_MenubarFactory},
+    {FalagardMenuItem::WidgetTypeName, &s_MenuItemFactory},
     {FalagardMultiColumnList::WidgetTypeName, &s_MultiColumnListFactory},
     {FalagardMultiLineEditbox::WidgetTypeName, &s_MultiLineEditboxFactory},
+    {FalagardPopupMenu::WidgetTypeName, &s_PopupMenuFactory},
     {FalagardProgressBar::WidgetTypeName, &s_ProgressBarFactory},
     {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
     {FalagardScrollablePane::WidgetTypeName, &s_ScrollablePaneFactory},

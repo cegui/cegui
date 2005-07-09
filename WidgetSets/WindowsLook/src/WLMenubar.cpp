@@ -80,15 +80,14 @@ Rect WLMenubar::getItemRenderArea(void) const
 /*************************************************************************
 	Perform the actual rendering of this WLMenubar
 *************************************************************************/
-void WLMenubar::drawSelf(float z)
+void WLMenubar::populateRenderCache()
 {
-	Rect clipper = getPixelRect();
-
 	const Image& white = ImagesetManager::getSingleton().getImageset(ImagesetName)->getImage(BackgroundImageName);
 
 	ColourRect cols = d_backgroundColours;
 	cols.modulateAlpha(getEffectiveAlpha());
-	white.draw(clipper,z,clipper,cols);
+
+    d_renderCache.cacheImage(white, getAbsoluteRect(), 0, cols);
 }
 
 

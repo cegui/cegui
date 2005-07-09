@@ -88,19 +88,68 @@ bool FalagardDemo1Sample::initialiseSample()
     wid->setSize(Size(0.5f, 0.5f));
     wid->setText("This is a test of the Falagard system");
 
-    ScrollablePane* w = static_cast<ScrollablePane*>(winMgr.createWindow("TaharezLook/TabControl", "widget1"));
+    Menubar* w = static_cast<Menubar*>(winMgr.createWindow("TaharezLook/Menubar", "widget1"));
     wid->addChildWindow(w);
 
     // set some basic things for the widget.
     w->setPosition(Point(0.25f, 0.25f));
-    w->setSize(Size(0.5f, 0.5f));
+    w->setSize(Size(0.5f, 0.085f));
 
-    Window* pane = winMgr.createWindow("DefaultWindow", "p1");
-    pane->setText("Pane.1");
-    w->addChildWindow(pane);
-    pane = winMgr.createWindow("DefaultWindow", "p2");
-    pane->setText("Pane.2");
-    w->addChildWindow(pane);
+    MenuItem* item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "FileItem"));
+    item->setText("File");
+    w->addItem(item);
+
+    PopupMenu* popup = static_cast<PopupMenu*>(winMgr.createWindow("TaharezLook/PopupMenu", "FilePopup"));
+    item->addChildWindow(popup);
+
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "NewItem"));
+    item->setText("New");
+    popup->addItem(item);
+
+    PopupMenu* subpopup = static_cast<PopupMenu*>(winMgr.createWindow("TaharezLook/PopupMenu", "NewPopup"));
+    item->addChildWindow(subpopup);
+
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "NewProjectItem"));
+    item->setText("Project...");
+    subpopup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "NewFileItem"));
+    item->setText("File...");
+    subpopup->addItem(item);
+
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "OpenItem"));
+    item->setText("Open...");
+    popup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "SaveItem"));
+    item->setText("Save");
+    popup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "SaveAsItem"));
+    item->setText("Save As...");
+    popup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "CloseItem"));
+    item->setText("Close");
+    popup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "QuitItem"));
+    item->setText("Quit");
+    popup->addItem(item);
+
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "EditItem"));
+    item->setText("Edit");
+    w->addItem(item);
+
+    popup = static_cast<PopupMenu*>(winMgr.createWindow("TaharezLook/PopupMenu", "EditPopup"));
+    item->addChildWindow(popup);
+
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "CutItem"));
+    item->setText("Cut");
+    popup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "CopyItem"));
+    item->setText("Copy");
+    popup->addItem(item);
+    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "PasteItem"));
+    item->setText("Paste");
+    popup->addItem(item);
+
+
 
     // success!
     return true;

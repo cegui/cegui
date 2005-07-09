@@ -163,6 +163,12 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListbox.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalMenuBar.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalMenuItem.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalModule.cpp">
 			</File>
 			<File
@@ -173,6 +179,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalMultiLineEditboxProperties.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalPopupMenu.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalProgressBar.cpp">
@@ -267,6 +276,12 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListbox.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalMenuBar.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalMenuItem.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalModule.h">
 			</File>
 			<File
@@ -277,6 +292,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalMultiLineEditboxProperties.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalPopupMenu.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalProgressBar.h">
