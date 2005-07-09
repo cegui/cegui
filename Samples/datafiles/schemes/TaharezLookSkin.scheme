@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<GUIScheme Name="FalagardTest">
+<GUIScheme Name="TaharezLookSkin">
 	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
-	<LookNFeel Filename="../datafiles/looknfeel/test.xml" />
+	<LookNFeel Filename="../datafiles/looknfeel/TaharezLook.looknfeel" />
 	<WindowSet Filename="CEGUIFalagardBase" />
 	<FalagardMapping WindowType="TaharezLook/AltProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
 	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />

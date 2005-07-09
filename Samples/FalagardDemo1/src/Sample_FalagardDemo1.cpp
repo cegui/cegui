@@ -67,8 +67,8 @@ bool FalagardDemo1Sample::initialiseSample()
     // do usual simple setup stuff
     Logger::getSingleton().setLoggingLevel(Informative);
 
-    // Note the loading of a test scheme...
-    SchemeManager::getSingleton().loadScheme("../datafiles/schemes/FalagardTest.scheme");
+    // Load the TaharezLookSkin (which uses Falagard skinning system)
+    SchemeManager::getSingleton().loadScheme("../datafiles/schemes/TaharezLookSkin.scheme");
 
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     FontManager::getSingleton().createFont("../datafiles/fonts/Commonwealth-10.font");
