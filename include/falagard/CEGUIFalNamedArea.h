@@ -29,7 +29,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class NamedArea
+    class CEGUIBASE_API NamedArea
     {
     public:
         NamedArea() {}

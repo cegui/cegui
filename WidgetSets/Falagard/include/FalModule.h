@@ -43,6 +43,6 @@
     Prototypes
 *************************************************************************/
 extern "C" FALAGARDBASE_API void registerFactory(const CEGUI::String& type_name);
-extern "C" FALAGARDBASE_API uint registerAllFactories(void);
+extern "C" FALAGARDBASE_API CEGUI::uint registerAllFactories(void);
 
 #endif  // end of guard _FalModule_h_

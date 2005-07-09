@@ -35,7 +35,7 @@ namespace CEGUI
     \brief
         Class the encapsulates imagery for a given widget state.
     */
-    class StateImagery
+    class CEGUIBASE_API StateImagery
     {
     public:
         /*!

@@ -39,7 +39,7 @@ namespace CEGUI
     \brief
         Class that encapsulates look & feel information for a particular widget type.
     */
-    class WidgetLookFeel
+    class CEGUIBASE_API WidgetLookFeel
     {
     public:
         WidgetLookFeel(const String& name);
