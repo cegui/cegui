@@ -113,8 +113,8 @@ void RenderableImage::draw_impl(RenderCache& renderCache) const
     // get size of destination image(s)
     Size imgSize(getDestinationSize());
     // get starting co-ords for image(s)
-    float baseX = getBaseXCoord(imgSize);
-    float baseY = getBaseYCoord(imgSize);
+    float baseX = getBaseXCoord(imgSize) + d_area.d_left;
+    float baseY = getBaseYCoord(imgSize) + d_area.d_top;
     // get number of image (tiles) to draw
     uint horzTiles = getHorzTileCount();
     uint vertTiles = getVertTileCount();
