@@ -48,7 +48,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         // try and get imagery for the approprite state.
-        imagery = &wlf.getStateImagery(d_enabled ? "Normal" : "Disabled");
+        imagery = &wlf.getStateImagery(d_enabled ? (isReadOnly() ? "ReadOnly" : "Enabled") : "Disabled");
 
         // peform the rendering operation for the container.
         imagery->render(*this);

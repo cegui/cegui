@@ -38,8 +38,9 @@ namespace CEGUI
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States:
-            - Normal    - Rendering for when the button is neither pushed or has the mouse hovering over it.
-            - Disabled  - Rendering for when the button is disabled.
+            - Normal    - Rendering for when the editbox is in enabled and is in read-write mode.
+            - ReadOnly  - Rendering for when the editbox is in enabled and is in read-only mode.
+            - Disabled  - Rendering for when the editbox is disabled.
             - ActiveSelection   - additional state rendered for text selection (the imagery in this section is rendered within the selection area.)
             - InactiveSelection - additional state rendered for text selection (the imagery in this section is rendered within the selection area.)
 
