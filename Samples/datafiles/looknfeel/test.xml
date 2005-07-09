@@ -514,12 +514,36 @@
         <Property name="EWSizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="set:TaharezLook image:MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="set:TaharezLook image:MouseNeSwCursor" />
-        <NamedArea name="ClientArea">
+        <NamedArea name="ClientWithTitleWithFrame">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-10" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-25" type="Height" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientWithTitleNoFrame">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="BottomEdge" ><WidgetDim dimension="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientNoTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="1" /></Dim>
                 <Dim type="Width" ><UnifiedDim scale="1" offset="-10" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" offset="-2" type="Height" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientNoTitleNoFrame">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
         </NamedArea>
         <Child type="TaharezLook/Titlebar" nameSuffix="__auto_titlebar__">
@@ -531,7 +555,7 @@
             </Area>
             <Property name="AlwaysOnTop" value="False" />
         </Child>
-        <Child type="TaharezLook/Button" nameSuffix="__auto_closebutton__">
+        <Child type="TaharezLook/SystemButton" nameSuffix="__auto_closebutton__">
             <Area>
                 <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-25" type="LeftEdge" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="5" /></Dim>
@@ -539,13 +563,69 @@
                 <Dim type="Height" ><AbsoluteDim value="10" /></Dim>
             </Area>
             <Property name="AlwaysOnTop" value="True" />
-            <Property name="ClippedByParent" value="True" />
             <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:NewCloseButtonNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:NewCloseButtonHover" />
             <Property name="PushedImage" value="set:TaharezLook image:NewCloseButtonPressed" />
         </Child>
-        <ImagerySection name="frame">
+        <ImagerySection name="withtitle_frame">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-24" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="24" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="WindowBottomLeft" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-5" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-24" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="24" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="WindowBottomRight" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="1" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-49" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="WindowLeftEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-1" type="LeftEdge" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="Width" ><AbsoluteDim value="1" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-49" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="WindowRightEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="TopEdge" ><UnifiedDim scale="1" offset="-1" type="TopEdge" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-10" type="Width" /></Dim>
+                    <Dim type="Height" ><AbsoluteDim value="1" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="WindowBottomEdge" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="notitle_frame">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -635,7 +715,20 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <ImagerySection name="client_area">
+        <ImagerySection name="withtitle_withframe_client_area">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" offset="-10" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-26" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ClientBrush" />
+                <VertFormat type="Tiled" />
+                <HorzFormat type="Tiled" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="notitle_withframe_client_area">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
@@ -648,22 +741,96 @@
                 <HorzFormat type="Tiled" />
             </ImageryComponent>
         </ImagerySection>
-        <StateImagery name="Active">
+        <ImagerySection name="withtitle_noframe_client_area">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" offset="-25" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ClientBrush" />
+                <VertFormat type="Tiled" />
+                <HorzFormat type="Tiled" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="notitle_noframe_client_area">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="ClientBrush" />
+                <VertFormat type="Tiled" />
+                <HorzFormat type="Tiled" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="ActiveWithTitleWithFrame">
             <Layer>
-                <Section section="frame" />
-                <Section section="client_area" />
+                <Section section="withtitle_frame" />
+                <Section section="withtitle_withframe_client_area" />
             </Layer>
         </StateImagery>
-        <StateImagery name="Inactive">
+        <StateImagery name="InactiveWithTitleWithFrame">
             <Layer>
-                <Section section="frame" />
-                <Section section="client_area" />
+                <Section section="withtitle_frame" />
+                <Section section="withtitle_withframe_client_area" />
             </Layer>
         </StateImagery>
-        <StateImagery name="Disabled">
+        <StateImagery name="DisabledWithTitleWithFrame">
             <Layer>
-                <Section section="frame" />
-                <Section section="client_area" />
+                <Section section="withtitle_frame" />
+                <Section section="withtitle_withframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveWithTitleNoFrame">
+            <Layer>
+                <Section section="withtitle_noframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveWithTitleNoFrame">
+            <Layer>
+                <Section section="withtitle_noframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledWithTitleNoFrame">
+            <Layer>
+                <Section section="withtitle_noframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveNoTitleWithFrame">
+            <Layer>
+                <Section section="notitle_frame" />
+                <Section section="notitle_withframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveNoTitleWithFrame">
+            <Layer>
+                <Section section="notitle_frame" />
+                <Section section="notitle_withframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNoTitleWithFrame">
+            <Layer>
+                <Section section="notitle_frame" />
+                <Section section="notitle_withframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveNoTitleNoFrame">
+            <Layer>
+                <Section section="notitle_noframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveNoTitleNoFrame">
+            <Layer>
+                <Section section="notitle_noframe_client_area" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNoTitleNoFrame">
+            <Layer>
+                <Section section="notitle_noframe_client_area" />
             </Layer>
         </StateImagery>
     </WidgetLook>

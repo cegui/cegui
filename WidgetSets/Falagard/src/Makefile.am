@@ -32,6 +32,7 @@ libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalSpinner.cpp \
                                   FalStaticImage.cpp \
                                   FalStaticText.cpp \
+                                  FalSystemButton.cpp \
                                   FalTabButton.cpp \
                                   FalTabControl.cpp \
                                   FalTabControlProperties.cpp \

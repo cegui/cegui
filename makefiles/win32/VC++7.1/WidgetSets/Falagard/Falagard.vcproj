@@ -217,6 +217,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStaticText.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalSystemButton.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalTabButton.cpp">
 			</File>
 			<File
@@ -328,6 +331,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStaticText.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalSystemButton.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalTabButton.h">

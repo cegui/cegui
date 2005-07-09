@@ -151,7 +151,9 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 {
     try
     {
-        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setEnabled(setting);
+        Window* titlebar = WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__");
+        titlebar->setEnabled(setting);
+        titlebar->setVisible(setting);
     }
     catch (UnknownObjectException)
     {}
@@ -165,7 +167,9 @@ void FrameWindow::setCloseButtonEnabled(bool setting)
 {
     try
     {
-        WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__")->setEnabled(setting);
+        Window* closebtn = WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__");
+        closebtn->setEnabled(setting);
+        closebtn->setVisible(setting);
     }
     catch (UnknownObjectException)
     {}

@@ -1,6 +1,6 @@
 /************************************************************************
-    filename:   FalMenubar.cpp
-    created:    Fri Jul 8 2005
+    filename:   FalSystemButton.cpp
+    created:    Sat Jul 9 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
@@ -21,56 +21,35 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "FalMenuBar.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "FalSystemButton.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const utf8 FalagardMenubar::WidgetTypeName[] = "Falagard/Menubar";
+    const utf8 FalagardSystemButton::WidgetTypeName[] = "Falagard/SystemButton";
 
-    FalagardMenubar::FalagardMenubar(const String& type, const String& name) :
-        Menubar(type, name)
+    FalagardSystemButton::FalagardSystemButton(const String& type, const String& name) :
+        FalagardButton(type, name)
     {
     }
 
-    FalagardMenubar::~FalagardMenubar()
+    FalagardSystemButton::~FalagardSystemButton()
     {
     }
 
-    void FalagardMenubar::populateRenderCache()
+    Rect FalagardSystemButton::getPixelRect(void) const
     {
-        const StateImagery* imagery;
-
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_enabled ? "Enabled" : "Disabled");
-        // peform the rendering operation.
-        imagery->render(*this);
+        // clip to grand-parent as needed
+        if (d_parent && d_parent->getParent() && isClippedByParent())
+        {
+            return d_parent->getParent()->getInnerRect().getIntersection(getUnclippedPixelRect());
+        }
+        // clip to screen if no grand-parent, or if clipping has been disabled for us.
+        else
+        {
+            return System::getSingleton().getRenderer()->getRect().getIntersection(getUnclippedPixelRect());
+        }
     }
-
-    void FalagardMenubar::sizeToContent_impl(void)
-    {
-        Rect renderArea(getItemRenderArea());
-        Rect wndArea(getAbsoluteRect());
-
-        // get size of content
-        Size sz(getContentSize());
-
-        // calculate the full size with the frame accounted for and resize the window to this
-        sz.d_width  += wndArea.getWidth() - renderArea.getWidth();
-        sz.d_height += wndArea.getHeight() - renderArea.getHeight();
-        setSize(Absolute,sz);
-    }
-
-    Rect FalagardMenubar::getItemRenderArea(void) const
-    {
-        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*this);
-    }
-
 
     //////////////////////////////////////////////////////////////////////////
     /*************************************************************************
@@ -79,15 +58,16 @@ namespace CEGUI
 
     *************************************************************************/
     //////////////////////////////////////////////////////////////////////////
-    Window* FalagardMenubarFactory::createWindow(const String& name)
+    Window* FalagardSystemButtonFactory::createWindow(const String& name)
     {
-        return new FalagardMenubar(d_type, name);
+        return new FalagardSystemButton(d_type, name);
     }
 
-    void FalagardMenubarFactory::destroyWindow(Window* window)
+    void FalagardSystemButtonFactory::destroyWindow(Window* window)
     {
         if (window->getType() == d_type)
             delete window;
     }
+
 
 } // End of  CEGUI namespace section

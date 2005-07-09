@@ -189,6 +189,10 @@ namespace CEGUI
         case VTF_BOTTOM_ALIGNED:
             destRect.d_top = destRect.d_bottom - textHeight;
             break;
+
+        default:
+            // default is VTF_TOP_ALIGNED, for which we take no action.
+            break;
         }
 
         // add text to the rendering cache for the target window.

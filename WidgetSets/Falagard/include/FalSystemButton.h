@@ -1,6 +1,6 @@
 /************************************************************************
-    filename:   FalFrameWindow.h
-    created:    Sat Jul 2 2005
+    filename:   FalSystemButton.h
+    created:    Sat Jul 9 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
@@ -21,43 +21,29 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalFrameWindow_h_
-#define _FalFrameWindow_h_
+#ifndef _FalSystemButton_h_
+#define _FalSystemButton_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
-#include "elements/CEGUIFrameWindow.h"
+#include "FalButton.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        FrameWindow class for the FalagardBase module.
+        SystemButton class for the FalagardBase module.  This class should be used for 'system' buttons on
+        a FrameWindow, such as the close button.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
-        States:
-            - ActiveWithTitleWithFrame
-            - InactiveWithTitleWithFrame
-            - DisabledWithTitleWithFrame
-            - ActiveWithTitleNoFrame
-            - InactiveWithTitleNoFrame
-            - DisabledWithTitleNoFrame
-            - ActiveNoTitleWithFrame
-            - InactiveNoTitleWithFrame
-            - DisabledNoTitleWithFrame
-            - ActiveNoTitleNoFrame
-            - InactiveNoTitleNoFrame
-            - DisabledNoTitleNoFrame
-
-        Named Areas:
-            - ClientWithTitleWithFrame
-            - ClientWithTitleNoFrame
-            - ClientNoTitleWithFrame
-            - ClientNoTitleNoFrame
+        States (missing states will default to 'Normal'):
+            - Normal    - Rendering for when the button is neither pushed or has the mouse hovering over it.
+            - Hover     - Rendering for then the button has the mouse hovering over it.
+            - Pushed    - Rendering for when the button is pushed.
+            - Disabled  - Rendering for when the button is disabled.
     */
-    class FALAGARDBASE_API FalagardFrameWindow : public FrameWindow
+    class FALAGARDBASE_API FalagardSystemButton : public FalagardButton
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
@@ -66,34 +52,26 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardFrameWindow(const String& type, const String& name);
+        FalagardSystemButton(const String& type, const String& name);
 
         /*!
         \brief
             Destructor
         */
-        ~FalagardFrameWindow();
+        ~FalagardSystemButton();
 
-        // overridden from Window base class.
-        Rect getUnclippedInnerRect(void) const;
-
-    protected:
-        // overridden from FrameWindow base class.
-        void populateRenderCache();
-        Titlebar* createTitlebar(const String& name) const;
-        PushButton* createCloseButton(const String& name) const;
-        void layoutComponentWidgets();
+        Rect getPixelRect(void) const;
     };
 
     /*!
     \brief
-        WindowFactory for FalagardFrameWindow type Window objects.
+        WindowFactory for FalagardSystemButton type Window objects.
     */
-    class FALAGARDBASE_API FalagardFrameWindowFactory : public WindowFactory
+    class FALAGARDBASE_API FalagardSystemButtonFactory : public WindowFactory
     {
     public:
-        FalagardFrameWindowFactory(void) : WindowFactory(FalagardFrameWindow::WidgetTypeName) { }
-        ~FalagardFrameWindowFactory(void){}
+        FalagardSystemButtonFactory(void) : WindowFactory(FalagardSystemButton::WidgetTypeName) { }
+        ~FalagardSystemButtonFactory(void){}
         Window* createWindow(const String& name);
         void destroyWindow(Window* window);
     };
@@ -101,4 +79,4 @@ namespace CEGUI
 } // End of  CEGUI namespace section
 
 
-#endif  // end of guard _FalFrameWindow_h_
+#endif  // end of guard _FalSystemSystemButton_h_

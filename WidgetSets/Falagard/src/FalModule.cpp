@@ -47,6 +47,7 @@
 #include "FalSpinner.h"
 #include "FalStaticImage.h"
 #include "FalStaticText.h"
+#include "FalSystemButton.h"
 #include "FalTabButton.h"
 #include "FalTabControl.h"
 #include "FalTabPane.h"
@@ -79,6 +80,7 @@ static CEGUI::FalagardSliderFactory             s_SliderFactory;
 static CEGUI::FalagardSpinnerFactory            s_SpinnerFactory;
 static CEGUI::FalagardStaticImageFactory        s_StaticImageFactory;
 static CEGUI::FalagardStaticTextFactory         s_StaticTextFactory;
+static CEGUI::FalagardSystemButtonFactory       s_SystemButtonFactory;
 static CEGUI::FalagardTabButtonFactory          s_TabButtonFactory;
 static CEGUI::FalagardTabControlFactory         s_TabControlFactory;
 static CEGUI::FalagardTabPaneFactory            s_TabPaneFactory;
@@ -119,6 +121,7 @@ mapEntry factoriesMap[] =
     {FalagardSpinner::WidgetTypeName, &s_SpinnerFactory},
     {FalagardStaticImage::WidgetTypeName, &s_StaticImageFactory},
     {FalagardStaticText::WidgetTypeName, &s_StaticTextFactory},
+    {FalagardSystemButton::WidgetTypeName, &s_SystemButtonFactory},
     {FalagardTabButton::WidgetTypeName, &s_TabButtonFactory},
     {FalagardTabControl::WidgetTypeName, &s_TabControlFactory},
     {FalagardTabPane::WidgetTypeName, &s_TabPaneFactory},

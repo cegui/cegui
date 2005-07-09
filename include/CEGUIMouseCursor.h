@@ -33,6 +33,7 @@
 #include "CEGUIRect.h"
 #include "CEGUIEventSet.h"
 #include "CEGUIInputEvent.h"
+#include "CEGUIUDim.h"
 
 
 #if defined(_MSC_VER)
@@ -193,6 +194,21 @@ public:
 
 	/*!
 	\brief
+		Set the area that the mouse cursor is constrained to.
+
+	\param area
+		Pointer to a URect object that describes the area of the display that the mouse is allowed to occupy.  The given area will be clipped to
+		the current Renderer screen area - it is never possible for the mouse to leave this area.  If this parameter is NULL, the
+		constraint is set to the size of the current Renderer screen area.
+
+	\return
+		Nothing.
+	*/
+	void	setUnifiedConstraintArea(const URect* area);
+
+
+	/*!
+	\brief
 		Hides the mouse cursor.
 
 	\return
@@ -238,7 +254,17 @@ public:
 	\return
 		Rect object describing the active area that the mouse cursor is constrained to.
 	*/
-	Rect	getConstraintArea(void) const		{return d_constraints;}
+	Rect	getConstraintArea(void) const;
+
+
+	/*!
+	\brief
+		return the current constraint area of the mouse cursor.
+
+	\return
+		URect object describing the active area that the mouse cursor is constrained to.
+	*/
+	const URect& getUnifiedConstraintArea(void) const;
 
 
 	/*!
@@ -291,7 +317,7 @@ private:
 	const Image*	d_cursorImage;		//!< Image that is currently set as the mouse cursor.
 	Vector3	d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
-	Rect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
+	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
 };
 
 } // End of  CEGUI namespace section

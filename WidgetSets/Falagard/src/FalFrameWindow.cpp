@@ -48,6 +48,11 @@ namespace CEGUI
         if (d_rolledup)
             return;
 
+        // build state name
+        String stateName(d_enabled ? ((d_parent && d_parent->isActive()) ? "Active" : "Inactive") : "Disabled");
+        stateName += d_titlebar->isVisible() ? "WithTitle" : "NoTitle";
+        stateName += d_frameEnabled ? "WithFrame" : "NoFrame";
+
         const StateImagery* imagery;
 
         try
@@ -55,10 +60,7 @@ namespace CEGUI
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
             // try and get imagery for our current state
-            if (d_enabled)
-                imagery = &wlf.getStateImagery((d_parent && d_parent->isActive()) ? "Active" : "Inactive");
-            else
-                imagery = &wlf.getStateImagery("Disabled");
+            imagery = &wlf.getStateImagery(stateName);
         }
         catch (UnknownObjectException)
         {
@@ -75,9 +77,14 @@ namespace CEGUI
         if (d_rolledup)
             return Rect(0,0,0,0);
 
+        // build name of area to fetch
+        String areaName("Client");
+        areaName += d_titlebar->isVisible() ? "WithTitle" : "NoTitle";
+        areaName += d_frameEnabled ? "WithFrame" : "NoFrame";
+
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        return wlf.getNamedArea("ClientArea").getArea().getPixelRect(*this, getPixelRect());
+        return wlf.getNamedArea(areaName).getArea().getPixelRect(*this, getPixelRect());
     }
 
     Titlebar* FalagardFrameWindow::createTitlebar(const String& name) const
