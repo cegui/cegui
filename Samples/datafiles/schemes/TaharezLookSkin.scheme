@@ -3,7 +3,7 @@
 	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
 	<LookNFeel Filename="../datafiles/looknfeel/TaharezLook.looknfeel" />
 	<WindowSet Filename="CEGUIFalagardBase" />
-	<FalagardMapping WindowType="TaharezLook/AltProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
+	<FalagardMapping WindowType="TaharezLook/AlternateProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
 	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="TaharezLook/Checkbox" />
 	<FalagardMapping WindowType="TaharezLook/ComboDropList" TargetType="Falagard/ComboDropList" LookNFeel="TaharezLook/ComboDropList" />
