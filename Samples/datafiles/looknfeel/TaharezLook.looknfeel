@@ -396,6 +396,11 @@
                 <Section section="container_normal" />
             </Layer>
         </StateImagery>
+        <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="container_normal" />
@@ -1810,6 +1815,11 @@
             </ImageryComponent>
         </ImagerySection>
         <StateImagery name="Normal">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnly">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
