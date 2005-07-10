@@ -33,7 +33,7 @@ class Combobox : public Window
 	ListboxItem* getListboxItemFromIndex(unsigned long index) const;
 	unsigned long getItemIndex(const ListboxItem* item) const;
 	bool isItemSelected(unsigned long index) const;
-	ListboxItem* findItemWithText(const String& text, const ListboxItem* start_item);
+	ListboxItem* findItemWithText(string text, const ListboxItem* start_item);
 	bool isListboxItemInList(const ListboxItem* item) const;
 
 	void resetList();

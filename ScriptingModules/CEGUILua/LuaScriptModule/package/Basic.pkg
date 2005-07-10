@@ -124,3 +124,36 @@ class colour
 	colour();
 	colour(float r, float g, float b, float a);
 };
+
+
+
+/***********************************************************************
+	ColourRect
+***********************************************************************/
+class ColourRect
+{
+	colour d_top_left @ top_left;
+	colour d_top_right @ top_right;
+	colour d_bottom_left @ bottom_left;
+	colour d_bottom_right @ bottom_right;
+
+	void	setAlpha(float alpha);
+	void	setTopAlpha(float alpha);
+	void	setBottomAlpha(float alpha);
+	void	setLeftAlpha(float alpha);
+	void	setRightAlpha(float alpha);
+	void	modulateAlpha(float alpha);
+
+	void	setColours(const colour& col);
+
+	bool	isMonochromatic() const;
+
+	ColourRect getSubRectangle( float left, float right, float top, float bottom ) const;
+	colour getColourAtPoint( float x, float y ) const;
+
+	//ColourRect& operator*= (const ColourRect& other); // no support for *= operators
+
+	ColourRect();
+	ColourRect(const colour& col);
+	ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right);
+};

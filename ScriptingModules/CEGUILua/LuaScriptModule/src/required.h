@@ -27,8 +27,6 @@
 
 typedef CEGUI::String string;
 
-using namespace CEGUI;
-
 namespace CEGUI
 {
 
