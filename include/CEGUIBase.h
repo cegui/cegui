@@ -59,9 +59,23 @@
 #   pragma warning(disable : 4786)
 #endif
 
-// No thanks Bill.
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#   define NOMINMAX
+
+// Detect macros for min / max and undefine (with a warning where possible)
+#if defined(max)
+#   if defined(_MSC_VER)
+#       pragma message("Macro defintion of max detected - undefining")
+#   elif defined (__GNUC__)
+#       warning ("Macro defintion of max detected - undefining")
+#   endif
+#   undef max
+#endif
+#if defined(min)
+#   if defined(_MSC_VER)
+#       pragma message("Macro defintion of min detected - undefining")
+#   elif defined (__GNUC__)
+#       warning ("Macro defintion of min detected - undefining")
+#   endif
+#   undef min
 #endif
 
 
