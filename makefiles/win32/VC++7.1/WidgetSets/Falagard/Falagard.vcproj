@@ -74,7 +74,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\FalagardBase\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
+				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\Falagard\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;FALAGARDBASE_EXPORTS"
 				RuntimeLibrary="2"
 				DisableLanguageExtensions="FALSE"
