@@ -170,4 +170,19 @@ void ColourRect::modulateAlpha(float alpha)
 	d_bottom_right.setAlpha(d_bottom_right.getAlpha()*alpha);
 }
 
+/*************************************************************************
+    Modulate all components of this colour rect with corresponding
+    components from another colour rect.
+*************************************************************************/
+ColourRect& ColourRect::operator *=(const ColourRect& other)
+{
+    d_top_left *= other.d_top_left;
+    d_top_right *= other.d_top_right;
+    d_bottom_left *= other.d_bottom_left;
+    d_bottom_right *= other.d_bottom_right;
+
+    return *this;
+}
+
+
 } // End of  CEGUI namespace section

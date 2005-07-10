@@ -60,6 +60,9 @@ AC_SUBST(CEGUI_VERSION_INFO)
 
 dnl Create the makefiles
 AC_CONFIG_FILES([Makefile
+                 Samples/FalagardDemo1/Makefile
+                 Samples/FalagardDemo1/include/Makefile
+                 Samples/FalagardDemo1/src/Makefile
                  Samples/FirstWindow/Makefile
                  Samples/FirstWindow/include/Makefile
                  Samples/FirstWindow/src/Makefile
@@ -77,6 +80,9 @@ AC_CONFIG_FILES([Makefile
                  ScriptingModules/CEGUILua/lua_and_tolua++/src/Makefile
                  ScriptingModules/Makefile
                  WidgetSets/Makefile
+                 WidgetSets/Falagard/Makefile
+                 WidgetSets/Falagard/include/Makefile
+                 WidgetSets/Falagard/src/Makefile
                  WidgetSets/TaharezLook/Makefile
                  WidgetSets/TaharezLook/include/Makefile
                  WidgetSets/TaharezLook/src/Makefile
@@ -85,6 +91,7 @@ AC_CONFIG_FILES([Makefile
                  WidgetSets/WindowsLook/src/Makefile
                  include/Makefile
                  include/elements/Makefile
+                 include/falagard/Makefile
                  include/renderers/IrrlichtRenderer/Makefile
                  include/renderers/Makefile
                  include/renderers/OpenGLGUIRenderer/Makefile

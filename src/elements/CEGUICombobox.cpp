@@ -115,9 +115,9 @@ Combobox::~Combobox(void)
 *************************************************************************/
 void Combobox::initialise(void)
 {
-	d_editbox	= createEditbox();
-	d_droplist	= createDropList();
-	d_button	= createPushButton();
+	d_editbox	= createEditbox(getName() + "__auto_editbox__");
+	d_droplist	= createDropList(getName() + "__auto_droplist__");
+	d_button	= createPushButton(getName() + "__auto_button__");
     d_droplist->setFont(getFont());
     d_editbox->setFont(getFont());
 

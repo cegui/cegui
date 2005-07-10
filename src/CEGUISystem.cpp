@@ -47,6 +47,7 @@
 #include "CEGUIDataContainer.h"
 #include "CEGUIResourceProvider.h"
 #include "CEGUIGlobalEventSet.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
 #include <time.h>
 
 // set up for whichever default xml parser will be used
@@ -319,6 +320,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	new SchemeManager();
 	new MouseCursor();
 	new GlobalEventSet();
+    new WidgetLookManager();
 
     // Add factories for types that the system supports natively
     // (mainly because they do no rendering)
@@ -446,6 +448,7 @@ System::~System(void)
 	delete	SchemeManager::getSingletonPtr();
 	delete	WindowManager::getSingletonPtr();
 	delete	WindowFactoryManager::getSingletonPtr();
+    delete  WidgetLookManager::getSingletonPtr();
 	delete	FontManager::getSingletonPtr();
 	delete	MouseCursor::getSingletonPtr();
 	delete	ImagesetManager::getSingletonPtr();

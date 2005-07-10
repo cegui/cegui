@@ -24,9 +24,6 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
-    Project_Dep_Name BaseSystem
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name CEGUIBase
     End Project Dependency
 }}}
@@ -41,9 +38,6 @@ Package=<5>
 
 Package=<4>
 {{{
-    Begin Project Dependency
-    Project_Dep_Name BaseSystem
-    End Project Dependency
     Begin Project Dependency
     Project_Dep_Name CEGUIBase
     End Project Dependency
@@ -66,7 +60,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "TaharezLook"=".\WIDGETSETS\TaharezLook\TaharezLook.dsp" - Package Owner=<4>
+Project: "FalagardBase"=".\WIDGETSETS\Falagard\Falagard.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -75,8 +69,20 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
-    Project_Dep_Name BaseSystem
+    Project_Dep_Name CEGUIBase
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TaharezLook"=".\WIDGETSETS\TaharezLook\TaharezLook.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
     Begin Project Dependency
     Project_Dep_Name CEGUIBase
     End Project Dependency
@@ -107,9 +113,6 @@ Package=<5>
 
 Package=<4>
 {{{
-    Begin Project Dependency
-    Project_Dep_Name BaseSystem
-    End Project Dependency
     Begin Project Dependency
     Project_Dep_Name CEGUIBase
     End Project Dependency
@@ -157,6 +160,27 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name TaharezLook
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Sample_FalagardDemo1"=".\Samples\Sample_FalagardDemo1.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUISampleHelper
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 

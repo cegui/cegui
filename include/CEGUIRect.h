@@ -49,6 +49,8 @@ public:
 	*/
 	Rect(float left, float top, float right, float bottom);
 
+    Rect(Point pos, Size sz);
+
 
 	/*!
 	\brief
@@ -194,6 +196,9 @@ public:
 	bool	operator!=(const Rect& rhs) const		{return !operator==(rhs);}
 
 	Rect&	operator=(const Rect& rhs);
+
+    Rect operator*(float scalar) const      { return Rect(d_left * scalar, d_top * scalar, d_right * scalar, d_bottom * scalar); }
+    const Rect& operator*=(float scalar)    { d_left *= scalar; d_top *= scalar; d_right *= scalar; d_bottom *= scalar; return *this; }
 
 
 	/*************************************************************************

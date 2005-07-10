@@ -142,7 +142,7 @@ void TLButton::drawNormal(float z)
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_normalColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -207,7 +207,7 @@ void TLButton::drawHover(float z)
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_hoverColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -272,7 +272,7 @@ void TLButton::drawPushed(float z)
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_pushedColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -337,7 +337,7 @@ void TLButton::drawDisabled(float z)
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	colours.setColours(d_disabledColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
 }
 
@@ -354,10 +354,7 @@ void TLButton::drawDisabled(float z)
 *************************************************************************/
 Window* TLButtonFactory::createWindow(const String& name)
 {
-	TLButton* wnd = new TLButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

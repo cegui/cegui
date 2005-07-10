@@ -152,7 +152,7 @@ public:
 class ScriptFunctor
 {
 public:
-	ScriptFunctor(const String functionName) : scriptFunctionName(functionName) {}
+	ScriptFunctor(const String& functionName) : scriptFunctionName(functionName) {}
     ScriptFunctor(const ScriptFunctor& obj) : scriptFunctionName(obj.scriptFunctionName) {}
 	bool	operator()(const EventArgs& e) const;
 

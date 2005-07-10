@@ -275,10 +275,7 @@ void TLTabButton::drawPushed(float z)
 *************************************************************************/
 Window* TLTabButtonFactory::createWindow(const String& name)
 {
-	TLTabButton* wnd = new TLTabButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLTabButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -167,6 +167,8 @@ protected:
 	*/
 	void draw_impl(const Vector3& position, const Rect& clip_rect) const;
 
+    // implements abstract method
+    void draw_impl(RenderCache& renderCache) const;
 
 	/*************************************************************************
 		Implementation Data

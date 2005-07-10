@@ -125,11 +125,14 @@ MultiLineEditbox::~MultiLineEditbox(void)
 void MultiLineEditbox::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar();
-	d_horzScrollbar = createHorzScrollbar();
+	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
+	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
 
 	addChildWindow(d_vertScrollbar);
 	addChildWindow(d_horzScrollbar);
+
+    d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
+    d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
 
 	formatText();
 	layoutComponentWidgets();
@@ -191,27 +194,23 @@ void MultiLineEditbox::addMultiLineEditboxEvents(void)
 /*************************************************************************
 	Perform the actual rendering for this Window.	
 *************************************************************************/
-void MultiLineEditbox::drawSelf(float z)
+void MultiLineEditbox::populateRenderCache()
 {
 	// get the derived class to render general stuff before we handle the text itself
-	renderEditboxBaseImagery(z);
+	cacheEditboxBaseImagery();
 
 	//
 	// Render edit box text
 	//
 	// calculate on-screen position of area we have to render into
-	Rect absarea(getTextRenderArea());
-	absarea.offset(getUnclippedPixelRect().getPosition());
+	Rect textarea(getTextRenderArea());
 
-	// calculate clipper for text rendering area
-	Rect clipper(absarea.getIntersection(getPixelRect()));
-
-	absarea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
-	renderTextLines(absarea, clipper);
+	textarea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
+	cacheTextLines(textarea);
 
 	if (hasInputFocus() && !isReadOnly())
 	{
-		renderCarat(absarea.d_left, absarea.d_top, clipper);
+		cacheCaratImagery(textarea);
 	}
 
 }
@@ -507,117 +506,119 @@ void MultiLineEditbox::configureScrollbars(void)
 /*************************************************************************
 	Render text lines.	
 *************************************************************************/
-void MultiLineEditbox::renderTextLines(const Rect& dest_area, const Rect& clipper) const
+void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 {
-	// text is already formatted, we just grab the lines and render them with the required alignment.
-	Rect drawArea(dest_area);
-	Renderer* renderer = System::getSingleton().getRenderer();
-	const Font* fnt = getFont();
+    // text is already formatted, we just grab the lines and render them with the required alignment.
+    Rect drawArea(dest_area);
+    Renderer* renderer = System::getSingleton().getRenderer();
+    const Font* fnt = getFont();
 
-	if (fnt != NULL)
-	{
-		// get layers to use for rendering
-		float textZ = renderer->getZLayer(4);
-		float selZ  = renderer->getZLayer(3);
+    if (fnt)
+    {
+        // get layers to use for rendering
+        float textZ = renderer->getZLayer(4) - renderer->getCurrentZ();
+        float selZ  = renderer->getZLayer(3) - renderer->getCurrentZ();
 
-		// calculate final colours to use.
-		float alpha = getEffectiveAlpha();
-		colour normalTextCol  = ((d_normalTextColour & 0x00FFFFFF) | (((argb_t)(((float)(d_normalTextColour >> 24)) * alpha)) << 24));
-		colour selectTextCol  = ((d_selectTextColour & 0x00FFFFFF) | (((argb_t)(((float)(d_selectTextColour >> 24)) * alpha)) << 24));
+        // calculate final colours to use.
+        ColourRect colours;
+        float alpha = getEffectiveAlpha();
+        colour normalTextCol = d_normalTextColour;
+        normalTextCol.setAlpha(normalTextCol.getAlpha() * alpha);
+        colour selectTextCol = d_selectTextColour;
+        selectTextCol.setAlpha(selectTextCol.getAlpha() * alpha);
+        colour selectBrushCol = hasInputFocus() ? d_selectBrushColour : d_inactiveSelectBrushColour;
+        selectBrushCol.setAlpha(selectBrushCol.getAlpha() * alpha);
 
-		colour selectBrushCol = hasInputFocus() ?
-			((d_selectBrushColour & 0x00FFFFFF) | (((argb_t)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24)) :
-			((d_inactiveSelectBrushColour & 0x00FFFFFF) | (((argb_t)(((float)(d_selectBrushColour >> 24)) * alpha)) << 24));
+        // for each formatted line.
+        for (size_t i = 0; i < d_lines.size(); ++i)
+        {
+            Rect lineRect(drawArea);
+            const LineInfo& currLine = d_lines[i];
+            String lineText(d_text.substr(currLine.d_startIdx, currLine.d_length));
 
-		// for each formatted line.
-		for (size_t i = 0; i < d_lines.size(); ++i)
-		{
-			Rect lineRect(drawArea);
-			const LineInfo& currLine = d_lines[i];
-			String lineText(d_text.substr(currLine.d_startIdx, currLine.d_length));
+            // if it is a simple 'no selection area' case
+            if ((currLine.d_startIdx >= d_selectionEnd) ||
+                ((currLine.d_startIdx + currLine.d_length) <= d_selectionStart) ||
+                (d_selectionBrush == NULL))
+            {
+                colours.setColours(normalTextCol);
+                // render the complete line.
+                d_renderCache.cacheText(lineText, fnt, LeftAligned, lineRect, textZ, colours);
+            }
+            // we have at least some selection highlighting to do
+            else
+            {
+                // Start of actual rendering section.
+                String sect;
+                size_t sectIdx = 0, sectLen;
+                float selStartOffset = 0.0f, selAreaWidth = 0.0f;
 
-			// if it is a simple 'no selection area' case
-			if ((currLine.d_startIdx >= d_selectionEnd) ||
-				((currLine.d_startIdx + currLine.d_length) <= d_selectionStart) ||
-				(d_selectionBrush == NULL))
-			{
-				// render the complete line.
-				fnt->drawText(lineText, lineRect, textZ, clipper, LeftAligned, ColourRect(normalTextCol));
-			}
-			//
-			// we have at least some selection highlight to do
-			//
-			else
-			{
-				// Start of actual rendering section.
-				String sect;
-				size_t sectIdx = 0, sectLen;
-				float selStartOffset = 0.0f, selAreaWidth = 0.0f;
+                // render any text prior to selected region of line.
+                if (currLine.d_startIdx < d_selectionStart)
+                {
+                    // calculate length of text section
+                    sectLen = d_selectionStart - currLine.d_startIdx;
 
-				// render any text prior to selected region of line.
-				if (currLine.d_startIdx < d_selectionStart)
-				{
-					// calculate length of text section
-					sectLen = d_selectionStart - currLine.d_startIdx;
+                    // get text for this section
+                    sect = lineText.substr(sectIdx, sectLen);
+                    sectIdx += sectLen;
 
-					// get text for this section
-					sect = lineText.substr(sectIdx, sectLen);
-					sectIdx += sectLen;
+                    // get the pixel offset to the beginning of the selection area highlight.
+                    selStartOffset = fnt->getTextExtent(sect);
 
-					// get the pixel offset to the beginning of the selection area highlight.
-					selStartOffset = fnt->getTextExtent(sect);
+                    // draw this portion of the text
+                    colours.setColours(normalTextCol);
+                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours);
 
-					// draw this portion of the text
-					fnt->drawText(sect, lineRect, textZ, clipper, LeftAligned, ColourRect(normalTextCol));
+                    // set position ready for next portion of text
+                    lineRect.d_left += selStartOffset;
+                }
 
-					// set position ready for next portion of text
-					lineRect.d_left += selStartOffset;
-				}
+                // calculate the length of the selected section
+                sectLen = ceguimin(d_selectionEnd - currLine.d_startIdx, currLine.d_length) - sectIdx;
 
-				// calculate the length of the selected section
-				sectLen = ceguimin(d_selectionEnd - currLine.d_startIdx, currLine.d_length) - sectIdx;
+                // get the text for this section
+                sect = lineText.substr(sectIdx, sectLen);
+                sectIdx += sectLen;
 
-				// get the text for this section
-				sect = lineText.substr(sectIdx, sectLen);
-				sectIdx += sectLen;
+                // get the extent to use as the width of the selection area highlight
+                selAreaWidth = fnt->getTextExtent(sect);
 
-				// get the extent to use as the width of the selection area highlight
-				selAreaWidth = fnt->getTextExtent(sect);
+                // draw the text for this section
+                colours.setColours(selectTextCol);
+                d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours);
 
-				// draw the text for this section
-				fnt->drawText(sect, lineRect, textZ, clipper, LeftAligned, ColourRect(selectTextCol));
+                // render any text beyond selected region of line
+                if (sectIdx < currLine.d_length)
+                {
+                    // update render position to the end of the selected area.
+                    lineRect.d_left += selAreaWidth;
 
-				// render any text beyond selected region of line
-				if (sectIdx < currLine.d_length)
-				{
-					// update render position to the end of the selected area.
-					lineRect.d_left += selAreaWidth;
+                    // calculate length of this section
+                    sectLen = currLine.d_length - sectIdx;
 
-					// calculate length of this section
-					sectLen = currLine.d_length - sectIdx;
+                    // get the text for this section
+                    sect = lineText.substr(sectIdx, sectLen);
 
-					// get the text for this section
-					sect = lineText.substr(sectIdx, sectLen);
+                    // render the text for this section.
+                    colours.setColours(normalTextCol);
+                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours);
+                }
 
-					// render the text for this section.
-					fnt->drawText(sect, lineRect, textZ, clipper, LeftAligned, ColourRect(normalTextCol));
-				}
+                // calculate area for the selection brush on this line
+                lineRect.d_left = drawArea.d_left + selStartOffset;
+                lineRect.d_right = lineRect.d_left + selAreaWidth;
+                lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
 
-				// calculate area for the selection brush on this line
-				lineRect.d_left = drawArea.d_left + selStartOffset;
-				lineRect.d_right = lineRect.d_left + selAreaWidth;
-				lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
+                // render the selection area brush for this line
+                colours.setColours(selectBrushCol);
+                d_renderCache.cacheImage(*d_selectionBrush, lineRect, selZ, colours, &lineRect);
+            }
 
-				// render the selection area brush for this line
-				d_selectionBrush->draw(lineRect, selZ, clipper, ColourRect(selectBrushCol));
-			}
-
-			// update master position for next line in paragraph.
-			drawArea.d_top += fnt->getLineSpacing();
-		}
-
-	}
-
+            // update master position for next line in paragraph.
+            drawArea.d_top += fnt->getLineSpacing();
+        }
+    }
 }
 
 
@@ -1657,5 +1658,17 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 	addProperty(&d_activeSelectionColourProperty);
 	addProperty(&d_inactiveSelectionColourProperty);
 }
+
+/*************************************************************************
+    Handler for scroll position changes.
+*************************************************************************/
+bool MultiLineEditbox::handle_scrollChange(const EventArgs& args)
+{
+    // simply trigger a redraw of the Listbox.
+    requestRedraw();
+    return true;
+}
+
+
 
 } // End of  CEGUI namespace section

@@ -344,6 +344,165 @@ public:
 	*/
 	void	setCaptionColour(colour col);
 
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the north-south
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getNSSizingCursorImage() const;
+
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the east-west
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getEWSizingCursorImage() const;
+
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the northwest-southeast
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getNWSESizingCursorImage() const;
+
+    /*!
+    \brief
+        Return a pointer to the currently set Image to be used for the northeast-southwest
+        sizing mouse cursor.
+
+    \return
+        Pointer to an Image object, or 0 for none.
+    */
+    const Image* getNESWSizingCursorImage() const;
+
+    /*!
+    \brief
+        Set the Image to be used for the north-south sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setNSSizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the Image to be used for the east-west sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setEWSizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the Image to be used for the northwest-southeast sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setNWSESizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the Image to be used for the northeast-southwest sizing mouse cursor.
+
+    \param image
+        Pointer to an Image object, or 0 for none.
+
+    \return
+        Nothing.
+    */
+    void setNESWSizingCursorImage(const Image* image);
+
+    /*!
+    \brief
+        Set the image to be used for the north-south sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setNSSizingCursorImage(const String& imageset, const String& image);
+
+    /*!
+    \brief
+        Set the image to be used for the east-west sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setEWSizingCursorImage(const String& imageset, const String& image);
+
+    /*!
+    \brief
+        Set the image to be used for the northwest-southeast sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setNWSESizingCursorImage(const String& imageset, const String& image);
+
+    /*!
+    \brief
+        Set the image to be used for the northeast-southwest sizing mouse cursor.
+
+    \param imageset
+        String holding the name of the Imageset containing the Image to be used.
+
+    \param image
+        String holding the name of the Image to be used.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    */
+    void setNESWSizingCursorImage(const String& imageset, const String& image);
+
+    // overridden from Window class
+    bool    isHit(const Point& position) const      { return Window::isHit(position) && !d_rolledup; }
+
 
 	/*************************************************************************
 		Construction / Destruction
@@ -369,20 +528,26 @@ protected:
 	\brief
 		Create a control based upon the Titlebar base class to be used as the title bar for this window.
 
+    \param name
+        String object holding the name that must be used when creating the titlebar.
+
 	\return
 		Pointer to an object who's class derives from Titlebar
 	*/
-	virtual Titlebar*	createTitlebar(void) const		= 0;
+	virtual Titlebar*	createTitlebar(const String& name) const		= 0;
 
 
 	/*!
 	\brief
 		Create a control based upon the PushButton base class, to be used at the close button for the window.
 
+    \param name
+        String object holding the name that must be used when creating the close button.
+
 	\return
 		Pointer to an object who's class derives from PushButton.
 	*/
-	virtual PushButton*	createCloseButton(void) const	= 0;
+	virtual PushButton*	createCloseButton(const String& name) const	= 0;
 
 
 	/*!
@@ -528,7 +693,7 @@ protected:
 	\brief
 		Return a Rect that describes, in window relative pixel co-ordinates, the outer edge of the sizing area for this window.
 	*/
-	virtual	Rect	getSizingRect(void) const		{return Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight());}
+	virtual	Rect	getSizingRect(void) const		{return Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight());}
 
 
 	/*!
@@ -574,7 +739,7 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onSized(WindowEventArgs& e);
-	virtual void	onParentSized(WindowEventArgs& e);
+	virtual void    onTextChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -586,8 +751,6 @@ protected:
 	// window roll-up data
 	bool	d_rollupEnabled;	//!< true if roll-up of window is allowed.
 	bool	d_rolledup;			//!< true if window is rolled up.
-	Size	d_abs_openSize;		//!< stores original size of window when rolled-up.
-	Size	d_rel_openSize;		//!< stores original size of window when rolled-up.
 
 	// drag-sizing data
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.
@@ -622,6 +785,10 @@ private:
 	static FrameWindowProperties::SizingBorderThickness d_sizingBorderThicknessProperty;
 	static FrameWindowProperties::TitlebarFont		d_titlebarFontProperty;
 	static FrameWindowProperties::CaptionColour		d_captionColourProperty;
+    static FrameWindowProperties::NSSizingCursorImage   d_nsSizingCursorProperty;
+    static FrameWindowProperties::EWSizingCursorImage   d_ewSizingCursorProperty;
+    static FrameWindowProperties::NWSESizingCursorImage d_nwseSizingCursorProperty;
+    static FrameWindowProperties::NESWSizingCursorImage d_neswSizingCursorProperty;
 
 
 	/*************************************************************************

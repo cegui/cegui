@@ -67,7 +67,7 @@ TLListHeaderSegment::TLListHeaderSegment(const String& type, const String& name)
 	d_sortAscendImage		= &iset->getImage(SortUpImageName);
 	d_sortDescendImage		= &iset->getImage(SortDownImageName);
 
-	d_normalMouseCursor		= &iset->getImage(NormalMouseCursor);
+	d_mouseCursor			= &iset->getImage(NormalMouseCursor);
 	d_sizingMouseCursor		= &iset->getImage(SizingMouseCursor);
 	d_movingMouseCursor		= &iset->getImage(MovingMouseCursor);
 }
@@ -209,10 +209,7 @@ void TLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 *************************************************************************/
 Window* TLListHeaderSegmentFactory::createWindow(const String& name)
 {
-	TLListHeaderSegment* wnd = new TLListHeaderSegment(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLListHeaderSegment(d_type, name);
 }
 
 } // End of  CEGUI namespace section

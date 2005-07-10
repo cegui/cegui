@@ -68,10 +68,7 @@ Rect TLCloseButton::getPixelRect(void) const
 *************************************************************************/
 Window* TLCloseButtonFactory::createWindow(const String& name)
 {
-	TLCloseButton* wnd = new TLCloseButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLCloseButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

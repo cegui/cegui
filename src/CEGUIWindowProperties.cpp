@@ -746,6 +746,181 @@ void RiseOnClick::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String VerticalAlignment::get(const PropertyReceiver* receiver) const
+{
+    switch(static_cast<const Window*>(receiver)->getVerticalAlignment())
+    {
+        case VA_CENTRE:
+            return String("Centre");
+            break;
+
+        case VA_BOTTOM:
+            return String("Bottom");
+            break;
+
+        default:
+            return String("Top");
+    }
+}
+
+void VerticalAlignment::set(PropertyReceiver* receiver, const String& value)
+{
+    CEGUI::VerticalAlignment align;
+
+    if (value == "Centre")
+    {
+        align = VA_CENTRE;
+    }
+    else if (value == "Bottom")
+    {
+        align = VA_BOTTOM;
+    }
+    else
+    {
+        align = VA_TOP;
+    }
+    
+    static_cast<Window*>(receiver)->setVerticalAlignment(align);
+}
+
+
+String HorizontalAlignment::get(const PropertyReceiver* receiver) const
+{
+    switch(static_cast<const Window*>(receiver)->getHorizontalAlignment())
+    {
+        case HA_CENTRE:
+            return String("Centre");
+            break;
+
+        case HA_RIGHT:
+            return String("Right");
+            break;
+
+        default:
+            return String("Left");
+    }
+}
+
+void HorizontalAlignment::set(PropertyReceiver* receiver, const String& value)
+{
+    CEGUI::HorizontalAlignment align;
+
+    if (value == "Centre")
+    {
+        align = HA_CENTRE;
+    }
+    else if (value == "Right")
+    {
+        align = HA_RIGHT;
+    }
+    else
+    {
+        align = HA_LEFT;
+    }
+    
+    static_cast<Window*>(receiver)->setHorizontalAlignment(align);
+}
+
+
+String UnifiedAreaRect::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::urectToString(static_cast<const Window*>(receiver)->getWindowArea());
+}
+
+void UnifiedAreaRect::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowArea(PropertyHelper::stringToURect(value));
+}
+
+
+String UnifiedPosition::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowPosition());
+}
+
+void UnifiedPosition::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowPosition(PropertyHelper::stringToUVector2(value));
+}
+
+
+String UnifiedXPosition::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowXPosition());
+}
+
+void UnifiedXPosition::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowXPosition(PropertyHelper::stringToUDim(value));
+}
+
+
+String UnifiedYPosition::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowYPosition());
+}
+
+void UnifiedYPosition::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowYPosition(PropertyHelper::stringToUDim(value));
+}
+
+
+String UnifiedSize::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowSize());
+}
+
+void UnifiedSize::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowSize(PropertyHelper::stringToUVector2(value));
+}
+
+
+String UnifiedWidth::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowWidth());
+}
+
+void UnifiedWidth::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowWidth(PropertyHelper::stringToUDim(value));
+}
+
+
+String UnifiedHeight::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowHeight());
+}
+
+void UnifiedHeight::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowHeight(PropertyHelper::stringToUDim(value));
+}
+
+
+String UnifiedMinSize::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowMinSize());
+}
+
+void UnifiedMinSize::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowMinSize(PropertyHelper::stringToUVector2(value));
+}
+
+
+String UnifiedMaxSize::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowMaxSize());
+}
+
+void UnifiedMaxSize::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowMaxSize(PropertyHelper::stringToUVector2(value));
+}
+
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

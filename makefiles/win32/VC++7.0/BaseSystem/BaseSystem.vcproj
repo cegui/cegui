@@ -21,7 +21,7 @@
 				AdditionalOptions="/Zm150"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include;..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS;_STLP_DEBUG"
+				PreprocessorDefinitions="WIN32;_STLP_DEBUG;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				DisableLanguageExtensions="FALSE"
@@ -29,10 +29,9 @@
 				RuntimeTypeInfo="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="FALSE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4251"/>
+				DisableSpecificWarnings="4251;4100"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -78,8 +77,7 @@
 				ForceConformanceInForLoopScope="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="TRUE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"
 				DisableSpecificWarnings="4251;4100"/>
 			<Tool
@@ -197,6 +195,9 @@
 				RelativePath="..\..\..\..\src\CEGUIRefPtr.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIRenderCache.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderableElement.cpp">
 			</File>
 			<File
@@ -265,6 +266,52 @@
 			<File
 				RelativePath="..\..\..\..\src\CEGUIXMLParser.cpp">
 			</File>
+			<Filter
+				Name="falagard"
+				Filter="">
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalDimensions.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalImageryComponent.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalImagerySection.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalLayerSpecification.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalNamedArea.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalPropertyDefinition.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalPropertyInitialiser.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalSectionSpecification.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalStateImagery.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalTextComponent.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalWidgetComponent.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalWidgetLookFeel.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalWidgetLookManager.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp">
+				</File>
+			</Filter>
 			<Filter
 				Name="elements"
 				Filter="">
@@ -699,6 +746,9 @@
 				RelativePath="..\..\..\..\include\CEGUIRefPtr.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIRenderCache.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderableElement.h">
 			</File>
 			<File
@@ -747,6 +797,9 @@
 				RelativePath="..\..\..\..\include\CEGUITinyXMLParser.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIUDim.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIVector.h">
 			</File>
 			<File
@@ -776,6 +829,55 @@
 			<File
 				RelativePath="..\..\..\..\include\CEGUIXMLParser.h">
 			</File>
+			<Filter
+				Name="falagard"
+				Filter="">
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalDimensions.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalEnums.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalImageryComponent.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalImagerySection.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalLayerSpecification.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalNamedArea.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalPropertyDefinition.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalPropertyInitialiser.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalSectionSpecification.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalStateImagery.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalTextComponent.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalWidgetComponent.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalWidgetLookFeel.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalWidgetLookManager.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h">
+				</File>
+			</Filter>
 			<Filter
 				Name="elements"
 				Filter="">
@@ -1009,10 +1111,6 @@
 					RelativePath="..\..\..\..\src\pcre\ucpinternal.h">
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
 		</Filter>
 	</Files>
 	<Globals>

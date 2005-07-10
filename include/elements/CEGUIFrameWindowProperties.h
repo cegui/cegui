@@ -295,6 +295,94 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+   Property to access the N-S (up-down) sizing cursor image
+
+   \par Usage:
+      - Name: NSSizingCursorImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class NSSizingCursorImage : public Property
+{
+public:
+   NSSizingCursorImage() : Property(
+	   "NSSizingCursorImage",
+	   "Property to get/set the N-S (up-down) sizing cursor image for the FramwWindow.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+   Property to access the E-W (left/right) sizing cursor image
+
+   \par Usage:
+      - Name: EWSizingCursorImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class EWSizingCursorImage : public Property
+{
+public:
+   EWSizingCursorImage() : Property(
+	   "EWSizingCursorImage",
+	   "Property to get/set the E-W (left-right) sizing cursor image for the FramwWindow.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+   Property to access the NW-SE diagonal sizing cursor image
+
+   \par Usage:
+      - Name: NWSESizingCursorImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class NWSESizingCursorImage : public Property
+{
+public:
+   NWSESizingCursorImage() : Property(
+	   "NWSESizingCursorImage",
+	   "Property to get/set the NW-SE diagonal sizing cursor image for the FramwWindow.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
+/*!
+\brief
+   Property to access the NE-SW diagonal sizing cursor image
+
+   \par Usage:
+      - Name: NESWSizingCursorImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class NESWSizingCursorImage : public Property
+{
+public:
+   NESWSizingCursorImage() : Property(
+	   "NESWSizingCursorImage",
+	   "Property to get/set the NE-SW diagonal sizing cursor image for the FramwWindow.  Value should be \"set:[imageset name] image:[image name]\".",
+	   "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  FrameWindowProperties namespace section
 
 } // End of  CEGUI namespace section

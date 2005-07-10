@@ -98,7 +98,7 @@ protected:
 	\return
 		Pointer to a Scrollbar to be used for scrolling vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const;
  
 
 	/*!
@@ -108,7 +108,7 @@ protected:
 	\return
 		Pointer to a Scrollbar to be used for scrolling horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const;
 };
 
 

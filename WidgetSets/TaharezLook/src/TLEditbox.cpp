@@ -308,10 +308,7 @@ void TLEditbox::drawSelf(float z)
 *************************************************************************/
 Window* TLEditboxFactory::createWindow(const String& name)
 {
-	TLEditbox* wnd = new TLEditbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLEditbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

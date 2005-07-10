@@ -85,10 +85,10 @@ TLMiniHorzScrollbar::~TLMiniHorzScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLMiniHorzScrollbar::createIncreaseButton(void) const
+PushButton* TLMiniHorzScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -115,10 +115,10 @@ PushButton* TLMiniHorzScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLMiniHorzScrollbar::createDecreaseButton(void) const
+PushButton* TLMiniHorzScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -144,10 +144,10 @@ PushButton* TLMiniHorzScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* TLMiniHorzScrollbar::createThumb(void) const
+Thumb* TLMiniHorzScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	TLMiniHorzScrollbarThumb* thumb = (TLMiniHorzScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	TLMiniHorzScrollbarThumb* thumb = (TLMiniHorzScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform some initialisation
 	thumb->setHorzFree(true);
@@ -164,7 +164,7 @@ Thumb* TLMiniHorzScrollbar::createThumb(void) const
 void TLMiniHorzScrollbar::layoutComponentWidgets(void)
 {
 	Size bsz;
-	bsz.d_width = bsz.d_height = d_abs_area.getHeight();
+	bsz.d_width = bsz.d_height = getAbsoluteHeight();
 
 	// install button sizes
 	d_increase->setSize(absoluteToRelative(bsz));
@@ -172,7 +172,7 @@ void TLMiniHorzScrollbar::layoutComponentWidgets(void)
 
 	// position buttons
 	d_decrease->setPosition(Point(0.0f, 0.0f));
-	d_increase->setPosition(Point(absoluteToRelativeX(d_abs_area.getWidth() - bsz.d_width), 0.0f));
+	d_increase->setPosition(Point(absoluteToRelativeX(getAbsoluteWidth() - bsz.d_width), 0.0f));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -190,7 +190,7 @@ void TLMiniHorzScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setHorzRange(absoluteToRelativeX(slideTrackXPadding), absoluteToRelativeX(slideTrackXPadding + slideExtent));
@@ -209,7 +209,7 @@ float TLMiniHorzScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth();
+	float slideExtent	= getAbsoluteWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth();
 
 	return	(d_thumb->getAbsoluteXPosition() - slideTrackXPadding) / (slideExtent / posExtent);
 }
@@ -282,10 +282,7 @@ void TLMiniHorzScrollbar::drawSelf(float z)
 *************************************************************************/
 Window* TLMiniHorzScrollbarFactory::createWindow(const String& name)
 {
-	TLMiniHorzScrollbar* wnd = new TLMiniHorzScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniHorzScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

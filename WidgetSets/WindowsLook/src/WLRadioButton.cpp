@@ -112,7 +112,7 @@ void WLRadioButton::drawNormal(float z)
 	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_normalColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -154,7 +154,7 @@ void WLRadioButton::drawHover(float z)
 	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_hoverImage->getWidth() + LabelPadding;
 	colours.setColours(d_hoverColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -196,7 +196,7 @@ void WLRadioButton::drawPushed(float z)
 	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_pushedColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -238,7 +238,7 @@ void WLRadioButton::drawDisabled(float z)
 	absrect.d_top	+= PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) * 0.5f);
 	absrect.d_left	+= d_normalImage->getWidth() + LabelPadding;
 	colours.setColours(d_disabledColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(1), clipper, LeftAligned, colours);
 }
 
@@ -255,10 +255,7 @@ void WLRadioButton::drawDisabled(float z)
 *************************************************************************/
 Window* WLRadioButtonFactory::createWindow(const String& name)
 {
-	WLRadioButton* wnd = new WLRadioButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLRadioButton(d_type, name);
 }
 
 } // End of  CEGUI namespace section

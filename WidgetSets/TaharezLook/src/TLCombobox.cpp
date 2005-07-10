@@ -123,9 +123,9 @@ void TLCombobox::layoutComponentWidgets()
 	Create, initialise, and return a pointer to an Editbox widget to be
 	used as part of this Combobox.
 *************************************************************************/
-Editbox* TLCombobox::createEditbox(void) const
+Editbox* TLCombobox::createEditbox(const String& name) const
 {
-	Editbox* eb = (Editbox*)WindowManager::getSingleton().createWindow(EditboxTypeName, getName() + "__auto_editbox__");
+	Editbox* eb = (Editbox*)WindowManager::getSingleton().createWindow(EditboxTypeName, name);
 	eb->setMetricsMode(Absolute);
 
 	return eb;
@@ -136,9 +136,9 @@ Editbox* TLCombobox::createEditbox(void) const
 	Create, initialise, and return a pointer to a PushButton widget to
 	be used as part of this Combobox.
 *************************************************************************/
-PushButton* TLCombobox::createPushButton(void) const
+PushButton* TLCombobox::createPushButton(const String& name) const
 {
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(ButtonTypeName, getName() + "__auto_button__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(ButtonTypeName, name);
 	btn->setMetricsMode(Absolute);
 
 	// Set up imagery
@@ -165,9 +165,9 @@ PushButton* TLCombobox::createPushButton(void) const
 	Create, initialise, and return a pointer to a ComboDropList widget
 	to be used as part of this Combobox.
 *************************************************************************/
-ComboDropList* TLCombobox::createDropList(void) const
+ComboDropList* TLCombobox::createDropList(const String& name) const
 {
-	return (ComboDropList*)WindowManager::getSingleton().createWindow(DropListTypeName, getName() + "__auto_droplist__");
+	return (ComboDropList*)WindowManager::getSingleton().createWindow(DropListTypeName, name);
 }
 
 
@@ -183,10 +183,7 @@ ComboDropList* TLCombobox::createDropList(void) const
 *************************************************************************/
 Window* TLComboboxFactory::createWindow(const String& name)
 {
-	TLCombobox* wnd = new TLCombobox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLCombobox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

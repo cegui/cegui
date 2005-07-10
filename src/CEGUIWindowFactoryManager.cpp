@@ -99,24 +99,35 @@ WindowFactory* WindowFactoryManager::getFactory(const String& type) const
 	{
 		return pos->second;
 	}
-	// no real type exists with that type, see if we have an appropriate alias instead.
+	// no real type exists with that type so try for an aliased type
 	else
 	{
 		TypeAliasRegistry::const_iterator aliasPos = d_aliasRegistry.find(type);
 
-		// no alias either, throw an exception
-		if (aliasPos == d_aliasRegistry.end())
-		{
-			throw UnknownObjectException((utf8*)"WindowFactoryManager::getFactory - A WindowFactory object (or an alias) for '" + type + (utf8*)"' Window objects is not registered with the system.");
-		}
-		else
+        // found aliased type
+		if (aliasPos != d_aliasRegistry.end())
 		{
 			// recursively call getFactory, for the alias target type (allows aliasing of aliased names)
 			return getFactory(aliasPos->second.getActiveTarget());
 		}
+		// no aliased type, try for a falagard mapped type
+		else
+		{
+            FalagardMapRegistry::const_iterator falagard = d_falagardRegistry.find(type);
 
-	}
-
+            // found falagard mapping for this type
+            if (falagard != d_falagardRegistry.end())
+            {
+                // recursively call getFactory on the target base type
+                return getFactory(falagard->second.d_baseType);
+            }
+            // type not found anywhere, give up with an exception.
+            else
+            {
+              throw UnknownObjectException("WindowFactoryManager::getFactory - A WindowFactory object (nor an alias, or mapping) for '" + type + "' Window objects is not registered with the system.");
+            }
+        }
+    }
 }
 
 
@@ -236,6 +247,60 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 
 }
 
+void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName)
+{
+    WindowFactoryManager::FalagardWindowMapping mapping;
+    mapping.d_windowType = newType;
+    mapping.d_baseType   = targetType;
+    mapping.d_lookName   = lookName;
+
+    // see if the type we're creating already exists
+    if (d_falagardRegistry.find(newType) != d_falagardRegistry.end())
+    {
+        // type already exists, log the fact that it's going to be replaced.
+        Logger::getSingleton().logEvent("Falagard mapping for type '" + newType + "' already exists - current mapping will be replaced.");
+    }
+
+    Logger::getSingleton().logEvent("Creating falagard mapping for type '" + newType + "' using base type '" + targetType + "' and LookN'Feel '" + lookName + "'.");
+
+    d_falagardRegistry[newType] = mapping;
+}
+
+void WindowFactoryManager::removeFalagardWindowMapping(const String& type)
+{
+    FalagardMapRegistry::iterator iter = d_falagardRegistry.find(type);
+
+    if (iter != d_falagardRegistry.end())
+    {
+        Logger::getSingleton().logEvent("Removing falagard mapping for type '" + type + "'.");
+        d_falagardRegistry.erase(iter);
+    }
+}
+
+WindowFactoryManager::FalagardMappingIterator WindowFactoryManager::getFalagardMappingIterator() const
+{
+    return FalagardMappingIterator(d_falagardRegistry.begin(), d_falagardRegistry.end());
+}
+
+bool WindowFactoryManager::isFalagardMappedType(const String& type) const
+{
+    return d_falagardRegistry.find(type) != d_falagardRegistry.end();
+}
+
+const String& WindowFactoryManager::getMappedLookForType(const String& type) const
+{
+    FalagardMapRegistry::const_iterator iter = d_falagardRegistry.find(type);
+
+    if (iter != d_falagardRegistry.end())
+    {
+        return (*iter).second.d_lookName;
+    }
+    // type does not exist as a mapped type
+    else
+    {
+        throw InvalidRequestException("WindowFactoryManager::getMappedLookForType - Window factory type '" + type + "' is not a falagard mapped type (or does not exist at all).");
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************

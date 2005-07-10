@@ -1287,6 +1287,7 @@ public:
 		grow(str_num);
 		setlen(str_num);
 		memcpy(ptr(), &str.ptr()[str_idx], str_num * sizeof(utf32));
+		
 		return *this;
 	}
 
@@ -5404,7 +5405,7 @@ bool CEGUIEXPORT	operator>=(const char* c_str, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIEXPORT	operator+(const String str1, const String& str2);
+String CEGUIEXPORT	operator+(const String& str1, const String& str2);
 
 /*!
 \brief
@@ -5421,7 +5422,7 @@ String CEGUIEXPORT	operator+(const String str1, const String& str2);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIEXPORT	operator+(const String str, const std::string& std_str);
+String CEGUIEXPORT	operator+(const String& str, const std::string& std_str);
 
 /*!
 \brief
@@ -5455,7 +5456,7 @@ String CEGUIEXPORT	operator+(const std::string& std_str, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIEXPORT	operator+(const String str, const utf8* utf8_str);
+String CEGUIEXPORT	operator+(const String& str, const utf8* utf8_str);
 
 /*!
 \brief
@@ -5489,7 +5490,7 @@ String CEGUIEXPORT	operator+(const utf8* utf8_str, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIEXPORT	operator+(const String str, utf32 code_point);
+String CEGUIEXPORT	operator+(const String& str, utf32 code_point);
 
 /*!
 \brief
@@ -5523,7 +5524,7 @@ String CEGUIEXPORT	operator+(utf32 code_point, const String& str);
 
 \exception std::length_error	Thrown if the resulting String would be too large.
 */
-String CEGUIEXPORT	operator+(const String str, const char* c_str);
+String CEGUIEXPORT	operator+(const String& str, const char* c_str);
 
 /*!
 \brief

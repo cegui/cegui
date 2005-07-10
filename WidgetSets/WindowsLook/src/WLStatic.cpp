@@ -83,9 +83,9 @@ void initWinLookStatic(Static* s)
 	create and return a pointer to a Scrollbar widget for use as
 	vertical scroll bar	
 *************************************************************************/
-Scrollbar* WLStaticText::createVertScrollbar(void) const
+Scrollbar* WLStaticText::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -99,9 +99,9 @@ Scrollbar* WLStaticText::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar	
 *************************************************************************/
-Scrollbar* WLStaticText::createHorzScrollbar(void) const
+Scrollbar* WLStaticText::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -153,10 +153,7 @@ void WLStaticImage::initialise(void)
 *************************************************************************/
 Window* WLStaticTextFactory::createWindow(const String& name)
 {
-	WLStaticText* wnd = new WLStaticText(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLStaticText(d_type, name);
 }
 
 
@@ -165,10 +162,7 @@ Window* WLStaticTextFactory::createWindow(const String& name)
 *************************************************************************/
 Window* WLStaticImageFactory::createWindow(const String& name)
 {
-	WLStaticImage* wnd = new WLStaticImage(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLStaticImage(d_type, name);
 }
 
 } // End of  CEGUI namespace section

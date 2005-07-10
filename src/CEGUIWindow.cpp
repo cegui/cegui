@@ -32,6 +32,8 @@
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
 #include "elements/CEGUITooltip.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "falagard/CEGUIFalWidgetLookFeel.h"
 #include <algorithm>
 #include <cmath>
 #include <stdio.h>
@@ -92,7 +94,17 @@ WindowProperties::CustomTooltipType Window::d_tooltipTypeProperty;
 WindowProperties::Tooltip           Window::d_tooltipProperty;
 WindowProperties::InheritsTooltipText Window::d_inheritsTooltipProperty;
 WindowProperties::RiseOnClick       Window::d_riseOnClickProperty;
-
+WindowProperties::VerticalAlignment   Window::d_vertAlignProperty;
+WindowProperties::HorizontalAlignment Window::d_horzAlignProperty;
+WindowProperties::UnifiedAreaRect	Window::d_unifiedAreaRectProperty;
+WindowProperties::UnifiedPosition	Window::d_unifiedPositionProperty;
+WindowProperties::UnifiedXPosition	Window::d_unifiedXPositionProperty;
+WindowProperties::UnifiedYPosition	Window::d_unifiedYPositionProperty;
+WindowProperties::UnifiedSize		Window::d_unifiedSizeProperty;
+WindowProperties::UnifiedWidth		Window::d_unifiedWidthProperty;
+WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
+WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
+WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 
 /*************************************************************************
 	static data definitions
@@ -132,6 +144,8 @@ const String Window::EventZOrderChanged( (utf8*)"ZChanged" );
 const String Window::EventDragDropItemEnters("DragDropItemEnters");
 const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
+const String Window::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
+const String Window::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
 const String Window::EventMouseEnters( (utf8*)"MouseEnter" );
 const String Window::EventMouseLeaves( (utf8*)"MouseLeave" );
 const String Window::EventMouseMove( (utf8*)"MouseMove" );
@@ -161,6 +175,7 @@ Window::Window(const String& type, const String& name) :
 	d_alpha			= 1.0f;
 	d_mouseCursor	= (const Image*)DefaultMouseCursor;
 	d_userData		= NULL;
+	d_needsRedraw   = true;
 
 	// basic settings
 	d_enabled			= true;
@@ -188,16 +203,19 @@ Window::Window(const String& type, const String& name) :
     d_weOwnTip = false;
     d_inheritsTipText = false;
 
-	// position and size
-	d_abs_area = Rect(0, 0, 0, 0);
-	d_rel_area = Rect(0, 0, 0, 0);
+    // add events
+    addStandardEvents();
 
-	// add events
-	addStandardEvents();
+    // set initial window area.
+    setWindowArea(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0));
+
+    // set initial alignments
+    d_horzAlign = HA_LEFT;
+    d_vertAlign = VA_TOP;
 
 	// set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
-	setMinimumSize(Size(0.0f, 0.0f));
-	setMaximumSize(Size(1.0f, 1.0f));
+    setWindowMinSize(UVector2(cegui_reldim(0), cegui_reldim(0)));
+    setWindowMaxSize(UVector2(cegui_reldim(1), cegui_reldim(1)));
 
 	// add properties
 	addStandardProperties();
@@ -492,15 +510,7 @@ float Window::getEffectiveAlpha(void) const
 *************************************************************************/
 Rect Window::getRect(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area;
-	}
-	else
-	{
-		return d_abs_area;
-	}
-
+    return (getMetricsMode() == Relative) ? getRelativeRect() : getAbsoluteRect();
 }
 
 
@@ -554,7 +564,7 @@ Rect Window::getUnclippedPixelRect(void) const
 	}
 	else
 	{
-		return windowToScreen(Rect(0, 0, d_abs_area.getWidth(), d_abs_area.getHeight()));
+		return windowToScreen(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
 	}
 }
 
@@ -653,12 +663,7 @@ MetricsMode Window::getMetricsMode(void) const
 *************************************************************************/
 float Window::getXPosition(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.d_left;
-	}
-
-	return d_abs_area.d_left;
+    return (getMetricsMode() == Relative) ? getRelativeXPosition() : getAbsoluteXPosition();
 }
 
 
@@ -668,12 +673,7 @@ float Window::getXPosition(void) const
 *************************************************************************/
 float Window::getYPosition(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.d_top;
-	}
-
-	return d_abs_area.d_top;
+    return (getMetricsMode() == Relative) ? getRelativeYPosition() : getAbsoluteYPosition();
 }
 
 
@@ -683,12 +683,7 @@ float Window::getYPosition(void) const
 *************************************************************************/
 Point Window::getPosition(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getPosition();
-	}
-
-	return d_abs_area.getPosition();
+    return (getMetricsMode() == Relative) ? getRelativePosition() : getAbsolutePosition();
 }
 
 
@@ -698,12 +693,7 @@ Point Window::getPosition(void) const
 *************************************************************************/
 float Window::getWidth(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getWidth();
-	}
-
-	return d_abs_area.getWidth();
+    return (getMetricsMode() == Relative) ? getRelativeWidth() : getAbsoluteWidth();
 }
 
 
@@ -713,12 +703,7 @@ float Window::getWidth(void) const
 *************************************************************************/
 float Window::getHeight(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getHeight();
-	}
-
-	return d_abs_area.getHeight();
+    return (getMetricsMode() == Relative) ? getRelativeHeight() : getAbsoluteHeight();
 }
 
 
@@ -728,12 +713,7 @@ float Window::getHeight(void) const
 *************************************************************************/
 Size Window::getSize(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return d_rel_area.getSize();
-	}
-
-	return d_abs_area.getSize();
+    return (getMetricsMode() == Relative) ? getRelativeSize() : getAbsoluteSize();
 }
 
 
@@ -1289,6 +1269,7 @@ void Window::setInheritsAlpha(bool setting)
 *************************************************************************/
 void Window::requestRedraw(void) const
 {
+    d_needsRedraw = true;
 	System::getSingleton().signalRedraw();
 }
 
@@ -1389,14 +1370,25 @@ Rect Window::relativeToAbsolute(const Rect& rect) const
 *************************************************************************/
 float Window::windowToScreenX(float x) const
 {
-	const Window* wnd = this;
-	float baseX = 0;
+    float baseX = 0;
 
-	while (wnd != NULL)
-	{
-		baseX += wnd->d_abs_area.d_left;
-		wnd = wnd->d_parent;
-	}
+    if (d_parent)
+    {
+        baseX = d_parent->windowToScreenX(baseX);
+    }
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            baseX += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
+            break;
+        case HA_RIGHT:
+            baseX += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
+            break;
+        default:
+            baseX += getAbsoluteXPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1416,14 +1408,25 @@ float Window::windowToScreenX(float x) const
 *************************************************************************/
 float Window::windowToScreenY(float y) const
 {
-	const Window* wnd = this;
-	float baseY = 0;
+    float baseY = 0;
 
-	while (wnd != NULL)
-	{
-		baseY += wnd->d_abs_area.d_top;
-		wnd = wnd->d_parent;
-	}
+    if (d_parent)
+    {
+        baseY = d_parent->windowToScreenY(baseY);
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            baseY += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
+            break;
+        case VA_BOTTOM:
+            baseY += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
+            break;
+        default:
+            baseY += getAbsoluteYPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1443,15 +1446,38 @@ float Window::windowToScreenY(float y) const
 *************************************************************************/
 Point Window::windowToScreen(const Point& pt) const
 {
-	const Window* wnd = this;
 	Point base(0, 0);
+    
+    if (d_parent)
+    {
+        base = d_parent->windowToScreen(base);
+    }
 
-	while (wnd != NULL)
-	{
-		base.d_x += wnd->d_abs_area.d_left;
-		base.d_y += wnd->d_abs_area.d_top;
-		wnd = wnd->d_parent;
-	}
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            base.d_x += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
+            break;
+        case HA_RIGHT:
+            base.d_x += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
+            break;
+        default:
+            base.d_x += getAbsoluteXPosition();
+            break;
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            base.d_y += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
+            break;
+        case VA_BOTTOM:
+            base.d_y += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
+            break;
+        default:
+            base.d_y += getAbsoluteYPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1473,7 +1499,7 @@ Size Window::windowToScreen(const Size& sze) const
 {
 	if (getMetricsMode() == Relative)
 	{
-		return Size(sze.d_width * d_abs_area.getWidth(), sze.d_height * d_abs_area.getHeight());
+		return Size(sze.d_width * getAbsoluteWidth(), sze.d_height * getAbsoluteHeight());
 	}
 	else
 	{
@@ -1489,15 +1515,38 @@ Size Window::windowToScreen(const Size& sze) const
 *************************************************************************/
 Rect Window::windowToScreen(const Rect& rect) const
 {
-	const Window* wnd = this;
-	Point base(0, 0);
+    Point base(0, 0);
 
-	while (wnd != NULL)
-	{
-		base.d_x += wnd->d_abs_area.d_left;
-		base.d_y += wnd->d_abs_area.d_top;
-		wnd = wnd->d_parent;
-	}
+    if (d_parent)
+    {
+        base = d_parent->windowToScreen(base);
+    }
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            base.d_x += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
+            break;
+        case HA_RIGHT:
+            base.d_x += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
+            break;
+        default:
+            base.d_x += getAbsoluteXPosition();
+            break;
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            base.d_y += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
+            break;
+        case VA_BOTTOM:
+            base.d_y += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
+            break;
+        default:
+            base.d_y += getAbsoluteYPosition();
+            break;
+    }
 
 	if (getMetricsMode() == Relative)
 	{
@@ -1522,7 +1571,7 @@ float Window::screenToWindowX(float x) const
 
 	if (getMetricsMode() == Relative)
 	{
-		x /= d_abs_area.getWidth();
+		x /= getAbsoluteWidth();
 	}
 
 	return x;
@@ -1539,7 +1588,7 @@ float Window::screenToWindowY(float y) const
 
 	if (getMetricsMode() == Relative)
 	{
-		y /= d_abs_area.getHeight();
+		y /= getAbsoluteHeight();
 	}
 
 	return y;
@@ -1559,8 +1608,8 @@ Point Window::screenToWindow(const Point& pt) const
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_x /= d_abs_area.getWidth();
-		tmp.d_y /= d_abs_area.getHeight();
+		tmp.d_x /= getAbsoluteWidth();
+		tmp.d_y /= getAbsoluteHeight();
 	}
 
 	return tmp;
@@ -1576,8 +1625,8 @@ Size Window::screenToWindow(const Size& sze) const
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_width		/= d_abs_area.getWidth();
-		tmp.d_height	/= d_abs_area.getHeight();
+		tmp.d_width		/= getAbsoluteWidth();
+		tmp.d_height	/= getAbsoluteHeight();
 	}
 
 	return tmp;
@@ -1599,10 +1648,10 @@ Rect Window::screenToWindow(const Rect& rect) const
 
 	if (getMetricsMode() == Relative)
 	{
-		tmp.d_left		/= d_abs_area.getWidth();
-		tmp.d_top		/= d_abs_area.getHeight();
-		tmp.d_right		/= d_abs_area.getWidth();
-		tmp.d_bottom	/= d_abs_area.getHeight();
+		tmp.d_left		/= getAbsoluteWidth();
+		tmp.d_top		/= getAbsoluteHeight();
+		tmp.d_right		/= getAbsoluteWidth();
+		tmp.d_bottom	/= getAbsoluteHeight();
 	}
 
 	return tmp;
@@ -1642,6 +1691,37 @@ void Window::render(void)
 
 
 /*************************************************************************
+    Perform the actual rendering for this Window.
+*************************************************************************/
+void Window::drawSelf(float z)
+{
+    if (d_needsRedraw)
+    {
+        // dispose of already cached imagery.
+        d_renderCache.clearCachedImagery();
+        // get derived class to re-populate cache.
+        populateRenderCache();
+        // mark ourselves as no longer needed a redraw.
+        d_needsRedraw = false;
+    }
+
+    // if render cache contains imagery.
+    if (d_renderCache.hasCachedImagery())
+    {
+		Point absPos(getUnclippedPixelRect().getPosition());
+        // calculate clipping area for this window
+        Rect clipper(getPixelRect());
+        // If window is not totally clipped.
+        if (clipper.getWidth())
+        {
+            // send cached imagery to the renderer.
+            d_renderCache.render(absPos, z, clipper);
+        }
+    }
+}
+
+
+/*************************************************************************
 	Set the parent window for this window object.
 *************************************************************************/
 void Window::setParent(Window* parent)
@@ -1661,7 +1741,7 @@ float Window::getParentWidth(void) const
 		return System::getSingleton().getRenderer()->getWidth();
 	}
 
-	return d_parent->d_abs_area.getWidth();
+	return d_parent->getAbsoluteWidth();
 }
 
 
@@ -1676,7 +1756,7 @@ float Window::getParentHeight(void) const
 		return System::getSingleton().getRenderer()->getHeight();
 	}
 
-	return d_parent->d_abs_area.getHeight();
+	return d_parent->getAbsoluteHeight();
 }
 
 
@@ -1705,7 +1785,8 @@ void Window::addStandardEvents(void)
 	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
 	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
 	addEvent(EventZOrderChanged);			addEvent(EventParentSized);             addEvent(EventDragDropItemEnters);
-    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);
+    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);     addEvent(EventVerticalAlignmentChanged);
+    addEvent(EventHorizontalAlignmentChanged);
 
 	// general input handling
 	addEvent(EventMouseEnters);				addEvent(EventMouseLeaves);				addEvent(EventMouseMove);
@@ -2037,7 +2118,7 @@ Size Window::getWindowSize_impl(const Window* window) const
 	}
 	else
 	{
-		return window->d_abs_area.getSize();
+        return window->getAbsoluteSize();
 	}
 
 }
@@ -2050,12 +2131,12 @@ Size Window::getMaximumSize(void) const
 {
 	if (getMetricsMode() == Absolute)
 	{
-		return d_maxSize;
+        return d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()).asSize();
 	}
 	else
 	{
-		return absoluteToRelative_impl(NULL, d_maxSize);
-	}
+        return d_maxSize.asRelative(System::getSingleton().getRenderer()->getSize()).asSize();
+    }
 
 }
 
@@ -2066,13 +2147,13 @@ Size Window::getMaximumSize(void) const
 Size Window::getMinimumSize(void) const
 {
 	if (getMetricsMode() == Absolute)
-	{
-		return d_minSize;
-	}
-	else
-	{
-		return absoluteToRelative_impl(NULL, d_minSize);
-	}
+    {
+        return d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()).asSize();
+    }
+    else
+    {
+        return d_minSize.asRelative(System::getSingleton().getRenderer()->getSize()).asSize();
+    }
 
 }
 
@@ -2082,29 +2163,20 @@ Size Window::getMinimumSize(void) const
 *************************************************************************/
 void Window::setMinimumSize(const Size& sz)
 {
-	if (getMetricsMode() == Absolute)
-	{
-		d_minSize.d_width = PixelAligned(sz.d_width);
-		d_minSize.d_height = PixelAligned(sz.d_height);
-	}
-	else
-	{
-		d_minSize = relativeToAbsolute_impl(NULL, sz);
-	}
+    UVector2 usz;
+    
+    if (getMetricsMode() == Absolute)
+    {
+        usz.d_x = cegui_absdim(PixelAligned(sz.d_width));
+        usz.d_y = cegui_absdim(PixelAligned(sz.d_height));
+    }
+    else
+    {
+        usz.d_x = cegui_reldim(sz.d_width);
+        usz.d_y = cegui_reldim(sz.d_height);
+    }
 
-	// store old size.
-	Rect old_sz(d_abs_area);
-
-	// limit size as required
-	d_abs_area.constrainSizeMin(d_minSize);
-
-	// if size has changed, trigger notifications
-	if (old_sz != d_abs_area)
-	{
-        WindowEventArgs args(this);
-		onSized(args);
-	}
-
+    setWindowMinSize(usz);
 }
 
 
@@ -2113,29 +2185,20 @@ void Window::setMinimumSize(const Size& sz)
 *************************************************************************/
 void Window::setMaximumSize(const Size& sz)
 {
-	if (getMetricsMode() == Absolute)
-	{
-		d_maxSize.d_width = PixelAligned(sz.d_width);
-		d_maxSize.d_height = PixelAligned(sz.d_height);
-	}
-	else
-	{
-		d_maxSize = relativeToAbsolute_impl(NULL, sz);
-	}
+    UVector2 usz;
 
-	// store old size.
-	Rect old_sz(d_abs_area);
+    if (getMetricsMode() == Absolute)
+    {
+        usz.d_x = cegui_absdim(PixelAligned(sz.d_width));
+        usz.d_y = cegui_absdim(PixelAligned(sz.d_height));
+    }
+    else
+    {
+        usz.d_x = cegui_reldim(sz.d_width);
+        usz.d_y = cegui_reldim(sz.d_height);
+    }
 
-	// limit size as required
-	d_abs_area.constrainSizeMax(d_maxSize);
-
-	// if size has changed, trigger notifications
-	if (old_sz != d_abs_area)
-	{
-        WindowEventArgs args(this);
-		onSized(args);
-	}
-
+    setWindowMaxSize(usz);
 }
 
 
@@ -2243,15 +2306,7 @@ float Window::getXPosition(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.d_left;
-	}
-	else
-	{
-		return d_rel_area.d_left;
-	}
-
+    return (mode == Relative) ? getRelativeXPosition() : getAbsoluteXPosition();
 }
 
 
@@ -2266,15 +2321,7 @@ float Window::getYPosition(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.d_top;
-	}
-	else
-	{
-		return d_rel_area.d_top;
-	}
-
+    return (mode == Relative) ? getRelativeYPosition() : getAbsoluteYPosition();
 }
 
 
@@ -2289,15 +2336,7 @@ Point Window::getPosition(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getPosition();
-	}
-	else
-	{
-		return d_rel_area.getPosition();
-	}
-
+    return (mode == Relative) ? getRelativePosition() : getAbsolutePosition();
 }
 
 
@@ -2312,15 +2351,7 @@ float Window::getWidth(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getWidth();
-	}
-	else
-	{
-		return d_rel_area.getWidth();
-	}
-
+    return (mode == Relative) ? getRelativeWidth() : getAbsoluteWidth();
 }
 
 
@@ -2335,15 +2366,7 @@ float Window::getHeight(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getHeight();
-	}
-	else
-	{
-		return d_rel_area.getHeight();
-	}
-
+    return (mode == Relative) ? getRelativeHeight() : getAbsoluteHeight();
 }
 
 
@@ -2358,15 +2381,7 @@ Size Window::getSize(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area.getSize();
-	}
-	else
-	{
-		return d_rel_area.getSize();
-	}
-
+    return (mode == Relative) ? getRelativeSize() : getAbsoluteSize();
 }
 
 
@@ -2382,15 +2397,7 @@ Rect Window::getRect(MetricsMode mode) const
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Absolute)
-	{
-		return d_abs_area;
-	}
-	else
-	{
-		return d_rel_area;
-	}
-
+    return (mode == Relative) ? getRelativeRect() : getAbsoluteRect();
 }
 
 
@@ -2424,20 +2431,12 @@ void Window::setPosition(MetricsMode mode, const Point& position)
 
 	if (mode == Relative)
 	{
-		d_rel_area.setPosition(position);
-		d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+        setWindowPosition(UVector2(cegui_reldim(position.d_x), cegui_reldim(position.d_y)));
 	}
 	else
 	{
-		Point intPos(PixelAligned(position.d_x), PixelAligned(position.d_y));
-
-		d_abs_area.setPosition(intPos);
-		d_rel_area.setPosition(absoluteToRelative_impl(d_parent, position));
+        setWindowPosition(UVector2(cegui_absdim(PixelAligned(position.d_x)), cegui_absdim(PixelAligned(position.d_y))));
 	}
-
-	WindowEventArgs args(this);
-	onMoved(args);
 }
 
 
@@ -2469,27 +2468,9 @@ void Window::setSize(MetricsMode mode, const Size& size)
 		mode = getInheritedMetricsMode();
 	}
 
-	if (mode == Relative)
-	{
-		d_rel_area.setSize(size);
+    UVector2 usz(((mode == Relative) ? UVector2(cegui_reldim(size.d_width), cegui_reldim(size.d_height)) : UVector2(cegui_absdim(PixelAligned(size.d_width)), cegui_absdim(PixelAligned(size.d_height)))));
 
-		// update Rect for the other metrics system
-        d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-	}
-	else
-	{
-		Size intSize(PixelAligned(size.d_width), PixelAligned(size.d_height));
-
-		d_abs_area.setSize(intSize);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-		// update Rect for the other metrics system.
-		d_rel_area.setSize(absoluteToRelative_impl(d_parent, size));
-	}
-
-	WindowEventArgs args(this);
-	onSized(args);
+    setWindowSize(usz);
 }
 
 
@@ -2504,31 +2485,28 @@ void Window::setRect(MetricsMode mode, const Rect& area)
 		mode = getInheritedMetricsMode();
 	}
 
+    URect uarea;
+    
 	if (mode == Relative)
 	{
-		d_rel_area = area;
-
-		d_abs_area = relativeToAbsolute_impl(d_parent, area);
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+        uarea = URect(
+                cegui_reldim(area.d_left),
+                cegui_reldim(area.d_top),
+                cegui_reldim(area.d_right),
+                cegui_reldim(area.d_bottom)
+                      );
 	}
 	else
 	{
-		Rect intArea(
-			PixelAligned(area.d_left),
-			PixelAligned(area.d_top),
-			PixelAligned(area.d_right),
-			PixelAligned(area.d_bottom)
-			);
+        uarea = URect(
+                cegui_absdim(PixelAligned(area.d_left)),
+                cegui_absdim(PixelAligned(area.d_top)),
+                cegui_absdim(PixelAligned(area.d_right)),
+                cegui_absdim(PixelAligned(area.d_bottom))
+                      );
+    }
 
-		d_abs_area = intArea;
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-		d_rel_area = absoluteToRelative_impl(d_parent, area);
-	}
-
-	WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+    setWindowArea(uarea);
 }
 
 
@@ -2600,6 +2578,17 @@ void Window::addStandardProperties(void)
     addProperty(&d_tooltipProperty);
     addProperty(&d_inheritsTooltipProperty);
     addProperty(&d_riseOnClickProperty);
+    addProperty(&d_vertAlignProperty);
+    addProperty(&d_horzAlignProperty);
+    addProperty(&d_unifiedAreaRectProperty);
+    addProperty(&d_unifiedPositionProperty);
+    addProperty(&d_unifiedXPositionProperty);
+    addProperty(&d_unifiedYPositionProperty);
+    addProperty(&d_unifiedSizeProperty);
+    addProperty(&d_unifiedWidthProperty);
+    addProperty(&d_unifiedHeightProperty);
+    addProperty(&d_unifiedMinSizeProperty);
+    addProperty(&d_unifiedMaxSizeProperty);
 }
 
 
@@ -2908,6 +2897,13 @@ String Window::getTooltipType(void) const
 void Window::setTooltipText(const String& tip)
 {
     d_tooltipText = tip;
+
+    Tooltip* tooltip = getTooltip();
+
+    if (tooltip && tooltip->getTargetWindow() == this)
+    {
+        tooltip->setText(tip);
+    }
 }
 
 const String& Window::getTooltipText(void) const
@@ -2950,6 +2946,215 @@ void Window::doRiseOnClick(void)
     }
 }
 
+void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)
+{
+    // notes of what we did
+    bool moved = false, sized;
+    
+    // save original size so we can work out how to behave later on
+    Size oldSize(d_pixelSize);
+
+    // calculate pixel sizes for everything, so we have a common format for comparisons.
+    Vector2 absMax(d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+    Vector2 absMin(d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+    d_pixelSize = size.asAbsolute(getParentSize()).asSize();
+
+    // limit new pixel size to: minSize <= newSize <= maxSize
+    if (d_pixelSize.d_width < absMin.d_x)
+        d_pixelSize.d_width = absMin.d_x;
+    else if (d_pixelSize.d_width > absMax.d_x)
+        d_pixelSize.d_width = absMax.d_x;
+    if (d_pixelSize.d_height < absMin.d_y)
+        d_pixelSize.d_height = absMin.d_y;
+    else if (d_pixelSize.d_height > absMax.d_y)
+        d_pixelSize.d_height = absMax.d_y;
+
+    d_area.setSize(size);
+    sized = (d_pixelSize != oldSize);
+
+    // If this is a top/left edge sizing op, only modify position if the size actually changed.
+    // If it is not a sizing op, then position may always change.
+    if (!topLeftSizing || sized)
+    {
+        // only update position if a change has occurred.
+        if (pos != d_area.d_min)
+        {
+            d_area.setPosition(pos);
+            moved = true;
+        }
+    }
+
+    // fire events as required
+    if (fireEvents)
+    {
+        WindowEventArgs args(this);
+
+        if (moved)
+        {
+            onMoved(args);
+            // reset handled so 'sized' event can re-use (since  wo do not care about it)
+            args.handled = false;
+        }
+    
+        if (sized)
+        {
+            onSized(args);
+        }
+    }
+}
+
+void Window::setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
+{
+    setWindowArea(UVector2(xpos, ypos), UVector2(width, height));
+}
+
+void Window::setWindowArea(const UVector2& pos, const UVector2& size)
+{
+    setWindowArea_impl(pos, size);
+}
+
+void Window::setWindowArea(const URect& area)
+{
+    setWindowArea(area.d_min, area.getSize());
+}
+
+void Window::setWindowPosition(const UVector2& pos)
+{
+    setWindowArea_impl(pos, d_area.getSize());
+}
+
+void Window::setWindowXPosition(const UDim& x)
+{
+    setWindowArea_impl(UVector2(x, d_area.d_min.d_y), d_area.getSize());
+}
+
+void Window::setWindowYPosition(const UDim& y)
+{
+    setWindowArea_impl(UVector2(d_area.d_min.d_x, y), d_area.getSize());
+}
+
+void Window::setWindowSize(const UVector2& size)
+{
+    setWindowArea_impl(d_area.getPosition(), size);
+}
+
+void Window::setWindowWidth(const UDim& width)
+{
+    setWindowArea_impl(d_area.getPosition(), UVector2(width, d_area.getSize().d_y));
+}
+
+void Window::setWindowHeight(const UDim& height)
+{
+    setWindowArea_impl(d_area.getPosition(), UVector2(d_area.getSize().d_x, height));
+}
+
+void Window::setWindowMaxSize(const UVector2& size)
+{
+    d_maxSize = size;
+
+    // set window area back on itself to cause new maximum size to be applied if required.
+    setWindowArea(d_area);
+}
+
+void Window::setWindowMinSize(const UVector2& size)
+{
+    d_minSize = size;
+
+    // set window area back on itself to cause new minimum size to be applied if required.
+    setWindowArea(d_area);
+}
+
+const URect& Window::getWindowArea() const
+{
+    return d_area;
+}
+
+const UVector2& Window::getWindowPosition() const
+{
+    return d_area.d_min;
+}
+
+const UDim& Window::getWindowXPosition() const
+{
+    return d_area.d_min.d_x;
+}
+
+const UDim& Window::getWindowYPosition() const
+{
+    return d_area.d_min.d_y;
+}
+
+UVector2 Window::getWindowSize() const
+{
+    return d_area.getSize();
+}
+
+UDim Window::getWindowWidth() const
+{
+    return d_area.getSize().d_x;
+}
+
+UDim Window::getWindowHeight() const
+{
+    return d_area.getSize().d_y;
+}
+
+const UVector2& Window::getWindowMaxSize() const
+{
+    return d_maxSize;
+}
+
+const UVector2& Window::getWindowMinSize() const
+{
+    return d_minSize;
+}
+
+void Window::setVerticalAlignment(const VerticalAlignment alignment)
+{
+    if (d_vertAlign != alignment)
+    {
+        d_vertAlign = alignment;
+
+        WindowEventArgs args(this);
+        onVerticalAlignmentChanged(args);
+    }
+}
+
+void Window::setHorizontalAlignment(const HorizontalAlignment alignment)
+{
+    if (d_horzAlign != alignment)
+    {
+        d_horzAlign = alignment;
+
+        WindowEventArgs args(this);
+        onHorizontalAlignmentChanged(args);
+    }
+}
+
+const String& Window::getLookNFeel()
+{
+    return d_lookName;
+}
+
+void Window::setLookNFeel(const String& look)
+{
+    if (d_lookName.empty())
+    {
+        d_lookName = look;
+        Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
+
+        // Work to initialse the look and feel...
+        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(look);
+        // Apply property initialisers and create child widgets.
+        wlf.initialiseWidget(*this);
+
+        // TODO: Create look n feel defined properties (not supported yet!)
+    }
+    else
+    {
+        throw InvalidRequestException("Window::setLookNFeel - The window '" + d_name + "' already has a look assigned (" + d_lookName + ").");
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -2977,7 +3182,9 @@ void Window::onSized(WindowEventArgs& e)
 
 void Window::onMoved(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventMoved, e, EventNamespace);
 }
 
@@ -3078,7 +3285,9 @@ void Window::onInheritsAlphaChanged(WindowEventArgs& e)
 
 void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventAlwaysOnTopChanged, e, EventNamespace);
 }
 
@@ -3122,7 +3331,9 @@ void Window::onRenderingEnded(WindowEventArgs& e)
 
 void Window::onZChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
@@ -3162,42 +3373,41 @@ void Window::onDeactivated(ActivationEventArgs& e)
 
 void Window::onParentSized(WindowEventArgs& e)
 {
-	// synchronise area rects for new parent size
-	if (getMetricsMode() == Relative)
-	{
-		d_abs_area = relativeToAbsolute_impl(d_parent, d_rel_area);
+    // set window area back on itself to cause minimum and maximum size
+    // constraints to be applied as required.  (fire no events though)
+    setWindowArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
-		// Check new absolute size and limit to currently set max/min values.  This does not affect relative co-ordinates
-		// which must 'recover' after window is again sized so normal relativity can take over.
-		d_abs_area.constrainSize(d_maxSize, d_minSize);
+    // now see if events should be fired.
+    if ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0))
+    {
+        WindowEventArgs args(this);
+        onMoved(args);
+    }
 
-		// perform notifications
-        WindowEventArgs args(this); 
-		onMoved(args);
-		onSized(args);
-
-		// call for a redraw
-		requestRedraw();
-	}
-	else
-	{
-		d_rel_area = absoluteToRelative_impl(d_parent, d_abs_area);
-	}
-
-	fireEvent(EventParentSized, e, EventNamespace);
+    if ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0))
+    {
+        WindowEventArgs args(this);
+        onSized(args);
+    }
+    
+    fireEvent(EventParentSized, e, EventNamespace);
 }
 
 
 void Window::onChildAdded(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventChildAdded, e, EventNamespace);
 }
 
 
 void Window::onChildRemoved(WindowEventArgs& e)
 {
-	requestRedraw();
+    // we no longer want a total redraw here, instead we just get each window
+    // to resubmit it's imagery to the Renderer.
+    System::getSingleton().signalRedraw();
 	fireEvent(EventChildRemoved, e, EventNamespace);
 }
 
@@ -3335,6 +3545,16 @@ void Window::onDragDropItemLeaves(DragDropEventArgs& e)
 void Window::onDragDropItemDropped(DragDropEventArgs& e)
 {
     fireEvent(EventDragDropItemDropped, e, EventNamespace);
+}
+
+void Window::onVerticalAlignmentChanged(WindowEventArgs& e)
+{
+    fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
+}
+
+void Window::onHorizontalAlignmentChanged(WindowEventArgs& e)
+{
+    fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section

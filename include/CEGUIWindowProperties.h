@@ -1364,6 +1364,308 @@ public:
 };
 
 
+/*!
+\brief
+    Property to access the vertical alignment setting for the window.
+
+    \par Usage:
+        - Name: VerticalAlignment
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "Top" to indicate the windows position is an offset of its top edge from its parents top edge.
+        - "Centre" to indicate the windows position is an offset of its centre point from its parents centre point.
+        - "Bottom" to indicate the windows position is an offset of its bottom edge from its parents bottom edge.
+*/
+class VerticalAlignment : public Property
+{
+    public:
+        VerticalAlignment() : Property(
+        "VerticalAlignment",
+        "Property to get/set the windows vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
+        "Top")
+        {}
+
+        String	get(const PropertyReceiver* receiver) const;
+        void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*!
+\brief
+    Property to access the horizontal alignment setting for the window.
+
+    \par Usage:
+        - Name: HorizontalAlignment
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "Left" to indicate the windows position is an offset of its left edge from its parents left edge.
+        - "Centre" to indicate the windows position is an offset of its centre point from its parents centre point.
+        - "Right" to indicate the windows position is an offset of its right edge from its parents right edge.
+*/
+class HorizontalAlignment : public Property
+{
+    public:
+        HorizontalAlignment() : Property(
+        "HorizontalAlignment",
+        "Property to get/set the windows horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
+        "Left")
+        {}
+
+        String	get(const PropertyReceiver* receiver) const;
+        void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified area rectangle of the window.
+
+	\par Usage:
+		- Name: UnifiedAreaRect
+		- Format: "{{[ls],[lo]},{[ts],[to]},{[rs],[ro]},{[bs],[bo]}}"
+
+	\par Where:
+		- [ls] is a floating point value describing the relative scale value for the left edge.
+		- [lo] is a floating point value describing the absolute offset value for the left edge.
+		- [ts] is a floating point value describing the relative scale value for the top edge.
+		- [to] is a floating point value describing the absolute offset value for the top edge.
+		- [rs] is a floating point value describing the relative scale value for the right edge.
+		- [ro] is a floating point value describing the absolute offset value for the right edge.
+		- [bs] is a floating point value describing the relative scale value for the bottom edge.
+		- [bo] is a floating point value describing the absolute offset value for the bottom edge.
+*/
+class UnifiedAreaRect : public Property
+{
+	public:
+		UnifiedAreaRect() : Property(
+		"UnifiedAreaRect",
+		"Property to get/set the windows unified area rectangle.  Value is a \"URect\".",
+		"{{0,0},{0,0},{0,0},{0,0}}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified position of the window.
+
+	\par Usage:
+		- Name: UnifiedPosition
+		- Format: "{{[xs],[xo]},{[ys],[yo]}}"
+
+	\par Where:
+		- [xs] is a floating point value describing the relative scale value for the position x-coordinate.
+		- [xo] is a floating point value describing the absolute offset value for the position x-coordinate.
+		- [ys] is a floating point value describing the relative scale value for the position y-coordinate.
+		- [yo] is a floating point value describing the absolute offset value for the position y-coordinate.
+*/
+class UnifiedPosition : public Property
+{
+	public:
+		UnifiedPosition() : Property(
+		"UnifiedPosition",
+		"Property to get/set the windows unified position.  Value is a \"UVector2\".",
+		"{{0,0},{0,0}}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified position x-coordinate of the window.
+
+	\par Usage:
+		- Name: UnifiedXPosition
+		- Format: "{[s],[o]}"
+
+	\par Where:
+		- [s] is a floating point value describing the relative scale value for the position x-coordinate.
+		- [o] is a floating point value describing the absolute offset value for the position x-coordinate.
+*/
+class UnifiedXPosition : public Property
+{
+	public:
+		UnifiedXPosition() : Property(
+		"UnifiedXPosition",
+		"Property to get/set the windows unified position x-coordinate.  Value is a \"UDim\".",
+		"{0,0}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified position y-coordinate of the window.
+
+	\par Usage:
+		- Name: UnifiedYPosition
+		- Format: "{[s],[o]}"
+
+	\par Where:
+		- [s] is a floating point value describing the relative scale value for the position y-coordinate.
+		- [o] is a floating point value describing the absolute offset value for the position y-coordinate.
+*/
+class UnifiedYPosition : public Property
+{
+	public:
+		UnifiedYPosition() : Property(
+		"UnifiedYPosition",
+		"Property to get/set the windows unified position y-coordinate.  Value is a \"UDim\".",
+		"{0,0}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified position of the window.
+
+	\par Usage:
+		- Name: UnifiedSize
+		- Format: "{{[ws],[wo]},{[hs],[ho]}}"
+
+	\par Where:
+		- [ws] is a floating point value describing the relative scale value for the width.
+		- [wo] is a floating point value describing the absolute offset value for the width.
+		- [hs] is a floating point value describing the relative scale value for the height.
+		- [ho] is a floating point value describing the absolute offset value for the height.
+*/
+class UnifiedSize : public Property
+{
+	public:
+		UnifiedSize() : Property(
+		"UnifiedSize",
+		"Property to get/set the windows unified size.  Value is a \"UVector2\".",
+		"{{0,0},{0,0}}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified width of the window.
+
+	\par Usage:
+		- Name: UnifiedWidth
+		- Format: "{[s],[o]}"
+
+	\par Where:
+		- [s] is a floating point value describing the relative scale value for the width.
+		- [o] is a floating point value describing the absolute offset value for the width.
+*/
+class UnifiedWidth : public Property
+{
+	public:
+		UnifiedWidth() : Property(
+		"UnifiedWidth",
+		"Property to get/set the windows unified width.  Value is a \"UDim\".",
+		"{0,0}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified height of the window.
+
+	\par Usage:
+		- Name: UnifiedHeight
+		- Format: "{[s],[o]}"
+
+	\par Where:
+		- [s] is a floating point value describing the relative scale value for the height.
+		- [o] is a floating point value describing the absolute offset value for the height.
+*/
+class UnifiedHeight : public Property
+{
+	public:
+		UnifiedHeight() : Property(
+		"UnifiedHeight",
+		"Property to get/set the windows unified height.  Value is a \"UDim\".",
+		"{0,0}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified minimum size of the window.
+
+	\par Usage:
+		- Name: UnifiedMinSize
+		- Format: "{{[ws],[wo]},{[hs],[ho]}}"
+
+	\par Where:
+		- [ws] is a floating point value describing the relative scale value for the minimum width.
+		- [wo] is a floating point value describing the absolute offset value for the minimum width.
+		- [hs] is a floating point value describing the relative scale value for the minimum height.
+		- [ho] is a floating point value describing the absolute offset value for the minimum height.
+*/
+class UnifiedMinSize : public Property
+{
+	public:
+		UnifiedMinSize() : Property(
+		"UnifiedMinSize",
+		"Property to get/set the windows unified minimum size.  Value is a \"UVector2\".",
+		"{{0,0},{0,0}}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*
+\brief
+	Property to access the unified maximum size of the window.
+
+	\par Usage:
+		- Name: UnifiedMaxSize
+		- Format: "{{[ws],[wo]},{[hs],[ho]}}"
+
+	\par Where:
+		- [ws] is a floating point value describing the relative scale value for the maximum width.
+		- [wo] is a floating point value describing the absolute offset value for the maximum width.
+		- [hs] is a floating point value describing the relative scale value for the maximum height.
+		- [ho] is a floating point value describing the absolute offset value for the maximum height.
+*/
+class UnifiedMaxSize : public Property
+{
+	public:
+		UnifiedMaxSize() : Property(
+		"UnifiedMaxSize",
+		"Property to get/set the windows unified maximum size.  Value is a \"UVector2\".",
+		"{{0,0},{0,0}}")
+		{}
+
+		String	get(const PropertyReceiver* receiver) const;
+		void	set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 

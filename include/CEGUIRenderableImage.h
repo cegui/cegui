@@ -206,6 +206,38 @@ protected:
 	*/
 	void draw_impl(const Vector3& position, const Rect& clip_rect) const;
 
+    // implements abstract method
+    void draw_impl(RenderCache& renderCache) const;
+
+    /*!
+    \brief
+        return number of horizontal tiles required.
+    */
+    uint getHorzTileCount() const;
+
+    /*!
+    \brief
+        return number of vertical tiles required.
+    */
+    uint getVertTileCount() const;
+
+    /*!
+    \brief
+        Return base x co-ord for first tile.
+    */
+    float getBaseXCoord(const Size& sz) const;
+
+    /*!
+    \brief
+        Return base y co-ord for first tile.
+    */
+    float getBaseYCoord(const Size& sz) const;
+
+    /*!
+    \brief
+        Return target size to be used for each tile.
+    */
+    Size getDestinationSize() const;
 
 	/*************************************************************************
 		Implementation Data

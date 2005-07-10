@@ -134,9 +134,9 @@ Rect TLListbox::getListRenderArea(void) const
 	create and return a pointer to a Scrollbar widget for use as vertical
 	scroll bar
 *************************************************************************/
-Scrollbar* TLListbox::createVertScrollbar(void) const
+Scrollbar* TLListbox::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -150,9 +150,9 @@ Scrollbar* TLListbox::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar
 *************************************************************************/
-Scrollbar* TLListbox::createHorzScrollbar(void) const
+Scrollbar* TLListbox::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -179,9 +179,9 @@ void TLListbox::layoutComponentWidgets()
 	// set desired size for horizontal scroll-bar
 	Size h_sz(1.0f, 0.0f);
 
-	if (d_abs_area.getHeight() != 0.0f)
+	if (getAbsoluteHeight() != 0.0f)
 	{
-		h_sz.d_height = (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight();
+		h_sz.d_height = (getAbsoluteWidth() * v_sz.d_width) / getAbsoluteHeight();
 	}
 
 	// adjust length to consider width of vertical scroll bar if that is visible
@@ -207,23 +207,11 @@ void TLListbox::layoutComponentWidgets()
 /*************************************************************************
 	Perform the rendering for everything except the items
 *************************************************************************/
-void TLListbox::renderListboxBaseImagery(float z)
+void TLListbox::cacheListboxBaseImagery()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
 	// draw the box elements
-	Vector3 pos(absrect.d_left, absrect.d_top, z);
-	d_background.draw(pos, clipper);
-	d_frame.draw(pos, clipper);
+	d_background.draw(d_renderCache);
+	d_frame.draw(d_renderCache);
 }
 
 
@@ -294,10 +282,7 @@ void TLListbox::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLListboxFactory::createWindow(const String& name)
 {
-	TLListbox* wnd = new TLListbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLListbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -221,9 +221,10 @@ void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 		}
 	}
 
-	// install new width values.
-	d_abs_area.setWidth(prefWidth);
-	d_rel_area.setWidth(absoluteToRelativeX_impl(getParent(), prefWidth));
+	// install new size.
+    UVector2 sze(d_area.getSize());
+    sze.d_x = cegui_absdim(prefWidth);
+    setWindowArea_impl(d_area.getPosition(), sze, false, false);
 
 	// base class processing.
 	Thumb::onSized(e);
@@ -246,10 +247,7 @@ void TLMiniHorzScrollbarThumb::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMiniHorzScrollbarThumbFactory::createWindow(const String& name)
 {
-	TLMiniHorzScrollbarThumb* wnd = new TLMiniHorzScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniHorzScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -115,7 +115,7 @@ protected:
 	\return
 		Pointer to a ListHeader based object.
 	*/
-	virtual ListHeader*	createListHeader(void) const;
+	virtual ListHeader*	createListHeader(const String& name) const;
  
 
 	/*!
@@ -125,7 +125,7 @@ protected:
 	\return
 		Pointer to a Scrollbar to be used for scrolling the list vertically.
 	*/
-	virtual Scrollbar*	createVertScrollbar(void) const;
+	virtual Scrollbar*	createVertScrollbar(const String& name) const;
  
 
 	/*!
@@ -135,7 +135,7 @@ protected:
 	\return
 		Pointer to a Scrollbar to be used for scrolling the list horizontally.
 	*/
-	virtual Scrollbar*	createHorzScrollbar(void) const;
+	virtual Scrollbar*	createHorzScrollbar(const String& name) const;
 
 
 	/*!
@@ -155,13 +155,10 @@ protected:
 		rendered to layer 3, other layers can be used for rendering imagery behind and
 		infront of the items.
 
-	\param z
-		Z co-ordinate for layer 0.
-
 	\return
 		Nothing.
 	*/
-	virtual	void	renderListboxBaseImagery(float z);
+	virtual	void	cacheListboxBaseImagery();
 
 	/*!
 	\brief

@@ -85,10 +85,7 @@ namespace CEGUI
 
         Window*	createWindow(const String& name)
         {
-            Window* wnd = new WLScrollablePane(d_type, name);
-            wnd->initialise();
-
-            return wnd;
+            return new WLScrollablePane(d_type, name);
         }
 
         virtual void destroyWindow(Window* window)

@@ -108,21 +108,42 @@ namespace CEGUI
                 System::getSingleton().getGUISheet()->addChildWindow(this);
             }
 
-            Rect area(System::getSingleton().getRenderer()->getRect());
-            const Font* fnt = getFont();
-            
-            // get required size of the tool tip according to the text extents.
-            // TODO: Add a proprty to allow specification of text formatting.
-            float height = fnt->getFormattedLineCount(wnd->getTooltipText(), area, LeftAligned) * fnt->getLineSpacing();
-            float width = fnt->getFormattedTextExtent(wnd->getTooltipText(), area, LeftAligned);
+            // set text to that of the tooltip text of the target
+            setText(wnd->getTooltipText());
 
             // set size and potition of the tooltip window.
-            setSize(Absolute, Size(width, height));
+            setSize(Absolute, getTextSize());
             positionSelf();
         }
 
         resetTimer();
         d_target = wnd;
+    }
+
+    const Window* Tooltip::getTargetWindow()
+    {
+        return d_target;
+    }
+
+    Size Tooltip::getTextSize() const
+    {
+        const Font* fnt = getFont();
+
+        if (fnt)
+        {
+            Rect area(System::getSingleton().getRenderer()->getRect());
+
+            // get required size of the tool tip according to the text extents.
+            // TODO: Add a proprty to allow specification of text formatting.
+            float height = fnt->getFormattedLineCount(d_text, area, LeftAligned) * fnt->getLineSpacing();
+            float width = fnt->getFormattedTextExtent(d_text, area, LeftAligned);
+
+            return Size(width, height);
+        }
+        else
+        {
+            return Size(0,0);
+        }
     }
 
     void Tooltip::resetTimer(void)

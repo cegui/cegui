@@ -42,10 +42,10 @@ ButtonBaseProperties::DisabledTextColour	ButtonBase::d_disabledTextColourPropert
 	Constants
 *************************************************************************/
 // default colours for text label rendering
-const colour	ButtonBase::DefaultNormalLabelColour	= 0x00FFFFFF;
-const colour	ButtonBase::DefaultHoverLabelColour		= 0x00FFFFFF;
-const colour	ButtonBase::DefaultPushedLabelColour	= 0x00FFFFFF;
-const colour	ButtonBase::DefaultDisabledLabelColour	= 0x007F7F7F;
+const colour	ButtonBase::DefaultNormalLabelColour	= 0xFFFFFFFF;
+const colour	ButtonBase::DefaultHoverLabelColour		= 0xFFFFFFFF;
+const colour	ButtonBase::DefaultPushedLabelColour	= 0xFFFFFFFF;
+const colour	ButtonBase::DefaultDisabledLabelColour	= 0xFF7F7F7F;
 
 
 /*************************************************************************
@@ -118,8 +118,7 @@ void ButtonBase::setNormalTextColour(const colour& colour)
 {
 	if (d_normalColour != colour)
 	{
-		// alpha part comes from window alpha
-		d_normalColour = (colour & 0x00FFFFFF);
+		d_normalColour = colour;
 		requestRedraw();
 	}
 
@@ -134,8 +133,7 @@ void ButtonBase::setHoverTextColour(const colour& colour)
 {
 	if (d_hoverColour != colour)
 	{
-		// alpha part comes from window alpha
-		d_hoverColour = (colour & 0x00FFFFFF);
+		d_hoverColour = colour;
 		requestRedraw();
 	}
 
@@ -150,8 +148,7 @@ void ButtonBase::setPushedTextColour(const colour& colour)
 {
 	if (d_pushedColour != colour)
 	{
-		// alpha part comes from window alpha
-		d_pushedColour = (colour & 0x00FFFFFF);
+		d_pushedColour = colour;
 		requestRedraw();
 	}
 
@@ -166,8 +163,7 @@ void ButtonBase::setDisabledTextColour(const colour& colour)
 {
 	if (d_disabledColour != colour)
 	{
-		// alpha part comes from window alpha
-		d_disabledColour = (colour & 0x00FFFFFF);
+		d_disabledColour = colour;
 		requestRedraw();
 	}
 

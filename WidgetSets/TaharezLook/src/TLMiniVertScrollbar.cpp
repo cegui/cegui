@@ -85,10 +85,10 @@ TLMiniVertScrollbar::~TLMiniVertScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLMiniVertScrollbar::createIncreaseButton(void) const
+PushButton* TLMiniVertScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -115,10 +115,10 @@ PushButton* TLMiniVertScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLMiniVertScrollbar::createDecreaseButton(void) const
+PushButton* TLMiniVertScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -144,10 +144,10 @@ PushButton* TLMiniVertScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* TLMiniVertScrollbar::createThumb(void) const
+Thumb* TLMiniVertScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	TLMiniVertScrollbarThumb* thumb = (TLMiniVertScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	TLMiniVertScrollbarThumb* thumb = (TLMiniVertScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform some initialisation
 	thumb->setVertFree(true);
@@ -164,7 +164,7 @@ Thumb* TLMiniVertScrollbar::createThumb(void) const
 void TLMiniVertScrollbar::layoutComponentWidgets(void)
 {
 	Size bsz;
-	bsz.d_width = bsz.d_height = d_abs_area.getWidth();
+	bsz.d_width = bsz.d_height = getAbsoluteWidth();
 
 	// install button sizes
 	d_increase->setSize(absoluteToRelative(bsz));
@@ -172,7 +172,7 @@ void TLMiniVertScrollbar::layoutComponentWidgets(void)
 
 	// position buttons
 	d_decrease->setPosition(Point(0.0f, 0.0f));
-	d_increase->setPosition(Point(0.0f, absoluteToRelativeY(d_abs_area.getHeight() - bsz.d_height)));
+	d_increase->setPosition(Point(0.0f, absoluteToRelativeY(getAbsoluteHeight() - bsz.d_height)));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -190,7 +190,7 @@ void TLMiniVertScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setVertRange(absoluteToRelativeY(slideTrackYPadding), absoluteToRelativeY(slideTrackYPadding + slideExtent));
@@ -209,7 +209,7 @@ float TLMiniVertScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight();
+	float slideExtent	= getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight();
 
 	return	(d_thumb->getAbsoluteYPosition() - slideTrackYPadding) / (slideExtent / posExtent);
 }
@@ -282,10 +282,7 @@ void TLMiniVertScrollbar::drawSelf(float z)
 *************************************************************************/
 Window* TLMiniVertScrollbarFactory::createWindow(const String& name)
 {
-	TLMiniVertScrollbar* wnd = new TLMiniVertScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniVertScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

@@ -397,7 +397,6 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	const Image*	d_normalMouseCursor;	//!< Image to use for mouse when not sizing (typically set by derived class).
 	const Image*	d_sizingMouseCursor;	//!< Image to use for mouse when sizing (typically set by derived class).
 	const Image*	d_movingMouseCursor;	//!< Image to use for mouse when moving (typically set by derived class).
 

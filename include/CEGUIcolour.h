@@ -223,6 +223,18 @@ public:
         );  
     }
 
+    inline colour& operator*=(const colour& val)
+    {
+        d_red *= val.d_red;
+        d_blue *= val.d_blue;
+        d_green *= val.d_green;
+        d_alpha *= val.d_alpha;
+
+		d_argbValid = false;
+
+        return *this;
+    }
+
 	/*************************************************************************
 		Compare operators
 	*************************************************************************/

@@ -70,12 +70,24 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 		throw AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + name +"' already exists within the system.");
 	}
 
-	WindowFactory* factory = WindowFactoryManager::getSingleton().getFactory(type);
+    WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
+    WindowFactory* factory = wfMgr.getFactory(type);
 
-	Window* newWindow = factory->createWindow(name);
+    Window* newWindow = factory->createWindow(name);
+    Logger::getSingleton().logEvent("Window '" + name +"' of type '" + type + "' has been created.", Informative);
+
+    // see if we need to assign a look to this window
+    if (wfMgr.isFalagardMappedType(type))
+    {
+        // this was a mapped type, so assign a look to the window so it can finalise
+        // its initialisation
+        newWindow->setLookNFeel(wfMgr.getMappedLookForType(type));
+    }
+
+    // perform initialisation step
+    newWindow->initialise();
+
 	d_windowRegistry[name] = newWindow;
-
-	Logger::getSingleton().logEvent((utf8*)"Window '" + name +"' of type '" + type + "' has been created.", Informative);
 
 	return newWindow;
 }

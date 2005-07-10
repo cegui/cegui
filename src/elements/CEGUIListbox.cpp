@@ -24,6 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUIExceptions.h"
+#include "CEGUIWindowManager.h"
 #include "elements/CEGUIListbox.h"
 #include "elements/CEGUIListboxItem.h"
 #include "elements/CEGUIScrollbar.h"
@@ -89,11 +90,14 @@ Listbox::~Listbox(void)
 void Listbox::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar();
-	d_horzScrollbar = createHorzScrollbar();
+	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
+	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
 
 	addChildWindow(d_vertScrollbar);
 	addChildWindow(d_horzScrollbar);
+
+    d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
+    d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
 
 	configureScrollbars();
 	layoutComponentWidgets();
@@ -540,62 +544,58 @@ void Listbox::handleUpdatedItemData(void)
 /*************************************************************************
 	Perform the actual rendering for this Window.
 *************************************************************************/
-void Listbox::drawSelf(float z)
+void Listbox::populateRenderCache()
 {
-	// get the derived class to render general stuff before we handle the items
-	renderListboxBaseImagery(z);
+    // get the derived class to render general stuff before we handle the items
+    cacheListboxBaseImagery();
 
-	//
-	// Render list items
-	//
-	Vector3	itemPos;
-	Size	itemSize;
-	Rect	itemClipper;
-	float	widest = getWidestItemWidth();
+    //
+    // Render list items
+    //
+    Vector3	itemPos;
+    Size	itemSize;
+    Rect	itemClipper, itemRect;
+    float	widest = getWidestItemWidth();
 
-	// calculate on-screen position of area we have to render into
-	Rect absarea(getListRenderArea());
-	absarea.offset(getUnclippedPixelRect().getPosition());
+    // calculate position of area we have to render into
+    Rect itemsArea(getListRenderArea());
 
-	// calculate clipper for list rendering area
-	Rect clipper(absarea.getIntersection(getPixelRect()));
+    // set up some initial positional details for items
+    itemPos.d_x = itemsArea.d_left - d_horzScrollbar->getScrollPosition();
+    itemPos.d_y = itemsArea.d_top - d_vertScrollbar->getScrollPosition();
+    itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
 
-	// set up some initial positional details for items
-	itemPos.d_x = PixelAligned(absarea.d_left - d_horzScrollbar->getScrollPosition());
-	itemPos.d_y = PixelAligned(absarea.d_top - d_vertScrollbar->getScrollPosition());
-	itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3);
+    float alpha = getEffectiveAlpha();
 
-	float alpha = getEffectiveAlpha();
+    // loop through the items
+    size_t itemCount = getItemCount();
 
-	// loop through the items
-	size_t itemCount = getItemCount();
+    for (size_t i = 0; i < itemCount; ++i)
+    {
+        itemSize.d_height = d_listItems[i]->getPixelSize().d_height;
 
-	for (size_t i = 0; i < itemCount; ++i)
-	{
-		itemSize.d_height = d_listItems[i]->getPixelSize().d_height;
+        // allow item to have full width of box if this is wider than items
+        itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
 
-		// allow item to have full width of box if this is wider than items
-		itemSize.d_width = ceguimax(absarea.getWidth(), widest);
+        // calculate destination area for this item.
+        itemRect.d_left	= itemPos.d_x;
+        itemRect.d_top	= itemPos.d_y;
+        itemRect.setSize(itemSize);
+        itemClipper = itemRect.getIntersection(itemsArea);
 
-		// calculate clipper for this item.
-		itemClipper.d_left	= itemPos.d_x;
-		itemClipper.d_top	= itemPos.d_y;
-		itemClipper.setSize(itemSize);
-		itemClipper = itemClipper.getIntersection(clipper);
+        // skip this item if totally clipped
+        if (itemClipper.getWidth() == 0)
+        {
+            itemPos.d_y += itemSize.d_height;
+            continue;
+        }
 
-		// skip this item if totally clipped
-		if (itemClipper.getWidth() == 0)
-		{
-			itemPos.d_y += itemSize.d_height;
-			continue;
-		}
+        // draw this item
+        d_listItems[i]->draw(d_renderCache, itemRect, itemPos.d_z, alpha, &itemClipper);
 
-		// draw this item
-		d_listItems[i]->draw(itemPos, alpha, itemClipper);
-
-		// update position ready for next item
-		itemPos.d_y += PixelAligned(itemSize.d_height);
-	}
+        // update position ready for next item
+        itemPos.d_y += itemSize.d_height;
+    }
 
 }
 
@@ -606,6 +606,20 @@ void Listbox::drawSelf(float z)
 *************************************************************************/
 void Listbox::configureScrollbars(void)
 {
+    Scrollbar* vertScrollbar;
+    Scrollbar* horzScrollbar;
+
+    try
+    {
+        vertScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_vscrollbar__"));
+        horzScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_hscrollbar__"));
+    }
+    catch (UnknownObjectException)
+    {
+        // no scrollbars?  Can't configure then!
+        return;
+    }
+
 	float totalHeight	= getTotalItemsHeight();
 	float widestItem	= getWidestItemWidth();
 
@@ -615,16 +629,16 @@ void Listbox::configureScrollbars(void)
 	// show or hide vertical scroll bar as required (or as specified by option)
 	if ((totalHeight > getListRenderArea().getHeight()) || d_forceVertScroll)
 	{
-		d_vertScrollbar->show();
+		vertScrollbar->show();
 
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((widestItem > getListRenderArea().getWidth()) || d_forceHorzScroll)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 		}
 		else
 		{
-			d_horzScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -633,23 +647,23 @@ void Listbox::configureScrollbars(void)
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((widestItem > getListRenderArea().getWidth()) || d_forceHorzScroll)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 
 			// show or hide vertical scroll bar as required (or as specified by option)
 			if ((totalHeight > getListRenderArea().getHeight()) || d_forceVertScroll)
 			{
-				d_vertScrollbar->show();
+				vertScrollbar->show();
 			}
 			else
 			{
-				d_vertScrollbar->hide();
+				vertScrollbar->hide();
 			}
 
 		}
 		else
 		{
-			d_vertScrollbar->hide();
-			d_horzScrollbar->hide();
+			vertScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -659,15 +673,15 @@ void Listbox::configureScrollbars(void)
 	//
 	Rect renderArea(getListRenderArea());
 
-	d_vertScrollbar->setDocumentSize(totalHeight);
-	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
-	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
+	vertScrollbar->setDocumentSize(totalHeight);
+	vertScrollbar->setPageSize(renderArea.getHeight());
+	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
-	d_horzScrollbar->setDocumentSize(widestItem);
-	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
-	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
+	horzScrollbar->setDocumentSize(widestItem);
+	horzScrollbar->setPageSize(renderArea.getWidth());
+	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
 
@@ -1095,6 +1109,16 @@ bool Listbox::resetList_impl(void)
 		return true;
 	}
 
+}
+
+/*************************************************************************
+    Handler for scroll position changes.
+*************************************************************************/
+bool Listbox::handle_scrollChange(const EventArgs& args)
+{
+    // simply trigger a redraw of the Listbox.
+    requestRedraw();
+    return true;
 }
 
 

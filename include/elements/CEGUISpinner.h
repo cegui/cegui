@@ -283,7 +283,7 @@ namespace CEGUI
         \return
             Pointer to a valid PushButton based object.
         */
-        virtual PushButton* createIncreaseButton(void) const = 0;
+        virtual PushButton* createIncreaseButton(const String& name) const = 0;
 
         /*!
         \brief
@@ -293,7 +293,7 @@ namespace CEGUI
         \return
             Pointer to a valid PushButton based object.
         */
-        virtual PushButton* createDecreaseButton(void) const = 0;
+        virtual PushButton* createDecreaseButton(const String& name) const = 0;
 
         /*!
         \brief
@@ -303,7 +303,7 @@ namespace CEGUI
         \return
             Pointer to a valid Editbox based object.
         */
-        virtual Editbox* createEditbox(void) const = 0;
+        virtual Editbox* createEditbox(const String& name) const = 0;
 
         /*!
         \brief

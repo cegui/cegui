@@ -149,10 +149,7 @@ void WLTabPane::drawSelf(float z)
 *************************************************************************/
 Window* WLTabPaneFactory::createWindow(const String& name)
 {
-	WLTabPane* wnd = new WLTabPane(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLTabPane(d_type, name);
 }
 
 } // End of  CEGUI namespace section

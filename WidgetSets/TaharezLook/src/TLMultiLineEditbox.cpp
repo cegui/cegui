@@ -141,9 +141,9 @@ Rect TLMultiLineEditbox::getTextRenderArea(void) const
 	create and return a pointer to a Scrollbar widget for use as vertical
 	scroll bar	
 *************************************************************************/
-Scrollbar* TLMultiLineEditbox::createVertScrollbar(void) const
+Scrollbar* TLMultiLineEditbox::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -157,9 +157,9 @@ Scrollbar* TLMultiLineEditbox::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar	
 *************************************************************************/
-Scrollbar* TLMultiLineEditbox::createHorzScrollbar(void) const
+Scrollbar* TLMultiLineEditbox::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -186,9 +186,9 @@ void TLMultiLineEditbox::layoutComponentWidgets()
 	// set desired size for horizontal scroll-bar
 	Size h_sz(1.0f, 0.0f);
 
-	if (d_abs_area.getHeight() != 0.0f)
+	if (getAbsoluteHeight() != 0.0f)
 	{
-		h_sz.d_height = (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight();
+		h_sz.d_height = (getAbsoluteWidth() * v_sz.d_width) / getAbsoluteHeight();
 	}
 
 	// adjust length to consider width of vertical scroll bar if that is visible
@@ -214,47 +214,50 @@ void TLMultiLineEditbox::layoutComponentWidgets()
 /*************************************************************************
 	Perform rendering of the widget control frame and other 'static' areas.	
 *************************************************************************/
-void TLMultiLineEditbox::renderEditboxBaseImagery(float z)
+void TLMultiLineEditbox::cacheEditboxBaseImagery()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
 	// draw the box elements
-	Vector3 pos(absrect.d_left, absrect.d_top, z);
-	d_background.draw(pos, clipper);
-	d_frame.draw(pos, clipper);
+	d_background.draw(d_renderCache);
+	d_frame.draw(d_renderCache);
 }
 
 
 /*************************************************************************
 	Render the carat.	
 *************************************************************************/
-void TLMultiLineEditbox::renderCarat(float baseX, float baseY, const Rect& clipper)
+void TLMultiLineEditbox::cacheCaratImagery(const Rect& textArea)
 {
-	// calculate position of carat
-	const Font* fnt = getFont();
-	size_t caratLine = getLineNumberFromIndex(d_caratPos);
+    const Font* fnt = getFont();
 
-	if (caratLine < (uint)d_lines.size())
-	{
-		size_t caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
+    // require a font so that we can calculate carat position.
+    if (fnt)
+    {
+        // get line that carat is in
+        size_t caratLine = getLineNumberFromIndex(d_caratPos);
 
-		float ypos = caratLine * fnt->getLineSpacing();
-		float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));
+        // if carat line is valid.
+        if (caratLine < d_lines.size())
+        {
+            // calculate pixel offsets to where carat should be drawn
+            size_t caratLineIdx = d_caratPos - d_lines[caratLine].d_startIdx;
+            float ypos = caratLine * fnt->getLineSpacing();
+            float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));
 
-		colour col = ((ulong)(getEffectiveAlpha() * 255.0f) << 24) | 0xFFFFFF;
+            // get base offset to target layer for cursor.
+            Renderer* renderer = System::getSingleton().getRenderer();
+            float baseZ = renderer->getZLayer(7) - renderer->getCurrentZ();
 
-		d_carat->draw(Vector3(baseX + xpos, baseY + ypos, System::getSingleton().getRenderer()->getZLayer(7)), Size(d_carat->getWidth(), fnt->getLineSpacing()), clipper, ColourRect(col));
-	}
+            // calculate finat destination area for carat
+            Rect caratArea;
+            caratArea.d_left    = textArea.d_left + xpos;
+            caratArea.d_top     = textArea.d_top + ypos;
+            caratArea.d_right   = caratArea.d_left + d_carat->getWidth();
+            caratArea.d_bottom  = caratArea.d_top + fnt->getLineSpacing();
 
+            // cache the carat image for rendering.
+            d_renderCache.cacheImage(*d_carat, caratArea, baseZ, ColourRect(colour(1,1,1,getEffectiveAlpha())), &textArea);
+        }
+    }
 }
 
 
@@ -326,10 +329,7 @@ void TLMultiLineEditbox::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMultiLineEditboxFactory::createWindow(const String& name)
 {
-	TLMultiLineEditbox* wnd = new TLMultiLineEditbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMultiLineEditbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

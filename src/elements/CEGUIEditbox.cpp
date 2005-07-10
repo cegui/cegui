@@ -85,10 +85,10 @@ EditboxProperties::InactiveSelectionColour	Editbox::d_inactiveSelectionColourPro
 	Constants
 *************************************************************************/
 // default colours
-const argb_t Editbox::DefaultNormalTextColour			= 0x00FFFFFF;
-const argb_t Editbox::DefaultSelectedTextColour			= 0x00000000;
-const argb_t Editbox::DefaultNormalSelectionColour		= 0x006060FF;
-const argb_t Editbox::DefaultInactiveSelectionColour	= 0x00808080;
+const argb_t Editbox::DefaultNormalTextColour			= 0xFFFFFFFF;
+const argb_t Editbox::DefaultSelectedTextColour			= 0xFF000000;
+const argb_t Editbox::DefaultNormalSelectionColour		= 0xFF6060FF;
+const argb_t Editbox::DefaultInactiveSelectionColour	= 0xFF808080;
 
 
 /*************************************************************************

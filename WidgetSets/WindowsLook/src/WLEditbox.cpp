@@ -362,10 +362,7 @@ void WLEditbox::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLEditboxFactory::createWindow(const String& name)
 {
-	WLEditbox* wnd = new WLEditbox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLEditbox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

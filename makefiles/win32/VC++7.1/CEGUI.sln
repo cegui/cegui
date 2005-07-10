@@ -48,6 +48,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_FirstWindow", "Sampl
 		{D054D8E6-FAED-49F1-B83C-A2CC2635BCA6} = {D054D8E6-FAED-49F1-B83C-A2CC2635BCA6}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_FalagardDemo1", "Samples\Sample_FalagardDemo1.vcproj", "{12ac3ba5-c217-43cf-8608-b7de6fa14345}"
+	ProjectSection(ProjectDependencies) = postProject
+		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
+		{A15FD3A6-EC2C-485E-8065-1F1B3E17CE87} = {A15FD3A6-EC2C-485E-8065-1F1B3E17CE87}
+		{04e4a944-225a-4bfb-b7b5-f23aee884989} = {04e4a944-225a-4bfb-b7b5-f23aee884989}
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua_and_tolua++", "ScriptingModules\CEGUILua\lua_and_tolua++.vcproj", "{06DB0C07-2CF7-4A39-86F1-B106F26E5A42}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -55,6 +62,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEGUILua", "ScriptingModules\CEGUILua\CEGUILua.vcproj", "{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{06DB0C07-2CF7-4A39-86F1-B106F26E5A42} = {06DB0C07-2CF7-4A39-86F1-B106F26E5A42}
+		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FalagardBase", "WidgetSets\Falagard\Falagard.vcproj", "{04e4a944-225a-4bfb-b7b5-f23aee884989}"
+	ProjectSection(ProjectDependencies) = postProject
 		{232B1F48-87C1-4EF9-98A2-CF675BAC7A54} = {232B1F48-87C1-4EF9-98A2-CF675BAC7A54}
 	EndProjectSection
 EndProject
@@ -106,6 +118,14 @@ Global
 		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Debug.Build.0 = Debug|Win32
 		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Release.ActiveCfg = Release|Win32
 		{A6E6F3F7-1ADA-48B1-832D-E4D933B2E72B}.Release.Build.0 = Release|Win32
+		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Debug.ActiveCfg = Debug|Win32
+		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Debug.Build.0 = Debug|Win32
+		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Release.ActiveCfg = Release|Win32
+		{12ac3ba5-c217-43cf-8608-b7de6fa14345}.Release.Build.0 = Release|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Debug.ActiveCfg = Debug|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Debug.Build.0 = Debug|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Release.ActiveCfg = Release|Win32
+		{04e4a944-225a-4bfb-b7b5-f23aee884989}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

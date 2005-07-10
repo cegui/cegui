@@ -95,10 +95,10 @@ TLVertScrollbar::~TLVertScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLVertScrollbar::createIncreaseButton(void) const
+PushButton* TLVertScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -124,10 +124,10 @@ PushButton* TLVertScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* TLVertScrollbar::createDecreaseButton(void) const
+PushButton* TLVertScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	TLButton* btn = (TLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(false);
@@ -152,10 +152,10 @@ PushButton* TLVertScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* TLVertScrollbar::createThumb(void) const
+Thumb* TLVertScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	TLVertScrollbarThumb* thumb = (TLVertScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	TLVertScrollbarThumb* thumb = (TLVertScrollbarThumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform some initialisation
 	thumb->setVertFree(true);
@@ -171,9 +171,11 @@ Thumb* TLVertScrollbar::createThumb(void) const
 *************************************************************************/
 void TLVertScrollbar::layoutComponentWidgets(void)
 {
-	// calculate button sizes
+    d_thumb->setXPosition(ThumbPositionX);
+	
+    // calculate button sizes
 	Size bsz;
-	bsz.d_width = d_abs_area.getWidth() * ButtonWidth;
+	bsz.d_width = getAbsoluteWidth() * ButtonWidth;
 
 	float ratio = bsz.d_width / d_upNormal->getWidth();
 
@@ -186,7 +188,7 @@ void TLVertScrollbar::layoutComponentWidgets(void)
 	// position buttons
 	float ySpacing = d_containerTop->getHeight() * ButtonOffsetYRatio;
 	d_decrease->setPosition(Point(ButtonPositionX, absoluteToRelativeY(ySpacing)));
-	d_increase->setPosition(Point(ButtonPositionX, absoluteToRelativeY(d_abs_area.getHeight() - bsz.d_height - ySpacing)));
+	d_increase->setPosition(Point(ButtonPositionX, absoluteToRelativeY(getAbsoluteHeight() - bsz.d_height - ySpacing)));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -204,7 +206,7 @@ void TLVertScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight());
 
 	// Thumb does not change size with document length, we just need to update position and range
 	d_thumb->setVertRange(absoluteToRelativeY(slideTrackYPadding), absoluteToRelativeY(slideTrackYPadding + slideExtent));
@@ -223,7 +225,7 @@ float TLVertScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= d_abs_area.getHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight();
+	float slideExtent	= getAbsoluteHeight() - (2 * slideTrackYPadding) - d_thumb->getAbsoluteHeight();
 
 	return	(d_thumb->getAbsoluteYPosition() - slideTrackYPadding) / (slideExtent / posExtent);
 }
@@ -329,10 +331,7 @@ void TLVertScrollbar::drawSelf(float z)
 *************************************************************************/
 Window* TLVertScrollbarFactory::createWindow(const String& name)
 {
-	TLVertScrollbar* wnd = new TLVertScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+    return new TLVertScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

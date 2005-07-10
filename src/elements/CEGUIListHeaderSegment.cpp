@@ -66,7 +66,6 @@ const float	ListHeaderSegment::SegmentMoveThreshold	= 12.0f;
 *************************************************************************/
 ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	Window(type, name),
-	d_normalMouseCursor(NULL),
 	d_sizingMouseCursor(NULL),
 	d_movingMouseCursor(NULL),
 	d_splitterSize(DefaultSizingArea),
@@ -283,28 +282,34 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::doDragSizing(const Point& local_mouse)
 {
-	// calculate sizing delta.
-	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
+    float delta = local_mouse.d_x - d_dragPoint.d_x;
 
-	// limit size to within max/min values
-	float width = d_abs_area.getWidth();
+    // store this so we can work out how much size actually changed
+    float orgWidth = getAbsoluteWidth();
 
-	if ((width + deltaX) < d_minSize.d_width) {
-		deltaX = d_minSize.d_width - width;
-	}
-	else if ((width + deltaX) > d_maxSize.d_width) {
-		deltaX = d_maxSize.d_width - width;
-	}
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float newWidth = orgWidth + delta;
 
-	// update window state
-	d_abs_area.d_right += deltaX;
-	d_dragPoint.d_x += deltaX;
+    if (newWidth > maxWidth)
+        delta = maxWidth - orgWidth;
+    else if (newWidth < minWidth)
+        delta = minWidth - orgWidth;
+    
+    // update segment area rect
+    URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
+    setWindowArea_impl(area.d_min, area.getSize());
 
-	d_rel_area.d_right = absoluteToRelativeX_impl(getParent(), d_abs_area.d_right);
+    // move the dragging point so mouse remains 'attached' to edge of segment
+    d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
 
-	WindowEventArgs args(this);
-	onSized(args);
-	onSegmentSized(args);
+    WindowEventArgs args(this);
+    onSegmentSized(args);
 }
 
 
@@ -391,7 +396,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-		MouseCursor::getSingleton().setImage(d_normalMouseCursor);
+		MouseCursor::getSingleton().setImage(getMouseCursor());
 		requestRedraw();
 	}
 
@@ -489,7 +494,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-			MouseCursor::getSingleton().setImage(d_normalMouseCursor);
+			MouseCursor::getSingleton().setImage(getMouseCursor());
 			requestRedraw();
 		}
 
@@ -571,7 +576,7 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-			MouseCursor::getSingleton().setImage(d_normalMouseCursor);
+			MouseCursor::getSingleton().setImage(getMouseCursor());
 			
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);

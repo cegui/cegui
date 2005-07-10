@@ -76,7 +76,7 @@ Slider::~Slider(void)
 void Slider::initialise(void)
 {
 	// create and attach thumb
-	d_thumb = createThumb();
+	d_thumb = createThumb(getName() + "__auto_thumb__");
 	addChildWindow(d_thumb);
 
 	// bind handler to thumb events

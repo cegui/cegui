@@ -85,6 +85,19 @@ protected:
     virtual void    drawSelf(float z) {}
 
 
+    /*!
+    \brief
+        overridden initialise member to set-up our default state.
+    */
+    void initialise(void)
+    {
+        Window::initialise();
+
+        setMaximumSize(Size(1.0f, 1.0f));
+        setSize(Size(1.0f, 1.0f));
+    }
+
+
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
@@ -129,12 +142,7 @@ public:
     */
     Window* createWindow(const String& name)
     {
-        GUISheet* wnd = new GUISheet(d_type, name);
-        wnd->initialise();
-        wnd->setMaximumSize(Size(1.0f, 1.0f));
-        wnd->setSize(Size(1.0f, 1.0f));
-
-        return wnd;
+        return new GUISheet(d_type, name);
     }
 
 

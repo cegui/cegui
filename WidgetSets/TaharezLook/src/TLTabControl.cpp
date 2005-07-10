@@ -65,14 +65,12 @@ namespace CEGUI
     /*************************************************************************
     Create a content pane
     *************************************************************************/
-    TabPane* TLTabControl::createTabContentPane(void) const
+    TabPane* TLTabControl::createTabContentPane(const String& name) const
     {
-        // construct name
-        String newName = getName() + (utf8*)"__auto_TabPane__";
         return static_cast<TabPane*>(
             WindowManager::getSingleton().createWindow(
                 TabContentPaneType, 
-                newName)
+                name)
                 );
 
     }
@@ -159,10 +157,7 @@ namespace CEGUI
 *************************************************************************/
 Window* TLTabControlFactory::createWindow(const String& name)
 {
-	TLTabControl* wnd = new TLTabControl(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLTabControl(d_type, name);
 }
 
 } // End of  CEGUI namespace section

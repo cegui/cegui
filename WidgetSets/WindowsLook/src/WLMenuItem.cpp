@@ -189,10 +189,7 @@ void WLMenubarItem::storeFrameSizes(void)
 
 Window* WLMenubarItemFactory::createWindow(const String& name)
 {
-    WLMenubarItem* wnd = new WLMenubarItem(d_type, name);
-    wnd->initialise();
-
-    return wnd;
+    return new WLMenubarItem(d_type, name);
 }
 
 
@@ -407,10 +404,7 @@ Size WLPopupMenuItem::getItemPixelSize()
 
 Window* WLPopupMenuItemFactory::createWindow(const String& name)
 {
-    WLPopupMenuItem* wnd = new WLPopupMenuItem(d_type, name);
-    wnd->initialise();
-
-    return wnd;
+    return new WLPopupMenuItem(d_type, name);
 }
 
 

@@ -43,5 +43,6 @@
 	Prototypes
 *************************************************************************/
 extern "C" WINDOWSLOOK_API void registerFactory(const CEGUI::String& type_name);
+extern "C" WINDOWSLOOK_API CEGUI::uint registerAllFactories(void);
 
 #endif	// end of guard _WLModule_h_

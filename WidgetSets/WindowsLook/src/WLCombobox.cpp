@@ -118,9 +118,9 @@ void WLCombobox::layoutComponentWidgets()
 	Create, initialise, and return a pointer to an Editbox widget to be
 	used as part of this Combobox.
 *************************************************************************/
-Editbox* WLCombobox::createEditbox(void) const
+Editbox* WLCombobox::createEditbox(const String& name) const
 {
-	Editbox* eb = (Editbox*)WindowManager::getSingleton().createWindow(EditboxTypeName, getName() + "__auto_editbox__");
+	Editbox* eb = (Editbox*)WindowManager::getSingleton().createWindow(EditboxTypeName, name);
 	eb->setMetricsMode(Absolute);
 
 	return eb;
@@ -131,9 +131,9 @@ Editbox* WLCombobox::createEditbox(void) const
 	Create, initialise, and return a pointer to a PushButton widget to
 	be used as part of this Combobox.
 *************************************************************************/
-PushButton* WLCombobox::createPushButton(void) const
+PushButton* WLCombobox::createPushButton(const String& name) const
 {
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(ButtonTypeName, getName() + "__auto_button__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(ButtonTypeName, name);
 	btn->setMetricsMode(Absolute);
 
 	// Set up imagery
@@ -160,9 +160,9 @@ PushButton* WLCombobox::createPushButton(void) const
 	Create, initialise, and return a pointer to a ComboDropList widget
 	to be used as part of this Combobox.
 *************************************************************************/
-ComboDropList* WLCombobox::createDropList(void) const
+ComboDropList* WLCombobox::createDropList(const String& name) const
 {
-	return (ComboDropList*)WindowManager::getSingleton().createWindow(DropListTypeName, getName() + "__auto_droplist__");
+	return (ComboDropList*)WindowManager::getSingleton().createWindow(DropListTypeName, name);
 }
 
 
@@ -178,10 +178,7 @@ ComboDropList* WLCombobox::createDropList(void) const
 *************************************************************************/
 Window* WLComboboxFactory::createWindow(const String& name)
 {
-	WLCombobox* wnd = new WLCombobox(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLCombobox(d_type, name);
 }
 
 } // End of  CEGUI namespace section

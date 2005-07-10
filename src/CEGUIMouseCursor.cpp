@@ -55,12 +55,13 @@ const String MouseCursor::EventImageChanged( (utf8*)"ImageChanged" );
 *************************************************************************/
 MouseCursor::MouseCursor(void)
 {
+    Rect screenArea(System::getSingleton().getRenderer()->getRect());
 	// default constraint is to whole screen
-	d_constraints = System::getSingleton().getRenderer()->getRect();
+	setConstraintArea(&screenArea);
 
 	// mouse defaults to middle of the constrained area
-	d_position.d_x = d_constraints.getWidth() / 2;
-	d_position.d_y = d_constraints.getHeight() / 2;
+	d_position.d_x = screenArea.getWidth() / 2;
+	d_position.d_y = screenArea.getHeight() / 2;
 	d_position.d_z = 1.0f;
 
 	// mouse defaults to visible
@@ -146,17 +147,19 @@ void MouseCursor::offsetPosition(const Point& offset)
 *************************************************************************/
 void MouseCursor::constrainPosition(void)
 {
-	if (d_position.d_x >= d_constraints.d_right)
-		d_position.d_x = d_constraints.d_right -1;
+    Rect absarea(getConstraintArea());
 
-	if (d_position.d_y >= d_constraints.d_bottom)
-		d_position.d_y = d_constraints.d_bottom -1;
+	if (d_position.d_x >= absarea.d_right)
+		d_position.d_x = absarea.d_right -1;
 
-	if (d_position.d_y < d_constraints.d_top)
-		d_position.d_y = d_constraints.d_top;
+	if (d_position.d_y >= absarea.d_bottom)
+		d_position.d_y = absarea.d_bottom -1;
 
-	if (d_position.d_x < d_constraints.d_left)
-		d_position.d_x = d_constraints.d_left;
+	if (d_position.d_y < absarea.d_top)
+		d_position.d_y = absarea.d_top;
+
+	if (d_position.d_x < absarea.d_left)
+		d_position.d_x = absarea.d_left;
 }
 
 
@@ -169,16 +172,61 @@ void MouseCursor::setConstraintArea(const Rect* area)
 
 	if (area == NULL)
 	{
-		d_constraints = renderer_area;
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_left / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_top / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_right / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_bottom / renderer_area.getHeight());
 	}
 	else
 	{
-		d_constraints = area->getIntersection(renderer_area);
+        Rect finalArea(area->getIntersection(renderer_area));
+		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_left / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_top / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_right / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_bottom / renderer_area.getHeight());
 	}
 
 	constrainPosition();
 }
 
+
+/*************************************************************************
+	Set the area that the mouse cursor is constrained to.
+*************************************************************************/
+void MouseCursor::setUnifiedConstraintArea(const URect* area)
+{
+	Rect renderer_area = System::getSingleton().getRenderer()->getRect();
+
+	if (area)
+	{
+        d_constraints = *area;
+	}
+	else
+	{
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_left / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_top / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_right / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_bottom / renderer_area.getHeight());
+	}
+
+	constrainPosition();
+}
+
+/*************************************************************************
+	Set the area that the mouse cursor is constrained to.
+*************************************************************************/
+Rect MouseCursor::getConstraintArea(void) const
+{
+    return Rect(d_constraints.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+}
+
+/*************************************************************************
+	Set the area that the mouse cursor is constrained to.
+*************************************************************************/
+const URect& MouseCursor::getUnifiedConstraintArea(void) const
+{
+    return d_constraints;
+}
 
 /*************************************************************************
 	Return the current mouse cursor position in display resolution

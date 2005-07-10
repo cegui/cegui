@@ -123,8 +123,10 @@ void TLVertScrollbarThumb::onSized(WindowEventArgs& e)
 	// changes, we modify the height in relation to the width (since that is
 	// known, but the height is not).
 	float ratio = getAbsoluteWidth() / d_normalImage->getWidth();
-	d_abs_area.setHeight(d_normalImage->getHeight() * ratio);
-	d_rel_area.setHeight(absoluteToRelativeY_impl(getParent(), d_abs_area.getHeight()));
+
+    UVector2 sze(d_area.getSize());
+    sze.d_y = cegui_absdim(d_normalImage->getHeight() * ratio);
+    setWindowArea_impl(d_area.getPosition(), sze, false, false);
 
 	// base class processing.
 	Thumb::onSized(e);
@@ -146,10 +148,7 @@ void TLVertScrollbarThumb::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLVertScrollbarThumbFactory::createWindow(const String& name)
 {
-	TLVertScrollbarThumb* wnd = new TLVertScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLVertScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

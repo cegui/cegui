@@ -67,7 +67,7 @@ WLListHeaderSegment::WLListHeaderSegment(const String& type, const String& name)
 	d_splitterImage			= &iset->getImage(SplitterImageName);
 	d_sortAscendImage		= &iset->getImage(SortUpImageName);
 	d_sortDescendImage		= &iset->getImage(SortDownImageName);
-	d_normalMouseCursor		= &iset->getImage(NormalMouseCursor);
+	d_mouseCursor			= &iset->getImage(NormalMouseCursor);
 	d_sizingMouseCursor		= &iset->getImage(SizingMouseCursor);
 	d_movingMouseCursor		= &iset->getImage(MovingMouseCursor);
 
@@ -229,10 +229,7 @@ void WLListHeaderSegment::renderSegmentImagery(Vector3 pos, float alpha, const R
 *************************************************************************/
 Window* WLListHeaderSegmentFactory::createWindow(const String& name)
 {
-	WLListHeaderSegment* wnd = new WLListHeaderSegment(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLListHeaderSegment(d_type, name);
 }
 
 } // End of  CEGUI namespace section

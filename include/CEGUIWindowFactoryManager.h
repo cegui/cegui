@@ -51,6 +51,17 @@ namespace CEGUI
 class CEGUIEXPORT WindowFactoryManager : public Singleton<WindowFactoryManager>
 {
 public:
+    /*!
+    \brief
+        struct used to hold mapping information required to create a falagard based window.
+    */
+    struct CEGUIEXPORT FalagardWindowMapping
+    {
+        String  d_windowType;
+        String  d_lookName;
+        String  d_baseType;
+    };
+
 	/*************************************************************************
 		Class used to track active alias targets
 	*************************************************************************/
@@ -279,6 +290,68 @@ public:
 	*/
 	void	removeWindowTypeAlias(const String& aliasName, const String& targetType);
 
+    /*!
+    \brief
+        Add a mapping for a falagard based window.
+
+        This function creates maps a target window type and target 'look' name onto a registered window type, thus allowing
+        the ususal window creation interface to be used to create windows that require extra information to full initialise
+        themselves.
+    \note
+        These mappings support 'late binding' to the target window type, as such the type indicated by \a targetType need not
+        exist in the system until attempting to create a Window using the type.
+    \par
+        Also note that creating a mapping for an existing type will replace any previous mapping for that same type.
+
+    \param newType
+        The type name that will be used to create windows using the target type and look.
+
+    \param targetType
+        The base window type.
+
+    \param lookName
+        The name of the 'look' that will be used by windows of this type.
+
+    \return
+        Nothing.
+    */
+    void addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName);
+
+    /*!
+    \brief
+        Remove the specified falagard type mapping if it exists.
+
+    \return
+        Nothing.
+    */
+    void removeFalagardWindowMapping(const String& type);
+
+    /*!
+    \brief
+        Return whether the given type is a falagard mapped type.
+
+    \param type
+        Name of a window type.
+
+    \return
+        - true if the requested type is a Falagard mapped window type.
+        - false if the requested type is a normal WindowFactory (or alias), or if the type does not exist.
+    */
+    bool isFalagardMappedType(const String& type) const;
+
+    /*!
+    \brief
+        Return the name of the LookN'Feel assigned to the specified window mapping.
+
+    \param type
+        Name of a window type.  The window type referenced should be a falagard mapped type.
+
+    \return
+        String object holding the name of the look mapped for the requested type.
+
+    \exception InvalidRequestException thrown if \a type is not a falagard mapping type (or maybe the type didn't exist).
+    */
+    const String& getMappedLookForType(const String& type) const;
 
 private:
 	/*************************************************************************
@@ -286,9 +359,11 @@ private:
 	*************************************************************************/
 	typedef	std::map<String, WindowFactory*>	WindowFactoryRegistry;		//!< Type used to implement registry of WindowFactory objects
 	typedef std::map<String, AliasTargetStack>	TypeAliasRegistry;		//!< Type used to implement registry of window type aliases.
+    typedef std::map<String, FalagardWindowMapping> FalagardMapRegistry;    //!< Type used to implement registry of falagard window mappings.
 
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
 	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.
+    FalagardMapRegistry     d_falagardRegistry;         //!< Container that hold all the falagard window mappings.
 
 public:
 	/*************************************************************************
@@ -296,6 +371,7 @@ public:
 	*************************************************************************/
 	typedef	ConstBaseIterator<WindowFactoryRegistry>	WindowFactoryIterator;
 	typedef ConstBaseIterator<TypeAliasRegistry>		TypeAliasIterator;
+    typedef ConstBaseIterator<FalagardMapRegistry>      FalagardMappingIterator;
 
 	/*!
 	\brief
@@ -309,6 +385,13 @@ public:
 		Return a WindowFactoryManager::TypeAliasIterator object to iterate over the defined aliases for window types.
 	*/
 	TypeAliasIterator	getAliasIterator(void) const;
+
+
+    /*!
+    \brief
+        Return a WindowFactoryManager::FalagardMappingIterator object to iterate over the defined falagard window mappings.
+    */
+    FalagardMappingIterator getFalagardMappingIterator() const;
 };
 
 } // End of  CEGUI namespace section

@@ -158,6 +158,66 @@ SOURCE=..\..\..\..\src\pcre\pcreposix.c
 SOURCE=..\..\..\..\src\pcre\study.c
 # End Source File
 # End Group
+# Begin Group "Falagard (source)"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalDimensions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalImageryComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalImagerySection.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalLayerSpecification.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalNamedArea.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalPropertyDefinition.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalPropertyInitialiser.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalSectionSpecification.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalStateImagery.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalTextComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalWidgetComponent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalWidgetLookFeel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalWidgetLookManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp
+# End Source File
+# End Group
 # Begin Group "elements (source)"
 
 # PROP Default_Filter ""
@@ -552,6 +612,10 @@ SOURCE=..\..\..\..\src\CEGUIRefPtr.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\CEGUIRenderCache.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\CEGUIRenderableElement.cpp
 # End Source File
 # Begin Source File
@@ -668,6 +732,70 @@ SOURCE=..\..\..\..\src\pcre\ucp.h
 # Begin Source File
 
 SOURCE=..\..\..\..\src\pcre\ucpinternal.h
+# End Source File
+# End Group
+# Begin Group "Falagard (headers)"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalDimensions.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalEnums.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalImageryComponent.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalImagerySection.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalLayerSpecification.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalNamedArea.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalPropertyDefinition.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalPropertyInitialiser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalSectionSpecification.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalStateImagery.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalTextComponent.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalWidgetComponent.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalWidgetLookFeel.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalWidgetLookManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h
 # End Source File
 # End Group
 # Begin Group "elements (headers)"
@@ -1092,6 +1220,10 @@ SOURCE=..\..\..\..\include\CEGUIRefPtr.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\CEGUIRenderCache.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\CEGUIRenderableElement.h
 # End Source File
 # Begin Source File
@@ -1153,6 +1285,10 @@ SOURCE=..\..\..\..\include\CEGUITextUtils.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUITinyXMLParser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIUDim.h
 # End Source File
 # Begin Source File
 

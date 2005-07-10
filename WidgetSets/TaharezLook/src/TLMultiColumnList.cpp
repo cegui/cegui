@@ -137,9 +137,9 @@ Rect TLMultiColumnList::getListRenderArea(void) const
 	create and return a pointer to a ListHeaer widget for use as the
 	column headers.	
 *************************************************************************/
-ListHeader*	TLMultiColumnList::createListHeader(void) const
+ListHeader*	TLMultiColumnList::createListHeader(const String& name) const
 {
-	ListHeader* hdr = (ListHeader*)WindowManager::getSingleton().createWindow(ListHeaderTypeName, getName() + "__auto_listheader__");
+	ListHeader* hdr = (ListHeader*)WindowManager::getSingleton().createWindow(ListHeaderTypeName, name);
 
 	// set min/max sizes
 	hdr->setMinimumSize(Size(0.0f, 0.014f));
@@ -153,9 +153,9 @@ ListHeader*	TLMultiColumnList::createListHeader(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	vertical scroll bar	
 *************************************************************************/
-Scrollbar* TLMultiColumnList::createVertScrollbar(void) const
+Scrollbar* TLMultiColumnList::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -169,9 +169,9 @@ Scrollbar* TLMultiColumnList::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar	
 *************************************************************************/
-Scrollbar* TLMultiColumnList::createHorzScrollbar(void) const
+Scrollbar* TLMultiColumnList::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -211,9 +211,9 @@ void TLMultiColumnList::layoutComponentWidgets()
 	// set desired size for horizontal scroll-bar
 	Size h_sz(1.0f, 0.0f);
 
-	if (d_abs_area.getHeight() != 0.0f)
+	if (getAbsoluteHeight() != 0.0f)
 	{
-		h_sz.d_height = (d_abs_area.getWidth() * v_sz.d_width) / d_abs_area.getHeight();
+		h_sz.d_height = (getAbsoluteWidth() * v_sz.d_width) / getAbsoluteHeight();
 	}
 
 	// adjust length to consider width of vertical scroll bar if that is visible
@@ -239,23 +239,11 @@ void TLMultiColumnList::layoutComponentWidgets()
 /*************************************************************************
 	Render static imagery 
 *************************************************************************/
-void TLMultiColumnList::renderListboxBaseImagery(float z)
+void TLMultiColumnList::cacheListboxBaseImagery()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-	{
-		return;
-	}
-
-	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
-
 	// draw the box elements
-	Vector3 pos(absrect.d_left, absrect.d_top, z);
-	d_background.draw(pos, clipper);
-	d_frame.draw(pos, clipper);
+	d_background.draw(d_renderCache);
+	d_frame.draw(d_renderCache);
 }
 
 
@@ -324,10 +312,7 @@ void TLMultiColumnList::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMultiColumnListFactory::createWindow(const String& name)
 {
-	TLMultiColumnList* wnd = new TLMultiColumnList(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMultiColumnList(d_type, name);
 }
 
 } // End of  CEGUI namespace section

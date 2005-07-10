@@ -87,14 +87,9 @@ void TextItem::onTextChanged(WindowEventArgs& e)
 /*************************************************************************
 	Perform the actual rendering for this Window.
 *************************************************************************/
-void TextItem::drawSelf(float z)
+void TextItem::populateRenderCache()
 {
-	Rect clipper = getPixelRect();
-	// completely clipped?
-	if (clipper.getWidth() == 0)
-		return;
-	
-	Rect absrect = getUnclippedPixelRect();
+	Rect absrect(getAbsoluteRect());
 	
 	d_textColour.setAlpha(getEffectiveAlpha());
 		
@@ -103,7 +98,10 @@ void TextItem::drawSelf(float z)
 	//
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
     absrect.d_left += PixelAligned(d_textXOffset);
-	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, d_textFormatting, ColourRect(d_textColour));
+
+    float zBase = System::getSingleton().getRenderer()->getZLayer(2) - System::getSingleton().getRenderer()->getCurrentZ();
+
+    d_renderCache.cacheText(getText(), getFont(), d_textFormatting, absrect, zBase, ColourRect(d_textColour));
 }
 
 

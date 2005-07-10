@@ -84,9 +84,9 @@ void initTaharezStatic(Static* s)
 	create and return a pointer to a Scrollbar widget for use as
 	vertical scroll bar	
 *************************************************************************/
-Scrollbar* TLStaticText::createVertScrollbar(void) const
+Scrollbar* TLStaticText::createVertScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, getName() + "__auto_vscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(VertScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0125f, 0.0f));
@@ -100,9 +100,9 @@ Scrollbar* TLStaticText::createVertScrollbar(void) const
 	create and return a pointer to a Scrollbar widget for use as
 	horizontal scroll bar	
 *************************************************************************/
-Scrollbar* TLStaticText::createHorzScrollbar(void) const
+Scrollbar* TLStaticText::createHorzScrollbar(const String& name) const
 {
-	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, getName() + "__auto_hscrollbar__");
+	Scrollbar* sbar = (Scrollbar*)WindowManager::getSingleton().createWindow(HorzScrollbarTypeName, name);
 
 	// set min/max sizes
 	sbar->setMinimumSize(Size(0.0f, 0.016667f));
@@ -152,10 +152,7 @@ void TLStaticImage::initialise(void)
 *************************************************************************/
 Window* TLStaticTextFactory::createWindow(const String& name)
 {
-	TLStaticText* wnd = new TLStaticText(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLStaticText(d_type, name);
 }
 
 
@@ -164,10 +161,7 @@ Window* TLStaticTextFactory::createWindow(const String& name)
 *************************************************************************/
 Window* TLStaticImageFactory::createWindow(const String& name)
 {
-	TLStaticImage* wnd = new TLStaticImage(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLStaticImage(d_type, name);
 }
 
 } // End of  CEGUI namespace section

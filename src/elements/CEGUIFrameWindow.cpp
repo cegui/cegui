@@ -27,7 +27,10 @@
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIPushButton.h"
 #include "CEGUIMouseCursor.h"
-
+#include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIImageset.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -47,6 +50,10 @@ FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProper
 FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
 FrameWindowProperties::TitlebarFont				FrameWindow::d_titlebarFontProperty;
 FrameWindowProperties::CaptionColour			FrameWindow::d_captionColourProperty;
+FrameWindowProperties::NSSizingCursorImage      FrameWindow::d_nsSizingCursorProperty;
+FrameWindowProperties::EWSizingCursorImage      FrameWindow::d_ewSizingCursorProperty;
+FrameWindowProperties::NWSESizingCursorImage    FrameWindow::d_nwseSizingCursorProperty;
+FrameWindowProperties::NESWSizingCursorImage    FrameWindow::d_neswSizingCursorProperty;
 
 
 /*************************************************************************
@@ -96,8 +103,8 @@ FrameWindow::~FrameWindow(void)
 void FrameWindow::initialise(void)
 {
 	// create child windows
-	d_titlebar		= createTitlebar();
-	d_closeButton	= createCloseButton();
+	d_titlebar		= createTitlebar(getName() + "__auto_titlebar__");
+	d_closeButton	= createCloseButton(getName() + "__auto_closebutton__");
 
 	// add child controls
 	if (d_titlebar != NULL)
@@ -142,11 +149,14 @@ void FrameWindow::setFrameEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::setTitleBarEnabled(bool setting)
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setEnabled(setting);
-	}
-
+    try
+    {
+        Window* titlebar = WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__");
+        titlebar->setEnabled(setting);
+        titlebar->setVisible(setting);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -155,11 +165,14 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::setCloseButtonEnabled(bool setting)
 {
-	if (d_closeButton != NULL)
-	{
-		d_closeButton->setEnabled(setting);
-	}
-
+    try
+    {
+        Window* closebtn = WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__");
+        closebtn->setEnabled(setting);
+        closebtn->setVisible(setting);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -183,51 +196,14 @@ void FrameWindow::setRollupEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::toggleRollup(void)
 {
-	if (isRollupEnabled())
-	{
-		if (isRolledup())
-		{
-			d_rolledup = false;
-			setSize((getMetricsMode()== Relative) ? d_rel_openSize : d_abs_openSize);
-		}
-		else
-		{
-			// store original sizes for window
-			d_abs_openSize = d_abs_area.getSize();
-			d_rel_openSize = d_rel_area.getSize();
-
-			// get the current size of the title bar (if any)
-			Size titleSize;
-			if (d_titlebar != NULL)
-			{
-				titleSize = d_titlebar->getSize();
-			}
-
-			// work-around minimum size setting
-			Size orgmin(d_minSize);
-			d_minSize.d_width = d_minSize.d_height = 0;
-
-			// set size of this window to 0x0, since the title/close controls are not clipped by us, they will still be visible
-			setSize(Size(0.0f, 0.0f));
-
-			// restore original min size;
-			d_minSize = orgmin;
-
-			// re-set the size of the title bar
-			if (d_titlebar != NULL)
-			{
-				d_titlebar->setSize(titleSize);
-			}
-
-			// this must be done last so onSize does not store 0x0 as our original size
-			d_rolledup = true;
-			layoutComponentWidgets();
-		}
-
-		// event notification.
+    if (isRollupEnabled())
+    {
+        d_rolledup ^= true;
+        
+        // event notification.
         WindowEventArgs args(this);
-		onRollupToggled(args);
-	}
+        onRollupToggled(args);
+    }
 
 }
 
@@ -237,11 +213,12 @@ void FrameWindow::toggleRollup(void)
 *************************************************************************/
 void FrameWindow::setTitlebarFont(const String& name)
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setFont(name);
-	}
-
+    try
+    {
+        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setFont(name);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -250,11 +227,12 @@ void FrameWindow::setTitlebarFont(const String& name)
 *************************************************************************/
 void FrameWindow::setTitlebarFont(Font* font)
 {
-	if (d_titlebar != NULL)
-	{
-		d_titlebar->setFont(font);
-	}
-
+    try
+    {
+        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setFont(font);
+    }
+    catch (UnknownObjectException)
+    {}
 }
 
 
@@ -263,18 +241,22 @@ void FrameWindow::setTitlebarFont(Font* font)
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const Vector2& offset)
 {
-	// update window state
-	Point pos = d_abs_area.getPosition();
+    UVector2 uOffset;
 
-	pos.d_x += PixelAligned(offset.d_x);
-	pos.d_y += PixelAligned(offset.d_y);
+    if (getMetricsMode() == Relative)
+    {
+        Size sz = getParentSize();
 
-	d_abs_area.setPosition(pos);
+        uOffset.d_x = cegui_reldim((sz.d_width != 0) ? offset.d_x / sz.d_width : 0);
+        uOffset.d_y = cegui_reldim((sz.d_height != 0) ? offset.d_y / sz.d_height : 0);
+    }
+    else
+    {
+        uOffset.d_x = cegui_absdim(PixelAligned(offset.d_x));
+        uOffset.d_y = cegui_absdim(PixelAligned(offset.d_y));
+    }
 
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
-
-    WindowEventArgs args(this);
-	onMoved(args);
+    setWindowPosition(d_area.getPosition() + uOffset);
 }
 
 
@@ -354,57 +336,117 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    float orgWidth = getAbsoluteWidth();
+    float adjustment;
+    float* minDim;
+    float* maxDim;
+    URect area(d_area);
 
-	float width = d_abs_area.getWidth();
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float newWidth = orgWidth - delta;
 
-	// limit size to within max/min values
-	if ((width - delta) < d_minSize.d_width) {
-		delta = width - d_minSize.d_width;
-	}
-	else if ((width - delta) > d_maxSize.d_width) {
-		delta = width - d_maxSize.d_width;
-	}
+    if (newWidth > maxWidth)
+        delta = orgWidth - maxWidth;
+    else if (newWidth < minWidth)
+        delta = orgWidth - minWidth;
 
-	// update window state
-	d_abs_area.d_left += delta;
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentWidth();
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_x.d_scale;
+        maxDim = &area.d_max.d_x.d_scale;
+    }
+    else
+    {
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_x.d_offset;
+        maxDim = &area.d_max.d_x.d_offset;
+    }
 
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+    if (d_horzAlign == HA_RIGHT)
+    {
+        *maxDim -= adjustment;
+    }
+    else if (d_horzAlign == HA_CENTRE)
+    {
+        *maxDim -= adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
+    }
+    else
+    {
+        *minDim += adjustment;
+    }
 
-    WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+    setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_LEFT);
 }
-
-
 /*************************************************************************
 	move the window's right edge by 'delta'.  The rest of the window
 	does not move, thus this changes the size of the Window.
 *************************************************************************/
 void FrameWindow::moveRightEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    // store this so we can work out how much size actually changed
+    float orgWidth = getAbsoluteWidth();
+    float adjustment;
+    float* minDim;
+    float* maxDim;
+    URect area(d_area);
 
-	float width = d_abs_area.getWidth();
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float newWidth = orgWidth + delta;
 
-	// limit size to within max/min values
-	if ((width + delta) < d_minSize.d_width) {
-		delta = d_minSize.d_width - width;
-	}
-	else if ((width + delta) > d_maxSize.d_width) {
-		delta = d_maxSize.d_width - width;
-	}
+    if (newWidth > maxWidth)
+        delta = maxWidth - orgWidth;
+    else if (newWidth < minWidth)
+        delta = minWidth - orgWidth;
+    
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentWidth();
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_x.d_scale;
+        maxDim = &area.d_max.d_x.d_scale;
+    }
+    else
+    {
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_x.d_offset;
+        maxDim = &area.d_max.d_x.d_offset;
+    }
 
-	// update window state
-	d_abs_area.d_right += delta;
-	d_dragPoint.d_x += delta;
+    *maxDim += adjustment;
 
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+    if (d_horzAlign == HA_RIGHT)
+    {
+        *maxDim += adjustment;
+        *minDim += adjustment;
+    }
+    else if (d_horzAlign == HA_CENTRE)
+    {
+        *maxDim += adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
+    }
 
-    WindowEventArgs args(this);
-	onSized(args);
+    setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
+
+    // move the dragging point so mouse remains 'attached' to edge of window
+    d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
 }
-
 
 /*************************************************************************
 	move the window's top edge by 'delta'.  The rest of the window
@@ -412,26 +454,56 @@ void FrameWindow::moveRightEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveTopEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    float orgHeight = getAbsoluteHeight();
+    float adjustment;
+    float* minDim;
+    float* maxDim;
+    URect area(d_area);
 
-	float height = d_abs_area.getHeight();
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float newHeight = orgHeight - delta;
 
-	// limit size to within max/min values
-	if ((height - delta) < d_minSize.d_height) {
-		delta = height - d_minSize.d_height;
-	}
-	else if ((height - delta) > d_maxSize.d_height) {
-		delta = height - d_maxSize.d_height;
-	}
+    if (newHeight > maxHeight)
+        delta = orgHeight - maxHeight;
+    else if (newHeight < minHeight)
+        delta = orgHeight - minHeight;
 
-	// update window state
-	d_abs_area.d_top += delta;
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentHeight();
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_y.d_scale;
+        maxDim = &area.d_max.d_y.d_scale;
+    }
+    else
+    {
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_y.d_offset;
+        maxDim = &area.d_max.d_y.d_offset;
+    }
 
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+    if (d_vertAlign == VA_BOTTOM)
+    {
+        *maxDim -= adjustment;
+    }
+    else if (d_vertAlign == VA_CENTRE)
+    {
+        *maxDim -= adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
+    }
+    else
+    {
+        *minDim += adjustment;
+    }
 
-    WindowEventArgs args(this);
-	onMoved(args);
-	onSized(args);
+    setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_TOP);
 }
 
 
@@ -441,26 +513,59 @@ void FrameWindow::moveTopEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveBottomEdge(float delta)
 {
-	delta = PixelAligned(delta);
+    // store this so we can work out how much size actually changed
+    float orgHeight = getAbsoluteHeight();
+    float adjustment;
+    float* minDim;
+    float* maxDim;
+    URect area(d_area);
 
-	float height = d_abs_area.getHeight();
+    // ensure that we only size to the set constraints.
+    //
+    // NB: We are required to do this here due to our virtually unique sizing nature; the
+    // normal system for limiting the window size is unable to supply the information we
+    // require for updating our internal state used to manage the dragging, etc.
+    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float newHeight = orgHeight + delta;
 
-	// limit size to within max/min values
-	if ((height + delta) < d_minSize.d_height) {
-		delta = d_minSize.d_height - height;
-	}
-	else if ((height + delta) > d_maxSize.d_height) {
-		delta = d_maxSize.d_height - height;
-	}
+    if (newHeight > maxHeight)
+        delta = maxHeight - orgHeight;
+    else if (newHeight < minHeight)
+        delta = minHeight - orgHeight;
+    
+    // we use the active metrics mode to decide which component of the window edge to modify
+    if (getMetricsMode() == Relative)
+    {
+        float base = getParentHeight();
+        adjustment = (base != 0) ? delta / base : 0;
+        minDim = &area.d_min.d_y.d_scale;
+        maxDim = &area.d_max.d_y.d_scale;
+    }
+    else
+    {
+        adjustment = PixelAligned(delta);
+        minDim = &area.d_min.d_y.d_offset;
+        maxDim = &area.d_max.d_y.d_offset;
+    }
 
-	// update window state
-	d_abs_area.d_bottom += delta;
-	d_dragPoint.d_y += delta;
+    *maxDim += adjustment;
 
-	d_rel_area = absoluteToRelative_impl(getParent(), d_abs_area);
+    if (d_vertAlign == VA_BOTTOM)
+    {
+        *maxDim += adjustment;
+        *minDim += adjustment;
+    }
+    else if (d_vertAlign == VA_CENTRE)
+    {
+        *maxDim += adjustment * 0.5f;
+        *minDim += adjustment * 0.5f;
+    }
 
-    WindowEventArgs args(this);
-	onSized(args);
+    setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);
+
+    // move the dragging point so mouse remains 'attached' to edge of window
+    d_dragPoint.d_y += getAbsoluteHeight() - orgHeight;
 }
 
 
@@ -528,6 +633,8 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
+    requestRedraw();
+
 	fireEvent(EventRollupToggled, e, EventNamespace);
 }
 
@@ -684,18 +791,6 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 *************************************************************************/
 void FrameWindow::onSized(WindowEventArgs& e)
 {
-	if (isRolledup())
-	{
-		// capture changed size(s)
-		d_rel_openSize = d_rel_area.getSize();
-		d_abs_openSize = d_abs_area.getSize();
-
-		// re-set window size to 0x0
-		Size nullsz(0,0);
-		d_abs_area.setSize(nullsz);
-		d_rel_area.setSize(nullsz);
-	}
-
 	layoutComponentWidgets();
 
 	// MUST call base class handler no matter what.  This is now required 100%
@@ -704,19 +799,12 @@ void FrameWindow::onSized(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when a frame windows parent is sized.
+    Handler for when text changes
 *************************************************************************/
-void FrameWindow::onParentSized(WindowEventArgs& e)
+void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
-	// if we are rolled up we temporarily need to restore the original sizes so
-	// that the required calculations can occur when our parent is sized.
-	if (isRolledup() && (getMetricsMode() == Relative))
-	{
-		d_rel_area.setSize(d_rel_openSize);
-		d_abs_area.setSize(d_abs_openSize);
-	}
-
-	Window::onParentSized(e);
+    // pass this onto titlebar component.
+    WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setText(d_text);
 }
 
 
@@ -729,12 +817,13 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 	{
 		d_dragMovable = setting;
 
-		if (d_titlebar != NULL)
-		{
-			d_titlebar->setDraggingEnabled(setting);
-		}
-
-	}
+        try
+        {
+            static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setDraggingEnabled(setting);
+        }
+        catch (UnknownObjectException)
+        {}
+    }
 
 }
 
@@ -744,7 +833,14 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 *************************************************************************/
 const Font* FrameWindow::getTitlebarFont(void) const
 {
-	return (d_titlebar != NULL) ? d_titlebar->getFont() : NULL;
+    try
+    {
+        return WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->getFont();
+    }
+    catch (UnknownObjectException)
+    {
+        return 0;
+    }
 }
 
 
@@ -763,6 +859,10 @@ void FrameWindow::addFrameWindowProperties(void)
 	addProperty(&d_sizingBorderThicknessProperty);
 	addProperty(&d_titlebarFontProperty);
 	addProperty(&d_captionColourProperty);
+    addProperty(&d_nsSizingCursorProperty);
+    addProperty(&d_ewSizingCursorProperty);
+    addProperty(&d_nwseSizingCursorProperty);
+    addProperty(&d_neswSizingCursorProperty);
 }
 
 
@@ -771,7 +871,7 @@ void FrameWindow::addFrameWindowProperties(void)
 *************************************************************************/
 colour FrameWindow::getCaptionColour(void) const
 {
-	return d_titlebar->getCaptionColour();
+    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->getCaptionColour();
 }
 
 
@@ -780,8 +880,68 @@ colour FrameWindow::getCaptionColour(void) const
 *************************************************************************/
 void FrameWindow::setCaptionColour(colour col)
 {
-	d_titlebar->setCaptionColour(col);
+    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setCaptionColour(col);
 }
 
+
+const Image* FrameWindow::getNSSizingCursorImage() const
+{
+    return d_nsSizingCursor;
+}
+
+const Image* FrameWindow::getEWSizingCursorImage() const
+{
+    return d_ewSizingCursor;
+}
+
+const Image* FrameWindow::getNWSESizingCursorImage() const
+{
+    return d_nwseSizingCursor;
+}
+
+const Image* FrameWindow::getNESWSizingCursorImage() const
+{
+    return d_neswSizingCursor;
+}
+
+void FrameWindow::setNSSizingCursorImage(const Image* image)
+{
+    d_nsSizingCursor = image;
+}
+
+void FrameWindow::setEWSizingCursorImage(const Image* image)
+{
+    d_ewSizingCursor = image;
+}
+
+void FrameWindow::setNWSESizingCursorImage(const Image* image)
+{
+    d_nwseSizingCursor = image;
+}
+
+void FrameWindow::setNESWSizingCursorImage(const Image* image)
+{
+    d_neswSizingCursor = image;
+}
+
+void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
+{
+    d_nsSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
+{
+    d_ewSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
+{
+    d_nwseSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
+{
+    d_neswSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
 
 } // End of  CEGUI namespace section

@@ -58,10 +58,10 @@ namespace CEGUI
     {
     }
 
-    PushButton* WLSpinner::createIncreaseButton(void) const
+    PushButton* WLSpinner::createIncreaseButton(const String& name) const
     {
         // create the widget
-        WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+        WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
         // perform some initialisation
         btn->setStandardImageryEnabled(true);
@@ -82,10 +82,10 @@ namespace CEGUI
         return btn;
     }
 
-    PushButton* WLSpinner::createDecreaseButton(void) const
+    PushButton* WLSpinner::createDecreaseButton(const String& name) const
     {
         // create the widget
-        WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+        WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
         // perform some initialisation
         btn->setStandardImageryEnabled(true);
@@ -105,10 +105,10 @@ namespace CEGUI
         return btn;
     }
 
-    Editbox* WLSpinner::createEditbox(void) const
+    Editbox* WLSpinner::createEditbox(const String& name) const
     {
         // create the widget
-        Editbox* ebox = (Editbox*)WindowManager::getSingleton().createWindow(EditboxWidgetType, getName() + "__auto_editbox__");
+        Editbox* ebox = (Editbox*)WindowManager::getSingleton().createWindow(EditboxWidgetType, name);
         return ebox;
     }
 
@@ -134,10 +134,7 @@ namespace CEGUI
 
     Window* WLSpinnerFactory::createWindow(const String& name)
     {
-        WLSpinner* wnd = new WLSpinner(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new WLSpinner(d_type, name);
     }
 
 } // End of  CEGUI namespace section

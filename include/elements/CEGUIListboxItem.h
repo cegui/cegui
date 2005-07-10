@@ -29,6 +29,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include "CEGUIColourRect.h"
+#include "CEGUIRenderCache.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -384,6 +385,7 @@ public:
 	*/
 	virtual	void	draw(const Vector3& position, float alpha, const Rect& clipper) const	= 0;
 
+    virtual void    draw(RenderCache& cache,const Rect& targetRect, float zBase,  float alpha, const Rect* clipper) const = 0;
 
 	/*************************************************************************
 		Operators

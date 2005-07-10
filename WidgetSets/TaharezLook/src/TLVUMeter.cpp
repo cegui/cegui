@@ -228,10 +228,7 @@ namespace CEGUI
 	*************************************************************************/
 	Window* TLVUMeterFactory::createWindow(const String& name)
 	{
-		TLVUMeter* wnd = new TLVUMeter(d_type, name);
-		wnd->initialise();
-
-		return wnd;
+		return new TLVUMeter(d_type, name);
 	}
 
 

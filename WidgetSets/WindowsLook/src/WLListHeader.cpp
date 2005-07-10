@@ -99,10 +99,7 @@ void WLListHeader::destroyListSegment(ListHeaderSegment* segment) const
 *************************************************************************/
 Window* WLListHeaderFactory::createWindow(const String& name)
 {
-	WLListHeader* wnd = new WLListHeader(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLListHeader(d_type, name);
 }
 
 } // End of  CEGUI namespace section

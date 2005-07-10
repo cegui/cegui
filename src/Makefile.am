@@ -30,6 +30,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
                       CEGUIRefPtr.cpp \
+                      CEGUIRenderCache.cpp \
                       CEGUIRenderableElement.cpp \
                       CEGUIRenderableFrame.cpp \
                       CEGUIRenderableImage.cpp \
@@ -122,6 +123,20 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITitlebarProperties.cpp \
                       elements/CEGUITooltip.cpp \
                       elements/CEGUITooltipProperties.cpp \
+                      falagard/CEGUIFalDimensions.cpp \
+                      falagard/CEGUIFalImageryComponent.cpp \
+                      falagard/CEGUIFalImagerySection.cpp \
+                      falagard/CEGUIFalLayerSpecification.cpp \
+                      falagard/CEGUIFalNamedArea.cpp \
+                      falagard/CEGUIFalPropertyDefinition.cpp \
+                      falagard/CEGUIFalPropertyInitialiser.cpp \
+                      falagard/CEGUIFalSectionSpecification.cpp \
+                      falagard/CEGUIFalStateImagery.cpp \
+                      falagard/CEGUIFalTextComponent.cpp \
+                      falagard/CEGUIFalWidgetComponent.cpp \
+                      falagard/CEGUIFalWidgetLookFeel.cpp \
+                      falagard/CEGUIFalWidgetLookManager.cpp \
+                      falagard/CEGUIFalagard_xmlHandler.cpp \
                       pcre/chartables.c \
                       pcre/get.c \
                       pcre/maketables.c \

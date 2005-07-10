@@ -196,10 +196,7 @@ void WLProgressBar::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLProgressBarFactory::createWindow(const String& name)
 {
-	WLProgressBar* wnd = new WLProgressBar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLProgressBar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

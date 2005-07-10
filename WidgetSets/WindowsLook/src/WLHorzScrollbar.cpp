@@ -105,10 +105,10 @@ WLHorzScrollbar::~WLHorzScrollbar(void)
 	create a PushButton based widget to use as the increase button for
 	this scroll bar.
 *************************************************************************/
-PushButton* WLHorzScrollbar::createIncreaseButton(void) const
+PushButton* WLHorzScrollbar::createIncreaseButton(const String& name) const
 {
 	// create the widget
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, getName() + "__auto_incbtn__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(IncreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(true);
@@ -135,10 +135,10 @@ PushButton* WLHorzScrollbar::createIncreaseButton(void) const
 	create a PushButton based widget to use as the decrease button for
 	this scroll bar.
 *************************************************************************/
-PushButton* WLHorzScrollbar::createDecreaseButton(void) const
+PushButton* WLHorzScrollbar::createDecreaseButton(const String& name) const
 {
 	// create the widget
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, getName() + "__auto_decbtn__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(DecreaseButtonWidgetType, name);
 
 	// perform some initialisation
 	btn->setStandardImageryEnabled(true);
@@ -164,10 +164,10 @@ PushButton* WLHorzScrollbar::createDecreaseButton(void) const
 /*************************************************************************
 	create a Thumb based widget to use as the thumb for this scroll bar.
 *************************************************************************/
-Thumb* WLHorzScrollbar::createThumb(void) const
+Thumb* WLHorzScrollbar::createThumb(const String& name) const
 {
 	// create the widget
-	Thumb* thumb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, getName() + "__auto_thumb__");
+	Thumb* thumb = (Thumb*)WindowManager::getSingleton().createWindow(ThumbWidgetType, name);
 
 	// perform initialisation
 	thumb->setHorzFree(true);
@@ -182,7 +182,7 @@ Thumb* WLHorzScrollbar::createThumb(void) const
 void WLHorzScrollbar::layoutComponentWidgets(void)
 {
 	Size bsz;
-	bsz.d_width = bsz.d_height = d_abs_area.getHeight() - d_frameLeftSize - d_frameRightSize;
+	bsz.d_width = bsz.d_height = getAbsoluteHeight() - d_frameLeftSize - d_frameRightSize;
 
 	// install button sizes
 	d_increase->setSize(absoluteToRelative(bsz));
@@ -190,7 +190,7 @@ void WLHorzScrollbar::layoutComponentWidgets(void)
 
 	// position buttons
 	d_decrease->setPosition(absoluteToRelative(Point(d_frameLeftSize, d_frameTopSize)));
-	d_increase->setPosition(absoluteToRelative(Point(d_abs_area.getWidth() - bsz.d_width - d_frameRightSize, d_frameTopSize)));
+	d_increase->setPosition(absoluteToRelative(Point(getAbsoluteWidth() - bsz.d_width - d_frameRightSize, d_frameTopSize)));
 
 	// this will configure thumb widget appropriately
 	updateThumb();
@@ -208,7 +208,7 @@ void WLHorzScrollbar::updateThumb(void)
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding));
+	float slideExtent	= ceguimax(0.0f, getAbsoluteWidth() - (2 * slideTrackXPadding));
 	float thumbWidth	= (d_documentSize <= d_pageSize) ? slideExtent : slideExtent * d_pageSize / d_documentSize;
 	slideExtent -= thumbWidth;
 
@@ -235,7 +235,7 @@ float WLHorzScrollbar::getValueFromThumb(void) const
 
 	// calculate maximum extents for thumb positioning.
 	float posExtent		= d_documentSize - d_pageSize;
-	float slideExtent	= ceguimax(0.0f, d_abs_area.getWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
+	float slideExtent	= ceguimax(0.0f, getAbsoluteWidth() - (2 * slideTrackXPadding) - d_thumb->getAbsoluteWidth());
 
 	return	(d_thumb->getAbsoluteXPosition() - slideTrackXPadding) / (slideExtent / posExtent);
 }
@@ -349,10 +349,7 @@ void WLHorzScrollbar::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLHorzScrollbarFactory::createWindow(const String& name)
 {
-	WLHorzScrollbar* wnd = new WLHorzScrollbar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLHorzScrollbar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

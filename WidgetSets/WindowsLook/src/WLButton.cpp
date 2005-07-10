@@ -189,7 +189,7 @@ void WLButton::drawNormal(float z)
 	// Draw label text
 	//
 	colours.setColours(d_normalColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
     absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -246,7 +246,7 @@ void WLButton::drawHover(float z)
 	// Draw label text
 	//
 	colours.setColours(d_hoverColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
     absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -303,7 +303,7 @@ void WLButton::drawPushed(float z)
 	// Draw label text
 	//
 	colours.setColours(d_pushedColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
     absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -360,7 +360,7 @@ void WLButton::drawDisabled(float z)
 	// Draw label text
 	//
 	colours.setColours(d_disabledColour);
-	colours.setAlpha(alpha_comp);
+	colours.modulateAlpha(alpha_comp);
 	absrect.d_top += PixelAligned((absrect.getHeight() - getFont()->getLineSpacing()) / 2);
     absrect.d_left += PixelAligned(d_textXOffset * absrect.getWidth());
 	getFont()->drawText(getText(), absrect, System::getSingleton().getRenderer()->getZLayer(2), clipper, Centred, colours);
@@ -437,10 +437,7 @@ void WLButton::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLButtonFactory::createWindow(const String& name)
 {
-	WLButton* wnd = new WLButton(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLButton(d_type, name);
 }
 
 

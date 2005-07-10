@@ -143,28 +143,21 @@ Rect WLPopupMenu::getItemRenderArea(void) const
 /*************************************************************************
 	Perform the actual rendering of this WLMenubar
 *************************************************************************/
-void WLPopupMenu::drawSelf(float z)
+void WLPopupMenu::populateRenderCache()
 {
-	Rect clipper(getPixelRect());
-
-	// do nothing if the widget is totally clipped.
-	if (clipper.getWidth() == 0)
-		return;
-
 	// get the destination screen rect for this window
-	Rect absrect(getUnclippedPixelRect());
+	Rect absrect(getAbsoluteRect());
 	
 	// set colour to use for the frame	
 	ColourRect colours(d_backgroundColours);
-	colours.modulateAlpha(getEffectiveAlpha());
+//	colours.modulateAlpha(getEffectiveAlpha());
 
 	//
 	// draw the frame
 	//
-	Vector3 pos(absrect.d_left, absrect.d_top, z);
 	d_frame.setSize(absrect.getSize());
 	d_frame.setColours(colours);
-	d_frame.draw(pos, clipper);
+	d_frame.draw(d_renderCache);
 
 	// calculate size for middle title bar segment
 	float midWidth		= absrect.getWidth() - d_frameLeftSize - d_frameRightSize;
@@ -185,9 +178,9 @@ void WLPopupMenu::drawSelf(float z)
 	
 	d_fill.setSize(Size(midWidth, midHeight));
 	d_fill.setColours(colours);
-	pos.d_x += d_frameLeftSize;
-	pos.d_y += d_frameTopSize;
-	d_fill.draw(pos, clipper);
+//	pos.d_x += d_frameLeftSize;
+//	pos.d_y += d_frameTopSize;
+	d_fill.draw(d_renderCache);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -198,10 +191,7 @@ void WLPopupMenu::drawSelf(float z)
 
 Window* WLPopupMenuFactory::createWindow(const String& name)
 {
-    WLPopupMenu* wnd = new WLPopupMenu(d_type, name);
-    wnd->initialise();
-
-    return wnd;
+    return new WLPopupMenu(d_type, name);
 }
 
 

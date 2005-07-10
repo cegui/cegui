@@ -164,10 +164,7 @@ void TLProgressBar::drawSelf(float z)
 *************************************************************************/
 Window* TLProgressBarFactory::createWindow(const String& name)
 {
-	TLProgressBar* wnd = new TLProgressBar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLProgressBar(d_type, name);
 }
 
 } // End of  CEGUI namespace section

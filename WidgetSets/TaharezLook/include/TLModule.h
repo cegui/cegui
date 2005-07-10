@@ -45,5 +45,6 @@
 	Prototypes
 *************************************************************************/
 extern "C" TAHAREZLOOK_API void registerFactory(const CEGUI::String& type_name);
+extern "C" TAHAREZLOOK_API CEGUI::uint registerAllFactories(void);
 
 #endif	// end of guard _TLModule_h_

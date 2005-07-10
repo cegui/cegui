@@ -167,34 +167,9 @@ public:
 	/*************************************************************************
 		Required implementations of pure virtuals from the base class.
 	*************************************************************************/
-	/*!
-	\brief
-		Return the rendered pixel size of this list box item.
-
-	\return
-		Size object describing the size of the list box item in pixels.
-	*/
-	virtual	Size	getPixelSize(void) const;
-
-
-	/*!
-	\brief
-		Draw the list box item in its current state.
-
-	\param position
-		Vecor3 object describing the upper-left corner of area that should be rendered in to for the draw operation.
-
-	\param alpha
-		Alpha value to be used when rendering the item (between 0.0f and 1.0f).
-
-	\param clipper
-		Rect object describing the clipping rectangle for the draw operation.
-
-	\return
-		Nothing.
-	*/
-	virtual	void	draw(const Vector3& position, float alpha, const Rect& clipper) const;
-
+    Size getPixelSize(void) const;
+    void draw(const Vector3& position, float alpha, const Rect& clipper) const;
+    void draw(RenderCache& cache,const Rect& targetRect, float zBase,  float alpha, const Rect* clipper) const;
 
 protected:
 	/*************************************************************************

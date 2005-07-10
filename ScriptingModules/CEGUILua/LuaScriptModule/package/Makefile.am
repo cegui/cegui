@@ -1,19 +1,53 @@
-EXTRA_DIST = Font.pkg \
+EXTRA_DIST = Basic.pkg \
+             CEGUI.pkg \
+             EventSet.pkg \
+             Font.pkg \
+             FontManager.pkg \
+             HelperFunctions.pkg \
              Image.pkg \
              Imageset.pkg \
-             Key.pkg \
-             Basic.pkg \
-             EventSet.pkg \
+             ImagesetManager.pkg \
              InputEvent.pkg \
+             Key.pkg \
+             Logger.pkg \
              MouseCursor.pkg \
+             PropertyHelper.pkg \
              Renderer.pkg \
+             Scheme.pkg \
+             SchemeManager.pkg \
              System.pkg \
              Texture.pkg \
              Window.pkg \
-             CEGUI.pkg \
-             FontManager.pkg \
-             ImagesetManager.pkg \
-             Logger.pkg \
-             Scheme.pkg \
-             SchemeManager.pkg \
-             WindowManager.pkg
+             WindowManager.pkg \
+             elements/ButtonBase.pkg \
+             elements/Checkbox.pkg \
+             elements/Combobox.pkg \
+             elements/ComboDropList.pkg \
+             elements/DragContainer.pkg \
+             elements/Editbox.pkg \
+             elements/FrameWindow.pkg \
+             elements/GUISheet.pkg \
+             elements/Listbox.pkg \
+             elements/ListboxItem.pkg \
+             elements/ListboxTextItem.pkg \
+             elements/ListHeader.pkg \
+             elements/ListHeaderSegment.pkg \
+             elements/MultiColumnList.pkg \
+             elements/MultiLineEditbox.pkg \
+             elements/PropgressBar.pkg \
+             elements/PushButton.pkg \
+             elements/RadioButton.pkg \
+             elements/ScrollablePane.pkg \
+             elements/Scrollbar.pkg \
+             elements/ScrolledContainer.pkg \
+             elements/Slider.pkg \
+             elements/Spinner.pkg \
+             elements/Static.pkg \
+             elements/StaticImage.pkg \
+             elements/StaticText.pkg \
+             elements/TabButton.pkg \
+             elements/TabControl.pkg \
+             elements/TabPane.pkg \
+             elements/Thumb.pkg \
+             elements/Titlebar.pkg \
+             elements/Tooltip.pkg

@@ -70,14 +70,12 @@ WLTabControl::~WLTabControl(void)
 /*************************************************************************
 	Create a content pane
 *************************************************************************/
-TabPane* WLTabControl::createTabContentPane(void) const
+TabPane* WLTabControl::createTabContentPane(const String& name) const
 {
-    // construct name
-    String newName = getName() + (utf8*)"__auto_TabPane__";
     return static_cast<TabPane*>(
         WindowManager::getSingleton().createWindow(
             TabContentPaneType, 
-            newName)
+            name)
             );
 
 }
@@ -172,10 +170,7 @@ void WLTabControl::drawSelf(float z)
 *************************************************************************/
 Window* WLTabControlFactory::createWindow(const String& name)
 {
-	WLTabControl* wnd = new WLTabControl(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLTabControl(d_type, name);
 }
 
 } // End of  CEGUI namespace section

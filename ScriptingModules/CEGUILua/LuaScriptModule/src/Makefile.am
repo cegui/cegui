@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/include \
 lib_LTLIBRARIES = libCEGUILuaScriptModule.la
 
 libCEGUILuaScriptModule_la_SOURCES = lua_CEGUI.cpp \
-                                     LuaScriptModule.cpp \
+                                     CEGUILua.cpp \
                                      required.cpp
 
 noinst_HEADERS = required.h

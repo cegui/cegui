@@ -187,8 +187,11 @@ protected:
 	/*!
 	\brief
 		create a Thumb based widget to use as the thumb for this slider.
+
+    \param name
+        String containing the name to be assigned to the thumb upon creation.
 	*/
-	virtual Thumb*	createThumb(void) const		= 0;
+	virtual Thumb*	createThumb(const String& name) const		= 0;
 
 
 	/*!

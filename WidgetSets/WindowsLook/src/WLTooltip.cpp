@@ -110,18 +110,13 @@ namespace CEGUI
     void WLTooltip::onSized(WindowEventArgs& e)
     {
         // update size to account for frame;
-        Size sz(getAbsoluteSize());
-        sz.d_width += PixelAligned(d_left_width + d_right_width);
-        sz.d_height += PixelAligned(d_top_height + d_bottom_height);
-
-        d_abs_area.setSize(sz);
-        d_abs_area.constrainSize(d_maxSize, d_minSize);
-
-        // update Rect for the other metrics system.
-        d_rel_area.setSize(absoluteToRelative_impl(d_parent, sz));
+        UVector2 sz(d_area.getSize());
+        sz.d_x.d_offset += PixelAligned(d_left_width + d_right_width);
+        sz.d_y.d_offset += PixelAligned(d_top_height + d_bottom_height);
+        setWindowArea_impl(d_area.getPosition(), sz, false, false);
 
         // update frame size.
-        d_frame.setSize(sz);
+        d_frame.setSize(sz.asAbsolute(getParentSize()).asSize());
 
         // base class processing
         Tooltip::onSized(e);
@@ -153,10 +148,7 @@ namespace CEGUI
 
     Window* WLTooltipFactory::createWindow(const String& name)
     {
-        WLTooltip* wnd = new WLTooltip(d_type, name);
-        wnd->initialise();
-
-        return wnd;
+        return new WLTooltip(d_type, name);
     }
 
 } // End of  CEGUI namespace section

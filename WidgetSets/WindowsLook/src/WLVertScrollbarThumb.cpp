@@ -392,10 +392,7 @@ void WLVertScrollbarThumb::onAlphaChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLVertScrollbarThumbFactory::createWindow(const String& name)
 {
-	WLVertScrollbarThumb* wnd = new WLVertScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLVertScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section

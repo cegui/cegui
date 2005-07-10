@@ -49,6 +49,9 @@ public:
 	static const Image*	stringToImage(const String& str);
 	static	colour	stringToColour(const String& str);
 	static	ColourRect	stringToColourRect(const String& str);
+	static	UDim	stringToUDim(const String& str);
+	static	UVector2	stringToUVector2(const String& str);
+	static	URect	stringToURect(const String& str);
 
 	static String	floatToString(float val);
 	static String	uintToString(uint val);
@@ -60,6 +63,9 @@ public:
 	static String	imageToString(const Image* const val);
 	static String	colourToString(const colour& val);
 	static String	colourRectToString(const ColourRect& val);
+	static String	udimToString(const UDim& val);
+	static String	uvector2ToString(const UVector2& val);
+	static String	urectToString(const URect& val);
 };
 
 } // End of  CEGUI namespace section

@@ -140,6 +140,9 @@ WLFrameWindow::~WLFrameWindow(void)
 *************************************************************************/
 Rect WLFrameWindow::getUnclippedInnerRect(void) const
 {
+    if (d_rolledup)
+        return Rect(0,0,0,0);
+
 	Rect tmp(getUnclippedPixelRect());
 
 	if (isFrameEnabled())
@@ -166,9 +169,9 @@ Rect WLFrameWindow::getUnclippedInnerRect(void) const
 	Create a control based upon the Titlebar base class to be used as
 	the title bar for this window.
 *************************************************************************/
-Titlebar* WLFrameWindow::createTitlebar(void) const
+Titlebar* WLFrameWindow::createTitlebar(const String& name) const
 {
-	Titlebar* tbar = (Titlebar*)WindowManager::getSingleton().createWindow(TitlebarType, getName() + "__auto_titlebar__");
+	Titlebar* tbar = (Titlebar*)WindowManager::getSingleton().createWindow(TitlebarType, name);
 	tbar->setMetricsMode(Absolute);
 	tbar->setPosition(Point(TitlebarXOffset, TitlebarYOffset));
 
@@ -180,9 +183,9 @@ Titlebar* WLFrameWindow::createTitlebar(void) const
 	Create a control based upon the PushButton base class, to be used as
 	the close button for the window.
 *************************************************************************/
-PushButton* WLFrameWindow::createCloseButton(void) const
+PushButton* WLFrameWindow::createCloseButton(const String& name) const
 {
-	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, getName() + "__auto_closebutton__");
+	WLButton* btn = (WLButton*)WindowManager::getSingleton().createWindow(CloseButtonType, name);
 
 	btn->setStandardImageryEnabled(false);
 	btn->setCustomImageryAutoSized(true);
@@ -222,7 +225,7 @@ void WLFrameWindow::layoutComponentWidgets()
 	// calculate and set size of title bar
 	Size titleSz;
 	titleSz.d_height = d_titlebar->getFont()->getLineSpacing() + TitlebarTextPadding;
-	titleSz.d_width	 = isRolledup() ? d_abs_openSize.d_width : d_abs_area.getWidth();
+	titleSz.d_width	 = getAbsoluteWidth();
 	d_titlebar->setSize(titleSz);
 
 	// set size of close button to be the same as the size of the imagery used to render it.
@@ -244,6 +247,10 @@ void WLFrameWindow::layoutComponentWidgets()
 *************************************************************************/
 void WLFrameWindow::drawSelf(float z)
 {
+    // do nothing when rolled up.
+    if (d_rolledup)
+        return;
+    
 	// get the destination screen rect for this window
 	Rect absrect(getUnclippedPixelRect());
 
@@ -500,10 +507,7 @@ void WLFrameWindow::updateFrameColours(void)
 *************************************************************************/
 Window* WLFrameWindowFactory::createWindow(const String& name)
 {
-	WLFrameWindow* wnd = new WLFrameWindow(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLFrameWindow(d_type, name);
 }
 
 } // End of  CEGUI namespace section

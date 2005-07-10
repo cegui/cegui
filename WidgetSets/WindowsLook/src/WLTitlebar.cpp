@@ -236,10 +236,7 @@ void WLTitlebar::onDraggingModeChanged(WindowEventArgs& e)
 *************************************************************************/
 Window* WLTitlebarFactory::createWindow(const String& name)
 {
-	WLTitlebar* wnd = new WLTitlebar(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new WLTitlebar(d_type, name);
 }
 
 

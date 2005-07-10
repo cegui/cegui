@@ -81,4 +81,15 @@ void RenderableElement::draw(const Vector3& position, const Rect& clip_rect)
 
 }
 
+void RenderableElement::draw(RenderCache& renderCache) const
+{
+    draw_impl(renderCache);
+
+    // also draw next element in the chain
+    if (d_next)
+    {
+        d_next->draw(renderCache);
+    }
+}
+
 } // End of  CEGUI namespace section

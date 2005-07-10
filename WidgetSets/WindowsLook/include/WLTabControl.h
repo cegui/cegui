@@ -92,7 +92,7 @@ protected:
     \return
     Pointer to a TabPane to be used for holding the main content.
     */
-    TabPane*	createTabContentPane(void) const;
+    TabPane*	createTabContentPane(const String& name) const;
 
     /*!
     \brief

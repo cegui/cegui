@@ -83,8 +83,8 @@ TabControl::~TabControl(void)
 void TabControl::initialise(void)
 {
 	// create the component sub-widgets
-	d_tabContentPane = createTabContentPane();
-    d_tabButtonPane = createTabButtonPane();
+	d_tabContentPane = createTabContentPane(getName() + "__auto_TabPane__");
+    d_tabButtonPane = createTabButtonPane(getName() + "__auto_TabPane__Buttons");
 
 	addChildWindow(d_tabContentPane);
     addChildWindow(d_tabButtonPane);
@@ -593,11 +593,9 @@ void TabControl::layoutComponentWidgets(void)
 /*************************************************************************
 Create tab button pane
 *************************************************************************/
-Window*	TabControl::createTabButtonPane(void) const
+Window*	TabControl::createTabButtonPane(const String& name) const
 {
-    // Generate name based on own name
-    String newName = getName() + (utf8*)"__auto_TabPane__Buttons";
-	return WindowManager::getSingleton().createWindow(GUISheet::WidgetTypeName, newName);
+	return WindowManager::getSingleton().createWindow(GUISheet::WidgetTypeName, name);
 }
 /*************************************************************************
 Text changed on a content window

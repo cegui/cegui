@@ -221,8 +221,9 @@ void TLMiniVertScrollbarThumb::onSized(WindowEventArgs& e)
 	}
 
 	// install new height values.
-	d_abs_area.setHeight(prefHeight);
-	d_rel_area.setHeight(absoluteToRelativeY_impl(getParent(), prefHeight));
+    UVector2 sze(d_area.getSize());
+    sze.d_y = cegui_absdim(prefHeight);
+    setWindowArea_impl(d_area.getPosition(), sze, false, false);
 
 	// base class processing.
 	Thumb::onSized(e);
@@ -244,10 +245,7 @@ void TLMiniVertScrollbarThumb::onSized(WindowEventArgs& e)
 *************************************************************************/
 Window* TLMiniVertScrollbarThumbFactory::createWindow(const String& name)
 {
-	TLMiniVertScrollbarThumb* wnd = new TLMiniVertScrollbarThumb(d_type, name);
-	wnd->initialise();
-
-	return wnd;
+	return new TLMiniVertScrollbarThumb(d_type, name);
 }
 
 } // End of  CEGUI namespace section
