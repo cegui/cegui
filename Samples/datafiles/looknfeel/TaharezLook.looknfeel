@@ -2980,7 +2980,6 @@
     </WidgetLook>
 
     <WidgetLook name="TaharezLook/TabPane">
-        <Property name="RiseOnClick" value="False" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
