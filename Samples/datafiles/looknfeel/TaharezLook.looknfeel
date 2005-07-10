@@ -391,7 +391,7 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <StateImagery name="Normal">
+        <StateImagery name="Enabled">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
@@ -1814,7 +1814,7 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-        <StateImagery name="Normal">
+        <StateImagery name="Enabled">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
