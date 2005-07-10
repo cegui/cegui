@@ -803,6 +803,9 @@
 				RelativePath="..\..\..\..\include\CEGUIVector.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\CEGUIVersion.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\CEGUIWindow.h">
 			</File>
 			<File

@@ -48,6 +48,7 @@
 #include "CEGUIResourceProvider.h"
 #include "CEGUIGlobalEventSet.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUIPropertyHelper.h"
 #include <time.h>
 
 // set up for whichever default xml parser will be used
@@ -208,6 +209,11 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
     // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
     new Logger();
 
+    // Set CEGUI version
+    d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
+       PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
+       PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
+
 	d_renderer		= renderer;
 	d_gui_redraw	= false;
 	d_defaultFont	= NULL;
@@ -334,7 +340,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	// success - we are created!  Log it for prosperity :)
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
-
+    Logger::getSingleton().logEvent((utf8*)"---- Version " + d_strVersion + " ----");
 	// subscribe to hear about display mode changes
 	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 

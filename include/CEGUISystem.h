@@ -942,6 +942,8 @@ private:
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
 	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
 
+	String d_strVersion;    //!< CEGUI version
+
 	uint		d_sysKeys;			//!< Current set of system keys pressed (in mk1 these were passed in, here we track these ourself).
 	bool		d_lshift;			//!< Tracks state of left shift.
 	bool		d_rshift;			//!< Tracks state of right shift.

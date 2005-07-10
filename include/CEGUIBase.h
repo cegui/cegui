@@ -34,6 +34,8 @@
 // bring in configuration options
 #include "CEGUIConfig.h"
 
+// add CEGUI version defines
+#include "CEGUIVersion.h"
 
 /*************************************************************************
 	Dynamic Library import / export control conditional

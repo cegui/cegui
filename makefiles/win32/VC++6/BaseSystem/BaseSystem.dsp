@@ -1296,6 +1296,10 @@ SOURCE=..\..\..\..\include\CEGUIVector.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\include\CEGUIVersion.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\CEGUIWindow.h
 # End Source File
 # Begin Source File
