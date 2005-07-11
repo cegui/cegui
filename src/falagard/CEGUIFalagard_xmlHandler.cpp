@@ -58,11 +58,14 @@ namespace CEGUI
     const String Falagard_xmlHandler::AbsoluteDimElement("AbsoluteDim");
     const String Falagard_xmlHandler::ImageDimElement("ImageDim");
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
+    const String Falagard_xmlHandler::FontDimElement("FontDim");
+    const String Falagard_xmlHandler::PropertyDimElement("PropertyDim");
     const String Falagard_xmlHandler::TextElement("Text");
     const String Falagard_xmlHandler::ColourPropertyElement("ColourProperty");
     const String Falagard_xmlHandler::ColourRectPropertyElement("ColourRectProperty");
     const String Falagard_xmlHandler::NamedAreaElement("NamedArea");
     const String Falagard_xmlHandler::PropertyDefinitionElement("PropertyDefinition");
+    const String Falagard_xmlHandler::DimOperatorElement("DimOperator");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -85,6 +88,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::FontAttribute("font");
     const String Falagard_xmlHandler::InitialValueAttribute("initialValue");
     const String Falagard_xmlHandler::ClippedAttribute("clipped");
+    const String Falagard_xmlHandler::OperatorAttribute("op");
+    const String Falagard_xmlHandler::PaddingAttribute("padding");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -112,7 +117,7 @@ namespace CEGUI
         // root Falagard element
         if (element == FalagardElement)
         {
-            Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====", Informative);
+            Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
         }
         // starting a new widget-look
         else if (element == WidgetLookElement)
@@ -128,14 +133,14 @@ namespace CEGUI
             assert(d_childcomponent == 0);
             d_childcomponent = new WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute));
 
-            Logger::getSingleton().logEvent("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName(), Informative);
+            CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName());
         }
         else if (element == ImagerySectionElement)
         {
             assert(d_imagerysection == 0);
             d_imagerysection = new ImagerySection(attributes.getValueAsString(NameAttribute));
 
-            Logger::getSingleton().logEvent("-----> Start of definition for imagery section '" + d_imagerysection->getName() + "'.", Informative);
+            CEGUI_LOGINSANE("-----> Start of definition for imagery section '" + d_imagerysection->getName() + "'.");
         }
         else if (element == StateImageryElement)
         {
@@ -143,14 +148,14 @@ namespace CEGUI
             d_stateimagery = new StateImagery(attributes.getValueAsString(NameAttribute));
             d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute));
 
-            Logger::getSingleton().logEvent("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.", Informative);
+            CEGUI_LOGINSANE("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.");
         }
         else if (element == LayerElement)
         {
             assert(d_layer == 0);
             d_layer = new LayerSpecification(attributes.getValueAsInteger(PriorityAttribute));
 
-            Logger::getSingleton().logEvent("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute), Informative);
+            CEGUI_LOGINSANE("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute));
         }
         else if (element == SectionElement)
         {
@@ -159,21 +164,21 @@ namespace CEGUI
             String owner(attributes.getValueAsString(LookAttribute));
             d_section = new SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner, attributes.getValueAsString(SectionNameAttribute));
 
-            Logger::getSingleton().logEvent("---------> Layer references imagery section '" + d_section->getSectionName() + "'.", Informative);
+            CEGUI_LOGINSANE("---------> Layer references imagery section '" + d_section->getSectionName() + "'.");
         }
         else if (element == ImageryComponentElement)
         {
             assert(d_imagerycomponent == 0);
             d_imagerycomponent = new ImageryComponent();
 
-            Logger::getSingleton().logEvent("-------> Image component definition...", Informative);
+            CEGUI_LOGINSANE("-------> Image component definition...");
         }
         else if (element == TextComponentElement)
         {
             assert(d_textcomponent == 0);
             d_textcomponent = new TextComponent();
 
-            Logger::getSingleton().logEvent("-------> Text component definition...", Informative);
+            CEGUI_LOGINSANE("-------> Text component definition...");
         }
         else if (element == AreaElement)
         {
@@ -242,12 +247,12 @@ namespace CEGUI
             if (d_childcomponent)
             {
                 d_childcomponent->addPropertyInitialiser(prop);
-                Logger::getSingleton().logEvent("-------> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue(), Informative);
+                CEGUI_LOGINSANE("-------> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue());
             }
             else
             {
                 d_widgetlook->addPropertyInitialiser(prop);
-                Logger::getSingleton().logEvent("---> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue(), Informative);
+                CEGUI_LOGINSANE("---> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue());
             }
 
         }
@@ -288,7 +293,7 @@ namespace CEGUI
             assert(d_imagerycomponent);
             d_imagerycomponent->setImage(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute));
 
-            Logger::getSingleton().logEvent("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute), Informative);
+            CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute));
         }
 		else if (element == DimElement)
 		{
@@ -297,30 +302,37 @@ namespace CEGUI
         else if (element == UnifiedDimElement)
         {
             UnifiedDim base(UDim(attributes.getValueAsFloat(ScaleAttribute), attributes.getValueAsFloat(OffsetAttribute)), stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
-			d_dimension.setBaseDimension(base);
-
-            assignAreaDimension(d_dimension);
+            doBaseDimStart(&base);
         }
         else if (element == AbsoluteDimElement)
         {
             AbsoluteDim base(attributes.getValueAsFloat(ValueAttribute));
-			d_dimension.setBaseDimension(base);
-
-			assignAreaDimension(d_dimension);
+            doBaseDimStart(&base);
         }
         else if (element == ImageDimElement)
         {
             ImageDim base(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute), stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
-			d_dimension.setBaseDimension(base);
-
-			assignAreaDimension(d_dimension);
+            doBaseDimStart(&base);
         }
         else if (element == WidgetDimElement)
         {
             WidgetDim base(attributes.getValueAsString(WidgetAttribute), stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
-			d_dimension.setBaseDimension(base);
+            doBaseDimStart(&base);
+        }
+        else if (element == FontDimElement)
+        {
+            FontDim base(
+                attributes.getValueAsString(FontAttribute),
+                attributes.getValueAsString(StringAttribute),
+                stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
+                attributes.getValueAsFloat(PaddingAttribute));
 
-			assignAreaDimension(d_dimension);
+            doBaseDimStart(&base);
+        }
+        else if (element == PropertyDimElement)
+        {
+            PropertyDim base(attributes.getValueAsString(NameAttribute));
+            doBaseDimStart(&base);
         }
         else if (element == TextElement)
         {
@@ -333,7 +345,14 @@ namespace CEGUI
             assert(d_namedArea == 0);
             d_namedArea = new NamedArea(attributes.getValueAsString(NameAttribute));
 
-            Logger::getSingleton().logEvent("-----> Creating named area: " + d_namedArea->getName(), Informative);
+            CEGUI_LOGINSANE("-----> Creating named area: " + d_namedArea->getName());
+        }
+        else if (element == DimOperatorElement)
+        {
+            if (!d_dimStack.empty())
+            {
+                d_dimStack.back()->setDimensionOperator(stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
+            }
         }
         else
         {
@@ -346,7 +365,7 @@ namespace CEGUI
         // end of main element
         if (element == FalagardElement)
         {
-            Logger::getSingleton().logEvent("===== Look and feel parsing completed =====", Informative);
+            Logger::getSingleton().logEvent("===== Look and feel parsing completed =====");
         }
         // ending a widget-look
         else if (element == WidgetLookElement)
@@ -366,7 +385,7 @@ namespace CEGUI
 
             if (d_childcomponent)
             {
-                Logger::getSingleton().logEvent("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".", Informative);
+                CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
                 d_widgetlook->addWidgetComponent(*d_childcomponent);
                 delete d_childcomponent;
                 d_childcomponent = 0;
@@ -379,7 +398,7 @@ namespace CEGUI
 
             if (d_imagerysection)
             {
-                Logger::getSingleton().logEvent("-----< End of definition for imagery section '" + d_imagerysection->getName() + "'.", Informative);
+                CEGUI_LOGINSANE("-----< End of definition for imagery section '" + d_imagerysection->getName() + "'.");
                 d_widgetlook->addImagerySection(*d_imagerysection);
                 delete d_imagerysection;
                 d_imagerysection = 0;
@@ -392,7 +411,7 @@ namespace CEGUI
 
             if (d_stateimagery)
             {
-                Logger::getSingleton().logEvent("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.", Informative);
+                CEGUI_LOGINSANE("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.");
                 d_widgetlook->addStateSpecification(*d_stateimagery);
                 delete d_stateimagery;
                 d_stateimagery = 0;
@@ -405,7 +424,7 @@ namespace CEGUI
 
             if (d_layer)
             {
-                Logger::getSingleton().logEvent("-------< End of definition of imagery layer.", Informative);
+                CEGUI_LOGINSANE("-------< End of definition of imagery layer.");
                 d_stateimagery->addLayer(*d_layer);
                 delete d_layer;
                 d_layer = 0;
@@ -484,6 +503,12 @@ namespace CEGUI
                 delete d_namedArea;
                 d_namedArea = 0;
             }
+        }
+        // End of a *Dim element.
+        else if ((element == UnifiedDimElement) || (element == AbsoluteDimElement) || (element == ImageDimElement) ||
+                 (element == WidgetDimElement) || (element == FontDimElement) || (element == PropertyDimElement))
+        {
+            doBaseDimEnd();
         }
     }
 
@@ -650,6 +675,31 @@ namespace CEGUI
         }
     }
 
+    void Falagard_xmlHandler::doBaseDimStart(const BaseDim* dim)
+    {
+        BaseDim* cloned = dim->clone();
+        d_dimStack.push_back(cloned);
+    }
+
+    void Falagard_xmlHandler::doBaseDimEnd()
+    {
+        if (!d_dimStack.empty())
+        {
+            BaseDim* currDim = d_dimStack.back();
+            d_dimStack.pop_back();
+
+            if (!d_dimStack.empty())
+            {
+                d_dimStack.back()->setOperand(*currDim);
+            }
+            else
+            {
+                d_dimension.setBaseDimension(*currDim);
+                assignAreaDimension(d_dimension);
+            }
+        }
+    }
+
     VerticalTextFormatting Falagard_xmlHandler::stringToVertTextFormat(const String& str)
     {
         if (str == "CentreAligned")
@@ -702,5 +752,44 @@ namespace CEGUI
         }
     }
 
+    FontMetricType Falagard_xmlHandler::stringToFontMetricType(const String& str)
+    {
+        if (str == "LineSpacing")
+        {
+            return FMT_LINE_SPACING;
+        }
+        else if (str == "Baseline")
+        {
+            return FMT_BASELINE;
+        }
+        else
+        {
+            return FMT_HORZ_EXTENT;
+        }
+    }
+
+    DimensionOperator Falagard_xmlHandler::stringToDimensionOperator(const String& str)
+    {
+        if (str == "Add")
+        {
+            return DOP_ADD;
+        }
+        else if (str == "Subtract")
+        {
+            return DOP_SUBTRACT;
+        }
+        else if (str == "Multiply")
+        {
+            return DOP_MULTIPLY;
+        }
+        else if (str == "Divide")
+        {
+            return DOP_DIVIDE;
+        }
+        else
+        {
+            return DOP_NOOP;
+        }
+    }
 
 } // End of  CEGUI namespace section

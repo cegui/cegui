@@ -28,11 +28,124 @@
 #include "CEGUIWindowManager.h"
 #include "CEGUIWindow.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIFontManager.h"
+#include "CEGUIFont.h"
+#include "CEGUIPropertyHelper.h"
 #include <cassert>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    BaseDim::BaseDim() :
+        d_operator(DOP_NOOP),
+        d_operand(0)
+    {
+    }
+
+    BaseDim::~BaseDim()
+    {
+        delete d_operand;
+    }
+
+    float BaseDim::getValue(const Window& wnd) const
+    {
+        // get sub-class to return value for this dimension.
+        float val = getValue_impl(wnd);
+
+        // if we have an attached operand, perform math on value as needed
+        if (d_operand)
+        {
+            switch (d_operator)
+            {
+            case DOP_ADD:
+                val += d_operand->getValue(wnd);
+                break;
+            case DOP_SUBTRACT:
+                val -= d_operand->getValue(wnd);
+                break;
+            case DOP_MULTIPLY:
+                val *= d_operand->getValue(wnd);
+                break;
+            case DOP_DIVIDE:
+                val /= d_operand->getValue(wnd);
+                break;
+            default:
+                // No-op.
+                break;
+            }
+        }
+
+        return val;
+    }
+
+    float BaseDim::getValue(const Window& wnd, const Rect& container) const
+    {
+        // get sub-class to return value for this dimension.
+        float val = getValue_impl(wnd, container);
+
+        // if we have an attached operand, perform math on value as needed
+        if (d_operand)
+        {
+            switch (d_operator)
+            {
+            case DOP_ADD:
+                val += d_operand->getValue(wnd, container);
+                break;
+            case DOP_SUBTRACT:
+                val -= d_operand->getValue(wnd, container);
+                break;
+            case DOP_MULTIPLY:
+                val *= d_operand->getValue(wnd, container);
+                break;
+            case DOP_DIVIDE:
+                val /= d_operand->getValue(wnd, container);
+                break;
+            default:
+                // No-op.
+                break;
+            }
+        }
+
+        return val;
+    }
+
+    BaseDim* BaseDim::clone() const
+    {
+        // get sub-class to return a cloned object
+        BaseDim* o = clone_impl();
+
+        // fill in operator for cloned object
+        o->d_operator = d_operator;
+
+        // now clone any attached operand dimension
+        if (d_operand)
+            o->d_operand = d_operand->clone();
+
+        return o;
+    }
+
+    DimensionOperator BaseDim::getDimensionOperator() const
+    {
+        return d_operator;
+    }
+
+    void BaseDim::setDimensionOperator(DimensionOperator op)
+    {
+        d_operator = op;
+    }
+
+    const BaseDim* BaseDim::getOperand() const
+    {
+        return d_operand;
+    }
+
+    void BaseDim::setOperand(const BaseDim& operand)
+    {
+        d_operand = operand.clone();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
     AbsoluteDim::AbsoluteDim(float val) :
         d_val(val)
     {}
@@ -42,17 +155,17 @@ namespace CEGUI
         d_val = val;
     }
 
-    float AbsoluteDim::getValue(const Window& wnd) const
+    float AbsoluteDim::getValue_impl(const Window& wnd) const
     {
         return d_val;
     }
 
-    float AbsoluteDim::getValue(const Window& wnd, const Rect& container) const
+    float AbsoluteDim::getValue_impl(const Window& wnd, const Rect& container) const
     {
         return d_val;
     }
 
-    BaseDim* AbsoluteDim::clone() const
+    BaseDim* AbsoluteDim::clone_impl() const
     {
         AbsoluteDim* ndim = new AbsoluteDim(d_val);
         return ndim;
@@ -77,7 +190,7 @@ namespace CEGUI
         d_what = dim;
     }
 
-    float ImageDim::getValue(const Window& wnd) const
+    float ImageDim::getValue_impl(const Window& wnd) const
     {
         const Image* img = &ImagesetManager::getSingleton().getImageset(d_imageset)->getImage(d_image);
 
@@ -125,14 +238,14 @@ namespace CEGUI
         }
     }
 
-    float ImageDim::getValue(const Window& wnd, const Rect& container) const
+    float ImageDim::getValue_impl(const Window& wnd, const Rect& container) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue(wnd);
     }
 
 
-    BaseDim* ImageDim::clone() const
+    BaseDim* ImageDim::clone_impl() const
     {
         ImageDim* ndim = new ImageDim(d_imageset, d_image, d_what);
         return ndim;
@@ -155,7 +268,7 @@ namespace CEGUI
         d_what = dim;
     }
 
-    float WidgetDim::getValue(const Window& wnd) const
+    float WidgetDim::getValue_impl(const Window& wnd) const
     {
         const Window* widget;
 
@@ -214,15 +327,89 @@ namespace CEGUI
         }
     }
 
-    float WidgetDim::getValue(const Window& wnd, const Rect& container) const
+    float WidgetDim::getValue_impl(const Window& wnd, const Rect& container) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue(wnd);
     }
 
-    BaseDim* WidgetDim::clone() const
+    BaseDim* WidgetDim::clone_impl() const
     {
         WidgetDim* ndim = new WidgetDim(d_widgetName, d_what);
+        return ndim;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    FontDim::FontDim(const String& font, const String& text, FontMetricType metric, float padding) :
+        d_font(font),
+        d_text(text),
+        d_metric(metric),
+        d_padding(padding)
+    {
+    }
+
+    float FontDim::getValue_impl(const Window& wnd) const
+    {
+        // get font to use
+        const Font* fontObj = d_font.empty() ? wnd.getFont() : FontManager::getSingleton().getFont(d_font);
+
+        if (fontObj)
+        {
+            switch (d_metric)
+            {
+                case FMT_LINE_SPACING:
+                    return fontObj->getLineSpacing() + d_padding;
+                    break;
+                case FMT_BASELINE:
+                    return fontObj->getBaseline() + d_padding;
+                    break;
+                case FMT_HORZ_EXTENT:
+                    return fontObj->getTextExtent(d_text.empty() ? wnd.getText() : d_text) + d_padding;
+                    break;
+                default:
+                    throw InvalidRequestException("FontDim::getValue - unknown or unsupported FontMetricType encountered.");
+                    break;
+            }
+        }
+        // no font, return padding value only.
+        else
+        {
+            return d_padding;
+        }
+    }
+
+    float FontDim::getValue_impl(const Window& wnd, const Rect& container) const
+    {
+        return getValue(wnd);
+    }
+
+    BaseDim* FontDim::clone_impl() const
+    {
+        FontDim* ndim = new FontDim(d_font, d_text, d_metric);
+        return ndim;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    PropertyDim::PropertyDim(const String& property) :
+        d_property(property)
+    {
+    }
+
+    float PropertyDim::getValue_impl(const Window& wnd) const
+    {
+        return PropertyHelper::stringToFloat(wnd.getProperty(d_property));
+    }
+
+    float PropertyDim::getValue_impl(const Window& wnd, const Rect& container) const
+    {
+        return getValue(wnd);
+    }
+
+    BaseDim* PropertyDim::clone_impl() const
+    {
+        PropertyDim* ndim = new PropertyDim(d_property);
         return ndim;
     }
 
@@ -289,7 +476,7 @@ namespace CEGUI
     {
     }
 
-    float UnifiedDim::getValue(const Window& wnd) const
+    float UnifiedDim::getValue_impl(const Window& wnd) const
     {
         switch (d_what)
         {
@@ -315,7 +502,7 @@ namespace CEGUI
         }
     }
 
-    float UnifiedDim::getValue(const Window& wnd, const Rect& container) const
+    float UnifiedDim::getValue_impl(const Window& wnd, const Rect& container) const
     {
         switch (d_what)
         {
@@ -341,7 +528,7 @@ namespace CEGUI
         }
     }
 
-    BaseDim* UnifiedDim::clone() const
+    BaseDim* UnifiedDim::clone_impl() const
     {
         UnifiedDim* ndim = new UnifiedDim(d_value, d_what);
         return ndim;

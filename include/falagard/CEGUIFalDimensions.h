@@ -38,7 +38,9 @@ namespace CEGUI
     class CEGUIEXPORT BaseDim
     {
     public:
-        virtual ~BaseDim() {}
+        BaseDim();
+
+        virtual ~BaseDim();
 
         /*!
         \brief
@@ -51,7 +53,7 @@ namespace CEGUI
         \return
             float value which represents, in pixels, the same value as this BaseDim.
         */
-        virtual float getValue(const Window& wnd) const = 0;
+        float getValue(const Window& wnd) const;
 
         /*!
         \brief
@@ -70,7 +72,7 @@ namespace CEGUI
         \return
             float value which represents, in pixels, the same value as this BaseDim.
         */
-        virtual float getValue(const Window& wnd, const Rect& container) const = 0;
+        float getValue(const Window& wnd, const Rect& container) const;
 
         /*!
         \brief
@@ -84,7 +86,79 @@ namespace CEGUI
         \return
             BaseDim object pointer
         */
-        virtual BaseDim* clone() const = 0;
+        BaseDim* clone() const;
+
+        /*!
+        \brief
+            Return the DimensionOperator set for this BaseDim based object.
+
+        \return
+            One of the DimensionOperator enumerated values representing a mathematical operation to be
+            performed upon this BaseDim using the set operand.
+        */
+        DimensionOperator getDimensionOperator() const;
+
+        /*!
+        \brief
+            Set the DimensionOperator set for this BaseDim based object.
+
+        \param op
+            One of the DimensionOperator enumerated values representing a mathematical operation to be
+            performed upon this BaseDim using the set operand.
+
+        \return
+            Nothing.
+        */
+        void setDimensionOperator(DimensionOperator op);
+
+        /*!
+        \brief
+            Return a pointer to the BaseDim set to be used as the other operand.
+
+        \return
+            Pointer to the BaseDim object.
+        */
+        const BaseDim* getOperand() const;
+
+        /*!
+        \brief
+            Set the BaseDim set to be used as the other operand in calculations for this BaseDim.
+
+        \param operand
+            sub-class of BaseDim representing the 'other' operand.  The given object will be cloned; no
+            transfer of ownership occurrs for the passed object.
+
+        \return
+            Nothing.
+        */
+        void setOperand(const BaseDim& operand);
+
+    protected:
+        /*!
+        \brief
+            Implementataion method to return the base value for this BaseDim.  This method should
+            not attempt to apply the mathematical operator; this is handled automatically.
+        */
+        virtual float getValue_impl(const Window& wnd) const = 0;
+
+        /*!
+        \brief
+            Implementataion method to return the base value for this BaseDim.  This method should
+            not attempt to apply the mathematical operator; this is handled automatically by BaseDim.
+        */
+        virtual float getValue_impl(const Window& wnd, const Rect& container) const = 0;
+
+        /*!
+        \brief
+            Implementataion method to return a clone of this sub-class of BaseDim.
+            This method should not attempt to clone the mathematical operator or operand; theis is
+            handled automatically by BaseDim.
+        */
+        virtual BaseDim* clone_impl() const = 0;
+
+    private:
+        DimensionOperator   d_operator;
+        BaseDim*            d_operand;
     };
 
 
@@ -110,11 +184,12 @@ namespace CEGUI
         */
         void setValue(float val);
 
+    protected:
         // Implementation of the base class interface
-        float getValue(const Window& wnd) const;
-        float getValue(const Window& wnd, const Rect& container) const;
+        float getValue_impl(const Window& wnd) const;
+        float getValue_impl(const Window& wnd, const Rect& container) const;
 
-        BaseDim* clone() const;
+        BaseDim* clone_impl() const;
 
     private:
         float d_val;    //!< holds pixel value for the AbsoluteDim.
@@ -172,10 +247,11 @@ namespace CEGUI
         */
         void setSourceDimension(DimensionType dim);
 
+    protected:
         // Implementation of the base class interface
-        float getValue(const Window& wnd) const;
-        float getValue(const Window& wnd, const Rect& container) const;
-        BaseDim* clone() const;
+        float getValue_impl(const Window& wnd) const;
+        float getValue_impl(const Window& wnd, const Rect& container) const;
+        BaseDim* clone_impl() const;
 
     private:
         String d_imageset;      //!< name of the Imageset containing the image.
@@ -234,10 +310,11 @@ namespace CEGUI
         */
         void setSourceDimension(DimensionType dim);
 
+    protected:
         // Implementation of the base class interface
-        float getValue(const Window& wnd) const;
-        float getValue(const Window& wnd, const Rect& container) const;
-        BaseDim* clone() const;
+        float getValue_impl(const Window& wnd) const;
+        float getValue_impl(const Window& wnd, const Rect& container) const;
+        BaseDim* clone_impl() const;
 
     private:
         String d_widgetName;    //!< Holds target window name suffix.
@@ -266,16 +343,83 @@ namespace CEGUI
         */
         UnifiedDim(const UDim& value, DimensionType dim);
 
+    protected:
         // Implementation of the base class interface
-        float getValue(const Window& wnd) const;
-        float getValue(const Window& wnd, const Rect& container) const;
-        BaseDim* clone() const;
+        float getValue_impl(const Window& wnd) const;
+        float getValue_impl(const Window& wnd, const Rect& container) const;
+        BaseDim* clone_impl() const;
 
     private:
         UDim d_value;           //!< The UDim value.
         DimensionType d_what;   //!< what we represent.
     };
 
+    /*!
+    \brief
+        Dimension type that represents some metric of a Font.  Implements BaseDim interface.
+    */
+    class CEGUIEXPORT FontDim : public BaseDim
+    {
+    public:
+        /*!
+        \brief
+            Constructor.
+
+        \param font
+            String holding the name of the font to use for this dimension.  If the string is
+            empty, the font assigned to the window passed to getValue will be used.
+
+        \param text
+            String holding the text to be measured for horizontal extent.  If this is empty,
+            the text from the window passed to getValue will be used.
+
+        \param metric
+            One of the FontMetricType values indicating what we should represent.
+
+        \param padding
+            constant pixel padding value to be added.
+        */
+        FontDim(const String& font, const String& text, FontMetricType metric, float padding = 0);
+
+    protected:
+        // Implementation of the base class interface
+        float getValue_impl(const Window& wnd) const;
+        float getValue_impl(const Window& wnd, const Rect& container) const;
+        BaseDim* clone_impl() const;
+
+    private:
+        String  d_font;          //!< Name of Font.  If empty font will be taken from Window.
+        String  d_text;          //!< String to measure for extents, if empty will use window text.
+        FontMetricType d_metric; //!< what metric we represent.
+        float   d_padding;       //!< padding value to be added.
+    };
+
+    /*!
+    \brief
+        Dimension type that represents the value of a Window property.  Implements BaseDim interface.
+    */
+    class CEGUIEXPORT PropertyDim : public BaseDim
+    {
+    public:
+        /*!
+        \brief
+            Constructor.
+
+        \param property
+            String object holding the name of the property this PropertyDim represents the value of.
+            The property named should represent a simple float value.
+        */
+        PropertyDim(const String& property);
+
+    protected:
+        // Implementation of the base class interface
+        float getValue_impl(const Window& wnd) const;
+        float getValue_impl(const Window& wnd, const Rect& container) const;
+        BaseDim* clone_impl() const;
+
+    private:
+        String d_property;      //!< Propery that this object represents.
+    };
 
     /*!
     \brief

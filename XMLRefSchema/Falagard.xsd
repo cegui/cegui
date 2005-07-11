@@ -129,24 +129,53 @@
 			<xsd:element name="UnifiedDim" type="unifiedDimType" />
 			<xsd:element name="AbsoluteDim" type="absoluteDimType" />
 			<xsd:element name="ImageDim" type="imageDimType" />
-			<xsd:element name="WidgetDim" type="widgetDimType" />
+            <xsd:element name="WidgetDim" type="widgetDimType" />
+            <xsd:element name="FontDim" type="fontDimType" />
+            <xsd:element name="PropertyDim" type="propertyDimType" />
 		</xsd:choice>
 		<xsd:attribute name="type" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
+    <xsd:complexType name="fontDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="font" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="string" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="type" type="fontMetricTypeEnum" use="required" />
+        <xsd:attribute name="padding" type="xsd:decimal" use="optional" default="0" />
+    </xsd:complexType>
+    <xsd:complexType name="propertyDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
 	<xsd:complexType name="unifiedDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
 		<xsd:attribute name="scale" type="xsd:decimal" use="optional" default="0" />
 		<xsd:attribute name="offset" type="xsd:integer" use="optional" default="0" />
 		<xsd:attribute name="type" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="absoluteDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
 		<xsd:attribute name="value" type="xsd:decimal" use="optional" default="0" />
 	</xsd:complexType>
 	<xsd:complexType name="imageDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
 		<xsd:attribute name="imageset" type="xsd:string" use="required" />
 		<xsd:attribute name="image" type="xsd:string" use="required" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="widgetDimType">
+        <xsd:sequence>
+            <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
 		<xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
@@ -167,6 +196,17 @@
     <xsd:complexType name="textStringType">
         <xsd:attribute name="string" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="font" type="xsd:string" use="optional" default="" />
+    </xsd:complexType>
+    <xsd:complexType name="dimensionOperatorType">
+        <xsd:choice>
+            <xsd:element name="UnifiedDim" type="unifiedDimType" />
+            <xsd:element name="AbsoluteDim" type="absoluteDimType" />
+            <xsd:element name="ImageDim" type="imageDimType" />
+            <xsd:element name="WidgetDim" type="widgetDimType" />
+            <xsd:element name="FontDim" type="fontDimType" />
+            <xsd:element name="PropertyDim" type="propertyDimType" />
+        </xsd:choice>
+        <xsd:attribute name="op" type="dimensionOperatorEnum" use="required" />
     </xsd:complexType>
 	<xsd:simpleType name="dimensionTypeEnum">
 		<xsd:restriction base="xsd:string">
@@ -236,6 +276,22 @@
     <xsd:simpleType name="propertyTypeEnum">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="Generic" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="fontMetricTypeEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="LineSpacing" />
+            <xsd:enumeration value="Baseline" />
+            <xsd:enumeration value="HorzExtent" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="dimensionOperatorEnum">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Noop" />
+            <xsd:enumeration value="Add" />
+            <xsd:enumeration value="Subtract" />
+            <xsd:enumeration value="Multiply" />
+            <xsd:enumeration value="Divide" />
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>

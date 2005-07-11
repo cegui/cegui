@@ -28,6 +28,7 @@
 #include "CEGUIcolour.h"
 #include "falagard/CEGUIFalDimensions.h"
 #include "CEGUIWindow.h"
+#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -98,11 +99,14 @@ namespace CEGUI
         static const String AbsoluteDimElement;         //!< Tag name for absolute dimension elements.
         static const String ImageDimElement;            //!< Tag name for image dimension elements.
         static const String WidgetDimElement;           //!< Tag name for widget dimension elements.
+        static const String FontDimElement;             //!< Tag name for font dimension elements.
+        static const String PropertyDimElement;         //!< Tag name for property dimension elements.
         static const String TextElement;                //!< Tag name for text component text elements
         static const String ColourPropertyElement;      //!< Tag name for property colour elements (fetches cols from a colour property)
         static const String ColourRectPropertyElement;  //!< Tag name for property colour elements (fetches cols from a ColourRect property)
         static const String NamedAreaElement;           //!< Tag name for named area elements.
         static const String PropertyDefinitionElement;  //!< Tag name for property definition elements.
+        static const String DimOperatorElement;         //!< Tag name for dimension operator elements.
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -125,6 +129,8 @@ namespace CEGUI
         static const String FontAttribute;              //!< Attribute name that stores the name of a font.
         static const String InitialValueAttribute;      //!< Attribute name that stores the initial default value for a property definition.
         static const String ClippedAttribute;           //!< Attribute name that stores whether some component will be clipped.
+        static const String OperatorAttribute;          //!< Attribute name that stores the name of an operator.
+        static const String PaddingAttribute;           //!< Attribute name that stores some padding value..
 
         /*************************************************************************
             helper methods
@@ -137,11 +143,16 @@ namespace CEGUI
         static DimensionType stringToDimensionType(const String& str);
         static VerticalTextFormatting stringToVertTextFormat(const String& str);
         static HorizontalTextFormatting stringToHorzTextFormat(const String& str);
+        static FontMetricType stringToFontMetricType(const String& str);
+        static DimensionOperator stringToDimensionOperator(const String& str);
 
         /*************************************************************************
             implementation methods
         **************************************************************************/
         void assignAreaDimension(Dimension& dim);
+
+        void doBaseDimStart(const BaseDim* dim);
+        void doBaseDimEnd();
 
         /*************************************************************************
             Implementation Data
@@ -161,6 +172,8 @@ namespace CEGUI
         TextComponent*  d_textcomponent;
         int d_dimIdx;
         NamedArea*      d_namedArea;
+
+        std::vector<BaseDim*>    d_dimStack;
     };
 
 } // End of  CEGUI namespace section

@@ -99,6 +99,30 @@ namespace CEGUI
         HTF_WORDWRAP_JUSTIFIED        //!< text should be spaced so that it takes the full width of the destination area (word wrapped to multiple lines as needed).
     };
 
+    /*!
+    \brief
+        Enumeration of possible values to indicate a particular font metric.
+    */
+    enum FontMetricType
+    {
+        FMT_LINE_SPACING,       //!< Vertical line spacing value for font.
+        FMT_BASELINE,           //!< Vertical baseline value for font.
+        FMT_HORZ_EXTENT         //!< Horizontal extent of a string.
+    };
+
+    /*!
+    \brief
+        Enumeration of values representing mathematical operations on dimensions.
+    */
+    enum DimensionOperator
+    {
+        DOP_NOOP,       //!< Do nothing operator.
+        DOP_ADD,        //!< Dims should be added.
+        DOP_SUBTRACT,   //!< Dims should be subtracted.
+        DOP_MULTIPLY,   //!< Dims should be multiplied.
+        DOP_DIVIDE      //!< Dims should be divided.
+    };
+
 } // End of  CEGUI namespace section
 
 

@@ -524,7 +524,13 @@
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
                 <Dim type="Width" ><UnifiedDim scale="1" offset="-10" type="Width" /></Dim>
-                <Dim type="Height" ><UnifiedDim scale="1" offset="-25" type="Height" /></Dim>
+                <Dim type="Height" >
+                    <UnifiedDim scale="1" type="Height">
+                        <DimOperator op="Subtract">
+                            <WidgetDim widget="__auto_titlebar__" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
             </Area>
         </NamedArea>
         <NamedArea name="ClientWithTitleNoFrame">
@@ -556,7 +562,13 @@
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                <Dim type="Height" ><AbsoluteDim value="25" /></Dim>
+                <Dim type="Height" >
+                    <FontDim type="LineSpacing">
+                        <DimOperator op="Multiply">
+                            <AbsoluteDim value="1.5" />
+                        </DimOperator>
+                    </FontDim>
+                </Dim>
             </Area>
             <Property name="AlwaysOnTop" value="False" />
         </Child>
@@ -599,9 +611,15 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="Height" /></Dim>
                     <Dim type="Width" ><AbsoluteDim value="1" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" offset="-49" type="Height" /></Dim>
+                    <Dim type="Height" >
+                        <UnifiedDim scale="1" offset="-24" type="Height">
+                            <DimOperator op="Subtract">
+                                <WidgetDim widget="__auto_titlebar__" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="WindowLeftEdge" />
                 <VertFormat type="Stretched" />
@@ -610,9 +628,15 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><UnifiedDim scale="1" offset="-1" type="LeftEdge" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="Height" /></Dim>
                     <Dim type="Width" ><AbsoluteDim value="1" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" offset="-49" type="Height" /></Dim>
+                    <Dim type="Height" >
+                        <UnifiedDim scale="1" offset="-24" type="Height">
+                            <DimOperator op="Subtract">
+                                <WidgetDim widget="__auto_titlebar__" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="WindowRightEdge" />
                 <VertFormat type="Stretched" />
@@ -724,9 +748,15 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="Height" /></Dim>
                     <Dim type="Width" ><UnifiedDim scale="1" offset="-10" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" offset="-26" type="Height" /></Dim>
+                    <Dim type="Height" >
+                        <UnifiedDim scale="1" offset="-1" type="Height">
+                            <DimOperator op="Subtract">
+                                <WidgetDim widget="__auto_titlebar__" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ClientBrush" />
                 <VertFormat type="Tiled" />
@@ -750,9 +780,15 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="25" /></Dim>
+                    <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="Height" /></Dim>
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" offset="-25" type="Height" /></Dim>
+                    <Dim type="Height" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <WidgetDim widget="__auto_titlebar__" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="ClientBrush" />
                 <VertFormat type="Tiled" />
