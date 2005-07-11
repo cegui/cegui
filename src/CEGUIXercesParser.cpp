@@ -53,12 +53,12 @@ namespace CEGUI
 
         // create parser
         SAX2XMLReader* reader = createReader(xercesHandler);
-        // set up schema
-        initialiseSchema(reader, schemaName, filename, resourceGroup);
 
-        // do parse
         try
         {
+            // set up schema
+            initialiseSchema(reader, schemaName, filename, resourceGroup);
+            // do parse
             doParse(reader, filename, resourceGroup);
         }
         catch(const XMLException& exc)
@@ -258,11 +258,21 @@ namespace CEGUI
             xmlFilename.c_str(),
             false);
 
-        // perform parse
-        parser->parse(fileData);
-        
-        // use resource provider to release loaded XML source (if it supports this)
-        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+         // perform parse
+         try
+         {
+             parser->parse(fileData);
+         }
+         catch(...)
+         {
+             // use resource provider to release loaded XML source (if it supports this)
+             System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+
+             throw;
+         }
+
+         // use resource provider to release loaded XML source (if it supports this)
+         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
 
     
@@ -297,12 +307,25 @@ namespace CEGUI
     }
 
     void XercesHandler::warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-    {}
+    {
+        XERCES_CPP_NAMESPACE_USE;
+
+        // prepare a message about the warning
+        char* excmsg = XMLString::transcode(exc.getMessage());
+        String message("Xerces warning: ");
+        message += (utf8*)excmsg;
+        XMLString::release(&excmsg);
+        Logger::getSingleton().logEvent(message);
+    }
 
     void XercesHandler::error (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-    {}
+    {
+        throw exc;
+    }
 
     void XercesHandler::fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
-    {}
+    {
+        throw exc;
+    }
 
 } // End of  CEGUI namespace section

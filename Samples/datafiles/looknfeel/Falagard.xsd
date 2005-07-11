@@ -105,6 +105,12 @@
 	<xsd:complexType name="vertFormatType">
 		<xsd:attribute name="type" type="vertFormatEnum" use="required" />
 	</xsd:complexType>
+        <xsd:complexType name="horzTextFormatType">
+		<xsd:attribute name="type" type="horzTextFormatEnum" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="vertTextFormatType">
+		<xsd:attribute name="type" type="vertTextFormatEnum" use="required" />
+	</xsd:complexType>
 	<xsd:complexType name="horzAlignmentType">
 		<xsd:attribute name="type" type="horzAlignmentEnum" use="required" />
 	</xsd:complexType>
@@ -254,7 +260,7 @@
 			<xsd:enumeration value="RightAligned" />
 		</xsd:restriction>
 	</xsd:simpleType>
-    <xsd:simpleType name="horzTextAlignmentEnum">
+    <xsd:simpleType name="horzTextFormatEnum">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="LeftAligned" />
             <xsd:enumeration value="RightAligned" />
@@ -266,7 +272,7 @@
             <xsd:enumeration value="WordWrapJustified" />
         </xsd:restriction>
     </xsd:simpleType>
-    <xsd:simpleType name="vertTextAlignmentEnum">
+    <xsd:simpleType name="vertTextFormatEnum">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="TopAligned" />
             <xsd:enumeration value="BottomAligned" />
