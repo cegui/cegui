@@ -14,6 +14,10 @@ class PropertyHelper
 	static	colour			stringToColour(string str);
 	static	ColourRect		stringToColourRect(string str);
 
+	static	UDim			stringToUDim(string str);
+	static	UVector2		stringToUVector2(string str);
+	static	URect			stringToURect(string str);
+
 	static string	floatToString(float val);
 	static string	uintToString(unsigned int val);
 	static string	boolToString(bool val);
@@ -24,4 +28,8 @@ class PropertyHelper
 	static string	imageToString(const Image* val);
 	static string	colourToString(const colour& val);
 	static string	colourRectToString(const ColourRect& val);
+
+	static string	udimToString(const UDim& val);
+	static string	uvector2ToString(const UVector2& val);
+	static string	urectToString(const URect& val);
 };

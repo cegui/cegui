@@ -10,6 +10,28 @@ enum MetricsMode
 
 
 /****************************************
+	Vertical alignment modes
+*****************************************/
+enum VerticalAlignment
+{
+	VA_TOP,
+	VA_CENTRE,
+	VA_BOTTOM
+};
+
+
+/****************************************
+	Horizontal alignment modes
+*****************************************/
+enum HorizontalAlignment
+{
+	HA_LEFT,
+	HA_CENTRE,
+	HA_RIGHT
+};
+
+
+/****************************************
 	Window
 *****************************************/
 class Window //: public EventSet
@@ -222,6 +244,37 @@ class Window //: public EventSet
 	void notifyDragDropItemEnters(DragContainer* item);
 	void notifyDragDropItemLeaves(DragContainer* item);
 	void notifyDragDropItemDropped(DragContainer* item);
+
+	VerticalAlignment getVerticalAlignment() const;
+	HorizontalAlignment getHorizontalAlignment() const;
+
+	string getLookNFeel();
+
+	//RenderCache& getRenderCache()
+
+	// unified stuff
+	void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
+	void setWindowArea(const UVector2& pos, const UVector2& size);
+	void setWindowArea(const URect& area);
+	void setWindowPosition(const UVector2& pos);
+	void setWindowXPosition(const UDim& x);
+	void setWindowYPosition(const UDim& y);
+	void setWindowSize(const UVector2& size);
+	void setWindowWidth(const UDim& width);
+	void setWindowHeight(const UDim& height);
+	void setWindowMaxSize(const UVector2& size);
+	void setWindowMinSize(const UVector2& size);
+
+	const URect& getWindowArea() const;
+	const UVector2& getWindowPosition() const;
+	const UDim& getWindowXPosition() const;
+	const UDim& getWindowYPosition() const;
+	UVector2 getWindowSize() const;
+	UDim getWindowWidth() const;
+	UDim getWindowHeight() const;
+	const UVector2& getWindowMaxSize() const;
+	const UVector2& getWindowMinSize() const;
+
 
 	//////////////////////////////////////////////
 	// PropertySet

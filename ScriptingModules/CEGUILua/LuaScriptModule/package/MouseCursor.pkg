@@ -27,6 +27,9 @@ class MouseCursor : public EventSet
 	Rect getConstraintArea() const;
 	Point getDisplayIndependantPosition() const;
 
+	void setUnifiedConstraintArea(const URect* area);
+	const URect& getUnifiedConstraintArea(void) const;
+
 	void hide();
 	void show();
 
