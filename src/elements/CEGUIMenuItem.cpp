@@ -203,6 +203,7 @@ void MenuItem::openPopupMenu()
 	}
 
 	d_opened = true;
+	requestRedraw();
 }
 
 
@@ -232,6 +233,7 @@ void MenuItem::closePopupMenu(bool notify)
 	}
 
 	d_opened = false;
+	requestRedraw();
 }
 
 

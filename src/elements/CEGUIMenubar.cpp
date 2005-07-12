@@ -74,7 +74,8 @@ void Menubar::layoutItemWidgets()
 		optimal.d_width += 2*d_horzPadding;
 		optimal.d_height += 2*d_vertPadding;
 
-		rect.setPosition( Point(x0, PixelAligned(height*.5f-optimal.d_height*.5f)) );
+		(*item)->setVerticalAlignment(VA_CENTRE);
+		rect.setPosition( Point(x0,0) );
 		rect.setSize( Size( PixelAligned(optimal.d_width), PixelAligned(optimal.d_height) ) );
 
 		(*item)->setRect(Absolute,rect);
