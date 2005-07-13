@@ -410,7 +410,8 @@ void Font::createFontGlyphSet(const String& glyph_set, uint size, argb_t* buffer
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
 		// load-up required glyph
-		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|(d_antiAliased ? 0 : FT_LOAD_MONOCHROME)))
+		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|FT_LOAD_FORCE_AUTOHINT|
+            (d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO)))
 		{
 			// skip errors (but now we log them!)
 			std::stringstream err;
