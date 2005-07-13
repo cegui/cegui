@@ -3156,6 +3156,23 @@ void Window::setLookNFeel(const String& look)
     }
 }
 
+void Window::setModalState(bool state)
+{
+	bool already_modal = getModalState();
+
+	// if going modal and not already the modal target
+	if (state == true && !already_modal)
+	{
+		activate();
+		System::getSingleton().setModalTarget(this);
+	}
+	// clear the modal target if we were it
+	else if (already_modal)
+	{
+		System::getSingleton().setModalTarget(NULL);
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 

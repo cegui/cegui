@@ -219,6 +219,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	d_defaultFont	= NULL;
 	d_wndWithMouse	= NULL;
 	d_activeSheet	= NULL;
+	d_modalTarget	= NULL;
 	d_sysKeys		= 0;
 
 	d_lshift	= false;
@@ -749,7 +750,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 		{
 			ma.window = dest_window;
 			dest_window->onMouseMove(ma);
-			dest_window = dest_window->getParent();
+			dest_window = getNextTargetWindow(dest_window);
 		}
 
 	}
@@ -851,7 +852,7 @@ bool System::injectMouseButtonDown(MouseButton button)
             dest_window->onMouseButtonDown(ma);
         }
 
-		dest_window = dest_window->getParent();
+		dest_window = getNextTargetWindow(dest_window);
 	}
 
 	// reset timer for this tracker.
@@ -883,7 +884,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	{
 		ma.window = dest_window;
 		dest_window->onMouseButtonUp(ma);
-		dest_window = dest_window->getParent();
+		dest_window = getNextTargetWindow(dest_window);
 	}
 
 	bool wasUpHandled = ma.handled;
@@ -899,7 +900,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 		{
 			ma.window = dest_window;
 			dest_window->onMouseClicked(ma);
-			dest_window = dest_window->getParent();
+			dest_window = getNextTargetWindow(dest_window);
 		}
 
 	}
@@ -923,14 +924,14 @@ bool System::injectKeyDown(uint key_code)
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
-		Window* dest = d_activeSheet->getActiveChild();
+		Window* dest = getKeyboardTargetWindow();
 
 		// loop backwards until event is handled or we run out of windows.
 		while ((dest != NULL) && (!args.handled))
 		{
 			args.window = dest;
 			dest->onKeyDown(args);
-			dest = dest->getParent();
+			dest = getNextTargetWindow(dest);
 		}
 
 	}
@@ -954,14 +955,14 @@ bool System::injectKeyUp(uint key_code)
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
 
-		Window* dest = d_activeSheet->getActiveChild();
+		Window* dest = getKeyboardTargetWindow();
 
 		// loop backwards until event is handled or we run out of windows.
 		while ((dest != NULL) && (!args.handled))
 		{
 			args.window = dest;
 			dest->onKeyUp(args);
-			dest = dest->getParent();
+			dest = getNextTargetWindow(dest);
 		}
 
 	}
@@ -982,14 +983,14 @@ bool System::injectChar(utf32 code_point)
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
 
-		Window* dest = d_activeSheet->getActiveChild();
+		Window* dest = getKeyboardTargetWindow();
 
 		// loop backwards until event is handled or we run out of windows.
 		while ((dest != NULL) && (!args.handled))
 		{
 			args.window = dest;
 			dest->onCharacter(args);
-			dest = dest->getParent();
+			dest = getNextTargetWindow(dest);
 		}
 
 	}
@@ -1017,7 +1018,7 @@ bool System::injectMouseWheelChange(float delta)
 	{
 		ma.window = dest_window;
 		dest_window->onMouseWheel(ma);
-		dest_window = dest_window->getParent();
+		dest_window = getNextTargetWindow(dest_window);
 	}
 
 	return ma.handled;
@@ -1088,9 +1089,59 @@ Window*	System::getTargetWindow(const Point& pt) const
 
 		}
 
+		// modal target overrules
+		if (d_modalTarget != NULL && dest_window != d_modalTarget)
+		{
+			if (!dest_window->isAncestor(d_modalTarget))
+			{
+				dest_window = d_modalTarget;
+			}
+
+		}
+
 	}
 
 	return dest_window;
+}
+
+
+/*************************************************************************
+	Return window that should receive keyboard input
+*************************************************************************/
+Window* System::getKeyboardTargetWindow(void) const
+{
+	Window* target = NULL;
+
+	if (d_modalTarget == NULL)
+	{
+		target = d_activeSheet->getActiveChild();
+	}
+	else
+	{
+		target = d_modalTarget->getActiveChild();
+		if (target == NULL)
+		{
+			target = d_modalTarget;
+		}
+	}
+
+	return target;
+}
+
+
+/*************************************************************************
+	Return the next window that should receive input in the chain
+*************************************************************************/
+Window* System::getNextTargetWindow(Window* w) const
+{
+	// if we have not reached the modal target, return the parent
+	if (w != d_modalTarget)
+	{
+		return w->getParent();
+	}
+
+	// otherwise stop now
+	return NULL;
 }
 
 
@@ -1361,6 +1412,11 @@ void System::notifyWindowDestroyed(const Window* window)
 	if (d_activeSheet == window)
 	{
 		d_activeSheet = NULL;
+	}
+
+	if (d_modalTarget == window)
+	{
+		d_modalTarget = NULL;
 	}
 
 }

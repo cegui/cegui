@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6pre2 on 07/12/05 13:54:10.
+** Generated automatically by tolua++-1.0.6pre2 on 07/13/05 02:52:10.
 */
 
 #ifndef __cplusplus
@@ -13490,6 +13490,67 @@ static int tolua_CEGUI_CEGUI_Window_getLookNFeel00(lua_State* tolua_S)
 #endif
 }
 
+/* method: getModalState of class  CEGUI::Window */
+static int tolua_CEGUI_CEGUI_Window_getModalState00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getModalState'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->getModalState();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getModalState'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: setModalState of class  CEGUI::Window */
+static int tolua_CEGUI_CEGUI_Window_setModalState00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  bool state = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setModalState'",NULL);
+#endif
+ {
+  self->setModalState(state);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setModalState'.",&tolua_err);
+ return 0;
+#endif
+}
+
 /* method: setWindowArea of class  CEGUI::Window */
 static int tolua_CEGUI_CEGUI_Window_setWindowArea00(lua_State* tolua_S)
 {
@@ -15776,6 +15837,93 @@ static int tolua_CEGUI_CEGUI_System_notifyWindowDestroyed00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'notifyWindowDestroyed'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: setTooltip of class  CEGUI::System */
+static int tolua_CEGUI_CEGUI_System_setTooltip00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::System",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Tooltip",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::System* self = (CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Tooltip* tooltip = ((CEGUI::Tooltip*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTooltip'",NULL);
+#endif
+ {
+  self->setTooltip(tooltip);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setTooltip'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: setTooltip of class  CEGUI::System */
+static int tolua_CEGUI_CEGUI_System_setTooltip01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::System",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::System* self = (CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
+  string tooltipType = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTooltip'",NULL);
+#endif
+ {
+  self->setTooltip(tooltipType);
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_System_setTooltip00(tolua_S);
+}
+
+/* method: getDefaultTooltip of class  CEGUI::System */
+static int tolua_CEGUI_CEGUI_System_getDefaultTooltip00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::System",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::System* self = (const CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getDefaultTooltip'",NULL);
+#endif
+ {
+  CEGUI::Tooltip* tolua_ret = (CEGUI::Tooltip*)  self->getDefaultTooltip();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Tooltip");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultTooltip'.",&tolua_err);
  return 0;
 #endif
 }
@@ -34228,6 +34376,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,"getVerticalAlignment",tolua_CEGUI_CEGUI_Window_getVerticalAlignment00);
  tolua_function(tolua_S,"getHorizontalAlignment",tolua_CEGUI_CEGUI_Window_getHorizontalAlignment00);
  tolua_function(tolua_S,"getLookNFeel",tolua_CEGUI_CEGUI_Window_getLookNFeel00);
+ tolua_function(tolua_S,"getModalState",tolua_CEGUI_CEGUI_Window_getModalState00);
+ tolua_function(tolua_S,"setModalState",tolua_CEGUI_CEGUI_Window_setModalState00);
  tolua_function(tolua_S,"setWindowArea",tolua_CEGUI_CEGUI_Window_setWindowArea00);
  tolua_function(tolua_S,"setWindowArea",tolua_CEGUI_CEGUI_Window_setWindowArea01);
  tolua_function(tolua_S,"setWindowArea",tolua_CEGUI_CEGUI_Window_setWindowArea02);
@@ -34317,6 +34467,9 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,"getMouseMoveScaling",tolua_CEGUI_CEGUI_System_getMouseMoveScaling00);
  tolua_function(tolua_S,"setMouseMoveScaling",tolua_CEGUI_CEGUI_System_setMouseMoveScaling00);
  tolua_function(tolua_S,"notifyWindowDestroyed",tolua_CEGUI_CEGUI_System_notifyWindowDestroyed00);
+ tolua_function(tolua_S,"setTooltip",tolua_CEGUI_CEGUI_System_setTooltip00);
+ tolua_function(tolua_S,"setTooltip",tolua_CEGUI_CEGUI_System_setTooltip01);
+ tolua_function(tolua_S,"getDefaultTooltip",tolua_CEGUI_CEGUI_System_getDefaultTooltip00);
  tolua_function(tolua_S,"injectMouseMove",tolua_CEGUI_CEGUI_System_injectMouseMove00);
  tolua_function(tolua_S,"injectMouseLeaves",tolua_CEGUI_CEGUI_System_injectMouseLeaves00);
  tolua_function(tolua_S,"injectMouseButtonDown",tolua_CEGUI_CEGUI_System_injectMouseButtonDown00);

@@ -42,6 +42,10 @@ class System : public EventSet
 
 	//unsigned int getSystemKeys() const;
 
+	void setTooltip(Tooltip* tooltip);
+	void setTooltip(string tooltipType);
+	Tooltip* getDefaultTooltip(void) const;
+
 	bool injectMouseMove(float dx, float dy);
 	bool injectMouseLeaves();
 	bool injectMouseButtonDown(MouseButton btn);

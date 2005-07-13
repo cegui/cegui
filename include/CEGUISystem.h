@@ -653,6 +653,26 @@ public:
     Tooltip* getDefaultTooltip(void) const  { return d_defaultTooltip; }
 
 
+	/*!
+	\brief
+		Internal method to directly set the current modal target.
+
+	\note
+		This method is called internally by Window, and must be used by client code.
+		Doing so will most likely not have the expected results.
+	*/
+	void setModalTarget(Window* target)		{d_modalTarget = target;}
+
+	/*!
+	\brief
+		Return a pointer to the Window that is currently the modal target.
+
+	\return
+		Pointer to the current modal target. NULL if there is no modal target.
+	*/
+	Window* getModalTarget(void) const		{return d_modalTarget;}
+
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -827,6 +847,29 @@ private:
 
 	/*!
 	\brief
+		Return a pointer to the Window that should receive keyboard input considering the current modal target.
+
+	\return
+		Pointer to a Window object that should receive the keyboard input.
+	*/
+	Window* getKeyboardTargetWindow(void) const;
+
+
+	/*!
+	\brief
+		Return a pointer to the next window that is to receive the input if the given Window did not use it.
+
+	\param w
+		Pointer to the Window that just received the input.
+
+	\return
+		Pointer to the next window to receive the input.
+	*/
+	Window* getNextTargetWindow(Window* w) const;
+
+
+	/*!
+	\brief
 		Translate a MouseButton value into the corresponding SystemKey value
 
 	\param btn
@@ -941,6 +984,7 @@ private:
 
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
 	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
+	Window*		d_modalTarget;		//!< Pointer to the window that is the current modal target. NULL is there is no modal target.
 
 	String d_strVersion;    //!< CEGUI version
 

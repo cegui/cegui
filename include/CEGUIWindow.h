@@ -1171,6 +1171,15 @@ public:
     */
     const String& getLookNFeel();
 
+	/*!
+	\brief
+		Get whether or not this Window is the modal target.
+
+	\return
+		Returns true if this Window is the modal target, otherwise false.
+	*/
+	bool getModalState(void) const	{return (System::getSingleton().getModalTarget() == this);}
+
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -2077,6 +2086,20 @@ public:
     \exception InvalidRequestException thrown if the window already has a look assigned to it.
     */
     void setLookNFeel(const String& look);
+
+	/*!
+	\brief
+		Set the modal state for this Window.
+
+	\param state
+		Boolean value defining if this Window should be the modal target.
+		If true, this Window will be activated and set as the modal target.
+		If false, the modal target will be cleared if this Window is currently the modal target.
+
+	\return
+		Nothing.
+	*/
+	void setModalState(bool state);
 
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions

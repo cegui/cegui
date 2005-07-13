@@ -252,6 +252,9 @@ class Window //: public EventSet
 
 	//RenderCache& getRenderCache()
 
+	bool getModalState() const;
+	void setModalState(bool state);
+
 	// unified stuff
 	void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
 	void setWindowArea(const UVector2& pos, const UVector2& size);
