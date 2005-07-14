@@ -41,6 +41,10 @@ namespace CEGUI
             - Normal
             - Disabled
 
+        Child Widgets:
+            Editbox based widget with name suffix "__auto_editbox__"
+            PushButton based widget with name suffix "__auto_incbtn__"
+            PushButton based widget with name suffix "__auto_decbtn__"
     */
     class FALAGARDBASE_API FalagardSpinner : public Spinner
     {

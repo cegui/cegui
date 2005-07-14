@@ -37,9 +37,11 @@ namespace CEGUI
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
-        States:
-
-        Named Areas:
+        States (missing states will default to 'Normal'):
+            - Normal    - Rendering for when the thumb is neither pushed or has the mouse hovering over it.
+            - Hover     - Rendering for then the thumb has the mouse hovering over it.
+            - Pushed    - Rendering for when the thumb is pushed.
+            - Disabled  - Rendering for when the thumb is disabled.
     */
     class FALAGARDBASE_API FalagardThumb : public Thumb
     {

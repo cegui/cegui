@@ -41,6 +41,12 @@ namespace CEGUI
             - Normal
             - Disabled
 
+        Named Areas:
+            - ItemRenderingArea
+
+        Child Widgets:
+            Scrollbar based widget with name suffix "__auto_vscrollbar__"
+            Scrollbar based widget with name suffix "__auto_hscrollbar__"
     */
     class FALAGARDBASE_API FalagardComboDropList : public ComboDropList
     {

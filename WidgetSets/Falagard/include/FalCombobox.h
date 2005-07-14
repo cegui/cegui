@@ -41,6 +41,12 @@ namespace CEGUI
             - Normal
             - Disabled
 
+        Child Widgets:
+            PushButton based widget with name suffix "__auto_button__"
+            Editbox based widget with name suffix "__auto_editbox__"
+            ComboDropList based widget with name suffix "__auto_droplist__"
+
+
     */
     class FALAGARDBASE_API FalagardCombobox : public Combobox
     {

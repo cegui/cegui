@@ -47,6 +47,8 @@ namespace CEGUI
 
         Child Widgets:
             Thumb based widget with name suffix "__auto_thumb__"
+            PushButton based widget with name suffix "__auto_incbtn__"
+            PushButton based widget with name suffix "__auto_decbtn__"
     */
     class FALAGARDBASE_API FalagardScrollbar : public Scrollbar
     {

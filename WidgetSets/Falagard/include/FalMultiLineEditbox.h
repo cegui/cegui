@@ -39,7 +39,7 @@ namespace CEGUI
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States:
-            - Normal    - Rendering for when the editbox is in enabled and is in read-write mode.
+            - Enabled    - Rendering for when the editbox is in enabled and is in read-write mode.
             - ReadOnly  - Rendering for when the editbox is in enabled and is in read-only mode.
             - Disabled  - Rendering for when the editbox is disabled.
 
@@ -48,6 +48,11 @@ namespace CEGUI
 
         Imagery Sections:
             - Carat
+
+        Child Widgets:
+            Scrollbar based widget with name suffix "__auto_vscrollbar__"
+            Scrollbar based widget with name suffix "__auto_hscrollbar__"
+
     */
     class FALAGARDBASE_API FalagardMultiLineEditbox : public MultiLineEditbox
     {

@@ -35,7 +35,7 @@ namespace CEGUI
     \brief
         TabButton class for the FalagardBase module.
 
-        This calss requires LookNFeel to be assigned.  The LookNFeel should provide the following:
+        This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States (missing states will default to 'Normal'):
             - Normal    - Rendering for when the tab button is neither selected nor has the mouse hovering over it.

@@ -35,7 +35,7 @@ namespace CEGUI
     \brief
         Button class for the FalagardBase module.
 
-        This calss requires LookNFeel to be assigned.  The LookNFeel should provide the following:
+        This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States (missing states will default to 'Normal'):
             - Normal    - Rendering for when the button is neither pushed or has the mouse hovering over it.
