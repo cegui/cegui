@@ -1180,6 +1180,34 @@ public:
 	*/
 	bool getModalState(void) const	{return (System::getSingleton().getModalTarget() == this);}
 
+
+	/*!
+	\brief
+	   Returns a named user string.
+
+    \param name
+        String object holding the name of the string to be returned.
+
+    \return
+        String object holding the data stored for the requested user string.
+
+    \exception UnknownObjectException thrown if a user string named \a name does not exist.
+    */
+    const String& getUserString(const String& name) const;
+
+    /*!
+    \brief
+        Return whether a user string with the specified name exists.
+
+    \param name
+        String object holding the name of the string to be checked.
+
+    \return
+        - true if a user string named \a name exists.
+        - false if no such user string exists.
+    */
+    bool isUserStringDefined(const String& name) const;
+
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -2112,6 +2140,21 @@ public:
         Nothing.
     */
     virtual void performChildWindowLayout();
+
+    /*!
+    \brief
+       Sets the value a named user string, creating it as required.
+
+    \param name
+        String object holding the name of the string to be returned.
+
+    \param value
+        String object holding the value to be assigned to the user string.
+
+    \return
+        Nothing.
+    */
+    void setUserString(const String& name, const String& value);
 
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
@@ -3400,6 +3443,9 @@ protected:
     Size            d_pixelSize;        //!< Current constrained pixel size of the window.
 	const Image*	d_mouseCursor;		//!< Holds pointer to the Window objects current mouse cursor image.
 	void*			d_userData;			//!< Holds pointer to some user assigned data.
+
+	typedef std::map<String, String>   UserStringMap;
+	UserStringMap  d_userStrings;      //!< Holds a collection of named user string values.
 
     // positional alignments
     HorizontalAlignment d_horzAlign;    //!< Specifies the base for horizontal alignment.

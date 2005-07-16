@@ -3191,6 +3191,30 @@ void Window::performChildWindowLayout()
     }
 }
 
+const String& Window::getUserString(const String& name) const
+{
+    UserStringMap::const_iterator iter = d_userStrings.find(name);
+
+    if (iter != d_userStrings.end())
+    {
+        return (*iter).second;
+    }
+    else
+    {
+        throw UnknownObjectException("Window::getUserString - a user string named '" + name + "' has not been set for this Window.");
+    }
+}
+
+bool Window::isUserStringDefined(const String& name) const
+{
+     return d_userStrings.find(name) != d_userStrings.end();
+}
+
+void Window::setUserString(const String& name, const String& value)
+{
+    d_userStrings[name] = value;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
