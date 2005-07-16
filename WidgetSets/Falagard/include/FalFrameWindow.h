@@ -82,7 +82,6 @@ namespace CEGUI
         void populateRenderCache();
         Titlebar* createTitlebar(const String& name) const;
         PushButton* createCloseButton(const String& name) const;
-        void layoutComponentWidgets();
     };
 
     /*!

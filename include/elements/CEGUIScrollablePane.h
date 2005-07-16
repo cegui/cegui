@@ -360,12 +360,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Perform look and feel specific layout of the component widgets.
-        */
-        virtual void layoutComponentWidgets(void) = 0;
-
-        /*!
-        \brief
             Return a Rect that described the pane's viewable area, relative
             to this Window, in pixels.
 

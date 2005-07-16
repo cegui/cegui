@@ -68,7 +68,6 @@ namespace CEGUI
     protected:
         // overridden from Combobox base class.
         void populateRenderCache();
-        void layoutComponentWidgets();
         Editbox* createEditbox(const String& name) const;
         PushButton* createPushButton(const String& name) const;
         ComboDropList* createDropList(const String& name) const;

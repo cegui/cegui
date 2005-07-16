@@ -169,8 +169,10 @@ Thumb* TLVertScrollbar::createThumb(const String& name) const
 /*************************************************************************
 	layout the scroll bar component widgets
 *************************************************************************/
-void TLVertScrollbar::layoutComponentWidgets(void)
+void TLVertScrollbar::performChildWindowLayout()
 {
+    Scrollbar::performChildWindowLayout();
+
     d_thumb->setXPosition(ThumbPositionX);
 	
     // calculate button sizes

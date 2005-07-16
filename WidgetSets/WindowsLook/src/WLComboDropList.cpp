@@ -163,8 +163,10 @@ Scrollbar* WLComboDropList::createHorzScrollbar(const String& name) const
 	Setup size and position for the component widgets attached to this
 	widget
 *************************************************************************/
-void WLComboDropList::layoutComponentWidgets()
+void WLComboDropList::performChildWindowLayout()
 {
+    ComboDropList::performChildWindowLayout();
+
 	// set desired size for vertical scroll-bar
 	Size v_sz(0.05f, 1.0f);
 	d_vertScrollbar->setSize(v_sz);

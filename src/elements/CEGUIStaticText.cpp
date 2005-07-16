@@ -230,7 +230,7 @@ void StaticText::initialise(void)
 	addChildWindow(d_vertScrollbar);
 	addChildWindow(d_horzScrollbar);
 
-	layoutComponentWidgets();
+	performChildWindowLayout();
 
 	// event subscription
 	d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&StaticText::handleScrollbarChange, this));
@@ -278,8 +278,11 @@ Rect StaticText::getTextRenderArea(void) const
 	Setup size and position for the component widgets attached to this
 	StaticText
 *************************************************************************/
-void StaticText::layoutComponentWidgets()
+void StaticText::performChildWindowLayout()
 {
+    // base class layout
+    Static::performChildWindowLayout();
+
 	// set desired size for vertical scroll-bar
 	Size v_sz(0.05f, 1.0f);
 	d_vertScrollbar->setSize(v_sz);
@@ -434,7 +437,7 @@ void StaticText::setVerticalScrollbarEnabled(bool setting)
 {
 	d_enableVertScrollbar = setting;
 	configureScrollbars();
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -445,7 +448,7 @@ void StaticText::setHorizontalScrollbarEnabled(bool setting)
 {
 	d_enableHorzScrollbar = setting;
 	configureScrollbars();
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -468,9 +471,7 @@ void StaticText::onSized(WindowEventArgs& e)
 {
 	Static::onSized(e);
 
-	layoutComponentWidgets();
 	configureScrollbars();
-	requestRedraw();
 }
 
 

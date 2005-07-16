@@ -84,7 +84,7 @@ void Slider::initialise(void)
 	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Slider::handleThumbTrackStarted, this));
 	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Slider::handleThumbTrackEnded, this));
 
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -196,20 +196,6 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 		e.handled = true;
 	}
 
-}
-
-
-/*************************************************************************
-	Handler for when the size of the slider widget changes.
-*************************************************************************/
-void Slider::onSized(WindowEventArgs& e)
-{
-	// base class processing
-	Window::onSized(e);
-
-	layoutComponentWidgets();
-
-	e.handled = true;
 }
 
 

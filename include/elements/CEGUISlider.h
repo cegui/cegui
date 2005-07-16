@@ -196,13 +196,6 @@ protected:
 
 	/*!
 	\brief
-		layout the slider component widgets
-	*/
-	virtual void	layoutComponentWidgets(void)	= 0;
-
-
-	/*!
-	\brief
 		update the size and location of the thumb to properly represent the current state of the slider
 	*/
 	virtual void	updateThumb(void)	= 0;
@@ -300,7 +293,6 @@ protected:
 		Overridden event handlers
 	*************************************************************************/
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onSized(WindowEventArgs& e);
 	virtual	void	onMouseWheel(MouseEventArgs& e);
 
 

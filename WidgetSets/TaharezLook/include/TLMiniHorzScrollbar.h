@@ -113,7 +113,7 @@ protected:
 	\brief
 		layout the scroll bar component widgets
 	*/
-	virtual void	layoutComponentWidgets(void);
+	virtual void	performChildWindowLayout();
 
 
 	/*!

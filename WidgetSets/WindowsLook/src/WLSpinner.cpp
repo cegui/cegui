@@ -112,8 +112,10 @@ namespace CEGUI
         return ebox;
     }
 
-    void WLSpinner::layoutComponentWidgets(void)
+    void WLSpinner::performChildWindowLayout()
     {
+        Spinner::performChildWindowLayout();
+
         Point pt(0,0);
         Size sz(getAbsoluteSize());
         sz.d_width -= d_buttonsWidth;

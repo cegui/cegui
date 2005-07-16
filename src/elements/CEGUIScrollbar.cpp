@@ -98,7 +98,7 @@ void Scrollbar::initialise(void)
 	d_decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 
 	// do initial layout
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -263,20 +263,6 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
 		e.handled = true;
 	}
 
-}
-
-
-/*************************************************************************
-	Handler for when widget is re-sized
-*************************************************************************/
-void Scrollbar::onSized(WindowEventArgs& e)
-{
-	// base class processing
-	Window::onSized(e);
-
-	layoutComponentWidgets();
-
-	e.handled = true;
 }
 
 

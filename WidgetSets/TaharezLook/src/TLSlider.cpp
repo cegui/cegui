@@ -87,8 +87,9 @@ Thumb* TLSlider::createThumb(const String& name) const
 /*************************************************************************
 	layout the slider component widgets
 *************************************************************************/
-void TLSlider::layoutComponentWidgets(void)
+void TLSlider::performChildWindowLayout()
 {
+    Slider::performChildWindowLayout();
 	updateThumb();
 }
 

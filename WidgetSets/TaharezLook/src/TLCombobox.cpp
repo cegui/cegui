@@ -86,8 +86,10 @@ void TLCombobox::drawSelf(float z)
 	Setup size and position for the component widgets attached to this
 	Combobox.	
 *************************************************************************/
-void TLCombobox::layoutComponentWidgets()
+void TLCombobox::performChildWindowLayout()
 {
+    Combobox::performChildWindowLayout();
+
 	Point	pos;
 	Size	sz;
 

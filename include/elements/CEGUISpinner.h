@@ -305,21 +305,9 @@ namespace CEGUI
         */
         virtual Editbox* createEditbox(const String& name) const = 0;
 
-        /*!
-        \brief
-            Performs required layout of the component widgets that make up the
-            Spinner widget.
-
-        \return
-            Nothing.
-        */
-        virtual void layoutComponentWidgets(void) = 0;
-
-
         /*************************************************************************
         	Overrides for Event handler methods
         *************************************************************************/
-        virtual void onSized(WindowEventArgs& e);
         virtual	void onFontChanged(WindowEventArgs& e);
         virtual void onTextChanged(WindowEventArgs& e);
         virtual void onActivated(ActivationEventArgs& e);

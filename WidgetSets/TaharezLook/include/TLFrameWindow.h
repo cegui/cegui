@@ -146,7 +146,7 @@ protected:
 	*************************************************************************/
 	virtual Titlebar*	createTitlebar(const String& name) const;
 	virtual PushButton*	createCloseButton(const String& name) const;
-	virtual void	layoutComponentWidgets();
+	virtual void	performChildWindowLayout();
 	virtual	void	drawSelf(float z);
 
 

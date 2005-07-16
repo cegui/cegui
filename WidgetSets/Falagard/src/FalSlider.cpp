@@ -63,18 +63,9 @@ namespace CEGUI
         return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(name));
     }
 
-    void FalagardSlider::layoutComponentWidgets(void)
+    void FalagardSlider::performChildWindowLayout()
     {
-        try
-        {
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            // get look'n'feel to layout any child windows it created.
-            wlf.layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException)
-        {}
-
+        Slider::performChildWindowLayout();
         updateThumb();
     }
 

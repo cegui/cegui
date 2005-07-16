@@ -100,7 +100,7 @@ void Listbox::initialise(void)
     d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
 
 	configureScrollbars();
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -903,7 +903,6 @@ void Listbox::onSized(WindowEventArgs& e)
 	Window::onSized(e);
 
 	configureScrollbars();
-	layoutComponentWidgets();
 
 	e.handled = true;
 }

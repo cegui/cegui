@@ -285,7 +285,7 @@ namespace CEGUI
             d_vertScrollbar->setVisible(isVertScrollbarNeeded());
         }
 
-        layoutComponentWidgets();
+        performChildWindowLayout();
 
         // get viewable area
         Rect viewableArea(getViewableArea());

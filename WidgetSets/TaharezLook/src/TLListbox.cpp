@@ -166,8 +166,10 @@ Scrollbar* TLListbox::createHorzScrollbar(const String& name) const
 	Setup size and position for the component widgets attached to this
 	Listbox	
 *************************************************************************/
-void TLListbox::layoutComponentWidgets()
+void TLListbox::performChildWindowLayout()
 {
+    Listbox::performChildWindowLayout();
+
 	// set desired size for vertical scroll-bar
 	Size v_sz(0.05f, 1.0f);
 	d_vertScrollbar->setSize(v_sz);

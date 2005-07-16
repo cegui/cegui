@@ -161,8 +161,10 @@ Thumb* TLMiniHorzScrollbar::createThumb(const String& name) const
 /*************************************************************************
 	layout the scroll bar component widgets
 *************************************************************************/
-void TLMiniHorzScrollbar::layoutComponentWidgets(void)
+void TLMiniHorzScrollbar::performChildWindowLayout()
 {
+    Scrollbar::performChildWindowLayout();
+
 	Size bsz;
 	bsz.d_width = bsz.d_height = getAbsoluteHeight();
 

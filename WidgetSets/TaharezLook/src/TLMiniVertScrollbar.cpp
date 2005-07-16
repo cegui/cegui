@@ -161,8 +161,10 @@ Thumb* TLMiniVertScrollbar::createThumb(const String& name) const
 /*************************************************************************
 	layout the scroll bar component widgets
 *************************************************************************/
-void TLMiniVertScrollbar::layoutComponentWidgets(void)
+void TLMiniVertScrollbar::performChildWindowLayout()
 {
+    Scrollbar::performChildWindowLayout();
+
 	Size bsz;
 	bsz.d_width = bsz.d_height = getAbsoluteWidth();
 

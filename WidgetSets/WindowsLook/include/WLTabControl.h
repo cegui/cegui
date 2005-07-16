@@ -108,7 +108,7 @@ protected:
     \return
         Nothing.
     */
-    void layoutComponentWidgets();
+    void performChildWindowLayout();
 
     /*!
     \brief

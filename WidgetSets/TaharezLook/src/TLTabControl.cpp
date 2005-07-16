@@ -87,9 +87,9 @@ namespace CEGUI
     /*************************************************************************
     Layout components
     *************************************************************************/
-    void TLTabControl::layoutComponentWidgets()
+    void TLTabControl::performChildWindowLayout()
     {
-        TabControl::layoutComponentWidgets();
+        TabControl::performChildWindowLayout();
 
         // Create the 'filler'
         if (d_tabButtonPane)

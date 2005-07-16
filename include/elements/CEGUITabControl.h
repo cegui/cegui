@@ -354,6 +354,8 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+	void performChildWindowLayout();
+
 
 	/*************************************************************************
 		New event handlers
@@ -374,10 +376,6 @@ protected:
 		event the trigger window is always 'this'.
 	*/
 	virtual void	onFontChanged(WindowEventArgs& e);
-	/*************************************************************************
-		Overridden Event handlers
-	*************************************************************************/
-    void onSized(WindowEventArgs& e);
 
 	/*************************************************************************
 		Implementation Data
@@ -440,14 +438,6 @@ protected:
         indexes before this.
     */
     void calculateTabButtonSizePosition(TabButton* btn, uint targetIndex);
-    /*!
-    \brief
-    Setup size and position for the component widgets attached to this TabControl
-
-    \return
-    Nothing.
-    */
-    virtual void	layoutComponentWidgets();
 
 protected:
 	/*************************************************************************

@@ -96,8 +96,9 @@ Thumb* WLSlider::createThumb(const String& name) const
 /*************************************************************************
 	layout the slider component widgets
 *************************************************************************/
-void WLSlider::layoutComponentWidgets(void)
+void WLSlider::performChildWindowLayout()
 {
+    Slider::performChildWindowLayout();
 	updateThumb();
 }
 

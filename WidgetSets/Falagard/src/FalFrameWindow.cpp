@@ -97,18 +97,6 @@ namespace CEGUI
         return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__"));
     }
 
-    void FalagardFrameWindow::layoutComponentWidgets()
-    {
-        // get WidgetLookFeel for the assigned look.
-        try
-        {
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            wlf.layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException)
-        {}
-    }
-
     //////////////////////////////////////////////////////////////////////////
     /*************************************************************************
 

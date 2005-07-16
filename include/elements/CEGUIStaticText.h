@@ -322,7 +322,7 @@ protected:
 	\return
 		Nothing.
 	*/
-	virtual void	layoutComponentWidgets();
+	virtual void performChildWindowLayout();
 
 
 	/*!

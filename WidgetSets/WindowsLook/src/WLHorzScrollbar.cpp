@@ -179,8 +179,10 @@ Thumb* WLHorzScrollbar::createThumb(const String& name) const
 /*************************************************************************
 	layout the scroll bar component widgets
 *************************************************************************/
-void WLHorzScrollbar::layoutComponentWidgets(void)
+void WLHorzScrollbar::performChildWindowLayout()
 {
+    Scrollbar::performChildWindowLayout();
+
 	Size bsz;
 	bsz.d_width = bsz.d_height = getAbsoluteHeight() - d_frameLeftSize - d_frameRightSize;
 

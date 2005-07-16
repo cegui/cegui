@@ -520,16 +520,6 @@ protected:
 
 	/*!
 	\brief
-		Setup size and position for the component widgets attached to this Listbox
-
-	\return
-		Nothing.
-	*/
-	virtual void	layoutComponentWidgets()	= 0;
-
-
-	/*!
-	\brief
 		Perform caching of the widget control frame and other 'static' areas.  This
 		method should not render the actual items.  Note that the items are typically
 		rendered to layer 3, other layers can be used for rendering imagery behind and

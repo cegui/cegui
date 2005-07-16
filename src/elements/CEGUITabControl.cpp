@@ -89,7 +89,7 @@ void TabControl::initialise(void)
 	addChildWindow(d_tabContentPane);
     addChildWindow(d_tabButtonPane);
 
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 /*************************************************************************
 Get the number of tabs
@@ -202,7 +202,7 @@ void TabControl::setRelativeTabHeight(float height)
     d_rel_tabHeight = height;
     d_abs_tabHeight = relativeToAbsoluteY(height);
 
-    layoutComponentWidgets();
+    performChildWindowLayout();
 }
 /*************************************************************************
 Set the tab height
@@ -212,7 +212,7 @@ void TabControl::setAbsoluteTabHeight(float height)
     d_abs_tabHeight = height;
     d_rel_tabHeight = absoluteToRelativeY(height);
 
-    layoutComponentWidgets();
+    performChildWindowLayout();
 }
 /*************************************************************************
 Set the tab height
@@ -252,7 +252,7 @@ void TabControl::setRelativeTabTextPadding(float height)
     d_rel_tabPadding = height;
     d_abs_tabPadding = relativeToAbsoluteY(height);
 
-    layoutComponentWidgets();
+    performChildWindowLayout();
 }
 /*************************************************************************
 Set the tab text padding
@@ -262,7 +262,7 @@ void TabControl::setAbsoluteTabTextPadding(float height)
     d_abs_tabPadding = height;
     d_rel_tabPadding = absoluteToRelativeY(height);
 
-    layoutComponentWidgets();
+    performChildWindowLayout();
 }
 /*************************************************************************
 Set the tab text padding
@@ -299,7 +299,7 @@ void TabControl::addTab(Window* wnd)
         wnd->setVisible(false);
     }
     // Just request redraw
-    layoutComponentWidgets();
+    performChildWindowLayout();
     requestRedraw();
     // Subscribe to text changed event so that we can resize as needed
     wnd->subscribeEvent(Window::EventTextChanged, 
@@ -329,7 +329,7 @@ void TabControl::removeTab(const String& name)
         }
     }
 
-    layoutComponentWidgets();
+    performChildWindowLayout();
 
     requestRedraw();
 
@@ -357,7 +357,7 @@ void TabControl::removeTab(uint ID)
         }
     }
 
-    layoutComponentWidgets();
+    performChildWindowLayout();
 
     requestRedraw();
 
@@ -551,22 +551,12 @@ void TabControl::addTabControlEvents(void)
     addEvent(EventSelectionChanged);
 }
 /*************************************************************************
-Handler for when widget is re-sized
-*************************************************************************/
-void TabControl::onSized(WindowEventArgs& e)
-{
-    // base class processing
-    Window::onSized(e);
-
-    layoutComponentWidgets();
-
-    e.handled = true;
-}
-/*************************************************************************
 Layout the widgets
 *************************************************************************/
-void TabControl::layoutComponentWidgets(void)
+void TabControl::performChildWindowLayout()
 {
+    Window::performChildWindowLayout();
+
     if (d_tabButtonPane)
     {
         // Set the size of the tab button area (full width, height from tab height)
@@ -608,7 +598,7 @@ bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
         makeButtonName(wargs.window));
     tabButton->setText(wargs.window->getText());
     // sort out the layout
-    layoutComponentWidgets();
+    performChildWindowLayout();
 	requestRedraw();
 
 	return true;

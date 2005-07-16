@@ -81,8 +81,10 @@ void WLCombobox::drawSelf(float z)
 	Setup size and position for the component widgets attached to this
 	Combobox.	
 *************************************************************************/
-void WLCombobox::layoutComponentWidgets()
+void WLCombobox::performChildWindowLayout()
 {
+    Combobox::performChildWindowLayout();
+
 	Point	pos;
 	Size	sz;
 

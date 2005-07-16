@@ -71,7 +71,6 @@ namespace CEGUI
         void populateRenderCache();
         Scrollbar* createVerticalScrollbar(const String& name) const;
         Scrollbar* createHorizontalScrollbar(const String& name) const;
-        void layoutComponentWidgets();
         Rect getViewableArea(void) const;
     };
 

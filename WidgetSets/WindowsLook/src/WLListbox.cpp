@@ -163,8 +163,10 @@ Scrollbar* WLListbox::createHorzScrollbar(const String& name) const
 	Setup size and position for the component widgets attached to this
 	Listbox	
 *************************************************************************/
-void WLListbox::layoutComponentWidgets()
+void WLListbox::performChildWindowLayout()
 {
+    Listbox::performChildWindowLayout();
+
 	// set desired size for vertical scroll-bar
 	Size v_sz(0.05f, 1.0f);
 	d_vertScrollbar->setSize(v_sz);

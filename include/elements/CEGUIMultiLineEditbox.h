@@ -413,16 +413,6 @@ protected:
 
 	/*!
 	\brief
-		Setup size and position for the component widgets attached to this Editbox
-
-	\return
-		Nothing.
-	*/
-	virtual void	layoutComponentWidgets()	= 0;
-
-
-	/*!
-	\brief
 		Perform rendering of the widget control frame and other 'static' areas.  This
 		method should not render the actual text.  Note that the text will be rendered
 		to layer 4 and the selection brush to layer 3, other layers can be used for

@@ -84,21 +84,6 @@ namespace CEGUI
         return static_cast<TabButton*>(WindowManager::getSingleton().createWindow(d_tabButtonType, name));
     }
 
-    void FalagardTabControl::layoutComponentWidgets(void)
-    {
-        try
-        {
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            // get look'n'feel to layout any child windows it created.
-            wlf.layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException)
-        {}
-
-        TabControl::layoutComponentWidgets();
-    }
-
     const String& FalagardTabControl::getTabButtonType() const
     {
         return d_tabButtonType;

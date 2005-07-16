@@ -99,7 +99,7 @@ namespace CEGUI
         // final initialisation
         setTextInputMode(Integer);
         setCurrentValue(0.0f);
-        layoutComponentWidgets();
+        performChildWindowLayout();
     }
 
     float Spinner::getCurrentValue(void) const
@@ -285,15 +285,6 @@ namespace CEGUI
         }
 
         return String(tmp.str());
-    }
-
-    void Spinner::onSized(WindowEventArgs& e)
-    {
-        // base class processing
-        Window::onSized(e);
-
-        layoutComponentWidgets();
-        e.handled = true;
     }
 
     void Spinner::onFontChanged(WindowEventArgs& e)

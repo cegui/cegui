@@ -60,19 +60,6 @@ namespace CEGUI
         return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
     }
 
-    void FalagardScrollablePane::layoutComponentWidgets(void)
-    {
-        try
-        {
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            // get look'n'feel to layout any child windows it created.
-            wlf.layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException)
-        {}
-    }
-
     void FalagardScrollablePane::populateRenderCache()
     {
         const StateImagery* imagery;

@@ -81,7 +81,7 @@ namespace CEGUI
         PushButton* createIncreaseButton(const String& name) const;
         PushButton* createDecreaseButton(const String& name) const;
         Editbox* createEditbox(const String& name) const;
-        void layoutComponentWidgets(void);
+        void performChildWindowLayout();
 
         /*************************************************************************
         	Implementation of Window abstract methods

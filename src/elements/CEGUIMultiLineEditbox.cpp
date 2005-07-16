@@ -135,7 +135,7 @@ void MultiLineEditbox::initialise(void)
     d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
 
 	formatText();
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -1512,7 +1512,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 	}
 
 	formatText();
-	layoutComponentWidgets();
+	performChildWindowLayout();
 	ensureCaratIsVisible();
 
 	e.handled = true;
@@ -1524,11 +1524,10 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onSized(WindowEventArgs& e)
 {
+	formatText();
+
 	// base class handling
 	Window::onSized(e);
-
-	formatText();
-	layoutComponentWidgets();
 
 	e.handled = true;
 }

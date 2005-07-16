@@ -76,7 +76,6 @@ namespace CEGUI
         TabPane* createTabContentPane(const String& name) const;
         TabButton* createTabButton(const String& name) const;
         Window* createTabButtonPane(const String& name) const;
-        void layoutComponentWidgets(void);
 
         // data fields
         String  d_tabButtonType;

@@ -552,16 +552,6 @@ protected:
 
 	/*!
 	\brief
-		Setup size and position for the title bar and close button widgets attached to this window
-
-	\return
-		Nothing.
-	*/
-	virtual void	layoutComponentWidgets()		= 0;
-
-
-	/*!
-	\brief
 		move the window's left edge by 'delta'.  The rest of the window does not move, thus this changes the size of the Window.
 
 	\param delta
@@ -738,7 +728,6 @@ protected:
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onSized(WindowEventArgs& e);
 	virtual void    onTextChanged(WindowEventArgs& e);
 
 

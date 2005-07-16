@@ -68,7 +68,6 @@ namespace CEGUI
     protected:
         // overridden from StaticText base class.
         void populateRenderCache();
-        void layoutComponentWidgets();
         Scrollbar* createVertScrollbar(const String& name) const;
         Scrollbar* createHorzScrollbar(const String& name) const;
         Rect getTextRenderArea(void) const;

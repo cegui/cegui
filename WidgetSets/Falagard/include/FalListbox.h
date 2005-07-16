@@ -70,7 +70,6 @@ namespace CEGUI
         Rect getListRenderArea(void) const;
         Scrollbar* createVertScrollbar(const String& name) const;
         Scrollbar* createHorzScrollbar(const String& name) const;
-        void layoutComponentWidgets();
         void cacheListboxBaseImagery();
     };
 

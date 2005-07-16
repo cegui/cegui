@@ -794,16 +794,6 @@ protected:
 
 	/*!
 	\brief
-		Setup size and position for the component widgets attached to this Combobox.
-
-	\return
-		Nothing.
-	*/
-	virtual void	layoutComponentWidgets()	= 0;
-
-
-	/*!
-	\brief
 		Create, initialise, and return a pointer to an Editbox widget to be used as part
 		of this Combobox.
 
@@ -1029,7 +1019,6 @@ protected:
 		Overridden Event handlers
 	*************************************************************************/
 	virtual	void	onFontChanged(WindowEventArgs& e);
-    virtual	void	onSized(WindowEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
 

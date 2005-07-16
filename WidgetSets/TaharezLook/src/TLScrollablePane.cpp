@@ -64,8 +64,10 @@ namespace CEGUI
         return sbar;
     }
 
-    void TLScrollablePane::layoutComponentWidgets(void)
+    void TLScrollablePane::performChildWindowLayout()
     {
+        ScrollablePane::performChildWindowLayout();
+
         // set desired size for vertical scroll-bar
         Size v_sz(0.05f, 1.0f);
         d_vertScrollbar->setSize(v_sz);

@@ -52,19 +52,6 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    void FalagardSpinner::layoutComponentWidgets()
-    {
-        try
-        {
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            // get look'n'feel to layout any child windows it created.
-            wlf.layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException)
-        {}
-    }
-
     PushButton* FalagardSpinner::createIncreaseButton(const String& name) const
     {
         // return component created by look'n'feel assignment.

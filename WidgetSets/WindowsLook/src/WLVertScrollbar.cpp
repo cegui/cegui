@@ -179,8 +179,10 @@ Thumb* WLVertScrollbar::createThumb(const String& name) const
 /*************************************************************************
 	layout the scroll bar component widgets
 *************************************************************************/
-void WLVertScrollbar::layoutComponentWidgets(void)
+void WLVertScrollbar::performChildWindowLayout()
 {
+    Scrollbar::performChildWindowLayout();
+
 	Size bsz;
 	bsz.d_width = bsz.d_height = getAbsoluteWidth() - d_frameLeftSize - d_frameRightSize;
 

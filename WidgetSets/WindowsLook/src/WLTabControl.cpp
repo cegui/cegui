@@ -96,9 +96,9 @@ TabButton* WLTabControl::createTabButton(const String& name) const
 /*************************************************************************
 	Layout components
 *************************************************************************/
-void WLTabControl::layoutComponentWidgets()
+void WLTabControl::performChildWindowLayout()
 {
-    TabControl::layoutComponentWidgets();
+    TabControl::performChildWindowLayout();
 
     // Create the 'filler'
     if (d_tabButtonPane)

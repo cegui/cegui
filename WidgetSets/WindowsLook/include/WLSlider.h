@@ -92,7 +92,7 @@ protected:
 	\brief
 		layout the slider component widgets
 	*/
-	virtual void	layoutComponentWidgets(void);
+	virtual void	performChildWindowLayout();
 
 
 	/*!

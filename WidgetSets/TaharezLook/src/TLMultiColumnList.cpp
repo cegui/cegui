@@ -185,8 +185,10 @@ Scrollbar* TLMultiColumnList::createHorzScrollbar(const String& name) const
 	Setup size and position for the component widgets attached to this
 	MultiColumnList
 *************************************************************************/
-void TLMultiColumnList::layoutComponentWidgets()
+void TLMultiColumnList::performChildWindowLayout()
 {
+    MultiColumnList::performChildWindowLayout();
+
 	Rect listArea(getListRenderArea());
 
 	// set position for header (fixed)

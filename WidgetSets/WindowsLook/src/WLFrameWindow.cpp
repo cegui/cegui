@@ -218,8 +218,10 @@ PushButton* WLFrameWindow::createCloseButton(const String& name) const
 	Setup size and position for the title bar and close button widgets
 	attached to this window
 *************************************************************************/
-void WLFrameWindow::layoutComponentWidgets()
+void WLFrameWindow::performChildWindowLayout()
 {
+    FrameWindow::performChildWindowLayout();
+
 	ImagesetManager& ismgr = ImagesetManager::getSingleton();
 
 	// calculate and set size of title bar

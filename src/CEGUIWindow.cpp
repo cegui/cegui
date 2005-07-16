@@ -3173,6 +3173,25 @@ void Window::setModalState(bool state)
 	}
 }
 
+void Window::performChildWindowLayout()
+{
+    if (!d_lookName.empty())
+    {
+        // here we just grab the look and feel and get it to layout its defined children
+        try
+        {
+            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+            // get look'n'feel to layout any child windows it created.
+            wlf.layoutChildWidgets(*this);
+        }
+        catch (UnknownObjectException)
+        {
+            Logger::getSingleton().logEvent("Window::performChildWindowLayout - assigned widget look was not found.", Errors);
+        }
+    }
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -3190,6 +3209,8 @@ void Window::onSized(WindowEventArgs& e)
 		WindowEventArgs args(this);
 		d_children[i]->onParentSized(args);
 	}
+
+	performChildWindowLayout();
 
 	requestRedraw();
 

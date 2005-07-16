@@ -2101,6 +2101,18 @@ public:
 	*/
 	void setModalState(bool state);
 
+    /*!
+    \brief
+        method called to perform extended laying out of attached child windows.
+
+        The system may call this at various times (like when it is resized for example), and it
+        may be invoked directly where required.
+
+    \return
+        Nothing.
+    */
+    virtual void performChildWindowLayout();
+
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
 	*************************************************************************/

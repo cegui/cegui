@@ -121,7 +121,7 @@ void FrameWindow::initialise(void)
 		d_closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 	}
 
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -783,18 +783,6 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 	d_beingSized = false;
 
 	e.handled = true;
-}
-
-
-/*************************************************************************
-	Handler for when frame window is re-sized
-*************************************************************************/
-void FrameWindow::onSized(WindowEventArgs& e)
-{
-	layoutComponentWidgets();
-
-	// MUST call base class handler no matter what.  This is now required 100%
-	Window::onSized(e);
 }
 
 

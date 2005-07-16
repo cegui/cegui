@@ -149,7 +149,7 @@ void Combobox::initialise(void)
 	d_droplist->subscribeEvent(Listbox::EventHorzScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_HorzScrollModeChangedHandler, this));
 
 	// put components in their initial positions
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -727,19 +727,6 @@ void Combobox::onDroplistRemoved(WindowEventArgs& e)
 void Combobox::onListSelectionAccepted(WindowEventArgs& e)
 {
 	fireEvent(EventListSelectionAccepted, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler for when widget is sized
-*************************************************************************/
-void Combobox::onSized(WindowEventArgs& e)
-{
-	Window::onSized(e);
-
-	layoutComponentWidgets();
-
-	e.handled = true;
 }
 
 

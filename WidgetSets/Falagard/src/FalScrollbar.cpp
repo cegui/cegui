@@ -76,18 +76,9 @@ namespace CEGUI
         return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(name));
     }
 
-    void FalagardScrollbar::layoutComponentWidgets(void)
+    void FalagardScrollbar::performChildWindowLayout()
     {
-        try
-        {
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            // get look'n'feel to layout any child windows it created.
-            wlf.layoutChildWidgets(*this);
-        }
-        catch (UnknownObjectException)
-        {}
-
+        Scrollbar::performChildWindowLayout();
         updateThumb();
     }
 

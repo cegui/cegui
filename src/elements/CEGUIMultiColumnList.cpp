@@ -637,7 +637,7 @@ void MultiColumnList::initialise(void)
 
 	// Perform initial layout
 	configureScrollbars();
-	layoutComponentWidgets();
+	performChildWindowLayout();
 }
 
 
@@ -1910,7 +1910,6 @@ void MultiColumnList::onSized(WindowEventArgs& e)
 	Window::onSized(e);
 
 	configureScrollbars();
-	layoutComponentWidgets();
 
 	e.handled = true;
 }
