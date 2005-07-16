@@ -341,9 +341,10 @@ namespace CEGUI
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    FontDim::FontDim(const String& font, const String& text, FontMetricType metric, float padding) :
+    FontDim::FontDim(const String& name, const String& font, const String& text, FontMetricType metric, float padding) :
         d_font(font),
         d_text(text),
+        d_childSuffix(name),
         d_metric(metric),
         d_padding(padding)
     {
@@ -351,8 +352,10 @@ namespace CEGUI
 
     float FontDim::getValue_impl(const Window& wnd) const
     {
+        // get window to use.
+        const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
         // get font to use
-        const Font* fontObj = d_font.empty() ? wnd.getFont() : FontManager::getSingleton().getFont(d_font);
+        const Font* fontObj = d_font.empty() ? sourceWindow.getFont() : FontManager::getSingleton().getFont(d_font);
 
         if (fontObj)
         {
@@ -365,7 +368,7 @@ namespace CEGUI
                     return fontObj->getBaseline() + d_padding;
                     break;
                 case FMT_HORZ_EXTENT:
-                    return fontObj->getTextExtent(d_text.empty() ? wnd.getText() : d_text) + d_padding;
+                    return fontObj->getTextExtent(d_text.empty() ? sourceWindow.getText() : d_text) + d_padding;
                     break;
                 default:
                     throw InvalidRequestException("FontDim::getValue - unknown or unsupported FontMetricType encountered.");
@@ -386,20 +389,24 @@ namespace CEGUI
 
     BaseDim* FontDim::clone_impl() const
     {
-        FontDim* ndim = new FontDim(d_font, d_text, d_metric);
+        FontDim* ndim = new FontDim(d_childSuffix, d_font, d_text, d_metric);
         return ndim;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    PropertyDim::PropertyDim(const String& property) :
-        d_property(property)
+    PropertyDim::PropertyDim(const String& name, const String& property) :
+        d_property(property),
+        d_childSuffix(name)
     {
     }
 
     float PropertyDim::getValue_impl(const Window& wnd) const
     {
-        return PropertyHelper::stringToFloat(wnd.getProperty(d_property));
+        // get window to use.
+        const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
+        // return property value.
+        return PropertyHelper::stringToFloat(sourceWindow.getProperty(d_property));
     }
 
     float PropertyDim::getValue_impl(const Window& wnd, const Rect& container) const
@@ -409,7 +416,7 @@ namespace CEGUI
 
     BaseDim* PropertyDim::clone_impl() const
     {
-        PropertyDim* ndim = new PropertyDim(d_property);
+        PropertyDim* ndim = new PropertyDim(d_childSuffix, d_property);
         return ndim;
     }
 

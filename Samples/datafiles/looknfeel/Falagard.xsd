@@ -145,6 +145,7 @@
         <xsd:sequence>
             <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="font" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="string" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="type" type="fontMetricTypeEnum" use="required" />
@@ -154,6 +155,7 @@
         <xsd:sequence>
             <xsd:element name="DimOperator" type="dimensionOperatorType" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="name" type="xsd:string" use="required" />
     </xsd:complexType>
 	<xsd:complexType name="unifiedDimType">

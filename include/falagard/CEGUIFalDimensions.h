@@ -365,6 +365,10 @@ namespace CEGUI
         \brief
             Constructor.
 
+        \param name
+            String holding the name suffix of the window to be accessed to obtain the font
+            and / or text strings to be used when these items are not explicitly given.
+
         \param font
             String holding the name of the font to use for this dimension.  If the string is
             empty, the font assigned to the window passed to getValue will be used.
@@ -379,7 +383,7 @@ namespace CEGUI
         \param padding
             constant pixel padding value to be added.
         */
-        FontDim(const String& font, const String& text, FontMetricType metric, float padding = 0);
+        FontDim(const String& name, const String& font, const String& text, FontMetricType metric, float padding = 0);
 
     protected:
         // Implementation of the base class interface
@@ -390,6 +394,7 @@ namespace CEGUI
     private:
         String  d_font;          //!< Name of Font.  If empty font will be taken from Window.
         String  d_text;          //!< String to measure for extents, if empty will use window text.
+        String  d_childSuffix;   //!< String to hold the name suffix of the window to use for fetching missing font and/or text.
         FontMetricType d_metric; //!< what metric we represent.
         float   d_padding;       //!< padding value to be added.
     };
@@ -405,11 +410,14 @@ namespace CEGUI
         \brief
             Constructor.
 
+        \param name
+            String holding the name suffix of the window on which the property is to be accessed.
+
         \param property
             String object holding the name of the property this PropertyDim represents the value of.
             The property named should represent a simple float value.
         */
-        PropertyDim(const String& property);
+        PropertyDim(const String& name, const String& property);
 
     protected:
         // Implementation of the base class interface
@@ -419,6 +427,7 @@ namespace CEGUI
 
     private:
         String d_property;      //!< Propery that this object represents.
+        String  d_childSuffix;  //!< String to hold the name suffix of the child to access the property form.
     };
 
     /*!

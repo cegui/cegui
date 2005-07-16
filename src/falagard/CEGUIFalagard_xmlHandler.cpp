@@ -322,6 +322,7 @@ namespace CEGUI
         else if (element == FontDimElement)
         {
             FontDim base(
+                attributes.getValueAsString(WidgetAttribute),
                 attributes.getValueAsString(FontAttribute),
                 attributes.getValueAsString(StringAttribute),
                 stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
@@ -331,7 +332,7 @@ namespace CEGUI
         }
         else if (element == PropertyDimElement)
         {
-            PropertyDim base(attributes.getValueAsString(NameAttribute));
+            PropertyDim base(attributes.getValueAsString(WidgetAttribute), attributes.getValueAsString(NameAttribute));
             doBaseDimStart(&base);
         }
         else if (element == TextElement)
