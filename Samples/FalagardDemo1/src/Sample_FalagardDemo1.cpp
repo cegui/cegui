@@ -73,83 +73,9 @@ bool FalagardDemo1Sample::initialiseSample()
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     FontManager::getSingleton().createFont("../datafiles/fonts/Commonwealth-10.font");
     WindowManager& winMgr = WindowManager::getSingleton();
-    DefaultWindow* root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
-    System::getSingleton().setGUISheet(root);
 
-    //
-    // this is falagard related stuff from now onwards
-    //
-    // create an instance of the test widget and add it to the root so we'll be able to see it.
-    FrameWindow* wid = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "testWidget"));
-    root->addChildWindow(wid);
-
-    // set some basic things for the widget.
-    wid->setPosition(Point(0.25f, 0.25f));
-    wid->setSize(Size(0.5f, 0.5f));
-    wid->setText("This is a test of the Falagard system");
-
-    Menubar* w = static_cast<Menubar*>(winMgr.createWindow("TaharezLook/Menubar", "widget1"));
-    wid->addChildWindow(w);
-
-    // set some basic things for the widget.
-    w->setPosition(Point(0.25f, 0.25f));
-    w->setSize(Size(0.5f, 0.085f));
-
-    MenuItem* item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "FileItem"));
-    item->setText("File");
-    w->addItem(item);
-
-    PopupMenu* popup = static_cast<PopupMenu*>(winMgr.createWindow("TaharezLook/PopupMenu", "FilePopup"));
-    item->addChildWindow(popup);
-
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "NewItem"));
-    item->setText("New");
-    popup->addItem(item);
-
-    PopupMenu* subpopup = static_cast<PopupMenu*>(winMgr.createWindow("TaharezLook/PopupMenu", "NewPopup"));
-    item->addChildWindow(subpopup);
-
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "NewProjectItem"));
-    item->setText("Project...");
-    subpopup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "NewFileItem"));
-    item->setText("File...");
-    subpopup->addItem(item);
-
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "OpenItem"));
-    item->setText("Open...");
-    popup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "SaveItem"));
-    item->setText("Save");
-    popup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "SaveAsItem"));
-    item->setText("Save As...");
-    popup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "CloseItem"));
-    item->setText("Close");
-    popup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "QuitItem"));
-    item->setText("Quit");
-    popup->addItem(item);
-
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "EditItem"));
-    item->setText("Edit");
-    w->addItem(item);
-
-    popup = static_cast<PopupMenu*>(winMgr.createWindow("TaharezLook/PopupMenu", "EditPopup"));
-    item->addChildWindow(popup);
-
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "CutItem"));
-    item->setText("Cut");
-    popup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "CopyItem"));
-    item->setText("Copy");
-    popup->addItem(item);
-    item = static_cast<MenuItem*>(winMgr.createWindow("TaharezLook/MenuItem", "PasteItem"));
-    item->setText("Paste");
-    popup->addItem(item);
-
-
+    // load layout and set as root
+    System::getSingleton().setGUISheet(winMgr.loadWindowLayout("../datafiles/layouts/Demo7Windows.layout"));
 
     // success!
     return true;

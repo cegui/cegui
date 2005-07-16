@@ -1,0 +1,155 @@
+<?xml version="1.0" ?>
+<GUILayout>
+    <Window Type="DefaultWindow" Name="root">
+
+        <Window Type="TaharezLook/FrameWindow" Name="Demo7/Window1">
+            <Property Name="RelativeMinSize" Value="w:0.2 h:0.2" />
+            <Property Name="RelativeMaxSize" Value="w:0.8 h:0.8" />
+            <Property Name="Position" Value="x:0.2 y:0.2" />
+            <Property Name="Size" Value="w:0.5 h:0.5" />
+            <Property Name="Text" Value="Demo 7 - Window 1" />
+            <Property Name="CloseButtonEnabled" Value="False" />
+
+            <Window Type="TaharezLook/Button" Name="Demo7/Window1/Quit">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.02 y:0.1" />
+                <Property Name="Size" Value="w:0.25 h:0.1" />
+                <Property Name="Text" Value="Exit Demo" />
+            </Window>
+
+            <Window Type="TaharezLook/RadioButton" Name="Demo7/Window1/Radio1">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.02 y:0.23" />
+                <Property Name="Size" Value="w:0.25 h:0.075" />
+                <Property Name="Text" Value="Option 1" />
+                <Property Name="ID" Value="0" />
+            </Window>
+
+            <Window Type="TaharezLook/RadioButton" Name="Demo7/Window1/Radio2">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.02 y:0.306" />
+                <Property Name="Size" Value="w:0.25 h:0.075" />
+                <Property Name="Text" Value="Option 2" />
+                <Property Name="ID" Value="1" />
+            </Window>
+
+            <Window Type="TaharezLook/RadioButton" Name="Demo7/Window1/Radio3">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.02 y:0.382" />
+                <Property Name="Size" Value="w:0.25 h:0.075" />
+                <Property Name="Text" Value="Option 3" />
+                <Property Name="ID" Value="2" />
+            </Window>
+
+            <Window Type="TaharezLook/Checkbox" Name="Demo7/Window1/Checkbox">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.02 y:0.48" />
+                <Property Name="Size" Value="w:0.45 h:0.075" />
+                <Property Name="Text" Value="Enable some option" />
+                <Property Name="Selected" Value="True" />
+            </Window>
+
+            <Window Type="TaharezLook/StaticText" Name="Demo7/Window1/Text1">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.5 y:0.1" />
+                <Property Name="Size" Value="w:0.45 h:0.5" />
+                <Property Name="Text" Value="This is a static text widget.  More examples of this, and the static image, can be seen in the frame-rate / debug overlay." />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="BackgroundEnabled" Value="False" />
+                <Property Name="HorzFormatting" Value="WordWrapCentred" />
+            </Window>
+
+            <Window Type="TaharezLook/Editbox" Name="Demo7/Window1/Editbox">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.2 y:0.6" />
+                <Property Name="Size" Value="w:0.6 h:0.1" />
+                <Property Name="Text" Value="Single-line editbox" />
+            </Window>
+
+            <Window Type="TaharezLook/LargeVerticalScrollbar" Name="Demo7/Window1/Scrollbar1">
+                <Property Name="RelativeMinSize" Value="w:0.01 h:0.1" />
+                <Property Name="RelativeMaxSize" Value="w:0.03 h:1.0" />
+                <Property Name="Position" Value="x:0.06 y:0.6" />
+                <Property Name="Size" Value="w:0.06 h:0.38" />
+            </Window>
+
+            <Window Type="TaharezLook/Slider" Name="Demo7/Window1/Slider1">
+                <Property Name="RelativeMinSize" Value="w:0.01 h:0.1" />
+                <Property Name="RelativeMaxSize" Value="w:0.03 h:1.0" />
+                <Property Name="Position" Value="x:0.9 y:0.625" />
+                <Property Name="Size" Value="w:0.03 h:0.28" />
+                <Property Name="CurrentValue" Value="1.0" />
+            </Window>
+        </Window>
+
+        <Window Type="TaharezLook/FrameWindow" Name="Demo7/Window2">
+            <Property Name="RelativeMinSize" Value="w:0.2 h:0.2" />
+            <Property Name="RelativeMaxSize" Value="w:0.8 h:0.8" />
+            <Property Name="Position" Value="x:0.4 y:0.1" />
+            <Property Name="Size" Value="w:0.5 h:0.5" />
+            <Property Name="Text" Value="Demo 7 - Window 2" />
+            <Property Name="CloseButtonEnabled" Value="False" />
+
+            <Window Type="TaharezLook/ProgressBar" Name="Demo7/Window2/Progbar1">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.04 y:0.1" />
+                <Property Name="Size" Value="w:0.94 h:0.05" />
+                <Property Name="CurrentProgress" Value="0.33" />
+            </Window>
+
+            <Window Type="TaharezLook/AlternateProgressBar" Name="Demo7/Window2/Progbar2">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.04 y:0.16" />
+                <Property Name="Size" Value="w:0.94 h:0.05" />
+                <Property Name="CurrentProgress" Value="0.7" />
+            </Window>
+
+            <Window Type="TaharezLook/Listbox" Name="Demo7/Window2/Listbox">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.04 y:0.25" />
+                <Property Name="Size" Value="w:0.42 h:0.3" />
+            </Window>
+
+            <Window Type="TaharezLook/Combobox" Name="Demo7/Window2/Combobox">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.5 y:0.25" />
+                <Property Name="Size" Value="w:0.42 h:0.45" />
+            </Window>
+
+            <Window Type="TaharezLook/MultiColumnList" Name="Demo7/Window2/MultiColumnList">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.05 y:0.6" />
+                <Property Name="Size" Value="w:0.9 h:0.38" />
+                <Property Name="SelectionMode" Value="RowSingle" />
+                <Property Name="ColumnHeader" Value="text:Server Name width:0.33 id:0" />
+                <Property Name="ColumnHeader" Value="text:Address width:0.5 id:1" />
+                <Property Name="ColumnHeader" Value="text:Ping width:0.2 id:2" />
+            </Window>
+
+            <Window Type="TaharezLook/StaticImage" Name="Demo7/Window2/Image1">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.56 y:0.35" />
+                <Property Name="Size" Value="w:0.3 h:0.2" />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+        </Window>
+
+        <Window Type="TaharezLook/FrameWindow" Name="Demo7/Window3">
+            <Property Name="RelativeMinSize" Value="w:0.2 h:0.2" />
+            <Property Name="RelativeMaxSize" Value="w:0.8 h:0.8" />
+            <Property Name="Position" Value="x:0.25 y:0.4" />
+            <Property Name="Size" Value="w:0.5 h:0.5" />
+            <Property Name="Text" Value="Demo 7 - Window 3" />
+            <Property Name="CloseButtonEnabled" Value="False" />
+
+            <Window Type="TaharezLook/MultiLineEditbox" Name="Demo7/Window3/MLEditbox">
+                <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
+                <Property Name="Position" Value="x:0.02 y:0.1" />
+                <Property Name="Size" Value="w:0.96 h:0.85" />
+                <Property Name="Text" Value="Multi-line edit box.  Edit me!" />
+            </Window>
+        </Window>
+
+    </Window>
+</GUILayout>
