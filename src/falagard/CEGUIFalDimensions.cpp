@@ -389,7 +389,7 @@ namespace CEGUI
 
     BaseDim* FontDim::clone_impl() const
     {
-        FontDim* ndim = new FontDim(d_childSuffix, d_font, d_text, d_metric);
+        FontDim* ndim = new FontDim(d_childSuffix, d_font, d_text, d_metric, d_padding);
         return ndim;
     }
 
