@@ -21,6 +21,8 @@
         <xsd:attribute name="type" type="propertyTypeEnum" use="optional" default="Generic" />
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="initialValue" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="layoutOnWrite" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="redrawOnWrite" type="xsd:boolean" use="optional" default="false" />
     </xsd:complexType>
     <xsd:complexType name="namedAreaType">
         <xsd:sequence>

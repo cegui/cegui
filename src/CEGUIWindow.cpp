@@ -3145,10 +3145,8 @@ void Window::setLookNFeel(const String& look)
 
         // Work to initialse the look and feel...
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(look);
-        // Apply property initialisers and create child widgets.
+        // Add property definitions, apply property initialisers and create child widgets.
         wlf.initialiseWidget(*this);
-
-        // TODO: Create look n feel defined properties (not supported yet!)
     }
     else
     {

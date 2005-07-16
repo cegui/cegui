@@ -27,6 +27,7 @@
 #include "falagard/CEGUIFalWidgetComponent.h"
 #include "falagard/CEGUIFalTextComponent.h"
 #include "falagard/CEGUIFalNamedArea.h"
+#include "falagard/CEGUIFalPropertyDefinition.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
 #include <sstream>
@@ -90,6 +91,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::ClippedAttribute("clipped");
     const String Falagard_xmlHandler::OperatorAttribute("op");
     const String Falagard_xmlHandler::PaddingAttribute("padding");
+    const String Falagard_xmlHandler::LayoutOnWriteAttribute("layoutOnWrite");
+    const String Falagard_xmlHandler::RedrawOnWriteAttribute("redrawOnWrite");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -354,6 +357,21 @@ namespace CEGUI
             {
                 d_dimStack.back()->setDimensionOperator(stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
             }
+        }
+        else if (element == PropertyDefinitionElement)
+        {
+            assert(d_widgetlook);
+
+            PropertyDefinition prop(
+                attributes.getValueAsString(NameAttribute),
+                attributes.getValueAsString(InitialValueAttribute),
+                attributes.getValueAsBool(RedrawOnWriteAttribute),
+                attributes.getValueAsBool(LayoutOnWriteAttribute)
+            );
+
+            CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + prop.getDefault());
+
+            d_widgetlook->addPropertyDefinition(prop);
         }
         else
         {

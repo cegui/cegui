@@ -22,9 +22,34 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalPropertyDefinition.h"
+#include "CEGUIWindow.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    PropertyDefinition::PropertyDefinition(const String& name, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite) :
+        Property(name, "Falagard custom property definition - gets/sets a named user string.", initialValue),
+        d_userStringName(name + "_fal_auto_prop__"),
+        d_writeCausesRedraw(redrawOnWrite),
+        d_writeCausesLayout(layoutOnWrite)
+    {
+    }
+
+    // abstract members from Property
+    String PropertyDefinition::get(const PropertyReceiver* receiver) const
+    {
+        return static_cast<const Window*>(receiver)->getUserString(d_userStringName);
+    }
+
+    void PropertyDefinition::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<Window*>(receiver)->setUserString(d_userStringName, value);
+
+        if (d_writeCausesLayout)
+            static_cast<Window*>(receiver)->performChildWindowLayout();
+
+        if (d_writeCausesRedraw)
+            static_cast<Window*>(receiver)->requestRedraw();
+    }
 
 } // End of  CEGUI namespace section

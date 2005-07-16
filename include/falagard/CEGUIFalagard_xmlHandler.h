@@ -131,6 +131,8 @@ namespace CEGUI
         static const String ClippedAttribute;           //!< Attribute name that stores whether some component will be clipped.
         static const String OperatorAttribute;          //!< Attribute name that stores the name of an operator.
         static const String PaddingAttribute;           //!< Attribute name that stores some padding value..
+        static const String LayoutOnWriteAttribute;     //!< Attribute name that stores whether to layout on write of a property.
+        static const String RedrawOnWriteAttribute;     //!< Attribute name that stores whether to redraw on write of a property.
 
         /*************************************************************************
             helper methods

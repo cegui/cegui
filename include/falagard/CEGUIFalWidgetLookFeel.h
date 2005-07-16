@@ -178,12 +178,84 @@ namespace CEGUI
         */
         bool isStateImageryPresent(const String& state) const;
 
+        /*!
+        \brief
+            Adds a named area to the WidgetLookFeel.
+
+        \param area
+            NamedArea to be added.
+
+        \return
+            Nothing.
+        */
         void addNamedArea(const NamedArea& area);
+
+        /*!
+        \brief
+            Clear all defined named areas from the WidgetLookFeel
+
+        \return
+            Nothing.
+        */
         void clearNamedAreas();
+
+        /*!
+        \brief
+            Return the NamedArea with the specified name.
+
+        \param name
+            String object holding the name of the NamedArea to be returned.
+
+        \return
+            The requested NamedArea object.
+        */
         const NamedArea& getNamedArea(const String& name) const;
+
+        /*!
+        \brief
+            return whether a NamedArea object with the specified name exists for this WidgetLookFeel.
+
+        \param name
+            String holding the name of the NamedArea to check for.
+
+        \return
+            - true if a named area with the requested name is defined for this WidgetLookFeel.
+            - false if no such named area is defined for this WidgetLookFeel.
+        */
         bool isNamedAreaDefined(const String& name) const;
 
+        /*!
+        \brief
+            Layout the child widgets defined for this WidgetLookFeel which are attached to the given window.
+
+        \param owner
+            Window object that has the child widgets that require laying out.
+
+        \return
+            Nothing.
+        */
         void layoutChildWidgets(const Window& owner) const;
+
+        /*!
+        \brief
+            Adds a property definition to the WidgetLookFeel.
+
+        \param propdef
+            PropertyDefinition to be added.
+
+        \return
+            Nothing.
+        */
+        void addPropertyDefinition(const PropertyDefinition& propdef);
+
+        /*!
+        \brief
+            Clear all defined property definitions from the WidgetLookFeel
+
+        \return
+            Nothing.
+        */
+        void clearPropertyDefinitions();
 
     private:
         typedef std::map<String, StateImagery>    StateList;
@@ -199,7 +271,7 @@ namespace CEGUI
         StateList       d_stateImagery;     //!< Collection of StateImagery objects.
         PropertyList    d_properties;       //!< Collection of PropertyInitialser objects.
         NamedAreaList   d_namedAreas;       //!< Collection of NamedArea objects.
-        PropertyDefinitionList  d_propertyDefinitions;  //!< Collection of PropertyDefinition objects.
+        mutable PropertyDefinitionList  d_propertyDefinitions;  //!< Collection of PropertyDefinition objects.
     };
 
 

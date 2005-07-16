@@ -24,13 +24,29 @@
 #ifndef _CEGUIFalPropertyDefinition_h_
 #define _CEGUIFalPropertyDefinition_h_
 
+#include "CEGUIProperty.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class PropertyDefinition
+    /*!
+    \brief
+        class representing a new property to be available on all widgets that use the WidgetLook
+        that this PropertyDefinition is defiend for.
+    */
+    class CEGUIEXPORT PropertyDefinition : public Property
     {
     public:
-        PropertyDefinition() {}
+        PropertyDefinition(const String& name, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+
+        // abstract members from Property
+        String get(const PropertyReceiver* receiver) const;
+        void set(PropertyReceiver* receiver, const String& value);
+
+    protected:
+        String d_userStringName;
+        bool d_writeCausesRedraw;
+        bool d_writeCausesLayout;
     };
 
 } // End of  CEGUI namespace section

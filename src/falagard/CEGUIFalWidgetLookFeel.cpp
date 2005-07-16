@@ -123,11 +123,14 @@ namespace CEGUI
 
     void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
-//        // add new property definitions first
-//        for(PropertyDefinitionList::const_iterator propdef = d_propertyDefinitions.begin(); propdef != d_propertyDefinitions.end(); ++propdef)
-//        {
-//            (*propdef).apply(widget);
-//        }
+        // add new property definitions first
+        for(PropertyDefinitionList::iterator propdef = d_propertyDefinitions.begin(); propdef != d_propertyDefinitions.end(); ++propdef)
+        {
+            // add the property to the window
+            widget.addProperty(&(*propdef));
+            // write default value to get things set up properly
+            widget.setProperty((*propdef).getName(), (*propdef).getDefault(&widget));
+        }
 
         // apply properties to the parent window
         for(PropertyList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
@@ -187,6 +190,16 @@ namespace CEGUI
         {
             (*wdgt).second.layout(owner);
         }
+    }
+
+    void WidgetLookFeel::addPropertyDefinition(const PropertyDefinition& propdef)
+    {
+        d_propertyDefinitions.push_back(propdef);
+    }
+
+    void WidgetLookFeel::clearPropertyDefinitions()
+    {
+        d_propertyDefinitions.clear();
     }
 
 } // End of  CEGUI namespace section
