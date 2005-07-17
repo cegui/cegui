@@ -50,6 +50,9 @@ CEGUI_ENABLE_IRRLICHT_RENDERER
 # decide whether to use gtk dialog in samples
 CEGUI_CHECK_GTK_FOR_SAMPLES
 
+# decide whether to build the samples
+CEGUI_CHECK_WANTS_SAMPLES
+
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library ver sion
 CEGUI_CURRENT=0
