@@ -757,9 +757,19 @@ void Window::setEnabled(bool setting)
 	{
 		d_enabled = setting;
         WindowEventArgs args(this);
-		d_enabled ? onEnabled(args) : onDisabled(args);
-	}
 
+        if (d_enabled)
+        {
+            // check to see if the window is actually enabled (which depends upon all ancestor windows being enabled)
+            // we do this so that events we fire give an accurate indication of the state of a window.
+            if ((d_parent && !d_parent->isDisabled()) || !d_parent)
+                onEnabled(args);
+        }
+        else
+        {
+            onDisabled(args);
+        }
+    }
 }
 
 
@@ -3305,13 +3315,35 @@ void Window::onHidden(WindowEventArgs& e)
 
 void Window::onEnabled(WindowEventArgs& e)
 {
-	requestRedraw();
-	fireEvent(EventEnabled, e, EventNamespace);
+    // signal all non-disabled children that they are now enabled (via inherited state)
+    uint child_count = getChildCount();
+    for (uint i = 0; i < child_count; ++i)
+    {
+        if (d_children[i]->d_enabled)
+        {
+            WindowEventArgs args(d_children[i]);
+            d_children[i]->onEnabled(args);
+        }
+    }
+
+    requestRedraw();
+    fireEvent(EventEnabled, e, EventNamespace);
 }
 
 
 void Window::onDisabled(WindowEventArgs& e)
 {
+    // signal all non-disabled children that they are now disabled (via inherited state)
+    uint child_count = getChildCount();
+    for (uint i = 0; i < child_count; ++i)
+    {
+        if (d_children[i]->d_enabled)
+        {
+            WindowEventArgs args(d_children[i]);
+            d_children[i]->onDisabled(args);
+        }
+    }
+
 	requestRedraw();
 	fireEvent(EventDisabled, e, EventNamespace);
 }
