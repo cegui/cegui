@@ -53,7 +53,10 @@
 #   include "CEGuiD3D81BaseApplication.h"
 #   include "CEGuiD3D9BaseApplication.h"
 #endif
-
+// now we include the base CEGuiBaseApplication just in case someone has managed to
+// get this far without any of the renderers.  This ensures the framework will build,
+// although there will be no renderers available for selection in the samples.
+#include "CEGuiBaseApplication.h"
 
 /*************************************************************************
     Constructor

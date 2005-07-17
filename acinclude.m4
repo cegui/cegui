@@ -1,3 +1,23 @@
+AC_DEFUN([CEGUI_CHECK_WANTS_SAMPLES],[
+    AC_ARG_ENABLE([samples], AC_HELP_STRING([--disable-samples], [Disable building of samples framework and applications.]),
+        [cegui_enable_samples=$enableval],[cegui_enable_samples=yes])
+
+    if test x$cegui_enable_samples = xyes; then
+        if test x$cegui_samples_use_ogre = xyes || test x$cegui_samples_use_irrlicht = xyes || test x$cegui_samples_use_opengl = xyes; then
+            cegui_build_samples=yes
+            AC_MSG_NOTICE([Samples framework and applications are enabled.])
+        else
+            cegui_build_samples=no
+            AC_MSG_NOTICE([No renderers available.  Building of samples framework and applications has been disabled.])
+        fi
+    else
+        cegui_build_samples=no
+        AC_MSG_NOTICE([Samples framework and applications are disabled.])
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_SAMPLES], [test x$cegui_build_samples = xyes])
+])
+
 AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4, [cegui_found_gtk=yes], [cegui_found_gtk=no])
     AC_ARG_WITH([gtk2], AC_HELP_STRING([--with-gtk2], [Enables the use of a GTK2 based dialog to select a renderer in the samples]),
@@ -6,7 +26,7 @@ AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
     if test x$cegui_found_gtk = xyes && test x$cegui_with_gtk = xyes; then
         AC_DEFINE(CEGUI_SAMPLES_USE_GTK2, [], [Define to have a GTK2 based dialog used for renderer selection in the samples])
         AC_MSG_NOTICE([GTK2 renderer selection dialog in samples is enabled])
-    else        
+    else
         AC_MSG_NOTICE([GTK2 renderer selection dialog in samples is disabled])
     fi
 
@@ -39,13 +59,15 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
                 [cegui_with_ogre=$withval], [cegui_with_ogre=yes])
 
     if test x$cegui_found_ogre_renderer = xyes && test x$cegui_found_cegui = xyes && test x$cegui_with_ogre = xyes; then
+        cegui_samples_use_ogre=yes
         AC_DEFINE(CEGUI_SAMPLES_USE_OGRE, [], [Define to have the Ogre3D CEGUI renderer available in the samples])
         AC_MSG_NOTICE([Use of Ogre3D in Samples is enabled])
     else        
+        cegui_samples_use_ogre=no
         AC_MSG_NOTICE([Use of Ogre3D in Samples is disabled])
     fi
 
-    AM_CONDITIONAL([CEGUI_SAMPLES_USE_OGRE], [test x$cegui_found_ogre_renderer = xyes && test x$cegui_found_cegui = xyes && test x$cegui_with_ogre = xyes])
+    AM_CONDITIONAL([CEGUI_SAMPLES_USE_OGRE], [test x$cegui_samples_use_ogre = xyes])
     AC_SUBST(CEGUIOGRE_CFLAGS)
     AC_SUBST(CEGUIOGRE_LIBS)
 ])
@@ -61,9 +83,11 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
         
         if test x$cegui_found_xf86vm = xyes; then
             Irrlicht_LIBS="-lXxf86vm $Irrlicht_LIBS"
+            cegui_samples_use_irrlicht=yes
             AC_DEFINE(CEGUI_SAMPLES_USE_IRRLICHT, [], [Define to have the Irrlicht CEGUI renderer available in the samples])
             AC_MSG_NOTICE([Use of Irrlicht in Samples is enabled])
         else
+            cegui_samples_use_irrlicht=no
             AC_MSG_NOTICE([Use of Irrlicht in Samples is disabled])
         fi
     else
@@ -71,7 +95,7 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
     fi
     
     AM_CONDITIONAL([BUILD_IRRLICHT_RENDERER], [test x$cegui_found_irr = xyes && test x$cegui_enable_irr = xyes])
-    AM_CONDITIONAL([CEGUI_SAMPLES_USE_IRRLICHT], [test x$cegui_found_irr = xyes && test x$cegui_enable_irr = xyes && test x$cegui_found_xf86vm = xyes])
+    AM_CONDITIONAL([CEGUI_SAMPLES_USE_IRRLICHT], [test x$cegui_samples_use_irrlicht = xyes])
     AC_SUBST(Irrlicht_CFLAGS)
     AC_SUBST(Irrlicht_LIBS)
 ])
@@ -150,9 +174,11 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
             AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
         fi
         if test x$cegui_found_lib_glut = xyes; then
-            AC_DEFINE(CEGUI_SAMPLES_USE_OPENGL, [], [Define to have the OpenGL CEGUI renderer available in the samples])
+            cegui_samples_use_opengl=yes
+            AC_DEFINE(CEGUI_SAMPLES_USE_OPENGL, [], [Define to have the OpenGL CEGUI renderer available in the samples (requires glut)])
             AC_MSG_NOTICE([Use of OpenGL in Samples is enabled])
         else
+            cegui_samples_use_opengl=no
             AC_MSG_NOTICE([Use of OpenGL in Samples is disabled])
         fi
     else
@@ -160,7 +186,7 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     fi
 
     AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes && test x$cegui_found_lib_GL = xyes && test x$cegui_found_lib_GLU = xyes])
-    AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_enable_opengl = xyes && test x$cegui_found_lib_GL = xyes && test x$cegui_found_lib_GLU = xyes && test x$cegui_found_lib_glut = xyes])
+    AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
     AC_SUBST(DevIL_CFLAGS)
