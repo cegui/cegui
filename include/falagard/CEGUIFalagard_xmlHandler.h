@@ -165,7 +165,6 @@ namespace CEGUI
         ComponentArea*   d_area;
         Dimension       d_dimension;
         TextComponent*  d_textcomponent;
-        int d_dimIdx;
         NamedArea*      d_namedArea;
         FrameComponent*  d_framecomponent;
 

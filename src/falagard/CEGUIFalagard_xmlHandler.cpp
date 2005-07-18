@@ -198,7 +198,6 @@ namespace CEGUI
         {
             assert(d_area == 0);
             d_area = new ComponentArea();
-            d_dimIdx = 0;
         }
         else if (element == ColoursElement)
         {
@@ -601,25 +600,27 @@ namespace CEGUI
     {
         if (d_area)
         {
-            switch (d_dimIdx)
+            switch (dim.getDimensionType())
             {
-            case 0:
+            case DT_LEFT_EDGE:
+            case DT_X_POSITION:
                 d_area->d_left = dim;
                 break;
-            case 1:
+            case DT_TOP_EDGE:
+            case DT_Y_POSITION:
                 d_area->d_top = dim;
                 break;
-            case 2:
+            case DT_RIGHT_EDGE:
+            case DT_WIDTH:
                 d_area->d_right_or_width = dim;
                 break;
-            case 3:
+            case DT_BOTTOM_EDGE:
+            case DT_HEIGHT:
                 d_area->d_bottom_or_height = dim;
                 break;
             default:
-                throw InvalidRequestException("Falagard::xmlHandler::assignAreaDimension - Internal error: d_dimIdx contains invalid value");
+                throw InvalidRequestException("Falagard::xmlHandler::assignAreaDimension - Invalid DimensionType specified for area component.");
             }
-
-            ++d_dimIdx;
         }
     }
 
