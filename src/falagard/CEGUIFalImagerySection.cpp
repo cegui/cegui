@@ -49,6 +49,11 @@ namespace CEGUI
 
         ColourRect* finalColsPtr = (finalCols.isMonochromatic() && finalCols.d_top_left.getARGB() == 0xFFFFFFFF) ? 0 : &finalCols;
 
+        // render all frame components in this section
+        for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
+        {
+            (*frame).render(srcWindow, base_z, finalColsPtr, clipper, clipToDisplay);
+        }
         // render all image components in this section
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
@@ -72,6 +77,11 @@ namespace CEGUI
 
         ColourRect* finalColsPtr = (finalCols.isMonochromatic() && finalCols.d_top_left.getARGB() == 0xFFFFFFFF) ? 0 : &finalCols;
 
+        // render all frame components in this section
+        for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
+        {
+            (*frame).render(srcWindow, baseRect, base_z, finalColsPtr, clipper, clipToDisplay);
+        }
         // render all image components in this section
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
@@ -102,6 +112,16 @@ namespace CEGUI
     void ImagerySection::clearTextComponents()
     {
         d_texts.clear();
+    }
+
+    void ImagerySection::clearFrameComponents()
+    {
+        d_frames.clear();
+    }
+
+    void ImagerySection::addFrameComponent(const FrameComponent& frame)
+    {
+        d_frames.push_back(frame);
     }
 
     const ColourRect& ImagerySection::getMasterColours() const
@@ -161,6 +181,16 @@ namespace CEGUI
         Rect compRect;
         Rect bounds(0, 0, 0, 0);
 
+        // measure all frame components
+        for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
+        {
+            compRect = (*frame).getComponentArea().getPixelRect(wnd);
+
+            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
+            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
+            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
+            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+        }
         // measure all imagery components
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
@@ -190,6 +220,16 @@ namespace CEGUI
         Rect compRect;
         Rect bounds(0, 0, 0, 0);
 
+        // measure all frame components
+        for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
+        {
+            compRect = (*frame).getComponentArea().getPixelRect(wnd, rect);
+
+            bounds.d_left   = ceguimin(bounds.d_left, compRect.d_left);
+            bounds.d_top    = ceguimin(bounds.d_top, compRect.d_top);
+            bounds.d_right  = ceguimax(bounds.d_right, compRect.d_right);
+            bounds.d_bottom = ceguimax(bounds.d_bottom, compRect.d_bottom);
+        }
         // measure all imagery components
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {

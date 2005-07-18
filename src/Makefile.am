@@ -123,7 +123,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITitlebarProperties.cpp \
                       elements/CEGUITooltip.cpp \
                       elements/CEGUITooltipProperties.cpp \
+                      falagard/CEGUIFalComponentBase.cpp \
                       falagard/CEGUIFalDimensions.cpp \
+                      falagard/CEGUIFalFrameComponent.cpp \
                       falagard/CEGUIFalImageryComponent.cpp \
                       falagard/CEGUIFalImagerySection.cpp \
                       falagard/CEGUIFalLayerSpecification.cpp \
@@ -136,6 +138,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalWidgetComponent.cpp \
                       falagard/CEGUIFalWidgetLookFeel.cpp \
                       falagard/CEGUIFalWidgetLookManager.cpp \
+                      falagard/CEGUIFalXMLEnumHelper.cpp \
                       falagard/CEGUIFalagard_xmlHandler.cpp \
                       pcre/chartables.c \
                       pcre/get.c \

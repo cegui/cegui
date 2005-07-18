@@ -26,8 +26,10 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "falagard/CEGUIFalWidgetComponent.h"
 #include "falagard/CEGUIFalTextComponent.h"
+#include "falagard/CEGUIFalFrameComponent.h"
 #include "falagard/CEGUIFalNamedArea.h"
 #include "falagard/CEGUIFalPropertyDefinition.h"
+#include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
 #include <sstream>
@@ -46,6 +48,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::SectionElement("Section");
     const String Falagard_xmlHandler::ImageryComponentElement("ImageryComponent");
     const String Falagard_xmlHandler::TextComponentElement("TextComponent");
+    const String Falagard_xmlHandler::FrameComponentElement("FrameComponent");
     const String Falagard_xmlHandler::AreaElement("Area");
     const String Falagard_xmlHandler::ImageElement("Image");
     const String Falagard_xmlHandler::ColoursElement("Colours");
@@ -108,7 +111,8 @@ namespace CEGUI
         d_imagerycomponent(0),
         d_area(0),
         d_textcomponent(0),
-        d_namedArea(0)
+        d_namedArea(0),
+        d_framecomponent(0)
     {
     }
 
@@ -183,6 +187,13 @@ namespace CEGUI
 
             CEGUI_LOGINSANE("-------> Text component definition...");
         }
+        else if (element == FrameComponentElement)
+        {
+            assert(d_framecomponent == 0);
+            d_framecomponent = new FrameComponent();
+
+            CEGUI_LOGINSANE("-------> Frame component definition...");
+        }
         else if (element == AreaElement)
         {
             assert(d_area == 0);
@@ -199,7 +210,11 @@ namespace CEGUI
             );
 
             // need to decide what to apply colours to
-            if (d_imagerycomponent)
+            if (d_framecomponent)
+            {
+                d_framecomponent->setColours(cols);
+            }
+            else if (d_imagerycomponent)
             {
                 d_imagerycomponent->setColours(cols);
             }
@@ -220,7 +235,12 @@ namespace CEGUI
         else if ((element == ColourPropertyElement) || (element == ColourRectPropertyElement))
         {
             // need to decide what to apply colours to
-            if (d_imagerycomponent)
+            if (d_framecomponent)
+            {
+                d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+                d_framecomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
+            }
+            else if (d_imagerycomponent)
             {
                 d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
                 d_imagerycomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
@@ -262,49 +282,70 @@ namespace CEGUI
         else if (element == VertAlignmentElement)
         {
             assert(d_childcomponent != 0);
-            d_childcomponent->setVerticalWidgetAlignment(stringToVertAlignment(attributes.getValueAsString(TypeAttribute)));
+            d_childcomponent->setVerticalWidgetAlignment(FalagardXMLHelper::stringToVertAlignment(attributes.getValueAsString(TypeAttribute)));
         }
         else if (element == HorzAlignmentElement)
         {
             assert(d_childcomponent != 0);
-            d_childcomponent->setHorizontalWidgetAlignemnt(stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
+            d_childcomponent->setHorizontalWidgetAlignemnt(FalagardXMLHelper::stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
         }
         else if (element == VertFormatElement)
         {
-            if (d_imagerycomponent)
+            if (d_framecomponent)
             {
-                d_imagerycomponent->setVerticalFormatting(stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+                d_framecomponent->setBackgroundVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+            }
+            else if (d_imagerycomponent)
+            {
+                d_imagerycomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
             }
             else if (d_textcomponent)
             {
-                d_textcomponent->setVerticalFormatting(stringToVertTextFormat(attributes.getValueAsString(TypeAttribute)));
+                d_textcomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertTextFormat(attributes.getValueAsString(TypeAttribute)));
             }
         }
         else if (element == HorzFormatElement)
         {
-            if (d_imagerycomponent)
+            if (d_framecomponent)
             {
-                d_imagerycomponent->setHorizontalFormatting(stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+                d_framecomponent->setBackgroundHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+            }
+            else if (d_imagerycomponent)
+            {
+                d_imagerycomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
             }
             else if (d_textcomponent)
             {
-                d_textcomponent->setHorizontalFormatting(stringToHorzTextFormat(attributes.getValueAsString(TypeAttribute)));
+                d_textcomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzTextFormat(attributes.getValueAsString(TypeAttribute)));
             }
         }
         else if (element == ImageElement)
         {
-            assert(d_imagerycomponent);
-            d_imagerycomponent->setImage(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute));
+            if (d_imagerycomponent)
+            {
+                d_imagerycomponent->setImage(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute));
+                CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute));
+            }
+            else if (d_framecomponent)
+            {
+                d_framecomponent->setImage(
+                    FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
+                    attributes.getValueAsString(ImagesetAttribute),
+                    attributes.getValueAsString(ImageAttribute));
 
-            CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute));
+                CEGUI_LOGINSANE("---------> Using image: " +
+                    attributes.getValueAsString(ImageAttribute) + " from imageset: " +
+                    attributes.getValueAsString(ImagesetAttribute) + " for: " +
+                    attributes.getValueAsString(TypeAttribute));
+            }
         }
 		else if (element == DimElement)
 		{
-			d_dimension.setDimensionType(stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+			d_dimension.setDimensionType(FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
 		}
         else if (element == UnifiedDimElement)
         {
-            UnifiedDim base(UDim(attributes.getValueAsFloat(ScaleAttribute), attributes.getValueAsFloat(OffsetAttribute)), stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+            UnifiedDim base(UDim(attributes.getValueAsFloat(ScaleAttribute), attributes.getValueAsFloat(OffsetAttribute)), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
             doBaseDimStart(&base);
         }
         else if (element == AbsoluteDimElement)
@@ -314,12 +355,12 @@ namespace CEGUI
         }
         else if (element == ImageDimElement)
         {
-            ImageDim base(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute), stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+            ImageDim base(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
             doBaseDimStart(&base);
         }
         else if (element == WidgetDimElement)
         {
-            WidgetDim base(attributes.getValueAsString(WidgetAttribute), stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+            WidgetDim base(attributes.getValueAsString(WidgetAttribute), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
             doBaseDimStart(&base);
         }
         else if (element == FontDimElement)
@@ -328,7 +369,7 @@ namespace CEGUI
                 attributes.getValueAsString(WidgetAttribute),
                 attributes.getValueAsString(FontAttribute),
                 attributes.getValueAsString(StringAttribute),
-                stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
+                FalagardXMLHelper::stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
                 attributes.getValueAsFloat(PaddingAttribute));
 
             doBaseDimStart(&base);
@@ -355,7 +396,7 @@ namespace CEGUI
         {
             if (!d_dimStack.empty())
             {
-                d_dimStack.back()->setDimensionOperator(stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
+                d_dimStack.back()->setDimensionOperator(FalagardXMLHelper::stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
             }
         }
         else if (element == PropertyDefinitionElement)
@@ -485,15 +526,31 @@ namespace CEGUI
                 d_textcomponent = 0;
             }
         }
+        // ending a Frame component specification
+        else if (element == FrameComponentElement)
+        {
+            assert(d_imagerysection != 0);
+
+            if (d_framecomponent)
+            {
+                d_imagerysection->addFrameComponent(*d_framecomponent);
+                delete d_framecomponent;
+                d_framecomponent = 0;
+            }
+        }
         // component area end
         else if (element == AreaElement)
         {
-            assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0) || d_namedArea != 0);
+            assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0) || d_namedArea != 0 || d_framecomponent != 0);
             assert(d_area != 0);
 
             if (d_childcomponent)
             {
                 d_childcomponent->setComponentArea(*d_area);
+            }
+            else if (d_framecomponent)
+            {
+                d_framecomponent->setComponentArea(*d_area);
             }
             else if (d_imagerycomponent)
             {
@@ -538,134 +595,6 @@ namespace CEGUI
         s >> std::hex >> val;
 
         return val;
-    }
-
-    VerticalFormatting Falagard_xmlHandler::stringToVertFormat(const String& str)
-    {
-        if (str == "CentreAligned")
-        {
-            return VF_CENTRE_ALIGNED;
-        }
-        else if (str == "BottomAligned")
-        {
-            return VF_BOTTOM_ALIGNED;
-        }
-        else if (str == "Tiled")
-        {
-            return VF_TILED;
-        }
-        else if (str == "Stretched")
-        {
-            return VF_STRETCHED;
-        }
-        else
-        {
-            return VF_TOP_ALIGNED;
-        }
-    }
-
-    HorizontalFormatting Falagard_xmlHandler::stringToHorzFormat(const String& str)
-    {
-        if (str == "CentreAligned")
-        {
-            return HF_CENTRE_ALIGNED;
-        }
-        else if (str == "RightAligned")
-        {
-            return HF_RIGHT_ALIGNED;
-        }
-        else if (str == "Tiled")
-        {
-            return HF_TILED;
-        }
-        else if (str == "Stretched")
-        {
-            return HF_STRETCHED;
-        }
-        else
-        {
-            return HF_LEFT_ALIGNED;
-        }
-    }
-
-    VerticalAlignment Falagard_xmlHandler::stringToVertAlignment(const String& str)
-    {
-        if (str == "CentreAligned")
-        {
-            return VA_CENTRE;
-        }
-        else if (str == "BottomAligned")
-        {
-            return VA_BOTTOM;
-        }
-        else
-        {
-            return VA_TOP;
-        }
-    }
-
-    HorizontalAlignment Falagard_xmlHandler::stringToHorzAlignment(const String& str)
-    {
-        if (str == "CentreAligned")
-        {
-            return HA_CENTRE;
-        }
-        else if (str == "RightAligned")
-        {
-            return HA_RIGHT;
-        }
-        else
-        {
-            return HA_LEFT;
-        }
-    }
-
-    DimensionType Falagard_xmlHandler::stringToDimensionType(const String& str)
-    {
-        if (str == "LeftEdge")
-        {
-            return DT_LEFT_EDGE;
-        }
-        else if (str == "XPosition")
-        {
-            return DT_X_POSITION;
-        }
-        else if (str == "TopEdge")
-        {
-            return DT_TOP_EDGE;
-        }
-        else if (str == "YPosition")
-        {
-            return DT_Y_POSITION;
-        }
-        else if (str == "RightEdge")
-        {
-            return DT_RIGHT_EDGE;
-        }
-        else if (str == "BottomEdge")
-        {
-            return DT_BOTTOM_EDGE;
-        }
-        else if (str == "Width")
-        {
-            return DT_WIDTH;
-        }
-        else if (str == "Height")
-        {
-            return DT_HEIGHT;
-        }
-        else if (str == "XOffset")
-        {
-            return DT_X_OFFSET;
-        }
-        else if (str == "YOffset")
-        {
-            return DT_Y_OFFSET;
-        }
-        else
-        {
-            return DT_INVALID;
-        }
     }
 
     void Falagard_xmlHandler::assignAreaDimension(Dimension& dim)
@@ -716,98 +645,6 @@ namespace CEGUI
                 d_dimension.setBaseDimension(*currDim);
                 assignAreaDimension(d_dimension);
             }
-        }
-    }
-
-    VerticalTextFormatting Falagard_xmlHandler::stringToVertTextFormat(const String& str)
-    {
-        if (str == "CentreAligned")
-        {
-            return VTF_CENTRE_ALIGNED;
-        }
-        else if (str == "BottomAligned")
-        {
-            return VTF_BOTTOM_ALIGNED;
-        }
-        else
-        {
-            return VTF_TOP_ALIGNED;
-        }
-    }
-
-    HorizontalTextFormatting Falagard_xmlHandler::stringToHorzTextFormat(const String& str)
-    {
-        if (str == "CentreAligned")
-        {
-            return HTF_CENTRE_ALIGNED;
-        }
-        else if (str == "RightAligned")
-        {
-            return HTF_RIGHT_ALIGNED;
-        }
-        else if (str == "Justified")
-        {
-            return HTF_JUSTIFIED;
-        }
-        else if (str == "WordWrapLeftAligned")
-        {
-            return HTF_WORDWRAP_LEFT_ALIGNED;
-        }
-        else if (str == "WordWrapCentreAligned")
-        {
-            return HTF_WORDWRAP_CENTRE_ALIGNED;
-        }
-        else if (str == "WordWrapRightAligned")
-        {
-            return HTF_WORDWRAP_RIGHT_ALIGNED;
-        }
-        else if (str == "WordWrapJustified")
-        {
-            return HTF_WORDWRAP_JUSTIFIED;
-        }
-        else
-        {
-            return HTF_LEFT_ALIGNED;
-        }
-    }
-
-    FontMetricType Falagard_xmlHandler::stringToFontMetricType(const String& str)
-    {
-        if (str == "LineSpacing")
-        {
-            return FMT_LINE_SPACING;
-        }
-        else if (str == "Baseline")
-        {
-            return FMT_BASELINE;
-        }
-        else
-        {
-            return FMT_HORZ_EXTENT;
-        }
-    }
-
-    DimensionOperator Falagard_xmlHandler::stringToDimensionOperator(const String& str)
-    {
-        if (str == "Add")
-        {
-            return DOP_ADD;
-        }
-        else if (str == "Subtract")
-        {
-            return DOP_SUBTRACT;
-        }
-        else if (str == "Multiply")
-        {
-            return DOP_MULTIPLY;
-        }
-        else if (str == "Divide")
-        {
-            return DOP_DIVIDE;
-        }
-        else
-        {
-            return DOP_NOOP;
         }
     }
 

@@ -270,7 +270,13 @@
 				Name="falagard"
 				Filter="">
 				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalComponentBase.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalDimensions.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalFrameComponent.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalImageryComponent.cpp">
@@ -307,6 +313,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalWidgetLookManager.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalXMLEnumHelper.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp">
@@ -836,10 +845,16 @@
 				Name="falagard"
 				Filter="">
 				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalComponentBase.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalDimensions.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalEnums.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalFrameComponent.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalImageryComponent.h">
@@ -876,6 +891,9 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalWidgetLookManager.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalXMLEnumHelper.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h">

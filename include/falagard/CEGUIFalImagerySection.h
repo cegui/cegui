@@ -26,6 +26,7 @@
 
 #include "falagard/CEGUIFalImageryComponent.h"
 #include "falagard/CEGUIFalTextComponent.h"
+#include "falagard/CEGUIFalFrameComponent.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -135,6 +136,27 @@ namespace CEGUI
 
         /*!
         \brief
+            Clear all FrameComponents from this ImagerySection.
+
+        \return
+            Nothing
+        */
+        void clearFrameComponents();
+
+        /*!
+        \brief
+            Add a FrameComponent to this ImagerySection.
+
+        \param frame
+            FrameComponent to be added to the section (a copy is made)
+
+        \return
+            Nothing
+        */
+        void addFrameComponent(const FrameComponent& frame);
+
+        /*!
+        \brief
             Return the current master colours set for this ImagerySection.
 
         \return
@@ -215,9 +237,11 @@ namespace CEGUI
     private:
         typedef std::vector<ImageryComponent> ImageryList;
         typedef std::vector<TextComponent> TextList;
+        typedef std::vector<FrameComponent> FrameList;
 
         CEGUI::String       d_name;             //!< Holds the name of the ImagerySection.
         CEGUI::ColourRect   d_masterColours;    //!< Naster colours for the the ImagerySection (combined with colours of each ImageryComponent).
+        FrameList           d_frames;           //!< Collection of FrameComponent objects to be drawn for this ImagerySection.
         ImageryList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
         TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
         String              d_colourPropertyName;   //!< name of property to fetch colours from.

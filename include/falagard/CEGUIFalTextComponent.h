@@ -24,8 +24,7 @@
 #ifndef _CEGUIFalTextComponent_h_
 #define _CEGUIFalTextComponent_h_
 
-#include "falagard/CEGUIFalDimensions.h"
-#include "CEGUIWindow.h"
+#include "falagard/CEGUIFalComponentBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -34,7 +33,7 @@ namespace CEGUI
     \brief
         Class that encapsulates information for a text component.
     */
-    class TextComponent
+    class CEGUIEXPORT TextComponent : public FalagardComponentBase
     {
     public:
         /*!
@@ -42,70 +41,6 @@ namespace CEGUI
             Constructor
         */
         TextComponent();
-
-        /*!
-        \brief
-            Render this TextComponent.  More correctly, the TextComponent is cached for rendering.
-
-        \param srcWindow
-            Window to use as the base for translating the TextComponent's ComponentArea into pixel values.
-
-        \param base_z
-            The z value to use for rendering the text.  Note that this is not the final z value to use, but
-            some z offset from a currently unknown starting value.
-
-        \param modColours
-            ColourRect describing colours that are to be modulated with the TextComponent's stored colour values
-            to calculate a set of 'final' colour values to be used.  May be 0.
-
-        \return
-            Nothing.
-        */
-        void render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
-
-        /*!
-        \brief
-            Render this TextComponent.  More correctly, the TextComponent is cached for rendering.
-
-        \param srcWindow
-            Window to use as the base for translating the TextComponent's ComponentArea into pixel values.
-
-        \param baseRect
-            Rect to use as the base for translating the TextComponent's ComponentArea into pixel values.
-
-        \param base_z
-            The z value to use for rendering the text.  Note that this is not the final z value to use, but
-            some z offset from a currently unknown starting value.
-
-        \param modColours
-            ColourRect describing colours that are to be modulated with the TextComponent's stored colour values
-            to calculate a set of 'final' colour values to be used.  May be 0.
-
-        \return
-            Nothing.
-        */
-        void render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
-
-        /*!
-        \brief
-            Return the ComponentArea of this TextComponent.
-
-        \return
-            ComponentArea object describing the TextComponent's current target area.
-        */
-        const ComponentArea& getComponentArea() const;
-
-        /*!
-        \brief
-            Set the TextComponent's ComponentArea.
-
-        \param area
-            ComponentArea object describing a new target area for the TextComponent.
-
-        \return
-            Nothing.
-        */
-        void setComponentArea(const ComponentArea& area);
 
         /*!
         \brief
@@ -157,24 +92,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the ColourRect set for use by this TextComponent.
-
-        \return
-            ColourRect object holding the colours currently in use by this TextComponent.
-        */
-        const ColourRect& getColours() const;
-
-        /*!
-        \brief
-            Set the colours to be used by this TextComponent.
-
-        \param cols
-            ColourRect object describing the colours to be used by this TextComponent.
-        */
-        void setColours(const ColourRect& cols);
-
-        /*!
-        \brief
             Return the current vertical formatting setting for this TextComponent.
 
         \return
@@ -215,58 +132,15 @@ namespace CEGUI
         */
         void setHorizontalFormatting(HorizontalTextFormatting fmt);
 
-        /*!
-        \brief
-            Set the name of the property where colour values can be obtained.
-
-        \param property
-            String containing the name of the property.
-
-        \return
-            Nothing.
-        */
-        void setColoursPropertySource(const String& property);
-
-        /*!
-        \brief
-            Set whether the colours property source represents a full ColourRect.
-
-        \param setting
-            - true if the colours property will access a ColourRect object.
-            - false if the colours property will access a colour object.
-
-        \return
-            Nothing.
-        */
-        void setColoursPropertyIsColourRect(bool setting = true);
-
     protected:
-        /*!
-        \brief
-            Helper method to initialise a ColourRect with appropriate values according to the way the
-            TextComponent is set up.
-
-            This will try and get values from multiple places:
-                - a property attached to \a wnd
-                - or the integral d_colours value.
-        */
-        void initColoursRect(const Window& wnd, ColourRect& cr) const;
-
-        /*!
-        \brief
-            Method to perform the main render caching work.
-        */
+        // implemets abstract from base
         void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
 
     private:
-        ComponentArea        d_area;            //!< Destination area for this component.
         String               d_text;            //!< text rendered by this component.
         String               d_font;            //!< name of font to use.
-        ColourRect           d_colours;         //!< base colours to be applied when rendering the component.
         VerticalTextFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the component.
         HorizontalTextFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the component.
-        String              d_colourPropertyName;   //!< name of property to fetch colours from.
-        bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
     };
 
 } // End of  CEGUI namespace section

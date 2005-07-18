@@ -46,6 +46,7 @@ namespace CEGUI
     class Dimension;
     class TextComponent;
     class NamedArea;
+    class FrameComponent;
 
     /*!
     \brief
@@ -86,6 +87,7 @@ namespace CEGUI
         static const String SectionElement;             //!< Tag name for Section elements.
         static const String ImageryComponentElement;    //!< Tag name for ImageryComponent elements.
         static const String TextComponentElement;       //!< Tag name for TextComponent elements.
+        static const String FrameComponentElement;      //!< Tag name for FrameComponent elements.
         static const String AreaElement;                //!< Tag name for Area elements.
         static const String ImageElement;               //!< Tag name for Image elements.
         static const String ColoursElement;             //!< Tag name for Colours elements.
@@ -138,15 +140,6 @@ namespace CEGUI
             helper methods
         **************************************************************************/
         static argb_t hexStringToARGB(const String& str);
-        static VerticalFormatting stringToVertFormat(const String& str);
-        static HorizontalFormatting stringToHorzFormat(const String& str);
-        static VerticalAlignment stringToVertAlignment(const String& str);
-        static HorizontalAlignment stringToHorzAlignment(const String& str);
-        static DimensionType stringToDimensionType(const String& str);
-        static VerticalTextFormatting stringToVertTextFormat(const String& str);
-        static HorizontalTextFormatting stringToHorzTextFormat(const String& str);
-        static FontMetricType stringToFontMetricType(const String& str);
-        static DimensionOperator stringToDimensionOperator(const String& str);
 
         /*************************************************************************
             implementation methods
@@ -174,6 +167,7 @@ namespace CEGUI
         TextComponent*  d_textcomponent;
         int d_dimIdx;
         NamedArea*      d_namedArea;
+        FrameComponent*  d_framecomponent;
 
         std::vector<BaseDim*>    d_dimStack;
     };

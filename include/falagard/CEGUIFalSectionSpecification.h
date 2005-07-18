@@ -40,7 +40,7 @@ namespace CEGUI
         This class enables sections to be easily re-used, by different states and/or layers, by allowing
         sections to be specified by name rather than having mutiple copies of the same thing all over the place.
     */
-    class SectionSpecification
+    class CEGUIEXPORT SectionSpecification
     {
     public:
         /*!

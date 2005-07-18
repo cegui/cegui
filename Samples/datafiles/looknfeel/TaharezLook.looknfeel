@@ -1832,135 +1832,23 @@
             <HorzAlignment type="RightAligned" />
         </Child>
         <ImagerySection name="main">
-            <ImageryComponent>
+            <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="ListboxTopLeft" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxTopRight" />
-                <HorzFormat type="RightAligned" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxBottomLeft" />
-                <VertFormat type="BottomAligned" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxBottomRight" />
-                <VertFormat type="BottomAligned" />
-                <HorzFormat type="RightAligned" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><ImageDim imageset="TaharezLook" image="ListboxTopLeft" dimension="Height" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim imageset="TaharezLook" image="ListboxBottomLeft" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxLeft" />
-                <VertFormat type="Stretched" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><ImageDim imageset="TaharezLook" image="ListboxTopRight" dimension="Height" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim imageset="TaharezLook" image="ListboxBottomRight" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxRight" />
-                <VertFormat type="Stretched" />
-                <HorzFormat type="RightAligned" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="ListboxTopLeft" dimension="Width" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim imageset="TaharezLook" image="ListboxTopRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxTop" />
-                <HorzFormat type="Stretched" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="ListboxBottomLeft" dimension="Width" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim imageset="TaharezLook" image="ListboxBottomRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxBottom" />
-                <VertFormat type="BottomAligned" />
-                <HorzFormat type="Stretched" />
-            </ImageryComponent>
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="ListboxLeft" dimension="Width" /></Dim>
-                    <Dim type="TopEdge" ><ImageDim imageset="TaharezLook" image="ListboxTop" dimension="Height" /></Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim imageset="TaharezLook" image="ListboxRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim imageset="TaharezLook" image="ListboxBottom" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
-                <Image imageset="TaharezLook" image="ListboxBackdrop" />
-                <VertFormat type="Stretched" />
-                <HorzFormat type="Stretched" />
-            </ImageryComponent>
+                <Image type="TopLeftCorner" imageset="TaharezLook" image="ListboxTopLeft" />
+                <Image type="TopRightCorner" imageset="TaharezLook" image="ListboxTopRight" />
+                <Image type="BottomLeftCorner" imageset="TaharezLook" image="ListboxBottomLeft" />
+                <Image type="BottomRightCorner" imageset="TaharezLook" image="ListboxBottomRight" />
+                <Image type="LeftEdge" imageset="TaharezLook" image="ListboxLeft" />
+                <Image type="RightEdge" imageset="TaharezLook" image="ListboxRight" />
+                <Image type="TopEdge" imageset="TaharezLook" image="ListboxTop" />
+                <Image type="BottomEdge" imageset="TaharezLook" image="ListboxBottom" />
+                <Image type="Background" imageset="TaharezLook" image="ListboxBackdrop" />
+            </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
             <Layer>

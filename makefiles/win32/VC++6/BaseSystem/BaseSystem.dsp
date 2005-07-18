@@ -163,7 +163,15 @@ SOURCE=..\..\..\..\src\pcre\study.c
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\..\..\src\falagard\CEGUIFalComponentBase.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\falagard\CEGUIFalDimensions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalFrameComponent.cpp
 # End Source File
 # Begin Source File
 
@@ -212,6 +220,10 @@ SOURCE=..\..\..\..\src\falagard\CEGUIFalWidgetLookFeel.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\falagard\CEGUIFalWidgetLookManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalXMLEnumHelper.cpp
 # End Source File
 # Begin Source File
 
@@ -739,11 +751,19 @@ SOURCE=..\..\..\..\src\pcre\ucpinternal.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\..\..\include\falagard\CEGUIFalComponentBase.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\falagard\CEGUIFalDimensions.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\include\falagard\CEGUIFalEnums.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalFrameComponent.h
 # End Source File
 # Begin Source File
 
@@ -792,6 +812,10 @@ SOURCE=..\..\..\..\include\falagard\CEGUIFalWidgetLookFeel.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\falagard\CEGUIFalWidgetLookManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalXMLEnumHelper.h
 # End Source File
 # Begin Source File
 

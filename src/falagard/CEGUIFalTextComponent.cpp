@@ -30,35 +30,9 @@
 namespace CEGUI
 {
     TextComponent::TextComponent() :
-        d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
         d_vertFormatting(VTF_TOP_ALIGNED),
-        d_horzFormatting(HTF_LEFT_ALIGNED),
-        d_colourProperyIsRect(false)
+        d_horzFormatting(HTF_LEFT_ALIGNED)
     {}
-
-    void TextComponent::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
-    {
-        // calculate area to render to
-        Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, base_z, modColours, (clipper != 0) ? clipper : &destRect, clipToDisplay);
-    }
-
-    void TextComponent::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
-    {
-        // calculate area to render to
-        Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, base_z, modColours, (clipper != 0) ? clipper : &destRect, clipToDisplay);
-    }
-
-    const ComponentArea& TextComponent::getComponentArea() const
-    {
-        return d_area;
-    }
-
-    void TextComponent::setComponentArea(const ComponentArea& area)
-    {
-        d_area = area;
-    }
 
     const String& TextComponent::getText() const
     {
@@ -78,16 +52,6 @@ namespace CEGUI
     void TextComponent::setFont(const String& font)
     {
         d_font = font;
-    }
-
-    const ColourRect& TextComponent::getColours() const
-    {
-        return d_colours;
-    }
-
-    void TextComponent::setColours(const ColourRect& cols)
-    {
-        d_colours = cols;
     }
 
     VerticalTextFormatting TextComponent::getVerticalFormatting() const
@@ -110,43 +74,6 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    void TextComponent::setColoursPropertySource(const String& property)
-    {
-        d_colourPropertyName = property;
-    }
-
-    void TextComponent::setColoursPropertyIsColourRect(bool setting)
-    {
-        d_colourProperyIsRect = setting;
-    }
-
-    void TextComponent::initColoursRect(const Window& wnd, ColourRect& cr) const
-    {
-        // if colours come via a colour property
-        if (!d_colourPropertyName.empty())
-        {
-            // if property accesses a ColourRect
-            if (d_colourProperyIsRect)
-            {
-                cr = PropertyHelper::stringToColourRect(wnd.getProperty(d_colourPropertyName));
-            }
-            // property accesses a colour
-            else
-            {
-                colour val(PropertyHelper::stringToColour(wnd.getProperty(d_colourPropertyName)));
-                cr.d_top_left     = val;
-                cr.d_top_right    = val;
-                cr.d_bottom_left  = val;
-                cr.d_bottom_right = val;
-            }
-        }
-        // use explicit ColourRect.
-        else
-        {
-            cr = d_colours;
-        }
-    }
-
     void TextComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // get font to use
@@ -167,11 +94,7 @@ namespace CEGUI
 
         // calculate final colours to be used
         ColourRect finalColours;
-        initColoursRect(srcWindow, finalColours);
-        if (modColours)
-        {
-            finalColours *= *modColours;
-        }
+        initColoursRect(srcWindow, modColours, finalColours);
 
         // decide which string to render.
         const String& renderString = d_text.empty() ? srcWindow.getText() : d_text;

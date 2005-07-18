@@ -38,7 +38,7 @@ namespace CEGUI
     \todo
         This is not finished in the slightest!  There will be many changes here...
     */
-    class WidgetComponent
+    class CEGUIEXPORT WidgetComponent
     {
     public:
         WidgetComponent() {}

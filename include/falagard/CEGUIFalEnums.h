@@ -123,6 +123,24 @@ namespace CEGUI
         DOP_DIVIDE      //!< Dims should be divided.
     };
 
+    /*!
+    \brief
+        Enumeration of values referencing available images forming a frame component.
+    */
+    enum FrameImageComponent
+    {
+        FIC_BACKGROUND,             //!< References image used for the background.
+        FIC_TOP_LEFT_CORNER,        //!< References image used for the top-left corner.
+        FIC_TOP_RIGHT_CORNER,       //!< References image used for the top-right corner.
+        FIC_BOTTOM_LEFT_CORNER,     //!< References image used for the bottom-left corner.
+        FIC_BOTTOM_RIGHT_CORNER,    //!< References image used for the bottom-right corner.
+        FIC_LEFT_EDGE,              //!< References image used for the left edge.
+        FIC_RIGHT_EDGE,             //!< References image used for the right edge.
+        FIC_TOP_EDGE,               //!< References image used for the top edge.
+        FIC_BOTTOM_EDGE,            //!< References image used for the bottom edge.
+        FIC_FRAME_IMAGE_COUNT       //!< Max number of images for a frame.
+    };
+
 } // End of  CEGUI namespace section
 
 
