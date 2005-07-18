@@ -242,7 +242,7 @@ namespace CEGUI
             finalRect.d_bottom = finalRect.d_top + imageSize.d_height;
 
             // adjust background area to miss this edge
-            backgroundRect.d_top += imageSize.d_height;
+            backgroundRect.d_top += imageSize.d_height + d_frameImages[FIC_TOP_EDGE]->getOffsetY();;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
@@ -270,7 +270,7 @@ namespace CEGUI
             finalRect.d_top    = finalRect.d_bottom - imageSize.d_height;
 
             // adjust background area to miss this edge
-            backgroundRect.d_bottom -= imageSize.d_height;
+            backgroundRect.d_bottom -= imageSize.d_height - d_frameImages[FIC_BOTTOM_EDGE]->getOffsetY();;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
@@ -298,7 +298,7 @@ namespace CEGUI
             finalRect.d_bottom = finalRect.d_top + leftHeight;
 
             // adjust background area to miss this edge
-            backgroundRect.d_left += imageSize.d_width;
+            backgroundRect.d_left += imageSize.d_width + d_frameImages[FIC_LEFT_EDGE]->getOffsetX();
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
@@ -326,7 +326,7 @@ namespace CEGUI
             finalRect.d_left   = finalRect.d_right - imageSize.d_width;
 
             // adjust background area to miss this edge
-            backgroundRect.d_right -= imageSize.d_width;
+            backgroundRect.d_right -= imageSize.d_width - d_frameImages[FIC_RIGHT_EDGE]->getOffsetX();
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
