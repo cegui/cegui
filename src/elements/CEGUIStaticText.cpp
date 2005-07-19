@@ -244,7 +244,7 @@ void StaticText::initialise(void)
 *************************************************************************/
 Rect StaticText::getTextRenderArea(void) const
 {
-	Rect area(getAbsoluteRect());
+	Rect area(Point(0,0), getAbsoluteSize());
 
 	if (d_horzScrollbar->isVisible())
 	{

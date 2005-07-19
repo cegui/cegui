@@ -287,7 +287,7 @@ colour Static::calculateModulatedAlphaColour(const colour& col, float alpha) con
 *************************************************************************/
 void Static::populateRenderCache()
 {
-	Rect backgroundRect(getAbsoluteRect());
+	Rect backgroundRect(Point(0,0), getAbsoluteSize());
 
 	// draw frame
 	if (d_frameEnabled)
