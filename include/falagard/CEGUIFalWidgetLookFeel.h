@@ -260,8 +260,8 @@ namespace CEGUI
     private:
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;
-        typedef std::map<String, WidgetComponent> WidgetList;
         typedef std::map<String, NamedArea>       NamedAreaList;
+        typedef std::vector<WidgetComponent>      WidgetList;
         typedef std::vector<PropertyInitialiser>  PropertyList;
         typedef std::vector<PropertyDefinition>   PropertyDefinitionList;
 

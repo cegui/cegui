@@ -76,13 +76,7 @@ namespace CEGUI
 
     void WidgetLookFeel::addWidgetComponent(const WidgetComponent& widget)
     {
-        if (d_childWidgets.find(widget.getWidgetNameSuffix()) != d_childWidgets.end())
-        {
-            Logger::getSingleton().logEvent(
-                "WidgetLookFeel::addWidgetComponent - Child widget defintion '" + widget.getWidgetLookName() + "' already exists.  Replacing previous definition.");
-        }
-
-        d_childWidgets[widget.getWidgetNameSuffix()] = widget;
+        d_childWidgets.push_back(widget);
     }
 
     void WidgetLookFeel::addStateSpecification(const StateImagery& state)
@@ -141,7 +135,7 @@ namespace CEGUI
         // add required child widgets
         for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
         {
-            (*curr).second.create(widget);
+            (*curr).create(widget);
         }
     }
 
@@ -188,7 +182,7 @@ namespace CEGUI
         // apply properties to the parent window
         for(WidgetList::const_iterator wdgt = d_childWidgets.begin(); wdgt != d_childWidgets.end(); ++wdgt)
         {
-            (*wdgt).second.layout(owner);
+            (*wdgt).layout(owner);
         }
     }
 
