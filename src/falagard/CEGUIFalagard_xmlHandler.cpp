@@ -409,7 +409,7 @@ namespace CEGUI
                 attributes.getValueAsBool(LayoutOnWriteAttribute)
             );
 
-            CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + prop.getDefault());
+            CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
 
             d_widgetlook->addPropertyDefinition(prop);
         }

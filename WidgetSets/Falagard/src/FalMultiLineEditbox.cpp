@@ -109,7 +109,7 @@ namespace CEGUI
                 caratArea.setHeight(fnt->getLineSpacing());
 
                 // cache the carat image for rendering.
-                caratImagery.render(*this, caratArea, baseZ, 0, &textArea, &caratArea);
+                caratImagery.render(*this, caratArea, baseZ, 0, &textArea);
             }
         }
     }
