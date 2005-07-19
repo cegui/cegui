@@ -105,8 +105,8 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the number of seconds the mouse should hover stationary over the target window before
-            the tooltip gets activated.
+            Set the number of seconds the tooltip should be displayed for before it automatically
+            de-activates itself.  0 indicates that the tooltip should never timesout and auto-deactivate.
 
         \param seconds
             float value representing a number of seconds.
@@ -128,8 +128,8 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the number of seconds that should be taken to fade the tooltip into and out of
-            visibility.
+            Set the number of seconds the mouse should hover stationary over the target window before
+            the tooltip gets activated.
 
         \param seconds
             float value representing a number of seconds.
@@ -151,8 +151,8 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the number of seconds the tooltip should be displayed for before it automatically
-            de-activates itself.  use a value of 0 if you never want the tooltip to timeout.
+            Set the number of seconds that should be taken to fade the tooltip into and out of
+            visibility.
 
         \param seconds
             float value representing a number of seconds.
