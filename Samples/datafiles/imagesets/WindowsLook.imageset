@@ -121,7 +121,7 @@
 
 	<Image Name="TooltipTopLeft" XPos="74" YPos="38" Width="3" Height="3" />
 	<Image Name="TooltipTopRight" XPos="87" YPos="38" Width="4" Height="3" />
-	<Image Name="TooltipBottomLeft" XPos="74" YPos="51" Width="3" Height="3" />
+	<Image Name="TooltipBottomLeft" XPos="74" YPos="51" Width="3" Height="4" />
 	<Image Name="TooltipBottomRight" XPos="87" YPos="51" Width="4" Height="4" />
 	<Image Name="TooltipLeftEdge" XPos="74" YPos="45" Width="3" Height="2" />
 	<Image Name="TooltipRightEdge" XPos="87" YPos="45" Width="4" Height="2" />
