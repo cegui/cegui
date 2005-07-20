@@ -729,6 +729,8 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void    onTextChanged(WindowEventArgs& e);
+	virtual void	onActivated(ActivationEventArgs& e);
+	virtual void	onDeactivated(ActivationEventArgs& e);
 
 
 	/*************************************************************************

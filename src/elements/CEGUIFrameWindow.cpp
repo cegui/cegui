@@ -797,6 +797,26 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
+    Handler for when this Window is activated
+*************************************************************************/
+void FrameWindow::onActivated(ActivationEventArgs& e)
+{
+	Window::onActivated(e);
+	d_titlebar->requestRedraw();
+}
+
+
+/*************************************************************************
+    Handler for when this Window is deactivated
+*************************************************************************/
+void FrameWindow::onDeactivated(ActivationEventArgs& e)
+{
+	Window::onDeactivated(e);
+	d_titlebar->requestRedraw();
+}
+
+
+/*************************************************************************
 	Set whether this FrameWindow can be moved by dragging the title bar.	
 *************************************************************************/
 void FrameWindow::setDragMovingEnabled(bool setting)
