@@ -123,6 +123,7 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
+	virtual void	onFontChanged(WindowEventArgs &e);
 
 
 	/*************************************************************************

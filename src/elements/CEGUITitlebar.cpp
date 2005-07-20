@@ -228,6 +228,20 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
+	Handler for when the font for this Window is changed
+*************************************************************************/
+void Titlebar::onFontChanged(WindowEventArgs& e)
+{
+	Window::onFontChanged(e);
+
+	if (d_parent != NULL)
+	{
+		d_parent->performChildWindowLayout();
+	}
+}
+
+
+/*************************************************************************
 	Add title bar specific properties
 *************************************************************************/
 void Titlebar::addTitlebarProperties(void)
