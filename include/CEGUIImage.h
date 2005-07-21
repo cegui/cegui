@@ -367,6 +367,18 @@ public:
 	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const;
 
 
+    /*!
+    \brief
+        Writes an xml representation of this Image object to \a out_stream.
+
+    \param out_stream
+        Stream where xml data should be output.
+
+    \return
+        Nothing.
+    */
+    void writeXMLToStream(OutStream& out_stream) const;
+
 
 	friend class std::map<String, Image>;
 	friend struct std::pair<const String, Image>;

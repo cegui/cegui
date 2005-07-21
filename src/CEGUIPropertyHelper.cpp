@@ -55,6 +55,17 @@ uint PropertyHelper::stringToUint(const String& str)
 }
 
 
+int PropertyHelper::stringToInt(const String& str)
+{
+	using namespace std;
+
+	uint val = 0;
+	sscanf(str.c_str(), " %d", &val);
+
+	return val;
+}
+
+
 bool PropertyHelper::stringToBool(const String& str)
 {
 	if ((str == (utf8*)"True") || (str == (utf8*)"true"))
@@ -201,6 +212,17 @@ String PropertyHelper::uintToString(uint val)
 
 	char buff[64];
 	sprintf(buff, "%u", val);
+
+	return String((utf8*)buff);
+}
+
+
+String PropertyHelper::intToString(int val)
+{
+	using namespace std;
+
+	char buff[64];
+	sprintf(buff, "%d", val);
 
 	return String((utf8*)buff);
 }

@@ -465,6 +465,19 @@ public:
 	ImageIterator	getIterator(void) const;
 
 
+    /*!
+    \brief
+        Writes an xml representation of this Imageset to \a out_stream.
+
+    \param out_stream
+        Stream where xml data should be output.
+
+    \return
+        Nothing.
+    */
+    void writeXMLToStream(OutStream& out_stream) const;
+
+
 protected:
 	/*************************************************************************
 		Implementation Constants
@@ -531,6 +544,7 @@ protected:
 	String			d_name;						//!< Holds the name of this imageset.
 	ImageRegistry	d_images;					//!< Registry of Image objects for the images defined for this Imageset
 	Texture*		d_texture;					//!< Texture object that handles imagery for this Imageset
+    String          d_textureFilename;          //!< String holding the name of the texture filename (if any).
 
 	// auto-scaling fields
 	bool	d_autoScale;			//!< true when auto-scaling is enabled.

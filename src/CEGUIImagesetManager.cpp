@@ -203,4 +203,16 @@ ImagesetManager::ImagesetIterator ImagesetManager::getIterator(void) const
 }
 
 
+void ImagesetManager::writeImagesetToStream(const String& imageset, OutStream& out_stream) const
+{
+    const Imageset* iset = getImageset(imageset);
+
+    // output xml header
+    out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+
+    // output imageset data
+    iset->writeXMLToStream(out_stream);
+}
+
+
 } // End of  CEGUI namespace section

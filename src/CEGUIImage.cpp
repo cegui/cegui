@@ -28,9 +28,9 @@
 #include "CEGUITexture.h"
 #include "CEGUIImageset.h"
 #include "CEGUIRenderer.h"
-
+#include "CEGUIPropertyHelper.h"
 #include <cmath>
-
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -138,5 +138,27 @@ const Rect& Image::getSourceTextureArea(void) const
 {
     return d_area;
 }
+
+
+/*************************************************************************
+    Output XML <Image ... > element for this image
+*************************************************************************/
+void Image::writeXMLToStream(OutStream& out_stream) const
+{
+    out_stream << "<Image Name=\"" << d_name.c_str() << "\" ";
+    out_stream << "XPos=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.d_left)) << "\" ";
+    out_stream << "YPos=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.d_top)) << "\" ";
+    out_stream << "Width=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.getWidth())) << "\" ";
+    out_stream << "Height=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.getHeight())) << "\" ";
+
+    if (d_offset.d_x != 0.0f)
+        out_stream << "XOffset=\"" << PropertyHelper::intToString(static_cast<int>(d_offset.d_x)) << "\" ";
+
+    if (d_offset.d_y != 0.0f)
+        out_stream << "YOffset=\"" << PropertyHelper::intToString(static_cast<int>(d_offset.d_x)) << "\" ";
+
+    out_stream << "/>" << std::endl;
+}
+
 
 } // End of  CEGUI namespace section

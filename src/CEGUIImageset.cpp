@@ -32,7 +32,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUIXMLParser.h"
-
+#include "CEGUIPropertyHelper.h"
 #include <iostream>
 #include <cmath>
 
@@ -286,6 +286,36 @@ void Imageset::notifyScreenResolution(const Size& size)
 		updateImageScalingFactors();
 	}
 
+}
+
+void Imageset::writeXMLToStream(OutStream& out_stream) const
+{
+    // output opening tag
+    out_stream << "<Imageset Name=\"" << d_name.c_str() << "\" ";
+    out_stream << "Filename=\"" << d_textureFilename.c_str() << "\" ";
+
+    if (d_nativeHorzRes != DefaultNativeHorzRes)
+        out_stream << "NativeHorzRes=\"" << PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)) << "\" ";
+
+    if (d_nativeVertRes != DefaultNativeVertRes)
+        out_stream << "NativeVertRes=\"" << PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)) << "\" ";
+
+    if (d_autoScale)
+        out_stream << "AutoScaled=\"True\" ";
+
+    out_stream << ">" << std::endl;
+
+    // output images
+    ImageIterator image = getIterator();
+
+    while (!image.isAtEnd())
+    {
+        image.getCurrentValue().writeXMLToStream(out_stream);
+        ++image;
+    }
+
+    // output closing tag
+    out_stream << "</Imageset>" << std::endl;
 }
 
 

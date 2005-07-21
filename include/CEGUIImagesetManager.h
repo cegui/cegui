@@ -203,6 +203,22 @@ public:
 	void	notifyScreenResolution(const Size& size);
 
 
+    /*!
+    \brief
+        Writes a full XML imageset for the specified Imageset to the given OutStream.
+
+    \param imageset
+        String holding the name of the Imageset to be written to the stream.
+
+    \param out_stream
+        OutStream (std::ostream based) object where data is to be sent.
+
+    \return
+        Nothing.
+    */
+    void writeImagesetToStream(const String& imageset, OutStream& out_stream) const;
+
+
 private:
 	/*************************************************************************
 		Implementation Data

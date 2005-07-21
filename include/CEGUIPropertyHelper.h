@@ -41,6 +41,7 @@ class CEGUIEXPORT PropertyHelper
 public:
 	static	float	stringToFloat(const String& str);
 	static	uint	stringToUint(const String& str);
+	static	int		stringToInt(const String& str);
 	static	bool	stringToBool(const String& str);
 	static	Size	stringToSize(const String& str);
 	static	Point	stringToPoint(const String& str);
@@ -55,6 +56,7 @@ public:
 
 	static String	floatToString(float val);
 	static String	uintToString(uint val);
+	static String	intToString(int val);
 	static String	boolToString(bool val);
 	static String	sizeToString(const Size& val);
 	static String	pointToString(const Point& val);

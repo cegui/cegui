@@ -114,6 +114,7 @@ void Imageset_xmlHandler::elementStart(const String& element, const XMLAttribute
 			throw RendererException((utf8*)"Imageset::xmlHandler::startElement - An unexpected error occurred while creating a Texture object from file '" + filename + "'");
 		}
 
+        d_imageset->d_textureFilename = filename;
 	}
 	// anything else is an error which *should* have already been caught by XML validation
 	else
