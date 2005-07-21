@@ -269,6 +269,44 @@ public:
     */
     void cleanDeadPool(void);
 
+    /*!
+    \brief
+        Writes a full XML window layout, starting at the given Window to the given OutStream.
+
+    \param window
+        Window object to become the root of the layout.
+
+    \param out_stream
+        OutStream (std::ostream based) object where data is to be sent.
+
+    \param writeParent
+        If the starting window has a parent window, specifies whether to write the parent name into
+        the Parent attribute of the GUILayout XML element.
+
+    \return
+        Nothing.
+    */
+    void writeWindowLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent = false) const;
+
+    /*!
+    \brief
+        Writes a full XML window layout, starting at the given Window to the given OutStream.
+
+    \param window
+        String holding the name of the Window object to become the root of the layout.
+
+    \param out_stream
+        OutStream (std::ostream based) object where data is to be sent.
+
+    \param writeParent
+        If the starting window has a parent window, specifies whether to write the parent name into
+        the Parent attribute of the GUILayout XML element.
+
+    \return
+        Nothing.
+    */
+    void writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent = false) const;
+
 private:
 	/*************************************************************************
 		Implementation Constants

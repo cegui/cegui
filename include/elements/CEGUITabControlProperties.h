@@ -81,7 +81,7 @@ public:
     AbsoluteTabHeight() : Property(
 		"AbsoluteTabHeight",
 		"Property to get/set the absolute height of the tabs.",
-		"")
+		"", false)
 	{}
 
     String	get(const PropertyReceiver* receiver) const;
@@ -107,7 +107,7 @@ public:
     RelativeTabHeight() : Property(
 		"RelativeTabHeight",
 		"Property to get/set the relative height of the tabs.",
-		"0.050000")
+		"0.050000", false)
 	{}
 
     String	get(const PropertyReceiver* receiver) const;
@@ -155,7 +155,7 @@ public:
     AbsoluteTabTextPadding() : Property(
 		"AbsoluteTabTextPadding",
 		"Property to get/set the absolute padding either side of the tab buttons.",
-		"5")
+		"5", false)
 	{}
 
     String	get(const PropertyReceiver* receiver) const;
@@ -177,7 +177,7 @@ public:
     RelativeTabTextPadding() : Property(
 		"RelativeTabTextPadding",
 		"Property to get/set the relative padding either side of the tab buttons.",
-		"")
+		"", false)
 	{}
 
     String	get(const PropertyReceiver* receiver) const;

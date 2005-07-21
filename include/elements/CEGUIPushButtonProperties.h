@@ -168,7 +168,7 @@ public:
    TextXOffset() : Property(
 	   "TextXOffset",
 	   "Property to get/set a relative x offset for the button's text",
-	   "0")
+	   "0.000000")
    {}
 
    String get(const PropertyReceiver* receiver) const;

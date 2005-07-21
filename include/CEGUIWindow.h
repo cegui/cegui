@@ -186,7 +186,7 @@ public:
 	\return
 		String object holding the Window type.
 	*/
-	const String& getType(void) const		{return d_type;}
+	const String& getType(void) const;
 
 
 	/*!
@@ -223,10 +223,14 @@ public:
 	\brief
 		return true if the Window is currently disabled
 
+	\param localOnly
+	   States whether to only return the state set for this window, and so not factor in
+	   inherited state from ancestor windows.
+
 	\return
 		true if the window is disabled, false if the window is enabled.
 	*/
-	bool	isDisabled(void) const;
+	bool	isDisabled(bool localOnly = false) const;
 
 
 	/*!
@@ -236,10 +240,14 @@ public:
 		A true return from this function does not mean that the window is not completely obscured by other windows, just that the window
 		is processed when rendering and is not hidden.
 
+	\param localOnly
+	   States whether to only return the state set for this window, and so not factor in
+	   inherited state from ancestor windows.
+
 	\return
 		true if the window is drawn, false if the window is hidden and therefore ignored when rendering.
 	*/
-	bool	isVisible(void) const;
+	bool	isVisible(bool localOnly = false) const;
 
 
 	/*!
@@ -442,10 +450,13 @@ public:
 	\brief
 		return the Font object active for the Window.
 
+	\param useDefault
+	   Sepcifies whether to return the default font if Window has no preference set.
+
 	\return
 		Pointer to the Font being used by this Window.  If the window has no assigned font, the default font is returned.
 	*/
-	const Font*		getFont(void) const;
+	const Font*		getFont(bool useDefault = true) const;
 
 
 	/*!
@@ -730,10 +741,13 @@ public:
 	\brief
 		Return a pointer to the mouse cursor image to use when the mouse is within this window.
 
+	\param useDefault
+	   Sepcifies whether to return the default font if Window has no preference set.
+
 	\return
 		Pointer to the mouse cursor image that will be used when the mouse enters this window.  May return NULL indicating no cursor.
 	*/
-	const Image*	getMouseCursor(void) const;
+	const Image*	getMouseCursor(bool useDefault = true) const;
 
 
 	/*!
@@ -2105,6 +2119,10 @@ public:
     \brief
         Set the LookNFeel that shoule be used for this window.
 
+    \param falagardType
+        String object holding the mapped falagard type name (since actual window type will be "Falagard/something")
+        and not what was passed to WindowManager.  This will be returned from getType instead of the base type.
+
     \param look
         String object holding the name of the look to be assigned to the window.
 
@@ -2113,7 +2131,7 @@ public:
 
     \exception InvalidRequestException thrown if the window already has a look assigned to it.
     */
-    void setLookNFeel(const String& look);
+    void setLookNFeel(const String& falagardType, const String& look);
 
 	/*!
 	\brief
@@ -2789,6 +2807,18 @@ public:
 	*/
 	void	update(float elapsed);
 
+
+    /*!
+    \brief
+        Writes an xml representation of this window object to \a out_stream.
+
+    \param out_stream
+        Stream where xml data should be output.
+
+    \return
+        Nothing.
+    */
+    virtual void writeXMLToStream(OutStream& out_stream) const;
 
 protected:
 	/*************************************************************************
@@ -3639,6 +3669,8 @@ protected:
      */
     void setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing = false, bool fireEvents = true);
 
+    virtual int writePropertiesXML(OutStream& out_stream) const;
+    virtual int writeChildWindowsXML(OutStream& out_stream) const;
 	
 	/*************************************************************************
 		May not copy or assign Window objects
@@ -3651,6 +3683,7 @@ protected:
 	*************************************************************************/
 	const String	d_type;			//!< String holding the type name for the Window (is also the name of the WindowFactory that created us)
 	const String	d_name;			//!< The name of the window (GUI system unique).
+	String    d_falagardType;       //!< Type name of the window as defined in a Falagard mapping.
 };
 
 } // End of  CEGUI namespace section

@@ -355,7 +355,7 @@ protected:
 	}
 
 	void performChildWindowLayout();
-
+    int writeChildWindowsXML(OutStream& out_stream) const;
 
 	/*************************************************************************
 		New event handlers

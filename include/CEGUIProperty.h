@@ -69,11 +69,16 @@ public:
 		
 	\param defaultValue
 		String holding the textual representation of the default value for this Property
+
+    \param writesXML
+        Specifies whether the writeXMLToStream method should do anything for this Property.  This
+        enables selectivity in what properties within a PropertySet will get output as XML.
 	*/
-	Property(const String& name, const String& help, const String& defaultValue = "") : 
+	Property(const String& name, const String& help, const String& defaultValue = "", bool writesXML = true) :
 	  d_name(name),
 	  d_help(help),
-	  d_default(defaultValue)
+	  d_default(defaultValue),
+	  d_writeXML(writesXML)
 	{
 	}
 
@@ -162,10 +167,22 @@ public:
 	*/
 	virtual String	getDefault(const PropertyReceiver* receiver) const;
 
+
+    /*!
+    \brief
+        Writes out an XML representation of this class to the given stream.
+
+    \note
+        This would normally have been implemented via XMLGenerator base class, but in this
+        case we require the target PropertyReceiver in order to obtain the property value.
+    */
+    void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream) const;
+
 protected:
 	String	d_name;		//!< String that stores the Property name.
 	String	d_help;		//!< String that stores the Property help text.
 	String	d_default;	//!< String that stores the Property default value string.
+	bool    d_writeXML; //!< Specifies whether writeXMLToStream should do anything for this property.
 };
 
 } // End of  CEGUI namespace section

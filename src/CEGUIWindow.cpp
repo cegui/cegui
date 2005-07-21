@@ -231,11 +231,20 @@ Window::~Window(void)
 
 
 /*************************************************************************
+	return type of this window.
+*************************************************************************/
+const String& Window::getType(void) const
+{
+    return d_falagardType.empty() ? d_type : d_falagardType;
+}
+
+
+/*************************************************************************
 	return true if the Window is currently disabled	
 *************************************************************************/
-bool Window::isDisabled(void) const
+bool Window::isDisabled(bool localOnly) const
 {
-	bool parDisabled = (d_parent == NULL) ? false : d_parent->isDisabled();
+	bool parDisabled = ((d_parent == NULL) || localOnly) ? false : d_parent->isDisabled();
 
 	return (!d_enabled) || parDisabled;
 }
@@ -244,9 +253,9 @@ bool Window::isDisabled(void) const
 /*************************************************************************
 	return true if the Window is currently visible.
 *************************************************************************/
-bool Window::isVisible(void) const
+bool Window::isVisible(bool localOnly) const
 {
-	bool parVisible = (d_parent == NULL) ? true : d_parent->isVisible();
+	bool parVisible = ((d_parent == NULL) || localOnly) ? true : d_parent->isVisible();
 
 	return d_visible && parVisible;
 }
@@ -478,11 +487,11 @@ bool Window::isAncestor(const Window* window) const
 /*************************************************************************
 	return the Font object active for the Window.
 *************************************************************************/
-const Font* Window::getFont(void) const
+const Font* Window::getFont(bool useDefault) const
 {
 	if (d_font == NULL)
 	{
-		return System::getSingleton().getDefaultFont();
+		return useDefault ? System::getSingleton().getDefaultFont() : 0;
 	}
 
 	return d_font;
@@ -2216,7 +2225,7 @@ void Window::setMaximumSize(const Size& sz)
 	Return a pointer to the mouse cursor image to use when the mouse is
 	within this window.
 *************************************************************************/
-const Image* Window::getMouseCursor(void) const
+const Image* Window::getMouseCursor(bool useDefault) const
 {
 	if (d_mouseCursor != (const Image*)DefaultMouseCursor)
 	{
@@ -2224,7 +2233,7 @@ const Image* Window::getMouseCursor(void) const
 	}
 	else
 	{
-		return System::getSingleton().getDefaultMouseCursor();
+		return useDefault ? System::getSingleton().getDefaultMouseCursor() : 0;
 	}
 
 }
@@ -3146,10 +3155,11 @@ const String& Window::getLookNFeel()
     return d_lookName;
 }
 
-void Window::setLookNFeel(const String& look)
+void Window::setLookNFeel(const String& falagardType, const String& look)
 {
     if (d_lookName.empty())
     {
+        d_falagardType = falagardType;
         d_lookName = look;
         Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
 
@@ -3221,6 +3231,58 @@ bool Window::isUserStringDefined(const String& name) const
 void Window::setUserString(const String& name, const String& value)
 {
     d_userStrings[name] = value;
+}
+
+void Window::writeXMLToStream(OutStream& out_stream) const
+{
+    // output opening Window tag
+    out_stream << "<Window Type=\"" << getType() << "\" Name=\"" << getName() << "\" >" << std::endl;
+    // write out properties.
+    writePropertiesXML(out_stream);
+    // write out attached child windows.
+    writeChildWindowsXML(out_stream);
+    // now ouput closing Window tag
+    out_stream << "</Window>" << std::endl;
+}
+
+int Window::writePropertiesXML(OutStream& out_stream) const
+{
+    int propertiesWritten = 0;
+    PropertyIterator iter =  PropertySet::getIterator();
+
+    while(!iter.isAtEnd())
+    {
+        // only write property if it's not at the default state
+        if (!iter.getCurrentValue()->isDefault(this))
+        {
+            iter.getCurrentValue()->writeXMLToStream(this, out_stream);
+            ++propertiesWritten;
+        }
+
+        ++iter;
+    }
+
+    return propertiesWritten;
+}
+
+int Window::writeChildWindowsXML(OutStream& out_stream) const
+{
+    int windowsWritten = 0;
+    PropertyIterator iter =  PropertySet::getIterator();
+
+    for (uint i = 0; i < getChildCount(); ++i)
+    {
+        Window* child = getChildAtIdx(i);
+
+        // conditional to ensure that auto created windows are not written.
+        if (child->getName().find("__auto_") == String::npos)
+        {
+            child->writeXMLToStream(out_stream);
+            ++windowsWritten;
+        }
+    }
+
+    return windowsWritten;
 }
 
 

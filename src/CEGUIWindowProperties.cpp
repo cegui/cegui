@@ -244,6 +244,11 @@ void Font::set(PropertyReceiver* receiver, const String& value)
 	{ }
 }
 
+bool Font::isDefault(const PropertyReceiver* receiver) const
+{
+    return static_cast<const Window*>(receiver)->getFont(false) == 0;
+}
+
 
 String Text::get(const PropertyReceiver* receiver) const
 {
@@ -272,13 +277,17 @@ String MouseCursorImage::get(const PropertyReceiver* receiver) const
 
 }
 
-
 void MouseCursorImage::set(PropertyReceiver* receiver, const String& value)
 {
 	if (!value.empty())
 	{
 		static_cast<Window*>(receiver)->setMouseCursor(PropertyHelper::stringToImage(value));
 	}
+}
+
+bool MouseCursorImage::isDefault(const PropertyReceiver* receiver) const
+{
+    return static_cast<const Window*>(receiver)->getMouseCursor(false) == 0;
 }
 
 
@@ -329,6 +338,11 @@ void Disabled::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Window*>(receiver)->setEnabled(!PropertyHelper::stringToBool(value));
 }
 
+bool Disabled::isDefault(const PropertyReceiver* receiver) const
+{
+    return !static_cast<const Window*>(receiver)->isDisabled(true);
+}
+
 
 String Visible::get(const PropertyReceiver* receiver) const
 {
@@ -339,6 +353,11 @@ String Visible::get(const PropertyReceiver* receiver) const
 void Visible::set(PropertyReceiver* receiver, const String& value)
 {
 	static_cast<Window*>(receiver)->setVisible(PropertyHelper::stringToBool(value));
+}
+
+bool Visible::isDefault(const PropertyReceiver* receiver) const
+{
+    return static_cast<const Window*>(receiver)->isVisible(true);
 }
 
 

@@ -30,6 +30,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIGUILayout_xmlHandler.h"
 #include "CEGUIXMLParser.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -81,7 +82,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
     {
         // this was a mapped type, so assign a look to the window so it can finalise
         // its initialisation
-        newWindow->setLookNFeel(wfMgr.getMappedLookForType(type));
+        newWindow->setLookNFeel(type, wfMgr.getMappedLookForType(type));
     }
 
     // perform initialisation step
@@ -250,6 +251,29 @@ void WindowManager::cleanDeadPool(void)
     d_deathrow.clear();
 }
 
+void WindowManager::writeWindowLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent) const
+{
+    // output xml header
+    out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+    // output GUILayout start element
+    out_stream << "<GUILayout";
+    // see if we need the parent attribute to be written
+    if ((window.getParent() != 0) && writeParent)
+    {
+        out_stream << " Parent=\"" << window.getParent()->getName() << "\" ";
+    }
+    // close opening tag
+    out_stream << ">" << std::endl;
+    // write windows
+    window.writeXMLToStream(out_stream);
+    // write closing GUILayout element
+    out_stream << "</GUILayout>" << std::endl;
+}
+
+void WindowManager::writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent) const
+{
+    writeWindowLayoutToStream(*getWindow(window), out_stream, writeParent);
+}
 
 /*************************************************************************
 	Return a WindowManager::WindowIterator object to iterate over the

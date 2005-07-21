@@ -162,7 +162,7 @@ public:
 	SortColumnID() : Property(
 		"SortColumnID",
 		"Property to get/set the current sort column (via ID code).  Value is an unsigned integer number.",
-		"0")
+		"0", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -325,7 +325,7 @@ public:
 	ColumnHeader() : Property(
 		"ColumnHeader",
 		"Property to set up a column (there is no getter for this property)",
-		"")
+		"", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -346,7 +346,7 @@ public:
 	RowCount() : Property(
 		"RowCount",
 		"Property to access the number of rows in the list (read only)",
-		"")
+		"", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;

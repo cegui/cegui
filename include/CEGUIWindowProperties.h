@@ -60,7 +60,7 @@ public:
 	RelativeMinSize() : Property(
 		"RelativeMinSize",
 		"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).",
-		"w:0.000000 h:0.000000")
+		"w:0.000000 h:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -88,7 +88,7 @@ public:
 	RelativeMaxSize() : Property(
 		"RelativeMaxSize",
 		"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).",
-		"w:1.000000 h:1.000000")
+		"w:1.000000 h:1.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -116,7 +116,7 @@ public:
 	AbsoluteMinSize() : Property(
 		"AbsoluteMinSize",
 		"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.",
-		"w:0.000000 h:0.000000")
+		"w:0.000000 h:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -144,7 +144,7 @@ public:
 	AbsoluteMaxSize() : Property(
 		"AbsoluteMaxSize",
 		"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.",
-		"")
+		"", false)
 		{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -263,6 +263,7 @@ public:
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+	bool	isDefault(const PropertyReceiver* receiver) const;
 };
 
 
@@ -318,6 +319,7 @@ public:
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+	bool	isDefault(const PropertyReceiver* receiver) const;
 };
 
 
@@ -430,6 +432,7 @@ public:
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+	bool	isDefault(const PropertyReceiver* receiver) const;
 };
 
 
@@ -458,6 +461,7 @@ public:
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
+	bool	isDefault(const PropertyReceiver* receiver) const;
 };
 
 
@@ -537,7 +541,7 @@ public:
 	Width() : Property(
 		"Width",
 		"Property to get/set the width of the Window.  Value is floating point using the active metrics mode.",
-		"0.000000") {}
+		"0.000000", false) {}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
@@ -563,7 +567,7 @@ public:
 	RelativeWidth() : Property(
 		"RelativeWidth",
 		"Property to get/set the width of the Window.  Value is floating point using relative metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -590,7 +594,7 @@ public:
 	AbsoluteWidth() : Property(
 		"AbsoluteWidth",
 		"Property to get/set the width of the Window.  Value is floating point using absolute metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -617,7 +621,7 @@ public:
 	Height() : Property(
 		"Height",
 		"Property to get/set the height of the Window.  Value is floating point using the active metrics mode.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -644,7 +648,7 @@ public:
 	RelativeHeight() : Property(
 		"RelativeHeight",
 		"Property to get/set the height of the Window.  Value is floating point using relative metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -671,7 +675,7 @@ public:
 	AbsoluteHeight() : Property(
 		"AbsoluteHeight",
 		"Property to get/set the height of the Window.  Value is floating point using absolute metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -699,7 +703,7 @@ public:
 	Size() : Property(
 		"Size",
 		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using the active metrics mode.",
-		"w:0.000000 h:0.000000")
+		"w:0.000000 h:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -727,7 +731,7 @@ public:
 	RelativeSize() : Property(
 		"RelativeSize",
 		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using relative metrics.",
-		"w:0.000000 h:0.000000")
+		"w:0.000000 h:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -755,7 +759,7 @@ public:
 	AbsoluteSize() : Property(
 		"AbsoluteSize",
 		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using absolute metrics.",
-		"w:0.000000 h:0.000000")
+		"w:0.000000 h:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -782,7 +786,7 @@ public:
 	XPosition() : Property(
 		"XPosition",
 		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -809,7 +813,7 @@ public:
 	RelativeXPosition() : Property(
 		"RelativeXPosition",
 		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using relative metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -836,7 +840,7 @@ public:
 	AbsoluteXPosition() : Property(
 		"AbsoluteXPosition",
 		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using absolute metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -863,7 +867,7 @@ public:
 	YPosition() : Property(
 		"YPosition",
 		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -890,7 +894,7 @@ public:
 	RelativeYPosition() : Property(
 		"RelativeYPosition",
 		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using relative metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -917,7 +921,7 @@ public:
 	AbsoluteYPosition() : Property(
 		"AbsoluteYPosition",
 		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using absolute metrics.",
-		"0.000000")
+		"0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -945,7 +949,7 @@ public:
 	Position() : Property(
 		"Position",
 		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using the active metrics mode.",
-		"x:0.000000 y:0.000000")
+		"x:0.000000 y:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -973,7 +977,7 @@ public:
 	RelativePosition() : Property(
 		"RelativePosition",
 		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using relative metrics.",
-		"x:0.000000 y:0.000000")
+		"x:0.000000 y:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -1001,7 +1005,7 @@ public:
 	AbsolutePosition() : Property(
 		"AbsolutePosition",
 		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using absolute metrics.",
-		"x:0.000000 y:0.000000")
+		"x:0.000000 y:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -1031,7 +1035,7 @@ public:
 	Rect() : Property(
 		"Rect",
 		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using the active metrics system.",
-		"l:0.000000 t:0.000000 r:0.000000 b:0.000000")
+		"l:0.000000 t:0.000000 r:0.000000 b:0.000000", false)
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -1061,7 +1065,7 @@ public:
 	RelativeRect() : Property(
 		"RelativeRect",
 		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using relative metrics.",
-		"l:0.000000 t:0.000000 r:0.000000 b:0.000000") 
+		"l:0.000000 t:0.000000 r:0.000000 b:0.000000", false) 
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -1091,7 +1095,7 @@ public:
 	AbsoluteRect() : Property(
 		"AbsoluteRect",
 		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using absolute metrics.",
-		"l:0.000000 t:0.000000 r:0.000000 b:0.000000") 
+		"l:0.000000 t:0.000000 r:0.000000 b:0.000000", false) 
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -1204,7 +1208,7 @@ public:
     AutoRepeatDelay() : Property(
         "AutoRepeatDelay",
         "Property to get/set the autorepeat delay.  Value is a floating point number indicating the delay required in seconds.",
-        "0.3")
+        "0.300000")
     {}
 
     String  get(const PropertyReceiver* receiver) const;
@@ -1231,7 +1235,7 @@ public:
     AutoRepeatRate() : Property(
         "AutoRepeatRate",
         "Property to get/set the autorepeat rate.  Value is a floating point number indicating the rate required in seconds.",
-        "0.06")
+        "0.060000")
     {}
 
     String  get(const PropertyReceiver* receiver) const;
@@ -1442,7 +1446,7 @@ class UnifiedAreaRect : public Property
 		UnifiedAreaRect() : Property(
 		"UnifiedAreaRect",
 		"Property to get/set the windows unified area rectangle.  Value is a \"URect\".",
-		"{{0,0},{0,0},{0,0},{0,0}}")
+		"{{0.000000,0.000000},{0.000000,0.000000},{0.000000,0.000000},{0.000000,0.000000}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1470,7 +1474,7 @@ class UnifiedPosition : public Property
 		UnifiedPosition() : Property(
 		"UnifiedPosition",
 		"Property to get/set the windows unified position.  Value is a \"UVector2\".",
-		"{{0,0},{0,0}}")
+		"{{0.000000,0.000000},{0.000000,0.000000}}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1496,7 +1500,7 @@ class UnifiedXPosition : public Property
 		UnifiedXPosition() : Property(
 		"UnifiedXPosition",
 		"Property to get/set the windows unified position x-coordinate.  Value is a \"UDim\".",
-		"{0,0}")
+		"{0.000000,0.000000}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1522,7 +1526,7 @@ class UnifiedYPosition : public Property
 		UnifiedYPosition() : Property(
 		"UnifiedYPosition",
 		"Property to get/set the windows unified position y-coordinate.  Value is a \"UDim\".",
-		"{0,0}")
+		"{0.000000,0.000000}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1550,7 +1554,7 @@ class UnifiedSize : public Property
 		UnifiedSize() : Property(
 		"UnifiedSize",
 		"Property to get/set the windows unified size.  Value is a \"UVector2\".",
-		"{{0,0},{0,0}}")
+		"{{0.000000,0.000000},{0.000000,0.000000}}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1576,7 +1580,7 @@ class UnifiedWidth : public Property
 		UnifiedWidth() : Property(
 		"UnifiedWidth",
 		"Property to get/set the windows unified width.  Value is a \"UDim\".",
-		"{0,0}")
+		"{0.000000,0.000000}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1602,7 +1606,7 @@ class UnifiedHeight : public Property
 		UnifiedHeight() : Property(
 		"UnifiedHeight",
 		"Property to get/set the windows unified height.  Value is a \"UDim\".",
-		"{0,0}")
+		"{0.000000,0.000000}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1630,7 +1634,7 @@ class UnifiedMinSize : public Property
 		UnifiedMinSize() : Property(
 		"UnifiedMinSize",
 		"Property to get/set the windows unified minimum size.  Value is a \"UVector2\".",
-		"{{0,0},{0,0}}")
+		"{{0.000000,0.000000},{0.000000,0.000000}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -1658,7 +1662,7 @@ class UnifiedMaxSize : public Property
 		UnifiedMaxSize() : Property(
 		"UnifiedMaxSize",
 		"Property to get/set the windows unified maximum size.  Value is a \"UVector2\".",
-		"{{0,0},{0,0}}")
+		"{{0.000000,0.000000},{0.000000,0.000000}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;

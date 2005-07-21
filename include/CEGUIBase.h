@@ -134,6 +134,11 @@ typedef unsigned char   uint8;
 static const float		DefaultNativeHorzRes	= 640.0f;		//!< Default native horizontal resolution (for fonts and imagesets)
 static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical resolution (for fonts and imagesets)
 
+
+/*************************************************************************
+    Additional typedefs
+*************************************************************************/
+typedef std::ostream OutStream;     //!< Output stream class.
 }  // end of CEGUI namespace section
 
 

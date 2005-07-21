@@ -29,7 +29,7 @@
 #include "elements/CEGUIListHeader.h"
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUILogger.h"
-
+#include "CEGUIPropertyHelper.h"
 #include <algorithm>
 
 
@@ -2338,6 +2338,51 @@ void MultiColumnList::setRowID(uint row_idx, uint row_id)
 	{
 		d_grid[row_idx].d_rowID = row_id;
 	}
+}
+
+int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
+{
+    // basically this is here to translate the columns in the list into
+    // instances of the <ColumnHeader> element.  Because the SortColumnID
+    // property requires the column to exist, we also write that out manually.
+
+    // Dump all other properties first
+    int propCnt = Window::writePropertiesXML(out_stream);
+
+    // create an dump <ColumnHeader> elements
+    for (uint i = 0; i < getColumnCount(); ++i)
+    {
+        ListHeaderSegment& seg = getHeaderSegmentForColumn(i);
+
+        // start of property element,
+        String propString("<Property Name=\"ColumnHeader\" Value=\"");
+        // column text
+        propString += "text:";
+        propString += seg.getText();
+        // column width
+        propString += " width:";
+        propString += PropertyHelper::floatToString(seg.getRelativeWidth());
+        // column id
+        propString += " id:";
+        propString += PropertyHelper::uintToString(seg.getID());
+        // close the tag
+        propString += "\" />";
+
+        // write this out to the stream
+        out_stream << propString.c_str() << std::endl;
+
+        ++propCnt;
+    }
+
+    // write out SortColumnID property
+    uint sortColumnID = getColumnWithID(getSortColumn());
+    if (sortColumnID != 0)
+    {
+        out_stream << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
+        ++propCnt;
+    }
+
+    return propCnt;
 }
 
 

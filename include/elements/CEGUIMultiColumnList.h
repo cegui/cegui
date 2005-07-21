@@ -1390,6 +1390,8 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    // overrides function in base class.
+    int writePropertiesXML(OutStream& out_stream) const;
 
 	/*************************************************************************
 		New event handlers for multi column list

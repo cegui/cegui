@@ -614,4 +614,21 @@ bool TabControl::handleTabButtonClicked(const EventArgs& args)
 
 	return true;
 }
+
+int TabControl::writeChildWindowsXML(OutStream& out_stream) const
+{
+    int childOutputCount = Window::writeChildWindowsXML(out_stream);
+
+    // since TabControl content is actually added to the component tab
+    // content pane window, this overridden function exists to dump those
+    // out as if they were our own children.
+    for (uint i = 0; i < getTabCount(); ++i)
+    {
+        getTabContentsAtIndex(i)->writeXMLToStream(out_stream);
+        ++childOutputCount;
+    }
+
+    return childOutputCount;
+}
+
 } // End of  CEGUI namespace section
