@@ -153,16 +153,16 @@ namespace CEGUI
         {
             assert(d_stateimagery == 0);
             d_stateimagery = new StateImagery(attributes.getValueAsString(NameAttribute));
-            d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute));
+            d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute, true));
 
             CEGUI_LOGINSANE("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.");
         }
         else if (element == LayerElement)
         {
             assert(d_layer == 0);
-            d_layer = new LayerSpecification(attributes.getValueAsInteger(PriorityAttribute));
+            d_layer = new LayerSpecification(attributes.getValueAsInteger(PriorityAttribute, 0));
 
-            CEGUI_LOGINSANE("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute));
+            CEGUI_LOGINSANE("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute, "0"));
         }
         else if (element == SectionElement)
         {
@@ -344,12 +344,12 @@ namespace CEGUI
 		}
         else if (element == UnifiedDimElement)
         {
-            UnifiedDim base(UDim(attributes.getValueAsFloat(ScaleAttribute), attributes.getValueAsFloat(OffsetAttribute)), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+            UnifiedDim base(UDim(attributes.getValueAsFloat(ScaleAttribute, 0.0f), attributes.getValueAsFloat(OffsetAttribute, 0.0f)), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
             doBaseDimStart(&base);
         }
         else if (element == AbsoluteDimElement)
         {
-            AbsoluteDim base(attributes.getValueAsFloat(ValueAttribute));
+            AbsoluteDim base(attributes.getValueAsFloat(ValueAttribute, 0.0f));
             doBaseDimStart(&base);
         }
         else if (element == ImageDimElement)
@@ -369,7 +369,7 @@ namespace CEGUI
                 attributes.getValueAsString(FontAttribute),
                 attributes.getValueAsString(StringAttribute),
                 FalagardXMLHelper::stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
-                attributes.getValueAsFloat(PaddingAttribute));
+                attributes.getValueAsFloat(PaddingAttribute, 0.0f));
 
             doBaseDimStart(&base);
         }
@@ -405,8 +405,8 @@ namespace CEGUI
             PropertyDefinition prop(
                 attributes.getValueAsString(NameAttribute),
                 attributes.getValueAsString(InitialValueAttribute),
-                attributes.getValueAsBool(RedrawOnWriteAttribute),
-                attributes.getValueAsBool(LayoutOnWriteAttribute)
+                attributes.getValueAsBool(RedrawOnWriteAttribute, false),
+                attributes.getValueAsBool(LayoutOnWriteAttribute, false)
             );
 
             CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
