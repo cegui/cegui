@@ -1024,6 +1024,19 @@ private:
 	float	getWrappedTextExtent(const String& text, float wrapWidth, float x_scale = 1.0f) const;
 
 
+    /*!
+    \brief
+        Writes an xml representation of this Font to \a out_stream.
+
+    \param out_stream
+        Stream where xml data should be output.
+
+    \return
+        Nothing.
+    */
+    void writeXMLToStream(OutStream& out_stream) const;
+
+
 	/*************************************************************************
 		Implementation structs
 	*************************************************************************/
@@ -1034,8 +1047,8 @@ private:
 	struct glyphDat
 	{
 		const Image*	d_image;				//!< The image which will be rendered.
-		uint			d_horz_advance;			//!< Amount to advance the pen after rendering this glyph
-		uint			d_horz_advance_unscaled;	//!< original unscaled advance value (only used with static / bitmap fonts).
+		int			d_horz_advance;			//!< Amount to advance the pen after rendering this glyph
+		int			d_horz_advance_unscaled;	//!< original unscaled advance value (only used with static / bitmap fonts).
 	};
 
 	/*************************************************************************
@@ -1046,6 +1059,7 @@ private:
 
 	String		d_name;			//!< Name of this font.
 	Imageset*	d_glyph_images;	//!< Imageset that holds the glyphs for this font.
+	String     d_sourceFilename;   //!< Holds the name of the file used to create this font (either font file or imagset)
 
 	bool	d_freetype;			//!< true when the font is a FreeType based font
 	float	d_lineHeight;		//!< Exact pixel height of font.

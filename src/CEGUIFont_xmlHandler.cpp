@@ -184,6 +184,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 			throw FileIOException("Font::xmlHandler::startElement - The unknown Font:Type attribute value '" + font_type + "' was encountered while processing the Font file.");
 		}
 
+        d_font->d_sourceFilename = filename;
 	}
 	// Glyph element
 	else if (element == GlyphElement)

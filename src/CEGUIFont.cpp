@@ -1253,4 +1253,54 @@ uint Font::getPointSize(void) const
 	}
 }
 
+
+/*************************************************************************
+    Writes an xml representation of this Font to \a out_stream.
+*************************************************************************/
+void Font::writeXMLToStream(OutStream& out_stream) const
+{
+    // output starting <Font ... > element
+    out_stream << "<Font Name=\"" << d_name << "\" Filename=\"" << d_sourceFilename << "\" ";
+
+    if (d_freetype)
+        out_stream << "Size=\"" << d_ptSize << "\" ";
+
+    if (d_nativeHorzRes != DefaultNativeHorzRes)
+        out_stream << "NativeHorzRes=\"" << static_cast<uint>(d_nativeHorzRes) << "\" ";
+
+    if (d_nativeVertRes != DefaultNativeVertRes)
+        out_stream << "NativeVertRes=\"" << static_cast<uint>(d_nativeVertRes) << "\" ";
+
+    if (d_autoScale)
+        out_stream << "AutoScaled=\"True\" ";
+
+    out_stream << ">" << std::endl;
+
+    // dynamic font so output defined glyphs
+    if (d_freetype)
+    {
+        for (String::const_iterator iter = d_glyphset.begin(); iter != d_glyphset.end(); ++iter)
+        {
+            out_stream << "<Glyph Codepoint=\"" << (*iter) << "\" />" << std::endl;
+        }
+    }
+    // static font, so output glyph to imageset mappings
+    else
+    {
+        for (CodepointMap::const_iterator iter = d_cp_map.begin(); iter != d_cp_map.end(); ++iter)
+        {
+            out_stream << "<Mapping Codepoint=\"" << (*iter).first << "\" Image=\"" << (*iter).second.d_image->getName() << "\" ";
+
+            if ((*iter).second.d_horz_advance_unscaled != -1)
+                out_stream << "HorzAdvance=\"" << (*iter).second.d_horz_advance_unscaled << "\" ";
+
+            out_stream << "/>" << std::endl;
+        }
+    }
+
+    // output closing </Font> element.
+    out_stream << "</Font>" << std::endl;
+}
+
+
 } // End of  CEGUI namespace section

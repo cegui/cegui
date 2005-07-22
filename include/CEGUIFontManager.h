@@ -218,6 +218,22 @@ public:
 	void	notifyScreenResolution(const Size& size);
 
 
+    /*!
+    \brief
+        Writes a full XML font file for the specified Font to the given OutStream.
+
+    \param name
+        String holding the name of the Font to be written to the stream.
+
+    \param out_stream
+        OutStream (std::ostream based) object where data is to be sent.
+
+    \return
+        Nothing.
+    */
+    void writeFontToStream(const String& name, OutStream& out_stream) const;
+
+
 private:
 	/*************************************************************************
 		Implementation Data
