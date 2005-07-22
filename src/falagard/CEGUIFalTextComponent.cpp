@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalTextComponent.h"
+#include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
@@ -92,6 +93,12 @@ namespace CEGUI
         if (!font)
             return;
 
+        HorizontalTextFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
+            FalagardXMLHelper::stringToHorzTextFormat(srcWindow.getProperty(d_horzFormatPropertyName));
+
+        VerticalTextFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
+            FalagardXMLHelper::stringToVertTextFormat(srcWindow.getProperty(d_vertFormatPropertyName));
+
         // calculate final colours to be used
         ColourRect finalColours;
         initColoursRect(srcWindow, modColours, finalColours);
@@ -100,10 +107,10 @@ namespace CEGUI
         const String& renderString = d_text.empty() ? srcWindow.getText() : d_text;
 
         // calculate height of formatted text
-        float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)d_horzFormatting) * font->getLineSpacing();
+        float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
 
         // handle dest area adjustments for vertical formatting.
-        switch(d_vertFormatting)
+        switch(vertFormatting)
         {
         case VTF_CENTRE_ALIGNED:
             destRect.d_top += (destRect.getHeight() - textHeight) * 0.5f;
@@ -119,7 +126,7 @@ namespace CEGUI
         }
 
         // add text to the rendering cache for the target window.
-        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)d_horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
+        srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
     }
 
 } // End of  CEGUI namespace section

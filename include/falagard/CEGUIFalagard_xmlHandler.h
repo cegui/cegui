@@ -109,6 +109,8 @@ namespace CEGUI
         static const String NamedAreaElement;           //!< Tag name for named area elements.
         static const String PropertyDefinitionElement;  //!< Tag name for property definition elements.
         static const String DimOperatorElement;         //!< Tag name for dimension operator elements.
+        static const String VertFormatPropertyElement;  //!< Tag name for element that specifies a vertical formatting property.
+        static const String HorzFormatPropertyElement;  //!< Tag name for element that specifies a horizontal formatting property..
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.

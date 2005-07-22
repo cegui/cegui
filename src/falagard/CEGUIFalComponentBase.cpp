@@ -110,4 +110,15 @@ namespace CEGUI
         }
     }
 
+
+    void FalagardComponentBase::setVertFormattingPropertySource(const String& property)
+    {
+        d_vertFormatPropertyName = property;
+    }
+
+    void FalagardComponentBase::setHorzFormattingPropertySource(const String& property)
+    {
+        d_horzFormatPropertyName = property;
+    }
+
 } // End of  CEGUI namespace section

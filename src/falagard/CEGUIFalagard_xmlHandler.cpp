@@ -70,6 +70,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::NamedAreaElement("NamedArea");
     const String Falagard_xmlHandler::PropertyDefinitionElement("PropertyDefinition");
     const String Falagard_xmlHandler::DimOperatorElement("DimOperator");
+    const String Falagard_xmlHandler::VertFormatPropertyElement("VertFormatProperty");
+    const String Falagard_xmlHandler::HorzFormatPropertyElement("HorzFormatProperty");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -412,6 +414,24 @@ namespace CEGUI
             CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
 
             d_widgetlook->addPropertyDefinition(prop);
+        }
+        else if (element == VertFormatPropertyElement)
+        {
+            if (d_framecomponent)
+                d_framecomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            else if (d_imagerycomponent)
+                d_imagerycomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            else if (d_textcomponent)
+                d_textcomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        }
+        else if (element == HorzFormatPropertyElement)
+        {
+            if (d_framecomponent)
+                d_framecomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            else if (d_imagerycomponent)
+                d_imagerycomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            else if (d_textcomponent)
+                d_textcomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
         }
         else
         {

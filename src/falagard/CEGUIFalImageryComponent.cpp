@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalImageryComponent.h"
+#include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIImagesetManager.h"
@@ -86,6 +87,12 @@ namespace CEGUI
         if (!d_image)
             return;
 
+        HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
+            FalagardXMLHelper::stringToHorzFormat(srcWindow.getProperty(d_horzFormatPropertyName));
+
+        VerticalFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
+            FalagardXMLHelper::stringToVertFormat(srcWindow.getProperty(d_vertFormatPropertyName));
+
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
@@ -96,7 +103,7 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // calculate initial x co-ordinate and horizontal tile count according to formatting options
-        switch (d_horzFormatting)
+        switch (horzFormatting)
         {
             case HF_STRETCHED:
                 imgSz.d_width = destRect.getWidth();
@@ -129,7 +136,7 @@ namespace CEGUI
         }
 
         // calculate initial y co-ordinate and vertical tile count according to formatting options
-        switch (d_vertFormatting)
+        switch (vertFormatting)
         {
             case VF_STRETCHED:
                 imgSz.d_height = destRect.getHeight();
@@ -176,8 +183,8 @@ namespace CEGUI
             for (uint col = 0; col < horzTiles; ++col)
             {
                 // use custom clipping for right and bottom edges when tiling the imagery
-                if (((d_vertFormatting == VF_TILED) && row == vertTiles - 1) ||
-                    ((d_horzFormatting == HF_TILED) && col == horzTiles - 1))
+                if (((vertFormatting == VF_TILED) && row == vertTiles - 1) ||
+                    ((horzFormatting == HF_TILED) && col == horzTiles - 1))
                 {
                     finalClipper = clipper ? clipper->getIntersection(destRect) : destRect;
                     clippingRect = &finalClipper;

@@ -156,6 +156,30 @@ namespace CEGUI
         */
         void setColoursPropertyIsColourRect(bool setting = true);
 
+        /*!
+        \brief
+            Set the name of the property where vertical formatting option can be obtained.
+
+        \param property
+            String containing the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setVertFormattingPropertySource(const String& property);
+
+        /*!
+        \brief
+            Set the name of the property where horizontal formatting option can be obtained.
+
+        \param property
+            String containing the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setHorzFormattingPropertySource(const String& property);
+
     protected:
         /*!
         \brief
@@ -180,6 +204,8 @@ namespace CEGUI
         ColourRect      d_colours;              //!< base colours to be applied when rendering the image component.
         String          d_colourPropertyName;   //!< name of property to fetch colours from.
         bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
+        String          d_vertFormatPropertyName;   //!< name of property to fetch vertical formatting setting from.
+        String          d_horzFormatPropertyName;   //!< name of property to fetch horizontal formatting setting from.
     };
 } // End of  CEGUI namespace section
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <Falagard>
     <WidgetLook name="TaharezLook/Button">
+        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" />
+        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -9,8 +11,8 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <VertFormat type="CentreAligned" />
-                <HorzFormat type="CentreAligned" />
+                <VertFormatProperty name="VertLabelFormatting" />
+                <HorzFormatProperty name="HorzLabelFormatting" />
             </TextComponent>
         </ImagerySection>
         <ImagerySection name="normal">
