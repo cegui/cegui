@@ -24,6 +24,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -194,6 +195,37 @@ namespace CEGUI
     void WidgetLookFeel::clearPropertyDefinitions()
     {
         d_propertyDefinitions.clear();
+    }
+
+    void WidgetLookFeel::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<WidgetLook name=\"" << d_lookName << "\">" << std::endl;
+
+        // output property definitions
+        for (PropertyDefinitionList::const_iterator curr = d_propertyDefinitions.begin(); curr != d_propertyDefinitions.end(); ++curr)
+            (*curr).writeXMLToStream(out_stream);
+
+        // output property initialisers.
+        for (PropertyList::const_iterator curr = d_properties.begin(); curr != d_properties.end(); ++curr)
+            (*curr).writeXMLToStream(out_stream);
+
+        // output named areas
+        for (NamedAreaList::const_iterator curr = d_namedAreas.begin(); curr != d_namedAreas.end(); ++curr)
+            (*curr).second.writeXMLToStream(out_stream);
+
+        // output child widgets
+        for (WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
+            (*curr).writeXMLToStream(out_stream);
+
+        // output imagery sections
+        for (ImageryList::const_iterator curr = d_imagerySections.begin(); curr != d_imagerySections.end(); ++curr)
+            (*curr).second.writeXMLToStream(out_stream);
+
+        // output states
+        for (StateList::const_iterator curr = d_stateImagery.begin(); curr != d_stateImagery.end(); ++curr)
+            (*curr).second.writeXMLToStream(out_stream);
+
+        out_stream << "</WidgetLook>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

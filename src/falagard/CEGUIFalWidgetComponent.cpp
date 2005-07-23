@@ -22,8 +22,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalWidgetComponent.h"
+#include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIExceptions.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -143,6 +145,35 @@ namespace CEGUI
         }
         catch (UnknownObjectException)
         {}
+    }
+
+    void WidgetComponent::writeXMLToStream(OutStream& out_stream) const
+    {
+        // output opening tag
+        out_stream << "<Child type=\"" << d_baseType << "\" nameSuffix=\"" << d_nameSuffix << "\"";
+
+        if (!d_imageryName.empty())
+            out_stream << " look=\"" << d_imageryName << "\"";
+
+        out_stream << ">" << std::endl;
+
+        // output target area
+        d_area.writeXMLToStream(out_stream);
+
+        // output vertical alignment
+        out_stream << "<VertAlignment type=\"" << FalagardXMLHelper::vertAlignmentToString(d_vertAlign) << "\" />" << std::endl;
+
+        // output horizontal alignment
+        out_stream << "<HorzAlignment type=\"" << FalagardXMLHelper::horzAlignmentToString(d_horzAlign) << "\" />" << std::endl;
+
+        //output property initialisers
+        for (PropertiesList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
+        {
+            (*prop).writeXMLToStream(out_stream);
+        }
+
+        // output closing tag
+        out_stream << "</Child>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

@@ -65,6 +65,18 @@ namespace CEGUI
         */
         void setArea(const ComponentArea& area);
 
+        /*!
+        \brief
+            Writes an xml representation of this NamedArea to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     private:
         String d_name;
         ComponentArea d_area;

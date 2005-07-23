@@ -23,6 +23,7 @@
 *************************************************************************/
 #include "falagard/CEGUIFalPropertyDefinition.h"
 #include "CEGUIWindow.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -50,6 +51,22 @@ namespace CEGUI
 
         if (d_writeCausesRedraw)
             static_cast<Window*>(receiver)->requestRedraw();
+    }
+
+    void PropertyDefinition::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<PropertyDefinition name=\"" << d_name << "\" ";
+
+        if (!d_default.empty())
+            out_stream << "initialValue=\"" << d_default << "\" ";
+
+        if (d_writeCausesRedraw)
+            out_stream << "redrawOnWrite=\"true\" ";
+
+        if (d_writeCausesLayout)
+            out_stream << "layoutOnWrite=\"true\" ";
+
+        out_stream << "/>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

@@ -23,6 +23,7 @@
 *************************************************************************/
 #include "falagard/CEGUIFalImagerySection.h"
 #include "CEGUIPropertyHelper.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -252,6 +253,52 @@ namespace CEGUI
         }
 
         return bounds;
+    }
+
+    void ImagerySection::writeXMLToStream(OutStream& out_stream) const
+    {
+        // output opening tag
+        out_stream << "<ImagerySection name=\"" << d_name << "\">" << std::endl;
+
+        // output modulative colours for this section
+        if (!d_colourPropertyName.empty())
+        {
+            if (d_colourProperyIsRect)
+                out_stream << "<ColourRectProperty ";
+            else
+                out_stream << "<ColourProperty ";
+
+            out_stream << "name=\"" << d_colourPropertyName << "\" />" << std::endl;
+        }
+        else if (!d_masterColours.isMonochromatic() || d_masterColours.d_top_left != colour(1,1,1,1))
+        {
+            out_stream << "<Colours ";
+            out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_masterColours.d_top_left) << "\" ";
+            out_stream << "topRight=\"" << PropertyHelper::colourToString(d_masterColours.d_top_right) << "\" ";
+            out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_masterColours.d_bottom_left) << "\" ";
+            out_stream << "bottomRight=\"" << PropertyHelper::colourToString(d_masterColours.d_bottom_right) << "\" />" << std::endl;
+        }
+
+        // output all frame components.
+        for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
+        {
+            (*frame).writeXMLToStream(out_stream);
+        }
+
+        // output all imagery components
+        for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
+        {
+            (*image).writeXMLToStream(out_stream);
+        }
+
+        // output all text components
+        for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
+        {
+            (*text).writeXMLToStream(out_stream);
+        }
+
+        // output closing tag
+        out_stream << "</ImagerySection>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

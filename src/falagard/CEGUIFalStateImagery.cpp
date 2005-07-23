@@ -24,6 +24,7 @@
 #include "falagard/CEGUIFalStateImagery.h"
 #include "CEGUISystem.h"
 #include "CEGUIRenderer.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -83,4 +84,29 @@ namespace CEGUI
     {
         d_clipToDisplay = setting;
     }
+
+    void StateImagery::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<StateImagery name=\"" << d_stateName << "\"";
+
+        if (d_clipToDisplay)
+            out_stream << " clipped=\"false\"";
+
+        if (d_layers.empty())
+        {
+            out_stream << " />" << std::endl;
+        }
+        else
+        {
+            out_stream << ">" << std::endl;
+
+            // output all layers defined for this state
+            for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
+                (*curr).writeXMLToStream(out_stream);
+
+            // write closing </StateImagery> tag
+            out_stream << "</StateImagery>" << std::endl;
+        }
+    }
+
 } // End of  CEGUI namespace section

@@ -27,6 +27,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -168,6 +169,49 @@ namespace CEGUI
     void SectionSpecification::setOverrideColoursPropertyIsColourRect(bool setting)
     {
         d_colourProperyIsRect = setting;
+    }
+
+    void SectionSpecification::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<Section ";
+
+        if (!d_owner.empty())
+            out_stream << "look=\"" << d_owner << "\" ";
+
+        out_stream << "section=\"" << d_sectionName << "\"";
+
+        if (d_usingColourOverride)
+        {
+            // terminate opening tag
+            out_stream << ">" << std::endl;
+
+            // output modulative colours for this section
+            if (!d_colourPropertyName.empty())
+            {
+                if (d_colourProperyIsRect)
+                    out_stream << "<ColourRectProperty ";
+                else
+                    out_stream << "<ColourProperty ";
+
+                out_stream << "name=\"" << d_colourPropertyName << "\" />" << std::endl;
+            }
+            else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != colour(1,1,1,1))
+            {
+                out_stream << "<Colours ";
+                out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_coloursOverride.d_top_left) << "\" ";
+                out_stream << "topRight=\"" << PropertyHelper::colourToString(d_coloursOverride.d_top_right) << "\" ";
+                out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_coloursOverride.d_bottom_left) << "\" ";
+                out_stream << "bottomRight=\"" << PropertyHelper::colourToString(d_coloursOverride.d_bottom_right) << "\" />" << std::endl;
+            }
+
+            // output closing section tag
+            out_stream << "</Section>" << std::endl;
+        }
+        else
+        {
+            // no sub elements, just terminate opening tag
+            out_stream << " />" << std::endl;
+        }
     }
 
 } // End of  CEGUI namespace section

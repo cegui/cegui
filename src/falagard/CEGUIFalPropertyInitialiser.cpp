@@ -23,6 +23,7 @@
 *************************************************************************/
 #include "falagard/CEGUIFalPropertyInitialiser.h"
 #include "CEGUIExceptions.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -51,6 +52,11 @@ namespace CEGUI
     const String& PropertyInitialiser::getInitialiserValue() const
     {
         return d_propertyValue;
+    }
+
+    void PropertyInitialiser::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<Property name=\"" << d_propertyName << "\" value=\"" << d_propertyValue << "\" />" << std::endl;
     }
 
 } // End of  CEGUI namespace section

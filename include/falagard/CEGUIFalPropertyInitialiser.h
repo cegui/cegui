@@ -79,6 +79,18 @@ namespace CEGUI
         */
         const String& getInitialiserValue() const;
 
+        /*!
+        \brief
+            Writes an xml representation of this PropertyInitialiser to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     private:
         CEGUI::String   d_propertyName;     //!< Name of a property to be set.
         CEGUI::String   d_propertyValue;    //!< Value string to be set on the property.

@@ -133,6 +133,18 @@ namespace CEGUI
         */
         void setOperand(const BaseDim& operand);
 
+        /*!
+        \brief
+            Writes an xml representation of this BaseDim to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     protected:
         /*!
         \brief
@@ -155,6 +167,22 @@ namespace CEGUI
             handled automatically by BaseDim.
         */
         virtual BaseDim* clone_impl() const = 0;
+
+        /*!
+        \brief
+            Implementataion method to output real xml element name to an OutStream.
+            This method should not write the element opening '<' character, nor close the element, it
+            must write just the element name itself.
+        */
+        virtual void writeXMLElementName_impl(OutStream& out_stream) const = 0;
+
+        /*!
+        \brief
+            Implementataion method to output xml element attributes to an OutStream.
+            This method should not write the element opening '<' character, nor close the element, it
+            must write just the element attributes.
+        */
+        virtual void writeXMLElementAttributes_impl(OutStream& out_stream) const = 0;
 
     private:
         DimensionOperator   d_operator;
@@ -188,6 +216,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
+        void writeXMLElementName_impl(OutStream& out_stream) const;
+        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
 
         BaseDim* clone_impl() const;
 
@@ -251,6 +281,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
+        void writeXMLElementName_impl(OutStream& out_stream) const;
+        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -314,6 +346,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
+        void writeXMLElementName_impl(OutStream& out_stream) const;
+        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -347,6 +381,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
+        void writeXMLElementName_impl(OutStream& out_stream) const;
+        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -389,6 +425,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
+        void writeXMLElementName_impl(OutStream& out_stream) const;
+        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -423,6 +461,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
+        void writeXMLElementName_impl(OutStream& out_stream) const;
+        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -519,6 +559,18 @@ namespace CEGUI
         */
         void setDimensionType(DimensionType type);
 
+        /*!
+        \brief
+            Writes an xml representation of this Dimension to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     private:
         BaseDim*        d_value;    //!< Pointer to the value for this Dimension.
         DimensionType   d_type;     //!< What we represent.
@@ -565,6 +617,18 @@ namespace CEGUI
             and \a container as a reference for calculating the final pixel dimensions.
         */
         Rect getPixelRect(const Window& wnd, const Rect& container) const;
+
+        /*!
+        \brief
+            Writes an xml representation of this ComponentArea to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
 
         Dimension d_left;   //!< Left edge of the area.
         Dimension d_top;    //!< Top edge of the area.

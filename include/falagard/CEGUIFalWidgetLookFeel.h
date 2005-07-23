@@ -257,6 +257,18 @@ namespace CEGUI
         */
         void clearPropertyDefinitions();
 
+        /*!
+        \brief
+            Writes an xml representation of this WidgetLookFeel to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     private:
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;

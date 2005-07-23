@@ -27,6 +27,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include <iostream>
 
 // void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours);
 
@@ -207,4 +208,34 @@ namespace CEGUI
         }
     }
 
+    void ImageryComponent::writeXMLToStream(OutStream& out_stream) const
+    {
+        // opening tag
+        out_stream << "<ImageryComponent>" << std::endl;
+        // write out area
+        d_area.writeXMLToStream(out_stream);
+
+        // write image
+        out_stream << "<Image imageset=\"" << d_image->getImagesetName() << "\" image=\"" << d_image->getName() << "\" />" << std::endl;
+
+        // get base class to write colours
+        writeColoursXML(out_stream);
+
+        // write vert format, allowing base class to do this for us if a propety is in use
+        if (!writeVertFormatXML(out_stream))
+        {
+            // was not a property, so write out explicit formatting in use
+            out_stream << "<VertFormat type=\"" << FalagardXMLHelper::vertFormatToString(d_vertFormatting) << "\" />" << std::endl;
+        }
+
+        // write horz format, allowing base class to do this for us if a propety is in use
+        if (!writeHorzFormatXML(out_stream))
+        {
+            // was not a property, so write out explicit formatting in use
+            out_stream << "<HorzFormat type=\"" << FalagardXMLHelper::horzFormatToString(d_horzFormatting) << "\" />" << std::endl;
+        }
+
+        // closing tag
+        out_stream << "</ImageryComponent>" << std::endl;
+    }
 } // End of  CEGUI namespace section

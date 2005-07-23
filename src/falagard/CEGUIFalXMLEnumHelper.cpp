@@ -286,4 +286,239 @@ namespace CEGUI
         }
     }
 
+
+    String FalagardXMLHelper::vertFormatToString(VerticalFormatting format)
+    {
+        switch (format)
+        {
+        case VF_BOTTOM_ALIGNED:
+            return String("BottomAligned");
+            break;
+        case VF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        case VF_TILED:
+            return String("Tiled");
+            break;
+        case VF_STRETCHED:
+            return String("Stretched");
+            break;
+        default:
+            return String("TopAligned");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::horzFormatToString(HorizontalFormatting format)
+    {
+        switch (format)
+        {
+        case HF_RIGHT_ALIGNED:
+            return String("RightAligned");
+            break;
+        case HF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        case HF_TILED:
+            return String("Tiled");
+            break;
+        case HF_STRETCHED:
+            return String("Stretched");
+            break;
+        default:
+            return String("LeftAligned");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::vertAlignmentToString(VerticalAlignment alignment)
+    {
+        switch (alignment)
+        {
+        case VA_BOTTOM:
+            return String("BottomAligned");
+            break;
+        case VA_CENTRE:
+            return String("CentreAligned");
+            break;
+        default:
+            return String("TopAligned");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::horzAlignmentToString(HorizontalAlignment alignment)
+    {
+        switch (alignment)
+        {
+        case HA_RIGHT:
+            return String("RightAligned");
+            break;
+        case HA_CENTRE:
+            return String("CentreAligned");
+            break;
+        default:
+            return String("LeftAligned");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::dimensionTypeToString(DimensionType dim)
+    {
+        switch (dim)
+        {
+        case DT_LEFT_EDGE:
+            return String("LeftEdge");
+            break;
+        case DT_X_POSITION:
+            return String("XPosition");
+            break;
+        case DT_TOP_EDGE:
+            return String("TopEdge");
+            break;
+        case DT_Y_POSITION:
+            return String("YPosition");
+            break;
+        case DT_RIGHT_EDGE:
+            return String("RightEdge");
+            break;
+        case DT_BOTTOM_EDGE:
+            return String("BottomEdge");
+            break;
+        case DT_WIDTH:
+            return String("Width");
+            break;
+        case DT_HEIGHT:
+            return String("Height");
+            break;
+        case DT_X_OFFSET:
+            return String("XOffset");
+            break;
+        case DT_Y_OFFSET:
+            return String("YOffset");
+            break;
+        default:
+            return String("Invalid");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::vertTextFormatToString(VerticalTextFormatting format)
+    {
+        switch (format)
+        {
+        case VTF_BOTTOM_ALIGNED:
+            return String("BottomAligned");
+            break;
+        case VTF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        default:
+            return String("TopAligned");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::horzTextFormatToString(HorizontalTextFormatting format)
+    {
+        switch (format)
+        {
+        case HTF_RIGHT_ALIGNED:
+            return String("RightAligned");
+            break;
+        case HTF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        case HTF_JUSTIFIED:
+            return String("Justified");
+            break;
+        case HTF_WORDWRAP_LEFT_ALIGNED:
+            return String("WordWrapLeftAligned");
+            break;
+        case HTF_WORDWRAP_RIGHT_ALIGNED:
+            return String("WordWrapRightAligned");
+            break;
+        case HTF_WORDWRAP_CENTRE_ALIGNED:
+            return String("WordWrapCentreAligned");
+            break;
+        case HTF_WORDWRAP_JUSTIFIED:
+            return String("WordWrapJustified");
+            break;
+        default:
+            return String("LeftAligned");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::fontMetricTypeToString(FontMetricType metric)
+    {
+        switch (metric)
+        {
+        case FMT_BASELINE:
+            return String("Baseline");
+            break;
+        case FMT_HORZ_EXTENT:
+            return String("HorzExtent");
+            break;
+        default:
+            return String("LineSpacing");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::dimensionOperatorToString(DimensionOperator op)
+    {
+        switch (op)
+        {
+        case DOP_ADD:
+            return String("Add");
+            break;
+        case DOP_SUBTRACT:
+            return String("Subtract");
+            break;
+        case DOP_MULTIPLY:
+            return String("Multiply");
+            break;
+        case DOP_DIVIDE:
+            return String("Divide");
+            break;
+        default:
+            return String("Noop");
+            break;
+        }
+    }
+
+    String FalagardXMLHelper::frameImageComponentToString(FrameImageComponent imageComp)
+    {
+        switch (imageComp)
+        {
+        case FIC_TOP_LEFT_CORNER:
+            return String("TopLeftCorner");
+            break;
+        case FIC_TOP_RIGHT_CORNER:
+            return String("TopRightCorner");
+            break;
+        case FIC_BOTTOM_LEFT_CORNER:
+            return String("BottomLeftCorner");
+            break;
+        case FIC_BOTTOM_RIGHT_CORNER:
+            return String("BottomRightCorner");
+            break;
+        case FIC_LEFT_EDGE:
+            return String("LeftEdge");
+            break;
+        case FIC_RIGHT_EDGE:
+            return String("RightEdge");
+            break;
+        case FIC_TOP_EDGE:
+            return String("TopEdge");
+            break;
+        case FIC_BOTTOM_EDGE:
+            return String("BottomEdge");
+            break;
+        default:
+            return String("Background");
+            break;
+        }
+    }
 } // End of  CEGUI namespace section

@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalNamedArea.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,6 +45,13 @@ namespace CEGUI
     void NamedArea::setArea(const ComponentArea& area)
     {
         d_area = area;
+    }
+
+    void NamedArea::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<NamedArea name=\"" << d_name << "\">" << std::endl;
+        d_area.writeXMLToStream(out_stream);
+        out_stream << "</NamedArea>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

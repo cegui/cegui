@@ -191,6 +191,18 @@ namespace CEGUI
         */
         void setOverrideColoursPropertyIsColourRect(bool setting = true);
 
+        /*!
+        \brief
+            Writes an xml representation of this SectionSpecification to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     protected:
         /*!
         \brief

@@ -198,6 +198,45 @@ namespace CEGUI
         */
         virtual void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const = 0;
 
+        /*!
+        \brief
+            Writes xml for the colours to a OutStream.  Will prefer property colours before explicit.
+
+        \note
+            This is intended as a helper method for sub-classes when outputting xml to a stream.
+
+        \return
+            - true if xml element was written.
+            - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
+        */
+        bool writeColoursXML(OutStream& out_stream) const;
+
+        /*!
+        \brief
+            Writes xml for the vertical formatting to a OutStream if such a property is defined.
+
+        \note
+            This is intended as a helper method for sub-classes when outputting xml to a stream.
+
+        \return
+            - true if xml element was written.
+            - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
+        */
+        bool writeVertFormatXML(OutStream& out_stream) const;
+
+        /*!
+        \brief
+            Writes xml for the horizontal formatting to a OutStream if such a property is defined.
+
+        \note
+            This is intended as a helper method for sub-classes when outputting xml to a stream.
+
+        \return
+            - true if xml element was written.
+            - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
+        */
+        bool writeHorzFormatXML(OutStream& out_stream) const;
+
 
         // data fields
         ComponentArea   d_area;                 //!< Destination area for this component.

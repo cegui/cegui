@@ -27,6 +27,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -478,6 +479,46 @@ namespace CEGUI
             finalRect.d_top += imgSz.d_height;
             finalRect.d_bottom += imgSz.d_height;
         }
+    }
+
+    void FrameComponent::writeXMLToStream(OutStream& out_stream) const
+    {
+        // opening tag
+        out_stream << "<FrameComponent>" << std::endl;
+        // write out area
+        d_area.writeXMLToStream(out_stream);
+
+        // write images
+        for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
+        {
+            if (d_frameImages[i])
+            {
+                out_stream << "<Image imageset=\"" << d_frameImages[i]->getImagesetName();
+                out_stream << "\" image=\"" << d_frameImages[i]->getName();
+                out_stream << "\" type=\"" << FalagardXMLHelper::frameImageComponentToString(static_cast<FrameImageComponent>(i));
+                out_stream << "\" />" << std::endl;
+            }
+        }
+
+        // get base class to write colours
+        writeColoursXML(out_stream);
+
+        // write vert format, allowing base class to do this for us if a propety is in use
+        if (!writeVertFormatXML(out_stream))
+        {
+            // was not a property, so write out explicit formatting in use
+            out_stream << "<VertFormat type=\"" << FalagardXMLHelper::vertFormatToString(d_vertFormatting) << "\" />" << std::endl;
+        }
+
+        // write horz format, allowing base class to do this for us if a propety is in use
+        if (!writeHorzFormatXML(out_stream))
+        {
+            // was not a property, so write out explicit formatting in use
+            out_stream << "<HorzFormat type=\"" << FalagardXMLHelper::horzFormatToString(d_horzFormatting) << "\" />" << std::endl;
+        }
+
+        // closing tag
+        out_stream << "</FrameComponent>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

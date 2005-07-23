@@ -120,6 +120,18 @@ namespace CEGUI
         */
         void setHorizontalFormatting(HorizontalFormatting fmt);
 
+        /*!
+        \brief
+            Writes an xml representation of this ImageryComponent to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     protected:
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;

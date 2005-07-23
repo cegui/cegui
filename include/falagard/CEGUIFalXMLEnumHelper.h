@@ -48,6 +48,17 @@ namespace CEGUI
         static FontMetricType stringToFontMetricType(const String& str);
         static DimensionOperator stringToDimensionOperator(const String& str);
         static FrameImageComponent stringToFrameImageComponent(const String& str);
+
+        static String vertFormatToString(VerticalFormatting format);
+        static String horzFormatToString(HorizontalFormatting format);
+        static String vertAlignmentToString(VerticalAlignment alignment);
+        static String horzAlignmentToString(HorizontalAlignment alignment);
+        static String dimensionTypeToString(DimensionType dim);
+        static String vertTextFormatToString(VerticalTextFormatting format);
+        static String horzTextFormatToString(HorizontalTextFormatting format);
+        static String fontMetricTypeToString(FontMetricType metric);
+        static String dimensionOperatorToString(DimensionOperator op);
+        static String frameImageComponentToString(FrameImageComponent imageComp);
     };
 } // End of  CEGUI namespace section
 

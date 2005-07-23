@@ -24,6 +24,7 @@
 #include "falagard/CEGUIFalComponentBase.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -119,6 +120,55 @@ namespace CEGUI
     void FalagardComponentBase::setHorzFormattingPropertySource(const String& property)
     {
         d_horzFormatPropertyName = property;
+    }
+
+    bool FalagardComponentBase::writeColoursXML(OutStream& out_stream) const
+    {
+        if (!d_colourPropertyName.empty())
+        {
+            if (d_colourProperyIsRect)
+                out_stream << "<ColourRectProperty ";
+            else
+                out_stream << "<ColourProperty ";
+
+            out_stream << "name=\"" << d_colourPropertyName << "\" />" << std::endl;
+        }
+        else if (!d_colours.isMonochromatic() || d_colours.d_top_left != colour(1,1,1,1))
+        {
+            out_stream << "<Colours ";
+            out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_colours.d_top_left) << "\" ";
+            out_stream << "topRight=\"" << PropertyHelper::colourToString(d_colours.d_top_right) << "\" ";
+            out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_colours.d_bottom_left) << "\" ";
+            out_stream << "bottomRight=\"" << PropertyHelper::colourToString(d_colours.d_bottom_right) << "\" />" << std::endl;
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool FalagardComponentBase::writeVertFormatXML(OutStream& out_stream) const
+    {
+        if (!d_vertFormatPropertyName.empty())
+        {
+            out_stream << "<VertFormatProperty name=\"" << d_vertFormatPropertyName << "\" />" << std::endl;
+            return true;
+        }
+
+        return false;
+    }
+
+    bool FalagardComponentBase::writeHorzFormatXML(OutStream& out_stream) const
+    {
+        if (!d_horzFormatPropertyName.empty())
+        {
+            out_stream << "<HorzFormatProperty name=\"" << d_horzFormatPropertyName << "\" />" << std::endl;
+            return true;
+        }
+
+        return false;
     }
 
 } // End of  CEGUI namespace section

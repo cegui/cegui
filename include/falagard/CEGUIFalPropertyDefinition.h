@@ -43,6 +43,18 @@ namespace CEGUI
         String get(const PropertyReceiver* receiver) const;
         void set(PropertyReceiver* receiver, const String& value);
 
+        /*!
+        \brief
+            Writes an xml representation of this PropertyDefinition  to \a out_stream.
+
+        \param out_stream
+            Stream where xml data should be output.
+
+        \return
+            Nothing.
+        */
+        void writeXMLToStream(OutStream& out_stream) const;
+
     protected:
         String d_userStringName;
         bool d_writeCausesRedraw;

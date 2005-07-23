@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalLayerSpecification.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -68,5 +69,22 @@ namespace CEGUI
         return d_layerPriority < other.d_layerPriority;
     }
 
+    void LayerSpecification::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<Layer";
+
+        if (d_layerPriority != 0)
+            out_stream << " priority=\"" << d_layerPriority << "\"";
+
+        out_stream << ">" << std::endl;
+
+        // ouput all sections in this layer
+        for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
+        {
+            (*curr).writeXMLToStream(out_stream);
+        }
+
+        out_stream << "</Layer>" << std::endl;
+    }
 
 } // End of  CEGUI namespace section

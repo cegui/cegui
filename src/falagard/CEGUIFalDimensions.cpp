@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "falagard/CEGUIFalDimensions.h"
+#include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIImage.h"
@@ -144,6 +145,37 @@ namespace CEGUI
         d_operand = operand.clone();
     }
 
+    void BaseDim::writeXMLToStream(OutStream& out_stream) const
+    {
+        // open tag
+        out_stream << "<";
+        // get sub-class to output the data for this single dimension
+        writeXMLElementName_impl(out_stream);
+        out_stream << " ";
+        writeXMLElementAttributes_impl(out_stream);
+
+        if (d_operand)
+        {
+            // terminate the opening element tag
+            out_stream << ">" << std::endl;
+            // write out the DimOperator
+            out_stream << "<DimOperator op=\"" << FalagardXMLHelper::dimensionOperatorToString(d_operator) << "\">" << std::endl;
+            // write out the other operand
+            d_operand->writeXMLToStream(out_stream);
+            // write closing tag for DimOperator element
+            out_stream << "</DimOperator>" << std::endl;
+            // write closing tag for this dimension element
+            out_stream << "</";
+            writeXMLElementName_impl(out_stream);
+            out_stream << ">" << std::endl;
+        }
+        // no operand, so just close this tag.
+        else
+        {
+            out_stream << " />" << std::endl;
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
 
     AbsoluteDim::AbsoluteDim(float val) :
@@ -170,6 +202,17 @@ namespace CEGUI
         AbsoluteDim* ndim = new AbsoluteDim(d_val);
         return ndim;
     }
+
+    void AbsoluteDim::writeXMLElementName_impl(OutStream& out_stream) const
+    {
+        out_stream << "AbsoluteDim";
+    }
+
+    void AbsoluteDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    {
+        out_stream << "value=\"" << d_val << "\"";
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -249,6 +292,16 @@ namespace CEGUI
     {
         ImageDim* ndim = new ImageDim(d_imageset, d_image, d_what);
         return ndim;
+    }
+
+    void ImageDim::writeXMLElementName_impl(OutStream& out_stream) const
+    {
+        out_stream << "ImageDim";
+    }
+
+    void ImageDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    {
+        out_stream << "imageset=\"" << d_imageset << "\" image=\"" << d_image << "\" dimension=\"" << FalagardXMLHelper::dimensionTypeToString(d_what) << "\"";
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -339,6 +392,19 @@ namespace CEGUI
         return ndim;
     }
 
+    void WidgetDim::writeXMLElementName_impl(OutStream& out_stream) const
+    {
+        out_stream << "WidgetDim";
+    }
+
+    void WidgetDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    {
+        if (!d_widgetName.empty())
+            out_stream << "widget=\"" << d_widgetName << "\" ";
+
+        out_stream << "dimension=\"" << FalagardXMLHelper::dimensionTypeToString(d_what) << "\"";
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
 
     FontDim::FontDim(const String& name, const String& font, const String& text, FontMetricType metric, float padding) :
@@ -393,6 +459,28 @@ namespace CEGUI
         return ndim;
     }
 
+    void FontDim::writeXMLElementName_impl(OutStream& out_stream) const
+    {
+        out_stream << "FontDim";
+    }
+
+    void FontDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    {
+        if (!d_childSuffix.empty())
+            out_stream << "widget=\"" << d_childSuffix << "\" ";
+
+        if (!d_font.empty())
+            out_stream << "font=\"" << d_font << "\" ";
+
+        if (!d_text.empty())
+            out_stream << "string=\"" << d_text << "\" ";
+
+        if (d_padding != 0)
+            out_stream << "padding=\"" << d_padding << "\" ";
+
+        out_stream << "type=\"" << FalagardXMLHelper::fontMetricTypeToString(d_metric) << "\"";
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
 
     PropertyDim::PropertyDim(const String& name, const String& property) :
@@ -418,6 +506,19 @@ namespace CEGUI
     {
         PropertyDim* ndim = new PropertyDim(d_childSuffix, d_property);
         return ndim;
+    }
+
+    void PropertyDim::writeXMLElementName_impl(OutStream& out_stream) const
+    {
+        if (!d_childSuffix.empty())
+            out_stream << "widget=\"" << d_childSuffix << "\" ";
+
+        out_stream << "PropertyDim";
+    }
+
+    void PropertyDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    {
+        out_stream << "name=\"" << d_property << "\"";
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -473,6 +574,16 @@ namespace CEGUI
     void Dimension::setDimensionType(DimensionType type)
     {
         d_type = type;
+    }
+
+    void Dimension::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<Dim type=\"" << FalagardXMLHelper::dimensionTypeToString(d_type) << "\">" << std::endl;
+
+        if (d_value)
+            d_value->writeXMLToStream(out_stream);
+
+        out_stream << "</Dim>" << std::endl;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -541,6 +652,22 @@ namespace CEGUI
         return ndim;
     }
 
+    void UnifiedDim::writeXMLElementName_impl(OutStream& out_stream) const
+    {
+        out_stream << "UnifiedDim";
+    }
+
+    void UnifiedDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    {
+        if (d_value.d_scale != 0)
+            out_stream << "scale=\"" << d_value.d_scale << "\" ";
+
+        if (d_value.d_offset != 0)
+            out_stream << "offset=\"" << d_value.d_offset << "\" ";
+
+        out_stream << "type=\"" << FalagardXMLHelper::dimensionTypeToString(d_what) << "\"";
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
 
     Rect ComponentArea::getPixelRect(const Window& wnd) const
@@ -591,6 +718,16 @@ namespace CEGUI
             pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.d_top;
 
         return pixelRect;
+    }
+
+    void ComponentArea::writeXMLToStream(OutStream& out_stream) const
+    {
+        out_stream << "<Area>" << std::endl;
+        d_left.writeXMLToStream(out_stream);
+        d_top.writeXMLToStream(out_stream);
+        d_right_or_width.writeXMLToStream(out_stream);
+        d_bottom_or_height.writeXMLToStream(out_stream);
+        out_stream << "</Area>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

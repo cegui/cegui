@@ -26,6 +26,7 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -127,6 +128,37 @@ namespace CEGUI
 
         // add text to the rendering cache for the target window.
         srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
+    }
+
+    void TextComponent::writeXMLToStream(OutStream& out_stream) const
+    {
+        // opening tag
+        out_stream << "<TextComponent>" << std::endl;
+        // write out area
+        d_area.writeXMLToStream(out_stream);
+
+        // write text element
+        out_stream << "<Text font=\"" << d_font << "\" string=\"" << d_text << "\" />" << std::endl;
+
+        // get base class to write colours
+        writeColoursXML(out_stream);
+
+        // write vert format, allowing base class to do this for us if a propety is in use
+        if (!writeVertFormatXML(out_stream))
+        {
+            // was not a property, so write out explicit formatting in use
+            out_stream << "<VertFormat type=\"" << FalagardXMLHelper::vertTextFormatToString(d_vertFormatting) << "\" />" << std::endl;
+        }
+
+        // write horz format, allowing base class to do this for us if a propety is in use
+        if (!writeHorzFormatXML(out_stream))
+        {
+            // was not a property, so write out explicit formatting in use
+            out_stream << "<HorzFormat type=\"" << FalagardXMLHelper::horzTextFormatToString(d_horzFormatting) << "\" />" << std::endl;
+        }
+
+        // closing tag
+        out_stream << "</TextComponent>" << std::endl;
     }
 
 } // End of  CEGUI namespace section
