@@ -5,9 +5,11 @@
 	<xsd:complexType name="FontType">
 		<xsd:sequence>
 			<xsd:element name="Mapping" type="MapType" maxOccurs="unbounded" minOccurs="0" />
-			<xsd:element name="GlyphSet" type="GlyphSetType" maxOccurs="unbounded" minOccurs="0" />
-			<xsd:element name="GlyphRange" type="GlyphRangeType" maxOccurs="unbounded" minOccurs="0" />
-			<xsd:element name="Glyph" type="GlyphType" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
+                <xsd:element name="GlyphSet" type="GlyphSetType" />
+                <xsd:element name="GlyphRange" type="GlyphRangeType" />
+                <xsd:element name="Glyph" type="GlyphType" />
+            </xsd:choice>
 		</xsd:sequence>
 		<xsd:attributeGroup ref="FontAttrs" />
 	</xsd:complexType>

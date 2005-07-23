@@ -1279,9 +1279,22 @@ void Font::writeXMLToStream(OutStream& out_stream) const
     // dynamic font so output defined glyphs
     if (d_freetype)
     {
-        for (String::const_iterator iter = d_glyphset.begin(); iter != d_glyphset.end(); ++iter)
+        size_t start = 0, idx = 0;
+
+        while(start < d_glyphset.length())
         {
-            out_stream << "<Glyph Codepoint=\"" << (*iter) << "\" />" << std::endl;
+            // find end of range
+            while ((idx + 1 < d_glyphset.length()) && (d_glyphset[idx] + 1 == d_glyphset[idx + 1]))
+                ++idx;
+
+            if (start == idx)
+                // if range is a just a single codepoint
+                out_stream << "<Glyph Codepoint=\"" << d_glyphset[start] << "\" />" << std::endl;
+            else
+                // range contains >1 codepoint
+                out_stream << "<GlyphRange StartCodepoint=\"" << d_glyphset[start] << "\" EndCodepoint=\"" << d_glyphset[idx] << "\" />" << std::endl;
+
+            start = ++idx;
         }
     }
     // static font, so output glyph to imageset mappings
