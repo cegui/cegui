@@ -137,6 +137,53 @@ namespace CEGUI
         */
         void addWidgetLook(const WidgetLookFeel& look);
 
+        /*!
+        \brief
+            Writes the xml header and opening 'Falagard' tags to a stream.
+        */
+        void writeFalagardXMLHeadToStream(OutStream& out_stream) const;
+
+        /*!
+        \brief
+            Writes closing xml 'Falagard' tag to a stream.
+
+        \param out_stream
+            OutStream where XML data should be sent.
+        */
+        void writeFalagardXMLTailToStream(OutStream& out_stream) const;
+
+        /*!
+        \brief
+            Writes a complete Widge Look to a stream.  Note that xml file header and
+            falagard opening/closing tags will also be written.
+
+        \param name
+            String holding the name of the widget look to be output to the stream.
+
+        \param out_stream
+            OutStream where XML data should be sent.
+        */
+        void writeWidgetLookToStream(const String& name, OutStream& out_stream) const;
+
+        /*!
+        \brief
+            Writes a series of complete Widge Look objects to a stream.  Note that xml file header and
+            falagard opening/closing tags will also be written.
+
+            The \a prefix specifies a name prefix common to all widget looks to be written, you could
+            specify this as "TaharezLook/" and then any defined widget look starting with that prefix, such
+            as "TaharezLook/Button" and "TaharezLook/Listbox" will be written to the stream.
+
+        \param prefix
+            String holding the widget look name prefix, which will be used when searching for the widget looks
+            to be output to the stream.
+
+        \param out_stream
+            OutStream where XML data should be sent.
+        */
+        void writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const;
+
+
     private:
         static const String FalagardSchemaName;     //!< Name of schema file used for XML validation.
 
