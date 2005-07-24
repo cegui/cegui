@@ -199,6 +199,9 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
     case 0x1B:  // Escape
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Escape);
         break;
+    case 0x0D:  // CR (Return)
+        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Return);
+        break;
     }
 
     // always inject Character even if we have done key-down injection
