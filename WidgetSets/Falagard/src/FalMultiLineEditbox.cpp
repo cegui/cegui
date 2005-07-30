@@ -69,7 +69,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_enabled ? (isReadOnly() ? "ReadOnly" : "Enabled") : "Disabled");
+        imagery = &wlf.getStateImagery(isDisabled() ? "Disabled" : (isReadOnly() ? "ReadOnly" : "Enabled"));
         // peform the rendering operation.
         imagery->render(*this);
     }
@@ -107,6 +107,7 @@ namespace CEGUI
                 caratArea.d_top     = textArea.d_top + ypos;
                 caratArea.setWidth(caratImagery.getBoundingRect(*this).getSize().d_width);
                 caratArea.setHeight(fnt->getLineSpacing());
+                caratArea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
 
                 // cache the carat image for rendering.
                 caratImagery.render(*this, caratArea, baseZ, 0, &textArea);

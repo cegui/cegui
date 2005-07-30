@@ -255,6 +255,7 @@ void TLMultiLineEditbox::cacheCaratImagery(const Rect& textArea)
             caratArea.d_top     = textArea.d_top + ypos;
             caratArea.d_right   = caratArea.d_left + d_carat->getWidth();
             caratArea.d_bottom  = caratArea.d_top + fnt->getLineSpacing();
+            caratArea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
 
             // cache the carat image for rendering.
             d_renderCache.cacheImage(*d_carat, caratArea, baseZ, ColourRect(colour(1,1,1,getEffectiveAlpha())), &textArea);

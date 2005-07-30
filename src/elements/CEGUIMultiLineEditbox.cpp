@@ -202,10 +202,8 @@ void MultiLineEditbox::populateRenderCache()
 	//
 	// Render edit box text
 	//
-	// calculate on-screen position of area we have to render into
 	Rect textarea(getTextRenderArea());
 
-	textarea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
 	cacheTextLines(textarea);
 
 	if (hasInputFocus() && !isReadOnly())
@@ -510,6 +508,8 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 {
     // text is already formatted, we just grab the lines and render them with the required alignment.
     Rect drawArea(dest_area);
+    drawArea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
+
     Renderer* renderer = System::getSingleton().getRenderer();
     const Font* fnt = getFont();
 
@@ -543,7 +543,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
             {
                 colours.setColours(normalTextCol);
                 // render the complete line.
-                d_renderCache.cacheText(lineText, fnt, LeftAligned, lineRect, textZ, colours);
+                d_renderCache.cacheText(lineText, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
             }
             // we have at least some selection highlighting to do
             else
@@ -568,7 +568,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 
                     // draw this portion of the text
                     colours.setColours(normalTextCol);
-                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours);
+                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
 
                     // set position ready for next portion of text
                     lineRect.d_left += selStartOffset;
@@ -586,7 +586,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 
                 // draw the text for this section
                 colours.setColours(selectTextCol);
-                d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours);
+                d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
 
                 // render any text beyond selected region of line
                 if (sectIdx < currLine.d_length)
@@ -602,7 +602,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 
                     // render the text for this section.
                     colours.setColours(normalTextCol);
-                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours);
+                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
                 }
 
                 // calculate area for the selection brush on this line
@@ -612,7 +612,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 
                 // render the selection area brush for this line
                 colours.setColours(selectBrushCol);
-                d_renderCache.cacheImage(*d_selectionBrush, lineRect, selZ, colours, &lineRect);
+                d_renderCache.cacheImage(*d_selectionBrush, lineRect, selZ, colours, &dest_area);
             }
 
             // update master position for next line in paragraph.
