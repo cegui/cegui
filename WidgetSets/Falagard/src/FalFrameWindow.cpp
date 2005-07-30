@@ -49,7 +49,7 @@ namespace CEGUI
             return;
 
         // build state name
-        String stateName(d_enabled ? (isActive() ? "Active" : "Inactive") : "Disabled");
+        String stateName(isDisabled() ? "Disabled" : (isActive() ? "Active" : "Inactive"));
         stateName += d_titlebar->isVisible() ? "WithTitle" : "NoTitle";
         stateName += d_frameEnabled ? "WithFrame" : "NoFrame";
 

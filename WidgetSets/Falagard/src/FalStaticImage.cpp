@@ -45,10 +45,12 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
 
+		bool is_enabled = !isDisabled();
+
         // render frame section
         if (d_frameEnabled)
         {
-            imagery = &wlf.getStateImagery(d_enabled ? "EnabledFrame" : "DisabledFrame");
+            imagery = &wlf.getStateImagery(is_enabled ? "EnabledFrame" : "DisabledFrame");
             // peform the rendering operation.
             imagery->render(*this);
         }
@@ -56,13 +58,13 @@ namespace CEGUI
         // render background section
         if (d_backgroundEnabled)
         {
-            imagery = &wlf.getStateImagery(d_enabled ? "EnabledBackground" : "DisabledBackground");
+            imagery = &wlf.getStateImagery(is_enabled ? "EnabledBackground" : "DisabledBackground");
             // peform the rendering operation.
             imagery->render(*this);
         }
 
         // render basic imagery
-        imagery = &wlf.getStateImagery(d_enabled ? "Enabled" : "Disabled");
+        imagery = &wlf.getStateImagery(is_enabled ? "Enabled" : "Disabled");
         // peform the rendering operation.
         imagery->render(*this);
 

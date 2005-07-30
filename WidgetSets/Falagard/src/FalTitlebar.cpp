@@ -48,7 +48,7 @@ namespace CEGUI
             // get WidgetLookFeel for the assigned look.
             const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
             // try and get imagery for our current state
-            if (d_enabled)
+            if (!isDisabled())
                 imagery = &wlf.getStateImagery((d_parent && d_parent->isActive()) ? "Active" : "Inactive");
             else
                 imagery = &wlf.getStateImagery("Disabled");
