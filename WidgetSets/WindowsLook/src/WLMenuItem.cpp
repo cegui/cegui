@@ -52,9 +52,9 @@ const utf8	WLMenubarItem::BackgroundImageName[]		= "Background";
 WLMenubarItem::WLMenubarItem(const String& type, const String& name) :
 	MenuItem(type, name)
 {
-	setNormalTextColour(0x00000000);
-	setHoverColour(0x00A7C7FF);
-	setPushedColour(0x0087A7DF);
+	setNormalTextColour(0xFF000000);
+	setHoverColour(0xFFA7C7FF);
+	setPushedColour(0xFF87A7DF);
 
 	// get images
 	Imageset* iset = ImagesetManager::getSingleton().getImageset(ImagesetName);
@@ -133,8 +133,8 @@ void WLMenubarItem::drawBackground(float z)
 	else
 		return;
 
-	col.setAlpha(getEffectiveAlpha());
 	ColourRect colours(col);
+	colours.modulateAlpha(getEffectiveAlpha());
 
 	//
 	// draw the frame
@@ -233,9 +233,9 @@ const utf8	WLPopupMenuItem::ArrowRightImageName[]			= "PopupMenuArrowRight";
 WLPopupMenuItem::WLPopupMenuItem(const String& type, const String& name) :
 	MenuItem(type, name)
 {
-	setNormalTextColour(0x00000000);
-	setHoverColour(0x00A7C7FF);
-	setPushedColour(0x0087A7DF);
+	setNormalTextColour(0xFF000000);
+	setHoverColour(0xFFA7C7FF);
+	setPushedColour(0xFF87A7DF);
 	
 	d_textXOffset = 20;
 

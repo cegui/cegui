@@ -47,11 +47,11 @@ MenuItemProperties::DisabledTextColour	MenuItem::d_disabledTextColourProperty;
 	Constants
 *************************************************************************/
 // default colours for rendering
-const colour	MenuItem::DefaultHoverColour		= 0x00FFFFFF;
-const colour	MenuItem::DefaultPushedColour		= 0x00FFFFFF;
-const colour	MenuItem::DefaultOpenedColour		= 0x00EFEFEF;
-const colour	MenuItem::DefaultNormalTextColour	= 0x00FFFFFF;
-const colour	MenuItem::DefaultDisabledTextColour	= 0x007F7F7F;
+const colour	MenuItem::DefaultHoverColour		= 0xFFFFFFFF;
+const colour	MenuItem::DefaultPushedColour		= 0xFFFFFFFF;
+const colour	MenuItem::DefaultOpenedColour		= 0xFFEFEFEF;
+const colour	MenuItem::DefaultNormalTextColour	= 0xFFFFFFFF;
+const colour	MenuItem::DefaultDisabledTextColour	= 0xFF7F7F7F;
 
 // event strings
 const String MenuItem::EventNamespace("MenuItem");
@@ -256,12 +256,11 @@ bool MenuItem::togglePopupMenu(void)
 	Set the colour to use for the label text when rendering in the
 	hover / highlighted states.	
 *************************************************************************/
-void MenuItem::setHoverColour(const colour& colour)
+void MenuItem::setHoverColour(const colour& col)
 {
-	if (d_hoverColour != colour)
+	if (d_hoverColour != col)
 	{
-		// alpha part comes from window alpha
-		d_hoverColour = (colour & 0x00FFFFFF);
+		d_hoverColour = col;
 		requestRedraw();
 	}
 
@@ -272,12 +271,11 @@ void MenuItem::setHoverColour(const colour& colour)
 	Set the colour to use for the label text when rendering in the
 	pushed state.
 *************************************************************************/
-void MenuItem::setPushedColour(const colour& colour)
+void MenuItem::setPushedColour(const colour& col)
 {
-	if (d_pushedColour != colour)
+	if (d_pushedColour != col)
 	{
-		// alpha part comes from window alpha
-		d_pushedColour = (colour & 0x00FFFFFF);
+		d_pushedColour = col;
 		requestRedraw();
 	}
 
@@ -288,12 +286,11 @@ void MenuItem::setPushedColour(const colour& colour)
 	Set the colour to use for the label text when rendering in the
 	opened state.
 *************************************************************************/
-void MenuItem::setOpenedColour(const colour& colour)
+void MenuItem::setOpenedColour(const colour& col)
 {
-	if (d_openedColour != colour)
+	if (d_openedColour != col)
 	{
-		// alpha part comes from window alpha
-		d_openedColour = (colour & 0x00FFFFFF);
+		d_openedColour = col;
 		requestRedraw();
 	}
 
@@ -304,12 +301,11 @@ void MenuItem::setOpenedColour(const colour& colour)
 	Set the colour to use for the label text when rendering in the
 	normal state.	
 *************************************************************************/
-void MenuItem::setNormalTextColour(const colour& colour)
+void MenuItem::setNormalTextColour(const colour& col)
 {
-	if (d_normalTextColour != colour)
+	if (d_normalTextColour != col)
 	{
-		// alpha part comes from window alpha
-		d_normalTextColour = (colour & 0x00FFFFFF);
+		d_normalTextColour = col;
 		requestRedraw();
 	}
 
@@ -320,12 +316,11 @@ void MenuItem::setNormalTextColour(const colour& colour)
 	Set the colour to use for the label text when rendering in the
 	disabled state.	
 *************************************************************************/
-void MenuItem::setDisabledTextColour(const colour& colour)
+void MenuItem::setDisabledTextColour(const colour& col)
 {
-	if (d_disabledTextColour != colour)
+	if (d_disabledTextColour != col)
 	{
-		// alpha part comes from window alpha
-		d_disabledTextColour = (colour & 0x00FFFFFF);
+		d_disabledTextColour = col;
 		requestRedraw();
 	}
 

@@ -41,7 +41,7 @@ TextItemProperties::TextFormatting	TextItem::d_textFormattingProperty;
 /*************************************************************************
 Constants
 *************************************************************************/
-const colour	TextItem::DefaultTextColour	= 0x00FFFFFF;
+const colour	TextItem::DefaultTextColour	= 0xFFFFFFFF;
 
 /*************************************************************************
 	Constructor for TextItem base class.
@@ -91,7 +91,8 @@ void TextItem::populateRenderCache()
 {
 	Rect absrect(getAbsoluteRect());
 	
-	d_textColour.setAlpha(getEffectiveAlpha());
+	ColourRect colours(d_textColour);
+	colours.modulateAlpha(getEffectiveAlpha());
 		
 	//
 	// Draw label text
@@ -101,7 +102,7 @@ void TextItem::populateRenderCache()
 
     float zBase = System::getSingleton().getRenderer()->getZLayer(2) - System::getSingleton().getRenderer()->getCurrentZ();
 
-    d_renderCache.cacheText(getText(), getFont(), d_textFormatting, absrect, zBase, ColourRect(d_textColour));
+    d_renderCache.cacheText(getText(), getFont(), d_textFormatting, absrect, zBase, colours);
 }
 
 
