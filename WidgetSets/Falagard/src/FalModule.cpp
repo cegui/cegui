@@ -142,7 +142,7 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
     {
         if (entry->d_name == type_name)
         {
-            WindowFactoryManager::getSingleton().addFactory(entry->d_factory);
+            doSafeFactoryRegistration(entry->d_factory);
             return;
         }
 
@@ -159,11 +159,33 @@ extern "C" CEGUI::uint registerAllFactories(void)
 
     while (entry->d_name)
     {
-        WindowFactoryManager::getSingleton().addFactory(entry->d_factory);
+		doSafeFactoryRegistration(entry->d_factory);
 
         ++entry;
         ++count;
     }
 
     return count;
+}
+
+void doSafeFactoryRegistration(WindowFactory* factory)
+{
+	assert(factory != 0);
+
+	WindowFactoryManager& wfm = WindowFactoryManager::getSingleton();
+
+	// is this factory is already registered
+	if (wfm.isFactoryPresent(factory->getTypeName()))
+	{
+		// log the fact that this type already appears to be registered
+		Logger::getSingleton().logEvent(
+			"Falagard widget factory '" + factory->getTypeName() + "' appears to be already registered, skipping.",
+			Informative);
+	}
+	// factory not already registered,
+	else
+	{
+		// add this factory to those available
+		wfm.addFactory(factory);
+	}
 }
