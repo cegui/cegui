@@ -57,8 +57,8 @@ const utf8*	WLMultiLineEditbox::HorzScrollbarTypeName		= WLHorzScrollbar::Widget
 const utf8*	WLMultiLineEditbox::VertScrollbarTypeName		= WLVertScrollbar::WidgetTypeName;
 
 // colours
-const colour WLMultiLineEditbox::ReadWriteBackgroundColour	= 0xFFFFFF;
-const colour WLMultiLineEditbox::ReadOnlyBackgroundColour	= 0xDFDFDF;
+const colour WLMultiLineEditbox::ReadWriteBackgroundColour	= 0xFFFFFFFF;
+const colour WLMultiLineEditbox::ReadOnlyBackgroundColour	= 0xFFDFDFDF;
 const colour WLMultiLineEditbox::NormalTextColour			= 0xFF000000;
 const colour WLMultiLineEditbox::SelectedTextColour			= 0xFFFFFFFF;
 const colour WLMultiLineEditbox::NormalSelectionColour		= 0xFF607FFF;

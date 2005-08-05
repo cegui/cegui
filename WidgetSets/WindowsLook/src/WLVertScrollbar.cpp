@@ -55,7 +55,7 @@ const utf8	WLVertScrollbar::DownButtonHighlightImageName[]	= "LargeDownArrow";
 const utf8	WLVertScrollbar::MouseCursorImageName[]			= "MouseArrow";
 
 // Colours
-const colour WLVertScrollbar::BackgroundColour		= 0xDFDFDF;
+const colour WLVertScrollbar::BackgroundColour		= 0xFFDFDFDF;
 
 // some layout stuff
 const float	WLVertScrollbar::MinThumbHeight		= 10.0f;

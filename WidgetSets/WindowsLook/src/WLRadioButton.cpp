@@ -42,8 +42,8 @@ const utf8	WLRadioButton::SelectMarkImageName[]	= "RadioButtonMark";
 const float	WLRadioButton::LabelPadding				= 4.0f;
 
 // colours
-const colour WLRadioButton::EnabledTextLabelColour	= 0x000000;
-const colour WLRadioButton::DisabledTextLabelColour	= 0x888888;
+const colour WLRadioButton::EnabledTextLabelColour	= 0xFF000000;
+const colour WLRadioButton::DisabledTextLabelColour	= 0xFF888888;
 
 
 /*************************************************************************

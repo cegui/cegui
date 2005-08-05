@@ -41,8 +41,8 @@ const utf8	WLCheckbox::CheckMarkImageName[]	= "CheckboxMark";
 const float	WLCheckbox::LabelPadding			= 4.0f;
 
 // colours
-const colour WLCheckbox::EnabledTextLabelColour		= 0x000000;
-const colour WLCheckbox::DisabledTextLabelColour	= 0x888888;
+const colour WLCheckbox::EnabledTextLabelColour		= 0xFF000000;
+const colour WLCheckbox::DisabledTextLabelColour	= 0xFF888888;
 
 
 /*************************************************************************

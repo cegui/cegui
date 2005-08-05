@@ -64,14 +64,14 @@ const utf8	WLVertScrollbarThumb::GripperImageName[]				= "VertScrollbarGrip";
 const utf8	WLVertScrollbarThumb::MouseCursorImageName[]			= "MouseArrow";
 
 // colours
-const colour WLVertScrollbarThumb::NormalPrimaryColour		= 0xAFAFAF;
-const colour WLVertScrollbarThumb::NormalSecondaryColour	= 0xFFFFFF;
-const colour WLVertScrollbarThumb::HoverPrimaryColour		= 0xCFD9CF;
-const colour WLVertScrollbarThumb::HoverSecondaryColour		= 0xF2FFF2;
-const colour WLVertScrollbarThumb::PushedPrimaryColour		= 0xAFAFAF;
-const colour WLVertScrollbarThumb::PushedSecondaryColour	= 0xFFFFFF;
-const colour WLVertScrollbarThumb::DisabledPrimaryColour	= 0x999999;
-const colour WLVertScrollbarThumb::DisabledSecondaryColour	= 0x999999;
+const colour WLVertScrollbarThumb::NormalPrimaryColour		= 0xFFAFAFAF;
+const colour WLVertScrollbarThumb::NormalSecondaryColour	= 0xFFFFFFFF;
+const colour WLVertScrollbarThumb::HoverPrimaryColour		= 0xFFCFD9CF;
+const colour WLVertScrollbarThumb::HoverSecondaryColour		= 0xFFF2FFF2;
+const colour WLVertScrollbarThumb::PushedPrimaryColour		= 0xFFAFAFAF;
+const colour WLVertScrollbarThumb::PushedSecondaryColour	= 0xFFFFFFFF;
+const colour WLVertScrollbarThumb::DisabledPrimaryColour	= 0xFF999999;
+const colour WLVertScrollbarThumb::DisabledSecondaryColour	= 0xFF999999;
 
 // layout related constants
 const float	WLVertScrollbarThumb::MinimumHeightWithGripRatio	= 2.0f;

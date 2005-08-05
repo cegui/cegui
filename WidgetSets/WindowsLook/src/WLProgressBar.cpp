@@ -48,8 +48,8 @@ const utf8	WLProgressBar::BackgroundImageName[]		= "Background";
 const utf8	WLProgressBar::MouseCursorImageName[]		= "MouseArrow";
 
 // colours
-colour WLProgressBar::ContainerBackgroundColour		= 0xDFDFDF;
-colour WLProgressBar::DefaultProgressColour			= 0x2222FF;
+colour WLProgressBar::ContainerBackgroundColour		= 0xFFDFDFDF;
+colour WLProgressBar::DefaultProgressColour			= 0xFF2222FF;
 
 // rendering layers
 const uint	WLProgressBar::ContainerLayer	= 0;

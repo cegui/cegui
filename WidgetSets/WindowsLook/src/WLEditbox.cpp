@@ -54,12 +54,12 @@ const utf8	WLEditbox::MouseCursorImageName[]		= "MouseTextBar";
 const float	WLEditbox::TextPaddingRatio		= 1.0f;
 
 // colours
-const colour WLEditbox::ReadWriteBackgroundColour	= 0xFFFFFF;
-const colour WLEditbox::ReadOnlyBackgroundColour	= 0xDFDFDF;
-const colour WLEditbox::NormalTextColour			= 0x000000;
-const colour WLEditbox::SelectedTextColour			= 0xFFFFFF;
-const colour WLEditbox::NormalSelectionColour		= 0x607FFF;
-const colour WLEditbox::InactiveSelectionColour		= 0x808080;
+const colour WLEditbox::ReadWriteBackgroundColour	= 0xFFFFFFFF;
+const colour WLEditbox::ReadOnlyBackgroundColour	= 0xFFDFDFDF;
+const colour WLEditbox::NormalTextColour			= 0xFF000000;
+const colour WLEditbox::SelectedTextColour			= 0xFFFFFFFF;
+const colour WLEditbox::NormalSelectionColour		= 0xFF607FFF;
+const colour WLEditbox::InactiveSelectionColour		= 0xFF808080;
 
 // implementation constantss
 const uint	WLEditbox::ContainerLayer	= 1;

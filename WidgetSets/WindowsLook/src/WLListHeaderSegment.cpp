@@ -47,10 +47,10 @@ const utf8	WLListHeaderSegment::SizingMouseCursor[]		= "MouseEsWeCursor";
 const utf8	WLListHeaderSegment::MovingMouseCursor[]		= "MouseMoveCursor";
 
 // colours
-const colour WLListHeaderSegment::BackdropNormalColour		= 0xDDDDDD;
-const colour WLListHeaderSegment::BackdropHighlightColour	= 0xEFEFEF;
-const colour WLListHeaderSegment::SplitterNormalColour		= 0xDDDDDD;
-const colour WLListHeaderSegment::SplitterHighlightColour	= 0xEFEFEF;
+const colour WLListHeaderSegment::BackdropNormalColour		= 0xFFDDDDDD;
+const colour WLListHeaderSegment::BackdropHighlightColour	= 0xFFEFEFEF;
+const colour WLListHeaderSegment::SplitterNormalColour		= 0xFFDDDDDD;
+const colour WLListHeaderSegment::SplitterHighlightColour	= 0xFFEFEFEF;
 
 
 /*************************************************************************

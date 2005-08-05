@@ -62,16 +62,16 @@ const utf8	WLButton::PushedBottomRightImageName[]		= "ButtonPushedBottomRight";
 const utf8	WLButton::MouseCursorImageName[]			= "MouseArrow";
 
 // colours
-const colour	WLButton::NormalPrimaryColour		= 0xAFAFAF;
-const colour	WLButton::NormalSecondaryColour		= 0xFFFFFF;
-const colour	WLButton::HoverPrimaryColour		= 0xCFD9CF;
-const colour	WLButton::HoverSecondaryColour		= 0xF2FFF2;
-const colour	WLButton::PushedPrimaryColour		= 0xAFAFAF;
-const colour	WLButton::PushedSecondaryColour		= 0xFFFFFF;
-const colour	WLButton::DisabledPrimaryColour		= 0x999999;
-const colour	WLButton::DisabledSecondaryColour	= 0x999999;
-const colour	WLButton::EnabledTextLabelColour	= 0x000000;
-const colour	WLButton::DisabledTextLabelColour	= 0x888888;
+const colour	WLButton::NormalPrimaryColour		= 0xFFAFAFAF;
+const colour	WLButton::NormalSecondaryColour		= 0xFFFFFFFF;
+const colour	WLButton::HoverPrimaryColour		= 0xFFCFD9CF;
+const colour	WLButton::HoverSecondaryColour		= 0xFFF2FFF2;
+const colour	WLButton::PushedPrimaryColour		= 0xFFAFAFAF;
+const colour	WLButton::PushedSecondaryColour		= 0xFFFFFFFF;
+const colour	WLButton::DisabledPrimaryColour		= 0xFF999999;
+const colour	WLButton::DisabledSecondaryColour	= 0xFF999999;
+const colour	WLButton::EnabledTextLabelColour	= 0xFF000000;
+const colour	WLButton::DisabledTextLabelColour	= 0xFF888888;
 
 	
 /*************************************************************************

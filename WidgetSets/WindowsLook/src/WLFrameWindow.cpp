@@ -72,12 +72,12 @@ const float	WLFrameWindow::TitlebarYOffset			= 0;
 const float	WLFrameWindow::TitlebarTextPadding		= 12;
 
 // colours
-const colour WLFrameWindow::ActiveColour			= 0xA7C7FF;
-const colour WLFrameWindow::InactiveColour			= 0xEFEFEF;
-const colour WLFrameWindow::ClientTopLeftColour		= 0xDFDFF5;
-const colour WLFrameWindow::ClientTopRightColour	= 0xDFEFF5;
-const colour WLFrameWindow::ClientBottomLeftColour	= 0xF4F3F5;
-const colour WLFrameWindow::ClientBottomRightColour	= 0xF0F0F5;
+const colour WLFrameWindow::ActiveColour			= 0xFFA7C7FF;
+const colour WLFrameWindow::InactiveColour			= 0xFFEFEFEF;
+const colour WLFrameWindow::ClientTopLeftColour		= 0xFFDFDFF5;
+const colour WLFrameWindow::ClientTopRightColour	= 0xFFDFEFF5;
+const colour WLFrameWindow::ClientBottomLeftColour	= 0xFFF4F3F5;
+const colour WLFrameWindow::ClientBottomRightColour	= 0xFFF0F0F5;
 
 
 /*************************************************************************

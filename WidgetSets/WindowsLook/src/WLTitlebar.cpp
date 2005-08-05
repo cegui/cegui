@@ -49,9 +49,9 @@ const utf8	WLTitlebar::NormalCursorImageName[]		= "MouseMoveCursor";
 const utf8	WLTitlebar::NoDragCursorImageName[]		= "MouseArrow";
 
 // colours
-const colour WLTitlebar::ActiveColour		= 0xA7C7FF;
-const colour WLTitlebar::InactiveColour		= 0xEFEFEF;
-const colour WLTitlebar::CaptionColour		= 0x000000;
+const colour WLTitlebar::ActiveColour		= 0xFFA7C7FF;
+const colour WLTitlebar::InactiveColour		= 0xFFEFEFEF;
+const colour WLTitlebar::CaptionColour		= 0xFF000000;
 
 
 /*************************************************************************
