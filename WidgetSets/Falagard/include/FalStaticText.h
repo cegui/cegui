@@ -45,8 +45,11 @@ namespace CEGUI
             - EnabledBackground  - backdrop rendering for enabled state
             - DisabledBackground - backdrop rendering for disabled state
 
-        Named Areas:
+        Named Areas (missing areas will default to 'TextRenderArea'):
             TextRenderArea
+            TextRenderAreaHScroll
+            TextRenderAreaVScroll
+            TextRenderAreaHVScroll
     */
     class FALAGARDBASE_API FalagardStaticText : public StaticText
     {

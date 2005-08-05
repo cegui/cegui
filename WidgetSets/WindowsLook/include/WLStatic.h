@@ -109,6 +109,13 @@ protected:
 		Pointer to a Scrollbar to be used for scrolling horizontally.
 	*/
 	virtual Scrollbar*	createHorzScrollbar(const String& name) const;
+
+
+	/*!
+	\brief
+		layout component widgets
+	*/
+	virtual void	performChildWindowLayout(void);
 };
 
 

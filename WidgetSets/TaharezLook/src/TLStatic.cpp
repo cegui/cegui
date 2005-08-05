@@ -122,6 +122,51 @@ void TLStaticText::initialise(void)
 }
 
 
+/*************************************************************************
+	Setup size and position for the component widgets attached to this
+	TLStaticText
+*************************************************************************/
+void TLStaticText::performChildWindowLayout()
+{
+    // base class layout
+    Static::performChildWindowLayout();
+
+	// set desired size for vertical scroll-bar
+	Size v_sz(0.05f, 1.0f);
+	d_vertScrollbar->setSize(v_sz);
+
+	// get the actual size used for vertical scroll bar.
+	v_sz = absoluteToRelative(d_vertScrollbar->getAbsoluteSize());
+
+
+	// set desired size for horizontal scroll-bar
+	Size h_sz(1.0f, 0.0f);
+
+	if (getAbsoluteHeight() != 0.0f)
+	{
+		h_sz.d_height = (getAbsoluteWidth() * v_sz.d_width) / getAbsoluteHeight();
+	}
+
+	// adjust length to consider width of vertical scroll bar if that is visible
+	if (d_vertScrollbar->isVisible())
+	{
+		h_sz.d_width -= v_sz.d_width;
+	}
+
+	d_horzScrollbar->setSize(h_sz);
+
+	// get actual size used
+	h_sz = absoluteToRelative(d_horzScrollbar->getAbsoluteSize());
+
+
+	// position vertical scroll bar
+	d_vertScrollbar->setPosition(Point(1.0f - v_sz.d_width, 0.0f));
+
+	// position horizontal scroll bar
+	d_horzScrollbar->setPosition(Point(0.0f, 1.0f - h_sz.d_height));
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 	

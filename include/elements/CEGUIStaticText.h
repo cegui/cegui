@@ -317,16 +317,6 @@ protected:
 
 	/*!
 	\brief
-		Setup size and position for the component widgets attached to this StaticText
-
-	\return
-		Nothing.
-	*/
-	virtual void performChildWindowLayout();
-
-
-	/*!
-	\brief
 		display required integrated scroll bars according to current state of the edit box and update their values.
 	*/
 	void	configureScrollbars(void);
