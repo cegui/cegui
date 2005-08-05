@@ -44,7 +44,33 @@ namespace CEGUI
 
     Rect FalagardListbox::getListRenderArea(void) const
     {
+        // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+        bool v_visible = d_vertScrollbar->isVisible(true);
+        bool h_visible = d_horzScrollbar->isVisible(true);
+
+        // if either of the scrollbars are visible, we might want to use another text rendering area
+        if (v_visible || h_visible)
+        {
+            String area_name("ItemRenderingArea");
+
+            if (h_visible)
+            {
+                area_name += "H";
+            }
+            if (v_visible)
+            {
+                area_name += "V";
+            }
+            area_name += "Scroll";
+
+            if (wlf.isNamedAreaDefined(area_name))
+            {
+                return wlf.getNamedArea(area_name).getArea().getPixelRect(*this);
+            }
+        }
+
+        // default to plain ItemRenderingArea
         return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*this);
     }
 

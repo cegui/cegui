@@ -43,6 +43,9 @@ namespace CEGUI
 
         Named Areas:
             - ItemRenderingArea
+            - ItemRenderingAreaHScroll
+            - ItemRenderingAreaVScroll
+            - ItemRenderingAreaHVScroll
 
         Child Widgets:
             Scrollbar based widget with name suffix "__auto_vscrollbar__"

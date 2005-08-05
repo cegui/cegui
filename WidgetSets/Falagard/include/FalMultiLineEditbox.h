@@ -44,7 +44,10 @@ namespace CEGUI
             - Disabled  - Rendering for when the editbox is disabled.
 
         NamedAreas:
-            TextArea    - area where text, selection, and carat imagery will appear.
+            TextArea         - area where text, selection, and carat imagery will appear.
+            TextAreaHScroll  - TextArea when only horizontal scrollbar is visible.
+            TextAreaVScroll  - TextArea when only vertical scrollbar is visible.
+            TextAreaHVScroll - TextArea when both horizontal and vertical scrollbar is visible.
 
         Imagery Sections:
             - Carat
