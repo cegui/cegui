@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6pre2 on 07/13/05 02:52:10.
+** Generated automatically by tolua++-1.0.6pre2 on 08/04/05 05:19:20.
 */
 
 #ifndef __cplusplus
@@ -5198,7 +5198,7 @@ static int tolua_CEGUI_CEGUI_FontManager_createFont00(lua_State* tolua_S)
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
   string fontname = ((string)  tolua_tocppstring(tolua_S,3,0));
   unsigned int size = ((unsigned int)  tolua_tonumber(tolua_S,4,0));
-  unsigned int flags = ((unsigned int)  tolua_tonumber(tolua_S,5,0));
+  CEGUI::FontFlag flags = ((CEGUI::FontFlag) (int)  tolua_tonumber(tolua_S,5,0));
   string resourcegroup = ((string)  tolua_tocppstring(tolua_S,6,""));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFont'",NULL);
@@ -33828,6 +33828,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_constant(tolua_S,"WordWrapRightAligned",CEGUI::WordWrapRightAligned);
  tolua_constant(tolua_S,"WordWrapCentred",CEGUI::WordWrapCentred);
  tolua_constant(tolua_S,"WordWrapJustified",CEGUI::WordWrapJustified);
+ tolua_constant(tolua_S,"Default",CEGUI::Default);
+ tolua_constant(tolua_S,"NoAntiAlias",CEGUI::NoAntiAlias);
  tolua_cclass(tolua_S,"Font","CEGUI::Font","",NULL);
  tolua_beginmodule(tolua_S,"Font");
  tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Font_getName00);
