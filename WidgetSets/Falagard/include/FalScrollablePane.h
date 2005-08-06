@@ -42,7 +42,10 @@ namespace CEGUI
             - Disabled
 
         Named Areas:
-            ViewableArea
+            - ViewableArea         - area where content will be drawn when no scrollbars are visible.
+            - ViewableAreaHScroll  - area where content will be drawn when the horizontal scrollbar is visible.
+            - ViewableAreaVScroll  - area where content will be drawn when the vertical scrollbar is visible.
+            - ViewableAreaHVScroll - area where content will be drawn when both scrollbars are visible.
 
         Child Widgets:
             Scrollbar based widget with name suffix "__auto_vscrollbar__"

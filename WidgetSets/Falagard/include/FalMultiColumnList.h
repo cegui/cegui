@@ -43,7 +43,10 @@ namespace CEGUI
             - Disabled
 
         Named Areas:
-            - ItemRenderingArea
+            - ItemRenderingArea         - area where items will be drawn when no scrollbars are visible.
+            - ItemRenderingAreaHScroll  - area where items will be drawn when the horizontal scrollbar is visible.
+            - ItemRenderingAreaVScroll  - area where items will be drawn when the vertical scrollbar is visible.
+            - ItemRenderingAreaHVScroll - area where items will be drawn when both scrollbars are visible.
 
         Child Widgets:
             Scrollbar based widget with name suffix "__auto_vscrollbar__"
