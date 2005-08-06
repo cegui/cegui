@@ -27,6 +27,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include "CEGUIPropertyHelper.h"
 #include <iostream>
 
 // void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours);
@@ -84,8 +85,13 @@ namespace CEGUI
 
     void ImageryComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
+        // get final image to use.
+        const Image* img = isImageFetchedFromProperty() ?
+            PropertyHelper::stringToImage(srcWindow.getProperty(d_imagePropertyName)) :
+            d_image;
+
         // do not draw anything if image is not set.
-        if (!d_image)
+        if (!img)
             return;
 
         HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
@@ -97,7 +103,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Size imgSz(d_image->getSize());
+        Size imgSz(img->getSize());
 
         // calculate final colours to be used
         ColourRect finalColours;
@@ -197,7 +203,7 @@ namespace CEGUI
                 }
 
                 // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*d_image, finalRect, base_z, finalColours, clippingRect, clipToDisplay);
+                srcWindow.getRenderCache().cacheImage(*img, finalRect, base_z, finalColours, clippingRect, clipToDisplay);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;
@@ -216,7 +222,10 @@ namespace CEGUI
         d_area.writeXMLToStream(out_stream);
 
         // write image
-        out_stream << "<Image imageset=\"" << d_image->getImagesetName() << "\" image=\"" << d_image->getName() << "\" />" << std::endl;
+        if (isImageFetchedFromProperty())
+            out_stream << "<ImageProperty name=\"" << d_imagePropertyName << "\" />" << std::endl;
+        else
+            out_stream << "<Image imageset=\"" << d_image->getImagesetName() << "\" image=\"" << d_image->getName() << "\" />" << std::endl;
 
         // get base class to write colours
         writeColoursXML(out_stream);
@@ -238,4 +247,20 @@ namespace CEGUI
         // closing tag
         out_stream << "</ImageryComponent>" << std::endl;
     }
+
+    bool ImageryComponent::isImageFetchedFromProperty() const
+    {
+        return !d_imagePropertyName.empty();
+    }
+
+    const String& ImageryComponent::getImagePropertySource() const
+    {
+        return d_imagePropertyName;
+    }
+
+    void ImageryComponent::setImagePropertySource(const String& property)
+    {
+        d_imagePropertyName = property;
+    }
+
 } // End of  CEGUI namespace section

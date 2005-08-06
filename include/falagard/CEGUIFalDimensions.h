@@ -630,10 +630,45 @@ namespace CEGUI
         */
         void writeXMLToStream(OutStream& out_stream) const;
 
+        /*!
+        \brief
+            Return whether this ComponentArea fetches it's area via a property on the target window.
+
+        \return
+            - true if the area comes via a Propery.
+            - false if the area is defined explicitly via the Dimension fields.
+        */
+        bool isAreaFetchedFromProperty() const;
+
+        /*!
+        \brief
+            Return the name of the property that will be used to determine the pixel area for this ComponentArea.
+
+        \return
+            String object holding the name of a Propery.
+        */
+        const String& getAreaPropertySource() const;
+
+        /*!
+        \brief
+            Set the name of the property that will be used to determine the pixel area for this ComponentArea.
+
+        \param property
+            String object holding the name of a Propery.  The property should access a URect type property.
+
+        \return
+            Nothing.
+        */
+        void setAreaPropertySource(const String& property);
+
+
         Dimension d_left;   //!< Left edge of the area.
         Dimension d_top;    //!< Top edge of the area.
         Dimension d_right_or_width;     //!< Either the right edge or the width of the area.
         Dimension d_bottom_or_height;   //!< Either the bototm edge or the height of the area.
+
+    private:
+        String  d_areaProperty;         //!< Property to access.  Must be a URect style property.
     };
 
 } // End of  CEGUI namespace section

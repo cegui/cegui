@@ -106,7 +106,10 @@
 	<xsd:complexType name="imageryComponentType">
 		<xsd:sequence>
 			<xsd:element name="Area" type="componentAreaType" />
-			<xsd:element name="Image" type="imageType" />
+            <xsd:choice>
+                <xsd:element name="Image" type="imageType" />
+                <xsd:element name="ImageProperty" type="propertyType" />
+            </xsd:choice>
             <xsd:choice  minOccurs="0" maxOccurs="1">
                 <xsd:element name="Colours" type="colourRectType" />
                 <xsd:element name="ColourProperty" type="settingByPropertyType" />
@@ -165,9 +168,12 @@
         <xsd:attribute name="image" type="xsd:string" use="required" />
     </xsd:complexType>
 	<xsd:complexType name="componentAreaType">
-		<xsd:sequence>
-			<xsd:element name="Dim" type="dimensionType" minOccurs="4" maxOccurs="4" />
-		</xsd:sequence>
+        <xsd:choice>
+            <xsd:sequence>
+                <xsd:element name="Dim" type="dimensionType" minOccurs="4" maxOccurs="4" />
+            </xsd:sequence>
+            <xsd:element name="AreaProperty" type="propertyType" />
+        </xsd:choice>
 	</xsd:complexType>
 	<xsd:complexType name="dimensionType">
 		<xsd:choice>

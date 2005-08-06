@@ -72,6 +72,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::DimOperatorElement("DimOperator");
     const String Falagard_xmlHandler::VertFormatPropertyElement("VertFormatProperty");
     const String Falagard_xmlHandler::HorzFormatPropertyElement("HorzFormatProperty");
+    const String Falagard_xmlHandler::AreaPropertyElement("AreaProperty");
+    const String Falagard_xmlHandler::ImagePropertyElement("ImageProperty");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -432,6 +434,18 @@ namespace CEGUI
                 d_imagerycomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
             else if (d_textcomponent)
                 d_textcomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        }
+        else if (element == AreaPropertyElement)
+        {
+            assert (d_area != 0);
+
+            d_area->setAreaPropertySource(attributes.getValueAsString(NameAttribute));
+        }
+        else if (element == ImagePropertyElement)
+        {
+            assert(d_imagerycomponent != 0);
+
+            d_imagerycomponent->setImagePropertySource(attributes.getValueAsString(NameAttribute));
         }
         else
         {

@@ -672,50 +672,70 @@ namespace CEGUI
 
     Rect ComponentArea::getPixelRect(const Window& wnd) const
     {
-        // sanity check, we mus be able to form a Rect from what we represent.
-        assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
-        assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
-        assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
-        assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
-
         Rect pixelRect;
-        pixelRect.d_left = d_left.getBaseDimension().getValue(wnd);
-        pixelRect.d_top = d_top.getBaseDimension().getValue(wnd);
 
-        if (d_right_or_width.getDimensionType() == DT_WIDTH)
-            pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd));
+        // use a property?
+        if (isAreaFetchedFromProperty())
+        {
+            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getAbsoluteSize());
+        }
+        // not via property - calculate using Dimensions
         else
-            pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd);
+        {
+            // sanity check, we mus be able to form a Rect from what we represent.
+            assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
+            assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
+            assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
+            assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
 
-        if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
-            pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd));
-        else
-            pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd);
+            pixelRect.d_left = d_left.getBaseDimension().getValue(wnd);
+            pixelRect.d_top = d_top.getBaseDimension().getValue(wnd);
+
+            if (d_right_or_width.getDimensionType() == DT_WIDTH)
+                pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd));
+            else
+                pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd);
+
+            if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
+                pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd));
+            else
+                pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd);
+        }
 
         return pixelRect;
     }
 
     Rect ComponentArea::getPixelRect(const Window& wnd, const Rect& container) const
     {
-        // sanity check, we mus be able to form a Rect from what we represent.
-        assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
-        assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
-        assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
-        assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
-
         Rect pixelRect;
-        pixelRect.d_left = d_left.getBaseDimension().getValue(wnd, container) + container.d_left;
-        pixelRect.d_top = d_top.getBaseDimension().getValue(wnd, container) + container.d_top;
 
-        if (d_right_or_width.getDimensionType() == DT_WIDTH)
-            pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd, container));
+        // use a property?
+        if (isAreaFetchedFromProperty())
+        {
+            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getAbsoluteSize());
+        }
+        // not via property - calculate using Dimensions
         else
-            pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd, container) + container.d_left;
+        {
+            // sanity check, we mus be able to form a Rect from what we represent.
+            assert(d_left.getDimensionType() == DT_LEFT_EDGE || d_left.getDimensionType() == DT_X_POSITION);
+            assert(d_top.getDimensionType() == DT_TOP_EDGE || d_top.getDimensionType() == DT_Y_POSITION);
+            assert(d_right_or_width.getDimensionType() == DT_RIGHT_EDGE || d_right_or_width.getDimensionType() == DT_WIDTH);
+            assert(d_bottom_or_height.getDimensionType() == DT_BOTTOM_EDGE || d_bottom_or_height.getDimensionType() == DT_HEIGHT);
 
-        if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
-            pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd, container));
-        else
-            pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.d_top;
+            pixelRect.d_left = d_left.getBaseDimension().getValue(wnd, container) + container.d_left;
+            pixelRect.d_top = d_top.getBaseDimension().getValue(wnd, container) + container.d_top;
+
+            if (d_right_or_width.getDimensionType() == DT_WIDTH)
+                pixelRect.setWidth(d_right_or_width.getBaseDimension().getValue(wnd, container));
+            else
+                pixelRect.d_right = d_right_or_width.getBaseDimension().getValue(wnd, container) + container.d_left;
+
+            if (d_bottom_or_height.getDimensionType() == DT_HEIGHT)
+                pixelRect.setHeight(d_bottom_or_height.getBaseDimension().getValue(wnd, container));
+            else
+                pixelRect.d_bottom = d_bottom_or_height.getBaseDimension().getValue(wnd, container) + container.d_top;
+        }
 
         return pixelRect;
     }
@@ -723,11 +743,36 @@ namespace CEGUI
     void ComponentArea::writeXMLToStream(OutStream& out_stream) const
     {
         out_stream << "<Area>" << std::endl;
-        d_left.writeXMLToStream(out_stream);
-        d_top.writeXMLToStream(out_stream);
-        d_right_or_width.writeXMLToStream(out_stream);
-        d_bottom_or_height.writeXMLToStream(out_stream);
+
+        // see if we should write an AreaProperty element
+        if (isAreaFetchedFromProperty())
+        {
+            out_stream << "<AreaProperty name=\"" << d_areaProperty << "\" />" << std::endl;
+        }
+        // not a property, write out individual dimensions explicitly.
+        else
+        {
+            d_left.writeXMLToStream(out_stream);
+            d_top.writeXMLToStream(out_stream);
+            d_right_or_width.writeXMLToStream(out_stream);
+            d_bottom_or_height.writeXMLToStream(out_stream);
+        }
         out_stream << "</Area>" << std::endl;
+    }
+
+    bool ComponentArea::isAreaFetchedFromProperty() const
+    {
+        return !d_areaProperty.empty();
+    }
+
+    const String& ComponentArea::getAreaPropertySource() const
+    {
+        return d_areaProperty;
+    }
+
+    void ComponentArea::setAreaPropertySource(const String& property)
+    {
+        d_areaProperty = property;
     }
 
 } // End of  CEGUI namespace section

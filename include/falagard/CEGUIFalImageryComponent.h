@@ -132,6 +132,37 @@ namespace CEGUI
         */
         void writeXMLToStream(OutStream& out_stream) const;
 
+        /*!
+        \brief
+            Return whether this ImageryComponent fetches it's image via a property on the target window.
+
+        \return
+            - true if the image comes via a Propery.
+            - false if the image is defined explicitly.
+        */
+        bool isImageFetchedFromProperty() const;
+
+        /*!
+        \brief
+            Return the name of the property that will be used to determine the image for this ImageryComponent.
+
+        \return
+            String object holding the name of a Propery.
+        */
+        const String& getImagePropertySource() const;
+
+        /*!
+        \brief
+            Set the name of the property that will be used to determine the image for this ImageryComponent.
+
+        \param property
+            String object holding the name of a Propery.  The property should access a imageset & image specification.
+
+        \return
+            Nothing.
+        */
+        void setImagePropertySource(const String& property);
+
     protected:
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
@@ -139,6 +170,7 @@ namespace CEGUI
         const Image*         d_image;           //!< CEGUI::Image to be drawn by this image component.
         VerticalFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the image component.
         HorizontalFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the image component.
+        String  d_imagePropertyName;            //!< Name of the property to access to obtain the image to be used.
     };
 
 } // End of  CEGUI namespace section
