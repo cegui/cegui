@@ -29,6 +29,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIXMLHandler.h"
 #include "CEGUIXMLAttributes.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -68,7 +69,7 @@ namespace CEGUI
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message((utf8*)"XercesParser::parseXMLFile - An error occurred while parsing XML file '" + filename + "'.  Additional information: ");
+                String message((utf8*)"XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getSrcLine()) + " while parsing XML file '" + filename + "'.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
@@ -81,7 +82,7 @@ namespace CEGUI
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message((utf8*)"XercesParser::parseXMLFile - An error occurred while parsing XML file '" + filename + "'.  Additional information: ");
+            String message((utf8*)"XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getLineNumber()) + " while parsing XML file '" + filename + "'.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 
