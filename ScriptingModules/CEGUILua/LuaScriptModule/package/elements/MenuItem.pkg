@@ -1,0 +1,24 @@
+/***********************************************************************
+	Menubar
+***********************************************************************/
+class Menubar : public MenuBase
+{
+	bool isHovering() const;
+	bool isPushed() const;
+	colour getHoverColour() const;
+	colour getPushedColour() const;
+	colour getOpenedColour() const;
+	colour getNormalTextColour() const;
+	colour getDisabledTextColour() const;
+	PopupMenu* getPopupMenu() const;
+
+	void setHoverColour(const colour& colour);
+	void setPushedColour(const colour& colour);
+	void setOpenedColour(const colour& colour);
+	void setNormalTextColour(const colour& colour);
+	void setDisabledTextColour(const colour& colour);
+	void setPopupMenu(PopupMenu* popup);
+	void openPopupMenu();
+	void closePopupMenu(bool notify=true);
+	bool togglePopupMenu();
+};

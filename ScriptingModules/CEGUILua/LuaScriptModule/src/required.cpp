@@ -69,6 +69,13 @@ const MouseEventArgs& ceguiLua_toMouseEventArgs(const EventArgs& e)
 }
 
 
+// converts EventArgs to KeyEventArgs
+const KeyEventArgs& ceguiLua_toKeyEventArgs(const EventArgs& e)
+{
+	return (const KeyEventArgs&)e;
+}
+
+
 /*************************************************************************
 	Helper functions for easy casting of the classes derived from
 	CEGUI::Window (the widgets)
@@ -122,6 +129,18 @@ GUISheet*			ceguiLua_toGUISheet(Window* w)
 }
 
 
+ItemEntry*			ceguiLua_toItemEntry(Window* w)
+{
+	return (ItemEntry*)w;
+}
+
+
+ItemListBase*		ceguiLua_toItemListBase(Window* w)
+{
+	return (ItemListBase*)w;
+}
+
+
 Listbox*			ceguiLua_toListbox(Window* w)
 {
 	return (Listbox*)w;
@@ -140,6 +159,24 @@ ListHeaderSegment*	ceguiLua_toListHeaderSegment(Window* w)
 }
 
 
+Menubar*			ceguiLua_toMenubar(Window* w)
+{
+	return (Menubar*)w;
+}
+
+
+MenuBase*			ceguiLua_toMenuBase(Window* w)
+{
+	return (MenuBase*)w;
+}
+
+
+MenuItem*			ceguiLua_toMenuItem(Window* w)
+{
+	return (MenuItem*)w;
+}
+
+
 MultiColumnList*	ceguiLua_toMultiColumnList(Window* w)
 {
 	return (MultiColumnList*)w;
@@ -149,6 +186,12 @@ MultiColumnList*	ceguiLua_toMultiColumnList(Window* w)
 MultiLineEditbox*	ceguiLua_toMultiLineEditbox(Window* w)
 {
 	return (MultiLineEditbox*)w;
+}
+
+
+PopupMenu*			ceguiLua_toPopupMenu(Window* w)
+{
+	return (PopupMenu*)w;
 }
 
 
@@ -233,6 +276,12 @@ TabControl*			ceguiLua_toTabControl(Window* w)
 TabPane*			ceguiLua_toTabPane(Window* w)
 {
 	return (TabPane*)w;
+}
+
+
+TextItem*			ceguiLua_toTextItem(Window* w)
+{
+	return (TextItem*)w;
 }
 
 

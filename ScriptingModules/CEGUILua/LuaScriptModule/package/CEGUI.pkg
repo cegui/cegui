@@ -82,6 +82,14 @@ $pfile "elements/ListHeaderSegment.pkg"
 $pfile "elements/ListHeader.pkg"
 $pfile "elements/MultiColumnList.pkg"
 
+$pfile "elements/ItemEntry.pkg"
+$pfile "elements/TextItem.pkg"
+$pfile "elements/ItemListBase.pkg"
+$pfile "elements/MenuBase.pkg"
+$pfile "elements/Menubar.pkg"
+$pfile "elements/PopupMenu.pkg"
+$pfile "elements/MenuItem.pkg"
+
 $pfile "HelperFunctions.pkg"
 
 }

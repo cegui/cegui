@@ -38,6 +38,7 @@ const WindowEventArgs&			ceguiLua_toWindowEventArgs(const EventArgs& e);
 const ActivationEventArgs&		ceguiLua_toActivationEventArgs(const EventArgs& e);
 const HeaderSequenceEventArgs&	ceguiLua_toHeaderSequenceEventArgs(const EventArgs& e);
 const MouseEventArgs&			ceguiLua_toMouseEventArgs(const EventArgs& e);
+const KeyEventArgs&				ceguiLua_toKeyEventArgs(const EventArgs& e);
 
 
 /*************************************************************************
@@ -52,11 +53,17 @@ DragContainer*		ceguiLua_toDragContainer(Window* w);
 Editbox*			ceguiLua_toEditbox(Window* w);
 FrameWindow*		ceguiLua_toFrameWindow(Window* w);
 GUISheet*			ceguiLua_toGUISheet(Window* w);
+ItemEntry*			ceguiLua_toItemEntry(Window* w);
+ItemListBase*		ceguiLua_toItemListBase(Window* w);
 Listbox*			ceguiLua_toListbox(Window* w);
 ListHeader*			ceguiLua_toListHeader(Window* w);
 ListHeaderSegment*	ceguiLua_toListHeaderSegment(Window* w);
+Menubar*			ceguiLua_toMenubar(Window* w);
+MenuBase*			ceguiLua_toMenuBase(Window* w);
+MenuItem*			ceguiLua_toMenuItem(Window* w);
 MultiColumnList*	ceguiLua_toMultiColumnList(Window* w);
 MultiLineEditbox*	ceguiLua_toMultiLineEditbox(Window* w);
+PopupMenu*			ceguiLua_toPopupMenu(Window* w);
 ProgressBar*		ceguiLua_toProgressBar(Window* w);
 PushButton*			ceguiLua_toPushButton(Window* w);
 RadioButton*		ceguiLua_toRadioButton(Window* w);
@@ -71,6 +78,7 @@ StaticText*			ceguiLua_toStaticText(Window* w);
 TabButton*			ceguiLua_toTabButton(Window* w);
 TabControl*			ceguiLua_toTabControl(Window* w);
 TabPane*			ceguiLua_toTabPane(Window* w);
+TextItem*			ceguiLua_toTextItem(Window* w);
 Thumb*				ceguiLua_toThumb(Window* w);
 Tooltip*			ceguiLua_toTooltip(Window* w);
 

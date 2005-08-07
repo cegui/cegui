@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6pre2 on 08/04/05 05:19:22.
+** Generated automatically by tolua++-1.0.6pre2 on 08/07/05 08:24:55.
 */
 
 /* Exported function */

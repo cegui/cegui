@@ -1,0 +1,21 @@
+/***********************************************************************
+	MenuBase
+***********************************************************************/
+class MenuBase : public ItemListBase
+{
+	float getItemSpacing() const;
+	float getHorzPadding() const;
+	float getVertPadding() const;
+	float getBorderWidth() const;
+	const ColourRect& getBackgroundColours() const;
+	bool isMultiplePopupsAllowed() const;
+	MenuItem* getPopupMenuItem() const;
+
+	void setItemSpacing(float spacing);
+	void setHorzPadding(float padding);
+	void setVertPadding(float padding);
+	void setBorderWidth(float border);
+	void setBackgroundColours(const ColourRect& cr);
+	void changePopupMenuItem(MenuItem* item);
+	void setAllowMultiplePopups(bool setting);
+};

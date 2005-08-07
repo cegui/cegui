@@ -1,0 +1,20 @@
+/***********************************************************************
+	ItemListBase
+***********************************************************************/
+class ItemListBase : public Window
+{
+	unsigned int getItemCount() const;
+	ItemEntry* getItemFromIndex(unsigned int index) const;
+	unsigned int getItemIndex(const ItemEntry* item) const;
+	ItemEntry* findItemWithText(string text, const ItemEntry* start_item);
+	bool isItemInList(const ItemEntry* item) const;
+	bool isAutoResizeEnabled() const;
+
+	void resetList();
+	void addItem(ItemEntry* item);
+	void insertItem(ItemEntry* item, const ItemEntry* position);
+	void removeItem(ItemEntry* item);
+	void handleUpdatedItemData();
+	void setAutoResizeEnabled(bool setting);
+	void sizeToContent();
+};

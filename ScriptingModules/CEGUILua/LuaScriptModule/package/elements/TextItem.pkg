@@ -1,0 +1,13 @@
+/***********************************************************************
+	TextItem
+***********************************************************************/
+class TextItem : public ItemEntry
+{
+	TextFormatting getTextFormatting() const;
+	float getTextXOffset() const;
+	colour getTextColour() const;
+
+	void setTextFormatting(TextFormatting format);
+	void setTextColour(const colour& col);
+	void setTextXOffset(float offset);
+};
