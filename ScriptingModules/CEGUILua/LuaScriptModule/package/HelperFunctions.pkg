@@ -8,6 +8,7 @@ const WindowEventArgs&			ceguiLua_toWindowEventArgs @ toWindowEventArgs(const Ev
 const ActivationEventArgs&		ceguiLua_toActivationEventArgs @ toActivationEventArgs(const EventArgs& e);
 const HeaderSequenceEventArgs&	ceguiLua_toHeaderSequenceEventArgs @ toHeaderSequenceEventArgs(const EventArgs& e);
 const MouseEventArgs&			ceguiLua_toMouseEventArgs @ toMouseEventArgs(const EventArgs& e);
+const KeyEventArgs&				ceguiLua_toKeyEventArgs @ toKeyEventArgs(const EventArgs& e);
 
 
 /****************************************************

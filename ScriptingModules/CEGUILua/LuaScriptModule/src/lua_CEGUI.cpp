@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6pre2 on 08/07/05 20:49:35.
+** Generated automatically by tolua++-1.0.6pre2 on 08/07/05 21:08:14.
 */
 
 #ifndef __cplusplus
@@ -34565,6 +34565,33 @@ static int tolua_CEGUI_CEGUI_toMouseEventArgs00(lua_State* tolua_S)
 #endif
 }
 
+/* function: CEGUI::ceguiLua_toKeyEventArgs */
+static int tolua_CEGUI_CEGUI_toKeyEventArgs00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::EventArgs",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::EventArgs* e = ((const CEGUI::EventArgs*)  tolua_tousertype(tolua_S,1,0));
+ {
+  const CEGUI::KeyEventArgs& tolua_ret = (const CEGUI::KeyEventArgs&)  CEGUI::ceguiLua_toKeyEventArgs(*e);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::KeyEventArgs");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'toKeyEventArgs'.",&tolua_err);
+ return 0;
+#endif
+}
+
 /* function: CEGUI::ceguiLua_toButtonBase */
 static int tolua_CEGUI_CEGUI_toButtonBase00(lua_State* tolua_S)
 {
@@ -37239,6 +37266,7 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,"toActivationEventArgs",tolua_CEGUI_CEGUI_toActivationEventArgs00);
  tolua_function(tolua_S,"toHeaderSequenceEventArgs",tolua_CEGUI_CEGUI_toHeaderSequenceEventArgs00);
  tolua_function(tolua_S,"toMouseEventArgs",tolua_CEGUI_CEGUI_toMouseEventArgs00);
+ tolua_function(tolua_S,"toKeyEventArgs",tolua_CEGUI_CEGUI_toKeyEventArgs00);
  tolua_function(tolua_S,"toButtonBase",tolua_CEGUI_CEGUI_toButtonBase00);
  tolua_function(tolua_S,"toCheckbox",tolua_CEGUI_CEGUI_toCheckbox00);
  tolua_function(tolua_S,"toCombobox",tolua_CEGUI_CEGUI_toCombobox00);
