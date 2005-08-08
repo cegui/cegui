@@ -172,7 +172,7 @@
             <xsd:sequence>
                 <xsd:element name="Dim" type="dimensionType" minOccurs="4" maxOccurs="4" />
             </xsd:sequence>
-            <xsd:element name="AreaProperty" type="propertyType" />
+            <xsd:element name="AreaProperty" type="settingByPropertyType" />
         </xsd:choice>
 	</xsd:complexType>
 	<xsd:complexType name="dimensionType">
