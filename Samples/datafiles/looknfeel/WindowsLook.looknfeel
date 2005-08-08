@@ -602,54 +602,6 @@
 
 	<!--
 	***************************************************
-		WindowsLook/ComboboxButton
-	***************************************************
-	-->
-	<WidgetLook name="WindowsLook/ComboboxButton">
-		<ImagerySection name="dropdown_icon">
-			<ImageryComponent>
-				<Area>
-					<Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-					<Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-				</Area>
-				<Image imageset="WindowsLook" image="LargeDownArrow" />
-				<VertFormat type="CentreAligned" />
-				<HorzFormat type="CentreAligned" />
-			</ImageryComponent>
-		</ImagerySection>
-		<StateImagery name="Normal">
-			<Layer>
-				<Section look="WindowsLook/Button" section="normal" />
-				<Section section="dropdown_icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Hover">
-			<Layer>
-				<Section look="WindowsLook/Button" section="hover" />
-				<Section section="dropdown_icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Pushed">
-			<Layer>
-				<Section look="WindowsLook/Button" section="pushed" />
-				<Section section="dropdown_icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Disabled">
-			<Layer>
-				<Section look="WindowsLook/Button" section="disabled">
-					<Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
-				</Section>
-				<Section section="dropdown_icon" />
-			</Layer>
-		</StateImagery>
-	</WidgetLook>
-
-
-	<!--
-	***************************************************
 		WindowsLook/Combobox
 	***************************************************
 	-->
@@ -661,20 +613,36 @@
 				<Dim type="RightEdge" >
 					<UnifiedDim scale="1" type="RightEdge">
 						<DimOperator op="Subtract">
-							<FontDim type="LineSpacing">
-								<DimOperator op="Multiply">
-									<AbsoluteDim value="1.5" />
+							<ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height">
+								<DimOperator op="Add">
+									<ImageDim imageset="WindowsLook" image="EditFrameBottom" dimension="Height">
+										<DimOperator op="Add">
+											<FontDim type="LineSpacing">
+												<DimOperator op="Multiply">
+													<AbsoluteDim value="1.5" />
+												</DimOperator>
+											</FontDim>
+										</DimOperator>
+									</ImageDim>
 								</DimOperator>
-							</FontDim>
+							</ImageDim>
 						</DimOperator>
 					</UnifiedDim>
 				</Dim>
 				<Dim type="Height" >
-					<FontDim type="LineSpacing">
-						<DimOperator op="Multiply">
-							<AbsoluteDim value="1.5" />
+					<ImageDim imageset="WindowsLook" image="EditFrameTop" dimension="Height">
+						<DimOperator op="Add">
+							<ImageDim imageset="WindowsLook" image="EditFrameBottom" dimension="Height">
+								<DimOperator op="Add">
+									<FontDim type="LineSpacing">
+										<DimOperator op="Multiply">
+											<AbsoluteDim value="1.5" />
+										</DimOperator>
+									</FontDim>
+								</DimOperator>
+							</ImageDim>
 						</DimOperator>
-					</FontDim>
+					</ImageDim>
 				</Dim>
 			</Area>
 		</Child>
@@ -686,7 +654,7 @@
 				<Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
 			</Area>
 		</Child>
-		<Child  type="WindowsLook/ComboboxButton" nameSuffix="__auto_button__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_button__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -694,6 +662,7 @@
 				<Dim type="Height" ><WidgetDim widget="__auto_editbox__" dimension="Height" /></Dim>
 			</Area>
 			<HorzAlignment type="RightAligned" />
+			<Property name="IconImage" value="set:WindowsLook image:LargeDownArrow" />
 		</Child>
 		<StateImagery name="Enabled" />
 		<StateImagery name="Disabled" />
@@ -1182,6 +1151,58 @@
 		<StateImagery name="DisabledNoTitleNoFrame">
 			<Layer>
 				<Section section="notitle_noframe_client_area" />
+			</Layer>
+		</StateImagery>
+	</WidgetLook>
+
+
+	<!--
+	***************************************************
+		WindowsLook/IconButton
+	***************************************************
+	-->
+	<WidgetLook name="WindowsLook/IconButton">
+		<PropertyDefinition name="IconImage" redrawOnWrite="true" />
+		<PropertyDefinition name="IconColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+		<Property name="WantsMultiClickEvents" value="False" />
+		<ImagerySection name="icon">
+			<ImageryComponent>
+				<Area>
+					<Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+					<Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+					<Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+					<Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+				</Area>
+				<ImageProperty name="IconImage" />
+				<ColourRectProperty name="IconColours" />
+				<VertFormat type="CentreAligned" />
+				<HorzFormat type="CentreAligned" />
+			</ImageryComponent>
+		</ImagerySection>
+		<StateImagery name="Normal">
+			<Layer>
+				<Section look="WindowsLook/Button" section="normal" />
+				<Section section="icon" />
+			</Layer>
+		</StateImagery>
+		<StateImagery name="Hover">
+			<Layer>
+				<Section look="WindowsLook/Button" section="hover" />
+				<Section section="icon" />
+			</Layer>
+		</StateImagery>
+		<StateImagery name="Pushed">
+			<Layer>
+				<Section look="WindowsLook/Button" section="pushed" />
+				<Section section="icon" />
+			</Layer>
+		</StateImagery>
+		<StateImagery name="Disabled">
+			<Layer>
+				<Section look="WindowsLook/Button" section="disabled">
+					<Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
+				</Section>
+				<Section section="icon" />
 			</Layer>
 		</StateImagery>
 	</WidgetLook>
@@ -1787,7 +1808,13 @@
 			<Area>
 				<Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
 				<Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
-				<Dim type="RightEdge" ><UnifiedDim scale="1" offset="-17" type="RightEdge" /></Dim>
+				<Dim type="RightEdge" > 
+				    <UnifiedDim scale="1" type="RightEdge"> 
+				        <DimOperator op="Subtract"> 
+				            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" /> 
+				        </DimOperator> 
+				    </UnifiedDim> 
+				</Dim>
 				<Dim type="Height" >
 					<FontDim type="LineSpacing">
 						<DimOperator op="Multiply">
@@ -1809,7 +1836,7 @@
 		<Child  type="WindowsLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
 				<Dim type="Width" ><AbsoluteDim value="16" /></Dim>
 				<Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-16" type="BottomEdge" /></Dim>
 			</Area>
@@ -2286,16 +2313,40 @@
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-				<Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-12" type="RightEdge" /></Dim>
-				<Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-12" type="BottomEdge" /></Dim>
+				<Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
+				<Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+			</Area>
+		</NamedArea>
+		<NamedArea name="ViewableAreaHScroll">
+			<Area>
+				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
+				<Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-16" type="BottomEdge" /></Dim>
+			</Area>
+		</NamedArea>
+		<NamedArea name="ViewableAreaVScroll">
+			<Area>
+				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-16" type="RightEdge" /></Dim>
+				<Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+			</Area>
+		</NamedArea>
+		<NamedArea name="ViewableAreaHVScroll">
+			<Area>
+				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+				<Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-16" type="RightEdge" /></Dim>
+				<Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-16" type="BottomEdge" /></Dim>
 			</Area>
 		</NamedArea>
 		<Child  type="WindowsLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-				<Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
-				<Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+				<Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+				<Dim type="Height" ><AbsoluteDim value="16" /></Dim>
 			</Area>
 			<VertAlignment type="BottomAligned" />
 		</Child>
@@ -2303,8 +2354,8 @@
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-				<Dim type="Width" ><AbsoluteDim value="12" /></Dim>
-				<Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
+				<Dim type="Width" ><AbsoluteDim value="16" /></Dim>
+				<Dim type="Height" ><UnifiedDim scale="1" offset="-16" type="Height" /></Dim>
 			</Area>
 			<HorzAlignment type="RightAligned" />
 		</Child>
@@ -2514,102 +2565,6 @@
 		</StateImagery>
 	</WidgetLook>
 
-	<!--
-	***************************************************
-		WindowsLook/ScrollbarUpButton
-	***************************************************
-	-->
-	<WidgetLook name="WindowsLook/ScrollbarUpButton">
-		<Property name="WantsMultiClickEvents" value="False" />
-		<ImagerySection name="icon">
-			<ImageryComponent>
-				<Area>
-					<Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-					<Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-				</Area>
-				<Image imageset="WindowsLook" image="LargeUpArrow" />
-				<VertFormat type="CentreAligned" />
-				<HorzFormat type="CentreAligned" />
-			</ImageryComponent>
-		</ImagerySection>
-		<StateImagery name="Normal">
-			<Layer>
-				<Section look="WindowsLook/Button" section="normal" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Hover">
-			<Layer>
-				<Section look="WindowsLook/Button" section="hover" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Pushed">
-			<Layer>
-				<Section look="WindowsLook/Button" section="pushed" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Disabled">
-			<Layer>
-				<Section look="WindowsLook/Button" section="disabled">
-					<Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
-				</Section>
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-	</WidgetLook>
-
-
-	<!--
-	***************************************************
-		WindowsLook/ScrollbarDownButton
-	***************************************************
-	-->
-	<WidgetLook name="WindowsLook/ScrollbarDownButton">
-		<Property name="WantsMultiClickEvents" value="False" />
-		<ImagerySection name="icon">
-			<ImageryComponent>
-				<Area>
-					<Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-					<Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-				</Area>
-				<Image imageset="WindowsLook" image="LargeDownArrow" />
-				<VertFormat type="CentreAligned" />
-				<HorzFormat type="CentreAligned" />
-			</ImageryComponent>
-		</ImagerySection>
-		<StateImagery name="Normal">
-			<Layer>
-				<Section look="WindowsLook/Button" section="normal" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Hover">
-			<Layer>
-				<Section look="WindowsLook/Button" section="hover" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Pushed">
-			<Layer>
-				<Section look="WindowsLook/Button" section="pushed" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Disabled">
-			<Layer>
-				<Section look="WindowsLook/Button" section="disabled">
-					<Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
-				</Section>
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-	</WidgetLook>
 
 	<!--
 	***************************************************
@@ -2633,7 +2588,7 @@
 				</Dim>
 			</Area>
 		</NamedArea>
-		<Child  type="WindowsLook/ScrollbarDownButton" nameSuffix="__auto_incbtn__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_incbtn__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -2641,14 +2596,16 @@
 				<Dim type="Height" ><UnifiedDim scale="1" type="Width" /></Dim>
 			</Area>
 			<VertAlignment type="BottomAligned" />
+			<Property name="IconImage" value="set:WindowsLook image:LargeDownArrow" />
 		</Child>
-		<Child  type="WindowsLook/ScrollbarUpButton" nameSuffix="__auto_decbtn__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_decbtn__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
 				<Dim type="Height" ><UnifiedDim scale="1" type="Width" /></Dim>
 			</Area>
+			<Property name="IconImage" value="set:WindowsLook image:LargeUpArrow" />
 		</Child>
 		<Child  type="WindowsLook/VerticalScrollbarThumb" nameSuffix="__auto_thumb__">
 			<Area>
@@ -2692,6 +2649,7 @@
 			</Layer>
 		</StateImagery>
 	</WidgetLook>
+
 
 	<!--
 	***************************************************
@@ -2897,104 +2855,6 @@
 
 	<!--
 	***************************************************
-		WindowsLook/ScrollbarLeftButton
-	***************************************************
-	-->
-	<WidgetLook name="WindowsLook/ScrollbarLeftButton">
-		<Property name="WantsMultiClickEvents" value="False" />
-		<ImagerySection name="icon">
-			<ImageryComponent>
-				<Area>
-					<Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-					<Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-				</Area>
-				<Image imageset="WindowsLook" image="LargeLeftArrow" />
-				<VertFormat type="CentreAligned" />
-				<HorzFormat type="CentreAligned" />
-			</ImageryComponent>
-		</ImagerySection>
-		<StateImagery name="Normal">
-			<Layer>
-				<Section look="WindowsLook/Button" section="normal" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Hover">
-			<Layer>
-				<Section look="WindowsLook/Button" section="hover" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Pushed">
-			<Layer>
-				<Section look="WindowsLook/Button" section="pushed" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Disabled">
-			<Layer>
-				<Section look="WindowsLook/Button" section="disabled">
-					<Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
-				</Section>
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-	</WidgetLook>
-
-
-	<!--
-	***************************************************
-		WindowsLook/ScrollbarRightButton
-	***************************************************
-	-->
-	<WidgetLook name="WindowsLook/ScrollbarRightButton">
-		<Property name="WantsMultiClickEvents" value="False" />
-		<ImagerySection name="icon">
-			<ImageryComponent>
-				<Area>
-					<Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-					<Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-					<Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-				</Area>
-				<Image imageset="WindowsLook" image="LargeRightArrow" />
-				<VertFormat type="CentreAligned" />
-				<HorzFormat type="CentreAligned" />
-			</ImageryComponent>
-		</ImagerySection>
-		<StateImagery name="Normal">
-			<Layer>
-				<Section look="WindowsLook/Button" section="normal" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Hover">
-			<Layer>
-				<Section look="WindowsLook/Button" section="hover" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Pushed">
-			<Layer>
-				<Section look="WindowsLook/Button" section="pushed" />
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-		<StateImagery name="Disabled">
-			<Layer>
-				<Section look="WindowsLook/Button" section="disabled">
-					<Colours topLeft="FFDFDFDF" topRight="FFDFDFDF" bottomLeft="FFDFDFDF" bottomRight="FFDFDFDF" />
-				</Section>
-				<Section section="icon" />
-			</Layer>
-		</StateImagery>
-	</WidgetLook>
-
-
-	<!--
-	***************************************************
 		WindowsLook/HorizontalScrollbar
 	***************************************************
 	-->
@@ -3013,7 +2873,7 @@
 				<Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
 			</Area>
 		</NamedArea>
-		<Child  type="WindowsLook/ScrollbarRightButton" nameSuffix="__auto_incbtn__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_incbtn__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -3021,14 +2881,16 @@
 				<Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
 			</Area>
 			<HorzAlignment type="RightAligned" />
+			<Property name="IconImage" value="set:WindowsLook image:LargeRightArrow" />
 		</Child>
-		<Child  type="WindowsLook/ScrollbarLeftButton" nameSuffix="__auto_decbtn__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_decbtn__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
 				<Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
 			</Area>
+			<Property name="IconImage" value="set:WindowsLook image:LargeLeftArrow" />
 		</Child>
 		<Child  type="WindowsLook/HorizontalScrollbarThumb" nameSuffix="__auto_thumb__">
 			<Area>
@@ -3220,36 +3082,32 @@
 				<Dim type="RightEdge" >
 					<UnifiedDim scale="1" type="RightEdge">
 						<DimOperator op="Subtract">
-							<ImageDim imageset="WindowsLook" image="LargeUpArrow" dimension="Width" />
+							<UnifiedDim scale="0.5" type="Height" />
 						</DimOperator>
 					</UnifiedDim>
 				</Dim>
 				<Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
 			</Area>
 		</Child>
-		<Child  type="WindowsLook/Button" nameSuffix="__auto_incbtn__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_incbtn__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-				<Dim type="Width" ><ImageDim imageset="WindowsLook" image="LargeUpArrow" dimension="Width" /></Dim>
+				<Dim type="Width" ><UnifiedDim scale="0.5" type="Height" /></Dim>
 				<Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
 			</Area>
 			<HorzAlignment type="RightAligned" />
-			<Property name="NormalImage" value="set:WindowsLook image:LargeUpArrow" />
-			<Property name="HoverImage" value="set:WindowsLook image:LargeUpArrow" />
-			<Property name="PushedImage" value="set:WindowsLook image:LargeUpArrow" />
+			<Property name="IconImage" value="set:WindowsLook image:LargeUpArrow" />
 		</Child>
-		<Child  type="WindowsLook/Button" nameSuffix="__auto_decbtn__">
+		<Child  type="WindowsLook/IconButton" nameSuffix="__auto_decbtn__">
 			<Area>
 				<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
 				<Dim type="TopEdge" ><UnifiedDim scale="0.5" type="TopEdge" /></Dim>
-				<Dim type="Width" ><ImageDim imageset="WindowsLook" image="LargeUpArrow" dimension="Width" /></Dim>
+				<Dim type="Width" ><UnifiedDim scale="0.5" type="Height" /></Dim>
 				<Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
 			</Area>
 			<HorzAlignment type="RightAligned" />
-			<Property name="NormalImage" value="set:WindowsLook image:LargeDownArrow" />
-			<Property name="HoverImage" value="set:WindowsLook image:LargeDownArrow" />
-			<Property name="PushedImage" value="set:WindowsLook image:LargeDownArrow" />
+			<Property name="IconImage" value="set:WindowsLook image:LargeDownArrow" />
 		</Child>
 		<StateImagery name="Enabled" />
 		<StateImagery name="Disabled" />
