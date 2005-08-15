@@ -2030,6 +2030,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/StaticImage">
+        <Property name="FrameEnabled" value="True" />
         <Property name="BackgroundEnabled" value="True" />
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -2061,6 +2062,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/StaticText">
+        <Property name="FrameEnabled" value="True" />
         <Property name="BackgroundEnabled" value="True" />
         <NamedArea name="TextRenderArea">
             <Area>
