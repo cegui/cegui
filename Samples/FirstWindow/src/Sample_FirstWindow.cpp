@@ -38,18 +38,10 @@ int main(int argc, char *argv[])
     // the CEGuiSample based object and then tell that sample application
     // to run.  All of the samples will use code similar to this in the
     // main/WinMain function.
-    try
-    {
-        FirstWindowSample app;
-        return app.run();
-    }
-    catch(...)
-    {
-        // TODO: Print error message!
+    FirstWindowSample app;
+    return app.run();
 
-        return 0;
-    }
-
+    return 0;
 }
 
 /*************************************************************************

@@ -91,9 +91,22 @@ CEGuiSample::~CEGuiSample()
 *************************************************************************/
 int CEGuiSample::run()
 {
-    if (initialise())
+    try
     {
-        cleanup();
+        if (initialise())
+            cleanup();
+    }
+    catch (CEGUI::Exception& exc)
+    {
+        outputExceptionMessage(exc.getMessage().c_str());
+    }
+    catch (std::exception& exc)
+    {
+        outputExceptionMessage(exc.what());
+    }
+    catch(...)
+    {
+        outputExceptionMessage("Unknown exception was caught!");
     }
 
     return 0;
@@ -208,4 +221,18 @@ void CEGuiSample::cleanup()
         d_rendererSelector = 0;
     }
 
+}
+
+
+/*************************************************************************
+    Output a message to the user in some OS independant way.
+*************************************************************************/
+void CEGuiSample::outputExceptionMessage(const char* message) const
+{
+#if defined(__WIN32__) || defined(_WIN32)
+    MessageBox(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
+#else
+    std::cout << "An exception was thrown within the sample framework:" << std::endl;
+    std::cout << message << std::endl;
+#endif
 }

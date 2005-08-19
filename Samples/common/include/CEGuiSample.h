@@ -110,6 +110,13 @@ protected:
     virtual void cleanup();
 
 
+    /*!
+    \brief
+        Output a message to the user in some OS independant way.
+    */
+    void outputExceptionMessage(const char* message) const;
+
+
     /*************************************************************************
         Data fields
     *************************************************************************/
