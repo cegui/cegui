@@ -41,8 +41,6 @@ int main(int argc, char *argv[])
     // main/WinMain function.
     FalagardDemo1Sample app;
     return app.run();
-
-    return 0;
 }
 
 /*************************************************************************

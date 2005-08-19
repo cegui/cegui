@@ -40,8 +40,6 @@ int main(int argc, char *argv[])
     // main/WinMain function.
     FirstWindowSample app;
     return app.run();
-
-    return 0;
 }
 
 /*************************************************************************
