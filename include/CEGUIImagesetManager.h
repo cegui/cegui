@@ -127,6 +127,29 @@ public:
 	Imageset*	createImageset(const String& filename, const String& resourceGroup = "");
 
 
+    /*!
+    \brief
+        Create an Imageset object from the specified image file.  The Imageset will initially have a single
+        image defined named "full_image" which is an image that represents the entire area of the loaded image.
+
+    \param name
+        String object containing the unique name for the Imageset being created.
+
+    \param filename
+        String object holding the name of the image file to be loaded.
+
+    \param resourceGroup
+        Resource group identifier to be passed to the resource manager when loading the image file.
+
+    \return
+        Pointer to the newly created Imageset object
+
+    \exception	AlreadyExistsException	Thrown if an Imageset named \a name is already present in the system.
+    \exception	FileIOException			Thrown if something goes wrong while reading the image file \a filename.
+    */
+    Imageset* createImagesetFromImageFile(const String& name, const String& filename, const String& resourceGroup = "");
+
+
 	/*!
 	\brief
 		Destroys the Imageset with the specified name

@@ -78,6 +78,27 @@ Imageset::Imageset(const String& filename, const String& resourceGroup)
 }
 
 
+Imageset::Imageset(const String& name, const String& filename, const String& resourceGroup) :
+    d_name(name)
+{
+    // try to load the image file using the renderer
+    d_texture =
+        System::getSingleton().getRenderer()->createTexture(filename, resourceGroup);
+
+    // initialse the auto-scaling for this Imageset
+    d_autoScale = true;
+    setNativeResolution(
+        Size(d_texture->getWidth(), d_texture->getHeight()));
+
+    // define the default image for this Imageset
+    defineImage(
+        "full_image",
+        Rect(0, 0, d_texture->getWidth(), d_texture->getHeight()),
+        Point(0, 0)
+    );
+}
+
+
 /*************************************************************************
 	destructor
 *************************************************************************/

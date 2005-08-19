@@ -105,6 +105,25 @@ Imageset* ImagesetManager::createImageset(const String& filename, const String& 
 
 
 /*************************************************************************
+    Create an Imageset object from the specified image file.
+*************************************************************************/
+Imageset* ImagesetManager::createImagesetFromImageFile(const String& name, const String& filename, const String& resourceGroup)
+{
+    Logger::getSingleton().logEvent((utf8*)"Attempting to create Imageset '" + name + "' using image file '" + filename + "'.");
+
+    if (isImagesetPresent(name))
+    {
+        throw	AlreadyExistsException("ImagesetManager::createImageset - An Imageset object named '" + name + "' already exists.");
+    }
+
+    Imageset* temp = new Imageset(name, filename, resourceGroup);
+    d_imagesets[name] = temp;
+
+    return temp;
+}
+
+
+/*************************************************************************
 	Destroys the Imageset with the specified name
 *************************************************************************/
 void ImagesetManager::destroyImageset(const String& name)

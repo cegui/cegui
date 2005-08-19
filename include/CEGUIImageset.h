@@ -66,6 +66,7 @@ private:
 	*************************************************************************/
 	friend Imageset*	ImagesetManager::createImageset(const String& name, Texture* texture);
 	friend Imageset*	ImagesetManager::createImageset(const String& filename, const String& resourceGroup);
+	friend Imageset*	ImagesetManager::createImagesetFromImageFile(const String& name, const String& filename, const String& resourceGroup);
 	friend void			ImagesetManager::destroyImageset(const String& name);
 
 
@@ -97,6 +98,34 @@ private:
 	\exception	FileIOException		thrown if something goes wrong while processing the file \a filename.
 	*/
 	Imageset(const String& filename, const String& resourceGroup);
+
+
+    /*!
+    \brief
+        Construct a new Imageset using the specified image file and imageset name.  The created
+        imageset will, by default, have a single Image defined named "full_image" which represents
+        the entire area of the loaded image file.
+
+    \note
+        Under certain renderers it may be required that the source image dimensions be some
+        power of 2, if this condition is not met then stretching and other undesired side-effects
+        may be experienced.  To be safe from such effects it is generally recommended that all
+        images that you load have dimensions that are some power of 2.
+
+    \param name
+        String object holding the name to be assigned to the created imageset.
+
+    \param filename
+        String object holding the filename of the image that is to be loaded.  The image should be
+        of some format that is supported by the Renderer that is in use.
+
+    \param resourceGroup
+        Resource group identifier to be passed to the resource manager, which may specify a group
+        from which the image file is to be loaded.
+
+    \exception FileIOException thrown if something goes wrong while loading the image.
+    */
+    Imageset(const String& name, const String& filename, const String& resourceGroup);
 
 
 public:	// For luabind support
