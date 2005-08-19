@@ -31,7 +31,7 @@
 // includes for renderer selector classes
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   include "Win32CEGuiRendererSelector.h"
-#elif defined(linux)
+#elif defined(__linux__)
 #   ifdef CEGUI_SAMPLES_USE_GTK2
 #       include "GTK2CEGuiRendererSelector.h"
 #   else
@@ -113,7 +113,7 @@ bool CEGuiSample::initialise()
     d_rendererSelector->setRendererAvailability(Direct3D81GuiRendererType);
     d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
 
-#elif defined(linux)
+#elif defined(__linux__)
     // decide which method to use for renderer selection
 #   ifdef CEGUI_SAMPLES_USE_GTK2
         d_rendererSelector = new GTK2CEGuiRendererSelector();
