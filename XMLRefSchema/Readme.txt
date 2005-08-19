@@ -138,6 +138,18 @@ Filename	- Filename of the Imageset file.  If the imageset created by this file 
 ResourceGroup - The resource group identifier to pass to the resource provider when loading the file.
 
 
+ImagesetFromImage Element
+=========================
+Specifies an Imageset to be created via an image file as part of this scheme.  Has attributes but no sub-elements.
+If an imageset with the requested name already exists, the file specified is not loaded.
+
+ImagesetFromImage attributes
+-------------------
+Name		- The name of the Imageset. (required).
+Filename	- Filename of the image file to load in order to create this Imageset. (required).
+ResourceGroup - The resource group identifier to pass to the resource provider when loading the image file.
+
+
 Font Element
 ============
 Specifies a Font to be loaded as part of the scheme.  Has attributes nut no sub-elements.

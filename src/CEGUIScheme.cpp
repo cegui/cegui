@@ -127,6 +127,13 @@ void Scheme::loadResources(void)
 
 	}
 
+    // check imagesets that are created directly from image files
+    for (pos = d_imagesetsFromImages.begin(); pos != d_imagesetsFromImages.end(); ++pos)
+    {
+        if (!ismgr.isImagesetPresent((*pos).name))
+            ismgr.createImagesetFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
+    }
+
 	// check fonts
 	for (pos = d_fonts.begin(); pos != d_fonts.end(); ++pos)
 	{
@@ -267,6 +274,12 @@ void Scheme::unloadResources(void)
 		ismgr.destroyImageset((*pos).name);
 	}
 
+    // check imagesets that are created directly from image files
+    for (pos = d_imagesetsFromImages.begin(); pos != d_imagesetsFromImages.end(); ++pos)
+    {
+        ismgr.destroyImageset((*pos).name);
+    }
+
 	// check factories
 	std::vector<UIModule>::iterator	cmod = d_widgetModules.begin();
 	for (;cmod != d_widgetModules.end(); ++cmod)
@@ -305,6 +318,30 @@ void Scheme::unloadResources(void)
 		}
 
 	}
+
+    // check falagard window mappings.
+    std::vector<FalagardMapping>::iterator falagard = d_falagardMappings.begin();
+    for (;falagard != d_falagardMappings.end(); ++falagard)
+    {
+        // get iterator
+        WindowFactoryManager::FalagardMappingIterator iter = wfmgr.getFalagardMappingIterator();
+
+        // look for this mapping
+        while (!iter.isAtEnd() && (iter.getCurrentKey() != (*falagard).windowName))
+            ++iter;
+
+        // if the alias exists
+        if (!iter.isAtEnd())
+        {
+            // if the current target and looks match
+            if ((iter.getCurrentValue().d_baseType == (*falagard).targetName) &&
+                (iter.getCurrentValue().d_lookName == (*falagard).lookName))
+            {
+                // assume this mapping is ours and delete it
+                wfmgr.removeFalagardWindowMapping((*falagard).targetName);
+            }
+        }
+    }
 
 	Logger::getSingleton().logEvent((utf8*)"---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", Informative);
 }

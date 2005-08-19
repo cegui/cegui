@@ -180,6 +180,7 @@ private:
 	String	d_name;			//!< the name of this scheme.
 
 	std::vector<LoadableUIElement>		d_imagesets;
+	std::vector<LoadableUIElement>		d_imagesetsFromImages;
 	std::vector<LoadableUIElement>		d_fonts;
 	std::vector<UIModule>				d_widgetModules;
 	std::vector<AliasMapping>			d_aliasMappings;

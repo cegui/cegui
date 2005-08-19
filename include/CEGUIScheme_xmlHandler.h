@@ -77,6 +77,7 @@ namespace CEGUI
         // XML related strings
         static const String GUISchemeElement;               //!< Root GUIScheme element.
         static const String ImagesetElement;                //!< Element specifying an Imageset
+        static const String ImagesetFromImageElement;       //!< Element specifying an Imageset to be created directly via an image file.
         static const String FontElement;                    //!< Element specifying a Font
         static const String WindowSetElement;               //!< Element specifying a module and set of WindowFactory elements.
         static const String WindowFactoryElement;           //!< Element specifying a WindowFactory type.

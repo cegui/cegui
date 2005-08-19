@@ -42,6 +42,7 @@ Static Data definitions
 // xml file elements and attributes
 const String Scheme_xmlHandler::GUISchemeElement( "GUIScheme" );
 const String Scheme_xmlHandler::ImagesetElement( "Imageset" );
+const String Scheme_xmlHandler::ImagesetFromImageElement( "ImagesetFromImage" );
 const String Scheme_xmlHandler::FontElement( "Font" );
 const String Scheme_xmlHandler::WindowSetElement( "WindowSet" );
 const String Scheme_xmlHandler::WindowFactoryElement( "WindowFactory" );
@@ -82,6 +83,17 @@ void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes&
 
 		d_scheme->d_imagesets.push_back(imageset);
 	}
+    // handle an ImagesetFromImage element
+    else if (element == ImagesetFromImageElement)
+    {
+        Scheme::LoadableUIElement	imageset;
+
+        imageset.name = attributes.getValueAsString(NameAttribute);
+        imageset.filename = attributes.getValueAsString(FilenameAttribute);
+        imageset.resourceGroup = attributes.getValueAsString(ResourceGroupAttribute);
+
+        d_scheme->d_imagesetsFromImages.push_back(imageset);
+    }
 	// handle a font element
 	else if (element == FontElement)
 	{
