@@ -58,6 +58,13 @@
 // although there will be no renderers available for selection in the samples.
 #include "CEGuiBaseApplication.h"
 
+// Include iostream if not on windows.
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#else
+#    include <iostream>
+#endif
+
+
 /*************************************************************************
     Constructor
 *************************************************************************/
