@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<GUIScheme Name="VanillaSkin">
+	<Imageset Name="Vanilla-Images" Filename="../datafiles/imagesets/Vanilla.imageset" />
+	<LookNFeel Filename="../datafiles/looknfeel/Vanilla.looknfeel" />
+	<WindowSet Filename="CEGUIFalagardBase" />
+	<FalagardMapping WindowType="Vanilla/Titlebar" TargetType="Falagard/Titlebar" LookNFeel="Vanilla/Titlebar" />
+	<FalagardMapping WindowType="Vanilla/Button" TargetType="Falagard/Button" LookNFeel="Vanilla/Button" />
+	<FalagardMapping WindowType="Vanilla/FrameWindow" TargetType="Falagard/FrameWindow" LookNFeel="Vanilla/FrameWindow" />
+	<FalagardMapping WindowType="Vanilla/Editbox" TargetType="Falagard/Editbox" LookNFeel="Vanilla/Editbox" />
+	<FalagardMapping WindowType="Vanilla/VerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="Vanilla/VerticalScrollbarThumb" />
+	<FalagardMapping WindowType="Vanilla/VerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="Vanilla/VerticalScrollbar" />
+	<FalagardMapping WindowType="Vanilla/HorizontalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="Vanilla/HorizontalScrollbarThumb" />
+	<FalagardMapping WindowType="Vanilla/HorizontalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="Vanilla/HorizontalScrollbar" />
+	<FalagardMapping WindowType="Vanilla/StaticImage" TargetType="Falagard/StaticImage" LookNFeel="Vanilla/StaticImage" />
+	<FalagardMapping WindowType="Vanilla/StaticText" TargetType="Falagard/StaticText" LookNFeel="Vanilla/StaticText" />
+	<FalagardMapping WindowType="Vanilla/Listbox" TargetType="Falagard/Listbox" LookNFeel="Vanilla/Listbox" />
+	<FalagardMapping WindowType="Vanilla/MultiLineEditbox" TargetType="Falagard/MultiLineEditbox" LookNFeel="Vanilla/MultiLineEditbox" />
+<!--	
+	<FalagardMapping WindowType="Vanilla/ComboDropList" TargetType="Falagard/ComboDropList" LookNFeel="Vanilla/ComboDropList" />
+	<FalagardMapping WindowType="Vanilla/ComboboxButton" TargetType="Falagard/Button" LookNFeel="Vanilla/ComboboxButton" />
+	<FalagardMapping WindowType="Vanilla/Combobox" TargetType="Falagard/Combobox" LookNFeel="Vanilla/Combobox" />
+	<FalagardMapping WindowType="Vanilla/ProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="Vanilla/ProgressBar" />
+	<FalagardMapping WindowType="Vanilla/ScrollablePane" TargetType="Falagard/ScrollablePane" LookNFeel="Vanilla/ScrollablePane" />
+	<FalagardMapping WindowType="Vanilla/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="Vanilla/Checkbox" />
+	<FalagardMapping WindowType="Vanilla/RadioButton" TargetType="Falagard/RadioButton" LookNFeel="Vanilla/RadioButton" />
+	<FalagardMapping WindowType="Vanilla/ScrollablePane" TargetType="Falagard/ScrollablePane" LookNFeel="Vanilla/ScrollablePane" />
+-->
+</GUIScheme>

@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<Imageset Name="Vanilla-Images" Imagefile="../datafiles/imagesets/vanilla.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+	<Image Name="GenericBrush" XPos="33" YPos="7" Width="1" Height="1" />
+	<Image Name="FrameTopLeft" XPos="24" YPos="6" Width="7" Height="7" />
+	<Image Name="FrameTopRight" XPos="24" YPos="14" Width="7" Height="7" />
+	<Image Name="FrameBottomLeft" XPos="24" YPos="22" Width="7" Height="7" />
+	<Image Name="FrameBottomRight" XPos="6" YPos="32" Width="7" Height="7" />
+	<Image Name="FrameLeft" XPos="6" YPos="41" Width="7" Height="1" />
+	<Image Name="FrameRight" XPos="6" YPos="44" Width="7" Height="1" />
+	<Image Name="FrameTop" XPos="36" YPos="6" Width="1" Height="7" />
+	<Image Name="FrameBottom" XPos="33" YPos="6" Width="1" Height="7" />
+	<Image Name="ScrollUpArrow" XPos="5" YPos="50" Width="20" Height="20" />
+	<Image Name="ScrollDownArrow" XPos="25" YPos="50" Width="20" Height="20" />
+	<Image Name="VertScrollContainer" XPos="25" YPos="71" Width="20" Height="18" />
+	<Image Name="ScrollLeftArrow" XPos="45" YPos="70" Width="20" Height="20" />
+	<Image Name="ScrollRightArrow" XPos="45" YPos="50" Width="20" Height="20" />
+	<Image Name="HorzScrollContainer" XPos="66" YPos="50" Width="18" Height="20" />
+	<Image Name="ScrollbarThumb" XPos="5" YPos="70" Width="20" Height="20" />
+	<Image Name="ShadowBrush" XPos="40" YPos="9" Width="24" Height="24" />
+	<Image Name="MouseArrow" XPos="6" YPos="6" Width="17" Height="25" />
+</Imageset>
