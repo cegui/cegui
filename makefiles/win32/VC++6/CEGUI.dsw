@@ -186,6 +186,69 @@ Package=<4>
 
 ###############################################################################
 
+Project: "Sample_Demo4"=".\Samples\Sample_Demo4.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUISampleHelper
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TaharezLook
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Sample_Demo6"=".\Samples\Sample_Demo6.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUISampleHelper
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TaharezLook
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Sample_Demo7"=".\Samples\Sample_Demo7.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUISampleHelper
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TaharezLook
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Global:
 
 Package=<5>
