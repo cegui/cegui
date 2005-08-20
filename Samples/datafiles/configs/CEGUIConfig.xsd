@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:element name="CEGUIConfig" type="CEGUIConfigType"/>
+
+    <xsd:simpleType name="LogLevel">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Errors"/>
+            <xsd:enumeration value="Standard"/>
+            <xsd:enumeration value="Informative"/>
+            <xsd:enumeration value="Insane"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+	<xsd:complexType name="CEGUIConfigType">
+		<xsd:attribute name="Logfile" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="Scheme" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="DefaultFont" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="Layout" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="InitScript" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="TerminateScript" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="DefaultResourceGroup" type="xsd:string" use="optional"  default="" />
+        <xsd:attribute name="LoggingLevel" type="LogLevel" use="optional"  default="Standard" />
+	</xsd:complexType>
+	
+</xsd:schema>
+
+

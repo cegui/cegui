@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<GUIScheme Name="TaharezLook">
+	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
+	<Font Name="Commonwealth-10" Filename="../datafiles/fonts/Commonwealth-10.font" />
+	<WindowSet Filename="CEGUITaharezLook" />
+</GUIScheme>
