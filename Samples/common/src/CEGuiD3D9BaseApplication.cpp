@@ -45,7 +45,6 @@ struct CEGuiBaseApplicationImpl
     LPDIRECT3DDEVICE9 d_3DDevice;
     D3DPRESENT_PARAMETERS d_ppars;
     CEGUI::DirectX9Renderer* d_renderer;
-    CEGUI::System* d_GuiSystem;
     Win32AppHelper::DirectInputState d_directInput;
 };
 
@@ -68,7 +67,7 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
                 pimpl->d_renderer = new CEGUI::DirectX9Renderer(pimpl->d_3DDevice, 3000);
 
                 // initialise the gui system
-                pimpl->d_GuiSystem = new CEGUI::System(pimpl->d_renderer);
+                new CEGUI::System(pimpl->d_renderer);
 
                 CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
 
@@ -99,7 +98,7 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
     Win32AppHelper::mouseLeaves();
 
     // cleanup gui system
-    delete pimpl->d_GuiSystem;
+	delete CEGUI::System::getSingletonPtr();
     delete pimpl->d_renderer;
 
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
@@ -159,15 +158,16 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
             Win32AppHelper::doDirectInputEvents(pimpl->d_directInput);
 
             // draw display
+			CEGUI::System& guiSystem = CEGUI::System::getSingleton();
             pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-            pimpl->d_GuiSystem->renderGUI();
+            guiSystem.renderGUI();
 
             // render FPS:
-            const CEGUI::Font* fnt = pimpl->d_GuiSystem->getDefaultFont();
+            const CEGUI::Font* fnt = guiSystem.getDefaultFont();
             if (fnt)
             {
-                pimpl->d_GuiSystem->getRenderer()->setQueueingEnabled(false);
-                fnt->drawText(fpsbuff, CEGUI::Vector3(0, 0, 0), pimpl->d_GuiSystem->getRenderer()->getRect());
+                guiSystem.getRenderer()->setQueueingEnabled(false);
+                fnt->drawText(fpsbuff, CEGUI::Vector3(0, 0, 0), guiSystem.getRenderer()->getRect());
             }
 
             pimpl->d_3DDevice->EndScene();
