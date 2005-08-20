@@ -66,7 +66,7 @@ protected:
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
     CEGUI::OgreCEGUIRenderer* d_renderer;
-    CEGUI::System* d_guiSys;
+    bool d_initialised;
 
     CEGuiDemoFrameListener* d_frameListener;
 };

@@ -38,7 +38,7 @@
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_ogreRoot(0),
         d_renderer(0),
-        d_guiSys(0),
+        d_initialised(false),
         d_frameListener(0)
 {
     using namespace Ogre;
@@ -70,11 +70,13 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // initialise GUI system
         d_renderer = new CEGUI::OgreCEGUIRenderer(d_window);
-        d_guiSys   = new CEGUI::System(d_renderer);
+        new CEGUI::System(d_renderer);
 
         // create frame listener
         d_frameListener= new CEGuiDemoFrameListener(this, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
+
+        d_initialised = true;
     }
     else
     {
@@ -86,23 +88,16 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
 CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 {
-    if (d_frameListener)
-        delete d_frameListener;
-
-    if (d_guiSys)
-        delete d_guiSys;
-
-    if (d_renderer)
-        delete d_renderer;
-
-    if (d_ogreRoot)
-        delete d_ogreRoot;
+    delete d_frameListener;
+    delete CEGUI::System::getSingletonPtr();
+    delete d_renderer;
+    delete d_ogreRoot;
 }
 
 bool CEGuiOgreBaseApplication::execute(CEGuiSample* sampleApp)
 {
     // if initialisation failed or was cancelled by user, bail out now.
-    if (d_ogreRoot && d_guiSys)
+    if (d_ogreRoot && d_initialised)
     {
         // perform sample initialisation
         sampleApp->initialiseSample();
