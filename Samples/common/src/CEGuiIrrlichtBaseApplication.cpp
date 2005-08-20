@@ -99,6 +99,10 @@ bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
             CEGUI::System::getSingleton().renderGUI();
             d_driver->endScene();
         }
+
+        // see if we should quit
+        if (isQuitting())
+            d_device->closeDevice();
     }
 
     return true;

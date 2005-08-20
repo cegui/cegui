@@ -44,7 +44,8 @@ public:
     \brief
         Constructor.
     */
-    CEGuiBaseApplication()
+    CEGuiBaseApplication() :
+        d_quitting(false)
     { }
 
 
@@ -78,6 +79,33 @@ public:
         Performs any required cleanup of the base application system.
     */
     virtual void cleanup() = 0;
+
+
+    /*!
+    \brief
+        Set whether the BaseApplication should clean up and exit.
+
+    \param quit
+        - true if the application should clean up and exit.
+
+    \return
+        Nothing.
+    */
+    virtual void setQuitting(bool quit = true)      { d_quitting = quit; }
+
+
+    /*!
+    \brief
+        Return whether the app is currently set to quit.
+
+    \return
+        - true if the application will terminate at its earliest opportunity.
+        - false if the application will keep running.
+    */
+    virtual bool isQuitting() const     { return d_quitting; }
+
+protected:
+    bool    d_quitting;     //!< true when the base app should cleanup and exit.
 };
 
 #endif  // end of guard _CEGuiBaseApplication_h_

@@ -54,6 +54,12 @@ public:
     bool execute(CEGuiSample* sampleApp);
     void cleanup();
 
+    // overrides of other base class methods.
+    // These are required to make the 'quit' flag field static to enable us
+    // to access it via the static methods employed by glut.
+    void setQuitting(bool quit = true);
+    bool isQuitting() const;
+
 protected:
     /*************************************************************************
         Implementation Methods
@@ -69,6 +75,7 @@ protected:
         Data fields
     *************************************************************************/
     CEGUI::Renderer* d_renderer;
+    static bool d_quitFlag;
 };
 
 

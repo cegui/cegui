@@ -39,12 +39,12 @@
 #include <GL/glu.h>
 
 #include <stdexcept>
-
+#include <cstdlib>
 
 /*************************************************************************
     Static Data
 *************************************************************************/
-
+bool CEGuiOpenGLBaseApplication::d_quitFlag = false;
 
 
 /*************************************************************************
@@ -73,7 +73,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutSpecialFunc(&CEGuiOpenGLBaseApplication::keySpecial);
 
     // Set the clear color
-    glClearColor(0.7f, 0.2f, 0.5f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     d_renderer = new CEGUI::OpenGLRenderer(1024);
     new CEGUI::System(d_renderer);
@@ -111,6 +111,21 @@ void CEGuiOpenGLBaseApplication::cleanup()
     // nothing to do here.
 }
 
+/*************************************************************************
+    Set whether the app should quit
+*************************************************************************/
+void CEGuiOpenGLBaseApplication::setQuitting(bool quit)
+{
+    d_quitFlag = quit;
+}
+
+/*************************************************************************
+    Is this app quitting
+*************************************************************************/
+bool CEGuiOpenGLBaseApplication::isQuitting() const
+{
+    return d_quitFlag;
+}
 
 /*************************************************************************
     Does whatever is required in one single frame
@@ -128,6 +143,21 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     glFlush();
     glutPostRedisplay();
     glutSwapBuffers();
+
+    // here we check the 'quitting' state and cleanup as required.
+    // this is probably not the best way to do this, but since we're
+    // using glut, and glutMainLoop can never return, we need some
+    // way of checking when to exit.  And this is it...
+    if (d_quitFlag)
+    {
+        // cleanup cegui system
+        CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
+        delete CEGUI::System::getSingletonPtr();
+        delete renderer;
+
+        // exit
+        std::exit(0);
+    }
 }
 
 void CEGuiOpenGLBaseApplication::reshape(int w, int h)

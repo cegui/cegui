@@ -73,7 +73,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_guiSys   = new CEGUI::System(d_renderer);
 
         // create frame listener
-        d_frameListener= new CEGuiDemoFrameListener(d_window, d_camera);
+        d_frameListener= new CEGuiDemoFrameListener(this, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
     }
     else
@@ -166,7 +166,7 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     Start of CEGuiDemoFrameListener mehods
 *******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
-CEGuiDemoFrameListener::CEGuiDemoFrameListener(Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
+CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
 {
     // load and show the default Ogre debug stats overlay
     d_statsOverlay = Ogre::OverlayManager::getSingleton().getByName("Core/DebugOverlay");
@@ -186,6 +186,9 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(Ogre::RenderWindow* window, Ogre:
 
     // we've not quit yet.
     d_quit = false;
+
+    // setup base app ptr
+    d_baseApp = baseApp;
 }
 
 CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
@@ -195,7 +198,7 @@ CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 
 bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 {
-    if(d_window->isClosed() || d_quit)
+    if(d_window->isClosed() || d_quit || d_baseApp->isQuitting())
     {
         return false;
     }

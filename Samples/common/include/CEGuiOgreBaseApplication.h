@@ -80,7 +80,7 @@ class CEGuiDemoFrameListener: public Ogre::FrameListener, public Ogre::KeyListen
 {
 public:
     // Construction and Destruction
-    CEGuiDemoFrameListener(Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
+    CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
     ~CEGuiDemoFrameListener();
 
     // Processing to be done at start and end of each frame.
@@ -117,6 +117,7 @@ protected:
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
     bool d_quit;
+    CEGuiBaseApplication* d_baseApp;
 };
 
 #endif  // end of guard _CEGuiOgreBaseApplication_h_

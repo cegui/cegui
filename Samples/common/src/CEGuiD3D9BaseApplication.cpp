@@ -174,6 +174,11 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
 
             pimpl->d_3DDevice->Present(0, 0, 0, 0);
         }
+
+        // check if the application is quitting, and break the loop next time
+        // around if so.
+        if (isQuitting())
+            PostQuitMessage(0);
     }
 
     return true;

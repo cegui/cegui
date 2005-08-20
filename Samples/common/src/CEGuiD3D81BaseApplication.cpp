@@ -160,7 +160,7 @@ bool CEGuiD3D81BaseApplication::execute(CEGuiSample* sampleApp)
             Win32AppHelper::doDirectInputEvents(pimpl->d_directInput);
 
             // draw display
-            pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(128, 0, 128), 1.0f, 0);
+            pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
             pimpl->d_GuiSystem->renderGUI();
 
             // render FPS:
@@ -175,6 +175,11 @@ bool CEGuiD3D81BaseApplication::execute(CEGuiSample* sampleApp)
 
             pimpl->d_3DDevice->Present(0, 0, 0, 0);
         }
+
+        // check if the application is quitting, and break the loop next time
+        // around if so.
+        if (isQuitting())
+            PostQuitMessage(0);
     }
 
     return true;
