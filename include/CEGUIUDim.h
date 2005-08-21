@@ -35,7 +35,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class UDim
+    class CEGUIEXPORT UDim
     {
     public:
         UDim() {}
@@ -62,7 +62,7 @@ namespace CEGUI
     };
 
 
-    class UVector2
+    class CEGUIEXPORT UVector2
     {
     public:
         UVector2() {}
@@ -89,7 +89,7 @@ namespace CEGUI
     };
 
 
-    class URect
+    class CEGUIEXPORT URect
     {
     public:
         URect() {}

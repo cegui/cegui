@@ -28,6 +28,11 @@
 #include "CEGUIWindow.h"
 #include <set>
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -159,5 +164,9 @@ namespace CEGUI
 
 } // End of  CEGUI namespace section
 
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIFalStateImagery_h_

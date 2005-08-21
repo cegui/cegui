@@ -291,14 +291,14 @@ namespace CEGUI
         Rect viewableArea(getViewableArea());
 
         // set up vertical scroll bar values
-        d_vertScrollbar->setDocumentSize(fabs(d_contentRect.getHeight()));
+        d_vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
         d_vertScrollbar->setPageSize(viewableArea.getHeight());
         d_vertScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertStep));
         d_vertScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertOverlap));
         d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
 
         // set up horizontal scroll bar values
-        d_horzScrollbar->setDocumentSize(fabs(d_contentRect.getWidth()));
+        d_horzScrollbar->setDocumentSize(fabsf(d_contentRect.getWidth()));
         d_horzScrollbar->setPageSize(viewableArea.getWidth());
         d_horzScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzStep));
         d_horzScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzOverlap));

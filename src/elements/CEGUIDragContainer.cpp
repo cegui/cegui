@@ -177,8 +177,8 @@ namespace CEGUI
     bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)
     {
         // calculate amount mouse has moved.
-        float	deltaX = fabs(local_mouse.d_x - d_dragPoint.d_x);
-        float	deltaY = fabs(local_mouse.d_y - d_dragPoint.d_y);
+        float	deltaX = fabsf(local_mouse.d_x - d_dragPoint.d_x);
+        float	deltaY = fabsf(local_mouse.d_y - d_dragPoint.d_y);
 
         // see if mouse has moved far enough to start dragging operation
         return (deltaX > d_dragThreshold || deltaY > d_dragThreshold) ? true : false;
