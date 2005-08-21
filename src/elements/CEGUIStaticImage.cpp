@@ -217,9 +217,10 @@ void StaticImage::onStaticFrameChanged(WindowEventArgs& e)
 
 	// update the size and position of the image to reflect changes made
 	// to the frame in the base class
+	Rect absRect(getUnclippedPixelRect());
 	Rect innerRect(getUnclippedInnerRect());
 	d_image.setSize(innerRect.getSize());
-	d_image.setPosition(innerRect.getPosition());
+	d_image.setPosition(Point(innerRect.d_left - absRect.d_left, innerRect.d_top - absRect.d_top));
 
 	e.handled = true;
 }

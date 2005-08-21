@@ -81,7 +81,7 @@ namespace CEGUI
         area_name += "ImageRenderArea";
 
         if (wlf.isNamedAreaDefined(area_name))
-            return wlf.getNamedArea(area_name).getArea().getPixelRect(*this);
+            return wlf.getNamedArea(area_name).getArea().getPixelRect(*this).offset(getUnclippedPixelRect().getPosition());
         else
             return StaticImage::getUnclippedInnerRect();
     }
