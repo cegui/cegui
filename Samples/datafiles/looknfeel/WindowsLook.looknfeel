@@ -3188,6 +3188,38 @@
 		<Property name="BackgroundEnabled" value="True" />
 		<Property name="BackgroundColours" value="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" />
 		<Property name="FrameEnabled" value="True" />
+		<NamedArea name="WithFrameImageRenderArea">
+			<Area>
+				<Dim type="LeftEdge" >
+					<ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" />
+				</Dim>
+				<Dim type="TopEdge" >
+					<ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" />
+				</Dim>
+				<Dim type="RightEdge" >
+					<UnifiedDim scale="1.0" type="RightEdge">
+						<DimOperator op="Subtract">
+							<ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+						</DimOperator>
+					</UnifiedDim>
+				</Dim>
+				<Dim type="BottomEdge" >
+					<UnifiedDim scale="1.0" type="BottomEdge">
+						<DimOperator op="Subtract">
+							<ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+						</DimOperator>
+					</UnifiedDim>
+				</Dim>
+			</Area>
+		</NamedArea>
+		<NamedArea name="NoFrameImageRenderArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+		</NamedArea>
 		<StateImagery name="Enabled" />
 		<StateImagery name="Disabled" />
 		<StateImagery name="EnabledFrame">

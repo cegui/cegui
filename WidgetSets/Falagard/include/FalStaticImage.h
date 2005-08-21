@@ -44,6 +44,10 @@ namespace CEGUI
             - DisabledFrame      - frame rendering for disabled state.
             - EnabledBackground  - backdrop rendering for enabled state
             - DisabledBackground - backdrop rendering for disabled state
+
+        Named Areas:
+            - WithFrameImageRenderArea  - Area to render image into when the frame is enabled.
+            - NoFrameImageRenderArea    - Area to render image into when the frame is disabled.
     */
     class FALAGARDBASE_API FalagardStaticImage : public StaticImage
     {
@@ -61,6 +65,9 @@ namespace CEGUI
             Destructor
         */
         ~FalagardStaticImage();
+
+		// overridden from StaticImage base class.
+		Rect getUnclippedInnerRect(void) const;
 
     protected:
         // overridden from StaticImage base class.

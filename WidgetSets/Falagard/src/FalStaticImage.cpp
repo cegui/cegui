@@ -72,6 +72,19 @@ namespace CEGUI
         StaticImage::populateRenderCache();
     }
 
+    Rect FalagardStaticImage::getUnclippedInnerRect(void) const
+    {
+        // get WidgetLookFeel for the assigned look.
+        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+
+        String area_name(isFrameEnabled() ? "WithFrame" : "NoFrame");
+        area_name += "ImageRenderArea";
+
+        if (wlf.isNamedAreaDefined(area_name))
+            return wlf.getNamedArea(area_name).getArea().getPixelRect(*this);
+        else
+            return StaticImage::getUnclippedInnerRect();
+    }
 
     //////////////////////////////////////////////////////////////////////////
     /*************************************************************************
