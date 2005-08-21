@@ -348,16 +348,16 @@ void TLFrameWindow::storeFrameSizes(void)
 
 	const Image* img;
 	img = &iset->getImage(LeftFrameImageName);
-	d_frameLeftSize = img->getWidth() + fabs(img->getOffsetX());
+	d_frameLeftSize = img->getWidth() + fabsf(img->getOffsetX());
 
 	img = &iset->getImage(RightFrameImageName);
-	d_frameRightSize = img->getWidth() + fabs(img->getOffsetX());
+	d_frameRightSize = img->getWidth() + fabsf(img->getOffsetX());
 
 	img = &iset->getImage(TopFrameImageName);
-	d_frameTopSize = img->getHeight() + fabs(img->getOffsetY());
+	d_frameTopSize = img->getHeight() + fabsf(img->getOffsetY());
 
 	img = &iset->getImage(BottomFrameImageName);
-	d_frameBottomSize = img->getHeight() + fabs(img->getOffsetY());
+	d_frameBottomSize = img->getHeight() + fabsf(img->getOffsetY());
 }
 
 
