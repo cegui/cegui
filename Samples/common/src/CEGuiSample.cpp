@@ -50,8 +50,12 @@
 #   include "CEGuiIrrlichtBaseApplication.h"
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#   include "CEGuiD3D81BaseApplication.h"
-#   include "CEGuiD3D9BaseApplication.h"
+#   ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+#       include "CEGuiD3D81BaseApplication.h"
+#   endif
+#   ifdef CEGUI_SAMPLES_USE_DIRECTX_9
+#       include "CEGuiD3D9BaseApplication.h"
+#   endif
 #endif
 // now we include the base CEGuiBaseApplication just in case someone has managed to
 // get this far without any of the renderers.  This ensures the framework will build,
@@ -130,8 +134,12 @@ bool CEGuiSample::initialise()
     d_rendererSelector = new Win32CEGuiRendererSelector;
 
     // enable renderer types supported for Win32
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
     d_rendererSelector->setRendererAvailability(Direct3D81GuiRendererType);
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
     d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
+#endif
 
 #elif defined(__linux__)
     // decide which method to use for renderer selection
@@ -165,14 +173,17 @@ bool CEGuiSample::initialise()
             break;
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
         case Direct3D81GuiRendererType:
             d_sampleApp = new CEGuiD3D81BaseApplication();
             break;
-
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
         case Direct3D9GuiRendererType:
             d_sampleApp = new CEGuiD3D9BaseApplication();
             break;
-#endif
+#endif // DX9
+#endif // Win32
 #ifdef CEGUI_SAMPLES_USE_OPENGL
         case OpenGLGuiRendererType:
             d_sampleApp = new CEGuiOpenGLBaseApplication();

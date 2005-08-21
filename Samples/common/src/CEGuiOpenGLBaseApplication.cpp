@@ -39,7 +39,7 @@
 #include <GL/glu.h>
 
 #include <stdexcept>
-#include <cstdlib>
+#include <stdlib.h>
 
 /*************************************************************************
     Static Data
@@ -156,7 +156,7 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
         delete renderer;
 
         // exit
-        std::exit(0);
+        exit(0);
     }
 }
 

@@ -21,6 +21,10 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+// this controls conditional compile of file for MSVC
+#include "CEGUIConfig.h"
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+
 #include "CEGuiD3D81BaseApplication.h"
 
 #include <d3d8.h>
@@ -269,3 +273,5 @@ bool CEGuiD3D81BaseApplication::resetDirect3D(void)
 
     return false;
 }
+
+#endif

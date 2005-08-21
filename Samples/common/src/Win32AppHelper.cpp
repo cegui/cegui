@@ -21,6 +21,10 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
+// this controls conditional compile of file for MSVC
+#include "CEGUIConfig.h"
+#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9)
+
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
 #include <TCHAR.H>
@@ -325,3 +329,5 @@ bool Win32AppHelper::doWin32Events(bool& idle)
 
     return true;
 }
+
+#endif
