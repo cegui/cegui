@@ -62,11 +62,16 @@ The following have contributed patches, bug reports, and other such valuable
 things...
 
 Geoff Carlton
+Clay Culver
 Paul Downey
 Jeff Doyle
 Jan Eickmann
 Erik Hjortsberg
+Chris Kang
 Peter Newman
+Chris Osborn
+Shane Parker
+James Turner
 Chris Weaver
 Christopher Wedman
 armaduck
@@ -78,6 +83,7 @@ Special Thanks
 --------------
 Shawn Carroll	- For his tutorial series.
 Chris McGuirk	- For his C#.Net port.
+Shane Parker	- For giving permission to use his "Vanilla GUI" imagery.
 
 Everyone on the GameDev.Net forums who looked at earlier versions of the system
 and gave constructive criticism.

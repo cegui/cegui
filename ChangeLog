@@ -6,6 +6,64 @@ Copyright ©2004 - 2005 CEGUI Team & Contributing Authors
 
 The following is a high-level view of changes made to the system between releases.
 
+Release 0.4.0
+=============
+Addition of "Falagard" XML skinning system.  Details as follows:
+-   RenderCache system for Window - vastly reduces the need to perform total redraws when only one widget changes.
+-   Core falagard support classes enabling xml skin data to be loaded and the results used for Window initialisation and rendering.
+-   CEGUIFalagardBase module implementing core skinned widget behaviours.
+-   LookNFeel (XML skin) loading via scheme files.
+-   FalagardMapping scheme element to allow creation of 'new' widget types within a scheme file.
+-   Full skinning system .pdf documentation 'mini-book'.
+-   XML based version of TaharezLook - as an example and to allow easy migration to the new system.
+-   XML based version of WindowsLook - as an example and to allow easy migration to the new system.
+-   "Vanilla GUI" - a simple XML based skin.  Special thanks to Shane Parker for permission to use his imagery.
+
+Added: 'Unified' co-ordinate system allowing specification of relative and absolute components simultaneously.
+Added: Window alignment options allowing child windows to be positioned offset from centre, right, and bottom points as well as the usual left and top.
+Added: Ability to create an imageset directly from an image file.
+Added: Added line number to error message for Xerces XML parsing errors.
+Added: Initial support for output of XML data for all core system data types (fonts, imagesets, window layouts, xml skins).
+Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo4" in Samples.
+Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo6" in Samples.
+Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo7" in Samples.
+Added: Renderer independant version of the original Ogre/CEGUI preview application "Demo8" in Samples.
+Added: Support to Window class for a collection of named user-data strings.
+Added: Modal window feature.
+Added: Missing Lua bindings for some System based Tooltip stuff.
+Added: Missing Lua bindings for Menusystem widgets.
+Added: Lua module 'toKeyEventArgs' helper 
+Added: An attempt at protecting the code from min/max preprocessor macros; as defined in MS Windows headers.
+Added: Logging of CEGUI version number.
+Added: The 'look' modules now have the ability to register all available widget types; saves listing them all in a scheme!
+Added: Support to the Lua module for FontFlags to allow direct loading of TTF fonts from script without using .font files.
+Added: Base Window class virtual method 'performChildWindowLayout'.  Replacing many widget's own 'layoutChildComponents' methods.
+
+Modified: Relaxation of many ordering restrictions within validated XML data files.
+Modified: Samples framework has had some minor improvments, and can now exit properly!
+Modified: Various improvments and additional options for linux configure.
+Modified: Lua scripting module renamed to CEGUILua (Win32 systems).
+Modified: Switched AC_DISABLE_STATIC & AM_PROG_LIBTOOL around due to a warning.
+Modified: Disabled building of static libraries under Linux.
+Modified: Window::initialise method now called by WindowManager when it creates a window, rather than having each factory do this itself.
+Modified: Major cleanup of the main file for the 'look' modules.
+Modified: Changed CEGUIBASE_API to CEGUIEXPORT throughout the code.  This is in preparation for some Linux ABI improvements.
+Modified: Various widget classes disregarded the alpha component of set colours; the alpha component of user specified colours is now respected.
+Modified: Updated the WindowsLook caret-cursor to greatly improve visibility!
+
+Bug Fix: Issue on some distros caused by use of AC_FUNC_MALLOC macro in configure.ac
+Bug Fix: Issues with samples framework not compiling when none of the renderer modules are available.
+Bug Fix: linux makefiles updated so 'make dist' works properly again.
+Bug Fix: Various fixes made to the MSVC++ 7.0 solution and projects.
+Bug Fix: Unified the tests for linux platform to always check for definition of: __linux__
+Bug Fix: Xerces based XML parser was not throwing exceptions, causing no useful logging to occur.
+Bug Fix: Some tool-tip API docs were incorrect.
+Bug Fix: Window::onEnabled & Window::onDisabled were not called when a window state changed via inherited state from an ancestor window.
+Bug Fix: Font class modified to force auto-hinting use for rendering glyphs.
+Bug Fix: Font class modified to properly render glyphs in mono mode (AA off)
+Bug Fix: Fixed some uint/ColourRect/String CEGUILua issues.
+
+
 Release 0.3.0
 =============
 Total refactoring of XML parsing system.  Details as follows:
