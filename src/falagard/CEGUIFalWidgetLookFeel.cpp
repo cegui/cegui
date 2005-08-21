@@ -201,29 +201,42 @@ namespace CEGUI
     {
         out_stream << "<WidgetLook name=\"" << d_lookName << "\">" << std::endl;
 
-        // output property definitions
-        for (PropertyDefinitionList::const_iterator curr = d_propertyDefinitions.begin(); curr != d_propertyDefinitions.end(); ++curr)
-            (*curr).writeXMLToStream(out_stream);
+        // These sub-scobes of the loops avoid the "'curr'-already-initialized" compile error on VC6++
+        {
+          // output property definitions
+          for (PropertyDefinitionList::const_iterator curr = d_propertyDefinitions.begin(); curr != d_propertyDefinitions.end(); ++curr)
+              (*curr).writeXMLToStream(out_stream);
+        }
 
-        // output property initialisers.
-        for (PropertyList::const_iterator curr = d_properties.begin(); curr != d_properties.end(); ++curr)
-            (*curr).writeXMLToStream(out_stream);
+        {
+          // output property initialisers.
+          for (PropertyList::const_iterator curr = d_properties.begin(); curr != d_properties.end(); ++curr)
+              (*curr).writeXMLToStream(out_stream);
+        }
 
-        // output named areas
-        for (NamedAreaList::const_iterator curr = d_namedAreas.begin(); curr != d_namedAreas.end(); ++curr)
-            (*curr).second.writeXMLToStream(out_stream);
+        {
+          // output named areas
+          for (NamedAreaList::const_iterator curr = d_namedAreas.begin(); curr != d_namedAreas.end(); ++curr)
+              (*curr).second.writeXMLToStream(out_stream);
+        }
 
-        // output child widgets
-        for (WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
-            (*curr).writeXMLToStream(out_stream);
+        {
+          // output child widgets
+          for (WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
+              (*curr).writeXMLToStream(out_stream);
+        }
 
-        // output imagery sections
-        for (ImageryList::const_iterator curr = d_imagerySections.begin(); curr != d_imagerySections.end(); ++curr)
-            (*curr).second.writeXMLToStream(out_stream);
+        {
+          // output imagery sections
+          for (ImageryList::const_iterator curr = d_imagerySections.begin(); curr != d_imagerySections.end(); ++curr)
+              (*curr).second.writeXMLToStream(out_stream);
+        }
 
-        // output states
-        for (StateList::const_iterator curr = d_stateImagery.begin(); curr != d_stateImagery.end(); ++curr)
-            (*curr).second.writeXMLToStream(out_stream);
+        {
+          // output states
+          for (StateList::const_iterator curr = d_stateImagery.begin(); curr != d_stateImagery.end(); ++curr)
+              (*curr).second.writeXMLToStream(out_stream);
+        }
 
         out_stream << "</WidgetLook>" << std::endl;
     }

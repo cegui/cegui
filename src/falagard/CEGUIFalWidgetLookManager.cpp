@@ -47,6 +47,22 @@ namespace CEGUI
         Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton destroyed.");
     }
 
+    /*************************************************************************
+		Return singleton object
+	  *************************************************************************/
+	  WidgetLookManager&	WidgetLookManager::getSingleton(void)
+	  {
+		  return Singleton<WidgetLookManager>::getSingleton();
+	  }
+
+	  /*************************************************************************
+		  Return singleton pointer
+	  *************************************************************************/
+	  WidgetLookManager*	WidgetLookManager::getSingletonPtr(void)
+	  {
+		  return Singleton<WidgetLookManager>::getSingletonPtr();
+  	}
+
     void WidgetLookManager::parseLookNFeelSpecification(const String& filename, const String& resourceGroup)
     {
         // valid filenames are required!

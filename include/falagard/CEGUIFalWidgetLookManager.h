@@ -52,6 +52,26 @@ namespace CEGUI
         */
         ~WidgetLookManager();
 
+       	/*!
+	      \brief
+		        Return singleton WidgetLookManager object
+
+	      \return
+		        Singleton WidgetLookManager object
+	      */
+	      static	WidgetLookManager&	getSingleton(void);
+
+
+	      /*!
+	      \brief
+		        Return pointer to singleton WindowFactoryManager object
+
+	      \return
+		        Pointer to singleton WindowFactoryManager object
+	      */
+	      static	WidgetLookManager*	getSingletonPtr(void);
+
+
         /*!
         \brief
             Parses a file containing window look & feel specifications (in the form of XML).
