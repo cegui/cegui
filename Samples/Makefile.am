@@ -7,3 +7,40 @@ SUBDIRS = common \
           FirstWindow \
           FalagardDemo1
 endif
+
+EXTRA_DIST = ReadMe.txt \
+             bin/keepme \
+             datafiles/configs/CEGUIConfig.xsd \
+             datafiles/configs/demo8.config \
+             datafiles/fonts/Commonv2c.ttf \
+             datafiles/fonts/Commonwealth-10.font \
+             datafiles/fonts/Font.xsd \
+             datafiles/fonts/README \
+             datafiles/fonts/common.txt \
+             datafiles/imagesets/GPN-2000-001437.tga \
+             datafiles/imagesets/Imageset.xsd \
+             datafiles/imagesets/ReadMe.txt \
+             datafiles/imagesets/TaharezLook.imageset \
+             datafiles/imagesets/TaharezLook.tga \
+             datafiles/imagesets/Vanilla.imageset \
+             datafiles/imagesets/WindowsLook.imageset \
+             datafiles/imagesets/WindowsLook.tga \
+             datafiles/imagesets/vanilla.tga \
+             datafiles/layouts/Demo7Windows.layout \
+             datafiles/layouts/Demo8.layout \
+             datafiles/layouts/GUILayout.xsd \
+             datafiles/looknfeel/Falagard.xsd \
+             datafiles/looknfeel/TaharezLook.looknfeel \
+             datafiles/looknfeel/Vanilla.looknfeel \
+             datafiles/looknfeel/WindowsLook.looknfeel \
+             datafiles/lua_scripts/demo8.lua \
+             datafiles/schemes/Demo8.scheme \
+             datafiles/schemes/GUIScheme.xsd \
+             datafiles/schemes/TaharezLook.scheme \
+             datafiles/schemes/TaharezLookSkin.scheme \
+             datafiles/schemes/TaharezLookWidgetAliases.scheme \
+             datafiles/schemes/TaharezLookWidgets.scheme \
+             datafiles/schemes/VanillaSkin.scheme \
+             datafiles/schemes/WindowsLook.scheme \
+             datafiles/schemes/WindowsLookSkin.scheme \
+             datafiles/schemes/WindowsLookWidgets.scheme

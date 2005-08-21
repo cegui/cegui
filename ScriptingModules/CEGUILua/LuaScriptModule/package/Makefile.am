@@ -17,6 +17,7 @@ EXTRA_DIST = Basic.pkg \
              SchemeManager.pkg \
              System.pkg \
              Texture.pkg \
+             UnifiedCoordSystem.pkg \
              Window.pkg \
              WindowManager.pkg \
              elements/ButtonBase.pkg \
@@ -27,14 +28,21 @@ EXTRA_DIST = Basic.pkg \
              elements/Editbox.pkg \
              elements/FrameWindow.pkg \
              elements/GUISheet.pkg \
+             elements/ItemEntry.pkg \
+             elements/ItemListBase.pkg \
              elements/Listbox.pkg \
              elements/ListboxItem.pkg \
              elements/ListboxTextItem.pkg \
              elements/ListHeader.pkg \
              elements/ListHeaderSegment.pkg \
              elements/MultiColumnList.pkg \
+             elements/Menubar.pkg \
+             elements/MenuBase.pkg \
+             elements/MenuItem.pkg \
+             elements/MultiColumnList.pkg \
              elements/MultiLineEditbox.pkg \
-             elements/PropgressBar.pkg \
+             elements/PopupMenu.pkg \
+             elements/ProgressBar.pkg \
              elements/PushButton.pkg \
              elements/RadioButton.pkg \
              elements/ScrollablePane.pkg \
@@ -48,6 +56,7 @@ EXTRA_DIST = Basic.pkg \
              elements/TabButton.pkg \
              elements/TabControl.pkg \
              elements/TabPane.pkg \
+             elements/TextItem.pkg \
              elements/Thumb.pkg \
              elements/Titlebar.pkg \
              elements/Tooltip.pkg
