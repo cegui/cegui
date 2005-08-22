@@ -41,6 +41,14 @@
 #include <stdexcept>
 #include <stdlib.h>
 
+#ifdef _MSCVER
+# if defined(DEBUG) || defined (_DEBUG)
+#   pragma comment (lib, "OpenGLGUIRenderer_d.lib")
+# else
+#   pragma comment (lib, "OpenGLGUIRenderer.lib")
+# endif
+#endif
+
 /*************************************************************************
     Static Data
 *************************************************************************/

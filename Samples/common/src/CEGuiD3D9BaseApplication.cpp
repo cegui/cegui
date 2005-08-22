@@ -39,6 +39,14 @@
 #include "CEGUI.h"
 #include <stdexcept>
 
+#ifdef _MSCVER
+# if defined(DEBUG) || defined (_DEBUG)
+#   pragma comment (lib, "DirectX9GUIRenderer_d.lib")
+# else
+#   pragma comment (lib, "DirectX9GUIRenderer.lib")
+# endif
+#endif
+
 /*************************************************************************
     Impl struct
 *************************************************************************/

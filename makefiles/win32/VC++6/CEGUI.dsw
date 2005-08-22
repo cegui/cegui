@@ -15,6 +15,24 @@ Package=<4>
 
 ###############################################################################
 
+Project: "CEGUISampleHelper"=".\Samples\SampleHelper.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name OpenGLRenderer
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Project: "DirectX81Renderer"=".\RENDERERS\DirectX81Renderer\DirectX81Renderer.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -45,21 +63,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "IrrlichtRenderer"=".\RENDERERS\IrrlichtRenderer\IrrlichtRenderer.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "FalagardBase"=".\WIDGETSETS\Falagard\Falagard.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -75,22 +78,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "TaharezLook"=".\WIDGETSETS\TaharezLook\TaharezLook.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "WindowsLook"=".\WIDGETSETS\WindowsLook\WindowsLook.dsp" - Package Owner=<4>
+Project: "IrrlichtRenderer"=".\RENDERERS\IrrlichtRenderer\IrrlichtRenderer.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -115,72 +103,6 @@ Package=<4>
 {{{
     Begin Project Dependency
     Project_Dep_Name CEGUIBase
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "CEGUISampleHelper"=".\Samples\SampleHelper.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name OpenGLRenderer
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name DirectX9Renderer
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name DirectX81Renderer
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "Sample_FirstWindow"=".\Samples\Sample_FirstWindow.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name CEGUISampleHelper
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name TaharezLook
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "Sample_FalagardDemo1"=".\Samples\Sample_FalagardDemo1.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name CEGUISampleHelper
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 
@@ -244,6 +166,78 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name TaharezLook
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Sample_FalagardDemo1"=".\Samples\Sample_FalagardDemo1.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUISampleHelper
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name FalagardBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Sample_FirstWindow"=".\Samples\Sample_FirstWindow.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CEGUISampleHelper
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TaharezLook
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TaharezLook"=".\WIDGETSETS\TaharezLook\TaharezLook.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "WindowsLook"=".\WIDGETSETS\WindowsLook\WindowsLook.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
     End Project Dependency
 }}}
 

@@ -40,6 +40,13 @@
 
 #include <stdexcept>
 
+#ifdef _MSCVER
+# if defined(DEBUG) || defined (_DEBUG)
+#   pragma comment (lib, "DirectX81GUIRenderer_d.lib")
+# else
+#   pragma comment (lib, "DirectX81GUIRenderer.lib")
+# endif
+#endif
 
 /*************************************************************************
     Impl struct
