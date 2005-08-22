@@ -41,7 +41,7 @@
 #include <stdexcept>
 #include <stdlib.h>
 
-#ifdef _MSCVER
+#ifdef _MSC_VER
 # if defined(DEBUG) || defined (_DEBUG)
 #   pragma comment (lib, "OpenGLGUIRenderer_d.lib")
 # else

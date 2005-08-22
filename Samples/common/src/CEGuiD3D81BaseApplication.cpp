@@ -40,7 +40,7 @@
 
 #include <stdexcept>
 
-#ifdef _MSCVER
+#ifdef _MSC_VER
 # if defined(DEBUG) || defined (_DEBUG)
 #   pragma comment (lib, "DirectX81GUIRenderer_d.lib")
 # else
