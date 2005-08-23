@@ -217,7 +217,7 @@ any number of LayoutImport elements, and any number of Event elements.
 Window attributes
 -----------------
 Type		- Specifies the type of Window object to be created (required).
-Name		- Specifies the unique name for the Window.  If such a window already exists, an exception will be thrown. (required).
+Name		- Specifies the unique name for the Window.  If this is ommitted a name will be generated.  If a window with the name already exists, an exception will be thrown. (optional).
 
 
 Property Element

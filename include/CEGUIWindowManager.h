@@ -56,6 +56,11 @@ namespace CEGUI
 class CEGUIEXPORT WindowManager : public Singleton <WindowManager>
 {
 public:
+    /*************************************************************************
+        Public static data
+    *************************************************************************/
+    static const String GeneratedWindowNameBase;      //!< Base name to use for generated window names.
+
 	/*!
 	\brief
 		Function type that is used as a callback when loading layouts from XML; the function is called
@@ -90,7 +95,7 @@ public:
 		intended pattern of access is to get a pointer to the GUI system's WindowManager via the System
 		object, and use that.
 	*/
-	WindowManager(void) { Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowManager singleton created"); }
+	WindowManager(void);
 
 
 	/*!
@@ -134,7 +139,8 @@ public:
 		String that describes the type of Window to be created.  A valid WindowFactory for the specified type must be registered.
 
 	\param name
-		String that holds a unique name that is to be given to the new window.
+		String that holds a unique name that is to be given to the new window.  If this string is empty (""), a name
+		will be generated for the window.
 
 	\return
 		Pointer to the newly created Window object.
@@ -143,7 +149,7 @@ public:
 	\exception	UnknownObjectException		No WindowFactory is registered for \a type Window objects.
 	\exception	GenericException			Some other error occurred (Exception message has details).
 	*/
-	Window*	createWindow(const String& type, const String& name);
+	Window*	createWindow(const String& type, const String& name = "");
 
 
 	/*!
@@ -225,7 +231,9 @@ public:
 
 	\param name_prefix
 		String object holding the prefix that is to be used when creating the windows in the layout file, this
-		function allows a layout to be loaded multiple times without having name clashes.
+		function allows a layout to be loaded multiple times without having name clashes.  Note that if you use
+		this facility, then all windows defined within the layout must have names assigned; you currently can not
+		use this feature in combination with automatically generated window names.
 
     \param resourceGroup
         Resource group identifier to be passed to the resource provider when loading the layout file.
@@ -308,6 +316,15 @@ public:
     void writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent = false) const;
 
 private:
+    /*************************************************************************
+        Implementation Methods
+    *************************************************************************/
+    /*!
+    \brief
+        Implementation method to generate a unique name to use for a window.
+    */
+    String generateUniqueWindowName();
+
 	/*************************************************************************
 		Implementation Constants
 	*************************************************************************/
@@ -322,6 +339,8 @@ private:
 
 	WindowRegistry			d_windowRegistry;			//!< The container that forms the Window registry
     WindowVector    d_deathrow;     //!< Collection of 'destroyed' windows.
+
+    unsigned long   d_uid_counter;  //!< Counter used to generate unique window names.
 
 public:
 	/*************************************************************************

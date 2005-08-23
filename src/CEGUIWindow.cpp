@@ -3236,7 +3236,15 @@ void Window::setUserString(const String& name, const String& value)
 void Window::writeXMLToStream(OutStream& out_stream) const
 {
     // output opening Window tag
-    out_stream << "<Window Type=\"" << getType() << "\" Name=\"" << getName() << "\" >" << std::endl;
+    out_stream << "<Window Type=\"" << getType() << "\" ";
+    // write name if not auto-generated
+    if (getName().compare(0, WindowManager::GeneratedWindowNameBase.length(), WindowManager::GeneratedWindowNameBase) != 0)
+    {
+        out_stream << "Name=\"" << getName() << "\" ";
+    }
+    // close opening tag
+    out_stream << ">" << std::endl;
+
     // write out properties.
     writePropertiesXML(out_stream);
     // write out attached child windows.

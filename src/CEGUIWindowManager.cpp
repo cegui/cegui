@@ -31,6 +31,7 @@
 #include "CEGUIGUILayout_xmlHandler.h"
 #include "CEGUIXMLParser.h"
 #include <iostream>
+#include <sstream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -47,6 +48,17 @@ template<> WindowManager* Singleton<WindowManager>::ms_Singleton	= NULL;
 *************************************************************************/
 // Declared in WindowManager
 const char	WindowManager::GUILayoutSchemaName[]	= "GUILayout.xsd";
+const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
+
+
+/*************************************************************************
+    Constructor
+*************************************************************************/
+WindowManager::WindowManager(void) :
+    d_uid_counter(0)
+{
+    Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowManager singleton created");
+}
 
 
 /*************************************************************************
@@ -66,16 +78,18 @@ WindowManager::~WindowManager(void)
 *************************************************************************/
 Window* WindowManager::createWindow(const String& type, const String& name)
 {
-	if (isWindowPresent(name))
+    String finalName(name.empty() ? generateUniqueWindowName() : name);
+
+	if (isWindowPresent(finalName))
 	{
-		throw AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + name +"' already exists within the system.");
+		throw AlreadyExistsException("WindowManager::createWindow - A Window object with the name '" + finalName +"' already exists within the system.");
 	}
 
     WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
     WindowFactory* factory = wfMgr.getFactory(type);
 
-    Window* newWindow = factory->createWindow(name);
-    Logger::getSingleton().logEvent("Window '" + name +"' of type '" + type + "' has been created.", Informative);
+    Window* newWindow = factory->createWindow(finalName);
+    Logger::getSingleton().logEvent("Window '" + finalName +"' of type '" + type + "' has been created.", Informative);
 
     // see if we need to assign a look to this window
     if (wfMgr.isFalagardMappedType(type))
@@ -88,7 +102,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
     // perform initialisation step
     newWindow->initialise();
 
-	d_windowRegistry[name] = newWindow;
+	d_windowRegistry[finalName] = newWindow;
 
 	return newWindow;
 }
@@ -274,6 +288,25 @@ void WindowManager::writeWindowLayoutToStream(const String& window, OutStream& o
 {
     writeWindowLayoutToStream(*getWindow(window), out_stream, writeParent);
 }
+
+String WindowManager::generateUniqueWindowName()
+{
+    // build name
+    std::ostringstream uidname;
+    uidname << GeneratedWindowNameBase.c_str() << d_uid_counter;
+
+    // update counter for next time
+    unsigned long old_uid = d_uid_counter;
+    ++d_uid_counter;
+
+    // log if we ever wrap-around (which should be pretty unlikely)
+    if (d_uid_counter < old_uid)
+        Logger::getSingleton().logEvent("UID counter for generated window names has wrapped around - the fun shall now commence!");
+
+    // return generated name as a CEGUI::String.
+    return String(uidname.str());
+}
+
 
 /*************************************************************************
 	Return a WindowManager::WindowIterator object to iterate over the

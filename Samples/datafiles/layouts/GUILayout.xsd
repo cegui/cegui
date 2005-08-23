@@ -19,7 +19,7 @@
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="Type" type="xsd:string" use="required"/>
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
+		<xsd:attribute name="Name" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyType">
