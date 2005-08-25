@@ -405,11 +405,9 @@ const Window* Window::getActiveChild(void) const
 	while (pos-- > 0)
 	{
 		// don't need full backward scan for activeness as we already know 'this' is active
-		if (d_children[pos]->d_active)
-		{
-			return d_children[pos]->getActiveChild();
-		}
-
+		// NB: This uses the draw-ordered child list, as that should be quicker in most cases.
+		if (d_drawList[pos]->d_active)
+			return d_drawList[pos]->getActiveChild();
 	}
 
 	// no child was active, therefore we are the topmost active window
@@ -618,9 +616,9 @@ Window* Window::getChildAtPosition(const Point& position) const
 {
 	ChildList::const_reverse_iterator	child, end;
 
-	end = d_children.rend();
+	end = d_drawList.rend();
 
-	for (child = d_children.rbegin(); child != end; ++child)
+	for (child = d_drawList.rbegin(); child != end; ++child)
 	{
 		if ((*child)->isVisible())
 		{
@@ -1068,54 +1066,41 @@ void Window::moveToFront_impl(bool wasClicked)
 		return;
 	}
 
-	// bring parent window to front of it's siblings...
+	// bring parent window to front of it's siblings
     wasClicked ? d_parent->doRiseOnClick() : d_parent->moveToFront_impl(false);
 
-	// get our sibling window which is currently active (if any)
-	Window* activeWnd = NULL;
+    // get immediate child of parent that is currently active (if any)
+    Window* activeWnd = getActiveSibling();
 
-	uint idx = d_parent->getChildCount();
-
-	while (idx-- > 0)
-	{
-		if (d_parent->d_children[idx]->isActive())
-		{
-			activeWnd = d_parent->d_children[idx];
-			break;
-		}
-
-	}
-
-	if (d_zOrderingEnabled)
-	{
-		// move us in front of sibling windows with the same 'always-on-top' setting as we have.
-		Window* org_parent = d_parent;
-		org_parent->removeChild_impl(this);
-		org_parent->addChild_impl(this);
-	}
-
-	// notify ourselves that we have become active
-	if (activeWnd != this)
-	{
+    // if a change in active window has occurred
+    if (activeWnd != this)
+    {
+        // notify ourselves that we have become active
         ActivationEventArgs args(this);
-		args.otherWindow = activeWnd;
-		onActivated(args);
-	}
+        args.otherWindow = activeWnd;
+        onActivated(args);
 
-	// notify previously active window that it is no longer active
-	if ((activeWnd != NULL) && (activeWnd != this))
-	{
-        ActivationEventArgs args(activeWnd);
-		args.otherWindow = this;
-		activeWnd->onDeactivated(args);
-	}
+        // notify any previously active window that it is no longer active
+        if (activeWnd)
+        {
+            args.window = activeWnd;
+            args.otherWindow = this;
+            args.handled = false;
+            activeWnd->onDeactivated(args);
+        }
+    }
 
-	// TODO: This could probably be moved above, is anyone relying on ordering of events?
-	if (d_zOrderingEnabled)
-	{
-		onZChange_impl();
-	}
-
+    // bring us to the front of our siblings
+    if (d_zOrderingEnabled)
+    {
+        // remove us from our parent's draw list
+        d_parent->removeWindowFromDrawList(*this);
+        // re-attach ourselves to our parent's draw list which will move us in front of
+        // sibling windows with the same 'always-on-top' setting as we have.
+        d_parent->addWindowToDrawList(*this);
+        // notify relevant windows about the z-order change.
+        onZChange_impl();
+    }
 }
 
 
@@ -1132,36 +1117,22 @@ void Window::moveToBack()
 		onDeactivated(args);
 	}
 
-	// if the window has no parent then we can have no siblings and have nothing more to do.
-	if (d_parent == NULL)
-	{
-		return;
-	}
+    // we only need to proceed if we have a parent (otherwise we have no siblings)
+    if (d_parent)
+    {
+        if (d_zOrderingEnabled)
+        {
+            // remove us from our parent's draw list
+            d_parent->removeWindowFromDrawList(*this);
+            // re-attach ourselves to our parent's draw list which will move us in behind
+            // sibling windows with the same 'always-on-top' setting as we have.
+            d_parent->addWindowToDrawList(*this, true);
+            // notify relevant windows about the z-order change.
+            onZChange_impl();
+        }
 
-	if (d_zOrderingEnabled)
-	{
-		// move us behind all sibling windows with the same 'always-on-top' setting as we have.
-		Window* org_parent = d_parent;
-		d_parent->removeChild_impl(this);
-
-		ChildList::iterator pos = org_parent->d_children.begin();
-
-		if (isAlwaysOnTop())
-		{
-			while ((pos != org_parent->d_children.end()) && (!(*pos)->isAlwaysOnTop()))
-			{
-				++pos;
-			}
-
-		}
-
-		org_parent->d_children.insert(pos, this);
-		setParent(org_parent);
-
-		onZChange_impl();
-	}
-
-	d_parent->moveToBack();
+        d_parent->moveToBack();
+    }
 }
 
 
@@ -1701,7 +1672,7 @@ void Window::render(void)
 
 	for (uint i = 0; i < child_count; ++i)
 	{
-		d_children[i]->render();
+		d_drawList[i]->render();
 	}
 
 	// signal rendering ended
@@ -1845,26 +1816,14 @@ void Window::addChild_impl(Window* wnd)
 {
 	// if window is already attached, detach it first (will fire normal events)
 	if (wnd->getParent() != NULL)
-	{
 		wnd->getParent()->removeChildWindow(wnd);
-	}
 
-	// calculate position where window should be added
-	ChildList::reverse_iterator		position = d_children.rbegin();
-	if (!wnd->isAlwaysOnTop())
-	{
-		position = d_children.rbegin();
+    addWindowToDrawList(*wnd);
 
-		// find last non-topmost window
-		while ((position != d_children.rend()) && ((*position)->isAlwaysOnTop()))
-		{
-			++position;
-		}
+    // add window to child list
+    d_children.push_back(wnd);
 
-	}
-
-	// add window (just behind 'pos')
-	d_children.insert(position.base(), wnd);
+	// set the parent window
 	wnd->setParent(this);
 
 	// Force and update for the area Rects for 'wnd' so they're correct for it's new parent.
@@ -1878,19 +1837,24 @@ void Window::addChild_impl(Window* wnd)
 *************************************************************************/
 void Window::removeChild_impl(Window* wnd)
 {
-	if (!d_children.empty())
-	{
-		ChildList::iterator	position;
-		position = std::find(d_children.begin(), d_children.end(), wnd);
+    // remove from draw list
+    removeWindowFromDrawList(*wnd);
 
-		if (position != d_children.end())
-		{
-			d_children.erase(position);
-			wnd->setParent(NULL);
-		}
+    // if window has children
+    if (!d_children.empty())
+    {
+        // find this window in the child list
+        ChildList::iterator	position = std::find(d_children.begin(), d_children.end(), wnd);
 
-	}
-
+        // if the window was found in the child list
+        if (position != d_children.end())
+        {
+            // remove window from child list
+            d_children.erase(position);
+            // reset windows parent so it's no longer this window.
+            wnd->setParent(0);
+        }
+    }
 }
 
 
@@ -3276,11 +3240,10 @@ int Window::writePropertiesXML(OutStream& out_stream) const
 int Window::writeChildWindowsXML(OutStream& out_stream) const
 {
     int windowsWritten = 0;
-    PropertyIterator iter =  PropertySet::getIterator();
 
     for (uint i = 0; i < getChildCount(); ++i)
     {
-        Window* child = getChildAtIdx(i);
+        Window* child = d_children[i];
 
         // conditional to ensure that auto created windows are not written.
         if (child->getName().find("__auto_") == String::npos)
@@ -3291,6 +3254,80 @@ int Window::writeChildWindowsXML(OutStream& out_stream) const
     }
 
     return windowsWritten;
+}
+
+void Window::addWindowToDrawList(Window& wnd, bool at_back)
+{
+    // add behind other windows in same group
+    if (at_back)
+    {
+         // calculate position where window should be added for drawing
+        ChildList::iterator pos = d_drawList.begin();
+        if (wnd.isAlwaysOnTop())
+        {
+            // find first topmost window
+            while ((pos != d_drawList.end()) && (!(*pos)->isAlwaysOnTop()))
+                ++pos;
+        }
+        // add window to draw list
+        d_drawList.insert(pos, &wnd);
+    }
+    // add in front of other windows in group
+    else
+    {
+        // calculate position where window should be added for drawing
+        ChildList::reverse_iterator	position = d_drawList.rbegin();
+        if (!wnd.isAlwaysOnTop())
+        {
+            // find last non-topmost window
+            while ((position != d_drawList.rend()) && ((*position)->isAlwaysOnTop()))
+                ++position;
+        }
+        // add window to draw list
+        d_drawList.insert(position.base(), &wnd);
+    }
+}
+
+void Window::removeWindowFromDrawList(const Window& wnd)
+{
+    // if draw list is not empty
+    if (!d_drawList.empty())
+    {
+        // attempt to find the window in the draw list
+        ChildList::iterator	position = std::find(d_drawList.begin(), d_drawList.end(), &wnd);
+
+        // remove the window if it was found in the draw list
+        if (position != d_drawList.end())
+            d_drawList.erase(position);
+    }
+}
+
+Window* Window::getActiveSibling()
+{
+    // initialise with this if we are active, else 0
+    Window* activeWnd = isActive() ? this : 0;
+
+    // if active window not already known, and we have a parent window
+    if (!activeWnd && d_parent)
+    {
+        // scan backwards through the draw list, as this will
+        // usually result in the fastest result.
+        uint idx = d_parent->getChildCount();
+        while (idx-- > 0)
+        {
+            // if this child is active
+            if (d_parent->d_drawList[idx]->isActive())
+            {
+                // set the return value
+                activeWnd = d_parent->d_drawList[idx];
+                // exit loop early, as we have found what we needed
+                break;
+            }
+        }
+    }
+
+    // return whatever we discovered
+    return activeWnd;
 }
 
 

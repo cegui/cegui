@@ -1222,6 +1222,22 @@ public:
     */
     bool isUserStringDefined(const String& name) const;
 
+    /*!
+    \brief
+        Returns the active sibling window.
+
+        This searches the immediate children of this window's parent, and returns a pointer
+        to the active window.  The method will return this if we are the immediate child of our
+        parent that is active.  If our parent is not active, or if no immediate child of our
+        parent is active then 0 is returned.  If this window has no parent, and this window is
+        not active then 0 is returned, else this is returned.
+
+    \return
+        A pointer to the immediate child window attached to our parent that is currently active,
+        or 0 if no immediate child of our parent is active.
+    */
+    Window* getActiveSibling();
+
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -3459,6 +3475,7 @@ protected:
 	// child stuff
 	typedef	std::vector<Window*>	ChildList;
 	ChildList		d_children;			//!< The list of child Window objects attached to this.
+    ChildList       d_drawList;         //!< Child window objects arranged in rendering order.
 
 	// general data
 	MetricsMode		d_metricsMode;		//!< Holds the active metrics mode for this window
@@ -3668,6 +3685,38 @@ protected:
             the onSize/onMove handlers).
      */
     void setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing = false, bool fireEvents = true);
+
+    /*!
+    \brief
+        Add the given window to the drawing list at an appropriate position for it's settings and the
+        required direction.  Basically, when \a at_back is false, the window will appear in front of
+        all other windows with the same 'always on top' setting.  When \a at_back is true, the window
+        will appear behind all other windows wih the same 'always on top' setting.
+
+    \param wnd
+        Window object to be added to the drawing list.
+
+    \param at_back
+        Indicates whether the window should be placed at the back of other windows in the same group.
+        If this is false, the window is place in front of other windows in the group.
+
+    \return
+        Nothing.
+    */
+    void addWindowToDrawList(Window& wnd, bool at_back = false);
+
+    /*!
+    \brief
+        Removes the window from the drawing list.  If the window is not attached to the drawing list
+        then nothing happens.
+
+    \param wnd
+        Window object to be removed from the drawing list.
+
+    \return
+        Nothing.
+    */
+    void removeWindowFromDrawList(const Window& wnd);
 
     virtual int writePropertiesXML(OutStream& out_stream) const;
     virtual int writeChildWindowsXML(OutStream& out_stream) const;
