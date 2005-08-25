@@ -26,17 +26,25 @@
 #include "CEGUISystem.h"
 #include "CEGUIXMLHandler.h"
 #include "CEGUIXMLAttributes.h"
+#include "CEGUILogger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    TinyXMLParser::TinyXMLParser(void)
-    {}
+    class TinyXMLDocument : public TiXmlDocument
+    {
+    public:
+        TinyXMLDocument(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
+        ~TinyXMLDocument()
+        {}
+    protected:
+        void processElement(const TiXmlElement* element);
 
-    TinyXMLParser::~TinyXMLParser(void)
-    {}
+    private:
+        XMLHandler* d_handler;
+    };
 
-    void TinyXMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    TinyXMLDocument::TinyXMLDocument(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
     {
         d_handler = &handler;
 
@@ -54,12 +62,12 @@ namespace CEGUI
         {
             // function called recursively to parse xml data
             processElement(currElement);
-        }        
+        }
 
-		System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+        System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
 
-    void TinyXMLParser::processElement(const TiXmlElement* element)
+    void TinyXMLDocument::processElement(const TiXmlElement* element)
     {
         // build attributes block for the element
         XMLAttributes attrs;
@@ -86,6 +94,19 @@ namespace CEGUI
         // end element
         d_handler->elementEnd(element->Value());
     }
+
+
+    TinyXMLParser::TinyXMLParser(void)
+    {}
+
+    TinyXMLParser::~TinyXMLParser(void)
+    {}
+
+    void TinyXMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
+    {
+        TinyXMLDocument doc(handler, filename, schemaName, resourceGroup);
+    }
+
 
     bool TinyXMLParser::initialiseImpl(void)
     {
