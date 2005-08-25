@@ -354,6 +354,17 @@ public:
 	*/
 	float	getZLayer(uint layer) const		{return d_current_z - ((float)layer * GuiZLayerStep);}
 
+
+    /*!
+    \brief
+        Return identification string for the renderer module.  If the internal id string has not been
+        set by the Renderer module creator, a generic string of "Unknown renderer" will be returned.
+
+    \return
+        String object holding a string that identifies the Renderer in use.
+    */
+    const String& getIdentifierString() const;
+
     virtual ResourceProvider* createResourceProvider(void);
 
 protected:
@@ -381,6 +392,7 @@ private:
 
 protected:
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object.
+    String d_identifierString;                 //!< String that holds some id information about the renderer.
 };
 
 } // End of  CEGUI namespace section

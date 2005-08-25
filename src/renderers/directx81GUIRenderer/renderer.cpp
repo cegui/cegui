@@ -123,6 +123,9 @@ void DirectX81Renderer::constructor_impl(LPDIRECT3DDEVICE8 device, const Size& d
 	d_maxTextureSize = ceguimin(devCaps.MaxTextureWidth, devCaps.MaxTextureHeight);
 
 	d_device->AddRef();
+
+    // set ID string
+    d_identifierString = "CEGUI::DirectX81Renderer - Official Direct3D 8.1 based renderer module for CEGUI";
 }
 
 

@@ -32,6 +32,14 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+ScriptModule::ScriptModule(void) :
+    d_identifierString("Unknown scripting module (vendor did not set the ID string!)")
+{}
+
+const String& ScriptModule::getIdentifierString() const
+{
+    return d_identifierString;
+}
 
 bool ScriptFunctor::operator()(const EventArgs& e) const
 {

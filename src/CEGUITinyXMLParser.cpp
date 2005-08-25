@@ -97,7 +97,10 @@ namespace CEGUI
 
 
     TinyXMLParser::TinyXMLParser(void)
-    {}
+    {
+        // set ID string
+        d_identifierString = "CEGUI::TinyXMLParser - Official tinyXML based parser module for CEGUI";
+    }
 
     TinyXMLParser::~TinyXMLParser(void)
     {}

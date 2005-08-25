@@ -59,6 +59,8 @@ LuaScriptModule::LuaScriptModule()
 	luaopen_table(d_state);
 	luaopen_math(d_state);
 	//luaopen_debug(d_state);
+
+	setModuleIdentifierString();
 }
 
 
@@ -70,6 +72,8 @@ LuaScriptModule::LuaScriptModule(lua_State* state)
 	// just use the given state
 	d_ownsState = false;
 	d_state = state;
+
+	setModuleIdentifierString();
 }
 
 
@@ -247,6 +251,16 @@ void LuaScriptModule::destroyBindings(void)
 	// is this ok ?
 	lua_pushnil(d_state);
 	lua_setglobal(d_state,"CEGUI");
+}
+
+
+/*************************************************************************
+	Set the ID string for the module
+*************************************************************************/
+void LuaScriptModule::setModuleIdentifierString()
+{
+    // set ID string
+    d_identifierString = "CEGUI::LuaScriptModule - Official Lua based scripting module for CEGUI";
 }
 
 

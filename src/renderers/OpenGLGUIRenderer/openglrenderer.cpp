@@ -57,6 +57,8 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads) :
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= (float)vp[2];
 	d_display_area.d_bottom	= (float)vp[3];
+
+    setModuleIdentifierString();
 }
 
 
@@ -74,6 +76,8 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height) :
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= static_cast<float>(width);
 	d_display_area.d_bottom	= static_cast<float>(height);
+
+    setModuleIdentifierString();
 }
 
 
@@ -519,6 +523,12 @@ void OpenGLRenderer::setDisplaySize(const Size& sz)
 		fireEvent(EventDisplaySizeChanged, args, EventNamespace);
 	}
 
+}
+
+void OpenGLRenderer::setModuleIdentifierString()
+{
+    // set ID string
+    d_identifierString = "CEGUI::OpenGLRenderer - Official OpenGL based renderer module for CEGUI";
 }
 
 } // End of  CEGUI namespace section

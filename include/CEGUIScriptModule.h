@@ -49,7 +49,7 @@ public:
 	\brief
 		Constructor for ScriptModule base class
 	*/
-	ScriptModule(void) {}
+	ScriptModule(void);
 
 
 	/*!
@@ -142,6 +142,19 @@ public:
         Nothing.
     */
     virtual void destroyBindings(void) {}
+
+    /*!
+    \brief
+        Return identification string for the ScriptModule.  If the internal id string has not been
+        set by the ScriptModule creator, a generic string of "Unknown scripting module" will be returned.
+
+    \return
+        String object holding a string that identifies the ScriptModule in use.
+    */
+    const String& getIdentifierString() const;
+
+protected:
+    String d_identifierString;                 //!< String that holds some id information about the module.
 };
 
 

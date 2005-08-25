@@ -41,7 +41,10 @@ namespace CEGUI
     ////////////////////////////////////////////////////////////////////////////////
 
     XercesParser::XercesParser(void)
-    {}
+    {
+        // set ID string
+        d_identifierString = "CEGUI::XercesParser - Official Xerces-C++ based parser module for CEGUI";
+    }
 
     XercesParser::~XercesParser(void)
     {}

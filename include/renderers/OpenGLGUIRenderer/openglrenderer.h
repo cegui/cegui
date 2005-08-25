@@ -346,6 +346,9 @@ private:
 	// convert colour value to whatever the OpenGL system is expecting.
 	long	colourToOGL(const colour& col) const;
 
+	// set the module ID string
+	void setModuleIdentifierString();
+
 
     /*************************************************************************
 	    Implementation Data

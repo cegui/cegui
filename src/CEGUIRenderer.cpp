@@ -52,7 +52,8 @@ const float	Renderer::GuiZLayerStep			= 0.0001f;		// provides space for 10 layer
 	Constructor
 *************************************************************************/
 Renderer::Renderer(void)
-    : d_resourceProvider(0)
+    : d_resourceProvider(0),
+      d_identifierString("Unknown renderer (vendor did not set the ID string!)")
 {
 	// setup standard events available
 	addEvent(EventDisplaySizeChanged);
@@ -77,6 +78,11 @@ ResourceProvider* Renderer::createResourceProvider(void)
 {
     d_resourceProvider = new DefaultResourceProvider();
     return d_resourceProvider;
+}
+
+const String& Renderer::getIdentifierString() const
+{
+    return d_identifierString;
 }
 
 } // End of  CEGUI namespace section

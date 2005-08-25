@@ -25,6 +25,7 @@
 #define _CEGUIXMLParser_h_
 
 #include "CEGUIBase.h"
+#include "CEGUIString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -96,6 +97,16 @@ namespace CEGUI
          */
         virtual void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup) = 0;
 
+        /*!
+        \brief
+            Return identification string for the XML parser module.  If the internal id string has not been
+            set by the XML parser module creator, a generic string of "Unknown XML parser" will be returned.
+
+        \return
+            String object holding a string that identifies the XML parser in use.
+        */
+        const String& getIdentifierString() const;
+
     protected:
         /*!
         \brief
@@ -116,6 +127,9 @@ namespace CEGUI
          */
 
         virtual void cleanupImpl(void) = 0;
+
+        // data fields
+        String d_identifierString;                 //!< String that holds some id information about the module.
 
     private:
         bool d_initialised;     //!< true if the parser module has been initialised,

@@ -342,6 +342,9 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
 	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
     Logger::getSingleton().logEvent((utf8*)"---- Version " + d_strVersion + " ----");
+    Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
+    Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
+    Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
 	// subscribe to hear about display mode changes
 	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 

@@ -28,6 +28,7 @@ namespace CEGUI
 {
 
     XMLParser::XMLParser(void) :
+            d_identifierString("Unknown XML parser (vendor did not set the ID string!)"),
             d_initialised(false)
     {}
 
@@ -52,6 +53,11 @@ namespace CEGUI
             cleanupImpl();
             d_initialised = false;
         }
+    }
+
+    const String& XMLParser::getIdentifierString() const
+    {
+        return d_identifierString;
     }
 
 } // End of  CEGUI namespace section

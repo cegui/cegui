@@ -39,6 +39,9 @@ namespace CEGUI
 		bSorted=false;
 		bQueuingEnabled=true;
 		eventpusher=new EventPusher(device->getCursorControl());
+
+        // set ID string
+        d_identifierString = "CEGUI::IrrlichtRenderer - Official Irrlicht based renderer module for CEGUI";
 	}
 /************************************************************************/
 	IrrlichtRenderer::~IrrlichtRenderer()
