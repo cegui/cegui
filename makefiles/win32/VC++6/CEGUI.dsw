@@ -15,6 +15,24 @@ Package=<4>
 
 ###############################################################################
 
+Project: "CEGUILua"=".\SCRIPTINGMODULES\CEGUILUA\CEGUILua.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name CEGUIBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name lua_and_toluapp
+    End Project Dependency
+}}}
+
+###############################################################################
+
 Project: "CEGUISampleHelper"=".\Samples\SampleHelper.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -239,6 +257,18 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name CEGUIBase
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "lua_and_toluapp"=".\SCRIPTINGMODULES\CEGUILUA\lua_and_toluapp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################

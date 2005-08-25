@@ -163,6 +163,10 @@ SOURCE=..\..\..\..\src\pcre\study.c
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\falagard\CEGUIFalComponentBase.cpp
 # End Source File
 # Begin Source File
@@ -224,10 +228,6 @@ SOURCE=..\..\..\..\src\falagard\CEGUIFalWidgetLookManager.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\falagard\CEGUIFalXMLEnumHelper.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp
 # End Source File
 # End Group
 # Begin Group "elements (source)"
@@ -624,10 +624,6 @@ SOURCE=..\..\..\..\src\CEGUIRefPtr.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\CEGUIRenderCache.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\src\CEGUIRenderableElement.cpp
 # End Source File
 # Begin Source File
@@ -637,6 +633,10 @@ SOURCE=..\..\..\..\src\CEGUIRenderableFrame.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\CEGUIRenderableImage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\CEGUIRenderCache.cpp
 # End Source File
 # Begin Source File
 
@@ -751,6 +751,10 @@ SOURCE=..\..\..\..\src\pcre\ucpinternal.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\include\falagard\CEGUIFalComponentBase.h
 # End Source File
 # Begin Source File
@@ -816,10 +820,6 @@ SOURCE=..\..\..\..\include\falagard\CEGUIFalWidgetLookManager.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\falagard\CEGUIFalXMLEnumHelper.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h
 # End Source File
 # End Group
 # Begin Group "elements (headers)"
@@ -1244,10 +1244,6 @@ SOURCE=..\..\..\..\include\CEGUIRefPtr.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\CEGUIRenderCache.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\include\CEGUIRenderableElement.h
 # End Source File
 # Begin Source File
@@ -1257,6 +1253,10 @@ SOURCE=..\..\..\..\include\CEGUIRenderableFrame.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIRenderableImage.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIRenderCache.h
 # End Source File
 # Begin Source File
 

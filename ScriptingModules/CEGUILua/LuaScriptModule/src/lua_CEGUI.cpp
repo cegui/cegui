@@ -18441,7 +18441,7 @@ static int tolua_CEGUI_CEGUI_Thumb_getVertRange00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ceguiLua_Thumb_getVertRange'",NULL);
 #endif
  {
-  ceguiLua_Thumb_getVertRange(self,&min,&max);
+ CEGUI::ceguiLua_Thumb_getVertRange(self,&min,&max);
  tolua_pushnumber(tolua_S,(lua_Number)min);
  tolua_pushnumber(tolua_S,(lua_Number)max);
  }
@@ -18476,7 +18476,7 @@ static int tolua_CEGUI_CEGUI_Thumb_getHorzRange00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ceguiLua_Thumb_getHorzRange'",NULL);
 #endif
  {
-  ceguiLua_Thumb_getHorzRange(self,&min,&max);
+ CEGUI::ceguiLua_Thumb_getHorzRange(self,&min,&max);
  tolua_pushnumber(tolua_S,(lua_Number)min);
  tolua_pushnumber(tolua_S,(lua_Number)max);
  }
