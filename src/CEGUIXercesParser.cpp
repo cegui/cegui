@@ -196,7 +196,7 @@ namespace CEGUI
         // try base filename first
         try
         {
-            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.", Informative);
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
             System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, resourceGroup);
         }
         // oops, no file.  Try an alternative instead...
@@ -210,7 +210,7 @@ namespace CEGUI
             // append schema filename
             schemaFilename += schemaName;
             // re-try the load operation.
-            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaFilename + "'.", Informative);
+            Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaFilename + "'.");
             System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaFilename, rawSchemaData, resourceGroup);
         }
         // wrap schema data in a xerces MemBufInputSource object
@@ -227,7 +227,7 @@ namespace CEGUI
         XMLCh* pval = XMLString::transcode(schemaName.c_str());
         reader->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation, pval);
         XMLString::release(&pval);
-        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.", Informative);
+        Logger::getSingleton().logEvent("XercesParser::initialiseSchema - XML schema file '" + schemaName + "' has been initialised.");
 
         // use resource provider to release loaded schema data (if it supports this)
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawSchemaData);
