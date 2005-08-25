@@ -38,6 +38,7 @@ Added: Logging of CEGUI version number.
 Added: The 'look' modules now have the ability to register all available widget types; saves listing them all in a scheme!
 Added: Support to the Lua module for FontFlags to allow direct loading of TTF fonts from script without using .font files.
 Added: Base Window class virtual method 'performChildWindowLayout'.  Replacing many widget's own 'layoutChildComponents' methods.
+Added: Facility for the system to auto-generate window names -  for use in cases where the user is too idle to think up names for themselves ;)
 
 Modified: Relaxation of many ordering restrictions within validated XML data files.
 Modified: Samples framework has had some minor improvments, and can now exit properly!
@@ -50,6 +51,8 @@ Modified: Major cleanup of the main file for the 'look' modules.
 Modified: Changed CEGUIBASE_API to CEGUIEXPORT throughout the code.  This is in preparation for some Linux ABI improvements.
 Modified: Various widget classes disregarded the alpha component of set colours; the alpha component of user specified colours is now respected.
 Modified: Updated the WindowsLook caret-cursor to greatly improve visibility!
+Modified: Made child window index positions stable.
+Modified: Fixed hacky z-order change implementations.
 
 Bug Fix: Issue on some distros caused by use of AC_FUNC_MALLOC macro in configure.ac
 Bug Fix: Issues with samples framework not compiling when none of the renderer modules are available.
@@ -62,6 +65,7 @@ Bug Fix: Window::onEnabled & Window::onDisabled were not called when a window st
 Bug Fix: Font class modified to force auto-hinting use for rendering glyphs.
 Bug Fix: Font class modified to properly render glyphs in mono mode (AA off)
 Bug Fix: Fixed some uint/ColourRect/String CEGUILua issues.
+Bug Fix: TinyXMLParser::parseXMLFile implementation was not reentrant, causing issues with nested loading of XML files (specifically static/bitmapped fonts).
 
 
 Release 0.3.0
