@@ -380,10 +380,6 @@ public:
 	\brief
 		return a pointer to the child window that is attached to 'this' at the given index.
 
-	\note
-		Window indeces are of limited value to client code, since any time a window is added, removed, or
-		it's z-order is changed the indeces all change.
-
 	\param idx
 		Index of the child window whos pointer should be returned.  This value is not bounds checked,
 		client code should ensure that this is less than the value returned by getChildCount().
