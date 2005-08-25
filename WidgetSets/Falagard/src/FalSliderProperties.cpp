@@ -39,5 +39,17 @@ namespace FalagardSliderProperties
     {
         static_cast<FalagardSlider*>(receiver)->setVertical(PropertyHelper::stringToBool(value));
     }
+
+
+    String ReversedDirection::get(const PropertyReceiver* receiver) const
+    {
+        return PropertyHelper::boolToString(static_cast<const FalagardSlider*>(receiver)->isReversedDirection());
+    }
+
+    void ReversedDirection::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<FalagardSlider*>(receiver)->setReversedDirection(PropertyHelper::stringToBool(value));
+    }
+
 }
 } // End of  CEGUI namespace section

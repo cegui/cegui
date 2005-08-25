@@ -32,13 +32,16 @@ namespace CEGUI
 {
     const utf8 FalagardSlider::WidgetTypeName[] = "Falagard/Slider";
     FalagardSliderProperties::VerticalSlider FalagardSlider::d_verticalProperty;
+    FalagardSliderProperties::ReversedDirection FalagardSlider::d_reversedProperty;
 
 
     FalagardSlider::FalagardSlider(const String& type, const String& name) :
         Slider(type, name),
-        d_vertical(false)
+        d_vertical(false),
+        d_reversed(false)
     {
         addProperty(&d_verticalProperty);
+        addProperty(&d_reversedProperty);
     }
 
     FalagardSlider::~FalagardSlider()
@@ -71,46 +74,71 @@ namespace CEGUI
 
     void FalagardSlider::updateThumb(void)
     {
+        // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
-
+        // get accesss to the thumb
         Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__"));
 
-        float fltVal    = d_value;
-        float posExtent = d_maxValue;
-        float slideExtent;
+        // get base location for thumb widget
+        Point thumbPosition(area.d_left, area.d_top);
 
+        // Is this a vertical slider
         if (d_vertical)
         {
-            slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
+            // pixel extent of total available area the thumb moves in
+            float slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
+            // Set range of motion for the thumb widget
             theThumb->setVertRange(absoluteToRelativeY_impl(this, area.d_top), absoluteToRelativeY_impl(this, area.d_top + slideExtent));
-            theThumb->setPosition(Point(absoluteToRelativeX_impl(this, area.d_left), absoluteToRelativeY_impl(this, area.d_top + slideExtent - (fltVal * (slideExtent / posExtent)))));
+
+            // calculate vertical positon for thumb
+            float thumbOffset = d_value * (slideExtent / d_maxValue);
+            thumbPosition.d_y += d_reversed ? thumbOffset : slideExtent - thumbOffset;
         }
+        // Horizontal slider
         else
         {
-            slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
+            // pixel extent of total available area the thumb moves in
+            float slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
+            // Set range of motion for the thumb widget
             theThumb->setHorzRange(absoluteToRelativeX_impl(this, area.d_left), absoluteToRelativeX_impl(this, area.d_left + slideExtent));
-            theThumb->setPosition(Point(absoluteToRelativeX_impl(this, area.d_left + slideExtent - (fltVal * (slideExtent / posExtent))), absoluteToRelativeY_impl(this, area.d_top)));
+
+            // calculate horizontal positon for thumb
+            float thumbOffset = d_value * (slideExtent / d_maxValue);
+            thumbPosition.d_x += d_reversed ? slideExtent - thumbOffset : thumbOffset;
         }
+
+        // set new position for thumb.
+        theThumb->setPosition(absoluteToRelative_impl(this, thumbPosition));
     }
 
     float FalagardSlider::getValueFromThumb(void) const
     {
+        // get area the thumb is supposed to use as it's area.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
-
+        // get accesss to the thumb
         Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__"));
-        float posExtent = d_maxValue;
 
+        // slider is vertical
         if (d_vertical)
         {
+            // pixel extent of total available area the thumb moves in
             float slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
-            return d_maxValue - ((theThumb->getAbsoluteYPosition() - area.d_top) / (slideExtent / posExtent));
+            // calculate value represented by current thumb position
+            float thumbValue = (theThumb->getAbsoluteYPosition() - area.d_top) / (slideExtent / d_maxValue);
+            // return final thumb value according to slider settings
+            return d_reversed ? thumbValue : d_maxValue - thumbValue;
         }
+        // slider is horizontal
         else
         {
+            // pixel extent of total available area the thumb moves in
             float slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
-            return d_maxValue - ((theThumb->getAbsoluteXPosition() - area.d_left) / (slideExtent / posExtent));
+            // calculate value represented by current thumb position
+            float thumbValue = (theThumb->getAbsoluteXPosition() - area.d_left) / (slideExtent / d_maxValue);
+            // return final thumb value according to slider settings
+            return d_reversed ? d_maxValue - thumbValue : thumbValue;
         }
     }
 
@@ -119,14 +147,14 @@ namespace CEGUI
         Rect absrect(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__")->getUnclippedPixelRect());
 
         if ((d_vertical && (pt.d_y < absrect.d_top)) ||
-            (!d_vertical && (pt.d_x < absrect.d_left)))
-        {
-            return 1;
-        }
-        else if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
             (!d_vertical && (pt.d_x > absrect.d_right)))
         {
-            return -1;
+            return d_reversed ? -1 : 1;
+        }
+        else if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
+            (!d_vertical && (pt.d_x < absrect.d_left)))
+        {
+            return d_reversed ? 1 : -1;
         }
         else
         {
@@ -142,6 +170,16 @@ namespace CEGUI
     void FalagardSlider::setVertical(bool setting)
     {
         d_vertical = setting;
+    }
+
+    bool FalagardSlider::isReversedDirection() const
+    {
+        return d_reversed;
+    }
+
+    void FalagardSlider::setReversedDirection(bool setting)
+    {
+        d_reversed = setting;
     }
 
     //////////////////////////////////////////////////////////////////////////

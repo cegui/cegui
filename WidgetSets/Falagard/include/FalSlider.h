@@ -73,9 +73,13 @@ namespace CEGUI
         bool isVertical() const;
         void setVertical(bool setting);
 
+        bool isReversedDirection() const;
+        void setReversedDirection(bool setting);
+
     protected:
         // data members
         bool    d_vertical;     //!< True if slider operates in vertical direction.
+        bool    d_reversed;     //!< true if slider operates in reversed direction to 'normal'.
 
         // overridden from Slider base class.
         void populateRenderCache();
@@ -87,6 +91,7 @@ namespace CEGUI
 
         // property objects
         static FalagardSliderProperties::VerticalSlider d_verticalProperty;
+        static FalagardSliderProperties::ReversedDirection d_reversedProperty;
     };
 
     /*!

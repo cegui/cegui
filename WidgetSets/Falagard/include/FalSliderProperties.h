@@ -60,6 +60,30 @@ namespace FalagardSliderProperties
         void	set(PropertyReceiver* receiver, const String& value);
     };
 
+    /*!
+    \brief
+        Property to access the setting that controls the positive direction for the slider
+
+        \par Usage:
+            - Name: ReversedDirection
+            - Format: "[text]".
+
+        \par Where [Text] is:
+            - "True" to indicate the slider value increases towards the bottom or left edges.
+            - "False" to indicate the slider value increases towards the top or right edges (default).
+    */
+    class ReversedDirection : public Property
+    {
+    public:
+        ReversedDirection() : Property(
+            "ReversedDirection",
+            "Property to get/set whether the Slider operates in reversed direction.  Value is either \"True\" or \"False\".",
+            "False")
+        {}
+
+        String	get(const PropertyReceiver* receiver) const;
+        void	set(PropertyReceiver* receiver, const String& value);
+    };
 }
 
 } // End of  CEGUI namespace section
