@@ -2567,6 +2567,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/MultiLineEditbox">
+        <Property name="MouseCursorImage" value="set:TaharezLook image:MouseTextBar" />
         <Property name="SelectionBrushImage" value="set:TaharezLook image:MultiLineEditboxSelectionBrush" />
         <NamedArea name="TextArea">
             <Area>
