@@ -49,6 +49,43 @@
 # endif
 #endif
 
+
+/*************************************************************************
+    Simple key-map used to translate glut special keys to CEGUI keys.
+    See: CEGuiOpenGLBaseApplication::keySpecial method.
+*************************************************************************/
+struct GlutKeyMapping
+{
+    int glutKey;
+    CEGUI::uint  ceguiKey;
+};
+
+GlutKeyMapping specialKeyMap[] =
+{
+    {GLUT_KEY_F1, CEGUI::Key::F1},
+    {GLUT_KEY_F2, CEGUI::Key::F2},
+    {GLUT_KEY_F3, CEGUI::Key::F3},
+    {GLUT_KEY_F4, CEGUI::Key::F4},
+    {GLUT_KEY_F5, CEGUI::Key::F5},
+    {GLUT_KEY_F6, CEGUI::Key::F6},
+    {GLUT_KEY_F7, CEGUI::Key::F7},
+    {GLUT_KEY_F8, CEGUI::Key::F8},
+    {GLUT_KEY_F9, CEGUI::Key::F9},
+    {GLUT_KEY_F10, CEGUI::Key::F10},
+    {GLUT_KEY_F11, CEGUI::Key::F11},
+    {GLUT_KEY_F12, CEGUI::Key::F12},
+    {GLUT_KEY_LEFT, CEGUI::Key::ArrowLeft},
+    {GLUT_KEY_UP, CEGUI::Key::ArrowUp},
+    {GLUT_KEY_RIGHT, CEGUI::Key::ArrowRight},
+    {GLUT_KEY_DOWN, CEGUI::Key::ArrowDown},
+    {GLUT_KEY_PAGE_UP, CEGUI::Key::PageUp},
+    {GLUT_KEY_PAGE_DOWN, CEGUI::Key::PageDown},
+    {GLUT_KEY_HOME, CEGUI::Key::Home},
+    {GLUT_KEY_END, CEGUI::Key::End},
+    {GLUT_KEY_INSERT, CEGUI::Key::Insert},
+    {-1, 0}
+};
+
 /*************************************************************************
     Static Data
 *************************************************************************/
@@ -235,7 +272,7 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Delete);
         break;
     case 0x1B:  // Escape
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Escape);
+        d_quitFlag = true;
         break;
     case 0x0D:  // CR (Return)
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Return);
@@ -248,32 +285,17 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
 
 void CEGuiOpenGLBaseApplication::keySpecial(int key, int x, int y)
 {
-    switch (key)
+    GlutKeyMapping* mapping = specialKeyMap;
+
+    while (mapping->glutKey != -1)
     {
-    case GLUT_KEY_LEFT:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::ArrowLeft);
-        break;
-    case GLUT_KEY_RIGHT:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::ArrowRight);
-        break;
-    case GLUT_KEY_UP:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::ArrowUp);
-        break;
-    case GLUT_KEY_DOWN:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::ArrowDown);
-        break;
-    case GLUT_KEY_HOME:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Home);
-        break;
-    case GLUT_KEY_END:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::End);
-        break;
-    case GLUT_KEY_PAGE_UP:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::PageUp);
-        break;
-    case GLUT_KEY_PAGE_DOWN:
-        CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::PageDown);
-        break;
+        if (mapping->glutKey == key)
+        {
+            CEGUI::System::getSingleton().injectKeyDown(mapping->ceguiKey);
+            return;
+        }
+
+        ++mapping;
     }
 }
 
