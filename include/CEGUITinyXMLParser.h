@@ -25,7 +25,7 @@
 #define _CEGUITinyXMLParser_h_
 
 #include "CEGUIXMLParser.h"
-#include "tinyxml/tinyxml.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,13 +44,9 @@ namespace CEGUI
         void parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
 
     protected:
-        void processElement(const TiXmlElement* element);
         // Implementation of abstract interface.
         bool initialiseImpl(void);
         void cleanupImpl(void);
-
-        // data
-        XMLHandler* d_handler;
     };
 
 } // End of  CEGUI namespace section
