@@ -92,6 +92,7 @@
         <Property name="HoverTextColour" value="FFFFFFFF" />
         <Property name="PushedTextColour" value="FFFFFFFF" />
         <Property name="DisabledTextColour" value="FF888888" />
+        <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -151,6 +152,7 @@
         <Property name="EWSizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />
         <Property name="NWSESizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />
         <Property name="NESWSizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />
+        <Property name="RollUpEnabled" value="False" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge"><AbsoluteDim value="7" /></Dim>
@@ -814,7 +816,6 @@
     </WidgetLook>
 
     <WidgetLook name="Vanilla/MultiLineEditbox">
-        <Property name="ForceVertScrollbar" value="True" />
         <Property name="SelectionBrushImage" value="set:Vanilla-Images image:GenericBrush" />
         <Property name="NormalTextColour" value="FF000000" />
         <Property name="SelectedTextColour" value="FFFFFFFF" />

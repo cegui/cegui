@@ -27,6 +27,35 @@
 #include "CEGuiSample.h"
 #include "CEGUI.h"
 
+
+/*!
+\brief
+    Extremely simple example console class
+*/
+class DemoConsole
+{
+public:
+    DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent = 0);
+    ~DemoConsole();
+
+    void toggleVisibility();
+    bool isVisible() const;
+
+private:
+    // these must match the IDs assigned in the layout
+    static const unsigned int SubmitButtonID;
+    static const unsigned int EntryBoxID;
+    static const unsigned int HistoryID;
+
+    bool handleSubmit(const CEGUI::EventArgs& args);
+    bool handleKeyDown(const CEGUI::EventArgs& args);
+
+    CEGUI::Window* d_root;
+    int d_historyPos;
+    std::vector<CEGUI::String> d_history;
+};
+
+
 class FalagardDemo1Sample : public CEGuiSample
 {
 public:
@@ -35,6 +64,12 @@ public:
 
     // method to perform any required cleanup operations.
     void cleanupSample(void);
+
+protected:
+    bool handleRootKeyDown(const CEGUI::EventArgs& args);
+
+    DemoConsole* d_console;
 };
+
 
 #endif  // end of guard _Sample_FalagardDemo1_h_
