@@ -25,8 +25,8 @@
 #include "CEGUI.h"
 #include "CEGuiBaseApplication.h"
 
-#include <cstdlib>
-#include <cstdio>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string>
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -448,9 +448,9 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& e)
     Editbox* textbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/NewColTextBox"));
 
     // get ID for new column
-    CEGUI::uint id = std::atoi(idbox->getText().c_str());
+    CEGUI::uint id = atoi(idbox->getText().c_str());
     // get width to use for new column (in pixels)
-    float width = std::atof(widthbox->getText().c_str());
+    float width = atof(widthbox->getText().c_str());
     // get column label text
     String text = textbox->getText();
 
@@ -482,7 +482,7 @@ bool Demo6Sample::handleDeleteColumn(const CEGUI::EventArgs& e)
     Editbox* idbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/DelColIDBox"));
 
     // obtain the id of the column to be deleted
-    CEGUI::uint id = std::atoi(idbox->getText().c_str());
+    CEGUI::uint id = atoi(idbox->getText().c_str());
 
     // attempt to delete the column, ignoring any errors.
     try
@@ -509,7 +509,7 @@ bool Demo6Sample::handleAddRow(const CEGUI::EventArgs& e)
     Editbox* textbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/RowTextBox"));
 
     // get the ID of the initial column item to set
-    CEGUI::uint id = std::atoi(idbox->getText().c_str());
+    CEGUI::uint id = atoi(idbox->getText().c_str());
     // get the text that is to be set initially into the specified column of the new row
     String text = textbox->getText();
 
@@ -546,7 +546,7 @@ bool Demo6Sample::handleDeleteRow(const CEGUI::EventArgs& e)
     Editbox* idxbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/DelRowIdxBox"));
 
     // get index of row to delete.
-    CEGUI::uint idx = std::atoi(idxbox->getText().c_str());
+    CEGUI::uint idx = atoi(idxbox->getText().c_str());
 
     // attempt to delete the row, ignoring any errors.
     try
@@ -574,9 +574,9 @@ bool Demo6Sample::handleSetItem(const CEGUI::EventArgs& e)
     Editbox* textbox = static_cast<Editbox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/ColumnPanel/SetItemTextBox"));
 
     // get ID of column to be affected
-    CEGUI::uint id = std::atoi(idbox->getText().c_str());
+    CEGUI::uint id = atoi(idbox->getText().c_str());
     // get index of row to be affected
-    CEGUI::uint row = std::atoi(rowbox->getText().c_str());
+    CEGUI::uint row = atoi(rowbox->getText().c_str());
     // get new text for item
     String text = textbox->getText();
 
@@ -616,7 +616,7 @@ bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& e)
     std::string tmp("Current Selected Count: ");
 
     char buff[16];
-    std::sprintf(buff, "%d", mcl->getSelectedCount());
+    sprintf(buff, "%d", mcl->getSelectedCount());
 
     tmp += buff;
 
@@ -708,13 +708,13 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& e)
 
     // update the column count
     tmp = "Current Column Count: ";
-    std::sprintf(buff, "%d", mcl->getColumnCount());
+    sprintf(buff, "%d", mcl->getColumnCount());
     tmp += buff;
     colText->setText(tmp);
 
     // update the row count
     tmp = "Current Row Count: ";
-    std::sprintf(buff, "%d", mcl->getRowCount());
+    sprintf(buff, "%d", mcl->getRowCount());
     tmp += buff;
     rowText->setText(tmp);
 

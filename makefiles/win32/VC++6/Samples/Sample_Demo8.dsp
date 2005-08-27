@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="Sample_Demo6" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="Sample_Demo8" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
-CFG=Sample_Demo6 - Win32 Debug
+CFG=Sample_Demo8 - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "Sample_Demo6.mak".
+!MESSAGE NMAKE /f "Sample_Demo8.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "Sample_Demo6.mak" CFG="Sample_Demo6 - Win32 Debug"
+!MESSAGE NMAKE /f "Sample_Demo8.mak" CFG="Sample_Demo8 - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "Sample_Demo6 - Win32 Release" (based on "Win32 (x86) Application")
-!MESSAGE "Sample_Demo6 - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "Sample_Demo8 - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "Sample_Demo8 - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "Sample_Demo6 - Win32 Release"
+!IF  "$(CFG)" == "Sample_Demo8 - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\Samples\common\include" /I "..\..\..\..\include" /D "NDEBUG" /D "_WINDOWS" /D "WIN32" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include" /I "..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include" /I "..\..\..\..\Samples\common\include" /I "..\..\..\..\include" /D "NDEBUG" /D "_WINDOWS" /D "WIN32" /YX /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -54,10 +54,10 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 CEGUIBase.lib CEGUISampleHelper.libkernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386 /out:"../../../../Samples/bin/Sample_Demo6.exe" /libpath:"..\..\..\..\lib"
+# ADD LINK32 lua_and_tolua++.lib CEGUILua.lib CEGUIBase.lib CEGUISampleHelper.libkernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386 /out:"../../../../Samples/bin/Sample_Demo8.exe" /libpath:"..\..\..\..\lib"
 # SUBTRACT LINK32 /profile /debug
 
-!ELSEIF  "$(CFG)" == "Sample_Demo6 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "Sample_Demo8 - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -71,7 +71,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\Samples\common\include" /I "..\..\..\..\include" /D "_WINDOWS" /D "_DEBUG" /D "WIN32" /D "_STLP_DEBUG" /FD /GZ /Zm500 /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include" /I "..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include" /I "..\..\..\..\Samples\common\include" /I "..\..\..\..\include" /D "_WINDOWS" /D "_DEBUG" /D "WIN32" /D "_STLP_DEBUG" /FD /GZ /Zm500 /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
@@ -81,21 +81,21 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 CEGUIBase_d.lib CEGUISampleHelper_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../Samples/bin/Sample_Demo6_d.exe" /pdbtype:sept /libpath:"..\..\..\..\lib"
+# ADD LINK32 lua_and_tolua++_d.lib CEGUILua_d.lib CEGUIBase_d.lib CEGUISampleHelper_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../Samples/bin/Sample_Demo8_d.exe" /pdbtype:sept /libpath:"..\..\..\..\lib"
 # SUBTRACT LINK32 /verbose
 
 !ENDIF 
 
 # Begin Target
 
-# Name "Sample_Demo6 - Win32 Release"
-# Name "Sample_Demo6 - Win32 Debug"
+# Name "Sample_Demo8 - Win32 Release"
+# Name "Sample_Demo8 - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\..\..\..\Samples\Demo6\src\Sample_Demo6.cpp
+SOURCE=..\..\..\..\Samples\Demo8\src\Sample_Demo8.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -103,7 +103,7 @@ SOURCE=..\..\..\..\Samples\Demo6\src\Sample_Demo6.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=..\..\..\..\Samples\Demo6\src\Sample_Demo6.h
+SOURCE=..\..\..\..\Samples\Demo8\src\Sample_Demo8.h
 # End Source File
 # End Group
 # End Target
