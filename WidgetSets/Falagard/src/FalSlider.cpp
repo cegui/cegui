@@ -149,12 +149,12 @@ namespace CEGUI
         if ((d_vertical && (pt.d_y < absrect.d_top)) ||
             (!d_vertical && (pt.d_x > absrect.d_right)))
         {
-            return d_reversed ? -1 : 1;
+            return d_reversed ? -1.0f : 1.0f;
         }
         else if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
             (!d_vertical && (pt.d_x < absrect.d_left)))
         {
-            return d_reversed ? 1 : -1;
+            return d_reversed ? 1.0f : -1.0f;
         }
         else
         {
