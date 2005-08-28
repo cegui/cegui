@@ -1649,6 +1649,222 @@ Rect Window::screenToWindow(const Rect& rect) const
 
 
 /*************************************************************************
+    Convert the given X co-ordinate from unified to relative metrics.
+*************************************************************************/
+float Window::unifiedToRelativeX(const UDim& val) const
+{
+    return val.asRelative(d_pixelSize.d_width);
+}
+
+/*************************************************************************
+    Convert the given Y co-ordinate from unified to relative metrics.
+*************************************************************************/
+float Window::unifiedToRelativeY(const UDim& val) const
+{
+    return val.asRelative(d_pixelSize.d_height);
+}
+
+/*************************************************************************
+    Convert the given UVector2 value from unified to relative metrics.
+*************************************************************************/
+Vector2 Window::unifiedToRelative(const UVector2& val) const
+{
+    return val.asRelative(d_pixelSize);
+}
+
+/*************************************************************************
+    Convert the given area from unfied to relative metrics.
+*************************************************************************/
+Rect Window::unifiedToRelative(const URect& val) const
+{
+    return val.asRelative(d_pixelSize);
+}
+
+/*************************************************************************
+    Convert the given X co-ordinate from unified to absolute metrics.
+*************************************************************************/
+float Window::unifiedToAbsoluteX(const UDim& val) const
+{
+    return val.asAbsolute(d_pixelSize.d_width);
+}
+
+/*************************************************************************
+    Convert the given Y co-ordinate from unified to absolute metrics.
+*************************************************************************/
+float Window::unifiedToAbsoluteY(const UDim& val) const
+{
+    return val.asAbsolute(d_pixelSize.d_height);
+}
+
+/*************************************************************************
+    Convert the given UVector2 value from unified to absolute metrics.
+*************************************************************************/
+Vector2 Window::unifiedToAbsolute(const UVector2& val) const
+{
+    return val.asAbsolute(d_pixelSize);
+}
+
+/*************************************************************************
+    Convert the given area from unfied to absolute metrics.
+*************************************************************************/
+Rect Window::unifiedToAbsolute(const URect& val) const
+{
+    return val.asAbsolute(d_pixelSize);
+}
+
+/*************************************************************************
+    Convert a window co-ordinate value, specified as a UDim, to a screen
+    relative pixel co-ordinate.
+*************************************************************************/
+float Window::windowToScreenX(const UDim& x) const
+{
+    float baseX = d_parent ?  d_parent->windowToScreenX(0) + getAbsoluteXPosition() : getAbsoluteXPosition();
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            baseX += (getParentWidth() - d_pixelSize.d_width) * 0.5f;
+            break;
+        case HA_RIGHT:
+            baseX += getParentWidth() - d_pixelSize.d_width;
+            break;
+        default:
+            break;
+    }
+
+    return baseX + x.asAbsolute(d_pixelSize.d_width);
+}
+
+/*************************************************************************
+    Convert a window co-ordinate value, specified as a UDim, to a screen
+    relative pixel co-ordinate.
+*************************************************************************/
+float Window::windowToScreenY(const UDim& y) const
+{
+    float baseY = d_parent ?  d_parent->windowToScreenY(0) + getAbsoluteYPosition() : getAbsoluteYPosition();
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            baseY += (getParentHeight() - d_pixelSize.d_height) * 0.5f;
+            break;
+        case VA_BOTTOM:
+            baseY += getParentHeight() - d_pixelSize.d_height;
+            break;
+        default:
+            break;
+    }
+
+    return baseY + y.asAbsolute(d_pixelSize.d_height);
+}
+
+/*************************************************************************
+    Convert a window co-ordinate point, specified as a UVector2, to a
+    screen relative pixel co-ordinate point.
+*************************************************************************/
+Vector2 Window::windowToScreen(const UVector2& vec) const
+{
+    Vector2 base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            base.d_x += (getParentWidth() - d_pixelSize.d_width) * 0.5f;
+            break;
+        case HA_RIGHT:
+            base.d_x += getParentWidth() - d_pixelSize.d_width;
+            break;
+        default:
+            break;
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            base.d_y += (getParentHeight() - d_pixelSize.d_height) * 0.5f;
+            break;
+        case VA_BOTTOM:
+            base.d_y += getParentHeight() - d_pixelSize.d_height;
+            break;
+        default:
+            break;
+    }
+
+    return base + vec.asAbsolute(d_pixelSize);
+}
+
+/*************************************************************************
+    Convert a window area, specified as a URect, to a screen area.
+*************************************************************************/
+Rect Window::windowToScreen(const URect& rect) const
+{
+    Vector2 base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
+
+    switch(d_horzAlign)
+    {
+        case HA_CENTRE:
+            base.d_x += (getParentWidth() - d_pixelSize.d_width) * 0.5f;
+            break;
+        case HA_RIGHT:
+            base.d_x += getParentWidth() - d_pixelSize.d_width;
+            break;
+        default:
+            break;
+    }
+
+    switch(d_vertAlign)
+    {
+        case VA_CENTRE:
+            base.d_y += (getParentHeight() - d_pixelSize.d_height) * 0.5f;
+            break;
+        case VA_BOTTOM:
+            base.d_y += getParentHeight() - d_pixelSize.d_height;
+            break;
+        default:
+            break;
+    }
+
+    Rect tmp(rect.asAbsolute(d_pixelSize));
+    return tmp.offset(base);
+}
+
+/*************************************************************************
+    Convert a screen relative UDim co-ordinate value to a window
+    co-ordinate value, specified in whichever metrics mode is active.
+*************************************************************************/
+float Window::screenToWindowX(const UDim& x) const
+{
+    return screenToWindowX(x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+}
+
+/*************************************************************************
+    Convert a screen relative UDim co-ordinate value to a window
+    co-ordinate value, specified in whichever metrics mode is active.
+*************************************************************************/
+float Window::screenToWindowY(const UDim& y) const
+{
+    return screenToWindowY(y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+}
+
+/*************************************************************************
+    Convert a screen relative UVector2 point to a window co-ordinate
+    point, specified in whichever metrics mode is active.
+*************************************************************************/
+Vector2 Window::screenToWindow(const UVector2& vec) const
+{
+    return screenToWindow(vec.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+}
+
+/*************************************************************************
+    Convert a URect screen area to a window area, specified in whichever
+    metrics mode is active.
+*************************************************************************/
+Rect Window::screenToWindow(const URect& rect) const
+{
+    return screenToWindow(rect.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+}
+
+/*************************************************************************
 	Causes the Window object to render itself.
 *************************************************************************/
 void Window::render(void)

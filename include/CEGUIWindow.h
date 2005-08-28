@@ -2449,6 +2449,214 @@ public:
 	Rect	screenToWindow(const Rect& rect) const;
 
 
+    /*!
+    \brief
+        Convert the given X co-ordinate from unified to relative metrics.
+
+    \param val
+        X co-ordinate specified as a UDim relative to this Window (so {0, 0} is this windows left edge).
+
+    \return
+        A relative metric value that is equivalent to \a val, given the Window objects current width.
+    */
+    float unifiedToRelativeX(const UDim& val) const;
+
+
+    /*!
+    \brief
+        Convert the given Y co-ordinate from unified to relative metrics.
+
+    \param val
+        Y co-ordinate specified in as a UDim relative to this Window (so {0, 0} is this windows top edge).
+
+    \return
+        A relative metric value that is equivalent to \a val, given the Window objects current height.
+    */
+    float	unifiedToRelativeY(const UDim& val) const;
+
+
+    /*!
+    \brief
+        Convert the given UVector2 value from unified to relative metrics.
+
+    \param val
+        UVector2 object that describes a position specified in unified dimensions relative to this Window (so {{0, 0}, {0, 0}) is this windows top-left corner).
+
+    \return
+        A Vector2 object describing a relative metric point that is equivalent to \a val, given the Window objects current size.
+    */
+    Vector2 unifiedToRelative(const UVector2& val) const;
+
+
+    /*!
+    \brief
+        Convert the given area from unfied to relative metrics.
+
+    \param val
+        URect object describing the area specified in unified dimensions relative to this Window.
+
+    \return
+        A Rect object describing a relative metric area that is equivalent to \a val, given the Window objects current size.
+    */
+    Rect unifiedToRelative(const URect& val) const;
+
+
+    /*!
+    \brief
+        Convert the given X co-ordinate from unified to absolute metrics.
+
+    \param val
+        X co-ordinate specified as a UDim relative to this Window (so {0, 0} is this windows left edge).
+
+    \return
+        An absolute metric value that is equivalent to \a val, given the Window objects current width.
+    */
+    float unifiedToAbsoluteX(const UDim& val) const;
+
+
+    /*!
+    \brief
+        Convert the given Y co-ordinate from unified to absolute metrics.
+
+    \param val
+        Y co-ordinate specified in as a UDim relative to this Window (so {0, 0} is this windows top edge).
+
+    \return
+        An absolute metric value that is equivalent to \a val, given the Window objects current height.
+    */
+    float	unifiedToAbsoluteY(const UDim& val) const;
+
+
+    /*!
+    \brief
+        Convert the given UVector2 value from unified to absolute metrics.
+
+    \param val
+        UVector2 object that describes a position specified in unified dimensions relative to this Window (so {{0, 0}, {0, 0}) is this windows top-left corner).
+
+    \return
+        A Vector2 object describing a absolute metric point that is equivalent to \a val, given the Window objects current size.
+    */
+    Vector2 unifiedToAbsolute(const UVector2& val) const;
+
+
+    /*!
+    \brief
+        Convert the given area from unfied to absolute metrics.
+
+    \param val
+        URect object describing the area specified in unified dimensions relative to this Window.
+
+    \return
+        A Rect object describing an absolute metric area that is equivalent to \a val, given the Window objects current size.
+    */
+    Rect unifiedToAbsolute(const URect& val) const;
+
+
+    /*!
+    \brief
+        Convert a window co-ordinate value, specified as a UDim, to a screen relative pixel co-ordinate.
+
+    \param x
+        UDim x co-ordinate value to be converted
+
+    \return
+        float value describing a pixel screen co-ordinate that is equivalent to window UDim co-ordinate \a x.
+    */
+    float windowToScreenX(const UDim& x) const;
+
+
+    /*!
+    \brief
+        Convert a window co-ordinate value, specified as a UDim, to a screen relative pixel co-ordinate.
+
+    \param y
+        UDim y co-ordinate value to be converted
+
+    \return
+        float value describing a screen co-ordinate that is equivalent to window UDim co-ordinate \a y.
+    */
+    float windowToScreenY(const UDim& y) const;
+
+
+    /*!
+    \brief
+        Convert a window co-ordinate point, specified as a UVector2, to a screen relative pixel co-ordinate point.
+
+    \param vec
+        UVector2 object describing the point to be converted
+
+    \return
+        Vector2 object describing a screen co-ordinate position that is equivalent to window based UVector2 \a vec.
+    */
+    Vector2 windowToScreen(const UVector2& vec) const;
+
+
+    /*!
+    \brief
+        Convert a window area, specified as a URect, to a screen area.
+
+    \param rect
+        URect object describing the area to be converted
+
+    \return
+        Rect object describing a screen area that is equivalent to window area \a rect.
+    */
+    Rect windowToScreen(const URect& rect) const;
+
+
+    /*!
+    \brief
+        Convert a screen relative UDim co-ordinate value to a window co-ordinate value, specified in whichever metrics mode is active.
+
+    \param x
+        UDim x co-ordinate value to be converted
+
+    \return
+        float value describing a window co-ordinate value that is equivalent to screen UDim co-ordinate \a x.
+    */
+    float screenToWindowX(const UDim& x) const;
+
+
+    /*!
+    \brief
+        Convert a screen relative UDim co-ordinate value to a window co-ordinate value, specified in whichever metrics mode is active.
+
+    \param y
+        UDim y co-ordinate value to be converted
+
+    \return
+        float value describing a window co-ordinate value that is equivalent to screen UDim co-ordinate \a y.
+    */
+    float screenToWindowY(const UDim& y) const;
+
+
+    /*!
+    \brief
+        Convert a screen relative UVector2 point to a window co-ordinate point, specified in whichever metrics mode is active.
+
+    \param vec
+        UVector2 object describing the point to be converted
+
+    \return
+        Vector2 object describing a window co-ordinate point that is equivalent to screen based UVector2 point \a vec.
+    */
+    Vector2 screenToWindow(const UVector2& vec) const;
+
+
+    /*!
+    \brief
+        Convert a URect screen area to a window area, specified in whichever metrics mode is active.
+
+    \param rect
+        URect object describing the area to be converted
+
+    \return
+        Rect object describing a window area that is equivalent to URect screen area \a rect.
+    */
+    Rect screenToWindow(const URect& rect) const;
+
+
     /*************************************************************************
         Interface to unified co-ordinate system
     *************************************************************************/
