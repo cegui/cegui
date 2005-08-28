@@ -175,6 +175,7 @@ struct CEGUIEXPORT Key
         Delete          =0xD3,    /* Delete on arrow keypad */
         LeftWindows     =0xDB,    /* Left Windows key */
         RightWindow     =0xDC,    /* Right Windows key */
+        RightWindows    =0xDC,    /* Right Windows key - Correct spelling :) */
         AppMenu         =0xDD,    /* AppMenu key */
         Power           =0xDE,    /* System Power */
         Sleep           =0xDF,    /* System Sleep */
