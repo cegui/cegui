@@ -722,6 +722,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 	ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
 	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = 0;
+	ma.clickCount = 0;
 
 	// move the mouse cursor & update position in args.
 	mouse.offsetPosition(ma.moveDelta);
@@ -779,6 +780,7 @@ bool System::injectMouseLeaves(void)
 		ma.sysKeys = d_sysKeys;
 		ma.wheelChange = 0;
 		ma.window = d_wndWithMouse;
+		ma.clickCount = 0;
 
 		d_wndWithMouse->onMouseLeaves(ma);
 		d_wndWithMouse = NULL;
@@ -823,6 +825,9 @@ bool System::injectMouseButtonDown(MouseButton button)
 		tkr.d_click_area.setSize(d_dblclick_size);
 		tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
 	}
+
+	// set click count in the event args
+	ma.clickCount = tkr.d_click_count;
 
 	Window* dest_window = getTargetWindow(ma.position);
 
@@ -880,6 +885,11 @@ bool System::injectMouseButtonUp(MouseButton button)
 	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = 0;
 
+    // get the tracker that holds the number of down events seen so far for this button
+    MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
+    // set click count in the event args
+    ma.clickCount = tkr.d_click_count;
+
 	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
@@ -893,7 +903,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	bool wasUpHandled = ma.handled;
 
 	// check timer for 'button' to see if this up event also constitutes a single 'click'
-	if (d_clickTrackerPimpl->click_trackers[button].d_timer.elapsed() <= d_click_timeout)
+	if (tkr.d_timer.elapsed() <= d_click_timeout)
 	{
 		ma.handled = false;
 		dest_window = getTargetWindow(ma.position);
@@ -1013,6 +1023,7 @@ bool System::injectMouseWheelChange(float delta)
 	ma.button = NoButton;
 	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = delta;
+	ma.clickCount = 0;
 
 	Window* dest_window = getTargetWindow(ma.position);
 
