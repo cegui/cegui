@@ -91,6 +91,9 @@ bool FalagardDemo1Sample::initialiseSample()
     // listen for key presses on the root window.
     background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&FalagardDemo1Sample::handleRootKeyDown, this));
 
+    // activate the background window
+    background->activate();
+
     // success!
     return true;
 }
