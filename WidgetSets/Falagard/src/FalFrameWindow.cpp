@@ -84,7 +84,7 @@ namespace CEGUI
 
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        return wlf.getNamedArea(areaName).getArea().getPixelRect(*this, getPixelRect());
+        return wlf.getNamedArea(areaName).getArea().getPixelRect(*this, getUnclippedPixelRect());
     }
 
     Titlebar* FalagardFrameWindow::createTitlebar(const String& name) const
