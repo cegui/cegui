@@ -66,6 +66,7 @@ Bug Fix: Font class modified to force auto-hinting use for rendering glyphs.
 Bug Fix: Font class modified to properly render glyphs in mono mode (AA off)
 Bug Fix: Fixed some uint/ColourRect/String CEGUILua issues.
 Bug Fix: TinyXMLParser::parseXMLFile implementation was not reentrant, causing issues with nested loading of XML files (specifically static/bitmapped fonts).
+Bug Fix: MultiLineEditbox would throw std::out_of_range sometimes when setting the text via setText().
 
 
 Release 0.3.0
