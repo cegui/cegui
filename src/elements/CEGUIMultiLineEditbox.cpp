@@ -1493,29 +1493,27 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 {
-	// ensure last character is a new line
-	if ((d_text.length() == 0) || (d_text[d_text.length() - 1] != '\n'))
-	{
-		d_text.append(1, '\n');
-	}
+    // ensure last character is a new line
+    if ((d_text.length() == 0) || (d_text[d_text.length() - 1] != '\n'))
+        d_text.append(1, '\n');
 
-	// base class processing
-	Window::onTextChanged(e);
+    // base class processing
+    Window::onTextChanged(e);
 
-	// clear selection
-	clearSelection();
+    // clear selection
+    clearSelection();
+    // layout new text
+    formatText();
+    // layout child windows (scrollbars) since text layout may have changed
+    performChildWindowLayout();
+    // ensure carat is still within the text
+    setCaratIndex(getCaratIndex());
+    // ensure carat is visible
+    // NB: this will already have been called at least once, but since we
+    // may have changed the formatting of the text, it needs to be called again.
+    ensureCaratIsVisible();
 
-	// make sure carat is within the text
-	if (getCaratIndex() > d_text.length() - 1)
-	{
-		setCaratIndex(d_text.length() - 1);
-	}
-
-	formatText();
-	performChildWindowLayout();
-	ensureCaratIsVisible();
-
-	e.handled = true;
+    e.handled = true;
 }
 
 
