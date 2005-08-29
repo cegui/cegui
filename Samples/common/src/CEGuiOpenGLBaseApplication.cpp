@@ -277,10 +277,12 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
     case 0x0D:  // CR (Return)
         CEGUI::System::getSingleton().injectKeyDown(CEGUI::Key::Return);
         break;
+    default:
+        // inject Character code
+        CEGUI::System::getSingleton().injectChar(static_cast<CEGUI::utf32>(key));
+        break;
     }
 
-    // always inject Character even if we have done key-down injection
-    CEGUI::System::getSingleton().injectChar(static_cast<CEGUI::utf32>(key));
 }
 
 void CEGuiOpenGLBaseApplication::keySpecial(int key, int x, int y)
