@@ -363,6 +363,19 @@ namespace CEGUI
         Window::onMouseEnters(e);
     }
 
+    void Tooltip::onTextChanged(WindowEventArgs& e)
+    {
+        // base class processing
+        Window::onTextChanged(e);
+
+        // set size and potition of the tooltip window to consider new text
+        setSize(Absolute, getTextSize());
+        positionSelf();
+
+        // we do not signal we handled it, in case user wants to hear
+        // about text changes too.
+    }
+
     void Tooltip::onHoverTimeChanged(WindowEventArgs& e)
     {
         fireEvent(EventHoverTimeChanged, e, EventNamespace);
