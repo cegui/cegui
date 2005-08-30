@@ -100,8 +100,7 @@ namespace CEGUI
 
     void FalagardStaticImageFactory::destroyWindow(Window* window)
     {
-        if (window->getType() == d_type)
-            delete window;
+        delete window;
     }
 
 } // End of  CEGUI namespace section

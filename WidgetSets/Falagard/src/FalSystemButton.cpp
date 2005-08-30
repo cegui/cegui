@@ -65,8 +65,7 @@ namespace CEGUI
 
     void FalagardSystemButtonFactory::destroyWindow(Window* window)
     {
-        if (window->getType() == d_type)
-            delete window;
+        delete window;
     }
 
 

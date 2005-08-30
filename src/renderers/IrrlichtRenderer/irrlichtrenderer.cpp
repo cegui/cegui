@@ -62,14 +62,14 @@ namespace CEGUI
 		irr::u32 tex_width=tex->getWidth();
 
 		dummyQuad.src.UpperLeftCorner.X=texture_rect.d_left*tex_width;
-		dummyQuad.src.UpperLeftCorner.Y=texture_rect.d_top*tex_height;
+		dummyQuad.src.UpperLeftCorner.Y=(texture_rect.d_top)*tex_height-1;
 		dummyQuad.src.LowerRightCorner.X=texture_rect.d_right*tex_width;
-		dummyQuad.src.LowerRightCorner.Y=texture_rect.d_bottom*tex_height;
+		dummyQuad.src.LowerRightCorner.Y=texture_rect.d_bottom*tex_height-1;
 
 		dummyQuad.dst.UpperLeftCorner.X=dest_rect.d_left;
-		dummyQuad.dst.UpperLeftCorner.Y=dest_rect.d_top;
+		dummyQuad.dst.UpperLeftCorner.Y=dest_rect.d_top-1;
 		dummyQuad.dst.LowerRightCorner.X=dest_rect.d_right;
-		dummyQuad.dst.LowerRightCorner.Y=dest_rect.d_bottom;
+		dummyQuad.dst.LowerRightCorner.Y=dest_rect.d_bottom-1;
 
 		dummyQuad.z=z;
 		dummyQuad.colours=colours;
