@@ -680,6 +680,9 @@ namespace CEGUI
                 d_dimension.setBaseDimension(*currDim);
                 assignAreaDimension(d_dimension);
             }
+
+            // release the dim we popped.
+            delete currDim;
         }
     }
 

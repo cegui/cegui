@@ -142,6 +142,9 @@ namespace CEGUI
 
     void BaseDim::setOperand(const BaseDim& operand)
     {
+        // release old operand, if any.
+        if(d_operand) delete d_operand;
+
         d_operand = operand.clone();
     }
 
@@ -549,6 +552,9 @@ namespace CEGUI
 
     Dimension& Dimension::operator=(const Dimension& other)
     {
+        // release old value, if any.
+        if (d_value)  delete d_value;
+
         d_value = other.d_value ? other.d_value->clone() : 0;
         d_type = other.d_type;
 
@@ -563,6 +569,9 @@ namespace CEGUI
 
     void Dimension::setBaseDimension(const BaseDim& dim)
     {
+        // release old value, if any.
+        if (d_value)  delete d_value;
+
         d_value = dim.clone();
     }
 
