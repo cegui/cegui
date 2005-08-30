@@ -153,6 +153,16 @@ namespace CEGUI
          */
         void setFadeTime(float seconds);
 
+        // 
+        /*!
+        \brief
+            Causes the tooltip to position itself appropriately.
+
+        \return
+            Nothing.
+        */
+        void positionSelf(void);
+
     protected:
         /*************************************************************************
             Implementation Methods
@@ -174,9 +184,6 @@ namespace CEGUI
         void switchToActiveState(void);
         void switchToFadeInState(void);
         void switchToFadeOutState(void);
-
-        // method to get the tooltip to position itself appropriately.
-        void positionSelf(void);
 
 
 		/*!
@@ -264,6 +271,7 @@ namespace CEGUI
         ************************************************************************/
         void updateSelf(float elapsed);
         void onMouseEnters(MouseEventArgs& e);
+        void onTextChanged(WindowEventArgs& e);
 
         /************************************************************************
             Enumerations
