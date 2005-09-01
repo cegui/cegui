@@ -35,8 +35,9 @@ GTK2CEGuiRendererSelector::GTK2CEGuiRendererSelector()
     // fake args for gtk_init
     int argc = 1;
     char* argv = "SampleApp";
+    char** pargv = &argv;
 
-    gtk_init (&argc, 0);
+    gtk_init (&argc, &pargv);
 
     createDialog();
 }

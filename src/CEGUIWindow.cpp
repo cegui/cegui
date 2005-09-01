@@ -206,16 +206,17 @@ Window::Window(const String& type, const String& name) :
     // add events
     addStandardEvents();
 
+    // set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
+    d_minSize = UVector2(cegui_reldim(0), cegui_reldim(0));
+    d_maxSize = UVector2(cegui_reldim(1), cegui_reldim(1));
+
     // set initial window area.
-    setWindowArea(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0));
+    d_area = URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0));
+    d_pixelSize = Size(0, 0);
 
     // set initial alignments
     d_horzAlign = HA_LEFT;
     d_vertAlign = VA_TOP;
-
-	// set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
-    setWindowMinSize(UVector2(cegui_reldim(0), cegui_reldim(0)));
-    setWindowMaxSize(UVector2(cegui_reldim(1), cegui_reldim(1)));
 
 	// add properties
 	addStandardProperties();
