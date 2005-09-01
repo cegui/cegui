@@ -76,6 +76,7 @@ protected:
     *************************************************************************/
     CEGUI::Renderer* d_renderer;
     static bool d_quitFlag;
+    static int  d_lastFrameTime;
 };
 
 
