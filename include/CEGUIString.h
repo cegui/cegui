@@ -559,10 +559,10 @@ public:
 	\return 
 		Nothing
 	*/
-	String(const_iterator beg, const_iterator end)
+	String(const_iterator iter_beg, const_iterator iter_end)
 	{
 		init();
-		append(beg, end);
+		append(iter_beg, iter_end);
 	}
 
 
@@ -581,10 +581,10 @@ public:
 
 	\exception std::length_error	Thrown if resulting String object would be too big.
 	*/
-	String(const char* c_str)
+	String(const char* cstr)
 	{
 		init();
-		assign(c_str);
+		assign(cstr);
 	}
 
 	/*!
@@ -976,9 +976,9 @@ public:
 		- <0 if this string is lexicographically smaller than \a c_str
 		- >0 if this string is lexicographically greater than \a c_str
 	*/
-	int		compare(const char* c_str) const
+	int		compare(const char* cstr) const
 	{
-		return compare(0, d_cplength, c_str, strlen(c_str));
+		return compare(0, d_cplength, cstr, strlen(cstr));
 	}
 
 
@@ -1005,9 +1005,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid.
 	*/
-	int		compare(size_type idx, size_type len, const char* c_str) const
+	int		compare(size_type idx, size_type len, const char* cstr) const
 	{
-		return compare(idx, len, c_str, strlen(c_str));
+		return compare(idx, len, cstr, strlen(cstr));
 	}
 
 
@@ -1492,9 +1492,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would have been too large.
 	*/
-	String&	operator=(const char* c_str)
+	String&	operator=(const char* cstr)
 	{
-		return assign(c_str, strlen(c_str));
+		return assign(cstr, strlen(cstr));
 	}
 
 
@@ -1510,9 +1510,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would have been too large.
 	*/
-	String&	assign(const char* c_str)
+	String&	assign(const char* cstr)
 	{
-		return assign(c_str, strlen(c_str));
+		return assign(cstr, strlen(cstr));
 	}
 
 
@@ -1867,9 +1867,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting string would be too large.
 	*/
-	String&	append(const_iterator beg, const_iterator end)
+	String&	append(const_iterator iter_beg, const_iterator iter_end)
 	{
-		return replace(this->end(), this->end(), beg, end);
+		return replace(end(), end(), iter_beg, iter_end);
 	}
 
 
@@ -1885,9 +1885,9 @@ public:
 
 	\exception std::length_error	Thrown if resulting String would be too large.
 	*/
-	String&	operator+=(const char* c_str)
+	String&	operator+=(const char* cstr)
 	{
-		return append(c_str, strlen(c_str));
+		return append(cstr, strlen(cstr));
 	}
 
 
@@ -1903,9 +1903,9 @@ public:
 
 	\exception std::length_error	Thrown if resulting String would be too large.
 	*/
-	String& append(const char* c_str)
+	String& append(const char* cstr)
 	{
-		return append(c_str, strlen(c_str));
+		return append(cstr, strlen(cstr));
 	}
 
 
@@ -2259,9 +2259,9 @@ public:
 
 	\exception std::length_error	Thrown if resulting String would be too large.
 	*/
-	void	insert(iterator pos, const_iterator beg, const_iterator end)
+	void	insert(iterator iter_pos, const_iterator iter_beg, const_iterator iter_end)
 	{
-		replace(pos, pos, beg, end);
+		replace(iter_pos, iter_pos, iter_beg, iter_end);
 	}
 
 
@@ -2281,9 +2281,9 @@ public:
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	\exception std::length_error	Thrown if resulting String would be too large.
 	*/
-	String&	insert(size_type idx, const char* c_str)
+	String&	insert(size_type idx, const char* cstr)
 	{
-		return insert(idx, c_str, strlen(c_str));
+		return insert(idx, cstr, strlen(cstr));
 	}
 
 
@@ -2434,9 +2434,9 @@ public:
 	\return
 		This String after the erase operation.
 	*/
-	String& erase(iterator beg, iterator end)
+	String& erase(iterator iter_beg, iterator iter_end)
 	{
-		return erase(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg));
+		return erase(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg));
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -2535,9 +2535,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would be too large.
 	*/
-	String& replace(iterator beg, iterator end, const String& str)
+	String& replace(iterator iter_beg, iterator iter_end, const String& str)
 	{
-		return replace(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg), str, 0, npos);
+		return replace(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg), str, 0, npos);
 	}
 
 	/*!
@@ -2643,9 +2643,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would be too large.
 	*/
-	String& replace(iterator beg, iterator end, const std::string& std_str)
+	String& replace(iterator iter_beg, iterator iter_end, const std::string& std_str)
 	{
-		return replace(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg), std_str, 0, npos);
+		return replace(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg), std_str, 0, npos);
 	}
 
 	/*!
@@ -2766,9 +2766,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would be too large.
 	*/
-	String& replace(iterator beg, iterator end, const utf8* utf8_str)
+	String& replace(iterator iter_beg, iterator iter_end, const utf8* utf8_str)
 	{
-		return replace(beg, end, utf8_str, utf_length(utf8_str));
+		return replace(iter_beg, iter_end, utf8_str, utf_length(utf8_str));
 	}
 
 	/*!
@@ -2854,9 +2854,9 @@ public:
 
 		\exception std::length_error	Thrown if the resulting String would be too large, or if \a str_len was 'npos'.
 	*/
-	String& replace(iterator beg, iterator end, const utf8* utf8_str, size_type str_len)
+	String& replace(iterator iter_beg, iterator iter_end, const utf8* utf8_str, size_type str_len)
 	{
-		return replace(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg), utf8_str, str_len);
+		return replace(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg), utf8_str, str_len);
 	}
 
 	/*!
@@ -2933,9 +2933,9 @@ public:
 
 	\exception std::length_error	Thrown if resulting String would have been too long, or if \a num was 'npos'.
 	*/
-	String& replace(iterator beg, iterator end, size_type num, utf32 code_point)
+	String& replace(iterator iter_beg, iterator iter_end, size_type num, utf32 code_point)
 	{
-		return replace(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg), num, code_point);
+		return replace(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg), num, code_point);
 	}
 
 
@@ -2963,17 +2963,17 @@ public:
 
 	\exception std::length_error	Thrown if the resulting string would be too long.
 	*/
-	String& replace(iterator beg, iterator end, const_iterator newBeg, const_iterator newEnd)
+	String& replace(iterator iter_beg, iterator iter_end, const_iterator iter_newBeg, const_iterator iter_newEnd)
 	{
-		if (beg == end)
+		if (iter_beg == iter_end)
 		{
-			erase(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg));
+			erase(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg));
 		}
 		else
 		{
-			size_type str_len = safe_iter_dif(newEnd, newBeg);
-			size_type idx = safe_iter_dif(beg, begin());
-			size_type len = safe_iter_dif(end, beg);
+			size_type str_len = safe_iter_dif(iter_newEnd, iter_newBeg);
+			size_type idx = safe_iter_dif(iter_beg, begin());
+			size_type len = safe_iter_dif(iter_end, iter_beg);
 
 			if ((len + idx) > d_cplength)
 				len = d_cplength - idx;
@@ -2985,7 +2985,7 @@ public:
 			if ((idx + len) < d_cplength)
 				memmove(&ptr()[idx + str_len], &ptr()[len + idx], (d_cplength - idx - len) * sizeof(utf32));
 
-			memcpy(&ptr()[idx], newBeg.d_ptr, str_len * sizeof(utf32));
+			memcpy(&ptr()[idx], iter_newBeg.d_ptr, str_len * sizeof(utf32));
 			setlen(newsz);
 		}
 
@@ -3012,9 +3012,9 @@ public:
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String
 	\exception std::length_error	Thrown if the resulting String would be too large.
 	*/
-	String& replace(size_type idx, size_type len, const char* c_str)
+	String& replace(size_type idx, size_type len, const char* cstr)
 	{
-		return replace(idx, len, c_str, strlen(c_str));
+		return replace(idx, len, cstr, strlen(cstr));
 	}
 
 
@@ -3039,9 +3039,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would be too large.
 	*/
-	String& replace(iterator beg, iterator end, const char* c_str)
+	String& replace(iterator iter_beg, iterator iter_end, const char* cstr)
 	{
-		return replace(beg, end, c_str, strlen(c_str));
+		return replace(iter_beg, iter_end, cstr, strlen(cstr));
 	}
 
 
@@ -3119,9 +3119,9 @@ public:
 
 	\exception std::length_error	Thrown if the resulting String would be too large, or if \a chars_len was 'npos'.
 	*/
-	String& replace(iterator beg, iterator end, const char* chars, size_type chars_len)
+	String& replace(iterator iter_beg, iterator iter_end, const char* chars, size_type chars_len)
 	{
-		return replace(safe_iter_dif(beg, begin()), safe_iter_dif(end, beg), chars, chars_len);
+		return replace(safe_iter_dif(iter_beg, begin()), safe_iter_dif(iter_end, iter_beg), chars, chars_len);
 	}
 
 
@@ -3527,9 +3527,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	size_type	find(const char* c_str, size_type idx = 0) const
+	size_type	find(const char* cstr, size_type idx = 0) const
 	{
-		return find(c_str, idx, strlen(c_str));
+		return find(cstr, idx, strlen(cstr));
 	}
 
 
@@ -3549,9 +3549,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	size_type	rfind(const char* c_str, size_type idx = npos) const
+	size_type	rfind(const char* cstr, size_type idx = npos) const
 	{
-		return rfind(c_str, idx, strlen(c_str));
+		return rfind(cstr, idx, strlen(cstr));
 	}
 
 
@@ -4004,9 +4004,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	size_type	find_first_of(const char* c_str, size_type idx = 0) const
+	size_type	find_first_of(const char* cstr, size_type idx = 0) const
 	{
-		return find_first_of(c_str, idx, strlen(c_str));
+		return find_first_of(cstr, idx, strlen(cstr));
 	}
 
 
@@ -4026,9 +4026,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	size_type	find_first_not_of(const char* c_str, size_type idx = 0) const
+	size_type	find_first_not_of(const char* cstr, size_type idx = 0) const
 	{
-		return find_first_not_of(c_str, idx, strlen(c_str));
+		return find_first_not_of(cstr, idx, strlen(cstr));
 	}
 
 
@@ -4493,9 +4493,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	size_type	find_last_of(const char* c_str, size_type idx = npos) const
+	size_type	find_last_of(const char* cstr, size_type idx = npos) const
 	{
-		return find_last_of(c_str, idx, strlen(c_str));
+		return find_last_of(cstr, idx, strlen(cstr));
 	}
 
 
@@ -4515,9 +4515,9 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx is invalid for this String.
 	*/
-	size_type	find_last_not_of(const char* c_str, size_type idx = npos) const
+	size_type	find_last_not_of(const char* cstr, size_type idx = npos) const
 	{
-		return find_last_not_of(c_str, idx, strlen(c_str));
+		return find_last_not_of(cstr, idx, strlen(cstr));
 	}
 
 
