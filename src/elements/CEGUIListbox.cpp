@@ -28,6 +28,7 @@
 #include "elements/CEGUIListbox.h"
 #include "elements/CEGUIListboxItem.h"
 #include "elements/CEGUIScrollbar.h"
+#include "elements/CEGUITooltip.h"
 
 #include <algorithm>
 
@@ -43,6 +44,7 @@ ListboxProperties::Sort					Listbox::d_sortProperty;
 ListboxProperties::MultiSelect			Listbox::d_multiSelectProperty;
 ListboxProperties::ForceVertScrollbar	Listbox::d_forceVertProperty;
 ListboxProperties::ForceHorzScrollbar	Listbox::d_forceHorzProperty;
+ListboxProperties::ItemTooltips			Listbox::d_itemTooltipsProperty;
 
 
 /*************************************************************************
@@ -66,6 +68,7 @@ Listbox::Listbox(const String& type, const String& name)
 	d_multiselect(false),
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
+	d_itemTooltips(false),
 	d_lastSelected(NULL)
 {
 	// add new events specific to list box.
@@ -446,6 +449,12 @@ void Listbox::setMultiselectEnabled(bool setting)
 	}
 
 }
+
+void Listbox::setItemTooltipsEnabled(bool setting)
+{
+	d_itemTooltips = setting;
+}
+
 
 
 /*************************************************************************
@@ -986,6 +995,46 @@ void Listbox::onMouseWheel(MouseEventArgs& e)
 	e.handled = true;
 }
 
+/*************************************************************************
+    Handler for mouse movement
+*************************************************************************/
+void Listbox::onMouseMove(MouseEventArgs& e)
+{
+    if (d_itemTooltips)
+    {
+        static ListboxItem* lastItem = NULL;
+
+        Point posi = relativeToAbsolute(screenToWindow(e.position));
+        ListboxItem* item = getItemAtPoint(posi);
+        if (item != lastItem)
+        {
+            if (item != NULL)
+            {
+                setTooltipText(item->getTooltipText());
+            }
+            else
+            {
+                setTooltipText("");
+            }
+            lastItem = item;
+        }
+
+        // must check the result from getTooltip(), as the tooltip object could
+        // be 0 at any time for various reasons.
+        Tooltip* tooltip = getTooltip();
+
+        if (tooltip)
+        {
+            if (tooltip->getTargetWindow() != this)
+                tooltip->setTargetWindow(this);
+            else
+                tooltip->positionSelf();
+        }
+    }
+
+    Window::onMouseMove(e);
+}
+
 
 /*************************************************************************
 	Ensure the item at the specified index is visible within the list box.	
@@ -1072,6 +1121,7 @@ void Listbox::addListboxProperties(void)
 	addProperty(&d_multiSelectProperty);
 	addProperty(&d_forceHorzProperty);
 	addProperty(&d_forceVertProperty);
+	addProperty(&d_itemTooltipsProperty);
 }
 
 

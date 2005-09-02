@@ -163,6 +163,7 @@ public:
 	*/
 	bool	isMultiselectEnabled(void) const	{return d_multiselect;}
 
+	bool	isItemTooltipsEnabled(void) const	{return d_itemTooltips;}
 
 	/*!
 	\brief
@@ -370,7 +371,7 @@ public:
 	*/
 	void	setShowHorzScrollbar(bool setting);
 
-
+	void	setItemTooltipsEnabled(bool setting);
 	/*!
 	\brief
 		Set the select state of an attached ListboxItem.
@@ -681,6 +682,7 @@ protected:
 	virtual void	onSized(WindowEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual	void	onMouseWheel(MouseEventArgs& e);
+	virtual void	onMouseMove(MouseEventArgs& e);
 
 
 	/*************************************************************************
@@ -691,6 +693,7 @@ protected:
 	bool	d_multiselect;			//!< true if multi-select is enabled
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
 	bool	d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
+	bool	d_itemTooltips;			//!< true if each item should have an individual tooltip
 	Scrollbar*	d_vertScrollbar;	//!< vertical scroll-bar widget
 	Scrollbar*	d_horzScrollbar;	//!< horizontal scroll-bar widget
 	LBItemList	d_listItems;		//!< list of items in the list box.
@@ -705,6 +708,7 @@ private:
 	static ListboxProperties::MultiSelect			d_multiSelectProperty;
 	static ListboxProperties::ForceVertScrollbar	d_forceVertProperty;
 	static ListboxProperties::ForceHorzScrollbar	d_forceHorzProperty;
+	static ListboxProperties::ItemTooltips			d_itemTooltipsProperty;
 
 	/*************************************************************************
 		Private methods

@@ -143,9 +143,33 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+Property to access the show item tooltips setting of the list box.
+
+\par Usage:
+- Name: ItemTooltips
+- Format: "[text]"
+
+\par Where [Text] is:
+- "True" to indicate that the tooltip of the list box will be set by the item below the mouse pointer
+- "False" to indicate that the list box has a static tooltip.
+*/
+class ItemTooltips : public Property
+{
+public:
+	ItemTooltips() : Property(
+		"ItemTooltips",
+		"Property to access the show item tooltips setting of the list box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
+
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  ListboxProperties namespace section
 
 } // End of  CEGUI namespace section
-
 
 #endif	// end of guard _CEGUIListboxProperties_h_

@@ -82,6 +82,16 @@ void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Listbox*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
 }
 
+String	ItemTooltips::get(const PropertyReceiver* receiver) const
+{
+	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isItemTooltipsEnabled());
+}
+
+
+void	ItemTooltips::set(PropertyReceiver* receiver, const String& value)
+{
+	static_cast<Listbox*>(receiver)->setItemTooltipsEnabled(PropertyHelper::stringToBool(value));
+}
 
 } // End of  ListboxProperties namespace section
 
