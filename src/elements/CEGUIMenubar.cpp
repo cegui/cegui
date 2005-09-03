@@ -63,7 +63,6 @@ void Menubar::layoutItemWidgets()
 {
 	Rect render_rect = getItemRenderArea();
 	float x0 = PixelAligned(render_rect.d_left+d_borderWidth);
-	float height = render_rect.getHeight();
 	
 	Rect rect;
 

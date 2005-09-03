@@ -243,7 +243,7 @@ void WLEditbox::drawSelf(float z)
 	//
 	if ((!isReadOnly()) && hasFocus)
 	{
-		Vector3 pos(absrect.d_left + textOffset + extentToCarat, absrect.d_top, renderer->getZLayer(CaratLayer));
+		pos = Vector3(absrect.d_left + textOffset + extentToCarat, absrect.d_top, renderer->getZLayer(CaratLayer));
 		Size	sz(d_carat->getWidth(), absrect.getHeight());
 		d_carat->draw(pos, sz, clipper, colours);
 	}

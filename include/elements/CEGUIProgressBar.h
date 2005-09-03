@@ -99,7 +99,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	setStepSize(float step)		{d_step = step;}
+	void	setStepSize(float step_val)		{d_step = step_val;}
 
 
 	/*!

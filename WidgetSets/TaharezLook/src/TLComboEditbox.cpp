@@ -224,8 +224,9 @@ void TLComboEditbox::drawSelf(float z)
 	//
 	if ((!isReadOnly()) && hasFocus)
 	{
-		Vector3 pos(absrect.d_left + textOffset + extentToCarat, absrect.d_top, renderer->getZLayer(CaratLayer));
-		Size	sz(d_carat->getWidth(), absrect.getHeight());
+		pos = Vector3(absrect.d_left + textOffset + extentToCarat, absrect.d_top, renderer->getZLayer(CaratLayer));
+		sz.d_width = d_carat->getWidth();
+		sz.d_height = absrect.getHeight();
 		d_carat->draw(pos, sz, clipper, colours);
 	}
 

@@ -60,7 +60,7 @@ Imageset::Imageset(const String& name, Texture* texture) :
 
 	// defaults for scaling options
 	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, d_nativeVertRes));
+	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
 }
 
 
@@ -71,7 +71,7 @@ Imageset::Imageset(const String& filename, const String& resourceGroup)
 {
 	// defaults for scaling options
 	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, d_nativeVertRes));
+	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
 
 	d_texture = NULL;
 	load(filename, resourceGroup);

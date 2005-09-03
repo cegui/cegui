@@ -56,13 +56,14 @@ const String MouseCursor::EventImageChanged( (utf8*)"ImageChanged" );
 MouseCursor::MouseCursor(void)
 {
     Rect screenArea(System::getSingleton().getRenderer()->getRect());
-	// default constraint is to whole screen
-	setConstraintArea(&screenArea);
 
 	// mouse defaults to middle of the constrained area
 	d_position.d_x = screenArea.getWidth() / 2;
 	d_position.d_y = screenArea.getHeight() / 2;
 	d_position.d_z = 1.0f;
+
+	// default constraint is to whole screen
+	setConstraintArea(&screenArea);
 
 	// mouse defaults to visible
 	d_visible = true;

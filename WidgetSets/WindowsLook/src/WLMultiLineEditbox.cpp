@@ -234,7 +234,7 @@ void WLMultiLineEditbox::cacheEditboxBaseImagery()
     d_frame.draw(d_renderCache);
 
     // draw background image
-    Rect backgroundRect(getAbsoluteRect());
+    Rect backgroundRect(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
     // adjust destination area for backfrop image.
     backgroundRect.d_left   += d_frameLeftSize;
     backgroundRect.d_right  -= d_frameRightSize;

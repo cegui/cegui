@@ -278,6 +278,25 @@ class Window //: public EventSet
 	const UVector2& getWindowMaxSize() const;
 	const UVector2& getWindowMinSize() const;
 
+	float unifiedToRelativeX(const UDim& val) const;
+	float	unifiedToRelativeY(const UDim& val) const;
+	Vector2 unifiedToRelative(const UVector2& val) const;
+	Rect unifiedToRelative(const URect& val) const;
+
+	float unifiedToAbsoluteX(const UDim& val) const;
+	float	unifiedToAbsoluteY(const UDim& val) const;
+	Vector2 unifiedToAbsolute(const UVector2& val) const;
+	Rect unifiedToAbsolute(const URect& val) const;
+
+	float windowToScreenX(const UDim& x) const;
+	float windowToScreenY(const UDim& y) const;
+	Vector2 windowToScreen(const UVector2& vec) const;
+	Rect windowToScreen(const URect& rect) const;
+
+	float screenToWindowX(const UDim& x) const;
+	float screenToWindowY(const UDim& y) const;
+	Vector2 screenToWindow(const UVector2& vec) const;
+	Rect screenToWindow(const URect& rect) const;	
 
 	//////////////////////////////////////////////
 	// PropertySet

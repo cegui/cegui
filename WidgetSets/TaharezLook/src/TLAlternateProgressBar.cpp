@@ -200,10 +200,11 @@ void TLAlternateProgressBar::drawSelf(float z)
 	pos.d_x = absrect.d_left + PixelAligned(leftWidth * FirstLightPaddingRatio);
 	pos.d_y = absrect.d_top + PixelAligned((containerHeight - sz.d_height) * 0.5f);
 
-	// construct rect for segment area
-	Rect	segClipper;
-	segClipper.setPosition(Point(pos.d_x, pos.d_y));
-	segClipper.setSize(Size(PixelAligned((absrect.getWidth() - ((leftWidth * FirstLightPaddingRatio) * 2.0f)) * d_progress), absrect.getHeight()));
+    // construct rect for segment area
+    Rect segClipper(
+        Point(pos.d_x, pos.d_y),
+        Size(PixelAligned((absrect.getWidth() - ((leftWidth * FirstLightPaddingRatio) * 2.0f)) * d_progress), absrect.getHeight())
+    );
 
 	// clip the clipper to the 'light area'
 	clipper = segClipper.getIntersection(clipper);

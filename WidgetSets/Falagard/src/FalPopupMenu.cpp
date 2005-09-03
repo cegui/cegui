@@ -53,12 +53,6 @@ namespace CEGUI
 
     void FalagardPopupMenu::sizeToContent_impl(void)
     {
-/*        // get size of content
-        Size csz = getContentSize();
-        setSize(Absolute,csz);*/
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-
         Rect renderArea(getItemRenderArea());
         Rect wndArea(getAbsoluteRect());
 

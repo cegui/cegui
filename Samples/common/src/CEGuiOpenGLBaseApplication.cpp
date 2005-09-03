@@ -90,7 +90,7 @@ GlutKeyMapping specialKeyMap[] =
     Static Data
 *************************************************************************/
 bool CEGuiOpenGLBaseApplication::d_quitFlag = false;
-
+int  CEGuiOpenGLBaseApplication::d_lastFrameTime = 0;
 
 /*************************************************************************
     Constructor.
@@ -142,6 +142,9 @@ bool CEGuiOpenGLBaseApplication::execute(CEGuiSample* sampleApp)
 {
     sampleApp->initialiseSample();
 
+    // set starting time
+    d_lastFrameTime = glutGet(GLUT_ELAPSED_TIME);
+
     glutMainLoop();
 
     return true;
@@ -177,6 +180,14 @@ bool CEGuiOpenGLBaseApplication::isQuitting() const
 *************************************************************************/
 void CEGuiOpenGLBaseApplication::drawFrame(void)
 {
+    // do time based updates
+    int thisTime = glutGet(GLUT_ELAPSED_TIME);
+    float elapsed = static_cast<float>(thisTime - d_lastFrameTime);
+    d_lastFrameTime = thisTime;
+    // inject the time pulse
+    CEGUI::System::getSingleton().injectTimePulse(elapsed / 1000.0f);
+
+    // do rendering for this frame.
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_MODELVIEW);

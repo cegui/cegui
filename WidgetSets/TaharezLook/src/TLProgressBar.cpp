@@ -132,10 +132,11 @@ void TLProgressBar::drawSelf(float z)
 	float segWidth = d_litSegment->getWidth();
 	segWidth -= PixelAligned(segWidth * SegmentOverlapRatio);
 
-	// construct rect for segment area
-	Rect segClipper;
-	segClipper.setPosition(Point(absrect.d_left + PixelAligned(d_litSegment->getWidth() * FirstSegmentOffsetRatioX), absrect.d_top));
-	segClipper.setSize(Size(PixelAligned(segCount * segWidth * d_progress), absrect.getHeight()));
+    // construct rect for segment area
+    Rect segClipper(
+        Point(absrect.d_left + PixelAligned(d_litSegment->getWidth() * FirstSegmentOffsetRatioX), absrect.d_top),
+        Size(PixelAligned(segCount * segWidth * d_progress), absrect.getHeight())
+    );
 
 	// clip the clipper to 'lit area'
 	clipper = segClipper.getIntersection(clipper);
