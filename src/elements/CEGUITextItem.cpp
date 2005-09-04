@@ -89,7 +89,7 @@ void TextItem::onTextChanged(WindowEventArgs& e)
 *************************************************************************/
 void TextItem::populateRenderCache()
 {
-	Rect absrect(getAbsoluteRect());
+	Rect absrect(0,0,d_pixelSize.d_width, d_pixelSize.d_height);
 	
 	ColourRect colours(d_textColour);
 	colours.modulateAlpha(getEffectiveAlpha());
