@@ -2908,6 +2908,13 @@ String Window::getTooltipType(void) const
 void Window::setTooltipText(const String& tip)
 {
     d_tooltipText = tip;
+
+    Tooltip* tooltip = getTooltip();
+
+    if (tooltip && tooltip->getTargetWindow() == this)
+    {
+        tooltip->setText(tip);
+    }
 }
 
 const String& Window::getTooltipText(void) const

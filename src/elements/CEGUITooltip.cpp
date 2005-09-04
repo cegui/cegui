@@ -125,6 +125,11 @@ namespace CEGUI
         d_target = wnd;
     }
 
+    const Window* Tooltip::getTargetWindow()
+    {
+        return d_target;
+    }
+
     void Tooltip::resetTimer(void)
     {
         // only do the reset in active / inactive states, this is so that
@@ -347,8 +352,13 @@ namespace CEGUI
         // base class processing
         Window::onTextChanged(e);
 
+        const Font* fnt = getFont();
+        Rect area(System::getSingleton().getRenderer()->getRect());
+        float height = fnt->getFormattedLineCount(d_text, area, LeftAligned) * fnt->getLineSpacing();
+        float width = fnt->getFormattedTextExtent(d_text, area, LeftAligned);
+
         // set size and potition of the tooltip window to consider new text
-        setSize(Absolute, getTextSize());
+        setSize(Absolute, Size(width, height));
         positionSelf();
 
         // we do not signal we handled it, in case user wants to hear

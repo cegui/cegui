@@ -1504,7 +1504,7 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
     // layout new text
     formatText();
     // layout child windows (scrollbars) since text layout may have changed
-    performChildWindowLayout();
+    layoutComponentWidgets();
     // ensure carat is still within the text
     setCaratIndex(getCaratIndex());
     // ensure carat is visible

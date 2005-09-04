@@ -76,6 +76,15 @@ namespace CEGUI
 
         /*!
         \brief
+            return the current target window for this Tooltip.
+
+        \return
+            Pointer to the target window for this Tooltip or 0 for none.
+        */
+        const Window* getTargetWindow();
+
+        /*!
+        \brief
             Resets the timer on the tooltip when in the Active / Inactive states.  This is used internally
             to control the tooltip, it is not normally necessary to call this method yourself.
 
