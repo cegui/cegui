@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'CrazyEddiesGUI' target in the 'CrazyEddiesGUI' project.
+//
+
+#include <Carbon/Carbon.h>
+
+#include <typeinfo>
