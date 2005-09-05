@@ -64,6 +64,8 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     irr::scene::ICameraSceneNode* camera = d_smgr->addCameraSceneNode(0, core::vector3df(0,0,0), core::vector3df(0,0,1));
     camera->setFOV(1.56f);
     d_driver->setAmbientLight(video::SColor(255,255,255,255));
+
+    d_lastTime = d_device->getTimer()->getRealTime();
 }
 
 CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
@@ -92,6 +94,13 @@ bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
         // draw only if the window is active
         if (d_device->isWindowActive())
         {
+            // calculate time elapsed
+            irr::u32 currTime = d_device->getTimer()->getRealTime();
+            // inject time pulse
+            CEGUI::System::getSingleton().injectTimePulse(static_cast<float>(currTime - d_lastTime) / 1000.0f);
+            d_lastTime = currTime;
+
+            // start rendering
             d_driver->beginScene(true, true, irr::video::SColor(150,50,50,50));
             //draw scene
             d_smgr->drawAll();

@@ -45,6 +45,7 @@ protected:
     irr::IrrlichtDevice*       d_device;
     irr::video::IVideoDriver*  d_driver;
     irr::scene::ISceneManager* d_smgr;
+    irr::u32                   d_lastTime;
     CEGUI::IrrlichtRenderer*   d_renderer;
 };
 
