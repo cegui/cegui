@@ -554,14 +554,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
 			remoteInfo = CEGUIBase;
 		};
 		5B5F7A5C08CCB7D500C417E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagard */;
+			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6;
 			remoteInfo = CEGUIFalagard;
 		};
 		5B991D8708C92239006E6DC9 /* PBXContainerItemProxy */ = {
@@ -679,7 +679,7 @@
 		5B4BB59C08C5EEC40088F7FA /* CEGUIFalWidgetLookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalWidgetLookManager.cpp; sourceTree = "<group>"; };
 		5B4BB59D08C5EEC40088F7FA /* CEGUIFalXMLEnumHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalXMLEnumHelper.cpp; sourceTree = "<group>"; };
 		5B4BB63108C5F1DA0088F7FA /* libfreetype.6.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.3.dylib; path = /usr/X11R6/lib/libfreetype.6.3.dylib; sourceTree = "<absolute>"; };
-		5B5F798F08CBD2C900C417E6 /* CEGUIFalagard.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIFalagard.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIFalagardBase.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5F799008CBD2C900C417E6 /* CEGUIFalagard-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUIFalagard-Info.plist"; sourceTree = "<group>"; };
 		5B5F79A308CBDB0300C417E6 /* FalButton.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FalButton.h; path = ../../../../WidgetSets/Falagard/include/FalButton.h; sourceTree = SOURCE_ROOT; };
 		5B5F79A408CBDB0300C417E6 /* FalCheckbox.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FalCheckbox.h; path = ../../../../WidgetSets/Falagard/include/FalCheckbox.h; sourceTree = SOURCE_ROOT; };
@@ -1300,7 +1300,7 @@
 				5B69B83008C4106E0086C816 /* CEGUI.framework */,
 				5B69B7BD08C40E910086C816 /* CEGUITaharezLook.bundle */,
 				5B69B7C708C40EA60086C816 /* CEGUIWindowsLook.bundle */,
-				5B5F798F08CBD2C900C417E6 /* CEGUIFalagard.bundle */,
+				5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */,
 				5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */,
 				5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */,
 				5B991DA708C92FBB006E6DC9 /* liblua.a */,
@@ -2462,9 +2462,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5B5F798E08CBD2C900C417E6 /* CEGUIFalagard */ = {
+		5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagard" */;
+			buildConfigurationList = 5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagardBase" */;
 			buildPhases = (
 				5B5F798B08CBD2C900C417E6 /* Resources */,
 				5B5F798C08CBD2C900C417E6 /* Sources */,
@@ -2499,9 +2499,9 @@
 			dependencies = (
 				5B5F799908CBD2E400C417E6 /* PBXTargetDependency */,
 			);
-			name = CEGUIFalagard;
+			name = CEGUIFalagardBase;
 			productName = CEGUIFalagard;
-			productReference = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagard.bundle */;
+			productReference = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
 <plist version=\"1.0\">
@@ -2914,7 +2914,7 @@
 				5B991D7A08C920FE006E6DC9 /* LuaScriptModule */,
 				5B69B7BC08C40E910086C816 /* CEGUITaharezLook */,
 				5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */,
-				5B5F798E08CBD2C900C417E6 /* CEGUIFalagard */,
+				5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */,
 				5B991DA608C92FBB006E6DC9 /* lua */,
 			);
 		};
@@ -3331,7 +3331,7 @@
 		};
 		5B5F7A5D08CCB7D500C417E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagard */;
+			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
 			targetProxy = 5B5F7A5C08CCB7D500C417E6 /* PBXContainerItemProxy */;
 		};
 		5B991D8808C92239006E6DC9 /* PBXTargetDependency */ = {
@@ -3404,7 +3404,7 @@
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -3412,7 +3412,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIFalagard;
+				PRODUCT_NAME = CEGUIFalagardBase;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3433,7 +3433,7 @@
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -3461,7 +3461,7 @@
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -4146,7 +4146,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagard" */ = {
+		5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagardBase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B5F799208CBD2CB00C417E6 /* Development */,
