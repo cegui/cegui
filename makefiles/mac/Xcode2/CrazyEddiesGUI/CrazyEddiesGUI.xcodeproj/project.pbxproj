@@ -117,8 +117,8 @@
 		5B5F7A0F08CBDB1D00C417E6 /* FalThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79EA08CBDB1D00C417E6 /* FalThumb.cpp */; };
 		5B5F7A1008CBDB1D00C417E6 /* FalTitlebar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79EB08CBDB1D00C417E6 /* FalTitlebar.cpp */; };
 		5B5F7A1108CBDB1D00C417E6 /* FalTooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79EC08CBDB1D00C417E6 /* FalTooltip.cpp */; };
-		5B5F7A6008CCC20900C417E6 /* opengltexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3C08C908AB006E6DC9 /* opengltexture.h */; };
-		5B5F7A6108CCC20A00C417E6 /* openglrenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3B08C908AB006E6DC9 /* openglrenderer.h */; };
+		5B5F7A6008CCC20900C417E6 /* opengltexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3C08C908AB006E6DC9 /* opengltexture.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B5F7A6108CCC20A00C417E6 /* openglrenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3B08C908AB006E6DC9 /* openglrenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B5F7A6208CCC20C00C417E6 /* OpenGLRenderer-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B76B08C40CF80086C816 /* OpenGLRenderer-Info.plist */; };
 		5B5F7A6308CCC20D00C417E6 /* openglrenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B991D3708C9088D006E6DC9 /* openglrenderer.cpp */; };
 		5B5F7A6408CCC20D00C417E6 /* opengltexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B991D3808C9088D006E6DC9 /* opengltexture.cpp */; };
@@ -2728,6 +2728,7 @@
 			buildConfigurationList = 5B991D7208C920E6006E6DC9 /* Build configuration list for PBXNativeTarget "OpenGLRenderer" */;
 			buildPhases = (
 				5B991D6B08C920E5006E6DC9 /* Headers */,
+				5BE13DAC08CE94D2009B2D51 /* ShellScript */,
 				5B991D6C08C920E5006E6DC9 /* Resources */,
 				5B991D6D08C920E5006E6DC9 /* Sources */,
 				5B991D6E08C920E5006E6DC9 /* Frameworks */,
@@ -2794,6 +2795,7 @@
 			buildConfigurationList = 5B991D7D08C920FF006E6DC9 /* Build configuration list for PBXNativeTarget "LuaScriptModule" */;
 			buildPhases = (
 				5B991D7608C920FE006E6DC9 /* Headers */,
+				5BE13DB108CE962E009B2D51 /* ShellScript */,
 				5B991D7708C920FE006E6DC9 /* Resources */,
 				5B991D7808C920FE006E6DC9 /* Sources */,
 				5B991D7908C920FE006E6DC9 /* Frameworks */,
@@ -2981,6 +2983,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "rsync -azC \"${SRCROOT}/../../../../include/elements\" \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nrsync -azC \"${SRCROOT}/../../../../include/falagard\" \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nfind \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" -name 'Makefile*' -delete > /dev/null 2>&1";
+		};
+		5BE13DAC08CE94D2009B2D51 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/renderers/\"\nrm -f \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/*.h\"\nrsync -azC \"${SRCROOT}/../../../../include/renderers/OpenGLGUIRenderer\" \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/renderers/\"\nfind \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" -name 'Makefile*' -delete > /dev/null 2>&1";
+		};
+		5BE13DB108CE962E009B2D51 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -azC \"${SRCROOT}/../../../../ScriptingModules/CEGUILua/LuaScriptModule/include/\" \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"\nfind \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" -name 'Makefile*' -delete > /dev/null 2>&1";
 		};
 /* End PBXShellScriptBuildPhase section */
 
