@@ -283,6 +283,7 @@ namespace CEGUI
         onTooltipInactive(args);
 
         d_target = 0;
+        hide();
     }
 
     void Tooltip::switchToActiveState(void)
@@ -296,6 +297,7 @@ namespace CEGUI
         positionSelf();
         d_state = FadeIn;
         d_elapsed = 0;
+        show();
 
         // fire event.  Not really active at the moment, but this is the "right" time
         // for this event (just prior to anything getting displayed).

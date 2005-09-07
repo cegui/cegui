@@ -14,6 +14,7 @@ James O'Sullivan (_mental_)
 Tomas Lindquist Olsen (lindquist)
 Paul D Turner (crayzed / CrazyEddie)
 Patrick Kooman (scriptkid)
+Paul Schifferer (Exsortis)
 
 
 Main Contributors
@@ -42,9 +43,6 @@ Jose A Milan:
 
 Magnus Osterlind:
 - Direct3D 9 GUI renderer module.
-
-Paul Schifferer:
-- Original Mac OS X build system.
 
 Steve Streeting:
 - TabControl widget base classes & related 'TaharezLook' classes.

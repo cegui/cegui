@@ -28,6 +28,10 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "CEGUILogger.h"
 
+int main(void)
+{
+}
+
 namespace CEGUI 
 {
      

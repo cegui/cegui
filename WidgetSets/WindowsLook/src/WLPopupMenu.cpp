@@ -178,8 +178,7 @@ void WLPopupMenu::populateRenderCache()
 	
 	d_fill.setSize(Size(midWidth, midHeight));
 	d_fill.setColours(colours);
-//	pos.d_x += d_frameLeftSize;
-//	pos.d_y += d_frameTopSize;
+	d_fill.setPosition(Point(d_frameLeftSize, d_frameTopSize));
 	d_fill.draw(d_renderCache);
 }
 
