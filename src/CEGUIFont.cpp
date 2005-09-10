@@ -59,17 +59,22 @@ const char	Font::FontSchemaName[]				= "Font.xsd";
 /*************************************************************************
 	Constructs a new Font object from a font definition file
 *************************************************************************/
-Font::Font(const String& filename, const String& resourceGroup, FontImplData* dat)
+Font::Font(const String& filename, const String& resourceGroup, FontImplData* dat) :
+    d_glyph_images(0),
+    d_freetype(false),
+    d_lineHeight(0),
+    d_lineSpacing(0),
+    d_max_bearingY(0),
+    d_maxGlyphHeight(0),
+    d_impldat(dat),
+    d_ptSize(0),
+    d_autoScale(false),
+    d_horzScaling(1.0f),
+    d_vertScaling(1.0f),
+    d_nativeHorzRes(DefaultNativeHorzRes),
+    d_nativeVertRes(DefaultNativeVertRes),
+    d_antiAliased(false)
 {
-	d_antiAliased = false;
-	d_impldat = dat;
-	d_freetype = false;
-	d_glyph_images = NULL;
-
-	// defaults for scaling options
-	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
-
 	load(filename, resourceGroup);
 
 	// complete y spacing set-up for bitmap / static fonts
@@ -82,16 +87,22 @@ Font::Font(const String& filename, const String& resourceGroup, FontImplData* da
 	'glyph-set' describes the set of code points to be available via
 	this font
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set, FontImplData* dat)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, const String& glyph_set, FontImplData* dat) :
+    d_glyph_images(0),
+    d_freetype(false),
+    d_lineHeight(0),
+    d_lineSpacing(0),
+    d_max_bearingY(0),
+    d_maxGlyphHeight(0),
+    d_impldat(dat),
+    d_ptSize(0),
+    d_autoScale(false),
+    d_horzScaling(1.0f),
+    d_vertScaling(1.0f),
+    d_nativeHorzRes(DefaultNativeHorzRes),
+    d_nativeVertRes(DefaultNativeVertRes),
+    d_antiAliased(false)
 {
-	d_impldat = dat;
-	d_freetype = false;
-	d_glyph_images = NULL;
-
-	// defaults for scaling options
-	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
-
 	constructor_impl(name, fontname, resourceGroup, size, flags, glyph_set);
 }
 
@@ -101,16 +112,22 @@ Font::Font(const String& name, const String& fontname, const String& resourceGro
 	[first_code_point, last_code_point] describes the range of code
 	points to be available via this font
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, utf32 first_code_point, utf32 last_code_point, FontImplData* dat) :
+    d_glyph_images(0),
+    d_freetype(false),
+    d_lineHeight(0),
+    d_lineSpacing(0),
+    d_max_bearingY(0),
+    d_maxGlyphHeight(0),
+    d_impldat(dat),
+    d_ptSize(0),
+    d_autoScale(false),
+    d_horzScaling(1.0f),
+    d_vertScaling(1.0f),
+    d_nativeHorzRes(DefaultNativeHorzRes),
+    d_nativeVertRes(DefaultNativeVertRes),
+    d_antiAliased(false)
 {
-	d_impldat = dat;
-	d_freetype = false;
-	d_glyph_images = NULL;
-
-	// defaults for scaling options
-	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
-
 	String tmp;
 
 	for (utf32 cp = first_code_point; cp <= last_code_point; ++cp)
@@ -126,16 +143,22 @@ Font::Font(const String& name, const String& fontname, const String& resourceGro
 	Constructs a new Font object (via FreeType & a true-type font file)
 	The font file will provide support for 7-bit ASCII characters only
 *************************************************************************/
-Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, FontImplData* dat)
+Font::Font(const String& name, const String& fontname, const String& resourceGroup, uint size, uint flags, FontImplData* dat) :
+    d_glyph_images(0),
+    d_freetype(false),
+    d_lineHeight(0),
+    d_lineSpacing(0),
+    d_max_bearingY(0),
+    d_maxGlyphHeight(0),
+    d_impldat(dat),
+    d_ptSize(0),
+    d_autoScale(false),
+    d_horzScaling(1.0f),
+    d_vertScaling(1.0f),
+    d_nativeHorzRes(DefaultNativeHorzRes),
+    d_nativeVertRes(DefaultNativeVertRes),
+    d_antiAliased(false)
 {
-	d_impldat = dat;
-	d_freetype = false;
-	d_glyph_images = NULL;
-
-	// defaults for scaling options
-	d_autoScale = false;
-	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
-
 	String tmp;
 
 	for (utf32 cp = 32; cp <= 127; ++cp)
@@ -349,7 +372,8 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
 	for (uint i = 0; i < glyph_set_length; ++i)
 	{
 		// load-up required glyph
-		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|(d_antiAliased ? 0 : FT_LOAD_MONOCHROME)))
+		if (FT_Load_Char(d_impldat->fontFace, glyph_set[i], FT_LOAD_RENDER|FT_LOAD_FORCE_AUTOHINT|
+            (d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO)))
 		{
 			// skip errors
 			continue;
