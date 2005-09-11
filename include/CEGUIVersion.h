@@ -34,7 +34,7 @@ This file contains CEGUI version defines
 // Define CEGUI version
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_VERSION_MAJOR 0
-#define CEGUI_VERSION_MINOR 4
+#define CEGUI_VERSION_MINOR 5
 #define CEGUI_VERSION_PATCH 0
 
 #endif	// end of guard _CEGUIVersion_h_
