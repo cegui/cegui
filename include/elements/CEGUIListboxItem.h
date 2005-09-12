@@ -148,7 +148,7 @@ public:
 	\return
 		Ponter to the window that is considered the owner of this ListboxItem.
 	*/
-	const Window*	getOwnerWindow()		{return d_owner;}
+	const Window*	getOwnerWindow() const		{return d_owner;}
 
 
 	/*!
