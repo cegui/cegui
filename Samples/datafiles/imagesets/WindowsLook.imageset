@@ -33,10 +33,10 @@
 	<Image Name="ButtonHoverTopRight" XPos="69" YPos="2" Width="3" Height="3" />
 	<Image Name="ButtonHoverBottomLeft" XPos="56" YPos="15" Width="3" Height="3" />
 	<Image Name="ButtonHoverBottomRight" XPos="69" YPos="15" Width="3" Height="3" />
-	<Image Name="EditFrameLeft" XPos="74" YPos="9" Width="4" Height="2" />
-	<Image Name="EditFrameRight" XPos="86" YPos="9" Width="4" Height="2" />
-	<Image Name="EditFrameTop" XPos="81" YPos="2" Width="2" Height="4" />
-	<Image Name="EditFrameBottom" XPos="81" YPos="14" Width="2" Height="4" />
+	<Image Name="EditFrameLeft" XPos="74" YPos="9" Width="3" Height="2" />
+	<Image Name="EditFrameRight" XPos="87" YPos="9" Width="3" Height="2" />
+	<Image Name="EditFrameTop" XPos="81" YPos="2" Width="2" Height="3" />
+	<Image Name="EditFrameBottom" XPos="81" YPos="15" Width="2" Height="3" />
 	<Image Name="EditFrameTopLeft" XPos="74" YPos="2" Width="3" Height="3" />
 	<Image Name="EditFrameTopRight" XPos="87" YPos="2" Width="3" Height="3" />
 	<Image Name="EditFrameBottomLeft" XPos="74" YPos="15" Width="3" Height="3" />
