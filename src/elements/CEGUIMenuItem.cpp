@@ -339,18 +339,17 @@ void MenuItem::closeAllMenuItemPopups()
 	{
 		// is this parent popup attached to a menu item?
 		MenuItem* item = (MenuItem*)pop->getParent();
-		if (item!=NULL && item->testClassName("MenuItem"))
+		if (item!=NULL && pop->getParent()->testClassName("MenuItem"))
 		{
 			// close popup
 			item->closePopupMenu();
 			// recurse
 			item->closeAllMenuItemPopups();
 		}
-		// otherwise we just hide ourselves
+		// otherwise we just hide the parent popup
 		else
 		{
-			//pop->closePopupMenu();
-			item->closePopupMenu();
+			pop->closePopupMenu();
 		}
 	}
 }
