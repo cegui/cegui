@@ -20,15 +20,22 @@
 #define TOLUA_API extern
 #endif
 
-#define TOLUA_VERSION "tolua++-1.0.6pre2"
+#define TOLUA_VERSION "tolua++-1.0.6"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define tolua_tocppstring	tolua_tostring
 #define tolua_pushcppstring(x,y)	tolua_pushstring(x,y.c_str())
 #define tolua_iscppstring	tolua_isstring
+
+//#define TEMPLATE_BIND(p...)
+#define TOLUA_PROTECTED_DESTRUCTOR
+#define TOLUA_PROPERTY_TYPE(p)
+
+#define tolua_outside
+
+typedef int lua_Object;
 
 #include "lua.h"
 #include "lauxlib.h"
@@ -40,7 +47,6 @@ struct tolua_Error
 	const char* type;
 };
 typedef struct tolua_Error tolua_Error;
-
 
 TOLUA_API const char* tolua_typename (lua_State* L, int lo);
 TOLUA_API void tolua_error (lua_State* L, char* msg, tolua_Error* err);
@@ -81,11 +87,11 @@ TOLUA_API void tolua_module (lua_State* L, char* name, int hasvar);
 TOLUA_API void tolua_class (lua_State* L, char* name, char* base);
 TOLUA_API void tolua_cclass (lua_State* L, char* lname, char* name, char* base, lua_CFunction col);
 TOLUA_API void tolua_function (lua_State* L, char* name, lua_CFunction func);
-TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func, char* type);
 TOLUA_API void tolua_constant (lua_State* L, char* name, double value);
 TOLUA_API void tolua_variable (lua_State* L, char* name, lua_CFunction get, lua_CFunction set);
 TOLUA_API void tolua_array (lua_State* L,char* name, lua_CFunction get, lua_CFunction set);
 
+/* TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func, char* type); */
 /* TOLUA_API void tolua_addbase(lua_State* L, char* name, char* base); */
 
 TOLUA_API void tolua_pushvalue (lua_State* L, int lo);
@@ -115,6 +121,16 @@ TOLUA_API void* tolua_tofielduserdata (lua_State* L, int lo, int index, void* de
 TOLUA_API void* tolua_tofieldusertype (lua_State* L, int lo, int index, void* def);
 TOLUA_API int tolua_tofieldvalue (lua_State* L, int lo, int index, int def);
 TOLUA_API int tolua_getfieldboolean (lua_State* L, int lo, int index, int def);
+
+#ifdef __cplusplus
+static inline const char* tolua_tocppstring (lua_State* L, int narg, const char* def) {
+
+	const char* s = tolua_tostring(L, narg, def);
+	return s?s:"";
+};
+#else
+#define tolua_tocppstring tolua_tostring
+#endif
 
 TOLUA_API int tolua_fast_isa(lua_State *L, int mt_indexa, int mt_indexb);
 

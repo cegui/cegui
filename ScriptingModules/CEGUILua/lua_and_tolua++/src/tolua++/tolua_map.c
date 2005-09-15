@@ -219,6 +219,20 @@ static int tolua_bnd_cast (lua_State* L)
 	return 1;
 }
 
+/* Inheritance
+*/
+static int tolua_bnd_inherit (lua_State* L) {
+
+	/* stack: lua object, c object */
+	lua_pushstring(L, ".c_instance");
+	lua_pushvalue(L, -2);
+	lua_rawset(L, -4);
+	/* l_obj[".c_instance"] = c_obj */
+
+	return 0;
+};
+
+
 TOLUA_API void tolua_open (lua_State* L)
 {
  int top = lua_gettop(L);
@@ -256,6 +270,7 @@ TOLUA_API void tolua_open (lua_State* L)
   tolua_function(L,"takeownership",tolua_bnd_takeownership);
   tolua_function(L,"releaseownership",tolua_bnd_releaseownership);
   tolua_function(L,"cast",tolua_bnd_cast);
+  tolua_function(L,"inherit", tolua_bnd_inherit);
   tolua_endmodule(L);
   tolua_endmodule(L);
  }
@@ -471,15 +486,17 @@ TOLUA_API void tolua_function (lua_State* L, char* name, lua_CFunction func)
 }
 
 /* sets the __call event for the class (expects the class' main table on top) */
+/*	never really worked :(
 TOLUA_API void tolua_set_call_event(lua_State* L, lua_CFunction func, char* type) {
 
 	lua_getmetatable(L, -1);
-	/*luaL_getmetatable(L, type);*/
+	//luaL_getmetatable(L, type);
 	lua_pushstring(L,"__call");
 	lua_pushcfunction(L,func);
 	lua_rawset(L,-3);
 	lua_pop(L, 1);
 };
+*/
 
 /* Map constant number
 	* It assigns a constant number into the current module (or class)

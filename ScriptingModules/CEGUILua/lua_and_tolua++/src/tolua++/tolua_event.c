@@ -274,6 +274,23 @@ static int class_newindex_event (lua_State* L)
 	return 0;
 }
 
+static int class_call_event(lua_State* L) {
+	
+	if (lua_istable(L, 1)) {
+		lua_pushstring(L, ".call");
+		lua_rawget(L, 1);
+		if (lua_isfunction(L, -1)) {
+		
+			lua_insert(L, 1);
+			lua_call(L, lua_gettop(L)-1, 1);
+			
+			return 1;
+		};
+	};
+	tolua_error(L,"Attempt to call a non-callable object.",NULL);
+	return 0;
+};
+
 static int do_operator (lua_State* L, const char* op)
 {
 	if (lua_isuserdata(L,1))
@@ -457,6 +474,10 @@ TOLUA_API void tolua_classevents (lua_State* L)
 	lua_pushcfunction(L,class_eq_event);
 	lua_rawset(L,-3);
 
+	lua_pushstring(L,"__call");
+	lua_pushcfunction(L,class_call_event);
+	lua_rawset(L,-3);
+	
 	lua_pushstring(L,"__gc");
 	lua_pushcfunction(L,class_gc_event);
 	lua_rawset(L,-3);

@@ -9,7 +9,7 @@ class ListboxItem
 	bool isSelected() const;
 	bool isDisabled() const;
 	bool isAutoDeleted() const;
-	const Window* getOwnerWindow(const Window* owner);
+	const Window* getOwnerWindow();
 	ColourRect getSelectionColours() const;
 	const Image* getSelectionBrushImage() const;
 
