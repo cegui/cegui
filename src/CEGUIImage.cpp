@@ -47,7 +47,7 @@ Image::Image(const Imageset* owner, const String& name, const Rect& area, const 
 {
 	if (d_owner == NULL)
 	{
-		throw NullObjectException((utf8*)"Image::Image - Imageset pointer passed to Image constructor must not be null.");
+		throw NullObjectException("Image::Image - Imageset pointer passed to Image constructor must not be null.");
 	}
 
 	// setup initial image scaling

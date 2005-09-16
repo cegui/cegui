@@ -134,7 +134,7 @@ void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes&
 
 		if (SchemeManager::getSingleton().isSchemePresent(d_scheme->d_name))
 		{
-			throw	AlreadyExistsException((utf8*)"A GUI Scheme named '" + d_scheme->d_name + "' is already present in the system.");
+			throw	AlreadyExistsException("A GUI Scheme named '" + d_scheme->d_name + "' is already present in the system.");
 		}
 
 	}

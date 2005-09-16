@@ -55,7 +55,7 @@ const colour	MenuItem::DefaultDisabledTextColour	= 0xFF7F7F7F;
 
 // event strings
 const String MenuItem::EventNamespace("MenuItem");
-const String MenuItem::EventClicked( (utf8*)"Clicked" );
+const String MenuItem::EventClicked( "Clicked" );
 
 
 /*************************************************************************

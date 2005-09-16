@@ -154,7 +154,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Titlebar")	return true;
+		if (class_name=="Titlebar")	return true;
 		return Window::testClassName_impl(class_name);
 	}
 

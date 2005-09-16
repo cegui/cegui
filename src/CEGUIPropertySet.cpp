@@ -38,12 +38,12 @@ void PropertySet::addProperty(Property* property)
 {
 	if (property == NULL)
 	{
-		throw NullObjectException((utf8*)"The given Property object pointer is NULL.");
+		throw NullObjectException("The given Property object pointer is NULL.");
 	}
 
 	if (d_properties.find(property->getName()) != d_properties.end())
 	{
-		throw AlreadyExistsException((utf8*)"A Property named '" + property->getName() + (utf8*)"' already exists in the PropertySet.");
+		throw AlreadyExistsException("A Property named '" + property->getName() + "' already exists in the PropertySet.");
 	}
 
 	d_properties[property->getName()] = property;
@@ -87,7 +87,7 @@ const String& PropertySet::getPropertyHelp(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->getHelp();
@@ -102,7 +102,7 @@ String PropertySet::getProperty(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->get(this);
@@ -117,7 +117,7 @@ void PropertySet::setProperty(const String& name,const String& value)
 
 	if (pos == d_properties.end())
 	{
-		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	pos->second->set(this, value);
@@ -143,7 +143,7 @@ bool PropertySet::isPropertyDefault(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->isDefault(this);
@@ -159,7 +159,7 @@ String PropertySet::getPropertyDefault(const String& name) const
 
 	if (pos == d_properties.end())
 	{
-		throw UnknownObjectException((utf8*)"There is no Property named '" + name + (utf8*)"' available in the set.");
+		throw UnknownObjectException("There is no Property named '" + name + "' available in the set.");
 	}
 
 	return pos->second->getDefault(this);

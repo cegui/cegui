@@ -55,9 +55,9 @@ const char Scheme::GUISchemeSchemaName[]					= "GUIScheme.xsd";
 *************************************************************************/
 Scheme::Scheme(const String& filename, const String& resourceGroup)
 {
-	if (filename.empty() || (filename == (utf8*)""))
+	if (filename.empty())
 	{
-		throw InvalidRequestException((utf8*)"Scheme::Scheme - Filename supplied for Scheme loading must be valid");
+		throw InvalidRequestException("Scheme::Scheme - Filename supplied for Scheme loading must be valid");
 	}
 
     // create handler object
@@ -74,7 +74,7 @@ Scheme::Scheme(const String& filename, const String& resourceGroup)
         throw;
 	}
 
-	Logger::getSingleton().logEvent((utf8*)"Loaded GUI scheme '" + d_name + "' from data in file '" + filename + "'.", Informative);
+	Logger::getSingleton().logEvent("Loaded GUI scheme '" + d_name + "' from data in file '" + filename + "'.", Informative);
 
 	// attempt to load in resources
 	loadResources();
@@ -88,7 +88,7 @@ Scheme::~Scheme(void)
 {
 	unloadResources();
 
-	Logger::getSingleton().logEvent((utf8*)"GUI scheme '" + d_name + "' has been unloaded.", Informative);
+	Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been unloaded.", Informative);
 }
 
 
@@ -97,7 +97,7 @@ Scheme::~Scheme(void)
 *************************************************************************/
 void Scheme::loadResources(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"---- Begining resource loading for GUI scheme '" + d_name + "' ----", Informative);
+	Logger::getSingleton().logEvent("---- Begining resource loading for GUI scheme '" + d_name + "' ----", Informative);
 
 	ImagesetManager& ismgr		= ImagesetManager::getSingleton();
 	FontManager& fntmgr			= FontManager::getSingleton();
@@ -119,7 +119,7 @@ void Scheme::loadResources(void)
 			if (realname != (*pos).name)
 			{
 				ismgr.destroyImageset(iset);
-				throw InvalidRequestException((utf8*)"Scheme::loadResources - The Imageset created by file '" + 
+				throw InvalidRequestException("Scheme::loadResources - The Imageset created by file '" +
 					(*pos).filename + "' is named '" + realname + "', not '" + (*pos).name + "' as required by Scheme '" + d_name + "'.");
 			}
 
@@ -147,7 +147,7 @@ void Scheme::loadResources(void)
 			if (realname != (*pos).name)
 			{
 				fntmgr.destroyFont(font);
-				throw InvalidRequestException((utf8*)"Scheme::loadResources - The Font created by file '" + 
+				throw InvalidRequestException("Scheme::loadResources - The Font created by file '" +
 					(*pos).filename + "' is named '" + realname + "', not '" + (*pos).name + "' as required by Scheme '" + d_name + "'.");
 			}
 
@@ -245,7 +245,7 @@ void Scheme::loadResources(void)
         wfmgr.addFalagardWindowMapping((*falagard).windowName, (*falagard).targetName, (*falagard).lookName);
     }
 
-	Logger::getSingleton().logEvent((utf8*)"---- Resource loading for GUI scheme '" + d_name + "' completed ----", Informative);
+	Logger::getSingleton().logEvent("---- Resource loading for GUI scheme '" + d_name + "' completed ----", Informative);
 }
 
 
@@ -254,7 +254,7 @@ void Scheme::loadResources(void)
 *************************************************************************/
 void Scheme::unloadResources(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"---- Begining resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
+	Logger::getSingleton().logEvent("---- Begining resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
 
 	ImagesetManager& ismgr		= ImagesetManager::getSingleton();
 	FontManager& fntmgr			= FontManager::getSingleton();
@@ -343,7 +343,7 @@ void Scheme::unloadResources(void)
         }
     }
 
-	Logger::getSingleton().logEvent((utf8*)"---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", Informative);
+	Logger::getSingleton().logEvent("---- Resource cleanup for GUI scheme '" + d_name + "' completed ----", Informative);
 }
 
 

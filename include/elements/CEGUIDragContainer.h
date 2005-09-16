@@ -309,7 +309,7 @@ namespace CEGUI
 		*/
 		virtual bool	testClassName_impl(const String& class_name) const
 		{
-			if (class_name==(const utf8*)"DragContainer")	return true;
+			if (class_name=="DragContainer")	return true;
 			return Window::testClassName_impl(class_name);
 		}
 

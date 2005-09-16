@@ -37,7 +37,7 @@ const String Renderer::EventNamespace("Renderer");
 /*************************************************************************
 	Event name constants (static data definitions)
 *************************************************************************/
-const String Renderer::EventDisplaySizeChanged( (utf8*)"DisplayModeChanged" );
+const String Renderer::EventDisplaySizeChanged( "DisplayModeChanged" );
 
 
 /*************************************************************************

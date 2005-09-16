@@ -37,111 +37,111 @@ namespace CEGUI
      
      CFBundleRef mac_loadExeBundle(const char* name) 
      {
-          Logger::getSingleton().logEvent((utf8*)"---- Beginning exe bundle loading ----");
-          Logger::getSingleton().logEvent((utf8*)name);
+          Logger::getSingleton().logEvent("---- Beginning exe bundle loading ----");
+          Logger::getSingleton().logEvent(name);
           
-          Logger::getSingleton().logEvent((utf8*)"Get reference to base bundle", Insane);
+          Logger::getSingleton().logEvent("Get reference to base bundle", Insane);
           CFBundleRef baseBundle = CFBundleGetBundleWithIdentifier(CFSTR("net.sourceforge.crayzedsgui.CEGUIBase"));
 
-          Logger::getSingleton().logEvent((utf8*)"Get reference to main bundle", Insane);
+          Logger::getSingleton().logEvent("Get reference to main bundle", Insane);
           CFBundleRef mainBundle = CFBundleGetMainBundle();
           
-          Logger::getSingleton().logEvent((utf8*)"Create name", Insane);
+          Logger::getSingleton().logEvent("Create name", Insane);
           CFStringRef nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
           CFURLRef bundleURL = 0; //URL of bundle to load
           CFBundleRef bundle = 0; //bundle to load
           
           // Cut off .bundle if present.
-          Logger::getSingleton().logEvent((utf8*)"Check if .bundle suffix is on name", Insane);
+          Logger::getSingleton().logEvent("Check if .bundle suffix is on name", Insane);
           if(CFStringHasSuffix(nameRef, CFSTR(".bundle"))) 
           {
-               Logger::getSingleton().logEvent((utf8*)"Create temporary name reference", Insane);
+               Logger::getSingleton().logEvent("Create temporary name reference", Insane);
                CFStringRef nameTempRef = nameRef;
                int end = CFStringGetLength(nameTempRef) - CFStringGetLength(CFSTR(".bundle"));
                nameRef = CFStringCreateWithSubstring(NULL, nameTempRef, CFRangeMake(0, end));
 
-               Logger::getSingleton().logEvent((utf8*)"Release temporary name reference", Insane);
+               Logger::getSingleton().logEvent("Release temporary name reference", Insane);
                CFRelease(nameTempRef);
           }
           
           // Assume relative to Resources/ directory of application's bundle.
-          Logger::getSingleton().logEvent((utf8*)"Create bundle URL", Insane);
+          Logger::getSingleton().logEvent("Create bundle URL", Insane);
           bundleURL = CFBundleCopyResourceURL(mainBundle, nameRef, CFSTR("bundle"), NULL);
           if(bundleURL)
           {
-               Logger::getSingleton().logEvent((utf8*)"Create bundle from URL", Insane);
+               Logger::getSingleton().logEvent("Create bundle from URL", Insane);
                bundle = CFBundleCreate(NULL, bundleURL);
                
-               Logger::getSingleton().logEvent((utf8*)"Release bundle URL", Insane);
+               Logger::getSingleton().logEvent("Release bundle URL", Insane);
                CFRelease(bundleURL);
           }
           
           // Otherwise, try Resources/ directory of CEGUI Framework bundle.
           if(!bundle) 
           {
-               Logger::getSingleton().logEvent((utf8*)"Couldn't get bundle from main bundle reference; try base");
+               Logger::getSingleton().logEvent("Couldn't get bundle from main bundle reference; try base");
                bundleURL = CFBundleCopyResourceURL(baseBundle, nameRef, CFSTR("bundle"), NULL);
                if(bundleURL) 
                {
-                    Logger::getSingleton().logEvent((utf8*)"Create bundle from URL", Insane);
+                    Logger::getSingleton().logEvent("Create bundle from URL", Insane);
                     bundle = CFBundleCreate(NULL, bundleURL);
                     
-                    Logger::getSingleton().logEvent((utf8*)"Release bundle URL", Insane);
+                    Logger::getSingleton().logEvent("Release bundle URL", Insane);
                     CFRelease(bundleURL);
                }
           }
-          Logger::getSingleton().logEvent((utf8*)"Release name reference", Insane);
+          Logger::getSingleton().logEvent("Release name reference", Insane);
           CFRelease(nameRef);
           
           if(bundle) 
           {
-               Logger::getSingleton().logEvent((utf8*)"Load the bundle executable.", Insane);
+               Logger::getSingleton().logEvent("Load the bundle executable.", Insane);
                if(CFBundleLoadExecutable(bundle)) 
                {
-                    Logger::getSingleton().logEvent((utf8*)"Bundle loaded successfully.");
+                    Logger::getSingleton().logEvent("Bundle loaded successfully.");
                     return bundle;
                }
                else 
                {
-                    Logger::getSingleton().logEvent((utf8*)"Bundle loading failed!");
+                    Logger::getSingleton().logEvent("Bundle loading failed!");
                     CFRelease(bundle);
                }
           }
           
-          Logger::getSingleton().logEvent((utf8*)"Failure; return 0", Insane);
+          Logger::getSingleton().logEvent("Failure; return 0", Insane);
           return 0;
      }
      
      void* mac_getBundleSym(CFBundleRef bundle, const char* name) 
      {
-          Logger::getSingleton().logEvent((utf8*)"---- Getting bundle symbol ----", Insane);
+          Logger::getSingleton().logEvent("---- Getting bundle symbol ----", Insane);
           CFStringRef nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
           
-          Logger::getSingleton().logEvent((utf8*)"Find function pointer for name: ", Insane);
-          Logger::getSingleton().logEvent((utf8*)name, Insane);
+          Logger::getSingleton().logEvent("Find function pointer for name: ", Insane);
+          Logger::getSingleton().logEvent(name, Insane);
           void* sym = CFBundleGetFunctionPointerForName(bundle, nameRef);
           
-          Logger::getSingleton().logEvent((utf8*)"Release bundle name", Insane);
+          Logger::getSingleton().logEvent("Release bundle name", Insane);
           CFRelease(nameRef);
           
-          Logger::getSingleton().logEvent((utf8*)"---- Done getting bundle symbol ----", Insane);
+          Logger::getSingleton().logEvent("---- Done getting bundle symbol ----", Insane);
           return sym;
      }
           
      // Returns 1 on error, 0 otherwise.
      bool mac_unloadExeBundle(CFBundleRef bundle) 
      {
-          Logger::getSingleton().logEvent((utf8*)"---- Beginning exe bundle unloading ----");
+          Logger::getSingleton().logEvent("---- Beginning exe bundle unloading ----");
           
           if(bundle) 
           {
-               Logger::getSingleton().logEvent((utf8*)"Bundle unloaded.", Insane);
+               Logger::getSingleton().logEvent("Bundle unloaded.", Insane);
 
                // No-op, can't unload Obj-C bundles without crashing.
                return 0;
           }
           
-          Logger::getSingleton().logEvent((utf8*)"---- Ending exe bundle unloading ----");
+          Logger::getSingleton().logEvent("---- Ending exe bundle unloading ----");
           return 1;
      }
      

@@ -60,14 +60,14 @@ MultiLineEditboxProperties::InactiveSelectionColour	MultiLineEditbox::d_inactive
 	Constants
 *************************************************************************/
 // event names
-const String MultiLineEditbox::EventReadOnlyModeChanged( (utf8*)"ReadOnlyChanged" );
-const String MultiLineEditbox::EventWordWrapModeChanged( (utf8*)"WordWrapModeChanged" );
-const String MultiLineEditbox::EventMaximumTextLengthChanged( (utf8*)"MaximumTextLengthChanged" );
-const String MultiLineEditbox::EventCaratMoved( (utf8*)"CaratMoved" );
-const String MultiLineEditbox::EventTextSelectionChanged( (utf8*)"TextSelectionChanged" );
-const String MultiLineEditbox::EventEditboxFull( (utf8*)"EditboxFullEvent" );
-const String MultiLineEditbox::EventVertScrollbarModeChanged( (utf8*)"VertScrollbarModeChanged" );
-const String MultiLineEditbox::EventHorzScrollbarModeChanged( (utf8*)"HorzScrollbarModeChanged" );
+const String MultiLineEditbox::EventReadOnlyModeChanged( "ReadOnlyChanged" );
+const String MultiLineEditbox::EventWordWrapModeChanged( "WordWrapModeChanged" );
+const String MultiLineEditbox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
+const String MultiLineEditbox::EventCaratMoved( "CaratMoved" );
+const String MultiLineEditbox::EventTextSelectionChanged( "TextSelectionChanged" );
+const String MultiLineEditbox::EventEditboxFull( "EditboxFullEvent" );
+const String MultiLineEditbox::EventVertScrollbarModeChanged( "VertScrollbarModeChanged" );
+const String MultiLineEditbox::EventHorzScrollbarModeChanged( "HorzScrollbarModeChanged" );
 
 // default colours
 const argb_t MultiLineEditbox::DefaultNormalTextColour			= 0xFFFFFFFF;
@@ -76,7 +76,7 @@ const argb_t MultiLineEditbox::DefaultNormalSelectionColour		= 0xFF6060FF;
 const argb_t MultiLineEditbox::DefaultInactiveSelectionColour	= 0xFF808080;
 
 // Static data initialisation
-String MultiLineEditbox::d_lineBreakChars((utf8*)"\n");
+String MultiLineEditbox::d_lineBreakChars("\n");
 
 
 /*************************************************************************
@@ -844,7 +844,7 @@ size_t MultiLineEditbox::getLineNumberFromIndex(size_t index) const
 
 	}
 
-	throw InvalidRequestException((utf8*)"MultiLineEditbox::getLineNumberFromIndex - Unable to identify a line from the given, invalid, index.");
+	throw InvalidRequestException("MultiLineEditbox::getLineNumberFromIndex - Unable to identify a line from the given, invalid, index.");
 }
 
 

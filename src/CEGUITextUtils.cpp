@@ -31,9 +31,9 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const String	TextUtils::DefaultWhitespace		= (utf8*)" \n\t\r";
-const String	TextUtils::DefaultAlphanumerical	= (utf8*)"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-const String	TextUtils::DefaultWrapDelimiters	= (utf8*)" \n\t\r";
+const String	TextUtils::DefaultWhitespace(" \n\t\r");
+const String	TextUtils::DefaultAlphanumerical("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+const String	TextUtils::DefaultWrapDelimiters(" \n\t\r");
 
 
 /*************************************************************************

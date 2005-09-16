@@ -42,9 +42,9 @@ SliderProperties::ClickStepSize	Slider::d_clickStepSizeProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String Slider::EventValueChanged( (utf8*)"ValueChanged" );
-const String Slider::EventThumbTrackStarted( (utf8*)"ThumbTrackStarted" );
-const String Slider::EventThumbTrackEnded( (utf8*)"ThumbTrackEnded" );
+const String Slider::EventValueChanged( "ValueChanged" );
+const String Slider::EventThumbTrackStarted( "ThumbTrackStarted" );
+const String Slider::EventThumbTrackEnded( "ThumbTrackEnded" );
 
 
 /*************************************************************************

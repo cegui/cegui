@@ -51,12 +51,12 @@ ListboxProperties::ItemTooltips			Listbox::d_itemTooltipsProperty;
 	Constants
 *************************************************************************/
 // event names
-const String Listbox::EventListContentsChanged( (utf8*)"ListItemsChanged" );
-const String Listbox::EventSelectionChanged( (utf8*)"ItemSelectionChanged" );
-const String Listbox::EventSortModeChanged( (utf8*)"SortModeChanged" );
-const String Listbox::EventMultiselectModeChanged( (utf8*)"MuliselectModeChanged" );
-const String Listbox::EventVertScrollbarModeChanged( (utf8*)"VertScrollModeChanged" );
-const String Listbox::EventHorzScrollbarModeChanged( (utf8*)"HorzScrollModeChanged" );
+const String Listbox::EventListContentsChanged( "ListItemsChanged" );
+const String Listbox::EventSelectionChanged( "ItemSelectionChanged" );
+const String Listbox::EventSortModeChanged( "SortModeChanged" );
+const String Listbox::EventMultiselectModeChanged( "MuliselectModeChanged" );
+const String Listbox::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
+const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
 
 	
 /*************************************************************************
@@ -175,7 +175,7 @@ ListboxItem* Listbox::getListboxItemFromIndex(size_t index) const
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"Listbox::getListboxItemFromIndex - the specified index is out of range for this Listbox.");
+		throw InvalidRequestException("Listbox::getListboxItemFromIndex - the specified index is out of range for this Listbox.");
 	}
 }
 
@@ -193,7 +193,7 @@ size_t Listbox::getItemIndex(const ListboxItem* item) const
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"Listbox::getItemIndex - the specified ListboxItem is not attached to this Listbox.");
+		throw InvalidRequestException("Listbox::getItemIndex - the specified ListboxItem is not attached to this Listbox.");
 	}
 
 }
@@ -210,7 +210,7 @@ bool Listbox::isItemSelected(size_t index) const
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"Listbox::isItemSelected - the specified index is out of range for this Listbox.");
+		throw InvalidRequestException("Listbox::isItemSelected - the specified index is out of range for this Listbox.");
 	}
 
 }
@@ -327,7 +327,7 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 			// throw if item 'position' is not in the list
 			if (ins_pos == d_listItems.end())
 			{
-				throw InvalidRequestException((utf8*)"Listbox::insertItem - the specified ListboxItem for parameter 'position' is not attached to this Listbox.");
+				throw InvalidRequestException("Listbox::insertItem - the specified ListboxItem for parameter 'position' is not attached to this Listbox.");
 			}
 
 		}
@@ -504,7 +504,7 @@ void Listbox::setItemSelectState(ListboxItem* item, bool state)
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"Listbox::setItemSelectState - the specified ListboxItem is not attached to this Listbox.");
+		throw InvalidRequestException("Listbox::setItemSelectState - the specified ListboxItem is not attached to this Listbox.");
 	}
 }
 
@@ -533,7 +533,7 @@ void Listbox::setItemSelectState(size_t item_index, bool state)
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"Listbox::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Listbox.");
+		throw InvalidRequestException("Listbox::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Listbox.");
 	}
 
 }

@@ -36,11 +36,11 @@ namespace CEGUI
 /*************************************************************************
 	Implementation Constants
 *************************************************************************/
-const String GUILayout_xmlHandler::GUILayoutElement( (utf8*)"GUILayout" );
-const String GUILayout_xmlHandler::WindowElement( (utf8*)"Window" );
-const String GUILayout_xmlHandler::PropertyElement( (utf8*)"Property" );
-const String GUILayout_xmlHandler::LayoutImportElement( (utf8*)"LayoutImport" );
-const String GUILayout_xmlHandler::EventElement( (utf8*)"Event" );
+const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );
+const String GUILayout_xmlHandler::WindowElement( "Window" );
+const String GUILayout_xmlHandler::PropertyElement( "Property" );
+const String GUILayout_xmlHandler::LayoutImportElement( "LayoutImport" );
+const String GUILayout_xmlHandler::EventElement( "Event" );
 const char	GUILayout_xmlHandler::WindowTypeAttribute[]		= "Type";
 const char	GUILayout_xmlHandler::WindowNameAttribute[]		= "Name";
 const char	GUILayout_xmlHandler::PropertyNameAttribute[]	= "Name";
@@ -65,7 +65,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 			if (!WindowManager::getSingleton().isWindowPresent(d_layoutParent))
 			{
 				// signal error - with more info about what we have done.
-				throw InvalidRequestException((utf8*)"GUILayout_xmlHandler::startElement - layout loading has been aborted since the specified parent Window ('" + d_layoutParent + "') does not exist.");
+				throw InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since the specified parent Window ('" + d_layoutParent + "') does not exist.");
 			}
 
 		}
@@ -104,7 +104,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 			cleanupLoadedWindows();
 
 			// signal error - with more info about what we have done.
-			throw InvalidRequestException((utf8*)"GUILayout_xmlHandler::startElement - layout loading has been aborted since Window named '" + windowName + "' already exists.");
+			throw InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since Window named '" + windowName + "' already exists.");
 		}
 		catch (UnknownObjectException exc)
 		{
@@ -112,7 +112,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 			cleanupLoadedWindows();
 
 			// signal error - with more info about what we have done.
-			throw InvalidRequestException((utf8*)"GUILayout_xmlHandler::startElement - layout loading has been aborted since no WindowFactory is available for '" + windowType + "' objects.");
+			throw InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since no WindowFactory is available for '" + windowType + "' objects.");
 		}
 
 	}

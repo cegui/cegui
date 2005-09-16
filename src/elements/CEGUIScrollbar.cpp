@@ -45,10 +45,10 @@ ScrollbarProperties::ScrollPosition	Scrollbar::d_scrollPositionProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String Scrollbar::EventScrollPositionChanged( (utf8*)"ScrollPosChanged" );
-const String Scrollbar::EventThumbTrackStarted( (utf8*)"ThumbTrackStarted" );
-const String Scrollbar::EventThumbTrackEnded( (utf8*)"ThumbTrackEnded" );
-const String Scrollbar::EventScrollConfigChanged( (utf8*)"ScrollConfigChanged" );
+const String Scrollbar::EventScrollPositionChanged( "ScrollPosChanged" );
+const String Scrollbar::EventThumbTrackStarted( "ThumbTrackStarted" );
+const String Scrollbar::EventThumbTrackEnded( "ThumbTrackEnded" );
+const String Scrollbar::EventScrollConfigChanged( "ScrollConfigChanged" );
 
 
 /*************************************************************************

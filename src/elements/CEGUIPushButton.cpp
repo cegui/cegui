@@ -34,7 +34,7 @@ namespace CEGUI
 *************************************************************************/
 // event strings
 const String PushButton::EventNamespace("PushButton");
-const String PushButton::EventClicked( (utf8*)"Clicked" );
+const String PushButton::EventClicked( "Clicked" );
 // properties
 PushButtonProperties::NormalImage PushButton::d_normalImageProperty;
 PushButtonProperties::PushedImage PushButton::d_pushedImageProperty;

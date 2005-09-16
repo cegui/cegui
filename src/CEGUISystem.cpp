@@ -120,13 +120,13 @@ const double	System::DefaultMultiClickTimeout	= 0.33;
 const Size		System::DefaultMultiClickAreaSize(12,12);
 
 // event names
-const String System::EventGUISheetChanged( (utf8*)"GUISheetChanged" );
-const String System::EventSingleClickTimeoutChanged( (utf8*)"SingleClickTimeoutChanged" );
-const String System::EventMultiClickTimeoutChanged( (utf8*)"MultiClickTimeoutChanged" );
-const String System::EventMultiClickAreaSizeChanged( (utf8*)"MultiClickAreaSizeChanged" );
-const String System::EventDefaultFontChanged( (utf8*)"DefaultFontChanged" );
-const String System::EventDefaultMouseCursorChanged( (utf8*)"DefaultMouseCursorChanged" );
-const String System::EventMouseMoveScalingChanged( (utf8*)"MouseMoveScalingChanged" );
+const String System::EventGUISheetChanged( "GUISheetChanged" );
+const String System::EventSingleClickTimeoutChanged( "SingleClickTimeoutChanged" );
+const String System::EventMultiClickTimeoutChanged( "MultiClickTimeoutChanged" );
+const String System::EventMultiClickAreaSizeChanged( "MultiClickAreaSizeChanged" );
+const String System::EventDefaultFontChanged( "DefaultFontChanged" );
+const String System::EventDefaultMouseCursorChanged( "DefaultMouseCursorChanged" );
+const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 
 
 /*************************************************************************
@@ -317,7 +317,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	}
 
 	// beginning main init
-	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System initialisation ----");
+	Logger::getSingleton().logEvent("---- Begining CEGUI System initialisation ----");
 
 	// cause creation of other singleton objects
 	new ImagesetManager();
@@ -336,12 +336,12 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
     WindowFactoryManager::getSingleton().addFactory(new ScrolledContainerFactory);
 
 	// GUISheet's name was changed, register an alias so both can be used
-	WindowFactoryManager::getSingleton().addWindowTypeAlias((utf8*)"DefaultGUISheet", GUISheet::WidgetTypeName);
+	WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
 
 	// success - we are created!  Log it for prosperity :)
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton created.");
-	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System initialisation completed ----");
-    Logger::getSingleton().logEvent((utf8*)"---- Version " + d_strVersion + " ----");
+	Logger::getSingleton().logEvent("CEGUI::System singleton created.");
+	Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
+    Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
     Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
@@ -402,7 +402,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 *************************************************************************/
 System::~System(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"---- Begining CEGUI System destruction ----");
+	Logger::getSingleton().logEvent("---- Begining CEGUI System destruction ----");
 
 	// execute shut-down script
 	if (!d_termScriptName.empty())
@@ -464,8 +464,8 @@ System::~System(void)
 	delete	ImagesetManager::getSingletonPtr();
 	delete	GlobalEventSet::getSingletonPtr();
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::System singleton destroyed.");
-	Logger::getSingleton().logEvent((utf8*)"---- CEGUI System destruction completed ----");
+	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed.");
+	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
 	delete Logger::getSingletonPtr();
 
 	delete d_clickTrackerPimpl;
@@ -624,13 +624,13 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 		}
 		catch(...)
 		{
-			throw GenericException((utf8*)"System::executeScriptFile - An exception was thrown during the execution of the script file.");
+			throw GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file.");
 		}
 
 	}
 	else
 	{
-		Logger::getSingleton().logEvent((utf8*)"System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", Errors);
+		Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", Errors);
 	}
 
 }
@@ -650,13 +650,13 @@ int	System::executeScriptGlobal(const String& function_name) const
 		}
 		catch(...)
 		{
-			throw GenericException((utf8*)"System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
+			throw GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
 		}
 
 	}
 	else
 	{
-		Logger::getSingleton().logEvent((utf8*)"System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
+		Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
 	}
 
 	return 0;
@@ -677,13 +677,13 @@ void System::executeScriptString(const String& str) const
         }
         catch(...)
         {
-            throw GenericException((utf8*)"System::executeScriptString - An exception was thrown during execution of the script code.");
+            throw GenericException("System::executeScriptString - An exception was thrown during execution of the script code.");
         }
 
     }
     else
     {
-        Logger::getSingleton().logEvent((utf8*)"System::executeScriptString - the script code could not be executed as no ScriptModule is available.", Errors);
+        Logger::getSingleton().logEvent("System::executeScriptString - the script code could not be executed as no ScriptModule is available.", Errors);
     }
 }
 
@@ -1182,7 +1182,7 @@ SystemKey System::mouseButtonToSyskey(MouseButton btn) const
 		return X2Mouse;
 
 	default:
-		throw InvalidRequestException((utf8*)"System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value.");
+		throw InvalidRequestException("System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value.");
 	}
 }
 

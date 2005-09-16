@@ -66,7 +66,7 @@ bool Demo8Sample::initialiseSample()
 
     // now re-create the CEGUI::System passing in our scripting module
     // and basically 'bootstrapping' the demo via a config file.
-    new System(renderer, scriptmod, (utf8*)"../datafiles/configs/demo8.config");
+    new System(renderer, scriptmod, (const utf8*)"../datafiles/configs/demo8.config");
 
     // success!
     return true;

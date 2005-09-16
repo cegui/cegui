@@ -50,8 +50,8 @@ namespace CEGUI
 	{
 		if(!fsys->existFile(filename.c_str()))
 		{
-			String sMsg=(utf8*)"IrrlichtResourceProvider::loadRawDataContainer - Filename supplied for loading must be valid";
-			sMsg+=(utf8*)" ["+filename+(utf8*)"]";
+			String sMsg("IrrlichtResourceProvider::loadRawDataContainer - Filename supplied for loading must be valid");
+			sMsg+=" ["+filename+"]";
 			throw InvalidRequestException(sMsg);
 		}
 		else

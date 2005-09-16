@@ -43,7 +43,7 @@ template<> ImagesetManager* Singleton<ImagesetManager>::ms_Singleton	= NULL;
 *************************************************************************/
 ImagesetManager::ImagesetManager(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::ImagesetManager singleton created");
+	Logger::getSingleton().logEvent("CEGUI::ImagesetManager singleton created");
 }
 
 
@@ -52,11 +52,11 @@ ImagesetManager::ImagesetManager(void)
 *************************************************************************/
 ImagesetManager::~ImagesetManager(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of Imageset system ----");
+	Logger::getSingleton().logEvent("---- Begining cleanup of Imageset system ----");
 
 	destroyAllImagesets();
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::ImagesetManager singleton destroyed");
+	Logger::getSingleton().logEvent("CEGUI::ImagesetManager singleton destroyed");
 }
 
 
@@ -66,7 +66,7 @@ ImagesetManager::~ImagesetManager(void)
 *************************************************************************/
 Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 {
-	Logger::getSingleton().logEvent((utf8*)"Attempting to create Imageset '" + name +"' with texture only.");
+	Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +"' with texture only.");
 
 	if (isImagesetPresent(name))
 	{
@@ -85,7 +85,7 @@ Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
 *************************************************************************/
 Imageset* ImagesetManager::createImageset(const String& filename, const String& resourceGroup)
 {
-	Logger::getSingleton().logEvent((utf8*)"Attempting to create an Imageset from the information specified in file '" + filename + "'.");
+	Logger::getSingleton().logEvent("Attempting to create an Imageset from the information specified in file '" + filename + "'.");
 
 	Imageset* temp = new Imageset(filename, resourceGroup);
 
@@ -109,7 +109,7 @@ Imageset* ImagesetManager::createImageset(const String& filename, const String& 
 *************************************************************************/
 Imageset* ImagesetManager::createImagesetFromImageFile(const String& name, const String& filename, const String& resourceGroup)
 {
-    Logger::getSingleton().logEvent((utf8*)"Attempting to create Imageset '" + name + "' using image file '" + filename + "'.");
+    Logger::getSingleton().logEvent("Attempting to create Imageset '" + name + "' using image file '" + filename + "'.");
 
     if (isImagesetPresent(name))
     {
@@ -137,7 +137,7 @@ void ImagesetManager::destroyImageset(const String& name)
 		delete pos->second;
 		d_imagesets.erase(pos);
 
-		Logger::getSingleton().logEvent((utf8*)"Imageset '" + tmpName +"' has been destroyed.", Informative);
+		Logger::getSingleton().logEvent("Imageset '" + tmpName +"' has been destroyed.", Informative);
 	}
 
 }

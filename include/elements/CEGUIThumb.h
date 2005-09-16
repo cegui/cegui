@@ -239,7 +239,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Thumb")	return true;
+		if (class_name=="Thumb")	return true;
 		return PushButton::testClassName_impl(class_name);
 	}
 

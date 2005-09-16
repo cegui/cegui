@@ -115,49 +115,49 @@ Window*	Window::d_captureWindow		= NULL;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String Window::EventParentSized( (utf8*)"ParentSized" );
-const String Window::EventSized( (utf8*)"Sized" );
-const String Window::EventMoved( (utf8*)"Moved" );
-const String Window::EventTextChanged( (utf8*)"TextChanged" );
-const String Window::EventFontChanged( (utf8*)"FontChanged" );
-const String Window::EventAlphaChanged( (utf8*)"AlphaChanged" );
-const String Window::EventIDChanged( (utf8*)"IDChanged" );
-const String Window::EventActivated( (utf8*)"Activated" );
-const String Window::EventDeactivated( (utf8*)"Deactivated" );
-const String Window::EventShown( (utf8*)"Shown" );
-const String Window::EventHidden( (utf8*)"Hidden" );
-const String Window::EventEnabled( (utf8*)"Enabled" );
-const String Window::EventDisabled( (utf8*)"Disabled" );
-const String Window::EventMetricsModeChanged( (utf8*)"MetricsChanged" );
-const String Window::EventClippedByParentChanged( (utf8*)"ClippingChanged" );
-const String Window::EventDestroyedByParentChanged( (utf8*)"DestroyedByParentChanged" );
-const String Window::EventInheritsAlphaChanged( (utf8*)"InheritAlphaChanged" );
-const String Window::EventAlwaysOnTopChanged( (utf8*)"AlwaysOnTopChanged" );
-const String Window::EventInputCaptureGained( (utf8*)"CaptureGained" );
-const String Window::EventInputCaptureLost( (utf8*)"CaptureLost" );
-const String Window::EventRenderingStarted( (utf8*)"StartRender" );
-const String Window::EventRenderingEnded( (utf8*)"EndRender" );
-const String Window::EventChildAdded( (utf8*)"AddedChild" );
-const String Window::EventChildRemoved( (utf8*)"RemovedChild" );
-const String Window::EventDestructionStarted( (utf8*)"DestructStart" );
-const String Window::EventZOrderChanged( (utf8*)"ZChanged" );
+const String Window::EventParentSized( "ParentSized" );
+const String Window::EventSized( "Sized" );
+const String Window::EventMoved( "Moved" );
+const String Window::EventTextChanged( "TextChanged" );
+const String Window::EventFontChanged( "FontChanged" );
+const String Window::EventAlphaChanged( "AlphaChanged" );
+const String Window::EventIDChanged( "IDChanged" );
+const String Window::EventActivated( "Activated" );
+const String Window::EventDeactivated( "Deactivated" );
+const String Window::EventShown( "Shown" );
+const String Window::EventHidden( "Hidden" );
+const String Window::EventEnabled( "Enabled" );
+const String Window::EventDisabled( "Disabled" );
+const String Window::EventMetricsModeChanged( "MetricsChanged" );
+const String Window::EventClippedByParentChanged( "ClippingChanged" );
+const String Window::EventDestroyedByParentChanged( "DestroyedByParentChanged" );
+const String Window::EventInheritsAlphaChanged( "InheritAlphaChanged" );
+const String Window::EventAlwaysOnTopChanged( "AlwaysOnTopChanged" );
+const String Window::EventInputCaptureGained( "CaptureGained" );
+const String Window::EventInputCaptureLost( "CaptureLost" );
+const String Window::EventRenderingStarted( "StartRender" );
+const String Window::EventRenderingEnded( "EndRender" );
+const String Window::EventChildAdded( "AddedChild" );
+const String Window::EventChildRemoved( "RemovedChild" );
+const String Window::EventDestructionStarted( "DestructStart" );
+const String Window::EventZOrderChanged( "ZChanged" );
 const String Window::EventDragDropItemEnters("DragDropItemEnters");
 const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
 const String Window::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
 const String Window::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
-const String Window::EventMouseEnters( (utf8*)"MouseEnter" );
-const String Window::EventMouseLeaves( (utf8*)"MouseLeave" );
-const String Window::EventMouseMove( (utf8*)"MouseMove" );
-const String Window::EventMouseWheel( (utf8*)"MouseWheel" );
-const String Window::EventMouseButtonDown( (utf8*)"MouseButtonDown" );
-const String Window::EventMouseButtonUp( (utf8*)"MouseButtonUp" );
-const String Window::EventMouseClick( (utf8*)"MouseClick" );
-const String Window::EventMouseDoubleClick( (utf8*)"MouseDoubleClick" );
-const String Window::EventMouseTripleClick( (utf8*)"MouseTripleClick" );
-const String Window::EventKeyDown( (utf8*)"KeyDown" );
-const String Window::EventKeyUp( (utf8*)"KeyUp" );
-const String Window::EventCharacterKey( (utf8*)"CharacterKey" );
+const String Window::EventMouseEnters( "MouseEnter" );
+const String Window::EventMouseLeaves( "MouseLeave" );
+const String Window::EventMouseMove( "MouseMove" );
+const String Window::EventMouseWheel( "MouseWheel" );
+const String Window::EventMouseButtonDown( "MouseButtonDown" );
+const String Window::EventMouseButtonUp( "MouseButtonUp" );
+const String Window::EventMouseClick( "MouseClick" );
+const String Window::EventMouseDoubleClick( "MouseDoubleClick" );
+const String Window::EventMouseTripleClick( "MouseTripleClick" );
+const String Window::EventKeyDown( "KeyDown" );
+const String Window::EventKeyUp( "KeyUp" );
+const String Window::EventCharacterKey( "CharacterKey" );
 	
 	
 /*************************************************************************
@@ -351,7 +351,7 @@ Window* Window::getChild(const String& name) const
 
 	}
 
-	throw UnknownObjectException((utf8*)"Window::getChild - The Window object named '" + name +"' is not attached to Window '" + d_name + "'.");
+	throw UnknownObjectException("Window::getChild - The Window object named '" + name +"' is not attached to Window '" + d_name + "'.");
 }
 
 

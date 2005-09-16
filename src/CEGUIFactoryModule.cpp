@@ -63,15 +63,15 @@ FactoryModule::FactoryModule(const String& filename) :
 {
 #if defined(__linux__)
 	// dlopen() does not add .so to the filename, like windows does for .dll
-	if (d_moduleName.substr(d_moduleName.length() - 3, 3) != (utf8*)".so")
+	if (d_moduleName.substr(d_moduleName.length() - 3, 3) != ".so")
 	{
-		d_moduleName += (utf8*)".so";
+		d_moduleName += ".so";
 	}
 
 	// see if we need to add the leading 'lib'
-	if (d_moduleName.substr(0, 3) != (utf8*)"lib")
+	if (d_moduleName.substr(0, 3) != "lib")
 	{
-		d_moduleName.insert(0, (utf8*)"lib");
+		d_moduleName.insert(0, "lib");
 	}
 #endif
 
@@ -79,9 +79,9 @@ FactoryModule::FactoryModule(const String& filename) :
 #if defined(__WIN32__) || defined(_WIN32)
 #	if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
 	// if name has .dll extension, assume it's complete and do not touch it.
-	if (d_moduleName.substr(d_moduleName.length() - 4, 4) != (utf8*)".dll")
+	if (d_moduleName.substr(d_moduleName.length() - 4, 4) != ".dll")
 	{
-		d_moduleName += (utf8*)CEGUI_LOAD_MODULE_DEBUG_SUFFIX;
+		d_moduleName += CEGUI_LOAD_MODULE_DEBUG_SUFFIX;
 	}
 #	endif
 #endif
@@ -91,7 +91,7 @@ FactoryModule::FactoryModule(const String& filename) :
 	// check for library load failure
 	if (d_handle == NULL)
 	{
-		throw	GenericException((utf8*)"FactoryModule::FactoryModule - Failed to load module '" + d_moduleName + "'.");
+		throw	GenericException("FactoryModule::FactoryModule - Failed to load module '" + d_moduleName + "'.");
 	}
 
     // functions are now optional, and only throw upon the first attempt to use a missing function.

@@ -230,7 +230,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"ButtonBase")	return true;
+		if (class_name=="ButtonBase")	return true;
 		return Window::testClassName_impl(class_name);
 	}
 

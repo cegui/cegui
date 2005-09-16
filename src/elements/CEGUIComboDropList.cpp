@@ -36,7 +36,7 @@ const String ComboDropList::EventNamespace("ComboDropList");
 	Constants
 *************************************************************************/
 // Event names
-const String ComboDropList::EventListSelectionAccepted( (utf8*)"ListSelectionAccepted" );
+const String ComboDropList::EventListSelectionAccepted( "ListSelectionAccepted" );
 
 
 /*************************************************************************

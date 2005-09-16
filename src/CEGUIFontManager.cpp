@@ -55,10 +55,10 @@ FontManager::FontManager(void)
 
 	if (FT_Init_FreeType(&d_implData->d_ftlib))
 	{
-		throw GenericException((utf8*)"FontManager::FontManager - Failed to initialise the FreeType library.");
+		throw GenericException("FontManager::FontManager - Failed to initialise the FreeType library.");
 	}
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::FontManager singleton created.");
+	Logger::getSingleton().logEvent("CEGUI::FontManager singleton created.");
 }
 
 
@@ -67,13 +67,13 @@ FontManager::FontManager(void)
 *************************************************************************/
 FontManager::~FontManager(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of Font system ----");
+	Logger::getSingleton().logEvent("---- Begining cleanup of Font system ----");
 	destroyAllFonts();
 
 	FT_Done_FreeType(d_implData->d_ftlib);
 	delete d_implData;
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::FontManager singleton destroyed.");
+	Logger::getSingleton().logEvent("CEGUI::FontManager singleton destroyed.");
 }
 
 
@@ -82,7 +82,7 @@ FontManager::~FontManager(void)
 *************************************************************************/
 Font* FontManager::createFont(const String& filename, const String& resourceGroup)
 {
-	Logger::getSingleton().logEvent((utf8*)"Attempting to create Font from the information specified in file '" + filename + "'.");
+	Logger::getSingleton().logEvent("Attempting to create Font from the information specified in file '" + filename + "'.");
 
 	Font* temp = new Font(filename, resourceGroup, new Font::FontImplData(d_implData->d_ftlib));
 
@@ -92,7 +92,7 @@ Font* FontManager::createFont(const String& filename, const String& resourceGrou
 	{
 		delete temp;
 
-		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
+		throw AlreadyExistsException("FontManager::createFont - A font named '" + name + "' already exists.");
 	}
 
 	d_fonts[name] = temp;
@@ -114,12 +114,12 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint s
 {
 	char strbuf[16];
 	sprintf(strbuf, "%d", size);
-	Logger::getSingleton().logEvent((utf8*)"Attempting to create Font '" + name + "' using the font file '" + fontname + "' and a size of " + strbuf + ".");
+	Logger::getSingleton().logEvent("Attempting to create Font '" + name + "' using the font file '" + fontname + "' and a size of " + strbuf + ".");
 
 	// first ensure name uniqueness
 	if (isFontPresent(name))
 	{
-		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
+		throw AlreadyExistsException("FontManager::createFont - A font named '" + name + "' already exists.");
 	}
 
 	Font* temp = new Font(name, fontname, resourceGroup, size, flags, new Font::FontImplData(d_implData->d_ftlib));
@@ -149,7 +149,7 @@ void FontManager::destroyFont(const String& name)
 		delete pos->second;
 		d_fonts.erase(pos);
 
-		Logger::getSingleton().logEvent((utf8*)"Font '" + tmpName +"' has been destroyed.");
+		Logger::getSingleton().logEvent("Font '" + tmpName +"' has been destroyed.");
 	}
 
 }

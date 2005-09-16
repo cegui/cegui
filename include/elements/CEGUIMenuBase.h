@@ -250,7 +250,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"MenuBase")	return true;
+		if (class_name=="MenuBase")	return true;
 		return ItemListBase::testClassName_impl(class_name);
 	}
 

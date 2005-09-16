@@ -38,8 +38,8 @@ namespace CEGUI
 Definition of constant data for Imageset (and sub-classes)
 *************************************************************************/
 // Declared in Imageset::xmlHandler
-const String Imageset_xmlHandler::ImagesetElement( (utf8*)"Imageset" );
-const String Imageset_xmlHandler::ImageElement( (utf8*)"Image" );
+const String Imageset_xmlHandler::ImagesetElement( "Imageset" );
+const String Imageset_xmlHandler::ImageElement( "Image" );
 const char	Imageset_xmlHandler::ImagesetImageFileAttribute[]		= "Imagefile";
 const char	Imageset_xmlHandler::ImagesetResourceGroupAttribute[]   = "ResourceGroup";
 const char	Imageset_xmlHandler::ImagesetNameAttribute[]			= "Name";
@@ -111,7 +111,7 @@ void Imageset_xmlHandler::elementStart(const String& element, const XMLAttribute
 		}
 		catch(...)
 		{
-			throw RendererException((utf8*)"Imageset::xmlHandler::startElement - An unexpected error occurred while creating a Texture object from file '" + filename + "'");
+			throw RendererException("Imageset::xmlHandler::startElement - An unexpected error occurred while creating a Texture object from file '" + filename + "'");
 		}
 
         d_imageset->d_textureFilename = filename;

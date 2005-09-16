@@ -44,9 +44,9 @@ ThumbProperties::HorzRange	Thumb::d_horzRangeProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const String Thumb::EventThumbPositionChanged( (utf8*)"ThumbPosChanged" );
-const String Thumb::EventThumbTrackStarted( (utf8*)"ThumbTrackStarted" );
-const String Thumb::EventThumbTrackEnded( (utf8*)"ThumbTrackEnded" );
+const String Thumb::EventThumbPositionChanged( "ThumbPosChanged" );
+const String Thumb::EventThumbTrackStarted( "ThumbTrackStarted" );
+const String Thumb::EventThumbTrackEnded( "ThumbTrackEnded" );
 
 
 /*************************************************************************

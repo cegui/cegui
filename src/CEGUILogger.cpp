@@ -59,7 +59,7 @@ namespace CEGUI
     {
         if (d_ostream.is_open())
         {
-            logEvent((utf8*)"CEGUI::Logger singleton destroyed.");
+            logEvent("CEGUI::Logger singleton destroyed.");
             d_ostream.close();
         }
 

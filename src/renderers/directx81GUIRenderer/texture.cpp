@@ -90,7 +90,7 @@ void DirectX81Texture::loadFromFile(const String& filename, const String& resour
 	}
 	else
 	{
-		throw RendererException((utf8*)"Failed to create Texture object from file '" + filename + "'.  Additional Info: " + (const utf8*)DXGetErrorString8(hr));
+		throw RendererException("Failed to create Texture object from file '" + filename + "'.  Additional Info: " + DXGetErrorString8(hr));
 	}
 
 }
@@ -115,7 +115,7 @@ void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint 
 
 	if (FAILED(hr))
 	{
-		throw RendererException((utf8*)"Failed to load texture from memory: D3D Texture creation failed.");
+		throw RendererException("Failed to load texture from memory: D3D Texture creation failed.");
 	}
 	else
 	{
@@ -135,7 +135,7 @@ void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint 
 			d_d3dtexture->Release();
 			d_d3dtexture = NULL;
 
-			throw RendererException((utf8*)"Failed to load texture from memory: IDirect3DTexture8::LockRect failed.");
+			throw RendererException("Failed to load texture from memory: IDirect3DTexture8::LockRect failed.");
 		}
 		else
 		{
@@ -189,7 +189,7 @@ void DirectX81Texture::setD3DTextureSize(uint size)
 
 	if (FAILED(hr))
 	{
-		throw RendererException((utf8*)"Failed to create texture of specified size: D3D Texture creation failed.");
+		throw RendererException("Failed to create texture of specified size: D3D Texture creation failed.");
 	}
 	else
 	{

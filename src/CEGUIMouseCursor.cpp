@@ -47,7 +47,7 @@ template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= NULL;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String MouseCursor::EventImageChanged( (utf8*)"ImageChanged" );
+const String MouseCursor::EventImageChanged( "ImageChanged" );
 
 
 /*************************************************************************
@@ -74,7 +74,7 @@ MouseCursor::MouseCursor(void)
 	// add events
 	addMouseCursorEvents();
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::MouseCursor singleton created.");
+	Logger::getSingleton().logEvent("CEGUI::MouseCursor singleton created.");
 }
 
 
@@ -83,7 +83,7 @@ MouseCursor::MouseCursor(void)
 *************************************************************************/
 MouseCursor::~MouseCursor(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::MouseCursor singleton destroyed.");
+	Logger::getSingleton().logEvent("CEGUI::MouseCursor singleton destroyed.");
 }
 
 

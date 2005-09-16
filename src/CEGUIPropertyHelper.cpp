@@ -68,7 +68,7 @@ int PropertyHelper::stringToInt(const String& str)
 
 bool PropertyHelper::stringToBool(const String& str)
 {
-	if ((str == (utf8*)"True") || (str == (utf8*)"true"))
+	if ((str == "True") || (str == "true"))
 	{
 		return true;
 	}
@@ -115,11 +115,11 @@ Rect PropertyHelper::stringToRect(const String& str)
 
 MetricsMode PropertyHelper::stringToMetricsMode(const String& str)
 {
-	if (str == (utf8*)"Relative")
+	if (str == "Relative")
 	{
 		return Relative;
 	}
-	else if (str == (utf8*)"Absolute")
+	else if (str == "Absolute")
 	{
 		return Absolute;
 	}
@@ -144,7 +144,7 @@ const Image* PropertyHelper::stringToImage(const String& str)
 
 	try
 	{
-		image = &ImagesetManager::getSingleton().getImageset((utf8*)imageSet)->getImage((utf8*)imageName);
+		image = &ImagesetManager::getSingleton().getImageset(imageSet)->getImage(imageName);
 	}
 	catch (UnknownObjectException)
 	{
@@ -202,7 +202,7 @@ String PropertyHelper::floatToString(float val)
 	char buff[64];
 	sprintf(buff, "%f", val);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -213,7 +213,7 @@ String PropertyHelper::uintToString(uint val)
 	char buff[64];
 	sprintf(buff, "%u", val);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -224,7 +224,7 @@ String PropertyHelper::intToString(int val)
 	char buff[64];
 	sprintf(buff, "%d", val);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -232,11 +232,11 @@ String PropertyHelper::boolToString(bool val)
 {
 	if (val)
 	{
-		return String((utf8*)"True");
+		return String("True");
 	}
 	else
 	{
-		return String ((utf8*)"False");
+		return String ("False");
 	}
 
 }
@@ -249,7 +249,7 @@ String PropertyHelper::sizeToString(const Size& val)
 	char buff[128];
 	sprintf(buff, "w:%f h:%f", val.d_width, val.d_height);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -260,7 +260,7 @@ String PropertyHelper::pointToString(const Point& val)
 	char buff[128];
 	sprintf(buff, "x:%f y:%f", val.d_x, val.d_y);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -271,7 +271,7 @@ String PropertyHelper::rectToString(const Rect& val)
 	char buff[256];
 	sprintf(buff, "l:%f t:%f r:%f b:%f", val.d_left, val.d_top, val.d_right, val.d_bottom);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -279,15 +279,15 @@ String PropertyHelper::metricsModeToString(MetricsMode val)
 {
 	if (val == Relative)
 	{
-		return String((utf8*)"Relative");
+		return String("Relative");
 	}
 	else if (val == Absolute)
 	{
-		return String((utf8*)"Absolute");
+		return String("Absolute");
 	}
 	else
 	{
-		return String((utf8*)"Inherited");
+		return String("Inherited");
 	}
 
 }
@@ -297,10 +297,10 @@ String PropertyHelper::imageToString(const Image* const val)
 {
 	if (val != NULL)
 	{
-		return String((utf8*)"set:" + val->getImagesetName() + (utf8*)" image:" + val->getName());
+		return String("set:" + val->getImagesetName() + " image:" + val->getName());
 	}
 
-	return String((utf8*)"");
+	return String("");
 }
 
 
@@ -311,7 +311,7 @@ String PropertyHelper::udimToString(const UDim& val)
 	char buff[128];
 	sprintf(buff, "{%f,%f}", val.d_scale, val.d_offset);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -322,7 +322,7 @@ String PropertyHelper::uvector2ToString(const UVector2& val)
 	char buff[256];
 	sprintf(buff, "{{%f,%f},{%f,%f}}", val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -340,7 +340,7 @@ String PropertyHelper::urectToString(const URect& val)
 		val.d_max.d_y.d_scale,val.d_max.d_y.d_offset
 	);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -351,7 +351,7 @@ String PropertyHelper::colourToString(const colour& val)
 	char buff[16];
 	sprintf(buff, "%.8X", val.getARGB());
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -374,7 +374,7 @@ String PropertyHelper::colourRectToString(const ColourRect& val)
 	char buff[64];
 	sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 

@@ -347,7 +347,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"MenuItem")	return true;
+		if (class_name=="MenuItem")	return true;
 		return TextItem::testClassName_impl(class_name);
 	}
 

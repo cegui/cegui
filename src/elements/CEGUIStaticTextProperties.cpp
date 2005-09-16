@@ -52,35 +52,35 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const StaticText*>(receiver)->getHorizontalFormatting())
 	{
 	case StaticText::RightAligned:
-		return String((utf8*)"RightAligned");
+		return String("RightAligned");
 		break;
 
 	case StaticText::HorzCentred:
-		return String((utf8*)"HorzCentred");
+		return String("HorzCentred");
 		break;
 
 	case StaticText::HorzJustified:
-		return String((utf8*)"HorzJustified");
+		return String("HorzJustified");
 		break;
 
 	case StaticText::WordWrapLeftAligned:
-		return String((utf8*)"WordWrapLeftAligned");
+		return String("WordWrapLeftAligned");
 		break;
 
 	case StaticText::WordWrapRightAligned:
-		return String((utf8*)"WordWrapRightAligned");
+		return String("WordWrapRightAligned");
 		break;
 
 	case StaticText::WordWrapCentred:
-		return String((utf8*)"WordWrapCentred");
+		return String("WordWrapCentred");
 		break;
 
 	case StaticText::WordWrapJustified:
-		return String((utf8*)"WordWrapJustified");
+		return String("WordWrapJustified");
 		break;
 
 	default:
-		return String((utf8*)"LeftAligned");
+		return String("LeftAligned");
 		break;
 	}
 }
@@ -90,31 +90,31 @@ void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticText::HorzFormatting fmt;
 
-	if (value == (utf8*)"RightAligned")
+	if (value == "RightAligned")
 	{
 		fmt = StaticText::RightAligned;
 	}
-	else if (value == (utf8*)"HorzCentred")
+	else if (value == "HorzCentred")
 	{
 		fmt = StaticText::HorzCentred;
 	}
-	else if (value == (utf8*)"HorzJustified")
+	else if (value == "HorzJustified")
 	{
 		fmt = StaticText::HorzJustified;
 	}
-	else if (value == (utf8*)"WordWrapLeftAligned")
+	else if (value == "WordWrapLeftAligned")
 	{
 		fmt = StaticText::WordWrapLeftAligned;
 	}
-	else if (value == (utf8*)"WordWrapRightAligned")
+	else if (value == "WordWrapRightAligned")
 	{
 		fmt = StaticText::WordWrapRightAligned;
 	}
-	else if (value == (utf8*)"WordWrapCentred")
+	else if (value == "WordWrapCentred")
 	{
 		fmt = StaticText::WordWrapCentred;
 	}
-	else if (value == (utf8*)"WordWrapJustified")
+	else if (value == "WordWrapJustified")
 	{
 		fmt = StaticText::WordWrapJustified;
 	}
@@ -132,15 +132,15 @@ String	VertFormatting::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const StaticText*>(receiver)->getVerticalFormatting())
 	{
 	case StaticText::BottomAligned:
-		return String((utf8*)"BottomAligned");
+		return String("BottomAligned");
 		break;
 
 	case StaticText::VertCentred:
-		return String((utf8*)"VertCentred");
+		return String("VertCentred");
 		break;
 
 	default:
-		return String((utf8*)"TopAligned");
+		return String("TopAligned");
 		break;
 	}
 }
@@ -150,11 +150,11 @@ void	VertFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticText::VertFormatting fmt;
 
-	if (value == (utf8*)"BottomAligned")
+	if (value == "BottomAligned")
 	{
 		fmt = StaticText::BottomAligned;
 	}
-	else if (value == (utf8*)"VertCentred")
+	else if (value == "VertCentred")
 	{
 		fmt = StaticText::VertCentred;
 	}

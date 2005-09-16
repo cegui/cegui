@@ -88,15 +88,15 @@ String	SortDirection::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const ListHeader*>(receiver)->getSortDirection())
 	{
 	case ListHeaderSegment::Ascending:
-		return String((utf8*)"Ascending");
+		return String("Ascending");
 		break;
 
 	case ListHeaderSegment::Descending:
-		return String((utf8*)"Descending");
+		return String("Descending");
 		break;
 
 	default:
-		return String((utf8*)"None");
+		return String("None");
 		break;
 	}
 
@@ -107,11 +107,11 @@ void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 {
 	ListHeaderSegment::SortDirection dir;
 
-	if (value == (utf8*)"Ascending")
+	if (value == "Ascending")
 	{
 		dir = ListHeaderSegment::Ascending;
 	}
-	else if (value == (utf8*)"Descending")
+	else if (value == "Descending")
 	{
 		dir = ListHeaderSegment::Descending;
 	}

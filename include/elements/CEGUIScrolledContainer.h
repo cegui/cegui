@@ -155,7 +155,7 @@ namespace CEGUI
 		*/
 		virtual bool	testClassName_impl(const String& class_name) const
 		{
-			if (class_name==(const utf8*)"ScrolledContainer")	return true;
+			if (class_name=="ScrolledContainer")	return true;
 			return Window::testClassName_impl(class_name);
 		}
 

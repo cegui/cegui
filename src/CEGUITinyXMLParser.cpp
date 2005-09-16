@@ -76,12 +76,12 @@ namespace CEGUI
 
         while (currAttr)
         {
-            attrs.add((utf8*)currAttr->Name(), (utf8*)currAttr->Value());
+            attrs.add(currAttr->Name(), currAttr->Value());
             currAttr = currAttr->Next();
         }
 
         // start element
-        d_handler->elementStart((utf8*)element->Value(), attrs);
+        d_handler->elementStart(element->Value(), attrs);
 
         // do children
         const TiXmlElement* childElement = element->FirstChildElement();

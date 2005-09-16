@@ -50,7 +50,7 @@ TabControlProperties::RelativeTabTextPadding	TabControl::d_relativeTabTextPaddin
 	Constants
 *************************************************************************/
 // event names
-const String TabControl::EventSelectionChanged( (utf8*)"TabSelectionChanged" );
+const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
 
 	
 /*************************************************************************
@@ -403,7 +403,7 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
 			return tb;
         }
 	}
-	throw UnknownObjectException((utf8*)"TabControl::getButtonForTabContents - The Window object is not a tab contents.");
+	throw UnknownObjectException("TabControl::getButtonForTabContents - The Window object is not a tab contents.");
 }
 /*************************************************************************
 	Calculate size and position for a tab button
@@ -457,7 +457,7 @@ Remove tab button
 String TabControl::makeButtonName(Window* wnd)
 {
     // derive button name
-    String buttonName = (utf8*)"__auto_btn";
+    String buttonName = "__auto_btn";
     buttonName.append(wnd->getName());
     return buttonName;
 }
@@ -511,7 +511,7 @@ Internal version of adding a child window
 void TabControl::addChild_impl(Window* wnd)
 {
     // Look for __auto_TabPane__ in the name (hopefully no-one will use this!)
-    if (wnd->getName().find((const utf8*)"__auto_TabPane__") != String::npos)
+    if (wnd->getName().find("__auto_TabPane__") != String::npos)
     {
         // perform normal addChild
         Window::addChild_impl(wnd);

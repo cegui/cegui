@@ -43,13 +43,13 @@ static data definitions
 *************************************************************************/
 
 // XML related strings
-const String Font_xmlHandler::FontElement( (utf8*)"Font" );
-const String Font_xmlHandler::MappingElement( (utf8*)"Mapping" );
-const String Font_xmlHandler::FontTypeStatic( (utf8*)"Static" );
-const String Font_xmlHandler::FontTypeDynamic( (utf8*)"Dynamic" );
-const String Font_xmlHandler::GlyphElement( (utf8*)"Glyph" );
-const String Font_xmlHandler::GlyphRangeElement( (utf8*)"GlyphRange" );
-const String Font_xmlHandler::GlyphSetElement( (utf8*)"GlyphSet" );
+const String Font_xmlHandler::FontElement( "Font" );
+const String Font_xmlHandler::MappingElement( "Mapping" );
+const String Font_xmlHandler::FontTypeStatic( "Static" );
+const String Font_xmlHandler::FontTypeDynamic( "Dynamic" );
+const String Font_xmlHandler::GlyphElement( "Glyph" );
+const String Font_xmlHandler::GlyphRangeElement( "GlyphRange" );
+const String Font_xmlHandler::GlyphSetElement( "GlyphSet" );
 const char	Font_xmlHandler::FontNameAttribute[]			= "Name";
 const char	Font_xmlHandler::FontFilenameAttribute[]		= "Filename";
 const char	Font_xmlHandler::FontResourceGroupAttribute[]   = "ResourceGroup";
@@ -104,7 +104,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 		}
 		else
 		{
-			Logger::getSingleton().logEvent((utf8*)"Mapping element encountered.  This element is invalid for dynamic fonts.", Informative);
+			Logger::getSingleton().logEvent("Mapping element encountered.  This element is invalid for dynamic fonts.", Informative);
 		}
 	}
 	// handle root Font element
@@ -200,7 +200,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 		}
 		else
 		{
-			Logger::getSingleton().logEvent((utf8*)"Glyph element encountered.  This element is invalid for static fonts.", Informative);
+			Logger::getSingleton().logEvent("Glyph element encountered.  This element is invalid for static fonts.", Informative);
 		}
 	}
 	// GlyphRange element
@@ -222,7 +222,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 		}
 		else
 		{
-			Logger::getSingleton().logEvent((utf8*)"GlyphRange element encountered.  This element is invalid for static fonts.", Informative);
+			Logger::getSingleton().logEvent("GlyphRange element encountered.  This element is invalid for static fonts.", Informative);
 		}
 	}
 	// GlyphSet element
@@ -246,7 +246,7 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 		}
 		else
 		{
-			Logger::getSingleton().logEvent((utf8*)"GlyphSet element encountered.  This element is invalid for static fonts.", Informative);
+			Logger::getSingleton().logEvent("GlyphSet element encountered.  This element is invalid for static fonts.", Informative);
 		}
 	}
 	// anything else is an error which *should* have already been caught by XML validation

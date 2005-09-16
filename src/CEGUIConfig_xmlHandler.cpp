@@ -35,7 +35,7 @@ namespace CEGUI
     /*************************************************************************
         Implementation Constants
     *************************************************************************/
-    const String Config_xmlHandler::CEGUIConfigElement( (utf8*)"CEGUIConfig" );
+    const String Config_xmlHandler::CEGUIConfigElement( "CEGUIConfig" );
     const char  Config_xmlHandler::ConfigLogfileAttribute[]         = "Logfile";
     const char  Config_xmlHandler::ConfigSchemeAttribute[]          = "Scheme";
     const char  Config_xmlHandler::ConfigLayoutAttribute[]          = "Layout";

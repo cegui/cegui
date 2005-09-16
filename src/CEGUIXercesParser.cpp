@@ -72,7 +72,7 @@ namespace CEGUI
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message((utf8*)"XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getSrcLine()) + " while parsing XML file '" + filename + "'.  Additional information: ");
+                String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getSrcLine()) + " while parsing XML file '" + filename + "'.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
@@ -85,7 +85,7 @@ namespace CEGUI
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message((utf8*)"XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getLineNumber()) + " while parsing XML file '" + filename + "'.  Additional information: ");
+            String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper::uintToString((uint)exc.getLineNumber()) + " while parsing XML file '" + filename + "'.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 
@@ -116,8 +116,8 @@ namespace CEGUI
         {
             // prepare a message about the failure
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message((utf8*)"An exception occurred while initialising the Xerces-C XML system.  Additional information: ");
-            message += (utf8*)excmsg;
+            String message("An exception occurred while initialising the Xerces-C XML system.  Additional information: ");
+            message += excmsg;
             XMLString::release(&excmsg);
 
             // throw a std::exception (because it won't try and use logger, which may not be available)
@@ -177,7 +177,7 @@ namespace CEGUI
         }
         else
         {
-            throw GenericException((utf8*)"XercesParser::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder.");
+            throw GenericException("XercesParser::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder.");
         }
 
     }
@@ -317,7 +317,7 @@ namespace CEGUI
         // prepare a message about the warning
         char* excmsg = XMLString::transcode(exc.getMessage());
         String message("Xerces warning: ");
-        message += (utf8*)excmsg;
+        message += excmsg;
         XMLString::release(&excmsg);
         Logger::getSingleton().logEvent(message);
     }

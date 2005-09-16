@@ -31,7 +31,7 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 // type name for this widget
-const String GUISheet::WidgetTypeName( (utf8*)"DefaultWindow" );
+const String GUISheet::WidgetTypeName( "DefaultWindow" );
 
 
 } // End of  CEGUI namespace section

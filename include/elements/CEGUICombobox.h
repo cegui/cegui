@@ -865,7 +865,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Combobox")	return true;
+		if (class_name=="Combobox")	return true;
 		return Window::testClassName_impl(class_name);
 	}
 

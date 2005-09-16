@@ -45,7 +45,7 @@ ItemListBaseProperties::AutoResizeEnabled	ItemListBase::d_autoResizeEnabledPrope
 *************************************************************************/
 // event names
 const String ItemListBase::EventNamespace("ItemListBase");
-const String ItemListBase::EventListContentsChanged( (utf8*)"ListItemsChanged" );
+const String ItemListBase::EventListContentsChanged( "ListItemsChanged" );
 
 	
 /*************************************************************************
@@ -92,7 +92,7 @@ ItemEntry* ItemListBase::getItemFromIndex(size_t index) const
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"ItemListBase::getItemFromIndex - the specified index is out of range for this ItemListBase.");
+		throw InvalidRequestException("ItemListBase::getItemFromIndex - the specified index is out of range for this ItemListBase.");
 	}
 }
 
@@ -110,7 +110,7 @@ size_t ItemListBase::getItemIndex(const ItemEntry* item) const
 	}
 	else
 	{
-		throw InvalidRequestException((utf8*)"ItemListBase::getItemIndex - the specified ItemEntry is not attached to this ItemListBase.");
+		throw InvalidRequestException("ItemListBase::getItemIndex - the specified ItemEntry is not attached to this ItemListBase.");
 	}
 
 }
@@ -207,7 +207,7 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 			// throw if item 'position' is not in the list
 			if (ins_pos == d_listItems.end())
 			{
-				throw InvalidRequestException((utf8*)"ItemListBase::insertItem - the specified ItemEntry for parameter 'position' is not attached to this ItemListBase.");
+				throw InvalidRequestException("ItemListBase::insertItem - the specified ItemEntry for parameter 'position' is not attached to this ItemListBase.");
 			}
 
 		}

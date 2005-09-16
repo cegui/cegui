@@ -45,16 +45,16 @@ ListHeaderSegmentProperties::SortDirection	ListHeaderSegment::d_sortDirectionPro
 	Constants
 *************************************************************************/
 // Event names
-const String ListHeaderSegment::EventSegmentClicked( (utf8*)"SegmentClicked" );
-const String ListHeaderSegment::EventSplitterDoubleClicked( (utf8*)"SplitterDoubleClicked" );
-const String ListHeaderSegment::EventSizingSettingChanged( (utf8*)"SizingSettingChanged" );
-const String ListHeaderSegment::EventSortDirectionChanged( (utf8*)"SortDirectionChanged" );
-const String ListHeaderSegment::EventMovableSettingChanged( (utf8*)"MovableSettingChanged" );
-const String ListHeaderSegment::EventSegmentDragStart( (utf8*)"SegmentDragStart" );
-const String ListHeaderSegment::EventSegmentDragStop( (utf8*)"SegmentDragStop" );
-const String ListHeaderSegment::EventSegmentDragPositionChanged( (utf8*)"SegmentDragPositionChanged" );
-const String ListHeaderSegment::EventSegmentSized( (utf8*)"SegmentSized" );
-const String ListHeaderSegment::EventClickableSettingChanged( (utf8*)"ClickableSettingChanged" );
+const String ListHeaderSegment::EventSegmentClicked( "SegmentClicked" );
+const String ListHeaderSegment::EventSplitterDoubleClicked( "SplitterDoubleClicked" );
+const String ListHeaderSegment::EventSizingSettingChanged( "SizingSettingChanged" );
+const String ListHeaderSegment::EventSortDirectionChanged( "SortDirectionChanged" );
+const String ListHeaderSegment::EventMovableSettingChanged( "MovableSettingChanged" );
+const String ListHeaderSegment::EventSegmentDragStart( "SegmentDragStart" );
+const String ListHeaderSegment::EventSegmentDragStop( "SegmentDragStop" );
+const String ListHeaderSegment::EventSegmentDragPositionChanged( "SegmentDragPositionChanged" );
+const String ListHeaderSegment::EventSegmentSized( "SegmentSized" );
+const String ListHeaderSegment::EventClickableSettingChanged( "ClickableSettingChanged" );
 
 // Defaults
 const float	ListHeaderSegment::DefaultSizingArea	= 8.0f;

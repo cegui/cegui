@@ -31,34 +31,19 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//    void DefaultResourceProvider::loadInputSourceContainer(const String& filename, InputSourceContainer& output)
-//    {
-//        if (filename.empty() || (filename == (utf8*)""))
-//        {
-//            throw InvalidRequestException((utf8*)
-//                "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
-//        }
-//
-//        XERCES_CPP_NAMESPACE_USE
-//        XMLCh* pval = XMLString::transcode(filename.c_str());
-//        InputSource* mInputSource = new LocalFileInputSource(pval);
-//        XMLString::release(&pval);
-//
-//        output.setData(mInputSource);
-//    }
 
     void DefaultResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup)
     {
-        if (filename.empty() || (filename == (utf8*)""))
+        if (filename.empty())
         {
-            throw InvalidRequestException((utf8*)
+            throw InvalidRequestException(
                 "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
         }
 
         std::ifstream dataFile(filename.c_str(), std::ios::binary|std::ios::ate);
         if( dataFile.fail())
         {
-            throw InvalidRequestException((utf8*)
+            throw InvalidRequestException(
                 "DefaultResourceProvider::load - " + filename + " does not exist");
         }
         std::streampos size = dataFile.tellg();
@@ -71,7 +56,7 @@ namespace CEGUI
         }
         catch(std::ifstream::failure e) {
             delete [] buffer;
-            throw GenericException((utf8*)
+            throw GenericException(
                 "DefaultResourceProvider::loadRawDataContainer - Problem reading " + filename);
         }
 

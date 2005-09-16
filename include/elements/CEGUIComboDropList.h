@@ -164,7 +164,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"ComboDropList")	return true;
+		if (class_name=="ComboDropList")	return true;
 		return Listbox::testClassName_impl(class_name);
 	}
 	

@@ -60,35 +60,35 @@ String TextFormatting::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const TextItem*>(receiver)->getTextFormatting())
 	{
 	case RightAligned:
-		return String((utf8*)"RightAligned");
+		return String("RightAligned");
 		break;
 
 	case Centred:
-		return String((utf8*)"HorzCentred");
+		return String("HorzCentred");
 		break;
 
 	case Justified:
-		return String((utf8*)"HorzJustified");
+		return String("HorzJustified");
 		break;
 
 	case WordWrapLeftAligned:
-		return String((utf8*)"WordWrapLeftAligned");
+		return String("WordWrapLeftAligned");
 		break;
 
 	case WordWrapRightAligned:
-		return String((utf8*)"WordWrapRightAligned");
+		return String("WordWrapRightAligned");
 		break;
 
 	case WordWrapCentred:
-		return String((utf8*)"WordWrapCentred");
+		return String("WordWrapCentred");
 		break;
 
 	case WordWrapJustified:
-		return String((utf8*)"WordWrapJustified");
+		return String("WordWrapJustified");
 		break;
 
 	default:
-		return String((utf8*)"LeftAligned");
+		return String("LeftAligned");
 		break;
 	}
 }
@@ -98,31 +98,31 @@ void TextFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	CEGUI::TextFormatting fmt;
 
-	if (value == (utf8*)"RightAligned")
+	if (value == "RightAligned")
 	{
 		fmt = RightAligned;
 	}
-	else if (value == (utf8*)"HorzCentred")
+	else if (value == "HorzCentred")
 	{
 		fmt = Centred;
 	}
-	else if (value == (utf8*)"HorzJustified")
+	else if (value == "HorzJustified")
 	{
 		fmt = Justified;
 	}
-	else if (value == (utf8*)"WordWrapLeftAligned")
+	else if (value == "WordWrapLeftAligned")
 	{
 		fmt = WordWrapLeftAligned;
 	}
-	else if (value == (utf8*)"WordWrapRightAligned")
+	else if (value == "WordWrapRightAligned")
 	{
 		fmt = WordWrapRightAligned;
 	}
-	else if (value == (utf8*)"WordWrapCentred")
+	else if (value == "WordWrapCentred")
 	{
 		fmt = WordWrapCentred;
 	}
-	else if (value == (utf8*)"WordWrapJustified")
+	else if (value == "WordWrapJustified")
 	{
 		fmt = WordWrapJustified;
 	}

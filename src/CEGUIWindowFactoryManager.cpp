@@ -46,19 +46,19 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// throw exception if passed factory is null.
 	if (factory == NULL)
 	{
-		throw NullObjectException((utf8*)"WindowFactoryManager::addFactory - The provided WindowFactory pointer was NULL");
+		throw NullObjectException("WindowFactoryManager::addFactory - The provided WindowFactory pointer was NULL");
 	}
 
 	// throw exception if type name for factory is already in use
 	if (d_factoryRegistry.find(factory->getTypeName()) != d_factoryRegistry.end())
 	{
-		throw AlreadyExistsException((utf8*)"WindowFactoryManager::addFactory - A WindowFactory for type '" + factory->getTypeName() + (utf8*)"' is already registered.");
+		throw AlreadyExistsException("WindowFactoryManager::addFactory - A WindowFactory for type '" + factory->getTypeName() + "' is already registered.");
 	}
 
 	// add the factory to the registry
 	d_factoryRegistry[factory->getTypeName()] = factory;
 
-	Logger::getSingleton().logEvent((utf8*)"WindowFactory for '" + factory->getTypeName() +"' windows added.");
+	Logger::getSingleton().logEvent("WindowFactory for '" + factory->getTypeName() +"' windows added.");
 }
 
 
@@ -69,7 +69,7 @@ void WindowFactoryManager::removeFactory(const String& name)
 {
 	d_factoryRegistry.erase(name);
 
-	Logger::getSingleton().logEvent((utf8*)"WindowFactory for '" + name +"' windows removed.");
+	Logger::getSingleton().logEvent("WindowFactory for '" + name +"' windows removed.");
 }
 
 
@@ -191,7 +191,7 @@ void WindowFactoryManager::addWindowTypeAlias(const String& aliasName, const Str
 	// throw if target type does not exist
 	if (!isFactoryPresent(targetType))
 	{
-		throw UnknownObjectException((utf8*)"WindowFactoryManager::addWindowTypeAlias - alias '" + aliasName + "' could not be created because the target type '" + targetType + "' is unknown within the system.");
+		throw UnknownObjectException("WindowFactoryManager::addWindowTypeAlias - alias '" + aliasName + "' could not be created because the target type '" + targetType + "' is unknown within the system.");
 	}
 
 	TypeAliasRegistry::iterator pos = d_aliasRegistry.find(aliasName);
@@ -206,7 +206,7 @@ void WindowFactoryManager::addWindowTypeAlias(const String& aliasName, const Str
 		pos->second.d_targetStack.push_back(targetType);
 	}
 
-	Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' added for window type '" + targetType +"'.");
+	Logger::getSingleton().logEvent("Window type alias named '" + aliasName + "' added for window type '" + targetType +"'.");
 }
 
 
@@ -230,7 +230,7 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 			// erase the target mapping
 			pos->second.d_targetStack.erase(aliasPos);
 
-			Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' removed for window type '" + targetType +"'.");
+			Logger::getSingleton().logEvent("Window type alias named '" + aliasName + "' removed for window type '" + targetType +"'.");
 
 			// if the list of targets for this alias is now empty
 			if (pos->second.d_targetStack.empty())
@@ -238,7 +238,7 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 				// erase the alias name also
 				d_aliasRegistry.erase(aliasName);
 
-				Logger::getSingleton().logEvent((utf8*)"Window type alias named '" + aliasName + "' has no more targets and has been removed.", Informative);
+				Logger::getSingleton().logEvent("Window type alias named '" + aliasName + "' has no more targets and has been removed.", Informative);
 			}
 
 		}

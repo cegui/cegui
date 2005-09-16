@@ -149,7 +149,7 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
         ++entry;
     }
 
-    throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
+    throw UnknownObjectException("::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 }
 
 extern "C" CEGUI::uint registerAllFactories(void)

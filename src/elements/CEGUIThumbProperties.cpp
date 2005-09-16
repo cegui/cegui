@@ -79,7 +79,7 @@ String	VertRange::get(const PropertyReceiver* receiver) const
 	pair<float, float> range = static_cast<const Thumb*>(receiver)->getVertRange();
 	sprintf(buff, "min:%f max:%f", range.first, range.second);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 
@@ -102,7 +102,7 @@ String	HorzRange::get(const PropertyReceiver* receiver) const
 	pair<float, float> range = static_cast<const Thumb*>(receiver)->getHorzRange();
 	sprintf(buff, "min:%f max:%f", range.first, range.second);
 
-	return String((utf8*)buff);
+	return String(buff);
 }
 
 

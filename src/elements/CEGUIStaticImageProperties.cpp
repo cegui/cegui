@@ -64,23 +64,23 @@ String	VertFormatting::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const StaticImage*>(receiver)->getVerticalFormatting())
 	{
 	case StaticImage::TopAligned:
-		return String((utf8*)"TopAligned");
+		return String("TopAligned");
 		break;
 
 	case StaticImage::BottomAligned:
-		return String((utf8*)"BottomAligned");
+		return String("BottomAligned");
 		break;
 
 	case StaticImage::VertTiled:
-		return String((utf8*)"VertTiled");
+		return String("VertTiled");
 		break;
 
 	case StaticImage::VertCentred:
-		return String((utf8*)"VertCentred");
+		return String("VertCentred");
 		break;
 
 	default:
-		return String((utf8*)"VertStretched");
+		return String("VertStretched");
 		break;
 	}
 
@@ -91,19 +91,19 @@ void	VertFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticImage::VertFormatting fmt;
 
-	if (value == (utf8*)"TopAligned")
+	if (value == "TopAligned")
 	{
 		fmt = StaticImage::TopAligned;
 	}
-	else if (value == (utf8*)"BottomAligned")
+	else if (value == "BottomAligned")
 	{
 		fmt = StaticImage::BottomAligned;
 	}
-	else if (value == (utf8*)"VertTiled")
+	else if (value == "VertTiled")
 	{
 		fmt = StaticImage::VertTiled;
 	}
-	else if (value == (utf8*)"VertCentred")
+	else if (value == "VertCentred")
 	{
 		fmt = StaticImage::VertCentred;
 	}
@@ -121,23 +121,23 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const StaticImage*>(receiver)->getHorizontalFormatting())
 	{
 	case StaticImage::LeftAligned:
-		return String((utf8*)"LeftAligned");
+		return String("LeftAligned");
 		break;
 
 	case StaticImage::RightAligned:
-		return String((utf8*)"RightAligned");
+		return String("RightAligned");
 		break;
 
 	case StaticImage::HorzTiled:
-		return String((utf8*)"HorzTiled");
+		return String("HorzTiled");
 		break;
 
 	case StaticImage::HorzCentred:
-		return String((utf8*)"HorzCentred");
+		return String("HorzCentred");
 		break;
 
 	default:
-		return String((utf8*)"HorzStretched");
+		return String("HorzStretched");
 		break;
 	}
 
@@ -148,19 +148,19 @@ void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 {
 	StaticImage::HorzFormatting fmt;
 
-	if (value == (utf8*)"LeftAligned")
+	if (value == "LeftAligned")
 	{
 		fmt = StaticImage::LeftAligned;
 	}
-	else if (value == (utf8*)"RightAligned")
+	else if (value == "RightAligned")
 	{
 		fmt = StaticImage::RightAligned;
 	}
-	else if (value == (utf8*)"HorzTiled")
+	else if (value == "HorzTiled")
 	{
 		fmt = StaticImage::HorzTiled;
 	}
-	else if (value == (utf8*)"HorzCentred")
+	else if (value == "HorzCentred")
 	{
 		fmt = StaticImage::HorzCentred;
 	}

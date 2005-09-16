@@ -60,8 +60,8 @@ FrameWindowProperties::NESWSizingCursorImage    FrameWindow::d_neswSizingCursorP
 	Constants
 *************************************************************************/
 // additional event names for this window
-const String FrameWindow::EventRollupToggled( (utf8*)"RollupToggled" );
-const String FrameWindow::EventCloseClicked( (utf8*)"CloseClicked" );
+const String FrameWindow::EventRollupToggled( "RollupToggled" );
+const String FrameWindow::EventCloseClicked( "CloseClicked" );
 
 // other bits
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;

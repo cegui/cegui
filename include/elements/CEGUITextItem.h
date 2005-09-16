@@ -194,7 +194,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"TextItem")	return true;
+		if (class_name=="TextItem")	return true;
 		return ItemEntry::testClassName_impl(class_name);
 	}
 

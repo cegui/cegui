@@ -94,17 +94,17 @@ const argb_t Editbox::DefaultInactiveSelectionColour	= 0xFF808080;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String Editbox::EventReadOnlyModeChanged( (utf8*)"ReadOnlyChanged" );
-const String Editbox::EventMaskedRenderingModeChanged( (utf8*)"MaskRenderChanged" );
-const String Editbox::EventMaskCodePointChanged( (utf8*)"MaskCPChanged" );
-const String Editbox::EventValidationStringChanged( (utf8*)"ValidatorChanged" );
-const String Editbox::EventMaximumTextLengthChanged( (utf8*)"MaxTextLenChanged" );
-const String Editbox::EventTextInvalidated( (utf8*)"TextInvalidated" );
-const String Editbox::EventInvalidEntryAttempted( (utf8*)"InvalidInputAttempt" );
-const String Editbox::EventCaratMoved( (utf8*)"TextCaratMoved" );
-const String Editbox::EventTextSelectionChanged( (utf8*)"TextSelectChanged" );
-const String Editbox::EventEditboxFull( (utf8*)"EditboxFull" );
-const String Editbox::EventTextAccepted( (utf8*)"TextAccepted" );
+const String Editbox::EventReadOnlyModeChanged( "ReadOnlyChanged" );
+const String Editbox::EventMaskedRenderingModeChanged( "MaskRenderChanged" );
+const String Editbox::EventMaskCodePointChanged( "MaskCPChanged" );
+const String Editbox::EventValidationStringChanged( "ValidatorChanged" );
+const String Editbox::EventMaximumTextLengthChanged( "MaxTextLenChanged" );
+const String Editbox::EventTextInvalidated( "TextInvalidated" );
+const String Editbox::EventInvalidEntryAttempted( "InvalidInputAttempt" );
+const String Editbox::EventCaratMoved( "TextCaratMoved" );
+const String Editbox::EventTextSelectionChanged( "TextSelectChanged" );
+const String Editbox::EventEditboxFull( "EditboxFull" );
+const String Editbox::EventTextAccepted( "TextAccepted" );
 
 
 /*************************************************************************
@@ -131,7 +131,7 @@ Editbox::Editbox(const String& type, const String& name) :
 	addEditboxProperties();
 
 	// default to accepting all characters
-	setValidationString((utf8*)".*");
+	setValidationString(".*");
 }
 
 

@@ -40,8 +40,8 @@ ProgressBarProperties::StepSize			ProgressBar::d_stepSizeProperty;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String ProgressBar::EventProgressChanged( (utf8*)"ProgressChanged" );
-const String ProgressBar::EventProgressDone( (utf8*)"ProgressDone" );
+const String ProgressBar::EventProgressChanged( "ProgressChanged" );
+const String ProgressBar::EventProgressDone( "ProgressDone" );
 
 
 /*************************************************************************

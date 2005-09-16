@@ -40,7 +40,7 @@ CheckboxProperties::Selected	Checkbox::d_selectedProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const String Checkbox::EventCheckStateChanged( (utf8*)"CheckStateChanged" );
+const String Checkbox::EventCheckStateChanged( "CheckStateChanged" );
 
 
 /*************************************************************************

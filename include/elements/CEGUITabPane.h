@@ -90,7 +90,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Tabpane")	return true;
+		if (class_name=="Tabpane")	return true;
 		return Static::testClassName_impl(class_name);
 	}
 

@@ -3566,7 +3566,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"Window")	return true;
+		if (class_name=="Window")	return true;
 		return false;
 	}
 

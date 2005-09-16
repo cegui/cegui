@@ -41,7 +41,7 @@ RadioButtonProperties::GroupID	RadioButton::d_groupIDProperty;
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const String RadioButton::EventSelectStateChanged( (utf8*)"SelectStateChanged" );
+const String RadioButton::EventSelectStateChanged( "SelectStateChanged" );
 
 
 /*************************************************************************

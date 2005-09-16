@@ -334,7 +334,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name==(const utf8*)"StaticText")	return true;
+		if (class_name=="StaticText")	return true;
 		return Static::testClassName_impl(class_name);
 	}
 

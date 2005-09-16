@@ -48,18 +48,18 @@ ListHeaderProperties::SortDirection			ListHeader::d_sortDirectionProperty;
 	Constants
 *************************************************************************/
 // Event names
-const String ListHeader::EventSortColumnChanged( (utf8*)"SortColumnChanged" );
-const String ListHeader::EventSortDirectionChanged( (utf8*)"SortDirectionChanged" );
-const String ListHeader::EventSegmentSized( (utf8*)"SegmentSized" );
-const String ListHeader::EventSegmentClicked( (utf8*)"SegmentClicked" );
-const String ListHeader::EventSplitterDoubleClicked( (utf8*)"SplitterDoubleClicked" );
-const String ListHeader::EventSegmentSequenceChanged( (utf8*)"SegmentSequenceChanged" );
-const String ListHeader::EventSegmentAdded( (utf8*)"SegmentAdded" );
-const String ListHeader::EventSegmentRemoved( (utf8*)"SegmentRemoved" );
-const String ListHeader::EventSortSettingChanged( (utf8*)"SortSettingChanged" );
-const String ListHeader::EventDragMoveSettingChanged( (utf8*)"DragMoveSettingChanged" );
-const String ListHeader::EventDragSizeSettingChanged( (utf8*)"DragSizeSettingChanged" );
-const String ListHeader::EventSegmentRenderOffsetChanged( (utf8*)"SegmentOffsetChanged" );
+const String ListHeader::EventSortColumnChanged( "SortColumnChanged" );
+const String ListHeader::EventSortDirectionChanged( "SortDirectionChanged" );
+const String ListHeader::EventSegmentSized( "SegmentSized" );
+const String ListHeader::EventSegmentClicked( "SegmentClicked" );
+const String ListHeader::EventSplitterDoubleClicked( "SplitterDoubleClicked" );
+const String ListHeader::EventSegmentSequenceChanged( "SegmentSequenceChanged" );
+const String ListHeader::EventSegmentAdded( "SegmentAdded" );
+const String ListHeader::EventSegmentRemoved( "SegmentRemoved" );
+const String ListHeader::EventSortSettingChanged( "SortSettingChanged" );
+const String ListHeader::EventDragMoveSettingChanged( "DragMoveSettingChanged" );
+const String ListHeader::EventDragSizeSettingChanged( "DragSizeSettingChanged" );
+const String ListHeader::EventSegmentRenderOffsetChanged( "SegmentOffsetChanged" );
 
 // values
 const float	ListHeader::ScrollSpeed	= 8.0f;
@@ -108,7 +108,7 @@ ListHeaderSegment& ListHeader::getSegmentFromColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::getSegmentFromColumn - requested column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::getSegmentFromColumn - requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -133,7 +133,7 @@ ListHeaderSegment& ListHeader::getSegmentFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException((utf8*)"ListHeader::getSegmentFromID - no segment with the requested ID is attached to this ListHeader.");
+	throw InvalidRequestException("ListHeader::getSegmentFromID - no segment with the requested ID is attached to this ListHeader.");
 }
 
 
@@ -144,7 +144,7 @@ ListHeaderSegment& ListHeader::getSortSegment(void) const
 {
 	if (d_sortSegment == NULL)
 	{
-		throw	InvalidRequestException((utf8*)"ListHeader::getSortSegment - Sort segment was NULL!  (No segments are attached to the ListHeader?)");
+		throw	InvalidRequestException("ListHeader::getSortSegment - Sort segment was NULL!  (No segments are attached to the ListHeader?)");
 	}
 	else
 	{
@@ -169,7 +169,7 @@ uint ListHeader::getColumnFromSegment(const ListHeaderSegment& segment) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException((utf8*)"ListHeader::getColumnFromSegment - the given ListHeaderSegment is not attached to this ListHeader.");
+	throw InvalidRequestException("ListHeader::getColumnFromSegment - the given ListHeaderSegment is not attached to this ListHeader.");
 }
 
 
@@ -188,7 +188,7 @@ uint ListHeader::getColumnFromID(uint id) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException((utf8*)"ListHeader::getColumnFromID - no column with the requested ID is available on this ListHeader.");
+	throw InvalidRequestException("ListHeader::getColumnFromID - no column with the requested ID is available on this ListHeader.");
 }
 
 
@@ -217,7 +217,7 @@ uint ListHeader::getColumnWithText(const String& text) const
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException((utf8*)"ListHeader::getColumnWithText - no column with the text '" + text + "' is attached to this ListHeader.");
+	throw InvalidRequestException("ListHeader::getColumnWithText - no column with the text '" + text + "' is attached to this ListHeader.");
 }
 
 
@@ -239,7 +239,7 @@ float ListHeader::getPixelOffsetToSegment(const ListHeaderSegment& segment) cons
 	}
 
 	// No such segment found, throw exception
-	throw InvalidRequestException((utf8*)"ListHeader::getPixelOffsetToSegment - the given ListHeaderSegment is not attached to this ListHeader.");
+	throw InvalidRequestException("ListHeader::getPixelOffsetToSegment - the given ListHeaderSegment is not attached to this ListHeader.");
 }
 
 
@@ -250,7 +250,7 @@ float ListHeader::getPixelOffsetToColumn(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::getPixelOffsetToColumn - requested column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::getPixelOffsetToColumn - requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -290,7 +290,7 @@ float ListHeader::getColumnPixelWidth(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::getColumnPixelWidth - requested column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::getColumnPixelWidth - requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -398,7 +398,7 @@ void ListHeader::setSortColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::setSortColumn - specified column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::setSortColumn - specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -528,7 +528,7 @@ void ListHeader::removeColumn(uint column)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::removeColumn - specified column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::removeColumn - specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -578,7 +578,7 @@ void ListHeader::moveColumn(uint column, uint position)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::moveColumn - specified column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::moveColumn - specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
@@ -677,7 +677,7 @@ void ListHeader::setColumnPixelWidth(uint column, float width)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException((utf8*)"ListHeader::setColumnPixelWidth - specified column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::setColumnPixelWidth - specified column index is out of range for this ListHeader.");
 	}
 	else
 	{

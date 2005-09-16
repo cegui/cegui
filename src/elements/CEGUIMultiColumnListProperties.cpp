@@ -89,15 +89,15 @@ String	SortDirection::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const MultiColumnList*>(receiver)->getSortDirection())
 	{
 	case ListHeaderSegment::Ascending:
-		return String((utf8*)"Ascending");
+		return String("Ascending");
 		break;
 
 	case ListHeaderSegment::Descending:
-		return String((utf8*)"Descending");
+		return String("Descending");
 		break;
 
 	default:
-		return String((utf8*)"None");
+		return String("None");
 		break;
 	}
 
@@ -108,11 +108,11 @@ void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 {
 	ListHeaderSegment::SortDirection dir;
 
-	if (value == (utf8*)"Ascending")
+	if (value == "Ascending")
 	{
 		dir = ListHeaderSegment::Ascending;
 	}
-	else if (value == (utf8*)"Descending")
+	else if (value == "Descending")
 	{
 		dir = ListHeaderSegment::Descending;
 	}
@@ -178,43 +178,43 @@ String	SelectionMode::get(const PropertyReceiver* receiver) const
 	switch(static_cast<const MultiColumnList*>(receiver)->getSelectionMode())
 	{
 	case MultiColumnList::RowMultiple:
-		return String((utf8*)"RowMultiple");
+		return String("RowMultiple");
 		break;
 
 	case MultiColumnList::ColumnSingle:
-		return String((utf8*)"ColumnSingle");
+		return String("ColumnSingle");
 		break;
 
 	case MultiColumnList::ColumnMultiple:
-		return String((utf8*)"ColumnMultiple");
+		return String("ColumnMultiple");
 		break;
 
 	case MultiColumnList::CellSingle:
-		return String((utf8*)"CellSingle");
+		return String("CellSingle");
 		break;
 
 	case MultiColumnList::CellMultiple:
-		return String((utf8*)"CellMultiple");
+		return String("CellMultiple");
 		break;
 
 	case MultiColumnList::NominatedColumnSingle:
-		return String((utf8*)"NominatedColumnSingle");
+		return String("NominatedColumnSingle");
 		break;
 
 	case MultiColumnList::NominatedColumnMultiple:
-		return String((utf8*)"NominatedColumnMultiple");
+		return String("NominatedColumnMultiple");
 		break;
 
 	case MultiColumnList::NominatedRowSingle:
-		return String((utf8*)"NominatedRowSingle");
+		return String("NominatedRowSingle");
 		break;
 
 	case MultiColumnList::NominatedRowMultiple:
-		return String((utf8*)"NominatedRowMultiple");
+		return String("NominatedRowMultiple");
 		break;
 
 	default:
-		return String((utf8*)"RowSingle");
+		return String("RowSingle");
 		break;
 	}
 }
@@ -224,39 +224,39 @@ void	SelectionMode::set(PropertyReceiver* receiver, const String& value)
 {
 	MultiColumnList::SelectionMode mode;
 
-	if (value == (utf8*)"RowMultiple")
+	if (value == "RowMultiple")
 	{
 		mode = MultiColumnList::RowMultiple;
 	}
-	else if (value == (utf8*)"ColumnSingle")
+	else if (value == "ColumnSingle")
 	{
 		mode = MultiColumnList::ColumnSingle;
 	}
-	else if (value == (utf8*)"ColumnMultiple")
+	else if (value == "ColumnMultiple")
 	{
 		mode = MultiColumnList::ColumnMultiple;
 	}
-	else if (value == (utf8*)"CellSingle")
+	else if (value == "CellSingle")
 	{
 		mode = MultiColumnList::CellSingle;
 	}
-	else if (value == (utf8*)"CellMultiple")
+	else if (value == "CellMultiple")
 	{
 		mode = MultiColumnList::CellMultiple;
 	}
-	else if (value == (utf8*)"NominatedColumnSingle")
+	else if (value == "NominatedColumnSingle")
 	{
 		mode = MultiColumnList::NominatedColumnSingle;
 	}
-	else if (value == (utf8*)"NominatedColumnMultiple")
+	else if (value == "NominatedColumnMultiple")
 	{
 		mode = MultiColumnList::NominatedColumnMultiple;
 	}
-	else if (value == (utf8*)"NominatedRowSingle")
+	else if (value == "NominatedRowSingle")
 	{
 		mode = MultiColumnList::NominatedRowSingle;
 	}
-	else if (value == (utf8*)"NominatedRowMultiple")
+	else if (value == "NominatedRowMultiple")
 	{
 		mode = MultiColumnList::NominatedRowMultiple;
 	}

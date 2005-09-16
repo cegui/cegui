@@ -33,7 +33,7 @@ const String TabButton::EventNamespace("TabButton");
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String TabButton::EventClicked( (utf8*)"Clicked" );
+const String TabButton::EventClicked( "Clicked" );
 
 
 /*************************************************************************

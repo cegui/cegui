@@ -55,7 +55,7 @@ Imageset::Imageset(const String& name, Texture* texture) :
 {
 	if (d_texture == NULL)
 	{
-		throw NullObjectException((utf8*)"Imageset::Imageset - Texture object supplied for Imageset creation must not be NULL");
+		throw NullObjectException("Imageset::Imageset - Texture object supplied for Imageset creation must not be NULL");
 	}
 
 	// defaults for scaling options
@@ -115,7 +115,7 @@ void Imageset::setTexture(Texture* texture)
 {
 	if (d_texture == NULL)
 	{
-		throw NullObjectException((utf8*)"Imageset::setTexture - Texture object supplied for Imageset creation must not be NULL");
+		throw NullObjectException("Imageset::setTexture - Texture object supplied for Imageset creation must not be NULL");
 	}
 
 	d_texture = texture;
@@ -130,9 +130,9 @@ void Imageset::load(const String& filename, const String& resourceGroup)
 	// unload old data and texture.
 	unload();
 
-	if (filename.empty() || (filename == (utf8*)""))
+	if (filename.empty())
 	{
-		throw InvalidRequestException((utf8*)"Imageset::load - Filename supplied for Imageset loading must be valid");
+		throw InvalidRequestException("Imageset::load - Filename supplied for Imageset loading must be valid");
 	}
 
     // create handler object

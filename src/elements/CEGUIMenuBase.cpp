@@ -49,8 +49,8 @@ const colour MenuBase::DefaultBackgroundColour = 0xFFFFFFFF;
 
 // event strings
 const String MenuBase::EventNamespace("MenuBase");
-const String MenuBase::EventPopupOpened( (utf8*)"PopupOpened" );
-const String MenuBase::EventPopupClosed( (utf8*)"PopupClosed" );
+const String MenuBase::EventPopupOpened( "PopupOpened" );
+const String MenuBase::EventPopupClosed( "PopupClosed" );
 
 /*************************************************************************
 	Constructor for MenuBase base class.

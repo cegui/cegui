@@ -44,7 +44,7 @@ template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton	= NULL;
 *************************************************************************/
 SchemeManager::SchemeManager(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::SchemeManager singleton created.");
+	Logger::getSingleton().logEvent("CEGUI::SchemeManager singleton created.");
 }
 
 
@@ -53,11 +53,11 @@ SchemeManager::SchemeManager(void)
 *************************************************************************/
 SchemeManager::~SchemeManager(void)
 {
-	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of GUI Scheme system ----");
+	Logger::getSingleton().logEvent("---- Begining cleanup of GUI Scheme system ----");
 
 	unloadAllSchemes();
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::SchemeManager singleton destroyed.");
+	Logger::getSingleton().logEvent("CEGUI::SchemeManager singleton destroyed.");
 }
 
 
@@ -66,7 +66,7 @@ SchemeManager::~SchemeManager(void)
 *************************************************************************/
 Scheme* SchemeManager::loadScheme(const String& scheme_filename, const String& resourceGroup)
 {
-	Logger::getSingleton().logEvent((utf8*)"Attempting to load Scheme from file '" + scheme_filename + "'.");
+	Logger::getSingleton().logEvent("Attempting to load Scheme from file '" + scheme_filename + "'.");
 
 	Scheme* tmp = new Scheme(scheme_filename, resourceGroup);
 	String name = tmp->getName();
@@ -89,7 +89,7 @@ void SchemeManager::unloadScheme(const String& scheme_name)
 		delete pos->second;
 		d_schemes.erase(pos);
 
-		Logger::getSingleton().logEvent((utf8*)"Scheme '" + tmpName + "' has been unloaded.");
+		Logger::getSingleton().logEvent("Scheme '" + tmpName + "' has been unloaded.");
 	}
 
 }

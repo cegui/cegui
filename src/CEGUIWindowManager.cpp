@@ -57,7 +57,7 @@ const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
 WindowManager::WindowManager(void) :
     d_uid_counter(0)
 {
-    Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowManager singleton created");
+    Logger::getSingleton().logEvent("CEGUI::WindowManager singleton created");
 }
 
 
@@ -69,7 +69,7 @@ WindowManager::~WindowManager(void)
 	destroyAllWindows();
     cleanDeadPool();
 
-	Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowManager singleton destroyed");
+	Logger::getSingleton().logEvent("CEGUI::WindowManager singleton destroyed");
 }
 
 
@@ -150,7 +150,7 @@ void WindowManager::destroyWindow(const String& window)
         // notify system object of the window destruction
         System::getSingleton().notifyWindowDestroyed(wnd);
 
-		Logger::getSingleton().logEvent((utf8*)"Window '" + window + "' has been added to dead pool.", Informative);
+		Logger::getSingleton().logEvent("Window '" + window + "' has been added to dead pool.", Informative);
 	}
 
 }
@@ -202,13 +202,13 @@ void WindowManager::destroyAllWindows(void)
 *************************************************************************/
 Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, const String& resourceGroup, PropertyCallback* callback, void* userdata)
 {
-	if (filename.empty() || (filename == (utf8*)""))
+	if (filename.empty())
 	{
-		throw InvalidRequestException((utf8*)"WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid.");
+		throw InvalidRequestException("WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid.");
 	}
 
 	// log the fact we are about to load a layout
-	Logger::getSingleton().logEvent((utf8*)"---- Beginning loading of GUI layout from '" + filename + "' ----", Informative);
+	Logger::getSingleton().logEvent("---- Beginning loading of GUI layout from '" + filename + "' ----", Informative);
 
     // create handler object
     GUILayout_xmlHandler handler(name_prefix, callback, userdata);
@@ -225,7 +225,7 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	}
 
     // log the completion of loading
-    Logger::getSingleton().logEvent((utf8*)"---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);
+    Logger::getSingleton().logEvent("---- Successfully completed loading of GUI layout from '" + filename + "' ----", Standard);
 
 	return handler.getLayoutRootWindow();
 }

@@ -329,7 +329,7 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
 			break;
 
 		default:
-			throw InvalidRequestException((utf8*)"Font::drawText - Unknown or unsupported TextFormatting value specified.");
+			throw InvalidRequestException("Font::drawText - Unknown or unsupported TextFormatting value specified.");
 		}
 
 		lineCount += thisCount;
@@ -570,7 +570,7 @@ void Font::drawGlyphToBuffer(argb_t* buffer, uint buf_width)
 				break;
 
 			default:
-				throw InvalidRequestException((utf8*)"Font::drawGlyphToBuffer - The glyph could not be drawn because the pixel mode is unsupported.");
+				throw InvalidRequestException("Font::drawGlyphToBuffer - The glyph could not be drawn because the pixel mode is unsupported.");
 				break;
 			}
 
@@ -770,14 +770,14 @@ void Font::constructor_impl(const String& name, const String& fontname, const St
 			FT_Done_Face(d_impldat->fontFace);
 			d_freetype = false;
 
-			errMsg = (utf8*)"Font::constructor_impl - The source font '" + fontname +"' does not have a Unicode charmap, and cannot be used.";
+			errMsg = "Font::constructor_impl - The source font '" + fontname +"' does not have a Unicode charmap, and cannot be used.";
 		}
 
 	}
 	// failed to create face (a problem with the font file?)
 	else
 	{
-		errMsg = (utf8*)"Font::constructor_impl - An error occurred while trying to create a FreeType face from source font '" + fontname + "'.";
+		errMsg = "Font::constructor_impl - An error occurred while trying to create a FreeType face from source font '" + fontname + "'.";
 	}
 
 	// cleanup image set we created here
@@ -795,9 +795,9 @@ void Font::load(const String& filename, const String& resourceGroup)
 	// unload old data
 	unload();
 
-	if (filename.empty() || (filename == (utf8*)""))
+	if (filename.empty())
 	{
-		throw InvalidRequestException((utf8*)"Font::load - Filename supplied for Font loading must be valid");
+		throw InvalidRequestException("Font::load - Filename supplied for Font loading must be valid");
 	}
 
     // create handler object
@@ -854,7 +854,7 @@ void Font::defineFontGlyphs_impl(void)
 	// must be a font using the FreeType system
 	if (!d_freetype)
 	{
-		throw InvalidRequestException((utf8*)"Font::defineFontGlyphs_impl - operation not supported on bitmap based fonts.");
+		throw InvalidRequestException("Font::defineFontGlyphs_impl - operation not supported on bitmap based fonts.");
 	}
 
 	uint texture_size = getRequiredTextureSize(d_glyphset);
@@ -862,7 +862,7 @@ void Font::defineFontGlyphs_impl(void)
 	// check renderer can do a texture big enough
 	if (texture_size > System::getSingleton().getRenderer()->getMaxTextureSize())
 	{
-		throw	RendererException((utf8*)"Font::defineFontGlyphs_impl - operation requires a texture larger than the supported maximum.");
+		throw	RendererException("Font::defineFontGlyphs_impl - operation requires a texture larger than the supported maximum.");
 	}
 
 	// allocate memory buffer where we will define the imagery
@@ -874,7 +874,7 @@ void Font::defineFontGlyphs_impl(void)
 	}
 	catch (std::bad_alloc)
 	{
-		throw	MemoryException((utf8*)"Font::defineFontGlyphs_impl - failed to allocate required memory buffer.");
+		throw	MemoryException("Font::defineFontGlyphs_impl - failed to allocate required memory buffer.");
 	}
 
 	// initialise background to transparent black.
@@ -1047,7 +1047,7 @@ void Font::createFontFromFT_Face(uint size, uint horzDpi, uint vertDpi)
 	// failed to set size for font
 	else
 	{
-		throw GenericException((utf8*)"Font::createFontFromFT_Face - An error occurred while creating a source font with the requested size.");
+		throw GenericException("Font::createFontFromFT_Face - An error occurred while creating a source font with the requested size.");
 	}
 
 }
@@ -1188,7 +1188,7 @@ float Font::getFormattedTextExtent(const String& text, const Rect& format_area, 
 			break;
 
 		default:
-			throw InvalidRequestException((utf8*)"Font::getFormattedTextExtent - Unknown or unsupported TextFormatting value specified.");
+			throw InvalidRequestException("Font::getFormattedTextExtent - Unknown or unsupported TextFormatting value specified.");
 		}
 
 		if (lineWidth > widest)
