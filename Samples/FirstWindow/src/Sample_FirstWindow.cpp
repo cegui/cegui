@@ -88,11 +88,17 @@ bool FirstWindowSample::initialiseSample()
     // Fonts are loaded via the FontManager singleton.
     FontManager::getSingleton().createFont("../datafiles/fonts/Commonwealth-10.font");
 
+    // The widgets that we will be using for this sample are the TaharezLook widgets,
+    // and to enable us to use this 'skin' we must load the xml specification - which
+    // within cegui is known as a "looknfeel" file.
+    //
+    // We load the looknfeel via the WidgetLookManager singleton.
+    WidgetLookManager::getSingleton().parseLookNFeelSpecification("../datafiles/looknfeel/TaharezLook.looknfeel");
+
     // The final step of basic initialisation that is usually peformed is
     // registering some widgets with the system via a scheme file.  The scheme
     // basically states the name of a dynamically loaded module that contains the
-    // concrete widget classes that we wish to use, and the names of the widgets
-    // that are to be registed.  As stated previously, a scheme can actually
+    // widget classes that we wish to use.  As stated previously, a scheme can actually
     // conatin much more information, though for the sake of this first example, we
     // load a scheme which only contains what is required to register some widgets.
     //

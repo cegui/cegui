@@ -58,6 +58,9 @@
 #include "CEGUIRenderableFrame.h"
 #include "CEGUIRenderableImage.h"
 
+// Falagard core system include
+#include "falagard/CEGUIFalWidgetLookManager.h"
+
 // gui elements
 #include "elements/CEGUIButtonBase.h"
 #include "elements/CEGUIPushButton.h"

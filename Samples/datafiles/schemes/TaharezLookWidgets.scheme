@@ -1,39 +1,41 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="TaharezLookWidgets">
-	<WindowSet Filename="CEGUITaharezLook">
-		<WindowFactory Name="TaharezLook/AlternateProgressBar" />
-		<WindowFactory Name="TaharezLook/Button" />
-		<WindowFactory Name="TaharezLook/Checkbox" />
-		<WindowFactory Name="TaharezLook/CloseButton" />
-		<WindowFactory Name="TaharezLook/Combobox" />
-		<WindowFactory Name="TaharezLook/ComboDropList" />
-		<WindowFactory Name="TaharezLook/ComboEditbox" />
-		<WindowFactory Name="TaharezLook/Editbox" />
-		<WindowFactory Name="TaharezLook/FrameWindow" />
-		<WindowFactory Name="TaharezLook/LargeVerticalScrollbar" />
-		<WindowFactory Name="TaharezLook/LargeVerticalScrollbarThumb" />
-		<WindowFactory Name="TaharezLook/Listbox" />
-		<WindowFactory Name="TaharezLook/ListHeader" />
-		<WindowFactory Name="TaharezLook/ListHeaderSegment" />
-		<WindowFactory Name="TaharezLook/HorizontalScrollbar" />
-		<WindowFactory Name="TaharezLook/HorizontalScrollbarThumb" />
-		<WindowFactory Name="TaharezLook/MultiColumnList" />
-		<WindowFactory Name="TaharezLook/MultiLineEditbox" />
-		<WindowFactory Name="TaharezLook/ProgressBar" />
-		<WindowFactory Name="TaharezLook/RadioButton" />
-		<WindowFactory Name="TaharezLook/ScrollablePane" />
-		<WindowFactory Name="TaharezLook/Slider" />
-		<WindowFactory Name="TaharezLook/SliderThumb" />
-		<WindowFactory Name="TaharezLook/Spinner" />
-		<WindowFactory Name="TaharezLook/StaticImage" />
-		<WindowFactory Name="TaharezLook/StaticText" />
-		<WindowFactory Name="TaharezLook/TabButton" />
-		<WindowFactory Name="TaharezLook/TabControl" />
-		<WindowFactory Name="TaharezLook/TabPane" />
-		<WindowFactory Name="TaharezLook/Titlebar" />
-        <WindowFactory Name="TaharezLook/Tooltip" />
-		<WindowFactory Name="TaharezLook/VerticalScrollbar" />
-		<WindowFactory Name="TaharezLook/VerticalScrollbarThumb" />
-		<WindowFactory Name="TaharezLook/VUMeter" />
-	</WindowSet>
+	<WindowSet Filename="CEGUIFalagardBase" />
+	<FalagardMapping WindowType="TaharezLook/AlternateProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
+	<FalagardMapping WindowType="TaharezLook/Button" TargetType="Falagard/Button" LookNFeel="TaharezLook/Button" />
+	<FalagardMapping WindowType="TaharezLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="TaharezLook/Checkbox" />
+	<FalagardMapping WindowType="TaharezLook/ComboDropList" TargetType="Falagard/ComboDropList" LookNFeel="TaharezLook/ComboDropList" />
+	<FalagardMapping WindowType="TaharezLook/ComboEditbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/ComboEditbox" />
+	<FalagardMapping WindowType="TaharezLook/Combobox" TargetType="Falagard/Combobox" LookNFeel="TaharezLook/Combobox" />
+	<FalagardMapping WindowType="TaharezLook/Editbox" TargetType="Falagard/Editbox" LookNFeel="TaharezLook/Editbox" />
+	<FalagardMapping WindowType="TaharezLook/FrameWindow" TargetType="Falagard/FrameWindow" LookNFeel="TaharezLook/FrameWindow" />
+	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/HorizontalScrollbar" />
+	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/HorizontalScrollbarThumb" />
+	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/LargeVerticalScrollbar" />
+	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/LargeVerticalScrollbarThumb" />
+	<FalagardMapping WindowType="TaharezLook/ListHeader" TargetType="Falagard/ListHeader" LookNFeel="TaharezLook/ListHeader" />
+	<FalagardMapping WindowType="TaharezLook/ListHeaderSegment" TargetType="Falagard/ListHeaderSegment" LookNFeel="TaharezLook/ListHeaderSegment" />
+	<FalagardMapping WindowType="TaharezLook/Listbox" TargetType="Falagard/Listbox" LookNFeel="TaharezLook/Listbox" />
+	<FalagardMapping WindowType="TaharezLook/Menubar" TargetType="Falagard/Menubar" LookNFeel="TaharezLook/PopupMenu" />
+	<FalagardMapping WindowType="TaharezLook/MenuItem" TargetType="Falagard/MenuItem" LookNFeel="TaharezLook/MenuItem" />
+	<FalagardMapping WindowType="TaharezLook/MultiColumnList" TargetType="Falagard/MultiColumnList" LookNFeel="TaharezLook/MultiColumnList" />
+	<FalagardMapping WindowType="TaharezLook/MultiLineEditbox" TargetType="Falagard/MultiLineEditbox" LookNFeel="TaharezLook/MultiLineEditbox" />
+	<FalagardMapping WindowType="TaharezLook/PopupMenu" TargetType="Falagard/PopupMenu" LookNFeel="TaharezLook/PopupMenu" />
+	<FalagardMapping WindowType="TaharezLook/ProgressBar" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/ProgressBar" />
+	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="Falagard/RadioButton" LookNFeel="TaharezLook/RadioButton" />
+	<FalagardMapping WindowType="TaharezLook/ScrollablePane" TargetType="Falagard/ScrollablePane" LookNFeel="TaharezLook/ScrollablePane" />
+	<FalagardMapping WindowType="TaharezLook/Slider" TargetType="Falagard/Slider" LookNFeel="TaharezLook/Slider" />
+	<FalagardMapping WindowType="TaharezLook/SliderThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/SliderThumb" />
+	<FalagardMapping WindowType="TaharezLook/Spinner" TargetType="Falagard/Spinner" LookNFeel="TaharezLook/Spinner" />
+	<FalagardMapping WindowType="TaharezLook/StaticImage" TargetType="Falagard/StaticImage" LookNFeel="TaharezLook/StaticImage" />
+	<FalagardMapping WindowType="TaharezLook/StaticText" TargetType="Falagard/StaticText" LookNFeel="TaharezLook/StaticText" />
+	<FalagardMapping WindowType="TaharezLook/SystemButton" TargetType="Falagard/SystemButton" LookNFeel="TaharezLook/Button" />
+	<FalagardMapping WindowType="TaharezLook/TabButton" TargetType="Falagard/TabButton" LookNFeel="TaharezLook/TabButton" />
+	<FalagardMapping WindowType="TaharezLook/TabControl" TargetType="Falagard/TabControl" LookNFeel="TaharezLook/TabControl" />
+	<FalagardMapping WindowType="TaharezLook/TabPane" TargetType="Falagard/TabPane" LookNFeel="TaharezLook/TabPane" />
+	<FalagardMapping WindowType="TaharezLook/Titlebar" TargetType="Falagard/Titlebar" LookNFeel="TaharezLook/Titlebar" />
+	<FalagardMapping WindowType="TaharezLook/Tooltip" TargetType="Falagard/Tooltip" LookNFeel="TaharezLook/Tooltip" />
+	<FalagardMapping WindowType="TaharezLook/VerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/VerticalScrollbar" />
+	<FalagardMapping WindowType="TaharezLook/VerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/VerticalScrollbarThumb" />
+	<FalagardMapping WindowType="TaharezLook/VUMeter" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/VUMeter" />
 </GUIScheme>
