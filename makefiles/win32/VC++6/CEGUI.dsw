@@ -141,7 +141,7 @@ Package=<4>
     Project_Dep_Name CEGUISampleHelper
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name TaharezLook
+    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 
@@ -162,7 +162,7 @@ Package=<4>
     Project_Dep_Name CEGUISampleHelper
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name TaharezLook
+    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 
@@ -183,7 +183,7 @@ Package=<4>
     Project_Dep_Name CEGUISampleHelper
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name TaharezLook
+    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 
@@ -210,7 +210,7 @@ Package=<4>
     Project_Dep_Name lua_and_toluapp
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name TaharezLook
+    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 
@@ -252,37 +252,7 @@ Package=<4>
     Project_Dep_Name CEGUISampleHelper
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name TaharezLook
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "TaharezLook"=".\WIDGETSETS\TaharezLook\TaharezLook.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "WindowsLook"=".\WIDGETSETS\WindowsLook\WindowsLook.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name CEGUIBase
+    Project_Dep_Name FalagardBase
     End Project Dependency
 }}}
 

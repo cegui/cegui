@@ -94,12 +94,6 @@ AC_CONFIG_FILES([Makefile
                  WidgetSets/Falagard/Makefile
                  WidgetSets/Falagard/include/Makefile
                  WidgetSets/Falagard/src/Makefile
-                 WidgetSets/TaharezLook/Makefile
-                 WidgetSets/TaharezLook/include/Makefile
-                 WidgetSets/TaharezLook/src/Makefile
-                 WidgetSets/WindowsLook/Makefile
-                 WidgetSets/WindowsLook/include/Makefile
-                 WidgetSets/WindowsLook/src/Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile
