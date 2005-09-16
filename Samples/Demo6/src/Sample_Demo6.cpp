@@ -636,10 +636,10 @@ bool Demo6Sample::handleSelectModeChanged(const CEGUI::EventArgs& e)
     Combobox* combo = static_cast<Combobox*>(WindowManager::getSingleton().getWindow("Demo6/ControlPanel/SelModeBox"));
 
     // find the selected item in the combobox
-    ListboxItem* item = combo->findItemWithText(combo->getText(), NULL);
+    ListboxItem* item = combo->findItemWithText(combo->getText(), 0);
 
     // set new selection mode according to ID of selected ListboxItem
-    if (item != NULL)
+    if (item)
     {
         switch (item->getID())
         {

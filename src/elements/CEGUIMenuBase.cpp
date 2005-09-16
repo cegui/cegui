@@ -62,7 +62,7 @@ MenuBase::MenuBase(const String& type, const String& name)
 	d_vertPadding(0.0f),
 	d_borderWidth(0.0f),
 	d_backgroundColours(DefaultBackgroundColour),
-	d_popup(NULL),
+	d_popup(0),
 	d_allowMultiplePopups(false)
 {
 	// add new events specific to MenuBase.
@@ -89,15 +89,15 @@ void MenuBase::changePopupMenuItem(MenuItem* item)
 	if (!d_allowMultiplePopups&&d_popup==item)
 		return;
 
-	if (!d_allowMultiplePopups&&d_popup!=NULL)
+	if (!d_allowMultiplePopups&&d_popup!=0)
 	{
 		d_popup->closePopupMenu(false);
 		WindowEventArgs we(d_popup->getPopupMenu());
-		d_popup = NULL;
+		d_popup = 0;
 		onPopupClosed(we);
 	}
 
-	if (item!=NULL)
+	if (item)
 	{
 		d_popup = item;
 		d_popup->getPopupMenu()->openPopupMenu();

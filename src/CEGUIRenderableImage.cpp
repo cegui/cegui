@@ -38,7 +38,7 @@ RenderableImage::RenderableImage(void) :
 	d_horzFormat(LeftAligned),
 	d_vertFormat(TopAligned),
 	d_quadSplitMode(TopLeftToBottomRight),
-	d_image(NULL)
+	d_image(0)
 {
 }
 
@@ -57,7 +57,7 @@ RenderableImage::~RenderableImage(void)
 void RenderableImage::draw_impl(const Vector3& position, const Rect& clip_rect) const
 {
 	// do not draw anything if image is not set.
-	if (d_image == NULL)
+	if (!d_image)
 		return;
 
 	// calculate final clipping rect which is intersection of RenderableImage area and supplied clipping area

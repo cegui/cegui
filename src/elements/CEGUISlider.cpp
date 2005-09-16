@@ -55,7 +55,7 @@ Slider::Slider(const String& type, const String& name) :
 	d_value(0.0f),
 	d_maxValue(1.0f),
 	d_step(0.01f),
-	d_thumb(NULL)
+	d_thumb(0)
 {
 	addSliderEvents();
 	addSliderProperties();

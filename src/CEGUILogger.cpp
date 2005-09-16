@@ -34,7 +34,7 @@ namespace CEGUI
         Static Data Definitions
     *************************************************************************/
     // singleton instance pointer
-    template<> Logger* Singleton<Logger>::ms_Singleton  = NULL;
+    template<> Logger* Singleton<Logger>::ms_Singleton  = 0;
 
 
     /*************************************************************************
@@ -76,7 +76,7 @@ namespace CEGUI
         time(&et);
         tm* etm = localtime(&et);
 
-        if (etm != NULL)
+        if (etm)
         {
             // clear sting stream
             d_workstream.str("");

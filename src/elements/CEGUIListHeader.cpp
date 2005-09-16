@@ -71,7 +71,7 @@ const float	ListHeader::MinimumSegmentPixelWidth	= 20.0f;
 *************************************************************************/
 ListHeader::ListHeader(const String& type, const String& name) :
 	Window(type, name),
-	d_sortSegment(NULL),
+	d_sortSegment(0),
 	d_sizingEnabled(true),
 	d_sortingEnabled(true),
 	d_movingEnabled(true),
@@ -142,9 +142,9 @@ ListHeaderSegment& ListHeader::getSegmentFromID(uint id) const
 *************************************************************************/
 ListHeaderSegment& ListHeader::getSortSegment(void) const
 {
-	if (d_sortSegment == NULL)
+	if (!d_sortSegment)
 	{
-		throw	InvalidRequestException("ListHeader::getSortSegment - Sort segment was NULL!  (No segments are attached to the ListHeader?)");
+		throw	InvalidRequestException("ListHeader::getSortSegment - Sort segment was invalid!  (No segments are attached to the ListHeader?)");
 	}
 	else
 	{
@@ -369,7 +369,7 @@ void ListHeader::setSortDirection(ListHeaderSegment::SortDirection direction)
 		d_sortDir = direction;
 
 		// set direction of current sort segment
-		if (d_sortSegment != NULL)
+		if (d_sortSegment)
 		{
 			d_sortSegment->setSortDirection(direction);
 		}
@@ -406,7 +406,7 @@ void ListHeader::setSortColumn(uint column)
 		if (d_sortSegment != d_segments[column])
 		{
 			// set sort direction on 'old' sort segment to none.
-			if (d_sortSegment != NULL)
+			if (d_sortSegment)
 			{
 				d_sortSegment->setSortDirection(ListHeaderSegment::None);
 			}
@@ -514,7 +514,7 @@ void ListHeader::insertColumn(const String& text, uint id, float width, uint pos
 	onSegmentAdded(args);
 
 	// if sort segment is invalid, make it valid now we have a segment attached
-	if (d_sortSegment == NULL)
+	if (!d_sortSegment)
 	{
 		setSortColumn(position);
 	}
@@ -550,7 +550,7 @@ void ListHeader::removeColumn(uint column)
 			// no columns, set sort segment to NULL
 			else
 			{
-				d_sortSegment = NULL;
+				d_sortSegment = 0;
 			}
 
 		}
@@ -710,7 +710,7 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	// setup segment;
 	newseg->setMetricsMode(Relative);
 	newseg->setSize(Size(width, 1.0f));
-	newseg->setMinimumSize(absoluteToRelative_impl(NULL, Size(MinimumSegmentPixelWidth, 0.0f)));
+	newseg->setMinimumSize(absoluteToRelative_impl(0, Size(MinimumSegmentPixelWidth, 0.0f)));
 	newseg->setText(text);
 	newseg->setID(id);
 
@@ -937,7 +937,7 @@ bool ListHeader::segmentClickedHandler(const EventArgs& e)
 			setSortSegment(*seg);
 		}
 		// not a new segment, toggle current direction
-		else if (d_sortSegment != NULL)
+		else if (d_sortSegment)
 		{
 			ListHeaderSegment::SortDirection currDir = d_sortSegment->getSortDirection();
 

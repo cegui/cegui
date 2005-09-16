@@ -109,7 +109,7 @@ WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 /*************************************************************************
 	static data definitions
 *************************************************************************/
-Window*	Window::d_captureWindow		= NULL;
+Window*	Window::d_captureWindow		= 0;
 
 
 /*************************************************************************
@@ -169,12 +169,12 @@ Window::Window(const String& type, const String& name) :
 {
 	// basic set-up
 	d_metricsMode	= Relative;
-	d_parent		= NULL;
-	d_font			= NULL;
+	d_parent		= 0;
+	d_font			= 0;
 	d_ID			= 0;
 	d_alpha			= 1.0f;
 	d_mouseCursor	= (const Image*)DefaultMouseCursor;
-	d_userData		= NULL;
+	d_userData		= 0;
 	d_needsRedraw   = true;
 
 	// basic settings
@@ -245,7 +245,7 @@ const String& Window::getType(void) const
 *************************************************************************/
 bool Window::isDisabled(bool localOnly) const
 {
-	bool parDisabled = ((d_parent == NULL) || localOnly) ? false : d_parent->isDisabled();
+	bool parDisabled = ((d_parent == 0) || localOnly) ? false : d_parent->isDisabled();
 
 	return (!d_enabled) || parDisabled;
 }
@@ -256,7 +256,7 @@ bool Window::isDisabled(bool localOnly) const
 *************************************************************************/
 bool Window::isVisible(bool localOnly) const
 {
-	bool parVisible = ((d_parent == NULL) || localOnly) ? true : d_parent->isVisible();
+	bool parVisible = ((d_parent == 0) || localOnly) ? true : d_parent->isVisible();
 
 	return d_visible && parVisible;
 }
@@ -268,7 +268,7 @@ bool Window::isVisible(bool localOnly) const
 *************************************************************************/
 bool Window::isActive(void) const
 {
-	bool parActive = (d_parent == NULL) ? true : d_parent->isActive();
+	bool parActive = (d_parent == 0) ? true : d_parent->isActive();
 
 	return d_active && parActive;
 }
@@ -398,7 +398,7 @@ const Window* Window::getActiveChild(void) const
 	// are children can't be active if we are not
 	if (!isActive())
 	{
-		return NULL;
+		return 0;
 	}
 
 	uint pos = getChildCount();
@@ -422,7 +422,7 @@ const Window* Window::getActiveChild(void) const
 bool Window::isAncestor(const String& name) const
 {
 	// if we have no ancestor then 'name' can't be ancestor
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
 		return false;
 	}
@@ -445,7 +445,7 @@ bool Window::isAncestor(const String& name) const
 bool Window::isAncestor(uint ID) const
 {
 	// return false if we have no ancestor
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
 		return false;
 	}
@@ -467,7 +467,7 @@ bool Window::isAncestor(uint ID) const
 bool Window::isAncestor(const Window* window) const
 {
 	// if we have no parent, then return false
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
 		return false;
 	}
@@ -488,7 +488,7 @@ bool Window::isAncestor(const Window* window) const
 *************************************************************************/
 const Font* Window::getFont(bool useDefault) const
 {
-	if (d_font == NULL)
+	if (!d_font)
 	{
 		return useDefault ? System::getSingleton().getDefaultFont() : 0;
 	}
@@ -504,7 +504,7 @@ const Font* Window::getFont(bool useDefault) const
 *************************************************************************/
 float Window::getEffectiveAlpha(void) const
 {
-	if ((d_parent == NULL) || (!inheritsAlpha()))
+	if ((d_parent == 0) || (!inheritsAlpha()))
 	{
 		return d_alpha;
 	}
@@ -528,7 +528,7 @@ Rect Window::getRect(void) const
 Rect Window::getPixelRect(void) const
 {
 	// clip to parent?
-	if (isClippedByParent() && (d_parent != NULL))
+	if (isClippedByParent() && (d_parent != 0))
 	{
 		return getUnclippedPixelRect().getIntersection(d_parent->getInnerRect());
 	}
@@ -547,7 +547,7 @@ Rect Window::getPixelRect(void) const
 Rect Window::getInnerRect(void) const
 {
 	// clip to parent?
-	if (isClippedByParent() && (d_parent != NULL))
+	if (isClippedByParent() && (d_parent != 0))
 	{
 		return getUnclippedInnerRect().getIntersection(d_parent->getInnerRect());
 	}
@@ -627,7 +627,7 @@ Window* Window::getChildAtPosition(const Point& position) const
 			Window* wnd = (*child)->getChildAtPosition(position);
 
 			// return window pointer if we found a 'hit' down the chain somewhere
-			if (wnd != NULL)
+			if (wnd)
 			{
 				return wnd;
 			}
@@ -647,7 +647,7 @@ Window* Window::getChildAtPosition(const Point& position) const
 	}
 
 	// nothing hit
-	return NULL;
+	return 0;
 }
 
 
@@ -737,7 +737,7 @@ void Window::setAlwaysOnTop(bool setting)
 		d_alwaysOnTop = setting;
 
 		// move us in front of sibling windows with the same 'always-on-top' setting as we have.
-		if (d_parent != NULL)
+		if (d_parent)
 		{
 			Window* org_parent = d_parent;
 
@@ -806,12 +806,12 @@ void Window::activate(void)
 	// force complete release of input capture.
 	// NB: This is not done via releaseCapture() because that has
 	// different behaviour depending on the restoreOldCapture setting.
-	if ((d_captureWindow != NULL) && (d_captureWindow != this))
+	if ((d_captureWindow != 0) && (d_captureWindow != this))
 	{
 		Window* tmpCapture = d_captureWindow;
-		d_captureWindow = NULL;
+		d_captureWindow = 0;
 
-		WindowEventArgs args(NULL);
+		WindowEventArgs args(0);
 		tmpCapture->onCaptureLost(args);
 	}
 
@@ -827,7 +827,7 @@ void Window::activate(void)
 void Window::deactivate(void)
 {
 	ActivationEventArgs args(this);
-	args.otherWindow = NULL;
+	args.otherWindow = 0;
 	onDeactivated(args);
 }
 
@@ -950,7 +950,7 @@ void Window::setFont(const String& name)
 {
 	if (name.empty())
 	{
-		setFont(NULL);
+		setFont(0);
 	}
 	else
 	{
@@ -1054,13 +1054,13 @@ void Window::moveToFront()
 void Window::moveToFront_impl(bool wasClicked)
 {
 	// if the window has no parent then we can have no siblings
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
 		// perform initial activation if required.
 		if (!isActive())
 		{
             ActivationEventArgs args(this);
-			args.otherWindow = NULL;
+			args.otherWindow = 0;
 			onActivated(args);
 		}
 
@@ -1114,7 +1114,7 @@ void Window::moveToBack()
 	if (isActive())
 	{
         ActivationEventArgs args(this);
-		args.otherWindow = NULL;
+		args.otherWindow = 0;
 		onDeactivated(args);
 	}
 
@@ -1152,7 +1152,7 @@ bool Window::captureInput(void)
     WindowEventArgs args(this);
 
 	// inform any window which previously had capture that it doesn't anymore!
-	if ((current_capture != NULL) && (current_capture != this) && (!d_restoreOldCapture)) {
+	if ((current_capture != 0) && (current_capture != this) && (!d_restoreOldCapture)) {
 		current_capture->onCaptureLost(args);
 	}
 
@@ -1182,14 +1182,16 @@ void Window::releaseInput(void)
 		d_captureWindow = d_oldCapture;
 
 		// check for case when there was no previously captured window
-		if (d_oldCapture != NULL) {
-			d_oldCapture = NULL;
+		if (d_oldCapture)
+		{
+			d_oldCapture = 0;
 			d_captureWindow->moveToFront();
 		}
 
 	}
-	else {
-		d_captureWindow = NULL;
+	else
+	{
+		d_captureWindow = 0;
 	}
 
     WindowEventArgs args(this);
@@ -1943,7 +1945,7 @@ void Window::setParent(Window* parent)
 *************************************************************************/
 float Window::getParentWidth(void) const
 {
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
 		return System::getSingleton().getRenderer()->getWidth();
 	}
@@ -1958,7 +1960,7 @@ float Window::getParentWidth(void) const
 *************************************************************************/
 float Window::getParentHeight(void) const
 {
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
 		return System::getSingleton().getRenderer()->getHeight();
 	}
@@ -2032,7 +2034,7 @@ void Window::cleanupChildren(void)
 void Window::addChild_impl(Window* wnd)
 {
 	// if window is already attached, detach it first (will fire normal events)
-	if (wnd->getParent() != NULL)
+	if (wnd->getParent())
 		wnd->getParent()->removeChildWindow(wnd);
 
     addWindowToDrawList(*wnd);
@@ -2080,7 +2082,7 @@ void Window::removeChild_impl(Window* wnd)
 *************************************************************************/
 void Window::onZChange_impl(void)
 {
-	if (d_parent == NULL)
+	if (!d_parent)
 	{
         WindowEventArgs args(this);
 		onZChanged(args);
@@ -2312,7 +2314,7 @@ float Window::relativeToAbsoluteY_impl(const Window* window, float y) const
 *************************************************************************/
 Size Window::getWindowSize_impl(const Window* window) const
 {
-	if (window == NULL)
+	if (!window)
 	{
 		return System::getSingleton().getRenderer()->getSize();
 	}
@@ -2491,7 +2493,7 @@ void Window::setDestroyedByParent(bool setting)
 *************************************************************************/
 MetricsMode Window::getInheritedMetricsMode(void) const
 {
-	return (d_parent == NULL) ? Relative : d_parent->getMetricsMode();
+	return (d_parent == 0) ? Relative : d_parent->getMetricsMode();
 }
 
 
@@ -3034,7 +3036,7 @@ void Window::destroy(void)
     onDestructionStarted(args);
 
     // double check we are detached from parent
-    if (d_parent != NULL)
+    if (d_parent)
     {
         d_parent->removeChildWindow(this);
     }
@@ -3368,7 +3370,7 @@ void Window::setModalState(bool state)
 	// clear the modal target if we were it
 	else if (already_modal)
 	{
-		System::getSingleton().setModalTarget(NULL);
+		System::getSingleton().setModalTarget(0);
 	}
 }
 
@@ -3720,9 +3722,9 @@ void Window::onCaptureLost(WindowEventArgs& e)
     d_repeatButton = NoButton;
 
 	// handle restore of previous capture window as required.
-	if (d_restoreOldCapture && (d_oldCapture != NULL)) {
+	if (d_restoreOldCapture && (d_oldCapture != 0)) {
 		d_oldCapture->onCaptureLost(e);
-		d_oldCapture = NULL;
+		d_oldCapture = 0;
 	}
 
 	// handle case where mouse is now in a different window

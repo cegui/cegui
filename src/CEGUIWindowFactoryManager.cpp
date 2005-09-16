@@ -35,7 +35,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> WindowFactoryManager* Singleton<WindowFactoryManager>::ms_Singleton	= NULL;
+template<> WindowFactoryManager* Singleton<WindowFactoryManager>::ms_Singleton	= 0;
 
 
 /*************************************************************************
@@ -44,9 +44,9 @@ template<> WindowFactoryManager* Singleton<WindowFactoryManager>::ms_Singleton	=
 void WindowFactoryManager::addFactory(WindowFactory* factory)
 {
 	// throw exception if passed factory is null.
-	if (factory == NULL)
+	if (!factory)
 	{
-		throw NullObjectException("WindowFactoryManager::addFactory - The provided WindowFactory pointer was NULL");
+		throw NullObjectException("WindowFactoryManager::addFactory - The provided WindowFactory pointer was invalid.");
 	}
 
 	// throw exception if type name for factory is already in use
@@ -78,7 +78,7 @@ void WindowFactoryManager::removeFactory(const String& name)
 *************************************************************************/
 void WindowFactoryManager::removeFactory(WindowFactory* factory)
 {
-	if (factory != NULL)
+	if (factory)
 	{
 		removeFactory(factory->getTypeName());
 	}

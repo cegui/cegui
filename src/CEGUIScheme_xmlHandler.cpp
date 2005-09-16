@@ -110,7 +110,7 @@ void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes&
 	{
 		Scheme::UIModule	module;
         module.name		= attributes.getValueAsString(FilenameAttribute);
-		module.module	= NULL;
+		module.module	= 0;
 
 		module.factories.clear();
 		d_scheme->d_widgetModules.push_back(module);

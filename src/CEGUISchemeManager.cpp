@@ -35,7 +35,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton	= NULL;
+template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton	= 0;
 
 
 

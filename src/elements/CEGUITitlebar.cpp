@@ -102,7 +102,7 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 	// Base class processing.
 	Window::onMouseMove(e);
 
-	if (d_dragging && (d_parent != NULL))
+	if (d_dragging && (d_parent != 0))
 	{
 		Vector2 delta(screenToWindow(e.position));
 
@@ -132,7 +132,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		if ((d_parent != NULL) && d_dragEnabled)
+		if ((d_parent != 0) && d_dragEnabled)
 		{
 			// we want all mouse inputs from now on
 			if (captureInput())
@@ -152,7 +152,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rect constrainArea;
 
-				if ((d_parent == NULL) || (d_parent->getParent() == NULL))
+				if ((d_parent == 0) || (d_parent->getParent() == 0))
 				{
 					constrainArea = System::getSingleton().getRenderer()->getRect().getIntersection(d_oldCursorArea);
 				}
@@ -199,7 +199,7 @@ void Titlebar::onMouseDoubleClicked(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		// if we do not have a parent window, then obviously nothing should happen.
-		if (d_parent != NULL)
+		if (d_parent)
 		{
 			// we should only ever be attached to a FrameWindow (or derived) class
 			((FrameWindow*)d_parent)->toggleRollup();
@@ -234,7 +234,7 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 {
 	Window::onFontChanged(e);
 
-	if (d_parent != NULL)
+	if (d_parent)
 	{
 		d_parent->performChildWindowLayout();
 	}

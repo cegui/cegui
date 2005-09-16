@@ -771,9 +771,9 @@ bool Combobox::button_PressHandler(const EventArgs& e)
 	showDropList();
 
 	// if there is an item with the same text as the edit box, pre-select it
-	ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), NULL);
+	ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), 0);
 
-	if (item != NULL)
+	if (item)
 	{
 		d_droplist->setItemSelectState(item, true);
 		d_droplist->ensureItemIsVisible(item);
@@ -796,7 +796,7 @@ bool Combobox::droplist_SelectionAcceptedHandler(const EventArgs& e)
 	// copy the text from the selected item into the edit box
 	ListboxItem* item = ((ComboDropList*)((WindowEventArgs&)e).window)->getFirstSelectedItem();
 
-	if (item != NULL)
+	if (item)
 	{
 		// Put the text from the list item into the edit box
 		d_editbox->setText(item->getText());
@@ -848,9 +848,9 @@ bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 			showDropList();
 
 			// if there is an item with the same text as the edit box, pre-select it
-			ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), NULL);
+			ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), 0);
 
-			if (item != NULL)
+			if (item)
 			{
 				d_droplist->setItemSelectState(item, true);
 				d_droplist->ensureItemIsVisible(item);

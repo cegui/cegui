@@ -89,7 +89,7 @@ FactoryModule::FactoryModule(const String& filename) :
 	d_handle = DYNLIB_LOAD(d_moduleName.c_str());
 
 	// check for library load failure
-	if (d_handle == NULL)
+	if (!d_handle)
 	{
 		throw	GenericException("FactoryModule::FactoryModule - Failed to load module '" + d_moduleName + "'.");
 	}

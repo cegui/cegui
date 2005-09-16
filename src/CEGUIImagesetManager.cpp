@@ -35,7 +35,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> ImagesetManager* Singleton<ImagesetManager>::ms_Singleton	= NULL;
+template<> ImagesetManager* Singleton<ImagesetManager>::ms_Singleton	= 0;
 
 
 /*************************************************************************
@@ -148,7 +148,7 @@ void ImagesetManager::destroyImageset(const String& name)
 *************************************************************************/
 void ImagesetManager::destroyImageset(Imageset* imageset)
 {
-	if (imageset != NULL)
+	if (imageset)
 	{
 		destroyImageset(imageset->getName());
 	}

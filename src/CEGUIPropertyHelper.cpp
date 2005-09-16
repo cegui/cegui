@@ -148,7 +148,7 @@ const Image* PropertyHelper::stringToImage(const String& str)
 	}
 	catch (UnknownObjectException)
 	{
-		image = NULL;
+		image = 0;
 	}
 
 	return image;
@@ -295,7 +295,7 @@ String PropertyHelper::metricsModeToString(MetricsMode val)
 
 String PropertyHelper::imageToString(const Image* const val)
 {
-	if (val != NULL)
+	if (val)
 	{
 		return String("set:" + val->getImagesetName() + " image:" + val->getName());
 	}

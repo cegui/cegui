@@ -105,7 +105,7 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 	// if mouse is within our area (but not our children)
 	if (isHit(e.position))
 	{
-		if (getChildAtPosition(e.position) == NULL)
+		if (!getChildAtPosition(e.position))
 		{
 			// handle auto-arm
 			if (d_autoArm)
@@ -129,7 +129,7 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 				ListboxItem* selItem = getItemAtPoint(localPos);
 
 				// if an item is under mouse, select it
-				if (selItem != NULL)
+				if (selItem)
 				{
 					setItemSelectState(selItem, true);
 				}
@@ -191,7 +191,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		if (d_armed && (getChildAtPosition(e.position) == NULL))
+		if (d_armed && (getChildAtPosition(e.position) == 0))
 		{
 			releaseInput();
 

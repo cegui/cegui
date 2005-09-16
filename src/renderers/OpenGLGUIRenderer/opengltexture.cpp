@@ -262,7 +262,7 @@ void OpenGLTexture::flipImageTGA(OpenGLTexture::tImageTGA* img)
 
 OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, size_t buffer_size)
 {
-	tImageTGA *pImageData = NULL;		// This stores our important image data
+	tImageTGA *pImageData = 0;		// This stores our important image data
 	short width = 0, height = 0;			// The dimensions of the image
 	GLbyte length = 0;					// The length in bytes to the pixels
 	GLbyte imageType = 0;					// The image type (RLE, RGB, Alpha...)
@@ -382,7 +382,7 @@ OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, si
 		}	
 		// Else return a NULL for a bad or unsupported pixel format
 		else
-			return NULL;
+			return 0;
 	}
 	// Else, it must be Run-Length Encoded (RLE)
 	else

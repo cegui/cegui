@@ -33,7 +33,7 @@ namespace CEGUI
 	Constructor
 *************************************************************************/
 RenderableElement::RenderableElement(void) :
-	d_next(NULL),
+	d_next(0),
 	d_colours(colour(1, 1, 1, 1)),
 	d_area(0, 0, 0, 0),
 	d_useColoursPerImage(false)
@@ -74,7 +74,7 @@ void RenderableElement::draw(const Vector3& position, const Rect& clip_rect)
 	draw_impl(final_pos, clip_rect);
 
 	// render next element in the chain if any.
-	if (d_next != NULL)
+	if (d_next)
 	{
 		d_next->draw(position, clip_rect);
 	}

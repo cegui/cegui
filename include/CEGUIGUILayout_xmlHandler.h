@@ -50,8 +50,8 @@ public:
 	\brief
 		Constructor for GUILayout_xmlHandler objects
 	*/
-	GUILayout_xmlHandler(const String& name_prefix, PropertyCallback* callback = NULL, void* userdata = NULL) : 
-	  d_root(NULL),
+	GUILayout_xmlHandler(const String& name_prefix, PropertyCallback* callback = 0, void* userdata = 0) :
+	  d_root(0),
 	  d_namingPrefix(name_prefix),
 	  d_propertyCallback(callback),
 	  d_userData(userdata)

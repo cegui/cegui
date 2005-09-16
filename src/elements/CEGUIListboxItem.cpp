@@ -47,9 +47,9 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
     d_selected(false),
 	d_disabled(disabled),
     d_autoDelete(auto_delete),
-	d_owner(NULL),
+	d_owner(0),
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
-	d_selectBrush(NULL)
+	d_selectBrush(0)
 {
 }
 

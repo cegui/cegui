@@ -82,7 +82,7 @@ FrameWindow::FrameWindow(const String& type, const String& name) :
 
 	d_borderSize		= DefaultSizingBorderSize;
 
-	d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = NULL;
+	d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = 0;
 
 	addFrameWindowEvents();
 	addFrameWindowProperties();
@@ -107,13 +107,13 @@ void FrameWindow::initialise(void)
 	d_closeButton	= createCloseButton(getName() + "__auto_closebutton__");
 
 	// add child controls
-	if (d_titlebar != NULL)
+	if (d_titlebar)
 	{
 		d_titlebar->setDraggingEnabled(d_dragMovable);
 		addChildWindow(d_titlebar);
 	}
 
-	if (d_closeButton != NULL)
+	if (d_closeButton)
 	{
 		addChildWindow(d_closeButton);
 

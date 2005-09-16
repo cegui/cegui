@@ -80,7 +80,7 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	d_forceHorzScroll(false),
 	d_nominatedSelectCol(0),
 	d_nominatedSelectRow(0),
-	d_lastSelected(NULL)
+	d_lastSelected(0)
 {
 	// add multi-column list box specific events
 	addMultiColumnListboxEvents();
@@ -391,7 +391,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	}
 
 	// find start position for search
-	uint i = (start_item == NULL) ? 0 : getItemRowIndex(start_item) + 1;
+	uint i = (!start_item) ? 0 : getItemRowIndex(start_item) + 1;
 
 	for ( ; i < getRowCount(); ++i)
 	{
@@ -404,7 +404,7 @@ ListboxItem* MultiColumnList::findColumnItemWithText(const String& text, uint co
 	}
 
 	// no matching item.
-	return NULL;
+	return 0;
 }
 
 
@@ -422,7 +422,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 	}
 
 	// find start position for search
-	uint i = (start_item == NULL) ? 0 : getItemColumnIndex(start_item) + 1;
+	uint i = (!start_item) ? 0 : getItemColumnIndex(start_item) + 1;
 
 	for ( ; i < getColumnCount(); ++i)
 	{
@@ -435,7 +435,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 	}
 
 	// no matching item.
-	return NULL;
+	return 0;
 }
 
 
@@ -451,7 +451,7 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 	MCLGridRef startRef(0, 0);
 	
 	// get position of start_item if it's not NULL
-	if (start_item != NULL)
+	if (start_item)
 	{
 		startRef = getItemGridReference(start_item);
 		++startRef.column;
@@ -473,7 +473,7 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 	}
 
 	// No match
-	return NULL;
+	return 0;
 }
 
 
@@ -483,7 +483,7 @@ ListboxItem* MultiColumnList::findListItemWithText(const String& text, const Lis
 *************************************************************************/
 ListboxItem* MultiColumnList::getFirstSelectedItem(void) const
 {
-	return getNextSelected(NULL);
+	return getNextSelected(0);
 }
 
 
@@ -499,7 +499,7 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	MCLGridRef startRef(0, 0);
 
 	// get position of start_item if it's not NULL
-	if (start_item != NULL)
+	if (start_item)
 	{
 		startRef = getItemGridReference(start_item);
 		++startRef.column;
@@ -513,7 +513,7 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 			// does this item match?
 			ListboxItem* item = d_grid[i][j];
 
-			if ((item != NULL) && item->isSelected())
+			if ((item != 0) && item->isSelected())
 			{
 				return d_grid[i][j];
 			}
@@ -523,7 +523,7 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	}
 
 	// No match
-	return NULL;
+	return 0;
 }
 
 
@@ -540,7 +540,7 @@ uint MultiColumnList::getSelectedCount(void) const
 		{
 			ListboxItem* item = d_grid[i][j];
 
-			if ((item != NULL) && item->isSelected())
+			if ((item != 0) && item->isSelected())
 			{
 				++count;
 			}
@@ -560,7 +560,7 @@ bool MultiColumnList::isItemSelected(const MCLGridRef& grid_ref) const
 {
 	ListboxItem* item = getItemAtGridReference(grid_ref);
 
-	if (item != NULL)
+	if (item)
 	{
 		return item->isSelected();
 	}
@@ -687,7 +687,7 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, float width,
 	// Insert a blank entry at the appropriate position in each row.
 	for (uint i = 0; i < getRowCount(); ++i)
 	{
-		d_grid[i].d_items.insert(d_grid[i].d_items.begin() + position, NULL);
+		d_grid[i].d_items.insert(d_grid[i].d_items.begin() + position, 0);
 	}
 
 	// update stored nominated selection column if that has changed.
@@ -730,7 +730,7 @@ void MultiColumnList::removeColumn(uint col_idx)
 			d_grid[i].d_items.erase(d_grid[i].d_items.begin() + col_idx);
 
 			// delete the ListboxItem as needed.
-			if ((item != NULL) && item->isAutoDeleted())
+			if ((item != 0) && item->isAutoDeleted())
 			{
 				delete item;
 			}
@@ -781,7 +781,7 @@ void MultiColumnList::moveColumnWithID(uint col_id, uint position)
 *************************************************************************/
 uint MultiColumnList::addRow(uint row_id)
 {
-	return addRow(NULL, 0, row_id);
+	return addRow(0, 0, row_id);
 }
 
 
@@ -795,10 +795,10 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 	// Build the new row
 	ListRow row;
 	row.d_sortColumn = getSortColumn();
-	row.d_items.resize(getColumnCount(), NULL);
+	row.d_items.resize(getColumnCount(), 0);
 	row.d_rowID = row_id;
 
-	if (item != NULL)
+	if (item)
 	{
 		// discover which column to initially set
 		col_idx = getColumnWithID(col_id);
@@ -840,7 +840,7 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 *************************************************************************/
 uint MultiColumnList::insertRow(uint row_idx, uint row_id)
 {
-	return insertRow(NULL, 0, row_idx, row_id);
+	return insertRow(0, 0, row_idx, row_id);
 }
 
 
@@ -859,7 +859,7 @@ uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx, ui
 		// Build the new row (empty)
 		ListRow row;
 		row.d_sortColumn = getSortColumn();
-		row.d_items.resize(getColumnCount(), NULL);
+		row.d_items.resize(getColumnCount(), 0);
 		row.d_rowID = row_id;
 
 		// if row index is too big, just insert at end.
@@ -900,7 +900,7 @@ void MultiColumnList::removeRow(uint row_idx)
 		{
 			ListboxItem* item = d_grid[row_idx][i];
 
-			if ((item != NULL) && item->isAutoDeleted())
+			if ((item != 0) && item->isAutoDeleted())
 			{
 				delete item;
 			}
@@ -943,13 +943,13 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 	// delete old item as required
 	ListboxItem* oldItem = d_grid[position.row][position.column];
 
-	if ((oldItem != NULL) && oldItem->isAutoDeleted())
+	if ((oldItem != 0) && oldItem->isAutoDeleted())
 	{
 		delete oldItem;
 	}
 
 	// set new item.
-	if (item != NULL)
+	if (item)
 		item->setOwnerWindow(this);
 
 	d_grid[position.row][position.column] = item;
@@ -1387,7 +1387,7 @@ bool MultiColumnList::selectRange(const MCLGridRef& start, const MCLGridRef& end
 		{
 			ListboxItem* item = d_grid[i][j];
 
-			if (item != NULL)
+			if (item)
 			{
 				modified |= setItemSelectState_impl(getItemGridReference(item), true);
 			}
@@ -1435,7 +1435,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 			ListboxItem* item = d_grid[i][col_idx];
 
 			// if the slot has an item in it
-			if (item != NULL)
+			if (item)
 			{
 				Size sz(item->getPixelSize());
 
@@ -1476,7 +1476,7 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 			ListboxItem* item = d_grid[row_idx][i];
 
 			// if the slot has an item in it
-			if (item != NULL)
+			if (item)
 			{
 				Size sz(item->getPixelSize());
 
@@ -1513,7 +1513,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 			ListboxItem* item = d_grid[i][j];
 
 			// if slot has an item, and item is selected
-			if ((item != NULL) && item->isSelected())
+			if ((item != 0) && item->isSelected())
 			{
 				// clear selection state and set modified flag
 				item->setSelected(false);
@@ -1564,7 +1564,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
 
 	}
 
-	return NULL;
+	return 0;
 }
 
 
@@ -1635,7 +1635,7 @@ void MultiColumnList::setSelectForItemsInRow(uint row_idx, bool state)
 	{
 		ListboxItem* item = d_grid[row_idx][i];
 
-		if (item != NULL)
+		if (item)
 		{
 			item->setSelected(state);
 		}
@@ -1654,7 +1654,7 @@ void MultiColumnList::setSelectForItemsInColumn(uint col_idx, bool state)
 	{
 		ListboxItem* item = d_grid[i][col_idx];
 
-		if (item != NULL)
+		if (item)
 		{
 			item->setSelected(state);
 		}
@@ -1942,12 +1942,12 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 
 		ListboxItem* item = getItemAtPoint(localPos);
 
-		if (item != NULL)
+		if (item)
 		{
 			modified = true;
 
 			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != NULL)) && d_multiSelect)
+			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
 			{
 				modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
 			}
@@ -1957,7 +1957,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			}
 
 			// update last selected item
-			d_lastSelected = item->isSelected() ? item : NULL;
+			d_lastSelected = item->isSelected() ? item : 0;
 		}
 
 		// fire event if needed
@@ -2273,7 +2273,7 @@ bool MultiColumnList::resetList_impl(void)
 				ListboxItem* item = d_grid[i][j];
 
 				// delete item as needed.
-				if ((item != NULL) && item->isAutoDeleted())
+				if ((item != 0) && item->isAutoDeleted())
 				{
 					delete item;
 				}
@@ -2287,7 +2287,7 @@ bool MultiColumnList::resetList_impl(void)
 
 		// reset other affected fields
 		d_nominatedSelectRow = 0;
-		d_lastSelected = NULL;
+		d_lastSelected = 0;
 
 		return true;
 	}
@@ -2400,11 +2400,11 @@ bool MultiColumnList::ListRow::operator<(const ListRow& rhs) const
 	ListboxItem* b = rhs.d_items[d_sortColumn];
 
 	// handle cases with empty slots
-	if (b == NULL)
+	if (!b)
 	{
 		return false;
 	}
-	else if (a == NULL)
+	else if (!a)
 	{
 		return true;
 	}
@@ -2425,11 +2425,11 @@ bool MultiColumnList::ListRow::operator>(const ListRow& rhs) const
 	ListboxItem* b = rhs.d_items[d_sortColumn];
 
 	// handle cases with empty slots
-	if (a == NULL)
+	if (!a)
 	{
 		return false;
 	}
-	else if (b == NULL)
+	else if (!b)
 	{
 		return true;
 	}

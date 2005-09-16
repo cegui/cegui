@@ -428,7 +428,7 @@ bool Editbox::isStringValid(const String& str) const
 	const char* utf8str = str.c_str();
 	int	match[3];
 	int len = static_cast<int>(strlen(utf8str));
-	int result = pcre_exec(d_validator->d_regex, NULL, utf8str, len, 0, 0, match, 3);
+	int result = pcre_exec(d_validator->d_regex, 0, utf8str, len, 0, 0, match, 3);
 
 	if (result >= 0)
 	{

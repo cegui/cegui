@@ -122,7 +122,7 @@ size_t ItemListBase::getItemIndex(const ItemEntry* item) const
 ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* start_item)
 {
 	// if start_item is NULL begin search at begining, else start at item after start_item
-	size_t index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
+	size_t index = (!start_item) ? 0 : (getItemIndex(start_item) + 1);
 
 	while (index < d_listItems.size())
 	{
@@ -140,7 +140,7 @@ ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* s
 	}
 
 	// no items matched.
-	return NULL;
+	return 0;
 }
 
 
@@ -173,7 +173,7 @@ void ItemListBase::resetList(void)
 *************************************************************************/
 void ItemListBase::addItem(ItemEntry* item)
 {
-	if (item != NULL)
+	if (item)
 	{
 		// just stick it on the end.
 		d_listItems.push_back(item);
@@ -191,12 +191,12 @@ void ItemListBase::addItem(ItemEntry* item)
 *************************************************************************/
 void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 {
-	if (item != NULL)
+	if (item)
 	{
 		// if position is NULL begin insert at begining, else insert after item 'position'
 		ItemEntryList::iterator ins_pos;
 
-		if (position == NULL)
+		if (!position)
 		{
 			ins_pos = d_listItems.begin();
 		}
@@ -227,7 +227,7 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 *************************************************************************/
 void ItemListBase::removeItem(ItemEntry* item)
 {
-	if (item != NULL)
+	if (item)
 	{
 		ItemEntryList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
 

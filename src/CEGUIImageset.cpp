@@ -53,9 +53,9 @@ Imageset::Imageset(const String& name, Texture* texture) :
 	d_name(name),
 	d_texture(texture)
 {
-	if (d_texture == NULL)
+	if (!d_texture)
 	{
-		throw NullObjectException("Imageset::Imageset - Texture object supplied for Imageset creation must not be NULL");
+		throw NullObjectException("Imageset::Imageset - Texture object supplied for Imageset creation must be valid.");
 	}
 
 	// defaults for scaling options
@@ -73,7 +73,7 @@ Imageset::Imageset(const String& filename, const String& resourceGroup)
 	d_autoScale = false;
 	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
 
-	d_texture = NULL;
+	d_texture = 0;
 	load(filename, resourceGroup);
 }
 
@@ -113,9 +113,9 @@ Imageset::~Imageset(void)
 *************************************************************************/
 void Imageset::setTexture(Texture* texture)
 {
-	if (d_texture == NULL)
+	if (!d_texture)
 	{
-		throw NullObjectException("Imageset::setTexture - Texture object supplied for Imageset creation must not be NULL");
+		throw NullObjectException("Imageset::setTexture - Texture object supplied for Imageset creation must be valid.");
 	}
 
 	d_texture = texture;
@@ -235,7 +235,7 @@ void Imageset::unload(void)
 
 	// cleanup texture
 	System::getSingleton().getRenderer()->destroyTexture(d_texture);
-	d_texture = NULL;
+	d_texture = 0;
 }
 
 

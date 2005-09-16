@@ -53,7 +53,7 @@ bool Win32CEGuiRendererSelector::inkokeDialog()
     if (d_template)
     {
         // show dialog & return result
-        return (1 == DialogBoxIndirectParam(GetModuleHandle(NULL), d_template, NULL, Win32CEGuiRendererSelector::dialogProcedure, reinterpret_cast<LPARAM>(this)));
+        return (1 == DialogBoxIndirectParam(GetModuleHandle(0), d_template, 0, Win32CEGuiRendererSelector::dialogProcedure, reinterpret_cast<LPARAM>(this)));
     }
 
     return false;

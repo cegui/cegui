@@ -32,7 +32,7 @@ namespace CEGUI
 		Static Data Definitions
 	*************************************************************************/
 	// singleton instance pointer
-	template<> GlobalEventSet* Singleton<GlobalEventSet>::ms_Singleton	= NULL;
+	template<> GlobalEventSet* Singleton<GlobalEventSet>::ms_Singleton	= 0;
 
 	/*************************************************************************
 		GlobalEventSet constructor.

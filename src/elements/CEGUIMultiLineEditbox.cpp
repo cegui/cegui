@@ -95,7 +95,7 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	d_widestExtent(0.0f),
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
-	d_selectionBrush(NULL),
+	d_selectionBrush(0),
 	d_normalTextColour(DefaultNormalTextColour),
 	d_selectTextColour(DefaultSelectedTextColour),
 	d_selectBrushColour(DefaultNormalSelectionColour),
@@ -539,7 +539,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
             // if it is a simple 'no selection area' case
             if ((currLine.d_startIdx >= d_selectionEnd) ||
                 ((currLine.d_startIdx + currLine.d_length) <= d_selectionStart) ||
-                (d_selectionBrush == NULL))
+                (d_selectionBrush == 0))
             {
                 colours.setColours(normalTextCol);
                 // render the complete line.
@@ -635,7 +635,7 @@ void MultiLineEditbox::formatText(void)
 
 	const Font* fnt = getFont();
 
-	if (fnt != NULL)
+	if (fnt)
 	{
 		float areaWidth = getTextRenderArea().getWidth();
 

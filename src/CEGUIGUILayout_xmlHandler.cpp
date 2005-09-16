@@ -132,7 +132,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 			{
 				Window* curwindow = d_stack.back();
 				bool useit = true;
-				if (NULL != d_propertyCallback)
+				if (d_propertyCallback)
 				{
 					useit = (*d_propertyCallback)(curwindow, propertyName, propertyValue, d_userData);
 				}
@@ -161,7 +161,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 				d_propertyCallback,
 				d_userData);
 
-		if ((subLayout != NULL) && (!d_stack.empty()))
+		if ((subLayout != 0) && (!d_stack.empty()))
 		{
 			d_stack.back()->addChildWindow(subLayout);
 		}
@@ -201,7 +201,7 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
 	if (element == GUILayoutElement)
 	{
 		// attach to named parent if needed
-		if (!d_layoutParent.empty() && (d_root != NULL))
+		if (!d_layoutParent.empty() && (d_root != 0))
 		{
 			WindowManager::getSingleton().getWindow(d_layoutParent)->addChildWindow(d_root);
 		}
@@ -234,7 +234,7 @@ void GUILayout_xmlHandler::cleanupLoadedWindows(void)
 		Window* wnd = d_stack.back();
 
 		// detach from parent
-		if (wnd->getParent() != NULL)
+		if (wnd->getParent())
 		{
 			wnd->getParent()->removeChildWindow(wnd);
 		}
@@ -246,7 +246,7 @@ void GUILayout_xmlHandler::cleanupLoadedWindows(void)
 		d_stack.pop_back();
 	}
 
-	d_root = NULL;
+	d_root = 0;
 }
 
 

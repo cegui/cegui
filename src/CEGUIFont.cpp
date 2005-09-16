@@ -741,7 +741,7 @@ void Font::constructor_impl(const String& name, const String& fontname, const St
                 (FT_Long)d_impldat->fontData.getSize(), 0, &d_impldat->fontFace) == 0)
 	{
 		// check that default Unicode character map is available
-		if (d_impldat->fontFace->charmap != NULL)	
+		if (d_impldat->fontFace->charmap)	
 		{
 			try
 			{
@@ -754,7 +754,7 @@ void Font::constructor_impl(const String& name, const String& fontname, const St
 			catch(...)
 			{
 				ismgr.destroyImageset(d_glyph_images);
-				d_glyph_images = NULL;
+				d_glyph_images = 0;
 
 				FT_Done_Face(d_impldat->fontFace);
 				d_freetype = false;
@@ -828,10 +828,10 @@ void Font::unload(void)
 	d_cp_map.clear();
 
 	// cleanup Imageset if it's valid
-	if (d_glyph_images != NULL)
+	if (d_glyph_images)
 	{
 		ImagesetManager::getSingleton().destroyImageset(d_glyph_images);
-		d_glyph_images = NULL;
+		d_glyph_images = 0;
 	}
 
 	// cleanup FreeType face if this is a FreeType based font.
@@ -943,7 +943,7 @@ void Font::setNativeResolution(const Size& size)
 	d_nativeVertRes = size.d_height;
 
 	// set native resolution for underlying imageset for bitmap fonts
-	if ((!d_freetype) && (d_glyph_images != NULL))
+	if ((!d_freetype) && (d_glyph_images != 0))
 	{
 		d_glyph_images->setNativeResolution(size);
 	}
@@ -983,7 +983,7 @@ void Font::setAutoScalingEnabled(bool setting)
 {
 	if (setting != d_autoScale)
 	{
-		if ((!d_freetype) && (d_glyph_images != NULL))
+		if ((!d_freetype) && (d_glyph_images != 0))
 		{
 			d_glyph_images->setAutoScalingEnabled(setting);
 		}

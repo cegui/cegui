@@ -40,7 +40,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> WindowManager* Singleton<WindowManager>::ms_Singleton	= NULL;
+template<> WindowManager* Singleton<WindowManager>::ms_Singleton	= 0;
 
 
 /*************************************************************************
@@ -113,7 +113,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 *************************************************************************/
 void WindowManager::destroyWindow(Window* window)
 {
-	if (window != NULL)
+	if (window)
 	{
 		// this is done because the name is used for the log after the window is destroyed,
 		// if we just did getName() we would get a const ref to the Window's internal name

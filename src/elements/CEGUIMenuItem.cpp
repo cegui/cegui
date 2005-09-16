@@ -71,7 +71,7 @@ MenuItem::MenuItem(const String& type, const String& name)
 	d_openedColour(DefaultOpenedColour),
 	d_normalTextColour(DefaultNormalTextColour),
 	d_disabledTextColour(DefaultDisabledTextColour),
-	d_popup(NULL)
+	d_popup(0)
 {
 	// menuitems dont want multi-click events
 	setWantsMultiClickEvents(false);
@@ -104,11 +104,11 @@ void MenuItem::updateInternalState(const Point& mouse_pos)
 	// if input is captured, but not by 'this', then we never hover highlight
 	const Window* capture_wnd = getCaptureWindow();
 
-	if ((capture_wnd == NULL) || (capture_wnd == this))
+	if ((capture_wnd == 0) || (capture_wnd == this))
 	{
 		Window* sheet = System::getSingleton().getGUISheet();
 
-		if (sheet != NULL)
+		if (sheet)
 		{
 			// check if hovering highlight is required, which is basically ("mouse over widget" XOR "widget pushed").
 			if ((this == sheet->getChildAtPosition(mouse_pos)) != d_pushed)
@@ -124,7 +124,7 @@ void MenuItem::updateInternalState(const Point& mouse_pos)
 					if (menu->isItemInList(this))
 					{
 						// does this menubar only allow one popup open? and is there a popup open?
-						if ( !menu->isMultiplePopupsAllowed() && menu->getPopupMenuItem()!=NULL )
+						if ( !menu->isMultiplePopupsAllowed() && menu->getPopupMenuItem()!=0 )
 						{
 							// open this popup instead
 							openPopupMenu();
@@ -172,7 +172,7 @@ void MenuItem::setPopupMenu(PopupMenu* popup)
 void MenuItem::openPopupMenu()
 {
 	// no popup? or already open...
-	if ( d_popup == NULL || d_opened )
+	if ( d_popup == 0 || d_opened )
 		return;
 
 	// if we are attached to a menubar, we let it handle the "activation"
@@ -213,7 +213,7 @@ void MenuItem::openPopupMenu()
 void MenuItem::closePopupMenu(bool notify)
 {
 	// no popup? or not open...
-	if ( d_popup == NULL || !d_opened )
+	if ( d_popup == 0 || !d_opened )
 		return;
 
 	// should we notify the parent menubar? otherwise...
@@ -222,7 +222,7 @@ void MenuItem::closePopupMenu(bool notify)
 	MenuBase* menu = (MenuBase*)getParent();
 	if (notify && getParent()->testClassName("MenuBase") && menu->isItemInList(this) && !menu->isMultiplePopupsAllowed())
 	{
-		menu->changePopupMenuItem(NULL);
+		menu->changePopupMenuItem(0);
 	}
 	// otherwise we do ourselves
 	else
@@ -339,7 +339,7 @@ void MenuItem::closeAllMenuItemPopups()
 	{
 		// is this parent popup attached to a menu item?
 		MenuItem* item = (MenuItem*)pop->getParent();
-		if (item!=NULL && pop->getParent()->testClassName("MenuItem"))
+		if (item!=0 && pop->getParent()->testClassName("MenuItem"))
 		{
 			// close popup
 			item->closePopupMenu();
@@ -489,7 +489,7 @@ void MenuItem::addChild_impl(Window* wnd)
 	TextItem::addChild_impl(wnd);
 
 	// if this is a PopupMenu we add it like one. only if there is not already a popup attached.
-	if (wnd->testClassName("PopupMenu") && d_popup==NULL)
+	if (wnd->testClassName("PopupMenu") && d_popup==0)
 	{
 		setPopupMenu((PopupMenu*)wnd);
 	}

@@ -85,11 +85,11 @@ void ButtonBase::updateInternalState(const Point& mouse_pos)
 	// if input is captured, but not by 'this', then we never hover highlight
 	const Window* capture_wnd = getCaptureWindow();
 
-	if ((capture_wnd == NULL) || (capture_wnd == this))
+	if ((capture_wnd == 0) || (capture_wnd == this))
 	{
 		Window* sheet = System::getSingleton().getGUISheet();
 
-		if (sheet != NULL)
+		if (sheet)
 		{
 			// check if hovering highlight is required, which is basically ("mouse over widget" XOR "widget pushed").
 			if ((this == sheet->getChildAtPosition(mouse_pos)) != d_pushed)

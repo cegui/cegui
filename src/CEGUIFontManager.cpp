@@ -42,7 +42,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> FontManager* Singleton<FontManager>::ms_Singleton	= NULL;
+template<> FontManager* Singleton<FontManager>::ms_Singleton	= 0;
 
 
 
@@ -160,7 +160,7 @@ void FontManager::destroyFont(const String& name)
 *************************************************************************/
 void FontManager::destroyFont(Font* font)
 {
-	if (font != NULL)
+	if (font)
 	{
 		destroyFont(font->getName());
 	}

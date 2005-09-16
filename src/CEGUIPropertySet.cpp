@@ -36,9 +36,9 @@ namespace CEGUI
 *************************************************************************/
 void PropertySet::addProperty(Property* property)
 {
-	if (property == NULL)
+	if (!property)
 	{
-		throw NullObjectException("The given Property object pointer is NULL.");
+		throw NullObjectException("The given Property object pointer is invalid.");
 	}
 
 	if (d_properties.find(property->getName()) != d_properties.end())

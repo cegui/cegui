@@ -84,7 +84,7 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 	{
 		Window* sheet = System::getSingleton().getGUISheet();
 
-		if (sheet != NULL)
+		if (sheet)
 		{
 			// if mouse was released over this widget
 			if (this == sheet->getChildAtPosition(e.position))

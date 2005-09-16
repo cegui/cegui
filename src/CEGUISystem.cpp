@@ -112,7 +112,7 @@ const char	System::CEGUIConfigSchemaName[]		= "CEGUIConfig.xsd";
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> System* Singleton<System>::ms_Singleton	= NULL;
+template<> System* Singleton<System>::ms_Singleton	= 0;
 
 // click event generation defaults
 const double	System::DefaultSingleClickTimeout	= 0.2;
@@ -135,7 +135,7 @@ const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 System::System(Renderer* renderer, const utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-	constructor_impl(renderer, NULL, NULL, NULL, (const utf8*)"", logFile);
+	constructor_impl(renderer, 0, 0, 0, (const utf8*)"", logFile);
 }
 /*************************************************************************
 	Construct a new System object
@@ -143,7 +143,7 @@ System::System(Renderer* renderer, const utf8* logFile) :
 System::System(Renderer* renderer, ResourceProvider* resourceProvider,const utf8* logFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-    constructor_impl(renderer, resourceProvider, NULL, NULL, (const utf8*)"", logFile);
+    constructor_impl(renderer, resourceProvider, 0, 0, (const utf8*)"", logFile);
 }
 
 /*************************************************************************
@@ -152,7 +152,7 @@ System::System(Renderer* renderer, ResourceProvider* resourceProvider,const utf8
 System::System(Renderer* renderer, ScriptModule* scriptModule, const utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-    constructor_impl(renderer, NULL, NULL, scriptModule, configFile, (const utf8*)"CEGUI.log");
+    constructor_impl(renderer, 0, 0, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
 
@@ -162,7 +162,7 @@ System::System(Renderer* renderer, ScriptModule* scriptModule, const utf8* confi
 System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile) :
 	d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-    constructor_impl(renderer, resourceProvider, NULL, scriptModule, configFile, (const utf8*)"CEGUI.log");
+    constructor_impl(renderer, resourceProvider, 0, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
 /*************************************************************************
@@ -171,7 +171,7 @@ System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider*
 System::System(Renderer* renderer, XMLParser* xmlParser, const utf8* logFile) :
         d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-    constructor_impl(renderer, NULL, xmlParser, NULL, (const utf8*)"", logFile);
+    constructor_impl(renderer, 0, xmlParser, 0, (const utf8*)"", logFile);
 }
 
 /*************************************************************************
@@ -180,7 +180,7 @@ System::System(Renderer* renderer, XMLParser* xmlParser, const utf8* logFile) :
 System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, const utf8* logFile) :
         d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-    constructor_impl(renderer, resourceProvider, xmlParser, NULL, (const utf8*)"", logFile);
+    constructor_impl(renderer, resourceProvider, xmlParser, 0, (const utf8*)"", logFile);
 }
 
 /*************************************************************************
@@ -189,7 +189,7 @@ System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser
 System::System(Renderer* renderer, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile) :
         d_clickTrackerPimpl(new MouseClickTrackerImpl)
 {
-    constructor_impl(renderer, NULL, xmlParser, scriptModule, configFile, (const utf8*)"CEGUI.log");
+    constructor_impl(renderer, 0, xmlParser, scriptModule, configFile, (const utf8*)"CEGUI.log");
 }
 
 /*************************************************************************
@@ -216,10 +216,10 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 
 	d_renderer		= renderer;
 	d_gui_redraw	= false;
-	d_defaultFont	= NULL;
-	d_wndWithMouse	= NULL;
-	d_activeSheet	= NULL;
-	d_modalTarget	= NULL;
+	d_defaultFont	= 0;
+	d_wndWithMouse	= 0;
+	d_activeSheet	= 0;
+	d_modalTarget	= 0;
 	d_sysKeys		= 0;
 
 	d_lshift	= false;
@@ -233,7 +233,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	d_dblclick_timeout	= DefaultMultiClickTimeout;
 	d_dblclick_size		= DefaultMultiClickAreaSize;
 
-	d_defaultMouseCursor = NULL;
+	d_defaultMouseCursor = 0;
 	d_scriptModule		 = scriptModule;
 
 	d_mouseScalingFactor = 1.0f;
@@ -493,7 +493,7 @@ void System::renderGUI(void)
 		d_renderer->setQueueingEnabled(true);
 		d_renderer->clearRenderList();
 
-		if (d_activeSheet != NULL)
+		if (d_activeSheet)
 		{
 			d_activeSheet->render();
 		}
@@ -522,7 +522,7 @@ Window* System::setGUISheet(Window* sheet)
 
     // Force and update for the area Rects for 'sheet' so they're correct according
     // to the screen size.
-    if (sheet != 0)
+    if (sheet)
     {
         WindowEventArgs sheetargs(0);
         sheet->onParentSized(sheetargs);
@@ -543,7 +543,7 @@ void System::setDefaultFont(const String& name)
 {
 	if (name.empty())
 	{
-		setDefaultFont(NULL);
+		setDefaultFont(0);
 	}
 	else
 	{
@@ -573,7 +573,7 @@ void System::setDefaultMouseCursor(const Image* image)
 {
 	if (image == (const Image*)DefaultMouseCursor)
 	{
-		image = NULL;
+		image = 0;
 	}
 
 	d_defaultMouseCursor = image;
@@ -616,7 +616,7 @@ ResourceProvider* System::getResourceProvider(void) const
 *************************************************************************/
 void System::executeScriptFile(const String& filename, const String& resourceGroup) const
 {
-	if (d_scriptModule != NULL)
+	if (d_scriptModule)
 	{
 		try
 		{
@@ -642,7 +642,7 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 *************************************************************************/
 int	System::executeScriptGlobal(const String& function_name) const
 {
-	if (d_scriptModule != NULL)
+	if (d_scriptModule)
 	{
 		try
 		{
@@ -669,7 +669,7 @@ int	System::executeScriptGlobal(const String& function_name) const
 *************************************************************************/
 void System::executeScriptString(const String& str) const
 {
-    if (d_scriptModule != NULL)
+    if (d_scriptModule)
     {
         try
         {
@@ -715,7 +715,7 @@ void System::setMouseMoveScaling(float scaling)
 *************************************************************************/
 bool System::injectMouseMove(float delta_x, float delta_y)
 {
-	MouseEventArgs ma(NULL);
+	MouseEventArgs ma(0);
 	MouseCursor& mouse = MouseCursor::getSingleton();
 
 	ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
@@ -731,11 +731,11 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 	Window* dest_window = getTargetWindow(ma.position);
 
 	// if there is no GUI sheet, then there is nowhere to send input
-	if (dest_window != NULL)
+	if (dest_window)
 	{
 		if (dest_window != d_wndWithMouse)
 		{
-			if (d_wndWithMouse != NULL)
+			if (d_wndWithMouse)
 			{
 				ma.window = d_wndWithMouse;
 				d_wndWithMouse->onMouseLeaves(ma);
@@ -750,7 +750,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 		ma.handled = false;
 
 		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (dest_window != NULL))
+		while ((!ma.handled) && (dest_window != 0))
 		{
 			ma.window = dest_window;
 			dest_window->onMouseMove(ma);
@@ -768,11 +768,11 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 *************************************************************************/
 bool System::injectMouseLeaves(void)
 {
-	MouseEventArgs ma(NULL);
+	MouseEventArgs ma(0);
 
 	// if there is no window that currently contains the mouse, then
 	// there is nowhere to send input
-	if (d_wndWithMouse != NULL)
+	if (d_wndWithMouse)
 	{
 		ma.position = MouseCursor::getSingleton().getPosition();
 		ma.moveDelta = Vector2(0.0f, 0.0f);
@@ -783,7 +783,7 @@ bool System::injectMouseLeaves(void)
 		ma.clickCount = 0;
 
 		d_wndWithMouse->onMouseLeaves(ma);
-		d_wndWithMouse = NULL;
+		d_wndWithMouse = 0;
 	}
 
 	return ma.handled;
@@ -798,7 +798,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 	// update system keys
 	d_sysKeys |= mouseButtonToSyskey(button);
 
-	MouseEventArgs ma(NULL);
+	MouseEventArgs ma(0);
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
@@ -832,7 +832,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != NULL))
+	while ((!ma.handled) && (dest_window != 0))
 	{
 		ma.window = dest_window;
 
@@ -878,7 +878,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	// update system keys
 	d_sysKeys &= ~mouseButtonToSyskey(button);
 
-	MouseEventArgs ma(NULL);
+	MouseEventArgs ma(0);
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = button;
@@ -893,7 +893,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != NULL))
+	while ((!ma.handled) && (dest_window != 0))
 	{
 		ma.window = dest_window;
 		dest_window->onMouseButtonUp(ma);
@@ -909,7 +909,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 		dest_window = getTargetWindow(ma.position);
 
 		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (dest_window != NULL))
+		while ((!ma.handled) && (dest_window != 0))
 		{
 			ma.window = dest_window;
 			dest_window->onMouseClicked(ma);
@@ -930,9 +930,9 @@ bool System::injectKeyDown(uint key_code)
 	// update system keys
 	d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
 
-	KeyEventArgs args(NULL);
+	KeyEventArgs args(0);
 
-	if (d_activeSheet != NULL)
+	if (d_activeSheet)
 	{
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
@@ -940,7 +940,7 @@ bool System::injectKeyDown(uint key_code)
 		Window* dest = getKeyboardTargetWindow();
 
 		// loop backwards until event is handled or we run out of windows.
-		while ((dest != NULL) && (!args.handled))
+		while ((dest != 0) && (!args.handled))
 		{
 			args.window = dest;
 			dest->onKeyDown(args);
@@ -961,9 +961,9 @@ bool System::injectKeyUp(uint key_code)
 	// update system keys
 	d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
 
-	KeyEventArgs args(NULL);
+	KeyEventArgs args(0);
 
-	if (d_activeSheet != NULL)
+	if (d_activeSheet)
 	{
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
@@ -971,7 +971,7 @@ bool System::injectKeyUp(uint key_code)
 		Window* dest = getKeyboardTargetWindow();
 
 		// loop backwards until event is handled or we run out of windows.
-		while ((dest != NULL) && (!args.handled))
+		while ((dest != 0) && (!args.handled))
 		{
 			args.window = dest;
 			dest->onKeyUp(args);
@@ -989,9 +989,9 @@ bool System::injectKeyUp(uint key_code)
 *************************************************************************/
 bool System::injectChar(utf32 code_point)
 {
-	KeyEventArgs args(NULL);
+	KeyEventArgs args(0);
 
-	if (d_activeSheet != NULL)
+	if (d_activeSheet)
 	{
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
@@ -999,7 +999,7 @@ bool System::injectChar(utf32 code_point)
 		Window* dest = getKeyboardTargetWindow();
 
 		// loop backwards until event is handled or we run out of windows.
-		while ((dest != NULL) && (!args.handled))
+		while ((dest != 0) && (!args.handled))
 		{
 			args.window = dest;
 			dest->onCharacter(args);
@@ -1017,7 +1017,7 @@ bool System::injectChar(utf32 code_point)
 *************************************************************************/
 bool System::injectMouseWheelChange(float delta)
 {
-	MouseEventArgs ma(NULL);
+	MouseEventArgs ma(0);
 	ma.position = MouseCursor::getSingleton().getPosition();
 	ma.moveDelta = Vector2(0.0f, 0.0f);
 	ma.button = NoButton;
@@ -1028,7 +1028,7 @@ bool System::injectMouseWheelChange(float delta)
 	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != NULL))
+	while ((!ma.handled) && (dest_window != 0))
 	{
 		ma.window = dest_window;
 		dest_window->onMouseWheel(ma);
@@ -1057,7 +1057,7 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
-	if (d_activeSheet != NULL)
+	if (d_activeSheet)
 	{
 		d_activeSheet->update(timeElapsed);
 	}
@@ -1071,18 +1071,18 @@ bool System::injectTimePulse(float timeElapsed)
 *************************************************************************/
 Window*	System::getTargetWindow(const Point& pt) const
 {
-	Window* dest_window = NULL;
+	Window* dest_window = 0;
 
 	// if there is no GUI sheet, then there is nowhere to send input
-	if (d_activeSheet != NULL)
+	if (d_activeSheet)
 	{
 		dest_window = Window::getCaptureWindow();
 
-		if (dest_window == NULL)
+		if (!dest_window)
 		{
 			dest_window = d_activeSheet->getChildAtPosition(pt);
 
-			if (dest_window == NULL)
+			if (!dest_window)
 			{
 				dest_window = d_activeSheet;
 			}
@@ -1094,7 +1094,7 @@ Window*	System::getTargetWindow(const Point& pt) const
             {
                 Window* child_window = dest_window->getChildAtPosition(pt);
 
-                if (child_window != NULL)
+                if (child_window)
                 {
                     dest_window = child_window;
                 }
@@ -1104,7 +1104,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 		}
 
 		// modal target overrules
-		if (d_modalTarget != NULL && dest_window != d_modalTarget)
+		if (d_modalTarget != 0 && dest_window != d_modalTarget)
 		{
 			if (!dest_window->isAncestor(d_modalTarget))
 			{
@@ -1124,16 +1124,16 @@ Window*	System::getTargetWindow(const Point& pt) const
 *************************************************************************/
 Window* System::getKeyboardTargetWindow(void) const
 {
-	Window* target = NULL;
+	Window* target = 0;
 
-	if (d_modalTarget == NULL)
+	if (!d_modalTarget)
 	{
 		target = d_activeSheet->getActiveChild();
 	}
 	else
 	{
 		target = d_modalTarget->getActiveChild();
-		if (target == NULL)
+		if (!target)
 		{
 			target = d_modalTarget;
 		}
@@ -1155,7 +1155,7 @@ Window* System::getNextTargetWindow(Window* w) const
 	}
 
 	// otherwise stop now
-	return NULL;
+	return 0;
 }
 
 
@@ -1402,9 +1402,9 @@ bool System::handleDisplaySizeChange(const EventArgs& e)
 
 	// notify gui sheet / root if size change, event propagation will ensure everything else
 	// gets updated as required.
-	if (d_activeSheet != NULL)
+	if (d_activeSheet)
 	{
-		WindowEventArgs args(NULL);
+		WindowEventArgs args(0);
 		d_activeSheet->onParentSized(args);
 	}
 
@@ -1420,17 +1420,17 @@ void System::notifyWindowDestroyed(const Window* window)
 {
 	if (d_wndWithMouse == window)
 	{
-		d_wndWithMouse = NULL;
+		d_wndWithMouse = 0;
 	}
 
 	if (d_activeSheet == window)
 	{
-		d_activeSheet = NULL;
+		d_activeSheet = 0;
 	}
 
 	if (d_modalTarget == window)
 	{
-		d_modalTarget = NULL;
+		d_modalTarget = 0;
 	}
 
 }

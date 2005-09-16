@@ -58,8 +58,8 @@ const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
 *************************************************************************/
 TabControl::TabControl(const String& type, const String& name)
 	: Window(type, name),
-    d_tabButtonPane(NULL),
-    d_tabContentPane(NULL),
+    d_tabButtonPane(0),
+    d_tabContentPane(0),
     d_nextTabIndex(0)
 {
 	addTabControlEvents();

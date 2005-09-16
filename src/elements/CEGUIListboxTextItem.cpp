@@ -44,7 +44,7 @@ const colour	ListboxTextItem::DefaultTextColour		= 0xFFFFFFFF;
 ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
 	ListboxItem(text, item_id, item_data, disabled, auto_delete),
 	d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-	d_font(NULL)
+	d_font(0)
 {
 }
 
@@ -55,12 +55,12 @@ ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_da
 const Font* ListboxTextItem::getFont(void) const
 {
 	// prefer out own font
-	if (d_font != NULL)
+	if (d_font)
 	{
 		return d_font;
 	}
 	// try our owner window's font setting (may be null if owner uses no existant default font)
-	else if (d_owner != NULL)
+	else if (d_owner)
 	{
 		return d_owner->getFont();
 	}
@@ -90,7 +90,7 @@ Size ListboxTextItem::getPixelSize(void) const
 
 	const Font* fnt = getFont();
 
-	if (fnt != NULL)
+	if (fnt)
 	{
 		tmp.d_height	= PixelAligned(fnt->getLineSpacing());
 		tmp.d_width		= PixelAligned(fnt->getTextExtent(d_itemText));
@@ -105,14 +105,14 @@ Size ListboxTextItem::getPixelSize(void) const
 *************************************************************************/
 void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& clipper) const
 {
-	if (d_selected && (d_selectBrush != NULL))
+	if (d_selected && (d_selectBrush != 0))
 	{
 		d_selectBrush->draw(clipper, position.d_z, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
 	}
 
 	const Font* fnt = getFont();
 
-	if (fnt != NULL)
+	if (fnt)
 	{
         Vector3 finalPos(position);
         finalPos.d_y -= PixelAligned((fnt->getLineSpacing() - fnt->getBaseline()) * 0.5f);

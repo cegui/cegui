@@ -121,7 +121,7 @@ void RadioButton::addRadioButtonEvents(void)
 void RadioButton::deselectOtherButtonsInGroup(void) const
 {
 	// nothing to do unless we are attached to another window.
-	if (d_parent != NULL)
+	if (d_parent)
 	{
 		int child_count = d_parent->getChildCount();
 
@@ -167,7 +167,7 @@ void RadioButton::onMouseButtonUp(MouseEventArgs& e)
 	{
 		Window* sheet = System::getSingleton().getGUISheet();
 
-		if (sheet != NULL)
+		if (sheet)
 		{
 			// if mouse was released over this widget
 			if (this == sheet->getChildAtPosition(e.position))
@@ -193,7 +193,7 @@ void RadioButton::onMouseButtonUp(MouseEventArgs& e)
 RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 {
 	// Only search we we are a child window
-	if (d_parent != NULL)
+	if (d_parent)
 	{
 		int child_count = d_parent->getChildCount();
 
@@ -219,7 +219,7 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 	}
 
 	// no selected button attached to this window is in same group
-	return NULL;
+	return 0;
 }
 
 /*************************************************************************

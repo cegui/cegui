@@ -215,7 +215,7 @@ String Font::get(const PropertyReceiver* receiver) const
 {
 	const CEGUI::Font* fnt = static_cast<const Window*>(receiver)->getFont();
 
-	if (fnt != NULL)
+	if (fnt)
 	{
 		return fnt->getName();
 	}
@@ -266,7 +266,7 @@ String MouseCursorImage::get(const PropertyReceiver* receiver) const
 {
 	const Image* img = static_cast<const Window*>(receiver)->getMouseCursor();
 
-	if (img != NULL)
+	if (img)
 	{
 		return PropertyHelper::imageToString(img);
 	}

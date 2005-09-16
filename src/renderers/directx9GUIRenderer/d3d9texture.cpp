@@ -40,12 +40,10 @@ namespace CEGUI
 	Constructor
 *************************************************************************/
 DirectX9Texture::DirectX9Texture(Renderer* owner) :
-	Texture(owner)
+	Texture(owner),
+	d_d3dtexture(0),
+	d_isMemoryTexture(true)
 {
-	d_d3dtexture = NULL;
-
-	// do this mainly to indicate the lack of a filename.
-	d_isMemoryTexture = true;
 }
 
 /*************************************************************************
@@ -71,7 +69,7 @@ void DirectX9Texture::loadFromFile(const String& filename, const String& resourc
 	D3DXIMAGE_INFO texInfo;
 	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX9Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(),
             static_cast<UINT>(texFile.getSize()), D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT,
-            D3DX_DEFAULT, D3DX_DEFAULT, 0, &texInfo, NULL, &d_d3dtexture);
+            D3DX_DEFAULT, D3DX_DEFAULT, 0, &texInfo, 0, &d_d3dtexture);
 	
 	System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
 	
@@ -124,12 +122,12 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 
 		// lock the D3D texture
 		D3DLOCKED_RECT	rect;
-		hr = d_d3dtexture->LockRect(0, &rect, NULL, 0);
+		hr = d_d3dtexture->LockRect(0, &rect, 0, 0);
 
 		if (FAILED(hr))
 		{
 			d_d3dtexture->Release();
-			d_d3dtexture = NULL;
+			d_d3dtexture = 0;
 
 			throw RendererException("Failed to load texture from memory: IDirect3DTexture9::LockRect failed.");
 		}
@@ -163,10 +161,10 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 *************************************************************************/
 void DirectX9Texture::freeD3DTexture(void)
 {
-	if (d_d3dtexture != NULL)
+	if (d_d3dtexture)
 	{
 		d_d3dtexture->Release();
-		d_d3dtexture = NULL;
+		d_d3dtexture = 0;
 	}
 
 	d_filename.clear();
@@ -211,14 +209,14 @@ void DirectX9Texture::preD3DReset(void)
 	if (!d_isMemoryTexture)
 	{
 		// release the d3d texture
-		if (d_d3dtexture != NULL)
+		if (d_d3dtexture)
 		{
 			if (FAILED(d_d3dtexture->Release()))
 			{
 				throw RendererException("DirectX9Texture::preD3DReset - failed to release the Direct3DTexture9 object for this texture.");
 			}
 
-			d_d3dtexture = NULL;
+			d_d3dtexture = 0;
 		}
 
 	}

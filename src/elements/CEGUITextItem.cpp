@@ -74,7 +74,7 @@ void TextItem::onTextChanged(WindowEventArgs& e)
 	// if we are attached to a ItemListBase, we inform the list of the change
 	Window* parent = getParent();
 	ItemListBase* ilb = (ItemListBase*)parent;
-	if (parent!=NULL && parent->testClassName("ItemListBase") && ilb->isItemInList(this))
+	if (parent!=0 && parent->testClassName("ItemListBase") && ilb->isItemInList(this))
 	{
 		ilb->handleUpdatedItemData();
 	}

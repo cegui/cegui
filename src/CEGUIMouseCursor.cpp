@@ -41,7 +41,7 @@ const String MouseCursor::EventNamespace("MouseCursor");
 	Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= NULL;
+template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= 0;
 
 
 /*************************************************************************
@@ -69,7 +69,7 @@ MouseCursor::MouseCursor(void)
 	d_visible = true;
 
 	// no default image though
-	d_cursorImage = NULL;
+	d_cursorImage = 0;
 
 	// add events
 	addMouseCursorEvents();
@@ -113,7 +113,7 @@ void MouseCursor::setImage(const String& imageset, const String& image_name)
 *************************************************************************/
 void MouseCursor::draw(void) const
 {
-	if (d_visible && (d_cursorImage != NULL))
+	if (d_visible && (d_cursorImage != 0))
 	{
 		d_cursorImage->draw( d_position, System::getSingleton().getRenderer()->getRect() );
 	}
@@ -171,7 +171,7 @@ void MouseCursor::setConstraintArea(const Rect* area)
 {
 	Rect renderer_area = System::getSingleton().getRenderer()->getRect();
 
-	if (area == NULL)
+	if (!area)
 	{
 		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_left / renderer_area.getWidth());
 		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_top / renderer_area.getHeight());

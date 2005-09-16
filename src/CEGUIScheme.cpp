@@ -166,7 +166,7 @@ void Scheme::loadResources(void)
 	for (;cmod != d_widgetModules.end(); ++cmod)
 	{
 		// create and load dynamic module as required
-		if ((*cmod).module == NULL)
+		if (!(*cmod).module)
 		{
 			(*cmod).module = new FactoryModule((*cmod).name);
 		}
@@ -291,10 +291,10 @@ void Scheme::unloadResources(void)
 		}
 
 		// unload dynamic module as required
-		if ((*cmod).module != NULL)
+		if ((*cmod).module)
 		{
 			delete (*cmod).module;
-			(*cmod).module = NULL;
+			(*cmod).module = 0;
 		}
 
 	}

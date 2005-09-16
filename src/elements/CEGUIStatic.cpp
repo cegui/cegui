@@ -60,7 +60,7 @@ Static::Static(const String& type, const String& name) :
 	d_frameCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
 	d_backgroundEnabled(false),
 	d_backgroundCols(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-	d_background(NULL),
+	d_background(0),
 	d_left_width(0),
 	d_right_width(0),
 	d_top_height(0),
@@ -128,10 +128,10 @@ void Static::setFrameImages(const Image* topleft, const Image* topright, const I
 	d_frame.setImages(topleft, topright, bottomleft, bottomright, left, top, right, bottom);
 
 	// get sizes of frame edges
-	d_left_width	= (left != NULL) ? left->getWidth() : 0.0f;
-	d_right_width	= (right != NULL) ? right->getWidth() : 0.0f;
-	d_top_height	= (top != NULL) ? top->getHeight() : 0.0f;
-	d_bottom_height	= (bottom != NULL) ? bottom->getHeight() : 0.0f;
+	d_left_width	= (left) ? left->getWidth() : 0.0f;
+	d_right_width	= (right) ? right->getWidth() : 0.0f;
+	d_top_height	= (top) ? top->getHeight() : 0.0f;
+	d_bottom_height	= (bottom) ? bottom->getHeight() : 0.0f;
 
 	// redraw only if change would be seen.
 	if (d_frameEnabled)
@@ -306,7 +306,7 @@ void Static::populateRenderCache()
 	}
 
 	// draw backdrop
-	if (d_backgroundEnabled && (d_background != NULL))
+	if (d_backgroundEnabled && (d_background != 0))
 	{
         // factor window alpha into colours to use when rendering background
         ColourRect colours(d_backgroundCols);
@@ -377,19 +377,19 @@ void Static::setImageForFrameLocation(FrameLocation location, const Image* image
 	switch (location)
 	{
 	case LeftEdge:
-		d_left_width = (image != NULL) ? image->getWidth() : 0;
+		d_left_width = (image) ? image->getWidth() : 0;
 		break;
 
 	case RightEdge:
-		d_right_width = (image != NULL) ? image->getWidth() : 0;
+		d_right_width = (image) ? image->getWidth() : 0;
 		break;
 
 	case TopEdge:
-		d_top_height = (image != NULL) ? image->getHeight() : 0;
+		d_top_height = (image) ? image->getHeight() : 0;
 		break;
 
 	case BottomEdge:
-		d_bottom_height = (image != NULL) ? image->getHeight() : 0;
+		d_bottom_height = (image) ? image->getHeight() : 0;
 		break;
 
 	default:

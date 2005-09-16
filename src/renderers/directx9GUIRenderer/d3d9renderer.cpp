@@ -64,8 +64,8 @@ void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& di
 {
 	d_device        = device;
 	d_queueing      = true;
-	d_currTexture   = NULL;
-	d_buffer        = NULL;
+	d_currTexture   = 0;
+	d_buffer        = 0;
 	d_bufferPos     = 0;
 
 	// initialise renderer display area
@@ -80,7 +80,7 @@ void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& di
 		VERTEX_FVF, 
 		D3DPOOL_DEFAULT, 
 		&d_buffer,
-		NULL)))
+		0)))
 	{
 		// Ideally, this would have been a RendererException, but we can't use that until the System object is created
 		// and that requires a Renderer passed to the constructor, so we throw this instead.
@@ -111,14 +111,14 @@ void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& di
 *************************************************************************/
 DirectX9Renderer::~DirectX9Renderer(void)
 {
-	if (d_buffer != NULL)
+	if (d_buffer)
 	{
 		d_buffer->Release();
 	}
 
 	destroyAllTextures();
 
-	if (d_device != NULL)
+	if (d_device)
 	{
 		d_device->Release();
 	}
@@ -165,7 +165,7 @@ void DirectX9Renderer::addQuad(const Rect& dest_rect, float z, const Texture* te
 *************************************************************************/
 void DirectX9Renderer::doRender(void)
 {
-	d_currTexture = NULL;
+	d_currTexture = 0;
 
 	initPerFrameStates();
 
@@ -371,7 +371,7 @@ Texture* DirectX9Renderer::createTexture(float size)
 *************************************************************************/
 void DirectX9Renderer::destroyTexture(Texture* texture)
 {
-	if (texture != NULL)
+	if (texture)
 	{
 		DirectX9Texture* tex = (DirectX9Texture*)texture;
 		d_texturelist.remove(tex);
@@ -401,8 +401,8 @@ void DirectX9Renderer::initPerFrameStates(void)
 	// setup vertex stream
 	d_device->SetStreamSource(0, d_buffer, 0, sizeof(QuadVertex));
 	d_device->SetFVF(VERTEX_FVF);
-	d_device->SetVertexShader( NULL );
-	d_device->SetPixelShader( NULL );
+	d_device->SetVertexShader( 0 );
+	d_device->SetPixelShader( 0 );
 
 	// set device states
 	d_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
@@ -614,7 +614,7 @@ void DirectX9Renderer::preD3DReset(void)
 void DirectX9Renderer::postD3DReset(void)
 {
 	// Recreate a vertex buffer
-	if (FAILED(d_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &d_buffer, NULL)))
+	if (FAILED(d_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &d_buffer, 0)))
 	{
 		throw RendererException("DirectX9Renderer::preD3DReset - Failed to create the VertexBuffer for use by the DirectX9Renderer object.");
 	}

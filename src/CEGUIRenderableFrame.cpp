@@ -36,8 +36,8 @@ namespace CEGUI
 *************************************************************************/
 RenderableFrame::RenderableFrame(void)
 {
-	d_left = d_right = d_top = d_bottom = NULL;
-	d_topleft = d_topright = d_bottomleft = d_bottomright = NULL;
+	d_left = d_right = d_top = d_bottom = 0;
+	d_topleft = d_topright = d_bottomleft = d_bottomright = 0;
 }
 
 
@@ -82,10 +82,10 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	float	coord_adj, size_adj;
 
 	// draw top-edge, if required
-	if (d_top != NULL) {
+	if (d_top) {
 
 		// calculate adjustments required if top-left corner will be rendered.
-		if (d_topleft != NULL) {
+		if (d_topleft) {
 			size_adj = (d_topleft->getWidth() - d_topleft->getOffsetX());
 			coord_adj = d_topleft->getWidth();
 		}
@@ -95,7 +95,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		}
 
 		// calculate adjustments required if top-right corner will be rendered.
-		if (d_topright != NULL) {
+		if (d_topright) {
 			size_adj += (d_topright->getWidth() + d_topright->getOffsetX());
 		}
 
@@ -119,10 +119,10 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	}
 
 	// draw bottom-edge, if required
-	if (d_bottom != NULL) {
+	if (d_bottom) {
 
 		// calculate adjustments required if bottom-left corner will be rendered.
-		if (d_bottomleft != NULL) {
+		if (d_bottomleft) {
 			size_adj = (d_bottomleft->getWidth() - d_bottomleft->getOffsetX());
 			coord_adj = d_bottomleft->getWidth();
 		}
@@ -132,7 +132,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		}
 
 		// calculate adjustments required if bottom-right corner will be rendered.
-		if (d_bottomright != NULL) {
+		if (d_bottomright) {
 			size_adj += (d_bottomright->getWidth() + d_bottomright->getOffsetX());
 		}
 
@@ -156,10 +156,10 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	}
 	
 	// draw left-edge, if required
-	if (d_left != NULL) {
+	if (d_left) {
 
 		// calculate adjustments required if top-left corner will be rendered.
-		if (d_topleft != NULL) {
+		if (d_topleft) {
 			size_adj = (d_topleft->getHeight() - d_topleft->getOffsetY());
 			coord_adj = d_topleft->getHeight();
 		}
@@ -169,7 +169,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		}
 
 		// calculate adjustments required if bottom-left corner will be rendered.
-		if (d_bottomleft != NULL) {
+		if (d_bottomleft) {
 			size_adj += (d_bottomleft->getHeight() + d_bottomleft->getOffsetY());
 		}
 
@@ -193,10 +193,10 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	}
 
 	// draw right-edge, if required
-	if (d_right != NULL) {
+	if (d_right) {
 
 		// calculate adjustments required if top-left corner will be rendered.
-		if (d_topright != NULL) {
+		if (d_topright) {
 			size_adj = (d_topright->getHeight() - d_topright->getOffsetY());
 			coord_adj = d_topright->getHeight();
 		}
@@ -206,7 +206,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		}
 
 		// calculate adjustments required if bottom-left corner will be rendered.
-		if (d_bottomright != NULL) {
+		if (d_bottomright) {
 			size_adj += (d_bottomright->getHeight() + d_bottomright->getOffsetY());
 		}
 
@@ -231,7 +231,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 	}
 
 	// draw required corner pieces...
-	if (d_topleft != NULL) {
+	if (d_topleft) {
 
 		// calculate final colours that are to be used
 		if (calcColoursPerImage)
@@ -247,7 +247,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		d_topleft->draw(position, clip_rect, final_colours);
 	}
 
-	if (d_topright != NULL) {
+	if (d_topright) {
 		final_pos.d_x = position.d_x + org_width - d_topright->getWidth();
 		final_pos.d_y = position.d_y;
 
@@ -265,7 +265,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		d_topright->draw(final_pos, clip_rect, final_colours);
 	}
 
-	if (d_bottomleft != NULL) {
+	if (d_bottomleft) {
 		final_pos.d_x = position.d_x;
 		final_pos.d_y = position.d_y + org_height - d_bottomleft->getHeight();
 
@@ -283,7 +283,7 @@ void RenderableFrame::draw_impl(const Vector3& position, const Rect& clip_rect) 
 		d_bottomleft->draw(final_pos, clip_rect, final_colours);
 	}
 
-	if (d_bottomright != NULL) {
+	if (d_bottomright) {
 		final_pos.d_x = position.d_x + org_width - d_bottomright->getWidth();
 		final_pos.d_y = position.d_y + org_height - d_bottomright->getHeight();
 
@@ -390,7 +390,7 @@ const Image* RenderableFrame::getImageForLocation(FrameLocation location) const
 		break;
 
 	default:
-		return NULL;
+		return 0;
 		break;
 	}
 
@@ -413,10 +413,10 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 	float	coord_adj, size_adj;
 
 	// draw top-edge, if required
-	if (d_top != NULL) {
+	if (d_top) {
 
 		// calculate adjustments required if top-left corner will be rendered.
-		if (d_topleft != NULL) {
+		if (d_topleft) {
 			size_adj = (d_topleft->getWidth() - d_topleft->getOffsetX());
 			coord_adj = d_topleft->getWidth();
 		}
@@ -426,7 +426,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 		}
 
 		// calculate adjustments required if top-right corner will be rendered.
-		if (d_topright != NULL) {
+		if (d_topright) {
 			size_adj += (d_topright->getWidth() + d_topright->getOffsetX());
 		}
 
@@ -455,10 +455,10 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 	}
 
 	// draw bottom-edge, if required
-	if (d_bottom != NULL) {
+	if (d_bottom) {
 
 		// calculate adjustments required if bottom-left corner will be rendered.
-		if (d_bottomleft != NULL) {
+		if (d_bottomleft) {
 			size_adj = (d_bottomleft->getWidth() - d_bottomleft->getOffsetX());
 			coord_adj = d_bottomleft->getWidth();
 		}
@@ -468,7 +468,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 		}
 
 		// calculate adjustments required if bottom-right corner will be rendered.
-		if (d_bottomright != NULL) {
+		if (d_bottomright) {
 			size_adj += (d_bottomright->getWidth() + d_bottomright->getOffsetX());
 		}
 
@@ -497,10 +497,10 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 	}
 	
 	// draw left-edge, if required
-	if (d_left != NULL) {
+	if (d_left) {
 
 		// calculate adjustments required if top-left corner will be rendered.
-		if (d_topleft != NULL) {
+		if (d_topleft) {
 			size_adj = (d_topleft->getHeight() - d_topleft->getOffsetY());
 			coord_adj = d_topleft->getHeight();
 		}
@@ -510,7 +510,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 		}
 
 		// calculate adjustments required if bottom-left corner will be rendered.
-		if (d_bottomleft != NULL) {
+		if (d_bottomleft) {
 			size_adj += (d_bottomleft->getHeight() + d_bottomleft->getOffsetY());
 		}
 
@@ -539,10 +539,10 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 	}
 
 	// draw right-edge, if required
-	if (d_right != NULL) {
+	if (d_right) {
 
 		// calculate adjustments required if top-left corner will be rendered.
-		if (d_topright != NULL) {
+		if (d_topright) {
 			size_adj = (d_topright->getHeight() - d_topright->getOffsetY());
 			coord_adj = d_topright->getHeight();
 		}
@@ -552,7 +552,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 		}
 
 		// calculate adjustments required if bottom-left corner will be rendered.
-		if (d_bottomright != NULL) {
+		if (d_bottomright) {
 			size_adj += (d_bottomright->getHeight() + d_bottomright->getOffsetY());
 		}
 
@@ -582,7 +582,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
 	}
 
 	// draw required corner pieces...
-	if (d_topleft != NULL) {
+	if (d_topleft) {
 
 		// calculate final colours that are to be used
 		if (calcColoursPerImage)
@@ -603,7 +603,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
         renderCache.cacheImage(*d_topleft, destArea, 0, final_colours);
 	}
 
-	if (d_topright != NULL) {
+	if (d_topright) {
 		final_pos.d_x = org_width - d_topright->getWidth();
 		final_pos.d_y = 0;
 
@@ -626,7 +626,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
         renderCache.cacheImage(*d_topright, destArea, 0, final_colours);
 	}
 
-	if (d_bottomleft != NULL) {
+	if (d_bottomleft) {
 		final_pos.d_x = 0;
 		final_pos.d_y = org_height - d_bottomleft->getHeight();
 
@@ -649,7 +649,7 @@ void RenderableFrame::draw_impl(RenderCache& renderCache) const
         renderCache.cacheImage(*d_bottomleft, destArea, 0, final_colours);
 	}
 
-	if (d_bottomright != NULL) {
+	if (d_bottomright) {
 		final_pos.d_x = org_width - d_bottomright->getWidth();
 		final_pos.d_y = org_height - d_bottomright->getHeight();
 

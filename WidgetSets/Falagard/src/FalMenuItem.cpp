@@ -63,7 +63,7 @@ namespace CEGUI
 
 		// only draw popup-open/closed-icon if we have a popup menu, and parent is not a menubar
 		Window* parent_window = getParent();
-		bool not_menubar = (parent_window==NULL) ? true : !parent_window->testClassName("Menubar");
+		bool not_menubar = (!parent_window) ? true : !parent_window->testClassName("Menubar");
         if (d_popup && not_menubar)
         {
             // get imagery for popup open/closed state

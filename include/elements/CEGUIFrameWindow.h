@@ -117,7 +117,7 @@ public:
 	\return
 		true if the window has a title bar and it is enabled, false if the window has no title bar or if the title bar is disabled.
 	*/	
-	bool	isTitleBarEnabled(void) const				{return (d_titlebar != NULL) && !((Window*)d_titlebar)->isDisabled();}
+	bool	isTitleBarEnabled(void) const				{return (d_titlebar != 0) && !((Window*)d_titlebar)->isDisabled();}
 
 
 	/*!
@@ -127,7 +127,7 @@ public:
 	\return
 		true if the window has a close button and it is enabled, false if the window either has no close button or if the close button is disabled.
 	*/
-	bool	isCloseButtonEnabled(void) const			{return (d_closeButton != NULL) && !((Window*)d_closeButton)->isDisabled();}
+	bool	isCloseButtonEnabled(void) const			{return (d_closeButton != 0) && !((Window*)d_closeButton)->isDisabled();}
 
 
 	/*!

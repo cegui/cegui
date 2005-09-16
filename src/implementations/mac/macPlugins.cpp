@@ -47,7 +47,7 @@ namespace CEGUI
           CFBundleRef mainBundle = CFBundleGetMainBundle();
           
           Logger::getSingleton().logEvent("Create name", Insane);
-          CFStringRef nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
+          CFStringRef nameRef = CFStringCreateWithCString(0, name, kCFStringEncodingASCII);
           CFURLRef bundleURL = 0; //URL of bundle to load
           CFBundleRef bundle = 0; //bundle to load
           
@@ -58,7 +58,7 @@ namespace CEGUI
                Logger::getSingleton().logEvent("Create temporary name reference", Insane);
                CFStringRef nameTempRef = nameRef;
                int end = CFStringGetLength(nameTempRef) - CFStringGetLength(CFSTR(".bundle"));
-               nameRef = CFStringCreateWithSubstring(NULL, nameTempRef, CFRangeMake(0, end));
+               nameRef = CFStringCreateWithSubstring(0, nameTempRef, CFRangeMake(0, end));
 
                Logger::getSingleton().logEvent("Release temporary name reference", Insane);
                CFRelease(nameTempRef);
@@ -66,11 +66,11 @@ namespace CEGUI
           
           // Assume relative to Resources/ directory of application's bundle.
           Logger::getSingleton().logEvent("Create bundle URL", Insane);
-          bundleURL = CFBundleCopyResourceURL(mainBundle, nameRef, CFSTR("bundle"), NULL);
+          bundleURL = CFBundleCopyResourceURL(mainBundle, nameRef, CFSTR("bundle"), 0);
           if(bundleURL)
           {
                Logger::getSingleton().logEvent("Create bundle from URL", Insane);
-               bundle = CFBundleCreate(NULL, bundleURL);
+               bundle = CFBundleCreate(0, bundleURL);
                
                Logger::getSingleton().logEvent("Release bundle URL", Insane);
                CFRelease(bundleURL);
@@ -80,11 +80,11 @@ namespace CEGUI
           if(!bundle) 
           {
                Logger::getSingleton().logEvent("Couldn't get bundle from main bundle reference; try base");
-               bundleURL = CFBundleCopyResourceURL(baseBundle, nameRef, CFSTR("bundle"), NULL);
+               bundleURL = CFBundleCopyResourceURL(baseBundle, nameRef, CFSTR("bundle"), 0);
                if(bundleURL) 
                {
                     Logger::getSingleton().logEvent("Create bundle from URL", Insane);
-                    bundle = CFBundleCreate(NULL, bundleURL);
+                    bundle = CFBundleCreate(0, bundleURL);
                     
                     Logger::getSingleton().logEvent("Release bundle URL", Insane);
                     CFRelease(bundleURL);
@@ -115,7 +115,7 @@ namespace CEGUI
      void* mac_getBundleSym(CFBundleRef bundle, const char* name) 
      {
           Logger::getSingleton().logEvent("---- Getting bundle symbol ----", Insane);
-          CFStringRef nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
+          CFStringRef nameRef = CFStringCreateWithCString(0, name, kCFStringEncodingASCII);
           
           Logger::getSingleton().logEvent("Find function pointer for name: ", Insane);
           Logger::getSingleton().logEvent(name, Insane);

@@ -4771,7 +4771,7 @@ private:
 	void	init(void)
 	{
 		d_reserve			= STR_QUICKBUFF_SIZE;
-		d_encodedbuff		= NULL;
+		d_encodedbuff		= 0;
 		d_encodedbufflen	= 0;
 		d_encodeddatlen		= 0;
 		setlen(0);

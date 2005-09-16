@@ -293,7 +293,7 @@ Texture* OpenGLRenderer::createTexture(float size)
 *************************************************************************/
 void OpenGLRenderer::destroyTexture(Texture* texture)
 {
-	if (texture != NULL)
+	if (texture)
 	{
 		OpenGLTexture* tex = (OpenGLTexture*)texture;
 		d_texturelist.remove(tex);

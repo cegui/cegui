@@ -69,7 +69,7 @@ Listbox::Listbox(const String& type, const String& name)
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
 	d_itemTooltips(false),
-	d_lastSelected(NULL)
+	d_lastSelected(0)
 {
 	// add new events specific to list box.
 	addListboxEvents();
@@ -132,7 +132,7 @@ size_t Listbox::getSelectedCount(void) const
 *************************************************************************/
 ListboxItem* Listbox::getFirstSelectedItem(void) const
 {
-	return getNextSelected(NULL);
+	return getNextSelected(0);
 }
 
 
@@ -142,7 +142,7 @@ ListboxItem* Listbox::getFirstSelectedItem(void) const
 ListboxItem* Listbox::getNextSelected(const ListboxItem* start_item) const
 {
 	// if start_item is NULL begin search at begining, else start at item after start_item
-	size_t index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
+	size_t index = (start_item == 0) ? 0 : (getItemIndex(start_item) + 1);
 
 	while (index < d_listItems.size())
 	{
@@ -160,7 +160,7 @@ ListboxItem* Listbox::getNextSelected(const ListboxItem* start_item) const
 	}
 
 	// no more selected items.
-	return NULL;
+	return 0;
 }
 
 
@@ -222,7 +222,7 @@ bool Listbox::isItemSelected(size_t index) const
 ListboxItem* Listbox::findItemWithText(const String& text, const ListboxItem* start_item)
 {
 	// if start_item is NULL begin search at begining, else start at item after start_item
-	size_t index = (start_item == NULL) ? 0 : (getItemIndex(start_item) + 1);
+	size_t index = (!start_item) ? 0 : (getItemIndex(start_item) + 1);
 
 	while (index < d_listItems.size())
 	{
@@ -240,7 +240,7 @@ ListboxItem* Listbox::findItemWithText(const String& text, const ListboxItem* st
 	}
 
 	// no items matched.
-	return NULL;
+	return 0;
 }
 
 
@@ -273,7 +273,7 @@ void Listbox::resetList(void)
 *************************************************************************/
 void Listbox::addItem(ListboxItem* item)
 {
-	if (item != NULL)
+	if (item)
 	{
 		// establish ownership
 		item->setOwnerWindow(this);
@@ -308,7 +308,7 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 	{
 		addItem(item);
 	}
-	else if (item != NULL)
+	else if (item)
 	{
 		// establish ownership
 		item->setOwnerWindow(this);
@@ -316,7 +316,7 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 		// if position is NULL begin insert at begining, else insert after item 'position'
 		LBItemList::iterator ins_pos;
 
-		if (position == NULL)
+		if (!position)
 		{
 			ins_pos = d_listItems.begin();
 		}
@@ -346,7 +346,7 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 *************************************************************************/
 void Listbox::removeItem(const ListboxItem* item)
 {
-	if (item != NULL)
+	if (item)
 	{
 		LBItemList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
 
@@ -354,7 +354,7 @@ void Listbox::removeItem(const ListboxItem* item)
 		if (pos != d_listItems.end())
 		{
 			// disown item
-			(*pos)->setOwnerWindow(NULL);
+			(*pos)->setOwnerWindow(0);
 
 			// remove item
 			d_listItems.erase(pos);
@@ -362,7 +362,7 @@ void Listbox::removeItem(const ListboxItem* item)
 			// if item was the last selected item, reset that to NULL
 			if (item == d_lastSelected)
 			{
-				d_lastSelected = NULL;
+				d_lastSelected = 0;
 			}
 
 			// if item is supposed to be deleted by us
@@ -822,7 +822,7 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 		}
 	}
 
-	return NULL;
+	return 0;
 }
 
 
@@ -944,12 +944,12 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 
 		ListboxItem* item = getItemAtPoint(localPos);
 
-		if (item != NULL)
+		if (item)
 		{
 			modified = true;
 
 			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != NULL)) && d_multiselect)
+			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
 			{
 				selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
 			}
@@ -959,7 +959,7 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 			}
 
 			// update last selected item
-			d_lastSelected = item->isSelected() ? item : NULL;
+			d_lastSelected = item->isSelected() ? item : 0;
 		}
 
 		// fire event if needed
@@ -1002,13 +1002,13 @@ void Listbox::onMouseMove(MouseEventArgs& e)
 {
     if (d_itemTooltips)
     {
-        static ListboxItem* lastItem = NULL;
+        static ListboxItem* lastItem = 0;
 
         Point posi = relativeToAbsolute(screenToWindow(e.position));
         ListboxItem* item = getItemAtPoint(posi);
         if (item != lastItem)
         {
-            if (item != NULL)
+            if (item)
             {
                 setTooltipText(item->getTooltipText());
             }
@@ -1153,7 +1153,7 @@ bool Listbox::resetList_impl(void)
 		// clear out the list.
 		d_listItems.clear();
 
-		d_lastSelected = NULL;
+		d_lastSelected = 0;
 
 		return true;
 	}

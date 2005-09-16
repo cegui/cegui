@@ -66,8 +66,8 @@ const float	ListHeaderSegment::SegmentMoveThreshold	= 12.0f;
 *************************************************************************/
 ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	Window(type, name),
-	d_sizingMouseCursor(NULL),
-	d_movingMouseCursor(NULL),
+	d_sizingMouseCursor(0),
+	d_movingMouseCursor(0),
 	d_splitterSize(DefaultSizingArea),
 	d_splitterHover(false),
 	d_dragSizing(false),

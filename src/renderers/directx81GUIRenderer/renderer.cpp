@@ -93,8 +93,8 @@ void DirectX81Renderer::constructor_impl(LPDIRECT3DDEVICE8 device, const Size& d
 {
 	d_device        = device;
 	d_queueing      = true;
-	d_currTexture   = NULL;
-	d_buffer        = NULL;
+	d_currTexture   = 0;
+	d_buffer        = 0;
 	d_bufferPos     = 0;
 
 	// initialise renderer display area
@@ -134,14 +134,14 @@ void DirectX81Renderer::constructor_impl(LPDIRECT3DDEVICE8 device, const Size& d
 *************************************************************************/
 DirectX81Renderer::~DirectX81Renderer(void)
 {
-	if (d_buffer != NULL)
+	if (d_buffer)
 	{
 		d_buffer->Release();
 	}
 	
 	destroyAllTextures();
 	
-	if (d_device != NULL)
+	if (d_device)
 	{
 		d_device->Release();
 	}
@@ -188,7 +188,7 @@ void DirectX81Renderer::addQuad(const Rect& dest_rect, float z, const Texture* t
 *************************************************************************/
 void DirectX81Renderer::doRender(void)
 {
-	d_currTexture = NULL;
+	d_currTexture = 0;
 
 	initPerFrameStates();
 
@@ -394,7 +394,7 @@ Texture* DirectX81Renderer::createTexture(float size)
 *************************************************************************/
 void DirectX81Renderer::destroyTexture(Texture* texture)
 {
-	if (texture != NULL)
+	if (texture)
 	{
 		DirectX81Texture* tex = (DirectX81Texture*)texture;
 		d_texturelist.remove(tex);
