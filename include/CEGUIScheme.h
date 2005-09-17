@@ -126,6 +126,131 @@ private:
 	*/
 	Scheme(const String& filename, const String& resourceGroup);
 
+    /*!
+    \brief
+        Load all XML based imagesets required by the scheme.
+    */
+    void loadXMLImagesets();
+
+    /*!
+    \brief
+        Load all image file based imagesets required by the scheme.
+    */
+    void loadImageFileImagesets();
+
+    /*!
+    \brief
+        Load all xml based fonts required by the scheme.
+    */
+    void loadFonts();
+
+    /*!
+    \brief
+        Load all xml looknfeel files required by the scheme.
+    */
+    void loadLookNFeels();
+
+    /*!
+    \brief
+        Register all window factories required by the scheme.
+    */
+    void loadWindowFactories();
+
+    /*!
+    \brief
+        Register all factory aliases required by the scheme.
+    */
+    void loadFactoryAliases();
+
+    /*!
+    \brief
+        Create all falagard mappings required by the scheme.
+    */
+    void loadFalagardMappings();
+
+    /*!
+    \brief
+        Unload all XML based imagesets created by the scheme.
+    */
+    void unloadXMLImagesets();
+
+    /*!
+    \brief
+        Unload all image file based imagesets created by the scheme.
+    */
+    void unloadImageFileImagesets();
+
+    /*!
+    \brief
+        Unload all xml based fonts created by the scheme.
+    */
+    void unloadFonts();
+
+    /*!
+    \brief
+        Unload all xml looknfeel files loaded by the scheme.
+    */
+    void unloadLookNFeels();
+
+    /*!
+    \brief
+        Unregister all window factories registered by the scheme.
+    */
+    void unloadWindowFactories();
+
+    /*!
+    \brief
+        Unregister all factory aliases created by the scheme.
+    */
+    void unloadFactoryAliases();
+
+    /*!
+    \brief
+        Unregister all falagard mappings created by the scheme.
+    */
+    void unloadFalagardMappings();
+
+    /*!
+    \brief
+        Check state of all XML based imagesets created by the scheme.
+    */
+    bool areXMLImagesetsLoaded() const;
+
+    /*!
+    \brief
+        Check state of all image file based imagesets created by the scheme.
+    */
+    bool areImageFileImagesetsLoaded() const;
+
+    /*!
+    \brief
+        Check state of all xml based fonts created by the scheme.
+    */
+    bool areFontsLoaded() const;
+
+    /*!
+    \brief
+        Check state of all looknfeel files loaded by the scheme.
+    */
+    bool areLookNFeelsLoaded() const;
+
+    /*!
+    \brief
+        Check state of all window factories registered by the scheme.
+    */
+    bool areWindowFactoriesLoaded() const;
+
+    /*!
+    \brief
+        Check state of all factory aliases created by the scheme.
+    */
+    bool areFactoryAliasesLoaded() const;
+
+    /*!
+    \brief
+        Check state of all falagard mappings created by the scheme.
+    */
+    bool areFalagardMappingsLoaded() const;
 
 public:		// for luabind compatibility
 	/*!
