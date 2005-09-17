@@ -1443,7 +1443,7 @@ float GlyphDat::getUnscaledAdvance() const
 
 void GlyphDat::setAdvance(float advance)
 {
-    d_horz_advance = advance;
+    d_horz_advance = static_cast<int>(advance);
 }
 
 } // End of  CEGUI namespace section
