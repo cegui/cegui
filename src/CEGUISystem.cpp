@@ -130,81 +130,38 @@ const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 
 
 /*************************************************************************
-	Constructor
+    Constructor
 *************************************************************************/
-System::System(Renderer* renderer, const utf8* logFile) :
-	d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-	constructor_impl(renderer, 0, 0, 0, (const utf8*)"", logFile);
-}
-/*************************************************************************
-	Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, ResourceProvider* resourceProvider,const utf8* logFile) :
-	d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, resourceProvider, 0, 0, (const utf8*)"", logFile);
-}
+System::System(Renderer* renderer,
+               ResourceProvider* resourceProvider,
+               XMLParser* xmlParser,
+               ScriptModule* scriptModule,
+               const String& configFile,
+               const String& logFile)
 
-/*************************************************************************
-	Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, ScriptModule* scriptModule, const utf8* configFile) :
-	d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, 0, 0, scriptModule, configFile, (const utf8*)"CEGUI.log");
-}
-
-
-/*************************************************************************
-	Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile) :
-	d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, resourceProvider, 0, scriptModule, configFile, (const utf8*)"CEGUI.log");
-}
-
-/*************************************************************************
-    Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, XMLParser* xmlParser, const utf8* logFile) :
-        d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, 0, xmlParser, 0, (const utf8*)"", logFile);
-}
-
-/*************************************************************************
-    Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, const utf8* logFile) :
-        d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, resourceProvider, xmlParser, 0, (const utf8*)"", logFile);
-}
-
-/*************************************************************************
-    Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile) :
-        d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, 0, xmlParser, scriptModule, configFile, (const utf8*)"CEGUI.log");
-}
-
-/*************************************************************************
-    Construct a new System object
-*************************************************************************/
-System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile) :
-        d_clickTrackerPimpl(new MouseClickTrackerImpl)
-{
-    constructor_impl(renderer, resourceProvider, xmlParser, scriptModule, configFile, (const utf8*)"CEGUI.log");
-}
-
-/*************************************************************************
-	Method to do the work of the constructor
-*************************************************************************/
-void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider,  XMLParser* xmlParser, ScriptModule* scriptModule, const String& configFile, const String& logFile)
+: d_renderer(renderer),
+  d_resourceProvider(resourceProvider ? resourceProvider : d_renderer->createResourceProvider()),
+  d_wndWithMouse(0),
+  d_activeSheet(0),
+  d_modalTarget(0),
+  d_sysKeys(0),
+  d_lshift(false),
+  d_rshift(false),
+  d_lctrl(false),
+  d_rctrl(false),
+  d_lalt(false),
+  d_ralt(false),
+  d_click_timeout(DefaultSingleClickTimeout),
+  d_dblclick_timeout(DefaultMultiClickTimeout),
+  d_dblclick_size(DefaultMultiClickAreaSize),
+  d_clickTrackerPimpl(new MouseClickTrackerImpl),
+  d_defaultMouseCursor(0),
+  d_scriptModule(scriptModule),
+  d_mouseScalingFactor(1.0f),
+  d_xmlParser(xmlParser ? xmlParser : new CEGUI_DEFAULT_XMLPARSER),
+  d_ourXmlParser(xmlParser == 0),
+  d_defaultTooltip(0),
+  d_weOwnTooltip(false)
 {
     // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
     new Logger();
@@ -214,119 +171,76 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
        PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
        PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
 
-	d_renderer		= renderer;
-	d_gui_redraw	= false;
-	d_defaultFont	= 0;
-	d_wndWithMouse	= 0;
-	d_activeSheet	= 0;
-	d_modalTarget	= 0;
-	d_sysKeys		= 0;
-
-	d_lshift	= false;
-	d_rshift	= false;
-	d_lctrl		= false;
-	d_rctrl		= false;
-    d_ralt      = false;
-    d_lalt      = false;
-
-	d_click_timeout		= DefaultSingleClickTimeout;
-	d_dblclick_timeout	= DefaultMultiClickTimeout;
-	d_dblclick_size		= DefaultMultiClickAreaSize;
-
-	d_defaultMouseCursor = 0;
-	d_scriptModule		 = scriptModule;
-
-	d_mouseScalingFactor = 1.0f;
-
-    // Tooltip setup
-    d_defaultTooltip = 0;
-    d_weOwnTooltip = false;
-
-	// add events for Sytem object
-	addSystemEvents();
-
-    // if there has been a resource provider supplied use that otherwise create one.
-    d_resourceProvider = resourceProvider ? resourceProvider : renderer->createResourceProvider();
-
-    // use supplied xml parser if provided, otherwise create one of the defaults
-    if (xmlParser)
-    {
-        d_xmlParser = xmlParser;
-        d_ourXmlParser = false;
-    }
-    else
-    {
-        d_xmlParser = new CEGUI_DEFAULT_XMLPARSER;
-        d_ourXmlParser = true;
-    }
+    // add events for Sytem object
+    addSystemEvents();
 
     // perform initialisation of XML parser.
     d_xmlParser->initialise();
 
-	// strings we may get from the configuration file.
-	String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
+    // strings we may get from the configuration file.
+    String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
 
-	// now XML is available, read the configuration file (if any)
-	if (!configFile.empty())
-	{
+    // now XML is available, read the configuration file (if any)
+    if (!configFile.empty())
+    {
         // create handler object
         Config_xmlHandler handler;
 
-		// do parsing of xml file
-		try
-		{
+        // do parsing of xml file
+        try
+        {
             d_xmlParser->parseXMLFile(handler, configFile, CEGUIConfigSchemaName, "");
-		}
-		catch(...)
-		{
-			// cleanup XML stuff
+        }
+        catch(...)
+        {
+            // cleanup XML stuff
             d_xmlParser->cleanup();
             delete d_xmlParser;
 
             throw;
-		}
+        }
 
         // set the logging level
         Logger::getSingleton().setLoggingLevel(handler.getLoggingLevel());
 
         // get the strings read
-        configLogname		= handler.getLogFilename();
-        configSchemeName	= handler.getSchemeFilename();
-        configLayoutName	= handler.getLayoutFilename();
-        defaultFontName		= handler.getDefaultFontName();
-        configInitScript	= handler.getInitScriptFilename();
-        d_termScriptName	= handler.getTermScriptFilename();
+        configLogname       = handler.getLogFilename();
+        configSchemeName    = handler.getSchemeFilename();
+        configLayoutName    = handler.getLayoutFilename();
+        defaultFontName     = handler.getDefaultFontName();
+        configInitScript    = handler.getInitScriptFilename();
+        d_termScriptName    = handler.getTermScriptFilename();
 
         // set default resource group if it was specified.
         if (!handler.getDefaultResourceGroup().empty())
         {
             d_resourceProvider->setDefaultResourceGroup(handler.getDefaultResourceGroup());
         }
-	}
+    }
 
-	// Start up the logger:
-	// prefer log filename from config file
-	if (!configLogname.empty())
-	{
+    // Start up the logger:
+    // prefer log filename from config file
+    if (!configLogname.empty())
+    {
         Logger::getSingleton().setLogFilename(configLogname, false);
-	}
-	// no log specified in configuration, use default / hard-coded option
-	else
-	{
+    }
+    // no log specified in configuration, use default / hard-coded option
+    else
+    {
         Logger::getSingleton().setLogFilename(logFile, false);
-	}
+    }
 
-	// beginning main init
-	Logger::getSingleton().logEvent("---- Begining CEGUI System initialisation ----");
+    // beginning main init
+    Logger::getSingleton().logEvent("---- Begining CEGUI System initialisation ----");
 
-	// cause creation of other singleton objects
-	new ImagesetManager();
-	new FontManager();
-	new WindowFactoryManager();
-	new WindowManager();
-	new SchemeManager();
-	new MouseCursor();
-	new GlobalEventSet();
+    // cause creation of other singleton objects
+    new ImagesetManager();
+    new FontManager();
+    new WindowFactoryManager();
+    new WindowManager();
+    new SchemeManager();
+    new MouseCursor();
+    new GlobalEventSet();
     new WidgetLookManager();
 
     // Add factories for types that the system supports natively
@@ -335,47 +249,47 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
     WindowFactoryManager::getSingleton().addFactory(new DragContainerFactory);
     WindowFactoryManager::getSingleton().addFactory(new ScrolledContainerFactory);
 
-	// GUISheet's name was changed, register an alias so both can be used
-	WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
+    // GUISheet's name was changed, register an alias so both can be used
+    WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
 
-	// success - we are created!  Log it for prosperity :)
-	Logger::getSingleton().logEvent("CEGUI::System singleton created.");
-	Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
+    // success - we are created!  Log it for prosperity :)
+    Logger::getSingleton().logEvent("CEGUI::System singleton created.");
+    Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
     Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
     Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
-	// subscribe to hear about display mode changes
-	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
+    // subscribe to hear about display mode changes
+    d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 
-	// load base scheme
-	if (!configSchemeName.empty())
-	{
-		try
-		{
-			SchemeManager::getSingleton().loadScheme(configSchemeName, d_resourceProvider->getDefaultResourceGroup());
+    // load base scheme
+    if (!configSchemeName.empty())
+    {
+        try
+        {
+            SchemeManager::getSingleton().loadScheme(configSchemeName, d_resourceProvider->getDefaultResourceGroup());
 
-			// set default font if that was specified also
-			if (!defaultFontName.empty())
-			{
-				setDefaultFont(defaultFontName);
-			}
+            // set default font if that was specified also
+            if (!defaultFontName.empty())
+            {
+                setDefaultFont(defaultFontName);
+            }
 
-		}
-		catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
+        }
+        catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
 
-	}
+    }
 
-	// load initial layout
-	if (!configLayoutName.empty())
-	{
-		try
-		{
-			setGUISheet(WindowManager::getSingleton().loadWindowLayout(configLayoutName));
-		}
-		catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
+    // load initial layout
+    if (!configLayoutName.empty())
+    {
+        try
+        {
+            setGUISheet(WindowManager::getSingleton().loadWindowLayout(configLayoutName));
+        }
+        catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
 
-	}
+    }
 
     // Create script module bindings
     if (d_scriptModule)
@@ -383,17 +297,16 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
         d_scriptModule->createBindings();
     }
 
-	// execute start up script
-	if (!configInitScript.empty())
-	{
-		try
-		{
-			executeScriptFile(configInitScript);
-		}
-		catch (...) {}  // catch all exceptions and try to continue anyway
+    // execute start up script
+    if (!configInitScript.empty())
+    {
+        try
+        {
+            executeScriptFile(configInitScript);
+        }
+        catch (...) {}  // catch all exceptions and try to continue anyway
 
-	}
-
+    }
 }
 
 

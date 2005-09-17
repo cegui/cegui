@@ -82,144 +82,32 @@ public:
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
-	/*!
-	\brief
-		Constructs a System object.
-
-	\param renderer
-		Pointer to the valid Renderer object that will be used to render GUI imagery
-
-	\param logFile
-		pointer to a utf8 encoded buffer containing the name to use for the log file.
-	*/
-	System(Renderer* renderer, const utf8* logFile = (const utf8*)"CEGUI.log");
-
-	/*!
-	\brief
-		Construct a new System object
-
-	\param renderer
-		Pointer to the valid Renderer object that will be used to render GUI imagery
-
-	\param resourceProvider
-		Pointer to a ResourceProvider object.
-
-	\param logFile
-		pointer to a utf8 encoded buffer containing the name to use for the log file.
-	*/
-    System(Renderer* renderer, ResourceProvider* resourceProvider, const utf8* logFile = (const utf8*)"CEGUI.log");
-
-
-	/*!
-	\brief
-		Construct a new System object
-
-	\param renderer
-		Pointer to the valid Renderer object that will be used to render GUI imagery
-
-	\param scriptModule
-		Pointer to a ScriptModule object.  may be NULL.
-
-	\param configFile
-		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
-	*/
-	System(Renderer* renderer, ScriptModule* scriptModule, const utf8* configFile = (const utf8*)"cegui.config");
-
-
-	/*!
-	\brief
-		Construct a new System object
-
-	\param renderer
-		Pointer to the valid Renderer object that will be used to render GUI imagery
-
-	\param scriptModule
-		Pointer to a ScriptModule object.  may be NULL.
-
-	\param resourceProvider
-		Pointer to a ResourceProvider object.
-
-	\param configFile
-		pointer to a utf8 encoded buffer containing the name to use for the configuration file.
-	*/
-	System(Renderer* renderer, ScriptModule* scriptModule, ResourceProvider* resourceProvider, const utf8* configFile = (const utf8*)"cegui.config");
-
-
-    /*!
-    \brief
-        Constructs a System object.
-
-    \param renderer
-        Pointer to the valid Renderer object that will be used to render GUI imagery
-
-    \param xmlParser
-        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
-
-    \param logFile
-        pointer to a utf8 encoded buffer containing the name to use for the log file.
-    */
-    System(Renderer* renderer, XMLParser* xmlParser, const utf8* logFile = (const utf8*)"CEGUI.log");
-
-    
-    /*!
-    \brief
-        Constructs a System object.
-
-    \param renderer
-        Pointer to the valid Renderer object that will be used to render GUI imagery
-
-    \param resourceProvider
-        Pointer to a ResourceProvider object.
-    
-    \param xmlParser
-        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
-
-    \param logFile
-        pointer to a utf8 encoded buffer containing the name to use for the log file.
-    */
-    System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, const utf8* logFile = (const utf8*)"CEGUI.log");
-
-    
     /*!
     \brief
         Construct a new System object
 
     \param renderer
-        Pointer to the valid Renderer object that will be used to render GUI imagery
-
-    \param xmlParser
-        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
-    
-    \param scriptModule
-        Pointer to a ScriptModule object.  may be NULL.
-
-    \param configFile
-        pointer to a utf8 encoded buffer containing the name to use for the configuration file.
-    */
-    System(Renderer* renderer, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile = (const utf8*)"cegui.config");
-
-        
-    /*!
-    \brief
-        Construct a new System object
-
-    \param renderer
-        Pointer to the valid Renderer object that will be used to render GUI imagery
+        Pointer to the valid Renderer object that will be used to render GUI
+        imagery.
 
     \param resourceProvider
-        Pointer to a ResourceProvider object.
-    
+        Pointer to a ResourceProvider object, or NULL to use whichever default
+        the Renderer provides.
+
     \param xmlParser
-        Pointer to a valid XMLParser object to be used when parsing XML files, or NULL to use a default parser.
-    
+        Pointer to a valid XMLParser object to be used when parsing XML files,
+        or NULL to use a default parser.
+
     \param scriptModule
-        Pointer to a ScriptModule object.  may be NULL.
+        Pointer to a ScriptModule object.  may be NULL for none.
 
     \param configFile
-        pointer to a utf8 encoded buffer containing the name to use for the configuration file.
-    */
-    System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, ScriptModule* scriptModule, const utf8* configFile = (const utf8*)"cegui.config");
+        String object containing the name of a configuration file to use.
 
+    \param logFile
+        String object containing the name to use for the log file.
+    */
+    System(Renderer* renderer, ResourceProvider* resourceProvider = 0, XMLParser* xmlParser = 0, ScriptModule* scriptModule = 0, const String& configFile = "", const String& logFile = "CEGUI.log");
 
 	/*!
 	\brief
@@ -897,13 +785,6 @@ private:
 		SystemKey value that corresponds to the same key as \a key, or 0 if key was not a system key.
 	*/
 	SystemKey	keyCodeToSyskey(Key::Scan key, bool direction);
-
-
-	/*!
-	\brief
-		Method to do the work of the constructor
-	*/
-       void	constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser* xmlParser, ScriptModule* scriptModule, const String& configFile, const String& logFile);
 
 
 	/*!
