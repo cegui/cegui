@@ -148,7 +148,7 @@ bool Scheme::resourcesLoaded(void) const
         return true;
     }
 
-    return true;
+    return false;
 }
 
 
