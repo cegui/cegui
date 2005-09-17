@@ -73,6 +73,110 @@ enum TextFormatting
 
 /*!
 \brief
+    internal class representing a single font glyph
+*/
+class GlyphDat
+{
+public:
+    /*!
+    \brief
+        Default Constructor
+    */
+    GlyphDat();
+
+    /*!
+    \brief
+        Copy Constructor
+    */
+    GlyphDat(const GlyphDat& other);
+
+    /*!
+    \brief
+        Main Constructor.
+    */
+    GlyphDat(const Image* image, int horzAdvance, int unscaledAdvace = 0);
+
+    /*!
+    \brief
+        Assignment operator
+    */
+    const GlyphDat& operator=(const GlyphDat& other);
+
+    /*!
+    \brief
+        Return the CEGUI::Image object rendered for this glyph.
+    */
+    const Image* getImage() const;
+
+    /*!
+    \brief
+        Return the scaled pixel size of the glyph.
+    */
+    Size getSize(float x_scale, float y_scale) const;
+
+    /*!
+    \brief
+        Return the scaled widht of the glyph.
+    */
+    float getWidth(float x_scale) const;
+
+    /*!
+    \brief
+        Return the scaled height of the glyph.
+    */
+    float getHeight(float y_scale) const;
+
+    /*!
+    \brief
+        Return the rendered advance value for this glyph.
+
+        The rendered advance value is the total number of pixels from the
+        current pen position that will be occupied by this glyph when rendered.
+    */
+    float getRenderedAdvance(float x_scale) const;
+
+    /*!
+    \brief
+        Return the horizontal advance value for the glyph.
+
+        The returned value is the number of pixels the pen should move
+        horizontally to position itself ready to render the next glyph.  This
+        is not always the same as the glyph image width or rendererd advance,
+        since it allows for horizontal overhangs.
+    */
+    float getAdvance(float x_scale) const;
+
+    /*!
+    \brief
+        Return the unscaled horizontal advance value for a bitmapped font.
+
+        The unscaled horizontal advance value returned by this function is the
+        same as the normal advance value except that it is totally unscaled.
+        The normal advance value may have been pre-adjusted by font / imageset
+        autoscaling settings, the value returned here is not.
+    */
+    float getUnscaledAdvance() const;
+
+    /*!
+    \brief
+        Set the horizontal advance value for the glyph.
+
+        This value is the number of pixels the pen should move
+        horizontally to position itself ready to render the next glyph.  This
+        is not always the same as the glyph image width or rendererd advance,
+        since it allows for horizontal overhangs.
+    */
+    void setAdvance(float advance);
+
+private:
+    const Image* d_image;                 //!< The image which will be rendered.
+    int          d_horz_advance;          //!< Amount to advance the pen after rendering this glyph
+    int          d_horz_advance_unscaled; //!< original unscaled advance value (only used with static / bitmap fonts).
+};
+
+
+/*!
+\brief
 	Class that encapsulates text rendering functionality for a typeface
 
 	A Font object is created for each unique typeface required.  The Font class provides
@@ -694,7 +798,7 @@ private:
 		Private forward refs
 	*************************************************************************/
 	struct FontImplData;
-
+    struct GlyphSlotImpl;
 
 	/*************************************************************************
 		Construction & Destruction
@@ -1036,25 +1140,104 @@ private:
     */
     void writeXMLToStream(OutStream& out_stream) const;
 
+    /*!
+    \brief
+        Return a String object containing codepoints in the specified range
 
-	/*************************************************************************
-		Implementation structs
-	*************************************************************************/
-	/*!
-	\brief
-		struct to hold extra details about a glyph (required for proper rendering)
-	*/
-	struct glyphDat
-	{
-		const Image*	d_image;				//!< The image which will be rendered.
-		int			d_horz_advance;			//!< Amount to advance the pen after rendering this glyph
-		int			d_horz_advance_unscaled;	//!< original unscaled advance value (only used with static / bitmap fonts).
-	};
+    \param first_code_point
+        utf32 code point that is the first code point in the range.
+
+    \param last_code_point
+        utf32 code point that is the last code point in the range.
+
+    \return
+        String object containing the set of codepoints.
+    */
+    String getCodepointRangeAsString(utf32 first_code_point, utf32 last_code_point) const;
+
+    /*!
+    \brief
+        Load the glyph for the specified codepoint into the internal FreeType state vars
+
+    \param codepoint
+        utf32 codepoint that we should load the glyph for.
+
+    \return
+        - true if the glyph was loaded successfully.
+        - false if the glyph could not be loaded (an error will be placed in the log)
+    */
+    bool loadFreetypeGlyph(utf32 codepoint);
+
+    /*!
+    \brief
+        Return the horizontal space required for the currently loaded FreeType
+        glyph.
+    */
+    uint getLoadedFreetypeGlyphWidth() const;
+    /*!
+    \brief
+        Return the vertical space required for the currently loaded FreeType
+        glyph.
+    */
+    uint getLoadedFreetypeGlyphHeight() const;
+
+    /*!
+    \brief
+        Return a pointer to the glyphDat struct for the given codepoint, or 0 if
+        the codepoint does not have a glyph defined.
+
+    \param codepoint
+        utf32 codepoint to return the glyphDat structure for.
+
+    \return
+        Pointer to the glyphDat struct for \a codepoint, or 0 if no glyph
+        is defined for \a codepoint.
+    */
+    const GlyphDat* getGlyphData(utf32 codepoint) const;
+
+    /*!
+    \brief
+        Define an Image for a glyph on the Imageset associated with this Font.
+
+    \param name
+        String holding the name to give to the Image.
+
+    \param glyph
+        Implementation structure.
+
+    \param x
+        X co-ordinate of the Image to be defined.
+
+    \param y
+        Y co-ordinate of the Image to be defined.
+
+    \param width
+        Pixel width of the Image to be defined.
+
+    \param height
+        Pixel width of the Image to be defined.
+    */
+    void defineGlyphImage(const String& name, const GlyphSlotImpl& glyph, uint x, uint y, uint width, uint height);
+
+    /*!
+    \brief
+        Create a mapping entry for a codepoint to a glyph Image.
+
+    \param codepoint
+        utf32 codepoint to be mapped to an Image.
+
+    \param imageName
+        String object holding the name of the Image to be mapped to \a codepoint
+
+    \param glyph
+        Implementation structure.
+    */
+    void createGlyphMapping(utf32 codepoint, const String& imageName, const GlyphSlotImpl& glyph);
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef		std::map<utf32, glyphDat>		CodepointMap;
+	typedef		std::map<utf32, GlyphDat>		CodepointMap;
 	CodepointMap	d_cp_map;	//!< Contains mappings from code points to Image objects
 
 	String		d_name;			//!< Name of this font.

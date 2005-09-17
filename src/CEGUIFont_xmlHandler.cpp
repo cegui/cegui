@@ -89,18 +89,17 @@ void Font_xmlHandler::elementStart(const String& element, const XMLAttributes& a
 			utf32 codepoint = (utf32)attributes.getValueAsInteger(MappingCodepointAttribute);
             int horzAdvance = attributes.getValueAsInteger(MappingHorzAdvanceAttribute, -1);
 
-			Font::glyphDat	mapDat;
-			mapDat.d_image = &d_font->d_glyph_images->getImage(image_name);
+            const Image* image = &d_font->d_glyph_images->getImage(image_name);
 
-			// calculate advance width if it was not specified
-			if (horzAdvance == AutoGenerateHorzAdvance)
-			{
-				horzAdvance = (int)(mapDat.d_image->getWidth() + mapDat.d_image->getOffsetX());
-			}
+            // calculate advance width if it was not specified
+            if (horzAdvance == AutoGenerateHorzAdvance)
+                horzAdvance = (int)(image->getWidth() + image->getOffsetX());
 
-			mapDat.d_horz_advance_unscaled = horzAdvance;
-            mapDat.d_horz_advance = (uint)(((float)horzAdvance) * (d_font->d_autoScale ? d_font->d_horzScaling : 1.0f));
-			d_font->d_cp_map[codepoint] = mapDat;
+            GlyphDat mapDat(image,
+                            (uint)(((float)horzAdvance) * (d_font->d_autoScale ? d_font->d_horzScaling : 1.0f)),
+                            horzAdvance);
+
+            d_font->d_cp_map[codepoint] = mapDat;
 		}
 		else
 		{

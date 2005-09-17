@@ -43,6 +43,13 @@ struct Font::FontImplData
     RawDataContainer fontData;
 };
 
+struct Font::GlyphSlotImpl
+{
+    GlyphSlotImpl(FT_GlyphSlot slot) : glyphSlot(slot) {}
+
+    FT_GlyphSlot glyphSlot;
+};
+
 } // End of  CEGUI namespace section
 
 
