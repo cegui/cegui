@@ -32,7 +32,8 @@ distribution.
 #include <ctype.h>
 
 #include "tinystr.h"
-
+namespace CEGUITinyXML 
+{
 // TiXmlString constructor, based on a C string
 TiXmlString::TiXmlString (const char* instring)
 {
@@ -303,5 +304,5 @@ bool TiXmlString::operator > (const TiXmlString & compare) const
 	return false;
 }
 
-
+}
 #endif	// TIXML_USE_STL

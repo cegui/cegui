@@ -35,7 +35,8 @@ distribution.
 #endif
 
 #include <assert.h>
-
+namespace CEGUITinyXML
+{
 /*
    TiXmlString is an emulation of the std::string template.
    Its purpose is to allow compiling TinyXML on compilers with no or poor STL support.
@@ -248,6 +249,6 @@ public :
         return (* this);
     }
 } ;
-
+}
 #endif	// TIXML_STRING_INCLUDED
 #endif	// TIXML_USE_STL

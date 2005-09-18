@@ -24,7 +24,8 @@ distribution.
 
 #include "tinyxml.h"
 #include <ctype.h>
-
+namespace CEGUITinyXML 
+{
 //#define DEBUG_PARSER
 
 // Note tha "PutString" hardcodes the same list. This
@@ -1500,4 +1501,4 @@ bool TiXmlText::Blank() const
 			return false;
 	return true;
 }
-
+}

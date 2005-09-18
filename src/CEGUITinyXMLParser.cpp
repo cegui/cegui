@@ -32,14 +32,14 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class TinyXMLDocument : public TiXmlDocument
+    class TinyXMLDocument : public CEGUITinyXML::TiXmlDocument
     {
     public:
         TinyXMLDocument(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup);
         ~TinyXMLDocument()
         {}
     protected:
-        void processElement(const TiXmlElement* element);
+        void processElement(const CEGUITinyXML::TiXmlElement* element);
 
     private:
         XMLHandler* d_handler;
@@ -54,10 +54,10 @@ namespace CEGUI
         RawDataContainer rawXMLData;
         System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
 
-        TiXmlDocument doc;
+        CEGUITinyXML::TiXmlDocument doc;
         doc.Parse((const char*)rawXMLData.getDataPtr());
 
-        const TiXmlElement* currElement = doc.RootElement();
+        const CEGUITinyXML::TiXmlElement* currElement = doc.RootElement();
 
         if (currElement)
         {
@@ -68,11 +68,11 @@ namespace CEGUI
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
 
-    void TinyXMLDocument::processElement(const TiXmlElement* element)
+    void TinyXMLDocument::processElement(const CEGUITinyXML::TiXmlElement* element)
     {
         // build attributes block for the element
         XMLAttributes attrs;
-        const TiXmlAttribute *currAttr = element->FirstAttribute();
+        const CEGUITinyXML::TiXmlAttribute *currAttr = element->FirstAttribute();
 
         while (currAttr)
         {
@@ -84,7 +84,7 @@ namespace CEGUI
         d_handler->elementStart(element->Value(), attrs);
 
         // do children
-        const TiXmlElement* childElement = element->FirstChildElement();
+        const CEGUITinyXML::TiXmlElement* childElement = element->FirstChildElement();
 
         while (childElement)
         {
@@ -108,7 +108,7 @@ namespace CEGUI
 
     void TinyXMLParser::parseXMLFile(XMLHandler& handler, const String& filename, const String& schemaName, const String& resourceGroup)
     {
-        TinyXMLDocument doc(handler, filename, schemaName, resourceGroup);
+      TinyXMLDocument doc(handler, filename, schemaName, resourceGroup);
     }
 
 

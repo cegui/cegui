@@ -62,7 +62,7 @@ distribution.
 	#define TIXML_OSTREAM	TiXmlOutStream
 	#define TIXML_CAST_STRING 
 #endif
-
+namespace CEGUITinyXML {
 class TiXmlDocument;
 class TiXmlElement;
 class TiXmlComment;
@@ -1419,6 +1419,6 @@ private:
 	TiXmlNode* node;
 };
 
-
+}
 #endif
 

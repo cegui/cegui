@@ -30,7 +30,8 @@ distribution.
 //
 // It also cleans up the code a bit.
 //
-
+namespace CEGUITinyXML 
+{
 const char* TiXmlBase::errorString[ TIXML_ERROR_STRING_COUNT ] =
 {
 	"No error",
@@ -49,3 +50,4 @@ const char* TiXmlBase::errorString[ TIXML_ERROR_STRING_COUNT ] =
 	"Error document empty.",
 	"Error null (0) or unexpected EOF found in input stream.",
 };
+}
