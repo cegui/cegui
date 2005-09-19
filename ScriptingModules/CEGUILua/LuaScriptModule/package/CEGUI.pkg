@@ -50,10 +50,6 @@ $pfile "elements/TabControl.pkg"
 $pfile "elements/Titlebar.pkg"
 $pfile "elements/FrameWindow.pkg"
 
-$pfile "elements/Static.pkg"
-$pfile "elements/StaticText.pkg"
-$pfile "elements/StaticImage.pkg"
-
 $pfile "elements/Tooltip.pkg"
 
 $pfile "elements/DragContainer.pkg"

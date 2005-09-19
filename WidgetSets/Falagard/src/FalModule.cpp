@@ -45,6 +45,7 @@
 #include "FalScrollbar.h"
 #include "FalSlider.h"
 #include "FalSpinner.h"
+#include "FalStatic.h"
 #include "FalStaticImage.h"
 #include "FalStaticText.h"
 #include "FalSystemButton.h"
@@ -78,6 +79,7 @@ static CEGUI::FalagardScrollablePaneFactory     s_ScrollablePaneFactory;
 static CEGUI::FalagardScrollbarFactory          s_ScrollbarFactory;
 static CEGUI::FalagardSliderFactory             s_SliderFactory;
 static CEGUI::FalagardSpinnerFactory            s_SpinnerFactory;
+static CEGUI::FalagardStaticFactory             s_StaticFactory;
 static CEGUI::FalagardStaticImageFactory        s_StaticImageFactory;
 static CEGUI::FalagardStaticTextFactory         s_StaticTextFactory;
 static CEGUI::FalagardSystemButtonFactory       s_SystemButtonFactory;
@@ -119,6 +121,7 @@ mapEntry factoriesMap[] =
     {FalagardScrollbar::WidgetTypeName, &s_ScrollbarFactory},
     {FalagardSlider::WidgetTypeName, &s_SliderFactory},
     {FalagardSpinner::WidgetTypeName, &s_SpinnerFactory},
+    {FalagardStatic::WidgetTypeName, &s_StaticFactory},
     {FalagardStaticImage::WidgetTypeName, &s_StaticImageFactory},
     {FalagardStaticText::WidgetTypeName, &s_StaticTextFactory},
     {FalagardSystemButton::WidgetTypeName, &s_SystemButtonFactory},

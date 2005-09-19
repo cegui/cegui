@@ -97,7 +97,7 @@ Each item in here has a comment to describe what it's for.
 // MSVC is used (since it can't auto-detect such things).
 //////////////////////////////////////////////////////////////////////////
 //#define CEGUI_SAMPLES_USE_DIRECTX_8
-#define CEGUI_SAMPLES_USE_DIRECTX_9
+//#define CEGUI_SAMPLES_USE_DIRECTX_9
 
 //////////////////////////////////////////////////////////////////////////
 // It is expected by now you are running a recent PSDK and not one that is

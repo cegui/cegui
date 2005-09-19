@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIStaticTextProperties.h
-	created:	10/7/2004
-	author:		Paul D Turner
+	filename: 	FalagardStaticTextProperties.h
+	created:	17/9/2005
+	author:		Tomas L Olsen (based on code by Paul D Turner)
 	
-	purpose:	Interface for properties for the StaticText class.
+	purpose:	Interface for properties for the FalagardStaticText class.
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -23,8 +23,8 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _CEGUIStaticTextProperties_h_
-#define _CEGUIStaticTextProperties_h_
+#ifndef _FalagardStaticTextProperties_h_
+#define _FalagardStaticTextProperties_h_
 
 #include "CEGUIProperty.h"
 
@@ -33,16 +33,17 @@
 namespace CEGUI
 {
 
-// Start of StaticTextProperties namespace section
+// Start of FalagardStaticTextProperties namespace section
 /*!
 \brief
-	Namespace containing all classes that make up the properties interface for the StaticText class
+	Namespace containing all classes that make up the properties interface for the FalagardStaticText class
 */
-namespace StaticTextProperties
+namespace FalagardStaticTextProperties
 {
+
 /*!
 \brief
-	Property to access the text colours for the StaticText widget.
+	Property to access the text colours for the FalagardStaticText widget.
 
 	\par Usage:
 		- Name: TextColours
@@ -59,7 +60,7 @@ class TextColours : public Property
 public:
 	TextColours() : Property(
 		"TextColours",
-		"Property to get/set the text colours for the StaticText widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
+		"Property to get/set the text colours for the FalagardStaticText widget.  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
 		"tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF")
 	{}
 
@@ -178,9 +179,9 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
-} // End of  StaticTextProperties namespace section
+} // End of  FalagardStaticTextProperties namespace section
 
 } // End of  CEGUI namespace section
 
 
-#endif	// end of guard _CEGUIStaticTextProperties_h_
+#endif	// end of guard _FalagardStaticTextProperties_h_

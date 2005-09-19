@@ -243,24 +243,6 @@ Spinner*			ceguiLua_toSpinner(Window* w)
 }
 
 
-Static*				ceguiLua_toStatic(Window* w)
-{
-	return (Static*)w;
-}
-
-
-StaticImage*		ceguiLua_toStaticImage(Window* w)
-{
-	return (StaticImage*)w;
-}
-
-
-StaticText*			ceguiLua_toStaticText(Window* w)
-{
-	return (StaticText*)w;
-}
-
-
 TabButton*			ceguiLua_toTabButton(Window* w)
 {
 	return (TabButton*)w;

@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIStaticTextProperties.cpp
-	created:	10/7/2004
-	author:		Paul D Turner
+	filename: 	FalagardStaticTextProperties.cpp
+	created:	17/9/2005
+	author:		Tomas L Olsen (based on code by Paul D Turner)
 	
-	purpose:	Implements properties for the StaticText class
+	purpose:	Implements properties for the FalagardStaticText class
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -23,59 +23,58 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "elements/CEGUIStaticTextProperties.h"
-#include "elements/CEGUIStaticText.h"
+#include "FalStaticTextProperties.h"
+#include "FalStaticText.h"
 #include "CEGUIPropertyHelper.h"
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 
-// Start of StaticTextProperties namespace section
-namespace StaticTextProperties
+// Start of FalagardStaticTextProperties namespace section
+namespace FalagardStaticTextProperties
 {
 String	TextColours::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::colourRectToString(static_cast<const StaticText*>(receiver)->getTextColours());
+	return PropertyHelper::colourRectToString(static_cast<const FalagardStaticText*>(receiver)->getTextColours());
 }
 
 
 void	TextColours::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<StaticText*>(receiver)->setTextColours(PropertyHelper::stringToColourRect(value));
+	static_cast<FalagardStaticText*>(receiver)->setTextColours(PropertyHelper::stringToColourRect(value));
 }
 
 
 String	HorzFormatting::get(const PropertyReceiver* receiver) const
 {
-	switch(static_cast<const StaticText*>(receiver)->getHorizontalFormatting())
+	switch(static_cast<const FalagardStaticText*>(receiver)->getHorizontalFormatting())
 	{
-	case StaticText::RightAligned:
+	case FalagardStaticText::RightAligned:
 		return String("RightAligned");
 		break;
 
-	case StaticText::HorzCentred:
+	case FalagardStaticText::HorzCentred:
 		return String("HorzCentred");
 		break;
 
-	case StaticText::HorzJustified:
+	case FalagardStaticText::HorzJustified:
 		return String("HorzJustified");
 		break;
 
-	case StaticText::WordWrapLeftAligned:
+	case FalagardStaticText::WordWrapLeftAligned:
 		return String("WordWrapLeftAligned");
 		break;
 
-	case StaticText::WordWrapRightAligned:
+	case FalagardStaticText::WordWrapRightAligned:
 		return String("WordWrapRightAligned");
 		break;
 
-	case StaticText::WordWrapCentred:
+	case FalagardStaticText::WordWrapCentred:
 		return String("WordWrapCentred");
 		break;
 
-	case StaticText::WordWrapJustified:
+	case FalagardStaticText::WordWrapJustified:
 		return String("WordWrapJustified");
 		break;
 
@@ -88,54 +87,54 @@ String	HorzFormatting::get(const PropertyReceiver* receiver) const
 
 void	HorzFormatting::set(PropertyReceiver* receiver, const String& value)
 {
-	StaticText::HorzFormatting fmt;
+	FalagardStaticText::HorzFormatting fmt;
 
 	if (value == "RightAligned")
 	{
-		fmt = StaticText::RightAligned;
+		fmt = FalagardStaticText::RightAligned;
 	}
 	else if (value == "HorzCentred")
 	{
-		fmt = StaticText::HorzCentred;
+		fmt = FalagardStaticText::HorzCentred;
 	}
 	else if (value == "HorzJustified")
 	{
-		fmt = StaticText::HorzJustified;
+		fmt = FalagardStaticText::HorzJustified;
 	}
 	else if (value == "WordWrapLeftAligned")
 	{
-		fmt = StaticText::WordWrapLeftAligned;
+		fmt = FalagardStaticText::WordWrapLeftAligned;
 	}
 	else if (value == "WordWrapRightAligned")
 	{
-		fmt = StaticText::WordWrapRightAligned;
+		fmt = FalagardStaticText::WordWrapRightAligned;
 	}
 	else if (value == "WordWrapCentred")
 	{
-		fmt = StaticText::WordWrapCentred;
+		fmt = FalagardStaticText::WordWrapCentred;
 	}
 	else if (value == "WordWrapJustified")
 	{
-		fmt = StaticText::WordWrapJustified;
+		fmt = FalagardStaticText::WordWrapJustified;
 	}
 	else
 	{
-		fmt = StaticText::LeftAligned;
+		fmt = FalagardStaticText::LeftAligned;
 	}
 
-	static_cast<StaticText*>(receiver)->setHorizontalFormatting(fmt);
+	static_cast<FalagardStaticText*>(receiver)->setHorizontalFormatting(fmt);
 }
 
 
 String	VertFormatting::get(const PropertyReceiver* receiver) const
 {
-	switch(static_cast<const StaticText*>(receiver)->getVerticalFormatting())
+	switch(static_cast<const FalagardStaticText*>(receiver)->getVerticalFormatting())
 	{
-	case StaticText::BottomAligned:
+	case FalagardStaticText::BottomAligned:
 		return String("BottomAligned");
 		break;
 
-	case StaticText::VertCentred:
+	case FalagardStaticText::VertCentred:
 		return String("VertCentred");
 		break;
 
@@ -148,47 +147,48 @@ String	VertFormatting::get(const PropertyReceiver* receiver) const
 
 void	VertFormatting::set(PropertyReceiver* receiver, const String& value)
 {
-	StaticText::VertFormatting fmt;
+	FalagardStaticText::VertFormatting fmt;
 
 	if (value == "BottomAligned")
 	{
-		fmt = StaticText::BottomAligned;
+		fmt = FalagardStaticText::BottomAligned;
 	}
 	else if (value == "VertCentred")
 	{
-		fmt = StaticText::VertCentred;
+		fmt = FalagardStaticText::VertCentred;
 	}
 	else
 	{
-		fmt = StaticText::TopAligned;
+		fmt = FalagardStaticText::TopAligned;
 	}
 
-	static_cast<StaticText*>(receiver)->setVerticalFormatting(fmt);
+	static_cast<FalagardStaticText*>(receiver)->setVerticalFormatting(fmt);
 }
 
 
 String	VertScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const StaticText*>(receiver)->isVerticalScrollbarEnabled());
+	return PropertyHelper::boolToString(static_cast<const FalagardStaticText*>(receiver)->isVerticalScrollbarEnabled());
 }
 
 
 void	VertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<StaticText*>(receiver)->setVerticalScrollbarEnabled(PropertyHelper::stringToBool(value));
+	static_cast<FalagardStaticText*>(receiver)->setVerticalScrollbarEnabled(PropertyHelper::stringToBool(value));
 }
+
 
 String	HorzScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const StaticText*>(receiver)->isHorizontalScrollbarEnabled());
+	return PropertyHelper::boolToString(static_cast<const FalagardStaticText*>(receiver)->isHorizontalScrollbarEnabled());
 }
 
 
 void	HorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<StaticText*>(receiver)->setHorizontalScrollbarEnabled(PropertyHelper::stringToBool(value));
+	static_cast<FalagardStaticText*>(receiver)->setHorizontalScrollbarEnabled(PropertyHelper::stringToBool(value));
 }
 
-} // End of  StaticTextProperties namespace section
+} // End of  FalagardStaticTextProperties namespace section
 
 } // End of  CEGUI namespace section

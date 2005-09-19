@@ -52,6 +52,18 @@
             </FrameComponent>
         </ImagerySection>
 
+		<ImagerySection name="BackgroundOnlyFull">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="Background" imageset="Vanilla-Images" image="GenericBrush" />
+            </FrameComponent>
+        </ImagerySection>
+
     </WidgetLook>
 
     <WidgetLook name="Vanilla/Titlebar">
@@ -652,8 +664,51 @@
     </WidgetLook>
 
     <WidgetLook name="Vanilla/StaticImage">
+		<PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" />
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
+        <ImagerySection name="image_withframe">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><ImageDim imageset="Vanilla-Images" image="FrameLeft" dimension="Width" /></Dim>
+					<Dim type="TopEdge" ><ImageDim imageset="Vanilla-Images" image="FrameTop" dimension="Height" /></Dim>
+					<Dim type="RightEdge" >
+						<UnifiedDim scale="1" type="RightEdge">
+							<DimOperator op="Subtract">
+								<ImageDim imageset="Vanilla-Images" image="FrameRight" dimension="Width" />
+							</DimOperator>
+						</UnifiedDim>
+					</Dim>
+					<Dim type="BottomEdge" >
+						<UnifiedDim scale="1" type="BottomEdge">
+							<DimOperator op="Subtract">
+								<ImageDim imageset="Vanilla-Images" image="FrameBottom" dimension="Height" />
+							</DimOperator>
+						</UnifiedDim>
+					</Dim>
+                </Area>
+                <ImageProperty name="Image" />
+                <ColourRectProperty name="ImageColours" />
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="image_noframe">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
+                </Area>
+                <ImageProperty name="Image" />
+                <ColourRectProperty name="ImageColours" />
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
         <StateImagery name="EnabledFrame">
@@ -670,18 +725,42 @@
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="EnabledBackground">
+        <StateImagery name="WithFrameEnabledBackground">
             <Layer>
                 <Section look="Vanilla/Shared" section="BackgroundOnly">
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="DisabledBackground">
+        <StateImagery name="WithFrameDisabledBackground">
             <Layer>
                 <Section look="Vanilla/Shared" section="BackgroundOnly">
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameEnabledBackground">
+            <Layer>
+                <Section look="Vanilla/Shared" section="BackgroundOnlyFull">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameDisabledBackground">
+            <Layer>
+                <Section look="Vanilla/Shared" section="BackgroundOnlyFull">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="WithFrameImage">
+            <Layer>
+                <Section section="image_withframe" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameImage">
+            <Layer>
+                <Section section="image_noframe" />
             </Layer>
         </StateImagery>
     </WidgetLook>
@@ -689,7 +768,7 @@
     <WidgetLook name="Vanilla/StaticText">
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
-        <NamedArea name="TextRenderArea">
+        <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim imageset="Vanilla-Images" image="FrameLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim imageset="Vanilla-Images" image="FrameTop" dimension="Height" /></Dim>
@@ -707,6 +786,82 @@
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="WithFrameTextRenderAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="Vanilla-Images" image="FrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="Vanilla-Images" image="FrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="Vanilla-Images" image="FrameRight" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" offset="-20" type="BottomEdge" />
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="WithFrameTextRenderAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="Vanilla-Images" image="FrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="Vanilla-Images" image="FrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" offset="-20" type="RightEdge" />
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="Vanilla-Images" image="FrameBottom" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="WithFrameTextRenderAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="Vanilla-Images" image="FrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="Vanilla-Images" image="FrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" offset="-20" type="RightEdge" />
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" offset="-20" type="BottomEdge" />
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderArea">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-20" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1" offset="-20" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge" ><UnifiedDim scale="1" offset="-20" type="RightEdge" /></Dim>
+                <Dim type="BottomEdge" ><UnifiedDim scale="1" offset="-20" type="BottomEdge" /></Dim>
             </Area>
         </NamedArea>
         <Child  type="Vanilla/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
@@ -743,16 +898,30 @@
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="EnabledBackground">
+        <StateImagery name="WithFrameEnabledBackground">
             <Layer>
                 <Section look="Vanilla/Shared" section="BackgroundOnly">
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="DisabledBackground">
+        <StateImagery name="WithFrameDisabledBackground">
             <Layer>
                 <Section look="Vanilla/Shared" section="BackgroundOnly">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameEnabledBackground">
+            <Layer>
+                <Section look="Vanilla/Shared" section="BackgroundOnlyFull">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameDisabledBackground">
+            <Layer>
+                <Section look="Vanilla/Shared" section="BackgroundOnlyFull">
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
             </Layer>

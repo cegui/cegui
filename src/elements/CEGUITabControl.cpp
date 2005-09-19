@@ -26,7 +26,6 @@
 #include "CEGUIExceptions.h"
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
-#include "elements/CEGUIStatic.h"
 #include "elements/CEGUIGUISheet.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"

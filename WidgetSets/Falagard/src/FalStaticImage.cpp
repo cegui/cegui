@@ -29,10 +29,14 @@
 namespace CEGUI
 {
     const utf8 FalagardStaticImage::WidgetTypeName[] = "Falagard/StaticImage";
+    
+    FalagardStaticImageProperties::Image    FalagardStaticImage::d_imageProperty;
 
     FalagardStaticImage::FalagardStaticImage(const String& type, const String& name) :
-        StaticImage(type, name)
+        FalagardStatic(type, name),
+        d_image(0)
     {
+        addProperty(&d_imageProperty);
     }
 
     FalagardStaticImage::~FalagardStaticImage()
@@ -41,49 +45,23 @@ namespace CEGUI
 
     void FalagardStaticImage::populateRenderCache()
     {
-        const StateImagery* imagery;
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+        // base class rendering
+        FalagardStatic::populateRenderCache();
 
-		bool is_enabled = !isDisabled();
-
-        // render frame section
-        if (d_frameEnabled)
+        // render image if there is one
+        if (d_image!=0)
         {
-            imagery = &wlf.getStateImagery(is_enabled ? "EnabledFrame" : "DisabledFrame");
-            // peform the rendering operation.
-            imagery->render(*this);
+            // get WidgetLookFeel for the assigned look.
+            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+            String imagery_name = (!d_frameEnabled && wlf.isStateImageryPresent("NoFrameImage")) ? "NoFrameImage" : "WithFrameImage";
+            wlf.getStateImagery(imagery_name).render(*this);
         }
-
-        // render background section
-        if (d_backgroundEnabled)
-        {
-            imagery = &wlf.getStateImagery(is_enabled ? "EnabledBackground" : "DisabledBackground");
-            // peform the rendering operation.
-            imagery->render(*this);
-        }
-
-        // render basic imagery
-        imagery = &wlf.getStateImagery(is_enabled ? "Enabled" : "Disabled");
-        // peform the rendering operation.
-        imagery->render(*this);
-
-        // call base class
-        StaticImage::populateRenderCache();
     }
 
-    Rect FalagardStaticImage::getUnclippedInnerRect(void) const
+    void FalagardStaticImage::setImage(const Image* img)
     {
-        // get WidgetLookFeel for the assigned look.
-        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-
-        String area_name(isFrameEnabled() ? "WithFrame" : "NoFrame");
-        area_name += "ImageRenderArea";
-
-        if (wlf.isNamedAreaDefined(area_name))
-            return wlf.getNamedArea(area_name).getArea().getPixelRect(*this).offset(getUnclippedPixelRect().getPosition());
-        else
-            return StaticImage::getUnclippedInnerRect();
+        d_image = img;
+        requestRedraw();
     }
 
     //////////////////////////////////////////////////////////////////////////

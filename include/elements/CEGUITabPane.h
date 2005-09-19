@@ -26,7 +26,7 @@
 #ifndef _CEGUITabPane_h_
 #define _CEGUITabPane_h_
 
-#include "elements/CEGUIStatic.h"
+#include "elements/CEGUIGUISheet.h"
 
 
 #if defined(_MSC_VER)
@@ -42,7 +42,7 @@ namespace CEGUI
 \brief
 	Base class for a tab pane.
 */
-class CEGUIEXPORT TabPane : public Static
+class CEGUIEXPORT TabPane : public DefaultWindow
 {
 public:
 	/*************************************************************************
@@ -52,7 +52,7 @@ public:
 	\brief
 		Constructor for tab pane widgets.
 	*/
-    TabPane(const String& type, const String& name) : Static(type, name) {}
+    TabPane(const String& type, const String& name) : DefaultWindow(type, name) {}
 
 
 	/*!
@@ -90,8 +90,8 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name=="Tabpane")	return true;
-		return Static::testClassName_impl(class_name);
+		if (class_name=="TabPane")	return true;
+		return DefaultWindow::testClassName_impl(class_name);
 	}
 
 	/*************************************************************************

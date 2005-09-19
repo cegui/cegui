@@ -1,7 +1,7 @@
 /************************************************************************
-    filename:   FalStaticImage.h
-    created:    Tue Jul 5 2005
-    author:     Paul D Turner <paul@cegui.org.uk>
+    filename:   FalStatic.h
+    created:    Sat Sep 17 2005
+    author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -21,21 +21,20 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalStaticImage_h_
-#define _FalStaticImage_h_
+#ifndef _FalStatic_h_
+#define _FalStatic_h_
 
-#include "CEGUIWindowFactory.h"
-#include "CEGUIImage.h"
 #include "FalModule.h"
-#include "FalStatic.h"
-#include "FalStaticImageProperties.h"
+#include "CEGUIWindowFactory.h"
+#include "CEGUIWindow.h"
+#include "FalStaticProperties.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        StaticImage class for the FalagardBase module.
+        Static class for the FalagardBase module.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
@@ -48,10 +47,8 @@ namespace CEGUI
             - WithFrameDisabledBackground - backdrop rendering for disabled state with frame enabled.
             - NoFrameEnabledBackground    - backdrop rendering for enabled state with frame disabled.
             - NoFrameDisabledBackground   - backdrop rendering for disabled state with frame disabled.
-            - WithFrameImage              - image rendering when frame is enabled
-            - NoFrameImage                - image rendering when frame is disabled (defaults to WithFrameImage if not present)
     */
-    class FALAGARDBASE_API FalagardStaticImage : public FalagardStatic
+    class FALAGARDBASE_API FalagardStatic : public Window
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
@@ -60,46 +57,72 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardStaticImage(const String& type, const String& name);
+        FalagardStatic(const String& type, const String& name);
 
         /*!
         \brief
             Destructor
         */
-        ~FalagardStaticImage();
+        ~FalagardStatic();
 
         /*!
         \brief
-            Set the image for this FalagardStaticImage widget
+            Return whether the frame for this static widget is enabled or disabled.
+
+        \return
+            true if the frame is enabled and will be rendered.  false is the frame is disabled and will not be rendered.
         */
-        void setImage(const Image* img);
+        bool    isFrameEnabled(void) const        {return d_frameEnabled;}
 
         /*!
         \brief
-            Get the image for this FalagardStaticImage widget
+            Return whether the background for this static widget is enabled to disabled.
+
+        \return
+            true if the background is enabled and will be rendered.  false if the background is disabled and will not be rendered.
         */
-        const Image* getImage(void) const   {return d_image;}
+        bool    isBackgroundEnabled(void) const        {return d_backgroundEnabled;}
+
+        /*!
+        \brief
+            Enable or disable rendering of the frame for this static widget.
+
+        \param setting
+            true to enable rendering of a frame.  false to disable rendering of a frame.
+        */
+        void    setFrameEnabled(bool setting);
+
+        /*!
+        \brief
+            Enable or disable rendering of the background for this static widget.
+
+        \param setting
+            true to enable rendering of the background.  false to disable rendering of the background.
+        */
+        void    setBackgroundEnabled(bool setting);
 
     protected:
-        // overridden from StaticImage base class.
+        // overridden from Window base class.
         void populateRenderCache();
 
         // static properties
-        static FalagardStaticImageProperties::Image d_imageProperty;
+        static FalagardStaticProperties::FrameEnabled       d_frameEnabledProperty;
+        static FalagardStaticProperties::BackgroundEnabled  d_backgroundEnabledProperty;
 
         // implementation data
-        const Image* d_image;
+        bool d_frameEnabled;        //!< True when the frame is enabled.
+        bool d_backgroundEnabled;   //!< true when the background is enabled.
     };
 
     /*!
     \brief
-        WindowFactory for FalagardStaticImage type Window objects.
+        WindowFactory for FalagardStatic type Window objects.
     */
-    class FALAGARDBASE_API FalagardStaticImageFactory : public WindowFactory
+    class FALAGARDBASE_API FalagardStaticFactory : public WindowFactory
     {
     public:
-        FalagardStaticImageFactory(void) : WindowFactory(FalagardStaticImage::WidgetTypeName) { }
-        ~FalagardStaticImageFactory(void){}
+        FalagardStaticFactory(void) : WindowFactory(FalagardStatic::WidgetTypeName) { }
+        ~FalagardStaticFactory(void){}
         Window* createWindow(const String& name);
         void destroyWindow(Window* window);
     };
@@ -107,4 +130,4 @@ namespace CEGUI
 } // End of  CEGUI namespace section
 
 
-#endif  // end of guard _FalStaticImage_h_
+#endif  // end of guard _FalStatic_h_
