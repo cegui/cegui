@@ -269,6 +269,7 @@ namespace CEGUI
     void FalagardStaticText::setVerticalFormatting(VertFormatting v_fmt)
     {
         d_vertFormatting = v_fmt;
+        configureScrollbars();
         requestRedraw();
     }
 
@@ -278,6 +279,7 @@ namespace CEGUI
     void FalagardStaticText::setHorizontalFormatting(HorzFormatting h_fmt)
     {
         d_horzFormatting = h_fmt;
+        configureScrollbars();
         requestRedraw();
     }
 
