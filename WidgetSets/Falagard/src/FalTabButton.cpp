@@ -39,76 +39,39 @@ namespace CEGUI
     {
     }
 
-    void FalagardTabButton::drawSelf(float z)
+    void FalagardTabButton::populateRenderCache()
     {
-        // this is hackish and relies on insider knowlegde of the way that both TabButton (actually TabButtonBase)
-        // and Window implement things; Soon I'll get to updating things so that this can be replaced
-        // with clean code.
+        // get WidgetLookFeel for the assigned look.
+        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
 
-        // do we need to update the cache?
-        if (d_needsRedraw)
+        bool norm = false;
+        String state;
+
+		if (isDisabled())
+		{
+		    state = "Disabled";
+		}
+		else if (d_pushed)
+		{
+		    state = "Pushed";
+		}
+		else if (d_hovering)
+		{
+		    state = "Hover";
+		}
+		else
+		{
+		    state = "Normal";
+		    norm = true;
+		}
+
+        if (!norm && !wlf.isStateImageryPresent(state))
         {
-            // remove old cached imagery
-            d_renderCache.clearCachedImagery();
-            // signal that we'll no loger need a redraw.
-            d_needsRedraw = false;
-            // call TabButton drawSelf method which will call one of the state drawing methods overridden in this class.
-            TabButton::drawSelf(z);
+            state = "Normal";
         }
 
-        // call Window drawSelf to get it to send the cached imagery to the renderer.
-        Window::drawSelf(z);
+        wlf.getStateImagery(state).render(*this);
     }
-
-    void FalagardTabButton::drawNormal(float z)
-    {
-        doTabButtonRender("Normal");
-    }
-
-    void FalagardTabButton::drawHover(float z)
-    {
-        doTabButtonRender("Hover");
-    }
-
-    void FalagardTabButton::drawPushed(float z)
-    {
-        doTabButtonRender("Selected");
-    }
-
-    void FalagardTabButton::drawDisabled(float z)
-    {
-        doTabButtonRender("Disabled");
-    }
-
-    void FalagardTabButton::doTabButtonRender(const String& state)
-    {
-        // this is the second part of the hackish code.  We're duplicating the first section of code
-        // from the Window::drawSelf method to decide whether to actually do anything.  It is likely
-        // this will be replaced with cleaner code in the near future...
-
-        const StateImagery* imagery;
-
-        try
-        {
-            // get WidgetLookFeel for the assigned look.
-            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-            // try and get imagery for the state we were given, though default to Normal state if the
-            // desired state does not exist
-            imagery = wlf.isStateImageryPresent(state) ? &wlf.getStateImagery(state) : &wlf.getStateImagery("Normal");
-        }
-        // catch exceptions, but do not exit.
-        catch (UnknownObjectException)
-        {
-            // don't try and draw using missing imagery!
-            return;
-        }
-
-        // peform the rendering operation.
-        // NB: This is not in the above try block since we want UnknownObjectException exceptions to be emitted from
-        // the rendering code for conditions such as missing Imagesets and/or Images.
-        imagery->render(*this);
-    }
-
 
     //////////////////////////////////////////////////////////////////////////
     /*************************************************************************

@@ -102,28 +102,8 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 	// default handling
 	ButtonBase::onMouseButtonUp(e);
 }
-/*************************************************************************
-Draw method
-*************************************************************************/
-void TabButton::drawSelf(float z)
-{
-	if (isDisabled())
-	{
-		drawDisabled(z);
-	}
-	else if (isHovering())
-	{
-		drawHover(z);
-	}
-    else if (d_selected)
-    {
-        drawPushed(z);
-    }
-    else
-    {
-        drawNormal(z);
-    }
-}
+
+
 /*************************************************************************
 Set target window
 *************************************************************************/

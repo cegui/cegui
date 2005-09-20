@@ -60,17 +60,9 @@ namespace CEGUI
         */
         ~FalagardTabButton();
 
-        // overridden from TabButton base class.
-        void drawSelf(float z);
-
-        // implementation of abstract methods in TabButton base class.
-        void drawNormal(float z);
-        void drawHover(float z);
-        void drawPushed(float z);
-        void drawDisabled(float z);
-
     protected:
-        void doTabButtonRender(const String& state);
+        // overridden from TabButton
+        void populateRenderCache();
     };
 
     /*!

@@ -40,79 +40,38 @@ namespace CEGUI
     {
     }
 
-    void FalagardThumb::drawSelf(float z)
+    void FalagardThumb::populateRenderCache()
     {
-        // this is hackish and relies on insider knowlegde of the way that both Thumb (actually ButtonBase)
-        // and Window implement things; Soon I'll get to updating things so that this can be replaced
-        // with clean code.
+        // get WidgetLookFeel for the assigned look.
+        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
 
-        // call Thumb drawSelf method which will call one of the state drawing methods overridden in this class.
-        Thumb::drawSelf(z);
+        bool norm = false;
+        String state;
 
-        // call Window drawSelf to get it to send the cached imagery to the renderer.
-        Window::drawSelf(z);
-    }
+		if (isDisabled())
+		{
+		    state = "Disabled";
+		}
+		else if (d_pushed)
+		{
+		    state = "Pushed";
+		}
+		else if (d_hovering)
+		{
+		    state = "Hover";
+		}
+		else
+		{
+		    state = "Normal";
+		    norm = true;
+		}
 
-    void FalagardThumb::drawNormal(float z)
-    {
-        doThumbRender("Normal");
-    }
-
-    void FalagardThumb::drawHover(float z)
-    {
-        doThumbRender("Hover");
-    }
-
-    void FalagardThumb::drawPushed(float z)
-    {
-        doThumbRender("Pushed");
-    }
-
-    void FalagardThumb::drawDisabled(float z)
-    {
-        doThumbRender("Disabled");
-    }
-
-    void FalagardThumb::doThumbRender(const String& state)
-    {
-        // this is the second part of the hackish code.  We're duplicating the first section of code
-        // from the Window::drawSelf method to decide whether to actually do anything.  It is likely
-        // this will be replaced with cleaner code in the near future...
-
-        // do we need to update the cache?
-        if (d_needsRedraw)
+        if (!norm && !wlf.isStateImageryPresent(state))
         {
-            // remove old cached imagery
-            d_renderCache.clearCachedImagery();
-            // signal that we'll no loger need a redraw.
-            d_needsRedraw = false;
-
-            // this conditional is just here to respect old legacy settings
-            if (d_useStandardImagery)
-            {
-                const StateImagery* imagery;
-
-                try
-                {
-                    // get WidgetLookFeel for the assigned look.
-                    const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-                    // try and get imagery for the state we were given, though default to Normal state if the
-                    // desired state does not exist
-                    imagery = wlf.isStateImageryPresent(state) ? &wlf.getStateImagery(state) : &wlf.getStateImagery("Normal");
-                }
-                // catch exceptions, but do not exit.
-                catch (UnknownObjectException)
-                {
-                    // don't try and draw using missing imagery!
-                    return;
-                }
-
-                // peform the rendering operation.
-                // NB: This is not in the above try block since we want UnknownObjectException exceptions to be emitted from
-                // the rendering code for conditions such as missing Imagesets and/or Images.
-                imagery->render(*this);
-            }
+            state = "Normal";
         }
+
+        wlf.getStateImagery(state).render(*this);
     }
 
 

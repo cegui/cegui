@@ -141,18 +141,6 @@ protected:
 		Add button specific events
 	*/
 	void	addTabButtonEvents(void);
-	/*!
-	\brief
-		Perform the rendering for this widget.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	void	drawSelf(float z);
-
 
 	/*!
 	\brief

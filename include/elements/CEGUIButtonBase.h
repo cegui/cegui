@@ -28,7 +28,6 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
-#include "elements/CEGUIButtonBaseProperties.h"
 
 
 #if defined(_MSC_VER)
@@ -48,16 +47,6 @@ namespace CEGUI
 class CEGUIEXPORT ButtonBase : public Window
 {
 public:
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	// default colours for text label rendering
-	static const colour		DefaultNormalLabelColour;		//!< Default colour used when rendering label text in normal state.
-	static const colour		DefaultHoverLabelColour;		//!< Default colour used when rendering label text in hover / highlight state.
-	static const colour		DefaultPushedLabelColour;		//!< Default colour used when rendering label text in pushed state.
-	static const colour		DefaultDisabledLabelColour;		//!< Default colour used when rendering label text in disabled state.
-
-
 	/*************************************************************************
 		Accessor type functions
 	*************************************************************************/
@@ -80,99 +69,6 @@ public:
 	*/
 	bool	isPushed(void) const			{return d_pushed;}
 
-
-	/*!
-	\brief
-		return text label colour used for normal rendering
-
-	\return
-		colour value that is used for the label text when rendering in the normal state.
-	*/
-	colour	getNormalTextColour(void) const			{return d_normalColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for hover / highlight rendering
-
-	\return
-		colour value that is used for the label text when rendering in the hover / highlighted states.
-	*/
-	colour	getHoverTextColour(void) const			{return d_hoverColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for pushed rendering
-
-	\return
-		colour value that is used for the label text when rendering in the pushed state.
-	*/
-	colour	getPushedTextColour(void) const			{return d_pushedColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for disabled rendering
-
-	\return
-		colour value that is used for the label text when rendering in the disabled state.
-	*/
-	colour	getDisabledTextColour(void) const		{return d_disabledColour;}
-
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
-	/*!
-	\brief
-		Set the colour to use for the label text when rendering in the normal state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalTextColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the label text when rendering in the hover / highlighted states.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setHoverTextColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the label text when rendering in the pushed state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setPushedTextColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the label text when rendering in the disabled state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setDisabledTextColour(const colour& colour);
 
 	/*************************************************************************
 		Construction and Destruction
@@ -236,98 +132,10 @@ protected:
 
 
 	/*************************************************************************
-		Implementation Rendering Functions
-	*************************************************************************/
-	/*!
-	\brief
-		Perform the rendering for this widget.
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual	void	drawSelf(float z);
-
-
-	/*!
-	\brief
-		Render the button-type widget in it's 'normal' state
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual void	drawNormal(float z)		= 0;
-
-
-	/*!
-	\brief
-		Render the button-type widget in it's 'hover' (highlighted) state
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual void	drawHover(float z)			{drawNormal(z);}
-
-
-	/*!
-	\brief
-		Render the button-type widget in it's 'pushed' state
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual void	drawPushed(float z)		{drawNormal(z);}
-
-
-	/*!
-	\brief
-		Render the button-type widget in it's 'disabled' state
-
-	\param z
-		float value specifying the base Z co-ordinate that should be used when rendering
-
-	\return
-		Nothing
-	*/
-	virtual void	drawDisabled(float z)		{drawNormal(z);}
-
-
-	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	bool	d_pushed;			//!< true when widget is pushed
 	bool	d_hovering;			//!< true when the button is in 'hover' state and requires the hover rendering.
-
-	// common rendering setting data
-	colour	d_normalColour;					//!< Colour used for label text when rendering in normal state
-	colour	d_hoverColour;					//!< Colour used for label text when rendering in highlighted state
-	colour	d_pushedColour;					//!< Colour used for label text when rendering in pushed state
-	colour	d_disabledColour;				//!< Colour used for label text when rendering in disabled state
-
-private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static ButtonBaseProperties::NormalTextColour	d_normalTextColourProperty;
-	static ButtonBaseProperties::HoverTextColour	d_hoverTextColourProperty;
-	static ButtonBaseProperties::PushedTextColour	d_pushedTextColourProperty;
-	static ButtonBaseProperties::DisabledTextColour	d_disabledTextColourProperty;
-
-	/*************************************************************************
-		Private methods
-	*************************************************************************/
-	void	addButtonBaseProperties(void);
 };
 
 } // End of  CEGUI namespace section

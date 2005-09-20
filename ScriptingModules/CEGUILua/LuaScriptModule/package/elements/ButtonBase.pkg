@@ -5,15 +5,4 @@ class ButtonBase : public Window
 {
 	bool isHovering() const;
 	bool isPushed() const;
-
-
-	colour getNormalTextColour() const;
-	colour getHoverTextColour() const;
-	colour getPushedTextColour() const;
-	colour getDisabledTextColour() const;
-
-	void setNormalTextColour(const colour& c);
-	void setHoverTextColour(const colour& c);
-	void setPushedTextColour(const colour& c);
-	void setDisabledTextColour(const colour& c);
 };

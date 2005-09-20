@@ -6,6 +6,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Button">
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
         <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" />
         <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" />
         <ImagerySection name="label">
@@ -101,6 +105,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/RadioButton">
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -223,6 +231,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Checkbox">
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -3015,6 +3027,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabButton">
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>

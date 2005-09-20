@@ -60,17 +60,9 @@ namespace CEGUI
         */
         ~FalagardButton();
 
-        // overridden from ButtonBase.
-        void drawSelf(float z);
-
-        // implementation of abstract methods in ButtonBase
-        void drawNormal(float z);
-        void drawHover(float z);
-        void drawPushed(float z);
-        void drawDisabled(float z);
-
     protected:
-        void doButtonRender(const String& state);
+        // overridden from PushButton base class.
+        void populateRenderCache();
     };
 
     /*!

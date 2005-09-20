@@ -64,17 +64,9 @@ namespace CEGUI
         */
         ~FalagardCheckbox();
 
-        // overridden from ButtonBase.
-        void drawSelf(float z);
-
-        // implementation of abstract methods in ButtonBase
-        void drawNormal(float z);
-        void drawHover(float z);
-        void drawPushed(float z);
-        void drawDisabled(float z);
-
     protected:
-        void doButtonRender(const String& state);
+        // overridden from Checkbox base class.
+        void populateRenderCache();
     };
 
     /*!

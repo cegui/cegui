@@ -54,10 +54,6 @@
 #include "CEGUISystem.h"
 #include "CEGUIScriptModule.h"
 
-// mid-level renderables
-#include "CEGUIRenderableFrame.h"
-#include "CEGUIRenderableImage.h"
-
 // Falagard core system include
 #include "falagard/CEGUIFalWidgetLookManager.h"
 

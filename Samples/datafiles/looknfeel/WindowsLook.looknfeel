@@ -6,10 +6,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Button">
-        <Property name="NormalTextColour" value="FF000000" />
-        <Property name="HoverTextColour" value="FF000000" />
-        <Property name="PushedTextColour" value="FF000000" />
-        <Property name="DisabledTextColour" value="FF888888" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -288,10 +288,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Checkbox">
-        <Property name="NormalTextColour" value="FF000000" />
-        <Property name="HoverTextColour" value="FF000000" />
-        <Property name="PushedTextColour" value="FF000000" />
-        <Property name="DisabledTextColour" value="FF888888" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -2205,10 +2205,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/RadioButton">
-        <Property name="NormalTextColour" value="FF000000" />
-        <Property name="HoverTextColour" value="FF000000" />
-        <Property name="PushedTextColour" value="FF000000" />
-        <Property name="DisabledTextColour" value="FF888888" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -3524,10 +3524,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/TabButton">
-        <Property name="NormalTextColour" value="FF000000" />
-        <Property name="HoverTextColour" value="FF000000" />
-        <Property name="PushedTextColour" value="FF000000" />
-        <Property name="DisabledTextColour" value="FF888888" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>

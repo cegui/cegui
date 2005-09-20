@@ -29,24 +29,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Definition of Properties for this class
-*************************************************************************/
-ButtonBaseProperties::NormalTextColour		ButtonBase::d_normalTextColourProperty;
-ButtonBaseProperties::HoverTextColour		ButtonBase::d_hoverTextColourProperty;
-ButtonBaseProperties::PushedTextColour		ButtonBase::d_pushedTextColourProperty;
-ButtonBaseProperties::DisabledTextColour	ButtonBase::d_disabledTextColourProperty;
-
-
-/*************************************************************************
-	Constants
-*************************************************************************/
-// default colours for text label rendering
-const colour	ButtonBase::DefaultNormalLabelColour	= 0xFFFFFFFF;
-const colour	ButtonBase::DefaultHoverLabelColour		= 0xFFFFFFFF;
-const colour	ButtonBase::DefaultPushedLabelColour	= 0xFFFFFFFF;
-const colour	ButtonBase::DefaultDisabledLabelColour	= 0xFF7F7F7F;
-
 
 /*************************************************************************
 	Constructor
@@ -54,13 +36,8 @@ const colour	ButtonBase::DefaultDisabledLabelColour	= 0xFF7F7F7F;
 ButtonBase::ButtonBase(const String& type, const String& name) :
 	Window(type, name),
 	d_pushed(false),
-	d_hovering(false),
-	d_normalColour(DefaultNormalLabelColour),
-	d_hoverColour(DefaultHoverLabelColour),
-	d_pushedColour(DefaultPushedLabelColour),
-	d_disabledColour(DefaultDisabledLabelColour)
+	d_hovering(false)
 {
-	addButtonBaseProperties();
 }
 
 
@@ -105,91 +82,6 @@ void ButtonBase::updateInternalState(const Point& mouse_pos)
 	if (oldstate != d_hovering)
 	{
 		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	Set the colour to use for the label text when rendering in the
-	normal state.	
-*************************************************************************/
-void ButtonBase::setNormalTextColour(const colour& colour)
-{
-	if (d_normalColour != colour)
-	{
-		d_normalColour = colour;
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	Set the colour to use for the label text when rendering in the
-	hover / highlighted states.	
-*************************************************************************/
-void ButtonBase::setHoverTextColour(const colour& colour)
-{
-	if (d_hoverColour != colour)
-	{
-		d_hoverColour = colour;
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	Set the colour to use for the label text when rendering in the
-	pushed state.
-*************************************************************************/
-void ButtonBase::setPushedTextColour(const colour& colour)
-{
-	if (d_pushedColour != colour)
-	{
-		d_pushedColour = colour;
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	Set the colour to use for the label text when rendering in the
-	disabled state.	
-*************************************************************************/
-void ButtonBase::setDisabledTextColour(const colour& colour)
-{
-	if (d_disabledColour != colour)
-	{
-		d_disabledColour = colour;
-		requestRedraw();
-	}
-
-}
-
-
-/*************************************************************************
-	Perform the rendering for this widget.	
-*************************************************************************/
-void ButtonBase::drawSelf(float z)
-{
-	if (isHovering())
-	{
-		drawHover(z);
-	}
-	else if (isPushed())
-	{
-		drawPushed(z);
-	}
-	else if (isDisabled())
-	{
-		drawDisabled(z);
-	}
-	else
-	{
-		drawNormal(z);
 	}
 
 }
@@ -285,18 +177,6 @@ void ButtonBase::onMouseLeaves(MouseEventArgs& e)
 	requestRedraw();
 
 	e.handled = true;
-}
-
-
-/*************************************************************************
-	Add properties for this class
-*************************************************************************/
-void ButtonBase::addButtonBaseProperties(void)
-{
-	addProperty(&d_normalTextColourProperty);
-	addProperty(&d_hoverTextColourProperty);
-	addProperty(&d_pushedTextColourProperty);
-	addProperty(&d_disabledTextColourProperty);
 }
 
 } // End of  CEGUI namespace section

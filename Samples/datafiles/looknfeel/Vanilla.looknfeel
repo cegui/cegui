@@ -100,10 +100,10 @@
 
 
     <WidgetLook name="Vanilla/Button">
-        <Property name="NormalTextColour" value="FFFFFFFF" />
-        <Property name="HoverTextColour" value="FFFFFFFF" />
-        <Property name="PushedTextColour" value="FFFFFFFF" />
-        <Property name="DisabledTextColour" value="FF888888" />
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="label">
             <TextComponent>

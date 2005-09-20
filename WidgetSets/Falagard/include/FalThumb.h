@@ -61,17 +61,8 @@ namespace CEGUI
         ~FalagardThumb();
 
     protected:
-        // overridden from ButtonBase.
-        void drawSelf(float z);
-
-        // implementation of abstract methods in Thumb base class
-        void drawNormal(float z);
-        void drawHover(float z);
-        void drawPushed(float z);
-        void drawDisabled(float z);
-
-        void doThumbRender(const String& state);
-
+        // overridden from Thumb
+        void populateRenderCache();
     };
 
     /*!

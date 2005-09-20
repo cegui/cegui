@@ -30,20 +30,3 @@ class Renderer : public EventSet
 	unsigned int getHorzScreenDPI() const;
 	unsigned int getVertScreenDPI() const;
 };
-
-
-/***********************************************************************
-	Rendering related enums
-***********************************************************************/
-enum FrameLocation
-{
-	Invalid,
-	TopLeftCorner,
-	TopRightCorner,
-	BottomLeftCorner,
-	BottomRightCorner,
-	LeftEdge,
-	TopEdge,
-	RightEdge,
-	BottomEdge
-};
