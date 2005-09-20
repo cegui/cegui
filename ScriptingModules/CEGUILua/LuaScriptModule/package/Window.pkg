@@ -1,15 +1,4 @@
 /****************************************
-	Window metrics mode
-*****************************************/
-enum MetricsMode
-{
-	Relative,
-	Absolute,
-	Inherited
-};
-
-
-/****************************************
 	Vertical alignment modes
 *****************************************/
 enum VerticalAlignment
@@ -105,11 +94,14 @@ class Window //: public EventSet
 	bool isZOrderingEnabled() const;
 	void setZOrderingEnabled(bool setting);
 
-	Rect getRect() const;
 	Rect getPixelRect() const;
 	Rect getInnerRect() const;
 	Rect getUnclippedPixelRect() const;
 	Rect getUnclippedInnerRect() const;
+
+    Size getParentPixelSize(void) const;
+    float getParentPixelWidth(void) const;
+    float getParentPixelHeight(void) const;
 
 	static Window* getCaptureWindow();
 	void setRestoreCapture(bool setting);
@@ -130,89 +122,10 @@ class Window //: public EventSet
 	bool isRiseOnClickEnabled() const;
 	void setRiseOnClickEnabled(bool setting);
 
-	MetricsMode getMetricsMode() const;
-	void setMetricsMode(MetricsMode mode);
-
 	const Image* getMouseCursor() const;
 	void setMouseCursor(MouseCursorImage cursor);
 	void setMouseCursor(const Image* image);
 	void setMouseCursor(string imageset, string image);
-
-	Rect getRelativeRect() const;
-	Point getRelativePosition() const;
-	float getRelativeXPosition() const;
-	float getRelativeYPosition() const;
-	Size getRelativeSize() const;
-	float getRelativeWidth() const;
-	float getRelativeHeight() const;
-
-	Rect getAbsoluteRect() const;
-	Point getAbsolutePosition() const;
-	float getAbsoluteXPosition() const;
-	float getAbsoluteYPosition() const;
-	Size getAbsoluteSize() const;
-	float getAbsoluteWidth() const;
-	float getAbsoluteHeight() const;
-
-	void setPosition(MetricsMode mode, const Point& pos);
-	void setXPosition(MetricsMode mode, float x);
-	void setYPosition(MetricsMode mode, float y);
-	void setWidth(MetricsMode mode, float w);
-	void setHeight(MetricsMode mode, float h);
-	void setSize(MetricsMode mode, const Size& sz);
-	void setRect(MetricsMode mode, const Rect& r);
-
-	Point getPosition(MetricsMode mode) const;
-	float getXPosition(MetricsMode mode) const;
-	float getYPosition(MetricsMode mode) const;
-	float getWidth(MetricsMode mode) const;
-	float getHeight(MetricsMode mode) const;
-	Size getSize(MetricsMode mode) const;
-	Rect getRect(MetricsMode mode) const;
-
-	void setMinimumSize(const Size& sz);
-	void setMaximumSize(const Size& sz);
-	void setSize(const Size& sz);
-	void setWidth(float w);
-	void setHeight(float h);
-	float getWidth() const;
-	float getHeight() const;
-	Size getSize() const;
-	Size getMinimumSize() const;
-	Size getMaximumSize() const;
-
-	void setPosition(const Point& pos);
-	void setXPosition(float x);
-	void setYPosition(float y);
-	float getXPosition() const;
-	float getYPosition() const;
-	Point getPosition() const;
-
-	void setAreaRect(const Rect& rect);
-
-	float absoluteToRelativeX(float x) const;
-	float absoluteToRelativeY(float y) const;
-	Point absoluteToRelative(const Point& p) const;
-	Size absoluteToRelative(const Size& sz) const;
-	Rect absoluteToRelative(const Rect& r) const;
-
-	float relativeToAbsoluteX(float x) const;
-	float relativeToAbsoluteY(float y) const;
-	Point relativeToAbsolute(const Point& p) const;
-	Size relativeToAbsolute(const Size& sz) const;
-	Rect relativeToAbsolute(const Rect& r) const;
-
-	float windowToScreenX(float x) const;
-	float windowToScreenY(float y) const;
-	Point windowToScreen(const Point& p) const;
-	Size windowToScreen(const Size& sz) const;
-	Rect windowToScreen(const Rect& r) const;
-
-	float screenToWindowX(float x) const;
-	float screenToWindowY(float y) const;
-	Point screenToWindow(const Point& p) const;
-	Size screenToWindow(const Size& sz) const;
-	Rect screenToWindow(const Rect& r) const;
 
 	void moveToFront();
 	void moveToBack();
@@ -277,26 +190,6 @@ class Window //: public EventSet
 	UDim getWindowHeight() const;
 	const UVector2& getWindowMaxSize() const;
 	const UVector2& getWindowMinSize() const;
-
-	float unifiedToRelativeX(const UDim& val) const;
-	float	unifiedToRelativeY(const UDim& val) const;
-	Vector2 unifiedToRelative(const UVector2& val) const;
-	Rect unifiedToRelative(const URect& val) const;
-
-	float unifiedToAbsoluteX(const UDim& val) const;
-	float	unifiedToAbsoluteY(const UDim& val) const;
-	Vector2 unifiedToAbsolute(const UVector2& val) const;
-	Rect unifiedToAbsolute(const URect& val) const;
-
-	float windowToScreenX(const UDim& x) const;
-	float windowToScreenY(const UDim& y) const;
-	Vector2 windowToScreen(const UVector2& vec) const;
-	Rect windowToScreen(const URect& rect) const;
-
-	float screenToWindowX(const UDim& x) const;
-	float screenToWindowY(const UDim& y) const;
-	Vector2 screenToWindow(const UVector2& vec) const;
-	Rect screenToWindow(const URect& rect) const;
 
 	/****************************************************
 	Functions for easy casting CEGUI::Window class

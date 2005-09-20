@@ -46,7 +46,6 @@ public:
 	static	Size	stringToSize(const String& str);
 	static	Point	stringToPoint(const String& str);
 	static	Rect	stringToRect(const String& str);
-	static	MetricsMode	stringToMetricsMode(const String& str);
 	static const Image*	stringToImage(const String& str);
 	static	colour	stringToColour(const String& str);
 	static	ColourRect	stringToColourRect(const String& str);
@@ -61,7 +60,6 @@ public:
 	static String	sizeToString(const Size& val);
 	static String	pointToString(const Point& val);
 	static String	rectToString(const Rect& val);
-	static String	metricsModeToString(MetricsMode val);
 	static String	imageToString(const Image* const val);
 	static String	colourToString(const colour& val);
 	static String	colourRectToString(const ColourRect& val);

@@ -31,6 +31,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
+#include "CEGUICoordConverter.h"
 #include "elements/CEGUITooltip.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
@@ -46,44 +47,18 @@ const String Window::EventNamespace("Window");
 /*************************************************************************
 	Definitions for Window base class Properties
 *************************************************************************/
-WindowProperties::AbsoluteHeight	Window::d_absHeightProperty;
-WindowProperties::AbsoluteMaxSize	Window::d_absMaxSizeProperty;
-WindowProperties::AbsoluteMinSize	Window::d_absMinSizeProperty;
-WindowProperties::AbsolutePosition	Window::d_absPositionProperty;
-WindowProperties::AbsoluteRect		Window::d_absRectProperty;
-WindowProperties::AbsoluteSize		Window::d_absSizeProperty;
-WindowProperties::AbsoluteWidth		Window::d_absWidthProperty;
-WindowProperties::AbsoluteXPosition	Window::d_absXPosProperty;
-WindowProperties::AbsoluteYPosition	Window::d_absYPosProperty;
 WindowProperties::Alpha				Window::d_alphaProperty;
 WindowProperties::AlwaysOnTop		Window::d_alwaysOnTopProperty;
 WindowProperties::ClippedByParent	Window::d_clippedByParentProperty;
 WindowProperties::DestroyedByParent	Window::d_destroyedByParentProperty;
 WindowProperties::Disabled			Window::d_disabledProperty;
 WindowProperties::Font				Window::d_fontProperty;
-WindowProperties::Height			Window::d_heightProperty;
 WindowProperties::ID				Window::d_IDProperty;
 WindowProperties::InheritsAlpha		Window::d_inheritsAlphaProperty;
-WindowProperties::MetricsMode		Window::d_metricsModeProperty;
 WindowProperties::MouseCursorImage	Window::d_mouseCursorProperty;
-WindowProperties::Position			Window::d_positionProperty;
-WindowProperties::Rect				Window::d_rectProperty;
-WindowProperties::RelativeHeight	Window::d_relHeightProperty;
-WindowProperties::RelativeMaxSize	Window::d_relMaxSizeProperty;
-WindowProperties::RelativeMinSize	Window::d_relMinSizeProperty;
-WindowProperties::RelativePosition	Window::d_relPositionProperty;
-WindowProperties::RelativeRect		Window::d_relRectProperty;
-WindowProperties::RelativeSize		Window::d_relSizeProperty;
-WindowProperties::RelativeWidth		Window::d_relWidthProperty;
-WindowProperties::RelativeXPosition	Window::d_relXPosProperty;
-WindowProperties::RelativeYPosition	Window::d_relYPosProperty;
 WindowProperties::RestoreOldCapture	Window::d_restoreOldCaptureProperty;
-WindowProperties::Size				Window::d_sizeProperty;
 WindowProperties::Text				Window::d_textProperty;
 WindowProperties::Visible			Window::d_visibleProperty;
-WindowProperties::Width				Window::d_widthProperty;
-WindowProperties::XPosition			Window::d_xPosProperty;
-WindowProperties::YPosition			Window::d_yPosProperty;
 WindowProperties::ZOrderChangeEnabled	Window::d_zOrderChangeProperty;
 WindowProperties::WantsMultiClickEvents Window::d_wantsMultiClicksProperty;
 WindowProperties::MouseButtonDownAutoRepeat Window::d_autoRepeatProperty;
@@ -128,7 +103,6 @@ const String Window::EventShown( "Shown" );
 const String Window::EventHidden( "Hidden" );
 const String Window::EventEnabled( "Enabled" );
 const String Window::EventDisabled( "Disabled" );
-const String Window::EventMetricsModeChanged( "MetricsChanged" );
 const String Window::EventClippedByParentChanged( "ClippingChanged" );
 const String Window::EventDestroyedByParentChanged( "DestroyedByParentChanged" );
 const String Window::EventInheritsAlphaChanged( "InheritAlphaChanged" );
@@ -168,7 +142,6 @@ Window::Window(const String& type, const String& name) :
 	d_name(name)
 {
 	// basic set-up
-	d_metricsMode	= Relative;
 	d_parent		= 0;
 	d_font			= 0;
 	d_ID			= 0;
@@ -514,15 +487,6 @@ float Window::getEffectiveAlpha(void) const
 
 
 /*************************************************************************
-	return a Rect object that describes the Window area.	
-*************************************************************************/
-Rect Window::getRect(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativeRect() : getAbsoluteRect();
-}
-
-
-/*************************************************************************
 	return a Rect object describing the Window area in screen space.
 *************************************************************************/
 Rect Window::getPixelRect(void) const
@@ -566,14 +530,13 @@ Rect Window::getInnerRect(void) const
 *************************************************************************/
 Rect Window::getUnclippedPixelRect(void) const
 {
-	if (getMetricsMode() == Relative)
-	{
-		return windowToScreen(Rect(0, 0, 1, 1));
-	}
-	else
-	{
-		return windowToScreen(Rect(0, 0, getAbsoluteWidth(), getAbsoluteHeight()));
-	}
+//     URect localArea(cegui_reldim(0),
+//                     cegui_reldim(0),
+//                     cegui_reldim(1),
+//                     cegui_reldim(1));
+    Rect localArea(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+
+    return CoordConverter::windowToScreen(*this, localArea);
 }
 
 
@@ -592,136 +555,47 @@ Rect Window::getUnclippedInnerRect(void) const
 /*************************************************************************
 	check if the given position would hit this window.	
 *************************************************************************/
-bool Window::isHit(const Point& position) const
+bool Window::isHit(const Vector2& position) const
 {
-	// cannot be hit if we are disabled.
-	if (isDisabled())
-	{
-		return false;
-	}
+    // cannot be hit if we are disabled.
+    if (isDisabled())
+        return false;
 
-	Rect clipped_area(getPixelRect());
+    Rect clipped_area(getPixelRect());
 
-	if (clipped_area.getWidth() == 0)
-	{
-		return false;
-	}
+    if (clipped_area.getWidth() == 0)
+        return false;
 
-	return clipped_area.isPointInRect(position);
+    return clipped_area.isPointInRect(position);
 }
 
 /*************************************************************************
 	return the child Window that is 'hit' by the given position
 *************************************************************************/
-Window* Window::getChildAtPosition(const Point& position) const
+Window* Window::getChildAtPosition(const Vector2& position) const
 {
-	ChildList::const_reverse_iterator	child, end;
+    ChildList::const_reverse_iterator	child, end;
 
-	end = d_drawList.rend();
+    end = d_drawList.rend();
 
-	for (child = d_drawList.rbegin(); child != end; ++child)
-	{
-		if ((*child)->isVisible())
-		{
-			// recursively scan children of this child windows...
-			Window* wnd = (*child)->getChildAtPosition(position);
+    for (child = d_drawList.rbegin(); child != end; ++child)
+    {
+        if ((*child)->isVisible())
+        {
+            // recursively scan children of this child windows...
+            Window* wnd = (*child)->getChildAtPosition(position);
 
-			// return window pointer if we found a 'hit' down the chain somewhere
-			if (wnd)
-			{
-				return wnd;
-			}
-			// none of our childs children were hit, 
-			else
-			{
-				// see if this child is hit and return it's pointer if it is
-				if ((*child)->isHit(position))
-				{
-					return (*child);
-				}
+            // return window pointer if we found a 'hit' down the chain somewhere
+            if (wnd)
+                return wnd;
+            // see if this child is hit and return it's pointer if it is
+            else if ((*child)->isHit(position))
+                return (*child);
+        }
+    }
 
-			}
-
-		}
-
-	}
-
-	// nothing hit
-	return 0;
-}
-
-
-/*************************************************************************
-	return the current metrics mode employed by the Window
-*************************************************************************/
-MetricsMode Window::getMetricsMode(void) const
-{
-	if (d_metricsMode == Inherited)
-	{
-		return getInheritedMetricsMode();
-	}
-
-	return d_metricsMode;
-}
-
-
-/*************************************************************************
-	return the x position of the window.  Interpretation of return value
-	depends upon the metric type in use by this window.
-*************************************************************************/
-float Window::getXPosition(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativeXPosition() : getAbsoluteXPosition();
-}
-
-
-/*************************************************************************
-	return the y position of the window.  Interpretation of return value
-	depends upon the metric type in use by this window.
-*************************************************************************/
-float Window::getYPosition(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativeYPosition() : getAbsoluteYPosition();
-}
-
-
-/*************************************************************************
-	return the position of the window.  Interpretation of return value
-	depends upon the metric type in use by this window.
-*************************************************************************/
-Point Window::getPosition(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativePosition() : getAbsolutePosition();
-}
-
-
-/*************************************************************************
-	return the width of the Window.  Interpretation of return value
-	depends upon the metric type in use by this window.
-*************************************************************************/
-float Window::getWidth(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativeWidth() : getAbsoluteWidth();
-}
-
-
-/*************************************************************************
-	return the height of the Window.  Interpretation of return value
-	depends upon the metric type in use by this window.
-*************************************************************************/
-float Window::getHeight(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativeHeight() : getAbsoluteHeight();
-}
-
-
-/*************************************************************************
-	return the size of the Window.  Interpretation of return value
-	depends upon the metric type in use by this window.
-*************************************************************************/
-Size Window::getSize(void) const
-{
-    return (getMetricsMode() == Relative) ? getRelativeSize() : getAbsoluteSize();
+    // nothing hit
+    return 0;
 }
 
 
@@ -858,78 +732,6 @@ void Window::setText(const String& text)
 	onTextChanged(args);
 }
 
-
-/*************************************************************************
-	Set the current width of the Window.  Interpretation of the input
-	value is dependant upon the current metrics system set for the Window.
-*************************************************************************/
-void Window::setWidth(float width)
-{
-	setSize(Size(width, getHeight()));
-}
-
-
-/*************************************************************************
-	Set the current height of the Window.  Interpretation of the input
-	value is dependant upon the current metrics system set for the Window.
-*************************************************************************/
-void Window::setHeight(float height)
-{
-	setSize(Size(getWidth(), height));
-}
-
-
-/*************************************************************************
-	Set the current size of the Window.  Interpretation of the input value
-	is dependant upon the current metrics system set for the Window.
-*************************************************************************/
-void Window::setSize(const Size& size)
-{
-	setSize(getMetricsMode(), size);
-}
-
-
-/*************************************************************************
-	Set the current 'x' position of the Window.  Interpretation of the
-	input value is dependant upon the current metrics system set for the
-	Window.
-*************************************************************************/
-void Window::setXPosition(float x)
-{
-	setPosition(Point(x, getYPosition()));
-}
-
-
-/*************************************************************************
-	Set the current 'y' position of the Window.  Interpretation of the
-	input value is dependant upon the current metrics system set for the
-	Window.
-*************************************************************************/
-void Window::setYPosition(float y)
-{
-	setPosition(Point(getXPosition(), y));
-}
-
-
-/*************************************************************************
-	Set the current position of the Window.  Interpretation of the input
-	value is dependant upon the current metrics system set for the Window.
-*************************************************************************/
-void Window::setPosition(const Point& position)
-{
-	setPosition(getMetricsMode(), position);
-}
-
-
-/*************************************************************************
-	Set the current area for the Window, this allows for setting of
-	position and size at the same time.  Interpretation of the input
-	value is dependant upon the current metrics system set for the Window.	
-*************************************************************************/
-void Window::setAreaRect(const Rect& area)
-{
-	setRect(getMetricsMode(), area);
-}
 
 
 /*************************************************************************
@@ -1268,606 +1070,6 @@ void Window::requestRedraw(void) const
 
 
 /*************************************************************************
-	Convert the given X co-ordinate from absolute to relative metrics.
-*************************************************************************/
-float Window::absoluteToRelativeX(float val) const
-{
-	return absoluteToRelativeX_impl(this, val);
-}
-
-
-/*************************************************************************
-	Convert the given Y co-ordinate from absolute to relative metrics.
-*************************************************************************/
-float Window::absoluteToRelativeY(float val) const
-{
-	return absoluteToRelativeY_impl(this, val);
-}
-
-
-/*************************************************************************
-	Convert the given position from absolute to relative metrics.
-*************************************************************************/
-Point Window::absoluteToRelative(const Point& pt) const
-{
-	return absoluteToRelative_impl(this, pt);
-}
-
-
-/*************************************************************************
-	Convert the given size from absolute to relative metrics.
-*************************************************************************/
-Size Window::absoluteToRelative(const Size& sze) const
-{
-	return absoluteToRelative_impl(this, sze);
-}
-
-
-/*************************************************************************
-	Convert the given area from absolute to relative metrics.
-*************************************************************************/
-Rect Window::absoluteToRelative(const Rect& rect) const
-{
-	return absoluteToRelative_impl(this, rect);
-}
-
-
-/*************************************************************************
-	Convert the given X co-ordinate from relative to absolute metrics.
-*************************************************************************/
-float Window::relativeToAbsoluteX(float val) const
-{
-	return relativeToAbsoluteX_impl(this, val);
-}
-
-
-/*************************************************************************
-	Convert the given Y co-ordinate from relative to absolute metrics.
-*************************************************************************/
-float Window::relativeToAbsoluteY(float val) const
-{
-	return relativeToAbsoluteY_impl(this, val);
-}
-
-
-/*************************************************************************
-	Convert the given position from relative to absolute metrics.
-*************************************************************************/
-Point Window::relativeToAbsolute(const Point& pt) const
-{
-	return relativeToAbsolute_impl(this, pt);
-}
-
-
-/*************************************************************************
-	Convert the given size from relative to absolute metrics.
-*************************************************************************/
-Size Window::relativeToAbsolute(const Size& sze) const
-{
-	return relativeToAbsolute_impl(this, sze);
-}
-
-
-/*************************************************************************
-	Convert the given area from relative to absolute metrics.
-*************************************************************************/
-Rect Window::relativeToAbsolute(const Rect& rect) const
-{
-		return relativeToAbsolute_impl(this, rect);
-}
-
-
-/*************************************************************************
-	Convert a window co-ordinate value, specified in whichever metrics
-	mode is active, to a screen relative pixel co-ordinate.
-*************************************************************************/
-float Window::windowToScreenX(float x) const
-{
-    float baseX = 0;
-
-    if (d_parent)
-    {
-        baseX = d_parent->windowToScreenX(baseX);
-    }
-
-    switch(d_horzAlign)
-    {
-        case HA_CENTRE:
-            baseX += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
-            break;
-        case HA_RIGHT:
-            baseX += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
-            break;
-        default:
-            baseX += getAbsoluteXPosition();
-            break;
-    }
-
-	if (getMetricsMode() == Relative)
-	{
-		return baseX + relativeToAbsoluteX(x);
-	}
-	else
-	{
-		return baseX + x;
-	}
-
-}
-
-
-/*************************************************************************
-	Convert a window co-ordinate value, specified in whichever metrics
-	mode is active, to a screen relative pixel co-ordinate.
-*************************************************************************/
-float Window::windowToScreenY(float y) const
-{
-    float baseY = 0;
-
-    if (d_parent)
-    {
-        baseY = d_parent->windowToScreenY(baseY);
-    }
-
-    switch(d_vertAlign)
-    {
-        case VA_CENTRE:
-            baseY += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
-            break;
-        case VA_BOTTOM:
-            baseY += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
-            break;
-        default:
-            baseY += getAbsoluteYPosition();
-            break;
-    }
-
-	if (getMetricsMode() == Relative)
-	{
-		return baseY + relativeToAbsoluteY(y);
-	}
-	else
-	{
-		return baseY + y;
-	}
-
-}
-
-
-/*************************************************************************
-	Convert a window co-ordinate position, specified in whichever metrics
-	mode is active, to a screen relative pixel co-ordinate position.
-*************************************************************************/
-Point Window::windowToScreen(const Point& pt) const
-{
-	Point base(0, 0);
-    
-    if (d_parent)
-    {
-        base = d_parent->windowToScreen(base);
-    }
-
-    switch(d_horzAlign)
-    {
-        case HA_CENTRE:
-            base.d_x += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
-            break;
-        case HA_RIGHT:
-            base.d_x += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
-            break;
-        default:
-            base.d_x += getAbsoluteXPosition();
-            break;
-    }
-
-    switch(d_vertAlign)
-    {
-        case VA_CENTRE:
-            base.d_y += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
-            break;
-        case VA_BOTTOM:
-            base.d_y += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
-            break;
-        default:
-            base.d_y += getAbsoluteYPosition();
-            break;
-    }
-
-	if (getMetricsMode() == Relative)
-	{
-		return base + relativeToAbsolute(pt);
-	}
-	else
-	{
-		return base + pt;
-	}
-
-}
-
-
-/*************************************************************************
-	Convert a window size value, specified in whichever metrics mode is
-	active, to a size in pixels.
-*************************************************************************/
-Size Window::windowToScreen(const Size& sze) const
-{
-	if (getMetricsMode() == Relative)
-	{
-		return Size(sze.d_width * getAbsoluteWidth(), sze.d_height * getAbsoluteHeight());
-	}
-	else
-	{
-		return sze;
-	}
-
-}
-
-
-/*************************************************************************
-	Convert a window area, specified in whichever metrics mode is
-	active, to a screen area.
-*************************************************************************/
-Rect Window::windowToScreen(const Rect& rect) const
-{
-    Point base(0, 0);
-
-    if (d_parent)
-    {
-        base = d_parent->windowToScreen(base);
-    }
-
-    switch(d_horzAlign)
-    {
-        case HA_CENTRE:
-            base.d_x += getAbsoluteXPosition() + ((getParentWidth() - getAbsoluteWidth()) * 0.5f);
-            break;
-        case HA_RIGHT:
-            base.d_x += getAbsoluteXPosition() + (getParentWidth() - getAbsoluteWidth());
-            break;
-        default:
-            base.d_x += getAbsoluteXPosition();
-            break;
-    }
-
-    switch(d_vertAlign)
-    {
-        case VA_CENTRE:
-            base.d_y += getAbsoluteYPosition() + ((getParentHeight() - getAbsoluteHeight()) * 0.5f);
-            break;
-        case VA_BOTTOM:
-            base.d_y += getAbsoluteYPosition() + (getParentHeight() - getAbsoluteHeight());
-            break;
-        default:
-            base.d_y += getAbsoluteYPosition();
-            break;
-    }
-
-	if (getMetricsMode() == Relative)
-	{
-		return relativeToAbsolute(rect).offset(base);
-	}
-	else
-	{
-		Rect tmp(rect);
-		return tmp.offset(base);
-	}
-
-}
-
-
-/*************************************************************************
-	Convert a screen relative pixel co-ordinate value to a window
-	co-ordinate value, specified in whichever metrics mode is active.
-*************************************************************************/
-float Window::screenToWindowX(float x) const
-{
-	x -= windowToScreenX(0);
-
-	if (getMetricsMode() == Relative)
-	{
-		x /= getAbsoluteWidth();
-	}
-
-	return x;
-}
-
-
-/*************************************************************************
-	Convert a screen relative pixel co-ordinate value to a window
-	co-ordinate value, specified in whichever metrics mode is active.
-*************************************************************************/
-float Window::screenToWindowY(float y) const
-{
-	y -= windowToScreenY(0);
-
-	if (getMetricsMode() == Relative)
-	{
-		y /= getAbsoluteHeight();
-	}
-
-	return y;
-}
-
-
-/*************************************************************************
-	Convert a screen relative pixel position to a window co-ordinate
-	position, specified in whichever metrics mode is active.
-*************************************************************************/
-Point Window::screenToWindow(const Point& pt) const
-{
-	Point tmp(pt);
-
-	tmp.d_x -= windowToScreenX(0);
-	tmp.d_y -= windowToScreenY(0);
-
-	if (getMetricsMode() == Relative)
-	{
-		tmp.d_x /= getAbsoluteWidth();
-		tmp.d_y /= getAbsoluteHeight();
-	}
-
-	return tmp;
-}
-
-
-/*************************************************************************
-	Convert a screen size to a window based size
-*************************************************************************/
-Size Window::screenToWindow(const Size& sze) const
-{
-	Size tmp(sze);
-
-	if (getMetricsMode() == Relative)
-	{
-		tmp.d_width		/= getAbsoluteWidth();
-		tmp.d_height	/= getAbsoluteHeight();
-	}
-
-	return tmp;
-}
-
-
-/*************************************************************************
-	Convert a screen area to a window area, specified in whichever
-	metrics mode is active.
-*************************************************************************/
-Rect Window::screenToWindow(const Rect& rect) const
-{
-	Rect tmp(rect);
-
-	tmp.d_left		-= windowToScreenX(0);
-	tmp.d_top		-= windowToScreenY(0);
-	tmp.d_right		-= windowToScreenX(0);
-	tmp.d_bottom	-= windowToScreenY(0);
-
-	if (getMetricsMode() == Relative)
-	{
-		tmp.d_left		/= getAbsoluteWidth();
-		tmp.d_top		/= getAbsoluteHeight();
-		tmp.d_right		/= getAbsoluteWidth();
-		tmp.d_bottom	/= getAbsoluteHeight();
-	}
-
-	return tmp;
-}
-
-
-/*************************************************************************
-    Convert the given X co-ordinate from unified to relative metrics.
-*************************************************************************/
-float Window::unifiedToRelativeX(const UDim& val) const
-{
-    return val.asRelative(d_pixelSize.d_width);
-}
-
-/*************************************************************************
-    Convert the given Y co-ordinate from unified to relative metrics.
-*************************************************************************/
-float Window::unifiedToRelativeY(const UDim& val) const
-{
-    return val.asRelative(d_pixelSize.d_height);
-}
-
-/*************************************************************************
-    Convert the given UVector2 value from unified to relative metrics.
-*************************************************************************/
-Vector2 Window::unifiedToRelative(const UVector2& val) const
-{
-    return val.asRelative(d_pixelSize);
-}
-
-/*************************************************************************
-    Convert the given area from unfied to relative metrics.
-*************************************************************************/
-Rect Window::unifiedToRelative(const URect& val) const
-{
-    return val.asRelative(d_pixelSize);
-}
-
-/*************************************************************************
-    Convert the given X co-ordinate from unified to absolute metrics.
-*************************************************************************/
-float Window::unifiedToAbsoluteX(const UDim& val) const
-{
-    return val.asAbsolute(d_pixelSize.d_width);
-}
-
-/*************************************************************************
-    Convert the given Y co-ordinate from unified to absolute metrics.
-*************************************************************************/
-float Window::unifiedToAbsoluteY(const UDim& val) const
-{
-    return val.asAbsolute(d_pixelSize.d_height);
-}
-
-/*************************************************************************
-    Convert the given UVector2 value from unified to absolute metrics.
-*************************************************************************/
-Vector2 Window::unifiedToAbsolute(const UVector2& val) const
-{
-    return val.asAbsolute(d_pixelSize);
-}
-
-/*************************************************************************
-    Convert the given area from unfied to absolute metrics.
-*************************************************************************/
-Rect Window::unifiedToAbsolute(const URect& val) const
-{
-    return val.asAbsolute(d_pixelSize);
-}
-
-/*************************************************************************
-    Convert a window co-ordinate value, specified as a UDim, to a screen
-    relative pixel co-ordinate.
-*************************************************************************/
-float Window::windowToScreenX(const UDim& x) const
-{
-    float baseX = d_parent ?  d_parent->windowToScreenX(0) + getAbsoluteXPosition() : getAbsoluteXPosition();
-
-    switch(d_horzAlign)
-    {
-        case HA_CENTRE:
-            baseX += (getParentWidth() - d_pixelSize.d_width) * 0.5f;
-            break;
-        case HA_RIGHT:
-            baseX += getParentWidth() - d_pixelSize.d_width;
-            break;
-        default:
-            break;
-    }
-
-    return baseX + x.asAbsolute(d_pixelSize.d_width);
-}
-
-/*************************************************************************
-    Convert a window co-ordinate value, specified as a UDim, to a screen
-    relative pixel co-ordinate.
-*************************************************************************/
-float Window::windowToScreenY(const UDim& y) const
-{
-    float baseY = d_parent ?  d_parent->windowToScreenY(0) + getAbsoluteYPosition() : getAbsoluteYPosition();
-
-    switch(d_vertAlign)
-    {
-        case VA_CENTRE:
-            baseY += (getParentHeight() - d_pixelSize.d_height) * 0.5f;
-            break;
-        case VA_BOTTOM:
-            baseY += getParentHeight() - d_pixelSize.d_height;
-            break;
-        default:
-            break;
-    }
-
-    return baseY + y.asAbsolute(d_pixelSize.d_height);
-}
-
-/*************************************************************************
-    Convert a window co-ordinate point, specified as a UVector2, to a
-    screen relative pixel co-ordinate point.
-*************************************************************************/
-Vector2 Window::windowToScreen(const UVector2& vec) const
-{
-    Vector2 base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
-
-    switch(d_horzAlign)
-    {
-        case HA_CENTRE:
-            base.d_x += (getParentWidth() - d_pixelSize.d_width) * 0.5f;
-            break;
-        case HA_RIGHT:
-            base.d_x += getParentWidth() - d_pixelSize.d_width;
-            break;
-        default:
-            break;
-    }
-
-    switch(d_vertAlign)
-    {
-        case VA_CENTRE:
-            base.d_y += (getParentHeight() - d_pixelSize.d_height) * 0.5f;
-            break;
-        case VA_BOTTOM:
-            base.d_y += getParentHeight() - d_pixelSize.d_height;
-            break;
-        default:
-            break;
-    }
-
-    return base + vec.asAbsolute(d_pixelSize);
-}
-
-/*************************************************************************
-    Convert a window area, specified as a URect, to a screen area.
-*************************************************************************/
-Rect Window::windowToScreen(const URect& rect) const
-{
-    Vector2 base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
-
-    switch(d_horzAlign)
-    {
-        case HA_CENTRE:
-            base.d_x += (getParentWidth() - d_pixelSize.d_width) * 0.5f;
-            break;
-        case HA_RIGHT:
-            base.d_x += getParentWidth() - d_pixelSize.d_width;
-            break;
-        default:
-            break;
-    }
-
-    switch(d_vertAlign)
-    {
-        case VA_CENTRE:
-            base.d_y += (getParentHeight() - d_pixelSize.d_height) * 0.5f;
-            break;
-        case VA_BOTTOM:
-            base.d_y += getParentHeight() - d_pixelSize.d_height;
-            break;
-        default:
-            break;
-    }
-
-    Rect tmp(rect.asAbsolute(d_pixelSize));
-    return tmp.offset(base);
-}
-
-/*************************************************************************
-    Convert a screen relative UDim co-ordinate value to a window
-    co-ordinate value, specified in whichever metrics mode is active.
-*************************************************************************/
-float Window::screenToWindowX(const UDim& x) const
-{
-    return screenToWindowX(x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-}
-
-/*************************************************************************
-    Convert a screen relative UDim co-ordinate value to a window
-    co-ordinate value, specified in whichever metrics mode is active.
-*************************************************************************/
-float Window::screenToWindowY(const UDim& y) const
-{
-    return screenToWindowY(y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
-}
-
-/*************************************************************************
-    Convert a screen relative UVector2 point to a window co-ordinate
-    point, specified in whichever metrics mode is active.
-*************************************************************************/
-Vector2 Window::screenToWindow(const UVector2& vec) const
-{
-    return screenToWindow(vec.asAbsolute(System::getSingleton().getRenderer()->getSize()));
-}
-
-/*************************************************************************
-    Convert a URect screen area to a window area, specified in whichever
-    metrics mode is active.
-*************************************************************************/
-Rect Window::screenToWindow(const URect& rect) const
-{
-    return screenToWindow(rect.asAbsolute(System::getSingleton().getRenderer()->getSize()));
-}
-
-/*************************************************************************
 	Causes the Window object to render itself.
 *************************************************************************/
 void Window::render(void)
@@ -1943,14 +1145,11 @@ void Window::setParent(Window* parent)
 	Return the pixel Width of the parent element.
 	This always returns a valid number.
 *************************************************************************/
-float Window::getParentWidth(void) const
+float Window::getParentPixelWidth(void) const
 {
-	if (!d_parent)
-	{
-		return System::getSingleton().getRenderer()->getWidth();
-	}
-
-	return d_parent->getAbsoluteWidth();
+    return d_parent ?
+           d_parent->d_pixelSize.d_width :
+           System::getSingleton().getRenderer()->getWidth();
 }
 
 
@@ -1958,14 +1157,11 @@ float Window::getParentWidth(void) const
 	Return the pixel Height of the parent element.
 	This always returns a valid number.
 *************************************************************************/
-float Window::getParentHeight(void) const
+float Window::getParentPixelHeight(void) const
 {
-	if (!d_parent)
-	{
-		return System::getSingleton().getRenderer()->getHeight();
-	}
-
-	return d_parent->getAbsoluteHeight();
+    return d_parent ?
+           d_parent->d_pixelSize.d_height:
+           System::getSingleton().getRenderer()->getHeight();
 }
 
 
@@ -1973,7 +1169,7 @@ float Window::getParentHeight(void) const
 	Return the pixel size of the parent element.
 	This always returns a valid object.
 *************************************************************************/
-Size Window::getParentSize(void) const
+Size Window::getParentPixelSize(void) const
 {
 	return getWindowSize_impl(d_parent);
 }
@@ -1989,7 +1185,7 @@ void Window::addStandardEvents(void)
 	addEvent(EventFontChanged);				addEvent(EventAlphaChanged);			addEvent(EventIDChanged);
 	addEvent(EventActivated);				addEvent(EventDeactivated);				addEvent(EventShown);
 	addEvent(EventHidden);					addEvent(EventEnabled);					addEvent(EventDisabled);
-	addEvent(EventMetricsModeChanged);		addEvent(EventClippedByParentChanged);	addEvent(EventDestroyedByParentChanged);
+	addEvent(EventClippedByParentChanged);	addEvent(EventDestroyedByParentChanged);
 	addEvent(EventInheritsAlphaChanged);	addEvent(EventAlwaysOnTopChanged);		addEvent(EventInputCaptureGained);
 	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
 	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
@@ -2103,304 +1299,13 @@ void Window::onZChange_impl(void)
 
 
 /*************************************************************************
-	
-*************************************************************************/
-Rect Window::absoluteToRelative_impl(const Window* window, const Rect& rect) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	Rect tmp;
-
-	if (sz.d_width)
-	{
-		tmp.d_left	= PixelAligned(rect.d_left) / sz.d_width;
-		tmp.d_right = PixelAligned(rect.d_right) / sz.d_width;
-	}
-	else
-	{
-		tmp.d_left = tmp.d_right = 0;
-	}
-
-	if (sz.d_height)
-	{
-		tmp.d_top		= PixelAligned(rect.d_top) / sz.d_height;
-		tmp.d_bottom	= PixelAligned(rect.d_bottom) / sz.d_height;
-	}
-	else
-	{
-		tmp.d_top = tmp.d_bottom= 0;
-	}
-
-	return tmp;
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-Size Window::absoluteToRelative_impl(const Window* window, const Size& sz) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size wndsz = getWindowSize_impl(window);
-
-	Size tmp;
-
-	if (wndsz.d_width)
-	{
-		tmp.d_width = PixelAligned(sz.d_width) / wndsz.d_width;
-	}
-	else
-	{
-		tmp.d_width = 0;
-	}
-
-	if (wndsz.d_height)
-	{
-		tmp.d_height = PixelAligned(sz.d_height) / wndsz.d_height;
-	}
-	else
-	{
-		tmp.d_height = 0;
-	}
-
-	return tmp;
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-Point Window::absoluteToRelative_impl(const Window* window, const Point& pt) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	Point tmp;
-
-	if (sz.d_width)
-	{
-		tmp.d_x = PixelAligned(pt.d_x) / sz.d_width;
-	}
-	else
-	{
-		tmp.d_x = 0;
-	}
-
-	if (sz.d_height)
-	{
-		tmp.d_y = PixelAligned(pt.d_y) / sz.d_height;
-	}
-	else
-	{
-		tmp.d_y = 0;
-	}
-
-	return tmp;
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-float Window::absoluteToRelativeX_impl(const Window* window, float x) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	if (sz.d_width)
-	{
-		return PixelAligned(x) / sz.d_width;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-float Window::absoluteToRelativeY_impl(const Window* window, float y) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	if (sz.d_height)
-	{
-		return PixelAligned(y) / sz.d_height;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-Rect Window::relativeToAbsolute_impl(const Window* window, const Rect& rect) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	return Rect(
-		PixelAligned(rect.d_left * sz.d_width),
-		PixelAligned(rect.d_top * sz.d_height),
-		PixelAligned(rect.d_right * sz.d_width),
-		PixelAligned(rect.d_bottom * sz.d_height)
-		);
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-Size Window::relativeToAbsolute_impl(const Window* window, const Size& sz) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size wndsz = getWindowSize_impl(window);
-
-	return Size(
-		PixelAligned(sz.d_width * wndsz.d_width),
-		PixelAligned(sz.d_height * wndsz.d_height)
-		);
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-Point Window::relativeToAbsolute_impl(const Window* window, const Point& pt) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	return Point(
-		PixelAligned(pt.d_x * sz.d_width),
-		PixelAligned(pt.d_y * sz.d_height)
-		);
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-float Window::relativeToAbsoluteX_impl(const Window* window, float x) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	return PixelAligned(x * sz.d_width);
-}
-
-
-/*************************************************************************
-
-*************************************************************************/
-float Window::relativeToAbsoluteY_impl(const Window* window, float y) const
-{
-	// get size object for whatever we are using as a base for the conversion
-	Size sz = getWindowSize_impl(window);
-
-	return PixelAligned(y * sz.d_height);
-}
-
-
-/*************************************************************************
 	Return size of window.  If window is NULL return size of display.
 *************************************************************************/
 Size Window::getWindowSize_impl(const Window* window) const
 {
-	if (!window)
-	{
-		return System::getSingleton().getRenderer()->getSize();
-	}
-	else
-	{
-        return window->getAbsoluteSize();
-	}
-
-}
-
-
-/*************************************************************************
-	Return the current maximum size for this window.
-*************************************************************************/
-Size Window::getMaximumSize(void) const
-{
-	if (getMetricsMode() == Absolute)
-	{
-        return d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()).asSize();
-	}
-	else
-	{
-        return d_maxSize.asRelative(System::getSingleton().getRenderer()->getSize()).asSize();
-    }
-
-}
-
-
-/*************************************************************************
-	Return the current minimum size for this window.
-*************************************************************************/
-Size Window::getMinimumSize(void) const
-{
-	if (getMetricsMode() == Absolute)
-    {
-        return d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()).asSize();
-    }
-    else
-    {
-        return d_minSize.asRelative(System::getSingleton().getRenderer()->getSize()).asSize();
-    }
-
-}
-
-
-/*************************************************************************
-	Set the minimum size for this window.
-*************************************************************************/
-void Window::setMinimumSize(const Size& sz)
-{
-    UVector2 usz;
-    
-    if (getMetricsMode() == Absolute)
-    {
-        usz.d_x = cegui_absdim(PixelAligned(sz.d_width));
-        usz.d_y = cegui_absdim(PixelAligned(sz.d_height));
-    }
-    else
-    {
-        usz.d_x = cegui_reldim(sz.d_width);
-        usz.d_y = cegui_reldim(sz.d_height);
-    }
-
-    setWindowMinSize(usz);
-}
-
-
-/*************************************************************************
-	Set the maximum size for this window.
-*************************************************************************/
-void Window::setMaximumSize(const Size& sz)
-{
-    UVector2 usz;
-
-    if (getMetricsMode() == Absolute)
-    {
-        usz.d_x = cegui_absdim(PixelAligned(sz.d_width));
-        usz.d_y = cegui_absdim(PixelAligned(sz.d_height));
-    }
-    else
-    {
-        usz.d_x = cegui_reldim(sz.d_width);
-        usz.d_y = cegui_reldim(sz.d_height);
-    }
-
-    setWindowMaxSize(usz);
+    return window ?
+           window->d_pixelSize :
+           System::getSingleton().getRenderer()->getSize();
 }
 
 
@@ -2449,28 +1354,6 @@ void Window::setID(uint ID)
 
 
 /*************************************************************************
-	set the current metrics mode employed by the Window	
-*************************************************************************/
-void Window::setMetricsMode(MetricsMode	mode)
-{
-	if (d_metricsMode != mode)
-	{
-		MetricsMode oldMode = d_metricsMode;
-		d_metricsMode = mode;
-
-		// only ever trigger the event if the mode is actually changed.
-		if ((d_metricsMode != Inherited) || (oldMode != getMetricsMode()))
-		{
-			WindowEventArgs args(this);
-			onMetricsChanged(args);
-		}
-
-	}
-
-}
-
-
-/*************************************************************************
 	Set whether or not this Window will automatically be destroyed when
 	its parent Window is destroyed.	
 *************************************************************************/
@@ -2484,231 +1367,6 @@ void Window::setDestroyedByParent(bool setting)
 		onParentDestroyChanged(args);
 	}
 
-}
-
-
-/*************************************************************************
-	Return the inherited metrics mode.  This is either the metrics mode
-	of our parent, or Relative if we have no parent.	
-*************************************************************************/
-MetricsMode Window::getInheritedMetricsMode(void) const
-{
-	return (d_parent == 0) ? Relative : d_parent->getMetricsMode();
-}
-
-
-/*************************************************************************
-	return the x position of the window using the specified metrics system.	
-*************************************************************************/
-float Window::getXPosition(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativeXPosition() : getAbsoluteXPosition();
-}
-
-
-/*************************************************************************
-	return the y position of the window using the specified metrics system.	
-*************************************************************************/
-float Window::getYPosition(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativeYPosition() : getAbsoluteYPosition();
-}
-
-
-/*************************************************************************
-	return the position of the window using the specified metrics system.	
-*************************************************************************/
-Point Window::getPosition(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativePosition() : getAbsolutePosition();
-}
-
-
-/*************************************************************************
-	return the width of the Window using the specified metrics system.	
-*************************************************************************/
-float Window::getWidth(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativeWidth() : getAbsoluteWidth();
-}
-
-
-/*************************************************************************
-	return the height of the Window using the specified metrics system.	
-*************************************************************************/
-float Window::getHeight(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativeHeight() : getAbsoluteHeight();
-}
-
-
-/*************************************************************************
-	return the size of the Window using the specified metrics system.	
-*************************************************************************/
-Size Window::getSize(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativeSize() : getAbsoluteSize();
-}
-
-
-/*************************************************************************
-	return a Rect object that describes the Window area using the
-	specified metrics system.
-*************************************************************************/
-Rect Window::getRect(MetricsMode mode) const
-{
-	// get proper mode to use for inherited.
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    return (mode == Relative) ? getRelativeRect() : getAbsoluteRect();
-}
-
-
-/*************************************************************************
-	set the x position of the window using the specified metrics system.	
-*************************************************************************/
-void Window::setXPosition(MetricsMode mode, float x)
-{
-	setPosition(mode, Point(x, getYPosition(mode)));
-}
-
-
-/*************************************************************************
-	set the y position of the window using the specified metrics system.	
-*************************************************************************/
-void Window::setYPosition(MetricsMode mode, float y)
-{
-	setPosition(mode, Point(getXPosition(mode), y));
-}
-
-
-/*************************************************************************
-	set the position of the window using the specified metrics system.	
-*************************************************************************/
-void Window::setPosition(MetricsMode mode, const Point& position)
-{
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-	if (mode == Relative)
-	{
-        setWindowPosition(UVector2(cegui_reldim(position.d_x), cegui_reldim(position.d_y)));
-	}
-	else
-	{
-        setWindowPosition(UVector2(cegui_absdim(PixelAligned(position.d_x)), cegui_absdim(PixelAligned(position.d_y))));
-	}
-}
-
-
-/*************************************************************************
-	set the width of the Window using the specified metrics system.	
-*************************************************************************/
-void Window::setWidth(MetricsMode mode, float width)
-{
-	setSize(mode, Size(width, getHeight(mode)));
-}
-
-
-/*************************************************************************
-	set the height of the Window using the specified metrics system.	
-*************************************************************************/
-void Window::setHeight(MetricsMode mode, float height)
-{
-	setSize(mode, Size(getWidth(mode), height));
-}
-
-
-/*************************************************************************
-	set the size of the Window using the specified metrics system.	
-*************************************************************************/
-void Window::setSize(MetricsMode mode, const Size& size)
-{
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    UVector2 usz(((mode == Relative) ? UVector2(cegui_reldim(size.d_width), cegui_reldim(size.d_height)) : UVector2(cegui_absdim(PixelAligned(size.d_width)), cegui_absdim(PixelAligned(size.d_height)))));
-
-    setWindowSize(usz);
-}
-
-
-/*************************************************************************
-	set the Rect that describes the Window area using the specified
-	metrics system.	
-*************************************************************************/
-void Window::setRect(MetricsMode mode, const Rect& area)
-{
-	if (mode == Inherited)
-	{
-		mode = getInheritedMetricsMode();
-	}
-
-    URect uarea;
-    
-	if (mode == Relative)
-	{
-        uarea = URect(
-                cegui_reldim(area.d_left),
-                cegui_reldim(area.d_top),
-                cegui_reldim(area.d_right),
-                cegui_reldim(area.d_bottom)
-                      );
-	}
-	else
-	{
-        uarea = URect(
-                cegui_absdim(PixelAligned(area.d_left)),
-                cegui_absdim(PixelAligned(area.d_top)),
-                cegui_absdim(PixelAligned(area.d_right)),
-                cegui_absdim(PixelAligned(area.d_bottom))
-                      );
-    }
-
-    setWindowArea(uarea);
 }
 
 
@@ -2732,44 +1390,18 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 *************************************************************************/
 void Window::addStandardProperties(void)
 {
-	addProperty(&d_absHeightProperty);
-	addProperty(&d_absMaxSizeProperty);
-	addProperty(&d_absMinSizeProperty);
-	addProperty(&d_absPositionProperty);
-	addProperty(&d_absRectProperty);
-	addProperty(&d_absSizeProperty);
-	addProperty(&d_absWidthProperty);
-	addProperty(&d_absXPosProperty);
-	addProperty(&d_absYPosProperty);
 	addProperty(&d_alphaProperty);
 	addProperty(&d_alwaysOnTopProperty);
 	addProperty(&d_clippedByParentProperty);
 	addProperty(&d_destroyedByParentProperty);
 	addProperty(&d_disabledProperty);
 	addProperty(&d_fontProperty);
-	addProperty(&d_heightProperty);
 	addProperty(&d_IDProperty);
 	addProperty(&d_inheritsAlphaProperty);
-	addProperty(&d_metricsModeProperty);
 	addProperty(&d_mouseCursorProperty);
-	addProperty(&d_positionProperty);
-	addProperty(&d_rectProperty);
-	addProperty(&d_relHeightProperty);
-	addProperty(&d_relMaxSizeProperty);
-	addProperty(&d_relMinSizeProperty);
-	addProperty(&d_relPositionProperty);
-	addProperty(&d_relRectProperty);
-	addProperty(&d_relSizeProperty);
-	addProperty(&d_relWidthProperty);
-	addProperty(&d_relXPosProperty);
-	addProperty(&d_relYPosProperty);
 	addProperty(&d_restoreOldCaptureProperty);
-	addProperty(&d_sizeProperty);
 	addProperty(&d_textProperty);
 	addProperty(&d_visibleProperty);
-	addProperty(&d_widthProperty);
-	addProperty(&d_xPosProperty);
-	addProperty(&d_yPosProperty);
 	addProperty(&d_zOrderChangeProperty);
     addProperty(&d_wantsMultiClicksProperty);
     addProperty(&d_autoRepeatProperty);
@@ -3159,7 +1791,7 @@ void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool 
     // calculate pixel sizes for everything, so we have a common format for comparisons.
     Vector2 absMax(d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
     Vector2 absMin(d_minSize.asAbsolute(System::getSingleton().getRenderer()->getSize()));
-    d_pixelSize = size.asAbsolute(getParentSize()).asSize();
+    d_pixelSize = size.asAbsolute(getParentPixelSize()).asSize();
 
     // limit new pixel size to: minSize <= newSize <= maxSize
     if (d_pixelSize.d_width < absMin.d_x)
@@ -3672,12 +2304,6 @@ void Window::onDisabled(WindowEventArgs& e)
 
 	requestRedraw();
 	fireEvent(EventDisabled, e, EventNamespace);
-}
-
-
-void Window::onMetricsChanged(WindowEventArgs& e)
-{
-	fireEvent(EventMetricsModeChanged, e, EventNamespace);
 }
 
 

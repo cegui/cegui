@@ -30,6 +30,7 @@
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUICoordConverter.h"
 #include <algorithm>
 
 
@@ -182,32 +183,23 @@ uint MultiColumnList::getColumnWithHeaderText(const String& text) const
 /*************************************************************************
 	Return the total width of all column headers.
 *************************************************************************/
-float MultiColumnList::getTotalColumnHeadersWidth(void) const
+UDim MultiColumnList::getTotalColumnHeadersWidth(void) const
 {
-	float width = d_header->getTotalSegmentsPixelExtent();
+    UDim width(0,0);
 
-	if (getMetricsMode() == Relative)
-	{
-		width = absoluteToRelativeX(width);
-	}
+    for (uint i = 0; i < getColumnCount(); ++i)
+        width += d_header->getColumnWidth(i);
 
-	return width;
+    return width;
 }
 
 
 /*************************************************************************
 	Return the width of the specified column header.	
 *************************************************************************/
-float MultiColumnList::getColumnHeaderWidth(uint col_idx) const
+UDim MultiColumnList::getColumnHeaderWidth(uint col_idx) const
 {
-	float width = d_header->getColumnPixelWidth(col_idx);
-
-	if (getMetricsMode() == Relative)
-	{
-		width = absoluteToRelativeX(width);
-	}
-
-	return width;
+	return d_header->getColumnWidth(col_idx);
 }
 
 
@@ -658,7 +650,7 @@ void MultiColumnList::resetList(void)
 /*************************************************************************
 	Add a column to the table.
 *************************************************************************/
-void MultiColumnList::addColumn(const String& text, uint col_id, float width)
+void MultiColumnList::addColumn(const String& text, uint col_id, const UDim& width)
 {
 	insertColumn(text, col_id, width, getColumnCount());
 }
@@ -667,7 +659,7 @@ void MultiColumnList::addColumn(const String& text, uint col_id, float width)
 /*************************************************************************
 	Insert a column into the table.
 *************************************************************************/
-void MultiColumnList::insertColumn(const String& text, uint col_id, float width, uint position)
+void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& width, uint position)
 {
 	// if position is out of range, add item to end of current columns.
 	if (position > getColumnCount())
@@ -675,14 +667,8 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, float width,
 		position = getColumnCount();
 	}
 
-	// get width as pixels
-	if (getMetricsMode() == Relative)
-	{
-		width = relativeToAbsoluteX(width);
-	}
-
 	// set-up the header for the new column.
-	d_header->insertColumn(text, col_id, d_header->absoluteToRelativeX(width), position);
+	d_header->insertColumn(text, col_id, width, position);
 
 	// Insert a blank entry at the appropriate position in each row.
 	for (uint i = 0; i < getRowCount(); ++i)
@@ -1261,14 +1247,9 @@ void MultiColumnList::handleUpdatedItemData(void)
 	Set the width of the specified column header (and therefore the
 	column itself).	
 *************************************************************************/
-void MultiColumnList::setColumnHeaderWidth(uint col_idx, float width)
+void MultiColumnList::setColumnHeaderWidth(uint col_idx, const UDim& width)
 {
-	if (getMetricsMode() == Relative)
-	{
-		width = relativeToAbsoluteX(width);
-	}
-
-	d_header->setColumnPixelWidth(col_idx, width);
+    d_header->setColumnWidth(col_idx, width);
 }
 
 
@@ -1534,37 +1515,38 @@ bool MultiColumnList::clearAllSelections_impl(void)
 *************************************************************************/
 ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
 {
-	Rect listArea(getListRenderArea());
+    Rect listArea(getListRenderArea());
 
-	float y = listArea.d_top - d_vertScrollbar->getScrollPosition();
-	float x = listArea.d_left - d_horzScrollbar->getScrollPosition();
+    float y = listArea.d_top - d_vertScrollbar->getScrollPosition();
+    float x = listArea.d_left - d_horzScrollbar->getScrollPosition();
 
-	for (uint i = 0; i < getRowCount(); ++i)
-	{
-		y += getHighestRowItemHeight(i);
+    for (uint i = 0; i < getRowCount(); ++i)
+    {
+        y += getHighestRowItemHeight(i);
 
-		// have we located the row?
-		if (pt.d_y < y)
-		{
-			// scan across to find column that was clicked
-			for (uint j = 0; j < getColumnCount(); ++j)
-			{
-				x += d_header->getColumnPixelWidth(j);
+        // have we located the row?
+        if (pt.d_y < y)
+        {
+            // scan across to find column that was clicked
+            for (uint j = 0; j < getColumnCount(); ++j)
+            {
+                const ListHeaderSegment& seg = d_header->getSegmentFromColumn(j);
+                x += seg.getWindowWidth().asAbsolute(d_header->getPixelSize().d_width);
 
-				// was this the column?
-				if (pt.d_x < x)
-				{
-					// return contents of grid element that was clicked.
-					return d_grid[i][j];
-				}
+                // was this the column?
+                if (pt.d_x < x)
+                {
+                    // return contents of grid element that was clicked.
+                    return d_grid[i][j];
+                }
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -1734,11 +1716,6 @@ void MultiColumnList::populateRenderCache()
 
     // calculate position of area we have to render into
     Rect itemsArea(getListRenderArea());
-    
-    //absarea.offset(getUnclippedPixelRect().getPosition());
-
-// 	// calculate clipper for list rendering area
-// 	Rect clipper(absarea.getIntersection(getPixelRect()));
 
     // set up initial positional details for items
     itemPos.d_y = itemsArea.d_top - d_vertScrollbar->getScrollPosition();
@@ -1759,7 +1736,7 @@ void MultiColumnList::populateRenderCache()
         for (uint j = 0; j < getColumnCount(); ++j)
         {
             // allow item to use full width of the column
-            itemSize.d_width = d_header->getColumnPixelWidth(j);
+            itemSize.d_width = d_header->getColumnWidth(j).asAbsolute(d_header->getPixelSize().d_width);
 
             ListboxItem* item = d_grid[i][j];
 
@@ -1933,12 +1910,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			modified = clearAllSelections_impl();
 		}
 
-		Point localPos(screenToWindow(e.position));
-
-		if (getMetricsMode() == Relative)
-		{
-			localPos = relativeToAbsolute(localPos);
-		}
+		Point localPos(CoordConverter::screenToWindow(*this, e.position));
 
 		ListboxItem* item = getItemAtPoint(localPos);
 
@@ -2000,7 +1972,7 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 bool MultiColumnList::handleHeaderScroll(const EventArgs& e)
 {
 	// grab the header scroll value, convert to pixels, and set the scroll bar to match.
-	d_horzScrollbar->setScrollPosition(d_header->relativeToAbsoluteX(d_header->getSegmentOffset()));
+	d_horzScrollbar->setScrollPosition(d_header->getSegmentOffset());
 
 	return true;
 }
@@ -2043,7 +2015,7 @@ bool MultiColumnList::handleColumnSizeChange(const EventArgs& e)
 bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
 {
 	// set header offset to match scroll position
-	d_header->setSegmentOffset(d_header->absoluteToRelativeX(d_horzScrollbar->getScrollPosition()));
+	d_header->setSegmentOffset(d_horzScrollbar->getScrollPosition());
     requestRedraw();
 	return true;
 }
@@ -2311,14 +2283,8 @@ void MultiColumnList::autoSizeColumnHeader(uint col_idx)
 		// get the width of the widest item in the column.
 		float width = ceguimax(getWidestColumnItemWidth(col_idx), ListHeader::MinimumSegmentPixelWidth);
 
-		// perform metrics conversion if needed
-		if (getMetricsMode() == Relative)
-		{
-			width = absoluteToRelativeX(width);
-		}
-
 		// set new column width
-		setColumnHeaderWidth(col_idx, width);
+		setColumnHeaderWidth(col_idx, cegui_absdim(width));
 	}
 
 }
@@ -2361,7 +2327,7 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
         propString += seg.getText();
         // column width
         propString += " width:";
-        propString += PropertyHelper::floatToString(seg.getRelativeWidth());
+        propString += PropertyHelper::udimToString(seg.getWindowWidth());
         // column id
         propString += " id:";
         propString += PropertyHelper::uintToString(seg.getID());

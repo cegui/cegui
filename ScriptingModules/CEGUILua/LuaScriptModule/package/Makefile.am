@@ -1,5 +1,6 @@
 EXTRA_DIST = Basic.pkg \
              CEGUI.pkg \
+             CoordConverter.pkg \
              EventSet.pkg \
              Font.pkg \
              FontManager.pkg \

@@ -245,17 +245,18 @@ public:
 
 	/*!
 	\brief
-		Return the pixel width of the specified column.
+		Return the width of the specified column.
 
 	\param column
-		Zero based column index of the segment whos pixel width is to be returned.
+		Zero based column index of the segment whose width is to be returned.
 
 	\return
-		Pixel width of the ListHeaderSegment at the zero based column index specified by \a column.
+		UDim describing the width of the ListHeaderSegment at the zero based
+        column index specified by \a column.
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	float	getColumnPixelWidth(uint column) const;
+	UDim getColumnWidth(uint column) const;
 
 
 	/*!
@@ -424,12 +425,12 @@ public:
 		Client specified ID code to be assigned to the new segment.
 
 	\param width
-		Initial width of the new segment using the relative metrics system
+		UDim describing the initial width of the new segment.
 
 	\return
 		Nothing.
 	*/
-	void	addColumn(const String& text, uint id, float width);
+	void	addColumn(const String& text, uint id, const UDim& width);
 
 
 	/*!
@@ -442,8 +443,8 @@ public:
 	\param id
 		Client specified ID code to be assigned to the new segment.
 
-	\param width
-		Initial width of the new segment using the relative metrics system
+    \param width
+        UDim describing the initial width of the new segment.
 
 	\param position
 		Zero based column index indicating the desired position for the new column.  If this is greater than
@@ -452,7 +453,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	insertColumn(const String& text, uint id, float width, uint position);
+	void	insertColumn(const String& text, uint id, const UDim& width, uint position);
 
 
 	/*!
@@ -465,8 +466,8 @@ public:
 	\param id
 		Client specified ID code to be assigned to the new segment.
 
-	\param width
-		Initial width of the new segment using the relative metrics system
+    \param width
+        UDim describing the initial width of the new segment.
 
 	\param position
 		ListHeaderSegment object indicating the insert position for the new segment.  The new segment will be
@@ -477,7 +478,7 @@ public:
 
 	\exception InvalidRequestException	thrown if ListHeaderSegment \a position is not attached to the ListHeader.
 	*/
-	void	insertColumn(const String& text, uint id, float width, const ListHeaderSegment& position);
+	void	insertColumn(const String& text, uint id, const UDim& width, const ListHeaderSegment& position);
 
 
 	/*!
@@ -606,13 +607,13 @@ public:
 
 	/*!
 	\brief
-		Set the pixel width of the specified column.
+		Set the width of the specified column.
 
 	\param column
-		Zero based column index of the segment whos pixel width is to be set.
+		Zero based column index of the segment whose width is to be set.
 
 	\param width
-		float value specifying the new pixel width to set for the ListHeaderSegment at the zero based column
+		UDim value specifying the new width to set for the ListHeaderSegment at the zero based column
 		index specified by \a column.
 
 	\return
@@ -620,7 +621,7 @@ public:
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	void	setColumnPixelWidth(uint column, float width);
+	void	setColumnWidth(uint column, const UDim& width);
 
 
 	/*************************************************************************
@@ -679,7 +680,7 @@ protected:
 	\brief
 		Create initialise and return a ListHeaderSegment object, with all events subscribed and ready to use.
 	*/
-	ListHeaderSegment*	createInitialisedSegment(const String& text, uint id, float width);
+	ListHeaderSegment*	createInitialisedSegment(const String& text, uint id, const UDim& width);
 
 
 	/*!

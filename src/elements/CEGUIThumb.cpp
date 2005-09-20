@@ -24,6 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "elements/CEGUIThumb.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -81,6 +82,8 @@ Thumb::~Thumb(void)
 *************************************************************************/
 void Thumb::setVertRange(float min, float max)
 {
+    Size parentSize(getParentPixelSize());
+
 	// ensure min <= max, swap if not.
 	if (min > max)
 	{
@@ -93,15 +96,15 @@ void Thumb::setVertRange(float min, float max)
 	d_vertMin = min;
 
 	// validate current position.
-	float cp = getYPosition();
+	float cp = getWindowYPosition().asAbsolute(parentSize.d_height);
 
 	if (cp < min)
 	{
-		setYPosition(min);
+		setWindowYPosition(cegui_absdim(min));
 	}
 	else if (cp > max)
 	{
-		setYPosition(max);
+		setWindowYPosition(cegui_absdim(max));
 	}
 
 }
@@ -112,6 +115,8 @@ void Thumb::setVertRange(float min, float max)
 *************************************************************************/
 void Thumb::setHorzRange(float min, float max)
 {
+    Size parentSize(getParentPixelSize());
+
 	// ensure min <= max, swap if not.
 	if (min > max)
 	{
@@ -124,15 +129,15 @@ void Thumb::setHorzRange(float min, float max)
 	d_horzMin = min;
 
 	// validate current position.
-	float cp = getXPosition();
+	float cp = getWindowXPosition().asAbsolute(parentSize.d_width);
 
 	if (cp < min)
 	{
-		setXPosition(min);
+		setWindowXPosition(cegui_absdim(min));
 	}
 	else if (cp > max)
 	{
-		setXPosition(max);
+		setWindowXPosition(cegui_absdim(max));
 	}
 
 }
@@ -187,28 +192,17 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 	// only react if we are being dragged
 	if (d_beingDragged)
 	{
+        Size parentSize(getParentPixelSize());
+
 		Vector2 delta;
 		float hmin, hmax, vmin, vmax;
 
-		// get some values as absolute pixel offsets
-		if (getMetricsMode() == Relative)
-		{
-			delta = relativeToAbsolute(screenToWindow(e.position));
+        delta = CoordConverter::screenToWindow(*this, e.position);
 
-			hmax = relativeToAbsoluteX_impl(d_parent, d_horzMax);
-			hmin = relativeToAbsoluteX_impl(d_parent, d_horzMin);
-			vmax = relativeToAbsoluteY_impl(d_parent, d_vertMax);
-			vmin = relativeToAbsoluteY_impl(d_parent, d_vertMin);
-		}
-		else
-		{
-			delta = screenToWindow(e.position);
-
-			hmin = d_horzMin;
-			hmax = d_horzMax;
-			vmin = d_vertMin;
-			vmax = d_vertMax;
-		}
+        hmin = d_horzMin;
+        hmax = d_horzMax;
+        vmin = d_vertMin;
+        vmax = d_vertMax;
 
 		// calculate amount of movement in pixels
 		delta -= d_dragPoint;
@@ -216,33 +210,28 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 		//
 		// Calculate new (pixel) position for thumb
 		//
-		Point newPos(getAbsolutePosition());
+		UVector2 newPos(getWindowPosition());
 
 		if (d_horzFree)
 		{
-			newPos.d_x += delta.d_x;
+			newPos.d_x.d_offset += delta.d_x;
 
 			// limit value to within currently set range
-			newPos.d_x = (newPos.d_x < hmin) ? hmin : (newPos.d_x > hmax) ? hmax : newPos.d_x;
+			newPos.d_x.d_offset = (newPos.d_x.d_offset < hmin) ? hmin : (newPos.d_x.d_offset > hmax) ? hmax : newPos.d_x.d_offset;
 		}
 
 		if (d_vertFree)
 		{
-			newPos.d_y += delta.d_y;
+			newPos.d_y.d_offset += delta.d_y;
 
 			// limit new position to within currently set range
-			newPos.d_y = (newPos.d_y < vmin) ? vmin : (newPos.d_y > vmax) ? vmax : newPos.d_y;
+			newPos.d_y.d_offset = (newPos.d_y.d_offset < vmin) ? vmin : (newPos.d_y.d_offset > vmax) ? vmax : newPos.d_y.d_offset;
 		}
 
 		// update thumb position if needed
-		if (newPos != getAbsolutePosition())
+		if (newPos != getWindowPosition())
 		{
-			if (getMetricsMode() == Relative)
-			{
-				newPos = absoluteToRelative_impl(d_parent, newPos);
-			}
-
-			setPosition(newPos);
+			setWindowPosition(newPos);
 
 			// send notification as required
 			if (d_hotTrack)
@@ -271,12 +260,7 @@ void Thumb::onMouseButtonDown(MouseEventArgs& e)
 	{
 		// initialise the dragging state
 		d_beingDragged = true;
-		d_dragPoint = screenToWindow(e.position);
-
-		if (getMetricsMode() == Relative)
-		{
-			d_dragPoint = relativeToAbsolute(d_dragPoint);
-		}
+		d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
 
 		// trigger tracking started event
 		WindowEventArgs args(this);

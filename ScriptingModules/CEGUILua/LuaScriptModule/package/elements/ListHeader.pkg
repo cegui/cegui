@@ -17,7 +17,7 @@ class ListHeader : public Window
 	float getPixelOffsetToSegment(const ListHeaderSegment& segment) const;
 	float getPixelOffsetToColumn(unsigned int column) const;
 	float getTotalSegmentsPixelExtent() const;
-	float getColumnPixelWidth(unsigned int column) const;
+	UDim  getColumnWidth(unsigned int column) const;
 
 	ListHeaderSegment::SortDirection getSortDirection() const;
 
@@ -36,10 +36,10 @@ class ListHeader : public Window
 
 	void setColumnSizingEnabled(bool setting);
 	void setColumnDraggingEnabled(bool setting);
-	void addColumn(string text, unsigned int id, float width);
+	void addColumn(string text, unsigned int id, const UDim& width);
 
-	void insertColumn(string text, unsigned int id, float width, unsigned int position);
-	void insertColumn(string text, unsigned int id, float width, const ListHeaderSegment& position);
+	void insertColumn(string text, unsigned int id, const UDim& width, unsigned int position);
+	void insertColumn(string text, unsigned int id, const UDim& width, const ListHeaderSegment& position);
 	void removeColumn(unsigned int column);
 	void removeSegment(const ListHeaderSegment& segment);
 
@@ -51,5 +51,5 @@ class ListHeader : public Window
 
 	void setSegmentOffset(float offset);
 
-	void setColumnPixelWidth(unsigned int column, float width);
+	void setColumnWidth(unsigned int column, const UDim& width);
 };

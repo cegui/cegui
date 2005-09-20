@@ -46,7 +46,7 @@ namespace TabControlProperties
 
 	\par Usage:
 		- Name: TabHeight
-		- Format: "[float]"
+		- Format: "{scale,offset}" (Unified Dimension)
 
 */
 class TabHeight : public Property
@@ -55,63 +55,11 @@ public:
 	TabHeight() : Property(
 		"TabHeight",
 		"Property to get/set the height of the tabs.",
-		"")
+		"{0.050000,0.000000}")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
 	void	set(PropertyReceiver* receiver, const String& value);
-
-	// default depends upon current metrics mode
-	bool	isDefault(const PropertyReceiver* receiver) const;
-	String	getDefault(const PropertyReceiver* receiver) const;
-};
-
-/*!
-\brief
-Property to access the absolute tab height setting of the tab control.
-
-\par Usage:
-- Name: AbsoluteTabHeight
-- Format: "[float]"
-
-*/
-class AbsoluteTabHeight : public Property
-{
-public:
-    AbsoluteTabHeight() : Property(
-		"AbsoluteTabHeight",
-		"Property to get/set the absolute height of the tabs.",
-		"", false)
-	{}
-
-    String	get(const PropertyReceiver* receiver) const;
-    void	set(PropertyReceiver* receiver, const String& value);
-
-	// default depends upon size of parent
-	bool	isDefault(const PropertyReceiver* receiver) const;
-	String	getDefault(const PropertyReceiver* receiver) const;
-};
-
-/*!
-\brief
-Property to access the relative tab height setting of the tab control.
-
-\par Usage:
-- Name: RelativeTabHeight
-- Format: "[float]"
-
-*/
-class RelativeTabHeight : public Property
-{
-public:
-    RelativeTabHeight() : Property(
-		"RelativeTabHeight",
-		"Property to get/set the relative height of the tabs.",
-		"0.050000", false)
-	{}
-
-    String	get(const PropertyReceiver* receiver) const;
-    void	set(PropertyReceiver* receiver, const String& value);
 };
 
 /*!
@@ -120,7 +68,7 @@ Property to access the tab text padding setting of the tab control.
 
 \par Usage:
 - Name: TabTextPadding
-- Format: "[float]"
+- Format: "{scale,offset}" (Unified Dimension)
 
 */
 class TabTextPadding : public Property
@@ -129,68 +77,12 @@ public:
     TabTextPadding() : Property(
 		"TabTextPadding", 
 		"Property to get/set the padding either side of the tab buttons.",
-		"")
-	{}
-
-    String	get(const PropertyReceiver* receiver) const;
-    void	set(PropertyReceiver* receiver, const String& value);
-
-	// default depends upon current metrics mode
-	bool	isDefault(const PropertyReceiver* receiver) const;
-	String	getDefault(const PropertyReceiver* receiver) const;
-};
-
-/*!
-\brief
-Property to access the absolute tab text padding setting of the tab control.
-
-\par Usage:
-- Name: AbsoluteTabTextPadding
-- Format: "[float]"
-
-*/
-class AbsoluteTabTextPadding : public Property
-{
-public:
-    AbsoluteTabTextPadding() : Property(
-		"AbsoluteTabTextPadding",
-		"Property to get/set the absolute padding either side of the tab buttons.",
-		"5", false)
+		"{0.000000,5.000000}")
 	{}
 
     String	get(const PropertyReceiver* receiver) const;
     void	set(PropertyReceiver* receiver, const String& value);
 };
-
-/*!
-\brief
-Property to access the relative tab text padding setting of the tab control.
-
-\par Usage:
-- Name: RelativeTabTextPadding
-- Format: "[float]"
-
-*/
-class RelativeTabTextPadding : public Property
-{
-public:
-    RelativeTabTextPadding() : Property(
-		"RelativeTabTextPadding",
-		"Property to get/set the relative padding either side of the tab buttons.",
-		"", false)
-	{}
-
-    String	get(const PropertyReceiver* receiver) const;
-    void	set(PropertyReceiver* receiver, const String& value);
-
-	// default depends upon size of parent
-	bool	isDefault(const PropertyReceiver* receiver) const;
-	String	getDefault(const PropertyReceiver* receiver) const;
-};
-
-
-
-
 
 } // End of  TabControlProperties namespace section
 

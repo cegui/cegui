@@ -1,6 +1,5 @@
 pkgincludedir=$(prefix)/include/CEGUI/elements
 pkginclude_HEADERS = CEGUIButtonBase.h \
-                     CEGUIButtonBaseProperties.h \
                      CEGUICheckbox.h \
                      CEGUICheckboxProperties.h \
                      CEGUIComboDropList.h \
@@ -40,7 +39,6 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIProgressBar.h \
                      CEGUIProgressBarProperties.h \
                      CEGUIPushButton.h \
-                     CEGUIPushButtonProperties.h \
                      CEGUIRadioButton.h \
                      CEGUIRadioButtonProperties.h \
                      CEGUIScrollablePane.h \
@@ -53,12 +51,6 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUISliderProperties.h \
                      CEGUISpinner.h \
                      CEGUISpinnerProperties.h \
-                     CEGUIStatic.h \
-                     CEGUIStaticImage.h \
-                     CEGUIStaticImageProperties.h \
-                     CEGUIStaticProperties.h \
-                     CEGUIStaticText.h \
-                     CEGUIStaticTextProperties.h \
                      CEGUITabButton.h \
                      CEGUITabControl.h \
                      CEGUITabControlProperties.h \

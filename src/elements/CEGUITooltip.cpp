@@ -96,7 +96,18 @@ namespace CEGUI
         }
 
         // set final position of tooltip window.
-        setPosition(Absolute, tmpPos);
+        setWindowPosition(
+            UVector2(cegui_absdim(tmpPos.d_x),
+                     cegui_absdim(tmpPos.d_y)));
+    }
+
+    void Tooltip::sizeSelf(void)
+    {
+        Size textSize(getTextSize());
+
+        setWindowSize(
+            UVector2(cegui_absdim(textSize.d_width),
+                     cegui_absdim(textSize.d_height)));
     }
 
     void Tooltip::setTargetWindow(Window* wnd)
@@ -112,7 +123,7 @@ namespace CEGUI
             setText(wnd->getTooltipText());
 
             // set size and potition of the tooltip window.
-            setSize(Absolute, getTextSize());
+            sizeSelf();
             positionSelf();
         }
 
@@ -371,7 +382,7 @@ namespace CEGUI
         Window::onTextChanged(e);
 
         // set size and potition of the tooltip window to consider new text
-        setSize(Absolute, getTextSize());
+        sizeSelf();
         positionSelf();
 
         // we do not signal we handled it, in case user wants to hear

@@ -16,21 +16,11 @@ class TabControl : public Window
 	bool isTabContentsSelected(Window* wnd) const;
 	unsigned int getSelectedTabIndex() const;
 
-	float getRelativeTabHeight() const;
-	float getAbsoluteTabHeight() const;
-	float getTabHeight() const;
-	float getTabTextPadding() const;
+	const UDim& getTabHeight() const;
+	const UDim& getTabTextPadding() const;
 
-	float getRelativeTabTextPadding() const;
-	float getAbsoluteTabTextPadding() const;
-
-	void setRelativeTabHeight(float height);
-	void setAbsoluteTabHeight(float height);
-	void setTabHeight(float height);
-
-	void setTabTextPadding(float pad);
-	void setRelativeTabTextPadding(float pad);
-	void setAbsoluteTabTextPadding(float pad);
+	void setTabHeight(const UDim& height);
+	void setTabTextPadding(const UDim& pad);
 
 	void addTab(Window* wnd);
 

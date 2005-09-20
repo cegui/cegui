@@ -62,15 +62,15 @@ bool Demo4Sample::initialiseSample()
     ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "../datafiles/imagesets/GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
-    StaticImage* background = static_cast<StaticImage*>(winMgr.createWindow("TaharezLook/StaticImage", "background_wnd"));
+    Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
     // set position and size
-    background->setPosition(Point(0, 0));
-    background->setSize(Size(1, 1));
+    background->setWindowPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
+    background->setWindowSize(UVector2(cegui_reldim(1), cegui_reldim( 1)));
     // disable frame and standard background
-    background->setFrameEnabled(false);
-    background->setBackgroundEnabled(false);
+    background->setProperty("FrameEnabled", "false");
+    background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setImage("BackgroundImage", "full_image");
+    background->setProperty("Image", "set:BackgroundImage image:full_image");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
@@ -90,16 +90,16 @@ bool Demo4Sample::initialiseSample()
     PushButton* btn = static_cast<PushButton*>(winMgr.createWindow("TaharezLook/Button", "QuitButton"));
     sheet->addChildWindow(btn);
     btn->setText("Quit!");
-    btn->setPosition(Point(0.035f, 0.0f));
-    btn->setSize(Size(0.1f, 0.036f));
+    btn->setWindowPosition(UVector2(cegui_reldim(0.035f), cegui_reldim( 0.0f)));
+    btn->setWindowSize(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.036f)));
     btn->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo4Sample::handleQuit, this));
     btn->setAlwaysOnTop(true);
 
     // Alpha-slider
     Slider* slider = static_cast<Slider*>(winMgr.createWindow("TaharezLook/Slider", "my slider"));
     sheet->addChildWindow(slider);
-    slider->setPosition(Point(0.136f, 0.0f));
-    slider->setSize(Size(0.02f, 0.075f));
+    slider->setWindowPosition(UVector2(cegui_reldim(0.136f), cegui_reldim( 0.0f)));
+    slider->setWindowSize(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.075f)));
     slider->setAlwaysOnTop(true);
     // here we disable inherited alpha so that we will always be able to see the slider
     slider->setInheritsAlpha(false);
@@ -112,10 +112,10 @@ bool Demo4Sample::initialiseSample()
     // big scroll bar
     Scrollbar* vscb = static_cast<Scrollbar*>(winMgr.createWindow("TaharezLook/LargeVerticalScrollbar", "Vert Scroll 1"));
     sheet->addChildWindow(vscb);
-    vscb->setPosition(Point(0.0f, 0.0f));
-    vscb->setMinimumSize(Size(0.01f, 0.01f));
-    vscb->setMaximumSize(Size(1.0f, 1.0f));
-    vscb->setSize(Size(0.035f, 0.83f));
+    vscb->setWindowPosition(UVector2(cegui_reldim(0.0f), cegui_reldim( 0.0f)));
+    vscb->setWindowMinSize(UVector2(cegui_reldim(0.01f), cegui_reldim( 0.01f)));
+    vscb->setWindowMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
+    vscb->setWindowSize(UVector2(cegui_reldim(0.035f), cegui_reldim( 0.83f)));
     vscb->setDocumentSize(100);
     vscb->setPageSize(5);
     vscb->setStepSize(1);
@@ -124,10 +124,10 @@ bool Demo4Sample::initialiseSample()
     // mini vert scroll bar
     Scrollbar* mvsb = static_cast<Scrollbar*>(winMgr.createWindow("TaharezLook/VerticalScrollbar", "MiniVertScroll 1"));
     sheet->addChildWindow(mvsb);
-    mvsb->setPosition(Point(0.99f, 0.015f));
-    mvsb->setMinimumSize(Size(0.01f, 0.01f));
-    mvsb->setMaximumSize(Size(1.0f, 1.0f));
-    mvsb->setSize(Size(0.01f, 0.5f));
+    mvsb->setWindowPosition(UVector2(cegui_reldim(0.99f), cegui_reldim( 0.015f)));
+    mvsb->setWindowMinSize(UVector2(cegui_reldim(0.01f), cegui_reldim( 0.01f)));
+    mvsb->setWindowMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
+    mvsb->setWindowSize(UVector2(cegui_reldim(0.01f), cegui_reldim( 0.5f)));
     mvsb->setDocumentSize(360);
     mvsb->setPageSize(45);
     mvsb->setStepSize(1);
@@ -136,10 +136,10 @@ bool Demo4Sample::initialiseSample()
     // mini horz scroll bar
     Scrollbar* mhsb = static_cast<Scrollbar*>(winMgr.createWindow("TaharezLook/HorizontalScrollbar", "MiniHorzScroll 1"));
     sheet->addChildWindow(mhsb);
-    mhsb->setPosition(Point(0.485f, 0.0f));
-    mhsb->setMinimumSize(Size(0.01f, 0.01f));
-    mhsb->setMaximumSize(Size(1.0f, 1.0f));
-    mhsb->setSize(Size(0.5f, 0.015f));
+    mhsb->setWindowPosition(UVector2(cegui_reldim(0.485f), cegui_reldim( 0.0f)));
+    mhsb->setWindowMinSize(UVector2(cegui_reldim(0.01f), cegui_reldim( 0.01f)));
+    mhsb->setWindowMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
+    mhsb->setWindowSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.015f)));
     mhsb->setDocumentSize(360);
     mhsb->setPageSize(45);
     mhsb->setStepSize(1);
@@ -150,50 +150,50 @@ bool Demo4Sample::initialiseSample()
     //
     FrameWindow* textwnd = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "TextWindow"));
     sheet->addChildWindow(textwnd);
-    textwnd->setPosition(Point(0.2f, 0.2f));
-    textwnd->setMaximumSize(Size(0.75f, 0.75f));
-    textwnd->setMinimumSize(Size(0.1f, 0.1f));
-    textwnd->setSize(Size(0.5f, 0.5f));
+    textwnd->setWindowPosition(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
+    textwnd->setWindowMaxSize(UVector2(cegui_reldim(0.75f), cegui_reldim( 0.75f)));
+    textwnd->setWindowMinSize(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.1f)));
+    textwnd->setWindowSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
     textwnd->setCloseButtonEnabled(false);
     textwnd->setText("Crazy Eddie's GUI - Demo 4");
 
-    StaticText* st = static_cast<StaticText*>(winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Static"));
+    Window* st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Static");
     textwnd->addChildWindow(st);
-    st->setPosition(Point(0.1f, 0.2f));
-    st->setSize(Size(0.5f, 0.6));
+    st->setWindowPosition(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.2f)));
+    st->setWindowSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.6)));
 
-    st = static_cast<StaticText*>(winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Group label 1"));
+    st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Group label 1");
     textwnd->addChildWindow(st);
-    st->setPosition(Point(0.65f, 0.23f));
-    st->setSize(Size(0.35f, 0.05f));
+    st->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.23f)));
+    st->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     st->setText("Horz. Formatting");
     // disable frame and background on static control
-    st->setFrameEnabled(false);
-    st->setBackgroundEnabled(false);
+    st->setProperty("FrameEnabled", "false");
+    st->setProperty("BackgroundEnabled", "false");
 
-    st = static_cast<StaticText*>(winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Group label 2"));
+    st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Group label 2");
     textwnd->addChildWindow(st);
-    st->setPosition(Point(0.65f, 0.53f));
-    st->setSize(Size(0.35f, 0.05f));
+    st->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.53f)));
+    st->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     st->setText("Vert. Formatting");
     // disable frame and background on static control
-    st->setFrameEnabled(false);
-    st->setBackgroundEnabled(false);
+    st->setProperty("FrameEnabled", "false");
+    st->setProperty("BackgroundEnabled", "false");
 
-    st = static_cast<StaticText*>(winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Box label"));
+    st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Box label");
     textwnd->addChildWindow(st);
-    st->setPosition(Point(0.12f, 0.13f));
-    st->setSize(Size(0.35f, 0.05f));
+    st->setWindowPosition(UVector2(cegui_reldim(0.12f), cegui_reldim( 0.13f)));
+    st->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     st->setText("Formatted Output");
     // disable frame and background on static control
-    st->setFrameEnabled(false);
-    st->setBackgroundEnabled(false);
+    st->setProperty("FrameEnabled", "false");
+    st->setProperty("BackgroundEnabled", "false");
 
     // word-wrap checkbox
     Checkbox* cb = static_cast<Checkbox*>(winMgr.createWindow("TaharezLook/Checkbox", "TextWindow/CB1"));
     textwnd->addChildWindow(cb);
-    cb->setPosition(Point(0.65f, 0.13f));
-    cb->setSize(Size(0.35f, 0.05f));
+    cb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.13f)));
+    cb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     cb->setText("Word Wrap");
     // subscribe a handler to listen for when the check-box button select state changes
     cb->subscribeEvent(Checkbox::EventCheckStateChanged, &formatChangedHandler);
@@ -201,8 +201,8 @@ bool Demo4Sample::initialiseSample()
     // horizontal formatting radio group
     RadioButton* rb = static_cast<RadioButton*>(winMgr.createWindow("TaharezLook/RadioButton", "TextWindow/RB1"));
     textwnd->addChildWindow(rb);
-    rb->setPosition(Point(0.65f, 0.3f));
-    rb->setSize(Size(0.35f, 0.05f));
+    rb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.3f)));
+    rb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     rb->setGroupID(1);
     rb->setText("Left Aligned");
     // subscribe a handler to listen for when the radio button select state changes
@@ -210,8 +210,8 @@ bool Demo4Sample::initialiseSample()
 
     rb = static_cast<RadioButton*>(winMgr.createWindow("TaharezLook/RadioButton", "TextWindow/RB2"));
     textwnd->addChildWindow(rb);
-    rb->setPosition(Point(0.65f, 0.35f));
-    rb->setSize(Size(0.35f, 0.05f));
+    rb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.35f)));
+    rb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     rb->setGroupID(1);
     rb->setText("Right Aligned");
     // subscribe a handler to listen for when the radio button select state changes
@@ -219,8 +219,8 @@ bool Demo4Sample::initialiseSample()
 
     rb = static_cast<RadioButton*>(winMgr.createWindow("TaharezLook/RadioButton", "TextWindow/RB3"));
     textwnd->addChildWindow(rb);
-    rb->setPosition(Point(0.65f, 0.4f));
-    rb->setSize(Size(0.35f, 0.05f));
+    rb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.4f)));
+    rb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     rb->setGroupID(1);
     rb->setText("Centred");
     // subscribe a handler to listen for when the radio button select state changes
@@ -229,8 +229,8 @@ bool Demo4Sample::initialiseSample()
     // vertical formatting radio group
     rb = static_cast<RadioButton*>(winMgr.createWindow("TaharezLook/RadioButton", "TextWindow/RB4"));
     textwnd->addChildWindow(rb);
-    rb->setPosition(Point(0.65f, 0.6f));
-    rb->setSize(Size(0.35f, 0.05f));
+    rb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.6f)));
+    rb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     rb->setGroupID(2);
     rb->setText("Top Aligned");
     // subscribe a handler to listen for when the radio button select state changes
@@ -238,8 +238,8 @@ bool Demo4Sample::initialiseSample()
 
     rb = static_cast<RadioButton*>(winMgr.createWindow("TaharezLook/RadioButton", "TextWindow/RB5"));
     textwnd->addChildWindow(rb);
-    rb->setPosition(Point(0.65f, 0.65f));
-    rb->setSize(Size(0.35f, 0.05f));
+    rb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.65f)));
+    rb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     rb->setGroupID(2);
     rb->setText("Bottom Aligned");
     // subscribe a handler to listen for when the radio button select state changes
@@ -247,8 +247,8 @@ bool Demo4Sample::initialiseSample()
 
     rb = static_cast<RadioButton*>(winMgr.createWindow("TaharezLook/RadioButton", "TextWindow/RB6"));
     textwnd->addChildWindow(rb);
-    rb->setPosition(Point(0.65f, 0.7f));
-    rb->setSize(Size(0.35f, 0.05f));
+    rb->setWindowPosition(UVector2(cegui_reldim(0.65f), cegui_reldim( 0.7f)));
+    rb->setWindowSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     rb->setGroupID(2);
     rb->setText("Centred");
     // subscribe a handler to listen for when the radio button select state changes
@@ -257,9 +257,9 @@ bool Demo4Sample::initialiseSample()
     // Edit box for text entry
     Editbox* eb = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "TextWindow/Editbox1"));
     textwnd->addChildWindow(eb);
-    eb->setPosition(Point(0.05f, 0.85f));
-    eb->setMaximumSize(Size(1.0f, 0.04f));
-    eb->setSize(Size(0.90f, 0.08f));
+    eb->setWindowPosition(UVector2(cegui_reldim(0.05f), cegui_reldim( 0.85f)));
+    eb->setWindowMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 0.04f)));
+    eb->setWindowSize(UVector2(cegui_reldim(0.90f), cegui_reldim( 0.08f)));
     // subscribe a handler to listen for when the text changes
     eb->subscribeEvent(Window::EventTextChanged, &textChangedHandler);
 
@@ -320,25 +320,25 @@ bool formatChangedHandler(const CEGUI::EventArgs& e)
     const RadioButton* rb6 = static_cast<const RadioButton*>(winMgr.getWindow("TextWindow/RB6"));
     const Checkbox*    cb1 = static_cast<const Checkbox*>(winMgr.getWindow("TextWindow/CB1"));
     // and also the static text for which we will set the formatting options
-    StaticText*  st  = static_cast<StaticText*>(winMgr.getWindow("TextWindow/Static"));
+    Window*  st  = winMgr.getWindow("TextWindow/Static");
 
     // handle vertical formatting settings
     if (rb4->isSelected())
-        st->setVerticalFormatting(StaticText::TopAligned);
+        st->setProperty("VertFormatting", "TopAligned");
     else if (rb5->isSelected())
-        st->setVerticalFormatting(StaticText::BottomAligned);
+        st->setProperty("VertFormatting", "BottomAligned");
     else if (rb6->isSelected())
-        st->setVerticalFormatting(StaticText::VertCentred);
+        st->setProperty("VertFormatting", "VertCentred");
 
     // handle horizontal formatting settings
     bool wrap = cb1->isSelected();
 
     if (rb1->isSelected())
-        st->setHorizontalFormatting(wrap ? StaticText::WordWrapLeftAligned : StaticText::LeftAligned);
+        st->setProperty("HorzFormatting", wrap ? "WordWrapLeftAligned" : "LeftAligned");
     else if (rb2->isSelected())
-        st->setHorizontalFormatting(wrap ? StaticText::WordWrapRightAligned : StaticText::RightAligned);
+        st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
     else if (rb3->isSelected())
-        st->setHorizontalFormatting(wrap ? StaticText::WordWrapCentred : StaticText::HorzCentred);
+        st->setProperty("HorzFormatting", wrap ? "WordWrapCentred" : "HorzCentred");
 
     // event was handled
     return true;
@@ -352,7 +352,7 @@ bool textChangedHandler(const CEGUI::EventArgs& e)
     using namespace CEGUI;
 
     //find the static box
-    StaticText* st = static_cast<StaticText*>(WindowManager::getSingleton().getWindow("TextWindow/Static"));
+    Window* st = WindowManager::getSingleton().getWindow("TextWindow/Static");
 
     // set text from the edit box...
     st->setText(static_cast<const WindowEventArgs&>(e).window->getText());

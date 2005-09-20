@@ -302,6 +302,10 @@ SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\CEGUI.pk
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\CoordConverter.pkg
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\EventSet.pkg
 # End Source File
 # Begin Source File

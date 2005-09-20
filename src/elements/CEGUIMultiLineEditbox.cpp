@@ -28,7 +28,7 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
-
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -774,12 +774,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
 	//
 	// calculate final window position to be checked
 	//
-	Point wndPt = screenToWindow(pt);
-
-	if (getMetricsMode() == Relative)
-	{
-		wndPt = relativeToAbsolute(wndPt);
-	}
+	Point wndPt = CoordConverter::screenToWindow(*this, pt);
 
 	Rect textArea(getTextRenderArea());
 

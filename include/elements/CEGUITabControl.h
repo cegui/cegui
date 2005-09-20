@@ -164,35 +164,15 @@ public:
 	
     /*!
     \brief
-        Return the relative height of the tabs
+        Return the height of the tabs
     */
-    float getRelativeTabHeight(void) const { return d_rel_tabHeight; }
+    const UDim& getTabHeight(void) const { return d_tabHeight; }
+
     /*!
     \brief
-        Return the absolute height of the tabs
+        Return the amount of padding to add either side of the text in the tab
     */
-    float getAbsoluteTabHeight(void) const { return d_abs_tabHeight; }
-    /*!
-    \brief
-        Return the height of the tabs in the current metrics mode
-    */
-    float getTabHeight(void) const;
-    /*!
-    \brief
-        Return the amount of padding to add either side of the text in the tab,
-        according to the current metrics mode.
-    */
-    float getTabTextPadding(void) const;
-    /*!
-    \brief
-        Return the relative amount of padding to add either side of the text in the tab
-    */
-    float getRelativeTabTextPadding(void) const { return d_rel_tabPadding; }
-    /*!
-    \brief
-        Return the absolute amount of padding to add either side of the text in the tab
-    */
-    float getAbsoluteTabTextPadding(void) const { return d_abs_tabPadding; }
+    const UDim& getTabTextPadding(void) const { return d_tabPadding; }
 
 
     /*************************************************************************
@@ -212,36 +192,16 @@ public:
 
     /*!
     \brief
-        Set the relative height of the tabs
+        Set the height of the tabs
     */
-    void setRelativeTabHeight(float height);
-    /*!
-    \brief
-        Set the absolute height of the tabs
-    */
-    void setAbsoluteTabHeight(float height);
-    /*!
-    \brief
-        Set the height of the tabs in the current metrics mode
-    */
-    void setTabHeight(float height);
+    void setTabHeight(const UDim& height);
 
     /*!
     \brief
-        Set the amount of padding to add either side of the text in the tab,
-        according to the current metrics mode.
+        Set the amount of padding to add either side of the text in the tab
     */
-    void setTabTextPadding(float);
-    /*!
-    \brief
-        Set the relative amount of padding to add either side of the text in the tab
-    */
-    void setRelativeTabTextPadding(float);
-    /*!
-    \brief
-        Set the absolute amount of padding to add either side of the text in the tab
-    */
-    void setAbsoluteTabTextPadding(float);
+    void setTabTextPadding(const UDim& padding);
+
     /*!
     \brief 
         Add a new tab to the tab control. 
@@ -382,10 +342,8 @@ protected:
 	*************************************************************************/
     Window*     d_tabButtonPane;    //!< The area containing the tab buttons
     TabPane*    d_tabContentPane;   //!< The content area window
-    float       d_abs_tabHeight;    //!< The height of the tabs in pixels
-    float       d_rel_tabHeight;    //!< The height of the tabs relative to parent
-    float       d_abs_tabPadding;    //!< The padding of the tabs in pixels
-    float       d_rel_tabPadding;    //!< The padding of the tabs relative to parent
+    UDim        d_tabHeight;        //!< The height of the tabs in pixels
+    UDim        d_tabPadding;       //!< The padding of the tabs relative to parent
     uint        d_nextTabIndex;     //!< The index to give the next tab 
     typedef std::map<uint, TabButton*> TabButtonIndexMap; 
     TabButtonIndexMap d_tabButtonIndexMap;  //!< Sorting for tabs
@@ -444,13 +402,9 @@ protected:
 		Static Properties for this class
 	*************************************************************************/
 	static TabControlProperties::TabHeight			d_tabHeightProperty;
-    static TabControlProperties::AbsoluteTabHeight	d_absoluteTabHeightProperty;
-    static TabControlProperties::RelativeTabHeight	d_relativeTabHeightProperty;
-
     static TabControlProperties::TabTextPadding			d_tabTextPaddingProperty;
-    static TabControlProperties::AbsoluteTabTextPadding	d_absoluteTabTextPaddingProperty;
-    static TabControlProperties::RelativeTabTextPadding	d_relativeTabTextPaddingProperty;
-	/*************************************************************************
+
+    /*************************************************************************
 		Private methods
 	*************************************************************************/
 	void	addTabControlProperties(void);

@@ -93,8 +93,9 @@ protected:
     {
         Window::initialise();
 
-        setMaximumSize(Size(1.0f, 1.0f));
-        setSize(Size(1.0f, 1.0f));
+        UVector2 sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
+        setWindowMaxSize(sz);
+        setWindowSize(sz);
     }
 
 

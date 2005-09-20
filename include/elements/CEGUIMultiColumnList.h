@@ -215,9 +215,9 @@ public:
 		Return the total width of all column headers.
 
 	\return
-		Sum total of all the column header widths in whichever metrics system is active.
+		Sum total of all the column header widths as a UDim.
 	*/
-	float	getTotalColumnHeadersWidth(void) const;
+	UDim getTotalColumnHeadersWidth(void) const;
 
 
 	/*!
@@ -228,11 +228,11 @@ public:
 		Zero based column index of the column whos width is to be returned.
 
 	\return
-		Width of the column header at the zero based column index specified by \a col_idx, in whichever is the active metrics system.
+		Width of the column header at the zero based column index specified by \a col_idx, as a UDim
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	float	getColumnHeaderWidth(uint col_idx) const;
+	UDim getColumnHeaderWidth(uint col_idx) const;
 
 
 	/*!
@@ -641,12 +641,12 @@ public:
 		ID code to be assigned to the column header.
 
 	\param width
-		Initial width to be set for the column using the active metrics mode for this window.
+		UDim describing the initial width to be set for the column.
 
 	\return
 		Nothing.
 	*/
-	void	addColumn(const String& text, uint col_id, float width);
+	void	addColumn(const String& text, uint col_id, const UDim& width);
 
 
 	/*!
@@ -660,7 +660,7 @@ public:
 		ID code to be assigned to the column header.
 
 	\param width
-		Initial width to be set for the column using the active metrics mode for this window.
+		UDim describing the initial width to be set for the column.
 
 	\param position
 		Zero based index where the column is to be inserted.  If this is greater than the current
@@ -669,7 +669,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	insertColumn(const String& text, uint col_id, float width, uint position);
+	void	insertColumn(const String& text, uint col_id, const UDim& width, uint position);
 
 
 	/*!
@@ -1090,14 +1090,14 @@ public:
 		Zero based column index of the column whos width is to be set.
 
 	\param width
-		float value specifying the new width for the column using the active metrics system.
+		UDim value specifying the new width for the column.
 
 	\return
 		Nothing.
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	void	setColumnHeaderWidth(uint col_idx, float width);
+	void	setColumnHeaderWidth(uint col_idx, const UDim& width);
 
 
 	/*!
@@ -1287,21 +1287,21 @@ protected:
 
 	/*!
 	\brief
-		Return the sum of all row heights
+		Return the sum of all row heights in pixels.
 	*/
 	float	getTotalRowsHeight(void) const;
 
 
 	/*!
 	\brief
-		Return the width of the widest item in the given column
+		Return the pixel width of the widest item in the given column
 	*/
 	float	getWidestColumnItemWidth(uint col_idx) const;
 
 
 	/*!
 	\brief
-		Return the height of the highest item in the given row.
+		Return, in pixels, the height of the highest item in the given row.
 	*/
 	float	getHighestRowItemHeight(uint row_idx) const;
 

@@ -29,7 +29,7 @@
 #include "elements/CEGUIListboxItem.h"
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUITooltip.h"
-
+#include "CEGUICoordConverter.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -935,12 +935,7 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 			modified = clearAllSelections_impl();
 		}
 
-		Point localPos(screenToWindow(e.position));
-
-		if (getMetricsMode() == Relative)
-		{
-			localPos = relativeToAbsolute(localPos);
-		}
+		Point localPos(CoordConverter::screenToWindow(*this, e.position));
 
 		ListboxItem* item = getItemAtPoint(localPos);
 
@@ -1004,7 +999,7 @@ void Listbox::onMouseMove(MouseEventArgs& e)
     {
         static ListboxItem* lastItem = 0;
 
-        Point posi = relativeToAbsolute(screenToWindow(e.position));
+        Point posi( CoordConverter::screenToWindow(*this, e.position) );
         ListboxItem* item = getItemAtPoint(posi);
         if (item != lastItem)
         {

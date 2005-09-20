@@ -24,6 +24,7 @@
 #include "FalEditbox.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -190,12 +191,7 @@ namespace CEGUI
         //
         // calculate final window position to be checked
         //
-        float wndx = screenToWindowX(pt.d_x);
-
-        if (getMetricsMode() == Relative)
-        {
-            wndx = relativeToAbsoluteX(wndx);
-        }
+        float wndx = CoordConverter::screenToWindowX(*this, pt.d_x);
 
         wndx -= d_lastTextOffset;
 

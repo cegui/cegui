@@ -1341,6 +1341,7 @@
                 <Dim type="Width" ><UnifiedDim scale="0.1" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
+            <Property name="UnifiedMinSize" value="{{0,25},{0,0}}" />
         </Child>
         <ImagerySection name="main">
             <ImageryComponent>
@@ -1485,6 +1486,7 @@
                 <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="0.1" type="Height" /></Dim>
             </Area>
+            <Property name="UnifiedMinSize" value="{{0,0},{0,25}}" />
         </Child>
         <ImagerySection name="main">
             <ImageryComponent>

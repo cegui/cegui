@@ -167,7 +167,6 @@ namespace CEGUI
          */
         void setFadeTime(float seconds);
 
-        // 
         /*!
         \brief
             Causes the tooltip to position itself appropriately.
@@ -176,6 +175,15 @@ namespace CEGUI
             Nothing.
         */
         void positionSelf(void);
+
+        /*!
+        \brief
+            Causes the tooltip to resize itself appropriately.
+
+        \return
+            Nothing.
+        */
+        void sizeSelf(void);
 
     protected:
         /*************************************************************************

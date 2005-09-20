@@ -25,7 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIScrollbar.h"
-
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -118,12 +118,7 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 				//
 				// Convert mouse position to absolute window pixels
 				//
-				Point localPos(screenToWindow(e.position));
-
-				if (getMetricsMode() == Relative)
-				{
-					localPos = relativeToAbsolute(localPos);
-				}
+				Point localPos(CoordConverter::screenToWindow(*this, e.position));
 
 				// check for an item under the mouse
 				ListboxItem* selItem = getItemAtPoint(localPos);

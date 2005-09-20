@@ -180,8 +180,8 @@ void MenuItem::openPopupMenu()
 	if (getParent()->testClassName("Menubar") && menu->isItemInList(this))
 	{
 		// align the popup to the bottom-left of the menuitem
-		Point pos(0,getAbsoluteRect().getHeight());
-		d_popup->setPosition(Absolute,pos);
+		UVector2 pos(cegui_absdim(0), cegui_absdim(d_pixelSize.d_height));
+		d_popup->setWindowPosition(pos);
 
 		menu->changePopupMenuItem(this);
 	}
@@ -189,9 +189,8 @@ void MenuItem::openPopupMenu()
 	else if (getParent()->testClassName("PopupMenu") && menu->isItemInList(this))
 	{
 		// align the popup to the top-right of the menuitem
-		const Rect absrect = getAbsoluteRect();
-		Point pos(absrect.getWidth(),0);
-		d_popup->setPosition(Absolute,pos);
+        UVector2 pos(cegui_absdim(d_pixelSize.d_width), cegui_absdim(0));
+        d_popup->setWindowPosition(pos);
 
 		menu->changePopupMenuItem(this);
 	}

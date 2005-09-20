@@ -43,8 +43,8 @@ class MultiColumnList : public Window
 	unsigned int getColumnWithID(unsigned int col_id) const;
 	unsigned int getColumnWithHeaderText(string text) const;
 
-	float getTotalColumnHeadersWidth() const;
-	float getColumnHeaderWidth(unsigned int col_idx) const;
+	UDim getTotalColumnHeadersWidth() const;
+	UDim getColumnHeaderWidth(unsigned int col_idx) const;
 
 	ListHeaderSegment::SortDirection getSortDirection() const;
 	ListHeaderSegment& getHeaderSegmentForColumn(unsigned int col_idx) const;
@@ -82,8 +82,8 @@ class MultiColumnList : public Window
 
 	void resetList();
 
-	void addColumn(string text, unsigned int col_id, float width);
-	void insertColumn(string text, unsigned int col_id, float width, unsigned int position);
+	void addColumn(string text, unsigned int col_id, const UDim& width);
+	void insertColumn(string text, unsigned int col_id, const UDim& width, unsigned int position);
 	void removeColumn(unsigned int col_idx);
 	void removeColumnWithID(unsigned int col_id);
 	void moveColumn(unsigned int col_idx, unsigned int position);
@@ -117,7 +117,7 @@ class MultiColumnList : public Window
 
 	void handleUpdatedItemData();
 
-	void setColumnHeaderWidth(unsigned int col_idx, float width);
+	void setColumnHeaderWidth(unsigned int col_idx, const UDim& width);
 	void setUserSortControlEnabled(bool setting);
 	void setUserColumnSizingEnabled(bool setting);
 	void setUserColumnDraggingEnabled(bool setting);

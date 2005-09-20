@@ -141,7 +141,13 @@ namespace CEGUI
     {
         try
         {
-            WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix)->setRect(Absolute, d_area.getPixelRect(owner));
+            Rect pixelArea(d_area.getPixelRect(owner));
+            URect window_area(cegui_absdim(pixelArea.d_left),
+                              cegui_absdim(pixelArea.d_top),
+                              cegui_absdim(pixelArea.d_right),
+                              cegui_absdim(pixelArea.d_bottom));
+
+            WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix)->setWindowArea(window_area);
         }
         catch (UnknownObjectException)
         {}

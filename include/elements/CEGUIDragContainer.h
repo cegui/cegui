@@ -315,11 +315,6 @@ namespace CEGUI
 
 
         /*************************************************************************
-        	Implementation of abstract methods in Window
-        *************************************************************************/
-        void drawSelf(float z);
-
-        /*************************************************************************
         	Overrides of methods in Window
         *************************************************************************/
 
@@ -435,8 +430,8 @@ namespace CEGUI
         bool    d_draggingEnabled;  //!< True when dragging is enabled.
         bool    d_leftMouseDown;    //!< True when left mouse button is down.
         bool    d_dragging;         //!< true when being dragged.
-        Point   d_dragPoint;        //!< point we are being dragged at.
-        Point   d_startPosition;    //!< position prior to dragging.
+        UVector2 d_dragPoint;       //!< point we are being dragged at.
+        UVector2 d_startPosition;   //!< position prior to dragging.
         float   d_dragThreshold;    //!< Pixels mouse must move before dragging commences.
         float   d_dragAlpha;        //!< Alpha value to set when dragging.
         float   d_storedAlpha;      //!< Alpha value to re-set when dragging ends.

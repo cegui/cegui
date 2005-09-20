@@ -39,11 +39,7 @@ const String TabControl::EventNamespace("TabControl");
 	Definition of Properties for this class
 *************************************************************************/
 TabControlProperties::TabHeight		            TabControl::d_tabHeightProperty;
-TabControlProperties::AbsoluteTabHeight	        TabControl::d_absoluteTabHeightProperty;
-TabControlProperties::RelativeTabHeight	        TabControl::d_relativeTabHeightProperty;
 TabControlProperties::TabTextPadding		    TabControl::d_tabTextPaddingProperty;
-TabControlProperties::AbsoluteTabTextPadding	TabControl::d_absoluteTabTextPaddingProperty;
-TabControlProperties::RelativeTabTextPadding	TabControl::d_relativeTabTextPaddingProperty;
 
 /*************************************************************************
 	Constants
@@ -63,8 +59,8 @@ TabControl::TabControl(const String& type, const String& name)
 {
 	addTabControlEvents();
 	addTabControlProperties();
-    setRelativeTabHeight(0.05f);
-    setAbsoluteTabTextPadding(5);
+    setTabHeight(cegui_reldim(0.05f));
+    setTabTextPadding(cegui_absdim(5));
 }
 
 
@@ -177,105 +173,25 @@ void TabControl::setSelectedTabAtIndex(uint index)
 	Window* wnd = getTabContentsAtIndex(index);
 	selectTab_impl(wnd);
 }
-/*************************************************************************
-Get the tab height
-*************************************************************************/
-float TabControl::getTabHeight(void) const
-{
-    MetricsMode mode = getMetricsMode();
-    if (mode == Relative)
-    {
-        return d_rel_tabHeight;
-    }
-    else
-    {
-        return d_abs_tabHeight;
-    }
-}
 
 /*************************************************************************
 Set the tab height
 *************************************************************************/
-void TabControl::setRelativeTabHeight(float height)
+void TabControl::setTabHeight(const UDim& height)
 {
-    d_rel_tabHeight = height;
-    d_abs_tabHeight = relativeToAbsoluteY(height);
+    d_tabHeight = height;
 
     performChildWindowLayout();
-}
-/*************************************************************************
-Set the tab height
-*************************************************************************/
-void TabControl::setAbsoluteTabHeight(float height)
-{
-    d_abs_tabHeight = height;
-    d_rel_tabHeight = absoluteToRelativeY(height);
-
-    performChildWindowLayout();
-}
-/*************************************************************************
-Set the tab height
-*************************************************************************/
-void TabControl::setTabHeight(float height)
-{
-    if (getMetricsMode() == Relative)
-    {
-        setRelativeTabHeight(height);
-    }
-    else
-    {
-        setAbsoluteTabHeight(height);
-    }
-}
-/*************************************************************************
-Get the tab text padding
-*************************************************************************/
-float TabControl::getTabTextPadding(void) const
-{
-    MetricsMode mode = getMetricsMode();
-    if (mode == Relative)
-    {
-        return d_rel_tabPadding;
-    }
-    else
-    {
-        return d_abs_tabPadding;
-    }
 }
 
 /*************************************************************************
 Set the tab text padding
 *************************************************************************/
-void TabControl::setRelativeTabTextPadding(float height)
+void TabControl::setTabTextPadding(const UDim& padding)
 {
-    d_rel_tabPadding = height;
-    d_abs_tabPadding = relativeToAbsoluteY(height);
+    d_tabPadding = padding;
 
     performChildWindowLayout();
-}
-/*************************************************************************
-Set the tab text padding
-*************************************************************************/
-void TabControl::setAbsoluteTabTextPadding(float height)
-{
-    d_abs_tabPadding = height;
-    d_rel_tabPadding = absoluteToRelativeY(height);
-
-    performChildWindowLayout();
-}
-/*************************************************************************
-Set the tab text padding
-*************************************************************************/
-void TabControl::setTabTextPadding(float height)
-{
-    if (getMetricsMode() == Relative)
-    {
-        setRelativeTabTextPadding(height);
-    }
-    else
-    {
-        setAbsoluteTabTextPadding(height);
-    }
 }
 
 /*************************************************************************
@@ -411,8 +327,8 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
 {
     // relative height is always 1.0 for buttons since they are embedded in a
     // panel of the correct height already
-    btn->setHeight(Relative, 1.0f);
-    btn->setYPosition(Relative, 0.0f);
+    btn->setWindowHeight(cegui_reldim(1.0f));
+    btn->setWindowYPosition(cegui_absdim(0.0f));
     // x position is based on previous button
     if (targetIndex > 0)
     {
@@ -421,19 +337,18 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
 		Window* prevButton = iter->second;
 
 		// position is prev pos + width
-        btn->setXPosition(Relative, 
-            prevButton->getXPosition(Relative) 
-            + prevButton->getWidth(Relative));
+        btn->setWindowXPosition(prevButton->getWindowArea().d_max.d_x);
     }
     else
     {
         // First button
-        btn->setXPosition(Relative, 0);
+        btn->setWindowXPosition(cegui_absdim(0));
     }
     // Width is based on font size (expressed as absolute)
     const Font* fnt = btn->getFont();
-    btn->setWidth(Absolute, 
-        fnt->getTextExtent(btn->getText()) + getAbsoluteTabTextPadding()*2);
+    btn->setWindowWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
+                                     getTabTextPadding() +
+                                     getTabTextPadding());
     btn->requestRedraw();
 }
 /*************************************************************************
@@ -498,11 +413,7 @@ Add tab control properties
 void TabControl::addTabControlProperties(void)
 {
     addProperty(&d_tabHeightProperty);
-    addProperty(&d_relativeTabHeightProperty);
-    addProperty(&d_absoluteTabHeightProperty);
     addProperty(&d_tabTextPaddingProperty);
-    addProperty(&d_relativeTabTextPaddingProperty);
-    addProperty(&d_absoluteTabTextPaddingProperty);
 }
 /*************************************************************************
 Internal version of adding a child window
@@ -559,8 +470,14 @@ void TabControl::performChildWindowLayout()
     if (d_tabButtonPane)
     {
         // Set the size of the tab button area (full width, height from tab height)
-        d_tabButtonPane->setSize(Relative, Size(1.0f, d_rel_tabHeight) );
-        d_tabButtonPane->setPosition(Relative, Point(0.0f, 0.0f) );
+        d_tabButtonPane->setWindowSize(
+            UVector2(cegui_reldim(1.0f),
+                     d_tabHeight) );
+
+        d_tabButtonPane->setWindowPosition(
+            UVector2(cegui_absdim(0),
+                     cegui_absdim(0)));
+
         // Calculate the positions and sizes of the tab buttons
         TabButtonIndexMap::iterator i, iend;
         iend = d_tabButtonIndexMap.end();
@@ -574,8 +491,12 @@ void TabControl::performChildWindowLayout()
     if (d_tabContentPane)
     {
         // Set the size of the content area
-        d_tabContentPane->setSize(Relative, Size(1.0f, 1.0f - d_rel_tabHeight) );
-        d_tabContentPane->setPosition(Relative, Point(0.0f, d_rel_tabHeight) );
+        d_tabContentPane->setWindowSize(
+            UVector2(cegui_reldim(1.0f),
+                     cegui_reldim(1.0f) - d_tabHeight));
+
+        d_tabContentPane->setWindowPosition(
+            UVector2(cegui_reldim(0.0f), d_tabHeight) );
     }
 
 }

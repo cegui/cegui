@@ -102,13 +102,13 @@ namespace CEGUI
         if (childCount != 0)
         {
             Window* wnd = getChildAtIdx(0);
-            Rect extents(wnd->getAbsoluteRect());
+            Rect extents(wnd->getWindowArea().asAbsolute(d_pixelSize));
 
             // control var starts at 1 since we already dealt with 0 above
             for (uint i = 1; i < childCount; ++i)
             {
                 wnd = getChildAtIdx(i);
-                Rect area(wnd->getAbsoluteRect());
+                Rect area(wnd->getWindowArea().asAbsolute(d_pixelSize));
 
                 if (area.d_left < extents.d_left)
                     extents.d_left = area.d_left;

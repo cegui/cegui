@@ -528,6 +528,10 @@ SOURCE=..\..\..\..\src\CEGUIConfig_xmlHandler.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\CEGUICoordConverter.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\CEGUIDefaultResourceProvider.cpp
 # End Source File
 # Begin Source File
@@ -1129,6 +1133,10 @@ SOURCE=..\..\..\..\include\CEGUIConfig.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIConfig_xmlHandler.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUICoordConverter.h
 # End Source File
 # Begin Source File
 

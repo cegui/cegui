@@ -81,35 +81,35 @@ namespace CEGUI
         Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__"));
 
         // get base location for thumb widget
-        Point thumbPosition(area.d_left, area.d_top);
+        UVector2 thumbPosition(cegui_absdim(area.d_left), cegui_absdim(area.d_top));
 
         // Is this a vertical slider
         if (d_vertical)
         {
             // pixel extent of total available area the thumb moves in
-            float slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
+            float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             // Set range of motion for the thumb widget
-            theThumb->setVertRange(absoluteToRelativeY_impl(this, area.d_top), absoluteToRelativeY_impl(this, area.d_top + slideExtent));
+            theThumb->setVertRange(area.d_top, area.d_top + slideExtent);
 
             // calculate vertical positon for thumb
             float thumbOffset = d_value * (slideExtent / d_maxValue);
-            thumbPosition.d_y += d_reversed ? thumbOffset : slideExtent - thumbOffset;
+            thumbPosition.d_y.d_offset += d_reversed ? thumbOffset : slideExtent - thumbOffset;
         }
         // Horizontal slider
         else
         {
             // pixel extent of total available area the thumb moves in
-            float slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
+            float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             // Set range of motion for the thumb widget
-            theThumb->setHorzRange(absoluteToRelativeX_impl(this, area.d_left), absoluteToRelativeX_impl(this, area.d_left + slideExtent));
+            theThumb->setHorzRange(area.d_left, area.d_left + slideExtent);
 
             // calculate horizontal positon for thumb
             float thumbOffset = d_value * (slideExtent / d_maxValue);
-            thumbPosition.d_x += d_reversed ? slideExtent - thumbOffset : thumbOffset;
+            thumbPosition.d_x.d_offset += d_reversed ? slideExtent - thumbOffset : thumbOffset;
         }
 
         // set new position for thumb.
-        theThumb->setPosition(absoluteToRelative_impl(this, thumbPosition));
+        theThumb->setWindowPosition(thumbPosition);
     }
 
     float FalagardSlider::getValueFromThumb(void) const
@@ -124,9 +124,9 @@ namespace CEGUI
         if (d_vertical)
         {
             // pixel extent of total available area the thumb moves in
-            float slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
+            float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             // calculate value represented by current thumb position
-            float thumbValue = (theThumb->getAbsoluteYPosition() - area.d_top) / (slideExtent / d_maxValue);
+            float thumbValue = (theThumb->getWindowYPosition().asAbsolute(d_pixelSize.d_height) - area.d_top) / (slideExtent / d_maxValue);
             // return final thumb value according to slider settings
             return d_reversed ? thumbValue : d_maxValue - thumbValue;
         }
@@ -134,9 +134,9 @@ namespace CEGUI
         else
         {
             // pixel extent of total available area the thumb moves in
-            float slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
+            float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             // calculate value represented by current thumb position
-            float thumbValue = (theThumb->getAbsoluteXPosition() - area.d_left) / (slideExtent / d_maxValue);
+            float thumbValue = (theThumb->getWindowXPosition().asAbsolute(d_pixelSize.d_width) - area.d_left) / (slideExtent / d_maxValue);
             // return final thumb value according to slider settings
             return d_reversed ? d_maxValue - thumbValue : thumbValue;
         }

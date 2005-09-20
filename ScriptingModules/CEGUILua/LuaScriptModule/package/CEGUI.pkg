@@ -24,6 +24,7 @@ $pfile "EventSet.pkg"
 
 $pfile "MouseCursor.pkg"
 $pfile "Window.pkg"
+$pfile "CoordConverter.pkg"
 $pfile "Renderer.pkg"
 $pfile "System.pkg"
 

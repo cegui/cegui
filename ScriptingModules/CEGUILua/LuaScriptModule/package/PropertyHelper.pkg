@@ -9,7 +9,6 @@ class PropertyHelper
 	static	Size			stringToSize(string str);
 	static	Point			stringToPoint(string str);
 	static	Rect			stringToRect(string str);
-	static	MetricsMode		stringToMetricsMode(string str);
 	static	const Image*	stringToImage(string str);
 	static	colour			stringToColour(string str);
 	static	ColourRect		stringToColourRect(string str);
@@ -24,7 +23,6 @@ class PropertyHelper
 	static string	sizeToString(const Size& val);
 	static string	pointToString(const Point& val);
 	static string	rectToString(const Rect& val);
-	static string	metricsModeToString(MetricsMode val);
 	static string	imageToString(const Image* val);
 	static string	colourToString(const colour& val);
 	static string	colourRectToString(const ColourRect& val);

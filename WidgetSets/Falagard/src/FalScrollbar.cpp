@@ -94,15 +94,17 @@ namespace CEGUI
 
         if (d_vertical)
         {
-            slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
-            theThumb->setVertRange(absoluteToRelativeY_impl(this, area.d_top), absoluteToRelativeY_impl(this, area.d_top + slideExtent));
-            theThumb->setPosition(Point(absoluteToRelativeX_impl(this, area.d_left), absoluteToRelativeY_impl(this, area.d_top + (d_position * (slideExtent / posExtent)))));
+            slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
+            theThumb->setVertRange(area.d_top, area.d_top + slideExtent);
+            theThumb->setWindowPosition(UVector2(cegui_absdim(area.d_left),
+                                                 cegui_absdim(area.d_top + (d_position * (slideExtent / posExtent)))));
         }
         else
         {
-            slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
-            theThumb->setHorzRange(absoluteToRelativeX_impl(this, area.d_left), absoluteToRelativeX_impl(this, area.d_left + slideExtent));
-            theThumb->setPosition(Point(absoluteToRelativeX_impl(this, area.d_left + (d_position * (slideExtent / posExtent))), absoluteToRelativeY_impl(this, area.d_top)));
+            slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
+            theThumb->setHorzRange(area.d_left, area.d_left + slideExtent);
+            theThumb->setWindowPosition(UVector2(cegui_absdim(area.d_left + (d_position * (slideExtent / posExtent))),
+                                                 cegui_absdim(area.d_top)));
         }
     }
 
@@ -116,13 +118,13 @@ namespace CEGUI
 
         if (d_vertical)
         {
-            float slideExtent = area.getHeight() - theThumb->getAbsoluteHeight();
-            return (theThumb->getAbsoluteYPosition() - area.d_top) / (slideExtent / posExtent);
+            float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
+            return (theThumb->getWindowYPosition().asAbsolute(d_pixelSize.d_height) - area.d_top) / (slideExtent / posExtent);
         }
         else
         {
-            float slideExtent = area.getWidth() - theThumb->getAbsoluteWidth();
-            return (theThumb->getAbsoluteXPosition() - area.d_left) / (slideExtent / posExtent);
+            float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
+            return (theThumb->getWindowXPosition().asAbsolute(d_pixelSize.d_width) - area.d_left) / (slideExtent / posExtent);
         }
     }
 

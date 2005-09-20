@@ -339,14 +339,17 @@ namespace CEGUI
             widget = WindowManager::getSingleton().getWindow(wnd.getName() + d_widgetName);
         }
 
+        // get size of parent; required to extract pixel values
+        Size parentSize(widget->getParentPixelSize());
+
         switch (d_what)
         {
             case DT_WIDTH:
-                return widget->getAbsoluteWidth();
+                return widget->getPixelSize().d_width;
                 break;
 
             case DT_HEIGHT:
-                return widget->getAbsoluteHeight();
+                return widget->getPixelSize().d_height;
                 break;
 
             case DT_X_OFFSET:
@@ -361,20 +364,20 @@ namespace CEGUI
 
             case DT_LEFT_EDGE:
             case DT_X_POSITION:
-                return widget->getAbsolutePosition().d_x;
+                return widget->getWindowPosition().d_x.asAbsolute(parentSize.d_width);
                 break;
 
             case DT_TOP_EDGE:
             case DT_Y_POSITION:
-                return widget->getAbsolutePosition().d_y;
+                return widget->getWindowPosition().d_y.asAbsolute(parentSize.d_height);
                 break;
 
             case DT_RIGHT_EDGE:
-                return widget->getAbsoluteRect().d_right;
+                return widget->getWindowArea().d_max.d_x.asAbsolute(parentSize.d_width);
                 break;
 
             case DT_BOTTOM_EDGE:
-                return widget->getAbsoluteRect().d_bottom;
+                return widget->getWindowArea().d_max.d_y.asAbsolute(parentSize.d_height);
                 break;
 
             default:
@@ -558,7 +561,7 @@ namespace CEGUI
         d_value = other.d_value ? other.d_value->clone() : 0;
         d_type = other.d_type;
 
-		return *this;
+        return *this;
     }
 
     const BaseDim& Dimension::getBaseDimension() const
@@ -612,7 +615,7 @@ namespace CEGUI
             case DT_X_POSITION:
             case DT_X_OFFSET:
             case DT_WIDTH:
-                return d_value.asAbsolute(wnd.getAbsoluteWidth());
+                return d_value.asAbsolute(wnd.getPixelSize().d_width);
                 break;
 
             case DT_TOP_EDGE:
@@ -620,7 +623,7 @@ namespace CEGUI
             case DT_Y_POSITION:
             case DT_Y_OFFSET:
             case DT_HEIGHT:
-                return d_value.asAbsolute(wnd.getAbsoluteHeight());
+                return d_value.asAbsolute(wnd.getPixelSize().d_height);
                 break;
 
             default:
@@ -686,7 +689,7 @@ namespace CEGUI
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getAbsoluteSize());
+            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
         }
         // not via property - calculate using Dimensions
         else
@@ -721,7 +724,7 @@ namespace CEGUI
         // use a property?
         if (isAreaFetchedFromProperty())
         {
-            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getAbsoluteSize());
+            pixelRect = PropertyHelper::stringToURect(wnd.getProperty(d_areaProperty)).asAbsolute(wnd.getPixelSize());
         }
         // not via property - calculate using Dimensions
         else

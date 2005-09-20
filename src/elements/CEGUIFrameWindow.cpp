@@ -31,6 +31,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -241,20 +242,8 @@ void FrameWindow::setTitlebarFont(Font* font)
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const Vector2& offset)
 {
-    UVector2 uOffset;
-
-    if (getMetricsMode() == Relative)
-    {
-        Size sz = getParentSize();
-
-        uOffset.d_x = cegui_reldim((sz.d_width != 0) ? offset.d_x / sz.d_width : 0);
-        uOffset.d_y = cegui_reldim((sz.d_height != 0) ? offset.d_y / sz.d_height : 0);
-    }
-    else
-    {
-        uOffset.d_x = cegui_absdim(PixelAligned(offset.d_x));
-        uOffset.d_y = cegui_absdim(PixelAligned(offset.d_y));
-    }
+    UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
+                     cegui_absdim(PixelAligned(offset.d_y)));
 
     setWindowPosition(d_area.getPosition() + uOffset);
 }
@@ -336,10 +325,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
-    float orgWidth = getAbsoluteWidth();
-    float adjustment;
-    float* minDim;
-    float* maxDim;
+    float orgWidth = d_pixelSize.d_width;
     URect area(d_area);
 
     // ensure that we only size to the set constraints.
@@ -356,33 +342,21 @@ void FrameWindow::moveLeftEdge(float delta)
     else if (newWidth < minWidth)
         delta = orgWidth - minWidth;
 
-    // we use the active metrics mode to decide which component of the window edge to modify
-    if (getMetricsMode() == Relative)
-    {
-        float base = getParentWidth();
-        adjustment = (base != 0) ? delta / base : 0;
-        minDim = &area.d_min.d_x.d_scale;
-        maxDim = &area.d_max.d_x.d_scale;
-    }
-    else
-    {
-        adjustment = PixelAligned(delta);
-        minDim = &area.d_min.d_x.d_offset;
-        maxDim = &area.d_max.d_x.d_offset;
-    }
+    // ensure adjustment will be whole pixel
+    float adjustment = PixelAligned(delta);
 
     if (d_horzAlign == HA_RIGHT)
     {
-        *maxDim -= adjustment;
+        area.d_max.d_x.d_offset -= adjustment;
     }
     else if (d_horzAlign == HA_CENTRE)
     {
-        *maxDim -= adjustment * 0.5f;
-        *minDim += adjustment * 0.5f;
+        area.d_max.d_x.d_offset -= adjustment * 0.5f;
+        area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
     else
     {
-        *minDim += adjustment;
+        area.d_min.d_x.d_offset += adjustment;
     }
 
     setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_LEFT);
@@ -394,10 +368,7 @@ void FrameWindow::moveLeftEdge(float delta)
 void FrameWindow::moveRightEdge(float delta)
 {
     // store this so we can work out how much size actually changed
-    float orgWidth = getAbsoluteWidth();
-    float adjustment;
-    float* minDim;
-    float* maxDim;
+    float orgWidth = d_pixelSize.d_width;
     URect area(d_area);
 
     // ensure that we only size to the set constraints.
@@ -413,39 +384,27 @@ void FrameWindow::moveRightEdge(float delta)
         delta = maxWidth - orgWidth;
     else if (newWidth < minWidth)
         delta = minWidth - orgWidth;
-    
-    // we use the active metrics mode to decide which component of the window edge to modify
-    if (getMetricsMode() == Relative)
-    {
-        float base = getParentWidth();
-        adjustment = (base != 0) ? delta / base : 0;
-        minDim = &area.d_min.d_x.d_scale;
-        maxDim = &area.d_max.d_x.d_scale;
-    }
-    else
-    {
-        adjustment = PixelAligned(delta);
-        minDim = &area.d_min.d_x.d_offset;
-        maxDim = &area.d_max.d_x.d_offset;
-    }
 
-    *maxDim += adjustment;
+    // ensure adjustment will be whole pixel
+    float adjustment = PixelAligned(delta);
+
+    area.d_max.d_x.d_offset += adjustment;
 
     if (d_horzAlign == HA_RIGHT)
     {
-        *maxDim += adjustment;
-        *minDim += adjustment;
+        area.d_max.d_x.d_offset += adjustment;
+        area.d_min.d_x.d_offset += adjustment;
     }
     else if (d_horzAlign == HA_CENTRE)
     {
-        *maxDim += adjustment * 0.5f;
-        *minDim += adjustment * 0.5f;
+        area.d_max.d_x.d_offset += adjustment * 0.5f;
+        area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
     setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
 
     // move the dragging point so mouse remains 'attached' to edge of window
-    d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
+    d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
 }
 
 /*************************************************************************
@@ -454,10 +413,7 @@ void FrameWindow::moveRightEdge(float delta)
 *************************************************************************/
 void FrameWindow::moveTopEdge(float delta)
 {
-    float orgHeight = getAbsoluteHeight();
-    float adjustment;
-    float* minDim;
-    float* maxDim;
+    float orgHeight = d_pixelSize.d_height;
     URect area(d_area);
 
     // ensure that we only size to the set constraints.
@@ -474,33 +430,21 @@ void FrameWindow::moveTopEdge(float delta)
     else if (newHeight < minHeight)
         delta = orgHeight - minHeight;
 
-    // we use the active metrics mode to decide which component of the window edge to modify
-    if (getMetricsMode() == Relative)
-    {
-        float base = getParentHeight();
-        adjustment = (base != 0) ? delta / base : 0;
-        minDim = &area.d_min.d_y.d_scale;
-        maxDim = &area.d_max.d_y.d_scale;
-    }
-    else
-    {
-        adjustment = PixelAligned(delta);
-        minDim = &area.d_min.d_y.d_offset;
-        maxDim = &area.d_max.d_y.d_offset;
-    }
+    // ensure adjustment will be whole pixel
+    float adjustment = PixelAligned(delta);
 
     if (d_vertAlign == VA_BOTTOM)
     {
-        *maxDim -= adjustment;
+        area.d_max.d_y.d_offset -= adjustment;
     }
     else if (d_vertAlign == VA_CENTRE)
     {
-        *maxDim -= adjustment * 0.5f;
-        *minDim += adjustment * 0.5f;
+        area.d_max.d_y.d_offset -= adjustment * 0.5f;
+        area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
     else
     {
-        *minDim += adjustment;
+        area.d_min.d_y.d_offset += adjustment;
     }
 
     setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_TOP);
@@ -514,10 +458,7 @@ void FrameWindow::moveTopEdge(float delta)
 void FrameWindow::moveBottomEdge(float delta)
 {
     // store this so we can work out how much size actually changed
-    float orgHeight = getAbsoluteHeight();
-    float adjustment;
-    float* minDim;
-    float* maxDim;
+    float orgHeight = d_pixelSize.d_height;
     URect area(d_area);
 
     // ensure that we only size to the set constraints.
@@ -533,39 +474,27 @@ void FrameWindow::moveBottomEdge(float delta)
         delta = maxHeight - orgHeight;
     else if (newHeight < minHeight)
         delta = minHeight - orgHeight;
-    
-    // we use the active metrics mode to decide which component of the window edge to modify
-    if (getMetricsMode() == Relative)
-    {
-        float base = getParentHeight();
-        adjustment = (base != 0) ? delta / base : 0;
-        minDim = &area.d_min.d_y.d_scale;
-        maxDim = &area.d_max.d_y.d_scale;
-    }
-    else
-    {
-        adjustment = PixelAligned(delta);
-        minDim = &area.d_min.d_y.d_offset;
-        maxDim = &area.d_max.d_y.d_offset;
-    }
 
-    *maxDim += adjustment;
+    // ensure adjustment will be whole pixel
+    float adjustment = PixelAligned(delta);
+
+    area.d_max.d_y.d_offset += adjustment;
 
     if (d_vertAlign == VA_BOTTOM)
     {
-        *maxDim += adjustment;
-        *minDim += adjustment;
+        area.d_max.d_y.d_offset += adjustment;
+        area.d_min.d_y.d_offset += adjustment;
     }
     else if (d_vertAlign == VA_CENTRE)
     {
-        *maxDim += adjustment * 0.5f;
-        *minDim += adjustment * 0.5f;
+        area.d_max.d_y.d_offset += adjustment * 0.5f;
+        area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
     setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);
 
     // move the dragging point so mouse remains 'attached' to edge of window
-    d_dragPoint.d_y += getAbsoluteHeight() - orgHeight;
+    d_dragPoint.d_y += d_pixelSize.d_height - orgHeight;
 }
 
 
@@ -664,12 +593,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-		Point localMousePos(screenToWindow(e.position));
-
-		if (getMetricsMode() == Relative)
-		{
-			localMousePos = relativeToAbsolute(localMousePos);
-		}
+		Point localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
@@ -725,12 +649,7 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 		if (isSizingEnabled())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Point localPos(screenToWindow(e.position));
-
-			if (getMetricsMode() == Relative)
-			{
-				localPos = relativeToAbsolute(localPos);
-			}
+			Point localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)

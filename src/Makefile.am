@@ -6,6 +6,7 @@ lib_LTLIBRARIES=libCEGUIBase.la
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIConfig_xmlHandler.cpp \
+                      CEGUICoordConverter.cpp \
                       CEGUIDefaultResourceProvider.cpp \
                       CEGUIEvent.cpp \
                       CEGUIEventArgs.cpp \
@@ -31,9 +32,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIRect.cpp \
                       CEGUIRefPtr.cpp \
                       CEGUIRenderCache.cpp \
-                      CEGUIRenderableElement.cpp \
-                      CEGUIRenderableFrame.cpp \
-                      CEGUIRenderableImage.cpp \
                       CEGUIRenderer.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
@@ -55,7 +53,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIXMLParser.cpp \
                       CEGUIcolour.cpp \
                       elements/CEGUIButtonBase.cpp \
-                      elements/CEGUIButtonBaseProperties.cpp \
                       elements/CEGUICheckbox.cpp \
                       elements/CEGUICheckboxProperties.cpp \
                       elements/CEGUICombobox.cpp \
@@ -93,7 +90,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIProgressBar.cpp \
                       elements/CEGUIProgressBarProperties.cpp \
                       elements/CEGUIPushButton.cpp \
-                      elements/CEGUIPushButtonProperties.cpp \
                       elements/CEGUIRadioButton.cpp \
                       elements/CEGUIRadioButtonProperties.cpp \
                       elements/CEGUIScrollablePane.cpp \
@@ -106,12 +102,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUISliderProperties.cpp \
                       elements/CEGUISpinner.cpp \
                       elements/CEGUISpinnerProperties.cpp \
-                      elements/CEGUIStatic.cpp \
-                      elements/CEGUIStaticImage.cpp \
-                      elements/CEGUIStaticImageProperties.cpp \
-                      elements/CEGUIStaticProperties.cpp \
-                      elements/CEGUIStaticText.cpp \
-                      elements/CEGUIStaticTextProperties.cpp \
                       elements/CEGUITabButton.cpp \
                       elements/CEGUITabControl.cpp \
                       elements/CEGUITabControlProperties.cpp \

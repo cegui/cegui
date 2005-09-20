@@ -23,6 +23,7 @@
 *************************************************************************/
 #include "elements/CEGUIDragContainer.h"
 #include "CEGUIImageset.h"
+#include "CEGUICoordConverter.h"
 #include <math.h>
 
 // Start of CEGUI namespace section
@@ -177,8 +178,8 @@ namespace CEGUI
     bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)
     {
         // calculate amount mouse has moved.
-        float	deltaX = fabsf(local_mouse.d_x - d_dragPoint.d_x);
-        float	deltaY = fabsf(local_mouse.d_y - d_dragPoint.d_y);
+        float	deltaX = fabsf(local_mouse.d_x - d_dragPoint.d_x.asAbsolute(d_pixelSize.d_width));
+        float	deltaY = fabsf(local_mouse.d_y - d_dragPoint.d_y.asAbsolute(d_pixelSize.d_height));
 
         // see if mouse has moved far enough to start dragging operation
         return (deltaX > d_dragThreshold || deltaY > d_dragThreshold) ? true : false;
@@ -194,7 +195,7 @@ namespace CEGUI
             setClippedByParent(false);
             d_storedAlpha = d_alpha;
             setAlpha(d_dragAlpha);
-            d_startPosition = getPosition(Absolute);
+            d_startPosition = getWindowPosition();
 
             d_dragging = true;
 
@@ -205,8 +206,14 @@ namespace CEGUI
 
     void DragContainer::doDragging(const Point& local_mouse)
     {
-        setPosition(Absolute, getPosition(Absolute) + (local_mouse - d_dragPoint));
+        // calculate amount to move
+        UVector2 offset(cegui_absdim(local_mouse.d_x), cegui_absdim(local_mouse.d_y));
+        offset -= d_dragPoint;
 
+        // set new position
+        setWindowPosition(getWindowPosition() + offset);
+
+        // Perform event notification
         WindowEventArgs args(this);
         onDragPositionChanged(args);
     }
@@ -214,11 +221,6 @@ namespace CEGUI
     void DragContainer::updateActiveMouseCursor(void) const
     {
         MouseCursor::getSingleton().setImage(d_dragging ? getDragCursorImage() : getMouseCursor());
-    }
-
-    void DragContainer::drawSelf(float z)
-    {
-        // No rendering for this window
     }
 
     void DragContainer::onMouseButtonDown(MouseEventArgs& e)
@@ -231,12 +233,11 @@ namespace CEGUI
             if (captureInput())
             {
                 // get position of mouse as co-ordinates local to this window.
-                Point localPos = (getMetricsMode() == Relative) ? 
-                    relativeToAbsolute(screenToWindow(e.position)) :
-                    screenToWindow(e.position);
+                Vector2 localPos = CoordConverter::screenToWindow(*this, e.position);
 
                 // store drag point for possible sizing or moving operation.
-                d_dragPoint = localPos;
+                d_dragPoint.d_x = cegui_absdim(localPos.d_x);
+                d_dragPoint.d_y = cegui_absdim(localPos.d_y);
                 d_leftMouseDown = true;
             }
 
@@ -269,9 +270,7 @@ namespace CEGUI
         Window::onMouseMove(e);
 
         // get position of mouse as co-ordinates local to this window.
-        Point localMousePos = (getMetricsMode() == Relative) ? 
-            relativeToAbsolute(screenToWindow(e.position)) :
-            screenToWindow(e.position);
+        Vector2 localMousePos = CoordConverter::screenToWindow(*this, e.position);
 
         // handle dragging
         if (d_dragging)
@@ -303,7 +302,7 @@ namespace CEGUI
         {
             // restore windows 'normal' state.
             d_dragging = false;
-            setPosition(Absolute, d_startPosition);
+            setWindowPosition(d_startPosition);
             setClippedByParent(d_storedClipState);
             setAlpha(d_storedAlpha);
 

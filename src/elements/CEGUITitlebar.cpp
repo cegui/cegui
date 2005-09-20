@@ -26,6 +26,7 @@
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIFrameWindow.h"
 #include "CEGUIMouseCursor.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -104,12 +105,7 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 
 	if (d_dragging && (d_parent != 0))
 	{
-		Vector2 delta(screenToWindow(e.position));
-
-		if (getMetricsMode() == Relative)
-		{
-			delta = relativeToAbsolute(delta);
-		}
+		Vector2 delta(CoordConverter::screenToWindow(*this, e.position));
 
 		// calculate amount that window has been moved
 		delta -= d_dragPoint;
@@ -139,12 +135,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 			{
 				// initialise the dragging state
 				d_dragging = true;
-				d_dragPoint = screenToWindow(e.position);
-
-				if (getMetricsMode() == Relative)
-				{
-					d_dragPoint = relativeToAbsolute(d_dragPoint);
-				}
+				d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
 
 				// store old constraint area
 				d_oldCursorArea = MouseCursor::getSingleton().getConstraintArea();

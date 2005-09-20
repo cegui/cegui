@@ -113,24 +113,6 @@ Rect PropertyHelper::stringToRect(const String& str)
 }
 
 
-MetricsMode PropertyHelper::stringToMetricsMode(const String& str)
-{
-	if (str == "Relative")
-	{
-		return Relative;
-	}
-	else if (str == "Absolute")
-	{
-		return Absolute;
-	}
-	else
-	{
-		return Inherited;
-	}
-
-}
-
-
 const Image* PropertyHelper::stringToImage(const String& str)
 {
 	using namespace std;
@@ -272,24 +254,6 @@ String PropertyHelper::rectToString(const Rect& val)
 	sprintf(buff, "l:%f t:%f r:%f b:%f", val.d_left, val.d_top, val.d_right, val.d_bottom);
 
 	return String(buff);
-}
-
-
-String PropertyHelper::metricsModeToString(MetricsMode val)
-{
-	if (val == Relative)
-	{
-		return String("Relative");
-	}
-	else if (val == Absolute)
-	{
-		return String("Absolute");
-	}
-	else
-	{
-		return String("Inherited");
-	}
-
 }
 
 

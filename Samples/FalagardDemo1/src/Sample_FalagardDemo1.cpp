@@ -69,14 +69,14 @@ bool FalagardDemo1Sample::initialiseSample()
     ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "../datafiles/imagesets/GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
-    StaticImage* background = static_cast<StaticImage*>(winMgr.createWindow("Vanilla/StaticImage"));
+    Window* background = winMgr.createWindow("Vanilla/StaticImage");
     // set area rectangle
-    background->setRect(Relative, Rect(0, 0, 1, 1));
+    background->setWindowArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
-    background->setFrameEnabled(false);
-    background->setBackgroundEnabled(false);
+    background->setProperty("FrameEnabled", "false");
+    background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setImage("BackgroundImage", "full_image");
+    background->setProperty("Image", "set:BackgroundImage image:full_image");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 

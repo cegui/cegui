@@ -53,6 +53,7 @@
 #include "CEGUISchemeManager.h"
 #include "CEGUISystem.h"
 #include "CEGUIScriptModule.h"
+#include "CEGUICoordConverter.h"
 
 // Falagard core system include
 #include "falagard/CEGUIFalWidgetLookManager.h"

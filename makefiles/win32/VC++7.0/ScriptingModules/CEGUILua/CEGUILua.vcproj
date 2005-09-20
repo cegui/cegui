@@ -171,6 +171,9 @@
 				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\CEGUI.pkg">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\CoordConverter.pkg">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\EventSet.pkg">
 			</File>
 			<File

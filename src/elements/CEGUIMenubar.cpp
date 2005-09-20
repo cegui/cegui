@@ -26,6 +26,7 @@
 #include "elements/CEGUIMenubar.h"
 #include "elements/CEGUIPopupMenu.h"
 #include "elements/CEGUIMenuItem.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -64,20 +65,21 @@ void Menubar::layoutItemWidgets()
 	Rect render_rect = getItemRenderArea();
 	float x0 = PixelAligned(render_rect.d_left+d_borderWidth);
 	
-	Rect rect;
+	URect rect;
 
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
 		Size optimal = (*item)->getItemPixelSize();
-		optimal.d_width += 2*d_horzPadding;
-		optimal.d_height += 2*d_vertPadding;
+		optimal.d_width += 2 * d_horzPadding;
+		optimal.d_height += 2 * d_vertPadding;
 
 		(*item)->setVerticalAlignment(VA_CENTRE);
-		rect.setPosition( Point(x0,0) );
-		rect.setSize( Size( PixelAligned(optimal.d_width), PixelAligned(optimal.d_height) ) );
+		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(0)) );
+		rect.setSize( UVector2( cegui_absdim(PixelAligned(optimal.d_width)),
+                                cegui_absdim(PixelAligned(optimal.d_height))));
 
-		(*item)->setRect(Absolute,rect);
+		(*item)->setWindowArea(rect);
 		
 		x0 += optimal.d_width + d_itemSpacing;
 

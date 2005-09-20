@@ -42,151 +42,6 @@ namespace WindowProperties
 {
 /*!
 \brief
-	Property to access minimum window size.
-
-	This property offers access to the minimum size setting for the window, using screen relative metrics.
-
-	\par Usage:
-		- Name: RelativeMinSize
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the minimum width as a floating point number.
-		- h:[float] specifies the minimum height as a floating point number.
-*/
-class RelativeMinSize : public Property
-{
-public:
-	RelativeMinSize() : Property(
-		"RelativeMinSize",
-		"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).",
-		"w:0.000000 h:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access maximum window size.
-
-	This property offers access to the maximum size setting for the window, using screen relative metrics.
-
-	\par Usage:
-		- Name: RelativeMaxSize
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the maximum width as a floating point number.
-		- h:[float] specifies the maximum height as a floating point number.
-*/
-class RelativeMaxSize : public Property
-{
-public:
-	RelativeMaxSize() : Property(
-		"RelativeMaxSize",
-		"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using relative metrics (this setting is relative to the display size).",
-		"w:1.000000 h:1.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access minimum window size.
-
-	This property offers access to the minimum size setting for the window, using absolute screen pixel metrics.
-
-	\par Usage:
-		- Name: AbsoluteMinSize
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the minimum width as a floating point number.
-		- h:[float] specifies the minimum height as a floating point number.
-*/
-class AbsoluteMinSize : public Property
-{
-public:
-	AbsoluteMinSize() : Property(
-		"AbsoluteMinSize",
-		"Property to get/set the minimum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.",
-		"w:0.000000 h:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access maximum window size.
-
-	This property offers access to the maximum size setting for the window, using absolute screen pixel metrics.
-
-	\par Usage:
-		- Name: AbsoluteMaxSize
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the maximum width as a floating point number.
-		- h:[float] specifies the maximum height as a floating point number.
-*/
-class AbsoluteMaxSize : public Property
-{
-public:
-	AbsoluteMaxSize() : Property(
-		"AbsoluteMaxSize",
-		"Property to get/set the maximum size for the Window.  Value is \"w:[float] h:[float]\" using absolute (pixel) metrics.",
-		"", false)
-		{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-
-	// default depends upon current size of display.
-	bool	isDefault(const PropertyReceiver* receiver) const;
-	String	getDefault(const PropertyReceiver* receiver) const;
-};
-
-
-/*!
-\brief
-	Property to access the metrics mode setting.
-
-	This property offers access to the metrics mode setting for the window.
-
-	\par Usage:
-		- Name: MetricsMode
-		- Format: "[text]".
-
-	\par Where [text] is:
-		- "Relative" for the relative metrics mode.
-		- "Absolute" for the absolute metrics mode.
-		- "Inherited" if metrics should be inherited from the parent (only used with set method).
-*/
-class MetricsMode : public Property
-{
-public:
-	MetricsMode() : Property(
-		"MetricsMode",
-		"Property to get/set the metrics mode for the Window.  Value is \"Relative\", \"Absolute\", or \"Inherited\".",
-		"Relative")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
 	Property to access window ID field.
 
 	This property offers access to the client specified ID for the window.
@@ -524,587 +379,6 @@ public:
 
 /*!
 \brief
-	Property to access window width.
-
-	This property offers access to the Width setting for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: Width
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the width as a floating point number, using the active metrics system for the Window.
-*/
-class Width : public Property
-{
-public:
-	Width() : Property(
-		"Width",
-		"Property to get/set the width of the Window.  Value is floating point using the active metrics mode.",
-		"0.000000", false) {}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window width.
-
-	This property offers access to the Width setting for the window, using the relative metrics mode.
-
-	\par Usage:
-		- Name: RelativeWidth
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the width as a floating point number, using the relative metrics system.
-*/
-class RelativeWidth : public Property
-{
-public:
-	RelativeWidth() : Property(
-		"RelativeWidth",
-		"Property to get/set the width of the Window.  Value is floating point using relative metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window width.
-
-	This property offers access to the Width setting for the window, using the absolute metrics mode.
-
-	\par Usage:
-		- Name: AbsoluteWidth
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the width as a floating point number, using the absolute metrics system.
-*/
-class AbsoluteWidth: public Property
-{
-public:
-	AbsoluteWidth() : Property(
-		"AbsoluteWidth",
-		"Property to get/set the width of the Window.  Value is floating point using absolute metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window height.
-
-	This property offers access to the Height setting for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: Height
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the height as a floating point number, using the active metrics system for the Window.
-*/
-class Height : public Property
-{
-public:
-	Height() : Property(
-		"Height",
-		"Property to get/set the height of the Window.  Value is floating point using the active metrics mode.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window height.
-
-	This property offers access to the Height setting for the window, using the relative metrics mode.
-
-	\par Usage:
-		- Name: RelativeHeight
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the height as a floating point number, using the relative metrics system.
-*/
-class RelativeHeight : public Property
-{
-public:
-	RelativeHeight() : Property(
-		"RelativeHeight",
-		"Property to get/set the height of the Window.  Value is floating point using relative metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window height.
-
-	This property offers access to the Height setting for the window, using the absolute metrics mode.
-
-	\par Usage:
-		- Name: AbsoluteHeight
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the height as a floating point number, using the absolute metrics system.
-*/
-class AbsoluteHeight : public Property
-{
-public:
-	AbsoluteHeight() : Property(
-		"AbsoluteHeight",
-		"Property to get/set the height of the Window.  Value is floating point using absolute metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access the window size.
-
-	This property offers access to the size setting for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: Size
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the minimum width as a floating point number, using the active metrics system for the Window.
-		- h:[float] specifies the minimum height as a floating point number, using the active metrics system for the Window.
-*/
-class Size : public Property
-{
-public:
-	Size() : Property(
-		"Size",
-		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using the active metrics mode.",
-		"w:0.000000 h:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access the window size.
-
-	This property offers access to the size setting for the window, using the relative metrics system.
-
-	\par Usage:
-		- Name: RelativeSize
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the minimum width as a floating point number, using the relative metrics system.
-		- h:[float] specifies the minimum height as a floating point number, using the relative metrics system.
-*/
-class RelativeSize : public Property
-{
-public:
-	RelativeSize() : Property(
-		"RelativeSize",
-		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using relative metrics.",
-		"w:0.000000 h:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access the window size.
-
-	This property offers access to the size setting for the window, using the absolute metrics system.
-
-	\par Usage:
-		- Name: AbsoluteSize
-		- Format: "w:[float] h:[float]".
-
-	\par Where:
-		- w:[float]	specifies the minimum width as a floating point number, using the absolute metrics system.
-		- h:[float] specifies the minimum height as a floating point number, using the absolute metrics system.
-*/
-class AbsoluteSize : public Property
-{
-public:
-	AbsoluteSize() : Property(
-		"AbsoluteSize",
-		"Property to get/set the size of the Window.  Value is \"w:[float] h:[float]\" using absolute metrics.",
-		"w:0.000000 h:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window X position.
-
-	This property offers access to the X position for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: XPosition
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the x position co-ordinate as a floating point number, using the active metrics system for the Window.
-*/
-class XPosition : public Property
-{
-public:
-	XPosition() : Property(
-		"XPosition",
-		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window X position.
-
-	This property offers access to the X position for the window, using the relative metrics system.
-
-	\par Usage:
-		- Name: RelativeXPosition
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the x position co-ordinate as a floating point number, using the relative metrics system.
-*/
-class RelativeXPosition : public Property
-{
-public:
-	RelativeXPosition() : Property(
-		"RelativeXPosition",
-		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using relative metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window X position.
-
-	This property offers access to the X position for the window, using the absolute metrics system.
-
-	\par Usage:
-		- Name: AbsoluteXPosition
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the x position co-ordinate as a floating point number, using the absolute metrics system.
-*/
-class AbsoluteXPosition : public Property
-{
-public:
-	AbsoluteXPosition() : Property(
-		"AbsoluteXPosition",
-		"Property to get/set the x co-ordinate position of the Window.  Value is a floating point number using absolute metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window Y position.
-
-	This property offers access to the Y position for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: YPosition
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the y position co-ordinate as a floating point number, using the active metrics system for the Window.
-*/
-class YPosition : public Property
-{
-public:
-	YPosition() : Property(
-		"YPosition",
-		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using the active metrics mode.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window Y position.
-
-	This property offers access to the Y position for the window, using the relative metrics system.
-
-	\par Usage:
-		- Name: RelativeYPosition
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the y position co-ordinate as a floating point number, using the relative metrics system.
-*/
-class RelativeYPosition : public Property
-{
-public:
-	RelativeYPosition() : Property(
-		"RelativeYPosition",
-		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using relative metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window Y position.
-
-	This property offers access to the Y position for the window, using the absolute metrics system.
-
-	\par Usage:
-		- Name: AbsoluteYPosition
-		- Format: "[float]".
-
-	\par Where:
-		- [float]	specifies the y position co-ordinate as a floating point number, using the absolute metrics system.
-*/
-class AbsoluteYPosition : public Property
-{
-public:
-	AbsoluteYPosition() : Property(
-		"AbsoluteYPosition",
-		"Property to get/set the y co-ordinate position of the Window.  Value is a floating point number using absolute metrics.",
-		"0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window position.
-
-	This property offers access to the position for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: Position
-		- Format: "x:[float] y:[float]".
-
-	\par Where:
-		- x:[float]	specifies the x position co-ordinate as a floating point number, using the active metrics system for the Window.
-		- y:[float]	specifies the y position co-ordinate as a floating point number, using the active metrics system for the Window.
-*/
-class Position : public Property
-{
-public:
-	Position() : Property(
-		"Position",
-		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using the active metrics mode.",
-		"x:0.000000 y:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window position.
-
-	This property offers access to the position for the window, using the relative metrics system.
-
-	\par Usage:
-		- Name: RelativePosition
-		- Format: "x:[float] y:[float]".
-
-	\par Where:
-		- x:[float]	specifies the x position co-ordinate as a floating point number, using the relative metrics system.
-		- y:[float]	specifies the y position co-ordinate as a floating point number, using the relative metrics system.
-*/
-class RelativePosition : public Property
-{
-public:
-	RelativePosition() : Property(
-		"RelativePosition",
-		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using relative metrics.",
-		"x:0.000000 y:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window position.
-
-	This property offers access to the position for the window, using the absolute metrics system.
-
-	\par Usage:
-		- Name: AbsolutePosition
-		- Format: "x:[float] y:[float]".
-
-	\par Where:
-		- x:[float]	specifies the x position co-ordinate as a floating point number, using the absolute metrics system.
-		- y:[float]	specifies the y position co-ordinate as a floating point number, using the absolute metrics system.
-*/
-class AbsolutePosition : public Property
-{
-public:
-	AbsolutePosition() : Property(
-		"AbsolutePosition",
-		"Property to get/set the position of the Window.  Value is \"x:[float] y:[float]\" using absolute metrics.",
-		"x:0.000000 y:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window area rectangle.
-
-	This property offers access to the area rectangle (Rect) for the window, using the Windows active metrics mode.
-
-	\par Usage:
-		- Name: Rect
-		- Format: "l:[float] t:[float] r:[float] b:[float]".
-
-	\par Where:
-		- l:[float]	specifies the position of the left edge of the area as a floating point number, using the active metrics system for the Window.
-		- t:[float]	specifies the position of the top edge of the area as a floating point number, using the active metrics system for the Window.
-		- r:[float]	specifies the position of the right edge of the area as a floating point number, using the active metrics system for the Window.
-		- b:[float]	specifies the position of the bottom edge of the area as a floating point number, using the active metrics system for the Window.
-*/
-class Rect : public Property
-{
-public:
-	Rect() : Property(
-		"Rect",
-		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using the active metrics system.",
-		"l:0.000000 t:0.000000 r:0.000000 b:0.000000", false)
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window area rectangle.
-
-	This property offers access to the area rectangle (Rect) for the window, using the relative metrics system.
-
-	\par Usage:
-		- Name: RelativeRect
-		- Format: "l:[float] t:[float] r:[float] b:[float]".
-
-	\par Where:
-		- l:[float]	specifies the position of the left edge of the area as a floating point number, using the relative metrics system.
-		- t:[float]	specifies the position of the top edge of the area as a floating point number, using the relative metrics system.
-		- r:[float]	specifies the position of the right edge of the area as a floating point number, using the relative metrics system.
-		- b:[float]	specifies the position of the bottom edge of the area as a floating point number, using the relative metrics system.
-*/
-class RelativeRect : public Property
-{
-public:
-	RelativeRect() : Property(
-		"RelativeRect",
-		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using relative metrics.",
-		"l:0.000000 t:0.000000 r:0.000000 b:0.000000", false) 
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
-	Property to access window area rectangle.
-
-	This property offers access to the area rectangle (Rect) for the window, using the absolute metrics system.
-
-	\par Usage:
-		- Name: AbsoluteRect
-		- Format: "l:[float] t:[float] r:[float] b:[float]".
-
-	\par Where:
-		- l:[float]	specifies the position of the left edge of the area as a floating point number, using the absolute metrics system.
-		- t:[float]	specifies the position of the top edge of the area as a floating point number, using the absolute metrics system.
-		- r:[float]	specifies the position of the right edge of the area as a floating point number, using the absolute metrics system.
-		- b:[float]	specifies the position of the bottom edge of the area as a floating point number, using the absolute metrics system.
-*/
-class AbsoluteRect : public Property
-{
-public:
-	AbsoluteRect() : Property(
-		"AbsoluteRect",
-		"Property to get/set the area rectangle of the Window.  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom) using absolute metrics.",
-		"l:0.000000 t:0.000000 r:0.000000 b:0.000000", false) 
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-
-/*!
-\brief
 	Property to access window Z-Order changing enabled setting.
 
 	This property offers access to the setting that controls whether z-order changes are enabled for the window.
@@ -1422,7 +696,7 @@ class HorizontalAlignment : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified area rectangle of the window.
 
@@ -1454,7 +728,7 @@ class UnifiedAreaRect : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified position of the window.
 
@@ -1482,7 +756,7 @@ class UnifiedPosition : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified position x-coordinate of the window.
 
@@ -1508,7 +782,7 @@ class UnifiedXPosition : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified position y-coordinate of the window.
 
@@ -1534,7 +808,7 @@ class UnifiedYPosition : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified position of the window.
 
@@ -1562,7 +836,7 @@ class UnifiedSize : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified width of the window.
 
@@ -1588,7 +862,7 @@ class UnifiedWidth : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified height of the window.
 
@@ -1614,7 +888,7 @@ class UnifiedHeight : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified minimum size of the window.
 
@@ -1642,7 +916,7 @@ class UnifiedMinSize : public Property
 };
 
 
-/*
+/*!
 \brief
 	Property to access the unified maximum size of the window.
 

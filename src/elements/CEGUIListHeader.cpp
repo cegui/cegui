@@ -25,7 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUIListHeader.h"
 #include "CEGUIExceptions.h"
-
+#include "CEGUICoordConverter.h"
 #include <sstream>
 
 
@@ -235,7 +235,7 @@ float ListHeader::getPixelOffsetToSegment(const ListHeaderSegment& segment) cons
 			return offset;
 		}
 
-		offset += d_segments[i]->getAbsoluteWidth();
+		offset += d_segments[i]->getPixelSize().d_width;
 	}
 
 	// No such segment found, throw exception
@@ -258,7 +258,7 @@ float ListHeader::getPixelOffsetToColumn(uint column) const
 
 		for (uint i = 0; i < column; ++i)
 		{
-			offset += d_segments[i]->getAbsoluteWidth();
+			offset += d_segments[i]->getPixelSize().d_width;
 		}
 
 		return offset;
@@ -276,7 +276,7 @@ float ListHeader::getTotalSegmentsPixelExtent(void) const
 
 	for (uint i = 0; i < getColumnCount(); ++i)
 	{
-		extent += d_segments[i]->getAbsoluteWidth();
+		extent += d_segments[i]->getPixelSize().d_width;
 	}
 
 	return extent;
@@ -284,17 +284,17 @@ float ListHeader::getTotalSegmentsPixelExtent(void) const
 
 
 /*************************************************************************
-	Return the pixel width of the segment at the specified column index.
+	Return the width of the segment at the specified column index.
 *************************************************************************/
-float ListHeader::getColumnPixelWidth(uint column) const
+UDim ListHeader::getColumnWidth(uint column) const
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::getColumnPixelWidth - requested column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::getColumnWidth - requested column index is out of range for this ListHeader.");
 	}
 	else
 	{
-		return d_segments[column]->getAbsoluteWidth();
+		return d_segments[column]->getWindowWidth();
 	}
 
 }
@@ -483,7 +483,7 @@ void ListHeader::setColumnDraggingEnabled(bool setting)
 /*************************************************************************
 	Add a new column segment to the header.
 *************************************************************************/
-void ListHeader::addColumn(const String& text, uint id, float width)
+void ListHeader::addColumn(const String& text, uint id, const UDim& width)
 {
 	// add just inserts at end.
 	insertColumn(text, id, width, getColumnCount());
@@ -493,7 +493,7 @@ void ListHeader::addColumn(const String& text, uint id, float width)
 /*************************************************************************
 	Insert a new column segment into the header
 *************************************************************************/
-void ListHeader::insertColumn(const String& text, uint id, float width, uint position)
+void ListHeader::insertColumn(const String& text, uint id, const UDim& width, uint position)
 {
 	// if position is too big, insert at end.
 	if (position > getColumnCount())
@@ -609,7 +609,7 @@ void ListHeader::moveColumn(uint column, uint position)
 /*************************************************************************
 	Insert a new column segment into the header
 *************************************************************************/
-void ListHeader::insertColumn(const String& text, uint id, float width, const ListHeaderSegment& position)
+void ListHeader::insertColumn(const String& text, uint id, const UDim& width, const ListHeaderSegment& position)
 {
 	insertColumn(text, id, width, getColumnFromSegment(position));
 }
@@ -671,17 +671,17 @@ void ListHeader::setSegmentOffset(float offset)
 
 
 /*************************************************************************
-	Set the pixel width of the specified column.	
+	Set the width of the specified column.
 *************************************************************************/
-void ListHeader::setColumnPixelWidth(uint column, float width)
+void ListHeader::setColumnWidth(uint column, const UDim& width)
 {
 	if (column >= getColumnCount())
 	{
-		throw InvalidRequestException("ListHeader::setColumnPixelWidth - specified column index is out of range for this ListHeader.");
+		throw InvalidRequestException("ListHeader::setColumnWidth - specified column index is out of range for this ListHeader.");
 	}
 	else
 	{
-		d_segments[column]->setWidth(Absolute, width);
+		d_segments[column]->setWindowWidth(width);
 
 		layoutSegments();
 
@@ -697,7 +697,7 @@ void ListHeader::setColumnPixelWidth(uint column, float width)
 	Create initialise and return a ListHeaderSegment object, with all
 	events subscribed and ready to use.
 *************************************************************************/
-ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint id, float width)
+ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint id, const UDim& width)
 {
 	// Build unique name
 	std::stringstream name;
@@ -708,9 +708,8 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	d_uniqueIDNumber++;
 
 	// setup segment;
-	newseg->setMetricsMode(Relative);
-	newseg->setSize(Size(width, 1.0f));
-	newseg->setMinimumSize(absoluteToRelative_impl(0, Size(MinimumSegmentPixelWidth, 0.0f)));
+	newseg->setWindowSize(UVector2(width, cegui_reldim(1.0f)));
+	newseg->setWindowMinSize(UVector2(cegui_absdim(MinimumSegmentPixelWidth), cegui_absdim(0)));
 	newseg->setText(text);
 	newseg->setID(id);
 
@@ -730,12 +729,12 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 *************************************************************************/
 void ListHeader::layoutSegments(void)
 {
-	Point pos(-d_segmentOffset, 0.0f);
+	UVector2 pos(cegui_absdim(-d_segmentOffset), cegui_absdim(0.0f));
 
 	for (uint i = 0; i < getColumnCount(); ++i)
 	{
-		d_segments[i]->setPosition(pos);
-		pos.d_x += d_segments[i]->getWidth();
+		d_segments[i]->setWindowPosition(pos);
+		pos.d_x += d_segments[i]->getWindowWidth();
 	}
 
 }
@@ -882,23 +881,16 @@ bool ListHeader::segmentMovedHandler(const EventArgs& e)
 	if (isHit(mousePos))
 	{
 		// get mouse position as something local
-		Point localMousePos(screenToWindow(mousePos));
+		Point localMousePos(CoordConverter::screenToWindow(*this, mousePos));
 
 		// set up to allow for current offsets
 		float currwidth = -d_segmentOffset;
-
-		// get required figures as pixels
-		if (getMetricsMode() == Relative)
-		{
-			localMousePos = relativeToAbsolute(localMousePos);
-			currwidth = relativeToAbsoluteX(currwidth);
-		}
 
 		// calculate column where dragged segment was dropped
         uint col;
 		for (col = 0; col < getColumnCount(); ++col)
 		{
-			currwidth += d_segments[col]->getAbsoluteWidth();
+			currwidth += d_segments[col]->getPixelSize().d_width;
 
 			if (localMousePos.d_x < currwidth)
 			{
@@ -988,52 +980,26 @@ bool ListHeader::segmentDragHandler(const EventArgs& e)
 	// what we do here is monitor the position and scroll if we can when mouse is outside area.
 
 	// get mouse position as something local
-	Point localMousePos(screenToWindow(MouseCursor::getSingleton().getPosition()));
-
-	MetricsMode mmode = getMetricsMode();
-
-	// get required figures as pixels
-	if (mmode == Relative)
-	{
-		localMousePos = relativeToAbsolute(localMousePos);
-	}
+	Point localMousePos(CoordConverter::screenToWindow(*this, MouseCursor::getSingleton().getPosition()));
 
 	// scroll left?
 	if (localMousePos.d_x < 0.0f)
 	{
 		if (d_segmentOffset > 0.0f)
 		{
-			float adjust = ScrollSpeed;
-			
-			if (mmode == Relative)
-			{
-				adjust = absoluteToRelativeX(adjust);
-			}
-			
-			setSegmentOffset(ceguimax(0.0f, d_segmentOffset - adjust));
+			setSegmentOffset(ceguimax(0.0f, d_segmentOffset - ScrollSpeed));
 		}
-
 	}
 	// scroll right?
-	else if (localMousePos.d_x >= getAbsoluteWidth())
+	else if (localMousePos.d_x >= d_pixelSize.d_width)
 	{
-		float adjust	= ScrollSpeed;
-		float pixOffset = d_segmentOffset;
-		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - getAbsoluteWidth());
-
-		// convert values as required so calculations can be done in a consistent way
-		if (mmode == Relative)
-		{
-			maxOffset = absoluteToRelativeX(maxOffset);
-			pixOffset = relativeToAbsoluteX(pixOffset);
-			adjust = absoluteToRelativeX(adjust);
-		}
+		float maxOffset = ceguimax(0.0f, getTotalSegmentsPixelExtent() - d_pixelSize.d_width);
 
 		// if we have not scrolled to the limit
 		if (d_segmentOffset < maxOffset)
 		{
 			// scroll, but never beyond the limit
-			setSegmentOffset(ceguimin(maxOffset, d_segmentOffset + adjust));
+			setSegmentOffset(ceguimin(maxOffset, d_segmentOffset + ScrollSpeed));
 		}
 
 	}

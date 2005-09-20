@@ -26,8 +26,12 @@ noinst_HEADERS = FalButton.h \
                  FalSlider.h \
                  FalSliderProperties.h \
                  FalSpinner.h \
+                 FalStatic.h \
                  FalStaticImage.h \
+                 FalStaticImageProperties.h \
+                 FalStaticProperties.h \
                  FalStaticText.h \
+                 FalStaticTextProperties.h \
                  FalSystemButton.h \
                  FalTabButton.h \
                  FalTabControl.h \

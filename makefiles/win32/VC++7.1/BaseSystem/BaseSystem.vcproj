@@ -142,6 +142,9 @@
 				RelativePath="..\..\..\..\src\CEGUIConfig_xmlHandler.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUICoordConverter.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIDefaultResourceProvider.cpp">
 			</File>
 			<File
@@ -683,6 +686,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIConfig_xmlHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUICoordConverter.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIDataContainer.h">

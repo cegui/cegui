@@ -25,7 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUIListHeaderSegment.h"
 #include "CEGUIMouseCursor.h"
-
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -285,7 +285,7 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
     float delta = local_mouse.d_x - d_dragPoint.d_x;
 
     // store this so we can work out how much size actually changed
-    float orgWidth = getAbsoluteWidth();
+    float orgWidth = d_pixelSize.d_width;
 
     // ensure that we only size to the set constraints.
     //
@@ -306,7 +306,7 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
     setWindowArea_impl(area.d_min, area.getSize());
 
     // move the dragging point so mouse remains 'attached' to edge of segment
-    d_dragPoint.d_x += getAbsoluteWidth() - orgWidth;
+    d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
 
     WindowEventArgs args(this);
     onSegmentSized(args);
@@ -444,12 +444,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 	//
 	// convert mouse position to something local
 	//
-	Point localMousePos(screenToWindow(e.position));
-
-	if (getMetricsMode() == Relative)
-	{
-		localMousePos = relativeToAbsolute(localMousePos);
-	}
+	Point localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 	// handle drag sizing
 	if (d_dragSizing)
@@ -465,7 +460,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 	else if (isHit(e.position))
 	{
 		// mouse in sizing area & sizing is enabled
-		if ((localMousePos.d_x > (getAbsoluteWidth() - d_splitterSize)) && d_sizingEnabled)
+		if ((localMousePos.d_x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
 		{
 			initSizingHoverState();
 		}
@@ -525,12 +520,7 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 		if (captureInput())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Point localPos(screenToWindow(e.position));
-
-			if (getMetricsMode() == Relative)
-			{
-				localPos = relativeToAbsolute(localPos);
-			}
+			Point localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;

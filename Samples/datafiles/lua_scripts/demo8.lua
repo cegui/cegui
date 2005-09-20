@@ -18,8 +18,10 @@ function panelSlideHandler(args)
 	local scroller = CEGUI.toScrollbar(CEGUI.toWindowEventArgs(args).window)
 	local demoWnd = CEGUI.WindowManager:getSingleton():getWindow("Demo8")
 
-	scroller:setPosition(CEGUI.Relative, CEGUI.Point:new_local(0, scroller:getScrollPosition() / demoWnd:getRelativeHeight()))
-	demoWnd:setPosition(CEGUI.Relative, CEGUI.Point:new_local(0, -scroller:getScrollPosition()))
+    local relHeight = demoWnd:getWindowHeight():asRelative(demoWnd:getParentPixelHeight())
+
+	scroller:setWindowPosition(CEGUI.UVector2(CEGUI.UDim(0,0), CEGUI.UDim(scroller:getScrollPosition() / relHeight,0)))
+	demoWnd:setWindowPosition(CEGUI.UVector2(CEGUI.UDim(0,0), CEGUI.UDim(-scroller:getScrollPosition(),0)))
 end
 
 -----------------------------------------
@@ -43,8 +45,9 @@ function colourChangeHandler(args)
 	local g = CEGUI.toScrollbar(winMgr:getWindow("Demo8/Window1/Controls/Green")):getScrollPosition()
 	local b = CEGUI.toScrollbar(winMgr:getWindow("Demo8/Window1/Controls/Blue")):getScrollPosition()
 	local col = CEGUI.colour:new_local(r, g, b, 1)
+    local crect = CEGUI.ColourRect(col)
 
-	CEGUI.toStaticImage(winMgr:getWindow("Demo8/Window1/Controls/ColourSample")):setImageColours(col)
+	winMgr:getWindow("Demo8/Window1/Controls/ColourSample"):setProperty("ImageColours", CEGUI.PropertyHelper:colourRectToString(crect))
 end
 
 
@@ -55,7 +58,7 @@ function addItemHandler(args)
 	local winMgr = CEGUI.WindowManager:getSingleton()
 
 	local text = winMgr:getWindow("Demo8/Window1/Controls/Editbox"):getText()
-	local cols = CEGUI.toStaticImage(winMgr:getWindow("Demo8/Window1/Controls/ColourSample")):getImageColours()
+	local cols = CEGUI.PropertyHelper:stringToColourRect(winMgr:getWindow("Demo8/Window1/Controls/ColourSample"):getProperty("ImageColours"))
 
 	local newItem = CEGUI.createListboxTextItem(text, 0, nil, false, true)
 	newItem:setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush")
@@ -73,10 +76,6 @@ local root = guiSystem:getGUISheet()
 
 -- set default mouse cursor
 guiSystem:setDefaultMouseCursor("TaharezLook", "MouseArrow")
-
--- init the table we'll use to keep the added items 'alive'
-ListItems = {}
-ListItems.next = 0
 
 -- init table of tips
 Tips = {}

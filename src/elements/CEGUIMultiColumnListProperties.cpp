@@ -292,7 +292,7 @@ void ColumnHeader::set(PropertyReceiver* receiver, const String& value)
 	id = id.substr(id.find_first_of(":") + 1);
 
 	static_cast<MultiColumnList*>(receiver)->addColumn(
-		caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToFloat(width));
+		caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToUDim(width));
 }
 
 

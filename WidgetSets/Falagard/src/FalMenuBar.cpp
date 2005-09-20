@@ -54,7 +54,7 @@ namespace CEGUI
     void FalagardMenubar::sizeToContent_impl(void)
     {
         Rect renderArea(getItemRenderArea());
-        Rect wndArea(getAbsoluteRect());
+        Rect wndArea(getWindowArea().asAbsolute(getParentPixelSize()));
 
         // get size of content
         Size sz(getContentSize());
@@ -62,7 +62,8 @@ namespace CEGUI
         // calculate the full size with the frame accounted for and resize the window to this
         sz.d_width  += wndArea.getWidth() - renderArea.getWidth();
         sz.d_height += wndArea.getHeight() - renderArea.getHeight();
-        setSize(Absolute,sz);
+        setWindowSize(UVector2(cegui_absdim(sz.d_width),
+                               cegui_absdim(sz.d_height)));
     }
 
     Rect FalagardMenubar::getItemRenderArea(void) const

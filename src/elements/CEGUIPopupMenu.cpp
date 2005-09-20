@@ -240,27 +240,27 @@ void PopupMenu::layoutItemWidgets()
 	Rect render_rect = getItemRenderArea();
 
 	// get starting position
-	const float x0 = render_rect.d_left+d_borderWidth;
-	float y0 = render_rect.d_top+d_borderWidth;
+	const float x0 = render_rect.d_left + d_borderWidth;
+	float y0 = render_rect.d_top + d_borderWidth;
 
-	Rect rect;
-	Size sz(render_rect.getWidth()-d_borderWidth-d_borderWidth,0); // set item width
+	URect rect;
+	UVector2 sz(cegui_absdim(render_rect.getWidth() - d_borderWidth-d_borderWidth), cegui_absdim(0)); // set item width
 
 	// iterate through all items attached to this window
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
 		// get the "optimal" height of the item and use that!
-		sz.d_height = (*item)->getItemPixelSize().d_height; // fix rounding errors
-		sz.d_height += d_vertPadding+d_vertPadding;
+		sz.d_y.d_offset = (*item)->getItemPixelSize().d_height; // fix rounding errors
+		sz.d_y.d_offset += d_vertPadding + d_vertPadding;
 
 		// set destination rect
-		rect.setPosition( Point(x0, y0) );
+		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(y0)) );
 		rect.setSize( sz );
-		(*item)->setRect(Absolute,rect);
+		(*item)->setWindowArea(rect);
 
 		// next position
-		y0 += sz.d_height + d_itemSpacing;
+		y0 += sz.d_y.d_offset + d_itemSpacing;
 
 		item++; // next item
 	}
