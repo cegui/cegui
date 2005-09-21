@@ -212,11 +212,11 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
 
+        String area_name(d_frameEnabled ? "WithFrameTextRenderArea" : "NoFrameTextRenderArea");
+
         // if either of the scrollbars are visible, we might want to use a special rendering area
         if (v_visible || h_visible)
         {
-            String area_name(d_frameEnabled ? "WithFrameTextRenderArea" : "NoFrameTextRenderArea");
-
             if (h_visible)
             {
                 area_name += "H";
@@ -226,11 +226,11 @@ namespace CEGUI
                 area_name += "V";
             }
             area_name += "Scroll";
+        }
 
-            if (wlf.isNamedAreaDefined(area_name))
-            {
-                return wlf.getNamedArea(area_name).getArea().getPixelRect(*this);
-            }
+        if (wlf.isNamedAreaDefined(area_name))
+        {
+            return wlf.getNamedArea(area_name).getArea().getPixelRect(*this);
         }
 
         // default to plain WithFrameTextRenderArea
