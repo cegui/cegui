@@ -89,11 +89,11 @@ namespace CEGUI
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             // Set range of motion for the thumb widget
-            theThumb->setVertRange(area.d_top, area.d_top + slideExtent);
+            theThumb->setVertRange(area.d_top  / d_pixelSize.d_height, (area.d_top + slideExtent) / d_pixelSize.d_height);
 
             // calculate vertical positon for thumb
             float thumbOffset = d_value * (slideExtent / d_maxValue);
-            thumbPosition.d_y.d_offset += d_reversed ? thumbOffset : slideExtent - thumbOffset;
+            thumbPosition.d_y.d_scale += (d_reversed ? thumbOffset : slideExtent - thumbOffset) / d_pixelSize.d_height;
         }
         // Horizontal slider
         else
@@ -101,11 +101,11 @@ namespace CEGUI
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             // Set range of motion for the thumb widget
-            theThumb->setHorzRange(area.d_left, area.d_left + slideExtent);
+            theThumb->setHorzRange(area.d_left / d_pixelSize.d_width, (area.d_left + slideExtent) / d_pixelSize.d_width);
 
             // calculate horizontal positon for thumb
             float thumbOffset = d_value * (slideExtent / d_maxValue);
-            thumbPosition.d_x.d_offset += d_reversed ? slideExtent - thumbOffset : thumbOffset;
+            thumbPosition.d_x.d_scale += (d_reversed ? slideExtent - thumbOffset : thumbOffset)  / d_pixelSize.d_width;
         }
 
         // set new position for thumb.

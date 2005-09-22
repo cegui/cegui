@@ -95,15 +95,15 @@ namespace CEGUI
         if (d_vertical)
         {
             slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            theThumb->setVertRange(area.d_top, area.d_top + slideExtent);
+            theThumb->setVertRange(area.d_top / d_pixelSize.d_height, (area.d_top + slideExtent) / d_pixelSize.d_height);
             theThumb->setWindowPosition(UVector2(cegui_absdim(area.d_left),
-                                                 cegui_absdim(area.d_top + (d_position * (slideExtent / posExtent)))));
+                                                 cegui_reldim((area.d_top + (d_position * (slideExtent / posExtent))) / d_pixelSize.d_height)));
         }
         else
         {
             slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            theThumb->setHorzRange(area.d_left, area.d_left + slideExtent);
-            theThumb->setWindowPosition(UVector2(cegui_absdim(area.d_left + (d_position * (slideExtent / posExtent))),
+            theThumb->setHorzRange(area.d_left / d_pixelSize.d_width, (area.d_left + slideExtent)  / d_pixelSize.d_width);
+            theThumb->setWindowPosition(UVector2(cegui_reldim((area.d_left + (d_position * (slideExtent / posExtent))) / d_pixelSize.d_width),
                                                  cegui_absdim(area.d_top)));
         }
     }

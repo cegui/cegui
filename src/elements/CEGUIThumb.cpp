@@ -82,8 +82,6 @@ Thumb::~Thumb(void)
 *************************************************************************/
 void Thumb::setVertRange(float min, float max)
 {
-    Size parentSize(getParentPixelSize());
-
 	// ensure min <= max, swap if not.
 	if (min > max)
 	{
@@ -96,15 +94,15 @@ void Thumb::setVertRange(float min, float max)
 	d_vertMin = min;
 
 	// validate current position.
-	float cp = getWindowYPosition().asAbsolute(parentSize.d_height);
+	float cp = getWindowYPosition().asRelative(getParentPixelHeight());
 
 	if (cp < min)
 	{
-		setWindowYPosition(cegui_absdim(min));
+		setWindowYPosition(cegui_reldim(min));
 	}
 	else if (cp > max)
 	{
-		setWindowYPosition(cegui_absdim(max));
+		setWindowYPosition(cegui_reldim(max));
 	}
 
 }
@@ -204,8 +202,10 @@ void Thumb::onMouseMove(MouseEventArgs& e)
         vmin = d_vertMin;
         vmax = d_vertMax;
 
-		// calculate amount of movement in pixels
+		// calculate amount of movement      
 		delta -= d_dragPoint;
+        delta.d_x /= parentSize.d_width;
+        delta.d_y /= parentSize.d_height;
 
 		//
 		// Calculate new (pixel) position for thumb
@@ -214,18 +214,18 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 
 		if (d_horzFree)
 		{
-			newPos.d_x.d_offset += delta.d_x;
+			newPos.d_x.d_scale += delta.d_x;
 
 			// limit value to within currently set range
-			newPos.d_x.d_offset = (newPos.d_x.d_offset < hmin) ? hmin : (newPos.d_x.d_offset > hmax) ? hmax : newPos.d_x.d_offset;
+			newPos.d_x.d_scale = (newPos.d_x.d_scale < hmin) ? hmin : (newPos.d_x.d_scale > hmax) ? hmax : newPos.d_x.d_scale;
 		}
 
 		if (d_vertFree)
 		{
-			newPos.d_y.d_offset += delta.d_y;
+			newPos.d_y.d_scale += delta.d_y;
 
 			// limit new position to within currently set range
-			newPos.d_y.d_offset = (newPos.d_y.d_offset < vmin) ? vmin : (newPos.d_y.d_offset > vmax) ? vmax : newPos.d_y.d_offset;
+			newPos.d_y.d_scale = (newPos.d_y.d_scale < vmin) ? vmin : (newPos.d_y.d_scale > vmax) ? vmax : newPos.d_y.d_scale;
 		}
 
 		// update thumb position if needed
