@@ -67,16 +67,10 @@ void ButtonBase::updateInternalState(const Point& mouse_pos)
 		Window* sheet = System::getSingleton().getGUISheet();
 
 		if (sheet)
-		{
-			// check if hovering highlight is required, which is basically ("mouse over widget" XOR "widget pushed").
-			if ((this == sheet->getChildAtPosition(mouse_pos)) != d_pushed)
-			{
-				d_hovering = true;
-			}
-
-		}
-
-	}
+        {
+			d_hovering = (this == sheet->getChildAtPosition(mouse_pos));
+        }
+    }
 
 	// if state has changed, trigger a re-draw
 	if (oldstate != d_hovering)

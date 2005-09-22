@@ -40,7 +40,8 @@ namespace CEGUI
         States (missing states will default to 'Normal'):
             - Normal    - Rendering for when the button is neither pushed or has the mouse hovering over it.
             - Hover     - Rendering for then the button has the mouse hovering over it.
-            - Pushed    - Rendering for when the button is pushed.
+            - Pushed    - Rendering for when the button is pushed and mouse is over it.
+            - PushedOff - Rendering for when the button is pushed and mouse is not over it.
             - Disabled  - Rendering for when the button is disabled.
     */
     class FALAGARDBASE_API FalagardButton : public PushButton

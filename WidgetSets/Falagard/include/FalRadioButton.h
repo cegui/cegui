@@ -40,11 +40,13 @@ namespace CEGUI
         States (missing states will default to 'Normal' or 'SelectedNormal' if selected)
             - Normal            - Rendering for when the radio button is neither pushed or has the mouse hovering over it.
             - Hover             - Rendering for then the radio button has the mouse hovering over it.
-            - Pushed            - Rendering for when the radio button is pushed.
+            - Pushed            - Rendering for when the radio button is not selected, is pushed and has the mouse over it.
+            - PushedOff         - Rendering for when the radio button is not selected, is pushed and the mouse is not over it.
             - Disabled          - Rendering for when the radio button is disabled.
             - SelectedNormal    - Rendering for when the radio button is selected and is neither pushed or has the mouse hovering over it.
             - SelectedHover     - Rendering for then the radio button is selected and has the mouse hovering over it.
-            - SelectedPushed    - Rendering for when the radio button is selected and is pushed.
+            - SelectedPushed    - Rendering for when the radio button is selected, is pushed and has the mouse over it.
+            - SelectedPushedOff - Rendering for when the radio button is selected, is pushed and the mouse is not over it.
             - SelectedDisabled  - Rendering for when the radio button is selected and is disabled.
     */
     class FALAGARDBASE_API FalagardRadioButton : public RadioButton

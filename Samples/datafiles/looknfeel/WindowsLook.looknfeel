@@ -269,6 +269,14 @@
                 </Section>
             </Layer>
         </StateImagery>
+        <StateImagery name="PushedOff">
+            <Layer>
+                <Section section="hover" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="disabled">
