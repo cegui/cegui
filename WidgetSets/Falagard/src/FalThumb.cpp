@@ -54,7 +54,7 @@ namespace CEGUI
 		}
 		else if (d_pushed)
 		{
-		    state = "Pushed";
+            state = d_hovering ? "Pushed" : "PushedOff";
 		}
 		else if (d_hovering)
 		{
