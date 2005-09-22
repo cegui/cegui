@@ -11,6 +11,7 @@
 	<FalagardMapping WindowType="TaharezLook/FrameWindow" TargetType="Falagard/FrameWindow" LookNFeel="TaharezLook/FrameWindow" />
 	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/HorizontalScrollbar" />
 	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/HorizontalScrollbarThumb" />
+    <FalagardMapping WindowType="TaharezLook/ImageButton" TargetType="Falagard/Button" LookNFeel="TaharezLook/ImageButton" />
 	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/LargeVerticalScrollbar" />
 	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/LargeVerticalScrollbarThumb" />
 	<FalagardMapping WindowType="TaharezLook/ListHeader" TargetType="Falagard/ListHeader" LookNFeel="TaharezLook/ListHeader" />
@@ -29,7 +30,7 @@
 	<FalagardMapping WindowType="TaharezLook/Spinner" TargetType="Falagard/Spinner" LookNFeel="TaharezLook/Spinner" />
 	<FalagardMapping WindowType="TaharezLook/StaticImage" TargetType="Falagard/StaticImage" LookNFeel="TaharezLook/StaticImage" />
 	<FalagardMapping WindowType="TaharezLook/StaticText" TargetType="Falagard/StaticText" LookNFeel="TaharezLook/StaticText" />
-	<FalagardMapping WindowType="TaharezLook/SystemButton" TargetType="Falagard/SystemButton" LookNFeel="TaharezLook/Button" />
+	<FalagardMapping WindowType="TaharezLook/SystemButton" TargetType="Falagard/SystemButton" LookNFeel="TaharezLook/ImageButton" />
 	<FalagardMapping WindowType="TaharezLook/TabButton" TargetType="Falagard/TabButton" LookNFeel="TaharezLook/TabButton" />
 	<FalagardMapping WindowType="TaharezLook/TabControl" TargetType="Falagard/TabControl" LookNFeel="TaharezLook/TabControl" />
 	<FalagardMapping WindowType="TaharezLook/TabPane" TargetType="Falagard/TabPane" LookNFeel="TaharezLook/TabPane" />

@@ -12,6 +12,12 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
         <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" />
         <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" />
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -36,6 +42,17 @@
                 <Image type="RightEdge" imageset="TaharezLook" image="ButtonRightNormal" />
                 <Image type="Background" imageset="TaharezLook" image="ButtonMiddleNormal" />
             </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="NormalImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="hover">
             <FrameComponent>
@@ -49,6 +66,17 @@
                 <Image type="RightEdge" imageset="TaharezLook" image="ButtonRightHighlight" />
                 <Image type="Background" imageset="TaharezLook" image="ButtonMiddleHighlight" />
             </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="pushed">
             <FrameComponent>
@@ -62,6 +90,17 @@
                 <Image type="RightEdge" imageset="TaharezLook" image="ButtonRightPushed" />
                 <Image type="Background" imageset="TaharezLook" image="ButtonMiddlePushed" />
             </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="PushedImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
         </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
@@ -678,7 +717,6 @@
                 <Dim type="Height" ><ImageDim imageset="TaharezLook" image="NewCloseButtonNormal" dimension="Width" /></Dim>
             </Area>
             <Property name="AlwaysOnTop" value="True" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:NewCloseButtonNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:NewCloseButtonHover" />
             <Property name="PushedImage" value="set:TaharezLook image:NewCloseButtonPressed" />
@@ -1317,7 +1355,7 @@
                 <Dim type="BottomEdge" ><UnifiedDim scale="1.0" type="BottomEdge" /></Dim>
             </Area>
         </NamedArea>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_incbtn__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1325,19 +1363,17 @@
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:MiniHorzScrollRightNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:MiniHorzScrollRightHover" />
             <Property name="PushedImage" value="set:TaharezLook image:MiniHorzScrollRightNormal" />
         </Child>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_decbtn__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="Width" ><ImageDim imageset="TaharezLook" image="MiniHorzScrollLeftNormal" dimension="Width" /></Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:MiniHorzScrollLeftNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:MiniHorzScrollLeftHover" />
             <Property name="PushedImage" value="set:TaharezLook image:MiniHorzScrollLeftNormal" />
@@ -1462,7 +1498,7 @@
                 </Dim>
             </Area>
         </NamedArea>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_incbtn__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1470,19 +1506,17 @@
                 <Dim type="Height" ><ImageDim imageset="TaharezLook" image="MiniVertScrollDownNormal" dimension="Height" /></Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:MiniVertScrollDownNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:MiniVertScrollDownHover" />
             <Property name="PushedImage" value="set:TaharezLook image:MiniVertScrollDownNormal" />
         </Child>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_decbtn__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                 <Dim type="Height" ><ImageDim imageset="TaharezLook" image="MiniVertScrollUpNormal" dimension="Height" /></Dim>
             </Area>
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:MiniVertScrollUpNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:MiniVertScrollUpHover" />
             <Property name="PushedImage" value="set:TaharezLook image:MiniVertScrollUpNormal" />
@@ -1927,7 +1961,7 @@
                 <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
             </Area>
         </Child>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_button__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_button__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1935,7 +1969,6 @@
                 <Dim type="Height" ><WidgetDim widget="__auto_editbox__" dimension="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:ComboboxListButtonHover" />
             <Property name="PushedImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
@@ -1964,7 +1997,7 @@
                 <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
             </Area>
         </Child>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_incbtn__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1972,12 +2005,11 @@
                 <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:VertScrollUpNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:VertScrollUpHover" />
             <Property name="PushedImage" value="set:TaharezLook image:VertScrollUpNormal" />
         </Child>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_decbtn__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge" ><UnifiedDim scale="0.5" type="TopEdge" /></Dim>
@@ -1985,7 +2017,6 @@
                 <Dim type="Height" ><UnifiedDim scale="0.5" type="Height" /></Dim>
             </Area>
             <HorzAlignment type="RightAligned" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:VertScrollDownNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:VertScrollDownHover" />
             <Property name="PushedImage" value="set:TaharezLook image:VertScrollDownNormal" />
@@ -3493,7 +3524,7 @@
                 </Dim>
             </Area>
         </NamedArea>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_incbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_incbtn__">
             <Area>
                 <Dim type="LeftEdge" ><UnifiedDim scale="0.25" type="LeftEdge" /></Dim>
                 <Dim type="TopEdge" >
@@ -3521,12 +3552,11 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:VertScrollDownNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:VertScrollDownHover" />
             <Property name="PushedImage" value="set:TaharezLook image:VertScrollDownNormal" />
         </Child>
-        <Child  type="TaharezLook/Button" nameSuffix="__auto_decbtn__">
+        <Child  type="TaharezLook/ImageButton" nameSuffix="__auto_decbtn__">
             <Area>
                 <Dim type="LeftEdge" ><UnifiedDim scale="0.25" type="LeftEdge" /></Dim>
                 <Dim type="TopEdge">
@@ -3549,7 +3579,6 @@
                     </UnifiedDim>
                 </Dim>
             </Area>
-            <Property name="UseStandardImagery" value="False" />
             <Property name="NormalImage" value="set:TaharezLook image:VertScrollUpNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:VertScrollUpHover" />
             <Property name="PushedImage" value="set:TaharezLook image:VertScrollUpNormal" />
@@ -3632,4 +3661,97 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+
+    <!--
+    ***************************************************
+        TaharezLook/ImageButton
+    ***************************************************
+    -->
+    <WidgetLook name="TaharezLook/ImageButton">
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="NormalImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="PushedImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="disabled">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="DisabledImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PushedOff">
+            <Layer>
+                <Section section="hover" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="disabled" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>
+
