@@ -78,6 +78,11 @@ const argb_t MultiLineEditbox::DefaultInactiveSelectionColour	= 0xFF808080;
 // Static data initialisation
 String MultiLineEditbox::d_lineBreakChars("\n");
 
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String MultiLineEditbox::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
+const String MultiLineEditbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
 
 /*************************************************************************
 	Constructor for the MultiLineEditbox base class.
@@ -125,8 +130,8 @@ MultiLineEditbox::~MultiLineEditbox(void)
 void MultiLineEditbox::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
-	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
+	d_vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
+	d_horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
 
 	addChildWindow(d_vertScrollbar);
 	addChildWindow(d_horzScrollbar);

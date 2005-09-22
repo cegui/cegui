@@ -61,6 +61,12 @@ public:
 	static const String EventThumbTrackEnded;				//!< Name of the event fired when the user releases the thumb.
 	static const String EventScrollConfigChanged;			//!< Name of the event fired when the scroll bar configuration data changes.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String ThumbNameSuffix;            //!< Widget name suffix for the thumb component.
+    static const String IncreaseButtonNameSuffix;   //!< Widget name suffix for the increase button component.
+    static const String DecreaseButtonNameSuffix;   //!< Widget name suffix for the decrease button component.
 
 	/*************************************************************************
 		Accessor functions

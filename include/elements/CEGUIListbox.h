@@ -63,6 +63,11 @@ public:
 	static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
 	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
+    static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
 
 	/*************************************************************************
 		Accessor Methods

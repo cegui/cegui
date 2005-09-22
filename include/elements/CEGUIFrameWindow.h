@@ -60,6 +60,12 @@ public:
 	// other bits
 	static const float	DefaultSizingBorderSize;	//!< Default size for the sizing border (in pixels)
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String TitlebarNameSuffix;      //!< Widget name suffix for the titlebar component.
+    static const String CloseButtonNameSuffix;   //!< Widget name suffix for the close button component.
+
 
 	/*!
 	\brief

@@ -88,6 +88,13 @@ const String Combobox::EventDropListDisplayed( "DropListDisplayed" );
 const String Combobox::EventDropListRemoved( "DropListRemoved" );
 const String Combobox::EventListSelectionAccepted( "ListSelectionAccepted" );
 
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String Combobox::EditboxNameSuffix( "__auto_editbox__" );
+const String Combobox::DropListNameSuffix( "__auto_droplist__" );
+const String Combobox::ButtonNameSuffix( "__auto_button__" );
+
 	
 /*************************************************************************
 	Constructor for Combobox base class
@@ -115,9 +122,9 @@ Combobox::~Combobox(void)
 *************************************************************************/
 void Combobox::initialise(void)
 {
-	d_editbox	= createEditbox(getName() + "__auto_editbox__");
-	d_droplist	= createDropList(getName() + "__auto_droplist__");
-	d_button	= createPushButton(getName() + "__auto_button__");
+	d_editbox	= createEditbox(getName() + EditboxNameSuffix);
+	d_droplist	= createDropList(getName() + DropListNameSuffix);
+	d_button	= createPushButton(getName() + ButtonNameSuffix);
     d_droplist->setFont(getFont());
     d_editbox->setFont(getFont());
 

@@ -71,7 +71,14 @@ const String MultiColumnList::EventSortDirectionChanged( "SortDirChanged" );
 const String MultiColumnList::EventListColumnSized( "ColSized" );
 const String MultiColumnList::EventListColumnMoved( "ColMoved" );
 
-	
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String MultiColumnList::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
+const String MultiColumnList::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+const String MultiColumnList::ListHeaderNameSuffix( "__auto_listheader__" );
+
+
 /*************************************************************************
 	Constructor for the Multi-column list base class
 *************************************************************************/
@@ -604,9 +611,9 @@ MultiColumnList::SelectionMode MultiColumnList::getSelectionMode(void) const
 void MultiColumnList::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
-	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
-	d_header		= createListHeader(getName() + "__auto_listheader__");
+	d_vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
+	d_horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
+	d_header		= createListHeader(getName() + ListHeaderNameSuffix);
 
 	// add components
 	addChildWindow(d_vertScrollbar);

@@ -47,7 +47,13 @@ TabControlProperties::TabTextPadding		    TabControl::d_tabTextPaddingProperty;
 // event names
 const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
 
-	
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String TabControl::ContentPaneNameSuffix( "__auto_TabPane__" );
+const String TabControl::TabButtonNameSuffix( "__auto_btn" );
+const String TabControl::TabPaneNameSuffix( "__auto_TabPane__Buttons" );
+
 /*************************************************************************
 	Constructor for TabControl base class.
 *************************************************************************/
@@ -78,8 +84,8 @@ TabControl::~TabControl(void)
 void TabControl::initialise(void)
 {
 	// create the component sub-widgets
-	d_tabContentPane = createTabContentPane(getName() + "__auto_TabPane__");
-    d_tabButtonPane = createTabButtonPane(getName() + "__auto_TabPane__Buttons");
+	d_tabContentPane = createTabContentPane(getName() + ContentPaneNameSuffix);
+    d_tabButtonPane = createTabButtonPane(getName() + TabPaneNameSuffix);
 
 	addChildWindow(d_tabContentPane);
     addChildWindow(d_tabButtonPane);
@@ -371,7 +377,7 @@ Remove tab button
 String TabControl::makeButtonName(Window* wnd)
 {
     // derive button name
-    String buttonName = "__auto_btn";
+    String buttonName = TabButtonNameSuffix;
     buttonName.append(wnd->getName());
     return buttonName;
 }
@@ -421,7 +427,7 @@ Internal version of adding a child window
 void TabControl::addChild_impl(Window* wnd)
 {
     // Look for __auto_TabPane__ in the name (hopefully no-one will use this!)
-    if (wnd->getName().find("__auto_TabPane__") != String::npos)
+    if (wnd->getName().find(ContentPaneNameSuffix) != String::npos)
     {
         // perform normal addChild
         Window::addChild_impl(wnd);

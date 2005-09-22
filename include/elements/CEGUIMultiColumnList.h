@@ -90,6 +90,12 @@ public:
 	static const String EventListColumnSized;				//!< Event fired when the width of a column in the list changes.
 	static const String EventListColumnMoved;				//!< Event fired when the column order changes.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
+    static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
+    static const String ListHeaderNameSuffix;      //!< Widget name suffix for the list header component.
 
 	/*************************************************************************
 		Enumerations

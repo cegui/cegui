@@ -72,6 +72,11 @@ public:
 	static const argb_t	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
 	static const argb_t	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
+    static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
 
 	/*************************************************************************
 		Accessor Functions

@@ -93,6 +93,12 @@ namespace CEGUI
             VertCentred     //!< Text is output vertically centred within the widget.
         };
 
+        /*************************************************************************
+            Child Widget name suffix constants
+        *************************************************************************/
+        static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
+        static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
+
         /************************************************************************
             Constructor / Destructor
         *************************************************************************/

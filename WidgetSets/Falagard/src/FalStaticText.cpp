@@ -41,6 +41,12 @@ namespace CEGUI
     FalagardStaticTextProperties::VertScrollbar     FalagardStaticText::d_vertScrollbarProperty;
     FalagardStaticTextProperties::HorzScrollbar     FalagardStaticText::d_horzScrollbarProperty;
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    const String FalagardStaticText::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
+    const String FalagardStaticText::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+
     /************************************************************************
         Constructor
     *************************************************************************/
@@ -187,7 +193,7 @@ namespace CEGUI
     Scrollbar* FalagardStaticText::getVertScrollbar(void) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_vscrollbar__"));
+        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + VertScrollbarNameSuffix));
     }
 
     /************************************************************************
@@ -196,7 +202,7 @@ namespace CEGUI
     Scrollbar* FalagardStaticText::getHorzScrollbar(void) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_hscrollbar__"));
+        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + HorzScrollbarNameSuffix));
     }
 
     /************************************************************************

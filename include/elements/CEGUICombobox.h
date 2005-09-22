@@ -76,6 +76,12 @@ public:
 	static const String EventDropListRemoved;				//!< Event triggered when the drop-down list is removed / hidden.
 	static const String EventListSelectionAccepted;		//!< Event triggered when the user accepts a selection from the drop-down list
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String EditboxNameSuffix;          //!< Widget name suffix for the editbox component.
+    static const String DropListNameSuffix;   //!< Widget name suffix for the drop list component.
+    static const String ButtonNameSuffix;           //!< Widget name suffix for the button component.
 
 	/*!
 	\brief

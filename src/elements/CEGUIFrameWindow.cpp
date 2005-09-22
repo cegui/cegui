@@ -67,6 +67,12 @@ const String FrameWindow::EventCloseClicked( "CloseClicked" );
 // other bits
 const float FrameWindow::DefaultSizingBorderSize	= 8.0f;
 
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String FrameWindow::TitlebarNameSuffix( "__auto_titlebar__" );
+const String FrameWindow::CloseButtonNameSuffix( "__auto_closebutton__" );
+
 
 /*************************************************************************
 	Constructor
@@ -104,8 +110,8 @@ FrameWindow::~FrameWindow(void)
 void FrameWindow::initialise(void)
 {
 	// create child windows
-	d_titlebar		= createTitlebar(getName() + "__auto_titlebar__");
-	d_closeButton	= createCloseButton(getName() + "__auto_closebutton__");
+	d_titlebar		= createTitlebar(getName() + TitlebarNameSuffix);
+	d_closeButton	= createCloseButton(getName() + CloseButtonNameSuffix);
 
 	// add child controls
 	if (d_titlebar)
@@ -152,7 +158,7 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 {
     try
     {
-        Window* titlebar = WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__");
+        Window* titlebar = WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix);
         titlebar->setEnabled(setting);
         titlebar->setVisible(setting);
     }
@@ -168,7 +174,7 @@ void FrameWindow::setCloseButtonEnabled(bool setting)
 {
     try
     {
-        Window* closebtn = WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__");
+        Window* closebtn = WindowManager::getSingleton().getWindow(getName() + CloseButtonNameSuffix);
         closebtn->setEnabled(setting);
         closebtn->setVisible(setting);
     }
@@ -216,7 +222,7 @@ void FrameWindow::setTitlebarFont(const String& name)
 {
     try
     {
-        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setFont(name);
+        WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->setFont(name);
     }
     catch (UnknownObjectException)
     {}
@@ -230,7 +236,7 @@ void FrameWindow::setTitlebarFont(Font* font)
 {
     try
     {
-        WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setFont(font);
+        WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->setFont(font);
     }
     catch (UnknownObjectException)
     {}
@@ -711,7 +717,7 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
     // pass this onto titlebar component.
-    WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setText(d_text);
+    WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->setText(d_text);
 }
 
 
@@ -746,7 +752,7 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 
         try
         {
-            static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setDraggingEnabled(setting);
+            static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix))->setDraggingEnabled(setting);
         }
         catch (UnknownObjectException)
         {}
@@ -762,7 +768,7 @@ const Font* FrameWindow::getTitlebarFont(void) const
 {
     try
     {
-        return WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->getFont();
+        return WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->getFont();
     }
     catch (UnknownObjectException)
     {
@@ -798,7 +804,7 @@ void FrameWindow::addFrameWindowProperties(void)
 *************************************************************************/
 colour FrameWindow::getCaptionColour(void) const
 {
-    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->getCaptionColour();
+    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix))->getCaptionColour();
 }
 
 
@@ -807,7 +813,7 @@ colour FrameWindow::getCaptionColour(void) const
 *************************************************************************/
 void FrameWindow::setCaptionColour(colour col)
 {
-    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"))->setCaptionColour(col);
+    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix))->setCaptionColour(col);
 }
 
 

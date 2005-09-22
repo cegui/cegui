@@ -65,6 +65,12 @@ const String ListHeader::EventSegmentRenderOffsetChanged( "SegmentOffsetChanged"
 const float	ListHeader::ScrollSpeed	= 8.0f;
 const float	ListHeader::MinimumSegmentPixelWidth	= 20.0f;
 
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const char ListHeader::SegmentNameSuffix[] = "__auto_seg_";
+
+
 
 /*************************************************************************
 	Constructor for the list header base class.
@@ -701,7 +707,7 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 {
 	// Build unique name
 	std::stringstream name;
-	name << getName().c_str() << "__auto_seg_" << d_uniqueIDNumber;
+	name << getName().c_str() << SegmentNameSuffix << d_uniqueIDNumber;
 
 	// create segment.
 	ListHeaderSegment* newseg = createNewSegment(name.str());

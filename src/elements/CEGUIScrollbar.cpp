@@ -50,6 +50,13 @@ const String Scrollbar::EventThumbTrackStarted( "ThumbTrackStarted" );
 const String Scrollbar::EventThumbTrackEnded( "ThumbTrackEnded" );
 const String Scrollbar::EventScrollConfigChanged( "ScrollConfigChanged" );
 
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String Scrollbar::ThumbNameSuffix( "__auto_thumb__" );
+const String Scrollbar::IncreaseButtonNameSuffix( "__auto_incbtn__" );
+const String Scrollbar::DecreaseButtonNameSuffix( "__auto_decbtn__" );
+
 
 /*************************************************************************
 	Constructor for Scrollbar objects
@@ -81,19 +88,19 @@ Scrollbar::~Scrollbar(void)
 void Scrollbar::initialise(void)
 {
 	// Set up thumb
-	d_thumb = createThumb(getName() + "__auto_thumb__");
+	d_thumb = createThumb(getName() + ThumbNameSuffix);
 	addChildWindow(d_thumb);
 	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved, this));
 	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted, this));
 	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded, this));
 
 	// set up Increase button
-	d_increase = createIncreaseButton(getName() + "__auto_incbtn__");
+	d_increase = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
 	addChildWindow(d_increase);
 	d_increase->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
 
 	// set up Decrease button
-	d_decrease = createDecreaseButton(getName() + "__auto_decbtn__");
+	d_decrease = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
 	addChildWindow(d_decrease);
 	d_decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 

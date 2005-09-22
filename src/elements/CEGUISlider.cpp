@@ -46,6 +46,10 @@ const String Slider::EventValueChanged( "ValueChanged" );
 const String Slider::EventThumbTrackStarted( "ThumbTrackStarted" );
 const String Slider::EventThumbTrackEnded( "ThumbTrackEnded" );
 
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String Slider::ThumbNameSuffix( "__auto_thumb__" );
 
 /*************************************************************************
 	Slider base class constructor
@@ -76,7 +80,7 @@ Slider::~Slider(void)
 void Slider::initialise(void)
 {
 	// create and attach thumb
-	d_thumb = createThumb(getName() + "__auto_thumb__");
+	d_thumb = createThumb(getName() + ThumbNameSuffix);
 	addChildWindow(d_thumb);
 
 	// bind handler to thumb events

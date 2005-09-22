@@ -207,6 +207,15 @@ public:
     static const String EventCharacterKey;
 
     /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    //! Widget name suffix for automatically created tooltip widgets.
+    static const String TooltipNameSuffix;
+    //! Something that all generated widgets will have in their names.
+    static const String AutoWidgetNameSuffix;
+
+
+    /*************************************************************************
         Construction and Destruction
     *************************************************************************/
     /*!

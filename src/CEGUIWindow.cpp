@@ -132,8 +132,14 @@ const String Window::EventMouseTripleClick( "MouseTripleClick" );
 const String Window::EventKeyDown( "KeyDown" );
 const String Window::EventKeyUp( "KeyUp" );
 const String Window::EventCharacterKey( "CharacterKey" );
-	
-	
+
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String Window::TooltipNameSuffix( "__auto_tooltip__" );
+const String Window::AutoWidgetNameSuffix( "__auto_" );
+
+
 /*************************************************************************
 	Constructor
 *************************************************************************/
@@ -1712,7 +1718,7 @@ void Window::setTooltipType(const String& tooltipType)
     {
         try
         {
-            d_customTip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, getName() + "__auto_tooltip__"));
+            d_customTip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, getName() + TooltipNameSuffix));
             d_weOwnTip = true;
         }
         catch (UnknownObjectException x)
@@ -2097,7 +2103,7 @@ int Window::writeChildWindowsXML(OutStream& out_stream) const
         Window* child = d_children[i];
 
         // conditional to ensure that auto created windows are not written.
-        if (child->getName().find("__auto_") == String::npos)
+        if (child->getName().find(AutoWidgetNameSuffix) == String::npos)
         {
             child->writeXMLToStream(out_stream);
             ++windowsWritten;

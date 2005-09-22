@@ -58,7 +58,12 @@ const String Listbox::EventMultiselectModeChanged( "MuliselectModeChanged" );
 const String Listbox::EventVertScrollbarModeChanged( "VertScrollModeChanged" );
 const String Listbox::EventHorzScrollbarModeChanged( "HorzScrollModeChanged" );
 
-	
+/*************************************************************************
+    Child Widget name suffix constants
+*************************************************************************/
+const String Listbox::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
+const String Listbox::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+
 /*************************************************************************
 	Constructor for Listbox base class.
 *************************************************************************/
@@ -93,8 +98,8 @@ Listbox::~Listbox(void)
 void Listbox::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
-	d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
+	d_vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
+	d_horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
 
 	addChildWindow(d_vertScrollbar);
 	addChildWindow(d_horzScrollbar);
@@ -620,8 +625,8 @@ void Listbox::configureScrollbars(void)
 
     try
     {
-        vertScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_vscrollbar__"));
-        horzScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_hscrollbar__"));
+        vertScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + VertScrollbarNameSuffix));
+        horzScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + HorzScrollbarNameSuffix));
     }
     catch (UnknownObjectException)
     {

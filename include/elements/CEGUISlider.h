@@ -61,6 +61,10 @@ public:
 	static const String EventThumbTrackStarted;	//!< Name of the event fired when the user begins dragging the thumb.
 	static const String EventThumbTrackEnded;		//!< Name of the event fired when the user releases the thumb.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String ThumbNameSuffix;            //!< Widget name suffix for the thumb component.
 
 	/*************************************************************************
 		Accessors

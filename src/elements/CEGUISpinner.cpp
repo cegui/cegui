@@ -45,6 +45,10 @@ namespace CEGUI
     const String Spinner::IntegerValidator("-?\\d*");
     const String Spinner::HexValidator("[0-9a-fA-F]*");
     const String Spinner::OctalValidator("[0-7]*");
+    // component widget name suffix strings
+    const String Spinner::EditboxNameSuffix( "__auto_editbox__" );
+    const String Spinner::IncreaseButtonNameSuffix( "__auto_incbtn__" );
+    const String Spinner::DecreaseButtonNameSuffix( "__auto_decbtn__" );
     // properties
     SpinnerProperties::CurrentValue  Spinner::d_currentValueProperty;
     SpinnerProperties::StepSize      Spinner::d_stepSizeProperty;
@@ -78,11 +82,11 @@ namespace CEGUI
         Window::initialise();
 
         // create all the component widgets
-        d_increaseButton = createIncreaseButton(getName() + "__auto_incbtn__");
+        d_increaseButton = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
         addChildWindow(d_increaseButton);
-        d_decreaseButton = createDecreaseButton(getName() + "__auto_decbtn__");
+        d_decreaseButton = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
         addChildWindow(d_decreaseButton);
-        d_editbox = createEditbox(getName() + "__auto_editbox__");
+        d_editbox = createEditbox(getName() + EditboxNameSuffix);
         addChildWindow(d_editbox);
 
         // setup component controls

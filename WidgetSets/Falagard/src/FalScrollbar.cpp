@@ -87,7 +87,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
 
-        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__"));
+        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix));
 
         float posExtent = d_documentSize - d_pageSize;
         float slideExtent;
@@ -113,7 +113,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
 
-        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__"));
+        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix));
         float posExtent = d_documentSize - d_pageSize;
 
         if (d_vertical)
@@ -130,7 +130,7 @@ namespace CEGUI
 
     float FalagardScrollbar::getAdjustDirectionFromPoint(const Point& pt) const
     {
-        Rect absrect(WindowManager::getSingleton().getWindow(getName() + "__auto_thumb__")->getUnclippedPixelRect());
+        Rect absrect(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix)->getUnclippedPixelRect());
 
         if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
             (!d_vertical && (pt.d_x > absrect.d_right)))

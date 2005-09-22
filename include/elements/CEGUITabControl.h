@@ -62,6 +62,12 @@ public:
 	// event names
 	static const String EventSelectionChanged;			//!< Event triggered when there is a change to the currently selected tab.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const String ContentPaneNameSuffix; //!< Widget name suffix for the tab content pane component.
+    static const String TabButtonNameSuffix;   //!< Widget name suffix for the tab button components.
+    static const String TabPaneNameSuffix;     //!< Widget name suffix for the tab header pane component.
 
 	/*************************************************************************
 		Accessor Methods

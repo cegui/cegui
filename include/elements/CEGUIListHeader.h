@@ -86,6 +86,11 @@ public:
 	static const float	ScrollSpeed;				//!< Speed to scroll at when dragging outside header.
 	static const float	MinimumSegmentPixelWidth;	//!< Miniumum width of a segment in pixels.
 
+    /*************************************************************************
+        Child Widget name suffix constants
+    *************************************************************************/
+    static const char SegmentNameSuffix[];          //!< Widget name suffix for header segments.
+
 
 	/*************************************************************************
 		Accessor Methods

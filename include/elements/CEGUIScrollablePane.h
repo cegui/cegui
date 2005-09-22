@@ -58,6 +58,13 @@ namespace CEGUI
         static const String EventContentPaneScrolled;       //!< Event fired when the pane gets scrolled.
 
         /*************************************************************************
+            Child Widget name suffix constants
+        *************************************************************************/
+        static const String VertScrollbarNameSuffix;        //!< Widget name suffix for the vertical scrollbar component.
+        static const String HorzScrollbarNameSuffix;        //!< Widget name suffix for the horizontal scrollbar component.
+        static const String ScrolledContainerNameSuffix;    //!< Widget name suffix for the scrolled container component.
+
+        /*************************************************************************
             Construction / Destruction
         *************************************************************************/
         /*!

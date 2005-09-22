@@ -38,6 +38,10 @@ namespace CEGUI
     const String ScrollablePane::EventHorzScrollbarModeChanged("HorzScrollbarModeChanged");
     const String ScrollablePane::EventAutoSizeSettingChanged("AutoSizeSettingChanged");
     const String ScrollablePane::EventContentPaneScrolled("ContentPaneScrolled");
+    // Child Widget name suffix constants
+    const String ScrollablePane::VertScrollbarNameSuffix( "__auto_vscrollbar__" );
+    const String ScrollablePane::HorzScrollbarNameSuffix( "__auto_hscrollbar__" );
+    const String ScrollablePane::ScrolledContainerNameSuffix( "__auto_container__" );
     // Property objects
     ScrollablePaneProperties::ForceHorzScrollbar   ScrollablePane::d_horzScrollbarProperty;
     ScrollablePaneProperties::ForceVertScrollbar   ScrollablePane::d_vertScrollbarProperty;
@@ -210,14 +214,14 @@ namespace CEGUI
     {
         String widgetName;
         // create horizontal scrollbar
-        widgetName = d_name + "__auto_hscrollbar__";
+        widgetName = d_name + HorzScrollbarNameSuffix;
         d_horzScrollbar = createHorizontalScrollbar(widgetName);
         // perform consistency checks on what we got back
         assert(d_horzScrollbar != 0);
         assert(d_horzScrollbar->getName() == widgetName);
 
         // create vertical scrollbar
-        widgetName = d_name + "__auto_vscrollbar__";
+        widgetName = d_name + VertScrollbarNameSuffix;
         d_vertScrollbar = createVerticalScrollbar(widgetName);
         // perform consistency checks on what we got back
         assert(d_vertScrollbar != 0);
@@ -226,7 +230,7 @@ namespace CEGUI
         // create scrolled container widget
         d_container = 
             static_cast<ScrolledContainer*>(WindowManager::getSingleton().createWindow(
-                ScrolledContainer::WidgetTypeName, d_name + "__auto_container__"));
+                ScrolledContainer::WidgetTypeName, d_name + ScrolledContainerNameSuffix));
 
         // add child controls
         addChildWindow(d_horzScrollbar);
@@ -423,8 +427,8 @@ namespace CEGUI
         // null is not a valid window pointer!
         assert(wnd != 0);
 
-        // See if this is an internally generated window (will have "__auto_" in the name)
-        if (wnd->getName().find("__auto_") != String::npos)
+        // See if this is an internally generated window (will have AutoWidgetNameSuffix in the name)
+        if (wnd->getName().find(AutoWidgetNameSuffix) != String::npos)
         {
             // This is an internal widget, so should be added normally.
             Window::addChild_impl(wnd);
@@ -443,8 +447,8 @@ namespace CEGUI
         // null is not a valid window pointer!
         assert(wnd != 0);
 
-        // See if this is an internally generated window (will have "__auto_" in the name)
-        if (wnd->getName().find("__auto_") != String::npos)
+        // See if this is an internally generated window (will have AutoWidgetNameSuffix in the name)
+        if (wnd->getName().find(AutoWidgetNameSuffix) != String::npos)
         {
             // This is an internal widget, so should be removed normally.
             Window::removeChild_impl(wnd);

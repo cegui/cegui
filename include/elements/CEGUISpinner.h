@@ -71,6 +71,13 @@ namespace CEGUI
         static const String EventTextInputModeChanged;      //!< Event fired when the input/display mode is changed.
 
         /*************************************************************************
+            Component widget name suffix strings
+        *************************************************************************/
+        static const String EditboxNameSuffix;          //!< Widget name suffix for the editbox thumb component.
+        static const String IncreaseButtonNameSuffix;   //!< Widget name suffix for the increase button component.
+        static const String DecreaseButtonNameSuffix;   //!< Widget name suffix for the decrease button component.
+
+        /*************************************************************************
             Object Construction and Destruction
         *************************************************************************/
         /*!

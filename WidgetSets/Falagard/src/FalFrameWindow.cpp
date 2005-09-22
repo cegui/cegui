@@ -89,12 +89,12 @@ namespace CEGUI
 
     Titlebar* FalagardFrameWindow::createTitlebar(const String& name) const
     {
-        return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__"));
+        return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix));
     }
 
     PushButton* FalagardFrameWindow::createCloseButton(const String& name) const
     {
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(getName() + "__auto_closebutton__"));
+        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(getName() + CloseButtonNameSuffix));
     }
 
     //////////////////////////////////////////////////////////////////////////
