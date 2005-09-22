@@ -117,6 +117,10 @@ const Image* PropertyHelper::stringToImage(const String& str)
 {
 	using namespace std;
 
+    // handle empty string case
+    if (str.empty())
+        return 0;
+
 	char imageSet[128];
 	char imageName[128];
 
