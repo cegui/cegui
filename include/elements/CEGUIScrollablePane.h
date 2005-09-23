@@ -440,6 +440,45 @@ namespace CEGUI
 			return Window::testClassName_impl(class_name);
 		}
 
+        /*!
+        \brief
+            Return a pointer to the vertical scrollbar component widget for this
+            ScrollablePane.
+
+        \return
+            Pointer to a Scrollbar object.
+
+        \exception UnknownObjectException
+            Thrown if the vertical Scrollbar component does not exist.
+        */
+        Scrollbar* getVertScrollbar() const;
+
+        /*!
+        \brief
+            Return a pointer to the horizontal scrollbar component widget for
+            this ScrollablePane.
+
+        \return
+            Pointer to a Scrollbar object.
+
+        \exception UnknownObjectException
+            Thrown if the horizontal Scrollbar component does not exist.
+        */
+        Scrollbar* getHorzScrollbar() const;
+
+        /*!
+        \brief
+            Return a pointer to the ScrolledContainer component widget for this
+            ScrollablePane.
+
+        \return
+            Pointer to a ScrolledContainer object.
+
+        \exception UnknownObjectException
+            Thrown if the scrolled container component does not exist.
+        */
+        ScrolledContainer* getScrolledContainer() const;
+
 
         /*************************************************************************
         	Event triggers
@@ -551,11 +590,6 @@ namespace CEGUI
         float   d_vertOverlap;          //!< vertical scroll overlap fraction.
         float   d_horzStep;             //!< horizontal scroll step fraction.
         float   d_horzOverlap;          //!< horizontal scroll overlap fraction.
-
-        // component widgets
-        Scrollbar*  d_vertScrollbar;        //!< Scrollbar widget used for vertical scrolling.
-        Scrollbar*  d_horzScrollbar;        //!< Scrollbar widget used for horizontal scrolling.
-        ScrolledContainer*  d_container;    //!< ScrolledContainer widget holding the attached widgets.
 
     private:
 	    /*************************************************************************

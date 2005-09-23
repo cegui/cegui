@@ -25,6 +25,7 @@
 #include "elements/CEGUIPushButton.h"
 #include "elements/CEGUIEditbox.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIWindowManager.h"
 #include <stdio.h>
 #include <sstream>
 #include <iomanip>
@@ -59,9 +60,6 @@ namespace CEGUI
     
     Spinner::Spinner(const String& type, const String& name) :
         Window(type, name),
-        d_increaseButton(0),
-        d_decreaseButton(0),
-        d_editbox(0),
         d_stepSize(1.0f),
         d_currentValue(1.0f),
         d_maxValue(32767.0f),
@@ -82,23 +80,23 @@ namespace CEGUI
         Window::initialise();
 
         // create all the component widgets
-        d_increaseButton = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
-        addChildWindow(d_increaseButton);
-        d_decreaseButton = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
-        addChildWindow(d_decreaseButton);
-        d_editbox = createEditbox(getName() + EditboxNameSuffix);
-        addChildWindow(d_editbox);
+        PushButton* increaseButton = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
+        addChildWindow(increaseButton);
+        PushButton* decreaseButton = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
+        addChildWindow(decreaseButton);
+        Editbox* editbox = createEditbox(getName() + EditboxNameSuffix);
+        addChildWindow(editbox);
 
         // setup component controls
-        d_increaseButton->setWantsMultiClickEvents(false);
-        d_increaseButton->setMouseAutoRepeatEnabled(true);
-        d_decreaseButton->setWantsMultiClickEvents(false);
-        d_decreaseButton->setMouseAutoRepeatEnabled(true);
+        increaseButton->setWantsMultiClickEvents(false);
+        increaseButton->setMouseAutoRepeatEnabled(true);
+        decreaseButton->setWantsMultiClickEvents(false);
+        decreaseButton->setMouseAutoRepeatEnabled(true);
 
         // perform event subscriptions.
-        d_increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        d_decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
-        d_editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
+        increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+        decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+        editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation
         setTextInputMode(Integer);
@@ -185,16 +183,16 @@ namespace CEGUI
             switch (mode)
             {
             case FloatingPoint:
-                d_editbox->setValidationString(FloatValidator);
+                getEditbox()->setValidationString(FloatValidator);
                 break;
             case Integer:
-                d_editbox->setValidationString(IntegerValidator);
+                getEditbox()->setValidationString(IntegerValidator);
                 break;
             case Hexadecimal:
-                d_editbox->setValidationString(HexValidator);
+                getEditbox()->setValidationString(HexValidator);
                 break;
             case Octal:
-                d_editbox->setValidationString(OctalValidator);
+                getEditbox()->setValidationString(OctalValidator);
                 break;
             default:
                 throw InvalidRequestException("Spinner::setTextInputMode - An unknown TextInputMode was specified.");
@@ -228,7 +226,7 @@ namespace CEGUI
     float Spinner::getValueFromText(void) const
     {
         // handle empty case
-        if (d_editbox->getText().empty())
+        if (getEditbox()->getText().empty())
         {
             return 0.0f;
         }
@@ -240,18 +238,18 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case FloatingPoint:
-            res = sscanf(d_editbox->getText().c_str(), "%f", &val);
+            res = sscanf(getEditbox()->getText().c_str(), "%f", &val);
             break;
         case Integer:
-            res = sscanf(d_editbox->getText().c_str(), "%d", &tmp);
+            res = sscanf(getEditbox()->getText().c_str(), "%d", &tmp);
             val = static_cast<float>(tmp);
             break;
         case Hexadecimal:
-            res = sscanf(d_editbox->getText().c_str(), "%x", &utmp);
+            res = sscanf(getEditbox()->getText().c_str(), "%x", &utmp);
             val = static_cast<float>(utmp);
             break;
         case Octal:
-            res = sscanf(d_editbox->getText().c_str(), "%o", &utmp);
+            res = sscanf(getEditbox()->getText().c_str(), "%o", &utmp);
             val = static_cast<float>(utmp);
             break;
         default:
@@ -260,10 +258,10 @@ namespace CEGUI
 
         if (res)
         {
-            return val;            
+            return val;
         }
 
-        throw InvalidRequestException("Spinner::getValueFromText - The string '" + d_editbox->getText() + "' ca not be converted to numerical representation.");
+        throw InvalidRequestException("Spinner::getValueFromText - The string '" + getEditbox()->getText() + "' can not be converted to numerical representation.");
     }
 
     String Spinner::getTextFromValue(void) const
@@ -294,19 +292,21 @@ namespace CEGUI
     void Spinner::onFontChanged(WindowEventArgs& e)
     {
         // Propagate to children
-        d_editbox->setFont(getFont());
+        getEditbox()->setFont(getFont());
         // Call base class handler
         Window::onFontChanged(e);
     }
 
     void Spinner::onTextChanged(WindowEventArgs& e)
     {
+        Editbox* editbox = getEditbox();
+
         // update only if needed
-        if (d_editbox->getText() != d_text)
+        if (editbox->getText() != d_text)
         {
             // done before doing base class processing so event subscribers see
             // 'updated' version.
-            d_editbox->setText(d_text);
+            editbox->setText(d_text);
             e.handled = true;
 
             Window::onTextChanged(e);
@@ -319,27 +319,31 @@ namespace CEGUI
         {
             Window::onActivated(e);
 
-            if (!d_editbox->isActive())
+            Editbox* editbox = getEditbox();
+
+            if (!editbox->isActive())
             {
-                d_editbox->activate();
+                editbox->activate();
             }
         }
     }
 
     void Spinner::onValueChanged(WindowEventArgs& e)
     {
+        Editbox* editbox = getEditbox();
+
         // mute to save doing unnecessary events work.
-        bool wasMuted = d_editbox->isMuted();
-        d_editbox->setMutedState(true);
+        bool wasMuted = editbox->isMuted();
+        editbox->setMutedState(true);
 
         // Update text with new value.
         // (allow special 'empty' case to equal 0 with no text change required)
-        if (!(d_currentValue == 0 && d_editbox->getText().empty()))
+        if (!(d_currentValue == 0 && editbox->getText().empty()))
         {
-            d_editbox->setText(getTextFromValue());
+            editbox->setText(getTextFromValue());
         }
         // restore previous mute state.
-        d_editbox->setMutedState(wasMuted);
+        editbox->setMutedState(wasMuted);
 
         fireEvent(EventValueChanged, e, EventNamespace);
     }
@@ -371,14 +375,15 @@ namespace CEGUI
 
     void Spinner::onTextInputModeChanged(WindowEventArgs& e)
     {
+        Editbox* editbox = getEditbox();
         // update edit box text to reflect new mode.
         // mute to save doing unnecessary events work.
-        bool wasMuted = d_editbox->isMuted();
-        d_editbox->setMutedState(true);
+        bool wasMuted = editbox->isMuted();
+        editbox->setMutedState(true);
         // Update text with new value.
-        d_editbox->setText(getTextFromValue());
+        editbox->setText(getTextFromValue());
         // restore previous mute state.
-        d_editbox->setMutedState(wasMuted);
+        editbox->setMutedState(wasMuted);
 
         fireEvent(EventTextInputModeChanged, e, EventNamespace);
     }
@@ -408,10 +413,28 @@ namespace CEGUI
     bool Spinner::handleEditTextChange(const EventArgs& e)
     {
         // set this windows text to match
-        setText(d_editbox->getText());
+        setText(getEditbox()->getText());
         // update value
         setCurrentValue(getValueFromText());
         return true;
+    }
+
+    PushButton* Spinner::getIncreaseButton() const
+    {
+        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
+                                        getName() + IncreaseButtonNameSuffix));
+    }
+
+    PushButton* Spinner::getDecreaseButton() const
+    {
+        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
+                                        getName() + DecreaseButtonNameSuffix));
+    }
+
+    Editbox* Spinner::getEditbox() const
+    {
+        return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(
+                                     getName() + EditboxNameSuffix));
     }
 
 } // End of  CEGUI namespace section

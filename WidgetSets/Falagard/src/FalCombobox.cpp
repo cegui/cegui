@@ -56,19 +56,19 @@ namespace CEGUI
     Editbox* FalagardCombobox::createEditbox(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(name));
+        return getEditbox();
     }
 
     PushButton* FalagardCombobox::createPushButton(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(name));
+        return getPushButton();
     }
 
     ComboDropList* FalagardCombobox::createDropList(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<ComboDropList*>(WindowManager::getSingleton().getWindow(name));
+        return getDropList();
     }
 
     //////////////////////////////////////////////////////////////////////////

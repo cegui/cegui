@@ -31,6 +31,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIWindowManager.h"
 #include <algorithm>
 
 
@@ -88,7 +89,8 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	d_forceHorzScroll(false),
 	d_nominatedSelectCol(0),
 	d_nominatedSelectRow(0),
-	d_lastSelected(0)
+	d_lastSelected(0),
+    d_columnCount(0)
 {
 	// add multi-column list box specific events
 	addMultiColumnListboxEvents();
@@ -118,7 +120,7 @@ MultiColumnList::~MultiColumnList(void)
 *************************************************************************/
 bool MultiColumnList::isUserSortControlEnabled(void) const
 {
-	return d_header->isSortingEnabled();
+	return getListHeader()->isSortingEnabled();
 }
 
 
@@ -127,7 +129,7 @@ bool MultiColumnList::isUserSortControlEnabled(void) const
 *************************************************************************/
 bool MultiColumnList::isUserColumnSizingEnabled(void) const
 {
-	return d_header->isColumnSizingEnabled();
+	return getListHeader()->isColumnSizingEnabled();
 }
 
 
@@ -136,7 +138,7 @@ bool MultiColumnList::isUserColumnSizingEnabled(void) const
 *************************************************************************/
 bool MultiColumnList::isUserColumnDraggingEnabled(void) const
 {
-	return d_header->isColumnDraggingEnabled();
+	return getListHeader()->isColumnDraggingEnabled();
 }
 
 
@@ -145,7 +147,7 @@ bool MultiColumnList::isUserColumnDraggingEnabled(void) const
 *************************************************************************/
 uint MultiColumnList::getColumnCount(void) const
 {
-	return d_header->getColumnCount();
+	return d_columnCount;
 }
 
 
@@ -164,7 +166,7 @@ uint MultiColumnList::getRowCount(void) const
 *************************************************************************/
 uint MultiColumnList::getSortColumn(void) const
 {
-	return d_header->getSortColumn();
+	return getListHeader()->getSortColumn();
 }
 
 
@@ -173,7 +175,7 @@ uint MultiColumnList::getSortColumn(void) const
 *************************************************************************/
 uint MultiColumnList::getColumnWithID(uint col_id) const
 {
-	return d_header->getColumnFromID(col_id);
+	return getListHeader()->getColumnFromID(col_id);
 }
 
 
@@ -183,7 +185,7 @@ uint MultiColumnList::getColumnWithID(uint col_id) const
 *************************************************************************/
 uint MultiColumnList::getColumnWithHeaderText(const String& text) const
 {
-	return d_header->getColumnWithText(text);
+	return getListHeader()->getColumnWithText(text);
 }
 
 
@@ -192,10 +194,11 @@ uint MultiColumnList::getColumnWithHeaderText(const String& text) const
 *************************************************************************/
 UDim MultiColumnList::getTotalColumnHeadersWidth(void) const
 {
+    const ListHeader* header = getListHeader();
     UDim width(0,0);
 
     for (uint i = 0; i < getColumnCount(); ++i)
-        width += d_header->getColumnWidth(i);
+        width += header->getColumnWidth(i);
 
     return width;
 }
@@ -206,7 +209,7 @@ UDim MultiColumnList::getTotalColumnHeadersWidth(void) const
 *************************************************************************/
 UDim MultiColumnList::getColumnHeaderWidth(uint col_idx) const
 {
-	return d_header->getColumnWidth(col_idx);
+	return getListHeader()->getColumnWidth(col_idx);
 }
 
 
@@ -215,7 +218,7 @@ UDim MultiColumnList::getColumnHeaderWidth(uint col_idx) const
 *************************************************************************/
 ListHeaderSegment::SortDirection MultiColumnList::getSortDirection(void) const
 {
-	return d_header->getSortDirection();
+	return getListHeader()->getSortDirection();
 }
 
 
@@ -224,7 +227,7 @@ ListHeaderSegment::SortDirection MultiColumnList::getSortDirection(void) const
 *************************************************************************/
 ListHeaderSegment& MultiColumnList::getHeaderSegmentForColumn(uint col_idx) const
 {
-	return d_header->getSegmentFromColumn(col_idx);
+	return getListHeader()->getSegmentFromColumn(col_idx);
 }
 
 
@@ -574,7 +577,7 @@ bool MultiColumnList::isItemSelected(const MCLGridRef& grid_ref) const
 *************************************************************************/
 uint MultiColumnList::getNominatedSelectionColumnID(void) const
 {
-	return d_header->getSegmentFromColumn(d_nominatedSelectCol).getID();
+	return getListHeader()->getSegmentFromColumn(d_nominatedSelectCol).getID();
 }
 
 
@@ -611,24 +614,24 @@ MultiColumnList::SelectionMode MultiColumnList::getSelectionMode(void) const
 void MultiColumnList::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
-	d_horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
-	d_header		= createListHeader(getName() + ListHeaderNameSuffix);
+	Scrollbar* vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
+	Scrollbar* horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
+	ListHeader* header       = createListHeader(getName() + ListHeaderNameSuffix);
 
 	// add components
-	addChildWindow(d_vertScrollbar);
-	addChildWindow(d_horzScrollbar);
-	addChildWindow(d_header);
+	addChildWindow(vertScrollbar);
+	addChildWindow(horzScrollbar);
+	addChildWindow(header);
 
 	// subscribe some events
-	d_header->subscribeEvent(ListHeader::EventSegmentRenderOffsetChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderScroll, this));
-	d_header->subscribeEvent(ListHeader::EventSegmentSequenceChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegMove, this));
-	d_header->subscribeEvent(ListHeader::EventSegmentSized, Event::Subscriber(&CEGUI::MultiColumnList::handleColumnSizeChange, this));
-	d_header->subscribeEvent(ListHeader::EventSortColumnChanged , Event::Subscriber(&CEGUI::MultiColumnList::handleSortColumnChange, this));
-	d_header->subscribeEvent(ListHeader::EventSortDirectionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleSortDirectionChange, this));
-	d_header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this));
-	d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHorzScrollbar, this));
-    d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleVertScrollbar, this));
+	header->subscribeEvent(ListHeader::EventSegmentRenderOffsetChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderScroll, this));
+	header->subscribeEvent(ListHeader::EventSegmentSequenceChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegMove, this));
+	header->subscribeEvent(ListHeader::EventSegmentSized, Event::Subscriber(&CEGUI::MultiColumnList::handleColumnSizeChange, this));
+	header->subscribeEvent(ListHeader::EventSortColumnChanged , Event::Subscriber(&CEGUI::MultiColumnList::handleSortColumnChange, this));
+	header->subscribeEvent(ListHeader::EventSortDirectionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleSortDirectionChange, this));
+	header->subscribeEvent(ListHeader::EventSplitterDoubleClicked, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderSegDblClick, this));
+	horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHorzScrollbar, this));
+    vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleVertScrollbar, this));
 
 
 	// final initialisation now widget is complete
@@ -675,7 +678,8 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& 
 	}
 
 	// set-up the header for the new column.
-	d_header->insertColumn(text, col_id, width, position);
+	getListHeader()->insertColumn(text, col_id, width, position);
+    ++d_columnCount;
 
 	// Insert a blank entry at the appropriate position in each row.
 	for (uint i = 0; i < getRowCount(); ++i)
@@ -731,7 +735,8 @@ void MultiColumnList::removeColumn(uint col_idx)
 		}
 
 		// remove header segment
-		d_header->removeColumn(col_idx);
+		getListHeader()->removeColumn(col_idx);
+        --d_columnCount;
 
 		// signal a change to the list contents
 		WindowEventArgs args(this);
@@ -756,7 +761,7 @@ void MultiColumnList::removeColumnWithID(uint col_id)
 void MultiColumnList::moveColumn(uint col_idx, uint position)
 {
 	// move the segment on the header, events will ensure the items get moved also.
-	d_header->moveColumn(col_idx, position);
+	getListHeader()->moveColumn(col_idx, position);
 }
 
 
@@ -1126,7 +1131,7 @@ void MultiColumnList::setSortDirection(ListHeaderSegment::SortDirection directio
 	if (getSortDirection() != direction)
 	{
 		// set the sort direction on the header, events will make sure everything else is updated.
-		d_header->setSortDirection(direction);
+		getListHeader()->setSortDirection(direction);
 	}
 
 }
@@ -1140,7 +1145,7 @@ void MultiColumnList::setSortColumn(uint col_idx)
 	if (getSortColumn() != col_idx)
 	{
 		// set the sort column on the header, events will make sure everything else is updated.
-		d_header->setSortColumn(col_idx);
+		getListHeader()->setSortColumn(col_idx);
 	}
 
 }
@@ -1151,10 +1156,12 @@ void MultiColumnList::setSortColumn(uint col_idx)
 *************************************************************************/
 void MultiColumnList::setSortColumnByID(uint col_id)
 {
-	if (d_header->getSegmentFromColumn(getSortColumn()).getID() != col_id)
+    ListHeader* header = getListHeader();
+
+	if (header->getSegmentFromColumn(getSortColumn()).getID() != col_id)
 	{
 		// set the sort column on the header, events will make sure everything else is updated.
-		d_header->setSortColumnFromID(col_id);
+		header->setSortColumnFromID(col_id);
 	}
 
 }
@@ -1256,7 +1263,7 @@ void MultiColumnList::handleUpdatedItemData(void)
 *************************************************************************/
 void MultiColumnList::setColumnHeaderWidth(uint col_idx, const UDim& width)
 {
-    d_header->setColumnWidth(col_idx, width);
+    getListHeader()->setColumnWidth(col_idx, width);
 }
 
 
@@ -1280,8 +1287,10 @@ void MultiColumnList::addMultiColumnListboxEvents(void)
 *************************************************************************/
 void MultiColumnList::configureScrollbars(void)
 {
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
 	float totalHeight	= getTotalRowsHeight();
-	float fullWidth		= d_header->getTotalSegmentsPixelExtent();
+	float fullWidth		= getListHeader()->getTotalSegmentsPixelExtent();
 
 	//
 	// First show or hide the scroll bars as needed (or requested)
@@ -1289,16 +1298,16 @@ void MultiColumnList::configureScrollbars(void)
 	// show or hide vertical scroll bar as required (or as specified by option)
 	if ((totalHeight > getListRenderArea().getHeight()) || d_forceVertScroll)
 	{
-		d_vertScrollbar->show();
+		vertScrollbar->show();
 
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((fullWidth > getListRenderArea().getWidth()) || d_forceHorzScroll)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 		}
 		else
 		{
-			d_horzScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -1307,23 +1316,23 @@ void MultiColumnList::configureScrollbars(void)
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((fullWidth > getListRenderArea().getWidth()) || d_forceHorzScroll)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 
 			// show or hide vertical scroll bar as required (or as specified by option)
 			if ((totalHeight > getListRenderArea().getHeight()) || d_forceVertScroll)
 			{
-				d_vertScrollbar->show();
+				vertScrollbar->show();
 			}
 			else
 			{
-				d_vertScrollbar->hide();
+				vertScrollbar->hide();
 			}
 
 		}
 		else
 		{
-			d_vertScrollbar->hide();
-			d_horzScrollbar->hide();
+			vertScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -1333,15 +1342,15 @@ void MultiColumnList::configureScrollbars(void)
 	//
 	Rect renderArea(getListRenderArea());
 
-	d_vertScrollbar->setDocumentSize(totalHeight);
-	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
-	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
+	vertScrollbar->setDocumentSize(totalHeight);
+	vertScrollbar->setPageSize(renderArea.getHeight());
+	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
-	d_horzScrollbar->setDocumentSize(fullWidth);
-	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
-	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
+	horzScrollbar->setDocumentSize(fullWidth);
+	horzScrollbar->setPageSize(renderArea.getWidth());
+	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
 
@@ -1522,10 +1531,11 @@ bool MultiColumnList::clearAllSelections_impl(void)
 *************************************************************************/
 ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
 {
+    const ListHeader* header = getListHeader();
     Rect listArea(getListRenderArea());
 
-    float y = listArea.d_top - d_vertScrollbar->getScrollPosition();
-    float x = listArea.d_left - d_horzScrollbar->getScrollPosition();
+    float y = listArea.d_top - getVertScrollbar()->getScrollPosition();
+    float x = listArea.d_left - getHorzScrollbar()->getScrollPosition();
 
     for (uint i = 0; i < getRowCount(); ++i)
     {
@@ -1537,8 +1547,8 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
             // scan across to find column that was clicked
             for (uint j = 0; j < getColumnCount(); ++j)
             {
-                const ListHeaderSegment& seg = d_header->getSegmentFromColumn(j);
-                x += seg.getWindowWidth().asAbsolute(d_header->getPixelSize().d_width);
+                const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
+                x += seg.getWindowWidth().asAbsolute(header->getPixelSize().d_width);
 
                 // was this the column?
                 if (pt.d_x < x)
@@ -1711,6 +1721,10 @@ void MultiColumnList::moveColumn_impl(uint col_idx, uint position)
 *************************************************************************/
 void MultiColumnList::populateRenderCache()
 {
+    const ListHeader* header = getListHeader();
+    const Scrollbar* vertScrollbar = getVertScrollbar();
+    const Scrollbar* horzScrollbar = getHorzScrollbar();
+
     // get the derived class to render general stuff before we handle the items
     cacheListboxBaseImagery();
 
@@ -1725,7 +1739,7 @@ void MultiColumnList::populateRenderCache()
     Rect itemsArea(getListRenderArea());
 
     // set up initial positional details for items
-    itemPos.d_y = itemsArea.d_top - d_vertScrollbar->getScrollPosition();
+    itemPos.d_y = itemsArea.d_top - vertScrollbar->getScrollPosition();
     itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
 
     float alpha = getEffectiveAlpha();
@@ -1734,7 +1748,7 @@ void MultiColumnList::populateRenderCache()
     for (uint i = 0; i < getRowCount(); ++i)
     {
         // set initial x position for this row.
-        itemPos.d_x = itemsArea.d_left - d_horzScrollbar->getScrollPosition();
+        itemPos.d_x = itemsArea.d_left - horzScrollbar->getScrollPosition();
 
         // calculate height for this row.
         itemSize.d_height = getHighestRowItemHeight(i);
@@ -1743,7 +1757,7 @@ void MultiColumnList::populateRenderCache()
         for (uint j = 0; j < getColumnCount(); ++j)
         {
             // allow item to use full width of the column
-            itemSize.d_width = d_header->getColumnWidth(j).asAbsolute(d_header->getPixelSize().d_width);
+            itemSize.d_width = header->getColumnWidth(j).asAbsolute(header->getPixelSize().d_width);
 
             ListboxItem* item = d_grid[i][j];
 
@@ -1960,13 +1974,16 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 	// base class processing.
 	Window::onMouseWheel(e);
 
-	if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+	if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
 	}
-	else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+	else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
 
 	e.handled = true;
@@ -1979,7 +1996,7 @@ void MultiColumnList::onMouseWheel(MouseEventArgs& e)
 bool MultiColumnList::handleHeaderScroll(const EventArgs& e)
 {
 	// grab the header scroll value, convert to pixels, and set the scroll bar to match.
-	d_horzScrollbar->setScrollPosition(d_header->getSegmentOffset());
+	getHorzScrollbar()->setScrollPosition(getListHeader()->getSegmentOffset());
 
 	return true;
 }
@@ -2022,7 +2039,7 @@ bool MultiColumnList::handleColumnSizeChange(const EventArgs& e)
 bool MultiColumnList::handleHorzScrollbar(const EventArgs& e)
 {
 	// set header offset to match scroll position
-	d_header->setSegmentOffset(d_horzScrollbar->getScrollPosition());
+	getListHeader()->setSegmentOffset(getHorzScrollbar()->getScrollPosition());
     requestRedraw();
 	return true;
 }
@@ -2105,7 +2122,7 @@ bool MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 {
 	// get the column index for the segment that was double-clicked
-	uint col = d_header->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
+	uint col = getListHeader()->getColumnFromSegment((ListHeaderSegment&)*((WindowEventArgs&)e).window);
 
 	autoSizeColumnHeader(col);
 
@@ -2119,7 +2136,7 @@ bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 *************************************************************************/
 void MultiColumnList::setUserSortControlEnabled(bool setting)
 {
-	d_header->setSortingEnabled(setting);
+	getListHeader()->setSortingEnabled(setting);
 }
 
 
@@ -2128,7 +2145,7 @@ void MultiColumnList::setUserSortControlEnabled(bool setting)
 *************************************************************************/
 void MultiColumnList::setUserColumnSizingEnabled(bool setting)
 {
-	d_header->setColumnSizingEnabled(setting);
+	getListHeader()->setColumnSizingEnabled(setting);
 }
 
 
@@ -2137,7 +2154,7 @@ void MultiColumnList::setUserColumnSizingEnabled(bool setting)
 *************************************************************************/
 void MultiColumnList::setUserColumnDraggingEnabled(bool setting)
 {
-	d_header->setColumnDraggingEnabled(setting);
+	getListHeader()->setColumnDraggingEnabled(setting);
 }
 
 
@@ -2146,7 +2163,7 @@ void MultiColumnList::setUserColumnDraggingEnabled(bool setting)
 *************************************************************************/
 uint MultiColumnList::getColumnID(uint col_idx) const
 {
-	return d_header->getSegmentFromColumn(col_idx).getID();
+	return getListHeader()->getSegmentFromColumn(col_idx).getID();
 }
 
 
@@ -2313,6 +2330,43 @@ void MultiColumnList::setRowID(uint row_idx, uint row_id)
 	}
 }
 
+
+/*************************************************************************
+    Return a pointer to the vertical scrollbar component widget for this
+    MultiColumnList.
+*************************************************************************/
+Scrollbar* MultiColumnList::getVertScrollbar() const
+{
+    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                   getName() + VertScrollbarNameSuffix));
+}
+
+
+/*************************************************************************
+    Return a pointer to the horizontal scrollbar component widget for this
+    MultiColumnList.
+*************************************************************************/
+Scrollbar* MultiColumnList::getHorzScrollbar() const
+{
+    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                   getName() + HorzScrollbarNameSuffix));
+}
+
+
+/*************************************************************************
+    Return a pointer to the list header component widget for this
+    MultiColumnList.
+*************************************************************************/
+ListHeader* MultiColumnList::getListHeader() const
+{
+    return static_cast<ListHeader*>(WindowManager::getSingleton().getWindow(
+                                    getName() + ListHeaderNameSuffix));
+}
+
+
+/*************************************************************************
+    Write xml properties for this MultiColumnList to a stream.
+*************************************************************************/
 int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
 {
     // basically this is here to translate the columns in the list into

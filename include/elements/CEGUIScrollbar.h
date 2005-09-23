@@ -439,6 +439,47 @@ protected:
 	}
 
 
+    /*!
+    \brief
+        Return a pointer to the 'increase' PushButtoncomponent widget for this
+        Scrollbar.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the increase PushButton component does not exist.
+    */
+    PushButton* getIncreaseButton() const;
+
+
+    /*!
+    \brief
+        Return a pointer to the 'decrease' PushButton component widget for this
+        Scrollbar.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the 'decrease' PushButton component does not exist.
+    */
+    PushButton* getDecreaseButton() const;
+
+
+    /*!
+    \brief
+        Return a pointer to the Thumb component widget for this Scrollbar.
+
+    \return
+        Pointer to a Thumb object.
+
+    \exception UnknownObjectException
+        Thrown if the Thumb component does not exist.
+    */
+    Thumb* getThumb() const;
+
+
 	/*************************************************************************
 		New event handlers for slider widget
 	*************************************************************************/
@@ -485,11 +526,6 @@ protected:
 	float	d_stepSize;			//!< Step size used for increase / decrease button clicks.
 	float	d_overlapSize;		//!< Amount of overlap when jumping by a page.
 	float	d_position;			//!< Current scroll position.
-
-	// Pointers to the controls that make up the scroll bar
-	Thumb*		d_thumb;		//!< widget used to represent the 'thumb' of the scroll bar.
-	PushButton*	d_increase;		//!< Widget used for the increase button of the scroll bar.
-	PushButton*	d_decrease;		//!< Widget used for the decrease button of the scroll bar.
 
 
 private:

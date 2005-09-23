@@ -25,7 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUIThumb.h"
-
+#include "CEGUIWindowManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -88,21 +88,21 @@ Scrollbar::~Scrollbar(void)
 void Scrollbar::initialise(void)
 {
 	// Set up thumb
-	d_thumb = createThumb(getName() + ThumbNameSuffix);
-	addChildWindow(d_thumb);
-	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved, this));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted, this));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded, this));
+	Thumb* thumb = createThumb(getName() + ThumbNameSuffix);
+	addChildWindow(thumb);
+	thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved, this));
+	thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted, this));
+	thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded, this));
 
 	// set up Increase button
-	d_increase = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
-	addChildWindow(d_increase);
-	d_increase->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
+	PushButton* increase = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
+	addChildWindow(increase);
+	increase->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
 
 	// set up Decrease button
-	d_decrease = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
-	addChildWindow(d_decrease);
-	d_decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
+	PushButton* decrease = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
+	addChildWindow(decrease);
+	decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 
 	// do initial layout
 	performChildWindowLayout();
@@ -379,5 +379,35 @@ void Scrollbar::addScrollbarProperties(void)
 }
 
 
+/*************************************************************************
+    Return a pointer to the 'increase' PushButtoncomponent widget for this
+    Scrollbar.
+*************************************************************************/
+PushButton* Scrollbar::getIncreaseButton() const
+{
+    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
+                                    getName() + IncreaseButtonNameSuffix));
+}
+
+
+/*************************************************************************
+    Return a pointer to the 'decrease' PushButton component widget for this
+    Scrollbar.
+*************************************************************************/
+PushButton* Scrollbar::getDecreaseButton() const
+{
+    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
+                                    getName() + DecreaseButtonNameSuffix));
+}
+
+
+/*************************************************************************
+    Return a pointer to the Thumb component widget for this Scrollbar.
+*************************************************************************/
+Thumb* Scrollbar::getThumb() const
+{
+    return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
+                               getName() + ThumbNameSuffix));
+}
 
 } // End of  CEGUI namespace section

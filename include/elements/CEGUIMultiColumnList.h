@@ -1396,6 +1396,45 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    /*!
+    \brief
+        Return a pointer to the vertical scrollbar component widget for this
+        MultiColumnList.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the horizontal scrollbar component widget for this
+        MultiColumnList.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the list header component widget for this
+        MultiColumnList.
+
+    \return
+        Pointer to a ListHeader object.
+
+    \exception UnknownObjectException
+        Thrown if the list header component does not exist.
+    */
+    ListHeader* getListHeader() const;
+
     // overrides function in base class.
     int writePropertiesXML(OutStream& out_stream) const;
 
@@ -1528,10 +1567,7 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	// component widgets and settings.
-	Scrollbar*	d_vertScrollbar;	//!< vertical scroll-bar widget
-	Scrollbar*	d_horzScrollbar;	//!< horizontal scroll-bar widget
-	ListHeader*	d_header;			//!< The ListHeader attached to this multi-column list.
+	// scrollbar settings.
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
 	bool	d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
 
@@ -1545,6 +1581,8 @@ protected:
 	bool	d_useNominatedRow;		//!< true if we use a nominated row to select.
 	bool	d_useNominatedCol;		//!< true if we use a nominated col to select.
 	ListboxItem*	d_lastSelected;	//!< holds pointer to the last selected item (used in range selections)
+
+    uint    d_columnCount;          //!< keeps track of the number of columns.
 
 	// storage of items in the list box.
 	typedef std::vector<ListRow>		ListItemGrid;

@@ -72,8 +72,8 @@ void ComboDropList::initialise(void)
 	Listbox::initialise();
 
 	// set-up scroll bars so they return capture to us.
-	d_vertScrollbar->setRestoreCapture(true);
-	d_horzScrollbar->setRestoreCapture(true);
+	getVertScrollbar()->setRestoreCapture(true);
+	getHorzScrollbar()->setRestoreCapture(true);
 }
 
 

@@ -63,7 +63,7 @@ namespace CEGUI
     Thumb* FalagardSlider::createThumb(const String& name) const
     {
         // return thumb created by look'n'feel assignment.
-        return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(name));
+        return getThumb();
     }
 
     void FalagardSlider::performChildWindowLayout()
@@ -78,7 +78,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
         // get accesss to the thumb
-        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix));
+        Thumb* theThumb = getThumb();
 
         // get base location for thumb widget
         UVector2 thumbPosition(cegui_absdim(area.d_left), cegui_absdim(area.d_top));
@@ -118,7 +118,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
         // get accesss to the thumb
-        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix));
+        Thumb* theThumb = getThumb();
 
         // slider is vertical
         if (d_vertical)
@@ -144,7 +144,7 @@ namespace CEGUI
 
     float FalagardSlider::getAdjustDirectionFromPoint(const Point& pt) const
     {
-        Rect absrect(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix)->getUnclippedPixelRect());
+        Rect absrect(getThumb()->getUnclippedPixelRect());
 
         if ((d_vertical && (pt.d_y < absrect.d_top)) ||
             (!d_vertical && (pt.d_x > absrect.d_right)))

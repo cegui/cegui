@@ -637,6 +637,31 @@ protected:
     */
     bool handle_scrollChange(const EventArgs& args);
 
+    /*!
+    \brief
+        Return a pointer to the vertical scrollbar component widget for this
+        MultiLineEditbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the horizontal scrollbar component widget for this
+        MultiLineEditbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
 
 	/*************************************************************************
 		New event handlers
@@ -746,9 +771,7 @@ protected:
 	LineList	d_lines;			//!< Holds the lines for the current formatting.
 	float		d_widestExtent;		//!< Holds the extent of the widest line as calculated in the last formatting pass.
 
-	// component widgets
-	Scrollbar*	d_vertScrollbar;	//!< Points to the vertical scroll bar widget.
-	Scrollbar*	d_horzScrollbar;	//!< Points to the horizontal scroll bar widget.
+	// component widget settings
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
 	bool	d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
 

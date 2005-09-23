@@ -278,6 +278,43 @@ namespace CEGUI
 			return Window::testClassName_impl(class_name);
 		}
 
+        /*!
+        \brief
+            Return a pointer to the 'increase' PushButtoncomponent widget for
+            this Spinner.
+
+        \return
+            Pointer to a PushButton object.
+
+        \exception UnknownObjectException
+            Thrown if the increase PushButton component does not exist.
+        */
+        PushButton* getIncreaseButton() const;
+
+        /*!
+        \brief
+            Return a pointer to the 'decrease' PushButton component widget for
+            this Spinner.
+
+        \return
+            Pointer to a PushButton object.
+
+        \exception UnknownObjectException
+            Thrown if the 'decrease' PushButton component does not exist.
+        */
+        PushButton* getDecreaseButton() const;
+
+        /*!
+        \brief
+            Return a pointer to the Editbox component widget for this Spinner.
+
+        \return
+            Pointer to a Editbox object.
+
+        \exception UnknownObjectException
+            Thrown if the Editbox component does not exist.
+        */
+        Editbox* getEditbox() const;
 
         /*************************************************************************
         	Abstract Implementation methods
@@ -393,10 +430,6 @@ namespace CEGUI
         /*************************************************************************
         	Data Fields
         *************************************************************************/
-        PushButton* d_increaseButton;   //!< Pointer to the increase button widget.
-        PushButton* d_decreaseButton;   //!< Pointer to the decrease button widget.
-        Editbox*    d_editbox;          //!< Pointer to the editbox widget.
-
         float   d_stepSize;     //!< Step size value used y the increase & decrease buttons.
         float   d_currentValue; //!< Numerical copy of the text in d_editbox.
         float   d_maxValue;     //!< Maximum value for spinner.

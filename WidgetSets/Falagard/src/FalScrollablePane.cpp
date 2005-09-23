@@ -46,8 +46,8 @@ namespace CEGUI
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        bool v_visible = d_vertScrollbar->isVisible(true);
-        bool h_visible = d_horzScrollbar->isVisible(true);
+        bool v_visible = getVertScrollbar()->isVisible(true);
+        bool h_visible = getHorzScrollbar()->isVisible(true);
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
@@ -77,13 +77,13 @@ namespace CEGUI
     Scrollbar* FalagardScrollablePane::createVerticalScrollbar(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
+        return getVertScrollbar();
     }
 
     Scrollbar* FalagardScrollablePane::createHorizontalScrollbar(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
+        return getHorzScrollbar();
     }
 
     void FalagardScrollablePane::populateRenderCache()

@@ -67,7 +67,7 @@ public:
     *************************************************************************/
     static const String ContentPaneNameSuffix; //!< Widget name suffix for the tab content pane component.
     static const String TabButtonNameSuffix;   //!< Widget name suffix for the tab button components.
-    static const String TabPaneNameSuffix;     //!< Widget name suffix for the tab header pane component.
+    static const String TabButtonPaneNameSuffix; //!< Widget name suffix for the tab button pane component.
 
 	/*************************************************************************
 		Accessor Methods
@@ -320,6 +320,32 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    /*!
+    \brief
+        Return a pointer to the tab button pane (Window)for
+        this TabControl.
+
+    \return
+        Pointer to a Window object.
+
+    \exception UnknownObjectException
+        Thrown if the component does not exist.
+    */
+    Window* getTabButtonPane() const;
+
+    /*!
+    \brief
+        Return a pointer to the TabPane component widget for
+        this TabControl.
+
+    \return
+        Pointer to a TabPane object.
+
+    \exception UnknownObjectException
+        Thrown if the component does not exist.
+    */
+    TabPane* getTabPane() const;
+
 	void performChildWindowLayout();
     int writeChildWindowsXML(OutStream& out_stream) const;
 
@@ -346,8 +372,6 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    Window*     d_tabButtonPane;    //!< The area containing the tab buttons
-    TabPane*    d_tabContentPane;   //!< The content area window
     UDim        d_tabHeight;        //!< The height of the tabs in pixels
     UDim        d_tabPadding;       //!< The padding of the tabs relative to parent
     uint        d_nextTabIndex;     //!< The index to give the next tab 

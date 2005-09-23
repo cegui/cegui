@@ -123,7 +123,7 @@ public:
 	\return
 		true if the window has a title bar and it is enabled, false if the window has no title bar or if the title bar is disabled.
 	*/	
-	bool	isTitleBarEnabled(void) const				{return (d_titlebar != 0) && !((Window*)d_titlebar)->isDisabled();}
+	bool	isTitleBarEnabled(void) const;
 
 
 	/*!
@@ -133,7 +133,7 @@ public:
 	\return
 		true if the window has a close button and it is enabled, false if the window either has no close button or if the close button is disabled.
 	*/
-	bool	isCloseButtonEnabled(void) const			{return (d_closeButton != 0) && !((Window*)d_closeButton)->isDisabled();}
+	bool	isCloseButtonEnabled(void) const;
 
 
 	/*!
@@ -708,6 +708,31 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    /*!
+    \brief
+        Return a pointer to the Titlebar component widget for this FrameWindow.
+
+    \return
+        Pointer to a Titlebar object.
+
+    \exception UnknownObjectException
+        Thrown if the Titlebar component does not exist.
+    */
+    Titlebar* getTitlebar() const;
+
+    /*!
+    \brief
+        Return a pointer to the close button component widget for this
+        FrameWindow.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the close button component does not exist.
+    */
+    PushButton* getCloseButton() const;
+
 
 	/*************************************************************************
 		New events for Frame Windows
@@ -754,10 +779,6 @@ protected:
 	bool	d_beingSized;		//!< true if window is being sized.
 	float	d_borderSize;		//!< thickness of the sizing border around this window
 	Point	d_dragPoint;		//!< point window is being dragged at.
-
-	// composite controls
-	Titlebar*	d_titlebar;				//!< points to the title bar widget.
-	PushButton*	d_closeButton;			//!< points to close button widget.
 
 	// images for cursor when on sizing border
 	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.

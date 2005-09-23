@@ -63,10 +63,7 @@ namespace CEGUI
         d_vertStep(0.1f),
         d_vertOverlap(0.01f),
         d_horzStep(0.1f),
-        d_horzOverlap(0.01f),
-        d_vertScrollbar(0),
-        d_horzScrollbar(0),
-        d_container(0)
+        d_horzOverlap(0.01f)
     {
         addScrollablePaneEvents();
         addScrollablePaneProperties();
@@ -78,8 +75,7 @@ namespace CEGUI
 
     const ScrolledContainer* ScrollablePane::getContentPane(void) const
     {
-        assert (d_container != 0);
-        return d_container;
+        return getScrolledContainer();
     }
 
     bool ScrollablePane::isVertScrollbarAlwaysShown(void) const
@@ -118,26 +114,22 @@ namespace CEGUI
 
     bool ScrollablePane::isContentPaneAutoSized(void) const
     {
-        assert(d_container != 0);
-        return d_container->isContentPaneAutoSized();
+        return getScrolledContainer()->isContentPaneAutoSized();
     }
 
     void ScrollablePane::setContentPaneAutoSized(bool setting)
     {
-        assert(d_container != 0);
-        d_container->setContentPaneAutoSized(setting);
+        getScrolledContainer()->setContentPaneAutoSized(setting);
     }
 
     const Rect& ScrollablePane::getContentPaneArea(void) const
     {
-        assert(d_container != 0);
-        return d_container->getContentArea();
+        return getScrolledContainer()->getContentArea();
     }
 
     void ScrollablePane::setContentPaneArea(const Rect& area)
     {
-        assert(d_container != 0);
-        d_container->setContentArea(area);
+        getScrolledContainer()->setContentArea(area);
     }
 
     float ScrollablePane::getHorizontalStepSize(void) const
@@ -164,15 +156,15 @@ namespace CEGUI
 
     float ScrollablePane::getHorizontalScrollPosition(void) const
     {
-        assert(d_horzScrollbar != 0);
-        float docSz = d_horzScrollbar->getDocumentSize();
-        return (docSz != 0) ? d_horzScrollbar->getScrollPosition() / docSz : 0.0f;
+        Scrollbar* horzScrollbar = getHorzScrollbar();
+        float docSz = horzScrollbar->getDocumentSize();
+        return (docSz != 0) ? horzScrollbar->getScrollPosition() / docSz : 0.0f;
     }
 
     void ScrollablePane::setHorizontalScrollPosition(float position)
     {
-        assert(d_horzScrollbar != 0);
-        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getDocumentSize() * position);
+        Scrollbar* horzScrollbar = getHorzScrollbar();
+        horzScrollbar->setScrollPosition(horzScrollbar->getDocumentSize() * position);
     }
 
     float ScrollablePane::getVerticalStepSize(void) const
@@ -199,15 +191,15 @@ namespace CEGUI
 
     float ScrollablePane::getVerticalScrollPosition(void) const
     {
-        assert(d_vertScrollbar != 0);
-        float docSz = d_vertScrollbar->getDocumentSize();
-        return (docSz != 0) ? d_vertScrollbar->getScrollPosition() / docSz : 0.0f;
+        Scrollbar* vertScrollbar = getVertScrollbar();
+        float docSz = vertScrollbar->getDocumentSize();
+        return (docSz != 0) ? vertScrollbar->getScrollPosition() / docSz : 0.0f;
     }
 
     void ScrollablePane::setVerticalScrollPosition(float position)
     {
-        assert(d_vertScrollbar != 0);
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getDocumentSize() * position);
+        Scrollbar* vertScrollbar = getVertScrollbar();
+        vertScrollbar->setScrollPosition(vertScrollbar->getDocumentSize() * position);
     }
 
     void ScrollablePane::initialise(void)
@@ -215,46 +207,46 @@ namespace CEGUI
         String widgetName;
         // create horizontal scrollbar
         widgetName = d_name + HorzScrollbarNameSuffix;
-        d_horzScrollbar = createHorizontalScrollbar(widgetName);
+        Scrollbar* horzScrollbar = createHorizontalScrollbar(widgetName);
         // perform consistency checks on what we got back
-        assert(d_horzScrollbar != 0);
-        assert(d_horzScrollbar->getName() == widgetName);
+        assert(horzScrollbar != 0);
+        assert(horzScrollbar->getName() == widgetName);
 
         // create vertical scrollbar
         widgetName = d_name + VertScrollbarNameSuffix;
-        d_vertScrollbar = createVerticalScrollbar(widgetName);
+        Scrollbar* vertScrollbar = createVerticalScrollbar(widgetName);
         // perform consistency checks on what we got back
-        assert(d_vertScrollbar != 0);
-        assert(d_vertScrollbar->getName() == widgetName);
+        assert(vertScrollbar != 0);
+        assert(vertScrollbar->getName() == widgetName);
 
         // create scrolled container widget
-        d_container = 
+        ScrolledContainer* container =
             static_cast<ScrolledContainer*>(WindowManager::getSingleton().createWindow(
                 ScrolledContainer::WidgetTypeName, d_name + ScrolledContainerNameSuffix));
 
         // add child controls
-        addChildWindow(d_horzScrollbar);
-        addChildWindow(d_vertScrollbar);
-        addChildWindow(d_container);
+        addChildWindow(horzScrollbar);
+        addChildWindow(vertScrollbar);
+        addChildWindow(container);
 
         // do a bit of initialisation
-        d_horzScrollbar->setAlwaysOnTop(true);
-        d_vertScrollbar->setAlwaysOnTop(true);
+        horzScrollbar->setAlwaysOnTop(true);
+        vertScrollbar->setAlwaysOnTop(true);
         // container pane is always same size as this parent pane,
         // scrolling is actually implemented via positioning and clipping tricks.
-        d_container->setWindowSize(UVector2(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+        container->setWindowSize(UVector2(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 
         // subscribe to events we need to hear about
-        d_vertScrollbar->subscribeEvent(
+        vertScrollbar->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
             Event::Subscriber(&ScrollablePane::handleScrollChange, this));
-        d_horzScrollbar->subscribeEvent(
+        horzScrollbar->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
             Event::Subscriber(&ScrollablePane::handleScrollChange, this));
-        d_container->subscribeEvent(
+        container->subscribeEvent(
             ScrolledContainer::EventContentChanged,
             Event::Subscriber(&ScrollablePane::handleContentAreaChange, this));
-        d_container->subscribeEvent(
+        container->subscribeEvent(
             ScrolledContainer::EventAutoSizeSettingChanged,
             Event::Subscriber(&ScrollablePane::handleAutoSizePaneChanged, this));
 
@@ -274,19 +266,18 @@ namespace CEGUI
     void ScrollablePane::configureScrollbars(void)
     {
         // controls should all be valid by this stage
-        assert(d_container != 0);
-        assert(d_vertScrollbar != 0);
-        assert(d_horzScrollbar != 0);
+        Scrollbar* vertScrollbar = getVertScrollbar();
+        Scrollbar* horzScrollbar = getHorzScrollbar();
 
         // enable required scrollbars
-        d_vertScrollbar->setVisible(isVertScrollbarNeeded());
-        d_horzScrollbar->setVisible(isHorzScrollbarNeeded());
+        vertScrollbar->setVisible(isVertScrollbarNeeded());
+        horzScrollbar->setVisible(isHorzScrollbarNeeded());
 
         // Check if the addition of the horizontal scrollbar means we
         // now also need the vertical bar.
-        if (d_horzScrollbar->isVisible())
+        if (horzScrollbar->isVisible())
         {
-            d_vertScrollbar->setVisible(isVertScrollbarNeeded());
+            vertScrollbar->setVisible(isVertScrollbarNeeded());
         }
 
         performChildWindowLayout();
@@ -295,44 +286,36 @@ namespace CEGUI
         Rect viewableArea(getViewableArea());
 
         // set up vertical scroll bar values
-        d_vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
-        d_vertScrollbar->setPageSize(viewableArea.getHeight());
-        d_vertScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertStep));
-        d_vertScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertOverlap));
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
+        vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
+        vertScrollbar->setPageSize(viewableArea.getHeight());
+        vertScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertStep));
+        vertScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getHeight() * d_vertOverlap));
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
         // set up horizontal scroll bar values
-        d_horzScrollbar->setDocumentSize(fabsf(d_contentRect.getWidth()));
-        d_horzScrollbar->setPageSize(viewableArea.getWidth());
-        d_horzScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzStep));
-        d_horzScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzOverlap));
-        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
+        horzScrollbar->setDocumentSize(fabsf(d_contentRect.getWidth()));
+        horzScrollbar->setPageSize(viewableArea.getWidth());
+        horzScrollbar->setStepSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzStep));
+        horzScrollbar->setOverlapSize(ceguimax(1.0f, viewableArea.getWidth() * d_horzOverlap));
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
     }
 
     bool ScrollablePane::isHorzScrollbarNeeded(void) const
     {
-        assert(d_container != 0);
-
         return ((fabs(d_contentRect.getWidth()) > getViewableArea().getWidth()) || d_forceHorzScroll);
     }
 
     bool ScrollablePane::isVertScrollbarNeeded(void) const
     {
-        assert(d_container != 0);
-
         return ((fabs(d_contentRect.getHeight()) > getViewableArea().getHeight()) || d_forceVertScroll);
     }
 
     void ScrollablePane::updateContainerPosition(void)
     {
-        assert(d_container != 0);
-        assert(d_horzScrollbar != 0);
-        assert(d_vertScrollbar != 0);
-
         // basePos is the position represented by the scrollbars
         // (these are negated so pane is scrolled in the correct directions)
-        UVector2 basePos(cegui_absdim(-d_horzScrollbar->getScrollPosition()),
-                         cegui_absdim(-d_vertScrollbar->getScrollPosition()));
+        UVector2 basePos(cegui_absdim(-getHorzScrollbar()->getScrollPosition()),
+                         cegui_absdim(-getVertScrollbar()->getScrollPosition()));
 
         // this bias is the absolute position that 0 on the scrollbars represent.
         // effectively removes un-used empty space from the pane.
@@ -341,7 +324,7 @@ namespace CEGUI
 
         // set the new container pane position to be what the scrollbars request
         // minus any bias generated by the location of the content.
-        d_container->setWindowPosition(basePos - bias);
+        getScrolledContainer()->setWindowPosition(basePos - bias);
     }
 
     void ScrollablePane::onContentPaneChanged(WindowEventArgs& e)
@@ -379,12 +362,11 @@ namespace CEGUI
 
     bool ScrollablePane::handleContentAreaChange(const EventArgs& e)
     {
-        assert(d_container != 0);
-        assert(d_horzScrollbar != 0);
-        assert(d_vertScrollbar != 0);
+        Scrollbar* vertScrollbar = getVertScrollbar();
+        Scrollbar* horzScrollbar = getHorzScrollbar();
 
         // get updated extents of the content
-        Rect contentArea(d_container->getContentArea());
+        Rect contentArea(getScrolledContainer()->getContentArea());
 
         // calculate any change on the top and left edges.
         float xChange = contentArea.d_left - d_contentRect.d_left;
@@ -396,8 +378,8 @@ namespace CEGUI
         configureScrollbars();
 
         // update scrollbar positions (which causes container pane to be moved as needed).
-        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() - xChange);
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() - yChange);
+        horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() - xChange);
+        vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() - yChange);
 
         // this call may already have been made if the scroll positions changed.  The call
         // is required here for cases where the top/left 'bias' has changed; in which
@@ -437,8 +419,7 @@ namespace CEGUI
         else
         {
             // container should always be valid by the time we're adding client controls
-            assert(d_container != 0);
-            d_container->addChildWindow(wnd);
+            getScrolledContainer()->addChildWindow(wnd);
         }
     }
 
@@ -457,8 +438,7 @@ namespace CEGUI
         else
         {
             // container should always be valid by the time we're handling client controls
-            assert(d_container != 0);
-            d_container->removeChildWindow(wnd);
+            getScrolledContainer()->removeChildWindow(wnd);
         }
     }
 
@@ -476,13 +456,16 @@ namespace CEGUI
         // base class processing.
         Window::onMouseWheel(e);
 
-        if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+        Scrollbar* vertScrollbar = getVertScrollbar();
+        Scrollbar* horzScrollbar = getHorzScrollbar();
+
+        if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
         {
-            d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+            vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
         }
-        else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+        else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
         {
-            d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+            horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
         }
 
         e.handled = true;
@@ -500,6 +483,25 @@ namespace CEGUI
         addProperty(&d_vertStepProperty);
         addProperty(&d_vertOverlapProperty);
         addProperty(&d_vertScrollPositionProperty);
+    }
+
+    Scrollbar* ScrollablePane::getVertScrollbar() const
+    {
+        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                    getName() + VertScrollbarNameSuffix));
+    }
+
+    Scrollbar* ScrollablePane::getHorzScrollbar() const
+    {
+        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                    getName() + HorzScrollbarNameSuffix));
+    }
+
+    ScrolledContainer* ScrollablePane::getScrolledContainer() const
+    {
+        return static_cast<ScrolledContainer*>(
+                    WindowManager::getSingleton().getWindow(
+                    getName() + ScrolledContainerNameSuffix));
     }
 
 } // End of  CEGUI namespace section

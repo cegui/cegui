@@ -98,14 +98,14 @@ Listbox::~Listbox(void)
 void Listbox::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
-	d_horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
+	Scrollbar* vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
+	Scrollbar* horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
 
-	addChildWindow(d_vertScrollbar);
-	addChildWindow(d_horzScrollbar);
+	addChildWindow(vertScrollbar);
+	addChildWindow(horzScrollbar);
 
-    d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
-    d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
+    vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
+    horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
 
 	configureScrollbars();
 	performChildWindowLayout();
@@ -575,8 +575,8 @@ void Listbox::populateRenderCache()
     Rect itemsArea(getListRenderArea());
 
     // set up some initial positional details for items
-    itemPos.d_x = itemsArea.d_left - d_horzScrollbar->getScrollPosition();
-    itemPos.d_y = itemsArea.d_top - d_vertScrollbar->getScrollPosition();
+    itemPos.d_x = itemsArea.d_left - getHorzScrollbar()->getScrollPosition();
+    itemPos.d_y = itemsArea.d_top - getVertScrollbar()->getScrollPosition();
     itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
 
     float alpha = getEffectiveAlpha();
@@ -620,19 +620,8 @@ void Listbox::populateRenderCache()
 *************************************************************************/
 void Listbox::configureScrollbars(void)
 {
-    Scrollbar* vertScrollbar;
-    Scrollbar* horzScrollbar;
-
-    try
-    {
-        vertScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + VertScrollbarNameSuffix));
-        horzScrollbar = static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(getName() + HorzScrollbarNameSuffix));
-    }
-    catch (UnknownObjectException)
-    {
-        // no scrollbars?  Can't configure then!
-        return;
-    }
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	float totalHeight	= getTotalItemsHeight();
 	float widestItem	= getWidestItemWidth();
@@ -809,7 +798,7 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 	// point must be within the rendering area of the Listbox.
 	if (renderArea.isPointInRect(pt))
 	{
-		float y = renderArea.d_top - d_vertScrollbar->getScrollPosition();
+		float y = renderArea.d_top - getVertScrollbar()->getScrollPosition();
 
 		// test if point is above first item
 		if (pt.d_y >= y)
@@ -983,13 +972,16 @@ void Listbox::onMouseWheel(MouseEventArgs& e)
 	// base class processing.
 	Window::onMouseWheel(e);
 
-	if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+	if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
 	}
-	else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+	else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
 
 	e.handled = true;
@@ -1041,10 +1033,12 @@ void Listbox::onMouseMove(MouseEventArgs& e)
 *************************************************************************/
 void Listbox::ensureItemIsVisible(size_t item_index)
 {
+    Scrollbar* vertScrollbar = getVertScrollbar();
+
 	// handle simple "scroll to the bottom" case
 	if (item_index >= getItemCount())
 	{
-		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getDocumentSize() - d_vertScrollbar->getPageSize());
+		vertScrollbar->setScrollPosition(vertScrollbar->getDocumentSize() - vertScrollbar->getPageSize());
 	}
 	else
 	{
@@ -1063,7 +1057,7 @@ void Listbox::ensureItemIsVisible(size_t item_index)
 		bottom = top + d_listItems[i]->getPixelSize().d_height;
 
 		// account for current scrollbar value
-		float currPos = d_vertScrollbar->getScrollPosition();
+		float currPos = vertScrollbar->getScrollPosition();
 		top		-= currPos;
 		bottom	-= currPos;
 
@@ -1071,13 +1065,13 @@ void Listbox::ensureItemIsVisible(size_t item_index)
 		if ((top < 0.0f) || ((bottom - top) > listHeight))
 		{
 			// scroll top of item to top of box.
-			d_vertScrollbar->setScrollPosition(currPos + top);
+			vertScrollbar->setScrollPosition(currPos + top);
 		}
 		// if bottom is below the view area
 		else if (bottom >= listHeight)
 		{
 			// position bottom of item at the bottom of the list
-			d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);		
+			vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
 		}
 		
 		// Item is already fully visible - nothing more to do.
@@ -1170,6 +1164,25 @@ bool Listbox::handle_scrollChange(const EventArgs& args)
     return true;
 }
 
+/*************************************************************************
+    Return a pointer to the vertical scrollbar component widget for this
+    Listbox.
+*************************************************************************/
+Scrollbar* Listbox::getVertScrollbar() const
+{
+    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                   getName() + VertScrollbarNameSuffix));
+}
+
+/*************************************************************************
+    Return a pointer to the horizontal scrollbar component widget for this
+    Listbox.
+*************************************************************************/
+Scrollbar* Listbox::getHorzScrollbar() const
+{
+    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                   getName() + HorzScrollbarNameSuffix));
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************

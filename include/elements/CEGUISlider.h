@@ -268,6 +268,18 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    /*!
+    \brief
+        Return a pointer to the Thumb component widget for this Slider.
+
+    \return
+        Pointer to a Thumb object.
+
+    \exception UnknownObjectException
+        Thrown if the Thumb component does not exist.
+    */
+    Thumb* getThumb() const;
+
 
 	/*************************************************************************
 		New event handlers for slider widget
@@ -306,10 +318,6 @@ protected:
 	float	d_value;		//!< current slider value
 	float	d_maxValue;		//!< slider maximum value (minimum is fixed at 0)
 	float	d_step;			//!< amount to adjust slider by when clicked (and not dragged).
-
-	// Pointers to the controls that make up the slider
-	Thumb*	d_thumb;		//!< widget used to represent the 'thumb' of the slider.
-
 
 private:
 	/*************************************************************************

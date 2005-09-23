@@ -57,7 +57,7 @@ namespace CEGUI
     TabPane* FalagardTabControl::createTabContentPane(const String& name) const
     {
         // return wiget created by look'n'feel assignment.
-        return static_cast<TabPane*>(WindowManager::getSingleton().getWindow(name));
+        return getTabPane();
     }
 
     Window* FalagardTabControl::createTabButtonPane(const String& name) const
@@ -65,7 +65,7 @@ namespace CEGUI
         try
         {
             // return wiget created by look'n'feel assignment.
-            return static_cast<TabPane*>(WindowManager::getSingleton().getWindow(name));
+            return getTabButtonPane();
         }
         // use default if none provided by LookNFeel
         catch (UnknownObjectException)

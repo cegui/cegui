@@ -47,8 +47,8 @@ namespace CEGUI
     Rect FalagardMultiLineEditbox::getTextRenderArea(void) const
     {
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        bool v_visible = d_vertScrollbar->isVisible(true);
-        bool h_visible = d_horzScrollbar->isVisible(true);
+        bool v_visible = getVertScrollbar()->isVisible(true);
+        bool h_visible = getHorzScrollbar()->isVisible(true);
 
         // if either of the scrollbars are visible, we might want to use another text rendering area
         if (v_visible || h_visible)
@@ -78,13 +78,13 @@ namespace CEGUI
     Scrollbar* FalagardMultiLineEditbox::createVertScrollbar(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
+        return getVertScrollbar();
     }
 
     Scrollbar* FalagardMultiLineEditbox::createHorzScrollbar(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
+        return getHorzScrollbar();
     }
 
     void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
@@ -132,7 +132,7 @@ namespace CEGUI
                 caratArea.d_top     = textArea.d_top + ypos;
                 caratArea.setWidth(caratImagery.getBoundingRect(*this).getSize().d_width);
                 caratArea.setHeight(fnt->getLineSpacing());
-                caratArea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
+                caratArea.offset(Point(-getHorzScrollbar()->getScrollPosition(), -getVertScrollbar()->getScrollPosition()));
 
                 // cache the carat image for rendering.
                 caratImagery.render(*this, caratArea, baseZ, 0, &textArea);

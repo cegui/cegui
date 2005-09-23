@@ -806,7 +806,7 @@ protected:
 	\return
 		Pointer to an Editbox derived class.
 	*/
-	virtual	Editbox*	createEditbox(const String& name) const		= 0;
+	virtual   Editbox*   createEditbox(const String& name) const		= 0;
 
 
 	/*!
@@ -875,6 +875,42 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    /*!
+    \brief
+        Return a pointer to the Editbox component widget for this Combobox.
+
+    \return
+        Pointer to an Editbox object.
+
+    \exception UnknownObjectException
+        Thrown if the Editbox component does not exist.
+    */
+    Editbox* getEditbox() const;
+
+    /*!
+    \brief
+        Return a pointer to the PushButton component widget for this Combobox.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the PushButton component does not exist.
+    */
+    PushButton* getPushButton() const;
+
+    /*!
+    \brief
+        Return a pointer to the ComboDropList component widget for this
+        Combobox.
+
+    \return
+        Pointer to an ComboDropList object.
+
+    \exception UnknownObjectException
+        Thrown if the ComboDropList component does not exist.
+    */
+    ComboDropList* getDropList() const;
 
 	/*************************************************************************
 		Handlers to relay child widget events so they appear to come from us
@@ -1032,9 +1068,6 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	Editbox*		d_editbox;		//!< Editbox widget sub-component.
-	ComboDropList*	d_droplist;		//!< ComboDropList widget sub-component.	
-	PushButton*		d_button;		//!< PushButton widget sub-component.
 	bool			d_singleClickOperation;		//!< true if user can show and select from list in a single click.
 
 

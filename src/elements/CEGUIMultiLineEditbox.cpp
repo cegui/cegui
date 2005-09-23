@@ -29,6 +29,7 @@
 #include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIWindowManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -130,14 +131,14 @@ MultiLineEditbox::~MultiLineEditbox(void)
 void MultiLineEditbox::initialise(void)
 {
 	// create the component sub-widgets
-	d_vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
-	d_horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
+	Scrollbar* vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
+	Scrollbar* horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
 
-	addChildWindow(d_vertScrollbar);
-	addChildWindow(d_horzScrollbar);
+	addChildWindow(vertScrollbar);
+	addChildWindow(horzScrollbar);
 
-    d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
-    d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
+    vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
+    horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
 
 	formatText();
 	performChildWindowLayout();
@@ -374,6 +375,9 @@ void MultiLineEditbox::setInactiveSelectBrushColour(const colour& col)
 *************************************************************************/
 void MultiLineEditbox::ensureCaratIsVisible(void)
 {
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
 	// calculate the location of the carat
 	const Font* fnt = getFont();
 	size_t caratLine = getLineNumberFromIndex(d_caratPos);
@@ -388,29 +392,29 @@ void MultiLineEditbox::ensureCaratIsVisible(void)
 		float xpos = fnt->getTextExtent(d_text.substr(d_lines[caratLine].d_startIdx, caratLineIdx));
 
 		// adjust position for scroll bars
-		xpos -= d_horzScrollbar->getScrollPosition();
-		ypos -= d_vertScrollbar->getScrollPosition();
+		xpos -= horzScrollbar->getScrollPosition();
+		ypos -= vertScrollbar->getScrollPosition();
 
 		// if carat is above window, scroll up
 		if (ypos < 0)
 		{
-			d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + ypos);
+			vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + ypos);
 		}
 		// if carat is below the window, scroll down
 		else if ((ypos += fnt->getLineSpacing()) > textArea.getHeight())
 		{
-			d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
+			vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + (ypos - textArea.getHeight()) + fnt->getLineSpacing());
 		}
 
 		// if carat is left of the window, scroll left
 		if (xpos < 0)
 		{
-			d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + xpos - 50);
+			horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + xpos - 50);
 		}
 		// if carat is right of the window, scroll right
 		else if (xpos > textArea.getWidth())
 		{
-			d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
+			horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + (xpos - textArea.getWidth()) + 50);
 		}
 
 	}
@@ -441,6 +445,8 @@ void MultiLineEditbox::setWordWrapping(bool setting)
 *************************************************************************/
 void MultiLineEditbox::configureScrollbars(void)
 {
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
 	float totalHeight	= (float)d_lines.size() * getFont()->getLineSpacing();
 	float widestItem	= d_widestExtent;
 
@@ -450,16 +456,16 @@ void MultiLineEditbox::configureScrollbars(void)
 	// show or hide vertical scroll bar as required (or as specified by option)
 	if ((totalHeight > getTextRenderArea().getHeight()) || d_forceVertScroll)
 	{
-		d_vertScrollbar->show();
+		vertScrollbar->show();
 
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((widestItem > getTextRenderArea().getWidth()) || d_forceHorzScroll)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 		}
 		else
 		{
-			d_horzScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -468,23 +474,23 @@ void MultiLineEditbox::configureScrollbars(void)
 		// show or hide horizontal scroll bar as required (or as specified by option)
 		if ((widestItem > getTextRenderArea().getWidth()) || d_forceHorzScroll)
 		{
-			d_horzScrollbar->show();
+			horzScrollbar->show();
 
 			// show or hide vertical scroll bar as required (or as specified by option)
 			if ((totalHeight > getTextRenderArea().getHeight()) || d_forceVertScroll)
 			{
-				d_vertScrollbar->show();
+				vertScrollbar->show();
 			}
 			else
 			{
-				d_vertScrollbar->hide();
+				vertScrollbar->hide();
 			}
 
 		}
 		else
 		{
-			d_vertScrollbar->hide();
-			d_horzScrollbar->hide();
+			vertScrollbar->hide();
+			horzScrollbar->hide();
 		}
 
 	}
@@ -494,15 +500,15 @@ void MultiLineEditbox::configureScrollbars(void)
 	//
 	Rect renderArea(getTextRenderArea());
 
-	d_vertScrollbar->setDocumentSize(totalHeight);
-	d_vertScrollbar->setPageSize(renderArea.getHeight());
-	d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
-	d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
+	vertScrollbar->setDocumentSize(totalHeight);
+	vertScrollbar->setPageSize(renderArea.getHeight());
+	vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / 10.0f));
+	vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition());
 
-	d_horzScrollbar->setDocumentSize(widestItem);
-	d_horzScrollbar->setPageSize(renderArea.getWidth());
-	d_horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
-	d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition());
+	horzScrollbar->setDocumentSize(widestItem);
+	horzScrollbar->setPageSize(renderArea.getWidth());
+	horzScrollbar->setStepSize(ceguimax(1.0f, renderArea.getWidth() / 10.0f));
+	horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition());
 }
 
 
@@ -513,7 +519,7 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
 {
     // text is already formatted, we just grab the lines and render them with the required alignment.
     Rect drawArea(dest_area);
-    drawArea.offset(Point(-d_horzScrollbar->getScrollPosition(), -d_vertScrollbar->getScrollPosition()));
+    drawArea.offset(Point(-getHorzScrollbar()->getScrollPosition(), -getVertScrollbar()->getScrollPosition()));
 
     Renderer* renderer = System::getSingleton().getRenderer();
     const Font* fnt = getFont();
@@ -787,8 +793,8 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
 	wndPt.d_y -= textArea.d_top;
 
 	// factor in scroll bar values
-	wndPt.d_x += d_horzScrollbar->getScrollPosition();
-	wndPt.d_y += d_vertScrollbar->getScrollPosition();
+	wndPt.d_x += getHorzScrollbar()->getScrollPosition();
+	wndPt.d_y += getVertScrollbar()->getScrollPosition();
 
 	size_t lineNumber = static_cast<size_t>(wndPt.d_y / getFont()->getLineSpacing());
 
@@ -1539,13 +1545,16 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 	// base class processing.
 	Window::onMouseWheel(e);
 
-	if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
+    Scrollbar* vertScrollbar = getVertScrollbar();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+	if (vertScrollbar->isVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
 	}
-	else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
+	else if (horzScrollbar->isVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
 	}
 
 	e.handled = true;
@@ -1666,6 +1675,22 @@ bool MultiLineEditbox::handle_scrollChange(const EventArgs& args)
     return true;
 }
 
+/*************************************************************************
+    Return a pointer to the vertical scrollbar component widget.
+*************************************************************************/
+Scrollbar* MultiLineEditbox::getVertScrollbar() const
+{
+    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                   getName() + VertScrollbarNameSuffix));
+}
 
+/*************************************************************************
+    Return a pointer to the horizontal scrollbar component widget.
+*************************************************************************/
+Scrollbar* MultiLineEditbox::getHorzScrollbar() const
+{
+    return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
+                                   getName() + HorzScrollbarNameSuffix));
+}
 
 } // End of  CEGUI namespace section

@@ -28,7 +28,7 @@
 #include "elements/CEGUIPushButton.h"
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIListboxItem.h"
-
+#include "CEGUIWindowManager.h"
 
 /*************************************************************************
 	General information.
@@ -122,38 +122,38 @@ Combobox::~Combobox(void)
 *************************************************************************/
 void Combobox::initialise(void)
 {
-	d_editbox	= createEditbox(getName() + EditboxNameSuffix);
-	d_droplist	= createDropList(getName() + DropListNameSuffix);
-	d_button	= createPushButton(getName() + ButtonNameSuffix);
-    d_droplist->setFont(getFont());
-    d_editbox->setFont(getFont());
+	Editbox* editbox        = createEditbox(getName() + EditboxNameSuffix);
+	ComboDropList* droplist = createDropList(getName() + DropListNameSuffix);
+	PushButton* button       = createPushButton(getName() + ButtonNameSuffix);
+    droplist->setFont(getFont());
+    editbox->setFont(getFont());
 
-	addChildWindow(d_editbox);
-	addChildWindow(d_droplist);
-	addChildWindow(d_button);
+	addChildWindow(editbox);
+	addChildWindow(droplist);
+	addChildWindow(button);
 
 	// internal event wiring
-	d_button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
-	d_droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
-	d_droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
-	d_editbox->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::editbox_MouseDownHandler, this));
+	button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
+	droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
+	droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
+	editbox->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::editbox_MouseDownHandler, this));
 
 	// event forwarding setup
-	d_editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventValidationStringChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ValidationStringChangedHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventMaximumTextLengthChanged, Event::Subscriber(&CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventTextInvalidated, Event::Subscriber(&CEGUI::Combobox::editbox_TextInvalidatedEventHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventInvalidEntryAttempted, Event::Subscriber(&CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventCaratMoved, Event::Subscriber(&CEGUI::Combobox::editbox_CaratMovedHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventTextSelectionChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextSelectionChangedHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventEditboxFull, Event::Subscriber(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&CEGUI::Combobox::editbox_TextAcceptedEventHandler, this));
-	d_editbox->subscribeEvent(Editbox::EventTextChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextChangedEventHandler, this));
-	d_droplist->subscribeEvent(Listbox::EventListContentsChanged, Event::Subscriber(&CEGUI::Combobox::listbox_ListContentsChangedHandler, this));
-	d_droplist->subscribeEvent(Listbox::EventSelectionChanged, Event::Subscriber(&CEGUI::Combobox::listbox_ListSelectionChangedHandler, this));
-	d_droplist->subscribeEvent(Listbox::EventSortModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_SortModeChangedHandler, this));
-	d_droplist->subscribeEvent(Listbox::EventVertScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_VertScrollModeChangedHandler, this));
-	d_droplist->subscribeEvent(Listbox::EventHorzScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_HorzScrollModeChangedHandler, this));
+	editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
+	editbox->subscribeEvent(Editbox::EventValidationStringChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ValidationStringChangedHandler, this));
+	editbox->subscribeEvent(Editbox::EventMaximumTextLengthChanged, Event::Subscriber(&CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler, this));
+	editbox->subscribeEvent(Editbox::EventTextInvalidated, Event::Subscriber(&CEGUI::Combobox::editbox_TextInvalidatedEventHandler, this));
+	editbox->subscribeEvent(Editbox::EventInvalidEntryAttempted, Event::Subscriber(&CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler, this));
+	editbox->subscribeEvent(Editbox::EventCaratMoved, Event::Subscriber(&CEGUI::Combobox::editbox_CaratMovedHandler, this));
+	editbox->subscribeEvent(Editbox::EventTextSelectionChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextSelectionChangedHandler, this));
+	editbox->subscribeEvent(Editbox::EventEditboxFull, Event::Subscriber(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this));
+	editbox->subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&CEGUI::Combobox::editbox_TextAcceptedEventHandler, this));
+	editbox->subscribeEvent(Editbox::EventTextChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextChangedEventHandler, this));
+	droplist->subscribeEvent(Listbox::EventListContentsChanged, Event::Subscriber(&CEGUI::Combobox::listbox_ListContentsChangedHandler, this));
+	droplist->subscribeEvent(Listbox::EventSelectionChanged, Event::Subscriber(&CEGUI::Combobox::listbox_ListSelectionChangedHandler, this));
+	droplist->subscribeEvent(Listbox::EventSortModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_SortModeChangedHandler, this));
+	droplist->subscribeEvent(Listbox::EventVertScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_VertScrollModeChangedHandler, this));
+	droplist->subscribeEvent(Listbox::EventHorzScrollbarModeChanged, Event::Subscriber(&CEGUI::Combobox::listbox_HorzScrollModeChangedHandler, this));
 
 	// put components in their initial positions
 	performChildWindowLayout();
@@ -166,9 +166,10 @@ void Combobox::initialise(void)
 void Combobox::showDropList(void)
 {
 	// Display the box
-	d_droplist->show();
-	d_droplist->activate();
-	d_droplist->captureInput();
+    ComboDropList* droplist = getDropList();
+	droplist->show();
+	droplist->activate();
+	droplist->captureInput();
 
 	// Fire off event
 	WindowEventArgs args(this);
@@ -183,7 +184,7 @@ void Combobox::hideDropList(void)
 {
 	// the natural order of things when this happens will ensure the list is
 	// hidden and events are fired.
-	d_droplist->releaseInput();
+	getDropList()->releaseInput();
 }
 
 
@@ -192,7 +193,7 @@ void Combobox::hideDropList(void)
 *************************************************************************/
 bool Combobox::hasInputFocus(void) const
 {
-	return d_editbox->hasInputFocus();
+	return getEditbox()->hasInputFocus();
 }
 
 
@@ -201,7 +202,7 @@ bool Combobox::hasInputFocus(void) const
 *************************************************************************/
 bool Combobox::isReadOnly(void) const
 {
-	return d_editbox->isReadOnly();
+	return getEditbox()->isReadOnly();
 }
 
 
@@ -211,7 +212,7 @@ bool Combobox::isReadOnly(void) const
 *************************************************************************/
 bool Combobox::isTextValid(void) const
 {
-	return d_editbox->isTextValid();
+	return getEditbox()->isTextValid();
 }
 
 
@@ -220,7 +221,7 @@ bool Combobox::isTextValid(void) const
 *************************************************************************/
 const String& Combobox::getValidationString(void) const
 {
-	return d_editbox->getValidationString();
+	return getEditbox()->getValidationString();
 }
 
 
@@ -229,7 +230,7 @@ const String& Combobox::getValidationString(void) const
 *************************************************************************/
 size_t Combobox::getCaratIndex(void) const
 {
-	return d_editbox->getCaratIndex();
+	return getEditbox()->getCaratIndex();
 }
 
 
@@ -238,7 +239,7 @@ size_t Combobox::getCaratIndex(void) const
 *************************************************************************/
 size_t Combobox::getSelectionStartIndex(void) const
 {
-	return d_editbox->getSelectionStartIndex();
+	return getEditbox()->getSelectionStartIndex();
 }
 
 
@@ -247,7 +248,7 @@ size_t Combobox::getSelectionStartIndex(void) const
 *************************************************************************/
 size_t Combobox::getSelectionEndIndex(void) const
 {
-	return d_editbox->getSelectionEndIndex();
+	return getEditbox()->getSelectionEndIndex();
 }
 
 
@@ -256,7 +257,7 @@ size_t Combobox::getSelectionEndIndex(void) const
 *************************************************************************/
 size_t Combobox::getSelectionLength(void) const
 {
-	return d_editbox->getSelectionLength();
+	return getEditbox()->getSelectionLength();
 }
 
 
@@ -265,7 +266,7 @@ size_t Combobox::getSelectionLength(void) const
 *************************************************************************/
 size_t Combobox::getMaxTextLength(void) const
 {
-	return d_editbox->getMaxTextLength();
+	return getEditbox()->getMaxTextLength();
 }
 
 
@@ -275,7 +276,7 @@ size_t Combobox::getMaxTextLength(void) const
 *************************************************************************/
 colour Combobox::getNormalTextColour(void) const	
 {
-	return d_editbox->getNormalTextColour();
+	return getEditbox()->getNormalTextColour();
 }
 
 
@@ -285,7 +286,7 @@ colour Combobox::getNormalTextColour(void) const
 *************************************************************************/
 colour Combobox::getSelectedTextColour(void) const
 {
-	return d_editbox->getSelectedTextColour();
+	return getEditbox()->getSelectedTextColour();
 }
 
 
@@ -295,7 +296,7 @@ colour Combobox::getSelectedTextColour(void) const
 *************************************************************************/
 colour Combobox::getNormalSelectBrushColour(void) const
 {
-	return d_editbox->getNormalSelectBrushColour();
+	return getEditbox()->getNormalSelectBrushColour();
 }
 
 
@@ -305,7 +306,7 @@ colour Combobox::getNormalSelectBrushColour(void) const
 *************************************************************************/
 colour Combobox::getInactiveSelectBrushColour(void) const
 {
-	return d_editbox->getInactiveSelectBrushColour();
+	return getEditbox()->getInactiveSelectBrushColour();
 }
 
 
@@ -314,7 +315,7 @@ colour Combobox::getInactiveSelectBrushColour(void) const
 *************************************************************************/
 void Combobox::setReadOnly(bool setting)
 {
-	d_editbox->setReadOnly(setting);
+	getEditbox()->setReadOnly(setting);
 }
 
 
@@ -323,7 +324,7 @@ void Combobox::setReadOnly(bool setting)
 *************************************************************************/
 void Combobox::setValidationString(const String& validation_string)
 {
-	d_editbox->setValidationString(validation_string);
+	getEditbox()->setValidationString(validation_string);
 }
 
 
@@ -332,7 +333,7 @@ void Combobox::setValidationString(const String& validation_string)
 *************************************************************************/
 void Combobox::setCaratIndex(size_t carat_pos)
 {
-	d_editbox->setCaratIndex(carat_pos);
+	getEditbox()->setCaratIndex(carat_pos);
 }
 
 
@@ -341,7 +342,7 @@ void Combobox::setCaratIndex(size_t carat_pos)
 *************************************************************************/
 void Combobox::setSelection(size_t start_pos, size_t end_pos)
 {
-	d_editbox->setSelection(start_pos, end_pos);
+	getEditbox()->setSelection(start_pos, end_pos);
 }
 
 
@@ -350,7 +351,7 @@ void Combobox::setSelection(size_t start_pos, size_t end_pos)
 *************************************************************************/
 void Combobox::setMaxTextLength(size_t max_len)
 {
-	d_editbox->setMaxTextLength(max_len);
+	getEditbox()->setMaxTextLength(max_len);
 }
 
 
@@ -360,7 +361,7 @@ void Combobox::setMaxTextLength(size_t max_len)
 *************************************************************************/
 void Combobox::setNormalTextColour(colour col)
 {
-	d_editbox->setNormalTextColour(col);
+	getEditbox()->setNormalTextColour(col);
 }
 
 
@@ -370,7 +371,7 @@ void Combobox::setNormalTextColour(colour col)
 *************************************************************************/
 void Combobox::setSelectedTextColour(colour col)
 {
-	d_editbox->setSelectedTextColour(col);
+	getEditbox()->setSelectedTextColour(col);
 }
 
 
@@ -380,7 +381,7 @@ void Combobox::setSelectedTextColour(colour col)
 *************************************************************************/
 void Combobox::setNormalSelectBrushColour(colour col)
 {
-	d_editbox->setNormalSelectBrushColour(col);
+	getEditbox()->setNormalSelectBrushColour(col);
 }
 
 
@@ -390,7 +391,7 @@ void Combobox::setNormalSelectBrushColour(colour col)
 *************************************************************************/
 void Combobox::setInactiveSelectBrushColour(colour col)
 {
-	d_editbox->setInactiveSelectBrushColour(col);
+	getEditbox()->setInactiveSelectBrushColour(col);
 }
 
 
@@ -399,7 +400,7 @@ void Combobox::setInactiveSelectBrushColour(colour col)
 *************************************************************************/
 size_t Combobox::getItemCount(void) const
 {
-	return d_droplist->getItemCount();
+	return getDropList()->getItemCount();
 }
 
 
@@ -408,7 +409,7 @@ size_t Combobox::getItemCount(void) const
 *************************************************************************/
 ListboxItem* Combobox::getSelectedItem(void) const
 {
-	return d_droplist->getFirstSelectedItem();
+	return getDropList()->getFirstSelectedItem();
 }
 
 
@@ -417,7 +418,7 @@ ListboxItem* Combobox::getSelectedItem(void) const
 *************************************************************************/
 ListboxItem* Combobox::getListboxItemFromIndex(size_t index) const
 {
-	return d_droplist->getListboxItemFromIndex(index);
+	return getDropList()->getListboxItemFromIndex(index);
 }
 
 
@@ -426,7 +427,7 @@ ListboxItem* Combobox::getListboxItemFromIndex(size_t index) const
 *************************************************************************/
 size_t Combobox::getItemIndex(const ListboxItem* item) const
 {
-	return d_droplist->getItemIndex(item);
+	return getDropList()->getItemIndex(item);
 }
 
 
@@ -435,7 +436,7 @@ size_t Combobox::getItemIndex(const ListboxItem* item) const
 *************************************************************************/
 bool Combobox::isSortEnabled(void) const
 {
-	return d_droplist->isSortEnabled();
+	return getDropList()->isSortEnabled();
 }
 
 
@@ -444,7 +445,7 @@ bool Combobox::isSortEnabled(void) const
 *************************************************************************/
 bool Combobox::isItemSelected(size_t index) const
 {
-	return d_droplist->isItemSelected(index);
+	return getDropList()->isItemSelected(index);
 }
 
 
@@ -453,7 +454,7 @@ bool Combobox::isItemSelected(size_t index) const
 *************************************************************************/
 ListboxItem* Combobox::findItemWithText(const String& text, const ListboxItem* start_item)
 {
-	return d_droplist->findItemWithText(text, start_item);
+	return getDropList()->findItemWithText(text, start_item);
 }
 
 
@@ -462,7 +463,7 @@ ListboxItem* Combobox::findItemWithText(const String& text, const ListboxItem* s
 *************************************************************************/
 bool Combobox::isListboxItemInList(const ListboxItem* item) const
 {
-	return d_droplist->isListboxItemInList(item);
+	return getDropList()->isListboxItemInList(item);
 }
 
 
@@ -471,7 +472,7 @@ bool Combobox::isListboxItemInList(const ListboxItem* item) const
 *************************************************************************/
 void Combobox::resetList(void)
 {
-	d_droplist->resetList();
+	getDropList()->resetList();
 }
 
 
@@ -480,7 +481,7 @@ void Combobox::resetList(void)
 *************************************************************************/
 void Combobox::addItem(ListboxItem* item)
 {
-	d_droplist->addItem(item);
+	getDropList()->addItem(item);
 }
 
 
@@ -490,7 +491,7 @@ void Combobox::addItem(ListboxItem* item)
 *************************************************************************/
 void Combobox::insertItem(ListboxItem* item, const ListboxItem* position)
 {
-	d_droplist->insertItem(item, position);
+	getDropList()->insertItem(item, position);
 }
 
 
@@ -499,7 +500,7 @@ void Combobox::insertItem(ListboxItem* item, const ListboxItem* position)
 *************************************************************************/
 void Combobox::removeItem(const ListboxItem* item)
 {
-	d_droplist->removeItem(item);
+	getDropList()->removeItem(item);
 }
 
 
@@ -508,7 +509,7 @@ void Combobox::removeItem(const ListboxItem* item)
 *************************************************************************/
 void Combobox::clearAllSelections(void)
 {
-	d_droplist->clearAllSelections();
+	getDropList()->clearAllSelections();
 }
 
 
@@ -517,7 +518,7 @@ void Combobox::clearAllSelections(void)
 *************************************************************************/
 void Combobox::setSortingEnabled(bool setting)
 {
-	d_droplist->setSortingEnabled(setting);
+	getDropList()->setSortingEnabled(setting);
 }
 
 
@@ -526,7 +527,7 @@ void Combobox::setSortingEnabled(bool setting)
 *************************************************************************/
 void Combobox::setShowVertScrollbar(bool setting)
 {
-	d_droplist->setShowVertScrollbar(setting);
+	getDropList()->setShowVertScrollbar(setting);
 }
 
 
@@ -535,7 +536,7 @@ void Combobox::setShowVertScrollbar(bool setting)
 *************************************************************************/
 void Combobox::setShowHorzScrollbar(bool setting)
 {
-	d_droplist->setShowHorzScrollbar(setting);
+	getDropList()->setShowHorzScrollbar(setting);
 }
 
 
@@ -544,7 +545,7 @@ void Combobox::setShowHorzScrollbar(bool setting)
 *************************************************************************/
 void Combobox::setItemSelectState(ListboxItem* item, bool state)
 {
-	d_droplist->setItemSelectState(item, state);
+	getDropList()->setItemSelectState(item, state);
 }
 
 
@@ -553,7 +554,7 @@ void Combobox::setItemSelectState(ListboxItem* item, bool state)
 *************************************************************************/
 void Combobox::setItemSelectState(size_t item_index, bool state)
 {
-	d_droplist->setItemSelectState(item_index, state);
+	getDropList()->setItemSelectState(item_index, state);
 }
 
 
@@ -563,7 +564,7 @@ void Combobox::setItemSelectState(size_t item_index, bool state)
 *************************************************************************/
 void Combobox::handleUpdatedListItemData(void)
 {
-	d_droplist->handleUpdatedItemData();
+    getDropList()->handleUpdatedItemData();
 }
 
 
@@ -743,8 +744,8 @@ void Combobox::onListSelectionAccepted(WindowEventArgs& e)
 void Combobox::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
-    d_editbox->setFont(getFont());
-    d_droplist->setFont(getFont());
+    getEditbox()->setFont(getFont());
+    getDropList()->setFont(getFont());
 
     // Call base class handler
     Window::onFontChanged(e);
@@ -756,11 +757,13 @@ void Combobox::onFontChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onTextChanged(WindowEventArgs& e)
 {
+    Editbox* editbox = getEditbox();
+
 	// update ourselves only if needed (prevents perpetual event loop & stack overflow)
-	if (d_editbox->getText() != d_text)
+	if (editbox->getText() != d_text)
 	{
 		// done before doing base class processing so event subscribers see 'updated' version of this.
-		d_editbox->setText(d_text);
+		editbox->setText(d_text);
 		e.handled = true;
 
 		Window::onTextChanged(e);
@@ -775,20 +778,22 @@ void Combobox::onTextChanged(WindowEventArgs& e)
 *************************************************************************/
 bool Combobox::button_PressHandler(const EventArgs& e)
 {
+    ComboDropList* droplist = getDropList();
+
 	showDropList();
 
 	// if there is an item with the same text as the edit box, pre-select it
-	ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), 0);
+	ListboxItem* item = droplist->findItemWithText(getEditbox()->getText(), 0);
 
 	if (item)
 	{
-		d_droplist->setItemSelectState(item, true);
-		d_droplist->ensureItemIsVisible(item);
+		droplist->setItemSelectState(item, true);
+		droplist->ensureItemIsVisible(item);
 	}
 	// no matching item, so select nothing
 	else
 	{
-		d_droplist->clearAllSelections();
+		droplist->clearAllSelections();
 	}
 
 	return true;
@@ -805,24 +810,25 @@ bool Combobox::droplist_SelectionAcceptedHandler(const EventArgs& e)
 
 	if (item)
 	{
+        Editbox* editbox = getEditbox();
 		// Put the text from the list item into the edit box
-		d_editbox->setText(item->getText());
+		editbox->setText(item->getText());
 
 		// select text if it's editable, and move carat to end
 		if (!isReadOnly())
 		{
-			d_editbox->setSelection(0, item->getText().length());
-			d_editbox->setCaratIndex(item->getText().length());
+			editbox->setSelection(0, item->getText().length());
+			editbox->setCaratIndex(item->getText().length());
 		}
 
-		d_editbox->setCaratIndex(0);
+		editbox->setCaratIndex(0);
 
 		// fire off an event of our own
 		WindowEventArgs args(this);
 		onListSelectionAccepted(args);
 
 		// finally, activate the edit box
-		d_editbox->activate();
+		editbox->activate();
 	}
 
 	return true;
@@ -849,23 +855,26 @@ bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 	// only interested in left button
 	if (((const MouseEventArgs&)e).button == LeftButton)
 	{
+        Editbox* editbox = getEditbox();
+
 		// if edit box is read-only, show list
-		if (d_editbox->isReadOnly())
+		if (editbox->isReadOnly())
 		{
+            ComboDropList* droplist = getDropList();
 			showDropList();
 
 			// if there is an item with the same text as the edit box, pre-select it
-			ListboxItem* item = d_droplist->findItemWithText(d_editbox->getText(), 0);
+			ListboxItem* item = droplist->findItemWithText(editbox->getText(), 0);
 
 			if (item)
 			{
-				d_droplist->setItemSelectState(item, true);
-				d_droplist->ensureItemIsVisible(item);
+				droplist->setItemSelectState(item, true);
+				droplist->ensureItemIsVisible(item);
 			}
 			// no matching item, so select nothing
 			else
 			{
-				d_droplist->clearAllSelections();
+				droplist->clearAllSelections();
 			}
 
 			return true;
@@ -881,7 +890,7 @@ bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 *************************************************************************/
 bool Combobox::isVertScrollbarAlwaysShown(void) const
 {
-	return d_droplist->isVertScrollbarAlwaysShown();
+	return getDropList()->isVertScrollbarAlwaysShown();
 }
 
 
@@ -890,7 +899,7 @@ bool Combobox::isVertScrollbarAlwaysShown(void) const
 *************************************************************************/
 bool Combobox::isHorzScrollbarAlwaysShown(void) const
 {
-	return d_droplist->isHorzScrollbarAlwaysShown();
+	return getDropList()->isHorzScrollbarAlwaysShown();
 }
 
 
@@ -921,9 +930,11 @@ void Combobox::addComboboxProperties(void)
 *************************************************************************/
 void Combobox::activateEditbox(void)
 {
-	if (!d_editbox->isActive())
+    Editbox* editbox = getEditbox();
+
+	if (!editbox->isActive())
 	{
-		d_editbox->activate();
+		editbox->activate();
 	}
 }
 
@@ -957,7 +968,7 @@ bool Combobox::getSingleClickEnabled(void) const
 *************************************************************************/
 bool Combobox::isDropDownListVisible(void) const
 {
-	return d_droplist->isVisible();
+	return getDropList()->isVisible();
 }
 
 
@@ -967,7 +978,36 @@ bool Combobox::isDropDownListVisible(void) const
 void Combobox::setSingleClickEnabled(bool setting)
 {
 	d_singleClickOperation = setting;
-	d_droplist->setAutoArmEnabled(setting);
+	getDropList()->setAutoArmEnabled(setting);
+}
+
+
+/************************************************************************
+    Return a pointer to the Editbox component widget for this Combobox.
+************************************************************************/
+Editbox* Combobox::getEditbox() const
+{
+    return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(
+                                 getName() + EditboxNameSuffix));
+}
+
+/************************************************************************
+    Return a pointer to the PushButton component widget for this Combobox.
+************************************************************************/
+PushButton* Combobox::getPushButton() const
+{
+    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
+                                    getName() + ButtonNameSuffix));
+}
+
+/************************************************************************
+    Return a pointer to the ComboDropList component widget for this
+    Combobox.
+************************************************************************/
+ComboDropList* Combobox::getDropList() const
+{
+    return static_cast<ComboDropList*>(WindowManager::getSingleton().getWindow(
+                                       getName() + DropListNameSuffix));
 }
 
 

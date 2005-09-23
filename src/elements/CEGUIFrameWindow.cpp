@@ -109,26 +109,38 @@ FrameWindow::~FrameWindow(void)
 *************************************************************************/
 void FrameWindow::initialise(void)
 {
-	// create child windows
-	d_titlebar		= createTitlebar(getName() + TitlebarNameSuffix);
-	d_closeButton	= createCloseButton(getName() + CloseButtonNameSuffix);
+    // create child windows
+    Titlebar* titlebar = createTitlebar(getName() + TitlebarNameSuffix);
+    PushButton* closeButton = createCloseButton(getName() + CloseButtonNameSuffix);
 
-	// add child controls
-	if (d_titlebar)
-	{
-		d_titlebar->setDraggingEnabled(d_dragMovable);
-		addChildWindow(d_titlebar);
-	}
+    // add child controls
+    titlebar->setDraggingEnabled(d_dragMovable);
+    addChildWindow(titlebar);
 
-	if (d_closeButton)
-	{
-		addChildWindow(d_closeButton);
+    addChildWindow(closeButton);
 
-		// bind handler to close button 'Click' event
-		d_closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
-	}
+    // bind handler to close button 'Click' event
+    closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));
 
-	performChildWindowLayout();
+    performChildWindowLayout();
+}
+
+
+/*************************************************************************
+    Return whether the title bar for this window is enabled.
+*************************************************************************/
+bool FrameWindow::isTitleBarEnabled(void) const
+{
+    return getTitlebar()->isDisabled();
+}
+
+
+/*************************************************************************
+    Return whether this close button for this window is enabled.
+*************************************************************************/
+bool FrameWindow::isCloseButtonEnabled(void) const
+{
+    return getCloseButton()->isDisabled();
 }
 
 
@@ -156,14 +168,9 @@ void FrameWindow::setFrameEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::setTitleBarEnabled(bool setting)
 {
-    try
-    {
-        Window* titlebar = WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix);
-        titlebar->setEnabled(setting);
-        titlebar->setVisible(setting);
-    }
-    catch (UnknownObjectException)
-    {}
+    Window* titlebar = getTitlebar();
+    titlebar->setEnabled(setting);
+    titlebar->setVisible(setting);
 }
 
 
@@ -172,14 +179,9 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 *************************************************************************/
 void FrameWindow::setCloseButtonEnabled(bool setting)
 {
-    try
-    {
-        Window* closebtn = WindowManager::getSingleton().getWindow(getName() + CloseButtonNameSuffix);
-        closebtn->setEnabled(setting);
-        closebtn->setVisible(setting);
-    }
-    catch (UnknownObjectException)
-    {}
+    Window* closebtn = getCloseButton();
+    closebtn->setEnabled(setting);
+    closebtn->setVisible(setting);
 }
 
 
@@ -220,12 +222,7 @@ void FrameWindow::toggleRollup(void)
 *************************************************************************/
 void FrameWindow::setTitlebarFont(const String& name)
 {
-    try
-    {
-        WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->setFont(name);
-    }
-    catch (UnknownObjectException)
-    {}
+    getTitlebar()->setFont(name);
 }
 
 
@@ -234,12 +231,7 @@ void FrameWindow::setTitlebarFont(const String& name)
 *************************************************************************/
 void FrameWindow::setTitlebarFont(Font* font)
 {
-    try
-    {
-        WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->setFont(font);
-    }
-    catch (UnknownObjectException)
-    {}
+    getTitlebar()->setFont(font);
 }
 
 
@@ -717,7 +709,7 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
     // pass this onto titlebar component.
-    WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->setText(d_text);
+    getTitlebar()->setText(d_text);
 }
 
 
@@ -727,7 +719,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
 void FrameWindow::onActivated(ActivationEventArgs& e)
 {
 	Window::onActivated(e);
-	d_titlebar->requestRedraw();
+	getTitlebar()->requestRedraw();
 }
 
 
@@ -737,7 +729,7 @@ void FrameWindow::onActivated(ActivationEventArgs& e)
 void FrameWindow::onDeactivated(ActivationEventArgs& e)
 {
 	Window::onDeactivated(e);
-	d_titlebar->requestRedraw();
+	getTitlebar()->requestRedraw();
 }
 
 
@@ -750,12 +742,7 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 	{
 		d_dragMovable = setting;
 
-        try
-        {
-            static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix))->setDraggingEnabled(setting);
-        }
-        catch (UnknownObjectException)
-        {}
+        getTitlebar()->setDraggingEnabled(setting);
     }
 
 }
@@ -766,14 +753,7 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 *************************************************************************/
 const Font* FrameWindow::getTitlebarFont(void) const
 {
-    try
-    {
-        return WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix)->getFont();
-    }
-    catch (UnknownObjectException)
-    {
-        return 0;
-    }
+    return getTitlebar()->getFont();
 }
 
 
@@ -804,7 +784,7 @@ void FrameWindow::addFrameWindowProperties(void)
 *************************************************************************/
 colour FrameWindow::getCaptionColour(void) const
 {
-    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix))->getCaptionColour();
+    return getTitlebar()->getCaptionColour();
 }
 
 
@@ -813,68 +793,123 @@ colour FrameWindow::getCaptionColour(void) const
 *************************************************************************/
 void FrameWindow::setCaptionColour(colour col)
 {
-    static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix))->setCaptionColour(col);
+    getTitlebar()->setCaptionColour(col);
 }
 
 
+/*************************************************************************
+    return the image used for the north-south sizing cursor.
+*************************************************************************/
 const Image* FrameWindow::getNSSizingCursorImage() const
 {
     return d_nsSizingCursor;
 }
 
+/*************************************************************************
+    return the image used for the east-west sizing cursor.
+*************************************************************************/
 const Image* FrameWindow::getEWSizingCursorImage() const
 {
     return d_ewSizingCursor;
 }
 
+/*************************************************************************
+    return the image used for the northwest-southeast sizing cursor.
+*************************************************************************/
 const Image* FrameWindow::getNWSESizingCursorImage() const
 {
     return d_nwseSizingCursor;
 }
 
+/*************************************************************************
+    return the image used for the northeast-southwest sizing cursor.
+*************************************************************************/
 const Image* FrameWindow::getNESWSizingCursorImage() const
 {
     return d_neswSizingCursor;
 }
 
+/*************************************************************************
+    set the image used for the north-south sizing cursor.
+*************************************************************************/
 void FrameWindow::setNSSizingCursorImage(const Image* image)
 {
     d_nsSizingCursor = image;
 }
 
+/*************************************************************************
+    set the image used for the east-west sizing cursor.
+*************************************************************************/
 void FrameWindow::setEWSizingCursorImage(const Image* image)
 {
     d_ewSizingCursor = image;
 }
 
+/*************************************************************************
+    set the image used for the northwest-southeast sizing cursor.
+*************************************************************************/
 void FrameWindow::setNWSESizingCursorImage(const Image* image)
 {
     d_nwseSizingCursor = image;
 }
 
+/*************************************************************************
+    set the image used for the northeast-southwest sizing cursor.
+*************************************************************************/
 void FrameWindow::setNESWSizingCursorImage(const Image* image)
 {
     d_neswSizingCursor = image;
 }
 
+/*************************************************************************
+    set the image used for the north-south sizing cursor.
+*************************************************************************/
 void FrameWindow::setNSSizingCursorImage(const String& imageset, const String& image)
 {
     d_nsSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
 }
 
+/*************************************************************************
+    set the image used for the east-west sizing cursor.
+*************************************************************************/
 void FrameWindow::setEWSizingCursorImage(const String& imageset, const String& image)
 {
     d_ewSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
 }
 
+/*************************************************************************
+    set the image used for the northwest-southeast sizing cursor.
+*************************************************************************/
 void FrameWindow::setNWSESizingCursorImage(const String& imageset, const String& image)
 {
     d_nwseSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
 }
 
+/*************************************************************************
+    set the image used for the northeast-southwest sizing cursor.
+*************************************************************************/
 void FrameWindow::setNESWSizingCursorImage(const String& imageset, const String& image)
 {
     d_neswSizingCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+/*************************************************************************
+    Return a pointer to the Titlebar component widget for this FrameWindow.
+*************************************************************************/
+Titlebar* FrameWindow::getTitlebar() const
+{
+    return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(
+                                  getName() + TitlebarNameSuffix));
+}
+
+/*************************************************************************
+    Return a pointer to the close button component widget for this
+    FrameWindow.
+*************************************************************************/
+PushButton* FrameWindow::getCloseButton() const
+{
+    return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(
+                                    getName() + CloseButtonNameSuffix));
 }
 
 } // End of  CEGUI namespace section

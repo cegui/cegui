@@ -635,6 +635,32 @@ protected:
     // overridden from Window base class.
     void populateRenderCache();
 
+    /*!
+    \brief
+        Return a pointer to the vertical scrollbar component widget for this
+        Listbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the horizontal scrollbar component widget for this
+        Listbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
+
 
 	/*************************************************************************
 		New event handlers
@@ -699,8 +725,6 @@ protected:
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
 	bool	d_forceHorzScroll;		//!< true if horizontal scrollbar should always be displayed
 	bool	d_itemTooltips;			//!< true if each item should have an individual tooltip
-	Scrollbar*	d_vertScrollbar;	//!< vertical scroll-bar widget
-	Scrollbar*	d_horzScrollbar;	//!< horizontal scroll-bar widget
 	LBItemList	d_listItems;		//!< list of items in the list box.
 	ListboxItem*	d_lastSelected;	//!< holds pointer to the last selected item (used in range selections)
 

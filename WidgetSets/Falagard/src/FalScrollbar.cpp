@@ -61,19 +61,19 @@ namespace CEGUI
     Thumb* FalagardScrollbar::createThumb(const String& name) const
     {
         // return thumb created by look'n'feel assignment.
-        return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(name));
+        return getThumb();
     }
 
     PushButton* FalagardScrollbar::createIncreaseButton(const String& name) const
     {
         // return button created by look'n'feel assignment.
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(name));
+        return getIncreaseButton();
     }
 
     PushButton* FalagardScrollbar::createDecreaseButton(const String& name) const
     {
         // return button created by look'n'feel assignment.
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(name));
+        return getDecreaseButton();
     }
 
     void FalagardScrollbar::performChildWindowLayout()
@@ -87,7 +87,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
 
-        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix));
+        Thumb* theThumb = getThumb();
 
         float posExtent = d_documentSize - d_pageSize;
         float slideExtent;
@@ -113,7 +113,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
         Rect area(wlf.getNamedArea("ThumbTrackArea").getArea().getPixelRect(*this));
 
-        Thumb* theThumb = static_cast<Thumb*>(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix));
+        Thumb* theThumb = getThumb();
         float posExtent = d_documentSize - d_pageSize;
 
         if (d_vertical)
@@ -130,7 +130,7 @@ namespace CEGUI
 
     float FalagardScrollbar::getAdjustDirectionFromPoint(const Point& pt) const
     {
-        Rect absrect(WindowManager::getSingleton().getWindow(getName() + ThumbNameSuffix)->getUnclippedPixelRect());
+        Rect absrect(getThumb()->getUnclippedPixelRect());
 
         if ((d_vertical && (pt.d_y > absrect.d_bottom)) ||
             (!d_vertical && (pt.d_x > absrect.d_right)))

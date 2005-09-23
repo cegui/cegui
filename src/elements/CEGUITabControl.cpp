@@ -52,15 +52,13 @@ const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
 *************************************************************************/
 const String TabControl::ContentPaneNameSuffix( "__auto_TabPane__" );
 const String TabControl::TabButtonNameSuffix( "__auto_btn" );
-const String TabControl::TabPaneNameSuffix( "__auto_TabPane__Buttons" );
+const String TabControl::TabButtonPaneNameSuffix( "__auto_TabPane__Buttons" );
 
 /*************************************************************************
 	Constructor for TabControl base class.
 *************************************************************************/
 TabControl::TabControl(const String& type, const String& name)
 	: Window(type, name),
-    d_tabButtonPane(0),
-    d_tabContentPane(0),
     d_nextTabIndex(0)
 {
 	addTabControlEvents();
@@ -84,11 +82,11 @@ TabControl::~TabControl(void)
 void TabControl::initialise(void)
 {
 	// create the component sub-widgets
-	d_tabContentPane = createTabContentPane(getName() + ContentPaneNameSuffix);
-    d_tabButtonPane = createTabButtonPane(getName() + TabPaneNameSuffix);
+	TabPane* tabContentPane = createTabContentPane(getName() + ContentPaneNameSuffix);
+    Window* tabButtonPane = createTabButtonPane(getName() + TabButtonPaneNameSuffix);
 
-	addChildWindow(d_tabContentPane);
-    addChildWindow(d_tabButtonPane);
+	addChildWindow(tabContentPane);
+    addChildWindow(tabButtonPane);
 
 	performChildWindowLayout();
 }
@@ -97,21 +95,21 @@ Get the number of tabs
 *************************************************************************/
 uint TabControl::getTabCount(void) const
 {   
-    return d_tabContentPane->getChildCount();
+    return getTabPane()->getChildCount();
 }
 /*************************************************************************
 Get the tab with a given name
 *************************************************************************/
 Window*	TabControl::getTabContents(const String& name) const
 {
-    return d_tabContentPane->getChild(name);
+    return getTabPane()->getChild(name);
 }
 /*************************************************************************
 Get the tab at a given ID
 *************************************************************************/
 Window*	TabControl::getTabContents(uint ID) const
 {
-    return d_tabContentPane->getChild(ID);
+    return getTabPane()->getChild(ID);
 }
 /*************************************************************************
 Get the tab for the given index
@@ -157,7 +155,7 @@ Set the selected tab by window name
 void TabControl::setSelectedTab(const String &name)
 {
     // get window
-    Window* wnd = d_tabContentPane->getChild(name);
+    Window* wnd = getTabPane()->getChild(name);
 
     selectTab_impl(wnd);
 }
@@ -167,7 +165,7 @@ Set the selected tab by window ID
 void TabControl::setSelectedTab(uint ID)
 {
     // get window
-    Window* wnd = d_tabContentPane->getChild(ID);
+    Window* wnd = getTabPane()->getChild(ID);
 
     selectTab_impl(wnd);
 }
@@ -208,7 +206,7 @@ void TabControl::addTab(Window* wnd)
     // Create a new TabButton
     addButtonForTabContent(wnd);
     // Add the window to the content pane
-    d_tabContentPane->addChildWindow(wnd);
+    getTabPane()->addChildWindow(wnd);
     // Auto-select?
     if (getTabCount() == 1)
     {
@@ -232,11 +230,11 @@ Remove a tab
 *************************************************************************/
 void TabControl::removeTab(const String& name)
 {
-    Window* wnd = d_tabContentPane->getChild(name);
+    Window* wnd = getTabPane()->getChild(name);
     // Was this selected?
     bool reselect = wnd->isVisible();
     // Tab buttons are the 2nd onward children
-    d_tabContentPane->removeChildWindow(name);
+    getTabPane()->removeChildWindow(name);
 
     // remove button too
     removeButtonForTabContent(wnd);
@@ -246,7 +244,7 @@ void TabControl::removeTab(const String& name)
         // Select another tab
         if (getTabCount() > 0)
         {
-            setSelectedTab(d_tabContentPane->getChildAtIdx(0)->getName());
+            setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
         }
     }
 
@@ -260,11 +258,11 @@ Remove a tab by ID
 *************************************************************************/
 void TabControl::removeTab(uint ID)
 {
-    Window* wnd = d_tabContentPane->getChild(ID);
+    Window* wnd = getTabPane()->getChild(ID);
     // Was this selected?
     bool reselect = wnd->isVisible();
     // Tab buttons are the 2nd onward children
-    d_tabContentPane->removeChildWindow(ID);
+    getTabPane()->removeChildWindow(ID);
 
     // remove button too
     removeButtonForTabContent(wnd);
@@ -274,7 +272,7 @@ void TabControl::removeTab(uint ID)
         // Select another tab
         if (getTabCount() > 0)
         {
-            setSelectedTab(d_tabContentPane->getChildAtIdx(0)->getName());
+            setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
         }
     }
 
@@ -300,7 +298,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     d_tabButtonIndexMap.insert(
         TabButtonIndexMap::value_type(tb->getTabIndex(), tb));
     // add the button
-    d_tabButtonPane->addChildWindow(tb);
+    getTabButtonPane()->addChildWindow(tb);
     // Subscribe to clicked event so that we can change tab
     tb->subscribeEvent(TabButton::EventClicked, 
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
@@ -364,10 +362,10 @@ void TabControl::removeButtonForTabContent(Window* wnd)
 {
     // get
     TabButton* tb = static_cast<TabButton*>(
-        d_tabButtonPane->getChild(makeButtonName(wnd)));
+        getTabButtonPane()->getChild(makeButtonName(wnd)));
     // remove
     d_tabButtonIndexMap.erase(tb->getTabIndex());
-    d_tabButtonPane->removeChildWindow(tb);
+    getTabButtonPane()->removeChildWindow(tb);
 	// destroy
 	WindowManager::getSingleton().destroyWindow(tb);
 }
@@ -473,37 +471,35 @@ void TabControl::performChildWindowLayout()
 {
     Window::performChildWindowLayout();
 
-    if (d_tabButtonPane)
+    Window* tabButtonPane = getTabButtonPane();
+    TabPane* tabContentPane = getTabPane();
+
+    // Set the size of the tab button area (full width, height from tab height)
+    tabButtonPane->setWindowSize(
+        UVector2(cegui_reldim(1.0f),
+                    d_tabHeight) );
+
+    tabButtonPane->setWindowPosition(
+        UVector2(cegui_absdim(0),
+                    cegui_absdim(0)));
+
+    // Calculate the positions and sizes of the tab buttons
+    TabButtonIndexMap::iterator i, iend;
+    iend = d_tabButtonIndexMap.end();
+    uint x = 0;
+    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++x)
     {
-        // Set the size of the tab button area (full width, height from tab height)
-        d_tabButtonPane->setWindowSize(
-            UVector2(cegui_reldim(1.0f),
-                     d_tabHeight) );
-
-        d_tabButtonPane->setWindowPosition(
-            UVector2(cegui_absdim(0),
-                     cegui_absdim(0)));
-
-        // Calculate the positions and sizes of the tab buttons
-        TabButtonIndexMap::iterator i, iend;
-        iend = d_tabButtonIndexMap.end();
-        uint x = 0;
-        for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++x)
-        {
-            TabButton* btn = i->second;
-            calculateTabButtonSizePosition(btn, x);
-        }
+        TabButton* btn = i->second;
+        calculateTabButtonSizePosition(btn, x);
     }
-    if (d_tabContentPane)
-    {
-        // Set the size of the content area
-        d_tabContentPane->setWindowSize(
-            UVector2(cegui_reldim(1.0f),
-                     cegui_reldim(1.0f) - d_tabHeight));
 
-        d_tabContentPane->setWindowPosition(
-            UVector2(cegui_reldim(0.0f), d_tabHeight) );
-    }
+    // Set the size of the content area
+    tabContentPane->setWindowSize(
+        UVector2(cegui_reldim(1.0f),
+                    cegui_reldim(1.0f) - d_tabHeight));
+
+    tabContentPane->setWindowPosition(
+        UVector2(cegui_reldim(0.0f), d_tabHeight) );
 
 }
 /*************************************************************************
@@ -520,7 +516,7 @@ bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
 {
     // update text
     const WindowEventArgs& wargs = static_cast<const WindowEventArgs&>(args);
-    Window* tabButton = d_tabButtonPane->getChild(
+    Window* tabButton = getTabButtonPane()->getChild(
         makeButtonName(wargs.window));
     tabButton->setText(wargs.window->getText());
     // sort out the layout
@@ -539,6 +535,26 @@ bool TabControl::handleTabButtonClicked(const EventArgs& args)
     setSelectedTab(tabButton->getTargetWindow()->getName());
 
 	return true;
+}
+
+/*************************************************************************
+    Return a pointer to the tab button pane (Window)for
+    this TabControl.
+*************************************************************************/
+Window* TabControl::getTabButtonPane() const
+{
+    return WindowManager::getSingleton().getWindow(getName() +
+                                                   TabButtonPaneNameSuffix);
+}
+
+/*************************************************************************
+    Return a pointer to the TabPane component widget for
+    this TabControl.
+*************************************************************************/
+TabPane* TabControl::getTabPane() const
+{
+    return static_cast<TabPane*>(WindowManager::getSingleton().getWindow(
+                                 getName() + ContentPaneNameSuffix));
 }
 
 int TabControl::writeChildWindowsXML(OutStream& out_stream) const

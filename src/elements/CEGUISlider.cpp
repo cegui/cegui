@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "elements/CEGUISlider.h"
 #include "elements/CEGUIThumb.h"
+#include "CEGUIWindowManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -58,8 +59,7 @@ Slider::Slider(const String& type, const String& name) :
 	Window(type, name),
 	d_value(0.0f),
 	d_maxValue(1.0f),
-	d_step(0.01f),
-	d_thumb(0)
+	d_step(0.01f)
 {
 	addSliderEvents();
 	addSliderProperties();
@@ -80,13 +80,13 @@ Slider::~Slider(void)
 void Slider::initialise(void)
 {
 	// create and attach thumb
-	d_thumb = createThumb(getName() + ThumbNameSuffix);
-	addChildWindow(d_thumb);
+	Thumb* thumb = createThumb(getName() + ThumbNameSuffix);
+	addChildWindow(thumb);
 
 	// bind handler to thumb events
-	d_thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Slider::handleThumbMoved, this));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Slider::handleThumbTrackStarted, this));
-	d_thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Slider::handleThumbTrackEnded, this));
+	thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Slider::handleThumbMoved, this));
+	thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Slider::handleThumbTrackStarted, this));
+	thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Slider::handleThumbTrackEnded, this));
 
 	performChildWindowLayout();
 }
@@ -266,5 +266,13 @@ void Slider::addSliderProperties(void)
 	addProperty(&d_maximumValueProperty);
 }
 
+/*************************************************************************
+    Return a pointer to the Thumb component widget..
+*************************************************************************/
+Thumb* Slider::getThumb() const
+{
+    return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
+                               getName() + ThumbNameSuffix));
+}
 
 } // End of  CEGUI namespace section

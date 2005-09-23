@@ -47,8 +47,8 @@ namespace CEGUI
     {
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        bool v_visible = d_vertScrollbar->isVisible(true);
-        bool h_visible = d_horzScrollbar->isVisible(true);
+        bool v_visible = getVertScrollbar()->isVisible(true);
+        bool h_visible = getHorzScrollbar()->isVisible(true);
 
         // if either of the scrollbars are visible, we might want to use another item rendering area
         if (v_visible || h_visible)
@@ -78,19 +78,19 @@ namespace CEGUI
     ListHeader* FalagardMultiColumnList::createListHeader(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<ListHeader*>(WindowManager::getSingleton().getWindow(name));
+        return getListHeader();
     }
 
     Scrollbar* FalagardMultiColumnList::createVertScrollbar(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
+        return getVertScrollbar();
     }
 
     Scrollbar* FalagardMultiColumnList::createHorzScrollbar(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(name));
+        return getHorzScrollbar();
     }
 
     void FalagardMultiColumnList::cacheListboxBaseImagery()

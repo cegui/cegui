@@ -50,7 +50,7 @@ namespace CEGUI
 
         // build state name
         String stateName(isDisabled() ? "Disabled" : (isActive() ? "Active" : "Inactive"));
-        stateName += d_titlebar->isVisible() ? "WithTitle" : "NoTitle";
+        stateName += getTitlebar()->isVisible() ? "WithTitle" : "NoTitle";
         stateName += d_frameEnabled ? "WithFrame" : "NoFrame";
 
         const StateImagery* imagery;
@@ -79,7 +79,7 @@ namespace CEGUI
 
         // build name of area to fetch
         String areaName("Client");
-        areaName += d_titlebar->isVisible() ? "WithTitle" : "NoTitle";
+        areaName += getTitlebar()->isVisible() ? "WithTitle" : "NoTitle";
         areaName += d_frameEnabled ? "WithFrame" : "NoFrame";
 
         // get WidgetLookFeel for the assigned look.
@@ -89,12 +89,12 @@ namespace CEGUI
 
     Titlebar* FalagardFrameWindow::createTitlebar(const String& name) const
     {
-        return static_cast<Titlebar*>(WindowManager::getSingleton().getWindow(getName() + TitlebarNameSuffix));
+        return getTitlebar();
     }
 
     PushButton* FalagardFrameWindow::createCloseButton(const String& name) const
     {
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(getName() + CloseButtonNameSuffix));
+        return getCloseButton();
     }
 
     //////////////////////////////////////////////////////////////////////////

@@ -55,19 +55,19 @@ namespace CEGUI
     PushButton* FalagardSpinner::createIncreaseButton(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(name));
+        return getIncreaseButton();
     }
 
     PushButton* FalagardSpinner::createDecreaseButton(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<PushButton*>(WindowManager::getSingleton().getWindow(name));
+        return getDecreaseButton();
     }
 
     Editbox* FalagardSpinner::createEditbox(const String& name) const
     {
         // return component created by look'n'feel assignment.
-        return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(name));
+        return getEditbox();
     }
 
     //////////////////////////////////////////////////////////////////////////
