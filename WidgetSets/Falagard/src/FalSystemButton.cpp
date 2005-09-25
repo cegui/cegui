@@ -51,22 +51,4 @@ namespace CEGUI
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardSystemButtonFactory::createWindow(const String& name)
-    {
-        return new FalagardSystemButton(d_type, name);
-    }
-
-    void FalagardSystemButtonFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
-
 } // End of  CEGUI namespace section

@@ -79,7 +79,7 @@ public:
 	\return
 		the number of tabs currently present.
 	*/
-	uint	getTabCount(void) const;
+	size_t	getTabCount(void) const;
 
 
     /*!
@@ -101,7 +101,7 @@ public:
         Set the selected tab by the index position in the tab control.
     \exception	InvalidRequestException	thrown if \a index is out of range.
     */
-    void    setSelectedTabAtIndex(uint index);
+    void    setSelectedTabAtIndex(size_t index);
 
     /*!
 	\brief
@@ -115,7 +115,7 @@ public:
 
 	\exception	InvalidRequestException	thrown if \a index is out of range.
 	*/
-    Window*	getTabContentsAtIndex(uint index) const;
+    Window*	getTabContentsAtIndex(size_t index) const;
 
     /*!
     \brief
@@ -166,7 +166,7 @@ public:
 	\return
 		index of the currently selected tab.
 	*/
-    uint	getSelectedTabIndex() const;
+    size_t	getSelectedTabIndex() const;
 	
     /*!
     \brief
@@ -374,8 +374,8 @@ protected:
 	*************************************************************************/
     UDim        d_tabHeight;        //!< The height of the tabs in pixels
     UDim        d_tabPadding;       //!< The padding of the tabs relative to parent
-    uint        d_nextTabIndex;     //!< The index to give the next tab 
-    typedef std::map<uint, TabButton*> TabButtonIndexMap; 
+    size_t      d_nextTabIndex;     //!< The index to give the next tab 
+    typedef std::map<size_t, TabButton*> TabButtonIndexMap; 
     TabButtonIndexMap d_tabButtonIndexMap;  //!< Sorting for tabs
     /*************************************************************************
     Abstract Implementation Functions (must be provided by derived class)
@@ -425,7 +425,7 @@ protected:
         The index at which the tab is/will be placed. Tabs must exist for all the
         indexes before this.
     */
-    void calculateTabButtonSizePosition(TabButton* btn, uint targetIndex);
+    void calculateTabButtonSizePosition(TabButton* btn, size_t targetIndex);
 
 protected:
 	/*************************************************************************

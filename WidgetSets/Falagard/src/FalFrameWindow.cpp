@@ -97,21 +97,4 @@ namespace CEGUI
         return getCloseButton();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardFrameWindowFactory::createWindow(const String& name)
-    {
-        return new FalagardFrameWindow(d_type, name);
-    }
-
-    void FalagardFrameWindowFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

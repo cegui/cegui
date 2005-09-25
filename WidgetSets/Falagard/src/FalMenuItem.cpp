@@ -73,21 +73,4 @@ namespace CEGUI
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardMenuItemFactory::createWindow(const String& name)
-    {
-        return new FalagardMenuItem(d_type, name);
-    }
-
-    void FalagardMenuItemFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 }

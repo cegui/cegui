@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\Falagard\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_STLP_DEBUG;_DEBUG;_WINDOWS;_USRDLL;FALAGARDBASE_EXPORTS"
+				PreprocessorDefinitions="WIN32;_STLP_DEBUG;_DEBUG;_WINDOWS;_USRDLL;FALAGARDBASE_EXPORTS;CEGUIWIDGETMODULE_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -75,7 +75,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\..\..\..\WidgetSets\Falagard\include;..\..\..\..\..\include;..\..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;FALAGARDBASE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;FALAGARDBASE_EXPORTS;CEGUIWIDGETMODULE_EXPORTS"
 				RuntimeLibrary="2"
 				DisableLanguageExtensions="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -210,10 +210,22 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalSpinner.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStatic.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStaticImage.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStaticImageProperties.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStaticProperties.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStaticText.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalStaticTextProperties.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalSystemButton.cpp">
@@ -325,10 +337,22 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalSpinner.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStatic.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStaticImage.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStaticImageProperties.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStaticProperties.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStaticText.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalStaticTextProperties.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalSystemButton.h">

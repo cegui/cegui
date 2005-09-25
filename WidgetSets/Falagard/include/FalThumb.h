@@ -25,7 +25,6 @@
 #define _FalThumb_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIThumb.h"
 
 // Start of CEGUI namespace section
@@ -63,19 +62,6 @@ namespace CEGUI
     protected:
         // overridden from Thumb
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardThumb type Window objects.
-    */
-    class FALAGARDBASE_API FalagardThumbFactory : public WindowFactory
-    {
-    public:
-        FalagardThumbFactory(void) : WindowFactory(FalagardThumb::WidgetTypeName) { }
-        ~FalagardThumbFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

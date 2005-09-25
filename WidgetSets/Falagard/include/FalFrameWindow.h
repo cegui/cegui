@@ -25,7 +25,6 @@
 #define _FalFrameWindow_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIFrameWindow.h"
 
 // Start of CEGUI namespace section
@@ -82,19 +81,6 @@ namespace CEGUI
         void populateRenderCache();
         Titlebar* createTitlebar(const String& name) const;
         PushButton* createCloseButton(const String& name) const;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardFrameWindow type Window objects.
-    */
-    class FALAGARDBASE_API FalagardFrameWindowFactory : public WindowFactory
-    {
-    public:
-        FalagardFrameWindowFactory(void) : WindowFactory(FalagardFrameWindow::WidgetTypeName) { }
-        ~FalagardFrameWindowFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

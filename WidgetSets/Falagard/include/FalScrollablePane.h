@@ -25,7 +25,6 @@
 #define _FalScrollablePane_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIScrollablePane.h"
 
 // Start of CEGUI namespace section
@@ -75,19 +74,6 @@ namespace CEGUI
         Scrollbar* createVerticalScrollbar(const String& name) const;
         Scrollbar* createHorizontalScrollbar(const String& name) const;
         Rect getViewableArea(void) const;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardScrollablePane type Window objects.
-    */
-    class FALAGARDBASE_API FalagardScrollablePaneFactory : public WindowFactory
-    {
-    public:
-        FalagardScrollablePaneFactory(void) : WindowFactory(FalagardScrollablePane::WidgetTypeName) { }
-        ~FalagardScrollablePaneFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

@@ -24,7 +24,6 @@
 #ifndef _FalStaticImage_h_
 #define _FalStaticImage_h_
 
-#include "CEGUIWindowFactory.h"
 #include "CEGUIImage.h"
 #include "FalModule.h"
 #include "FalStatic.h"
@@ -89,19 +88,6 @@ namespace CEGUI
 
         // implementation data
         const Image* d_image;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardStaticImage type Window objects.
-    */
-    class FALAGARDBASE_API FalagardStaticImageFactory : public WindowFactory
-    {
-    public:
-        FalagardStaticImageFactory(void) : WindowFactory(FalagardStaticImage::WidgetTypeName) { }
-        ~FalagardStaticImageFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

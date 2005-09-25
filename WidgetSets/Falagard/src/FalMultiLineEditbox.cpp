@@ -151,21 +151,4 @@ namespace CEGUI
         requestRedraw();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardMultiLineEditboxFactory::createWindow(const String& name)
-    {
-        return new FalagardMultiLineEditbox(d_type, name);
-    }
-
-    void FalagardMultiLineEditboxFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

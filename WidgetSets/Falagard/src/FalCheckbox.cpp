@@ -73,21 +73,4 @@ namespace CEGUI
         wlf.getStateImagery(state).render(*this);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardCheckboxFactory::createWindow(const String& name)
-    {
-        return new FalagardCheckbox(d_type, name);
-    }
-
-    void FalagardCheckboxFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

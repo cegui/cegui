@@ -97,21 +97,4 @@ namespace CEGUI
         wlf.getStateImagery(is_enabled ? "Enabled" : "Disabled").render(*this);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardStaticFactory::createWindow(const String& name)
-    {
-        return new FalagardStatic(d_type, name);
-    }
-
-    void FalagardStaticFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

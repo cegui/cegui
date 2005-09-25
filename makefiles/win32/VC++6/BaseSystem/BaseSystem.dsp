@@ -239,10 +239,6 @@ SOURCE=..\..\..\..\src\elements\CEGUIButtonBase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\elements\CEGUIButtonBaseProperties.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\src\elements\CEGUICheckbox.cpp
 # End Source File
 # Begin Source File
@@ -391,10 +387,6 @@ SOURCE=..\..\..\..\src\elements\CEGUIPushButton.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\elements\CEGUIPushButtonProperties.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\src\elements\CEGUIRadioButton.cpp
 # End Source File
 # Begin Source File
@@ -440,30 +432,6 @@ SOURCE=..\..\..\..\src\elements\CEGUISpinner.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\elements\CEGUISpinnerProperties.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUIStatic.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUIStaticImage.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUIStaticImageProperties.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUIStaticProperties.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUIStaticText.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUIStaticTextProperties.cpp
 # End Source File
 # Begin Source File
 
@@ -625,18 +593,6 @@ SOURCE=..\..\..\..\src\CEGUIRect.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\CEGUIRefPtr.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\CEGUIRenderableElement.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\CEGUIRenderableFrame.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\CEGUIRenderableImage.cpp
 # End Source File
 # Begin Source File
 
@@ -835,10 +791,6 @@ SOURCE=..\..\..\..\include\elements\CEGUIButtonBase.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\elements\CEGUIButtonBaseProperties.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\include\elements\CEGUICheckbox.h
 # End Source File
 # Begin Source File
@@ -987,10 +939,6 @@ SOURCE=..\..\..\..\include\elements\CEGUIPushButton.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\elements\CEGUIPushButtonProperties.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\include\elements\CEGUIRadioButton.h
 # End Source File
 # Begin Source File
@@ -1036,30 +984,6 @@ SOURCE=..\..\..\..\include\elements\CEGUISpinner.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUISpinnerProperties.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUIStatic.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUIStaticImage.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUIStaticImageProperties.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUIStaticProperties.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUIStaticText.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUIStaticTextProperties.h
 # End Source File
 # Begin Source File
 
@@ -1252,18 +1176,6 @@ SOURCE=..\..\..\..\include\CEGUIRefPtr.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\CEGUIRenderableElement.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\CEGUIRenderableFrame.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\CEGUIRenderableImage.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\include\CEGUIRenderCache.h
 # End Source File
 # Begin Source File
@@ -1329,6 +1241,10 @@ SOURCE=..\..\..\..\include\CEGUIVector.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIVersion.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIWidgetModule.h
 # End Source File
 # Begin Source File
 

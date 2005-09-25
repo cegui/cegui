@@ -259,9 +259,9 @@ bool Window::isActive(void) const
 *************************************************************************/
 bool Window::isChild(const String& name) const
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->getName() == name)
 		{
@@ -279,9 +279,9 @@ bool Window::isChild(const String& name) const
 *************************************************************************/
 bool Window::isChild(uint ID) const
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->getID() == ID)
 		{
@@ -299,9 +299,9 @@ bool Window::isChild(uint ID) const
 *************************************************************************/
 bool Window::isChild(const Window* window) const
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i] == window)
 		{
@@ -319,9 +319,9 @@ bool Window::isChild(const Window* window) const
 *************************************************************************/
 Window* Window::getChild(const String& name) const
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->getName() == name)
 		{
@@ -340,9 +340,9 @@ Window* Window::getChild(const String& name) const
 *************************************************************************/
 Window* Window::getChild(uint ID) const
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->getID() == ID)
 		{
@@ -380,7 +380,7 @@ const Window* Window::getActiveChild(void) const
 		return 0;
 	}
 
-	uint pos = getChildCount();
+	size_t pos = getChildCount();
 
 	while (pos-- > 0)
 	{
@@ -798,9 +798,9 @@ void Window::addChildWindow(Window* window)
 *************************************************************************/
 void Window::removeChildWindow(const String& name)
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->getName() == name)
 		{
@@ -832,9 +832,9 @@ void Window::removeChildWindow(Window* window)
 *************************************************************************/
 void Window::removeChildWindow(uint ID)
 {
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->getID() == ID)
 		{
@@ -1015,9 +1015,9 @@ void Window::setRestoreCapture(bool setting)
 {
 	d_restoreOldCapture = setting;
 
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		d_children[i]->setRestoreCapture(setting);
 	}
@@ -1095,9 +1095,9 @@ void Window::render(void)
 	renderer->advanceZValue();
 
 	// render any child windows
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		d_drawList[i]->render();
 	}
@@ -1291,9 +1291,9 @@ void Window::onZChange_impl(void)
 	}
 	else
 	{
-		uint child_count = d_parent->getChildCount();
+		size_t child_count = d_parent->getChildCount();
 
-		for (uint i = 0; i < child_count; ++i)
+		for (size_t i = 0; i < child_count; ++i)
 		{
             WindowEventArgs args(d_parent->d_children[i]);
 			d_parent->d_children[i]->onZChanged(args);
@@ -1564,9 +1564,9 @@ void Window::update(float elapsed)
 	updateSelf(elapsed);
 
 	// update child windows
-	uint child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (uint i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		d_children[i]->update(elapsed);
 	}
@@ -2169,7 +2169,7 @@ Window* Window::getActiveSibling()
     {
         // scan backwards through the draw list, as this will
         // usually result in the fastest result.
-        uint idx = d_parent->getChildCount();
+        size_t idx = d_parent->getChildCount();
         while (idx-- > 0)
         {
             // if this child is active
@@ -2199,8 +2199,8 @@ Window* Window::getActiveSibling()
 void Window::onSized(WindowEventArgs& e)
 {
 	// inform children their parent has been re-sized
-	uint child_count = getChildCount();
-	for (uint i = 0; i < child_count; ++i)
+	size_t child_count = getChildCount();
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		WindowEventArgs args(this);
 		d_children[i]->onParentSized(args);
@@ -2240,9 +2240,9 @@ void Window::onFontChanged(WindowEventArgs& e)
 void Window::onAlphaChanged(WindowEventArgs& e)
 {
 	// scan child list and call this method for all children that inherit alpha
-	int child_count = getChildCount();
+	size_t child_count = getChildCount();
 
-	for (int i = 0; i < child_count; ++i)
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->inheritsAlpha())
 		{
@@ -2280,8 +2280,8 @@ void Window::onHidden(WindowEventArgs& e)
 void Window::onEnabled(WindowEventArgs& e)
 {
     // signal all non-disabled children that they are now enabled (via inherited state)
-    uint child_count = getChildCount();
-    for (uint i = 0; i < child_count; ++i)
+    size_t child_count = getChildCount();
+    for (size_t i = 0; i < child_count; ++i)
     {
         if (d_children[i]->d_enabled)
         {
@@ -2298,8 +2298,8 @@ void Window::onEnabled(WindowEventArgs& e)
 void Window::onDisabled(WindowEventArgs& e)
 {
     // signal all non-disabled children that they are now disabled (via inherited state)
-    uint child_count = getChildCount();
-    for (uint i = 0; i < child_count; ++i)
+    size_t child_count = getChildCount();
+    for (size_t i = 0; i < child_count; ++i)
     {
         if (d_children[i]->d_enabled)
         {
@@ -2405,8 +2405,8 @@ void Window::onActivated(ActivationEventArgs& e)
 void Window::onDeactivated(ActivationEventArgs& e)
 {
 	// first de-activate all children
-	uint child_count = getChildCount();
-	for (uint i = 0; i < child_count; ++i)
+	size_t child_count = getChildCount();
+	for (size_t i = 0; i < child_count; ++i)
 	{
 		if (d_children[i]->isActive())
 		{

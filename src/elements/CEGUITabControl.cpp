@@ -93,7 +93,7 @@ void TabControl::initialise(void)
 /*************************************************************************
 Get the number of tabs
 *************************************************************************/
-uint TabControl::getTabCount(void) const
+size_t TabControl::getTabCount(void) const
 {   
     return getTabPane()->getChildCount();
 }
@@ -114,7 +114,7 @@ Window*	TabControl::getTabContents(uint ID) const
 /*************************************************************************
 Get the tab for the given index
 *************************************************************************/
-Window*	TabControl::getTabContentsAtIndex(uint index) const
+Window*	TabControl::getTabContentsAtIndex(size_t index) const
 {
     return d_tabButtonIndexMap.find(index)->second->getTargetWindow();
 }
@@ -131,9 +131,9 @@ bool TabControl::isTabContentsSelected(Window* wnd) const
 /*************************************************************************
 Return whether the tab content window is currently selected.
 *************************************************************************/
-uint TabControl::getSelectedTabIndex() const
+size_t TabControl::getSelectedTabIndex() const
 {
-    uint index;
+    size_t index;
     TabButtonIndexMap::const_iterator i, iend;
     iend = d_tabButtonIndexMap.end();
     for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
@@ -172,7 +172,7 @@ void TabControl::setSelectedTab(uint ID)
 /*************************************************************************
 Set the selected tab by window name
 *************************************************************************/
-void TabControl::setSelectedTabAtIndex(uint index)
+void TabControl::setSelectedTabAtIndex(size_t index)
 {
 	Window* wnd = getTabContentsAtIndex(index);
 	selectTab_impl(wnd);
@@ -327,7 +327,7 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
 /*************************************************************************
 	Calculate size and position for a tab button
 *************************************************************************/
-void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex)
+void TabControl::calculateTabButtonSizePosition(TabButton* btn, size_t targetIndex)
 {
     // relative height is always 1.0 for buttons since they are embedded in a
     // panel of the correct height already
@@ -486,7 +486,7 @@ void TabControl::performChildWindowLayout()
     // Calculate the positions and sizes of the tab buttons
     TabButtonIndexMap::iterator i, iend;
     iend = d_tabButtonIndexMap.end();
-    uint x = 0;
+    size_t x = 0;
     for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++x)
     {
         TabButton* btn = i->second;
@@ -564,7 +564,7 @@ int TabControl::writeChildWindowsXML(OutStream& out_stream) const
     // since TabControl content is actually added to the component tab
     // content pane window, this overridden function exists to dump those
     // out as if they were our own children.
-    for (uint i = 0; i < getTabCount(); ++i)
+    for (size_t i = 0; i < getTabCount(); ++i)
     {
         getTabContentsAtIndex(i)->writeXMLToStream(out_stream);
         ++childOutputCount;

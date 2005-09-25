@@ -25,7 +25,6 @@
 #define _FalTitlebar_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUITitlebar.h"
 
 // Start of CEGUI namespace section
@@ -65,19 +64,6 @@ namespace CEGUI
     protected:
         // overridden from Titlebar base class.
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardTitlebar type Window objects.
-    */
-    class FALAGARDBASE_API FalagardTitlebarFactory : public WindowFactory
-    {
-    public:
-        FalagardTitlebarFactory(void) : WindowFactory(FalagardTitlebar::WidgetTypeName) { }
-        ~FalagardTitlebarFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

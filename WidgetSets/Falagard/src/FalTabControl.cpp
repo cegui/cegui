@@ -94,21 +94,4 @@ namespace CEGUI
         d_tabButtonType = type;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardTabControlFactory::createWindow(const String& name)
-    {
-        return new FalagardTabControl(d_type, name);
-    }
-
-    void FalagardTabControlFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

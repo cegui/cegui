@@ -98,22 +98,4 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardScrollablePaneFactory::createWindow(const String& name)
-    {
-        return new FalagardScrollablePane(d_type, name);
-    }
-
-    void FalagardScrollablePaneFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

@@ -25,7 +25,6 @@
 #define _FalEditbox_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIEditbox.h"
 
 // Start of CEGUI namespace section
@@ -74,19 +73,6 @@ namespace CEGUI
 
         // rendering internal vars
         float	d_lastTextOffset;		//!< x rendering offset used last time we drew the widget.
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardEditbox type Window objects.
-    */
-    class FALAGARDBASE_API FalagardEditboxFactory : public WindowFactory
-    {
-    public:
-        FalagardEditboxFactory(void) : WindowFactory(FalagardEditbox::WidgetTypeName) { }
-        ~FalagardEditboxFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

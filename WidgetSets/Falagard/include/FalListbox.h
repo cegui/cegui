@@ -25,7 +25,6 @@
 #define _FalListbox_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIListbox.h"
 
 // Start of CEGUI namespace section
@@ -75,20 +74,6 @@ namespace CEGUI
         Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheListboxBaseImagery();
     };
-
-    /*!
-    \brief
-        WindowFactory for FalagardListbox type Window objects.
-    */
-    class FALAGARDBASE_API FalagardListboxFactory : public WindowFactory
-    {
-    public:
-        FalagardListboxFactory(void) : WindowFactory(FalagardListbox::WidgetTypeName) { }
-        ~FalagardListboxFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
-    };
-
 } // End of  CEGUI namespace section
 
 

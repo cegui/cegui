@@ -366,7 +366,7 @@ uint Font::getRequiredTextureSize(const String& glyph_set)
         if (getLoadedFreetypeGlyphHeight() > d_maxGlyphHeight)
         {
             d_maxGlyphHeight = getLoadedFreetypeGlyphHeight();
-            cur_y = (i + 1) * d_maxGlyphHeight;
+            cur_y = static_cast<uint>((i + 1) * d_maxGlyphHeight);
         }
 
         width = getLoadedFreetypeGlyphWidth();
@@ -948,7 +948,7 @@ void Font::updateFontScaling(void)
         CodepointMap::iterator pos = d_cp_map.begin(), end = d_cp_map.end();
         for (; pos != end; ++pos)
         {
-            pos->second.setAdvance((uint)(pos->second.getUnscaledAdvance() * hscale));
+            pos->second.setAdvance(PixelAligned(pos->second.getUnscaledAdvance() * hscale));
         }
 
         // re-calculate height
@@ -1293,7 +1293,7 @@ String Font::getCodepointRangeAsString(utf32 first_code_point, utf32 last_code_p
 bool Font::loadFreetypeGlyph(utf32 codepoint)
 {
     // load-up required glyph
-    bool load_error = FT_Load_Char(d_impldat->fontFace, codepoint, FT_LOAD_RENDER|FT_LOAD_FORCE_AUTOHINT|
+    bool load_error = 0 != FT_Load_Char(d_impldat->fontFace, codepoint, FT_LOAD_RENDER|FT_LOAD_FORCE_AUTOHINT|
             (d_antiAliased ? FT_LOAD_TARGET_NORMAL : FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO));
 
     if (load_error)

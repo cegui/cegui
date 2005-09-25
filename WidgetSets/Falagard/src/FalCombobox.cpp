@@ -70,22 +70,4 @@ namespace CEGUI
         // return component created by look'n'feel assignment.
         return getDropList();
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardComboboxFactory::createWindow(const String& name)
-    {
-        return new FalagardCombobox(d_type, name);
-    }
-
-    void FalagardComboboxFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

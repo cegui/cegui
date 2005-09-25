@@ -99,21 +99,4 @@ namespace CEGUI
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardListboxFactory::createWindow(const String& name)
-    {
-        return new FalagardListbox(d_type, name);
-    }
-
-    void FalagardListboxFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

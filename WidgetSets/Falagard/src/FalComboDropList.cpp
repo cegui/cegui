@@ -98,22 +98,4 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardComboDropListFactory::createWindow(const String& name)
-    {
-        return new FalagardComboDropList(d_type, name);
-    }
-
-    void FalagardComboDropListFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

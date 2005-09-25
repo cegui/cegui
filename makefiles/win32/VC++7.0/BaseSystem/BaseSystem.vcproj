@@ -201,15 +201,6 @@
 				RelativePath="..\..\..\..\src\CEGUIRenderCache.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIRenderableElement.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\CEGUIRenderableFrame.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\src\CEGUIRenderableImage.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderer.cpp">
 			</File>
 			<File
@@ -331,9 +322,6 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIButtonBase.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIButtonBaseProperties.cpp">
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\elements\CEGUICheckbox.cpp">
 				</File>
 				<File
@@ -415,9 +403,6 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIPushButton.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIPushButtonProperties.cpp">
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIRadioButton.cpp">
 				</File>
 				<File
@@ -452,24 +437,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUISpinnerProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIStatic.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIStaticImage.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIStaticImageProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIStaticProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIStaticText.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIStaticTextProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUITabButton.cpp">
@@ -764,15 +731,6 @@
 				RelativePath="..\..\..\..\include\CEGUIRenderCache.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIRenderableElement.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\CEGUIRenderableFrame.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\CEGUIRenderableImage.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderer.h">
 			</File>
 			<File
@@ -819,6 +777,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIVersion.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIWidgetModule.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIWindow.h">
@@ -912,9 +873,6 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIButtonBase.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIButtonBaseProperties.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUICheckbox.h">
 				</File>
 				<File
@@ -996,9 +954,6 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIPushButton.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIPushButtonProperties.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIRadioButton.h">
 				</File>
 				<File
@@ -1033,24 +988,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUISpinnerProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIStatic.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIStaticImage.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIStaticImageProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIStaticProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIStaticText.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIStaticTextProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITabButton.h">

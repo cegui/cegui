@@ -25,7 +25,6 @@
 #define _FalSpinner_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUISpinner.h"
 
 // Start of CEGUI namespace section
@@ -70,19 +69,6 @@ namespace CEGUI
         PushButton* createDecreaseButton(const String& name) const;
         Editbox* createEditbox(const String& name) const;
 
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardSpinner type Window objects.
-    */
-    class FALAGARDBASE_API FalagardSpinnerFactory : public WindowFactory
-    {
-    public:
-        FalagardSpinnerFactory(void) : WindowFactory(FalagardSpinner::WidgetTypeName) { }
-        ~FalagardSpinnerFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

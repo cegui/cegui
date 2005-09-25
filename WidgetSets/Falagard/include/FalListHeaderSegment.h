@@ -25,7 +25,6 @@
 #define _FalListHeaderSegment_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIListHeaderSegment.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "FalListHeaderSegmentProperties.h"
@@ -87,19 +86,6 @@ namespace CEGUI
         // properties
         static FalagardListHeaderSegmentProperties::SizingCursorImage   d_sizingCursorProperty;
         static FalagardListHeaderSegmentProperties::MovingCursorImage   d_movingCursorProperty;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardListHeaderSegment type Window objects.
-    */
-    class FALAGARDBASE_API FalagardListHeaderSegmentFactory : public WindowFactory
-    {
-    public:
-        FalagardListHeaderSegmentFactory(void) : WindowFactory(FalagardListHeaderSegment::WidgetTypeName) { }
-        ~FalagardListHeaderSegmentFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

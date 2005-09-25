@@ -63,19 +63,6 @@ namespace CEGUI
         Rect getPixelRect(void) const;
     };
 
-    /*!
-    \brief
-        WindowFactory for FalagardSystemButton type Window objects.
-    */
-    class FALAGARDBASE_API FalagardSystemButtonFactory : public WindowFactory
-    {
-    public:
-        FalagardSystemButtonFactory(void) : WindowFactory(FalagardSystemButton::WidgetTypeName) { }
-        ~FalagardSystemButtonFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
-    };
-
 } // End of  CEGUI namespace section
 
 

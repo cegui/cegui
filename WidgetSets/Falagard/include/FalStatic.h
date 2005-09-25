@@ -25,7 +25,6 @@
 #define _FalStatic_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "CEGUIWindow.h"
 #include "FalStaticProperties.h"
 
@@ -112,19 +111,6 @@ namespace CEGUI
         // implementation data
         bool d_frameEnabled;        //!< True when the frame is enabled.
         bool d_backgroundEnabled;   //!< true when the background is enabled.
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardStatic type Window objects.
-    */
-    class FALAGARDBASE_API FalagardStaticFactory : public WindowFactory
-    {
-    public:
-        FalagardStaticFactory(void) : WindowFactory(FalagardStatic::WidgetTypeName) { }
-        ~FalagardStaticFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

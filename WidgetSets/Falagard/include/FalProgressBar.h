@@ -25,7 +25,6 @@
 #define _FalProgressBar_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIProgressBar.h"
 #include "FalProgressBarProperties.h"
 
@@ -86,19 +85,6 @@ namespace CEGUI
         // property objects
         static FalagardProgressBarProperties::VerticalProgress d_verticalProperty;
         static FalagardProgressBarProperties::ReversedProgress d_reversedProperty;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardProgressBar type Window objects.
-    */
-    class FALAGARDBASE_API FalagardProgressBarFactory : public WindowFactory
-    {
-    public:
-        FalagardProgressBarFactory(void) : WindowFactory(FalagardProgressBar::WidgetTypeName) { }
-        ~FalagardProgressBarFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

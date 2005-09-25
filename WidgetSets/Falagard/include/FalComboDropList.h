@@ -25,7 +25,6 @@
 #define _FalComboDropList_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIComboDropList.h"
 
 // Start of CEGUI namespace section
@@ -74,19 +73,6 @@ namespace CEGUI
         Scrollbar* createVertScrollbar(const String& name) const;
         Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheListboxBaseImagery();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardComboDropList type Window objects.
-    */
-    class FALAGARDBASE_API FalagardComboDropListFactory : public WindowFactory
-    {
-    public:
-        FalagardComboDropListFactory(void) : WindowFactory(FalagardComboDropList::WidgetTypeName) { }
-        ~FalagardComboDropListFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

@@ -105,22 +105,4 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardMultiColumnListFactory::createWindow(const String& name)
-    {
-        return new FalagardMultiColumnList(d_type, name);
-    }
-
-    void FalagardMultiColumnListFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

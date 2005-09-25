@@ -83,21 +83,4 @@ namespace CEGUI
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardListHeaderFactory::createWindow(const String& name)
-    {
-        return new FalagardListHeader(d_type, name);
-    }
-
-    void FalagardListHeaderFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

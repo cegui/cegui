@@ -25,7 +25,6 @@
 #define _FalMenubar_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIMenubar.h"
 
 // Start of CEGUI namespace section
@@ -66,19 +65,6 @@ namespace CEGUI
         void populateRenderCache();
         void sizeToContent_impl(void);
         Rect getItemRenderArea(void) const;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardMenubar type Window objects.
-    */
-    class FALAGARDBASE_API FalagardMenubarFactory : public WindowFactory
-    {
-    public:
-        FalagardMenubarFactory(void) : WindowFactory(FalagardMenubar::WidgetTypeName) { }
-        ~FalagardMenubarFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

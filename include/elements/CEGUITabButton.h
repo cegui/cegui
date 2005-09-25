@@ -102,13 +102,13 @@ public:
     \brief
         Set the index at which this tab is positioned.
     */
-    void setTabIndex(uint idx) { d_tabIndex = idx; }
+    void setTabIndex(size_t idx) { d_tabIndex = idx; }
 
     /*!
     \brief
         Get the index at which this tab is positioned.
     */
-    uint getTabIndex(void) { return d_tabIndex; }
+    size_t getTabIndex(void) { return d_tabIndex; }
 protected:
     /*************************************************************************
     Implementation Data
@@ -116,7 +116,7 @@ protected:
     bool    d_selected;             //!< Is this button selected?
     bool    d_rightOfSelected;      //!< Is this button to the right of the selected tab?
     Window* d_targetWindow;         //!< The target window which this button is representing
-    uint    d_tabIndex;             //!< The index at which this tab is positioned
+    size_t  d_tabIndex;             //!< The index at which this tab is positioned
 	/*************************************************************************
 		New Event Handlers
 	*************************************************************************/

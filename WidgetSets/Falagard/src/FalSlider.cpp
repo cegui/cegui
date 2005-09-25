@@ -182,21 +182,4 @@ namespace CEGUI
         d_reversed = setting;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardSliderFactory::createWindow(const String& name)
-    {
-        return new FalagardSlider(d_type, name);
-    }
-
-    void FalagardSliderFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

@@ -25,7 +25,6 @@
 #define _FalSlider_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUISlider.h"
 #include "FalSliderProperties.h"
 
@@ -92,19 +91,6 @@ namespace CEGUI
         // property objects
         static FalagardSliderProperties::VerticalSlider d_verticalProperty;
         static FalagardSliderProperties::ReversedDirection d_reversedProperty;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardSlider type Window objects.
-    */
-    class FALAGARDBASE_API FalagardSliderFactory : public WindowFactory
-    {
-    public:
-        FalagardSliderFactory(void) : WindowFactory(FalagardSlider::WidgetTypeName) { }
-        ~FalagardSliderFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

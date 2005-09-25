@@ -158,21 +158,4 @@ namespace CEGUI
         d_vertical = setting;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardScrollbarFactory::createWindow(const String& name)
-    {
-        return new FalagardScrollbar(d_type, name);
-    }
-
-    void FalagardScrollbarFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

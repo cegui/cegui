@@ -42,8 +42,8 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Output/release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -74,8 +74,8 @@ PostBuild_Cmds=copy "..\..\..\..\..\bin\CEGUIFalagardBase.dll" "..\..\..\..\..\S
 # PROP Intermediate_Dir "Output/debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "_STLP_DEBUG" /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /D "_STLP_DEBUG" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -212,11 +212,27 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalSpinner.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalStatic.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalStaticImage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalStaticImageProperties.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalStaticProperties.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalStaticText.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalStaticTextProperties.cpp
 # End Source File
 # Begin Source File
 
@@ -364,11 +380,27 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalSpinner.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalStatic.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalStaticImage.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalStaticImageProperties.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalStaticProperties.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalStaticText.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalStaticTextProperties.h
 # End Source File
 # Begin Source File
 

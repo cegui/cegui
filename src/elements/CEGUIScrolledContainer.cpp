@@ -96,7 +96,7 @@ namespace CEGUI
 
     Rect ScrolledContainer::getChildExtentsArea(void) const
     {
-        uint childCount = getChildCount();
+        size_t childCount = getChildCount();
 
         // set up initial content area to match first child.
         if (childCount != 0)
@@ -105,7 +105,7 @@ namespace CEGUI
             Rect extents(wnd->getWindowArea().asAbsolute(d_pixelSize));
 
             // control var starts at 1 since we already dealt with 0 above
-            for (uint i = 1; i < childCount; ++i)
+            for (size_t i = 1; i < childCount; ++i)
             {
                 wnd = getChildAtIdx(i);
                 Rect area(wnd->getWindowArea().asAbsolute(d_pixelSize));

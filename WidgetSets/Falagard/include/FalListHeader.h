@@ -25,7 +25,6 @@
 #define _FalListHeader_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIListHeader.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "FalListHeaderProperties.h"
@@ -82,19 +81,6 @@ namespace CEGUI
 
         // data fields
         String  d_segmentWidgetType;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardListHeader type Window objects.
-    */
-    class FALAGARDBASE_API FalagardListHeaderFactory : public WindowFactory
-    {
-    public:
-        FalagardListHeaderFactory(void) : WindowFactory(FalagardListHeader::WidgetTypeName) { }
-        ~FalagardListHeaderFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

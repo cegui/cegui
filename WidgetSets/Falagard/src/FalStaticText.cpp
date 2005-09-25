@@ -433,21 +433,4 @@ namespace CEGUI
         return true;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardStaticTextFactory::createWindow(const String& name)
-    {
-        return new FalagardStaticText(d_type, name);
-    }
-
-    void FalagardStaticTextFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

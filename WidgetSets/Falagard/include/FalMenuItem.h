@@ -25,7 +25,6 @@
 #define _FalMenuItem_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIMenuItem.h"
 
 // Start of CEGUI namespace section
@@ -69,19 +68,6 @@ namespace CEGUI
     protected:
         // overridden from MenuItem base class.
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardMenuItem type Window objects.
-    */
-    class FALAGARDBASE_API FalagardMenuItemFactory : public WindowFactory
-    {
-    public:
-        FalagardMenuItemFactory(void) : WindowFactory(FalagardMenuItem::WidgetTypeName) { }
-        ~FalagardMenuItemFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

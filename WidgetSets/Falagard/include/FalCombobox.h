@@ -25,7 +25,6 @@
 #define _FalCombobox_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUICombobox.h"
 
 // Start of CEGUI namespace section
@@ -71,19 +70,6 @@ namespace CEGUI
         Editbox* createEditbox(const String& name) const;
         PushButton* createPushButton(const String& name) const;
         ComboDropList* createDropList(const String& name) const;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardCombobox type Window objects.
-    */
-    class FALAGARDBASE_API FalagardComboboxFactory : public WindowFactory
-    {
-    public:
-        FalagardComboboxFactory(void) : WindowFactory(FalagardCombobox::WidgetTypeName) { }
-        ~FalagardComboboxFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

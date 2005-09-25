@@ -117,21 +117,4 @@ namespace CEGUI
         d_reversed = setting;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardProgressBarFactory::createWindow(const String& name)
-    {
-        return new FalagardProgressBar(d_type, name);
-    }
-
-    void FalagardProgressBarFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

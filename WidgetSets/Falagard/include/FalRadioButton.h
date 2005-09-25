@@ -26,7 +26,6 @@
 
 #include "FalModule.h"
 #include "elements/CEGUIRadioButton.h"
-#include "CEGUIWindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -69,19 +68,6 @@ namespace CEGUI
     protected:
         // overridden from RadioButton base class.
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardRadioButton type Window objects.
-    */
-    class FALAGARDBASE_API FalagardRadioButtonFactory : public WindowFactory
-    {
-    public:
-        FalagardRadioButtonFactory(void) : WindowFactory(FalagardRadioButton::WidgetTypeName) { }
-        ~FalagardRadioButtonFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

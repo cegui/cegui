@@ -72,22 +72,4 @@ namespace CEGUI
         return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*this);
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardMenubarFactory::createWindow(const String& name)
-    {
-        return new FalagardMenubar(d_type, name);
-    }
-
-    void FalagardMenubarFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

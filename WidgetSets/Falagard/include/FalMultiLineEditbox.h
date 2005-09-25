@@ -25,7 +25,6 @@
 #define _FalMultiLineEditbox_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIMultiLineEditbox.h"
 #include "FalMultiLineEditboxProperties.h"
 
@@ -92,19 +91,6 @@ namespace CEGUI
 
         // properties
         static FalagardMultiLineEditboxProperties::SelectionBrushImage d_selectionBrushProperty;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardMultiLineEditbox type Window objects.
-    */
-    class FALAGARDBASE_API FalagardMultiLineEditboxFactory : public WindowFactory
-    {
-    public:
-        FalagardMultiLineEditboxFactory(void) : WindowFactory(FalagardMultiLineEditbox::WidgetTypeName) { }
-        ~FalagardMultiLineEditboxFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

@@ -14,6 +14,7 @@
 	<FalagardMapping WindowType="TaharezLook/FrameWindow" TargetType="Falagard/FrameWindow" LookNFeel="TaharezLook/FrameWindow" />
 	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/HorizontalScrollbar" />
 	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/HorizontalScrollbarThumb" />
+    <FalagardMapping WindowType="TaharezLook/ImageButton" TargetType="Falagard/Button" LookNFeel="TaharezLook/ImageButton" />
 	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/LargeVerticalScrollbar" />
 	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/LargeVerticalScrollbarThumb" />
 	<FalagardMapping WindowType="TaharezLook/ListHeader" TargetType="Falagard/ListHeader" LookNFeel="TaharezLook/ListHeader" />

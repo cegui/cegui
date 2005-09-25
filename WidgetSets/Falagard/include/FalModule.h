@@ -24,7 +24,7 @@
 #ifndef _FalModule_h_
 #define _FalModule_h_
 
-#include "CEGUIString.h"
+#include "CEGUIWidgetModule.h"
 
 /*************************************************************************
     Import / Export control macros
@@ -39,14 +39,6 @@
 #   define FALAGARDBASE_API
 #endif
 
-// forward refs
-class CEGUI::WindowFactory;
+CEGUI_DECLARE_WIDGET_MODULE( Falagard )
 
-/*************************************************************************
-    Prototypes
-*************************************************************************/
-extern "C" FALAGARDBASE_API void registerFactory(const CEGUI::String& type_name);
-extern "C" FALAGARDBASE_API CEGUI::uint registerAllFactories(void);
-// implementation helper function
-void doSafeFactoryRegistration(CEGUI::WindowFactory* factory);
 #endif  // end of guard _FalModule_h_

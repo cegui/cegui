@@ -49,21 +49,4 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardTabPaneFactory::createWindow(const String& name)
-    {
-        return new FalagardTabPane(d_type, name);
-    }
-
-    void FalagardTabPaneFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

@@ -123,10 +123,10 @@ void RadioButton::deselectOtherButtonsInGroup(void) const
 	// nothing to do unless we are attached to another window.
 	if (d_parent)
 	{
-		int child_count = d_parent->getChildCount();
+		size_t child_count = d_parent->getChildCount();
 
 		// scan all children
-		for (int child = 0; child < child_count; ++child)
+		for (size_t child = 0; child < child_count; ++child)
 		{
 			// is this child same type as we are?
 			if (d_parent->getChildAtIdx(child)->getType() == getType())
@@ -195,10 +195,10 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 	// Only search we we are a child window
 	if (d_parent)
 	{
-		int child_count = d_parent->getChildCount();
+		size_t child_count = d_parent->getChildCount();
 
 		// scan all children
-		for (int child = 0; child < child_count; ++child)
+		for (size_t child = 0; child < child_count; ++child)
 		{
 			// is this child same type as we are?
 			if (d_parent->getChildAtIdx(child)->getType() == getType())

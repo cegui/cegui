@@ -25,7 +25,6 @@
 #define _FalScrollbar_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIScrollbar.h"
 #include "FalScrollbarProperties.h"
 
@@ -91,19 +90,6 @@ namespace CEGUI
 
         // property objects
         static FalagardScrollbarProperties::VerticalScrollbar d_verticalProperty;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardScrollbar type Window objects.
-    */
-    class FALAGARDBASE_API FalagardScrollbarFactory : public WindowFactory
-    {
-    public:
-        FalagardScrollbarFactory(void) : WindowFactory(FalagardScrollbar::WidgetTypeName) { }
-        ~FalagardScrollbarFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

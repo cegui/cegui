@@ -73,22 +73,4 @@ namespace CEGUI
         wlf.getStateImagery(state).render(*this);
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardButtonFactory::createWindow(const String& name)
-    {
-        return new FalagardButton(d_type, name);
-    }
-
-    void FalagardButtonFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

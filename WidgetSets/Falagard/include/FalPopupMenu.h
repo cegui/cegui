@@ -25,7 +25,6 @@
 #define _FalPopupMenu_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUIPopupMenu.h"
 
 // Start of CEGUI namespace section
@@ -66,19 +65,6 @@ namespace CEGUI
         void populateRenderCache();
         void sizeToContent_impl(void);
         Rect getItemRenderArea(void) const;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardPopupMenu type Window objects.
-    */
-    class FALAGARDBASE_API FalagardPopupMenuFactory : public WindowFactory
-    {
-    public:
-        FalagardPopupMenuFactory(void) : WindowFactory(FalagardPopupMenu::WidgetTypeName) { }
-        ~FalagardPopupMenuFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

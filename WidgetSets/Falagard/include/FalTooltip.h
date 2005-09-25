@@ -25,7 +25,6 @@
 #define _FalTooltip_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUITooltip.h"
 
 // Start of CEGUI namespace section
@@ -67,19 +66,6 @@ namespace CEGUI
         void populateRenderCache();
         Size getTextSize() const;
 
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardTooltip type Window objects.
-    */
-    class FALAGARDBASE_API FalagardTooltipFactory : public WindowFactory
-    {
-    public:
-        FalagardTooltipFactory(void) : WindowFactory(FalagardTooltip::WidgetTypeName) { }
-        ~FalagardTooltipFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

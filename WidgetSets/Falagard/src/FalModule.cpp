@@ -22,8 +22,6 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "FalModule.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowFactoryManager.h"
 // includes for types we create
 #include "FalButton.h"
 #include "FalCheckbox.h"
@@ -56,139 +54,71 @@
 #include "FalTitlebar.h"
 #include "FalTooltip.h"
 
-/*************************************************************************
-    Static factory objects
-*************************************************************************/
-static CEGUI::FalagardButtonFactory             s_ButtonFactory;
-static CEGUI::FalagardCheckboxFactory           s_CheckboxFactory;
-static CEGUI::FalagardComboDropListFactory      s_ComboDropListFactory;
-static CEGUI::FalagardComboboxFactory           s_ComboboxFactory;
-static CEGUI::FalagardEditboxFactory            s_EditboxFactory;
-static CEGUI::FalagardFrameWindowFactory        s_FrameWindowFactory;
-static CEGUI::FalagardListHeaderFactory         s_ListHeaderFactory;
-static CEGUI::FalagardListHeaderSegmentFactory  s_ListHeaderSegmentFactory;
-static CEGUI::FalagardListboxFactory            s_ListboxFactory;
-static CEGUI::FalagardMenubarFactory            s_MenubarFactory;
-static CEGUI::FalagardMenuItemFactory           s_MenuItemFactory;
-static CEGUI::FalagardMultiColumnListFactory    s_MultiColumnListFactory;
-static CEGUI::FalagardMultiLineEditboxFactory   s_MultiLineEditboxFactory;
-static CEGUI::FalagardPopupMenuFactory          s_PopupMenuFactory;
-static CEGUI::FalagardProgressBarFactory        s_ProgressBarFactory;
-static CEGUI::FalagardRadioButtonFactory        s_RadioButtonFactory;
-static CEGUI::FalagardScrollablePaneFactory     s_ScrollablePaneFactory;
-static CEGUI::FalagardScrollbarFactory          s_ScrollbarFactory;
-static CEGUI::FalagardSliderFactory             s_SliderFactory;
-static CEGUI::FalagardSpinnerFactory            s_SpinnerFactory;
-static CEGUI::FalagardStaticFactory             s_StaticFactory;
-static CEGUI::FalagardStaticImageFactory        s_StaticImageFactory;
-static CEGUI::FalagardStaticTextFactory         s_StaticTextFactory;
-static CEGUI::FalagardSystemButtonFactory       s_SystemButtonFactory;
-static CEGUI::FalagardTabButtonFactory          s_TabButtonFactory;
-static CEGUI::FalagardTabControlFactory         s_TabControlFactory;
-static CEGUI::FalagardTabPaneFactory            s_TabPaneFactory;
-static CEGUI::FalagardThumbFactory              s_ThumbFactory;
-static CEGUI::FalagardTitlebarFactory           s_TitlebarFactory;
-static CEGUI::FalagardTooltipFactory            s_TooltipFactory;
+// Define factories to create Falagard window types
+CEGUI_DEFINE_FACTORY( FalagardButton )
+CEGUI_DEFINE_FACTORY( FalagardCheckbox )
+CEGUI_DEFINE_FACTORY( FalagardComboDropList )
+CEGUI_DEFINE_FACTORY( FalagardCombobox )
+CEGUI_DEFINE_FACTORY( FalagardEditbox )
+CEGUI_DEFINE_FACTORY( FalagardFrameWindow )
+CEGUI_DEFINE_FACTORY( FalagardListHeader )
+CEGUI_DEFINE_FACTORY( FalagardListHeaderSegment )
+CEGUI_DEFINE_FACTORY( FalagardListbox )
+CEGUI_DEFINE_FACTORY( FalagardMenubar )
+CEGUI_DEFINE_FACTORY( FalagardMenuItem )
+CEGUI_DEFINE_FACTORY( FalagardMultiColumnList )
+CEGUI_DEFINE_FACTORY( FalagardMultiLineEditbox )
+CEGUI_DEFINE_FACTORY( FalagardPopupMenu )
+CEGUI_DEFINE_FACTORY( FalagardProgressBar )
+CEGUI_DEFINE_FACTORY( FalagardRadioButton )
+CEGUI_DEFINE_FACTORY( FalagardScrollablePane )
+CEGUI_DEFINE_FACTORY( FalagardScrollbar )
+CEGUI_DEFINE_FACTORY( FalagardSlider )
+CEGUI_DEFINE_FACTORY( FalagardSpinner )
+CEGUI_DEFINE_FACTORY( FalagardStatic )
+CEGUI_DEFINE_FACTORY( FalagardStaticImage )
+CEGUI_DEFINE_FACTORY( FalagardStaticText )
+CEGUI_DEFINE_FACTORY( FalagardSystemButton )
+CEGUI_DEFINE_FACTORY( FalagardTabButton )
+CEGUI_DEFINE_FACTORY( FalagardTabControl )
+CEGUI_DEFINE_FACTORY( FalagardTabPane )
+CEGUI_DEFINE_FACTORY( FalagardThumb )
+CEGUI_DEFINE_FACTORY( FalagardTitlebar )
+CEGUI_DEFINE_FACTORY( FalagardTooltip )
 
+// Define the factory map so types can be registered
+CEGUI_START_FACTORY_MAP( Falagard )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardButton )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardCheckbox )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardComboDropList )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardCombobox )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardEditbox )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardFrameWindow )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardListHeader )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardListHeaderSegment )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardListbox )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardMenubar )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardMenuItem )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardMultiColumnList )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardMultiLineEditbox )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardPopupMenu )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardProgressBar )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardRadioButton )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardScrollablePane )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardScrollbar )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardSlider )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardSpinner )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardStatic )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardStaticImage )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardStaticText )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardSystemButton )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardTabButton )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardTabControl )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardTabPane )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardThumb )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardTitlebar )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardTooltip )
+CEGUI_END_FACTORY_MAP
 
-using namespace CEGUI;
-
-struct mapEntry
-{
-    const CEGUI::utf8* d_name;
-    CEGUI::WindowFactory* d_factory;
-};
-
-mapEntry factoriesMap[] =
-{
-    {FalagardButton::WidgetTypeName, &s_ButtonFactory},
-    {FalagardCheckbox::WidgetTypeName, &s_CheckboxFactory},
-    {FalagardComboDropList::WidgetTypeName, &s_ComboDropListFactory},
-    {FalagardCombobox::WidgetTypeName, &s_ComboboxFactory},
-    {FalagardEditbox::WidgetTypeName, &s_EditboxFactory},
-    {FalagardFrameWindow::WidgetTypeName, &s_FrameWindowFactory},
-    {FalagardListHeader::WidgetTypeName, &s_ListHeaderFactory},
-    {FalagardListHeaderSegment::WidgetTypeName, &s_ListHeaderSegmentFactory},
-    {FalagardListbox::WidgetTypeName, &s_ListboxFactory},
-    {FalagardMenubar::WidgetTypeName, &s_MenubarFactory},
-    {FalagardMenuItem::WidgetTypeName, &s_MenuItemFactory},
-    {FalagardMultiColumnList::WidgetTypeName, &s_MultiColumnListFactory},
-    {FalagardMultiLineEditbox::WidgetTypeName, &s_MultiLineEditboxFactory},
-    {FalagardPopupMenu::WidgetTypeName, &s_PopupMenuFactory},
-    {FalagardProgressBar::WidgetTypeName, &s_ProgressBarFactory},
-    {FalagardRadioButton::WidgetTypeName, &s_RadioButtonFactory},
-    {FalagardScrollablePane::WidgetTypeName, &s_ScrollablePaneFactory},
-    {FalagardScrollbar::WidgetTypeName, &s_ScrollbarFactory},
-    {FalagardSlider::WidgetTypeName, &s_SliderFactory},
-    {FalagardSpinner::WidgetTypeName, &s_SpinnerFactory},
-    {FalagardStatic::WidgetTypeName, &s_StaticFactory},
-    {FalagardStaticImage::WidgetTypeName, &s_StaticImageFactory},
-    {FalagardStaticText::WidgetTypeName, &s_StaticTextFactory},
-    {FalagardSystemButton::WidgetTypeName, &s_SystemButtonFactory},
-    {FalagardTabButton::WidgetTypeName, &s_TabButtonFactory},
-    {FalagardTabControl::WidgetTypeName, &s_TabControlFactory},
-    {FalagardTabPane::WidgetTypeName, &s_TabPaneFactory},
-    {FalagardThumb::WidgetTypeName, &s_ThumbFactory},
-    {FalagardTitlebar::WidgetTypeName, &s_TitlebarFactory},
-    {FalagardTooltip::WidgetTypeName, &s_TooltipFactory},
-    {0,0}
-};
-
-/*************************************************************************
-	Plugin access interface
-*************************************************************************/
-extern "C" void registerFactory(const CEGUI::String& type_name)
-{
-    mapEntry* entry = factoriesMap;
-
-    while (entry->d_name)
-    {
-        if (entry->d_name == type_name)
-        {
-            doSafeFactoryRegistration(entry->d_factory);
-            return;
-        }
-
-        ++entry;
-    }
-
-    throw UnknownObjectException("::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
-}
-
-extern "C" CEGUI::uint registerAllFactories(void)
-{
-    CEGUI::uint count = 0;
-    mapEntry* entry = factoriesMap;
-
-    while (entry->d_name)
-    {
-		doSafeFactoryRegistration(entry->d_factory);
-
-        ++entry;
-        ++count;
-    }
-
-    return count;
-}
-
-void doSafeFactoryRegistration(WindowFactory* factory)
-{
-	assert(factory != 0);
-
-	WindowFactoryManager& wfm = WindowFactoryManager::getSingleton();
-
-	// is this factory is already registered
-	if (wfm.isFactoryPresent(factory->getTypeName()))
-	{
-		// log the fact that this type already appears to be registered
-		Logger::getSingleton().logEvent(
-			"Falagard widget factory '" + factory->getTypeName() + "' appears to be already registered, skipping.",
-			Informative);
-	}
-	// factory not already registered,
-	else
-	{
-		// add this factory to those available
-		wfm.addFactory(factory);
-	}
-}
+// define the widget module for Falagard
+CEGUI_DEFINE_WIDGET_MODULE( Falagard )

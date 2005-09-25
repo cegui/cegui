@@ -70,21 +70,4 @@ namespace CEGUI
         return getEditbox();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardSpinnerFactory::createWindow(const String& name)
-    {
-        return new FalagardSpinner(d_type, name);
-    }
-
-    void FalagardSpinnerFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

@@ -26,7 +26,6 @@
 
 #include "FalModule.h"
 #include "elements/CEGUITabButton.h"
-#include "CEGUIWindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -63,19 +62,6 @@ namespace CEGUI
     protected:
         // overridden from TabButton
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardTabButton type Window objects.
-    */
-    class FALAGARDBASE_API FalagardTabButtonFactory : public WindowFactory
-    {
-    public:
-        FalagardTabButtonFactory(void) : WindowFactory(FalagardTabButton::WidgetTypeName) { }
-        ~FalagardTabButtonFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

@@ -64,21 +64,4 @@ namespace CEGUI
         requestRedraw();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardStaticImageFactory::createWindow(const String& name)
-    {
-        return new FalagardStaticImage(d_type, name);
-    }
-
-    void FalagardStaticImageFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

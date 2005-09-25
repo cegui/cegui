@@ -26,7 +26,6 @@
 
 #include "FalModule.h"
 #include "elements/CEGUICheckbox.h"
-#include "CEGUIWindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -69,19 +68,6 @@ namespace CEGUI
     protected:
         // overridden from Checkbox base class.
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardCheckbox type Window objects.
-    */
-    class FALAGARDBASE_API FalagardCheckboxFactory : public WindowFactory
-    {
-    public:
-        FalagardCheckboxFactory(void) : WindowFactory(FalagardCheckbox::WidgetTypeName) { }
-        ~FalagardCheckboxFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

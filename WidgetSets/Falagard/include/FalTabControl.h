@@ -25,7 +25,6 @@
 #define _FalTabControl_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "elements/CEGUITabControl.h"
 #include "FalTabControlProperties.h"
 
@@ -87,19 +86,6 @@ namespace CEGUI
 
         // properties
         static FalagardTabControlProperties::TabButtonType d_tabButtonTypeProperty;
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardTabControl type Window objects.
-    */
-    class FALAGARDBASE_API FalagardTabControlFactory : public WindowFactory
-    {
-    public:
-        FalagardTabControlFactory(void) : WindowFactory(FalagardTabControl::WidgetTypeName) { }
-        ~FalagardTabControlFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

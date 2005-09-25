@@ -64,22 +64,4 @@ namespace CEGUI
         return sz;
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardTooltipFactory::createWindow(const String& name)
-    {
-        return new FalagardTooltip(d_type, name);
-    }
-
-    void FalagardTooltipFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

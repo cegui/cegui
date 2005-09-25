@@ -208,21 +208,4 @@ namespace CEGUI
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    /*************************************************************************
-
-        Factory Methods
-
-    *************************************************************************/
-    //////////////////////////////////////////////////////////////////////////
-    Window* FalagardEditboxFactory::createWindow(const String& name)
-    {
-        return new FalagardEditbox(d_type, name);
-    }
-
-    void FalagardEditboxFactory::destroyWindow(Window* window)
-    {
-        delete window;
-    }
-
 } // End of  CEGUI namespace section

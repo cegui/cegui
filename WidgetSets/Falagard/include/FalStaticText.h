@@ -25,7 +25,6 @@
 #define _FalStaticText_h_
 
 #include "FalModule.h"
-#include "CEGUIWindowFactory.h"
 #include "FalStatic.h"
 #include "FalStaticTextProperties.h"
 
@@ -212,19 +211,6 @@ namespace CEGUI
         ColourRect      d_textCols;             //!< Colours used when rendering the text.
         bool            d_enableVertScrollbar;  //!< true if vertical scroll bar is enabled.
         bool            d_enableHorzScrollbar;  //!< true if horizontal scroll bar is enabled.
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardStaticText type Window objects.
-    */
-    class FALAGARDBASE_API FalagardStaticTextFactory : public WindowFactory
-    {
-    public:
-        FalagardStaticTextFactory(void) : WindowFactory(FalagardStaticText::WidgetTypeName) { }
-        ~FalagardStaticTextFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

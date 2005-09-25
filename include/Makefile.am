@@ -47,6 +47,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIUDim.h \
                  CEGUIVector.h \
                  CEGUIVersion.h \
+                 CEGUIWidgetModule.h \
                  CEGUIWindow.h \
                  CEGUIWindowFactory.h \
                  CEGUIWindowFactoryManager.h \

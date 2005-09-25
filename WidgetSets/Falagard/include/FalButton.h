@@ -26,7 +26,6 @@
 
 #include "FalModule.h"
 #include "elements/CEGUIPushButton.h"
-#include "CEGUIWindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -64,19 +63,6 @@ namespace CEGUI
     protected:
         // overridden from PushButton base class.
         void populateRenderCache();
-    };
-
-    /*!
-    \brief
-        WindowFactory for FalagardButton type Window objects.
-    */
-    class FALAGARDBASE_API FalagardButtonFactory : public WindowFactory
-    {
-    public:
-        FalagardButtonFactory(void) : WindowFactory(FalagardButton::WidgetTypeName) { }
-        ~FalagardButtonFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
     };
 
 } // End of  CEGUI namespace section

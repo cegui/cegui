@@ -27,7 +27,6 @@
 #include "FalModule.h"
 #include "elements/CEGUIMultiColumnList.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIWindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -78,20 +77,6 @@ namespace CEGUI
         Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheListboxBaseImagery();
     };
-
-    /*!
-    \brief
-        WindowFactory for FalagardMultiColumnList type Window objects.
-    */
-    class FALAGARDBASE_API FalagardMultiColumnListFactory : public WindowFactory
-    {
-    public:
-        FalagardMultiColumnListFactory(void) : WindowFactory(FalagardMultiColumnList::WidgetTypeName) { }
-        ~FalagardMultiColumnListFactory(void){}
-        Window* createWindow(const String& name);
-        void destroyWindow(Window* window);
-    };
-
 } // End of  CEGUI namespace section
 
 

@@ -35,7 +35,7 @@ namespace CEGUI
     absolute screen positions and positions offset from the top-left corner of
     a given Window object.
 */
-class CoordConverter
+class CEGUIEXPORT CoordConverter
 {
 public:
     /*!
