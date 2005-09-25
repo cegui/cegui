@@ -77,9 +77,7 @@ namespace CEGUI
     protected:
         // overridden from TabControl base class.
         void populateRenderCache();
-        TabPane* createTabContentPane(const String& name) const;
         TabButton* createTabButton(const String& name) const;
-        Window* createTabButtonPane(const String& name) const;
 
         // data fields
         String  d_tabButtonType;

@@ -75,18 +75,6 @@ namespace CEGUI
         return wlf.getNamedArea("TextArea").getArea().getPixelRect(*this);
     }
 
-    Scrollbar* FalagardMultiLineEditbox::createVertScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getVertScrollbar();
-    }
-
-    Scrollbar* FalagardMultiLineEditbox::createHorzScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getHorzScrollbar();
-    }
-
     void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
     {
         const StateImagery* imagery;

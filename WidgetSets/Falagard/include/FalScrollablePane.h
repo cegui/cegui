@@ -71,8 +71,6 @@ namespace CEGUI
     protected:
         // overridden from ScrollablePane base class.
         void populateRenderCache();
-        Scrollbar* createVerticalScrollbar(const String& name) const;
-        Scrollbar* createHorizontalScrollbar(const String& name) const;
         Rect getViewableArea(void) const;
     };
 

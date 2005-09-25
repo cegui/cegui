@@ -74,18 +74,6 @@ namespace CEGUI
         return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*this);
     }
 
-    Scrollbar* FalagardComboDropList::createVertScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getVertScrollbar();
-    }
-
-    Scrollbar* FalagardComboDropList::createHorzScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getHorzScrollbar();
-    }
-
     void FalagardComboDropList::cacheListboxBaseImagery()
     {
         const StateImagery* imagery;

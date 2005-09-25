@@ -131,8 +131,8 @@ MultiLineEditbox::~MultiLineEditbox(void)
 void MultiLineEditbox::initialise(void)
 {
 	// create the component sub-widgets
-	Scrollbar* vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
-	Scrollbar* horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
+	Scrollbar* vertScrollbar = getVertScrollbar();
+	Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	addChildWindow(vertScrollbar);
 	addChildWindow(horzScrollbar);

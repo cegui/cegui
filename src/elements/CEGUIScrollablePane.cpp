@@ -204,20 +204,11 @@ namespace CEGUI
 
     void ScrollablePane::initialise(void)
     {
-        String widgetName;
-        // create horizontal scrollbar
-        widgetName = d_name + HorzScrollbarNameSuffix;
-        Scrollbar* horzScrollbar = createHorizontalScrollbar(widgetName);
-        // perform consistency checks on what we got back
-        assert(horzScrollbar != 0);
-        assert(horzScrollbar->getName() == widgetName);
+        // get horizontal scrollbar
+        Scrollbar* horzScrollbar = getHorzScrollbar();
 
-        // create vertical scrollbar
-        widgetName = d_name + VertScrollbarNameSuffix;
-        Scrollbar* vertScrollbar = createVerticalScrollbar(widgetName);
-        // perform consistency checks on what we got back
-        assert(vertScrollbar != 0);
-        assert(vertScrollbar->getName() == widgetName);
+        // get vertical scrollbar
+        Scrollbar* vertScrollbar = getVertScrollbar();
 
         // create scrolled container widget
         ScrolledContainer* container =

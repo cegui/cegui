@@ -79,8 +79,6 @@ namespace CEGUI
     protected:
         // overridden from FrameWindow base class.
         void populateRenderCache();
-        Titlebar* createTitlebar(const String& name) const;
-        PushButton* createCloseButton(const String& name) const;
     };
 
 } // End of  CEGUI namespace section

@@ -65,10 +65,6 @@ namespace CEGUI
     protected:
         // overridden from Spinner base class.
         void populateRenderCache();
-        PushButton* createIncreaseButton(const String& name) const;
-        PushButton* createDecreaseButton(const String& name) const;
-        Editbox* createEditbox(const String& name) const;
-
     };
 
 } // End of  CEGUI namespace section

@@ -348,30 +348,6 @@ namespace CEGUI
         *************************************************************************/
         /*!
         \brief
-            Create a Scrollbar based widget to be used as the horizontal scrollbar.
-
-        \param name
-            String object holding the name that must be used when creating the widget.
-
-        \return
-            Scrollbar based object.
-        */
-        virtual Scrollbar* createHorizontalScrollbar(const String& name) const = 0;
-
-        /*!
-        \brief
-            Create a Scrollbar based widget to be used as the vertical scrollbar.
-
-        \param name
-            String object holding the name that must be used when creating the widget.
-
-        \return
-            Scrollbar based object.
-        */
-        virtual Scrollbar* createVerticalScrollbar(const String& name) const = 0;
-
-        /*!
-        \brief
             Return a Rect that described the pane's viewable area, relative
             to this Window, in pixels.
 

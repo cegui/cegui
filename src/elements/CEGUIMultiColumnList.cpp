@@ -614,9 +614,9 @@ MultiColumnList::SelectionMode MultiColumnList::getSelectionMode(void) const
 void MultiColumnList::initialise(void)
 {
 	// create the component sub-widgets
-	Scrollbar* vertScrollbar = createVertScrollbar(getName() + VertScrollbarNameSuffix);
-	Scrollbar* horzScrollbar = createHorzScrollbar(getName() + HorzScrollbarNameSuffix);
-	ListHeader* header       = createListHeader(getName() + ListHeaderNameSuffix);
+	Scrollbar* vertScrollbar = getVertScrollbar();
+	Scrollbar* horzScrollbar = getHorzScrollbar();
+	ListHeader* header       = getListHeader();
 
 	// add components
 	addChildWindow(vertScrollbar);

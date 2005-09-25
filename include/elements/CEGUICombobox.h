@@ -800,39 +800,6 @@ protected:
 
 	/*!
 	\brief
-		Create, initialise, and return a pointer to an Editbox widget to be used as part
-		of this Combobox.
-
-	\return
-		Pointer to an Editbox derived class.
-	*/
-	virtual   Editbox*   createEditbox(const String& name) const		= 0;
-
-
-	/*!
-	\brief
-		Create, initialise, and return a pointer to a PushButton widget to be used as part
-		of this Combobox.
-
-	\return
-		Pointer to a PushButton derived class.
-	*/
-	virtual	PushButton*	createPushButton(const String& name) const	= 0;
-
-
-	/*!
-	\brief
-		Create, initialise, and return a pointer to a ComboDropList widget to be used as part
-		of this Combobox.
-
-	\return
-		Pointer to a ComboDropList derived class.
-	*/
-	virtual	ComboDropList*	createDropList(const String& name) const	= 0;
-
-
-	/*!
-	\brief
 		Handler function for button clicks.
 	*/
 	bool	button_PressHandler(const EventArgs& e);

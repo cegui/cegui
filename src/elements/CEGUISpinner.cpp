@@ -80,11 +80,11 @@ namespace CEGUI
         Window::initialise();
 
         // create all the component widgets
-        PushButton* increaseButton = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
+        PushButton* increaseButton = getIncreaseButton();
         addChildWindow(increaseButton);
-        PushButton* decreaseButton = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
+        PushButton* decreaseButton = getDecreaseButton();
         addChildWindow(decreaseButton);
-        Editbox* editbox = createEditbox(getName() + EditboxNameSuffix);
+        Editbox* editbox = getEditbox();
         addChildWindow(editbox);
 
         // setup component controls

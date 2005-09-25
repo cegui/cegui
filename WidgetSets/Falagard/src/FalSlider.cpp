@@ -60,12 +60,6 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    Thumb* FalagardSlider::createThumb(const String& name) const
-    {
-        // return thumb created by look'n'feel assignment.
-        return getThumb();
-    }
-
     void FalagardSlider::performChildWindowLayout()
     {
         Slider::performChildWindowLayout();

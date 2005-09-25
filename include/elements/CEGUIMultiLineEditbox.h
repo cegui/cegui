@@ -392,32 +392,6 @@ protected:
 
 	/*!
 	\brief
-		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
-
-	\param name
-	   String holding the name to be assigned to the component.
-
-	\return
-		Pointer to a Scrollbar to be used for scrolling vertically.
-	*/
-	virtual Scrollbar*	createVertScrollbar(const String& name) const		= 0;
- 
-
-	/*!
-	\brief
-		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
-
-	\param name
-	   String holding the name to be assigned to the component.
-
-	\return
-		Pointer to a Scrollbar to be used for scrolling horizontally.
-	*/
-	virtual Scrollbar*	createHorzScrollbar(const String& name) const		= 0;
-
-
-	/*!
-	\brief
 		Perform rendering of the widget control frame and other 'static' areas.  This
 		method should not render the actual text.  Note that the text will be rendered
 		to layer 4 and the selection brush to layer 3, other layers can be used for

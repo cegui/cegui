@@ -110,8 +110,8 @@ FrameWindow::~FrameWindow(void)
 void FrameWindow::initialise(void)
 {
     // create child windows
-    Titlebar* titlebar = createTitlebar(getName() + TitlebarNameSuffix);
-    PushButton* closeButton = createCloseButton(getName() + CloseButtonNameSuffix);
+    Titlebar* titlebar = getTitlebar();
+    PushButton* closeButton = getCloseButton();
 
     // add child controls
     titlebar->setDraggingEnabled(d_dragMovable);

@@ -87,14 +87,4 @@ namespace CEGUI
         return wlf.getNamedArea(areaName).getArea().getPixelRect(*this, getUnclippedPixelRect());
     }
 
-    Titlebar* FalagardFrameWindow::createTitlebar(const String& name) const
-    {
-        return getTitlebar();
-    }
-
-    PushButton* FalagardFrameWindow::createCloseButton(const String& name) const
-    {
-        return getCloseButton();
-    }
-
 } // End of  CEGUI namespace section

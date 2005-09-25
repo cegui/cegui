@@ -75,24 +75,6 @@ namespace CEGUI
         return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*this);
     }
 
-    ListHeader* FalagardMultiColumnList::createListHeader(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getListHeader();
-    }
-
-    Scrollbar* FalagardMultiColumnList::createVertScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getVertScrollbar();
-    }
-
-    Scrollbar* FalagardMultiColumnList::createHorzScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getHorzScrollbar();
-    }
-
     void FalagardMultiColumnList::cacheListboxBaseImagery()
     {
         const StateImagery* imagery;

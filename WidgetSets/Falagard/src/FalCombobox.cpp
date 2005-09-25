@@ -53,21 +53,4 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    Editbox* FalagardCombobox::createEditbox(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getEditbox();
-    }
-
-    PushButton* FalagardCombobox::createPushButton(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getPushButton();
-    }
-
-    ComboDropList* FalagardCombobox::createDropList(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getDropList();
-    }
 } // End of  CEGUI namespace section

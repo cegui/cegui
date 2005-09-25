@@ -1214,45 +1214,6 @@ protected:
 
 	/*!
 	\brief
-		create and return a pointer to a ListHeaer widget for use as the column headers.
-
-	\param name
-	   String holding the name to be assigned to the created component.
-
-	\return
-		Pointer to a ListHeader based object.
-	*/
-	virtual ListHeader*	createListHeader(const String& name) const		= 0;
- 
-
-	/*!
-	\brief
-		create and return a pointer to a Scrollbar widget for use as vertical scroll bar
-
-	\param name
-	   String holding the name to be assigned to the created component.
-
-	\return
-		Pointer to a Scrollbar to be used for scrolling the list vertically.
-	*/
-	virtual Scrollbar*	createVertScrollbar(const String& name) const		= 0;
- 
-
-	/*!
-	\brief
-		create and return a pointer to a Scrollbar widget for use as horizontal scroll bar
-
-	\param name
-	   String holding the name to be assigned to the created component.
-
-	\return
-		Pointer to a Scrollbar to be used for scrolling the list horizontally.
-	*/
-	virtual Scrollbar*	createHorzScrollbar(const String& name) const		= 0;
-
-
-	/*!
-	\brief
 		Perform rendering of the widget control frame and other 'static' areas.  This
 		method should not render the actual items.  Note that the items are typically
 		rendered to layer 3, other layers can be used for rendering imagery behind and

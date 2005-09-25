@@ -317,39 +317,6 @@ namespace CEGUI
         Editbox* getEditbox() const;
 
         /*************************************************************************
-        	Abstract Implementation methods
-        *************************************************************************/
-        /*!
-        \brief
-            Creates a PushButton based widget that will be used for the increase
-            button component of the Spinner widget.
-
-        \return
-            Pointer to a valid PushButton based object.
-        */
-        virtual PushButton* createIncreaseButton(const String& name) const = 0;
-
-        /*!
-        \brief
-            Creates a PushButton based widget that will be used for the decrease
-            button component of the Spinner widget.
-
-        \return
-            Pointer to a valid PushButton based object.
-        */
-        virtual PushButton* createDecreaseButton(const String& name) const = 0;
-
-        /*!
-        \brief
-            Creates an Editbox based widget that will be used for the text input
-            area of the spinner widget.
-
-        \return
-            Pointer to a valid Editbox based object.
-        */
-        virtual Editbox* createEditbox(const String& name) const = 0;
-
-        /*************************************************************************
         	Overrides for Event handler methods
         *************************************************************************/
         virtual	void onFontChanged(WindowEventArgs& e);

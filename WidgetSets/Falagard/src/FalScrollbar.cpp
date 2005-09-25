@@ -58,24 +58,6 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    Thumb* FalagardScrollbar::createThumb(const String& name) const
-    {
-        // return thumb created by look'n'feel assignment.
-        return getThumb();
-    }
-
-    PushButton* FalagardScrollbar::createIncreaseButton(const String& name) const
-    {
-        // return button created by look'n'feel assignment.
-        return getIncreaseButton();
-    }
-
-    PushButton* FalagardScrollbar::createDecreaseButton(const String& name) const
-    {
-        // return button created by look'n'feel assignment.
-        return getDecreaseButton();
-    }
-
     void FalagardScrollbar::performChildWindowLayout()
     {
         Scrollbar::performChildWindowLayout();

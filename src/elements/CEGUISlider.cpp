@@ -80,7 +80,7 @@ Slider::~Slider(void)
 void Slider::initialise(void)
 {
 	// create and attach thumb
-	Thumb* thumb = createThumb(getName() + ThumbNameSuffix);
+	Thumb* thumb = getThumb();
 	addChildWindow(thumb);
 
 	// bind handler to thumb events

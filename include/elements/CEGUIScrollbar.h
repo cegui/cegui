@@ -326,36 +326,6 @@ protected:
 
 	/*!
 	\brief
-		create a PushButton based widget to use as the increase button for this scroll bar.
-
-    \param name
-        String holding the name that must be passed when creating the component widget.
-	*/
-	virtual PushButton*	createIncreaseButton(const String& name) const		= 0;
-
-
-	/*!
-	\brief
-		create a PushButton based widget to use as the decrease button for this scroll bar.
-
-    \param name
-        String holding the name that must be passed when creating the component widget.
-	*/
-	virtual PushButton*	createDecreaseButton(const String& name) const		= 0;
-
-
-	/*!
-	\brief
-		create a Thumb based widget to use as the thumb for this scroll bar.
-
-    \param name
-        String holding the name that must be passed when creating the component widget.
-	*/
-	virtual Thumb*	createThumb(const String& name) const		= 0;
-
-
-	/*!
-	\brief
 		update the size and location of the thumb to properly represent the current state of the scroll bar
 	*/
 	virtual void	updateThumb(void)	= 0;

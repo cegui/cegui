@@ -72,9 +72,6 @@ namespace CEGUI
     protected:
         // overridden from MultiColumnList base class.
         Rect getListRenderArea(void) const;
-        ListHeader* createListHeader(const String& name) const;
-        Scrollbar* createVertScrollbar(const String& name) const;
-        Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheListboxBaseImagery();
     };
 } // End of  CEGUI namespace section

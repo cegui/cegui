@@ -52,22 +52,4 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    PushButton* FalagardSpinner::createIncreaseButton(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getIncreaseButton();
-    }
-
-    PushButton* FalagardSpinner::createDecreaseButton(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getDecreaseButton();
-    }
-
-    Editbox* FalagardSpinner::createEditbox(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getEditbox();
-    }
-
 } // End of  CEGUI namespace section

@@ -70,8 +70,6 @@ namespace CEGUI
     protected:
         // overridden from ComboDropList base class.
         Rect getListRenderArea(void) const;
-        Scrollbar* createVertScrollbar(const String& name) const;
-        Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheListboxBaseImagery();
     };
 

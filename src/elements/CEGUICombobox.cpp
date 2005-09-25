@@ -122,9 +122,9 @@ Combobox::~Combobox(void)
 *************************************************************************/
 void Combobox::initialise(void)
 {
-	Editbox* editbox        = createEditbox(getName() + EditboxNameSuffix);
-	ComboDropList* droplist = createDropList(getName() + DropListNameSuffix);
-	PushButton* button       = createPushButton(getName() + ButtonNameSuffix);
+	Editbox* editbox        = getEditbox();
+	ComboDropList* droplist = getDropList();
+	PushButton* button      = getPushButton();
     droplist->setFont(getFont());
     editbox->setFont(getFont());
 

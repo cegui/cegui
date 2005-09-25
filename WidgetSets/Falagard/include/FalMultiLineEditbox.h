@@ -83,8 +83,6 @@ namespace CEGUI
 
     protected:
         // overridden from MultiLineEditbox base class.
-        Scrollbar* createVertScrollbar(const String& name) const;
-        Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheEditboxBaseImagery();
         void cacheCaratImagery(const Rect& textArea);
         Rect getTextRenderArea(void) const;

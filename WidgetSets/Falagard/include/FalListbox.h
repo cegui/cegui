@@ -70,8 +70,6 @@ namespace CEGUI
     protected:
         // overridden from Listbox base class.
         Rect getListRenderArea(void) const;
-        Scrollbar* createVertScrollbar(const String& name) const;
-        Scrollbar* createHorzScrollbar(const String& name) const;
         void cacheListboxBaseImagery();
     };
 } // End of  CEGUI namespace section

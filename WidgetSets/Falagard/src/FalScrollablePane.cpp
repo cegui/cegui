@@ -74,18 +74,6 @@ namespace CEGUI
         return wlf.getNamedArea("ViewableArea").getArea().getPixelRect(*this);
     }
 
-    Scrollbar* FalagardScrollablePane::createVerticalScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getVertScrollbar();
-    }
-
-    Scrollbar* FalagardScrollablePane::createHorizontalScrollbar(const String& name) const
-    {
-        // return component created by look'n'feel assignment.
-        return getHorzScrollbar();
-    }
-
     void FalagardScrollablePane::populateRenderCache()
     {
         const StateImagery* imagery;

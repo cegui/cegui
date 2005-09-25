@@ -80,9 +80,6 @@ namespace CEGUI
 
         // overridden from Scrollbar base class.
         void populateRenderCache();
-        Thumb* createThumb(const String& name) const;
-        PushButton* createIncreaseButton(const String& name) const;
-        PushButton* createDecreaseButton(const String& name) const;
         void performChildWindowLayout();
         void updateThumb(void);
         float getValueFromThumb(void) const;

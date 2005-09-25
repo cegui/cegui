@@ -88,19 +88,19 @@ Scrollbar::~Scrollbar(void)
 void Scrollbar::initialise(void)
 {
 	// Set up thumb
-	Thumb* thumb = createThumb(getName() + ThumbNameSuffix);
+	Thumb* thumb = getThumb();
 	addChildWindow(thumb);
 	thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved, this));
 	thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted, this));
 	thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded, this));
 
 	// set up Increase button
-	PushButton* increase = createIncreaseButton(getName() + IncreaseButtonNameSuffix);
+	PushButton* increase = getIncreaseButton();
 	addChildWindow(increase);
 	increase->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
 
 	// set up Decrease button
-	PushButton* decrease = createDecreaseButton(getName() + DecreaseButtonNameSuffix);
+	PushButton* decrease = getDecreaseButton();
 	addChildWindow(decrease);
 	decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 

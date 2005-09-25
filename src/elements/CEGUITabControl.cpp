@@ -82,8 +82,8 @@ TabControl::~TabControl(void)
 void TabControl::initialise(void)
 {
 	// create the component sub-widgets
-	TabPane* tabContentPane = createTabContentPane(getName() + ContentPaneNameSuffix);
-    Window* tabButtonPane = createTabButtonPane(getName() + TabButtonPaneNameSuffix);
+	TabPane* tabContentPane = getTabPane();
+    Window* tabButtonPane = getTabButtonPane();
 
 	addChildWindow(tabContentPane);
     addChildWindow(tabButtonPane);
@@ -501,13 +501,6 @@ void TabControl::performChildWindowLayout()
     tabContentPane->setWindowPosition(
         UVector2(cegui_reldim(0.0f), d_tabHeight) );
 
-}
-/*************************************************************************
-Create tab button pane
-*************************************************************************/
-Window*	TabControl::createTabButtonPane(const String& name) const
-{
-	return WindowManager::getSingleton().createWindow(GUISheet::WidgetTypeName, name);
 }
 /*************************************************************************
 Text changed on a content window

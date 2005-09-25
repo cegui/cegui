@@ -54,26 +54,6 @@ namespace CEGUI
         imagery->render(*this);
     }
 
-    TabPane* FalagardTabControl::createTabContentPane(const String& name) const
-    {
-        // return wiget created by look'n'feel assignment.
-        return getTabPane();
-    }
-
-    Window* FalagardTabControl::createTabButtonPane(const String& name) const
-    {
-        try
-        {
-            // return wiget created by look'n'feel assignment.
-            return getTabButtonPane();
-        }
-        // use default if none provided by LookNFeel
-        catch (UnknownObjectException)
-        {
-            return TabControl::createTabButtonPane(name);
-        }
-    }
-
     TabButton* FalagardTabControl::createTabButton(const String& name) const
     {
         if (d_tabButtonType.empty())

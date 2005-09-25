@@ -82,7 +82,6 @@ namespace CEGUI
 
         // overridden from Slider base class.
         void populateRenderCache();
-        Thumb* createThumb(const String& name) const;
         void performChildWindowLayout();
         void updateThumb(void);
         float getValueFromThumb(void) const;
