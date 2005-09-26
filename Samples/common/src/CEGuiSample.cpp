@@ -26,7 +26,7 @@
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
-#include "CEGUIConfig.h"
+#include "CEGUISamplesConfig.h"
 
 // includes for renderer selector classes
 #if defined( __WIN32__ ) || defined( _WIN32 )

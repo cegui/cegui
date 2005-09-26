@@ -168,6 +168,10 @@ SOURCE=..\..\..\..\Samples\common\include\CEGuiSample.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\Samples\common\include\CEGUISamplesConfig.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\Samples\common\include\Win32AppHelper.h
 # End Source File
 # Begin Source File

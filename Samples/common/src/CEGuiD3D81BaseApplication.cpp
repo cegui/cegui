@@ -22,7 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 // this controls conditional compile of file for MSVC
-#include "CEGUIConfig.h"
+#include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_8
 
 #include "CEGuiD3D81BaseApplication.h"

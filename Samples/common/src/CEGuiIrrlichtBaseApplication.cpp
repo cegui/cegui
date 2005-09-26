@@ -26,7 +26,7 @@
 #endif
 
 // this controls conditional compile of file for MSVC
-#include "CEGUIConfig.h"
+#include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
 
 #include "CEGuiIrrlichtBaseApplication.h"

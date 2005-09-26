@@ -184,6 +184,9 @@
 				RelativePath="..\..\..\..\Samples\common\include\CEGuiSample.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\Samples\common\include\CEGUISamplesConfig.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\Samples\common\include\Win32AppHelper.h">
 			</File>
 			<File
