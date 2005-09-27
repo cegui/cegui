@@ -80,27 +80,82 @@ private:
 	static const String GlyphElement;					//!< Tag name for Glyph elements.
 	static const String GlyphRangeElement;			//!< Tag name for GlyphRange elements.
 	static const String GlyphSetElement;				//!< Tag name for GlyphSet elements.
-	static const char	FontNameAttribute[];			//!< Attribute name that stores the name of the Font
-    static const char	FontFilenameAttribute[];		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
-    static const char	FontResourceGroupAttribute[];   //!< Attribute name that stores the resource group identifier used when loading font file.
-	static const char	FontTypeAttribute[];			//!< Attribute name that stores the type of font being defined (either static or dynamic).
-	static const char	FontSizeAttribute[];			//!< Attribute name that stores the point size for a dynamic font.
-	static const char	FontFirstCodepointAttribute[];	//!< Attribute name that stores the first code-point for a dynamic font.
-	static const char	FontLastCodepointAttribute[];	//!< Attribute name that stores the last code-point for a dynamic font.
-	static const char	FontNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Font.
-	static const char	FontNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Font.
-	static const char	FontAutoScaledAttribute[];		//!< Optional attribute that specifies whether the Font should be auto-scaled.
-	static const char	FontAntiAliasedAttribute[];		//!< Optional attribute that specifies whether the TTF based font should be anti-aliased.
-	static const char	MappingCodepointAttribute[];	//!< Attribute name that stores the Unicode code-point for a mapping.
-	static const char	MappingImageAttribute[];		//!< Attribute name that stores the Image name for a mapping.
-	static const char	MappingHorzAdvanceAttribute[];	//!< Attribute name that stores the horizontal advance for a glyph.
-	static const char	GlyphCodepointAttribute[];				//!< Attribute name that stores the U+ codepoint to add to the set.
-	static const char	GlyphRangeStartCodepointAttribute[];	//!< Attribute name that stores the U+ codepoint for the start of a range.
-	static const char	GlyphRangeEndCodepointAttribute[];		//!< Attribute name that stores the U+ codepoint for the end of a range.
-	static const char	GlyphSetGlyphsAttribute[];				//!< Attribute name that stores the UTF8 encoded codepoint set.
+	static const String FontNameAttribute;			//!< Attribute name that stores the name of the Font
+    static const String FontFilenameAttribute;		//!< Attribute name that stores the filename, this is either an Imageset xml file, or a font file.
+    static const String FontResourceGroupAttribute;   //!< Attribute name that stores the resource group identifier used when loading font file.
+	static const String FontTypeAttribute;			//!< Attribute name that stores the type of font being defined (either static or dynamic).
+	static const String FontSizeAttribute;			//!< Attribute name that stores the point size for a dynamic font.
+	static const String FontFirstCodepointAttribute;	//!< Attribute name that stores the first code-point for a dynamic font.
+	static const String FontLastCodepointAttribute;	//!< Attribute name that stores the last code-point for a dynamic font.
+	static const String FontNativeHorzResAttribute;	//!< Optional attribute that stores 'native' horizontal resolution for the Font.
+	static const String FontNativeVertResAttribute;	//!< Optional attribute that stores 'native' vertical resolution for the Font.
+	static const String FontAutoScaledAttribute;		//!< Optional attribute that specifies whether the Font should be auto-scaled.
+	static const String FontAntiAliasedAttribute;		//!< Optional attribute that specifies whether the TTF based font should be anti-aliased.
+	static const String MappingCodepointAttribute;	//!< Attribute name that stores the Unicode code-point for a mapping.
+	static const String MappingImageAttribute;		//!< Attribute name that stores the Image name for a mapping.
+	static const String MappingHorzAdvanceAttribute;	//!< Attribute name that stores the horizontal advance for a glyph.
+	static const String GlyphCodepointAttribute;				//!< Attribute name that stores the U+ codepoint to add to the set.
+	static const String GlyphRangeStartCodepointAttribute;	//!< Attribute name that stores the U+ codepoint for the start of a range.
+	static const String GlyphRangeEndCodepointAttribute;		//!< Attribute name that stores the U+ codepoint for the end of a range.
+	static const String GlyphSetGlyphsAttribute;				//!< Attribute name that stores the UTF8 encoded codepoint set.
 
 	// general constants
 	static const int	AutoGenerateHorzAdvance;		//!< Horizontal advance value that tells the parser to auto-calculate some reasonable value.
+
+    /*!
+    \brief
+        Method that handles the opening Font XML element.
+    */
+    void elementFontStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the Mapping XML element.
+    */
+    void elementMappingStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the Glyph XML element.
+    */
+    void elementGlyphStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the GlyphRange XML element.
+    */
+    void elementGlyphRangeStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the GlyphSet XML element.
+    */
+    void elementGlyphSetStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the closing Font XML element.
+    */
+    void elementFontEnd();
+
+    /*!
+    \brief
+        Method that completes font creatiion for a dynamic font.
+    */
+    void createDynamicFont(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that completes font creatiion for a static font.
+    */
+    void createStaticFont(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that initialises the auto-scale settings of the font being
+        created.
+    */
+    void initialiseAutoScaling(const XMLAttributes& attributes);
 
 	/*************************************************************************
 	Implementation Data

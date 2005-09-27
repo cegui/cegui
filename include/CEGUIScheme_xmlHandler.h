@@ -93,6 +93,65 @@ namespace CEGUI
         static const String TargetTypeAttribute;            //!< Attribute specifying the base target type of a falagard mapped window type.
         static const String LookNFeelAttribute;             //!< Attribute specifying the name of a LookNFeel for a falagard mapping..
 
+        /*!
+        \brief
+            Method that handles the opening GUIScheme XML element.
+        */
+        void elementGUISchemeStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the Imageset XML element.
+        */
+        void elementImagesetStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the ImagesetFromImage XML element.
+        */
+        void elementImagesetFromImageStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the Font XML element.
+        */
+        void elementFontStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the WindowSet XML element.
+        */
+        void elementWindowSetStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the WindowFactory XML element.
+        */
+        void elementWindowFactoryStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the WindowAlias XML element.
+        */
+        void elementWindowAliasStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the FalagardMapping XML element.
+        */
+        void elementFalagardMappingStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the LookNFeel XML element.
+        */
+        void elementLookNFeelStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the closing GUIScheme XML element.
+        */
+        void elementGUISchemeEnd();
 
         /*************************************************************************
         Implementation Data

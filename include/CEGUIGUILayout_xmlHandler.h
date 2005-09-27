@@ -98,17 +98,58 @@ private:
 	static const String PropertyElement;				//!< Tag name for Property elements.
 	static const String LayoutImportElement;			//!< Tag name for LayoutImport elements.
 	static const String EventElement;					//!< Tag name for Event elements.
-	static const char	WindowTypeAttribute[];			//!< Attribute name that stores the type of Window to create.
-	static const char	WindowNameAttribute[];			//!< Attribute name that stores the name of the window to create.
-	static const char	PropertyNameAttribute[];		//!< Attribute name that stores the name of the property to set.
-	static const char	PropertyValueAttribute[];		//!< Attribute name that stores the value to pass to the property.
-	static const char	LayoutParentAttribute[];		//!< Attribute name that stores the name of the window to attach the layout to.
-	static const char	LayoutImportFilenameAttribute[];//!< Attribute name that stores the file name of the layout to import.
-	static const char	LayoutImportPrefixAttribute[];	//!< Attribute name that stores the prefix to use when loading the imported layout.
-    static const char	LayoutImportResourceGroupAttribute[]; //!< Attribute name that stores the resource group identifier used when loading imported file.
-	static const char	EventNameAttribute[];			//!< Attribute name that stores the event name to be subscribed.
-	static const char	EventFunctionAttribute[];		//!< Attribute name that stores the name of the scripted function to be bound.
+	static const String WindowTypeAttribute;			//!< Attribute name that stores the type of Window to create.
+	static const String WindowNameAttribute;			//!< Attribute name that stores the name of the window to create.
+	static const String PropertyNameAttribute;		//!< Attribute name that stores the name of the property to set.
+	static const String PropertyValueAttribute;		//!< Attribute name that stores the value to pass to the property.
+	static const String LayoutParentAttribute;		//!< Attribute name that stores the name of the window to attach the layout to.
+	static const String LayoutImportFilenameAttribute;//!< Attribute name that stores the file name of the layout to import.
+	static const String LayoutImportPrefixAttribute;	//!< Attribute name that stores the prefix to use when loading the imported layout.
+    static const String LayoutImportResourceGroupAttribute; //!< Attribute name that stores the resource group identifier used when loading imported file.
+	static const String EventNameAttribute;			//!< Attribute name that stores the event name to be subscribed.
+	static const String EventFunctionAttribute;		//!< Attribute name that stores the name of the scripted function to be bound.
 
+    /*!
+    \brief
+        Method that handles the opening GUILayout XML element.
+    */
+    void elementGUILayoutStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the opening Window XML element.
+    */
+    void elementWindowStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the Property XML element.
+    */
+    void elementPropertyStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the LayoutImport XML element.
+    */
+    void elementLayoutImportStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the Event XML element.
+    */
+    void elementEventStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the closing GUILayout XML element.
+    */
+    void elementGUILayoutEnd();
+
+    /*!
+    \brief
+        Method that handles the closing Window XML element.
+    */
+    void elementWindowEnd();
 
 	/*************************************************************************
 		Implementation Data

@@ -82,19 +82,37 @@ private:
 	*************************************************************************/
 	static const String ImagesetElement;				//!< Tag name for Imageset elements.
 	static const String ImageElement;					//!< Tag name for Image elements.
-	static const char	ImagesetNameAttribute[];		//!< Attribute name that stores the name of the Imageset
-	static const char	ImagesetImageFileAttribute[];	//!< Attribute name that stores the filename for the image file.
-    static const char	ImagesetResourceGroupAttribute[];   //!< Attribute name that stores the resource group identifier used when loading image file.
-	static const char	ImagesetNativeHorzResAttribute[];	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.
-	static const char	ImagesetNativeVertResAttribute[];	//!< Optional attribute that stores 'native' vertical resolution for the Imageset.
-	static const char	ImagesetAutoScaledAttribute[];	//!< Optional attribute that specifies whether the Imageset should be auto-scaled.
-	static const char	ImageNameAttribute[];			//!< Attribute name that stores the name of the new Image.
-	static const char	ImageXPosAttribute[];			//!< Attribute name that stores the x position of the new Image.
-	static const char	ImageYPosAttribute[];			//!< Attribute name that stores the y position of the new Image.
-	static const char	ImageWidthAttribute[];			//!< Attribute name that stores the width of the new Image.
-	static const char	ImageHeightAttribute[];			//!< Attribute name that stores the height of the new Image.
-	static const char	ImageXOffsetAttribute[];		//!< Attribute name that stores the x rendering offset of the new Image.
-	static const char	ImageYOffsetAttribute[];		//!< Attribute name that stores the y rendering offset of the new Image.
+	static const String ImagesetNameAttribute;		//!< Attribute name that stores the name of the Imageset
+	static const String ImagesetImageFileAttribute;	//!< Attribute name that stores the filename for the image file.
+    static const String ImagesetResourceGroupAttribute;   //!< Attribute name that stores the resource group identifier used when loading image file.
+	static const String ImagesetNativeHorzResAttribute;	//!< Optional attribute that stores 'native' horizontal resolution for the Imageset.
+	static const String ImagesetNativeVertResAttribute;	//!< Optional attribute that stores 'native' vertical resolution for the Imageset.
+	static const String ImagesetAutoScaledAttribute;	//!< Optional attribute that specifies whether the Imageset should be auto-scaled.
+	static const String ImageNameAttribute;			//!< Attribute name that stores the name of the new Image.
+	static const String ImageXPosAttribute;			//!< Attribute name that stores the x position of the new Image.
+	static const String ImageYPosAttribute;			//!< Attribute name that stores the y position of the new Image.
+	static const String ImageWidthAttribute;			//!< Attribute name that stores the width of the new Image.
+	static const String ImageHeightAttribute;			//!< Attribute name that stores the height of the new Image.
+	static const String ImageXOffsetAttribute;		//!< Attribute name that stores the x rendering offset of the new Image.
+	static const String ImageYOffsetAttribute;		//!< Attribute name that stores the y rendering offset of the new Image.
+
+    /*!
+    \brief
+        Method that handles the opening Imageset XML element.
+    */
+    void elementImagesetStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the Image XML element.
+    */
+    void elementImageStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the closing Imageset XML element.
+    */
+    void elementImagesetEnd();
 
 	/*************************************************************************
 	Implementation Data
