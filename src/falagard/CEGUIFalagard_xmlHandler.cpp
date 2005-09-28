@@ -57,8 +57,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::VertAlignmentElement("VertAlignment");
     const String Falagard_xmlHandler::HorzAlignmentElement("HorzAlignment");
     const String Falagard_xmlHandler::PropertyElement("Property");
-	const String Falagard_xmlHandler::DimElement("Dim");
-	const String Falagard_xmlHandler::UnifiedDimElement("UnifiedDim");
+    const String Falagard_xmlHandler::DimElement("Dim");
+    const String Falagard_xmlHandler::UnifiedDimElement("UnifiedDim");
     const String Falagard_xmlHandler::AbsoluteDimElement("AbsoluteDim");
     const String Falagard_xmlHandler::ImageDimElement("ImageDim");
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
@@ -118,509 +118,105 @@ namespace CEGUI
         d_namedArea(0),
         d_framecomponent(0)
     {
+        // register element start handlers
+        registerElementStartHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardStart);
+        registerElementStartHandler(WidgetLookElement, &Falagard_xmlHandler::elementWidgetLookStart);
+        registerElementStartHandler(ChildElement, &Falagard_xmlHandler::elementChildStart);
+        registerElementStartHandler(ImagerySectionElement, &Falagard_xmlHandler::elementImagerySectionStart);
+        registerElementStartHandler(StateImageryElement, &Falagard_xmlHandler::elementStateImageryStart);
+        registerElementStartHandler(LayerElement, &Falagard_xmlHandler::elementLayerStart);
+        registerElementStartHandler(SectionElement, &Falagard_xmlHandler::elementSectionStart);
+        registerElementStartHandler(ImageryComponentElement, &Falagard_xmlHandler::elementImageryComponentStart);
+        registerElementStartHandler(TextComponentElement, &Falagard_xmlHandler::elementTextComponentStart);
+        registerElementStartHandler(FrameComponentElement, &Falagard_xmlHandler::elementFrameComponentStart);
+        registerElementStartHandler(AreaElement, &Falagard_xmlHandler::elementAreaStart);
+        registerElementStartHandler(ImageElement, &Falagard_xmlHandler::elementImageStart);
+        registerElementStartHandler(ColoursElement, &Falagard_xmlHandler::elementColoursStart);
+        registerElementStartHandler(VertFormatElement, &Falagard_xmlHandler::elementVertFormatStart);
+        registerElementStartHandler(HorzFormatElement, &Falagard_xmlHandler::elementHorzFormatStart);
+        registerElementStartHandler(VertAlignmentElement, &Falagard_xmlHandler::elementVertAlignmentStart);
+        registerElementStartHandler(HorzAlignmentElement, &Falagard_xmlHandler::elementHorzAlignmentStart);
+        registerElementStartHandler(PropertyElement, &Falagard_xmlHandler::elementPropertyStart);
+        registerElementStartHandler(DimElement, &Falagard_xmlHandler::elementDimStart);
+        registerElementStartHandler(UnifiedDimElement, &Falagard_xmlHandler::elementUnifiedDimStart);
+        registerElementStartHandler(AbsoluteDimElement, &Falagard_xmlHandler::elementAbsoluteDimStart);
+        registerElementStartHandler(ImageDimElement, &Falagard_xmlHandler::elementImageDimStart);
+        registerElementStartHandler(WidgetDimElement, &Falagard_xmlHandler::elementWidgetDimStart);
+        registerElementStartHandler(FontDimElement, &Falagard_xmlHandler::elementFontDimStart);
+        registerElementStartHandler(PropertyDimElement, &Falagard_xmlHandler::elementPropertyDimStart);
+        registerElementStartHandler(TextElement, &Falagard_xmlHandler::elementTextStart);
+        registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourPropertyStart);
+        registerElementStartHandler(ColourRectPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
+        registerElementStartHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaStart);
+        registerElementStartHandler(PropertyDefinitionElement, &Falagard_xmlHandler::elementPropertyDefinitionStart);
+        registerElementStartHandler(DimOperatorElement, &Falagard_xmlHandler::elementDimOperatorStart);
+        registerElementStartHandler(VertFormatPropertyElement, &Falagard_xmlHandler::elementVertFormatPropertyStart);
+        registerElementStartHandler(HorzFormatPropertyElement, &Falagard_xmlHandler::elementHorzFormatPropertyStart);
+        registerElementStartHandler(AreaPropertyElement, &Falagard_xmlHandler::elementAreaPropertyStart);
+        registerElementStartHandler(ImagePropertyElement, &Falagard_xmlHandler::elementImagePropertyStart);
+
+        // register element end handlers
+        registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
+        registerElementEndHandler(WidgetLookElement, &Falagard_xmlHandler::elementWidgetLookEnd);
+        registerElementEndHandler(ChildElement, &Falagard_xmlHandler::elementChildEnd);
+        registerElementEndHandler(ImagerySectionElement, &Falagard_xmlHandler::elementImagerySectionEnd);
+        registerElementEndHandler(StateImageryElement, &Falagard_xmlHandler::elementStateImageryEnd);
+        registerElementEndHandler(LayerElement, &Falagard_xmlHandler::elementLayerEnd);
+        registerElementEndHandler(SectionElement, &Falagard_xmlHandler::elementSectionEnd);
+        registerElementEndHandler(ImageryComponentElement, &Falagard_xmlHandler::elementImageryComponentEnd);
+        registerElementEndHandler(TextComponentElement, &Falagard_xmlHandler::elementTextComponentEnd);
+        registerElementEndHandler(FrameComponentElement, &Falagard_xmlHandler::elementFrameComponentEnd);
+        registerElementEndHandler(AreaElement, &Falagard_xmlHandler::elementAreaEnd);
+        registerElementEndHandler(UnifiedDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(AbsoluteDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(ImageDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(WidgetDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(FontDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(PropertyDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaEnd);
     }
 
     Falagard_xmlHandler::~Falagard_xmlHandler()
     {}
 
+    /*************************************************************************
+        Handle an opening XML element tag.
+    *************************************************************************/
     void Falagard_xmlHandler::elementStart(const String& element, const XMLAttributes& attributes)
     {
-        // root Falagard element
-        if (element == FalagardElement)
-        {
-            Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
-        }
-        // starting a new widget-look
-        else if (element == WidgetLookElement)
-        {
-            assert(d_widgetlook == 0);
-            d_widgetlook = new WidgetLookFeel(attributes.getValueAsString(NameAttribute));
+        // find registered handler for this element.
+        ElementStartHandlerMap::const_iterator iter = d_startHandlersMap.find(element);
 
-            Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
-        }
-        // starting a component widget "Child" element
-        else if (element == ChildElement)
+        // if a handler existed
+        if (iter != d_startHandlersMap.end())
         {
-            assert(d_childcomponent == 0);
-            d_childcomponent = new WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute));
-
-            CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName());
+            // call the handler for this element
+            (this->*(iter->second))(attributes);
         }
-        else if (element == ImagerySectionElement)
-        {
-            assert(d_imagerysection == 0);
-            d_imagerysection = new ImagerySection(attributes.getValueAsString(NameAttribute));
-
-            CEGUI_LOGINSANE("-----> Start of definition for imagery section '" + d_imagerysection->getName() + "'.");
-        }
-        else if (element == StateImageryElement)
-        {
-            assert(d_stateimagery == 0);
-            d_stateimagery = new StateImagery(attributes.getValueAsString(NameAttribute));
-            d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute, true));
-
-            CEGUI_LOGINSANE("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.");
-        }
-        else if (element == LayerElement)
-        {
-            assert(d_layer == 0);
-            d_layer = new LayerSpecification(attributes.getValueAsInteger(PriorityAttribute, 0));
-
-            CEGUI_LOGINSANE("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute, "0"));
-        }
-        else if (element == SectionElement)
-        {
-            assert(d_section == 0);
-            assert(d_widgetlook != 0);
-            String owner(attributes.getValueAsString(LookAttribute));
-            d_section = new SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner, attributes.getValueAsString(SectionNameAttribute));
-
-            CEGUI_LOGINSANE("---------> Layer references imagery section '" + d_section->getSectionName() + "'.");
-        }
-        else if (element == ImageryComponentElement)
-        {
-            assert(d_imagerycomponent == 0);
-            d_imagerycomponent = new ImageryComponent();
-
-            CEGUI_LOGINSANE("-------> Image component definition...");
-        }
-        else if (element == TextComponentElement)
-        {
-            assert(d_textcomponent == 0);
-            d_textcomponent = new TextComponent();
-
-            CEGUI_LOGINSANE("-------> Text component definition...");
-        }
-        else if (element == FrameComponentElement)
-        {
-            assert(d_framecomponent == 0);
-            d_framecomponent = new FrameComponent();
-
-            CEGUI_LOGINSANE("-------> Frame component definition...");
-        }
-        else if (element == AreaElement)
-        {
-            assert(d_area == 0);
-            d_area = new ComponentArea();
-        }
-        else if (element == ColoursElement)
-        {
-            ColourRect cols(
-                hexStringToARGB(attributes.getValueAsString(TopLeftAttribute)),
-                hexStringToARGB(attributes.getValueAsString(TopRightAttribute)),
-                hexStringToARGB(attributes.getValueAsString(BottomLeftAttribute)),
-                hexStringToARGB(attributes.getValueAsString(BottomRightAttribute))
-            );
-
-            // need to decide what to apply colours to
-            if (d_framecomponent)
-            {
-                d_framecomponent->setColours(cols);
-            }
-            else if (d_imagerycomponent)
-            {
-                d_imagerycomponent->setColours(cols);
-            }
-            else if (d_textcomponent)
-            {
-                d_textcomponent->setColours(cols);
-            }
-            else if (d_imagerysection)
-            {
-                d_imagerysection->setMasterColours(cols);
-            }
-            else if (d_section)
-            {
-                d_section->setOverrideColours(cols);
-				d_section->setUsingOverrideColours(true);
-            }
-        }
-        else if ((element == ColourPropertyElement) || (element == ColourRectPropertyElement))
-        {
-            // need to decide what to apply colours to
-            if (d_framecomponent)
-            {
-                d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-                d_framecomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
-            }
-            else if (d_imagerycomponent)
-            {
-                d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-                d_imagerycomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
-            }
-            else if (d_textcomponent)
-            {
-                d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-                d_textcomponent->setColoursPropertyIsColourRect(element == ColourRectPropertyElement);
-            }
-            else if (d_imagerysection)
-            {
-                d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
-                d_imagerysection->setMasterColoursPropertyIsColourRect(element == ColourRectPropertyElement);
-            }
-            else if (d_section)
-            {
-                d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
-                d_section->setOverrideColoursPropertyIsColourRect(element == ColourRectPropertyElement);
-                d_section->setUsingOverrideColours(true);
-            }
-        }
-        else if (element == PropertyElement)
-        {
-            assert(d_widgetlook != 0);
-            PropertyInitialiser prop(attributes.getValueAsString(NameAttribute), attributes.getValueAsString(ValueAttribute));
-
-            if (d_childcomponent)
-            {
-                d_childcomponent->addPropertyInitialiser(prop);
-                CEGUI_LOGINSANE("-------> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue());
-            }
-            else
-            {
-                d_widgetlook->addPropertyInitialiser(prop);
-                CEGUI_LOGINSANE("---> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue());
-            }
-
-        }
-        else if (element == VertAlignmentElement)
-        {
-            assert(d_childcomponent != 0);
-            d_childcomponent->setVerticalWidgetAlignment(FalagardXMLHelper::stringToVertAlignment(attributes.getValueAsString(TypeAttribute)));
-        }
-        else if (element == HorzAlignmentElement)
-        {
-            assert(d_childcomponent != 0);
-            d_childcomponent->setHorizontalWidgetAlignemnt(FalagardXMLHelper::stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
-        }
-        else if (element == VertFormatElement)
-        {
-            if (d_framecomponent)
-            {
-                d_framecomponent->setBackgroundVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
-            }
-            else if (d_imagerycomponent)
-            {
-                d_imagerycomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
-            }
-            else if (d_textcomponent)
-            {
-                d_textcomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertTextFormat(attributes.getValueAsString(TypeAttribute)));
-            }
-        }
-        else if (element == HorzFormatElement)
-        {
-            if (d_framecomponent)
-            {
-                d_framecomponent->setBackgroundHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
-            }
-            else if (d_imagerycomponent)
-            {
-                d_imagerycomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
-            }
-            else if (d_textcomponent)
-            {
-                d_textcomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzTextFormat(attributes.getValueAsString(TypeAttribute)));
-            }
-        }
-        else if (element == ImageElement)
-        {
-            if (d_imagerycomponent)
-            {
-                d_imagerycomponent->setImage(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute));
-                CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute));
-            }
-            else if (d_framecomponent)
-            {
-                d_framecomponent->setImage(
-                    FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
-                    attributes.getValueAsString(ImagesetAttribute),
-                    attributes.getValueAsString(ImageAttribute));
-
-                CEGUI_LOGINSANE("---------> Using image: " +
-                    attributes.getValueAsString(ImageAttribute) + " from imageset: " +
-                    attributes.getValueAsString(ImagesetAttribute) + " for: " +
-                    attributes.getValueAsString(TypeAttribute));
-            }
-        }
-		else if (element == DimElement)
-		{
-			d_dimension.setDimensionType(FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
-		}
-        else if (element == UnifiedDimElement)
-        {
-            UnifiedDim base(UDim(attributes.getValueAsFloat(ScaleAttribute, 0.0f), attributes.getValueAsFloat(OffsetAttribute, 0.0f)), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
-            doBaseDimStart(&base);
-        }
-        else if (element == AbsoluteDimElement)
-        {
-            AbsoluteDim base(attributes.getValueAsFloat(ValueAttribute, 0.0f));
-            doBaseDimStart(&base);
-        }
-        else if (element == ImageDimElement)
-        {
-            ImageDim base(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
-            doBaseDimStart(&base);
-        }
-        else if (element == WidgetDimElement)
-        {
-            WidgetDim base(attributes.getValueAsString(WidgetAttribute), FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
-            doBaseDimStart(&base);
-        }
-        else if (element == FontDimElement)
-        {
-            FontDim base(
-                attributes.getValueAsString(WidgetAttribute),
-                attributes.getValueAsString(FontAttribute),
-                attributes.getValueAsString(StringAttribute),
-                FalagardXMLHelper::stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
-                attributes.getValueAsFloat(PaddingAttribute, 0.0f));
-
-            doBaseDimStart(&base);
-        }
-        else if (element == PropertyDimElement)
-        {
-            PropertyDim base(attributes.getValueAsString(WidgetAttribute), attributes.getValueAsString(NameAttribute));
-            doBaseDimStart(&base);
-        }
-        else if (element == TextElement)
-        {
-            assert (d_textcomponent != 0);
-            d_textcomponent->setText(attributes.getValueAsString(StringAttribute));
-            d_textcomponent->setFont(attributes.getValueAsString(FontAttribute));
-        }
-        else if (element == NamedAreaElement)
-        {
-            assert(d_namedArea == 0);
-            d_namedArea = new NamedArea(attributes.getValueAsString(NameAttribute));
-
-            CEGUI_LOGINSANE("-----> Creating named area: " + d_namedArea->getName());
-        }
-        else if (element == DimOperatorElement)
-        {
-            if (!d_dimStack.empty())
-            {
-                d_dimStack.back()->setDimensionOperator(FalagardXMLHelper::stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
-            }
-        }
-        else if (element == PropertyDefinitionElement)
-        {
-            assert(d_widgetlook);
-
-            PropertyDefinition prop(
-                attributes.getValueAsString(NameAttribute),
-                attributes.getValueAsString(InitialValueAttribute),
-                attributes.getValueAsBool(RedrawOnWriteAttribute, false),
-                attributes.getValueAsBool(LayoutOnWriteAttribute, false)
-            );
-
-            CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
-
-            d_widgetlook->addPropertyDefinition(prop);
-        }
-        else if (element == VertFormatPropertyElement)
-        {
-            if (d_framecomponent)
-                d_framecomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
-            else if (d_imagerycomponent)
-                d_imagerycomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
-            else if (d_textcomponent)
-                d_textcomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
-        }
-        else if (element == HorzFormatPropertyElement)
-        {
-            if (d_framecomponent)
-                d_framecomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
-            else if (d_imagerycomponent)
-                d_imagerycomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
-            else if (d_textcomponent)
-                d_textcomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
-        }
-        else if (element == AreaPropertyElement)
-        {
-            assert (d_area != 0);
-
-            d_area->setAreaPropertySource(attributes.getValueAsString(NameAttribute));
-        }
-        else if (element == ImagePropertyElement)
-        {
-            assert(d_imagerycomponent != 0);
-
-            d_imagerycomponent->setImagePropertySource(attributes.getValueAsString(NameAttribute));
-        }
+        // no handler existed
         else
         {
-            throw FileIOException("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.");
+            Logger::getSingleton().logEvent("Falagard::xmlHandler::elementStart - The unknown XML element '" + element + "' was encountered while processing the look and feel file.", Errors);
         }
     }
 
+    /*************************************************************************
+        Handle a closing XML element tag
+    *************************************************************************/
     void Falagard_xmlHandler::elementEnd(const String& element)
     {
-        // end of main element
-        if (element == FalagardElement)
-        {
-            Logger::getSingleton().logEvent("===== Look and feel parsing completed =====");
-        }
-        // ending a widget-look
-        else if (element == WidgetLookElement)
-        {
-            if (d_widgetlook)
-            {
-                Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
-                d_manager->addWidgetLook(*d_widgetlook);
-                delete d_widgetlook;
-                d_widgetlook = 0;
-            }
-        }
-        // ending a component widget
-        else if (element == ChildElement)
-        {
-            assert(d_widgetlook != 0);
+        // find registered handler for this element.
+        ElementEndHandlerMap::const_iterator iter = d_endHandlersMap.find(element);
 
-            if (d_childcomponent)
-            {
-                CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
-                d_widgetlook->addWidgetComponent(*d_childcomponent);
-                delete d_childcomponent;
-                d_childcomponent = 0;
-            }
-        }
-        // ending an ImagerySection
-        else if (element == ImagerySectionElement)
-        {
-            assert(d_widgetlook != 0);
-
-            if (d_imagerysection)
-            {
-                CEGUI_LOGINSANE("-----< End of definition for imagery section '" + d_imagerysection->getName() + "'.");
-                d_widgetlook->addImagerySection(*d_imagerysection);
-                delete d_imagerysection;
-                d_imagerysection = 0;
-            }
-        }
-        // ending a StateImagery section
-        else if (element == StateImageryElement)
-        {
-            assert(d_widgetlook != 0);
-
-            if (d_stateimagery)
-            {
-                CEGUI_LOGINSANE("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.");
-                d_widgetlook->addStateSpecification(*d_stateimagery);
-                delete d_stateimagery;
-                d_stateimagery = 0;
-            }
-        }
-        // ending a Layer section
-        else if (element == LayerElement)
-        {
-            assert(d_stateimagery != 0);
-
-            if (d_layer)
-            {
-                CEGUI_LOGINSANE("-------< End of definition of imagery layer.");
-                d_stateimagery->addLayer(*d_layer);
-                delete d_layer;
-                d_layer = 0;
-            }
-        }
-        // ending a Section specification
-        else if (element == SectionElement)
-        {
-            assert(d_layer != 0);
-
-            if (d_section)
-            {
-                d_layer->addSectionSpecification(*d_section);
-                delete d_section;
-                d_section = 0;
-            }
-        }
-        // ending an Imagery component specification
-        else if (element == ImageryComponentElement)
-        {
-            assert(d_imagerysection != 0);
-
-            if (d_imagerycomponent)
-            {
-                d_imagerysection->addImageryComponent(*d_imagerycomponent);
-                delete d_imagerycomponent;
-                d_imagerycomponent = 0;
-            }
-        }
-        // ending a Text component specification
-        else if (element == TextComponentElement)
-        {
-            assert(d_imagerysection != 0);
-
-            if (d_textcomponent)
-            {
-                d_imagerysection->addTextComponent(*d_textcomponent);
-                delete d_textcomponent;
-                d_textcomponent = 0;
-            }
-        }
-        // ending a Frame component specification
-        else if (element == FrameComponentElement)
-        {
-            assert(d_imagerysection != 0);
-
-            if (d_framecomponent)
-            {
-                d_imagerysection->addFrameComponent(*d_framecomponent);
-                delete d_framecomponent;
-                d_framecomponent = 0;
-            }
-        }
-        // component area end
-        else if (element == AreaElement)
-        {
-            assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0) || d_namedArea != 0 || d_framecomponent != 0);
-            assert(d_area != 0);
-
-            if (d_childcomponent)
-            {
-                d_childcomponent->setComponentArea(*d_area);
-            }
-            else if (d_framecomponent)
-            {
-                d_framecomponent->setComponentArea(*d_area);
-            }
-            else if (d_imagerycomponent)
-            {
-                d_imagerycomponent->setComponentArea(*d_area);
-            }
-            else if (d_textcomponent)
-            {
-                d_textcomponent->setComponentArea(*d_area);
-            }
-            else if (d_namedArea)
-            {
-                d_namedArea->setArea(*d_area);
-            }
-
-            delete d_area;
-            d_area = 0;
-        }
-        // NamedArea end
-        else if (element == NamedAreaElement)
-        {
-            assert(d_widgetlook != 0);
-
-            if (d_namedArea)
-            {
-                d_widgetlook->addNamedArea(*d_namedArea);
-                delete d_namedArea;
-                d_namedArea = 0;
-            }
-        }
-        // End of a *Dim element.
-        else if ((element == UnifiedDimElement) || (element == AbsoluteDimElement) || (element == ImageDimElement) ||
-                 (element == WidgetDimElement) || (element == FontDimElement) || (element == PropertyDimElement))
-        {
-            doBaseDimEnd();
-        }
+        // if a handler existed
+        if (iter != d_endHandlersMap.end())
+            // call the handler for this element
+            (this->*(iter->second))();
     }
 
+    /*************************************************************************
+        Convert a hex string "AARRGGBB" to type argb_t
+    *************************************************************************/
     argb_t Falagard_xmlHandler::hexStringToARGB(const String& str)
     {
         argb_t val;
@@ -630,6 +226,10 @@ namespace CEGUI
         return val;
     }
 
+    /*************************************************************************
+        Assign a dimension to a ComponentArea depending upon the dimension's
+        type.
+    *************************************************************************/
     void Falagard_xmlHandler::assignAreaDimension(Dimension& dim)
     {
         if (d_area)
@@ -658,13 +258,711 @@ namespace CEGUI
         }
     }
 
+    /*************************************************************************
+        Method that performs common handling for all *Dim elements.
+    *************************************************************************/
     void Falagard_xmlHandler::doBaseDimStart(const BaseDim* dim)
     {
         BaseDim* cloned = dim->clone();
         d_dimStack.push_back(cloned);
     }
 
-    void Falagard_xmlHandler::doBaseDimEnd()
+    /*************************************************************************
+        Method that handles the opening Falagard XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementFalagardStart(const XMLAttributes& attributes)
+    {
+        Logger::getSingleton().logEvent("===== Falagard 'root' element: look and feel parsing begins =====");
+    }
+
+    /*************************************************************************
+        Method that handles the opening WidgetLook XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementWidgetLookStart(const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook == 0);
+        d_widgetlook = new WidgetLookFeel(attributes.getValueAsString(NameAttribute));
+
+        Logger::getSingleton().logEvent("---> Start of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
+    }
+
+    /*************************************************************************
+        Method that handles the opening Child XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementChildStart(const XMLAttributes& attributes)
+    {
+        assert(d_childcomponent == 0);
+        d_childcomponent = new WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute));
+
+        CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName());
+    }
+
+    /*************************************************************************
+        Method that handles the opening ImagerySection XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImagerySectionStart(const XMLAttributes& attributes)
+    {
+        assert(d_imagerysection == 0);
+        d_imagerysection = new ImagerySection(attributes.getValueAsString(NameAttribute));
+
+        CEGUI_LOGINSANE("-----> Start of definition for imagery section '" + d_imagerysection->getName() + "'.");
+    }
+
+    /*************************************************************************
+        Method that handles the opening StateImagery XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementStateImageryStart(const XMLAttributes& attributes)
+    {
+        assert(d_stateimagery == 0);
+        d_stateimagery = new StateImagery(attributes.getValueAsString(NameAttribute));
+        d_stateimagery->setClippedToDisplay(!attributes.getValueAsBool(ClippedAttribute, true));
+
+        CEGUI_LOGINSANE("-----> Start of definition for imagery for state '" + d_stateimagery->getName() + "'.");
+    }
+
+    /*************************************************************************
+        Method that handles the opening Layer XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementLayerStart(const XMLAttributes& attributes)
+    {
+        assert(d_layer == 0);
+        d_layer = new LayerSpecification(attributes.getValueAsInteger(PriorityAttribute, 0));
+
+        CEGUI_LOGINSANE("-------> Start of definition of new imagery layer, priority: " + attributes.getValueAsString(PriorityAttribute, "0"));
+    }
+
+    /*************************************************************************
+        Method that handles the opening Section XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementSectionStart(const XMLAttributes& attributes)
+    {
+        assert(d_section == 0);
+        assert(d_widgetlook != 0);
+        String owner(attributes.getValueAsString(LookAttribute));
+        d_section = new SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner, attributes.getValueAsString(SectionNameAttribute));
+
+        CEGUI_LOGINSANE("---------> Layer references imagery section '" + d_section->getSectionName() + "'.");
+    }
+
+    /*************************************************************************
+        Method that handles the opening ImageryComponent XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImageryComponentStart(const XMLAttributes& attributes)
+    {
+        assert(d_imagerycomponent == 0);
+        d_imagerycomponent = new ImageryComponent();
+
+        CEGUI_LOGINSANE("-------> Image component definition...");
+    }
+
+    /*************************************************************************
+        Method that handles the opening TextComponent XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementTextComponentStart(const XMLAttributes& attributes)
+    {
+        assert(d_textcomponent == 0);
+        d_textcomponent = new TextComponent();
+
+        CEGUI_LOGINSANE("-------> Text component definition...");
+    }
+
+    /*************************************************************************
+        Method that handles the opening FrameComponent XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementFrameComponentStart(const XMLAttributes& attributes)
+    {
+        assert(d_framecomponent == 0);
+        d_framecomponent = new FrameComponent();
+
+        CEGUI_LOGINSANE("-------> Frame component definition...");
+    }
+
+    /*************************************************************************
+        Method that handles the opening Area XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementAreaStart(const XMLAttributes& attributes)
+    {
+        assert(d_area == 0);
+        d_area = new ComponentArea();
+    }
+
+    /*************************************************************************
+        Method that handles the opening Image XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImageStart(const XMLAttributes& attributes)
+    {
+        if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setImage(attributes.getValueAsString(ImagesetAttribute), attributes.getValueAsString(ImageAttribute));
+            CEGUI_LOGINSANE("---------> Using image: " + attributes.getValueAsString(ImageAttribute) + " from imageset: " + attributes.getValueAsString(ImagesetAttribute));
+        }
+        else if (d_framecomponent)
+        {
+            d_framecomponent->setImage(
+                FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
+                attributes.getValueAsString(ImagesetAttribute),
+                attributes.getValueAsString(ImageAttribute));
+
+            CEGUI_LOGINSANE("---------> Using image: " +
+                attributes.getValueAsString(ImageAttribute) + " from imageset: " +
+                attributes.getValueAsString(ImagesetAttribute) + " for: " +
+                attributes.getValueAsString(TypeAttribute));
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening Colours XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementColoursStart(const XMLAttributes& attributes)
+    {
+        ColourRect cols(
+            hexStringToARGB(attributes.getValueAsString(TopLeftAttribute)),
+            hexStringToARGB(attributes.getValueAsString(TopRightAttribute)),
+            hexStringToARGB(attributes.getValueAsString(BottomLeftAttribute)),
+            hexStringToARGB(attributes.getValueAsString(BottomRightAttribute)));
+
+        // need to decide what to apply colours to
+        if (d_framecomponent)
+        {
+            d_framecomponent->setColours(cols);
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setColours(cols);
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setColours(cols);
+        }
+        else if (d_imagerysection)
+        {
+            d_imagerysection->setMasterColours(cols);
+        }
+        else if (d_section)
+        {
+            d_section->setOverrideColours(cols);
+            d_section->setUsingOverrideColours(true);
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening VertFormat XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementVertFormatStart(const XMLAttributes& attributes)
+    {
+        if (d_framecomponent)
+        {
+            d_framecomponent->setBackgroundVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertTextFormat(attributes.getValueAsString(TypeAttribute)));
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening HorzFormat XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementHorzFormatStart(const XMLAttributes& attributes)
+    {
+        if (d_framecomponent)
+        {
+            d_framecomponent->setBackgroundHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzTextFormat(attributes.getValueAsString(TypeAttribute)));
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening VertAlignment XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementVertAlignmentStart(const XMLAttributes& attributes)
+    {
+        assert(d_childcomponent != 0);
+        d_childcomponent->setVerticalWidgetAlignment(FalagardXMLHelper::stringToVertAlignment(attributes.getValueAsString(TypeAttribute)));
+    }
+
+    /*************************************************************************
+        Method that handles the opening HorzAlignment XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementHorzAlignmentStart(const XMLAttributes& attributes)
+    {
+        assert(d_childcomponent != 0);
+        d_childcomponent->setHorizontalWidgetAlignemnt(FalagardXMLHelper::stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
+    }
+
+    /*************************************************************************
+        Method that handles the opening Property XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook != 0);
+        PropertyInitialiser prop(attributes.getValueAsString(NameAttribute), attributes.getValueAsString(ValueAttribute));
+
+        if (d_childcomponent)
+        {
+            d_childcomponent->addPropertyInitialiser(prop);
+            CEGUI_LOGINSANE("-------> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue());
+        }
+        else
+        {
+            d_widgetlook->addPropertyInitialiser(prop);
+            CEGUI_LOGINSANE("---> Added property initialiser for property: " + prop.getTargetPropertyName() + " with value: " + prop.getInitialiserValue());
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening Dim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementDimStart(const XMLAttributes& attributes)
+    {
+        d_dimension.setDimensionType(FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+    }
+
+    /*************************************************************************
+        Method that handles the opening UnifiedDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementUnifiedDimStart(const XMLAttributes& attributes)
+    {
+        UnifiedDim base(
+            UDim(attributes.getValueAsFloat(ScaleAttribute, 0.0f),
+                 attributes.getValueAsFloat(OffsetAttribute, 0.0f)),
+            FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening AbsoluteDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementAbsoluteDimStart(const XMLAttributes& attributes)
+    {
+        AbsoluteDim base(attributes.getValueAsFloat(ValueAttribute, 0.0f));
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening ImageDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImageDimStart(const XMLAttributes& attributes)
+    {
+        ImageDim base(attributes.getValueAsString(ImagesetAttribute),
+                      attributes.getValueAsString(ImageAttribute),
+                      FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening WidgetDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementWidgetDimStart(const XMLAttributes& attributes)
+    {
+        WidgetDim base(attributes.getValueAsString(WidgetAttribute),
+                       FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening FontDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementFontDimStart(const XMLAttributes& attributes)
+    {
+        FontDim base(
+            attributes.getValueAsString(WidgetAttribute),
+            attributes.getValueAsString(FontAttribute),
+            attributes.getValueAsString(StringAttribute),
+            FalagardXMLHelper::stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
+            attributes.getValueAsFloat(PaddingAttribute, 0.0f));
+
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening PropertyDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementPropertyDimStart(const XMLAttributes& attributes)
+    {
+        PropertyDim base(attributes.getValueAsString(WidgetAttribute),
+                         attributes.getValueAsString(NameAttribute));
+
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening Text XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementTextStart(const XMLAttributes& attributes)
+    {
+        assert (d_textcomponent != 0);
+        d_textcomponent->setText(attributes.getValueAsString(StringAttribute));
+        d_textcomponent->setFont(attributes.getValueAsString(FontAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening ColourProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementColourPropertyStart(const XMLAttributes& attributes)
+    {
+        // need to decide what to apply colours to
+        if (d_framecomponent)
+        {
+            d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_framecomponent->setColoursPropertyIsColourRect(false);
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_imagerycomponent->setColoursPropertyIsColourRect(false);
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_textcomponent->setColoursPropertyIsColourRect(false);
+        }
+        else if (d_imagerysection)
+        {
+            d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_imagerysection->setMasterColoursPropertyIsColourRect(false);
+        }
+        else if (d_section)
+        {
+            d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_section->setOverrideColoursPropertyIsColourRect(false);
+            d_section->setUsingOverrideColours(true);
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening ColourRectProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementColourRectPropertyStart(const XMLAttributes& attributes)
+    {
+        // need to decide what to apply colours to
+        if (d_framecomponent)
+        {
+            d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_framecomponent->setColoursPropertyIsColourRect(true);
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_imagerycomponent->setColoursPropertyIsColourRect(true);
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_textcomponent->setColoursPropertyIsColourRect(true);
+        }
+        else if (d_imagerysection)
+        {
+            d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_imagerysection->setMasterColoursPropertyIsColourRect(true);
+        }
+        else if (d_section)
+        {
+            d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
+            d_section->setOverrideColoursPropertyIsColourRect(true);
+            d_section->setUsingOverrideColours(true);
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening NamedArea XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementNamedAreaStart(const XMLAttributes& attributes)
+    {
+        assert(d_namedArea == 0);
+        d_namedArea = new NamedArea(attributes.getValueAsString(NameAttribute));
+
+        CEGUI_LOGINSANE("-----> Creating named area: " + d_namedArea->getName());
+    }
+
+    /*************************************************************************
+        Method that handles the opening PropertyDefinition XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementPropertyDefinitionStart(const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook);
+
+        PropertyDefinition prop(
+            attributes.getValueAsString(NameAttribute),
+            attributes.getValueAsString(InitialValueAttribute),
+            attributes.getValueAsBool(RedrawOnWriteAttribute, false),
+            attributes.getValueAsBool(LayoutOnWriteAttribute, false)
+        );
+
+        CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
+
+        d_widgetlook->addPropertyDefinition(prop);
+    }
+
+    /*************************************************************************
+        Method that handles the opening DimOperator XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementDimOperatorStart(const XMLAttributes& attributes)
+    {
+        if (!d_dimStack.empty())
+        {
+            d_dimStack.back()->setDimensionOperator(FalagardXMLHelper::stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the opening VertFormatProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementVertFormatPropertyStart(const XMLAttributes& attributes)
+    {
+        if (d_framecomponent)
+            d_framecomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        else if (d_imagerycomponent)
+            d_imagerycomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        else if (d_textcomponent)
+            d_textcomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening HorzFormatProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementHorzFormatPropertyStart(const XMLAttributes& attributes)
+    {
+        if (d_framecomponent)
+            d_framecomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        else if (d_imagerycomponent)
+            d_imagerycomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        else if (d_textcomponent)
+            d_textcomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening AreaProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementAreaPropertyStart(const XMLAttributes& attributes)
+    {
+        assert (d_area != 0);
+
+        d_area->setAreaPropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening ImageProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImagePropertyStart(const XMLAttributes& attributes)
+    {
+        assert(d_imagerycomponent != 0);
+
+        d_imagerycomponent->setImagePropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the closing Falagard XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementFalagardEnd()
+    {
+        Logger::getSingleton().logEvent("===== Look and feel parsing completed =====");
+    }
+
+    /*************************************************************************
+        Method that handles the closing WidgetLook XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementWidgetLookEnd()
+    {
+        if (d_widgetlook)
+        {
+            Logger::getSingleton().logEvent("---< End of definition for widget look '" + d_widgetlook->getName() + "'.", Informative);
+            d_manager->addWidgetLook(*d_widgetlook);
+            delete d_widgetlook;
+            d_widgetlook = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing Child XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementChildEnd()
+    {
+        assert(d_widgetlook != 0);
+
+        if (d_childcomponent)
+        {
+            CEGUI_LOGINSANE("-----< End of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + ".");
+            d_widgetlook->addWidgetComponent(*d_childcomponent);
+            delete d_childcomponent;
+            d_childcomponent = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing ImagerySection XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImagerySectionEnd()
+    {
+        assert(d_widgetlook != 0);
+
+        if (d_imagerysection)
+        {
+            CEGUI_LOGINSANE("-----< End of definition for imagery section '" + d_imagerysection->getName() + "'.");
+            d_widgetlook->addImagerySection(*d_imagerysection);
+            delete d_imagerysection;
+            d_imagerysection = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing StateImagery XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementStateImageryEnd()
+    {
+        assert(d_widgetlook != 0);
+
+        if (d_stateimagery)
+        {
+            CEGUI_LOGINSANE("-----< End of definition for imagery for state '" + d_stateimagery->getName() + "'.");
+            d_widgetlook->addStateSpecification(*d_stateimagery);
+            delete d_stateimagery;
+            d_stateimagery = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing Layer XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementLayerEnd()
+    {
+        assert(d_stateimagery != 0);
+
+        if (d_layer)
+        {
+            CEGUI_LOGINSANE("-------< End of definition of imagery layer.");
+            d_stateimagery->addLayer(*d_layer);
+            delete d_layer;
+            d_layer = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing Section XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementSectionEnd()
+    {
+        assert(d_layer != 0);
+
+        if (d_section)
+        {
+            d_layer->addSectionSpecification(*d_section);
+            delete d_section;
+            d_section = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing ImageryComponent XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImageryComponentEnd()
+    {
+        assert(d_imagerysection != 0);
+
+        if (d_imagerycomponent)
+        {
+            d_imagerysection->addImageryComponent(*d_imagerycomponent);
+            delete d_imagerycomponent;
+            d_imagerycomponent = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing TextComponent XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementTextComponentEnd()
+    {
+        assert(d_imagerysection != 0);
+
+        if (d_textcomponent)
+        {
+            d_imagerysection->addTextComponent(*d_textcomponent);
+            delete d_textcomponent;
+            d_textcomponent = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing FrameComponent XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementFrameComponentEnd()
+    {
+        assert(d_imagerysection != 0);
+
+        if (d_framecomponent)
+        {
+            d_imagerysection->addFrameComponent(*d_framecomponent);
+            delete d_framecomponent;
+            d_framecomponent = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing Area XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementAreaEnd()
+    {
+        assert((d_childcomponent != 0) || (d_imagerycomponent != 0) || (d_textcomponent != 0) || d_namedArea != 0 || d_framecomponent != 0);
+        assert(d_area != 0);
+
+        if (d_childcomponent)
+        {
+            d_childcomponent->setComponentArea(*d_area);
+        }
+        else if (d_framecomponent)
+        {
+            d_framecomponent->setComponentArea(*d_area);
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setComponentArea(*d_area);
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setComponentArea(*d_area);
+        }
+        else if (d_namedArea)
+        {
+            d_namedArea->setArea(*d_area);
+        }
+
+        delete d_area;
+        d_area = 0;
+    }
+
+    /*************************************************************************
+        Method that handles the closing NamedArea XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementNamedAreaEnd()
+    {
+        assert(d_widgetlook != 0);
+
+        if (d_namedArea)
+        {
+            d_widgetlook->addNamedArea(*d_namedArea);
+            delete d_namedArea;
+            d_namedArea = 0;
+        }
+    }
+
+    /*************************************************************************
+        Method that handles the closing of all *Dim XML elements.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementAnyDimEnd()
     {
         if (!d_dimStack.empty())
         {
@@ -684,6 +982,23 @@ namespace CEGUI
             // release the dim we popped.
             delete currDim;
         }
+    }
+
+
+    /*************************************************************************
+        register a handler for the opening tag of an XML element
+    *************************************************************************/
+    void Falagard_xmlHandler::registerElementStartHandler(const String& element, ElementStartHandler handler)
+    {
+        d_startHandlersMap[element] = handler;
+    }
+
+    /*************************************************************************
+        register a handler for the closing tag of an XML element
+    *************************************************************************/
+    void Falagard_xmlHandler::registerElementEndHandler(const String& element, ElementEndHandler handler)
+    {
+        d_endHandlersMap[element] = handler;
     }
 
 } // End of  CEGUI namespace section

@@ -75,6 +75,18 @@ namespace CEGUI
 
     private:
         /*************************************************************************
+            Typedefs
+        *************************************************************************/
+        //! Type for handlers of an opening xml element.
+        typedef void (Falagard_xmlHandler::*ElementStartHandler)(const XMLAttributes& attributes);
+        //! Type for handlers of a closing xml element.
+        typedef void (Falagard_xmlHandler::*ElementEndHandler)();
+        //! Map of handlers for opening xml elements.
+        typedef std::map<String, ElementStartHandler> ElementStartHandlerMap;
+        //! Map of handlers for closing xml elements.
+        typedef std::map<String, ElementEndHandler> ElementEndHandlerMap;
+
+        /*************************************************************************
             Implementation Constants
         *************************************************************************/
         // element names
@@ -150,13 +162,323 @@ namespace CEGUI
         **************************************************************************/
         void assignAreaDimension(Dimension& dim);
 
+        /*!
+        \brief
+            Method that performs common handling for all *Dim elements.
+        */
         void doBaseDimStart(const BaseDim* dim);
-        void doBaseDimEnd();
+
+        /*!
+        \brief
+            Method that handles the opening Falagard XML element.
+        */
+        void elementFalagardStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening WidgetLook XML element.
+        */
+        void elementWidgetLookStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Child XML element.
+        */
+        void elementChildStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ImagerySection XML element.
+        */
+        void elementImagerySectionStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening StateImagery XML element.
+        */
+        void elementStateImageryStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Layer XML element.
+        */
+        void elementLayerStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Section XML element.
+        */
+        void elementSectionStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ImageryComponent XML element.
+        */
+        void elementImageryComponentStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening TextComponent XML element.
+        */
+        void elementTextComponentStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening FrameComponent XML element.
+        */
+        void elementFrameComponentStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Area XML element.
+        */
+        void elementAreaStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Image XML element.
+        */
+        void elementImageStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Colours XML element.
+        */
+        void elementColoursStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening VertFormat XML element.
+        */
+        void elementVertFormatStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening HorzFormat XML element.
+        */
+        void elementHorzFormatStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening VertAlignment XML element.
+        */
+        void elementVertAlignmentStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening HorzAlignment XML element.
+        */
+        void elementHorzAlignmentStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Property XML element.
+        */
+        void elementPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Dim XML element.
+        */
+        void elementDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening UnifiedDim XML element.
+        */
+        void elementUnifiedDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening AbsoluteDim XML element.
+        */
+        void elementAbsoluteDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ImageDim XML element.
+        */
+        void elementImageDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening WidgetDim XML element.
+        */
+        void elementWidgetDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening FontDim XML element.
+        */
+        void elementFontDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening PropertyDim XML element.
+        */
+        void elementPropertyDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Text XML element.
+        */
+        void elementTextStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ColourProperty XML element.
+        */
+        void elementColourPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ColourRectProperty XML element.
+        */
+        void elementColourRectPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening NamedArea XML element.
+        */
+        void elementNamedAreaStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening PropertyDefinition XML element.
+        */
+        void elementPropertyDefinitionStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening DimOperator XML element.
+        */
+        void elementDimOperatorStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening VertFormatProperty XML element.
+        */
+        void elementVertFormatPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening HorzFormatProperty XML element.
+        */
+        void elementHorzFormatPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening AreaProperty XML element.
+        */
+        void elementAreaPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ImageProperty XML element.
+        */
+        void elementImagePropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the closing Falagard XML element.
+        */
+        void elementFalagardEnd();
+
+        /*!
+        \brief
+            Method that handles the closing WidgetLook XML element.
+        */
+        void elementWidgetLookEnd();
+
+        /*!
+        \brief
+            Method that handles the closing Child XML element.
+        */
+        void elementChildEnd();
+
+        /*!
+        \brief
+            Method that handles the closing ImagerySection XML element.
+        */
+        void elementImagerySectionEnd();
+
+        /*!
+        \brief
+            Method that handles the closing StateImagery XML element.
+        */
+        void elementStateImageryEnd();
+
+        /*!
+        \brief
+            Method that handles the closing Layer XML element.
+        */
+        void elementLayerEnd();
+
+        /*!
+        \brief
+            Method that handles the closing Section XML element.
+        */
+        void elementSectionEnd();
+
+        /*!
+        \brief
+            Method that handles the closing ImageryComponent XML element.
+        */
+        void elementImageryComponentEnd();
+
+        /*!
+        \brief
+            Method that handles the closing TextComponent XML element.
+        */
+        void elementTextComponentEnd();
+
+        /*!
+        \brief
+            Method that handles the closing FrameComponent XML element.
+        */
+        void elementFrameComponentEnd();
+
+        /*!
+        \brief
+            Method that handles the closing Area XML element.
+        */
+        void elementAreaEnd();
+
+        /*!
+        \brief
+            Method that handles the closing NamedArea XML element.
+        */
+        void elementNamedAreaEnd();
+
+        /*!
+        \brief
+            Method that handles the closing XML for all *Dim elements.
+        */
+        void elementAnyDimEnd();
+
+        /*!
+        \brief
+            Register a handler for the opening tag of an XML element
+        */
+        void registerElementStartHandler(const String& element, ElementStartHandler handler);
+
+        /*!
+        \brief
+            Register a handler for the closing tag of an XML element
+        */
+        void registerElementEndHandler(const String& element, ElementEndHandler handler);
 
         /*************************************************************************
             Implementation Data
         *************************************************************************/
         WidgetLookManager* d_manager;
+
+        // these are used to implement the handler without using a huge
+        // if / else if /else construct, we just register the element name, and
+        // handler member function, and everything else is done using those
+        // mappings.
+        ElementStartHandlerMap  d_startHandlersMap;
+        ElementEndHandlerMap    d_endHandlersMap;
 
         // these hold pointers to various objects under construction.
         WidgetLookFeel*     d_widgetlook;
