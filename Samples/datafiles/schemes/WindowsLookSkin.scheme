@@ -15,7 +15,7 @@
 	<FalagardMapping WindowType="WindowsLook/ListHeader" TargetType="Falagard/ListHeader" LookNFeel="WindowsLook/ListHeader" />
 	<FalagardMapping WindowType="WindowsLook/ListHeaderSegment" TargetType="Falagard/ListHeaderSegment" LookNFeel="WindowsLook/ListHeaderSegment" />
 	<FalagardMapping WindowType="WindowsLook/Listbox" TargetType="Falagard/Listbox" LookNFeel="WindowsLook/Listbox" />
-	<FalagardMapping WindowType="WindowsLook/Menubar" TargetType="Falagard/Menubar" LookNFeel="WindowsLook/PopupMenu" />
+	<FalagardMapping WindowType="WindowsLook/Menubar" TargetType="Falagard/Menubar" LookNFeel="WindowsLook/Menubar" />
 	<FalagardMapping WindowType="WindowsLook/MenuItem" TargetType="Falagard/MenuItem" LookNFeel="WindowsLook/MenuItem" />
 	<FalagardMapping WindowType="WindowsLook/MultiColumnList" TargetType="Falagard/MultiColumnList" LookNFeel="WindowsLook/MultiColumnList" />
 	<FalagardMapping WindowType="WindowsLook/MultiLineEditbox" TargetType="Falagard/MultiLineEditbox" LookNFeel="WindowsLook/MultiLineEditbox" />
