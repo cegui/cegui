@@ -48,7 +48,8 @@ namespace CEGUI
 	Constructor
 *************************************************************************/
 OpenGLTexture::OpenGLTexture(Renderer* owner) :
-	Texture(owner)
+	Texture(owner),
+	d_grabBuffer(0)
 {
 	// generate a OGL texture that we will use.
 	glGenTextures(1, &d_ogltexture);
@@ -73,8 +74,16 @@ OpenGLTexture::OpenGLTexture(Renderer* owner) :
 *************************************************************************/
 OpenGLTexture::~OpenGLTexture(void)
 {
-	// delete OGL texture associated with this object.
-	glDeleteTextures(1, &d_ogltexture);
+    // if the grabbuffer is not empty then free it
+    if (d_grabBuffer)
+    {
+        delete [] d_grabBuffer;
+    }
+    // otherwise delete OGL texture associated with this object.
+    else
+    {
+	    glDeleteTextures(1, &d_ogltexture);
+    }
 }
 
 
@@ -497,5 +506,44 @@ OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, si
 	return pImageData;
 }
 #endif
+
+
+/************************************************************************
+    Grabs this texture's image data into a buffer for later restoration
+*************************************************************************/
+void OpenGLTexture::grabTexture(void)
+{
+    // bind the texture we want to grab
+    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    // allocate the buffer for storing the image data
+    d_grabBuffer = new uint8[4*d_width*d_height];
+    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,d_grabBuffer);
+    // delete the texture
+    glDeleteTextures(1, &d_ogltexture);
+}
+
+
+/************************************************************************
+    Restores this texture from the previously grabbed image data
+*************************************************************************/
+void OpenGLTexture::restoreTexture(void)
+{
+    // recreate texture
+    // generate a OGL texture that we will use.
+	glGenTextures(1, &d_ogltexture);
+
+	// set some parameters for this texture.
+	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);	// GL_CLAMP_TO_EDGE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);	// GL_CLAMP_TO_EDGE
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, d_width, d_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
+    
+    // free the grabbuffer
+    delete [] d_grabBuffer;
+    d_grabBuffer = 0;
+}
 
 } // End of  CEGUI namespace section

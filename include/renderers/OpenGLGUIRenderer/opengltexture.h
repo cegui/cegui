@@ -140,6 +140,24 @@ public:
     void	setOGLTextureSize(uint size);
 
 
+    /************************************************************************
+        Grab/restore
+    *************************************************************************/
+    /*!
+    \brief
+        Grab the texture to a local buffer.
+        This will destroy the OpenGL texture, and restoreTexture must be called before using it again.
+    */
+    void grabTexture(void);
+
+
+    /*!
+    \brief
+        Restore the texture from the locally buffered copy previously create by a call to grabTexture.
+    */
+    void restoreTexture(void);
+
+
 private:
 #ifndef USE_DEVIL_LIBRARY
 // These defines are used to tell us about the type of TARGA file it is
@@ -189,6 +207,7 @@ private:
     GLuint 		d_ogltexture;		//!< The 'real' texture.
     ushort		d_width;			//!< cached width of the texture
     ushort		d_height;			//!< cached height of the texture
+    uint8*		d_grabBuffer;       //!< cached image data for restoring the texture
 };
 
 } // End of  CEGUI namespace section

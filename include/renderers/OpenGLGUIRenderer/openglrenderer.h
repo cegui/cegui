@@ -281,6 +281,22 @@ public:
 	void	setDisplaySize(const Size& sz);
 
 
+    /*!
+    \brief
+        Grabs all the loaded textures from Texture RAM and stores them in a local data buffer.
+        This function invalidates all textures, and restoreTextures must be called before any
+        CEGUI rendering is done for predictable results
+    */
+    void grabTextures(void);
+
+
+    /*!
+    \brief
+        Restores all the loaded textures from the local data buffers previously created by 'grabTextures'
+    */
+    void restoreTextures(void);
+
+
 private:
     /************************************************************************
 		Implementation Constants

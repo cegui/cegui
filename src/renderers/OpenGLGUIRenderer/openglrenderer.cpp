@@ -332,10 +332,13 @@ void OpenGLRenderer::initPerFrameStates(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glLoadIdentity();	
+	glLoadIdentity();
 
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_CCW);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
@@ -347,13 +350,6 @@ void OpenGLRenderer::initPerFrameStates(void)
 
 void OpenGLRenderer::exitPerFrameStates(void)
 {
-	glDisable(GL_TEXTURE_2D);
-
-	glPopMatrix(); 
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix(); 
-	glMatrixMode(GL_MODELVIEW);
-
 	//restore former attributes
 	glPopClientAttrib();
 	glPopAttrib();
@@ -529,6 +525,36 @@ void OpenGLRenderer::setModuleIdentifierString()
 {
     // set ID string
     d_identifierString = "CEGUI::OpenGLRenderer - Official OpenGL based renderer module for CEGUI";
+}
+
+
+/************************************************************************
+    Grabs all loaded textures to local buffers and frees them
+*************************************************************************/
+void OpenGLRenderer::grabTextures()
+{
+    typedef std::list<OpenGLTexture*> texlist;
+    texlist::iterator i = d_texturelist.begin();
+    while (i!=d_texturelist.end())
+    {
+        (*i)->grabTexture();
+        i++;
+    }
+}
+
+
+/************************************************************************
+    Restores all textures from the previous call to 'grabTextures'
+*************************************************************************/
+void OpenGLRenderer::restoreTextures()
+{
+    typedef std::list<OpenGLTexture*> texlist;
+    texlist::iterator i = d_texturelist.begin();
+    while (i!=d_texturelist.end())
+    {
+        (*i)->restoreTexture();
+        i++;
+    }
 }
 
 } // End of  CEGUI namespace section
