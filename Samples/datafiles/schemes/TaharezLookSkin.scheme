@@ -19,7 +19,7 @@
 	<FalagardMapping WindowType="TaharezLook/ListHeader" TargetType="Falagard/ListHeader" LookNFeel="TaharezLook/ListHeader" />
 	<FalagardMapping WindowType="TaharezLook/ListHeaderSegment" TargetType="Falagard/ListHeaderSegment" LookNFeel="TaharezLook/ListHeaderSegment" />
 	<FalagardMapping WindowType="TaharezLook/Listbox" TargetType="Falagard/Listbox" LookNFeel="TaharezLook/Listbox" />
-	<FalagardMapping WindowType="TaharezLook/Menubar" TargetType="Falagard/Menubar" LookNFeel="TaharezLook/PopupMenu" />
+	<FalagardMapping WindowType="TaharezLook/Menubar" TargetType="Falagard/Menubar" LookNFeel="TaharezLook/Menubar" />
 	<FalagardMapping WindowType="TaharezLook/MenuItem" TargetType="Falagard/MenuItem" LookNFeel="TaharezLook/MenuItem" />
 	<FalagardMapping WindowType="TaharezLook/MultiColumnList" TargetType="Falagard/MultiColumnList" LookNFeel="TaharezLook/MultiColumnList" />
 	<FalagardMapping WindowType="TaharezLook/MultiLineEditbox" TargetType="Falagard/MultiLineEditbox" LookNFeel="TaharezLook/MultiLineEditbox" />

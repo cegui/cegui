@@ -39,7 +39,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		5B3E843D08C49D1D00D8C077 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
 		5B4BB54508C5EE2B0088F7FA /* CEGUIRenderCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4BB54308C5EE2B0088F7FA /* CEGUIRenderCache.cpp */; };
 		5B4BB54F08C5EE600088F7FA /* CEGUIRenderCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4BB54908C5EE600088F7FA /* CEGUIRenderCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B4BB55008C5EE600088F7FA /* CEGUIUDim.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4BB54A08C5EE600088F7FA /* CEGUIUDim.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -521,8 +520,13 @@
 		5B991E2E08C93712006E6DC9 /* tolua_map.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B991E2808C93712006E6DC9 /* tolua_map.c */; };
 		5B991E2F08C93712006E6DC9 /* tolua_push.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B991E2908C93712006E6DC9 /* tolua_push.c */; };
 		5B991E3008C93712006E6DC9 /* tolua_to.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B991E2A08C93712006E6DC9 /* tolua_to.c */; };
-		5B991E3108C93732006E6DC9 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
 		5BCF868108C6BDB700DF4B22 /* CrazyEddiesGUI_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 5BCF867F08C6BDB700DF4B22 /* CrazyEddiesGUI_Prefix.pch */; };
+		5BE493B308E5B39600ABE744 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
+		5BE493B408E5B39A00ABE744 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
+		5BE493B508E5B39D00ABE744 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
+		5BE493B608E5B3A000ABE744 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
+		5BE493B708E5B3A300ABE744 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
+		5BE493B808E5B3A700ABE744 /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
@@ -1237,6 +1241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B5F7A7908CCC59900C417E6 /* CEGUI.framework in Frameworks */,
+				5BE493B808E5B3A700ABE744 /* Xerces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1245,6 +1250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B991E1908C93162006E6DC9 /* CEGUI.framework in Frameworks */,
+				5BE493B608E5B3A000ABE744 /* Xerces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1253,6 +1259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B991E1808C9315E006E6DC9 /* CEGUI.framework in Frameworks */,
+				5BE493B708E5B3A300ABE744 /* Xerces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1260,8 +1267,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B3E843D08C49D1D00D8C077 /* Xerces.framework in Frameworks */,
 				5B4BB63308C5F1DA0088F7FA /* libfreetype.6.3.dylib in Frameworks */,
+				5BE493B308E5B39600ABE744 /* Xerces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1271,6 +1278,7 @@
 			files = (
 				5B991E1708C9315A006E6DC9 /* CEGUI.framework in Frameworks */,
 				5B5F7A7808CCC27600C417E6 /* OpenGL.framework in Frameworks */,
+				5BE493B408E5B39A00ABE744 /* Xerces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1280,7 +1288,7 @@
 			files = (
 				5B991E1508C9314A006E6DC9 /* CEGUI.framework in Frameworks */,
 				5B991E1608C9314C006E6DC9 /* liblua.a in Frameworks */,
-				5B991E3108C93732006E6DC9 /* Xerces.framework in Frameworks */,
+				5BE493B508E5B39D00ABE744 /* Xerces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3419,9 +3427,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
@@ -3454,10 +3463,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.0;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					../../../../include,
+					../../../../WidgetSets/Falagard/include,
+					/usr/include/malloc,
+				);
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3529,9 +3545,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
@@ -3564,10 +3581,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.0;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					../../../../include,
+					../../../../WidgetSets/TaharezLook/include,
+					/usr/include/malloc,
+				);
 				INFOPLIST_FILE = "CEGUITaharezLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3623,7 +3647,7 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
@@ -3656,10 +3680,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.0;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					../../../../include,
+					../../../../WidgetSets/WindowsLook/include,
+					/usr/include/malloc,
+				);
 				INFOPLIST_FILE = "CEGUIWindowsLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3732,6 +3763,7 @@
 					../../../../include,
 					../../../../src/implementations/mac,
 					/usr/include/malloc,
+					/usr/X11R6/include,
 					/usr/X11R6/include/freetype2,
 					/Library/Frameworks/Xerces.framework/Headers,
 				);
@@ -3750,7 +3782,6 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUI;
 				SECTORDER_FLAGS = "";
-				SYMROOT = build;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3763,13 +3794,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.3.0;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -3786,7 +3817,7 @@
 				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
-				LIBRARY_STYLE = STATIC;
+				LIBRARY_STYLE = DYNAMIC;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3849,12 +3880,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
@@ -3866,6 +3898,7 @@
 				);
 				INFOPLIST_FILE = "OpenGLRenderer-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
 				LIBRARY_STYLE = DYNAMIC;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
@@ -3889,15 +3922,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					../../../../include,
+					../../../../src/implementations/mac,
+					/usr/include/malloc,
+					/usr/X11R6/include/freetype2,
+					/Library/Frameworks/Xerces.framework/Headers,
+				);
 				INFOPLIST_FILE = "CEGUIOpenGLRenderer-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
+				LIBRARY_STYLE = DYNAMIC;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3950,12 +3994,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
@@ -3989,15 +4034,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					../../../../include,
+					"../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include",
+					../../../../ScriptingModules/CEGUILua/LuaScriptModule/include,
+					/usr/include/malloc,
+				);
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LIBRARY_STYLE = DYNAMIC;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -4105,11 +4159,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
 				HEADER_SEARCH_PATHS = "../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
 				INSTALL_PATH = "$(HOME)/lib";
-				LIBRARY_SEARCH_PATHS = "$(BUILD_PRODUCTS_DIR)";
+				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				LIBRARY_STYLE = STATIC;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
@@ -4118,6 +4173,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = lua;
 				SECTORDER_FLAGS = "";
+				SHARED_PRECOMPS_DIR = "$(CACHE_ROOT)/SharedPrecompiledHeaders";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -4130,9 +4186,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.0;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_MODEL_TUNING = G4;
+				HEADER_SEARCH_PATHS = "../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
 				INSTALL_PATH = "$(HOME)/lib";
+				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				LIBRARY_STYLE = STATIC;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";

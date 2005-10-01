@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>OpenGLRenderer</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.OpenGLRenderer</string>
+	<string>net.sourceforge.crayzedsgui.OpenGLRenderer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -15,6 +15,6 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>0.4.0</string>
 </dict>
 </plist>
