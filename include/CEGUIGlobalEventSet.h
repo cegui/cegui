@@ -36,7 +36,13 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
+/*!
+\brief
+    The GlobalEventSet singleton allows you to subscribe to an event for all
+    instances of a class.  The GlobalEventSet effectively supports "late binding"
+    to events; which means you can subscribe to some event that does not actually
+    exist (yet).
+*/
 class CEGUIEXPORT GlobalEventSet : public EventSet, public Singleton<GlobalEventSet>
 {
 public:

@@ -48,8 +48,10 @@
 namespace CEGUI
 {
 
-/* The base class for the various binders.  This provides
-   a consistent interface for firing functions bound to an event.
+/*!
+\brief
+    The base class for the various binders.  This provides a consistent
+    interface for firing functions bound to an event.
 */
 template <typename Ret, typename Args>
 class SubscriberInterface {
@@ -59,7 +61,10 @@ public:
 };
 
 
-/* This class binds a free function. */
+/*!
+\brief
+    This class binds a free function.
+*/
 template <typename Ret, typename Args>
 class _freeBinder : public SubscriberInterface<Ret,Args>
 {
@@ -75,7 +80,10 @@ protected:
 };
 
 
-/* This class binds a copy of a functor. */
+/*!
+\brief
+    This class binds a copy of a functor.
+*/
 template <class Functor, typename Ret, typename Args>
 class _functorBinder : public SubscriberInterface<Ret,Args>
 {
@@ -90,8 +98,10 @@ protected:
 };
 
 
-/* This class binds a member function along with a target
-   object. */
+/*!
+\brief
+    This class binds a member function along with a target object.
+*/
 template <class T, typename Ret, typename Args>
 class _memberBinder : public SubscriberInterface<Ret,Args>
 {
@@ -108,9 +118,12 @@ protected:
 };
 
 
-/* This template describes the Subscriber class.  It is a wrapper
-   for a pointer to a SubscriberInterface with various constructors
-   that will by implicit conversion construct the various binders. */
+/*!
+\brief
+    This template describes the Subscriber class.  It is a wrapper
+    for a pointer to a SubscriberInterface with various constructors
+    that will by implicit conversion construct the various binders.
+*/
 template <typename Ret, typename Args>
 class SubscriberTemplate
 {
@@ -122,37 +135,40 @@ public:
 
   typedef Ret (*SlotFunction)(Args);
 
-  // construct from a free function
+  //! construct from a free function
   SubscriberTemplate(SlotFunction f)
   {
     d_si = new _freeBinder<Ret,Args>(f);
   }
 
-  // construct from a member function and a pointer to the target object.
+  //! construct from a member function and a pointer to the target object.
   template <class T>
   SubscriberTemplate(Ret (T::*f)(Args), T* target)
   {
     d_si = new _memberBinder<T,Ret,Args>(f, target);
   }
 
-  // construct from a generalized functor by copying it
+  //! construct from a generalized functor by copying it
   template <typename Functor> 
   SubscriberTemplate(const Functor& f)
   {
     d_si = new _functorBinder<Functor,Ret,Args>(f);
   }
 
-  /* construct from a preconstructed SubscriberInterface.
-     used for SubscriberRef(). */
+  /*!
+  \brief
+    construct from a preconstructed SubscriberInterface.
+    used for SubscriberRef().
+  */
   SubscriberTemplate(SubscriberInterface<Ret,Args>* si) : d_si(si) {}
 
-  // copy constructor
+  //! copy constructor
   SubscriberTemplate(const SubscriberTemplate<Ret,Args>& copy) : d_si(copy.d_si) {}
 
-  // 'less than' comparable for insertion in a map
+  //! 'less than' comparable for insertion in a map
   bool operator<(const SubscriberTemplate<Ret,Args>& rhs) const { return d_si < rhs.d_si; }
 
-  // release the binding -- called upon disconnection
+  //! release the binding -- called upon disconnection
   void release() const
   {
     delete d_si;
@@ -163,9 +179,12 @@ protected:
 };
 
 
-/* This class binds a const reference to a generalized functor.
-   Sometimes it may not be appropriate for the functor to be
-   cloned.  In which case, use SubscriberRef() (which uses this). */
+/*!
+\brief
+    This class binds a const reference to a generalized functor.
+    Sometimes it may not be appropriate for the functor to be
+    cloned.  In which case, use SubscriberRef() (which uses this).
+*/
 template <class Functor, typename Ret, typename Args>
 class _refBinder : public SubscriberInterface<Ret,Args>
 {
@@ -179,7 +198,10 @@ protected:
   const Functor& d_f;
 };
 
-/* This helper function produces a const reference binding */
+/*!
+\brief
+    This helper function produces a const reference binding
+*/
 template <class Functor>
 SubscriberInterface<bool, const EventArgs&>*
 SubscriberRef(const Functor& f)
@@ -192,7 +214,7 @@ SubscriberRef(const Functor& f)
 \brief
 	Defines an 'event' which can be subscribed to by interested parties.
 
-	An Event can be subscribed by a function, a static member function, or a function object.  Whichever option
+	An Event can be subscribed by a function, a member function, or a function object.  Whichever option
 	is taken, the function signature needs to be as follows
 	\par
 	<em>bool function_name(const EventArgs& args);</em>
@@ -202,6 +224,10 @@ SubscriberRef(const Functor& f)
 class CEGUIEXPORT Event
 {
 public:
+    /*!
+    \brief
+        Interface to be implemented by connection objects.
+    */
 	class ConnectionInterface : public Referenced {
 	public:
 		virtual bool connected() { return false; }
@@ -209,7 +235,11 @@ public:
 	};
 	typedef RefPtr<ConnectionInterface> Connection;
 
-
+    /*!
+    \brief
+        A Connection object that automatically disconnects from the event
+        when the ScropedConnection object goes out of scope (and is deleted).
+    */
 	class ScopedConnection {
 	public:
 		ScopedConnection(Connection conn_) : conn(conn_) {}

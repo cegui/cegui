@@ -62,9 +62,10 @@ public:
         String  d_baseType;
     };
 
-	/*************************************************************************
-		Class used to track active alias targets
-	*************************************************************************/
+    /*!
+    \brief
+        Class used to track active alias targets for Window factory types.
+    */
 	class CEGUIEXPORT AliasTargetStack
 	{
 	public:
