@@ -29,4 +29,6 @@ class Renderer : public EventSet
 	unsigned int getMaxTextureSize() const;
 	unsigned int getHorzScreenDPI() const;
 	unsigned int getVertScreenDPI() const;
+
+    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

@@ -104,3 +104,15 @@ class KeyEventArgs : public WindowEventArgs
 
 	KeyEventArgs(Window* wnd);
 };
+
+
+
+/************************************************************************
+    DragDropEventArgs
+*************************************************************************/
+class DragDropEventArgs : public WindowEventArgs
+{
+    DragContainer* dragDropItem;
+
+    DragDropEventArgs(Window* wnd);
+};

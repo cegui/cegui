@@ -10,4 +10,6 @@ class SchemeManager
 	bool isSchemePresent(string name) const;
 	Scheme* getScheme(string name) const;
 	void unloadAllSchemes();
+
+    SchemeIterator getIterator() const;
 };

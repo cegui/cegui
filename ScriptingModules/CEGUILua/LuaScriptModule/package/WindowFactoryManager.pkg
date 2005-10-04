@@ -1,0 +1,22 @@
+/***********************************************************************
+	WindowFactoryManager
+***********************************************************************/
+class FalagardWindowMapping
+{
+    string d_windowType @ windowType;
+    string d_lookName @ lookName;
+    string d_baseType @ baseType;
+};
+
+class WindowFactory
+{
+    string getTypeName() const;
+};
+
+class WindowFactoryManager
+{
+	static WindowFactoryManager& getSingleton();
+
+    WindowFactoryIterator getIterator() const;
+    FalagardMappingIterator getFalagardMappingIterator() const;
+};

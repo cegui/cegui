@@ -33,6 +33,8 @@ class Font
 
 	void defineFontGlyphs(unsigned long first, unsigned long last);
 	void defineFontGlyphs(string glyph_set);
+	void defineFontGlyphs(const String& glyph_set);
+
 	bool isCodepointAvailable(unsigned long cp) const;
 	string getAvailableGlyphs() const;
 	unsigned int getPointSize() const;

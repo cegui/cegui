@@ -25,10 +25,17 @@
 *************************************************************************/
 #include "CEGUI.h"
 
+#define __operator_increment    operator++
+#define __operator_decrement    operator--
+#define __operator_dereference  operator*
+
 typedef CEGUI::String string;
 
 namespace CEGUI
 {
+
+typedef Event::Connection EventConnection;
+
 
 /*************************************************************************
 	Helper functions for easy casting of the EventArgs class
@@ -39,6 +46,7 @@ const ActivationEventArgs&		ceguiLua_toActivationEventArgs(const EventArgs& e);
 const HeaderSequenceEventArgs&	ceguiLua_toHeaderSequenceEventArgs(const EventArgs& e);
 const MouseEventArgs&			ceguiLua_toMouseEventArgs(const EventArgs& e);
 const KeyEventArgs&				ceguiLua_toKeyEventArgs(const EventArgs& e);
+const DragDropEventArgs&		ceguiLua_toDragDropEventArgs(const EventArgs& e);
 
 
 /*************************************************************************
@@ -75,7 +83,6 @@ Spinner*			ceguiLua_toSpinner(Window* w);
 TabButton*			ceguiLua_toTabButton(Window* w);
 TabControl*			ceguiLua_toTabControl(Window* w);
 TabPane*			ceguiLua_toTabPane(Window* w);
-TextItem*			ceguiLua_toTextItem(Window* w);
 Thumb*				ceguiLua_toThumb(Window* w);
 Tooltip*			ceguiLua_toTooltip(Window* w);
 
@@ -91,5 +98,45 @@ void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max);
 	Functions for creating list box items
 *************************************************************************/
 ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete);
+
+
+/************************************************************************
+    Stuff needed to make the iterators work
+*************************************************************************/
+typedef PropertySet::PropertyIterator PropertyIterator;
+typedef EventSet::EventIterator EventIterator;
+typedef WindowManager::WindowIterator WindowIterator;
+typedef WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
+typedef WindowFactoryManager::FalagardMappingIterator FalagardMappingIterator;
+typedef WindowFactoryManager::FalagardWindowMapping FalagardWindowMapping;
+typedef ImagesetManager::ImagesetIterator ImagesetIterator;
+typedef Imageset::ImageIterator ImageIterator;
+typedef SchemeManager::SchemeIterator SchemeIterator;
+typedef FontManager::FontIterator FontIterator;
+
+template <typename T>
+inline PropertyIterator ceguiLua_getPropertyIterator(const T* self)
+{
+    return static_cast<const PropertySet*>(self)->getIterator();
+}
+
+template <typename T>
+inline EventIterator ceguiLua_getEventIterator(const T* self)
+{
+    return static_cast<const EventSet*>(self)->getIterator();
+}
+
+
+/************************************************************************
+    writeWindowLayoutToStream -> file
+*************************************************************************/
+void ceguiLua_WindowManager_writeWindowLayoutToStream(const WindowManager* wm, const String& window, const String& filename, bool writeParent);
+void ceguiLua_WindowManager_writeWindowLayoutToStream(const WindowManager* wm, const Window& window, const String& filename, bool writeParent);
+
+
+/************************************************************************
+    CEGUI::System::getSystemKeys alternative
+*************************************************************************/
+bool ceguiLua_System_isSystemKeyDown(const System* sys, SystemKey k);
 
 }

@@ -1,8 +1,8 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6 on 09/19/05 21:32:59.
+** Generated automatically by tolua++-1.0.6 on 10/01/05 21:51:20.
 */
 
 /* Exported function */
-TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S);
+int tolua_CEGUI_open (lua_State* tolua_S);
 

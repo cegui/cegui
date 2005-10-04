@@ -23,4 +23,6 @@ class Imageset
 	Size getNativeResolution() const;
 	void setNativeResolution(const Size& sz);
 	void notifyScreenResolution(const Size& sz);
+
+    ImageIterator getIterator() const;
 };

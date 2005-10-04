@@ -1,22 +1,12 @@
 /***********************************************************************
 	Menubar
 ***********************************************************************/
-class MenuItem : public TextItem
+class MenuItem : public ItemEntry
 {
 	bool isHovering() const;
 	bool isPushed() const;
-	colour getHoverColour() const;
-	colour getPushedColour() const;
-	colour getOpenedColour() const;
-	colour getNormalTextColour() const;
-	colour getDisabledTextColour() const;
 	PopupMenu* getPopupMenu() const;
 
-	void setHoverColour(const colour& col);
-	void setPushedColour(const colour& col);
-	void setOpenedColour(const colour& col);
-	void setNormalTextColour(const colour& col);
-	void setDisabledTextColour(const colour& col);
 	void setPopupMenu(PopupMenu* popup);
 	void openPopupMenu();
 	void closePopupMenu(bool notify=true);

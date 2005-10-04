@@ -18,6 +18,8 @@ $pfile "Texture.pkg"
 $pfile "Imageset.pkg"
 $pfile "ImagesetManager.pkg"
 
+$pfile "Iterators.pkg"
+
 $pfile "Key.pkg"
 $pfile "InputEvent.pkg"
 $pfile "EventSet.pkg"
@@ -29,6 +31,7 @@ $pfile "Renderer.pkg"
 $pfile "System.pkg"
 
 $pfile "WindowManager.pkg"
+$pfile "WindowFactoryManager.pkg"
 
 $pfile "Scheme.pkg"
 $pfile "SchemeManager.pkg"
@@ -80,7 +83,6 @@ $pfile "elements/ListHeader.pkg"
 $pfile "elements/MultiColumnList.pkg"
 
 $pfile "elements/ItemEntry.pkg"
-$pfile "elements/TextItem.pkg"
 $pfile "elements/ItemListBase.pkg"
 $pfile "elements/MenuBase.pkg"
 $pfile "elements/Menubar.pkg"

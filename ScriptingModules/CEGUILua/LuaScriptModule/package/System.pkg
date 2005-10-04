@@ -40,7 +40,9 @@ class System : public EventSet
 
 	void notifyWindowDestroyed(const Window* window);
 
+    // commented because we can't do 'bitwise and' in Lua
 	//unsigned int getSystemKeys() const;
+	tolua_outside bool ceguiLua_System_isSystemKeyDown @ isSystemKeyDown(SystemKey k) const;
 
 	void setTooltip(Tooltip* tooltip);
 	void setTooltip(string tooltipType);
@@ -56,4 +58,6 @@ class System : public EventSet
 	bool injectMouseWheelChange(float delta);
 	bool injectMousePosition(float x, float y);
 	bool injectTimePulse(float timeElapsed);
+
+    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

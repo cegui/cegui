@@ -157,3 +157,52 @@ class ColourRect
 	ColourRect(const colour& col);
 	ColourRect(const colour& top_left, const colour& top_right, const colour& bottom_left, const colour& bottom_right);
 };
+
+
+
+/************************************************************************
+    String
+*************************************************************************/
+class String
+{
+    static const unsigned long npos;
+
+    unsigned long size() const;
+    unsigned long length() const;
+    bool empty() const;
+    unsigned long capacity() const;
+
+    unsigned long& operator[] (unsigned long i);
+    unsigned long& at(unsigned long i);
+    string c_str() const;
+
+    void reserve(unsigned long num=0);
+    void resize(unsigned long num);
+    void resize(unsigned long num, unsigned long codepoint);
+
+    void clear();
+    String& erase();
+    // default len is different from usual to handle ambiguity issue
+    String& erase(unsigned long idx, unsigned long len=1);
+
+    String& replace(unsigned long begin, unsigned long len, const String&s);
+    //String& replace(unsigned long begin, unsigned long len, unsigned long codepoint);
+
+    void swap(String& s);
+    String& insert(unsigned long pos, const String& s);
+    //String& insert(unsigned long pos, unsigned long codepoint);
+
+    unsigned long find(unsigned long codepoint, unsigned long idx=0) const;
+    unsigned long rfind(unsigned long codepoint, unsigned long idx=-1) const;
+    unsigned long find(const String& sub, unsigned long idx=0) const;
+    unsigned long rfind(const String& sub, unsigned long idx=-1) const;
+
+    String substr(unsigned long idx=0, unsigned long len=-1) const;
+
+    void push_back(unsigned long codepoint);
+
+    String();
+    String(unsigned long num, unsigned long codepoint);
+    String(string s);
+    String(const String& s);
+};

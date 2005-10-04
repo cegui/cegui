@@ -16,4 +16,6 @@ class ImagesetManager
 	bool isImagesetPresent(string name) const;
 
 	void notifyScreenResolution(const Size& size);
+
+    ImagesetIterator getIterator() const;
 };

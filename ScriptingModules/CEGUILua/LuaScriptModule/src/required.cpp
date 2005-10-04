@@ -76,6 +76,13 @@ const KeyEventArgs& ceguiLua_toKeyEventArgs(const EventArgs& e)
 }
 
 
+// converts EventArgs to DragDropEventArgs
+const DragDropEventArgs& ceguiLua_toDragDropEventArgs(const EventArgs& e)
+{
+	return (const DragDropEventArgs&)e;
+}
+
+
 /*************************************************************************
 	Helper functions for easy casting of the classes derived from
 	CEGUI::Window (the widgets)
@@ -261,12 +268,6 @@ TabPane*			ceguiLua_toTabPane(Window* w)
 }
 
 
-TextItem*			ceguiLua_toTextItem(Window* w)
-{
-	return (TextItem*)w;
-}
-
-
 Thumb*				ceguiLua_toThumb(Window* w)
 {
 	return (Thumb*)w;
@@ -309,6 +310,34 @@ void ceguiLua_Thumb_getVertRange(Thumb* wnd, float* min, float* max)
 ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete)
 {
 	return new ListboxTextItem(text,item_id,item_data,disabled,auto_delete);
+}
+
+
+/************************************************************************
+    writeWindowLayoutToFile
+*************************************************************************/
+void ceguiLua_WindowManager_writeWindowLayoutToStream(const WindowManager* wm, const Window& window, const String& filename, bool writeParent)
+{
+    std::ofstream os(filename.c_str(), std::ios::binary);
+    wm->writeWindowLayoutToStream(window,os,writeParent);
+    os.close();
+}
+
+
+void ceguiLua_WindowManager_writeWindowLayoutToStream(const WindowManager* wm, const String& window, const String& filename, bool writeParent)
+{
+    std::ofstream os(filename.c_str(), std::ios::binary);
+    wm->writeWindowLayoutToStream(window,os,writeParent);
+    os.close();
+}
+
+
+/************************************************************************
+    CEGUI::System::getSystemKeys alternative
+*************************************************************************/
+bool ceguiLua_System_isSystemKeyDown(const System* sys, SystemKey k)
+{
+    return (k & sys->getSystemKeys()) != 0;
 }
 
 

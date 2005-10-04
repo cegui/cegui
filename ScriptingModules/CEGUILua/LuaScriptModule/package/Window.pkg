@@ -30,8 +30,8 @@ class Window //: public EventSet
 
 	bool isDestroyedByParent() const;
 	bool isAlwaysOnTop() const;
-	bool isDisabled() const;
-	bool isVisible() const;
+	bool isDisabled(bool localOnly=false) const;
+	bool isVisible(bool localOnly=false) const;
 	bool isActive() const;
 	bool isClippedByParent() const;
 
@@ -225,7 +225,6 @@ class Window //: public EventSet
 	tolua_outside TabButton*			ceguiLua_toTabButton @ toTabButton();
 	tolua_outside TabControl*			ceguiLua_toTabControl @ toTabControl();
 	tolua_outside TabPane*				ceguiLua_toTabPane @ toTabPane();
-	tolua_outside TextItem*				ceguiLua_toTextItem @ toTextItem();
 	tolua_outside Thumb*				ceguiLua_toThumb @ toThumb();
 	tolua_outside Tooltip*				ceguiLua_toTooltip @ toTooltip();
 
@@ -239,6 +238,8 @@ class Window //: public EventSet
 	bool isPropertyPresent(string name) const;
 	bool isPropertyDefault(string name) const;
 
+    tolua_outside PropertyIterator ceguiLua_getPropertyIterator @ getPropertyIterator() const;
+
 	//////////////////////////////////////////////
 	// EventSet
 	void addEvent(string name);
@@ -251,4 +252,6 @@ class Window //: public EventSet
 
 	bool isMuted() const;
 	void setMutedState(bool setting);
+
+    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

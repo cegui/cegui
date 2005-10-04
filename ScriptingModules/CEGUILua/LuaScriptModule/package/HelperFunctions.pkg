@@ -9,6 +9,7 @@ const ActivationEventArgs&		ceguiLua_toActivationEventArgs @ toActivationEventAr
 const HeaderSequenceEventArgs&	ceguiLua_toHeaderSequenceEventArgs @ toHeaderSequenceEventArgs(const EventArgs& e);
 const MouseEventArgs&			ceguiLua_toMouseEventArgs @ toMouseEventArgs(const EventArgs& e);
 const KeyEventArgs&				ceguiLua_toKeyEventArgs @ toKeyEventArgs(const EventArgs& e);
+const DragDropEventArgs&		ceguiLua_toDragDropEventArgs @ toDragDropEventArgs(const EventArgs& e);
 
 
 /****************************************************
@@ -47,7 +48,6 @@ Spinner*			ceguiLua_toSpinner @ toSpinner(Window* w);
 TabButton*			ceguiLua_toTabButton @ toTabButton(Window* w);
 TabControl*			ceguiLua_toTabControl @ toTabControl(Window* w);
 TabPane*			ceguiLua_toTabPane @ toTabPane(Window* w);
-TextItem*			ceguiLua_toTextItem @ toTextItem(Window* w);
 Thumb*				ceguiLua_toThumb @ toThumb(Window* w);
 Tooltip*			ceguiLua_toTooltip @ toTooltip(Window* w);
 

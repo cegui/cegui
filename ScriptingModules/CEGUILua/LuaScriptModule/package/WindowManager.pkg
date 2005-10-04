@@ -5,8 +5,11 @@ class WindowManager
 {
 	static WindowManager& getSingleton();
 
-	Window* createWindow(string type, string name);
+	Window* createWindow(string type, string name="");
 	Window* loadWindowLayout(string filename, string name_prefix="", string resourcegroup="");
+
+    tolua_outside void ceguiLua_WindowManager_writeWindowLayoutToStream @ writeWindowLayoutToStream(string window, string filename, bool writeParent=false) const;
+    tolua_outside void ceguiLua_WindowManager_writeWindowLayoutToStream @ writeWindowLayoutToStream(const Window& window, string filename, bool writeParent=false) const;
 
 	void destroyWindow(string name);
 	void destroyWindow(Window* window);
@@ -17,4 +20,6 @@ class WindowManager
 
 	bool isDeadPoolEmpty() const;
 	void cleanDeadPool();
+
+    WindowIterator getIterator() const;
 };

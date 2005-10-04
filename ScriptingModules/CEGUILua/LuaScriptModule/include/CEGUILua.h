@@ -41,6 +41,8 @@
 #endif
 
 
+#include "CEGUIScriptModule.h"
+
 // include Lua
 extern "C" {
 #include "lua.h"
@@ -123,6 +125,8 @@ public:
 
 	\param handler_name
 		String object holding the name of the scripted handler function.
+		If this string contains dots '.' it will be parsed as tables containing a function field.
+		For example: 'mytable.subtable.func'
 
 	\param e
 		EventArgs based object that should be passed, by any appropriate means, to the scripted function.
