@@ -210,6 +210,8 @@ protected:
 	virtual void onDestructionStarted(WindowEventArgs& e);
 	virtual void onShown(WindowEventArgs& e);
 	virtual void onHidden(WindowEventArgs& e);
+	virtual void onMouseButtonDown(MouseEventArgs& e);
+	virtual void onMouseButtonUp(MouseEventArgs& e);
 
 
     /*************************************************************************

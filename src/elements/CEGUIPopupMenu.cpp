@@ -84,7 +84,7 @@ PopupMenu::~PopupMenu(void)
 void PopupMenu::openPopupMenu(bool notify)
 {
     // already open and not fading, or fading in?
-    if (d_isOpen && (!d_fading || !d_fadingOut)))
+    if (d_isOpen && (!d_fading || !d_fadingOut))
     {
         // then don't do anything
         return;
@@ -351,6 +351,28 @@ void PopupMenu::onHidden(WindowEventArgs& e)
 {
     d_isOpen = false;
     MenuBase::onHidden(e);
+}
+
+
+/************************************************************************
+	Handler for mouse button down events
+************************************************************************/
+void PopupMenu::onMouseButtonDown(MouseEventArgs& e)
+{
+        MenuBase::onMouseButtonDown(e);
+        // dont reach our parent
+        e.handled = true;
+}
+
+
+/************************************************************************
+	Handler for mouse button up events
+************************************************************************/
+void PopupMenu::onMouseButtonUp(MouseEventArgs& e)
+{
+        MenuBase::onMouseButtonUp(e);
+        // dont reach our parent
+        e.handled = true;
 }
 
 
