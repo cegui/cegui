@@ -347,10 +347,6 @@ SOURCE=..\..\..\..\src\elements\CEGUIMenuItem.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\src\elements\CEGUIMenuItemProperties.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\src\elements\CEGUIMultiColumnList.cpp
 # End Source File
 # Begin Source File
@@ -444,14 +440,6 @@ SOURCE=..\..\..\..\src\elements\CEGUITabControl.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\src\elements\CEGUITabControlProperties.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUITextItem.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\src\elements\CEGUITextItemProperties.cpp
 # End Source File
 # Begin Source File
 
@@ -899,10 +887,6 @@ SOURCE=..\..\..\..\include\elements\CEGUIMenuItem.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\include\elements\CEGUIMenuItemProperties.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\include\elements\CEGUIMultiColumnList.h
 # End Source File
 # Begin Source File
@@ -1000,14 +984,6 @@ SOURCE=..\..\..\..\include\elements\CEGUITabControlProperties.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\elements\CEGUITabPane.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUITextItem.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\include\elements\CEGUITextItemProperties.h
 # End Source File
 # Begin Source File
 

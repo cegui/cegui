@@ -487,19 +487,10 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIMenuItem.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenuItemProperties.cpp">
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenu.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenuProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUITextItem.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUITextItemProperties.cpp">
 				</File>
 			</Filter>
 			<Filter
@@ -1041,19 +1032,10 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIMenuItem.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenuItemProperties.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenu.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenuProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUITextItem.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUITextItemProperties.h">
 				</File>
 			</Filter>
 			<Filter

@@ -277,10 +277,6 @@ SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\TextItem.pkg
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Thumb.pkg
 # End Source File
 # Begin Source File
@@ -338,6 +334,10 @@ SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\InputEve
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Iterators.pkg
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Key.pkg
 # End Source File
 # Begin Source File
@@ -387,6 +387,10 @@ SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Window.p
 # Begin Source File
 
 SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\WindowManager.pkg
+# End Source File
+# End Group
+
+SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\WindowFactoryManager.pkg
 # End Source File
 # End Group
 # End Target

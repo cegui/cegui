@@ -141,10 +141,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalCombobox.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalDefaultWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalDragContainer.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalEditbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalFrameWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalItemEntry.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListHeader.cpp">
@@ -268,10 +277,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalCombobox.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalDefaultWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalDragContainer.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalEditbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalFrameWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalItemEntry.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListHeader.h">

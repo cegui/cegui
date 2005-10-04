@@ -416,9 +416,6 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIMenuItem.cpp">
 				</File>
 				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenuItemProperties.cpp">
-				</File>
-				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiColumnList.cpp">
 				</File>
 				<File
@@ -489,12 +486,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUITabControlProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUITextItem.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUITextItemProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIThumb.cpp">
@@ -968,9 +959,6 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIMenuItem.h">
 				</File>
 				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenuItemProperties.h">
-				</File>
-				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiColumnList.h">
 				</File>
 				<File
@@ -1044,12 +1032,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITabPane.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUITextItem.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUITextItemProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIThumb.h">

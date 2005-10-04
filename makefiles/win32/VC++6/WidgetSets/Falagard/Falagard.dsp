@@ -120,11 +120,23 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalCombobox.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalDefaultWindow.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalDragContainer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalEditbox.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalFrameWindow.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalItemEntry.cpp
 # End Source File
 # Begin Source File
 
@@ -288,11 +300,23 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalCombobox.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalDefaultWindow.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalDragContainer.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalEditbox.h
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalFrameWindow.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalItemEntry.h
 # End Source File
 # Begin Source File
 
