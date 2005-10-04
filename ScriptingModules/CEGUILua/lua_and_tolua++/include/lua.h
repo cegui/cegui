@@ -91,9 +91,26 @@ typedef LUA_NUMBER lua_Number;
 
 
 /* mark for all API functions */
+/*************************************************************************
+	Import / Export added for the CEGUI library
+*************************************************************************/
+#ifndef LUA_API
+#   if defined( __WIN32__ ) || defined( _WIN32 )
+#      ifdef LUA_AND_TOLUA_EXPORTS
+#          define LUA_API __declspec(dllexport)
+#      else
+#          define LUA_API __declspec(dllimport)
+#      endif
+#   else
+#      define LUA_API extern
+#   endif
+#endif
+/* original code */
+/*
 #ifndef LUA_API
 #define LUA_API		extern
 #endif
+*/
 
 
 /*

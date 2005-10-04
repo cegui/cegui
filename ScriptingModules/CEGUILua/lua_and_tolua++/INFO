@@ -1,3 +1,6 @@
-the source code included in this package is the unmodified lua-5.0.2 and tolua++ 1.0.6pre2-1
+The source code included in this package is lua-5.0.2 and tolua++ 1.0.6.
+
+Lua has been lightly modified to be able to build a shared library.
+Tolua++ the same, as well as minor mods to circumvent bugs in the code generator. 
 
 release by Tomas Lindquist Olsen (tomas@helix.dk)

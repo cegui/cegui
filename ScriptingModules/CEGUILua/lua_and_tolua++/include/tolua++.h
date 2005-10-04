@@ -16,9 +16,26 @@
 #ifndef TOLUA_H
 #define TOLUA_H
 
+/*************************************************************************
+	Import / Export (CEGUI change)
+*************************************************************************/
+#ifndef TOLUA_API
+#   if defined( __WIN32__ ) || defined( _WIN32 )
+#      ifdef LUA_AND_TOLUA_EXPORTS
+#          define TOLUA_API __declspec(dllexport)
+#      else
+#          define TOLUA_API __declspec(dllimport)
+#      endif
+#   else
+#      define TOLUA_API extern
+#   endif
+#endif
+/* original code */
+/*
 #ifndef TOLUA_API
 #define TOLUA_API extern
 #endif
+*/
 
 #define TOLUA_VERSION "tolua++-1.0.6"
 
@@ -29,10 +46,12 @@ extern "C" {
 #define tolua_pushcppstring(x,y)	tolua_pushstring(x,y.c_str())
 #define tolua_iscppstring	tolua_isstring
 
+// build errors in vc7.1 (CEGUI change)
 //#define TEMPLATE_BIND(p...)
 #define TOLUA_PROTECTED_DESTRUCTOR
 #define TOLUA_PROPERTY_TYPE(p)
 
+// add to fix code generator bug (CEGUI change)
 #define tolua_outside
 
 typedef int lua_Object;
