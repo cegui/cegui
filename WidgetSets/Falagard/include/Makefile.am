@@ -3,8 +3,11 @@ noinst_HEADERS = FalButton.h \
                  FalCheckbox.h \
                  FalComboDropList.h \
                  FalCombobox.h \
+                 FalDefaultWindow.h \
+                 FalDragContainer.h \
                  FalEditbox.h \
                  FalFrameWindow.h \
+                 FalItemEntry.h \
                  FalListHeader.h \
                  FalListHeaderProperties.h \
                  FalListHeaderSegment.h \

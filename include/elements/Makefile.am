@@ -29,7 +29,6 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUIMenuBase.h \
                      CEGUIMenuBaseProperties.h \
                      CEGUIMenuItem.h \
-                     CEGUIMenuItemProperties.h \
                      CEGUIMultiColumnList.h \
                      CEGUIMultiColumnListProperties.h \
                      CEGUIMultiLineEditbox.h \
@@ -55,8 +54,6 @@ pkginclude_HEADERS = CEGUIButtonBase.h \
                      CEGUITabControl.h \
                      CEGUITabControlProperties.h \
                      CEGUITabPane.h \
-                     CEGUITextItem.h \
-                     CEGUITextItemProperties.h \
                      CEGUIThumb.h \
                      CEGUIThumbProperties.h \
                      CEGUITitlebar.h \

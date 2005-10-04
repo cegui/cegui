@@ -80,7 +80,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIMenuBase.cpp \
                       elements/CEGUIMenuBaseProperties.cpp \
                       elements/CEGUIMenuItem.cpp \
-                      elements/CEGUIMenuItemProperties.cpp \
                       elements/CEGUIMultiColumnList.cpp \
                       elements/CEGUIMultiColumnListProperties.cpp \
                       elements/CEGUIMultiLineEditbox.cpp \
@@ -105,8 +104,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITabButton.cpp \
                       elements/CEGUITabControl.cpp \
                       elements/CEGUITabControlProperties.cpp \
-                      elements/CEGUITextItem.cpp \
-                      elements/CEGUITextItemProperties.cpp \
                       elements/CEGUIThumb.cpp \
                       elements/CEGUIThumbProperties.cpp \
                       elements/CEGUITitlebar.cpp \
