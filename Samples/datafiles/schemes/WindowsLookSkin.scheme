@@ -26,6 +26,7 @@
 	<FalagardMapping WindowType="WindowsLook/Slider" TargetType="Falagard/Slider" LookNFeel="WindowsLook/Slider" />
 	<FalagardMapping WindowType="WindowsLook/SliderThumb" TargetType="Falagard/Thumb" LookNFeel="WindowsLook/SliderThumb" />
 	<FalagardMapping WindowType="WindowsLook/Spinner" TargetType="Falagard/Spinner" LookNFeel="WindowsLook/Spinner" />
+	<FalagardMapping WindowType="WindowsLook/Static" TargetType="Falagard/Static" LookNFeel="WindowsLook/Static" />
 	<FalagardMapping WindowType="WindowsLook/StaticImage" TargetType="Falagard/StaticImage" LookNFeel="WindowsLook/StaticImage" />
 	<FalagardMapping WindowType="WindowsLook/StaticText" TargetType="Falagard/StaticText" LookNFeel="WindowsLook/StaticText" />
 	<FalagardMapping WindowType="WindowsLook/CloseButton" TargetType="Falagard/SystemButton" LookNFeel="WindowsLook/CloseButton" />
