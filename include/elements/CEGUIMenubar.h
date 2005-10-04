@@ -83,10 +83,10 @@ protected:
 
 	/*!
 	\brief
-		Resizes the menubar to exactly fit the content that is attached to it.
+		Returns the Size in unclipped pixels of the content attached to this ItemListBase that is attached to it.
 
 	\return
-		Nothing.
+		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
 	virtual Size getContentSize();
 

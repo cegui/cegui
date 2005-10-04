@@ -39,6 +39,23 @@ namespace CEGUI
     {
     }
 
+    Size FalagardMenuItem::getItemPixelSize() const
+    {
+        Window* parent = getParent();
+		bool not_menubar = (!parent) ? true : !parent->testClassName("Menubar");
+		const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+		const NamedArea* area;
+		if (d_popup && not_menubar && wlf.isNamedAreaDefined("HasPopupContentSize"))
+		{
+		    area = &wlf.getNamedArea("HasPopupContentSize");
+		}
+		else
+		{
+		    area = &wlf.getNamedArea("ContentSize");
+		}
+        return area->getArea().getPixelRect(*this).getSize();
+    }
+
     void FalagardMenuItem::populateRenderCache()
     {
         // build name of state we're in

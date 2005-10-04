@@ -28,15 +28,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
-#include "elements/CEGUITextItem.h"
-#include "elements/CEGUIMenuItemProperties.h"
-
-
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
+#include "elements/CEGUIItemEntry.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -46,28 +38,16 @@ namespace CEGUI
 \brief
 	Base class for menu items.
 */
-class CEGUIEXPORT MenuItem : public TextItem
+class CEGUIEXPORT MenuItem : public ItemEntry
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
 
 	/*************************************************************************
-		Constants
-	*************************************************************************/
-	// default colours for rendering
-	
-	static const colour		DefaultHoverColour;			//!< Default colour used when rendering in hover / highlight state.
-	static const colour		DefaultPushedColour;		//!< Default colour used when rendering in pushed state.
-	static const colour		DefaultOpenedColour;		//!< Default colour used when rendering in opended state.
-	static const colour		DefaultNormalTextColour;	//!< Default colour used when rendering the text in normal state.
-	static const colour		DefaultDisabledTextColour;	//!< Default colour used when rendering the text in disabled state.
-
-
-	/*************************************************************************
 		Event name constants
 	*************************************************************************/
 	// generated internally by Window
-	static const String EventClicked;					//!< The menuitem was clicked.
+	static const String EventClicked;					//!< The menu item was clicked.
 
 
 	/*************************************************************************
@@ -95,56 +75,6 @@ public:
 
 	/*!
 	\brief
-		return text label colour used for hover / highlight rendering
-
-	\return
-		colour value that is used for the label text when rendering in the hover / highlighted states.
-	*/
-	colour	getHoverColour(void) const			{return d_hoverColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for pushed rendering
-
-	\return
-		colour value that is used for the label text when rendering in the pushed state.
-	*/
-	colour	getPushedColour(void) const			{return d_pushedColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for opened rendering
-
-	\return
-		colour value that is used for the label text when rendering in the opened state.
-	*/
-	colour	getOpenedColour(void) const			{return d_openedColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for normal rendering
-
-	\return
-		colour value that is used for the label text when rendering in the normal state.
-	*/
-	colour	getNormalTextColour(void) const			{return d_normalTextColour;}
-
-
-	/*!
-	\brief
-		return text label colour used for disabled rendering
-
-	\return
-		colour value that is used for the label text when rendering in the disabled state.
-	*/
-	colour	getDisabledTextColour(void) const		{return d_disabledTextColour;}
-
-
-	/*!
-	\brief
 		Get the PopupMenu that is currently attached to this MenuItem.
 
 	\return
@@ -156,71 +86,6 @@ public:
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
-	/*!
-	\brief
-		Set the colour to use when rendering in the hover / highlighted states.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setHoverColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use when rendering in the pushed state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setPushedColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use when rendering in the opened state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setOpenedColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the label text when rendering in the normal state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalTextColour(const colour& colour);
-
-
-	/*!
-	\brief
-		Set the colour to use for the label text when rendering in the disabled state.
-
-	\param colour
-		colour value specifying the colour to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setDisabledTextColour(const colour& colour);
-
-
 	/*!
 	\brief
 		Set the popup menu for this item.
@@ -237,8 +102,11 @@ public:
 	/*!
 	\brief
 		Opens the PopupMenu.
+
+    \param notify
+		true if the parent menu bar or menu popup (if any) is to handle the open.
 	*/
-	void	openPopupMenu(void);
+	void	openPopupMenu(bool notify=true);
 
 
 	/*!
@@ -246,7 +114,7 @@ public:
 		Closes the PopupMenu.
 
 	\param notify
-		true if the parent menubar is to be notified of the close.
+		true if the parent menubar (if any) is to handle the close.
 
 	\return
 		Nothing.
@@ -300,6 +168,7 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onMouseLeaves(MouseEventArgs& e);
+	virtual void    onTextChanged(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -335,6 +204,19 @@ protected:
 	void	closeAllMenuItemPopups();
 
 
+    /*!
+	\brief
+		Set the popup menu for this item.
+
+	\param popup
+		popupmenu window to attach to this item
+
+	\return
+		Nothing.
+	*/
+	void	setPopupMenu_impl(PopupMenu* popup,bool add_as_child=true);
+
+
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
@@ -348,44 +230,24 @@ protected:
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
 		if (class_name=="MenuItem")	return true;
-		return TextItem::testClassName_impl(class_name);
+		return ItemEntry::testClassName_impl(class_name);
 	}
 
 
 	/*************************************************************************
-		Implementation Rendering Functions
-	*************************************************************************/
-
-	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	bool	d_pushed;			//!< true when widget is pushed
-	bool	d_hovering;			//!< true when the button is in 'hover' state and requires the hover rendering.
-	bool	d_opened;			//!< true when the menu item's popup menu is opened.
+	bool d_pushed;			//!< true when widget is pushed
+	bool d_hovering;		//!< true when the button is in 'hover' state and requires the hover rendering.
+	bool d_opened;			//!< true when the menu item's popup menu is in its opened state.
 
-	// common rendering setting data
-	colour	d_hoverColour;					//!< Colour used when rendering in highlighted state
-	colour	d_pushedColour;					//!< Colour used when rendering in pushed state
-	colour	d_openedColour;					//!< Colour used when rendering in opened state
-	colour	d_normalTextColour;				//!< Colour used for the text when rendering in normal state
-	colour	d_disabledTextColour;			//!< Colour used for the text when rendering in disabled state
+	PopupMenu*  d_popup;	//!< PopupMenu that this item displays when activated.
 
-	PopupMenu* d_popup;						//!< PopupMenu that this item displays when activated.
+	bool d_popupWasClosed;	//!< Used internally to determine if a popup was just closed on a Clicked event
 
-	bool	d_popupWasClosed;				//!< Used internally to determine if a popup was just closed on a Clicked event
 
 private:
-	/*************************************************************************
-		Static Properties for this class
-	*************************************************************************/
-	static MenuItemProperties::HoverColour			d_hoverColourProperty;
-	static MenuItemProperties::PushedColour			d_pushedColourProperty;
-	static MenuItemProperties::OpenedColour			d_openedColourProperty;
-	static MenuItemProperties::NormalTextColour		d_normalTextColourProperty;
-	static MenuItemProperties::DisabledTextColour	d_disabledTextColourProperty;
-
-
-	/*************************************************************************
+    /*************************************************************************
 		Private methods
 	*************************************************************************/
 	void addMenuItemProperties(void);
@@ -399,11 +261,5 @@ private:
 };
 
 } // End of  CEGUI namespace section
-
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
 
 #endif	// end of guard _CEGUIMenuItem_h_

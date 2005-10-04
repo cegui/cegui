@@ -197,6 +197,9 @@ Window::Window(const String& type, const String& name) :
     d_horzAlign = HA_LEFT;
     d_vertAlign = VA_TOP;
 
+    // initialisation flag
+    d_initialising = false;
+
 	// add properties
 	addStandardProperties();
 }

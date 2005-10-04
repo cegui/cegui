@@ -44,8 +44,6 @@ Menubar::Menubar(const String& type, const String& name)
 	: MenuBase(type, name)
 {
 	d_itemSpacing = 10;
-	d_horzPadding = d_vertPadding = 3;
-	d_borderWidth = 5;
 }
 
 
@@ -63,16 +61,14 @@ Menubar::~Menubar(void)
 void Menubar::layoutItemWidgets()
 {
 	Rect render_rect = getItemRenderArea();
-	float x0 = PixelAligned(render_rect.d_left+d_borderWidth);
-	
+	float x0 = PixelAligned(render_rect.d_left);
+
 	URect rect;
 
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
-		Size optimal = (*item)->getItemPixelSize();
-		optimal.d_width += 2 * d_horzPadding;
-		optimal.d_height += 2 * d_vertPadding;
+		const Size optimal = (*item)->getItemPixelSize();
 
 		(*item)->setVerticalAlignment(VA_CENTRE);
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(0)) );
@@ -80,10 +76,9 @@ void Menubar::layoutItemWidgets()
                                 cegui_absdim(PixelAligned(optimal.d_height))));
 
 		(*item)->setWindowArea(rect);
-		
-		x0 += optimal.d_width + d_itemSpacing;
 
-		item++;
+		x0 += optimal.d_width + d_itemSpacing;
+		++item;
 	}
 
 }
@@ -97,35 +92,29 @@ Size Menubar::getContentSize()
 	// find the content sizes
 	float tallest = 0;
 	float total_width = 0;
-	
-	size_t count = 0;
+
+	size_t i = 0;
 	size_t max = d_listItems.size();
-	while (count < max)
+	while (i < max)
 	{
-		const Size sz = d_listItems[count]->getItemPixelSize();
+		const Size sz = d_listItems[i]->getItemPixelSize();
 		if (sz.d_height > tallest)
 			tallest = sz.d_height;
 		total_width += sz.d_width;
 
-		count++;
+		i++;
 	}
-	
-	const float dbl_border = d_borderWidth+d_borderWidth;
 
-	// add horz padding
-	total_width += 2.0f*count*d_horzPadding;
-	// spacing
-	total_width += (count-1)*d_itemSpacing;
-	// border
-	total_width += dbl_border;
+	const float count = float(i);
 
-	// add vert padding
-	tallest += d_vertPadding+d_vertPadding;
-	// border
-	tallest += dbl_border;
+	// horz item spacing
+	if (count >= 2)
+	{
+	    total_width += (count-1)*d_itemSpacing;
+	}
 
 	// return the content size
-	return Size( total_width, tallest);
+	return Size(total_width, tallest);
 }
 
 } // End of  CEGUI namespace section

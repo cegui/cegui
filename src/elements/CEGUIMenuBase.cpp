@@ -35,22 +35,16 @@ namespace CEGUI
 Definition of Properties for this class
 *************************************************************************/
 MenuBaseProperties::ItemSpacing			MenuBase::d_itemSpacingProperty;
-MenuBaseProperties::HorzPadding			MenuBase::d_horzPaddingProperty;
-MenuBaseProperties::VertPadding			MenuBase::d_vertPaddingProperty;
-MenuBaseProperties::BorderWidth			MenuBase::d_borderWidthProperty;
-MenuBaseProperties::BackgroundColours	MenuBase::d_backgroundColoursProperty;
 MenuBaseProperties::AllowMultiplePopups	MenuBase::d_allowMultiplePopupsProperty;
 
 
 /*************************************************************************
 	Constants
 *************************************************************************/
-const colour MenuBase::DefaultBackgroundColour = 0xFFFFFFFF;
-
 // event strings
 const String MenuBase::EventNamespace("MenuBase");
-const String MenuBase::EventPopupOpened( "PopupOpened" );
-const String MenuBase::EventPopupClosed( "PopupClosed" );
+const String MenuBase::EventPopupOpened("PopupOpened");
+const String MenuBase::EventPopupClosed("PopupClosed");
 
 /*************************************************************************
 	Constructor for MenuBase base class.
@@ -58,11 +52,7 @@ const String MenuBase::EventPopupClosed( "PopupClosed" );
 MenuBase::MenuBase(const String& type, const String& name)
 	: ItemListBase(type, name),
 	d_itemSpacing(0.0f),
-	d_horzPadding(0.0f),
-	d_vertPadding(0.0f),
-	d_borderWidth(0.0f),
-	d_backgroundColours(DefaultBackgroundColour),
-	d_popup(0),
+	d_popupItem(0),
 	d_allowMultiplePopups(false)
 {
 	// add new events specific to MenuBase.
@@ -86,22 +76,22 @@ MenuBase::~MenuBase(void)
 *************************************************************************/
 void MenuBase::changePopupMenuItem(MenuItem* item)
 {
-	if (!d_allowMultiplePopups&&d_popup==item)
+	if (!d_allowMultiplePopups&&d_popupItem==item)
 		return;
 
-	if (!d_allowMultiplePopups&&d_popup!=0)
+	if (!d_allowMultiplePopups&&d_popupItem!=0)
 	{
-		d_popup->closePopupMenu(false);
-		WindowEventArgs we(d_popup->getPopupMenu());
-		d_popup = 0;
+		d_popupItem->closePopupMenu(false);
+		WindowEventArgs we(d_popupItem->getPopupMenu());
+		d_popupItem = 0;
 		onPopupClosed(we);
 	}
 
 	if (item)
 	{
-		d_popup = item;
-		d_popup->getPopupMenu()->openPopupMenu();
-		WindowEventArgs we(d_popup->getPopupMenu());
+		d_popupItem = item;
+		d_popupItem->openPopupMenu(false);
+		WindowEventArgs we(d_popupItem->getPopupMenu());
 		onPopupOpened(we);
 	}
 
@@ -138,14 +128,27 @@ void MenuBase::onPopupClosed(WindowEventArgs& e)
 }
 
 
+/************************************************************************
+    Add properties for this widget
+*************************************************************************/
 void MenuBase::addMenuBaseProperties(void)
 {
 	addProperty(&d_itemSpacingProperty);
-    addProperty(&d_horzPaddingProperty);
-    addProperty(&d_vertPaddingProperty);
-    addProperty(&d_borderWidthProperty);
-    addProperty(&d_backgroundColoursProperty);
     addProperty(&d_allowMultiplePopupsProperty);
+}
+
+
+/************************************************************************
+    Set if multiple child popup menus are allowed simultaneously
+*************************************************************************/
+void MenuBase::setAllowMultiplePopups(bool setting)
+{
+    if (d_allowMultiplePopups != setting)
+    {
+        // TODO :
+        // close all popups except perhaps the last one opened!
+        d_allowMultiplePopups = setting;
+    }
 }
 
 } // End of  CEGUI namespace section

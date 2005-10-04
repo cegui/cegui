@@ -52,12 +52,10 @@ PopupMenu::PopupMenu(const String& type, const String& name)
 	d_fadeOutTime(0),
 	d_fadeInTime(0),
 	d_fading(false),
-	d_fadingOut(false)
+	d_fadingOut(false),
+	d_isOpen(false)
 {
 	d_itemSpacing = 2;
-	d_horzPadding = 10;
-	d_vertPadding = 2;
-	d_borderWidth = 0;
 
 	addPopupMenuProperties();
 
@@ -83,37 +81,41 @@ PopupMenu::~PopupMenu(void)
 /*************************************************************************
 	Tells the popup menu to open.
 *************************************************************************/
-void PopupMenu::openPopupMenu(void)
+void PopupMenu::openPopupMenu(bool notify)
 {
-	// are we fading?
-	if (d_fading)
+    // already open and not fading, or fading in?
+    if (d_isOpen && (!d_fading || !d_fadingOut)))
+    {
+        // then don't do anything
+        return;
+    }
+
+    // should we let the parent menu item initiate the open?
+    Window* parent = getParent();
+    if (notify && parent && parent->testClassName("MenuItem"))
+    {
+        static_cast<MenuItem*>(parent)->openPopupMenu();
+        return; // the rest will be handled when MenuItem calls us itself
+    }
+
+    // we'll handle it ourselves then.
+	// are we fading, and fading out?
+	if (d_fading && d_fadingOut)
 	{
-		// fading in!
-		if (!d_fadingOut)
+		if (d_fadeInTime>0.0f&&d_fadeOutTime>0.0f)
 		{
-			// dont want to restart fade in!
-			return;
+			// jump to the point of the fade in that has the same alpha as right now - this keeps it smooth
+			d_fadeElapsed = ((d_fadeOutTime-d_fadeElapsed)/d_fadeOutTime)*d_fadeInTime;
 		}
-		// fading out!
 		else
 		{
-			// make sure the "fade back in" is smooth - if possible !
-			if (d_fadeInTime>0.0f&&d_fadeOutTime>0.0f)
-			{
-				// jump to the point of the fade in that has the same alpha as right now - this keeps it smooth
-				d_fadeElapsed = ((d_fadeOutTime-d_fadeElapsed)/d_fadeOutTime)*d_fadeInTime;
-			}
-			else
-			{
-				// start the fade in from the beginning
-				d_fadeElapsed = 0;
-			}
-			// change to fade in
-			d_fadingOut=false;
+			// start the fade in from the beginning
+			d_fadeElapsed = 0;
 		}
-
+		// change to fade in
+		d_fadingOut=false;
 	}
-	// start normal fade in!
+	// otherwise just start normal fade in!
 	else if (d_fadeInTime>0.0f)
 	{
 		d_fading = true;
@@ -136,51 +138,55 @@ void PopupMenu::openPopupMenu(void)
 /*************************************************************************
 	Tells the popup menu to close.
 *************************************************************************/
-void PopupMenu::closePopupMenu(void)
+void PopupMenu::closePopupMenu(bool notify)
 {
-	// are we fading?
-	if (d_fading)
+    // already closed?
+    if (!d_isOpen)
+    {
+        // then do nothing
+        return;
+    }
+
+    // should we let the parent menu item close initiate the close?
+    Window* parent = getParent();
+    if (notify && parent && parent->testClassName("MenuItem"))
+    {
+        static_cast<MenuItem*>(parent)->closePopupMenu();
+        return; // the rest will be handled when MenuItem calls us itself
+    }
+
+    // we'll do it our selves then.
+	// are we fading, and fading in?
+	if (d_fading && !d_fadingOut)
 	{
-		// fading out!
-		if (d_fadingOut)
+		// make sure the "fade back out" is smooth - if possible !
+		if (d_fadeOutTime>0.0f&&d_fadeInTime>0.0f)
 		{
-			// dont want to restart fade out!
-			return;
+			// jump to the point of the fade in that has the same alpha as right now - this keeps it smooth
+			d_fadeElapsed = ((d_fadeInTime-d_fadeElapsed)/d_fadeInTime)*d_fadeOutTime;
 		}
-		// fading in!
 		else
 		{
-			// make sure the "fade back out" is smooth - if possible !
-			if (d_fadeInTime>0.0f&&d_fadeOutTime>0.0f)
-			{
-				// jump to the point of the fade in that has the same alpha as right now - this keeps it smooth
-				d_fadeElapsed = ((d_fadeInTime-d_fadeElapsed)/d_fadeInTime)*d_fadeOutTime;
-			}
-			else
-			{
-				// start the fade in from the beginning
-				d_fadeElapsed = 0;
-			}
-			// change to fade in
-			d_fadingOut=true;
+			// start the fade in from the beginning
+			d_fadeElapsed = 0;
 		}
-
+		// change to fade out
+		d_fadingOut=true;
 	}
-	// start normal fade out!
+	// otherwise just start normal fade out!
 	else if (d_fadeOutTime>0.0f)
 	{
-		d_fading = true;
-		d_fadingOut=true;
-		setAlpha(d_origAlpha);
-		d_fadeElapsed = 0;
+	    d_fading = true;
+	    d_fadingOut = true;
+	    setAlpha(d_origAlpha);
+	    d_fadeElapsed = 0;
 	}
 	// should not fade!
 	else
 	{
-		d_fading = false;
-		hide();
+	    d_fading = false;
+	    hide();
 	}
-
 }
 
 
@@ -189,8 +195,8 @@ void PopupMenu::closePopupMenu(void)
 *************************************************************************/
 void PopupMenu::updateSelf(float elapsed)
 {
-    ItemListBase::updateSelf(elapsed);
-    
+    MenuBase::updateSelf(elapsed);
+
     // handle fading
     if (d_fading)
     {
@@ -203,6 +209,7 @@ void PopupMenu::updateSelf(float elapsed)
 			{
 				hide();
 				d_fading=false;
+				setAlpha(d_origAlpha); // set real alpha so users can show directly without having to restore it
 			}
 			else
 			{
@@ -223,11 +230,8 @@ void PopupMenu::updateSelf(float elapsed)
 			{
 				setAlpha(d_origAlpha*d_fadeElapsed/d_fadeInTime);
 			}
-
 		}
-
 	}
-
 }
 
 
@@ -240,19 +244,18 @@ void PopupMenu::layoutItemWidgets()
 	Rect render_rect = getItemRenderArea();
 
 	// get starting position
-	const float x0 = render_rect.d_left + d_borderWidth;
-	float y0 = render_rect.d_top + d_borderWidth;
+	const float x0 = PixelAligned(render_rect.d_left);
+	float y0 = PixelAligned(render_rect.d_top);
 
 	URect rect;
-	UVector2 sz(cegui_absdim(render_rect.getWidth() - d_borderWidth-d_borderWidth), cegui_absdim(0)); // set item width
+	UVector2 sz(cegui_absdim(PixelAligned(render_rect.getWidth())), cegui_absdim(0)); // set item width
 
 	// iterate through all items attached to this window
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
 		// get the "optimal" height of the item and use that!
-		sz.d_y.d_offset = (*item)->getItemPixelSize().d_height; // fix rounding errors
-		sz.d_y.d_offset += d_vertPadding + d_vertPadding;
+		sz.d_y.d_offset = PixelAligned((*item)->getItemPixelSize().d_height); // rounding errors ?
 
 		// set destination rect
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(y0)) );
@@ -260,7 +263,7 @@ void PopupMenu::layoutItemWidgets()
 		(*item)->setWindowArea(rect);
 
 		// next position
-		y0 += sz.d_y.d_offset + d_itemSpacing;
+		y0 += PixelAligned(sz.d_y.d_offset + d_itemSpacing);
 
 		item++; // next item
 	}
@@ -276,34 +279,28 @@ Size PopupMenu::getContentSize()
 	float widest = 0;
 	float total_height = 0;
 	
-	size_t count = 0;
+	size_t i = 0;
 	size_t max = d_listItems.size();
-	while (count < max)
+	while (i < max)
 	{
-		const Size sz = d_listItems[count]->getItemPixelSize();
+		const Size sz = d_listItems[i]->getItemPixelSize();
 		if (sz.d_width > widest)
 			widest = sz.d_width;
 		total_height += sz.d_height;
 
-		count++;
+		i++;
 	}
 	
-	const float dbl_border = d_borderWidth+d_borderWidth;
+	const float count = float(i);
 
-	// add vert padding
-	total_height += 2.0f*count*d_vertPadding;
-	// spacing
-	total_height += (count-1)*d_itemSpacing;
-	// border
-	total_height += dbl_border;
-
-	// add horz padding
-	widest += d_horzPadding+d_horzPadding;
-	// border
-	widest += dbl_border;
+	// vert item spacing
+	if (count >= 2)
+	{
+	    total_height += (count-1)*d_itemSpacing;
+	}
 
 	// return the content size
-	return Size( widest, total_height );
+	return Size(widest, total_height);
 }
 
 
@@ -312,13 +309,48 @@ Size PopupMenu::getContentSize()
 *************************************************************************/
 void PopupMenu::onAlphaChanged(WindowEventArgs& e)
 {
-	ItemListBase::onAlphaChanged(e);
+	MenuBase::onAlphaChanged(e);
 	
 	// if we are not fading, this is a real alpha change request and we save a copy of the value
 	if (!d_fading)
 	{
 		d_origAlpha = d_alpha;
 	}
+}
+
+
+/************************************************************************
+    Handler for destruction started events
+*************************************************************************/
+void PopupMenu::onDestructionStarted(WindowEventArgs& e)
+{
+    // if we are attached to a menuitem, we make sure that gets updated
+    Window* p = getParent();
+    if (p && p->testClassName("MenuItem"))
+    {
+        static_cast<MenuItem*>(p)->setPopupMenu(0);
+    }
+    MenuBase::onDestructionStarted(e);
+}
+
+
+/************************************************************************
+    Handler for shown events
+*************************************************************************/
+void PopupMenu::onShown(WindowEventArgs& e)
+{
+    d_isOpen = true;
+    MenuBase::onShown(e);
+}
+
+
+/************************************************************************
+    Handler for hidden events
+*************************************************************************/
+void PopupMenu::onHidden(WindowEventArgs& e)
+{
+    d_isOpen = false;
+    MenuBase::onHidden(e);
 }
 
 

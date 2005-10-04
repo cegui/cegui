@@ -177,6 +177,19 @@ public:
 	ObjectInUseException(const String& message) : Exception(message) {}
 };
 
+/*!
+\brief
+    Exception class used when a scripting error occurs
+*/
+class CEGUIEXPORT ScriptException : public Exception
+{
+public:
+	/*************************************************************************
+		Construction and Destruction
+	*************************************************************************/
+	ScriptException(const String& message) : Exception(message) {}
+};
+
 
 } // End of  CEGUI namespace section
 

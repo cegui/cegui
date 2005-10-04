@@ -179,6 +179,9 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 
         // make this window the top of the stack
         d_stack.push_back(wnd);
+
+        // tell it that it is being initialised
+        wnd->beginInitialisation();
     }
     catch (AlreadyExistsException exc)
     {
@@ -301,6 +304,7 @@ void GUILayout_xmlHandler::elementWindowEnd()
     // pop a window from the window stack
     if (!d_stack.empty())
     {
+        d_stack.back()->endInitialisation();
         d_stack.pop_back();
     }
 }

@@ -87,7 +87,6 @@
 #include "elements/CEGUIScrollablePane.h"
 #include "elements/CEGUITooltip.h"
 #include "elements/CEGUIItemEntry.h"
-#include "elements/CEGUITextItem.h"
 #include "elements/CEGUIMenuItem.h"
 #include "elements/CEGUIItemListBase.h"
 #include "elements/CEGUIMenuBase.h"

@@ -1,7 +1,7 @@
 /************************************************************************
-    filename:   FalMenuItem.h
-    created:    Fri Jul 8 2005
-    author:     Paul D Turner <paul@cegui.org.uk>
+    filename:   FalDefaultWindow.h
+    created:    Thu Sep 22 2005
+    author:     Tomas Lindquist Olsen
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -21,38 +21,27 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalMenuItem_h_
-#define _FalMenuItem_h_
+#ifndef _FalDefaultWindow_h_
+#define _FalDefaultWindow_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIMenuItem.h"
+#include "CEGUIWindowFactory.h"
+#include "elements/CEGUIGUISheet.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        MenuItem class for the FalagardBase module.
+        DefaultWindow class for the FalagardBase module.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States:
-            - EnabledNormal
-            - EnabledHover
-            - EnabledPushed
-            - EnabledPopupOpen
-            - DisabledNormal
-            - DisabledHover
-            - DisabledPushed
-            - DisabledPopupOpen
-            - PopupClosedIcon   - Additional state drawn when item has a pop-up attached (in closed state)
-            - PopupOpenIcon     - Additional state drawn when item has a pop-up attached (in open state)
-
-        Named Areas:
-            ContentSize
-            HasPopupContentSize
+            - Enabled       - basic rendering for enabled state.
+            - Disabled      - basic rendering for disabled state.
     */
-    class FALAGARDBASE_API FalagardMenuItem : public MenuItem
+    class FALAGARDBASE_API FalagardDefaultWindow : public DefaultWindow
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
@@ -61,23 +50,21 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardMenuItem(const String& type, const String& name);
+        FalagardDefaultWindow(const String& type, const String& name);
 
         /*!
         \brief
             Destructor
         */
-        ~FalagardMenuItem();
-
-        // overridden from MenuItem base class.
-        Size getItemPixelSize(void) const;
+        ~FalagardDefaultWindow();
 
     protected:
-        // overridden from MenuItem base class.
+        // overridden from DefaultWindow base class.
         void populateRenderCache();
+        void drawSelf(float z);
     };
 
 } // End of  CEGUI namespace section
 
 
-#endif  // end of guard _FalMenuItem_h_
+#endif  // end of guard _FalDefaultWindow_h_

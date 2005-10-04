@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIPopupMenu.h
-	created:	27/3/2005
-	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
-	purpose:	Interface to base class for PopupMenu widget
+    filename:   CEGUIPopupMenu.h
+    created:    27/3/2005
+    author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
+    
+    purpose:    Interface to base class for PopupMenu widget
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -33,8 +33,8 @@
 
 
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
+#    pragma warning(push)
+#    pragma warning(disable : 4251)
 #endif
 
 
@@ -44,184 +44,206 @@ namespace CEGUI
 
 /*!
 \brief
-	Base class for popup menus
+    Base class for popup menus
 */
 class CEGUIEXPORT PopupMenu : public MenuBase
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
-
-	/*************************************************************************
-		Accessor type functions
-	*************************************************************************/
-	/*!
-	\brief
-		Get the fade in time for this popup menu.
-
-	\return
-		The time in seconds that it takes for the popup to fade in.
-		0 if fading is disabled.
-	*/
-	float	getFadeInTime(void) const			{return d_fadeInTime;}
+    /************************************************************************
+        Constants
+    *************************************************************************/
+    static const String EventNamespace;     //!< Namespace for global events
 
 
-	/*!
-	\brief
-		Get the fade out time for this popup menu.
+    /*************************************************************************
+        Accessor type functions
+    *************************************************************************/
+    /*!
+    \brief
+        Get the fade in time for this popup menu.
 
-	\return
-		The time in seconds that it takes for the popup to fade out.
-		0 if fading is disabled.
-	*/
-	float	getFadeOutTime(void) const			{return d_fadeOutTime;}
-
-
-	/*************************************************************************
-		Manipulators
-	*************************************************************************/
-	/*!
-	\brief
-		Set the fade in time for this popup menu.
-
-	\param fadetime
-		The time in seconds that it takes for the popup to fade in.
-		If this parameter is zero, fading is disabled.
-	*/
-	void	setFadeInTime(float fadetime)		{d_fadeInTime=fadetime;}
+    \return
+        The time in seconds that it takes for the popup to fade in.
+        0 if fading is disabled.
+    */
+    float getFadeInTime(void) const      {return d_fadeInTime;}
 
 
-	/*!
-	\brief
-		Set the fade out time for this popup menu.
+    /*!
+    \brief
+        Get the fade out time for this popup menu.
 
-	\param fadetime
-		The time in seconds that it takes for the popup to fade out.
-		If this parameter is zero, fading is disabled.
-	*/
-	void	setFadeOutTime(float fadetime)		{d_fadeOutTime=fadetime;}
-
-	/*!
-	\brief
-		Tells the popup menu to open.
-	*/
-	void	openPopupMenu(void);
+    \return
+        The time in seconds that it takes for the popup to fade out.
+        0 if fading is disabled.
+    */
+    float getFadeOutTime(void) const     {return d_fadeOutTime;}
 
 
-	/*!
-	\brief
-		Tells the popup menu to close.
-	*/
-	void	closePopupMenu(void);
+    /*!
+    \brief
+        Find out if this popup menu is open or closed;
+    */
+    bool isPopupMenuOpen(void) const     {return d_isOpen;}
 
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructor for PopupMenu objects
-	*/
-	PopupMenu(const String& type, const String& name);
+    /*************************************************************************
+        Manipulators
+    *************************************************************************/
+    /*!
+    \brief
+        Set the fade in time for this popup menu.
+
+    \param fadetime
+        The time in seconds that it takes for the popup to fade in.
+        If this parameter is zero, fading is disabled.
+    */
+    void    setFadeInTime(float fadetime)         {d_fadeInTime=fadetime;}
 
 
-	/*!
-	\brief
-		Destructor for PopupMenu objects
-	*/
-	virtual ~PopupMenu(void);
+    /*!
+    \brief
+        Set the fade out time for this popup menu.
+
+    \param fadetime
+        The time in seconds that it takes for the popup to fade out.
+        If this parameter is zero, fading is disabled.
+    */
+    void    setFadeOutTime(float fadetime)        {d_fadeOutTime=fadetime;}
+
+
+    /*!
+    \brief
+        Tells the popup menu to open.
+
+    \param notify
+        true if the parent menu item (if any) is to handle the opening. false if not.
+    */
+    void    openPopupMenu(bool notify=true);
+
+
+    /*!
+    \brief
+        Tells the popup menu to close.
+
+    \param notify
+        true if the parent menu item (if any) is to handle the closing. false if not.
+    */
+    void    closePopupMenu(bool notify=true);
+
+
+    /*************************************************************************
+        Construction and Destruction
+    *************************************************************************/
+    /*!
+    \brief
+        Constructor for PopupMenu objects
+    */
+    PopupMenu(const String& type, const String& name);
+
+
+    /*!
+    \brief
+        Destructor for PopupMenu objects
+    */
+    virtual ~PopupMenu(void);
 
 
 protected:
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	/*!
-	\brief
-	Perform actual update processing for this Window.
+    /*************************************************************************
+        Implementation Functions
+    *************************************************************************/
+    /*!
+    \brief
+    Perform actual update processing for this Window.
 
-	\param elapsed
-	float value indicating the number of seconds elapsed since the last update call.
+    \param elapsed
+    float value indicating the number of seconds elapsed since the last update call.
 
-	\return
-	Nothing.
-	*/
-	virtual void	updateSelf(float elapsed);
-
-
-	/*!
-	\brief
-		Setup size and position for the item widgets attached to this Listbox
-
-	\return
-		Nothing.
-	*/
-	virtual void	layoutItemWidgets(void);
+    \return
+    Nothing.
+    */
+    virtual void    updateSelf(float elapsed);
 
 
-	/*!
-	\brief
-		Resizes the popup menu to exactly fit the content that is attached to it.
+    /*!
+    \brief
+        Setup size and position for the item widgets attached to this Listbox
 
-	\return
-		Nothing.
-	*/
-	virtual Size getContentSize(void);
-
-
-	/*!
-	\brief
-		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
-
-	\param class_name
-		The class name that is to be checked.
-
-	\return
-		true if this window was inherited from \a class_name. false if not.
-	*/
-	virtual bool	testClassName_impl(const String& class_name) const
-	{
-		if (class_name=="PopupMenu")	return true;
-		return MenuBase::testClassName_impl(class_name);
-	}
+    \return
+        Nothing.
+    */
+    virtual void    layoutItemWidgets(void);
 
 
-	/*************************************************************************
-		Overridden event handlers
-	*************************************************************************/
-	virtual void onAlphaChanged(WindowEventArgs& e);
+    /*!
+    \brief
+        Resizes the popup menu to exactly fit the content that is attached to it.
+
+    \return
+        Nothing.
+    */
+    virtual Size getContentSize(void);
 
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	float d_origAlpha;			//!< The original alpha of this window.
+    /*!
+    \brief
+        Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
 
-	float d_fadeElapsed;		//!< The time in seconds this popup menu has been fading.
-	float d_fadeOutTime;		//!< The time in seconds it takes for this popup menu to fade out.
-	float d_fadeInTime;			//!< The time in seconds it takes for this popup menu to fade in.
-	bool d_fading;				//!< true if this popup menu is fading in/out. false if not
-	bool d_fadingOut;			//!< true if this popup menu is fading out. false if fading in.
+    \param class_name
+        The class name that is to be checked.
+
+    \return
+        true if this window was inherited from \a class_name. false if not.
+    */
+    virtual bool    testClassName_impl(const String& class_name) const
+    {
+        if (class_name=="PopupMenu")    return true;
+        return MenuBase::testClassName_impl(class_name);
+    }
+
+
+    /*************************************************************************
+        Overridden event handlers
+    *************************************************************************/
+    virtual void onAlphaChanged(WindowEventArgs& e);
+	virtual void onDestructionStarted(WindowEventArgs& e);
+	virtual void onShown(WindowEventArgs& e);
+	virtual void onHidden(WindowEventArgs& e);
+
+
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    float d_origAlpha;      //!< The original alpha of this window.
+    float d_fadeElapsed;    //!< The time in seconds this popup menu has been fading.
+    float d_fadeOutTime;    //!< The time in seconds it takes for this popup menu to fade out.
+    float d_fadeInTime;     //!< The time in seconds it takes for this popup menu to fade in.
+    bool d_fading;          //!< true if this popup menu is fading in/out. false if not
+    bool d_fadingOut;       //!< true if this popup menu is fading out. false if fading in.
+    bool d_isOpen;          //!< true if this popup menu is open. false if not.
+
 
 private:
-	/*************************************************************************
-	Static Properties for this class
-	*************************************************************************/
-	static PopupMenuProperties::FadeInTime	d_fadeInTimeProperty;
-	static PopupMenuProperties::FadeOutTime	d_fadeOutTimeProperty;
+    /*************************************************************************
+    Static Properties for this class
+    *************************************************************************/
+    static PopupMenuProperties::FadeInTime  d_fadeInTimeProperty;
+    static PopupMenuProperties::FadeOutTime d_fadeOutTimeProperty;
 
 
-	/*************************************************************************
-	Private methods
-	*************************************************************************/
-	void	addPopupMenuProperties(void);
+    /*************************************************************************
+    Private methods
+    *************************************************************************/
+    void    addPopupMenuProperties(void);
 };
 
 } // End of  CEGUI namespace section
 
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
 
-#endif	// end of guard _CEGUIPopupMenu_h_
+#endif    // end of guard _CEGUIPopupMenu_h_

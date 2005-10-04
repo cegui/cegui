@@ -43,7 +43,6 @@ void FadeInTime::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-
 String FadeOutTime::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::floatToString(static_cast<const PopupMenu*>(receiver)->getFadeOutTime());

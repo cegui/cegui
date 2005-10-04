@@ -99,7 +99,6 @@ class ScrollablePane;
 class ScrolledContainer;
 class Tooltip;
 class ItemEntry;
-class TextItem;
 class MenuItem;
 class ItemListBase;
 class MenuBase;

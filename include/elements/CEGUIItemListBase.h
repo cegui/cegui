@@ -136,7 +136,7 @@ public:
 
 	/*!
 	\brief
-		Return wheter this window is automatically resized to fit its content.
+		Return whether this window is automatically resized to fit its content.
 
 	\return
 		true if automatic resizing is enabled, false if it is disabled.
@@ -149,22 +149,9 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		Initialise the Window based object ready for use.
-
-	\note
-		This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
-
-	\return
-		Nothing
-	*/
-	virtual void	initialise(void);
-
-
-	/*!
-	\brief
 		Remove all items from the list.
 
-		Note that this will cause 'AutoDelete' items to be deleted.
+		Note that this will cause items, which does not have the 'DestroyedByParent' property set to 'false', to be deleted.
 	*/
 	void	resetList(void);
 
@@ -205,7 +192,7 @@ public:
 
 	/*!
 	\brief
-		Removes the given item from the list.  If the item is has the auto delete state set, the item will be deleted.
+		Removes the given item from the list.  If the item is has the 'DestroyedByParent' property set to 'true', the item will be deleted.
 
 	\param item
 		Pointer to the ItemEntry that is to be removed.  If \a item is not attached to this list then nothing
@@ -217,14 +204,12 @@ public:
 	void	removeItem(ItemEntry* item);
 
 
-	/*!
+    /*!
 	\brief
 		Causes the list to update it's internal state after changes have been made to one or more
 		attached ItemEntry objects.
 
-		Client code must call this whenever it has made any changes to ItemEntry objects already attached to the
-		list.  If you are just adding items, or removed items to update them prior to re-adding them, there is
-		no need to call this method.
+		It should not be necessary to call this from client code, as the ItemEntries themselves call it if their parent is an ItemListBase.
 
 	\return
 		Nothing.
@@ -255,6 +240,27 @@ public:
 	Nothing
 	*/
 	virtual	void	sizeToContent(void)		{sizeToContent_impl();}
+
+
+    /*!
+    \brief
+        Triggers a ListContentsChanged event.
+        These are not fired during initialisation for optimization purposes.
+    */
+    virtual void endInitialisation(void);
+
+
+    /*!
+    \brief
+        method called to perform extended laying out of attached child windows.
+
+        The system may call this at various times (like when it is resized for
+        example), and it may be invoked directly where required.
+
+    \return
+        Nothing.
+    */
+    virtual void performChildWindowLayout(void);
 
 
 	/*************************************************************************
@@ -295,7 +301,7 @@ protected:
 		Returns the Size in unclipped pixels of the content attached to this ItemListBase that is attached to it.
 
 	\return
-		Nothing.
+		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
 	virtual Size getContentSize()		= 0;
 
@@ -322,16 +328,6 @@ protected:
 	virtual void	layoutItemWidgets()	= 0;
 
 
-	/*!
-	\brief
-		Perform the actual rendering for this Window.
-
-	\return
-		Nothing
-	*/
-	virtual	void	populateRenderCache() = 0;
-
-
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
@@ -347,7 +343,7 @@ protected:
 		Remove all items from the list.
 
 	\note
-		Note that this will cause 'AutoDelete' items to be deleted.
+		Note that this will cause items with the 'DestroyedByParent' property set to 'true', to be deleted.
 
 	\return
 		- true if the list contents were changed.
@@ -385,7 +381,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-	virtual void	onSized(WindowEventArgs& e);
+	virtual void    onChildRemoved(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -394,12 +390,12 @@ protected:
 	typedef	std::vector<ItemEntry*>	ItemEntryList;
 	ItemEntryList	d_listItems;		//!< list of items in the list.
 
-	// boolean telling if this ItemListBase widget should automatically resize to fit its content.
-	bool d_autoResize;
+	bool d_autoResize; //!< True if this ItemListBase widget should automatically resize to fit its content. False if not.
+
 
 private:
 	/*************************************************************************
-	Static Properties for this class
+        Static Properties for this class
 	*************************************************************************/
 	static ItemListBaseProperties::AutoResizeEnabled	d_autoResizeEnabledProperty;
 

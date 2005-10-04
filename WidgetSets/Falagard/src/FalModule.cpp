@@ -27,8 +27,11 @@
 #include "FalCheckbox.h"
 #include "FalComboDropList.h"
 #include "FalCombobox.h"
+#include "FalDefaultWindow.h"
+#include "FalDragContainer.h"
 #include "FalEditbox.h"
 #include "FalFrameWindow.h"
+#include "FalItemEntry.h"
 #include "FalListHeader.h"
 #include "FalListHeaderSegment.h"
 #include "FalListbox.h"
@@ -59,8 +62,11 @@ CEGUI_DEFINE_FACTORY( FalagardButton )
 CEGUI_DEFINE_FACTORY( FalagardCheckbox )
 CEGUI_DEFINE_FACTORY( FalagardComboDropList )
 CEGUI_DEFINE_FACTORY( FalagardCombobox )
+CEGUI_DEFINE_FACTORY( FalagardDefaultWindow )
+CEGUI_DEFINE_FACTORY( FalagardDragContainer )
 CEGUI_DEFINE_FACTORY( FalagardEditbox )
 CEGUI_DEFINE_FACTORY( FalagardFrameWindow )
+CEGUI_DEFINE_FACTORY( FalagardItemEntry )
 CEGUI_DEFINE_FACTORY( FalagardListHeader )
 CEGUI_DEFINE_FACTORY( FalagardListHeaderSegment )
 CEGUI_DEFINE_FACTORY( FalagardListbox )
@@ -92,8 +98,11 @@ CEGUI_START_FACTORY_MAP( Falagard )
     CEGUI_FACTORY_MAP_ENTRY( FalagardCheckbox )
     CEGUI_FACTORY_MAP_ENTRY( FalagardComboDropList )
     CEGUI_FACTORY_MAP_ENTRY( FalagardCombobox )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardDefaultWindow )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardDragContainer )
     CEGUI_FACTORY_MAP_ENTRY( FalagardEditbox )
     CEGUI_FACTORY_MAP_ENTRY( FalagardFrameWindow )
+    CEGUI_FACTORY_MAP_ENTRY( FalagardItemEntry )
     CEGUI_FACTORY_MAP_ENTRY( FalagardListHeader )
     CEGUI_FACTORY_MAP_ENTRY( FalagardListHeaderSegment )
     CEGUI_FACTORY_MAP_ENTRY( FalagardListbox )

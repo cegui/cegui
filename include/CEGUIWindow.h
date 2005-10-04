@@ -2215,6 +2215,25 @@ public:
     */
     virtual void writeXMLToStream(OutStream& out_stream) const;
 
+    /*!
+    \brief
+        Sets the internal 'initialising' flag to true.
+        This can be use to optimize initialisation of some widgets, and is called
+        automatically by the layout XML handler when it has created a window.
+        That is just after the window has been created, but before any children or
+        properties are read.
+    */
+    virtual void beginInitialisation(void)     {d_initialising=true;}
+
+    /*!
+    \brief
+        Sets the internal 'initialising' flag to false.
+        This is called automatically by the layout XML handler when it is done
+        creating a window. That is after all properties and children have been
+        loaded and just before the next sibling gets created.
+    */
+    virtual void endInitialisation(void)       {d_initialising=false;}
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -2932,6 +2951,9 @@ protected:
     // Look'N'Feel stuff
     //! Name of the Look assigned to this window (if any).
     String d_lookName;
+
+    //! true when this window is currently being initialised (creating children etc)
+    bool d_initialising;
 
 protected:
     /*************************************************************************

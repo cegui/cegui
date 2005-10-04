@@ -29,13 +29,6 @@
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
 
-
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
-#endif
-
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -58,7 +51,8 @@ public:
 		Size describing the size in pixel that this ItemEntry's content requires
 		for non-clipped rendering
 	*/
-	virtual Size getItemPixelSize(void) = 0;
+	virtual Size getItemPixelSize(void) const = 0;
+
 
 	/*************************************************************************
 		Construction and Destruction
@@ -83,23 +77,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add itementry specific events
-	*/
-	void	addItemEntryEvents(void);
-
-
-	/*!
-    \brief
-        Perform the actual rendering for this Window.
-
-    \return
-        Nothing
-    */
-    virtual void    populateRenderCahce() {};
-
-
-	/*!
-	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
 
 	\param class_name
@@ -117,11 +94,5 @@ protected:
 };
 
 } // End of  CEGUI namespace section
-
-
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
 
 #endif	// end of guard _CEGUIItemEntry_h_
