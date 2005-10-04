@@ -3228,6 +3228,76 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/MenuItem">
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <Property name="WantsMultiClickEvents" value="False" />
+        <NamedArea name="ContentSize">
+            <Area>
+                <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width">
+                    <FontDim type="HorzExtent">
+                        <DimOperator op="Add">
+                            <ImageDim imageset="TaharezLook" image="MenuLeft" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim imageset="TaharezLook" image="MenuRight" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </FontDim>
+                </Dim>
+                <Dim type="Height">
+                    <FontDim type="LineSpacing">
+                        <DimOperator op="Add">
+                            <ImageDim imageset="TaharezLook" image="MenuTop" dimension="Height">
+                                <DimOperator op="Add">
+                                    <ImageDim imageset="TaharezLook" image="MenuBottom" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </FontDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="HasPopupContentSize">
+            <Area>
+                <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width">
+                    <FontDim type="HorzExtent">
+                        <DimOperator op="Add">
+                            <ImageDim imageset="TaharezLook" image="MenuLeft" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim imageset="TaharezLook" image="MenuRight" dimension="Width">
+                                        <DimOperator op="Add">
+                                            <ImageDim imageset="TaharezLook" image="PopupMenuArrowLeft" dimension="Width">
+                                                <DimOperator op="Multiply">
+                                                    <AbsoluteDim value="3" />
+                                                </DimOperator>
+                                            </ImageDim>
+                                        </DimOperator>
+                                    </ImageDim>
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </FontDim>
+                </Dim>
+                <Dim type="Height">
+                    <FontDim type="LineSpacing">
+                        <DimOperator op="Add">
+                            <ImageDim imageset="TaharezLook" image="MenuTop" dimension="Height">
+                                <DimOperator op="Add">
+                                    <ImageDim imageset="TaharezLook" image="MenuBottom" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </FontDim>
+                </Dim>
+            </Area>
+        </NamedArea>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -3276,7 +3346,13 @@
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Width" >
+                        <UnifiedDim scale="1" type="Width">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="TaharezLook" image="PopupMenuArrowRight" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="PopupMenuArrowRight" />
@@ -3289,7 +3365,13 @@
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Width" >
+                        <UnifiedDim scale="1" type="Width">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="TaharezLook" image="PopupMenuArrowLeft" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <Image imageset="TaharezLook" image="PopupMenuArrowLeft" />
@@ -3299,31 +3381,45 @@
         </ImagerySection>
         <StateImagery name="EnabledNormal">
             <Layer>
-                <Section section="label" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="EnabledHover">
             <Layer>
-                <Section section="frame" />
-                <Section section="label" />
+                <Section section="frame">
+                    <ColourProperty name="HoverColour" />
+                </Section>
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="EnabledPushed">
             <Layer>
-                <Section section="frame" />
-                <Section section="label" />
+                <Section section="frame">
+                    <ColourProperty name="PushedColour" />
+                </Section>
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="EnabledPopupOpen">
             <Layer>
-                <Section section="frame" />
-                <Section section="label" />
+                <Section section="frame">
+                    <ColourProperty name="OpenedColour" />
+                </Section>
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="DisabledNormal">
             <Layer>
                 <Section section="label">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                    <ColourProperty name="DisabledTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -3333,7 +3429,7 @@
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
                 <Section section="label">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                    <ColourProperty name="DisabledTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -3343,7 +3439,7 @@
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
                 <Section section="label">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                    <ColourProperty name="DisabledTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -3353,7 +3449,7 @@
                     <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
                 </Section>
                 <Section section="label">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                    <ColourProperty name="DisabledTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -3374,22 +3470,44 @@
         TaharezLook/PopupMenu
     ***************************************************
     -->
-    <WidgetLook name="TaharezLook/PopupMenu">
+    <WidgetLook name="TaharezLook/Menubar">
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" />
         <NamedArea name="ItemRenderArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="PopupMenuFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="TaharezLook" image="PopupMenuFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" >
+                    <ImageDim imageset="TaharezLook" image="PopupMenuFrameLeft" dimension="Width">
+                        <DimOperator op="Add">
+                            <PropertyDim name="BorderWidth" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim imageset="TaharezLook" image="PopupMenuFrameTop" dimension="Height">
+                        <DimOperator op="Add">
+                            <PropertyDim name="BorderWidth" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameRight" dimension="Width" />
+                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameRight" dimension="Width">
+                                <DimOperator op="Add">
+                                    <PropertyDim name="BorderWidth" />
+                                </DimOperator>
+                            </ImageDim>
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameBottom" dimension="Height" />
+                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameBottom" dimension="Height">
+                                <DimOperator op="Add">
+                                    <PropertyDim name="BorderWidth" />
+                                </DimOperator>
+                            </ImageDim>
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -3416,7 +3534,9 @@
         </ImagerySection>
         <StateImagery name="Enabled">
             <Layer>
-                <Section section="frame" />
+                <Section section="frame">
+                    <ColourRectProperty name="BackgroundColours" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Disabled">
@@ -3435,21 +3555,43 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Menubar">
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" />
         <NamedArea name="ItemRenderArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="PopupMenuFrameLeft" dimension="Width" /></Dim>
-                <Dim type="TopEdge" ><ImageDim imageset="TaharezLook" image="PopupMenuFrameTop" dimension="Height" /></Dim>
+                <Dim type="LeftEdge" >
+                    <ImageDim imageset="TaharezLook" image="PopupMenuFrameLeft" dimension="Width">
+                        <DimOperator op="Add">
+                            <PropertyDim name="BorderWidth" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim imageset="TaharezLook" image="PopupMenuFrameTop" dimension="Height">
+                        <DimOperator op="Add">
+                            <PropertyDim name="BorderWidth" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameRight" dimension="Width" />
+                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameRight" dimension="Width">
+                                <DimOperator op="Add">
+                                    <PropertyDim name="BorderWidth" />
+                                </DimOperator>
+                            </ImageDim>
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" type="BottomEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameBottom" dimension="Height" />
+                            <ImageDim imageset="TaharezLook" image="PopupMenuFrameBottom" dimension="Height">
+                                <DimOperator op="Add">
+                                    <PropertyDim name="BorderWidth" />
+                                </DimOperator>
+                            </ImageDim>
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -3476,7 +3618,9 @@
         </ImagerySection>
         <StateImagery name="Enabled">
             <Layer>
-                <Section section="frame" />
+                <Section section="frame">
+                    <ColourRectProperty name="BackgroundColours" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Disabled">
