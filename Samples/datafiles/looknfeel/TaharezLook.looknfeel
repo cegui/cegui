@@ -3470,7 +3470,7 @@
         TaharezLook/PopupMenu
     ***************************************************
     -->
-    <WidgetLook name="TaharezLook/Menubar">
+    <WidgetLook name="TaharezLook/PopupMenu">
         <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" />
         <NamedArea name="ItemRenderArea">
