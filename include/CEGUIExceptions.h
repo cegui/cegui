@@ -164,7 +164,7 @@ public:
 	NullObjectException(const String& message) : Exception(message) {}
 };
 
-/*Q
+/*!
 \brief
 	Exception class used when some attempt to delete, remove, or otherwise invalidate some object that is still in use occurs.
 */

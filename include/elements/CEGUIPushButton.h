@@ -39,7 +39,7 @@ namespace CEGUI
 {
 /*!
 \brief
-
+    Base class to provide logic for push button type widgets.
 */
 class CEGUIEXPORT PushButton : public ButtonBase
 {

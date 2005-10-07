@@ -35,6 +35,11 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    /*!
+    \brief
+        Class representing a unified dimension; that is a dimension that has both
+        a relative 'scale' portion and and absolute 'offset' portion.
+    */
     class CEGUIEXPORT UDim
     {
     public:
@@ -61,7 +66,11 @@ namespace CEGUI
         float d_scale, d_offset;
     };
 
-
+    /*!
+    \brief
+        Two dimensional vector class built using unified dimensions (UDims).
+        The UVector2 class is used for representing both positions and sizes.
+    */
     class CEGUIEXPORT UVector2
     {
     public:
@@ -88,7 +97,10 @@ namespace CEGUI
         UDim d_x, d_y;
     };
 
-
+    /*!
+    \brief
+        Area rectangle class built using unified dimensions (UDims).
+    */
     class CEGUIEXPORT URect
     {
     public:

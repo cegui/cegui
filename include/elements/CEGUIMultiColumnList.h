@@ -1499,10 +1499,11 @@ protected:
 	bool	handleSortDirectionChange(const EventArgs& e);
 	bool	handleHeaderSegDblClick(const EventArgs& e);
 
-
-	/*************************************************************************
-		Struct used to wrap a 'row' and ease sorting
-	*************************************************************************/
+    /*!
+    \brief
+        Struct used internally to represent a row in the list and also to ease
+        sorting of the rows.
+    */
 	struct ListRow
 	{
 		typedef	std::vector<ListboxItem*>	RowItems;

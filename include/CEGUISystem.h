@@ -45,7 +45,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-// forward reference of impl struct
+//! Implementation struct that tracks and controls multiclick for mouse buttons.
 struct MouseClickTrackerImpl;
 
 
