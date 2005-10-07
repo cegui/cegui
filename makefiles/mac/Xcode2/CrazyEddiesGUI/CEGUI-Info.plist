@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>CEGUI-xerces</string>
+	<string>CEGUI</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.crayzedsgui.CEGUI</string>
+	<string>net.sourceforge.crayzedsgui.CEGUIBase</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -15,6 +15,6 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.4.0</string>
+	<string>0.5.0</string>
 </dict>
 </plist>
