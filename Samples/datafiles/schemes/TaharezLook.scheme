@@ -41,4 +41,4 @@
     <FalagardMapping WindowType="TaharezLook/VerticalScrollbar" TargetType="Falagard/Scrollbar" LookNFeel="TaharezLook/VerticalScrollbar" />
     <FalagardMapping WindowType="TaharezLook/VerticalScrollbarThumb" TargetType="Falagard/Thumb" LookNFeel="TaharezLook/VerticalScrollbarThumb" />
     <FalagardMapping WindowType="TaharezLook/VUMeter" TargetType="Falagard/ProgressBar" LookNFeel="TaharezLook/VUMeter" />
- /> /></GUIScheme>
+</GUIScheme>
