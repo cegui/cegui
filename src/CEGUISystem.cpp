@@ -93,6 +93,7 @@ struct MouseClickTracker
 	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
 	int				d_click_count;		//!< count of clicks made so far.
 	Rect			d_click_area;		//!< area used to detect multi-clicks
+    Window*         d_target_window;    //!< target window for any events generated.
 };
 
 
@@ -718,31 +719,36 @@ bool System::injectMouseButtonDown(MouseButton button)
 	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = 0;
 
-	//
+    // find the likely destination for generated events.
+    Window* dest_window = getTargetWindow(ma.position);
+	
+    //
 	// Handling for multi-click generation
 	//
 	MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
 
 	tkr.d_click_count++;
 
-	// see if we meet multi-click timing
-	if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
-		(!tkr.d_click_area.isPointInRect(ma.position)) ||
-		(tkr.d_click_count > 3))
-	{
-		// single down event.
-		tkr.d_click_count = 1;
+    // if multi-click requirements are not met
+    if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
+        (!tkr.d_click_area.isPointInRect(ma.position)) ||
+        (tkr.d_target_window != dest_window) ||
+        (tkr.d_click_count > 3))
+    {
+        // reset to single down event.
+        tkr.d_click_count = 1;
 
-		// build allowable area for multi-clicks
-		tkr.d_click_area.setPosition(ma.position);
-		tkr.d_click_area.setSize(d_dblclick_size);
-		tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
-	}
+        // build new allowable area for multi-clicks
+        tkr.d_click_area.setPosition(ma.position);
+        tkr.d_click_area.setSize(d_dblclick_size);
+        tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+
+        // set target window for click events on this tracker
+        tkr.d_target_window = dest_window;
+    }
 
 	// set click count in the event args
 	ma.clickCount = tkr.d_click_count;
-
-	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
 	while ((!ma.handled) && (dest_window != 0))
@@ -803,7 +809,8 @@ bool System::injectMouseButtonUp(MouseButton button)
     // set click count in the event args
     ma.clickCount = tkr.d_click_count;
 
-	Window* dest_window = getTargetWindow(ma.position);
+    Window* const initial_dest_window = getTargetWindow(ma.position);
+	Window* dest_window = initial_dest_window;
 
 	// loop backwards until event is handled or we run out of windows.
 	while ((!ma.handled) && (dest_window != 0))
@@ -815,11 +822,13 @@ bool System::injectMouseButtonUp(MouseButton button)
 
 	bool wasUpHandled = ma.handled;
 
-	// check timer for 'button' to see if this up event also constitutes a single 'click'
-	if (tkr.d_timer.elapsed() <= d_click_timeout)
-	{
+    // if requirements for click events are met
+    if ((tkr.d_timer.elapsed() <= d_click_timeout) &&
+        (tkr.d_click_area.isPointInRect(ma.position)) &&
+        (tkr.d_target_window == initial_dest_window))
+    {
 		ma.handled = false;
-		dest_window = getTargetWindow(ma.position);
+        dest_window = initial_dest_window;
 
 		// loop backwards until event is handled or we run out of windows.
 		while ((!ma.handled) && (dest_window != 0))

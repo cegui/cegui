@@ -601,7 +601,12 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name=="MultiLineEditBox")	return true;
+		if ((class_name=="MultiLineEditBox") ||
+			(class_name=="MultiLineEditbox"))
+		{
+			return true;
+		}
+
 		return Window::testClassName_impl(class_name);
 	}
 
