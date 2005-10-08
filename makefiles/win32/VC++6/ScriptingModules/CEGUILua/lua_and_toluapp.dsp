@@ -2,7 +2,7 @@
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
-# TARGTYPE "Win32 (x86) Static Library" 0x0104
+# TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
 CFG=lua_and_toluapp - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
@@ -17,8 +17,8 @@ CFG=lua_and_toluapp - Win32 Debug
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "lua_and_toluapp - Win32 Release" (based on "Win32 (x86) Static Library")
-!MESSAGE "lua_and_toluapp - Win32 Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE "lua_and_toluapp - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "lua_and_toluapp - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -26,6 +26,7 @@ CFG=lua_and_toluapp - Win32 Debug
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
 CPP=cl.exe
+MTL=midl.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "lua_and_toluapp - Win32 Release"
@@ -39,17 +40,25 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "../../../../../bin"
 # PROP Intermediate_Dir "Output\release"
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include" /D "WIN32" /D "NDEBUG" /D "_LIB" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LUA_AND_TOLUA_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_USRDLL" /D "LUA_AND_TOLUA_EXPORTS" /YX /FD /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
 # ADD RSC /l 0x809 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo /out:"..\..\..\..\..\lib\lua_and_tolua++.lib"
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /implib:"../../../../../lib/lua_and_tolua++.lib" /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy "..\..\..\..\..\bin\lua_and_tolua++.dll" "..\..\..\..\..\Samples\bin"
+# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "lua_and_toluapp - Win32 Debug"
 
@@ -62,17 +71,24 @@ LIB32=link.exe -lib
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "../../../../../bin"
 # PROP Intermediate_Dir "Output\Debug"
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "_STLP_DEBUG" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LUA_AND_TOLUA_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "LUA_AND_TOLUA_EXPORTS" /D "_STLP_DEBUG" /YX /FD /GZ /c
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-LIB32=link.exe -lib
-# ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo /out:"..\..\..\..\..\lib\lua_and_tolua++_d.lib"
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"../../../../../bin/lua_and_tolua++_d.dll" /implib:"../../../../../lib/lua_and_tolua++_d.lib" /pdbtype:sept /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy "..\..\..\..\..\bin\lua_and_tolua++_d.dll" "..\..\..\..\..\Samples\bin"
+# End Special Build Tool
 
 !ENDIF 
 

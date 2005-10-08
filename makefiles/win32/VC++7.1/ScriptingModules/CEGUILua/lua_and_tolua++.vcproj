@@ -12,15 +12,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
-			ConfigurationType="4"
+			OutputDirectory="..\..\..\..\..\bin"
+			IntermediateDirectory="Output\$(ConfigurationName)"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;LUA_AND_TOLUA_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -30,14 +30,40 @@
 				DebugInformationFormat="4"
 				CompileAs="0"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\..\..\lib\$(ProjectName)_d.lib"/>
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
+				ImportLibrary="..\..\..\..\..\lib\$(TargetName).lib"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
-			ConfigurationType="4"
+			OutputDirectory="..\..\..\..\..\bin"
+			IntermediateDirectory="Output\$(ConfigurationName)"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -45,7 +71,7 @@
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="..\..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;LUA_AND_TOLUA_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
@@ -56,8 +82,32 @@
 				DebugInformationFormat="0"
 				CompileAs="0"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\..\..\lib\$(ProjectName).lib"/>
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
+				ImportLibrary="..\..\..\..\..\lib\$(TargetName).lib"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\..\..\..\Samples\bin&quot;"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<References>
