@@ -11,7 +11,7 @@
 #include "tolua++.h"
 
 /* Exported function */
-TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S);
+int tolua_CEGUI_open (lua_State* tolua_S);
 
 #include "required.h"
 #include "CEGUIPropertyHelper.h"
@@ -37025,7 +37025,7 @@ static int tolua_CEGUI_CEGUI_createListboxTextItem00(lua_State* tolua_S)
 }
 
 /* Open function */
-TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
+int tolua_CEGUI_open (lua_State* tolua_S)
 {
  tolua_open(tolua_S);
  tolua_reg_types(tolua_S);
