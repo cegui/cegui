@@ -297,6 +297,21 @@ namespace CEGUI
         */
         void writeXMLToStream(OutStream& out_stream) const;
 
+        /*!
+        \brief
+            Uses the WindowManager to rename the child windows that are
+            created for this WidgetLookFeel.
+
+        \param widget
+            The target Window containing the child windows that are to be
+            renamed.
+
+        \param newBaseName
+            String object holding the new base name that will be used when
+            constructing new names for the child windows.
+        */
+        void renameChildren(const Window& widget, const String& newBaseName) const;
+
     private:
         typedef std::map<String, StateImagery>    StateList;
         typedef std::map<String, ImagerySection>  ImageryList;

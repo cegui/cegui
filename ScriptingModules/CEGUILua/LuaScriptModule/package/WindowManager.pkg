@@ -21,5 +21,8 @@ class WindowManager
 	bool isDeadPoolEmpty() const;
 	void cleanDeadPool();
 
+    void renameWindow(Window* window, string  new_name);
+    void renameWindow(string window, string new_name);
+
     WindowIterator getIterator() const;
 };

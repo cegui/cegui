@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6 on 10/01/05 21:51:19.
+** Generated automatically by tolua++-1.0.6 on Sat Oct  8 20:09:21 2005.
 */
 
 #ifndef __cplusplus
@@ -11,7 +11,7 @@
 #include "tolua++.h"
 
 /* Exported function */
-int tolua_CEGUI_open (lua_State* tolua_S);
+TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S);
 
 #include "required.h"
 #include "CEGUIPropertyHelper.h"
@@ -20586,6 +20586,67 @@ static int tolua_CEGUI_CEGUI_WindowManager_cleanDeadPool00(lua_State* tolua_S)
 #endif
 }
 
+/* method: renameWindow of class  CEGUI::WindowManager */
+static int tolua_CEGUI_CEGUI_WindowManager_renameWindow00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowManager* self = (CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Window* window = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+  string new_name = ((string)  tolua_tocppstring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'renameWindow'",NULL);
+#endif
+ {
+  self->renameWindow(window,new_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'renameWindow'.",&tolua_err);
+ return 0;
+#endif
+}
+
+/* method: renameWindow of class  CEGUI::WindowManager */
+static int tolua_CEGUI_CEGUI_WindowManager_renameWindow01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::WindowManager* self = (CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
+  string window = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string new_name = ((string)  tolua_tocppstring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'renameWindow'",NULL);
+#endif
+ {
+  self->renameWindow(window,new_name);
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_WindowManager_renameWindow00(tolua_S);
+}
+
 /* method: getIterator of class  CEGUI::WindowManager */
 static int tolua_CEGUI_CEGUI_WindowManager_getIterator00(lua_State* tolua_S)
 {
@@ -36964,7 +37025,7 @@ static int tolua_CEGUI_CEGUI_createListboxTextItem00(lua_State* tolua_S)
 }
 
 /* Open function */
-int tolua_CEGUI_open (lua_State* tolua_S)
+TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
 {
  tolua_open(tolua_S);
  tolua_reg_types(tolua_S);
@@ -38262,6 +38323,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,"isWindowPresent",tolua_CEGUI_CEGUI_WindowManager_isWindowPresent00);
  tolua_function(tolua_S,"isDeadPoolEmpty",tolua_CEGUI_CEGUI_WindowManager_isDeadPoolEmpty00);
  tolua_function(tolua_S,"cleanDeadPool",tolua_CEGUI_CEGUI_WindowManager_cleanDeadPool00);
+ tolua_function(tolua_S,"renameWindow",tolua_CEGUI_CEGUI_WindowManager_renameWindow00);
+ tolua_function(tolua_S,"renameWindow",tolua_CEGUI_CEGUI_WindowManager_renameWindow01);
  tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_WindowManager_getIterator00);
  tolua_endmodule(tolua_S);
 #ifdef __cplusplus

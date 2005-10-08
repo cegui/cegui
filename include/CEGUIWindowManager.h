@@ -315,6 +315,39 @@ public:
     */
     void writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent = false) const;
 
+    /*!
+    \brief
+        Rename a window.
+
+    \param window
+        String holding the current name of the window to be renamed.
+
+    \param new_name
+        String holding the new name for the window
+
+    \exception UnknownObjectException
+        thrown if \a window is not known in the system.
+
+    \exception AlreadyExistsException
+        thrown if a Window named \a new_name already exists.
+    */
+    void renameWindow(const String& window, const String& new_name);
+
+    /*!
+    \brief
+        Rename a window.
+
+    \param window
+        Pointer to the window to be renamed.
+
+    \param new_name
+        String holding the new name for the window
+
+    \exception AlreadyExistsException
+        thrown if a Window named \a new_name already exists.
+    */
+    void renameWindow(Window* window, const String& new_name);
+
 private:
     /*************************************************************************
         Implementation Methods

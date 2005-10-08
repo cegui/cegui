@@ -2190,6 +2190,62 @@ Window* Window::getActiveSibling()
     return activeWnd;
 }
 
+void Window::rename(const String& new_name)
+{
+    WindowManager& winMgr = WindowManager::getSingleton();
+    /*
+     * Client code should never call this, but again, since we know people do
+     * not read and stick to the API reference, here is some built-in protection
+     * which ensures that things are handled via the WindowManager anyway.
+     */
+    if (winMgr.isWindowPresent(d_name))
+    {
+        winMgr.renameWindow(this, new_name);
+        // now we return, since the work was already done when WindowManager
+        // re-called this function in the proper manner.
+        return;
+    }
+
+    if (winMgr.isWindowPresent(new_name))
+        throw AlreadyExistsException("Window::rename - a Window named '" +
+                new_name + "' already exists within the system.");
+
+    // rename Falagard created child windows
+    if (!d_lookName.empty())
+    {
+        const WidgetLookFeel& wlf =
+                WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+
+        // get WidgetLookFeel to rename the children it created
+        wlf.renameChildren(*this, new_name);
+    }
+
+    // how to detect other auto created windows.
+    const String autoPrefix(d_name + AutoWidgetNameSuffix);
+    // length of current name
+    const size_t oldNameLength = d_name.length();
+
+    // now rename all remaining auto-created windows attached
+    for (size_t i = 0; i < getChildCount(); ++i)
+    {
+        // is this an auto created window that we created?
+        if (!d_children[i]->d_name.compare(0, autoPrefix.length(), autoPrefix))
+        {
+            winMgr.renameWindow(d_children[i],
+                                new_name +
+                                d_children[i]->d_name.substr(oldNameLength));
+        }
+    }
+
+    // log this under insane level
+    Logger::getSingleton().logEvent("Renamed window: " + d_name +
+                                    " as: " + new_name,
+                                    Informative);
+
+    // finally, set our new name
+    d_name = new_name;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
