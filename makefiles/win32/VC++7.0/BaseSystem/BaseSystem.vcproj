@@ -288,6 +288,12 @@
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalPropertyDefinition.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalPropertyDefinitionBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalPropertyLinkDefinition.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalPropertyInitialiser.cpp">
 				</File>
 				<File
@@ -828,6 +834,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalPropertyDefinition.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalPropertyDefinitionBase.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalPropertyLinkDefinition.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalPropertyInitialiser.h">

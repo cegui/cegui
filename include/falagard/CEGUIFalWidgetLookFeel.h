@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalImagerySection.h"
 #include "falagard/CEGUIFalPropertyInitialiser.h"
 #include "falagard/CEGUIFalPropertyDefinition.h"
+#include "falagard/CEGUIFalPropertyLinkDefinition.h"
 #include "falagard/CEGUIFalNamedArea.h"
 #include <map>
 
@@ -247,12 +248,24 @@ namespace CEGUI
             Adds a property definition to the WidgetLookFeel.
 
         \param propdef
-            PropertyDefinition to be added.
+            PropertyDefinition object to be added.
 
         \return
             Nothing.
         */
         void addPropertyDefinition(const PropertyDefinition& propdef);
+
+        /*!
+        \brief
+            Adds a property link definition to the WidgetLookFeel.
+
+        \param propdef
+            PropertyLinkDefinition object to be added.
+
+        \return
+            Nothing.
+        */
+        void addPropertyLinkDefinition(const PropertyLinkDefinition& propdef);
 
         /*!
         \brief
@@ -262,6 +275,15 @@ namespace CEGUI
             Nothing.
         */
         void clearPropertyDefinitions();
+
+        /*!
+        \brief
+            Clear all defined property link definitions from the WidgetLookFeel
+
+        \return
+            Nothing.
+        */
+        void clearPropertyLinkDefinitions();
 
         /*!
         \brief
@@ -282,6 +304,7 @@ namespace CEGUI
         typedef std::vector<WidgetComponent>      WidgetList;
         typedef std::vector<PropertyInitialiser>  PropertyList;
         typedef std::vector<PropertyDefinition>   PropertyDefinitionList;
+        typedef std::vector<PropertyLinkDefinition> PropertyLinkDefinitionList;
 
         CEGUI::String   d_lookName;         //!< Name of this WidgetLookFeel.
         ImageryList     d_imagerySections;  //!< Collection of ImagerySection objects.
@@ -290,6 +313,7 @@ namespace CEGUI
         PropertyList    d_properties;       //!< Collection of PropertyInitialser objects.
         NamedAreaList   d_namedAreas;       //!< Collection of NamedArea objects.
         mutable PropertyDefinitionList  d_propertyDefinitions;  //!< Collection of PropertyDefinition objects.
+        mutable PropertyLinkDefinitionList d_propertyLinkDefinitions;  //!< Collection of PropertyLinkDefinition objects.
     };
 
 

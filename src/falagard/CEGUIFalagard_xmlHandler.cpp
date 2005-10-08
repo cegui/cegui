@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalFrameComponent.h"
 #include "falagard/CEGUIFalNamedArea.h"
 #include "falagard/CEGUIFalPropertyDefinition.h"
+#include "falagard/CEGUIFalPropertyLinkDefinition.h"
 #include "falagard/CEGUIFalXMLEnumHelper.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
@@ -69,6 +70,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ColourRectPropertyElement("ColourRectProperty");
     const String Falagard_xmlHandler::NamedAreaElement("NamedArea");
     const String Falagard_xmlHandler::PropertyDefinitionElement("PropertyDefinition");
+    const String Falagard_xmlHandler::PropertyLinkDefinitionElement("PropertyLinkDefinition");
     const String Falagard_xmlHandler::DimOperatorElement("DimOperator");
     const String Falagard_xmlHandler::VertFormatPropertyElement("VertFormatProperty");
     const String Falagard_xmlHandler::HorzFormatPropertyElement("HorzFormatProperty");
@@ -100,6 +102,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::PaddingAttribute("padding");
     const String Falagard_xmlHandler::LayoutOnWriteAttribute("layoutOnWrite");
     const String Falagard_xmlHandler::RedrawOnWriteAttribute("redrawOnWrite");
+    const String Falagard_xmlHandler::TargetPropertyAttribute("targetProperty");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -149,6 +152,7 @@ namespace CEGUI
         registerElementStartHandler(ColourRectPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
         registerElementStartHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaStart);
         registerElementStartHandler(PropertyDefinitionElement, &Falagard_xmlHandler::elementPropertyDefinitionStart);
+        registerElementStartHandler(PropertyLinkDefinitionElement, &Falagard_xmlHandler::elementPropertyLinkDefinitionStart);
         registerElementStartHandler(DimOperatorElement, &Falagard_xmlHandler::elementDimOperatorStart);
         registerElementStartHandler(VertFormatPropertyElement, &Falagard_xmlHandler::elementVertFormatPropertyStart);
         registerElementStartHandler(HorzFormatPropertyElement, &Falagard_xmlHandler::elementHorzFormatPropertyStart);
@@ -706,6 +710,30 @@ namespace CEGUI
         CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
 
         d_widgetlook->addPropertyDefinition(prop);
+    }
+
+    /*************************************************************************
+        Method that handles the opening PropertyLinkDefinition XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementPropertyLinkDefinitionStart(const XMLAttributes& attributes)
+    {
+        assert(d_widgetlook);
+
+        PropertyLinkDefinition prop(
+            attributes.getValueAsString(NameAttribute),
+            attributes.getValueAsString(WidgetAttribute),
+            attributes.getValueAsString(TargetPropertyAttribute),
+            attributes.getValueAsString(InitialValueAttribute),
+            attributes.getValueAsBool(RedrawOnWriteAttribute, false),
+            attributes.getValueAsBool(LayoutOnWriteAttribute, false)
+        );
+
+        CEGUI_LOGINSANE("-----> Adding PropertyLinkDefiniton. Name: " + prop.getName() +
+                        " Target widget: " + attributes.getValueAsString(WidgetAttribute) +
+                        " Target property: " + attributes.getValueAsString(TargetPropertyAttribute) +
+                        " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
+
+        d_widgetlook->addPropertyLinkDefinition(prop);
     }
 
     /*************************************************************************

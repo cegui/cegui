@@ -120,6 +120,7 @@ namespace CEGUI
         static const String ColourRectPropertyElement;  //!< Tag name for property colour elements (fetches cols from a ColourRect property)
         static const String NamedAreaElement;           //!< Tag name for named area elements.
         static const String PropertyDefinitionElement;  //!< Tag name for property definition elements.
+        static const String PropertyLinkDefinitionElement;  //!< Tag name for property link elements.
         static const String DimOperatorElement;         //!< Tag name for dimension operator elements.
         static const String VertFormatPropertyElement;  //!< Tag name for element that specifies a vertical formatting property.
         static const String HorzFormatPropertyElement;  //!< Tag name for element that specifies a horizontal formatting property..
@@ -151,6 +152,7 @@ namespace CEGUI
         static const String PaddingAttribute;           //!< Attribute name that stores some padding value..
         static const String LayoutOnWriteAttribute;     //!< Attribute name that stores whether to layout on write of a property.
         static const String RedrawOnWriteAttribute;     //!< Attribute name that stores whether to redraw on write of a property.
+        static const String TargetPropertyAttribute;    //!< Attribute name that stores a name of a target property.
 
         /*************************************************************************
             helper methods
@@ -347,6 +349,12 @@ namespace CEGUI
             Method that handles the opening PropertyDefinition XML element.
         */
         void elementPropertyDefinitionStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening PropertyLinkDefinition XML element.
+        */
+        void elementPropertyLinkDefinitionStart(const XMLAttributes& attributes);
 
         /*!
         \brief

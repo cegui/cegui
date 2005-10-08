@@ -9,6 +9,7 @@
 	<xsd:complexType name="widgetLookType">
 		<xsd:sequence>
             <xsd:element name="PropertyDefinition" type="propertyDefinitionType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="PropertyLinkDefinition" type="propertyLinkDefinitionType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="Property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="NamedArea" type="namedAreaType" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Child" type="widgetComponentType" minOccurs="0" maxOccurs="unbounded" />
@@ -20,6 +21,15 @@
     <xsd:complexType name="propertyDefinitionType">
         <xsd:attribute name="type" type="propertyTypeEnum" use="optional" default="Generic" />
         <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="initialValue" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="layoutOnWrite" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="redrawOnWrite" type="xsd:boolean" use="optional" default="false" />
+    </xsd:complexType>
+    <xsd:complexType name="propertyLinkDefinitionType">
+        <xsd:attribute name="type" type="propertyTypeEnum" use="optional" default="Generic" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="widget" type="xsd:string" use="required" />
+        <xsd:attribute name="targetProperty" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="initialValue" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="layoutOnWrite" type="xsd:boolean" use="optional" default="false" />
         <xsd:attribute name="redrawOnWrite" type="xsd:boolean" use="optional" default="false" />

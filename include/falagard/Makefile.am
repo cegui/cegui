@@ -6,6 +6,8 @@ pkginclude_HEADERS = CEGUIFalEnums.h \
                      CEGUIFalImageryComponent.h \
                      CEGUIFalNamedArea.h \
                      CEGUIFalPropertyDefinition.h \
+                     CEGUIFalPropertyDefinitionBase.h \
+                     CEGUIFalPropertyLinkDefinition.h \
                      CEGUIFalPropertyInitialiser.h \
                      CEGUIFalWidgetComponent.h \
                      CEGUIFalImagerySection.h \

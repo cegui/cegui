@@ -199,6 +199,14 @@ SOURCE=..\..\..\..\src\falagard\CEGUIFalPropertyDefinition.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\falagard\CEGUIFalPropertyDefinitionBase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\src\falagard\CEGUIFalPropertyLinkDefinition.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\falagard\CEGUIFalPropertyInitialiser.cpp
 # End Source File
 # Begin Source File
@@ -736,6 +744,14 @@ SOURCE=..\..\..\..\include\falagard\CEGUIFalNamedArea.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\falagard\CEGUIFalPropertyDefinition.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalPropertyDefinitionBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\falagard\CEGUIFalPropertyLinkDefinition.h
 # End Source File
 # Begin Source File
 

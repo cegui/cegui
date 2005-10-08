@@ -118,7 +118,13 @@ namespace CEGUI
 
     void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
-        // add new property definitions first
+        // add required child widgets
+        for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
+        {
+            (*curr).create(widget);
+        }
+
+        // add new property definitions
         for(PropertyDefinitionList::iterator propdef = d_propertyDefinitions.begin(); propdef != d_propertyDefinitions.end(); ++propdef)
         {
             // add the property to the window
@@ -127,17 +133,21 @@ namespace CEGUI
             widget.setProperty((*propdef).getName(), (*propdef).getDefault(&widget));
         }
 
+        // add new property link definitions
+        for(PropertyLinkDefinitionList::iterator linkdef = d_propertyLinkDefinitions.begin(); linkdef != d_propertyLinkDefinitions.end(); ++linkdef)
+        {
+            // add the property to the window
+            widget.addProperty(&(*linkdef));
+            // write default value to get things set up properly
+            widget.setProperty((*linkdef).getName(), (*linkdef).getDefault(&widget));
+        }
+
         // apply properties to the parent window
         for(PropertyList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
         {
             (*prop).apply(widget);
         }
 
-        // add required child widgets
-        for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
-        {
-            (*curr).create(widget);
-        }
     }
 
     bool WidgetLookFeel::isStateImageryPresent(const String& state) const
@@ -197,6 +207,16 @@ namespace CEGUI
         d_propertyDefinitions.clear();
     }
 
+    void WidgetLookFeel::addPropertyLinkDefinition(const PropertyLinkDefinition& propdef)
+    {
+        d_propertyLinkDefinitions.push_back(propdef);
+    }
+
+    void WidgetLookFeel::clearPropertyLinkDefinitions()
+    {
+        d_propertyLinkDefinitions.clear();
+    }
+
     void WidgetLookFeel::writeXMLToStream(OutStream& out_stream) const
     {
         out_stream << "<WidgetLook name=\"" << d_lookName << "\">" << std::endl;
@@ -205,6 +225,12 @@ namespace CEGUI
         {
           // output property definitions
           for (PropertyDefinitionList::const_iterator curr = d_propertyDefinitions.begin(); curr != d_propertyDefinitions.end(); ++curr)
+              (*curr).writeXMLToStream(out_stream);
+        }
+
+        {
+          // output property link definitions
+          for (PropertyLinkDefinitionList::const_iterator curr = d_propertyLinkDefinitions.begin(); curr != d_propertyLinkDefinitions.end(); ++curr)
               (*curr).writeXMLToStream(out_stream);
         }
 
