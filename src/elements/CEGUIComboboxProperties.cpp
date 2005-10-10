@@ -111,54 +111,6 @@ void	MaxEditTextLength::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-String	NormalEditTextColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getNormalTextColour());
-}
-
-
-void	NormalEditTextColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Combobox*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
-}
-
-
-String	SelectedEditTextColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getSelectedTextColour());
-}
-
-
-void	SelectedEditTextColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Combobox*>(receiver)->setSelectedTextColour(PropertyHelper::stringToColour(value));
-}
-
-
-String	ActiveEditSelectionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getNormalSelectBrushColour());
-}
-
-
-void	ActiveEditSelectionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Combobox*>(receiver)->setNormalSelectBrushColour(PropertyHelper::stringToColour(value));
-}
-
-
-String	InactiveEditSelectionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Combobox*>(receiver)->getInactiveSelectBrushColour());
-}
-
-
-void	InactiveEditSelectionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Combobox*>(receiver)->setInactiveSelectBrushColour(PropertyHelper::stringToColour(value));
-}
-
-
 String	SortList::get(const PropertyReceiver* receiver) const
 {
 	return PropertyHelper::boolToString(static_cast<const Combobox*>(receiver)->isSortEnabled());

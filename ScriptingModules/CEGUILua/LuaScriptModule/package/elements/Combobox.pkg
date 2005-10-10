@@ -17,15 +17,6 @@ class Combobox : public Window
 	unsigned long getSelectionLength() const;
 	unsigned long getMaxTextLength() const;
 
-	colour getNormalTextColour() const;
-	colour getSelectedTextColour() const;
-	colour getNormalSelectBrushColour() const;
-	colour getInactiveSelectBrushColour() const;
-
-	void setNormalTextColour(colour col);
-	void setSelectedTextColour(colour col);
-	void setNormalSelectBrushColour(colour col);
-	void setInactiveSelectBrushColour(colour col);
 	void activateEditbox();
 
 	unsigned long getItemCount() const;

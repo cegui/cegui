@@ -230,50 +230,6 @@ public:
 	size_t	getMaxTextLength(void) const;
 
 
-	/*!
-	\brief
-		return the currently set colour to be used for rendering Editbox text in the
-		normal, unselected state.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getNormalTextColour(void) const;
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the Editbox text when within the
-		selected region.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getSelectedTextColour(void) const;
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the Editbox selection highlight
-		when the Editbox is active.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getNormalSelectBrushColour(void) const;
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the Editbox selection highlight
-		when the Editbox is inactive.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getInactiveSelectBrushColour(void) const;
-
-
 	/*************************************************************************
 		List Accessors
 	*************************************************************************/
@@ -536,58 +492,6 @@ public:
 		Nothing.
 	*/
 	void	setMaxTextLength(size_t max_len);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering Editbox text in the normal, unselected state.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalTextColour(colour col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the Editbox text when within the
-		selected region.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	void	setSelectedTextColour(colour col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the Editbox selection highlight
-		when the Editbox is active.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalSelectBrushColour(colour col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the Editbox selection highlight
-		when the Editbox is inactive.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setInactiveSelectBrushColour(colour col);
 
 
 	/*!
@@ -1048,10 +952,6 @@ private:
 	static ComboboxProperties::EditSelectionStart			d_selStartProperty;
 	static ComboboxProperties::EditSelectionLength			d_selLengthProperty;
 	static ComboboxProperties::MaxEditTextLength			d_maxTextLengthProperty;
-	static ComboboxProperties::NormalEditTextColour			d_normalTextColourProperty;
-	static ComboboxProperties::SelectedEditTextColour		d_selectedTextColourProperty;
-	static ComboboxProperties::ActiveEditSelectionColour	d_activeSelectionColourProperty;
-	static ComboboxProperties::InactiveEditSelectionColour	d_inactiveSelectionColourProperty;
 	static ComboboxProperties::SortList						d_sortProperty;
 	static ComboboxProperties::ForceVertScrollbar			d_forceVertProperty;
 	static ComboboxProperties::ForceHorzScrollbar			d_forceHorzProperty;

@@ -52,10 +52,6 @@ ComboboxProperties::CaratIndex					Combobox::d_caratIndexProperty;
 ComboboxProperties::EditSelectionStart			Combobox::d_selStartProperty;
 ComboboxProperties::EditSelectionLength			Combobox::d_selLengthProperty;
 ComboboxProperties::MaxEditTextLength			Combobox::d_maxTextLengthProperty;
-ComboboxProperties::NormalEditTextColour		Combobox::d_normalTextColourProperty;
-ComboboxProperties::SelectedEditTextColour		Combobox::d_selectedTextColourProperty;
-ComboboxProperties::ActiveEditSelectionColour	Combobox::d_activeSelectionColourProperty;
-ComboboxProperties::InactiveEditSelectionColour	Combobox::d_inactiveSelectionColourProperty;
 ComboboxProperties::SortList					Combobox::d_sortProperty;
 ComboboxProperties::ForceVertScrollbar			Combobox::d_forceVertProperty;
 ComboboxProperties::ForceHorzScrollbar			Combobox::d_forceHorzProperty;
@@ -271,46 +267,6 @@ size_t Combobox::getMaxTextLength(void) const
 
 
 /*************************************************************************
-	return the currently set colour to be used for rendering Editbox text
-	in the normal, unselected state.
-*************************************************************************/
-colour Combobox::getNormalTextColour(void) const	
-{
-	return getEditbox()->getNormalTextColour();
-}
-
-
-/*************************************************************************
-	return the currently set colour to be used for rendering the Editbox
-	text when within the selected region.
-*************************************************************************/
-colour Combobox::getSelectedTextColour(void) const
-{
-	return getEditbox()->getSelectedTextColour();
-}
-
-
-/*************************************************************************
-	return the currently set colour to be used for rendering the Editbox
-	selection highlight when the Editbox is active.
-*************************************************************************/
-colour Combobox::getNormalSelectBrushColour(void) const
-{
-	return getEditbox()->getNormalSelectBrushColour();
-}
-
-
-/*************************************************************************
-	return the currently set colour to be used for rendering the Editbox
-	selection highlight when the Editbox is inactive.
-*************************************************************************/
-colour Combobox::getInactiveSelectBrushColour(void) const
-{
-	return getEditbox()->getInactiveSelectBrushColour();
-}
-
-
-/*************************************************************************
 	Specify whether the Editbox is read-only.
 *************************************************************************/
 void Combobox::setReadOnly(bool setting)
@@ -352,46 +308,6 @@ void Combobox::setSelection(size_t start_pos, size_t end_pos)
 void Combobox::setMaxTextLength(size_t max_len)
 {
 	getEditbox()->setMaxTextLength(max_len);
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering Editbox text in the normal,
-	unselected state.
-*************************************************************************/
-void Combobox::setNormalTextColour(colour col)
-{
-	getEditbox()->setNormalTextColour(col);
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering the Editbox text when within
-	the selected region.	
-*************************************************************************/
-void Combobox::setSelectedTextColour(colour col)
-{
-	getEditbox()->setSelectedTextColour(col);
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering the Editbox selection
-	highlight when the Editbox is active.
-*************************************************************************/
-void Combobox::setNormalSelectBrushColour(colour col)
-{
-	getEditbox()->setNormalSelectBrushColour(col);
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering the Editbox selection
-	highlight when the Editbox is inactive.
-*************************************************************************/
-void Combobox::setInactiveSelectBrushColour(colour col)
-{
-	getEditbox()->setInactiveSelectBrushColour(col);
 }
 
 
@@ -916,10 +832,6 @@ void Combobox::addComboboxProperties(void)
 	addProperty(&d_maxTextLengthProperty);
 	addProperty(&d_selStartProperty);
 	addProperty(&d_selLengthProperty);
-	addProperty(&d_normalTextColourProperty);
-	addProperty(&d_selectedTextColourProperty);
-	addProperty(&d_activeSelectionColourProperty);
-	addProperty(&d_inactiveSelectionColourProperty);
 	addProperty(&d_caratIndexProperty);
 	addProperty(&d_singleClickOperationProperty);
 }
