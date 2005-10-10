@@ -404,6 +404,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Editbox">
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
         <Property name="MouseCursorImage" value="set:TaharezLook image:MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>
@@ -1845,6 +1849,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ComboEditbox">
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
         <Property name="MouseCursorImage" value="set:TaharezLook image:MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>

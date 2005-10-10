@@ -46,6 +46,10 @@ namespace CEGUI
         NamedAreas:
             TextArea    - area where text, selection, and carat imagery will appear.
 
+        PropertyDefinitions (optional, defaults will be black):
+            - NormalTextColour   - property that accesses a colour value to be used to render normal unselected text.
+            - SelectedTextColour - property that accesses a colour value to be used to render selected text.
+
         Imagery Sections:
             - Carat
     */
@@ -53,6 +57,8 @@ namespace CEGUI
     {
     public:
         static const utf8   WidgetTypeName[];       //!< type name for this widget.
+        static const String UnselectedTextColourPropertyName;   //!< Name of property to access for unselected text colour.
+        static const String SelectedTextColourPropertyName;     //!< Name of property to access for selected text colour.
 
         /*!
         \brief
@@ -67,6 +73,37 @@ namespace CEGUI
         ~FalagardEditbox();
 
     protected:
+        /*!
+        \brief
+            return the colour to be used for rendering Editbox text oustside of the
+            selected region.
+
+        \return
+            colour value describing the colour to be used.
+        */
+        colour getUnselectedTextColour() const;
+
+        /*!
+        \brief
+            return the colour to be used for rendering Editbox text falling within
+            the selected region.
+
+        \return
+            colour value describing the colour to be used.
+        */
+        colour getSelectedTextColour() const;
+
+        /*!
+        \brief
+            Return a colour object fetched from the named property if it exists,
+            else a default colour (black).
+
+        \param propertyName
+            String object holding the name of the property to be accessed if it
+            exists.
+        */
+        colour getOptionalPropertyColour(const String& propertyName) const;
+
         // overridden from Editbox base class.
         void populateRenderCache();
         size_t getTextIndexFromPosition(const Point& pt) const;

@@ -75,20 +75,6 @@ EditboxProperties::CaratIndex				Editbox::d_caratIndexProperty;
 EditboxProperties::SelectionStart			Editbox::d_selectionStartProperty;
 EditboxProperties::SelectionLength			Editbox::d_selectionLengthProperty;
 EditboxProperties::MaxTextLength			Editbox::d_maxTextLengthProperty;
-EditboxProperties::NormalTextColour			Editbox::d_normalTextColourProperty;
-EditboxProperties::SelectedTextColour		Editbox::d_selectedTextColourProperty;
-EditboxProperties::ActiveSelectionColour	Editbox::d_activeSelectionColourProperty;
-EditboxProperties::InactiveSelectionColour	Editbox::d_inactiveSelectionColourProperty;
-
-
-/*************************************************************************
-	Constants
-*************************************************************************/
-// default colours
-const argb_t Editbox::DefaultNormalTextColour			= 0xFFFFFFFF;
-const argb_t Editbox::DefaultSelectedTextColour			= 0xFF000000;
-const argb_t Editbox::DefaultNormalSelectionColour		= 0xFF6060FF;
-const argb_t Editbox::DefaultInactiveSelectionColour	= 0xFF808080;
 
 
 /*************************************************************************
@@ -119,14 +105,9 @@ Editbox::Editbox(const String& type, const String& name) :
 	d_caratPos(0),
 	d_selectionStart(0),
 	d_selectionEnd(0),
-	d_dragging(false),
-	d_normalTextColour(DefaultNormalTextColour),
-	d_selectTextColour(DefaultSelectedTextColour),
-	d_selectBrushColour(DefaultNormalSelectionColour),
-	d_inactiveSelectBrushColour(DefaultInactiveSelectionColour)
+    d_validator(new RegexValidator),
+	d_dragging(false)
 {
-	d_validator = new RegexValidator;
-
 	addEditboxEvents();
 	addEditboxProperties();
 
@@ -1071,50 +1052,6 @@ void Editbox::onTextAcceptedEvent(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Set the colour to be used for rendering Editbox text in the normal,
-	unselected state.	
-*************************************************************************/
-void Editbox::setNormalTextColour(const colour& col)
-{
-	d_normalTextColour = col;
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering the Editbox text when within
-	the selected region.
-*************************************************************************/
-void Editbox::setSelectedTextColour(const colour& col)
-{
-	d_selectTextColour = col;
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering the Editbox selection highlight
-	when the Editbox is active.
-*************************************************************************/
-void Editbox::setNormalSelectBrushColour(const colour& col)
-{
-	d_selectBrushColour = col;
-	requestRedraw();
-}
-
-
-/*************************************************************************
-	Set the colour to be used for rendering the Editbox selection highlight
-	when the Editbox is inactive.
-*************************************************************************/
-void Editbox::setInactiveSelectBrushColour(const colour& col)
-{
-	d_inactiveSelectBrushColour = col;
-	requestRedraw();
-}
-
-
-/*************************************************************************
 	Handler for when text is changed programmatically
 *************************************************************************/
 void Editbox::onTextChanged(WindowEventArgs& e)
@@ -1147,10 +1084,6 @@ void Editbox::addEditboxProperties(void)
 	addProperty(&d_selectionStartProperty);
 	addProperty(&d_selectionLengthProperty);
 	addProperty(&d_maxTextLengthProperty);
-	addProperty(&d_normalTextColourProperty);
-	addProperty(&d_selectedTextColourProperty);
-	addProperty(&d_activeSelectionColourProperty);
-	addProperty(&d_inactiveSelectionColourProperty);
 }
 
 

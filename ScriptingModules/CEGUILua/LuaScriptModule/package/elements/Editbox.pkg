@@ -17,11 +17,6 @@ class Editbox : public Window
 	unsigned long getMaskCodePoint() const;
 	unsigned long getMaxTextLength() const;
 
-	colour getNormalTextColour() const;
-	colour getSelectedTextColour() const;
-	colour getNormalSelectBrushColour() const;
-	colour getInactiveSelectBrushColour() const;
-
 	void setReadOnly(bool setting);
 	void setTextMasked(bool setting);
 	void setValidationString(string validation_string);
@@ -29,9 +24,4 @@ class Editbox : public Window
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaskCodePoint(unsigned long code_point);
 	void setMaxTextLength(unsigned long max_len);
-
-	void setNormalTextColour(const colour& col);
-	void setSelectedTextColour(const colour& col);
-	void setNormalSelectBrushColour(const colour& col);
-	void setInactiveSelectBrushColour(const colour& col);
 };

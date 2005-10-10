@@ -138,54 +138,6 @@ void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 	static_cast<Editbox*>(receiver)->setMaxTextLength(PropertyHelper::stringToUint(value));
 }
 
-
-String NormalTextColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getNormalTextColour());
-}
-
-
-void NormalTextColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Editbox*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
-}
-
-
-String SelectedTextColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getSelectedTextColour());
-}
-
-
-void SelectedTextColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Editbox*>(receiver)->setSelectedTextColour(PropertyHelper::stringToColour(value));
-}
-
-
-String ActiveSelectionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getNormalSelectBrushColour());
-}
-
-
-void ActiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Editbox*>(receiver)->setNormalSelectBrushColour(PropertyHelper::stringToColour(value));
-}
-
-
-String InactiveSelectionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const Editbox*>(receiver)->getInactiveSelectBrushColour());
-}
-
-
-void InactiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<Editbox*>(receiver)->setInactiveSelectBrushColour(PropertyHelper::stringToColour(value));
-}
-
 } // End of  EditboxProperties namespace section
 
 } // End of  CEGUI namespace section

@@ -53,17 +53,6 @@ class CEGUIEXPORT Editbox : public Window
 public:
 	static const String EventNamespace;				//!< Namespace for global events
 
-
-	/*************************************************************************
-		Constants
-	*************************************************************************/
-	// default colours
-	static const argb_t	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
-	static const argb_t	DefaultSelectedTextColour;			//!< Colour applied to selected text.
-	static const argb_t	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
-	static const argb_t	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
-
-
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
@@ -215,50 +204,6 @@ public:
 	size_t	getMaxTextLength(void) const		{return d_maxTextLen;}
 
 
-	/*!
-	\brief
-		return the currently set colour to be used for rendering Editbox text in the
-		normal, unselected state.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getNormalTextColour(void) const				{return d_normalTextColour;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the Editbox text when within the
-		selected region.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getSelectedTextColour(void) const			{return d_selectTextColour;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the Editbox selection highlight
-		when the Editbox is active.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getNormalSelectBrushColour(void) const		{return d_selectBrushColour;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the Editbox selection highlight
-		when the Editbox is inactive.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getInactiveSelectBrushColour(void) const	{return d_inactiveSelectBrushColour;}
-
-
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
@@ -368,58 +313,6 @@ public:
 		Nothing.
 	*/
 	void	setMaxTextLength(size_t max_len);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering Editbox text in the normal, unselected state.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalTextColour(const colour& col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the Editbox text when within the
-		selected region.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	void	setSelectedTextColour(const colour& col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the Editbox selection highlight
-		when the Editbox is active.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalSelectBrushColour(const colour& col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the Editbox selection highlight
-		when the Editbox is inactive.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setInactiveSelectBrushColour(const colour& col);
 
 
 	/*************************************************************************
@@ -560,7 +453,6 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
-
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
@@ -674,13 +566,6 @@ protected:
 	bool	d_dragging;			//!< true when a selection is being dragged.
 	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
-	// basic rendering colours
-	colour	d_normalTextColour;				//!< Text colour used normally.
-	colour	d_selectTextColour;				//!< Text colour used when text is highlighted
-	colour	d_selectBrushColour;			//!< Colour to apply to the selection brush.
-	colour	d_inactiveSelectBrushColour;	//!< Colour to apply to the selection brush when widget is inactive / read-only.
-
-
 private:
 	/*************************************************************************
 		Static Properties for this class
@@ -693,11 +578,6 @@ private:
 	static EditboxProperties::SelectionStart			d_selectionStartProperty;
 	static EditboxProperties::SelectionLength			d_selectionLengthProperty;
 	static EditboxProperties::MaxTextLength				d_maxTextLengthProperty;
-	static EditboxProperties::NormalTextColour			d_normalTextColourProperty;
-	static EditboxProperties::SelectedTextColour		d_selectedTextColourProperty;
-	static EditboxProperties::ActiveSelectionColour		d_activeSelectionColourProperty;
-	static EditboxProperties::InactiveSelectionColour	d_inactiveSelectionColourProperty;
-
 
 	/*************************************************************************
 		Private methods

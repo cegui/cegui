@@ -24,12 +24,15 @@
 #include "FalEditbox.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const utf8 FalagardEditbox::WidgetTypeName[] = "Falagard/Editbox";
+    const String FalagardEditbox::UnselectedTextColourPropertyName( "NormalTextColour" );
+    const String FalagardEditbox::SelectedTextColourPropertyName( "SelectedTextColour" );
 
     FalagardEditbox::FalagardEditbox(const String& type, const String& name) :
         Editbox(type, name),
@@ -126,9 +129,11 @@ namespace CEGUI
         // centre text vertically within the defined text area
         text_part_rect.d_top += (textArea.getHeight() - font->getLineSpacing()) * 0.5f;
 
+        // get unhighlighted text colour (saves accessing property twice)
+        colour unselectedColour(getUnselectedTextColour());
         // draw pre-highlight text
         String sect = editText->substr(0, getSelectionStartIndex());
-        colours.setColours(d_normalTextColour);
+        colours.setColours(unselectedColour);
         colours.modulateAlpha(alpha_comp);
         d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
 
@@ -137,7 +142,7 @@ namespace CEGUI
 
         // draw highlight text
         sect = editText->substr(getSelectionStartIndex(), getSelectionLength());
-        colours.setColours(d_selectTextColour);
+        colours.setColours(getSelectedTextColour());
         colours.modulateAlpha(alpha_comp);
         d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
 
@@ -146,7 +151,7 @@ namespace CEGUI
 
         // draw post-highlight text
         sect = editText->substr(getSelectionEndIndex());
-        colours.setColours(d_normalTextColour);
+        colours.setColours(unselectedColour);
         colours.modulateAlpha(alpha_comp);
         d_renderCache.cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
 
@@ -206,6 +211,24 @@ namespace CEGUI
         {
             return getFont()->getCharAtPixel(d_text, wndx);
         }
+    }
+
+    colour FalagardEditbox::getOptionalPropertyColour(const String& propertyName) const
+    {
+        if (isPropertyPresent(propertyName))
+            return PropertyHelper::stringToColour(getProperty(propertyName));
+        else
+            return colour(0,0,0);
+    }
+
+    colour FalagardEditbox::getUnselectedTextColour() const
+    {
+        return getOptionalPropertyColour(UnselectedTextColourPropertyName);
+    }
+
+    colour FalagardEditbox::getSelectedTextColour() const
+    {
+        return getOptionalPropertyColour(SelectedTextColourPropertyName);
     }
 
 } // End of  CEGUI namespace section
