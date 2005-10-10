@@ -67,7 +67,7 @@
     </WidgetLook>
 
     <WidgetLook name="Vanilla/Titlebar">
-        <Property name="CaptionColour" value="FFFFFFFF" />
+        <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <ImagerySection name="caption">
             <TextComponent>
                 <Area>

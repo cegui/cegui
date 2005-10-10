@@ -3895,7 +3895,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Titlebar">
-        <Property name="CaptionColour" value="FF000000" />
+        <PropertyDefinition name="CaptionColour" initialValue="FF000000" redrawOnWrite="true" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>

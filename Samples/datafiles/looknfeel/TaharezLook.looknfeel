@@ -491,7 +491,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Titlebar">
-        <Property name="CaptionColour" value="FFFFFFFF" />
+        <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>

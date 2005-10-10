@@ -5,7 +5,4 @@ class Titlebar : public Window
 {
 	bool isDraggingEnabled() const;
 	void setDraggingEnabled(bool setting);
-
-	colour getCaptionColour() const;
-	void setCaptionColour(const colour& col);
 };

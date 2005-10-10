@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6 on Mon Oct 10 11:15:22 2005.
+** Generated automatically by tolua++-1.0.6 on Mon Oct 10 13:05:32 2005.
 */
 
 #ifndef __cplusplus
@@ -23319,75 +23319,6 @@ static int tolua_CEGUI_CEGUI_Titlebar_setDraggingEnabled00(lua_State* tolua_S)
 #endif
 }
 
-/* method: getCaptionColour of class  CEGUI::Titlebar */
-static int tolua_CEGUI_CEGUI_Titlebar_getCaptionColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Titlebar",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Titlebar* self = (const CEGUI::Titlebar*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaptionColour'",NULL);
-#endif
- {
-  CEGUI::colour tolua_ret = (CEGUI::colour)  self->getCaptionColour();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::colour(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::colour));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getCaptionColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setCaptionColour of class  CEGUI::Titlebar */
-static int tolua_CEGUI_CEGUI_Titlebar_setCaptionColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Titlebar",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::colour",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::Titlebar* self = (CEGUI::Titlebar*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::colour* col = ((const CEGUI::colour*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaptionColour'",NULL);
-#endif
- {
-  self->setCaptionColour(*col);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setCaptionColour'.",&tolua_err);
- return 0;
-#endif
-}
-
 /* method: isSizingEnabled of class  CEGUI::FrameWindow */
 static int tolua_CEGUI_CEGUI_FrameWindow_isSizingEnabled00(lua_State* tolua_S)
 {
@@ -38032,8 +37963,6 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_beginmodule(tolua_S,"Titlebar");
  tolua_function(tolua_S,"isDraggingEnabled",tolua_CEGUI_CEGUI_Titlebar_isDraggingEnabled00);
  tolua_function(tolua_S,"setDraggingEnabled",tolua_CEGUI_CEGUI_Titlebar_setDraggingEnabled00);
- tolua_function(tolua_S,"getCaptionColour",tolua_CEGUI_CEGUI_Titlebar_getCaptionColour00);
- tolua_function(tolua_S,"setCaptionColour",tolua_CEGUI_CEGUI_Titlebar_setCaptionColour00);
  tolua_endmodule(tolua_S);
  tolua_cclass(tolua_S,"FrameWindow","CEGUI::FrameWindow","CEGUI::Window",NULL);
  tolua_beginmodule(tolua_S,"FrameWindow");
