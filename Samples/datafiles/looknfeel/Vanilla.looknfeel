@@ -160,6 +160,8 @@
     </WidgetLook>
 
     <WidgetLook name="Vanilla/FrameWindow">
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" />
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" />
         <Property name="NSSizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />
         <Property name="EWSizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />
         <Property name="NWSESizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />

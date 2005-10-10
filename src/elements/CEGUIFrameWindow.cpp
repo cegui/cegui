@@ -49,8 +49,6 @@ FrameWindowProperties::RollUpState				FrameWindow::d_rollUpStateProperty;
 FrameWindowProperties::RollUpEnabled			FrameWindow::d_rollUpEnabledProperty;
 FrameWindowProperties::DragMovingEnabled		FrameWindow::d_dragMovingEnabledProperty;
 FrameWindowProperties::SizingBorderThickness	FrameWindow::d_sizingBorderThicknessProperty;
-FrameWindowProperties::TitlebarFont				FrameWindow::d_titlebarFontProperty;
-FrameWindowProperties::CaptionColour			FrameWindow::d_captionColourProperty;
 FrameWindowProperties::NSSizingCursorImage      FrameWindow::d_nsSizingCursorProperty;
 FrameWindowProperties::EWSizingCursorImage      FrameWindow::d_ewSizingCursorProperty;
 FrameWindowProperties::NWSESizingCursorImage    FrameWindow::d_nwseSizingCursorProperty;
@@ -214,24 +212,6 @@ void FrameWindow::toggleRollup(void)
         onRollupToggled(args);
     }
 
-}
-
-
-/*************************************************************************
-	Set the font to use for the title bar text	
-*************************************************************************/
-void FrameWindow::setTitlebarFont(const String& name)
-{
-    getTitlebar()->setFont(name);
-}
-
-
-/*************************************************************************
-	Set the font to use for the title bar text	
-*************************************************************************/
-void FrameWindow::setTitlebarFont(Font* font)
-{
-    getTitlebar()->setFont(font);
 }
 
 
@@ -749,15 +729,6 @@ void FrameWindow::setDragMovingEnabled(bool setting)
 
 
 /*************************************************************************
-	Return the font being used for the title bar text
-*************************************************************************/
-const Font* FrameWindow::getTitlebarFont(void) const
-{
-    return getTitlebar()->getFont();
-}
-
-
-/*************************************************************************
 	Add properties for this class
 *************************************************************************/
 void FrameWindow::addFrameWindowProperties(void)
@@ -770,30 +741,10 @@ void FrameWindow::addFrameWindowProperties(void)
 	addProperty(&d_rollUpStateProperty);
 	addProperty(&d_dragMovingEnabledProperty);
 	addProperty(&d_sizingBorderThicknessProperty);
-	addProperty(&d_titlebarFontProperty);
-	addProperty(&d_captionColourProperty);
     addProperty(&d_nsSizingCursorProperty);
     addProperty(&d_ewSizingCursorProperty);
     addProperty(&d_nwseSizingCursorProperty);
     addProperty(&d_neswSizingCursorProperty);
-}
-
-
-/*************************************************************************
-	Return the current colour used for rendering the caption text
-*************************************************************************/
-colour FrameWindow::getCaptionColour(void) const
-{
-    return getTitlebar()->getCaptionColour();
-}
-
-
-/*************************************************************************
-	Sets the colour to be used for rendering the caption text.
-*************************************************************************/
-void FrameWindow::setCaptionColour(colour col)
-{
-    getTitlebar()->setCaptionColour(col);
 }
 
 

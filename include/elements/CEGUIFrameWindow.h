@@ -256,32 +256,6 @@ public:
 
 	/*!
 	\brief
-		Set the font to use for the title bar text
-
-	\param name
-		String object holding the name of the font to use.
-
-	\return
-		Nothing.
-	*/
-	void	setTitlebarFont(const String& name);
-
-
-	/*!
-	\brief
-		Set the font to use for the title bar text
-
-	\param font
-		Pointer to the font to use.
-
-	\return
-		Nothing.
-	*/
-	void	setTitlebarFont(Font* font);
-
-
-	/*!
-	\brief
 		Move the window by the pixel offsets specified in \a offset.
 
 		This is intended for internal system use - it is the method by which the title bar moves the frame window.
@@ -317,38 +291,6 @@ public:
 	*/
 	void	setDragMovingEnabled(bool setting);
 
-
-	/*!
-	\brief
-		Return the font being used for the title bar text
-
-	\return
-		Pointer to the Font being used for the TitleBar on this FrameWindow.
-	*/
-	const Font*	getTitlebarFont(void) const;
-
-
-	/*!
-	\brief
-		Return the current colour used for rendering the caption text
-
-	\return
-		colour value that specifies the colour used when rendering the title bar caption text.
-	*/
-	colour	getCaptionColour(void) const;
-
-
-	/*!
-	\brief
-		Sets the colour to be used for rendering the caption text.
-
-	\param col
-		colour value that specifies the colour to be used when rendering the title bar caption text.
-
-	\return
-		Nothing.
-	*/
-	void	setCaptionColour(colour col);
 
     /*!
     \brief
@@ -775,8 +717,6 @@ private:
 	static FrameWindowProperties::RollUpEnabled		d_rollUpEnabledProperty;
 	static FrameWindowProperties::DragMovingEnabled	d_dragMovingEnabledProperty;
 	static FrameWindowProperties::SizingBorderThickness d_sizingBorderThicknessProperty;
-	static FrameWindowProperties::TitlebarFont		d_titlebarFontProperty;
-	static FrameWindowProperties::CaptionColour		d_captionColourProperty;
     static FrameWindowProperties::NSSizingCursorImage   d_nsSizingCursorProperty;
     static FrameWindowProperties::EWSizingCursorImage   d_ewSizingCursorProperty;
     static FrameWindowProperties::NWSESizingCursorImage d_nwseSizingCursorProperty;

@@ -23,12 +23,5 @@ class FrameWindow : public Window
 
 	void toggleRollup();
 
-	void setTitlebarFont(string name);
-	void setTitlebarFont(Font* font);
-	const Font* getTitlebarFont() const;
-
-	colour getCaptionColour() const;
-	void setCaptionColour(const colour& col);
-
 	void offsetPixelPosition(const Vector2& offset);
 };

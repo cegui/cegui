@@ -139,34 +139,6 @@ void	SizingBorderThickness::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-String	TitlebarFont::get(const PropertyReceiver* receiver) const
-{
-	return static_cast<const FrameWindow*>(receiver)->getTitlebarFont()->getName();	
-}
-
-
-void	TitlebarFont::set(PropertyReceiver* receiver, const String& value)
-{
-	if (value.empty())
-	{
-		static_cast<FrameWindow*>(receiver)->setTitlebarFont(System::getSingleton().getDefaultFont());
-	}
-	else
-	{
-		static_cast<FrameWindow*>(receiver)->setTitlebarFont(value);
-	}
-}
-
-String CaptionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const FrameWindow*>(receiver)->getCaptionColour());
-}
-
-void CaptionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<FrameWindow*>(receiver)->setCaptionColour(PropertyHelper::stringToColour(value));
-}
-
 String NSSizingCursorImage::get(const PropertyReceiver* receiver) const
 {
     const Image* img = static_cast<const FrameWindow*>(receiver)->getNSSizingCursorImage();

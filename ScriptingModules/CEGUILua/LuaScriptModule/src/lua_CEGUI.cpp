@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6 on Mon Oct 10 10:54:36 2005.
+** Generated automatically by tolua++-1.0.6 on Mon Oct 10 11:15:22 2005.
 */
 
 #ifndef __cplusplus
@@ -23874,162 +23874,6 @@ static int tolua_CEGUI_CEGUI_FrameWindow_toggleRollup00(lua_State* tolua_S)
 #endif
 }
 
-/* method: setTitlebarFont of class  CEGUI::FrameWindow */
-static int tolua_CEGUI_CEGUI_FrameWindow_setTitlebarFont00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::FrameWindow",0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::FrameWindow* self = (CEGUI::FrameWindow*)  tolua_tousertype(tolua_S,1,0);
-  string name = ((string)  tolua_tocppstring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTitlebarFont'",NULL);
-#endif
- {
-  self->setTitlebarFont(name);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setTitlebarFont'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setTitlebarFont of class  CEGUI::FrameWindow */
-static int tolua_CEGUI_CEGUI_FrameWindow_setTitlebarFont01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::FrameWindow",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"CEGUI::Font",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
- {
-  CEGUI::FrameWindow* self = (CEGUI::FrameWindow*)  tolua_tousertype(tolua_S,1,0);
-  CEGUI::Font* font = ((CEGUI::Font*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTitlebarFont'",NULL);
-#endif
- {
-  self->setTitlebarFont(font);
- }
- }
- return 0;
-tolua_lerror:
- return tolua_CEGUI_CEGUI_FrameWindow_setTitlebarFont00(tolua_S);
-}
-
-/* method: getTitlebarFont of class  CEGUI::FrameWindow */
-static int tolua_CEGUI_CEGUI_FrameWindow_getTitlebarFont00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::FrameWindow",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::FrameWindow* self = (const CEGUI::FrameWindow*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTitlebarFont'",NULL);
-#endif
- {
-  const CEGUI::Font* tolua_ret = (const CEGUI::Font*)  self->getTitlebarFont();
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"const CEGUI::Font");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getTitlebarFont'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: getCaptionColour of class  CEGUI::FrameWindow */
-static int tolua_CEGUI_CEGUI_FrameWindow_getCaptionColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::FrameWindow",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::FrameWindow* self = (const CEGUI::FrameWindow*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCaptionColour'",NULL);
-#endif
- {
-  CEGUI::colour tolua_ret = (CEGUI::colour)  self->getCaptionColour();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::colour(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::colour));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getCaptionColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setCaptionColour of class  CEGUI::FrameWindow */
-static int tolua_CEGUI_CEGUI_FrameWindow_setCaptionColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::FrameWindow",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::colour",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::FrameWindow* self = (CEGUI::FrameWindow*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::colour* col = ((const CEGUI::colour*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setCaptionColour'",NULL);
-#endif
- {
-  self->setCaptionColour(*col);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setCaptionColour'.",&tolua_err);
- return 0;
-#endif
-}
-
 /* method: offsetPixelPosition of class  CEGUI::FrameWindow */
 static int tolua_CEGUI_CEGUI_FrameWindow_offsetPixelPosition00(lua_State* tolua_S)
 {
@@ -38209,11 +38053,6 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,"getSizingBorderThickness",tolua_CEGUI_CEGUI_FrameWindow_getSizingBorderThickness00);
  tolua_function(tolua_S,"setSizingBorderThickness",tolua_CEGUI_CEGUI_FrameWindow_setSizingBorderThickness00);
  tolua_function(tolua_S,"toggleRollup",tolua_CEGUI_CEGUI_FrameWindow_toggleRollup00);
- tolua_function(tolua_S,"setTitlebarFont",tolua_CEGUI_CEGUI_FrameWindow_setTitlebarFont00);
- tolua_function(tolua_S,"setTitlebarFont",tolua_CEGUI_CEGUI_FrameWindow_setTitlebarFont01);
- tolua_function(tolua_S,"getTitlebarFont",tolua_CEGUI_CEGUI_FrameWindow_getTitlebarFont00);
- tolua_function(tolua_S,"getCaptionColour",tolua_CEGUI_CEGUI_FrameWindow_getCaptionColour00);
- tolua_function(tolua_S,"setCaptionColour",tolua_CEGUI_CEGUI_FrameWindow_setCaptionColour00);
  tolua_function(tolua_S,"offsetPixelPosition",tolua_CEGUI_CEGUI_FrameWindow_offsetPixelPosition00);
  tolua_endmodule(tolua_S);
  tolua_cclass(tolua_S,"Tooltip","CEGUI::Tooltip","CEGUI::Window",NULL);

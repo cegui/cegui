@@ -249,54 +249,6 @@ public:
 
 /*!
 \brief
-	Property to access the Font set for the windows title bar.
-
-	\par Usage:
-		- Name: TitlebarFont
-		- Format: "[text]".
-
-	\par Where:
-		- [text] is the name of the Font to assign for this windows title bar.  The Font specified must already be loaded.
-*/
-class TitlebarFont : public Property
-{
-public:
-	TitlebarFont() : Property(
-		"TitlebarFont",
-		"Property to get/set the Font set for the windows title bar.  Value is the name of the font to use (must be loaded already).",
-		"")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-/*!
-\brief
-	Property to colour used for rendering the caption text.
-
-	\par Usage:
-		- Name: CaptionColour
-		- Format: "aarrggbb".
-
-	\par Where:
-		- aarrggbb is the ARGB colour value to be used.
-*/
-class CaptionColour : public Property
-{
-public:
-	CaptionColour() : Property(
-		"CaptionColour",
-		"Property to get/set the colour used for rendering the caption text.  Value is \"aarrggbb\" (hex).",
-		"FF000000")
-	{}
-
-	String	get(const PropertyReceiver* receiver) const;
-	void	set(PropertyReceiver* receiver, const String& value);
-};
-
-/*!
-\brief
    Property to access the N-S (up-down) sizing cursor image
 
    \par Usage:
