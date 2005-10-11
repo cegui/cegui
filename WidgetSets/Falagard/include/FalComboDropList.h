@@ -68,9 +68,22 @@ namespace CEGUI
         ~FalagardComboDropList();
 
     protected:
+        /*!
+        \brief
+            Perform caching of the widget control frame and other 'static' areas.  This
+            method should not render the actual items.  Note that the items are typically
+            rendered to layer 3, other layers can be used for rendering imagery behind and
+            infront of the items.
+
+        \return
+            Nothing.
+        */
+        void cacheListboxBaseImagery();
+
         // overridden from ComboDropList base class.
         Rect getListRenderArea(void) const;
-        void cacheListboxBaseImagery();
+        // overridden from Window base class.
+        void populateRenderCache();
     };
 
 } // End of  CEGUI namespace section

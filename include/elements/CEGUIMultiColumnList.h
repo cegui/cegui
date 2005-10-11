@@ -1212,19 +1212,6 @@ protected:
 	virtual	Rect	getListRenderArea(void) const		= 0;
 
 
-	/*!
-	\brief
-		Perform rendering of the widget control frame and other 'static' areas.  This
-		method should not render the actual items.  Note that the items are typically
-		rendered to layer 3, other layers can be used for rendering imagery behind and
-		infront of the items.
-
-	\return
-		Nothing.
-	*/
-	virtual	void	cacheListboxBaseImagery()		= 0;
-
-
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
@@ -1233,9 +1220,6 @@ protected:
 		Add multi column list box specific events
 	*/
 	void	addMultiColumnListboxEvents(void);
-
-    // overridden from base class.
-	virtual	void populateRenderCache();
 
 
 	/*!

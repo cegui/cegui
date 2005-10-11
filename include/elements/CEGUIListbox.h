@@ -498,19 +498,6 @@ protected:
 	virtual	Rect	getListRenderArea(void) const		= 0;
 
 
-	/*!
-	\brief
-		Perform caching of the widget control frame and other 'static' areas.  This
-		method should not render the actual items.  Note that the items are typically
-		rendered to layer 3, other layers can be used for rendering imagery behind and
-		infront of the items.
-
-	\return
-		Nothing.
-	*/
-	virtual	void cacheListboxBaseImagery() = 0;
-
-
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
@@ -605,9 +592,6 @@ protected:
 	   Internal handler that is triggered when the user interacts with the scrollbars.
     */
     bool handle_scrollChange(const EventArgs& args);
-
-    // overridden from Window base class.
-    void populateRenderCache();
 
     /*!
     \brief
