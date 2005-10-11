@@ -113,53 +113,6 @@ void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 }
 
 
-String NormalTextColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getNormalTextColour());
-}
-
-
-void NormalTextColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<MultiLineEditbox*>(receiver)->setNormalTextColour(PropertyHelper::stringToColour(value));
-}
-
-
-String SelectedTextColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getSelectedTextColour());
-}
-
-
-void SelectedTextColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<MultiLineEditbox*>(receiver)->setSelectedTextColour(PropertyHelper::stringToColour(value));
-}
-
-
-String ActiveSelectionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getNormalSelectBrushColour());
-}
-
-
-void ActiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<MultiLineEditbox*>(receiver)->setNormalSelectBrushColour(PropertyHelper::stringToColour(value));
-}
-
-
-String InactiveSelectionColour::get(const PropertyReceiver* receiver) const
-{
-	return PropertyHelper::colourToString(static_cast<const MultiLineEditbox*>(receiver)->getInactiveSelectBrushColour());
-}
-
-
-void InactiveSelectionColour::set(PropertyReceiver* receiver, const String& value)
-{
-	static_cast<MultiLineEditbox*>(receiver)->setInactiveSelectBrushColour(PropertyHelper::stringToColour(value));
-}
-
 } // End of  MultiLineEditboxProperties namespace section
 
 } // End of  CEGUI namespace section

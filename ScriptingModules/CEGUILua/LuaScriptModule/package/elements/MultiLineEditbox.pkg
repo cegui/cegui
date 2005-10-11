@@ -10,20 +10,12 @@ class MultiLineEditbox : public Window
 	unsigned long getSelectionEndIndex() const;
 	unsigned long getSelectionLength() const;
 	unsigned long getMaxTextLength() const;
-	colour getNormalTextColour() const;
-	colour getSelectedTextColour() const;
-	colour getNormalSelectBrushColour() const;
-	colour getInactiveSelectBrushColour() const;
 	bool isWordWrapped() const;
 
 	void setReadOnly(bool setting);
 	void setCaratIndex(unsigned long carat_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaxTextLength(unsigned long max_len);
-	void setNormalTextColour(const colour& col);
-	void setSelectedTextColour(const colour& col);
-	void setNormalSelectBrushColour(const colour& col);
-	void setInactiveSelectBrushColour(const colour& col);
 	void ensureCaratIsVisible();
 	void setWordWrapping(bool setting);
 };

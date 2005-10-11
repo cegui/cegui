@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.6 on Mon Oct 10 13:30:22 2005.
+** Generated automatically by tolua++-1.0.6 on Mon Oct 10 14:33:56 2005.
 */
 
 #ifndef __cplusplus
@@ -26971,158 +26971,6 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_getMaxTextLength00(lua_State* tolu
 #endif
 }
 
-/* method: getNormalTextColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_getNormalTextColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::MultiLineEditbox* self = (const CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getNormalTextColour'",NULL);
-#endif
- {
-  CEGUI::colour tolua_ret = (CEGUI::colour)  self->getNormalTextColour();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::colour(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::colour));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getNormalTextColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: getSelectedTextColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectedTextColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::MultiLineEditbox* self = (const CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSelectedTextColour'",NULL);
-#endif
- {
-  CEGUI::colour tolua_ret = (CEGUI::colour)  self->getSelectedTextColour();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::colour(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::colour));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getSelectedTextColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: getNormalSelectBrushColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_getNormalSelectBrushColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::MultiLineEditbox* self = (const CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getNormalSelectBrushColour'",NULL);
-#endif
- {
-  CEGUI::colour tolua_ret = (CEGUI::colour)  self->getNormalSelectBrushColour();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::colour(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::colour));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getNormalSelectBrushColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: getInactiveSelectBrushColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_getInactiveSelectBrushColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::MultiLineEditbox* self = (const CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getInactiveSelectBrushColour'",NULL);
-#endif
- {
-  CEGUI::colour tolua_ret = (CEGUI::colour)  self->getInactiveSelectBrushColour();
- {
-#ifdef __cplusplus
- void* tolua_obj = new CEGUI::colour(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::colour));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::colour");
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getInactiveSelectBrushColour'.",&tolua_err);
- return 0;
-#endif
-}
-
 /* method: isWordWrapped of class  CEGUI::MultiLineEditbox */
 static int tolua_CEGUI_CEGUI_MultiLineEditbox_isWordWrapped00(lua_State* tolua_S)
 {
@@ -27275,130 +27123,6 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_setMaxTextLength00(lua_State* tolu
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setMaxTextLength'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setNormalTextColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_setNormalTextColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::colour",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::colour* col = ((const CEGUI::colour*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setNormalTextColour'",NULL);
-#endif
- {
-  self->setNormalTextColour(*col);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setNormalTextColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setSelectedTextColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_setSelectedTextColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::colour",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::colour* col = ((const CEGUI::colour*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelectedTextColour'",NULL);
-#endif
- {
-  self->setSelectedTextColour(*col);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setSelectedTextColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setNormalSelectBrushColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_setNormalSelectBrushColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::colour",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::colour* col = ((const CEGUI::colour*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setNormalSelectBrushColour'",NULL);
-#endif
- {
-  self->setNormalSelectBrushColour(*col);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setNormalSelectBrushColour'.",&tolua_err);
- return 0;
-#endif
-}
-
-/* method: setInactiveSelectBrushColour of class  CEGUI::MultiLineEditbox */
-static int tolua_CEGUI_CEGUI_MultiLineEditbox_setInactiveSelectBrushColour00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::MultiLineEditbox",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::colour",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::colour* col = ((const CEGUI::colour*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setInactiveSelectBrushColour'",NULL);
-#endif
- {
-  self->setInactiveSelectBrushColour(*col);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setInactiveSelectBrushColour'.",&tolua_err);
  return 0;
 #endif
 }
@@ -37844,19 +37568,11 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
  tolua_function(tolua_S,"getSelectionEndIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectionEndIndex00);
  tolua_function(tolua_S,"getSelectionLength",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectionLength00);
  tolua_function(tolua_S,"getMaxTextLength",tolua_CEGUI_CEGUI_MultiLineEditbox_getMaxTextLength00);
- tolua_function(tolua_S,"getNormalTextColour",tolua_CEGUI_CEGUI_MultiLineEditbox_getNormalTextColour00);
- tolua_function(tolua_S,"getSelectedTextColour",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectedTextColour00);
- tolua_function(tolua_S,"getNormalSelectBrushColour",tolua_CEGUI_CEGUI_MultiLineEditbox_getNormalSelectBrushColour00);
- tolua_function(tolua_S,"getInactiveSelectBrushColour",tolua_CEGUI_CEGUI_MultiLineEditbox_getInactiveSelectBrushColour00);
  tolua_function(tolua_S,"isWordWrapped",tolua_CEGUI_CEGUI_MultiLineEditbox_isWordWrapped00);
  tolua_function(tolua_S,"setReadOnly",tolua_CEGUI_CEGUI_MultiLineEditbox_setReadOnly00);
  tolua_function(tolua_S,"setCaratIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_setCaratIndex00);
  tolua_function(tolua_S,"setSelection",tolua_CEGUI_CEGUI_MultiLineEditbox_setSelection00);
  tolua_function(tolua_S,"setMaxTextLength",tolua_CEGUI_CEGUI_MultiLineEditbox_setMaxTextLength00);
- tolua_function(tolua_S,"setNormalTextColour",tolua_CEGUI_CEGUI_MultiLineEditbox_setNormalTextColour00);
- tolua_function(tolua_S,"setSelectedTextColour",tolua_CEGUI_CEGUI_MultiLineEditbox_setSelectedTextColour00);
- tolua_function(tolua_S,"setNormalSelectBrushColour",tolua_CEGUI_CEGUI_MultiLineEditbox_setNormalSelectBrushColour00);
- tolua_function(tolua_S,"setInactiveSelectBrushColour",tolua_CEGUI_CEGUI_MultiLineEditbox_setInactiveSelectBrushColour00);
  tolua_function(tolua_S,"ensureCaratIsVisible",tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaratIsVisible00);
  tolua_function(tolua_S,"setWordWrapping",tolua_CEGUI_CEGUI_MultiLineEditbox_setWordWrapping00);
  tolua_endmodule(tolua_S);

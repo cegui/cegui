@@ -66,12 +66,6 @@ public:
 	static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
 	static const String EventHorzScrollbarModeChanged;	//!< Event triggered when the horizontal scroll bar 'force' setting changes.
 
-	// default colours
-	static const argb_t	DefaultNormalTextColour;			//!< Colour applied to normal unselected text.
-	static const argb_t	DefaultSelectedTextColour;			//!< Colour applied to selected text.
-	static const argb_t	DefaultNormalSelectionColour;		//!< Colour applied to normal selection brush.
-	static const argb_t	DefaultInactiveSelectionColour;		//!< Colour applied to selection brush when widget is inactive.
-
     /*************************************************************************
         Child Widget name suffix constants
     *************************************************************************/
@@ -153,50 +147,6 @@ public:
 		The maximum number of code points (characters) that can be entered into this edit box.
 	*/
 	size_t	getMaxTextLength(void) const		{return d_maxTextLen;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering edit box text in the
-		normal, unselected state.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getNormalTextColour(void) const				{return d_normalTextColour;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the edit box text when within the
-		selected region.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getSelectedTextColour(void) const			{return d_selectTextColour;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the edit box selection highlight
-		when the edit box is active.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getNormalSelectBrushColour(void) const		{return d_selectBrushColour;}
-
-
-	/*!
-	\brief
-		return the currently set colour to be used for rendering the edit box selection highlight
-		when the edit box is inactive.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	colour	getInactiveSelectBrushColour(void) const	{return d_inactiveSelectBrushColour;}
 
 
 	/*!
@@ -287,58 +237,6 @@ public:
 
 	/*!
 	\brief
-		Set the colour to be used for rendering edit box text in the normal, unselected state.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalTextColour(const colour& col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the edit box text when within the
-		selected region.
-
-	\return
-		colour value describing the ARGB colour that is currently set.
-	*/
-	void	setSelectedTextColour(const colour& col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the edit box selection highlight
-		when the edit box is active.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setNormalSelectBrushColour(const colour& col);
-
-
-	/*!
-	\brief
-		Set the colour to be used for rendering the edit box selection highlight
-		when the edit box is inactive.
-
-	\param col
-		colour value describing the ARGB colour that is to be used.
-
-	\return
-		Nothing.
-	*/
-	void	setInactiveSelectBrushColour(const colour& col);
-
-
-	/*!
-	\brief
 		Scroll the view so that the current carat position is visible.
 	*/
 	void	ensureCaratIsVisible(void);
@@ -390,29 +288,6 @@ protected:
 	virtual	Rect	getTextRenderArea(void) const		= 0;
 
 
-	/*!
-	\brief
-		Perform rendering of the widget control frame and other 'static' areas.  This
-		method should not render the actual text.  Note that the text will be rendered
-		to layer 4 and the selection brush to layer 3, other layers can be used for
-		rendering imagery behind and infront of the text & selection..
-
-	\return
-		Nothing.
-	*/
-	virtual	void	cacheEditboxBaseImagery()		= 0;
-
-
-	/*!
-	\brief
-		Render the carat.
-
-	\return
-		Nothing
-	*/
-	virtual void	cacheCaratImagery(const Rect& textArea)	= 0;
-
-
 	/*************************************************************************
 		Implementation Methods
 	*************************************************************************/
@@ -421,13 +296,6 @@ protected:
 		Add multi-line edit box specific events
 	*/
 	void	addMultiLineEditboxEvents(void);
-
-
-	/*!
-	\brief
-		Render text lines.
-	*/
-	void	cacheTextLines(const Rect& dest_area);
 
 
 	/*!
@@ -450,10 +318,7 @@ protected:
 	size_t	getNextTokenLength(const String& text, size_t start_idx) const;
 
 
-	virtual	void populateRenderCache();
-
-
-	/*!
+    /*!
 	\brief
 		display required integrated scroll bars according to current state of the edit box and update their values.
 	*/
@@ -757,12 +622,6 @@ protected:
 	// images
 	const Image*	d_selectionBrush;	//!< Image to use as the selection brush (should be set by derived class).
 
-	// basic rendering colours
-	colour	d_normalTextColour;				//!< Text colour used normally.
-	colour	d_selectTextColour;				//!< Text colour used when text is highlighted
-	colour	d_selectBrushColour;			//!< Colour to apply to the selection brush.
-	colour	d_inactiveSelectBrushColour;	//!< Colour to apply to the selection brush when widget is inactive / read-only.
-
 
 private:
 	/*************************************************************************
@@ -774,10 +633,6 @@ private:
 	static MultiLineEditboxProperties::SelectionStart			d_selectionStartProperty;
 	static MultiLineEditboxProperties::SelectionLength			d_selectionLengthProperty;
 	static MultiLineEditboxProperties::MaxTextLength			d_maxTextLengthProperty;
-	static MultiLineEditboxProperties::NormalTextColour			d_normalTextColourProperty;
-	static MultiLineEditboxProperties::SelectedTextColour		d_selectedTextColourProperty;
-	static MultiLineEditboxProperties::ActiveSelectionColour	d_activeSelectionColourProperty;
-	static MultiLineEditboxProperties::InactiveSelectionColour	d_inactiveSelectionColourProperty;
 
 
 	/*************************************************************************

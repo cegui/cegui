@@ -1982,11 +1982,11 @@
     -->
     <WidgetLook name="WindowsLook/MultiLineEditbox">
         <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
         <Property name="MouseCursorImage" value="set:WindowsLook image:MouseTextBar" />
-        <Property name="NormalTextColour" value="FF000000" />
-        <Property name="SelectedTextColour" value="FFFFFFFF" />
-        <Property name="ActiveSelectionColour" value="FF607FFF" />
-        <Property name="InactiveSelectionColour" value="FF808080" />
         <Property name="SelectionBrushImage" value="set:WindowsLook image:Background" />
         <NamedArea name="TextArea">
             <Area>
