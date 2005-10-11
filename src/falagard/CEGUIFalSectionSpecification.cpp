@@ -32,43 +32,50 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    SectionSpecification::SectionSpecification(const String& owner, const String& sectionName) :
+    SectionSpecification::SectionSpecification(const String& owner, const String& sectionName, const String& controlPropertySource) :
         d_owner(owner),
         d_sectionName(sectionName),
         d_usingColourOverride(false),
-        d_colourProperyIsRect(false)
+        d_colourProperyIsRect(false),
+        d_renderControlProperty(controlPropertySource)
     {}
 
-    SectionSpecification::SectionSpecification(const String& owner, const String& sectionName, const ColourRect& cols) :
+    SectionSpecification::SectionSpecification(const String& owner, const String& sectionName, const String& controlPropertySource, const ColourRect& cols) :
         d_owner(owner),
         d_sectionName(sectionName),
         d_coloursOverride(cols),
         d_usingColourOverride(true),
-        d_colourProperyIsRect(false)
+        d_colourProperyIsRect(false),
+        d_renderControlProperty(controlPropertySource)
     {}
 
     void SectionSpecification::render(Window& srcWindow, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
     {
-        try
+        // see if we need to bother rendering
+        if (d_renderControlProperty.empty() ||
+            PropertyHelper::stringToBool(srcWindow.getProperty(d_renderControlProperty)))
         {
-            // get the imagery section object with the name we're set up to use
-			const ImagerySection* sect =
-				&WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
+            try
+            {
+                // get the imagery section object with the name we're set up to use
+                const ImagerySection* sect =
+                    &WidgetLookManager::getSingleton().getWidgetLook(d_owner).getImagerySection(d_sectionName);
 
-            // decide what colours are to be used
-            ColourRect finalColours;
-            initColourRectForOverride(srcWindow, finalColours);
-            finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
+                // decide what colours are to be used
+                ColourRect finalColours;
+                initColourRectForOverride(srcWindow, finalColours);
+                finalColours.modulateAlpha(srcWindow.getEffectiveAlpha());
 
-            if (modcols)
-                finalColours *= *modcols;
+                if (modcols)
+                    finalColours *= *modcols;
 
-            // render the imagery section
-            sect->render(srcWindow, base_z, &finalColours, clipper, clipToDisplay);
+                // render the imagery section
+                sect->render(srcWindow, base_z, &finalColours, clipper, clipToDisplay);
+            }
+            // do nothing here, errors are non-faltal and are logged for debugging purposes.
+            catch (Exception)
+            {}
         }
-        // do nothing here, errors are non-faltal and are logged for debugging purposes.
-        catch (Exception)
-        {}
     }
 
     void SectionSpecification::render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modcols, const Rect* clipper, bool clipToDisplay) const
@@ -171,6 +178,11 @@ namespace CEGUI
         d_colourProperyIsRect = setting;
     }
 
+    void SectionSpecification::setRenderControlPropertySource(const String& property)
+    {
+        d_renderControlProperty = property;
+    }
+
     void SectionSpecification::writeXMLToStream(OutStream& out_stream) const
     {
         out_stream << "<Section ";
@@ -179,6 +191,10 @@ namespace CEGUI
             out_stream << "look=\"" << d_owner << "\" ";
 
         out_stream << "section=\"" << d_sectionName << "\"";
+
+        // render controlling property name if needed
+        if (!d_renderControlProperty.empty())
+            out_stream << " controlProperty=\"" << d_renderControlProperty <<"\"";
 
         if (d_usingColourOverride)
         {

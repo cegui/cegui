@@ -52,8 +52,12 @@ namespace CEGUI
 
         \param sectionName
             String holding the name of the target section.
+
+        \param controlPropertySource
+            String holding the name of a boolean property that will control if
+            the rendering for this secion will actually occur or not.
         */
-        SectionSpecification(const String& owner, const String& sectionName);
+        SectionSpecification(const String& owner, const String& sectionName, const String& controlPropertySource);
 
         /*!
         \brief
@@ -65,10 +69,14 @@ namespace CEGUI
         \param sectionName
             String holding the name of the target section.
 
+        \param controlPropertySource
+            String holding the name of a boolean property that will control if
+            the rendering for this secion will actually occur or not.
+
         \param cols
             Override colours to be used (modulates sections master colours).
         */
-        SectionSpecification(const String& owner, const String& sectionName, const ColourRect& cols);
+        SectionSpecification(const String& owner, const String& sectionName, const String& controlPropertySource, const ColourRect& cols);
 
         /*!
         \brief
@@ -193,6 +201,19 @@ namespace CEGUI
 
         /*!
         \brief
+            Set the name of the property that controls whether to actually
+            render this section.
+
+        \param property
+            String containing the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setRenderControlPropertySource(const String& property);
+
+        /*!
+        \brief
             Writes an xml representation of this SectionSpecification to \a out_stream.
 
         \param out_stream
@@ -223,6 +244,7 @@ namespace CEGUI
         bool            d_usingColourOverride;  //!< true if colour override is enabled.
         String          d_colourPropertyName;   //!< name of property to fetch colours from.
         bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
+        String          d_renderControlProperty;    //!< Name of a 'boolean' property that controls whether to actually draw this section.
     };
 
 

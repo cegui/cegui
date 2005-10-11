@@ -61,6 +61,7 @@
         </xsd:choice>
         <xsd:attribute name="look" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="section" type="xsd:string" use="required" />
+        <xsd:attribute name="controlProperty" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
 	<xsd:complexType name="imagerySectionType">
 		<xsd:sequence>

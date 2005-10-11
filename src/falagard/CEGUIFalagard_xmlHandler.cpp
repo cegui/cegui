@@ -103,6 +103,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::LayoutOnWriteAttribute("layoutOnWrite");
     const String Falagard_xmlHandler::RedrawOnWriteAttribute("redrawOnWrite");
     const String Falagard_xmlHandler::TargetPropertyAttribute("targetProperty");
+    const String Falagard_xmlHandler::ControlPropertyAttribute("controlProperty");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -343,7 +344,10 @@ namespace CEGUI
         assert(d_section == 0);
         assert(d_widgetlook != 0);
         String owner(attributes.getValueAsString(LookAttribute));
-        d_section = new SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner, attributes.getValueAsString(SectionNameAttribute));
+        d_section =
+            new SectionSpecification(owner.empty() ? d_widgetlook->getName() : owner,
+                                     attributes.getValueAsString(SectionNameAttribute),
+                                     attributes.getValueAsString(ControlPropertyAttribute));
 
         CEGUI_LOGINSANE("---------> Layer references imagery section '" + d_section->getSectionName() + "'.");
     }

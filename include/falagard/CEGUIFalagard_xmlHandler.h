@@ -153,6 +153,7 @@ namespace CEGUI
         static const String LayoutOnWriteAttribute;     //!< Attribute name that stores whether to layout on write of a property.
         static const String RedrawOnWriteAttribute;     //!< Attribute name that stores whether to redraw on write of a property.
         static const String TargetPropertyAttribute;    //!< Attribute name that stores a name of a target property.
+        static const String ControlPropertyAttribute;   //!< Attribute name that stores a name of a property to control rendering of a section.
 
         /*************************************************************************
             helper methods
