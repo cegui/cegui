@@ -3011,7 +3011,7 @@
 					/usr/X11R6/include/freetype2,
 					/Library/Frameworks/Xerces.framework/Headers,
 				);
-				INFOPLIST_FILE = "CEGUIOpenGLRenderer-Info.plist";
+				INFOPLIST_FILE = "OpenGLRenderer-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
 				LIBRARY_STYLE = DYNAMIC;
