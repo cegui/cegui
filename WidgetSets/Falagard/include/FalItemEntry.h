@@ -33,7 +33,7 @@ namespace CEGUI
 {
     /*!
     \brief
-        Static class for the FalagardBase module.
+        ItemEntry class for the FalagardBase module.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 

@@ -50,6 +50,16 @@ namespace CEGUI
 
         Named Areas:
             - ProgressArea
+
+        Property initialiser definitions:
+            - VerticalProgress - boolean property.
+              Determines whether the progress widget is horizontal or vertical.
+              Default is horizontal.  Optional.
+
+            - ReversedProgress - boolean property.
+              Determines whether the progress grows in the opposite direction to
+              what is considered 'usual'.  Set to "True" to have progress grow
+              towards the left or bottom of the progress area.  Optional.
     */
     class FALAGARDBASE_API FalagardProgressBar : public ProgressBar
     {

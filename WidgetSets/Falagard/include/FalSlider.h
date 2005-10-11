@@ -51,6 +51,11 @@ namespace CEGUI
 
         Child Widgets:
             Thumb based widget with name suffix "__auto_thumb__"
+
+        Property initialiser definitions:
+            - VerticalSlider - boolean property.
+              Indicates whether this slider will operate in the vertical or
+              horizontal direction.  Default is for horizontal.  Optional.
     */
     class FALAGARDBASE_API FalagardSlider : public Slider
     {

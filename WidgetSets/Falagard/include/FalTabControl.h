@@ -50,9 +50,14 @@ namespace CEGUI
             TabPane based widget with name suffix "__auto_TabPane__"
             optional: DefaultWindow to contain tab buttons with name suffix "__auto_TabPane__Buttons"
 
+        Property initialiser definitions:
+            - TabButtonType - specifies a TabButton based widget type to be
+              created each time a new tab button is required.
+
     \note
-        The current TabControl base class enforces a strict layout, so while imagery can be customised
-        as desired, the general layout of the component widgets is, at least for the time being, fixed.
+        The current TabControl base class enforces a strict layout, so while
+        imagery can be customised as desired, the general layout of the
+        component widgets is, at least for the time being, fixed.
     */
     class FALAGARDBASE_API FalagardTabControl : public TabControl
     {

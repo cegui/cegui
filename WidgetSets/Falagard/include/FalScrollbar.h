@@ -53,6 +53,11 @@ namespace CEGUI
             Thumb based widget with name suffix "__auto_thumb__"
             PushButton based widget with name suffix "__auto_incbtn__"
             PushButton based widget with name suffix "__auto_decbtn__"
+
+        Property initialiser definitions:
+            - VerticalScrollbar - boolean property.
+            Indicates whether this scrollbar will operate in the vertical or
+            horizontal direction.  Default is for horizontal.  Optional.
     */
     class FALAGARDBASE_API FalagardScrollbar : public Scrollbar
     {
