@@ -1,28 +1,12 @@
 /***********************************************************************
-	Vector2
-***********************************************************************/
-class Vector2
-{
-	// rename 'd_x' and 'd_y' to just 'x' and 'y'
-	float d_x @ x;
-	float d_y @ y;
-
-	Vector2 operator+ (const Vector2& vec) const;
-	Vector2 operator- (const Vector2& vec) const;
-	Vector2 operator* (const Vector2& vec) const;
-	bool operator== (const Vector2& vec) const;
-
-	Vector2();
-	Vector2(float x, float y);
-};
-
-
-
-/***********************************************************************
 	Point
 
-	just a typedef only has effect inside the pkg files
-	- not inside lua. so only Vector2 would be available
+    Point is really just a typedef for Vector2, but it seems that
+    the Point variant is most widely used. So we export that.
+    The thing here is that tolua++ does have any easy means for
+    this kind of aliases, and we want them to be completely
+    interchangable.
+    For convenience CEGUI.Vector2 is defined as a copy of CEGUI.Point
 ***********************************************************************/
 class Point
 {
@@ -38,6 +22,11 @@ class Point
 	Point();
 	Point(float x, float y);
 };
+
+// do a simple copy of Point to Vector2
+$[
+CEGUI.Vector2 = CEGUI.Point
+$]
 
 
 

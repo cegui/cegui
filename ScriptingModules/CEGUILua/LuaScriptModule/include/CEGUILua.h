@@ -117,28 +117,26 @@ public:
 	int executeScriptGlobal(const String& function_name);
 
 
-	/*!
-	\brief
-		Execute a scripted global 'event handler' function.  The function should take some kind of EventArgs like parameter
-		that the concrete implementation of this function can create from the passed EventArgs based object.  The function
-		should not return anything.
+    /*!
+    \brief
+        Execute a scripted global 'event handler' function by looking it up by name.
 
-	\param handler_name
-		String object holding the name of the scripted handler function.
-		If this string contains dots '.' it will be parsed as tables containing a function field.
-		For example: 'mytable.subtable.func'
+    \param handler_name
+        String object holding the name of the scripted handler function.
+        If this string contains dots '.' it will be parsed as tables containing a function field.
+        For example: 'mytable.subtable.func'
 
-	\param e
-		EventArgs based object that should be passed, by any appropriate means, to the scripted function.
+    \param e
+        EventArgs based object that should be passed, by any appropriate means, to the scripted function.
 
-	\return
-		- true if the event was handled.
-		- false if the event was not handled.
-	*/
-	bool executeScriptedEventHandler(const String& handler_name, const EventArgs& e);
+    \return
+        - true if the event was handled.
+        - false if the event was not handled.
+    */
+    bool executeScriptedEventHandler(const String& handler_name, const EventArgs& e);
 
 
-	/*!
+    /*!
     \brief
         Execute script code contained in the given CEGUI::String object.
 
@@ -148,13 +146,58 @@ public:
     \return
         Nothing.
     */
-	void executeString(const String& str);
+    void executeString(const String& str);
 
+    /*************************************************************************
+        Event subscription
+    *************************************************************************/
+    /*!
+    \brief
+            Subscribes the named Event to a scripted funtion
 
-	/*************************************************************************
-		Bindings creation / destruction
-	*************************************************************************/
-	/*!
+    \param target
+            The target EventSet for the subscription.
+
+    \param name
+            String object containing the name of the Event to subscribe to.
+
+    \param subscriber_name
+            String object containing the name of the script funtion that is to be subscribed to the Event.
+
+    \return
+            Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
+
+    \exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
+    */
+    Event::Connection	subscribeEvent(EventSet* target, const String& name, const String& subscriber_name);
+
+    /*!
+    \brief
+            Subscribes the specified group of the named Event to a scripted funtion.
+
+    \param target
+            The target EventSet for the subscription.
+
+    \param name
+            String object containing the name of the Event to subscribe to.
+
+    \param group
+            Group which is to be subscribed to.  Subscription groups are called in ascending order.
+
+    \param subscriber_name
+            String object containing the name of the script funtion that is to be subscribed to the Event.
+
+    \return
+            Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
+
+    \exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
+    */
+    Event::Connection	subscribeEvent(EventSet* target, const String& name, Event::Group group, const String& subscriber_name);
+
+    /*************************************************************************
+        Bindings creation / destruction
+    *************************************************************************/
+    /*!
     \brief
         Method called during system initialisation, prior to running any scripts via the ScriptModule, to enable the ScriptModule
         to perform any operations required to complete initialisation or binding of the script language to the gui system objects.
@@ -162,10 +205,10 @@ public:
     \return
         Nothing.
     */
-	void createBindings(void);
+    void createBindings(void);
 
 
-	/*!
+    /*!
     \brief
         Method called during system destruction, after all scripts have been run via the ScriptModule, to enable the ScriptModule
         to perform any operations required to cleanup bindings of the script language to the gui system objects, as set-up in the
@@ -174,35 +217,58 @@ public:
     \return
         Nothing.
     */
-	void destroyBindings(void);
+    void destroyBindings(void);
 
-
-	/*************************************************************************
-		Accessor type functions
-	*************************************************************************/
-	/*!
+    /*************************************************************************
+        Accessor type functions
+    *************************************************************************/
+    /*!
     \brief
-		Method used to get a pointer to the lua_State that the script module is attached to.
+        Method used to get a pointer to the lua_State that the script module is attached to.
 
     \return
         A pointer to the lua_State that the script module is attached to.
     */
-	lua_State* getLuaState(void) const	{return d_state;}
-
+    lua_State* getLuaState(void) const {return d_state;}
 
 private:
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
     void setModuleIdentifierString();
+    bool pushNamedFunction(const String& name);
 
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    bool d_ownsState;      //!< true when the attached lua_State was created by this script module
+    lua_State* d_state;    //!< The lua_State that this script module uses.
+};
 
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	bool d_ownsState;		//!< true when the attached lua_State was created by this script module
-	lua_State* d_state;		//!< The lua_State that this script module uses.
+/*!
+\brief
+    Functor class used for binding anonymous Lua functions to events
+*/
+class LuaFunctor
+{
+public:
+    lua_State* L;
+    int index;
+    int self;
 
+    LuaFunctor(lua_State* state, int func, int selfIndex) : L(state), index(func), self(selfIndex) {}
+    LuaFunctor(const LuaFunctor& cp) : L(cp.L), index(cp.index), self(cp.self) {}
+    ~LuaFunctor();
+
+    bool operator()(const EventArgs& args) const;
+
+    /*!
+    \brief
+        function used to subscribe any Lua function as event handler.
+        References using the Lua registry.
+        To be called from Lua only.
+    */
+    static Event::Connection SubscribeEvent(EventSet* self, const String& eventName, int funcIndex, int selfIndex, lua_State* L);
 };
 
 } // namespace CEGUI

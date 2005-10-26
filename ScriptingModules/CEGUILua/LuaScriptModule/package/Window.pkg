@@ -168,6 +168,13 @@ class Window //: public EventSet
 	bool getModalState() const;
 	void setModalState(bool state);
 
+    string getUserString(string name) const;
+    bool isUserStringDefined(string name) const;
+    void setUserString(string name, string value);
+
+    void beginInitialisation();
+    void endInitialisation();
+
 	// unified stuff
 	void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
 	void setWindowArea(const UVector2& pos, const UVector2& size);
@@ -191,43 +198,6 @@ class Window //: public EventSet
 	const UVector2& getWindowMaxSize() const;
 	const UVector2& getWindowMinSize() const;
 
-	/****************************************************
-	Functions for easy casting CEGUI::Window class
-	to the widget classes derived from it.
-	*****************************************************/
-	tolua_outside ButtonBase*			ceguiLua_toButtonBase @ toButtonBase();
-	tolua_outside Checkbox*				ceguiLua_toCheckbox @ toCheckbox();
-	tolua_outside Combobox*				ceguiLua_toCombobox @ toCombobox();
-	tolua_outside ComboDropList*		ceguiLua_toComboDropList @ toComboDropList();
-	tolua_outside DragContainer*		ceguiLua_toDragContainer @ toDragContainer();
-	tolua_outside Editbox*				ceguiLua_toEditbox @ toEditbox();
-	tolua_outside FrameWindow*			ceguiLua_toFrameWindow @ toFrameWindow();
-	tolua_outside GUISheet*				ceguiLua_toGUISheet @ toGUISheet();
-	tolua_outside ItemEntry*			ceguiLua_toItemEntry @ toItemEntry();
-	tolua_outside ItemListBase*			ceguiLua_toItemListBase @ toItemListBase();
-	tolua_outside Listbox*				ceguiLua_toListbox @ toListbox();
-	tolua_outside ListHeader*			ceguiLua_toListHeader @ toListHeader();
-	tolua_outside ListHeaderSegment*	ceguiLua_toListHeaderSegment @ toListHeaderSegment();
-	tolua_outside Menubar*				ceguiLua_toMenubar @ toMenubar();
-	tolua_outside MenuBase*				ceguiLua_toMenuBase @ toMenuBase();
-	tolua_outside MenuItem*				ceguiLua_toMenuItem @ toMenuItem();
-	tolua_outside MultiColumnList*		ceguiLua_toMultiColumnList @ toMultiColumnList();
-	tolua_outside MultiLineEditbox*		ceguiLua_toMultiLineEditbox @ toMultiLineEditbox();
-	tolua_outside PopupMenu*			ceguiLua_toPopupMenu @ toPopupMenu();
-	tolua_outside ProgressBar*			ceguiLua_toProgressBar @ toProgressBar();
-	tolua_outside PushButton*			ceguiLua_toPushButton @ toPushButton();
-	tolua_outside RadioButton*			ceguiLua_toRadioButton @ toRadioButton();
-	tolua_outside ScrollablePane*		ceguiLua_toScrollablePane @ toScrollablePane();
-	tolua_outside Scrollbar*			ceguiLua_toScrollbar @ toScrollbar();
-	tolua_outside ScrolledContainer*	ceguiLua_toScrolledContainer @ toScrolledContainer();
-	tolua_outside Slider*				ceguiLua_toSlider @ toSlider();
-	tolua_outside Spinner*				ceguiLua_toSpinner @ toSpinner();
-	tolua_outside TabButton*			ceguiLua_toTabButton @ toTabButton();
-	tolua_outside TabControl*			ceguiLua_toTabControl @ toTabControl();
-	tolua_outside TabPane*				ceguiLua_toTabPane @ toTabPane();
-	tolua_outside Thumb*				ceguiLua_toThumb @ toThumb();
-	tolua_outside Tooltip*				ceguiLua_toTooltip @ toTooltip();
-
 	//////////////////////////////////////////////
 	// PropertySet
 	void setProperty(string name, string value);
@@ -247,11 +217,14 @@ class Window //: public EventSet
 	void removeAllEvents();
 	bool isEventPresent(string name);
 
-	void subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
+	tolua_throws|CEGUI::UnknownObjectException,error| tolua_outside EventConnection LuaFunctorSubscribeEvent @ subscribeEvent(string name, lua_Object funcIndex, lua_Object selfIndex=LUA_NOREF, lua_State*);
+
+	tolua_throws|CEGUI::UnknownObjectException,error| EventConnection subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
+	
 	void fireEvent(string name, EventArgs& args, string eventnamespace="");
 
 	bool isMuted() const;
 	void setMutedState(bool setting);
 
-    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
+        tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };

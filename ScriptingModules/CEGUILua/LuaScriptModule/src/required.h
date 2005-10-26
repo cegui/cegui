@@ -24,10 +24,13 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "CEGUI.h"
+#include "CEGUILua.h"
 
 #define __operator_increment    operator++
 #define __operator_decrement    operator--
 #define __operator_dereference  operator*
+
+#define LuaFunctorSubscribeEvent CEGUI::LuaFunctor::SubscribeEvent
 
 typedef CEGUI::String string;
 
@@ -35,56 +38,6 @@ namespace CEGUI
 {
 
 typedef Event::Connection EventConnection;
-
-
-/*************************************************************************
-	Helper functions for easy casting of the EventArgs class
-*************************************************************************/
-const MouseCursorEventArgs&		ceguiLua_toMouseCursorEventArgs(const EventArgs& e);
-const WindowEventArgs&			ceguiLua_toWindowEventArgs(const EventArgs& e);
-const ActivationEventArgs&		ceguiLua_toActivationEventArgs(const EventArgs& e);
-const HeaderSequenceEventArgs&	ceguiLua_toHeaderSequenceEventArgs(const EventArgs& e);
-const MouseEventArgs&			ceguiLua_toMouseEventArgs(const EventArgs& e);
-const KeyEventArgs&				ceguiLua_toKeyEventArgs(const EventArgs& e);
-const DragDropEventArgs&		ceguiLua_toDragDropEventArgs(const EventArgs& e);
-
-
-/*************************************************************************
-	Helper functions for easy casting of the classes derived from
-	CEGUI::Window (the widgets)
-*************************************************************************/
-ButtonBase*			ceguiLua_toButtonBase(Window* w);
-Checkbox*			ceguiLua_toCheckbox(Window* w);
-Combobox*			ceguiLua_toCombobox(Window* w);
-ComboDropList*		ceguiLua_toComboDropList(Window* w);
-DragContainer*		ceguiLua_toDragContainer(Window* w);
-Editbox*			ceguiLua_toEditbox(Window* w);
-FrameWindow*		ceguiLua_toFrameWindow(Window* w);
-GUISheet*			ceguiLua_toGUISheet(Window* w);
-ItemEntry*			ceguiLua_toItemEntry(Window* w);
-ItemListBase*		ceguiLua_toItemListBase(Window* w);
-Listbox*			ceguiLua_toListbox(Window* w);
-ListHeader*			ceguiLua_toListHeader(Window* w);
-ListHeaderSegment*	ceguiLua_toListHeaderSegment(Window* w);
-Menubar*			ceguiLua_toMenubar(Window* w);
-MenuBase*			ceguiLua_toMenuBase(Window* w);
-MenuItem*			ceguiLua_toMenuItem(Window* w);
-MultiColumnList*	ceguiLua_toMultiColumnList(Window* w);
-MultiLineEditbox*	ceguiLua_toMultiLineEditbox(Window* w);
-PopupMenu*			ceguiLua_toPopupMenu(Window* w);
-ProgressBar*		ceguiLua_toProgressBar(Window* w);
-PushButton*			ceguiLua_toPushButton(Window* w);
-RadioButton*		ceguiLua_toRadioButton(Window* w);
-ScrollablePane*		ceguiLua_toScrollablePane(Window* w);
-Scrollbar*			ceguiLua_toScrollbar(Window* w);
-ScrolledContainer*	ceguiLua_toScrolledContainer(Window* w);
-Slider*				ceguiLua_toSlider(Window* w);
-Spinner*			ceguiLua_toSpinner(Window* w);
-TabButton*			ceguiLua_toTabButton(Window* w);
-TabControl*			ceguiLua_toTabControl(Window* w);
-TabPane*			ceguiLua_toTabPane(Window* w);
-Thumb*				ceguiLua_toThumb(Window* w);
-Tooltip*			ceguiLua_toTooltip(Window* w);
 
 
 /*************************************************************************
@@ -130,8 +83,8 @@ inline EventIterator ceguiLua_getEventIterator(const T* self)
 /************************************************************************
     writeWindowLayoutToStream -> file
 *************************************************************************/
-void ceguiLua_WindowManager_writeWindowLayoutToStream(const WindowManager* wm, const String& window, const String& filename, bool writeParent);
-void ceguiLua_WindowManager_writeWindowLayoutToStream(const WindowManager* wm, const Window& window, const String& filename, bool writeParent);
+void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, const String& window, const String& filename, bool writeParent);
+void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, const Window& window, const String& filename, bool writeParent);
 
 
 /************************************************************************
