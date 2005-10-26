@@ -27,6 +27,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIGlobalEventSet.h"
 #include "CEGUIScriptModule.h"
+#include "CEGUISystem.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -110,7 +111,13 @@ bool EventSet::isEventPresent(const String& name)
 *************************************************************************/
 Event::Connection EventSet::subscribeScriptedEvent(const String& name, const String& subscriber_name)
 {
-	return subscribeEvent(name, Event::Subscriber(ScriptFunctor(subscriber_name)));
+	//return subscribeEvent(name, Event::Subscriber(ScriptFunctor(subscriber_name)));
+	ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
+	if (!sm)
+	{
+	   throw InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available");
+	}
+	return sm->subscribeEvent(this, name, subscriber_name);
 }
 
 
@@ -119,7 +126,13 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name, const Str
 *************************************************************************/
 Event::Connection EventSet::subscribeScriptedEvent(const String& name, Event::Group group, const String& subscriber_name)
 {
-	return subscribeEvent(name, group, Event::Subscriber(ScriptFunctor(subscriber_name)));
+        //return subscribeEvent(name, group, Event::Subscriber(ScriptFunctor(subscriber_name)));
+        ScriptModule* sm = System::getSingletonPtr()->getScriptingModule();
+	if (!sm)
+	{
+	   throw InvalidRequestException("[EventSet::subscribeScriptedEvent] No scripting module is available");
+	}
+	return sm->subscribeEvent(this, name, group, subscriber_name);
 }
 
 

@@ -153,6 +153,49 @@ public:
     */
     const String& getIdentifierString() const;
 
+    /*!
+    \brief
+            Subscribes the named Event to a scripted funtion
+
+    \param target
+            The target EventSet for the subscription.
+
+    \param name
+            String object containing the name of the Event to subscribe to.
+
+    \param subscriber_name
+            String object containing the name of the script funtion that is to be subscribed to the Event.
+
+    \return
+            Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
+
+    \exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
+    */
+    virtual Event::Connection	subscribeEvent(EventSet* target, const String& name, const String& subscriber_name) = 0;
+
+    /*!
+    \brief
+            Subscribes the specified group of the named Event to a scripted funtion.
+
+    \param target
+            The target EventSet for the subscription.
+
+    \param name
+            String object containing the name of the Event to subscribe to.
+
+    \param group
+            Group which is to be subscribed to.  Subscription groups are called in ascending order.
+
+    \param subscriber_name
+            String object containing the name of the script funtion that is to be subscribed to the Event.
+
+    \return
+            Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
+
+    \exception UnknownObjectException	Thrown if an Event named \a name is not in the EventSet
+    */
+    virtual Event::Connection	subscribeEvent(EventSet* target, const String& name, Event::Group group, const String& subscriber_name) = 0;
+
 protected:
     String d_identifierString;                 //!< String that holds some id information about the module.
 };
