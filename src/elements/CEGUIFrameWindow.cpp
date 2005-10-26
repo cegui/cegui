@@ -688,8 +688,11 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 *************************************************************************/
 void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
+    Window::onTextChanged(e);
     // pass this onto titlebar component.
     getTitlebar()->setText(d_text);
+    // maybe the user is using a fontdim for titlebar dimensions ;)
+    performChildWindowLayout();
 }
 
 
