@@ -1,0 +1,2 @@
+In here we have a modified version of the tolua++ 1.0.7 code generator with added support for exception handling.
+See '../lua_and_tolua++/tolua++README' for more details.
