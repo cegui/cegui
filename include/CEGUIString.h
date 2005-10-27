@@ -1474,7 +1474,7 @@ public:
 		utf32* p = ptr();
 
 		while(num--)
-			*p = code_point;
+			*p++ = code_point;
 
 		return *this;
 	}
