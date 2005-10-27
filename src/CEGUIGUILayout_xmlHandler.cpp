@@ -1,9 +1,9 @@
 /************************************************************************
-	filename: 	CEGUIGUILayout_xmlHandler.cpp
-	created:	5/7/2004
-	author:		Paul D Turner
-	
-	purpose:	Implements XML parser for GUILayout files
+    filename:   CEGUIGUILayout_xmlHandler.cpp
+    created:    5/7/2004
+    author:     Paul D Turner
+
+    purpose:    Implements XML parser for GUILayout files
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
@@ -34,7 +34,7 @@
 namespace CEGUI
 {
 /*************************************************************************
-	Implementation Constants
+    Implementation Constants
 *************************************************************************/
 const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );
 const String GUILayout_xmlHandler::WindowElement( "Window" );
@@ -102,40 +102,40 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
 
 
 /*************************************************************************
-	Destroy all windows created so far.	
+    Destroy all windows created so far.
 *************************************************************************/
 void GUILayout_xmlHandler::cleanupLoadedWindows(void)
 {
-	// Notes: We could just destroy the root window of the layout, which normally would also destroy
-	// all attached windows.  Since the client may have specified that certain windows are not auto-destroyed
-	// we can't rely on this, so we work backwards detaching and deleting windows instead.
-	while (!d_stack.empty())
-	{
-		Window* wnd = d_stack.back();
+    // Notes: We could just destroy the root window of the layout, which normally would also destroy
+    // all attached windows.  Since the client may have specified that certain windows are not auto-destroyed
+    // we can't rely on this, so we work backwards detaching and deleting windows instead.
+    while (!d_stack.empty())
+    {
+        Window* wnd = d_stack.back();
 
-		// detach from parent
-		if (wnd->getParent())
-		{
-			wnd->getParent()->removeChildWindow(wnd);
-		}
+        // detach from parent
+        if (wnd->getParent())
+        {
+            wnd->getParent()->removeChildWindow(wnd);
+        }
 
-		// destroy the window
-		WindowManager::getSingleton().destroyWindow(wnd);
+        // destroy the window
+        WindowManager::getSingleton().destroyWindow(wnd);
 
-		// pop window from stack
-		d_stack.pop_back();
-	}
+        // pop window from stack
+        d_stack.pop_back();
+    }
 
-	d_root = 0;
+    d_root = 0;
 }
 
 
 /*************************************************************************
-	Return a pointer to the 'root' window created.
+    Return a pointer to the 'root' window created.
 *************************************************************************/
 Window* GUILayout_xmlHandler::getLayoutRootWindow(void) const
 {
-	return d_root;
+    return d_root;
 }
 
 /*************************************************************************
@@ -276,7 +276,7 @@ void GUILayout_xmlHandler::elementEventStart(const XMLAttributes& attributes)
     try
     {
         if (!d_stack.empty())
-            d_stack.back()->subscribeEvent(eventName, ScriptFunctor(functionName));
+            d_stack.back()->subscribeScriptedEvent(eventName, functionName);
     }
     catch (Exception exc)
     {
