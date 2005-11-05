@@ -231,17 +231,21 @@ public:
 	WindowFactory*	getFactory(const String& type) const;
 
 
-	/*!
-	\brief
-		Checks the list of registered WindowFactory objects for one which creates Window objects of the specified type.
+    /*!
+    \brief
+        Checks the list of registered WindowFactory objects, aliases, and
+        falagard mapped types for one which can create Window objects of the
+        specified type.
 
-	\param name
-		String containing the name (technically, Window type name) of the WindowFactory to check for.
+    \param name
+        String containing the Window type name to check for.
 
-	\return
-		true if a WindowFactory that creates Window objects of type \a name is registered.  Else, false.
-	*/
-	bool	isFactoryPresent(const String& name) const;
+    \return
+        - true if a WindowFactory, alias, or falagard mapping for Window objects
+          of type \a name is registered.
+        - false if the system knows nothing about windows of type \a name.
+    */
+    bool	isFactoryPresent(const String& name) const;
 
 
 	/*!
@@ -353,6 +357,27 @@ public:
     \exception InvalidRequestException thrown if \a type is not a falagard mapping type (or maybe the type didn't exist).
     */
     const String& getMappedLookForType(const String& type) const;
+
+
+    /*!
+    \brief
+        Use the alias system, where required, to 'de-reference' the specified
+        type to an actual window type that can be created directly (that being
+        either a concrete window type, or a falagard mapped type).
+
+    \note
+        Even though implied by the above description, this method does not
+        check that a factory for the final type exists; we simply say that the
+        returned type is not an alias for some other type.
+
+    \param type
+        String describing the type to be de-referenced.
+
+    \return
+        String object holding a type for a window that can be created directly;
+        that is, a type that does not describe an alias to some other type.
+    */
+    String getDereferencedAliasType(const String& type) const;
 
 private:
 	/*************************************************************************

@@ -91,63 +91,56 @@ void WindowFactoryManager::removeFactory(WindowFactory* factory)
 *************************************************************************/
 WindowFactory* WindowFactoryManager::getFactory(const String& type) const
 {
-	// first try for a 'real' type
-	WindowFactoryRegistry::const_iterator pos = d_factoryRegistry.find(type);
+    // first, dereference aliased types, as needed.
+    String targetType(getDereferencedAliasType(type));
+
+	// try for a 'real' type
+	WindowFactoryRegistry::const_iterator pos = d_factoryRegistry.find(targetType);
 
 	// found an actual factory for this type
 	if (pos != d_factoryRegistry.end())
 	{
 		return pos->second;
 	}
-	// no real type exists with that type so try for an aliased type
-	else
-	{
-		TypeAliasRegistry::const_iterator aliasPos = d_aliasRegistry.find(type);
+    // no concrete type, try for a falagard mapped type
+    else
+    {
+        FalagardMapRegistry::const_iterator falagard = d_falagardRegistry.find(targetType);
 
-        // found aliased type
-		if (aliasPos != d_aliasRegistry.end())
-		{
-			// recursively call getFactory, for the alias target type (allows aliasing of aliased names)
-			return getFactory(aliasPos->second.getActiveTarget());
-		}
-		// no aliased type, try for a falagard mapped type
-		else
-		{
-            FalagardMapRegistry::const_iterator falagard = d_falagardRegistry.find(type);
-
-            // found falagard mapping for this type
-            if (falagard != d_falagardRegistry.end())
-            {
-                // recursively call getFactory on the target base type
-                return getFactory(falagard->second.d_baseType);
-            }
-            // type not found anywhere, give up with an exception.
-            else
-            {
-              throw UnknownObjectException("WindowFactoryManager::getFactory - A WindowFactory object (nor an alias, or mapping) for '" + type + "' Window objects is not registered with the system.");
-            }
+        // found falagard mapping for this type
+        if (falagard != d_falagardRegistry.end())
+        {
+            // recursively call getFactory on the target base type
+            return getFactory(falagard->second.d_baseType);
+        }
+        // type not found anywhere, give up with an exception.
+        else
+        {
+            throw UnknownObjectException("WindowFactoryManager::getFactory - A WindowFactory object, an alias, or mapping for '" + type + "' Window objects is not registered with the system.");
         }
     }
 }
 
 
 /*************************************************************************
-	Returns true if a WindowFactory (or an alias) for a specified type
-	is present
+    Returns true if a WindowFactory, an alias, or a falagard mapping for
+    a specified window type is present
 *************************************************************************/
 bool WindowFactoryManager::isFactoryPresent(const String& name) const
 {
-	// first try for a 'real' type
-	if (d_factoryRegistry.find(name) != d_factoryRegistry.end())
-	{
-		return true;
-	}
-	// no real type exists with that type, see if we have an appropriate alias instead.
-	else
-	{
-		return (d_aliasRegistry.find(name) != d_aliasRegistry.end());
-	}
+    // first, dereference aliased types, as needed.
+    String targetType(getDereferencedAliasType(name));
 
+    // now try for a 'real' type
+    if (d_factoryRegistry.find(targetType) != d_factoryRegistry.end())
+    {
+        return true;
+    }
+    // not a concrete type, so return whether it's a Falagard mapped type.
+    else
+    {
+        return (d_falagardRegistry.find(targetType) != d_falagardRegistry.end());
+    }
 }
 
 
@@ -284,23 +277,38 @@ WindowFactoryManager::FalagardMappingIterator WindowFactoryManager::getFalagardM
 
 bool WindowFactoryManager::isFalagardMappedType(const String& type) const
 {
-    return d_falagardRegistry.find(type) != d_falagardRegistry.end();
+    return d_falagardRegistry.find(getDereferencedAliasType(type)) != d_falagardRegistry.end();
 }
 
 const String& WindowFactoryManager::getMappedLookForType(const String& type) const
 {
-    FalagardMapRegistry::const_iterator iter = d_falagardRegistry.find(type);
+    FalagardMapRegistry::const_iterator iter =
+        d_falagardRegistry.find(getDereferencedAliasType(type));
 
     if (iter != d_falagardRegistry.end())
     {
         return (*iter).second.d_lookName;
     }
-    // type does not exist as a mapped type
+    // type does not exist as a mapped type (or an alias for one)
     else
     {
-        throw InvalidRequestException("WindowFactoryManager::getMappedLookForType - Window factory type '" + type + "' is not a falagard mapped type (or does not exist at all).");
+        throw InvalidRequestException("WindowFactoryManager::getMappedLookForType - Window factory type '" + type + "' is not a falagard mapped type (or an alias for one).");
     }
 }
+
+String WindowFactoryManager::getDereferencedAliasType(const String& type) const
+{
+    TypeAliasRegistry::const_iterator alias = d_aliasRegistry.find(type);
+
+    // if this is an aliased type, ensure to fully dereference by recursively
+    // calling ourselves on the active target for the given type.
+    if (alias != d_aliasRegistry.end())
+        return getDereferencedAliasType(type);
+
+    // we're not an alias, so return the input type unchanged
+    return type;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
