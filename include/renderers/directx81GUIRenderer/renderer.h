@@ -267,10 +267,10 @@ private:
 	/************************************************************************
 		Implementation Constants
 	************************************************************************/
-	const static int			VERTEX_PER_QUAD;							//!< number of vertices per quad
-	const static int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
-	const static int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
-	const static ulong			VERTEX_FVF;									//!< FVF specifier constant
+	static const int			VERTEX_PER_QUAD;							//!< number of vertices per quad
+	static const int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
+	static const int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
+	static const ulong			VERTEX_FVF;									//!< FVF specifier constant
 
 	/*************************************************************************
 	    Implementation Structs & classes
