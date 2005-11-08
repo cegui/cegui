@@ -303,7 +303,7 @@ String WindowFactoryManager::getDereferencedAliasType(const String& type) const
     // if this is an aliased type, ensure to fully dereference by recursively
     // calling ourselves on the active target for the given type.
     if (alias != d_aliasRegistry.end())
-        return getDereferencedAliasType(type);
+        return getDereferencedAliasType(alias->second.getActiveTarget());
 
     // we're not an alias, so return the input type unchanged
     return type;
