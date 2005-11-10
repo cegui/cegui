@@ -2324,13 +2324,21 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
         ++propCnt;
     }
 
-    // write out SortColumnID property
-    uint sortColumnID = getColumnWithID(getSortColumn());
-    if (sortColumnID != 0)
-    {
-        out_stream << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
-        ++propCnt;
-    }
+    // write out SortColumnID property, if any(!)
+		try
+		{
+			uint sortColumnID = getColumnWithID(getSortColumn());
+			if (sortColumnID != 0)
+			{
+				  out_stream << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
+					++propCnt;
+			}
+		}
+		catch (InvalidRequestException)
+		{
+			// This catches error(s) from the MultiLineColumnList for example
+			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", Errors);
+		}
 
     return propCnt;
 }

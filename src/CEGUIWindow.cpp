@@ -2084,12 +2084,20 @@ int Window::writePropertiesXML(OutStream& out_stream) const
 
     while(!iter.isAtEnd())
     {
+			try
+			{
         // only write property if it's not at the default state
         if (!iter.getCurrentValue()->isDefault(this))
         {
             iter.getCurrentValue()->writeXMLToStream(this, out_stream);
             ++propertiesWritten;
         }
+			}
+			catch (InvalidRequestException)
+			{
+				// This catches error(s) from the MultiLineColumnList for example
+				Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);
+			}
 
         ++iter;
     }
