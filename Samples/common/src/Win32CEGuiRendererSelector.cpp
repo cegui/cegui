@@ -441,7 +441,7 @@ LPBYTE Win32CEGuiRendererSelector::alignPointer(LPBYTE buff)
 *************************************************************************/
 int Win32CEGuiRendererSelector::copyAnsiToWideChar(LPBYTE outBuff, PTSTR ansiString)
 {
-    LPWORD pWCStr = reinterpret_cast<LPWORD>(outBuff);
+    LPWSTR pWCStr = reinterpret_cast<LPWSTR>(outBuff);
 
 #   ifdef UNICODE
     return lstrlen(lstrcpy(pWCStr, ansiString)) + 1;
