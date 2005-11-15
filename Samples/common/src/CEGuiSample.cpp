@@ -248,7 +248,7 @@ void CEGuiSample::cleanup()
 void CEGuiSample::outputExceptionMessage(const char* message) const
 {
 #if defined(__WIN32__) || defined(_WIN32)
-    MessageBox(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
+    MessageBoxA(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
 #else
     std::cout << "An exception was thrown within the sample framework:" << std::endl;
     std::cout << message << std::endl;
