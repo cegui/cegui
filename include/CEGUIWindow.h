@@ -1239,6 +1239,18 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
+        Renames the window.
+
+    \param new_name
+        String object holding the new name for the window.
+
+    \exception AlreadyExistsException
+        thrown if a Window named \a new_name already exists in the system.
+    */
+    void rename(const String& new_name);
+
+    /*!
+    \brief
 		Initialises the Window based object ready for use.
 
 	\note
@@ -3935,7 +3947,7 @@ protected:
 		Private implementation Data
 	*************************************************************************/
 	const String	d_type;			//!< String holding the type name for the Window (is also the name of the WindowFactory that created us)
-	const String	d_name;			//!< The name of the window (GUI system unique).
+	String	d_name;					//!< The name of the window (GUI system unique).
 	String    d_falagardType;       //!< Type name of the window as defined in a Falagard mapping.
 };
 

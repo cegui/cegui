@@ -307,6 +307,28 @@ String WindowManager::generateUniqueWindowName()
     return String(uidname.str());
 }
 
+void WindowManager::renameWindow(const String& window, const String& new_name)
+{
+    renameWindow(getWindow(window), new_name);
+}
+
+void WindowManager::renameWindow(Window* window, const String& new_name)
+{
+    if (window)
+    {
+        WindowRegistry::iterator pos = d_windowRegistry.find(window->getName());
+
+        if (pos != d_windowRegistry.end())
+        {
+            // erase old window name from registry
+            d_windowRegistry.erase(pos);
+            // rename the window
+            window->rename(new_name);
+            // add window to registry under new name
+            d_windowRegistry[new_name] = window;
+        }
+    }
+}
 
 /*************************************************************************
 	Return a WindowManager::WindowIterator object to iterate over the
