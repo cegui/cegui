@@ -102,9 +102,6 @@ public:
     void mouseExited(Ogre::MouseEvent *e);
 
 protected:
-    // update stats pane
-    void updateStats(void);
-
     // convert an Ogre mouse button into a CEGUI mouse button
     CEGUI::MouseButton convertOgreButtonToCegui(int ogre_button_id);
 

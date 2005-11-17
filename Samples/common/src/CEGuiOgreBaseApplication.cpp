@@ -133,26 +133,16 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
 {
     using namespace Ogre;
 
-    // Load resource paths from config file
-    ConfigFile cf;
-    cf.load("resources.cfg");
-
-    // Go through all sections & settings in the file
-    ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-    String secName, typeName, archName;
-    while (seci.hasMoreElements())
-    {
-        secName = seci.peekNextKey();
-        ConfigFile::SettingsMultiMap *settings = seci.getNext();
-        ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
-            typeName = i->first;
-            archName = i->second;
-            ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
-        }
-    }
+    // add CEGUI sample framework datafile dirs as resource locations
+    ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/configs", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/fonts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/imagesets", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/layouts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/looknfeel", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/lua_scripts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/schemes", "FileSystem");
 }
 
 
@@ -163,10 +153,6 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
 ////////////////////////////////////////////////////////////////////////////////
 CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
 {
-    // load and show the default Ogre debug stats overlay
-    d_statsOverlay = Ogre::OverlayManager::getSingleton().getByName("Core/DebugOverlay");
-    d_statsOverlay->show();
-
     // create and initialise events processor
     d_eventProcessor = new Ogre::EventProcessor();
     d_eventProcessor->initialise(window);
@@ -207,7 +193,6 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 
 bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
 {
-    updateStats();
     return true;
 }
 
@@ -287,45 +272,6 @@ void CEGuiDemoFrameListener::mouseEntered(Ogre::MouseEvent *e)
 
 void CEGuiDemoFrameListener::mouseExited(Ogre::MouseEvent *e)
 {}
-
-void CEGuiDemoFrameListener::updateStats(void)
-{
-    using namespace Ogre;
-
-    static String currFps = "Current FPS: ";
-    static String avgFps = "Average FPS: ";
-    static String bestFps = "Best FPS: ";
-    static String worstFps = "Worst FPS: ";
-    static String tris = "Triangle Count: ";
-
-    // update stats when necessary
-    try
-    {
-        OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps");
-        OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps");
-        OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps");
-        OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps");
-
-        const RenderTarget::FrameStats& stats = d_window->getStatistics();
-
-        guiAvg->setCaption(avgFps + StringConverter::toString(stats.avgFPS));
-        guiCurr->setCaption(currFps + StringConverter::toString(stats.lastFPS));
-        guiBest->setCaption(bestFps + StringConverter::toString(stats.bestFPS)
-                            +" "+StringConverter::toString(stats.bestFrameTime)+" ms");
-        guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS)
-                             +" "+StringConverter::toString(stats.worstFrameTime)+" ms");
-
-        OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
-        guiTris->setCaption(tris + StringConverter::toString(stats.triangleCount));
-
-        OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
-        guiDbg->setCaption(d_window->getDebugText());
-    }
-    catch(...)
-    {
-        // ignore
-    }
-}
 
 CEGUI::MouseButton CEGuiDemoFrameListener::convertOgreButtonToCegui(int ogre_button_id)
 {
