@@ -91,6 +91,10 @@ void SchemeManager::unloadScheme(const String& scheme_name)
 
 		Logger::getSingleton().logEvent("Scheme '" + tmpName + "' has been unloaded.");
 	}
+	else
+	{
+		Logger::getSingleton().logEvent((utf8*)"Unable to unload non-existant scheme '" + scheme_name + "'.", Errors);
+	}
 
 }
 
