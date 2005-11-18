@@ -249,17 +249,29 @@ void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attribu
     // append the prefix specified in the layout doing the import
     prefixName += attributes.getValueAsString(LayoutImportPrefixAttribute);
 
-    // attempt to load the imported sub-layout
-    Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
-            attributes.getValueAsString( LayoutImportFilenameAttribute),
-            prefixName,
-            attributes.getValueAsString(LayoutImportResourceGroupAttribute),
-            d_propertyCallback,
-            d_userData);
+    try
+    {
+        // attempt to load the imported sub-layout
+        Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
+                attributes.getValueAsString( LayoutImportFilenameAttribute),
+                prefixName,
+                attributes.getValueAsString(LayoutImportResourceGroupAttribute),
+                d_propertyCallback,
+                d_userData);
 
-    // attach the imported layout to the window being defined
-    if ((subLayout != 0) && (!d_stack.empty()))
-        d_stack.back()->addChildWindow(subLayout);
+        // attach the imported layout to the window being defined
+        if ((subLayout != 0) && (!d_stack.empty()))
+            d_stack.back()->addChildWindow(subLayout);
+    }
+    // something failed when loading the sub-layout
+    catch (Exception& exc)
+    {
+        // delete all windows created so far
+        cleanupLoadedWindows();
+
+        // signal error - with more info about what we have done.
+        throw GenericException("GUILayout_xmlHandler::startElement - layout loading aborted due to imported layout load failure (see error(s) above).");
+    }
 }
 
 /*************************************************************************
