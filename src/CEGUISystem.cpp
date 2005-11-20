@@ -1357,7 +1357,7 @@ void System::notifyWindowDestroyed(const Window* window)
 
 }
 
-void System::setTooltip(Tooltip* tooltip)
+void System::setDefaultTooltip(Tooltip* tooltip)
 {
     // destroy current custom tooltip if one exists and we created it
     if (d_defaultTooltip && d_weOwnTooltip)
@@ -1368,7 +1368,7 @@ void System::setTooltip(Tooltip* tooltip)
     d_defaultTooltip = tooltip;
 }
 
-void System::setTooltip(const String& tooltipType)
+void System::setDefaultTooltip(const String& tooltipType)
 {
     // destroy current tooltip if one exists and we created it
     if (d_defaultTooltip && d_weOwnTooltip)

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.7 on Wed Oct 26 19:19:40 2005.
+** Generated automatically by tolua++-1.0.7 on Sun Nov 20 14:22:08 2005.
 */
 
 #ifndef __cplusplus
@@ -20083,9 +20083,9 @@ static int tolua_CEGUI_CEGUI_System_isSystemKeyDown00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setTooltip of class  CEGUI::System */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_setTooltip00
-static int tolua_CEGUI_CEGUI_System_setTooltip00(lua_State* tolua_S)
+/* method: setDefaultTooltip of class  CEGUI::System */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_setDefaultTooltip00
+static int tolua_CEGUI_CEGUI_System_setDefaultTooltip00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -20101,24 +20101,24 @@ static int tolua_CEGUI_CEGUI_System_setTooltip00(lua_State* tolua_S)
   CEGUI::System* self = (CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::Tooltip* tooltip = ((CEGUI::Tooltip*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTooltip'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setDefaultTooltip'",NULL);
 #endif
  {
-  self->setTooltip(tooltip);
+  self->setDefaultTooltip(tooltip);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setTooltip'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setDefaultTooltip'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setTooltip of class  CEGUI::System */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_setTooltip01
-static int tolua_CEGUI_CEGUI_System_setTooltip01(lua_State* tolua_S)
+/* method: setDefaultTooltip of class  CEGUI::System */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_setDefaultTooltip01
+static int tolua_CEGUI_CEGUI_System_setDefaultTooltip01(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
@@ -20132,15 +20132,15 @@ static int tolua_CEGUI_CEGUI_System_setTooltip01(lua_State* tolua_S)
   CEGUI::System* self = (CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
   string tooltipType = ((string)  tolua_tocppstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTooltip'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setDefaultTooltip'",NULL);
 #endif
  {
-  self->setTooltip(tooltipType);
+  self->setDefaultTooltip(tooltipType);
  }
  }
  return 0;
 tolua_lerror:
- return tolua_CEGUI_CEGUI_System_setTooltip00(tolua_S);
+ return tolua_CEGUI_CEGUI_System_setDefaultTooltip00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -37493,8 +37493,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setMouseMoveScaling",tolua_CEGUI_CEGUI_System_setMouseMoveScaling00);
    tolua_function(tolua_S,"notifyWindowDestroyed",tolua_CEGUI_CEGUI_System_notifyWindowDestroyed00);
    tolua_function(tolua_S,"isSystemKeyDown",tolua_CEGUI_CEGUI_System_isSystemKeyDown00);
-   tolua_function(tolua_S,"setTooltip",tolua_CEGUI_CEGUI_System_setTooltip00);
-   tolua_function(tolua_S,"setTooltip",tolua_CEGUI_CEGUI_System_setTooltip01);
+   tolua_function(tolua_S,"setDefaultTooltip",tolua_CEGUI_CEGUI_System_setDefaultTooltip00);
+   tolua_function(tolua_S,"setDefaultTooltip",tolua_CEGUI_CEGUI_System_setDefaultTooltip01);
    tolua_function(tolua_S,"getDefaultTooltip",tolua_CEGUI_CEGUI_System_getDefaultTooltip00);
    tolua_function(tolua_S,"injectMouseMove",tolua_CEGUI_CEGUI_System_injectMouseMove00);
    tolua_function(tolua_S,"injectMouseLeaves",tolua_CEGUI_CEGUI_System_injectMouseLeaves00);

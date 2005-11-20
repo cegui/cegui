@@ -44,8 +44,8 @@ class System : public EventSet
 	//unsigned int getSystemKeys() const;
 	tolua_outside bool ceguiLua_System_isSystemKeyDown @ isSystemKeyDown(SystemKey k) const;
 
-	void setTooltip(Tooltip* tooltip);
-	void setTooltip(string tooltipType);
+	void setDefaultTooltip(Tooltip* tooltip);
+	void setDefaultTooltip(string tooltipType);
 	Tooltip* getDefaultTooltip(void) const;
 
 	bool injectMouseMove(float dx, float dy);

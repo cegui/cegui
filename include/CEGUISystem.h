@@ -511,7 +511,7 @@ public:
     \return
         Nothing.
     */
-    void setTooltip(Tooltip* tooltip);
+    void setDefaultTooltip(Tooltip* tooltip);
 
     /*!
     \brief
@@ -528,7 +528,7 @@ public:
     \return
         Nothing.
     */
-    void setTooltip(const String& tooltipType);
+    void setDefaultTooltip(const String& tooltipType);
 
     /*!
     \brief
