@@ -43,10 +43,22 @@
         <ImagerySection name="BackgroundOnly">
             <FrameComponent>
                 <Area>
-                    <Dim type="LeftEdge"><AbsoluteDim value="7" /></Dim>
-                    <Dim type="TopEdge"><AbsoluteDim value="7" /></Dim>
-                    <Dim type="RightEdge"><UnifiedDim scale="1" offset="-7" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" offset="-7" type="BottomEdge" /></Dim>
+                    <Dim type="LeftEdge"><ImageDim imageset="Vanilla-Images" image="FrameLeft" dimension="Width" /></Dim>
+                    <Dim type="TopEdge"><ImageDim imageset="Vanilla-Images" image="FrameTop" dimension="Height" /></Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale="1" type="RightEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="Vanilla-Images" image="FrameRight" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale="1" type="BottomEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="Vanilla-Images" image="FrameBottom" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
                 </Area>
                 <Image type="Background" imageset="Vanilla-Images" image="GenericBrush" />
             </FrameComponent>

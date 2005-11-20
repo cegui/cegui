@@ -10,6 +10,36 @@ CVS 0.5.0
 =========
 
 
+Release 0.4.1
+=============
+Added: Window renaming functionality.
+Added: Logging of error when trying to unload a non-existant scheme.
+
+Modified: Updates to Xcode project to account for differing build paths and some link issues.
+Modified: Updated version numbers, CPU tuning setting, deployment build paths and library build style for MacOS X builds.
+Modified: Changed default settings for doxygen documentation - is now more minimal and thefore more readable.
+Modified: Simplified required setup to use Ogre CEGUI Renderer with the samples (now just requires access to Ogre modules and a plugins.cfg).
+
+Bug Fix: Cleanup properly if layout loading fails when loading a sub-layout (imported layout).
+Bug Fix: 'Vanilla' skin showed rendering artefacts when scaled.
+Bug Fix: Lots of missing API docs.
+Bug Fix: 'static const' <-> 'const static' issue in renderers (mainly affected parsing by binding generators).
+Bug Fix: Win32 type issue in MSVC++ 8.
+Bug Fix: Issue in sample framework with MSVC++ using Unicode character mode.
+Bug Fix: FrameWindow does a re-layout of children when text changes to allow using a FontDim to set the titlebar dimensions.
+Bug Fix: Issues when writing xml for Window / MCL properties (patch #1353395)
+Bug Fix: Fixed various issues related to window type aliasing not working as expected in all cases.
+Bug Fix: CEGUI::String stream output operator was not exported under MSVC++.
+Bug Fix: Fixed a bug in String class
+Bug Fix: 'click' based mouse events would be sent to the wrong window in various circumstances.
+Bug Fix: The class name string compared in MultiLineEditbox::testClassName_impl has the wrong casing.  Added additional check using correct casing.
+Bug Fix: Menubar in skin schemes was using PopupMenu WidgetLook
+Bug Fix: Closing a popup not attached to a MenuItem was still using parent as a MenuItem even after discoving this was not the case.
+Bug Fix: WindowsLook imageset had incorrect sizes for Editbox frame edges.
+Bug Fix: Font::getRequiredTexture size would get it wrong sometimes.
+Bug Fix: Full initialiser lists added for Font constructors (solves some potential issues with uninitialised class data).
+
+
 Release 0.4.0
 =============
 Addition of "Falagard" XML skinning system.  Details as follows:
