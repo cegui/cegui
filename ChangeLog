@@ -20,6 +20,8 @@ Modified: Updated version numbers, CPU tuning setting, deployment build paths an
 Modified: Changed default settings for doxygen documentation - is now more minimal and thefore more readable.
 Modified: Simplified required setup to use Ogre CEGUI Renderer with the samples (now just requires access to Ogre modules and a plugins.cfg).
 
+Bug Fix: Resolved some behavioural mis-match issues with TabControl; removeChildWindow can now be used as expected to remove content.
+Bug Fix: Changing the default mouse cursor in the System object did not result in an immediate change when appropriate.
 Bug Fix: Cleanup properly if layout loading fails when loading a sub-layout (imported layout).
 Bug Fix: 'Vanilla' skin showed rendering artefacts when scaled.
 Bug Fix: Lots of missing API docs.

@@ -230,7 +230,12 @@ Remove a tab
 *************************************************************************/
 void TabControl::removeTab(const String& name)
 {
+    // do nothing if given window is not attached as a tab.
+    if (!getTabPane()->isChild(name))
+        return;
+
     Window* wnd = getTabPane()->getChild(name);
+
     // Was this selected?
     bool reselect = wnd->isVisible();
     // Tab buttons are the 2nd onward children
@@ -251,14 +256,18 @@ void TabControl::removeTab(const String& name)
     performChildWindowLayout();
 
     requestRedraw();
-
 }
 /*************************************************************************
 Remove a tab by ID
 *************************************************************************/
 void TabControl::removeTab(uint ID)
 {
+    // do nothing if given window is not attached as a tab.
+    if (!getTabPane()->isChild(ID))
+        return;
+
     Window* wnd = getTabPane()->getChild(ID);
+
     // Was this selected?
     bool reselect = wnd->isVisible();
     // Tab buttons are the 2nd onward children
@@ -434,6 +443,26 @@ void TabControl::addChild_impl(Window* wnd)
     {
         // This is another control, therefore add as a tab
         addTab(wnd);
+    }
+}
+/*************************************************************************
+Internal version of removing a child window
+*************************************************************************/
+void TabControl::removeChild_impl(Window* wnd)
+{
+    // protect against possible null pointers
+    if (!wnd) return;
+
+    // Look for __auto_TabPane__ in the name (hopefully no-one will use this!)
+    if (wnd->getName().find(ContentPaneNameSuffix) != String::npos)
+    {
+        // perform normal removeChild
+        Window::removeChild_impl(wnd);
+    }
+    else
+    {
+        // This is some user window, therefore remove as a tab
+        removeTab(wnd->getName());
     }
 }
 /*************************************************************************

@@ -415,11 +415,8 @@ protected:
 	*************************************************************************/
 	void	addTabControlProperties(void);
 
-    /*!
-    \brief
-    Add given window to child list at an appropriate position
-    */
-    void	addChild_impl(Window* wnd);
+    void    addChild_impl(Window* wnd);
+    void    removeChild_impl(Window* wnd);
 
     /*************************************************************************
     Event handlers
