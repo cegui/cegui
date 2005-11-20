@@ -481,20 +481,37 @@ void System::setDefaultFont(Font* font)
 
 
 /*************************************************************************
-	Set the image to be used as the default mouse cursor.
+    Set the image to be used as the default mouse cursor.
 *************************************************************************/
 void System::setDefaultMouseCursor(const Image* image)
 {
-	if (image == (const Image*)DefaultMouseCursor)
-	{
-		image = 0;
-	}
+    // the default, default, is for nothing!
+    if (image == (const Image*)DefaultMouseCursor)
+        image = 0;
 
-	d_defaultMouseCursor = image;
+    // if mouse cursor is set to the current default we *may* need to
+    // update its Image immediately (first, we will investigate further!)
+    //
+    // NB: The reason we do this check, is to allow code to modify the cursor
+    // image directly without a call to this member changing the image back
+    // again.  However, 'normal' updates to the cursor when the mouse enters
+    // a window will, of course, update the mouse image as expected.
+    if (MouseCursor::getSingleton().getImage() == d_defaultMouseCursor)
+    {
+        // does the window containing the mouse use the default cursor?
+        if ((d_wndWithMouse) && (0 == d_wndWithMouse->getMouseCursor(false)))
+        {
+            // default cursor is active, update the image immediately
+            MouseCursor::getSingleton().setImage(image);
+        }
+    }
 
-	// fire off event.
-	EventArgs args;
-	onDefaultMouseCursorChanged(args);
+    // update our pointer for the default mouse cursor image.
+    d_defaultMouseCursor = image;
+
+    // fire off event.
+    EventArgs args;
+    onDefaultMouseCursorChanged(args);
 }
 
 
