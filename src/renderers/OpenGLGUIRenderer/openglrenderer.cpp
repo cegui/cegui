@@ -501,11 +501,17 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 long OpenGLRenderer::colourToOGL(const colour& col) const
 {
 	ulong cval;
+#ifdef __BIG_ENDIAN__
+    cval =  (static_cast<ulong>(255 * col.getAlpha()));
+    cval |= (static_cast<ulong>(255 * col.getBlue())) << 8;
+    cval |= (static_cast<ulong>(255 * col.getGreen())) << 16;
+    cval |= (static_cast<ulong>(255 * col.getRed())) << 24;
+#else
 	cval =	(static_cast<ulong>(255 * col.getAlpha())) << 24;
 	cval |=	(static_cast<ulong>(255 * col.getBlue())) << 16;
 	cval |=	(static_cast<ulong>(255 * col.getGreen())) << 8;
 	cval |= (static_cast<ulong>(255 * col.getRed()));
-
+#endif
 	return cval;
 }
 
@@ -529,6 +535,36 @@ void OpenGLRenderer::setModuleIdentifierString()
 {
     // set ID string
     d_identifierString = "CEGUI::OpenGLRenderer - Official OpenGL based renderer module for CEGUI";
+}
+
+
+/************************************************************************
+    Grabs all loaded textures to local buffers and frees them
+*************************************************************************/
+void OpenGLRenderer::grabTextures()
+{
+    typedef std::list<OpenGLTexture*> texlist;
+    texlist::iterator i = d_texturelist.begin();
+    while (i!=d_texturelist.end())
+    {
+        (*i)->grabTexture();
+        i++;
+    }
+}
+
+
+/************************************************************************
+    Restores all textures from the previous call to 'grabTextures'
+*************************************************************************/
+void OpenGLRenderer::restoreTextures()
+{
+    typedef std::list<OpenGLTexture*> texlist;
+    texlist::iterator i = d_texturelist.begin();
+    while (i!=d_texturelist.end())
+    {
+        (*i)->restoreTexture();
+        i++;
+    }
 }
 
 } // End of  CEGUI namespace section
