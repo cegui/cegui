@@ -497,11 +497,17 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 long OpenGLRenderer::colourToOGL(const colour& col) const
 {
 	ulong cval;
+#ifdef __BIG_ENDIAN__
+    cval =  (static_cast<ulong>(255 * col.getAlpha()));
+    cval |= (static_cast<ulong>(255 * col.getBlue())) << 8;
+    cval |= (static_cast<ulong>(255 * col.getGreen())) << 16;
+    cval |= (static_cast<ulong>(255 * col.getRed())) << 24;
+#else
 	cval =	(static_cast<ulong>(255 * col.getAlpha())) << 24;
 	cval |=	(static_cast<ulong>(255 * col.getBlue())) << 16;
 	cval |=	(static_cast<ulong>(255 * col.getGreen())) << 8;
 	cval |= (static_cast<ulong>(255 * col.getRed()));
-
+#endif
 	return cval;
 }
 

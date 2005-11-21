@@ -316,6 +316,10 @@ OpenGLTexture::tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, si
 	buffer += sizeof(short);
 	memcpy(&height, buffer, sizeof(short));
 	buffer += sizeof(short);
+#ifdef __BIG_ENDIAN__
+    width = ((width & 0xFF00)>>8) | ((width & 0x00FF)<<8);
+    height = ((height & 0xFF00)>>8) | ((height & 0x00FF)<<8);
+#endif
 	memcpy(&bits, buffer, sizeof(GLbyte));
 	buffer += sizeof(GLbyte);
 

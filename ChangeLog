@@ -1,7 +1,7 @@
 Crazy Eddie's GUI System Mk-2
 http://www.cegui.org.uk
 
-Copyright ©2004 - 2005 CEGUI Team & Contributing Authors
+Copyright 2004 - 2005 CEGUI Team & Contributing Authors
 
 
 The following is a high-level view of changes made to the system between releases.
@@ -14,12 +14,15 @@ Release 0.4.1
 =============
 Added: Window renaming functionality.
 Added: Logging of error when trying to unload a non-existant scheme.
+Added: "Lost device" handlers for OpenGLRenderer (grab/restoreTextures).
 
 Modified: Updates to Xcode project to account for differing build paths and some link issues.
 Modified: Updated version numbers, CPU tuning setting, deployment build paths and library build style for MacOS X builds.
 Modified: Changed default settings for doxygen documentation - is now more minimal and thefore more readable.
 Modified: Simplified required setup to use Ogre CEGUI Renderer with the samples (now just requires access to Ogre modules and a plugins.cfg).
 
+Bug Fix: Endianness issues in OpenGL renderer on Mac. (patch #1309172)
+Bug Fix: Typo in Falagard bundle plist (Mac) that prevented loading. (patch #1309172)
 Bug Fix: Resolved some behavioural mis-match issues with TabControl; removeChildWindow can now be used as expected to remove content.
 Bug Fix: Changing the default mouse cursor in the System object did not result in an immediate change when appropriate.
 Bug Fix: Cleanup properly if layout loading fails when loading a sub-layout (imported layout).
