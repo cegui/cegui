@@ -37,6 +37,8 @@
 #   else
 #       include "CLICEGuiRendererSelector.h"
 #   endif
+#elif defined(__APPLE__)
+#   include "MacCEGuiRendererSelector.h"
 #endif
 
 // includes for application types
@@ -148,6 +150,9 @@ bool CEGuiSample::initialise()
 #   else
         d_rendererSelector = new CLICEGuiRendererSelector();
 #   endif
+
+#elif defined(__APPLE__)
+     d_rendererSelector = new MacCEGuiRendererSelector();
 #endif
 
     // enable available renderer types
