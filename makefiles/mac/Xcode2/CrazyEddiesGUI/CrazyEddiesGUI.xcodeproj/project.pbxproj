@@ -81,12 +81,10 @@
 		5B4BB63308C5F1DA0088F7FA /* libfreetype.6.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4BB63108C5F1DA0088F7FA /* libfreetype.6.3.dylib */; };
 		5B5605E80933812E0000CAF3 /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5605E70933812E0000CAF3 /* Sample_FirstWindow.cpp */; };
 		5B56063D0933922F0000CAF3 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5B560649093393BB0000CAF3 /* FirstWindow-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B56058909337AF10000CAF3 /* FirstWindow-Info.plist */; };
 		5B560663093393ED0000CAF3 /* CEGUITaharezLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7BD08C40E910086C816 /* CEGUITaharezLook.bundle */; };
 		5B560664093393ED0000CAF3 /* CEGUIWindowsLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7C708C40EA60086C816 /* CEGUIWindowsLook.bundle */; };
 		5B560665093393ED0000CAF3 /* CEGUIFalagardBase.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */; };
 		5B56069C09339C3A0000CAF3 /* CEGUISampleHelper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B56069509339BDA0000CAF3 /* CEGUISampleHelper-Info.plist */; };
-		5B56069D09339C3B0000CAF3 /* config.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5B56068609339BB30000CAF3 /* config.nib */; };
 		5B56069E09339C3C0000CAF3 /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B56068709339BB30000CAF3 /* MacCEGuiRendererSelector.cpp */; };
 		5B5606A009339C3E0000CAF3 /* CEGuiOgreBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B56063F093393620000CAF3 /* CEGuiOgreBaseApplication.cpp */; };
 		5B5606A109339C3F0000CAF3 /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B560640093393620000CAF3 /* CEGuiRendererSelector.cpp */; };
@@ -109,6 +107,24 @@
 		5B560804093419580000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */; };
 		5B560815093419F40000CAF3 /* zzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560807093419F40000CAF3 /* zzip.framework */; };
 		5B560816093419F40000CAF3 /* zzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560807093419F40000CAF3 /* zzip.framework */; };
+		5B56082D093427490000CAF3 /* Sample_FalagardDemo1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B56082C093427480000CAF3 /* Sample_FalagardDemo1.cpp */; };
+		5B560831093427E10000CAF3 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B56069409339BDA0000CAF3 /* CEGUISampleHelper.framework */; };
+		5B560832093427E50000CAF3 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5B560833093427E60000CAF3 /* CEGUITaharezLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7BD08C40E910086C816 /* CEGUITaharezLook.bundle */; };
+		5B560834093427E70000CAF3 /* CEGUIWindowsLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7C708C40EA60086C816 /* CEGUIWindowsLook.bundle */; };
+		5B560835093427E80000CAF3 /* CEGUIFalagardBase.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */; };
+		5B560836093427EC0000CAF3 /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5B560837093428040000CAF3 /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5B5608380934280C0000CAF3 /* zzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560807093419F40000CAF3 /* zzip.framework */; };
+		5B5608390934280F0000CAF3 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560732093419580000CAF3 /* Ogre.framework */; };
+		5B56083A0934280F0000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */; };
+		5B56084C09342DF90000CAF3 /* plugins.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 5B56084B09342DF90000CAF3 /* plugins.cfg */; };
+		5B56084D09342DF90000CAF3 /* plugins.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 5B56084B09342DF90000CAF3 /* plugins.cfg */; };
+		5B56089A0934B4C30000CAF3 /* Sample_Demo8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5608980934B4C30000CAF3 /* Sample_Demo8.cpp */; };
+		5B5608A70934B8130000CAF3 /* plugins.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 5B56084B09342DF90000CAF3 /* plugins.cfg */; };
+		5B5608C40934C2170000CAF3 /* CEGUITaharezLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7BD08C40E910086C816 /* CEGUITaharezLook.bundle */; };
+		5B5608C50934C2190000CAF3 /* CEGUIWindowsLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7C708C40EA60086C816 /* CEGUIWindowsLook.bundle */; };
+		5B5608C60934C21A0000CAF3 /* CEGUIFalagardBase.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */; };
 		5B5F79ED08CBDB1D00C417E6 /* FalButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79C808CBDB1D00C417E6 /* FalButton.cpp */; };
 		5B5F79EE08CBDB1D00C417E6 /* FalCheckbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79C908CBDB1D00C417E6 /* FalCheckbox.cpp */; };
 		5B5F79EF08CBDB1D00C417E6 /* FalCombobox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79CA08CBDB1D00C417E6 /* FalCombobox.cpp */; };
@@ -488,9 +504,9 @@
 		5B991D9908C92C60006E6DC9 /* CEGUILua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B991D3108C90832006E6DC9 /* CEGUILua.cpp */; };
 		5B991D9A08C92C61006E6DC9 /* lua_CEGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B991D3208C90832006E6DC9 /* lua_CEGUI.cpp */; };
 		5B991D9B08C92C62006E6DC9 /* required.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B991D3308C90832006E6DC9 /* required.cpp */; };
-		5B991D9C08C92C65006E6DC9 /* CEGUILua.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3508C90859006E6DC9 /* CEGUILua.h */; };
-		5B991D9D08C92C65006E6DC9 /* lua_CEGUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3608C90859006E6DC9 /* lua_CEGUI.h */; };
-		5B991D9E08C92C66006E6DC9 /* required.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3408C90832006E6DC9 /* required.h */; };
+		5B991D9C08C92C65006E6DC9 /* CEGUILua.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3508C90859006E6DC9 /* CEGUILua.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B991D9D08C92C65006E6DC9 /* lua_CEGUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3608C90859006E6DC9 /* lua_CEGUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B991D9E08C92C66006E6DC9 /* required.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991D3408C90832006E6DC9 /* required.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B991D9F08C92C69006E6DC9 /* LuaScriptModule-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */; };
 		5B991DDC08C93033006E6DC9 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B991DAC08C93033006E6DC9 /* lapi.c */; };
 		5B991DDD08C93033006E6DC9 /* lapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B991DAD08C93033006E6DC9 /* lapi.h */; };
@@ -661,6 +677,90 @@
 			remoteGlobalIDString = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
 			remoteInfo = CEGUISampleHelper;
 		};
+		5B56083C09342C920000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9 /* OpenGLRenderer */;
+			remoteInfo = OpenGLRenderer;
+		};
+		5B56083E09342C920000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B7BC08C40E910086C816 /* CEGUITaharezLook */;
+			remoteInfo = CEGUITaharezLook;
+		};
+		5B56084009342C920000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */;
+			remoteInfo = CEGUIWindowsLook;
+		};
+		5B56084209342C920000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
+			remoteInfo = CEGUIFalagardBase;
+		};
+		5B56084409342C920000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
+			remoteInfo = CEGUISampleHelper;
+		};
+		5B56084609342CB00000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9 /* OpenGLRenderer */;
+			remoteInfo = OpenGLRenderer;
+		};
+		5B56089B0934B56F0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9 /* OpenGLRenderer */;
+			remoteInfo = OpenGLRenderer;
+		};
+		5B56089D0934B56F0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D7A08C920FE006E6DC9 /* LuaScriptModule */;
+			remoteInfo = LuaScriptModule;
+		};
+		5B56089F0934B56F0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B7BC08C40E910086C816 /* CEGUITaharezLook */;
+			remoteInfo = CEGUITaharezLook;
+		};
+		5B5608A10934B56F0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */;
+			remoteInfo = CEGUIWindowsLook;
+		};
+		5B5608A30934B56F0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
+			remoteInfo = CEGUIFalagardBase;
+		};
+		5B5608A50934B56F0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
+			remoteInfo = CEGUISampleHelper;
+		};
 		5B5F799808CBD2E400C417E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -792,9 +892,9 @@
 		5B4BB63108C5F1DA0088F7FA /* libfreetype.6.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.3.dylib; path = /usr/X11R6/lib/libfreetype.6.3.dylib; sourceTree = "<absolute>"; };
 		5B56058709337AF10000CAF3 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B56058909337AF10000CAF3 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
-		5B56059409337B120000CAF3 /* FalagardDemo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = FalagardDemo1.app; path = build/Development/FalagardDemo1.app; sourceTree = "<group>"; };
+		5B56059409337B120000CAF3 /* FalagardDemo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FalagardDemo1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B56059609337B120000CAF3 /* FalagardDemo1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "FalagardDemo1-Info.plist"; sourceTree = "<group>"; };
-		5B5605A109337B2D0000CAF3 /* Demo8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Demo8.app; path = build/Development/Demo8.app; sourceTree = "<group>"; };
+		5B5605A109337B2D0000CAF3 /* Demo8.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Demo8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5605A309337B2E0000CAF3 /* Demo8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Demo8-Info.plist"; sourceTree = "<group>"; };
 		5B5605AE09337B3F0000CAF3 /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Demo7.app; path = build/Development/Demo7.app; sourceTree = "<group>"; };
 		5B5605B009337B3F0000CAF3 /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Demo7-Info.plist"; sourceTree = "<group>"; };
@@ -811,7 +911,6 @@
 		5B560646093393B20000CAF3 /* CEGuiOgreBaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiOgreBaseApplication.h; path = ../../../../Samples/common/include/CEGuiOgreBaseApplication.h; sourceTree = SOURCE_ROOT; };
 		5B560647093393B20000CAF3 /* CEGuiRendererSelector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiRendererSelector.h; path = ../../../../Samples/common/include/CEGuiRendererSelector.h; sourceTree = SOURCE_ROOT; };
 		5B560648093393B20000CAF3 /* CEGuiSample.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiSample.h; path = ../../../../Samples/common/include/CEGuiSample.h; sourceTree = SOURCE_ROOT; };
-		5B56068609339BB30000CAF3 /* config.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = config.nib; path = ../../../../Samples/common/src/config.nib; sourceTree = SOURCE_ROOT; };
 		5B56068709339BB30000CAF3 /* MacCEGuiRendererSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = MacCEGuiRendererSelector.cpp; path = ../../../../Samples/common/src/MacCEGuiRendererSelector.cpp; sourceTree = SOURCE_ROOT; };
 		5B56069409339BDA0000CAF3 /* CEGUISampleHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUISampleHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B56069509339BDA0000CAF3 /* CEGUISampleHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUISampleHelper-Info.plist"; sourceTree = "<group>"; };
@@ -822,6 +921,11 @@
 		5B560732093419580000CAF3 /* Ogre.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogre.framework; path = /Library/Frameworks/Ogre.framework; sourceTree = "<absolute>"; };
 		5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OgreCEGUIRenderer.framework; path = /Library/Frameworks/OgreCEGUIRenderer.framework; sourceTree = "<absolute>"; };
 		5B560807093419F40000CAF3 /* zzip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = zzip.framework; path = /Library/Frameworks/zzip.framework; sourceTree = "<absolute>"; };
+		5B56082C093427480000CAF3 /* Sample_FalagardDemo1.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_FalagardDemo1.cpp; path = ../../../../Samples/FalagardDemo1/src/Sample_FalagardDemo1.cpp; sourceTree = SOURCE_ROOT; };
+		5B56082E093427640000CAF3 /* Sample_FalagardDemo1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Sample_FalagardDemo1.h; path = ../../../../Samples/FalagardDemo1/include/Sample_FalagardDemo1.h; sourceTree = SOURCE_ROOT; };
+		5B56084B09342DF90000CAF3 /* plugins.cfg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = plugins.cfg; path = ../../../../Samples/bin/plugins.cfg; sourceTree = SOURCE_ROOT; };
+		5B5608980934B4C30000CAF3 /* Sample_Demo8.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_Demo8.cpp; path = ../../../../Samples/Demo8/src/Sample_Demo8.cpp; sourceTree = SOURCE_ROOT; };
+		5B5608990934B4C30000CAF3 /* Sample_Demo8.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Sample_Demo8.h; path = ../../../../Samples/Demo8/src/Sample_Demo8.h; sourceTree = SOURCE_ROOT; };
 		5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIFalagardBase.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5F799008CBD2C900C417E6 /* CEGUIFalagard-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUIFalagard-Info.plist"; sourceTree = "<group>"; };
 		5B5F79A308CBDB0300C417E6 /* FalButton.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FalButton.h; path = ../../../../WidgetSets/Falagard/include/FalButton.h; sourceTree = SOURCE_ROOT; };
@@ -1384,6 +1488,7 @@
 				5B560803093419580000CAF3 /* Ogre.framework in Frameworks */,
 				5B560804093419580000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */,
 				5B560816093419F40000CAF3 /* zzip.framework in Frameworks */,
+				5B560837093428040000CAF3 /* CEGUIOpenGLRenderer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1391,6 +1496,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B560831093427E10000CAF3 /* CEGUISampleHelper.framework in Frameworks */,
+				5B560832093427E50000CAF3 /* CEGUI.framework in Frameworks */,
+				5B560836093427EC0000CAF3 /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				5B5608380934280C0000CAF3 /* zzip.framework in Frameworks */,
+				5B5608390934280F0000CAF3 /* Ogre.framework in Frameworks */,
+				5B56083A0934280F0000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1606,6 +1717,7 @@
 		5B56053E093378C00000CAF3 /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				5B56084B09342DF90000CAF3 /* plugins.cfg */,
 				5B56068209339B1B0000CAF3 /* SampleHelper */,
 				5B56055A0933796E0000CAF3 /* FirstWindow */,
 				5B560555093379590000CAF3 /* FalagardDemo1 */,
@@ -1731,6 +1843,7 @@
 		5B56057609337A020000CAF3 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				5B5608990934B4C30000CAF3 /* Sample_Demo8.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -1738,6 +1851,7 @@
 		5B56057909337A050000CAF3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5B5608980934B4C30000CAF3 /* Sample_Demo8.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1752,6 +1866,7 @@
 		5B56057F09337A180000CAF3 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				5B56082E093427640000CAF3 /* Sample_FalagardDemo1.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -1759,6 +1874,7 @@
 		5B56058209337A1C0000CAF3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5B56082C093427480000CAF3 /* Sample_FalagardDemo1.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1792,7 +1908,6 @@
 			isa = PBXGroup;
 			children = (
 				5B56069509339BDA0000CAF3 /* CEGUISampleHelper-Info.plist */,
-				5B56068609339BB30000CAF3 /* config.nib */,
 				5B56067F09339B0D0000CAF3 /* Source */,
 				5B56067809339AFF0000CAF3 /* Headers */,
 			);
@@ -2898,6 +3013,7 @@
 				5B56058309337AF10000CAF3 /* Resources */,
 				5B56058409337AF10000CAF3 /* Sources */,
 				5B56058509337AF10000CAF3 /* Frameworks */,
+				5B5608A90934B93C0000CAF3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2923,6 +3039,7 @@
 				5B56066A093394110000CAF3 /* PBXTargetDependency */,
 				5B56066C093394110000CAF3 /* PBXTargetDependency */,
 				5B560827093422390000CAF3 /* PBXTargetDependency */,
+				5B56084709342CB00000CAF3 /* PBXTargetDependency */,
 			);
 			name = FirstWindow;
 			productName = FirstWindow;
@@ -2957,6 +3074,7 @@
 				5B56059009337B120000CAF3 /* Resources */,
 				5B56059109337B120000CAF3 /* Sources */,
 				5B56059209337B120000CAF3 /* Frameworks */,
+				5B5608B20934BD3A0000CAF3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2978,6 +3096,11 @@
 			};
 			dependencies = (
 				5B56059C09337B170000CAF3 /* PBXTargetDependency */,
+				5B56083D09342C920000CAF3 /* PBXTargetDependency */,
+				5B56083F09342C920000CAF3 /* PBXTargetDependency */,
+				5B56084109342C920000CAF3 /* PBXTargetDependency */,
+				5B56084309342C920000CAF3 /* PBXTargetDependency */,
+				5B56084509342C920000CAF3 /* PBXTargetDependency */,
 			);
 			name = FalagardDemo1;
 			productName = FalagardDemo1;
@@ -3012,6 +3135,7 @@
 				5B56059D09337B2D0000CAF3 /* Resources */,
 				5B56059E09337B2D0000CAF3 /* Sources */,
 				5B56059F09337B2D0000CAF3 /* Frameworks */,
+				5B5608B40934BD4B0000CAF3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3033,6 +3157,12 @@
 			};
 			dependencies = (
 				5B5605A909337B340000CAF3 /* PBXTargetDependency */,
+				5B56089C0934B56F0000CAF3 /* PBXTargetDependency */,
+				5B56089E0934B56F0000CAF3 /* PBXTargetDependency */,
+				5B5608A00934B56F0000CAF3 /* PBXTargetDependency */,
+				5B5608A20934B56F0000CAF3 /* PBXTargetDependency */,
+				5B5608A40934B56F0000CAF3 /* PBXTargetDependency */,
+				5B5608A60934B56F0000CAF3 /* PBXTargetDependency */,
 			);
 			name = Demo8;
 			productName = Demo8;
@@ -3758,7 +3888,7 @@
 				5B560663093393ED0000CAF3 /* CEGUITaharezLook.bundle in Resources */,
 				5B560664093393ED0000CAF3 /* CEGUIWindowsLook.bundle in Resources */,
 				5B560665093393ED0000CAF3 /* CEGUIFalagardBase.bundle in Resources */,
-				5B560649093393BB0000CAF3 /* FirstWindow-Info.plist in Resources */,
+				5B56084D09342DF90000CAF3 /* plugins.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3766,6 +3896,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B560833093427E60000CAF3 /* CEGUITaharezLook.bundle in Resources */,
+				5B560834093427E70000CAF3 /* CEGUIWindowsLook.bundle in Resources */,
+				5B560835093427E80000CAF3 /* CEGUIFalagardBase.bundle in Resources */,
+				5B56084C09342DF90000CAF3 /* plugins.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3773,6 +3907,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B5608A70934B8130000CAF3 /* plugins.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3802,7 +3937,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B56069C09339C3A0000CAF3 /* CEGUISampleHelper-Info.plist in Resources */,
-				5B56069D09339C3B0000CAF3 /* config.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3832,6 +3966,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B69BAD208C419E70086C816 /* CEGUI-Info.plist in Resources */,
+				5B5608C40934C2170000CAF3 /* CEGUITaharezLook.bundle in Resources */,
+				5B5608C50934C2190000CAF3 /* CEGUIWindowsLook.bundle in Resources */,
+				5B5608C60934C21A0000CAF3 /* CEGUIFalagardBase.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3854,6 +3991,45 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5B5608A90934B93C0000CAF3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -azvvC \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"";
+		};
+		5B5608B20934BD3A0000CAF3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -azvvC \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"";
+		};
+		5B5608B40934BD4B0000CAF3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -azvvC \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"";
+		};
 		5B5F7A3B08CCB31100C417E6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3908,6 +4084,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B56082D093427490000CAF3 /* Sample_FalagardDemo1.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3915,6 +4092,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B56089A0934B4C30000CAF3 /* Sample_Demo8.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4345,6 +4523,66 @@
 			target = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
 			targetProxy = 5B560826093422390000CAF3 /* PBXContainerItemProxy */;
 		};
+		5B56083D09342C920000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* OpenGLRenderer */;
+			targetProxy = 5B56083C09342C920000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56083F09342C920000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B7BC08C40E910086C816 /* CEGUITaharezLook */;
+			targetProxy = 5B56083E09342C920000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56084109342C920000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */;
+			targetProxy = 5B56084009342C920000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56084309342C920000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
+			targetProxy = 5B56084209342C920000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56084509342C920000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
+			targetProxy = 5B56084409342C920000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56084709342CB00000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* OpenGLRenderer */;
+			targetProxy = 5B56084609342CB00000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56089C0934B56F0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* OpenGLRenderer */;
+			targetProxy = 5B56089B0934B56F0000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56089E0934B56F0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D7A08C920FE006E6DC9 /* LuaScriptModule */;
+			targetProxy = 5B56089D0934B56F0000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5608A00934B56F0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B7BC08C40E910086C816 /* CEGUITaharezLook */;
+			targetProxy = 5B56089F0934B56F0000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5608A20934B56F0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */;
+			targetProxy = 5B5608A10934B56F0000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5608A40934B56F0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
+			targetProxy = 5B5608A30934B56F0000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5608A60934B56F0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
+			targetProxy = 5B5608A50934B56F0000CAF3 /* PBXContainerItemProxy */;
+		};
 		5B5F799908CBD2E400C417E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
@@ -4413,10 +4651,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 0.4.1;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Library/Frameworks,
-					"$(BUILD_DIR)/$(CONFIGURATION)",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -4444,10 +4679,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 0.4.1;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Library/Frameworks,
-					"$(BUILD_DIR)/$(CONFIGURATION)",
-				);
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
@@ -4492,6 +4724,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -4499,6 +4733,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
@@ -4507,8 +4742,9 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = FalagardDemo1;
+				USER_HEADER_SEARCH_PATHS = "../../../../Samples/FalagardDemo1/include ../../../../include ../../../../Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
+				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
@@ -4516,11 +4752,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
@@ -4529,6 +4768,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = FalagardDemo1;
+				USER_HEADER_SEARCH_PATHS = "../../../../Samples/FalagardDemo1/include ../../../../include ../../../../Samples/common/include";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -4558,6 +4798,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -4565,6 +4807,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "Demo8-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
@@ -4573,6 +4816,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Demo8;
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../Samples/common/include ../../../../ScriptingModules/CEGUILua/LuaScriptModule/include ../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -4582,11 +4826,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "Demo8-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
@@ -4595,6 +4842,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Demo8;
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../Samples/common/include ../../../../ScriptingModules/CEGUILua/LuaScriptModule/include ../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
