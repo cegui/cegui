@@ -79,6 +79,36 @@
 		5B4BB5BE08C5EEC50088F7FA /* CEGUIFalWidgetLookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4BB59C08C5EEC40088F7FA /* CEGUIFalWidgetLookManager.cpp */; };
 		5B4BB5BF08C5EEC50088F7FA /* CEGUIFalXMLEnumHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4BB59D08C5EEC40088F7FA /* CEGUIFalXMLEnumHelper.cpp */; };
 		5B4BB63308C5F1DA0088F7FA /* libfreetype.6.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4BB63108C5F1DA0088F7FA /* libfreetype.6.3.dylib */; };
+		5B5605E80933812E0000CAF3 /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5605E70933812E0000CAF3 /* Sample_FirstWindow.cpp */; };
+		5B56063D0933922F0000CAF3 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5B560649093393BB0000CAF3 /* FirstWindow-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B56058909337AF10000CAF3 /* FirstWindow-Info.plist */; };
+		5B560663093393ED0000CAF3 /* CEGUITaharezLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7BD08C40E910086C816 /* CEGUITaharezLook.bundle */; };
+		5B560664093393ED0000CAF3 /* CEGUIWindowsLook.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B7C708C40EA60086C816 /* CEGUIWindowsLook.bundle */; };
+		5B560665093393ED0000CAF3 /* CEGUIFalagardBase.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */; };
+		5B56069C09339C3A0000CAF3 /* CEGUISampleHelper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B56069509339BDA0000CAF3 /* CEGUISampleHelper-Info.plist */; };
+		5B56069D09339C3B0000CAF3 /* config.nib in Resources */ = {isa = PBXBuildFile; fileRef = 5B56068609339BB30000CAF3 /* config.nib */; };
+		5B56069E09339C3C0000CAF3 /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B56068709339BB30000CAF3 /* MacCEGuiRendererSelector.cpp */; };
+		5B5606A009339C3E0000CAF3 /* CEGuiOgreBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B56063F093393620000CAF3 /* CEGuiOgreBaseApplication.cpp */; };
+		5B5606A109339C3F0000CAF3 /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B560640093393620000CAF3 /* CEGuiRendererSelector.cpp */; };
+		5B5606A209339C400000CAF3 /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B560641093393620000CAF3 /* CEGuiSample.cpp */; };
+		5B5606A309339C520000CAF3 /* CEGUISampleHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B56069409339BDA0000CAF3 /* CEGUISampleHelper.framework */; };
+		5B5606B509339D9D0000CAF3 /* CEGuiOpenGLBaseApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B5606B009339D9D0000CAF3 /* CEGuiOpenGLBaseApplication.h */; };
+		5B5606B709339D9D0000CAF3 /* MacCEGuiRendererSelector.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B5606B209339D9D0000CAF3 /* MacCEGuiRendererSelector.h */; };
+		5B5606BA09339DA30000CAF3 /* CEGuiBaseApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B560645093393B20000CAF3 /* CEGuiBaseApplication.h */; };
+		5B5606BB09339DA30000CAF3 /* CEGuiOgreBaseApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B560646093393B20000CAF3 /* CEGuiOgreBaseApplication.h */; };
+		5B5606BC09339DA40000CAF3 /* CEGuiRendererSelector.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B560647093393B20000CAF3 /* CEGuiRendererSelector.h */; };
+		5B5606BD09339DA50000CAF3 /* CEGuiSample.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B560648093393B20000CAF3 /* CEGuiSample.h */; };
+		5B5606CA0933A4760000CAF3 /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5606C90933A4760000CAF3 /* CEGuiOpenGLBaseApplication.cpp */; };
+		5B5606CD0933A4920000CAF3 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5B5606D00933A4DA0000CAF3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		5B5607110933A7770000CAF3 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5606FD0933A7760000CAF3 /* GLUT.framework */; };
+		5B5607130933A7B60000CAF3 /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5B560801093419580000CAF3 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560732093419580000CAF3 /* Ogre.framework */; };
+		5B560802093419580000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */; };
+		5B560803093419580000CAF3 /* Ogre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560732093419580000CAF3 /* Ogre.framework */; };
+		5B560804093419580000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */; };
+		5B560815093419F40000CAF3 /* zzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560807093419F40000CAF3 /* zzip.framework */; };
+		5B560816093419F40000CAF3 /* zzip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B560807093419F40000CAF3 /* zzip.framework */; };
 		5B5F79ED08CBDB1D00C417E6 /* FalButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79C808CBDB1D00C417E6 /* FalButton.cpp */; };
 		5B5F79EE08CBDB1D00C417E6 /* FalCheckbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79C908CBDB1D00C417E6 /* FalCheckbox.cpp */; };
 		5B5F79EF08CBDB1D00C417E6 /* FalCombobox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F79CA08CBDB1D00C417E6 /* FalCombobox.cpp */; };
@@ -554,6 +584,83 @@
 /* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
+		5B56058E09337AFB0000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B56059B09337B170000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B5605A809337B340000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B5605B509337B450000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B5605C209337B570000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B5605CF09337B640000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B560667093394110000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B7BC08C40E910086C816 /* CEGUITaharezLook */;
+			remoteInfo = CEGUITaharezLook;
+		};
+		5B560669093394110000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */;
+			remoteInfo = CEGUIWindowsLook;
+		};
+		5B56066B093394110000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
+			remoteInfo = CEGUIFalagardBase;
+		};
+		5B56069A09339BE30000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		5B560826093422390000CAF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
+			remoteInfo = CEGUISampleHelper;
+		};
 		5B5F799808CBD2E400C417E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -683,6 +790,38 @@
 		5B4BB59C08C5EEC40088F7FA /* CEGUIFalWidgetLookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalWidgetLookManager.cpp; sourceTree = "<group>"; };
 		5B4BB59D08C5EEC40088F7FA /* CEGUIFalXMLEnumHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalXMLEnumHelper.cpp; sourceTree = "<group>"; };
 		5B4BB63108C5F1DA0088F7FA /* libfreetype.6.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.3.dylib; path = /usr/X11R6/lib/libfreetype.6.3.dylib; sourceTree = "<absolute>"; };
+		5B56058709337AF10000CAF3 /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B56058909337AF10000CAF3 /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		5B56059409337B120000CAF3 /* FalagardDemo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = FalagardDemo1.app; path = build/Development/FalagardDemo1.app; sourceTree = "<group>"; };
+		5B56059609337B120000CAF3 /* FalagardDemo1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "FalagardDemo1-Info.plist"; sourceTree = "<group>"; };
+		5B5605A109337B2D0000CAF3 /* Demo8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Demo8.app; path = build/Development/Demo8.app; sourceTree = "<group>"; };
+		5B5605A309337B2E0000CAF3 /* Demo8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Demo8-Info.plist"; sourceTree = "<group>"; };
+		5B5605AE09337B3F0000CAF3 /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Demo7.app; path = build/Development/Demo7.app; sourceTree = "<group>"; };
+		5B5605B009337B3F0000CAF3 /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Demo7-Info.plist"; sourceTree = "<group>"; };
+		5B5605BB09337B520000CAF3 /* Demo6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Demo6.app; path = build/Development/Demo6.app; sourceTree = "<group>"; };
+		5B5605BD09337B520000CAF3 /* Demo6-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Demo6-Info.plist"; sourceTree = "<group>"; };
+		5B5605C809337B600000CAF3 /* Demo4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Demo4.app; path = build/Development/Demo4.app; sourceTree = "<group>"; };
+		5B5605CA09337B600000CAF3 /* Demo4-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Demo4-Info.plist"; sourceTree = "<group>"; };
+		5B5605E70933812E0000CAF3 /* Sample_FirstWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Sample_FirstWindow.cpp; path = ../../../../Samples/FirstWindow/src/Sample_FirstWindow.cpp; sourceTree = SOURCE_ROOT; };
+		5B5605E9093381460000CAF3 /* Sample_FirstWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Sample_FirstWindow.h; path = ../../../../Samples/FirstWindow/include/Sample_FirstWindow.h; sourceTree = SOURCE_ROOT; };
+		5B56063F093393620000CAF3 /* CEGuiOgreBaseApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGuiOgreBaseApplication.cpp; path = ../../../../Samples/common/src/CEGuiOgreBaseApplication.cpp; sourceTree = SOURCE_ROOT; };
+		5B560640093393620000CAF3 /* CEGuiRendererSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGuiRendererSelector.cpp; path = ../../../../Samples/common/src/CEGuiRendererSelector.cpp; sourceTree = SOURCE_ROOT; };
+		5B560641093393620000CAF3 /* CEGuiSample.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGuiSample.cpp; path = ../../../../Samples/common/src/CEGuiSample.cpp; sourceTree = SOURCE_ROOT; };
+		5B560645093393B20000CAF3 /* CEGuiBaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiBaseApplication.h; path = ../../../../Samples/common/include/CEGuiBaseApplication.h; sourceTree = SOURCE_ROOT; };
+		5B560646093393B20000CAF3 /* CEGuiOgreBaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiOgreBaseApplication.h; path = ../../../../Samples/common/include/CEGuiOgreBaseApplication.h; sourceTree = SOURCE_ROOT; };
+		5B560647093393B20000CAF3 /* CEGuiRendererSelector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiRendererSelector.h; path = ../../../../Samples/common/include/CEGuiRendererSelector.h; sourceTree = SOURCE_ROOT; };
+		5B560648093393B20000CAF3 /* CEGuiSample.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiSample.h; path = ../../../../Samples/common/include/CEGuiSample.h; sourceTree = SOURCE_ROOT; };
+		5B56068609339BB30000CAF3 /* config.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = config.nib; path = ../../../../Samples/common/src/config.nib; sourceTree = SOURCE_ROOT; };
+		5B56068709339BB30000CAF3 /* MacCEGuiRendererSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = MacCEGuiRendererSelector.cpp; path = ../../../../Samples/common/src/MacCEGuiRendererSelector.cpp; sourceTree = SOURCE_ROOT; };
+		5B56069409339BDA0000CAF3 /* CEGUISampleHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUISampleHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B56069509339BDA0000CAF3 /* CEGUISampleHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUISampleHelper-Info.plist"; sourceTree = "<group>"; };
+		5B5606B009339D9D0000CAF3 /* CEGuiOpenGLBaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGuiOpenGLBaseApplication.h; path = ../../../../Samples/common/include/CEGuiOpenGLBaseApplication.h; sourceTree = SOURCE_ROOT; };
+		5B5606B209339D9D0000CAF3 /* MacCEGuiRendererSelector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = MacCEGuiRendererSelector.h; path = ../../../../Samples/common/include/MacCEGuiRendererSelector.h; sourceTree = SOURCE_ROOT; };
+		5B5606C90933A4760000CAF3 /* CEGuiOpenGLBaseApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGuiOpenGLBaseApplication.cpp; path = ../../../../Samples/common/src/CEGuiOpenGLBaseApplication.cpp; sourceTree = SOURCE_ROOT; };
+		5B5606FD0933A7760000CAF3 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
+		5B560732093419580000CAF3 /* Ogre.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ogre.framework; path = /Library/Frameworks/Ogre.framework; sourceTree = "<absolute>"; };
+		5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OgreCEGUIRenderer.framework; path = /Library/Frameworks/OgreCEGUIRenderer.framework; sourceTree = "<absolute>"; };
+		5B560807093419F40000CAF3 /* zzip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = zzip.framework; path = /Library/Frameworks/zzip.framework; sourceTree = "<absolute>"; };
 		5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIFalagardBase.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5F799008CBD2C900C417E6 /* CEGUIFalagard-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUIFalagard-Info.plist"; sourceTree = "<group>"; };
 		5B5F79A308CBDB0300C417E6 /* FalButton.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FalButton.h; path = ../../../../WidgetSets/Falagard/include/FalButton.h; sourceTree = SOURCE_ROOT; };
@@ -1236,6 +1375,67 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5B56058509337AF10000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B56063D0933922F0000CAF3 /* CEGUI.framework in Frameworks */,
+				5B5606A309339C520000CAF3 /* CEGUISampleHelper.framework in Frameworks */,
+				5B560803093419580000CAF3 /* Ogre.framework in Frameworks */,
+				5B560804093419580000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */,
+				5B560816093419F40000CAF3 /* zzip.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56059209337B120000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56059F09337B2D0000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605AC09337B3F0000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605B909337B520000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605C609337B600000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56069209339BDA0000CAF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B5606CD0933A4920000CAF3 /* CEGUI.framework in Frameworks */,
+				5B5606D00933A4DA0000CAF3 /* OpenGL.framework in Frameworks */,
+				5B5607110933A7770000CAF3 /* GLUT.framework in Frameworks */,
+				5B5607130933A7B60000CAF3 /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				5B560801093419580000CAF3 /* Ogre.framework in Frameworks */,
+				5B560802093419580000CAF3 /* OgreCEGUIRenderer.framework in Frameworks */,
+				5B560815093419F40000CAF3 /* zzip.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B5F798D08CBD2C900C417E6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1312,6 +1512,13 @@
 				5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */,
 				5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */,
 				5B991DA708C92FBB006E6DC9 /* liblua.a */,
+				5B56058709337AF10000CAF3 /* FirstWindow.app */,
+				5B56059409337B120000CAF3 /* FalagardDemo1.app */,
+				5B5605A109337B2D0000CAF3 /* Demo8.app */,
+				5B5605AE09337B3F0000CAF3 /* Demo7.app */,
+				5B5605BB09337B520000CAF3 /* Demo6.app */,
+				5B5605C809337B600000CAF3 /* Demo4.app */,
+				5B56069409339BDA0000CAF3 /* CEGUISampleHelper.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1323,6 +1530,7 @@
 				5B69B73408C40B5A0086C816 /* Renderers */,
 				5B69B74C08C40BEB0086C816 /* Widget Sets */,
 				5B69B73808C40B6C0086C816 /* Modules */,
+				5B56053E093378C00000CAF3 /* Samples */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DDFF38A45A11DB9C8B /* Products */,
 			);
@@ -1332,6 +1540,10 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5B560807093419F40000CAF3 /* zzip.framework */,
+				5B560732093419580000CAF3 /* Ogre.framework */,
+				5B560733093419580000CAF3 /* OgreCEGUIRenderer.framework */,
+				5B5606FD0933A7760000CAF3 /* GLUT.framework */,
 				5B5F7A6508CCC27500C417E6 /* OpenGL.framework */,
 				5B4BB63108C5F1DA0088F7FA /* libfreetype.6.3.dylib */,
 				5B3E843C08C49D1D00D8C077 /* Xerces.framework */,
@@ -1390,6 +1602,202 @@
 			name = falagard;
 			path = ../../../../src/falagard;
 			sourceTree = SOURCE_ROOT;
+		};
+		5B56053E093378C00000CAF3 /* Samples */ = {
+			isa = PBXGroup;
+			children = (
+				5B56068209339B1B0000CAF3 /* SampleHelper */,
+				5B56055A0933796E0000CAF3 /* FirstWindow */,
+				5B560555093379590000CAF3 /* FalagardDemo1 */,
+				5B5605520933794B0000CAF3 /* Demo8 */,
+				5B56054F0933793D0000CAF3 /* Demo7 */,
+				5B5605480933790E0000CAF3 /* Demo6 */,
+				5B560545093379070000CAF3 /* Demo4 */,
+			);
+			name = Samples;
+			sourceTree = "<group>";
+		};
+		5B560545093379070000CAF3 /* Demo4 */ = {
+			isa = PBXGroup;
+			children = (
+				5B5605CA09337B600000CAF3 /* Demo4-Info.plist */,
+				5B56056A093379E10000CAF3 /* Source */,
+				5B560567093379DD0000CAF3 /* Headers */,
+			);
+			name = Demo4;
+			sourceTree = "<group>";
+		};
+		5B5605480933790E0000CAF3 /* Demo6 */ = {
+			isa = PBXGroup;
+			children = (
+				5B5605BD09337B520000CAF3 /* Demo6-Info.plist */,
+				5B560570093379E80000CAF3 /* Source */,
+				5B56056D093379E40000CAF3 /* Headers */,
+			);
+			name = Demo6;
+			sourceTree = "<group>";
+		};
+		5B56054F0933793D0000CAF3 /* Demo7 */ = {
+			isa = PBXGroup;
+			children = (
+				5B5605B009337B3F0000CAF3 /* Demo7-Info.plist */,
+				5B56057C09337A090000CAF3 /* Source */,
+				5B560573093379F00000CAF3 /* Headers */,
+			);
+			name = Demo7;
+			sourceTree = "<group>";
+		};
+		5B5605520933794B0000CAF3 /* Demo8 */ = {
+			isa = PBXGroup;
+			children = (
+				5B5605A309337B2E0000CAF3 /* Demo8-Info.plist */,
+				5B56057909337A050000CAF3 /* Source */,
+				5B56057609337A020000CAF3 /* Headers */,
+			);
+			name = Demo8;
+			sourceTree = "<group>";
+		};
+		5B560555093379590000CAF3 /* FalagardDemo1 */ = {
+			isa = PBXGroup;
+			children = (
+				5B56059609337B120000CAF3 /* FalagardDemo1-Info.plist */,
+				5B56058209337A1C0000CAF3 /* Source */,
+				5B56057F09337A180000CAF3 /* Headers */,
+			);
+			name = FalagardDemo1;
+			sourceTree = "<group>";
+		};
+		5B56055A0933796E0000CAF3 /* FirstWindow */ = {
+			isa = PBXGroup;
+			children = (
+				5B56058909337AF10000CAF3 /* FirstWindow-Info.plist */,
+				5B56055F093379860000CAF3 /* Source */,
+				5B560564093379BE0000CAF3 /* Headers */,
+			);
+			name = FirstWindow;
+			sourceTree = "<group>";
+		};
+		5B56055F093379860000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5B5605E70933812E0000CAF3 /* Sample_FirstWindow.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B560564093379BE0000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				5B5605E9093381460000CAF3 /* Sample_FirstWindow.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B560567093379DD0000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B56056A093379E10000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B56056D093379E40000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B560570093379E80000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B560573093379F00000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B56057609337A020000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B56057909337A050000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B56057C09337A090000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B56057F09337A180000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B56058209337A1C0000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B56067809339AFF0000CAF3 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				5B560645093393B20000CAF3 /* CEGuiBaseApplication.h */,
+				5B560646093393B20000CAF3 /* CEGuiOgreBaseApplication.h */,
+				5B5606B009339D9D0000CAF3 /* CEGuiOpenGLBaseApplication.h */,
+				5B560647093393B20000CAF3 /* CEGuiRendererSelector.h */,
+				5B560648093393B20000CAF3 /* CEGuiSample.h */,
+				5B5606B209339D9D0000CAF3 /* MacCEGuiRendererSelector.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		5B56067F09339B0D0000CAF3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5B56063F093393620000CAF3 /* CEGuiOgreBaseApplication.cpp */,
+				5B5606C90933A4760000CAF3 /* CEGuiOpenGLBaseApplication.cpp */,
+				5B560640093393620000CAF3 /* CEGuiRendererSelector.cpp */,
+				5B560641093393620000CAF3 /* CEGuiSample.cpp */,
+				5B56068709339BB30000CAF3 /* MacCEGuiRendererSelector.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5B56068209339B1B0000CAF3 /* SampleHelper */ = {
+			isa = PBXGroup;
+			children = (
+				5B56069509339BDA0000CAF3 /* CEGUISampleHelper-Info.plist */,
+				5B56068609339BB30000CAF3 /* config.nib */,
+				5B56067F09339B0D0000CAF3 /* Source */,
+				5B56067809339AFF0000CAF3 /* Headers */,
+			);
+			name = SampleHelper;
+			sourceTree = "<group>";
 		};
 		5B5F798208CBD29500C417E6 /* Falagard */ = {
 			isa = PBXGroup;
@@ -2255,6 +2663,19 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		5B56068F09339BDA0000CAF3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B5606B509339D9D0000CAF3 /* CEGuiOpenGLBaseApplication.h in Headers */,
+				5B5606B709339D9D0000CAF3 /* MacCEGuiRendererSelector.h in Headers */,
+				5B5606BA09339DA30000CAF3 /* CEGuiBaseApplication.h in Headers */,
+				5B5606BB09339DA30000CAF3 /* CEGuiOgreBaseApplication.h in Headers */,
+				5B5606BC09339DA40000CAF3 /* CEGuiRendererSelector.h in Headers */,
+				5B5606BD09339DA50000CAF3 /* CEGuiSample.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B69B82B08C4106E0086C816 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2470,6 +2891,398 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5B56058609337AF10000CAF3 /* FirstWindow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B56058A09337AF20000CAF3 /* Build configuration list for PBXNativeTarget "FirstWindow" */;
+			buildPhases = (
+				5B56058309337AF10000CAF3 /* Resources */,
+				5B56058409337AF10000CAF3 /* Sources */,
+				5B56058509337AF10000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B56058F09337AFB0000CAF3 /* PBXTargetDependency */,
+				5B560668093394110000CAF3 /* PBXTargetDependency */,
+				5B56066A093394110000CAF3 /* PBXTargetDependency */,
+				5B56066C093394110000CAF3 /* PBXTargetDependency */,
+				5B560827093422390000CAF3 /* PBXTargetDependency */,
+			);
+			name = FirstWindow;
+			productName = FirstWindow;
+			productReference = 5B56058709337AF10000CAF3 /* FirstWindow.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.FirstWindow</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.application";
+		};
+		5B56059309337B120000CAF3 /* FalagardDemo1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B56059709337B140000CAF3 /* Build configuration list for PBXNativeTarget "FalagardDemo1" */;
+			buildPhases = (
+				5B56059009337B120000CAF3 /* Resources */,
+				5B56059109337B120000CAF3 /* Sources */,
+				5B56059209337B120000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B56059C09337B170000CAF3 /* PBXTargetDependency */,
+			);
+			name = FalagardDemo1;
+			productName = FalagardDemo1;
+			productReference = 5B56059409337B120000CAF3 /* FalagardDemo1.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.FalagardDemo1</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.application";
+		};
+		5B5605A009337B2D0000CAF3 /* Demo8 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B5605A409337B2F0000CAF3 /* Build configuration list for PBXNativeTarget "Demo8" */;
+			buildPhases = (
+				5B56059D09337B2D0000CAF3 /* Resources */,
+				5B56059E09337B2D0000CAF3 /* Sources */,
+				5B56059F09337B2D0000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B5605A909337B340000CAF3 /* PBXTargetDependency */,
+			);
+			name = Demo8;
+			productName = Demo8;
+			productReference = 5B5605A109337B2D0000CAF3 /* Demo8.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.Demo8</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.application";
+		};
+		5B5605AD09337B3F0000CAF3 /* Demo7 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B5605B109337B400000CAF3 /* Build configuration list for PBXNativeTarget "Demo7" */;
+			buildPhases = (
+				5B5605AA09337B3F0000CAF3 /* Resources */,
+				5B5605AB09337B3F0000CAF3 /* Sources */,
+				5B5605AC09337B3F0000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B5605B609337B450000CAF3 /* PBXTargetDependency */,
+			);
+			name = Demo7;
+			productName = Demo7;
+			productReference = 5B5605AE09337B3F0000CAF3 /* Demo7.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.Demo7</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.application";
+		};
+		5B5605BA09337B520000CAF3 /* Demo6 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B5605BE09337B530000CAF3 /* Build configuration list for PBXNativeTarget "Demo6" */;
+			buildPhases = (
+				5B5605B709337B520000CAF3 /* Resources */,
+				5B5605B809337B520000CAF3 /* Sources */,
+				5B5605B909337B520000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B5605C309337B570000CAF3 /* PBXTargetDependency */,
+			);
+			name = Demo6;
+			productName = Demo6;
+			productReference = 5B5605BB09337B520000CAF3 /* Demo6.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.Demo6</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.application";
+		};
+		5B5605C709337B600000CAF3 /* Demo4 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B5605CB09337B610000CAF3 /* Build configuration list for PBXNativeTarget "Demo4" */;
+			buildPhases = (
+				5B5605C409337B600000CAF3 /* Resources */,
+				5B5605C509337B600000CAF3 /* Sources */,
+				5B5605C609337B600000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo4-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo4;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B5605D009337B640000CAF3 /* PBXTargetDependency */,
+			);
+			name = Demo4;
+			productName = Demo4;
+			productReference = 5B5605C809337B600000CAF3 /* Demo4.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.Demo4</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.application";
+		};
+		5B56069309339BDA0000CAF3 /* CEGUISampleHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B56069609339BDB0000CAF3 /* Build configuration list for PBXNativeTarget "CEGUISampleHelper" */;
+			buildPhases = (
+				5B56068F09339BDA0000CAF3 /* Headers */,
+				5B56069009339BDA0000CAF3 /* Resources */,
+				5B56069109339BDA0000CAF3 /* Sources */,
+				5B56069209339BDA0000CAF3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUISampleHelper;
+				ZERO_LINK = YES;
+			};
+			dependencies = (
+				5B56069B09339BE30000CAF3 /* PBXTargetDependency */,
+			);
+			name = CEGUISampleHelper;
+			productName = CEGUISampleHelper;
+			productReference = 5B56069409339BDA0000CAF3 /* CEGUISampleHelper.framework */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yourcompany.CEGUISampleHelper</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
 		5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagardBase" */;
@@ -2926,11 +3739,73 @@
 				5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */,
 				5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */,
 				5B991DA608C92FBB006E6DC9 /* lua */,
+				5B56058609337AF10000CAF3 /* FirstWindow */,
+				5B56059309337B120000CAF3 /* FalagardDemo1 */,
+				5B5605A009337B2D0000CAF3 /* Demo8 */,
+				5B5605AD09337B3F0000CAF3 /* Demo7 */,
+				5B5605BA09337B520000CAF3 /* Demo6 */,
+				5B5605C709337B600000CAF3 /* Demo4 */,
+				5B56069309339BDA0000CAF3 /* CEGUISampleHelper */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5B56058309337AF10000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B560663093393ED0000CAF3 /* CEGUITaharezLook.bundle in Resources */,
+				5B560664093393ED0000CAF3 /* CEGUIWindowsLook.bundle in Resources */,
+				5B560665093393ED0000CAF3 /* CEGUIFalagardBase.bundle in Resources */,
+				5B560649093393BB0000CAF3 /* FirstWindow-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56059009337B120000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56059D09337B2D0000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605AA09337B3F0000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605B709337B520000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605C409337B600000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56069009339BDA0000CAF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B56069C09339C3A0000CAF3 /* CEGUISampleHelper-Info.plist in Resources */,
+				5B56069D09339C3B0000CAF3 /* config.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B5F798B08CBD2C900C417E6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3021,6 +3896,61 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5B56058409337AF10000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B5605E80933812E0000CAF3 /* Sample_FirstWindow.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56059109337B120000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56059E09337B2D0000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605AB09337B3F0000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605B809337B520000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B5605C509337B600000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B56069109339BDA0000CAF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B56069E09339C3C0000CAF3 /* MacCEGuiRendererSelector.cpp in Sources */,
+				5B5606A009339C3E0000CAF3 /* CEGuiOgreBaseApplication.cpp in Sources */,
+				5B5606A109339C3F0000CAF3 /* CEGuiRendererSelector.cpp in Sources */,
+				5B5606A209339C400000CAF3 /* CEGuiSample.cpp in Sources */,
+				5B5606CA0933A4760000CAF3 /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B5F798C08CBD2C900C417E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3360,6 +4290,61 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5B56058F09337AFB0000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B56058E09337AFB0000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56059C09337B170000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B56059B09337B170000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5605A909337B340000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B5605A809337B340000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5605B609337B450000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B5605B509337B450000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5605C309337B570000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B5605C209337B570000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B5605D009337B640000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B5605CF09337B640000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B560668093394110000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B7BC08C40E910086C816 /* CEGUITaharezLook */;
+			targetProxy = 5B560667093394110000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56066A093394110000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B7C608C40EA60086C816 /* CEGUIWindowsLook */;
+			targetProxy = 5B560669093394110000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56066C093394110000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardBase */;
+			targetProxy = 5B56066B093394110000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B56069B09339BE30000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B56069A09339BE30000CAF3 /* PBXContainerItemProxy */;
+		};
+		5B560827093422390000CAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B56069309339BDA0000CAF3 /* CEGUISampleHelper */;
+			targetProxy = 5B560826093422390000CAF3 /* PBXContainerItemProxy */;
+		};
 		5B5F799908CBD2E400C417E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
@@ -3423,21 +4408,507 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5B56058B09337AF20000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"$(BUILD_DIR)/$(CONFIGURATION)",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				USER_HEADER_SEARCH_PATHS = "../../../../Samples/FirstWindow/include ../../../../include ../../../../Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Development;
+		};
+		5B56058C09337AF20000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"$(BUILD_DIR)/$(CONFIGURATION)",
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				USER_HEADER_SEARCH_PATHS = "../../../../Samples/FirstWindow/include ../../../../include ../../../../Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B56058D09337AF20000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B56059809337B140000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		5B56059909337B140000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B56059A09337B140000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B5605A509337B2F0000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		5B5605A609337B2F0000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B5605A709337B2F0000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B5605B209337B400000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		5B5605B309337B400000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B5605B409337B400000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B5605BF09337B530000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		5B5605C009337B530000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B5605C109337B530000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B5605CC09337B610000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo4-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo4;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		5B5605CD09337B610000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo4-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo4;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B5605CE09337B610000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo4-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo4;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B56069709339BDB0000CAF3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				OTHER_CFLAGS = (
+					"-DCEGUI_SAMPLES_USE_OGRE",
+					"-DCEGUI_SAMPLES_USE_OPENGL",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUISampleHelper;
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../Samples/common/include /Library/Frameworks/Ogre.framework/Headers /Library/Frameworks/OgreCEGUIRenderer.framework/Headers";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		5B56069809339BDB0000CAF3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUISampleHelper;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B56069909339BDB0000CAF3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "CEGUISampleHelper-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUISampleHelper;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
 		5B5F799208CBD2CB00C417E6 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../WidgetSets/Falagard/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3451,6 +4922,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIFalagardBase;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../WidgetSets/Falagard/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3463,17 +4935,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../WidgetSets/Falagard/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3487,6 +4955,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIFalagard;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../WidgetSets/Falagard/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3545,17 +5014,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../WidgetSets/TaharezLook/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUITaharezLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3569,6 +5034,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUITaharezLook;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../WidgetSets/TaharezLook/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3581,17 +5047,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../WidgetSets/TaharezLook/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUITaharezLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3605,6 +5067,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUITaharezLook;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../WidgetSets/TaharezLook/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3645,16 +5108,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../WidgetSets/WindowsLook/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUIWindowsLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3668,6 +5128,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIWindowsLook;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../WidgetSets/WindowsLook/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3680,17 +5141,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../WidgetSets/WindowsLook/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUIWindowsLook-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				LIBRARY_STYLE = BUNDLE;
@@ -3704,6 +5161,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIWindowsLook;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../WidgetSets/WindowsLook/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3744,7 +5202,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
@@ -3760,8 +5218,6 @@
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GENERATE_PKGINFO_FILE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../src/implementations/mac,
 					/usr/include/malloc,
 					/usr/X11R6/include,
 					/usr/X11R6/include/freetype2,
@@ -3772,6 +5228,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
 				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3782,6 +5239,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUI;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3794,7 +5252,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
@@ -3807,8 +5265,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../src/implementations/mac,
 					/usr/include/malloc,
 					/usr/X11R6/include/freetype2,
 					/Library/Frameworks/Xerces.framework/Headers,
@@ -3818,6 +5274,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
 				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3829,6 +5286,7 @@
 				PRODUCT_NAME = CEGUI;
 				SECTORDER_FLAGS = "";
 				SYMROOT = build;
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3880,7 +5338,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
@@ -3890,8 +5348,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../src/implementations/mac,
 					/usr/include/malloc,
 					/usr/X11R6/include/freetype2,
 					/Library/Frameworks/Xerces.framework/Headers,
@@ -3900,6 +5356,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
 				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3910,6 +5367,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIOpenGLRenderer;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3922,7 +5380,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
@@ -3932,8 +5390,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					../../../../src/implementations/mac,
 					/usr/include/malloc,
 					/usr/X11R6/include/freetype2,
 					/Library/Frameworks/Xerces.framework/Headers,
@@ -3942,6 +5398,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
 				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -3952,6 +5409,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIOpenGLRenderer;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -3994,7 +5452,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
@@ -4003,15 +5461,11 @@
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					../../../../include,
-					"../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include",
-					../../../../ScriptingModules/CEGUILua/LuaScriptModule/include,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -4022,6 +5476,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUILuaScriptModule;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include ../../../../ScriptingModules/CEGUILua/LuaScriptModule/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -4034,7 +5489,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
@@ -4047,11 +5502,11 @@
 					../../../../include,
 					"../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include",
 					../../../../ScriptingModules/CEGUILua/LuaScriptModule/include,
-					/usr/include/malloc,
 				);
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -4062,6 +5517,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = LuaScriptModule;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = /usr/include/malloc;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -4159,10 +5615,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G4;
-				HEADER_SEARCH_PATHS = "../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
+				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = "$(HOME)/lib";
 				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				LIBRARY_STYLE = STATIC;
@@ -4174,6 +5630,7 @@
 				PRODUCT_NAME = lua;
 				SECTORDER_FLAGS = "";
 				SHARED_PRECOMPS_DIR = "$(CACHE_ROOT)/SharedPrecompiledHeaders";
+				USER_HEADER_SEARCH_PATHS = "../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -4186,10 +5643,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.4.0;
+				CURRENT_PROJECT_VERSION = 0.4.1;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
-				HEADER_SEARCH_PATHS = "../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
+				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = "$(HOME)/lib";
 				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				LIBRARY_STYLE = STATIC;
@@ -4200,6 +5657,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = lua;
 				SECTORDER_FLAGS = "";
+				USER_HEADER_SEARCH_PATHS = "../../../../ScriptingModules/CEGUILua/lua_and_tolua++/include";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -4233,6 +5691,76 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5B56058A09337AF20000CAF3 /* Build configuration list for PBXNativeTarget "FirstWindow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B56058B09337AF20000CAF3 /* Development */,
+				5B56058C09337AF20000CAF3 /* Deployment */,
+				5B56058D09337AF20000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B56059709337B140000CAF3 /* Build configuration list for PBXNativeTarget "FalagardDemo1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B56059809337B140000CAF3 /* Development */,
+				5B56059909337B140000CAF3 /* Deployment */,
+				5B56059A09337B140000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B5605A409337B2F0000CAF3 /* Build configuration list for PBXNativeTarget "Demo8" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B5605A509337B2F0000CAF3 /* Development */,
+				5B5605A609337B2F0000CAF3 /* Deployment */,
+				5B5605A709337B2F0000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B5605B109337B400000CAF3 /* Build configuration list for PBXNativeTarget "Demo7" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B5605B209337B400000CAF3 /* Development */,
+				5B5605B309337B400000CAF3 /* Deployment */,
+				5B5605B409337B400000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B5605BE09337B530000CAF3 /* Build configuration list for PBXNativeTarget "Demo6" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B5605BF09337B530000CAF3 /* Development */,
+				5B5605C009337B530000CAF3 /* Deployment */,
+				5B5605C109337B530000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B5605CB09337B610000CAF3 /* Build configuration list for PBXNativeTarget "Demo4" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B5605CC09337B610000CAF3 /* Development */,
+				5B5605CD09337B610000CAF3 /* Deployment */,
+				5B5605CE09337B610000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B56069609339BDB0000CAF3 /* Build configuration list for PBXNativeTarget "CEGUISampleHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B56069709339BDB0000CAF3 /* Development */,
+				5B56069809339BDB0000CAF3 /* Deployment */,
+				5B56069909339BDB0000CAF3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
 		5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagardBase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4241,6 +5769,7 @@
 				5B5F799408CBD2CB00C417E6 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B69B72208C40ADD0086C816 /* Build configuration list for PBXProject "CrazyEddiesGUI" */ = {
 			isa = XCConfigurationList;
@@ -4260,6 +5789,7 @@
 				5B69B7C208C40E920086C816 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B69B7C908C40EA70086C816 /* Build configuration list for PBXNativeTarget "CEGUIWindowsLook" */ = {
 			isa = XCConfigurationList;
@@ -4269,6 +5799,7 @@
 				5B69B7CC08C40EA70086C816 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B69B83208C4106E0086C816 /* Build configuration list for PBXNativeTarget "CEGUIBase" */ = {
 			isa = XCConfigurationList;
@@ -4278,6 +5809,7 @@
 				5B69B83508C4106E0086C816 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B991D7208C920E6006E6DC9 /* Build configuration list for PBXNativeTarget "OpenGLRenderer" */ = {
 			isa = XCConfigurationList;
@@ -4287,6 +5819,7 @@
 				5B991D7508C920E6006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B991D7D08C920FF006E6DC9 /* Build configuration list for PBXNativeTarget "LuaScriptModule" */ = {
 			isa = XCConfigurationList;
@@ -4296,6 +5829,7 @@
 				5B991D8008C920FF006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B991D9108C92258006E6DC9 /* Build configuration list for PBXAggregateTarget "CEGUI" */ = {
 			isa = XCConfigurationList;
@@ -4305,6 +5839,7 @@
 				5B991D9408C92258006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 		5B991DA808C92FDA006E6DC9 /* Build configuration list for PBXNativeTarget "lua" */ = {
 			isa = XCConfigurationList;
@@ -4314,6 +5849,7 @@
 				5B991DAB08C92FDA006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
 		};
 /* End XCConfigurationList section */
 	};
