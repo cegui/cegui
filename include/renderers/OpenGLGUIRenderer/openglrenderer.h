@@ -27,6 +27,7 @@
 #ifndef _openglrenderer_h_
 #define _openglrenderer_h_
 
+#include "CEGUIBase.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef OPENGL_GUIRENDERER_EXPORTS
@@ -84,7 +85,7 @@ typedef unsigned short wchar_t;
 #endif /* __APPLE__ */
 #include <list>
 #include <set>
-#include "CEGUIBase.h"
+
 #include "CEGUIRenderer.h"
 #include "CEGUITexture.h"
 

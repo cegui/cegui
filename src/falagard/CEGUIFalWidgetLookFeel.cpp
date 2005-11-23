@@ -270,7 +270,7 @@ namespace CEGUI
 
     void WidgetLookFeel::renameChildren(const Window& widget, const String& newBaseName) const
     {
-        WindowManager& winMgr(WindowManager::getSingleton());
+        WindowManager& winMgr = WindowManager::getSingleton();
 
         for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
             winMgr.renameWindow(widget.getName() + (*curr).getWidgetNameSuffix(),
