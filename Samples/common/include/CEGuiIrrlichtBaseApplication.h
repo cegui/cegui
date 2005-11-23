@@ -24,6 +24,15 @@
 #ifndef _CEGuiIrrlichtBaseApplication_h_
 #define _CEGuiIrrlichtBaseApplication_h_
 
+#if defined(_WIN32)
+#  pragma comment(lib, "irrlicht.lib")
+#  if defined(_DEBUG)
+#      pragma comment(lib, "IrrlichtGUIRenderer_d.lib")
+#  else
+#      pragma comment(lib, "IrrlichtGUIRenderer.lib")
+#  endif
+#endif
+
 #include "CEGuiBaseApplication.h"
 #include "renderers/IrrlichtRenderer/irrlichtrenderer.h"
 #include "CEGUI.h"
