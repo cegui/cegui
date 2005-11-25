@@ -35,6 +35,11 @@
 #   undef max
 #endif
 
+#if defined(_WIN32)
+#  pragma comment(lib, "dinput8.lib")
+#  pragma comment(lib, "dxguid.lib")
+#endif
+
 
 /*!
 \brief

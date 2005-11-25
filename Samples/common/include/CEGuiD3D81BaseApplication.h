@@ -35,6 +35,15 @@
 #   undef max
 #endif
 
+#if defined(_WIN32)
+#  pragma comment(lib, "d3d8.lib")
+#  if defined(_DEBUG)
+#      pragma comment(lib, "DirectX81GUIRenderer_d.lib")
+#  else
+#      pragma comment(lib, "DirectX81GUIRenderer.lib")
+#  endif
+#endif
+
 
 struct CEGuiD3D81BaseApplicationImpl;
 
