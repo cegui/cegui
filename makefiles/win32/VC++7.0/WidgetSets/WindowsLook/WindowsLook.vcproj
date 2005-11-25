@@ -41,7 +41,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				ProgramDatabaseFile="$(OutDir)/CEGUIWindowsLook_d.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
