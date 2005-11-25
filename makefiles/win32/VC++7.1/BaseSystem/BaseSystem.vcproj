@@ -41,6 +41,7 @@
 				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
 				IgnoreDefaultLibraryNames="LIBCMTD"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
@@ -92,8 +93,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -208,9 +207,6 @@
 				RelativePath="..\..\..\..\src\CEGUIRefPtr.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIRenderCache.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderableElement.cpp">
 			</File>
 			<File
@@ -218,6 +214,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderableImage.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIRenderCache.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderer.cpp">
@@ -283,6 +282,9 @@
 				Name="falagard"
 				Filter="">
 				<File
+					RelativePath="..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalComponentBase.cpp">
 				</File>
 				<File
@@ -329,9 +331,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\falagard\CEGUIFalXMLEnumHelper.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\falagard\CEGUIFalagard_xmlHandler.cpp">
 				</File>
 			</Filter>
 			<Filter
@@ -380,6 +379,15 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIGUISheet.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemEntry.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemListBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemListBaseProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListbox.cpp">
 				</File>
 				<File
@@ -404,6 +412,21 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeaderSegmentProperties.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenubar.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuBaseProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuItem.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIMenuItemProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiColumnList.cpp">
 				</File>
 				<File
@@ -414,6 +437,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIMultiLineEditboxProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenu.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenuProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIProgressBar.cpp">
@@ -491,6 +520,12 @@
 					RelativePath="..\..\..\..\src\elements\CEGUITabControlProperties.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITextItem.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUITextItemProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIThumb.cpp">
 				</File>
 				<File
@@ -507,42 +542,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUITooltipProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIItemEntry.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIItemListBase.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIItemListBaseProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenubar.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenuBase.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenuBaseProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenuItem.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIMenuItemProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenu.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUIPopupMenuProperties.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUITextItem.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\elements\CEGUITextItemProperties.cpp">
 				</File>
 			</Filter>
 			<Filter
@@ -769,9 +768,6 @@
 				RelativePath="..\..\..\..\include\CEGUIRefPtr.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIRenderCache.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderableElement.h">
 			</File>
 			<File
@@ -779,6 +775,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderableImage.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIRenderCache.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIRenderer.h">
@@ -859,6 +858,9 @@
 				Name="falagard"
 				Filter="">
 				<File
+					RelativePath="..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalComponentBase.h">
 				</File>
 				<File
@@ -909,9 +911,6 @@
 				<File
 					RelativePath="..\..\..\..\include\falagard\CEGUIFalXMLEnumHelper.h">
 				</File>
-				<File
-					RelativePath="..\..\..\..\include\falagard\CEGUIFalagard_xmlHandler.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="elements"
@@ -959,6 +958,15 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIGUISheet.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemEntry.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemListBase.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemListBaseProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListbox.h">
 				</File>
 				<File
@@ -983,6 +991,21 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIListHeaderSegmentProperties.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenubar.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuBase.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuBaseProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuItem.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIMenuItemProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiColumnList.h">
 				</File>
 				<File
@@ -993,6 +1016,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIMultiLineEditboxProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenu.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenuProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIProgressBar.h">
@@ -1073,6 +1102,12 @@
 					RelativePath="..\..\..\..\include\elements\CEGUITabPane.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITextItem.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUITextItemProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIThumb.h">
 				</File>
 				<File
@@ -1089,42 +1124,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITooltipProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIItemEntry.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIItemListBase.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIItemListBaseProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenubar.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenuBase.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenuBaseProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenuItem.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIMenuItemProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenu.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUIPopupMenuProperties.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUITextItem.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\include\elements\CEGUITextItemProperties.h">
 				</File>
 			</Filter>
 			<Filter

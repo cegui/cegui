@@ -40,7 +40,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/CEGUIFalagardBase_d.pdb"
+				ProgramDatabaseFile="$(OutDir)/CEGUIFalagardBase_d.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\..\lib\CEGUIFalagardBase_d.lib"
 				TargetMachine="1"/>
@@ -92,8 +92,6 @@
 				OutputFile="$(OutDir)/CEGUIFalagardBase.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/CEGUIFalagardBase.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -136,16 +134,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalCheckbox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalComboDropList.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalCombobox.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalCombobox.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalComboDropList.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalEditbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalFrameWindow.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListHeader.cpp">
@@ -158,9 +159,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListHeaderSegmentProperties.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalListbox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\src\FalMenuBar.cpp">
@@ -252,16 +250,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalCheckbox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalComboDropList.h">
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalCombobox.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalCombobox.h">
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalComboDropList.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalEditbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalFrameWindow.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListHeader.h">
@@ -274,9 +275,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListHeaderSegmentProperties.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalListbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\Falagard\include\FalMenuBar.h">
@@ -358,4 +356,6 @@
 			</File>
 		</Filter>
 	</Files>
+	<Globals>
+	</Globals>
 </VisualStudioProject>

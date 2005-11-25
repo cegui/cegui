@@ -54,8 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"../../../../../bin/CEGUIFalagardBase.dll" /implib:"../../../../../lib/CEGUIFalagardBase.lib" /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /pdb:none /machine:I386 /out:"../../../../../bin/CEGUIFalagardBase.dll" /implib:"../../../../../lib/CEGUIFalagardBase.lib" /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy "..\..\..\..\..\bin\CEGUIFalagardBase.dll" "..\..\..\..\..\Samples\bin"
@@ -112,11 +111,11 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalCheckbox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalComboDropList.cpp
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalCombobox.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalCombobox.cpp
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalComboDropList.cpp
 # End Source File
 # Begin Source File
 
@@ -125,6 +124,10 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalEditbox.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalFrameWindow.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalListbox.cpp
 # End Source File
 # Begin Source File
 
@@ -141,10 +144,6 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalListHeaderSegment.cpp
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalListHeaderSegmentProperties.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\..\WidgetSets\Falagard\src\FalListbox.cpp
 # End Source File
 # Begin Source File
 
@@ -264,11 +263,11 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalCheckbox.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalComboDropList.h
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalCombobox.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalCombobox.h
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalComboDropList.h
 # End Source File
 # Begin Source File
 
@@ -277,6 +276,10 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalEditbox.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalFrameWindow.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalListbox.h
 # End Source File
 # Begin Source File
 
@@ -293,10 +296,6 @@ SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalListHeaderSegment.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalListHeaderSegmentProperties.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\..\..\WidgetSets\Falagard\include\FalListbox.h
 # End Source File
 # Begin Source File
 

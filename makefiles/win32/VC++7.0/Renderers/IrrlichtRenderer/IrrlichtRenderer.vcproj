@@ -39,7 +39,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/irrrenderer.pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
@@ -57,13 +57,7 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -91,7 +85,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
-				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -111,13 +104,7 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -125,10 +112,10 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
-				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichtrenderer.cpp">
+				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtResourceProvider.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtResourceProvider.cpp">
+				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichtrenderer.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichttexture.cpp">
@@ -141,13 +128,13 @@
 				RelativePath="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtEventPusher.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichtrenderer.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtRendererDef.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtResourceProvider.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichtrenderer.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichttexture.h">

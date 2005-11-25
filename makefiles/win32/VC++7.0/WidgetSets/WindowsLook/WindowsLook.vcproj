@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding = "Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.00"
@@ -41,7 +41,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
@@ -59,13 +59,7 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -94,8 +88,6 @@
 				OutputFile="$(OutDir)/CEGUIWindowsLook.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -115,17 +107,9 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
 				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
-	<References>
-	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
@@ -140,10 +124,10 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLCloseButton.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLCombobox.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLComboDropList.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLComboDropList.cpp">
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLCombobox.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLEditbox.cpp">
@@ -158,13 +142,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLHorzScrollbarThumb.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListbox.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListHeader.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListHeaderSegment.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListbox.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenuItem.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenubar.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLModule.cpp">
@@ -174,6 +164,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMultiLineEditbox.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLPopupMenu.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLProgressBar.cpp">
@@ -206,6 +199,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabPane.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTextItem.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp">
 			</File>
 			<File
@@ -216,18 +212,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLVertScrollbarThumb.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenubar.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenuItem.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLPopupMenu.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTextItem.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -243,10 +227,10 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLCloseButton.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLCombobox.h">
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLComboDropList.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLComboDropList.h">
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLCombobox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLEditbox.h">
@@ -261,13 +245,19 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLHorzScrollbarThumb.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListbox.h">
-			</File>
-			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListHeader.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListHeaderSegment.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListbox.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenuItem.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenubar.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLModule.h">
@@ -277,6 +267,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMultiLineEditbox.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLPopupMenu.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLProgressBar.h">
@@ -309,6 +302,9 @@
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTextItem.h">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTitlebar.h">
 			</File>
 			<File
@@ -319,18 +315,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLVertScrollbarThumb.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenubar.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenuItem.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLPopupMenu.h">
-			</File>
-			<File
-				RelativePath="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTextItem.h">
 			</File>
 		</Filter>
 		<Filter
