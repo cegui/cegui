@@ -8,6 +8,7 @@ The following is a high-level view of changes made to the system between release
 
 Release 0.4.1
 =============
+Added: Samples support for Mac OS X Build.
 Added: Window renaming functionality.
 Added: Logging of error when trying to unload a non-existant scheme.
 Added: "Lost device" handlers for OpenGLRenderer (grab/restoreTextures).
