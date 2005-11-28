@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 CEGUIBase.lib CEGUISampleHelper.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386 /out:"../../../../Samples/bin/Sample_FirstWindow.exe" /libpath:"..\..\..\..\lib"
+# ADD LINK32 CEGUIBase.lib CEGUISampleHelper.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /pdb:none /machine:I386 /out:"../../../../Samples/bin/Sample_FirstWindow.exe" /libpath:"..\..\..\..\lib"
 # SUBTRACT LINK32 /profile /debug
 
 !ELSEIF  "$(CFG)" == "Sample_FirstWindow - Win32 Debug"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 CEGUIBase_d.lib CEGUISampleHelper_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../Samples/bin/Sample_FirstWindow_d.exe" /pdbtype:sept /libpath:"..\..\..\..\lib"
+# ADD LINK32 CEGUIBase_d.lib CEGUISampleHelper_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /pdb:"../../../../Samples/bin/Sample_FirstWindow_d.pdb" /debug /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../Samples/bin/Sample_FirstWindow_d.exe" /pdbtype:sept /libpath:"..\..\..\..\lib"
 # SUBTRACT LINK32 /verbose
 
 !ENDIF 

@@ -42,8 +42,8 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Output/release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -54,8 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"../../../../../bin/CEGUIFalagardBase.dll" /implib:"../../../../../lib/CEGUIFalagardBase.lib" /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /pdb:none /machine:I386 /out:"../../../../../bin/CEGUIFalagardBase.dll" /implib:"../../../../../lib/CEGUIFalagardBase.lib" /libpath:"..\..\..\..\..\lib" /libpath:"..\..\..\..\..\dependencies\lib"
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy "..\..\..\..\..\bin\CEGUIFalagardBase.dll" "..\..\..\..\..\Samples\bin"
@@ -74,8 +73,8 @@ PostBuild_Cmds=copy "..\..\..\..\..\bin\CEGUIFalagardBase.dll" "..\..\..\..\..\S
 # PROP Intermediate_Dir "Output/debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "CEGUIWIDGETMODULE_EXPORTS" /D "_STLP_DEBUG" /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\..\WidgetSets\Falagard\include" /I "..\..\..\..\..\include\\" /I "..\..\..\..\..\dependencies\include\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_USRDLL" /D "FALAGARDBASE_EXPORTS" /D "_STLP_DEBUG" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32

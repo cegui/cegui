@@ -42,7 +42,7 @@
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				IgnoreDefaultLibraryNames="libci.lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
 				ImportLibrary="..\..\..\..\..\lib\$(ProjectName)_d.lib"
 				TargetMachine="1"/>
@@ -95,8 +95,6 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\..\lib;..\..\..\..\..\dependencies\lib"
 				IgnoreDefaultLibraryNames="libci.lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

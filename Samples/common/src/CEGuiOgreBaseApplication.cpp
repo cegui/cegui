@@ -135,6 +135,7 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
 
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
+#ifndef __APPLE__
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/configs", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/fonts", "FileSystem");
@@ -143,6 +144,17 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/looknfeel", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/lua_scripts", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/schemes", "FileSystem");
+#else
+    // Because Ogre/Mac looks in the bundle's Resources folder by default...
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/configs", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/fonts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/imagesets", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/layouts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/looknfeel", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/lua_scripts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/schemes", "FileSystem");
+#endif
 }
 
 

@@ -54,8 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 CEGUIBase.lib d3d8.lib d3d9.lib dinput8.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../Samples/bin/CEGUISampleHelper.dll" /implib:"../../../../lib/CEGUISampleHelper.lib" /libpath:"..\..\..\..\lib" /libpath:"..\..\..\..\dependencies\lib"
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 CEGUIBase.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /pdb:none /machine:I386 /nodefaultlib:"LIBCMT" /out:"../../../../Samples/bin/CEGUISampleHelper.dll" /implib:"../../../../lib/CEGUISampleHelper.lib" /libpath:"..\..\..\..\lib" /libpath:"..\..\..\..\dependencies\lib"
 
 !ELSEIF  "$(CFG)" == "CEGUISampleHelper - Win32 Debug"
 
@@ -82,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 CEGUIBase_d.lib d3d8.lib d3d9.lib dinput8.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /nodefaultlib:"LIBCMTD" /out:"../../../../Samples/bin/CEGUISampleHelper_d.dll" /implib:"../../../../lib/CEGUISampleHelper_d.lib" /pdbtype:sept /libpath:"..\..\..\..\lib" /libpath:"..\..\..\..\dependencies\lib"
+# ADD LINK32 CEGUIBase_d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /nodefaultlib:"LIBCMTD" /out:"../../../../Samples/bin/CEGUISampleHelper_d.dll" /implib:"../../../../lib/CEGUISampleHelper_d.lib" /pdbtype:sept /libpath:"..\..\..\..\lib" /libpath:"..\..\..\..\dependencies\lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 

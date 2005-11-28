@@ -35,6 +35,15 @@
 #   undef max
 #endif
 
+#if defined(_WIN32)
+#  pragma comment(lib, "d3d9.lib")
+#  if defined(_DEBUG)
+#      pragma comment(lib, "DirectX9GUIRenderer_d.lib")
+#  else
+#      pragma comment(lib, "DirectX9GUIRenderer.lib")
+#  endif
+#endif
+
 
 struct CEGuiBaseApplicationImpl;
 

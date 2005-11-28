@@ -31,6 +31,16 @@
 #include <Ogre.h>
 #include <OgreEventListeners.h>
 
+#if defined(_WIN32)
+#  if defined(_DEBUG)
+#      pragma comment(lib, "OgreGUIRenderer_d.lib")
+#      pragma comment(lib, "OgreMain_d.lib")
+#  else
+#      pragma comment(lib, "OgreGUIRenderer.lib")
+#      pragma comment(lib, "OgreMain.lib")
+#  endif
+#endif
+
 // Frame listener forward ref (see class below)
 class CEGuiDemoFrameListener;
 

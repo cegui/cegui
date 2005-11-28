@@ -41,6 +41,7 @@
 				AdditionalLibraryDirectories="..\..\..\..\dependencies\lib;..\..\..\..\lib"
 				IgnoreDefaultLibraryNames="LIBCMTD"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName)_d.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -90,8 +91,6 @@
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\dependencies\lib;..\..\..\..\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
