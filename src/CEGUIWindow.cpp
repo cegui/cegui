@@ -789,6 +789,11 @@ void Window::addChildWindow(const String& name)
 *************************************************************************/
 void Window::addChildWindow(Window* window)
 {
+	// dont add ourselves as a child
+	if (window == this)
+	{
+		return;
+	}
 	addChild_impl(window);
     WindowEventArgs args(window);
 	onChildAdded(args);
