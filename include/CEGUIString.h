@@ -1228,7 +1228,7 @@ public:
 
 	\exception std::out_of_range	Thrown if \a idx was invalid for this String.
 	*/
-	size_type	utf8_stream_len(size_type num = npos, size_type idx = 0)
+	size_type	utf8_stream_len(size_type num = npos, size_type idx = 0) const
 	{
 		using namespace std;
 
