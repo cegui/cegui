@@ -37,21 +37,26 @@ bool CLICEGuiRendererSelector::inkokeDialog()
 
     std::cout << "-- CEGUI Sample Application Framework --" << std::endl;
     std::cout << "Please select a renderer:" << std::endl;
+    
+    CEGuiRendererType last_available;
 
     // print options for enabled renderers
     if (d_rendererAvailability[OgreGuiRendererType])
     {
         ++rendererNumber;
+        last_available = OgreGuiRendererType;
         std::cout << rendererNumber << ". Ogre3D GUI Renderer." << std::endl;
     }
     if (d_rendererAvailability[OpenGLGuiRendererType])
     {
         ++rendererNumber;
+        last_available = OpenGLGuiRendererType;
         std::cout << rendererNumber << ". OpenGL GUI Renderer." << std::endl;
     }
     if (d_rendererAvailability[IrrlichtGuiRendererType])
     {
         ++rendererNumber;
+        last_available = IrrlichtGuiRendererType;
         std::cout << rendererNumber << ". Irrlicht GUI Renderer." << std::endl;
     }
 
@@ -62,6 +67,13 @@ bool CLICEGuiRendererSelector::inkokeDialog()
         return false;
     }
 
+    // if we only have one available renderer, then pick that one automatically
+    if (rendererNumber == 1)
+    {
+        d_lastSelected = last_available;
+        std::cout << "Picked the only renderer. Starting..." << std::endl;
+        return true;
+    }
     // get user to pick a valid option.
     std::cin >> selection;
     while (selection > rendererNumber)
