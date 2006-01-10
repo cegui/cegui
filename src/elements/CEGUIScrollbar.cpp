@@ -244,6 +244,7 @@ void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 {
+	performChildWindowLayout();
 	fireEvent(EventScrollConfigChanged, e, EventNamespace);
 }
 
