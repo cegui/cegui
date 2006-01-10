@@ -229,6 +229,8 @@ void CEGuiOpenGLBaseApplication::reshape(int w, int h)
     glLoadIdentity ();
     gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 50.0);
     glMatrixMode(GL_MODELVIEW);
+    CEGUI::OpenGLRenderer* renderer = (CEGUI::OpenGLRenderer*)CEGUI::System::getSingleton().getRenderer();
+    renderer->setDisplaySize(CEGUI::Size((float)w,(float)h));
 }
 
 void CEGuiOpenGLBaseApplication::mouseMotion(int x, int y)
