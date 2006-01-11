@@ -97,6 +97,7 @@ GlutKeyMapping specialKeyMap[] =
 *************************************************************************/
 bool CEGuiOpenGLBaseApplication::d_quitFlag = false;
 int  CEGuiOpenGLBaseApplication::d_lastFrameTime = 0;
+int CEGuiOpenGLBaseApplication::d_modifiers = 0;
 
 /*************************************************************************
     Constructor.
@@ -281,6 +282,8 @@ void CEGuiOpenGLBaseApplication::mouseButton(int button, int state, int x, int y
 
 void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
 {
+    handleModifierKeys();
+
     // extract some keys may be handled via key code and generate those too
     switch (key)
     {
@@ -306,6 +309,8 @@ void CEGuiOpenGLBaseApplication::keyChar(unsigned char key, int x, int y)
 
 void CEGuiOpenGLBaseApplication::keySpecial(int key, int x, int y)
 {
+    handleModifierKeys();
+
     GlutKeyMapping* mapping = specialKeyMap;
 
     while (mapping->glutKey != -1)
@@ -318,6 +323,61 @@ void CEGuiOpenGLBaseApplication::keySpecial(int key, int x, int y)
 
         ++mapping;
     }
+}
+
+void CEGuiOpenGLBaseApplication::handleModifierKeys(void)
+{
+    int mods = glutGetModifiers();
+
+    CEGUI::System& cesys = CEGUI::System::getSingleton();
+    
+    bool shift = mods&GLUT_ACTIVE_SHIFT;
+    bool ctrl  = mods&GLUT_ACTIVE_CTRL;
+    bool alt   = mods&GLUT_ACTIVE_ALT;
+
+    // shift
+    if (shift != bool(d_modifiers&GLUT_ACTIVE_SHIFT))
+    {
+        CEGUI::Key::Scan sc = CEGUI::Key::LeftShift;
+        if (shift)
+        {
+            cesys.injectKeyDown(sc);
+        }
+        else
+        {
+            cesys.injectKeyUp(sc);
+        }
+    }
+
+    // control
+    if (ctrl != bool(d_modifiers&GLUT_ACTIVE_CTRL))
+    {
+        CEGUI::Key::Scan sc = CEGUI::Key::LeftControl;
+        if (shift)
+        {
+            cesys.injectKeyDown(sc);
+        }
+        else
+        {
+            cesys.injectKeyUp(sc);
+        }
+    }
+
+    // alt
+    if (alt != bool(d_modifiers&GLUT_ACTIVE_ALT))
+    {
+        CEGUI::Key::Scan sc = CEGUI::Key::LeftAlt;
+        if (shift)
+        {
+            cesys.injectKeyDown(sc);
+        }
+        else
+        {
+            cesys.injectKeyUp(sc);
+        }
+    }
+    
+    d_modifiers = mods;
 }
 
 #endif

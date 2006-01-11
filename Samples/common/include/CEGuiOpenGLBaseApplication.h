@@ -70,6 +70,7 @@ protected:
     static void mouseButton(int button, int state, int x, int y);
     static void keyChar(unsigned char key, int x, int y);
     static void keySpecial(int key, int x, int y);
+    static void handleModifierKeys(void);
 
     /*************************************************************************
         Data fields
@@ -77,6 +78,7 @@ protected:
     CEGUI::Renderer* d_renderer;
     static bool d_quitFlag;
     static int  d_lastFrameTime;
+    static int  d_modifiers;
 };
 
 
