@@ -618,9 +618,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
 			onEditboxFullEvent(args);
 		}
 
+        e.handled = true;
 	}
 
-	e.handled = true;
 }
 
 
