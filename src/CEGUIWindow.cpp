@@ -105,6 +105,7 @@ WindowProperties::UnifiedWidth		Window::d_unifiedWidthProperty;
 WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
 WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
 WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
+WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
 
 /*************************************************************************
 	static data definitions
@@ -217,6 +218,9 @@ Window::Window(const String& type, const String& name) :
     // set initial alignments
     d_horzAlign = HA_LEFT;
     d_vertAlign = VA_TOP;
+
+    // event pass through
+    d_mousePassThroughEnabled = false;
 
 	// add properties
 	addStandardProperties();
@@ -648,6 +652,45 @@ Window* Window::getChildAtPosition(const Point& position) const
 
 	// nothing hit
 	return NULL;
+}
+
+
+/*************************************************************************
+    return the child Window that is 'hit' by the given position and
+    is allowed to handle mouse events
+*************************************************************************/
+Window* Window::getTargetChildAtPosition(const Point& position) const
+{
+    ChildList::const_reverse_iterator child;
+    ChildList::const_reverse_iterator end = d_drawList.rend();
+
+    for (child = d_drawList.rbegin(); child != end; ++child)
+    {
+        if ((*child)->isVisible())
+        {
+            // recursively scan children of this child windows...
+            Window* wnd = (*child)->getTargetChildAtPosition(position);
+
+            // return window pointer if we found a 'hit' down the chain somewhere
+            if (wnd != NULL)
+            {
+                return wnd;
+            }
+            // none of our childs children were hit, 
+            else
+            {
+                // see if this child is accepting mouse input and is hit,
+                // and return it's pointer if it is
+                if (!(*child)->isMousePassThroughEnabled() && (*child)->isHit(position))
+                {
+                    return (*child);
+                }
+            }
+        }
+    }
+
+    // nothing hit
+    return NULL;
 }
 
 
@@ -2794,6 +2837,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_unifiedHeightProperty);
     addProperty(&d_unifiedMinSizeProperty);
     addProperty(&d_unifiedMaxSizeProperty);
+    addProperty(&d_mousePassThroughEnabledProperty);
 }
 
 

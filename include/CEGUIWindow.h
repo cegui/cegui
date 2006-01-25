@@ -625,6 +625,19 @@ public:
 	Window*	getChildAtPosition(const Point& position) const;
 
 
+    /*!
+    \brief
+        return the child Window that is 'hit' by the given position, and is allowed to handle mouse events.
+
+    \param position
+        Point object that describes the position to check in screen pixels
+
+    \return
+        Pointer to the child Window that was hit according to the Point \a position, or NULL if no child window was hit.
+    */
+    Window* getTargetChildAtPosition(const Point& position) const;
+
+
 	/*!
 	\brief
 		return the current metrics mode employed by the Window
@@ -1233,6 +1246,17 @@ public:
         or 0 if no immediate child of our parent is active.
     */
     Window* getActiveSibling();
+
+    /*!
+    \brief
+        Returns whether this window should ignore mouse event and pass them through to and other windows behind it.
+        In effect making the window transparent to the mouse.
+
+    \return
+        true if mouse pass through is enabled.
+        false if mouse pass through is not enabled.
+    */
+    bool isMousePassThroughEnabled(void) const      {return d_mousePassThroughEnabled;}
 
     /*************************************************************************
 		Manipulator functions
@@ -2197,6 +2221,17 @@ public:
         Nothing.
     */
     void setUserString(const String& name, const String& value);
+
+    /*!
+    \brief
+        Sets whether this window should ignore mouse events and pass them through to any windows behind it.
+        In effect making the window transparent to the mouse.
+
+    \param setting
+        true if mouse pass through is enabled.
+        false if mouse pass through is not enabled.
+    */
+    bool setMousePassThroughEnabled(bool setting)       {d_mousePassThroughEnabled = setting;}
 
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
@@ -3753,6 +3788,9 @@ protected:
     // Look'N'Feel stuff
     String  d_lookName;         //!< Name of the Look assigned to this window (if any).
 
+    // Event pass through
+    bool    d_mousePassThroughEnabled;  //!< true if this window can never be "hit" by the cursor. false for normal mouse event handling.
+
 protected:
 	/*************************************************************************
 		Properties for Window base class
@@ -3816,6 +3854,7 @@ protected:
     static	WindowProperties::UnifiedHeight		d_unifiedHeightProperty;
     static	WindowProperties::UnifiedMinSize	d_unifiedMinSizeProperty;
     static	WindowProperties::UnifiedMaxSize	d_unifiedMaxSizeProperty;
+    static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
 
 
 	/*************************************************************************
