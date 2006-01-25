@@ -1106,7 +1106,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 
 		if (dest_window == NULL)
 		{
-			dest_window = d_activeSheet->getChildAtPosition(pt);
+			dest_window = d_activeSheet->getTargetChildAtPosition(pt);
 
 			if (dest_window == NULL)
 			{
@@ -1118,7 +1118,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 		{
             if (dest_window->distributesCapturedInputs())
             {
-                Window* child_window = dest_window->getChildAtPosition(pt);
+                Window* child_window = dest_window->getTargetChildAtPosition(pt);
 
                 if (child_window != NULL)
                 {
