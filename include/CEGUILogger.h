@@ -60,7 +60,10 @@ enum LoggingLevel
 
 /*!
 \brief
-	Class that implements logging for the GUI system
+	Abstract class that defines the interface of a logger object for the GUI system.
+    The default implementation of this interface is the DefaultLogger class; if you
+    want to perform special logging, derive your own class from Logger and initialize
+    a object of that type before you create the CEGUI::System singleton.
 */
 class CEGUIEXPORT Logger : public Singleton <Logger>
 {
@@ -74,17 +77,7 @@ public:
 	/*!
 	\brief Destructor for Logger object.
 	*/
-	~Logger(void);
-
-	
-	/*!
-	\brief
-		Return the singleton Logger object
-
-	\return
-		Reference to the one and only Logger object
-	*/
-	static Logger&	getSingleton(void);
+	virtual ~Logger(void);
 
 
 	/*!
@@ -123,11 +116,13 @@ public:
 	\return
 		Nothing
 	*/
-	void	logEvent(const String& message, LoggingLevel level = Standard);
+	virtual void logEvent(const String& message, LoggingLevel level = Standard) = 0;
 
     /*!
     \brief
         Set the name of the log file where all subsequent log entries should be written.
+        The interpretation of file name may differ depending on the concrete logger
+        implementation.
 
     \note
         When this is called, and the log file is created, any cached log entries are
@@ -140,18 +135,11 @@ public:
         - true if events should be added to the end of the current file.
         - false if the current contents of the file should be discarded.
      */
-    void    setLogFilename(const String& filename, bool append = false);
+    virtual void setLogFilename(const String& filename, bool append = false) = 0;
 
 protected:
-    /*************************************************************************
-		Implementation Data
-	*************************************************************************/
 	LoggingLevel	d_level;		//!< Holds current logging level
-	std::ofstream	d_ostream;		//!< Stream used to implement the logger
-    std::vector<std::pair<String, LoggingLevel> > d_cache;    //!< Used to cache log entries before log file is created.
-    std::ostringstream d_workstream;//!< Used to build log entry strings. 
-    bool d_caching;                 //!< true while log entries are beign cached (prior to logfile creation)
-    
+
 private:
 	/*************************************************************************
 		Copy constructor and assignment usage is denied.

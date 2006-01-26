@@ -6,6 +6,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIConfig_xmlHandler.h \
                  CEGUICoordConverter.h \
                  CEGUIDataContainer.h \
+                 CEGUIDefaultLogger.h \
                  CEGUIDefaultResourceProvider.h \
                  CEGUIEvent.h \
                  CEGUIEventArgs.h \

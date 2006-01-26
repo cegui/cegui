@@ -28,7 +28,7 @@
 #endif
 
 #include "CEGUISystem.h"
-#include "CEGUILogger.h"
+#include "CEGUIDefaultLogger.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIWindowFactoryManager.h"
@@ -165,7 +165,8 @@ System::System(Renderer* renderer,
   d_weOwnTooltip(false)
 {
     // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
-    new Logger();
+    if (!Logger::getSingletonPtr ())
+        new DefaultLogger();
 
     // Set CEGUI version
     d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +

@@ -1,6 +1,8 @@
 INCLUDES = -I$(top_srcdir)/ScriptingModules/CEGUILua/lua_and_tolua++/include
 lib_LTLIBRARIES = libCEGUIluatoluapp.la
 
+libCEGUIluatoluapp_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
+
 libCEGUIluatoluapp_la_SOURCES = lapi.c \
                                 lcode.c \
                                 ldebug.c \

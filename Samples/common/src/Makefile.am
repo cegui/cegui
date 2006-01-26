@@ -2,12 +2,14 @@ INCLUDES = -I$(top_srcdir)/Samples/common/include -I$(top_srcdir)/include
 
 lib_LTLIBRARIES=libCEGUISampleHelper.la
 
+libCEGUISampleHelper_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
+
 libCEGUISampleHelper_la_SOURCES = CEGuiRendererSelector.cpp \
                                   CEGuiSample.cpp \
                                   CLICEGuiRendererSelector.cpp
 
 libCEGUISampleHelper_la_LIBADD =
-libCEGUISampleHelper_la_LDFLAGS =
+
 
 if CEGUI_USING_GTK2
     INCLUDES += $(GTK_CFLAGS)

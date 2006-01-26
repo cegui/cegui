@@ -7,6 +7,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIConfig_xmlHandler.cpp \
                       CEGUICoordConverter.cpp \
+                      CEGUIDefaultLogger.cpp \
                       CEGUIDefaultResourceProvider.cpp \
                       CEGUIEvent.cpp \
                       CEGUIEventArgs.cpp \

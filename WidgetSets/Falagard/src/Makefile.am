@@ -3,6 +3,8 @@ INCLUDES = -I$(top_srcdir)/include \
 
 lib_LTLIBRARIES=libCEGUIFalagardBase.la
 
+libCEGUIFalagardBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
+
 libCEGUIFalagardBase_la_SOURCES = FalButton.cpp \
                                   FalCheckbox.cpp \
                                   FalComboDropList.cpp \
