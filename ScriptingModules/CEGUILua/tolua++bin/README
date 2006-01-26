@@ -1,2 +1,5 @@
-In here we have a modified version of the tolua++ 1.0.7 code generator with added support for exception handling.
-See '../lua_and_tolua++/tolua++README' for more details.
+In here we have a modified version of the tolua++ 1.0.7 code generator with
+added support for exception handling.
+
+The original tolua++ readme can be found at: '../lua_and_tolua++/tolua++README'
+if you need more details.
