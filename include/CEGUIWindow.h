@@ -709,6 +709,21 @@ public:
 
     /*!
     \brief
+        return the child Window that is 'hit' by the given position, and is
+        allowed to handle mouse events.
+
+    \param position
+        Vector2 object describing the position to check.  The position
+        describes a pixel offset from the top-left corner of the display.
+
+    \return
+        Pointer to the child Window that was hit according to the location
+        \a position, or 0 if no child of this window was hit.
+    */
+    Window* getTargetChildAtPosition(const Vector2& position) const;
+
+    /*!
+    \brief
         return the parent of this Window.
 
     \return
@@ -1051,6 +1066,18 @@ public:
         parent
     */
     float getParentPixelHeight(void) const;
+
+    /*!
+    \brief
+        Returns whether this window should ignore mouse event and pass them
+        through to and other windows behind it. In effect making the window
+        transparent to the mouse.
+
+    \return
+        true if mouse pass through is enabled.
+        false if mouse pass through is not enabled.
+    */
+    bool isMousePassThroughEnabled(void) const  {return d_mousePassThroughEnabled;}
 
     /*************************************************************************
         Manipulator functions
@@ -2246,6 +2273,18 @@ public:
     */
     virtual void endInitialisation(void)       {d_initialising=false;}
 
+    /*!
+    \brief
+        Sets whether this window should ignore mouse events and pass them
+        through to any windows behind it. In effect making the window
+        transparent to the mouse.
+
+    \param setting
+        true if mouse pass through is enabled.
+        false if mouse pass through is not enabled.
+    */
+    bool setMousePassThroughEnabled(bool setting)   {d_mousePassThroughEnabled = setting;}
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -2967,6 +3006,14 @@ protected:
     //! true when this window is currently being initialised (creating children etc)
     bool d_initialising;
 
+    // Event pass through
+    /*!
+    \brief
+        true if this window can never be "hit" by the cursor.
+        false for normal mouse event handling.
+    */
+    bool d_mousePassThroughEnabled;  
+
 protected:
     /*************************************************************************
         Properties for Window base class
@@ -3004,6 +3051,7 @@ protected:
     static  WindowProperties::UnifiedHeight     d_unifiedHeightProperty;
     static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
     static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
+    static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
 
     /*************************************************************************
         implementation functions

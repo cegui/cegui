@@ -80,6 +80,7 @@ WindowProperties::UnifiedWidth		Window::d_unifiedWidthProperty;
 WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
 WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
 WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
+WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
 
 /*************************************************************************
 	static data definitions
@@ -199,6 +200,9 @@ Window::Window(const String& type, const String& name) :
 
     // initialisation flag
     d_initialising = false;
+
+    // event pass through
+    d_mousePassThroughEnabled = false;
 
 	// add properties
 	addStandardProperties();
@@ -607,6 +611,35 @@ Window* Window::getChildAtPosition(const Vector2& position) const
     return 0;
 }
 
+/*************************************************************************
+    return the child Window that is 'hit' by the given position, and
+    does not have mouse pass through enabled.
+*************************************************************************/
+Window* Window::getTargetChildAtPosition(const Vector2& position) const
+{
+    ChildList::const_reverse_iterator   child, end;
+
+    end = d_drawList.rend();
+
+    for (child = d_drawList.rbegin(); child != end; ++child)
+    {
+        if ((*child)->isVisible())
+        {
+            // recursively scan children of this child windows...
+            Window* wnd = (*child)->getTargetChildAtPosition(position);
+
+            // return window pointer if we found a 'hit' down the chain somewhere
+            if (wnd)
+                return wnd;
+            // see if this child is hit and return it's pointer if it is
+            else if (!(*child)->isMousePassThroughEnabled() && (*child)->isHit(position))
+                return (*child);
+        }
+    }
+
+    // nothing hit
+    return 0;
+}
 
 /*************************************************************************
 	true to have the Window appear on top of all other non always on top
@@ -1437,6 +1470,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_unifiedHeightProperty);
     addProperty(&d_unifiedMinSizeProperty);
     addProperty(&d_unifiedMaxSizeProperty);
+    addProperty(&d_mousePassThroughEnabledProperty);
 }
 
 

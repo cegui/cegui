@@ -944,6 +944,32 @@ class UnifiedMaxSize : public Property
 };
 
 
+/*!
+\brief
+    Property to access whether the window ignores mouse events and pass them through to any windows behind it.
+
+    \par Usage:
+        - Name: MousePassThroughEnabled
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" to indicate the Window will not respond to mouse events but pass them directly to any children behind it.
+        - "False" to indicate the Window will respond to normally to all mouse events (Default).
+*/
+class MousePassThroughEnabled : public Property
+{
+    public:
+        MousePassThroughEnabled() : Property(
+        "MousePassThroughEnabled",
+        "Property to get/set whether the window ignores mouse events and pass them through to any windows behind it. Value is either \"True\" or \"False\".",
+        "False")
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 
