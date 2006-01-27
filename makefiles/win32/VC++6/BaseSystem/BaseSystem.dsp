@@ -495,6 +495,10 @@ SOURCE=..\..\..\..\src\CEGUICoordConverter.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\src\CEGUIDefaultLogger.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\src\CEGUIDefaultResourceProvider.cpp
 # End Source File
 # Begin Source File
@@ -1056,6 +1060,10 @@ SOURCE=..\..\..\..\include\CEGUICoordConverter.h
 # Begin Source File
 
 SOURCE=..\..\..\..\include\CEGUIDataContainer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\include\CEGUIDefaultLogger.h
 # End Source File
 # Begin Source File
 

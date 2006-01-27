@@ -105,6 +105,10 @@ SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\CEGUILua.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\CEGUILuaFunctor.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\lua_CEGUI.cpp
 # End Source File
 # Begin Source File
@@ -122,6 +126,10 @@ SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\required.h
 # Begin Source File
 
 SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\CEGUILua.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\CEGUILuaFunctor.h
 # End Source File
 # Begin Source File
 

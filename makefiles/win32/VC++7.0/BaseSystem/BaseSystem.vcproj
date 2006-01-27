@@ -131,6 +131,9 @@
 				RelativePath="..\..\..\..\src\CEGUICoordConverter.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIDefaultLogger.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIDefaultResourceProvider.cpp">
 			</File>
 			<File
@@ -641,6 +644,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIDataContainer.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIDefaultLogger.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIDefaultResourceProvider.h">

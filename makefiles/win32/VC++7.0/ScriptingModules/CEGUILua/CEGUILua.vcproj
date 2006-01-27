@@ -111,6 +111,9 @@
 				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\CEGUILua.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\CEGUILuaFunctor.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\lua_CEGUI.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -137,6 +140,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd">
 			<File
 				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\CEGUILua.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\CEGUILuaFunctor.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\lua_CEGUI.h">
