@@ -305,8 +305,13 @@ function classFunction:supcode (local_constructor)
  local exRaiseError = false
  --------------------------------------------------
 
-
  local out = string.find(self.mod, "tolua_outside")
+
+ -- remove "tolua_outside" from self.mod
+ if out then
+    self.mod = string.gsub(self.mod, "tolua_outside", "")
+ end
+
  -- call function
  if class and self.name=='delete' then
   output('  delete self;')
