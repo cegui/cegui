@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "CEGUI.h"
 #include "CEGUILua.h"
+#include "CEGUILuaFunctor.h"
 
 #define __operator_increment    operator++
 #define __operator_decrement    operator--

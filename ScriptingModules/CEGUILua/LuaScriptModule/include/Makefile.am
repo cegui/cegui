@@ -1,1 +1,2 @@
-pkginclude_HEADERS = CEGUILua.h
+pkginclude_HEADERS = CEGUILua.h \
+                     CEGUILuaFunctor.h

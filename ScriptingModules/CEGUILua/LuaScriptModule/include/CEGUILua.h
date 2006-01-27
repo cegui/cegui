@@ -236,39 +236,12 @@ private:
         Implementation Functions
     *************************************************************************/
     void setModuleIdentifierString();
-    bool pushNamedFunction(const String& name);
 
     /*************************************************************************
         Implementation Data
     *************************************************************************/
     bool d_ownsState;      //!< true when the attached lua_State was created by this script module
     lua_State* d_state;    //!< The lua_State that this script module uses.
-};
-
-/*!
-\brief
-    Functor class used for binding anonymous Lua functions to events
-*/
-class LuaFunctor
-{
-public:
-    lua_State* L;
-    int index;
-    int self;
-
-    LuaFunctor(lua_State* state, int func, int selfIndex) : L(state), index(func), self(selfIndex) {}
-    LuaFunctor(const LuaFunctor& cp) : L(cp.L), index(cp.index), self(cp.self) {}
-    ~LuaFunctor();
-
-    bool operator()(const EventArgs& args) const;
-
-    /*!
-    \brief
-        function used to subscribe any Lua function as event handler.
-        References using the Lua registry.
-        To be called from Lua only.
-    */
-    static Event::Connection SubscribeEvent(EventSet* self, const String& eventName, int funcIndex, int selfIndex, lua_State* L);
 };
 
 } // namespace CEGUI

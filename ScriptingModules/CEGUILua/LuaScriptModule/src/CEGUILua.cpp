@@ -26,6 +26,7 @@
 #include "CEGUI.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUILua.h"
+#include "CEGUILuaFunctor.h"
 #include <vector>
 
 // include Lua libs and tolua++
@@ -99,11 +100,11 @@ void LuaScriptModule::executeScriptFile(const String& filename, const String& re
 {
 	// load file
 	RawDataContainer raw;
-	System::getSingleton().getResourceProvider()->loadRawDataContainer( filename, raw, resourceGroup);
+	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, raw, resourceGroup);
 
 	// load code into lua and call it
 	int top = lua_gettop(d_state);
-	int error =	luaL_loadbuffer(d_state, (char*)raw.getDataPtr(), raw.getSize(), filename.c_str()) || lua_pcall(d_state,0,0,0);
+	int error = luaL_loadbuffer(d_state, (char*)raw.getDataPtr(), raw.getSize(), filename.c_str()) || lua_pcall(d_state,0,0,0);
 
 	System::getSingleton().getResourceProvider()->unloadRawDataContainer( raw );
 
@@ -133,7 +134,7 @@ int	LuaScriptModule::executeScriptGlobal(const String& function_name)
     if (!lua_isfunction(d_state,-1))
     {
         lua_settop(d_state,top);
-        throw ScriptException( "Unable to get Lua global: '"+function_name+"' as name not represent a global Lua function" );
+        throw ScriptException("Unable to get Lua global: '"+function_name+"' as name not represent a global Lua function" );
     }
 
     // call it
@@ -150,8 +151,10 @@ int	LuaScriptModule::executeScriptGlobal(const String& function_name)
     // get return value
     if (!lua_isnumber(d_state,-1))
     {
+        // log that return value is invalid. return -1 and move on.
         lua_settop(d_state,top);
-        throw String( "Unable to get Lua global : '"+function_name+"' return value as it's not a number" );
+        ScriptException("Unable to get Lua global : '"+function_name+"' return value as it's not a number" );
+        return -1;
     }
 
     int ret = (int)lua_tonumber(d_state,-1);
@@ -163,85 +166,11 @@ int	LuaScriptModule::executeScriptGlobal(const String& function_name)
 
 
 /*************************************************************************
-	Pushes a named function on the stack
-*************************************************************************/
-bool LuaScriptModule::pushNamedFunction(const String& handler_name)
-{
-    int top = lua_gettop(d_state);
-
-    // do we have any dots in the handler name? if so we grab the function as a table field
-    String::size_type i = handler_name.find_first_of((utf32)'.');
-    if (i!=String::npos)
-    {
-        // split the rest of the string up in parts seperated by '.'
-        std::vector<String> parts;
-        String::size_type start = 0;
-        do
-        {
-        	parts.push_back(handler_name.substr(start,i-start));
-        	start = i+1;
-        	i = handler_name.find_first_of((utf32)'.',start);
-        } while(i!=String::npos);
-        
-        // add last part
-        parts.push_back(handler_name.substr(start));
-
-        // first part is the global
-        lua_getglobal(d_state, parts[0].c_str());
-        if (!lua_istable(d_state,-1))
-        {
-            lua_settop(d_state,top);
-            throw ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as first part is not a table");
-        }
-
-        // if there is more than two parts, we have more tables to go through
-        std::vector<String>::size_type visz = parts.size();
-        if (visz-- > 2) // avoid subtracting one later on
-        {
-            // go through all the remaining parts to (hopefully) have a valid Lua function in the end
-            std::vector<String>::size_type vi = 1;
-            while (vi<visz)
-            {
-                // push key, and get the next table
-                lua_pushstring(d_state,parts[vi].c_str());
-                lua_gettable(d_state,-2);
-                if (!lua_istable(d_state,-1))
-                {
-                    lua_settop(d_state,top);
-                    throw ScriptException("Unable to get the Lua event handler: '"+handler_name+"' as part #"+PropertyHelper::uintToString(uint(vi+1))+" ("+parts[vi]+") is not a table");
-                }
-                // get rid of the last table and move on
-                lua_remove(d_state,-2);
-                vi++;
-            }
-        }
-
-        // now we are ready to get the function to call ... phew :)
-        lua_pushstring(d_state,parts[visz].c_str());
-        lua_gettable(d_state,-2);
-        lua_remove(d_state,-2); // get rid of the table
-    }
-    // just a regular global function
-    else
-    {
-        lua_getglobal(d_state, handler_name.c_str());
-    }
-    
-    // is it a function
-    if (!lua_isfunction(d_state,-1))
-    {
-        lua_settop(d_state,top);
-        throw ScriptException("The Lua event handler: '"+handler_name+"' does not represent a Lua function");
-    }
-}
-
-
-/*************************************************************************
 	Execute scripted event handler
 *************************************************************************/
 bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, const EventArgs& e)
 {
-    pushNamedFunction(handler_name);
+    LuaFunctor::pushNamedFunction(d_state, handler_name);
 
     // push EventArgs as the first parameter
     tolua_pushusertype(d_state,(void*)&e,"const CEGUI::EventArgs");
@@ -319,15 +248,9 @@ void LuaScriptModule::setModuleIdentifierString()
 *************************************************************************/
 Event::Connection LuaScriptModule::subscribeEvent(EventSet* target, const String& event_name, const String& subscriber_name)
 {
-    // make sure we are subscribing a function
-    pushNamedFunction(subscriber_name);
-
-    // reference function
-    int index = luaL_ref(d_state, LUA_REGISTRYINDEX);
-
     // do the real subscription
-    LuaFunctor functor(d_state,index,LUA_NOREF);
-    Event::Connection con = target->subscribeEvent(String(event_name), Event::Subscriber(functor));
+    LuaFunctor functor(d_state,subscriber_name,LUA_NOREF);
+    Event::Connection con = target->subscribeEvent(event_name, Event::Subscriber(functor));
     // make sure we don't release the reference we just made when this call returns
     functor.index = LUA_NOREF;
 
@@ -341,93 +264,9 @@ Event::Connection LuaScriptModule::subscribeEvent(EventSet* target, const String
 *************************************************************************/
 Event::Connection LuaScriptModule::subscribeEvent(EventSet* target, const String& event_name, Event::Group group, const String& subscriber_name)
 {
-    // make sure we are subscribing a function
-    pushNamedFunction(subscriber_name);
-
-    // reference function
-    int index = luaL_ref(d_state, LUA_REGISTRYINDEX);
-
     // do the real subscription
-    LuaFunctor functor(d_state,index,LUA_NOREF);
-    Event::Connection con = target->subscribeEvent(String(event_name), group, Event::Subscriber(functor));
-    // make sure we don't release the reference we just made when this call returns
-    functor.index = LUA_NOREF;
-
-    // return the event connection
-    return con;
-}
-
-
-/*************************************************************************
-**************************************************************************
-    LuaFunctor implementation
-**************************************************************************
-*************************************************************************/
-LuaFunctor::~LuaFunctor()
-{
-    if (self!=LUA_NOREF)
-    {
-        luaL_unref(L, LUA_REGISTRYINDEX, self);
-    }
-    if (index!=LUA_NOREF)
-    {
-        luaL_unref(L, LUA_REGISTRYINDEX, index);
-    }
-}
-
-bool LuaFunctor::operator()(const EventArgs& args) const
-{
-    // retrieve function
-    lua_rawgeti(L, LUA_REGISTRYINDEX, index);
-
-    // possibly self as well?
-    int nargs = 1;
-    if (self != LUA_NOREF)
-    {
-        lua_rawgeti(L, LUA_REGISTRYINDEX, self);
-        ++nargs;
-    }
-
-    // push EventArgs  parameter
-    tolua_pushusertype(L,(void*)&args,"const CEGUI::EventArgs");
-
-    // call it
-    int error = lua_pcall(L,nargs,0,0);
-
-    // handle errors
-    if (error)
-    {
-        String errStr(lua_tostring(L,-1));
-        lua_pop(L,1);
-        throw ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n");
-    }
-
-    return true;
-}
-
-// do event subscription by reference instead of by name
-Event::Connection LuaFunctor::SubscribeEvent(EventSet* self, const String& event_name, int funcIndex, int selfIndex, lua_State* L)
-{
-    // make sure we are subscribing a function
-    luaL_checktype(L,funcIndex,LUA_TFUNCTION);
-
-    // should we pass a self to the callback?
-    int thisIndex = LUA_NOREF;
-    if (selfIndex != LUA_NOREF)
-    {
-        // reference self
-        thisIndex = luaL_ref(L, LUA_REGISTRYINDEX);
-    }
-
-    // reference function
-    int index = luaL_ref(L, LUA_REGISTRYINDEX);
-
-    // do the real subscription
-    LuaFunctor functor(L,index,thisIndex);
-    Event::Connection con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
-    // make sure we don't release the reference(s) we just made when this call returns
-    functor.index = LUA_NOREF;
-    functor.self = LUA_NOREF;
+    LuaFunctor functor(d_state,subscriber_name,LUA_NOREF);
+    Event::Connection con = target->subscribeEvent(event_name, group, Event::Subscriber(functor));
 
     // return the event connection
     return con;

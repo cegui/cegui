@@ -7,7 +7,7 @@ libCEGUILuaScriptModule_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 
 libCEGUILuaScriptModule_la_SOURCES = lua_CEGUI.cpp \
                                      CEGUILua.cpp \
+                                     CEGUILuaFunctor.cpp \
                                      required.cpp
-
 
 noinst_HEADERS = required.h
