@@ -454,6 +454,20 @@ protected:
 	void	handleNewLine(uint sysKeys);
 
 
+    /*!
+    \brief
+        Processing to move caret one page up
+    */
+    void    handlePageUp(uint sysKeys);
+
+
+    /*!
+    \brief
+        Processing to move caret one page down
+    */
+    void    handlePageDown(uint sysKeys);
+
+
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.

@@ -1020,6 +1020,56 @@ void MultiLineEditbox::handleNewLine(uint sysKeys)
 
 
 /*************************************************************************
+    Processing to move caret one page up
+*************************************************************************/
+void MultiLineEditbox::handlePageUp(uint sysKeys)
+{
+    size_t caratLine = getLineNumberFromIndex(d_caratPos);
+    size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
+    size_t newline = 0;
+    if (nbLine < caratLine)
+    {
+        newline = caratLine - nbLine;
+    }
+    setCaratIndex(d_lines[newline].d_startIdx);
+    if (sysKeys & Shift)
+    {
+        setSelection(d_caratPos, d_selectionEnd);
+    }
+    else
+    {
+        clearSelection();
+    }
+    ensureCaratIsVisible();
+}
+
+
+/*************************************************************************
+    Processing to move caret one page down
+*************************************************************************/
+void MultiLineEditbox::handlePageDown(uint sysKeys)
+{
+    size_t caratLine = getLineNumberFromIndex(d_caratPos);
+    size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
+    size_t newline = caratLine + nbLine;
+    if (d_lines.size() > 0)
+    {
+        newline = newline < d_lines.size() - 1 ? newline : d_lines.size() -1;
+    }
+    setCaratIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
+    if (sysKeys & Shift)
+    {
+        setSelection(d_selectionStart, d_caratPos);
+    }
+    else
+    {
+        clearSelection();
+    }
+    ensureCaratIsVisible();
+}
+
+
+/*************************************************************************
 	Handler for when a mouse button is pushed
 *************************************************************************/
 void MultiLineEditbox::onMouseButtonDown(MouseEventArgs& e)
@@ -1280,6 +1330,14 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 				handleLineEnd(e.sysKeys);
 			}
 			break;
+
+        case Key::PageUp:
+            handlePageUp(e.sysKeys);
+            break;
+
+        case Key::PageDown:
+            handlePageDown(e.sysKeys);
+            break;
 
         // default case is now to leave event as (possibly) unhandled.
         default:
