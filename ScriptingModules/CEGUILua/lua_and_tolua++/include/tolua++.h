@@ -40,9 +40,6 @@
 #   endif
 #endif
 
-// add to fix code generator bug
-#define tolua_outside
-
 /********************************
 ******* END CEGUI CHANGES *******
 ********************************/

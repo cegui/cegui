@@ -12,7 +12,7 @@ class System : public EventSet
 
 	void signalRedraw();
 	bool isRedrawRequested() const;
-	//void renderGUI();
+	void renderGUI();
 
 	Window* setGUISheet(Window* sheet);
 	Window* getGUISheet() const;

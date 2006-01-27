@@ -32,6 +32,10 @@
 
 #define LuaFunctorSubscribeEvent CEGUI::LuaFunctor::SubscribeEvent
 
+#if defined(_MSC_VER) && !defined(snprintf)
+#   define snprintf   _snprintf
+#endif
+
 typedef CEGUI::String string;
 
 namespace CEGUI

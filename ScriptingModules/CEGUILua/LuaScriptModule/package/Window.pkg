@@ -69,6 +69,7 @@ class Window //: public EventSet
 	Window* getChildAtIdx(unsigned int ID) const;
 	Window* getActiveChild() const;
 	Window* getChildAtPosition(const Point& pos) const;
+    Window* getTargetChildAtPosition(const Point& pos) const;
 
 	Window* getParent() const;
 
@@ -160,6 +161,8 @@ class Window //: public EventSet
 
 	VerticalAlignment getVerticalAlignment() const;
 	HorizontalAlignment getHorizontalAlignment() const;
+    void setVerticalAlignment(const VerticalAlignment alignment);
+    void setHorizontalAlignment(const HorizontalAlignment alignment);
 
 	string getLookNFeel();
 
@@ -197,6 +200,10 @@ class Window //: public EventSet
 	UDim getWindowHeight() const;
 	const UVector2& getWindowMaxSize() const;
 	const UVector2& getWindowMinSize() const;
+
+    // event pass through
+    bool isMousePassThroughEnabled() const;
+    void setMousePassThroughEnabled(bool setting);
 
 	//////////////////////////////////////////////
 	// PropertySet
