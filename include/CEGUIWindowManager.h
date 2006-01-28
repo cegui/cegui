@@ -108,26 +108,6 @@ public:
 	~WindowManager(void);
 
 
-	/*!
-	\brief
-		Return singleton WindowManager object
-
-	\return
-		Singleton WindowManager object
-	*/
-	static	WindowManager&	getSingleton(void);
-
-
-	/*!
-	\brief
-		Return pointer to singleton WindowManager object
-
-	\return
-		Pointer to singleton WindowManager object
-	*/
-	static	WindowManager*	getSingletonPtr(void);
-
-
 	/*************************************************************************
 		Window Related Methods
 	*************************************************************************/

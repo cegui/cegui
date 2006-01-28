@@ -144,18 +144,6 @@ bool WindowFactoryManager::isFactoryPresent(const String& name) const
 }
 
 
-WindowFactoryManager& WindowFactoryManager::getSingleton(void)
-{
-	return Singleton<WindowFactoryManager>::getSingleton();
-}
-
-
-WindowFactoryManager* WindowFactoryManager::getSingletonPtr(void)
-{
-	return Singleton<WindowFactoryManager>::getSingletonPtr();
-}
-
-
 /*************************************************************************
 	Return a WindowFactoryManager::WindowFactoryIterator object to
 	iterate over the available WindowFactory types.

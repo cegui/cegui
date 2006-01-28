@@ -200,18 +200,6 @@ void ImagesetManager::notifyScreenResolution(const Size& size)
 }
 
 
-ImagesetManager& ImagesetManager::getSingleton(void)
-{
-	return Singleton<ImagesetManager>::getSingleton();
-}
-
-
-ImagesetManager* ImagesetManager::getSingletonPtr(void)
-{
-	return Singleton<ImagesetManager>::getSingletonPtr();
-}
-
-
 /*************************************************************************
 	Return a ImagesetManager::ImagesetIterator object to iterate over
 	the available Imageset objects.

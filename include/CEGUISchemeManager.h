@@ -66,26 +66,6 @@ public:
 
 	/*!
 	\brief
-		Return singleton SchemeManager object
-
-	\return
-		Singleton SchemeManager object
-	*/
-	static	SchemeManager&	getSingleton(void);
-
-
-	/*!
-	\brief
-		Return pointer to singleton SchemeManager object
-
-	\return
-		Pointer to singleton SchemeManager object
-	*/
-	static	SchemeManager*	getSingletonPtr(void);
-
-
-	/*!
-	\brief
 		Loads a scheme
 
 	\param scheme_filename

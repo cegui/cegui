@@ -138,26 +138,6 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		Return singleton WindowFactoryManager object
-
-	\return
-		Singleton WindowFactoryManager object
-	*/
-	static	WindowFactoryManager&	getSingleton(void);
-
-
-	/*!
-	\brief
-		Return pointer to singleton WindowFactoryManager object
-
-	\return
-		Pointer to singleton WindowFactoryManager object
-	*/
-	static	WindowFactoryManager*	getSingletonPtr(void);
-
-
-	/*!
-	\brief
 		Adds a new WindowFactory to the list of registered factories.
 
 	\param factory

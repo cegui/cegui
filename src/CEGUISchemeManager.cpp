@@ -115,18 +115,6 @@ Scheme* SchemeManager::getScheme(const String& name) const
 }
 
 
-SchemeManager& SchemeManager::getSingleton(void)
-{
-	return Singleton<SchemeManager>::getSingleton();
-}
-
-
-SchemeManager* SchemeManager::getSingletonPtr(void)
-{
-	return Singleton<SchemeManager>::getSingletonPtr();
-}
-
-
 /*************************************************************************
 	Return a SchemeManager::SchemeIterator object to iterate over the
 	available schemes.

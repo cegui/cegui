@@ -70,26 +70,6 @@ public:
 
 	/*!
 	\brief
-		Return singleton FontManager object
-
-	\return
-		Singleton FontManager object
-	*/
-	static	FontManager&	getSingleton(void);
-
-
-	/*!
-	\brief
-		Return pointer to singleton FontManager object
-
-	\return
-		Pointer to singleton FontManager object
-	*/
-	static	FontManager*	getSingletonPtr(void);
-
-
-	/*!
-	\brief
 		Creates a new font from a font definition file, and returns a pointer to the new Font object.
 
 	\param filename

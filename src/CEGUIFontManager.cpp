@@ -223,18 +223,6 @@ void FontManager::notifyScreenResolution(const Size& size)
 }
 
 
-FontManager& FontManager::getSingleton(void)
-{
-	return Singleton<FontManager>::getSingleton();
-}
-
-
-FontManager* FontManager::getSingletonPtr(void)
-{
-	return Singleton<FontManager>::getSingletonPtr();
-}
-
-
 /*************************************************************************
 	Return a FontManager::FontIterator object to iterate over the
 	available Font objects.

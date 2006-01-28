@@ -230,18 +230,6 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	return handler.getLayoutRootWindow();
 }
 
-
-WindowManager& WindowManager::getSingleton(void)
-{
-	return Singleton<WindowManager>::getSingleton();
-}
-
-
-WindowManager* WindowManager::getSingletonPtr(void)
-{
-	return Singleton<WindowManager>::getSingletonPtr();
-}
-
 bool WindowManager::isDeadPoolEmpty(void) const
 {
     return d_deathrow.empty();

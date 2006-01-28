@@ -70,26 +70,6 @@ public:
 
 	/*!
 	\brief
-		Return singleton ImagesetManager object
-
-	\return
-		Singleton ImagesetManager object
-	*/
-	static	ImagesetManager&	getSingleton(void);
-
-
-	/*!
-	\brief
-		Return pointer to singleton ImagesetManager object
-
-	\return
-		Pointer to singleton ImagesetManager object
-	*/
-	static	ImagesetManager*	getSingletonPtr(void);
-
-
-	/*!
-	\brief
 		Create a Imageset object with the given name and Texture
 
 		The created Imageset will be of limited use, and will require one or more images to be defined for the set.
