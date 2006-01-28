@@ -2013,7 +2013,7 @@ void Window::setHorizontalAlignment(const HorizontalAlignment alignment)
     }
 }
 
-const String& Window::getLookNFeel()
+const String& Window::getLookNFeel() const
 {
     return d_lookName;
 }

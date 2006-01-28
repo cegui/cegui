@@ -977,7 +977,7 @@ public:
         String object holding the name of the look assigned to this window.
         Returns the empty string if no look is assigned.
     */
-    const String& getLookNFeel();
+    const String& getLookNFeel() const;
 
     /*!
     \brief
