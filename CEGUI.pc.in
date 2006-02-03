@@ -8,4 +8,4 @@ Name: CEGUI
 Description: The free GUI library for games and multi-media development.
 Version: @VERSION@
 Libs: -L${libdir} -lCEGUIBase
-Cflags: -I${includedir}/@PACKAGE@
+Cflags: -I${includedir} -I${includedir}/@PACKAGE@
