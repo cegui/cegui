@@ -1,0 +1,57 @@
+/************************************************************************
+    filename:   FalMenubar.cpp
+    created:    Fri Jul 8 2005
+    author:     Paul D Turner <paul@cegui.org.uk>
+*************************************************************************/
+/*************************************************************************
+    Crazy Eddie's GUI System (http://www.cegui.org.uk)
+    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
+ 
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+ 
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+ 
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*************************************************************************/
+#include "FalMenubar.h"
+#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "elements/CEGUIMenubar.h"
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+    const utf8 FalagardMenubar::TypeName[] = "Falagard/Menubar";
+
+    FalagardMenubar::FalagardMenubar(const String& type) :
+        ItemListBaseWindowRenderer(type)
+    {
+    }
+
+    void FalagardMenubar::render()
+    {
+        const StateImagery* imagery;
+
+        // get WidgetLookFeel for the assigned look.
+        const WidgetLookFeel& wlf = getLookNFeel();
+        // try and get imagery for our current state
+        imagery = &wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled");
+        // peform the rendering operation.
+        imagery->render(*d_window);
+    }
+
+    Rect FalagardMenubar::getItemRenderArea(void) const
+    {
+        const WidgetLookFeel& wlf = getLookNFeel();
+        return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*d_window);
+    }
+
+} // End of  CEGUI namespace section
