@@ -49,6 +49,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIWindowFactoryManager.cpp \
                       CEGUIWindowManager.cpp \
                       CEGUIWindowProperties.cpp \
+                      CEGUIWindowRenderer.cpp \
+                      CEGUIWindowRendererManager.cpp \
                       CEGUIXMLAttributes.cpp \
                       CEGUIXMLHandler.cpp \
                       CEGUIXMLParser.cpp \

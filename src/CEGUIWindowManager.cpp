@@ -94,13 +94,13 @@ Window* WindowManager::createWindow(const String& type, const String& name)
     // see if we need to assign a look to this window
     if (wfMgr.isFalagardMappedType(type))
     {
+        const WindowFactoryManager::FalagardWindowMapping& fwm = wfMgr.getFalagardMappingForType(type);
         // this was a mapped type, so assign a look to the window so it can finalise
         // its initialisation
-        newWindow->setLookNFeel(type, wfMgr.getMappedLookForType(type));
+        newWindow->d_falagardType = type;
+        newWindow->setWindowRenderer(fwm.d_rendererType);
+        newWindow->setLookNFeel(fwm.d_lookName);
     }
-
-    // perform initialisation step
-    newWindow->initialise();
 
 	d_windowRegistry[finalName] = newWindow;
 

@@ -41,6 +41,31 @@
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIDragContainer.h"
 #include "elements/CEGUIScrolledContainer.h"
+#include "elements/CEGUICheckbox.h"
+#include "elements/CEGUIPushButton.h"
+#include "elements/CEGUIRadioButton.h"
+#include "elements/CEGUITabButton.h"
+#include "elements/CEGUICombobox.h"
+#include "elements/CEGUIComboDropList.h"
+#include "elements/CEGUIEditbox.h"
+#include "elements/CEGUIFrameWindow.h"
+#include "elements/CEGUIItemEntry.h"
+#include "elements/CEGUIListbox.h"
+#include "elements/CEGUIListHeader.h"
+#include "elements/CEGUIMenubar.h"
+#include "elements/CEGUIPopupMenu.h"
+#include "elements/CEGUIMenuItem.h"
+#include "elements/CEGUIMultiColumnList.h"
+#include "elements/CEGUIMultiLineEditbox.h"
+#include "elements/CEGUIProgressBar.h"
+#include "elements/CEGUIScrollablePane.h"
+#include "elements/CEGUIScrollbar.h"
+#include "elements/CEGUISlider.h"
+#include "elements/CEGUISpinner.h"
+#include "elements/CEGUITabButton.h"
+#include "elements/CEGUITabControl.h"
+#include "elements/CEGUIThumb.h"
+#include "elements/CEGUITitlebar.h"
 #include "elements/CEGUITooltip.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
@@ -49,6 +74,7 @@
 #include "CEGUIGlobalEventSet.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUIWindowRendererManager.h"
 #include <time.h>
 
 // set up for whichever default xml parser will be used
@@ -244,12 +270,42 @@ System::System(Renderer* renderer,
     new MouseCursor();
     new GlobalEventSet();
     new WidgetLookManager();
+    new WindowRendererManager();
 
     // Add factories for types that the system supports natively
     // (mainly because they do no rendering)
     WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
     WindowFactoryManager::getSingleton().addFactory(new DragContainerFactory);
     WindowFactoryManager::getSingleton().addFactory(new ScrolledContainerFactory);
+
+    // Add factories for types all base elements
+    WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PushButton));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(RadioButton));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Combobox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ComboDropList));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Editbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(FrameWindow));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemEntry));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Listbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeader));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeaderSegment));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Menubar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PopupMenu));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MenuItem));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiColumnList));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiLineEditbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ProgressBar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrollablePane));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Scrollbar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Slider));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Spinner));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabButton));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabControl));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Thumb));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
 
     // GUISheet's name was changed, register an alias so both can be used
     WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
@@ -374,6 +430,7 @@ System::~System(void)
 	delete	WindowManager::getSingletonPtr();
 	delete	WindowFactoryManager::getSingletonPtr();
     delete  WidgetLookManager::getSingletonPtr();
+    delete  WindowRendererManager::getSingletonPtr();
 	delete	FontManager::getSingletonPtr();
 	delete	MouseCursor::getSingletonPtr();
 	delete	ImagesetManager::getSingletonPtr();

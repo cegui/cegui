@@ -228,12 +228,13 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 
 }
 
-void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName)
+void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName, const String& renderer)
 {
     WindowFactoryManager::FalagardWindowMapping mapping;
     mapping.d_windowType = newType;
     mapping.d_baseType   = targetType;
     mapping.d_lookName   = lookName;
+    mapping.d_rendererType = renderer;
 
     // see if the type we're creating already exists
     if (d_falagardRegistry.find(newType) != d_falagardRegistry.end())
@@ -242,7 +243,7 @@ void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const
         Logger::getSingleton().logEvent("Falagard mapping for type '" + newType + "' already exists - current mapping will be replaced.");
     }
 
-    Logger::getSingleton().logEvent("Creating falagard mapping for type '" + newType + "' using base type '" + targetType + "' and LookN'Feel '" + lookName + "'.");
+    Logger::getSingleton().logEvent("Creating falagard mapping for type '" + newType + "' using base type '" + targetType + "', window renderer '" + renderer + "' and Look'N'Feel '" + lookName + "'.");
 
     d_falagardRegistry[newType] = mapping;
 }
@@ -284,6 +285,22 @@ const String& WindowFactoryManager::getMappedLookForType(const String& type) con
     }
 }
 
+const String& WindowFactoryManager::getMappedRendererForType(const String& type) const
+{
+    FalagardMapRegistry::const_iterator iter =
+        d_falagardRegistry.find(getDereferencedAliasType(type));
+
+    if (iter != d_falagardRegistry.end())
+    {
+        return (*iter).second.d_rendererType;
+    }
+    // type does not exist as a mapped type (or an alias for one)
+    else
+    {
+        throw InvalidRequestException("WindowFactoryManager::getMappedLookForType - Window factory type '" + type + "' is not a falagard mapped type (or an alias for one).");
+    }
+}
+
 String WindowFactoryManager::getDereferencedAliasType(const String& type) const
 {
     TypeAliasRegistry::const_iterator alias = d_aliasRegistry.find(type);
@@ -295,6 +312,22 @@ String WindowFactoryManager::getDereferencedAliasType(const String& type) const
 
     // we're not an alias, so return the input type unchanged
     return type;
+}
+
+const WindowFactoryManager::FalagardWindowMapping& WindowFactoryManager::getFalagardMappingForType(const String& type) const
+{
+    FalagardMapRegistry::const_iterator iter =
+        d_falagardRegistry.find(getDereferencedAliasType(type));
+
+    if (iter != d_falagardRegistry.end())
+    {
+        return (*iter).second;
+    }
+    // type does not exist as a mapped type (or an alias for one)
+    else
+    {
+        throw InvalidRequestException("WindowFactoryManager::getFalagardMappingForType - Window factory type '" + type + "' is not a falagard mapped type (or an alias for one).");
+    }
 }
 
 

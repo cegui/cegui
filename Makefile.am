@@ -1,4 +1,4 @@
-SUBDIRS = . src include WidgetSets ScriptingModules Samples
+SUBDIRS = . src include WindowRendererSets ScriptingModules Samples
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = CEGUI.pc CEGUI-OPENGL.pc

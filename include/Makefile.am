@@ -54,6 +54,9 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIWindowFactoryManager.h \
                  CEGUIWindowManager.h \
                  CEGUIWindowProperties.h \
+                 CEGUIWindowRenderer.h \
+                 CEGUIWindowRendererManager.h \
+                 CEGUIWindowRendererModule.h \
                  CEGUIXMLAttributes.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \

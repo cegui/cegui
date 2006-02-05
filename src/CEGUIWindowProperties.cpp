@@ -549,6 +549,29 @@ void MousePassThroughEnabled::set(PropertyReceiver* receiver, const String& valu
 }
 
 
+String WindowRenderer::get(const PropertyReceiver* receiver) const
+{
+    CEGUI::WindowRenderer* wr = static_cast<const Window*>(receiver)->getWindowRenderer();
+    return wr ? wr->getName() : "";
+}
+
+void WindowRenderer::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setWindowRenderer(value);
+}
+
+
+String LookNFeel::get(const PropertyReceiver* receiver) const
+{
+    return static_cast<const Window*>(receiver)->getLookNFeel();
+}
+
+void LookNFeel::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setLookNFeel(value);
+}
+
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

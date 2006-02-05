@@ -32,6 +32,7 @@
 #include "CEGUIFontManager.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowFactoryManager.h"
+#include "CEGUIWindowRendererManager.h"
 #include "CEGUIFactoryModule.h"
 #include "CEGUIScheme_xmlHandler.h"
 #include "CEGUIDataContainer.h"
@@ -104,6 +105,7 @@ void Scheme::loadResources(void)
     loadImageFileImagesets();
     loadFonts();
     loadLookNFeels();
+    loadWindowRendererFactories();
     loadWindowFactories();
     loadFactoryAliases();
     loadFalagardMappings();
@@ -124,6 +126,7 @@ void Scheme::unloadResources(void)
     unloadXMLImagesets();
     unloadImageFileImagesets();
     unloadWindowFactories();
+    unloadWindowRendererFactories();
     unloadFactoryAliases();
     unloadFalagardMappings();
     unloadLookNFeels();
@@ -141,6 +144,7 @@ bool Scheme::resourcesLoaded(void) const
     if (areXMLImagesetsLoaded() &&
         areImageFileImagesetsLoaded() &&
         areFontsLoaded() &&
+        areWindowRendererFactoriesLoaded() &&
         areWindowFactoriesLoaded() &&
         areFactoryAliasesLoaded() &&
         areFalagardMappingsLoaded())
@@ -283,6 +287,44 @@ void Scheme::loadWindowFactories()
 }
 
 /*************************************************************************
+    Load all windowrendererset modules specified.and register factories.
+*************************************************************************/
+void Scheme::loadWindowRendererFactories()
+{
+    WindowRendererManager& wfmgr = WindowRendererManager::getSingleton();
+
+    // check factories
+    std::vector<UIModule>::iterator cmod = d_windowRendererModules.begin();
+    for (;cmod != d_windowRendererModules.end(); ++cmod)
+    {
+        // create and load dynamic module as required
+        if (!(*cmod).module)
+        {
+            (*cmod).module = new FactoryModule((*cmod).name);
+        }
+
+        // see if we should just register all factories available in the module (i.e. No factories explicitly specified)
+        if ((*cmod).factories.size() == 0)
+        {
+            Logger::getSingleton().logEvent("No window renderer factories specified for module '" + (*cmod).name + "' - adding all available factories...");
+            (*cmod).module->registerAllFactories();
+        }
+        // some names were explicitly given, so only register those.
+        else
+        {
+            std::vector<UIElementFactory>::const_iterator   elem = (*cmod).factories.begin();
+            for (; elem != (*cmod).factories.end(); ++elem)
+            {
+                if (!wfmgr.isFactoryPresent((*elem).name))
+                {
+                    (*cmod).module->registerFactory((*elem).name);
+                }
+            }
+        }
+    }
+}
+
+/*************************************************************************
     Create all window factory aliases
 *************************************************************************/
 void Scheme::loadFactoryAliases()
@@ -337,8 +379,9 @@ void Scheme::loadFalagardMappings()
         // if the mapping exists
         if (!iter.isAtEnd())
         {
-            // check if the current target and looks match
+            // check if the current target and looks and window renderer match
             if ((iter.getCurrentValue().d_baseType == (*falagard).targetName) &&
+                (iter.getCurrentValue().d_rendererType == (*falagard).rendererName) &&
                 (iter.getCurrentValue().d_lookName == (*falagard).lookName))
             {
                 // assume this mapping is ours and skip to next
@@ -347,7 +390,7 @@ void Scheme::loadFalagardMappings()
         }
 
         // create a new mapping entry
-        wfmgr.addFalagardWindowMapping((*falagard).windowName, (*falagard).targetName, (*falagard).lookName);
+        wfmgr.addFalagardWindowMapping((*falagard).windowName, (*falagard).targetName, (*falagard).lookName, (*falagard).rendererName);
     }
 }
 
@@ -435,6 +478,40 @@ void Scheme::unloadWindowFactories()
 }
 
 /*************************************************************************
+    Unregister all window renderer factories and unload shared modules
+*************************************************************************/
+void Scheme::unloadWindowRendererFactories()
+{
+    WindowRendererManager& wfmgr = WindowRendererManager::getSingleton();
+    std::vector<UIModule>::iterator cmod = d_windowRendererModules.begin();
+
+    // for all widget modules loaded
+    for (;cmod != d_windowRendererModules.end(); ++cmod)
+    {
+        // see if we should just unregister all factories available in the
+        // module (i.e. No factories explicitly specified)
+        if ((*cmod).factories.size() == 0)
+        {
+            // TODO: This is not supported yet!
+        }
+        // remove all window factories explicitly registered for this module
+        else
+        {
+            std::vector<UIElementFactory>::const_iterator elem = (*cmod).factories.begin();
+            for (; elem != (*cmod).factories.end(); ++elem)
+                wfmgr.removeFactory((*elem).name);
+        }
+
+        // unload dynamic module as required
+        if ((*cmod).module)
+        {
+            delete (*cmod).module;
+            (*cmod).module = 0;
+        }
+    }
+}
+
+/*************************************************************************
     Unregister all factory aliases
 *************************************************************************/
 void Scheme::unloadFactoryAliases()
@@ -482,6 +559,7 @@ void Scheme::unloadFalagardMappings()
         {
             // if the current target and looks match
             if ((iter.getCurrentValue().d_baseType == (*falagard).targetName) &&
+                (iter.getCurrentValue().d_rendererType == (*falagard).rendererName) &&
                 (iter.getCurrentValue().d_lookName == (*falagard).lookName))
             {
                 // assume this mapping is ours and delete it
@@ -587,6 +665,39 @@ bool Scheme::areWindowFactoriesLoaded() const
 }
 
 /*************************************************************************
+    Check if all required window renderer factories are registered
+*************************************************************************/
+bool Scheme::areWindowRendererFactoriesLoaded() const
+{
+    WindowRendererManager& wfmgr = WindowRendererManager::getSingleton();
+    std::vector<UIModule>::const_iterator   cmod = d_windowRendererModules.begin();
+
+    // check factory modules
+    for (;cmod != d_windowRendererModules.end(); ++cmod)
+    {
+        // see if we should just test all factories available in the
+        // module (i.e. No factories explicitly specified)
+        if ((*cmod).factories.size() == 0)
+        {
+            // TODO: This is not supported yet!
+        }
+        // check all window factories explicitly registered for this module
+        else
+        {
+            std::vector<UIElementFactory>::const_iterator   elem = (*cmod).factories.begin();
+
+            for (; elem != (*cmod).factories.end(); ++elem)
+            {
+                if (!wfmgr.isFactoryPresent((*elem).name))
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+/*************************************************************************
     Check if all window factory aliases are registered
 *************************************************************************/
 bool Scheme::areFactoryAliasesLoaded() const
@@ -643,6 +754,7 @@ bool Scheme::areFalagardMappingsLoaded() const
         {
             // if the current target and looks match
             if ((iter.getCurrentValue().d_baseType == (*falagard).targetName) &&
+                (iter.getCurrentValue().d_rendererType == (*falagard).rendererName) &&
                 (iter.getCurrentValue().d_lookName == (*falagard).lookName))
             {
                 // assume this mapping is ours and skip to next

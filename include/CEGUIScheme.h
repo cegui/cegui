@@ -158,6 +158,12 @@ private:
 
     /*!
     \brief
+        Register all window renderer factories required by the scheme.
+    */
+    void loadWindowRendererFactories();
+
+    /*!
+    \brief
         Register all factory aliases required by the scheme.
     */
     void loadFactoryAliases();
@@ -197,6 +203,12 @@ private:
         Unregister all window factories registered by the scheme.
     */
     void unloadWindowFactories();
+
+    /*!
+    \brief
+        Unregister all window renderer factories registered by the scheme.
+    */
+    void unloadWindowRendererFactories();
 
     /*!
     \brief
@@ -242,6 +254,12 @@ private:
 
     /*!
     \brief
+        Check state of all window renderer factories registered by the scheme.
+    */
+    bool areWindowRendererFactoriesLoaded() const;
+
+    /*!
+    \brief
         Check state of all factory aliases created by the scheme.
     */
     bool areFactoryAliasesLoaded() const;
@@ -262,7 +280,7 @@ public:		// for luabind compatibility
 	*/
 	~Scheme(void);
 
-	
+
 private:
 	/*************************************************************************
 		Structs used to hold scheme information
@@ -296,6 +314,7 @@ private:
     {
         String windowName;
         String targetName;
+        String rendererName;
         String lookName;
     };
 
@@ -308,6 +327,7 @@ private:
 	std::vector<LoadableUIElement>		d_imagesetsFromImages;
 	std::vector<LoadableUIElement>		d_fonts;
 	std::vector<UIModule>				d_widgetModules;
+    std::vector<UIModule>               d_windowRendererModules;
 	std::vector<AliasMapping>			d_aliasMappings;
     std::vector<LoadableUIElement>		d_looknfeels;
     std::vector<FalagardMapping>        d_falagardMappings;

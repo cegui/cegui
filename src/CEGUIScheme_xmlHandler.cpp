@@ -57,6 +57,9 @@ const String Scheme_xmlHandler::ResourceGroupAttribute( "ResourceGroup" );
 const String Scheme_xmlHandler::WindowTypeAttribute( "WindowType" );
 const String Scheme_xmlHandler::TargetTypeAttribute( "TargetType" );
 const String Scheme_xmlHandler::LookNFeelAttribute( "LookNFeel" );
+const String Scheme_xmlHandler::WindowRendererSetElement( "WindowRendererSet" );
+const String Scheme_xmlHandler::WindowRendererFactoryElement( "WindowRendererFactory" );
+const String Scheme_xmlHandler::WindowRendererAttribute( "Renderer" );
 
 /*************************************************************************
 Handler methods
@@ -92,6 +95,16 @@ void Scheme_xmlHandler::elementStart(const String& element, const XMLAttributes&
     else if (element == WindowFactoryElement)
     {
         elementWindowFactoryStart(attributes);
+    }
+    // handle a WindowRendererSet element
+    else if (element == WindowRendererSetElement)
+    {
+        elementWindowRendererSetStart(attributes);
+    }
+    // handle a WindowRendererFactory element
+    else if (element == WindowRendererFactoryElement)
+    {
+        elementWindowRendererFactoryStart(attributes);
     }
     // handle root Scheme element
     else if (element == GUISchemeElement)
@@ -205,6 +218,31 @@ void Scheme_xmlHandler::elementWindowFactoryStart(const XMLAttributes& attribute
 }
 
 /*************************************************************************
+    Method that handles the WindowRendererSet XML element.
+*************************************************************************/
+void Scheme_xmlHandler::elementWindowRendererSetStart(const XMLAttributes& attributes)
+{
+    Scheme::UIModule    module;
+    module.name     = attributes.getValueAsString(FilenameAttribute);
+    module.module   = 0;
+
+    module.factories.clear();
+    d_scheme->d_windowRendererModules.push_back(module);
+}
+
+/*************************************************************************
+    Method that handles the WindowFactory XML element.
+*************************************************************************/
+void Scheme_xmlHandler::elementWindowRendererFactoryStart(const XMLAttributes& attributes)
+{
+    Scheme::UIElementFactory factory;
+
+    factory.name = attributes.getValueAsString(NameAttribute);
+
+    d_scheme->d_windowRendererModules[d_scheme->d_windowRendererModules.size() - 1].factories.push_back(factory);
+}
+
+/*************************************************************************
     Method that handles the WindowAlias XML element.
 *************************************************************************/
 void Scheme_xmlHandler::elementWindowAliasStart(const XMLAttributes& attributes)
@@ -225,6 +263,7 @@ void Scheme_xmlHandler::elementFalagardMappingStart(const XMLAttributes& attribu
     fmap.windowName = attributes.getValueAsString(WindowTypeAttribute);
     fmap.targetName = attributes.getValueAsString(TargetTypeAttribute);
     fmap.lookName   = attributes.getValueAsString(LookNFeelAttribute);
+    fmap.rendererName = attributes.getValueAsString(WindowRendererAttribute);
 
     d_scheme->d_falagardMappings.push_back(fmap);
 }

@@ -970,6 +970,54 @@ class MousePassThroughEnabled : public Property
 };
 
 
+/*!
+\brief
+    Property to access/change the assigned window renderer object.
+
+    \par Usage:
+        - Name: WindowRenderer
+        - Format: "[windowRendererName]"
+
+    \par Where [windowRendererName] is the factory name of the window renderer type you wish to assign.
+*/
+class WindowRenderer : public Property
+{
+    public:
+        WindowRenderer() : Property(
+        "WindowRenderer",
+        "Property to get/set the windows assigned window renderer objects name.  Value is a string.",
+        "")
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*!
+\brief
+    Property to access/change the assigned look'n'feel.
+
+    \par Usage:
+        - Name: LookNFeel
+        - Format: "[LookNFeelName]"
+
+    \par Where [LookNFeelName] is the name of the look'n'feel you wish to assign.
+*/
+class LookNFeel : public Property
+{
+    public:
+        LookNFeel() : Property(
+        "LookNFeel",
+        "Property to get/set the windows assigned look'n'feel.  Value is a string.",
+        "")
+        {}
+
+        String  get(const PropertyReceiver* receiver) const;
+        void    set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  WindowProperties namespace section
 
 
