@@ -8,6 +8,7 @@
 			<xsd:element name="Font" type="NamedDataType" />
             <xsd:element name="LookNFeel" type="FileDataType" />
 			<xsd:element name="WindowSet" type="WindowSetType" />
+			<xsd:element name="WindowRendererSet" type="WindowRendererSetType" />
 			<xsd:element name="WindowAlias" type="WindowAliasType" />
             <xsd:element name="FalagardMapping" type="FalagardMapType" />
 		</xsd:choice>
@@ -16,6 +17,12 @@
 	<xsd:complexType name="WindowSetType">
 		<xsd:sequence>
             <xsd:element name="WindowFactory" type="WindowFactoryType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="Filename" type="xsd:string" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="WindowRendererSetType">
+		<xsd:sequence>
+            <xsd:element name="WindowRendererFactory" type="WindowRendererFactoryType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="Filename" type="xsd:string" use="required" />
 	</xsd:complexType>
@@ -31,6 +38,9 @@
 	<xsd:complexType name="WindowFactoryType">
 		<xsd:attribute name="Name" type="xsd:string" use="required" />
 	</xsd:complexType>
+	<xsd:complexType name="WindowRendererFactoryType">
+		<xsd:attribute name="Name" type="xsd:string" use="required" />
+	</xsd:complexType>
 	<xsd:complexType name="WindowAliasType">
 		<xsd:attribute name="Alias" type="xsd:string" use="required" />
 		<xsd:attribute name="Target" type="xsd:string" use="required" />
@@ -38,6 +48,7 @@
     <xsd:complexType name="FalagardMapType">
         <xsd:attribute name="WindowType" type="xsd:string" use="required" />
         <xsd:attribute name="TargetType" type="xsd:string" use="required" />
+		<xsd:attribute name="Renderer" type="xsd:string" use="required" />
         <xsd:attribute name="LookNFeel" type="xsd:string" use="required" />
     </xsd:complexType>
 </xsd:schema>
