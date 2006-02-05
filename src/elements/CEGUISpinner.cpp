@@ -33,6 +33,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    const String Spinner::WidgetTypeName("CEGUI/Spinner");
+    CEGUI_DEFINE_WINDOW_FACTORY(Spinner);
+
     //////////////////////////////////////////////////////////////////////////
     // event strings
     const String Spinner::EventNamespace("Spinner");
@@ -75,17 +78,12 @@ namespace CEGUI
         // Nothing to do here.
     }
 
-    void Spinner::initialise(void)
+    void Spinner::initialiseComponents(void)
     {
-        Window::initialise();
-
-        // create all the component widgets
+        // get all the component widgets
         PushButton* increaseButton = getIncreaseButton();
-        addChildWindow(increaseButton);
         PushButton* decreaseButton = getDecreaseButton();
-        addChildWindow(decreaseButton);
         Editbox* editbox = getEditbox();
-        addChildWindow(editbox);
 
         // setup component controls
         increaseButton->setWantsMultiClickEvents(false);

@@ -31,6 +31,8 @@
 namespace CEGUI
 {
 const String ComboDropList::EventNamespace("ComboDropList");
+const String ComboDropList::WidgetTypeName("CEGUI/ComboDropList");
+CEGUI_DEFINE_WINDOW_FACTORY(ComboDropList);
 
 /*************************************************************************
 	Constants
@@ -67,9 +69,9 @@ ComboDropList::~ComboDropList(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.	
 *************************************************************************/
-void ComboDropList::initialise(void)
+void ComboDropList::initialiseComponents(void)
 {
-	Listbox::initialise();
+	Listbox::initialiseComponents();
 
 	// set-up scroll bars so they return capture to us.
 	getVertScrollbar()->setRestoreCapture(true);

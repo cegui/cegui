@@ -40,7 +40,9 @@ PopupMenuProperties::FadeOutTime	PopupMenu::d_fadeOutTimeProperty;
 /*************************************************************************
 	Constants
 *************************************************************************/
+const String PopupMenu::WidgetTypeName("CEGUI/PopupMenu");
 const String PopupMenu::EventNamespace("PopupMenu");
+CEGUI_DEFINE_WINDOW_FACTORY(PopupMenu);
 
 
 /*************************************************************************
@@ -273,7 +275,7 @@ void PopupMenu::layoutItemWidgets()
 /*************************************************************************
 	Returns the "optimal" size for the content in unclipped pixels
 *************************************************************************/
-Size PopupMenu::getContentSize()
+Size PopupMenu::getContentSize() const
 {
 	// find the content sizes
 	float widest = 0;

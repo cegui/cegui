@@ -53,7 +53,7 @@ class CEGUIEXPORT Thumb : public PushButton
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -310,6 +310,8 @@ private:
 	*************************************************************************/
 	void	addThumbProperties(void);
 };
+
+CEGUI_DECLARE_WINDOW_FACTORY(Thumb);
 
 } // End of  CEGUI namespace section
 

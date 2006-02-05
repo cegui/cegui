@@ -49,7 +49,7 @@ class CEGUIEXPORT Titlebar : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*!
 	\brief
@@ -157,6 +157,8 @@ private:
 	*************************************************************************/
 	void	addTitlebarProperties(void);
 };
+
+CEGUI_DECLARE_WINDOW_FACTORY(Titlebar);
 
 } // End of  CEGUI namespace section
 

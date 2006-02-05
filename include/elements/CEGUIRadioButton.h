@@ -49,7 +49,7 @@ class CEGUIEXPORT RadioButton : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -205,6 +205,7 @@ private:
 	void	addRadioButtonProperties(void);
 };
 
+CEGUI_DECLARE_WINDOW_FACTORY(RadioButton);
 
 } // End of  CEGUI namespace section
 

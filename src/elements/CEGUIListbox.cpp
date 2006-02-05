@@ -36,6 +36,16 @@
 namespace CEGUI
 {
 const String Listbox::EventNamespace("Listbox");
+const String Listbox::WidgetTypeName("CEGUI/Listbox");
+CEGUI_DEFINE_WINDOW_FACTORY(Listbox);
+
+/*************************************************************************
+    ListboxWindowRenderer
+*************************************************************************/
+ListboxWindowRenderer::ListboxWindowRenderer(const String& name) :
+    WindowRenderer(name, Listbox::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Definition of Properties for this class
@@ -95,14 +105,11 @@ Listbox::~Listbox(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void Listbox::initialise(void)
+void Listbox::initialiseComponents(void)
 {
-	// create the component sub-widgets
+	// get the component sub-widgets
 	Scrollbar* vertScrollbar = getVertScrollbar();
 	Scrollbar* horzScrollbar = getHorzScrollbar();
-
-	addChildWindow(vertScrollbar);
-	addChildWindow(horzScrollbar);
 
     vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
     horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Listbox::handle_scrollChange, this));
@@ -1123,6 +1130,23 @@ Scrollbar* Listbox::getHorzScrollbar() const
 {
     return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
                                    getName() + HorzScrollbarNameSuffix));
+}
+
+/*************************************************************************
+    Return a Rect object describing, in un-clipped pixels, the window
+    relative area that is to be used for rendering list items.
+*************************************************************************/
+Rect Listbox::getListRenderArea() const
+{
+    if (d_lookRenderer != 0)
+    {
+        ListboxWindowRenderer* wr = (ListboxWindowRenderer*)d_lookRenderer;
+        return wr->getListRenderArea();
+    }
+    else
+    {
+        throw InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module");
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////

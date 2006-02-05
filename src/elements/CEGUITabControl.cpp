@@ -34,6 +34,16 @@
 namespace CEGUI
 {
 const String TabControl::EventNamespace("TabControl");
+const String TabControl::WidgetTypeName("CEGUI/TabControl");
+CEGUI_DEFINE_WINDOW_FACTORY(TabControl);
+
+/*************************************************************************
+    TabControlWindowRenderer
+*************************************************************************/
+TabControlWindowRenderer::TabControlWindowRenderer(const String& name) :
+    WindowRenderer(name, TabControl::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Definition of Properties for this class
@@ -79,15 +89,8 @@ TabControl::~TabControl(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void TabControl::initialise(void)
+void TabControl::initialiseComponents(void)
 {
-	// create the component sub-widgets
-	TabPane* tabContentPane = getTabPane();
-    Window* tabButtonPane = getTabButtonPane();
-
-	addChildWindow(tabContentPane);
-    addChildWindow(tabButtonPane);
-
 	performChildWindowLayout();
 }
 /*************************************************************************
@@ -593,6 +596,24 @@ int TabControl::writeChildWindowsXML(OutStream& out_stream) const
     }
 
     return childOutputCount;
+}
+
+/*************************************************************************
+    create and return a pointer to a TabButton widget for use as a
+    clickable tab header
+*************************************************************************/
+TabButton* TabControl::createTabButton(const String& name) const
+{
+    if (d_lookRenderer != 0)
+    {
+        TabControlWindowRenderer* wr = (TabControlWindowRenderer*)d_lookRenderer;
+        return wr->createTabButton(name);
+    }
+    else
+    {
+        //return createTabButton_impl(name);
+        throw InvalidRequestException("TabControl::createTabButton - This function must be implemented by the window renderer module");
+    }
 }
 
 } // End of  CEGUI namespace section

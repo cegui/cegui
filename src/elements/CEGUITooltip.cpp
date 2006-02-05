@@ -29,6 +29,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    const String Tooltip::WidgetTypeName("CEGUI/Tooltip");
+    CEGUI_DEFINE_WINDOW_FACTORY(Tooltip);
+
     //////////////////////////////////////////////////////////////////////////
     // Event name constants
     const String Tooltip::EventNamespace("Tooltip");
@@ -43,6 +46,15 @@ namespace CEGUI
     TooltipProperties::FadeTime     Tooltip::d_fadeTimeProperty;
     //////////////////////////////////////////////////////////////////////////
 
+    /*************************************************************************
+        TooltipWindowRenderer
+    *************************************************************************/
+    TooltipWindowRenderer::TooltipWindowRenderer(const String& name) :
+        WindowRenderer(name, Tooltip::EventNamespace)
+    {
+    }
+
+    //////////////////////////////////////////////////////////////////////////
     Tooltip::Tooltip(const String& type, const String& name) :
             Window(type, name)
     {
@@ -137,6 +149,19 @@ namespace CEGUI
     }
 
     Size Tooltip::getTextSize() const
+    {
+        if (d_lookRenderer != 0)
+        {
+            TooltipWindowRenderer* wr = (TooltipWindowRenderer*)d_lookRenderer;
+            return wr->getTextSize();
+        }
+        else
+        {
+            return getTextSize_impl();
+        }
+    }
+
+    Size Tooltip::getTextSize_impl() const
     {
         const Font* fnt = getFont();
 

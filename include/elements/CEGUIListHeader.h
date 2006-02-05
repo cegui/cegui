@@ -54,6 +54,46 @@ public:
 	uint d_newIdx;		//!< The new column index of the segment that has moved.
 };
 
+/*!
+\brief
+    Base class for the multi column list header window renderer.
+*/
+class CEGUIEXPORT ListHeaderWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    ListHeaderWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Create and return a pointer to a new ListHeaderSegment based object.
+
+    \param name
+        String object holding the name that should be given to the new Window.
+
+    \return
+        Pointer to an ListHeaderSegment based object of whatever type is appropriate for
+        this ListHeader.
+    */
+    virtual ListHeaderSegment*  createNewSegment(const String& name) const  = 0;
+
+    /*!
+    \brief
+        Cleanup and destroy the given ListHeaderSegment that was created via the
+        createNewSegment method.
+
+    \param segment
+        Pointer to a ListHeaderSegment based object to be destroyed.
+
+    \return
+        Nothing.
+    */
+    virtual void    destroyListSegment(ListHeaderSegment* segment) const = 0;
+};
+
 
 /*!
 \brief
@@ -63,6 +103,7 @@ class CEGUIEXPORT ListHeader : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 
 	/*************************************************************************
@@ -661,7 +702,7 @@ protected:
 		Pointer to an ListHeaderSegment based object of whatever type is appropriate for
 		this ListHeader.
 	*/
-	virtual ListHeaderSegment*	createNewSegment(const String& name) const	= 0;
+	//virtual ListHeaderSegment*	createNewSegment_impl(const String& name) const	= 0;
 
 
 	/*!
@@ -675,7 +716,7 @@ protected:
 	\return
 		Nothing.
 	*/
-	virtual void	destroyListSegment(ListHeaderSegment* segment) const = 0;
+	//virtual void	destroyListSegment_impl(ListHeaderSegment* segment) const = 0;
 
 
 	/*************************************************************************
@@ -718,6 +759,39 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+
+    /*!
+    \brief
+        Create and return a pointer to a new ListHeaderSegment based object.
+
+    \param name
+        String object holding the name that should be given to the new Window.
+
+    \return
+        Pointer to an ListHeaderSegment based object of whatever type is appropriate for
+        this ListHeader.
+    */
+    ListHeaderSegment*  createNewSegment(const String& name) const;
+
+
+    /*!
+    \brief
+        Cleanup and destroy the given ListHeaderSegment that was created via the
+        createNewSegment method.
+
+    \param segment
+        Pointer to a ListHeaderSegment based object to be destroyed.
+
+    \return
+        Nothing.
+    */
+    void    destroyListSegment(ListHeaderSegment* segment) const;
+
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "ListHeader");
+    }
 
 	/*************************************************************************
 		New List header event handlers
@@ -805,7 +879,6 @@ protected:
 	*/
 	virtual	void	onSegmentOffsetChanged(WindowEventArgs& e);
 
-
 	/*************************************************************************
 		handlers for events we subscribe to from segments
 	*************************************************************************/
@@ -846,6 +919,8 @@ private:
 	*************************************************************************/
 	void	addHeaderProperties(void);
 };
+
+CEGUI_DECLARE_WINDOW_FACTORY(ListHeader);
 
 } // End of  CEGUI namespace section
 

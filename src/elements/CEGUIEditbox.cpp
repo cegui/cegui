@@ -35,6 +35,8 @@
 namespace CEGUI
 {
 const String Editbox::EventNamespace("Editbox");
+const String Editbox::WidgetTypeName("CEGUI/Editbox");
+CEGUI_DEFINE_WINDOW_FACTORY(Editbox);
 
 /*!
 \brief
@@ -57,6 +59,14 @@ struct RegexValidator
 
 	pcre* d_regex;
 };
+
+/*************************************************************************
+    EditboxWindowRenderer
+*************************************************************************/
+EditboxWindowRenderer::EditboxWindowRenderer(const String& name) :
+    WindowRenderer(name, Editbox::EventNamespace)
+{
+}
 
 /*************************************************************************
 	TODO:
@@ -1086,5 +1096,22 @@ void Editbox::addEditboxProperties(void)
 	addProperty(&d_maxTextLengthProperty);
 }
 
+/*************************************************************************
+    Return the text code point index that is rendered closest to the
+    given screen position
+*************************************************************************/
+size_t Editbox::getTextIndexFromPosition(const Point& pt) const
+{
+    if (d_lookRenderer != 0)
+    {
+        EditboxWindowRenderer* wr = (EditboxWindowRenderer*)d_lookRenderer;
+        return wr->getTextIndexFromPosition(pt);
+    }
+    else
+    {
+        //return getTextIndexFromPosition_impl(pt);
+        throw InvalidRequestException("Editbox::getTextIndexFromPosition - This function must be implemented by the window renderer");
+    }
+}
 
 } // End of  CEGUI namespace section

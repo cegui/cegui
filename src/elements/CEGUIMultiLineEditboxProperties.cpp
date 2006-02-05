@@ -113,6 +113,18 @@ void MaxTextLength::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String SelectionBrushImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const MultiLineEditbox*>(receiver)->getSelectionBrushImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void SelectionBrushImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<MultiLineEditbox*>(receiver)->setSelectionBrushImage(PropertyHelper::stringToImage(value));
+}
+
+
 } // End of  MultiLineEditboxProperties namespace section
 
 } // End of  CEGUI namespace section

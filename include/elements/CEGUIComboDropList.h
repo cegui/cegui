@@ -46,6 +46,7 @@ class CEGUIEXPORT ComboDropList : public Listbox
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 
 	/*************************************************************************
@@ -65,7 +66,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
 
 	/*!
@@ -194,6 +195,8 @@ protected:
 	bool	d_autoArm;		//!< true if the box auto-arms when the mouse enters it.
 	bool	d_armed;		//!< true when item selection has been armed.
 };
+
+CEGUI_DECLARE_WINDOW_FACTORY(ComboDropList);
 
 } // End of  CEGUI namespace section
 

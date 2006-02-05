@@ -48,7 +48,7 @@ class CEGUIEXPORT FrameWindow : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Constants	
@@ -93,7 +93,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 	
 	
 	/*!
@@ -451,6 +451,30 @@ public:
     // overridden from Window class
     bool    isHit(const Point& position) const      { return Window::isHit(position) && !d_rolledup; }
 
+    /*!
+    \brief
+        Return a pointer to the Titlebar component widget for this FrameWindow.
+
+    \return
+        Pointer to a Titlebar object.
+
+    \exception UnknownObjectException
+        Thrown if the Titlebar component does not exist.
+    */
+    Titlebar* getTitlebar() const;
+
+    /*!
+    \brief
+        Return a pointer to the close button component widget for this
+        FrameWindow.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the close button component does not exist.
+    */
+    PushButton* getCloseButton() const;
 
 	/*************************************************************************
 		Construction / Destruction
@@ -624,31 +648,6 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
-    /*!
-    \brief
-        Return a pointer to the Titlebar component widget for this FrameWindow.
-
-    \return
-        Pointer to a Titlebar object.
-
-    \exception UnknownObjectException
-        Thrown if the Titlebar component does not exist.
-    */
-    Titlebar* getTitlebar() const;
-
-    /*!
-    \brief
-        Return a pointer to the close button component widget for this
-        FrameWindow.
-
-    \return
-        Pointer to a PushButton object.
-
-    \exception UnknownObjectException
-        Thrown if the close button component does not exist.
-    */
-    PushButton* getCloseButton() const;
-
 
 	/*************************************************************************
 		New events for Frame Windows
@@ -728,6 +727,8 @@ private:
 	*************************************************************************/
 	void	addFrameWindowProperties(void);
 };
+
+CEGUI_DECLARE_WINDOW_FACTORY(FrameWindow);
 
 } // End of  CEGUI namespace section
 

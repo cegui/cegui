@@ -192,6 +192,29 @@ public:
 };
 
 
+/*!
+\brief
+Property to access the selection brush image
+
+\par Usage:
+    - Name: SelectionBrushImage
+    - Format: "set:<imageset> image:<imagename>".
+
+*/
+class SelectionBrushImage : public Property
+{
+public:
+    SelectionBrushImage() : Property(
+        "SelectionBrushImage",
+        "Property to get/set the selection brush image for the editbox.  Value should be \"set:[imageset name] image:[image name]\".",
+        "")
+    {}
+
+    String   get(const PropertyReceiver* receiver) const;
+    void   set(PropertyReceiver* receiver, const String& value);
+};
+
+
 } // End of  MultiLineEditboxProperties namespace section
 
 } // End of  CEGUI namespace section
