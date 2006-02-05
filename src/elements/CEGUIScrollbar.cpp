@@ -425,9 +425,9 @@ Thumb* Scrollbar::getThumb() const
 *************************************************************************/
 void Scrollbar::updateThumb(void)
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_lookRenderer;
+        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_windowRenderer;
         wr->updateThumb();
     }
     else
@@ -443,9 +443,9 @@ void Scrollbar::updateThumb(void)
 *************************************************************************/
 float Scrollbar::getValueFromThumb(void) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_lookRenderer;
+        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_windowRenderer;
         return wr->getValueFromThumb();
     }
     else
@@ -461,9 +461,9 @@ float Scrollbar::getValueFromThumb(void) const
 *************************************************************************/
 float Scrollbar::getAdjustDirectionFromPoint(const Point& pt) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_lookRenderer;
+        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_windowRenderer;
         return wr->getAdjustDirectionFromPoint(pt);
     }
     else

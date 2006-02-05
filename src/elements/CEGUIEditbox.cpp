@@ -1102,9 +1102,9 @@ void Editbox::addEditboxProperties(void)
 *************************************************************************/
 size_t Editbox::getTextIndexFromPosition(const Point& pt) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        EditboxWindowRenderer* wr = (EditboxWindowRenderer*)d_lookRenderer;
+        EditboxWindowRenderer* wr = (EditboxWindowRenderer*)d_windowRenderer;
         return wr->getTextIndexFromPosition(pt);
     }
     else

@@ -4,7 +4,6 @@
 #include "CEGUIWindowRenderer.h"
 #include "CEGUISingleton.h"
 //#include "CEGUIIteratorBase.h"
-#include "CEGUIKeyString.h"
 #include <map>
 
 // Start of CEGUI namespace section
@@ -52,7 +51,7 @@ private:
     /*************************************************************************
         Implementation data
     *************************************************************************/
-    typedef std::map<KeyString, WindowRendererFactory*> WR_Registry;
+    typedef std::map<String, WindowRendererFactory*> WR_Registry;
     WR_Registry d_wrReg;
 };
 

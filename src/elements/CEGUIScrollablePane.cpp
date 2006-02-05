@@ -510,9 +510,9 @@ namespace CEGUI
 
     Rect ScrollablePane::getViewableArea() const
     {
-        if (d_lookRenderer != 0)
+        if (d_windowRenderer != 0)
         {
-            ScrollablePaneWindowRenderer* wr = (ScrollablePaneWindowRenderer*)d_lookRenderer;
+            ScrollablePaneWindowRenderer* wr = (ScrollablePaneWindowRenderer*)d_windowRenderer;
             return wr->getViewableArea();
         }
         else

@@ -604,9 +604,9 @@ int TabControl::writeChildWindowsXML(OutStream& out_stream) const
 *************************************************************************/
 TabButton* TabControl::createTabButton(const String& name) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        TabControlWindowRenderer* wr = (TabControlWindowRenderer*)d_lookRenderer;
+        TabControlWindowRenderer* wr = (TabControlWindowRenderer*)d_windowRenderer;
         return wr->createTabButton(name);
     }
     else

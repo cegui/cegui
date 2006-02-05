@@ -1559,9 +1559,9 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 *************************************************************************/
 Rect MultiLineEditbox::getTextRenderArea() const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        MultiLineEditboxWindowRenderer* wr = (MultiLineEditboxWindowRenderer*)d_lookRenderer;
+        MultiLineEditboxWindowRenderer* wr = (MultiLineEditboxWindowRenderer*)d_windowRenderer;
         return wr->getTextRenderArea();
     }
     else

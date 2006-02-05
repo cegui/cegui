@@ -2355,9 +2355,9 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
 *************************************************************************/
 Rect MultiColumnList::getListRenderArea() const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        MultiColumnListWindowRenderer* wr = (MultiColumnListWindowRenderer*)d_lookRenderer;
+        MultiColumnListWindowRenderer* wr = (MultiColumnListWindowRenderer*)d_windowRenderer;
         return wr->getListRenderArea();
     }
     else

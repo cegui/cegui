@@ -49,7 +49,7 @@ GUISheet::GUISheet(const String& type, const String& name) :
 *************************************************************************/
 void GUISheet::drawSelf(float z)
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
         Window::drawSelf(z);
     }

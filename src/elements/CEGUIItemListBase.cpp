@@ -423,9 +423,9 @@ void ItemListBase::sizeToContent_impl(void)
 ************************************************************************/
 Rect ItemListBase::getItemRenderArea(void) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ItemListBaseWindowRenderer* wr = (ItemListBaseWindowRenderer*)d_lookRenderer;
+        ItemListBaseWindowRenderer* wr = (ItemListBaseWindowRenderer*)d_windowRenderer;
         return wr->getItemRenderArea();
     }
     else

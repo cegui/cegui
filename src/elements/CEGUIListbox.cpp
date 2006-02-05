@@ -1138,9 +1138,9 @@ Scrollbar* Listbox::getHorzScrollbar() const
 *************************************************************************/
 Rect Listbox::getListRenderArea() const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ListboxWindowRenderer* wr = (ListboxWindowRenderer*)d_lookRenderer;
+        ListboxWindowRenderer* wr = (ListboxWindowRenderer*)d_windowRenderer;
         return wr->getListRenderArea();
     }
     else

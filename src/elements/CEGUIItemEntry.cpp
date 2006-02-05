@@ -61,9 +61,9 @@ ItemEntry::~ItemEntry(void)
 *************************************************************************/
 Size ItemEntry::getItemPixelSize(void) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ItemEntryWindowRenderer* wr = (ItemEntryWindowRenderer*)d_lookRenderer;
+        ItemEntryWindowRenderer* wr = (ItemEntryWindowRenderer*)d_windowRenderer;
         return wr->getItemPixelSize();
     }
     else

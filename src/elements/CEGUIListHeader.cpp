@@ -1060,9 +1060,9 @@ void ListHeader::addHeaderProperties(void)
 *************************************************************************/
 ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_lookRenderer;
+        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
         return wr->createNewSegment(name);
     }
     else
@@ -1077,9 +1077,9 @@ ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
 *************************************************************************/
 void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
 {
-    if (d_lookRenderer != 0)
+    if (d_windowRenderer != 0)
     {
-        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_lookRenderer;
+        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
         return wr->destroyListSegment(segment);
     }
     else

@@ -150,9 +150,9 @@ namespace CEGUI
 
     Size Tooltip::getTextSize() const
     {
-        if (d_lookRenderer != 0)
+        if (d_windowRenderer != 0)
         {
-            TooltipWindowRenderer* wr = (TooltipWindowRenderer*)d_lookRenderer;
+            TooltipWindowRenderer* wr = (TooltipWindowRenderer*)d_windowRenderer;
             return wr->getTextSize();
         }
         else
