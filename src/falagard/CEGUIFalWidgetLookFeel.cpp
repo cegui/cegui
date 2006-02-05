@@ -117,6 +117,9 @@ namespace CEGUI
         d_properties.clear();
     }
 
+    /*************************************************************************
+        Initialise a widget for this look'n'feel
+    *************************************************************************/
     void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
         // add required child widgets
@@ -149,6 +152,40 @@ namespace CEGUI
             (*prop).apply(widget);
         }
 
+    }
+
+    /*************************************************************************
+        Clean up a widget currently using this look'n'feel
+    *************************************************************************/
+    void WidgetLookFeel::cleanUpWidget(Window& widget) const
+    {
+        if (widget.getLookNFeel() != getName())
+        {
+            throw InvalidRequestException(
+                "WidgetLookFeel::cleanUpWidget - The window '"
+                + widget.getName() +
+                "' does not have this look'n'feel assigned");
+        }
+
+        // remove added child widgets
+        for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
+        {
+            WindowManager::getSingleton().destroyWindow(widget.getName() + (*curr).getWidgetNameSuffix());
+        }
+
+        // remove added property definitions
+        for(PropertyDefinitionList::iterator propdef = d_propertyDefinitions.begin(); propdef != d_propertyDefinitions.end(); ++propdef)
+        {
+            // remove the property from the window
+            widget.removeProperty((*propdef).getName());
+        }
+
+        // remove added property link definitions
+        for(PropertyLinkDefinitionList::iterator linkdef = d_propertyLinkDefinitions.begin(); linkdef != d_propertyLinkDefinitions.end(); ++linkdef)
+        {
+            // remove the property from the window
+            widget.removeProperty((*linkdef).getName());
+        }
     }
 
     bool WidgetLookFeel::isStateImageryPresent(const String& state) const
