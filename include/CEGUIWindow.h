@@ -2231,7 +2231,7 @@ public:
         true if mouse pass through is enabled.
         false if mouse pass through is not enabled.
     */
-    bool setMousePassThroughEnabled(bool setting)       {d_mousePassThroughEnabled = setting;}
+    void setMousePassThroughEnabled(bool setting)       {d_mousePassThroughEnabled = setting;}
 
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
