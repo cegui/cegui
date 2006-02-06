@@ -196,8 +196,6 @@ protected:
 	bool	d_armed;		//!< true when item selection has been armed.
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(ComboDropList);
-
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

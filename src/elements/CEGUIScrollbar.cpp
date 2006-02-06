@@ -33,7 +33,6 @@ namespace CEGUI
 {
 const String Scrollbar::EventNamespace("Scrollbar");
 const String Scrollbar::WidgetTypeName("CEGUI/Scrollbar");
-CEGUI_DEFINE_WINDOW_FACTORY(Scrollbar);
 
 /*************************************************************************
     ScrollbarWindowRenderer

@@ -38,7 +38,7 @@ namespace CEGUI
 {
 const String FrameWindow::EventNamespace("FrameWindow");
 const String FrameWindow::WidgetTypeName("CEGUI/FrameWindow");
-CEGUI_DEFINE_WINDOW_FACTORY(FrameWindow);
+
 
 /*************************************************************************
 	Definitions for Properties

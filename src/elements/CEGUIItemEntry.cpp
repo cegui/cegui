@@ -30,7 +30,6 @@
 namespace CEGUI
 {
 const String ItemEntry::WidgetTypeName("CEGUI/ItemEntry");
-CEGUI_DEFINE_WINDOW_FACTORY(ItemEntry);
 
 /*************************************************************************
     ItemEntryWindowRenderer constructor

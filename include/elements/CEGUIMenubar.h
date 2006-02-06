@@ -110,7 +110,6 @@ protected:
 
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Menubar);
 
 } // End of  CEGUI namespace section
 

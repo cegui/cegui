@@ -598,8 +598,6 @@ private:
 	void	addScrollbarProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Scrollbar);
-
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

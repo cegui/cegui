@@ -920,7 +920,6 @@ private:
 	void	addHeaderProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(ListHeader);
 
 } // End of  CEGUI namespace section
 

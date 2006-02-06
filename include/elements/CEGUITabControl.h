@@ -465,7 +465,6 @@ protected:
     bool handleTabButtonClicked(const EventArgs& args);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(TabControl);
 
 } // End of  CEGUI namespace section
 

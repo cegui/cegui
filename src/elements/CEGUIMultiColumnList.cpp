@@ -40,7 +40,6 @@ namespace CEGUI
 {
 const String MultiColumnList::EventNamespace("MultiColumnList");
 const String MultiColumnList::WidgetTypeName("CEGUI/MultiColumnList");
-CEGUI_DEFINE_WINDOW_FACTORY(MultiColumnList);
 
 /*************************************************************************
     MultiColumnListWindowRenderer

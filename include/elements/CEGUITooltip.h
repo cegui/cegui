@@ -400,7 +400,6 @@ namespace CEGUI
         void addTooltipProperties(void);
     };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Tooltip);
 
 } // End of  CEGUI namespace section
 

@@ -240,7 +240,6 @@ private:
     void    addPopupMenuProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(PopupMenu);
 
 } // End of  CEGUI namespace section
 

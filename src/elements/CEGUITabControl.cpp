@@ -35,7 +35,6 @@ namespace CEGUI
 {
 const String TabControl::EventNamespace("TabControl");
 const String TabControl::WidgetTypeName("CEGUI/TabControl");
-CEGUI_DEFINE_WINDOW_FACTORY(TabControl);
 
 /*************************************************************************
     TabControlWindowRenderer

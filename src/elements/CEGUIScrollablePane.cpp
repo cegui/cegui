@@ -32,7 +32,6 @@
 namespace CEGUI
 {
     const String ScrollablePane::WidgetTypeName("CEGUI/ScrollablePane");
-    CEGUI_DEFINE_WINDOW_FACTORY(ScrollablePane);
 
     //////////////////////////////////////////////////////////////////////////
     // Event name constants

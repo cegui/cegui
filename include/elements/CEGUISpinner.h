@@ -427,8 +427,6 @@ namespace CEGUI
         void    addSpinnerProperties(void);
     };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Spinner);
-
 } // End of  CEGUI namespace section
 
 

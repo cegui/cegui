@@ -30,7 +30,7 @@ namespace CEGUI
 {
 const String TabButton::EventNamespace("TabButton");
 const String TabButton::WidgetTypeName("CEGUI/TabButton");
-CEGUI_DEFINE_WINDOW_FACTORY(TabButton);
+
 
 /*************************************************************************
 	Event name constants

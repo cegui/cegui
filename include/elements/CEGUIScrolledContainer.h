@@ -255,7 +255,7 @@ namespace CEGUI
 
         void destroyWindow(Window* window)
         {
-            if (window->getType() == d_type)
+            //if (window->getType() == d_type)
                 delete window;
         }
 

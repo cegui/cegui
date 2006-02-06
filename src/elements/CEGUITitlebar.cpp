@@ -33,7 +33,7 @@ namespace CEGUI
 {
 const String Titlebar::EventNamespace("Titlebar");
 const String Titlebar::WidgetTypeName("CEGUI/Titlebar");
-CEGUI_DEFINE_WINDOW_FACTORY(Titlebar);
+
 
 /*************************************************************************
 	Definition of Properties for this class

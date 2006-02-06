@@ -43,7 +43,7 @@ namespace CEGUI
 {
 const String Combobox::EventNamespace("Combobox");
 const String Combobox::WidgetTypeName("CEGUI/Combobox");
-CEGUI_DEFINE_WINDOW_FACTORY(Combobox);
+
 
 /*************************************************************************
 	Definitions for Properties for this class

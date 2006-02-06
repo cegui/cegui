@@ -25,6 +25,7 @@
 *************************************************************************/
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -33,7 +34,15 @@ namespace CEGUI
 Exception::Exception(const String& message) :
 	d_message(message)
 {
-	Logger::getSingleton().logEvent("Exception: " + message, Errors);
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+    {
+        logger->logEvent("Exception: " + message, Errors);
+    }
+    else
+    {
+        std::cerr << "CEGUI::Exception: " << message.c_str() << std::endl;
+    }
 }
 
 Exception::~Exception(void)

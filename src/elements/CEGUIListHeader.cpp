@@ -34,7 +34,6 @@ namespace CEGUI
 {
 const String ListHeader::EventNamespace("ListHeader");
 const String ListHeader::WidgetTypeName("CEGUI/ListHeader");
-CEGUI_DEFINE_WINDOW_FACTORY(ListHeader);
 
 /*************************************************************************
     ListHeaderWindowRenderer constructor

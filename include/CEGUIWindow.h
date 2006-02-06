@@ -39,7 +39,6 @@
 #include "CEGUIUDim.h"
 #include "CEGUIRenderCache.h"
 #include "CEGUIWindowRenderer.h"
-#include "CEGUIWindowFactory.h"
 #include <vector>
 
 

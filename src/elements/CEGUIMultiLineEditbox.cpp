@@ -36,7 +36,7 @@ namespace CEGUI
 {
 const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
 const String MultiLineEditbox::WidgetTypeName("CEGUI/MultiLineEditbox");
-CEGUI_DEFINE_WINDOW_FACTORY(MultiLineEditbox);
+
 
 /*************************************************************************
     MultiLineEditboxWindowRenderer

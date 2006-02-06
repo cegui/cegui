@@ -37,7 +37,6 @@ namespace CEGUI
 *************************************************************************/
 const String Menubar::EventNamespace("Menubar");
 const String Menubar::WidgetTypeName("CEGUI/Menubar");
-CEGUI_DEFINE_WINDOW_FACTORY(Menubar);
 
 
 /*************************************************************************

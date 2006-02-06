@@ -37,7 +37,6 @@ namespace CEGUI
 {
 const String Listbox::EventNamespace("Listbox");
 const String Listbox::WidgetTypeName("CEGUI/Listbox");
-CEGUI_DEFINE_WINDOW_FACTORY(Listbox);
 
 /*************************************************************************
     ListboxWindowRenderer

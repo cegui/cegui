@@ -32,7 +32,7 @@ namespace CEGUI
 {
 const String ComboDropList::EventNamespace("ComboDropList");
 const String ComboDropList::WidgetTypeName("CEGUI/ComboDropList");
-CEGUI_DEFINE_WINDOW_FACTORY(ComboDropList);
+
 
 /*************************************************************************
 	Constants

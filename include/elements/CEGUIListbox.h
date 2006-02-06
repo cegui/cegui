@@ -749,7 +749,6 @@ private:
 	void	addListboxProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Listbox);
 
 /*!
 \brief

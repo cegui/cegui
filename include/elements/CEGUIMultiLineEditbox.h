@@ -702,8 +702,6 @@ private:
 	void	addMultiLineEditboxProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(MultiLineEditbox);
-
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

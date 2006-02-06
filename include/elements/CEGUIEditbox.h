@@ -631,8 +631,6 @@ private:
 	void	addEditboxProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Editbox);
-
 } // End of  CEGUI namespace section
 
 

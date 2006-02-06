@@ -34,7 +34,7 @@ namespace CEGUI
 {
 const String ListHeaderSegment::EventNamespace("ListHeaderSegment");
 const String ListHeaderSegment::WidgetTypeName("CEGUI/ListHeaderSegment");
-CEGUI_DEFINE_WINDOW_FACTORY(ListHeaderSegment);
+
 
 /*************************************************************************
 	Properties for this class

@@ -628,7 +628,6 @@ namespace CEGUI
 	    void addScrollablePaneProperties(void);
     };
 
-CEGUI_DECLARE_WINDOW_FACTORY(ScrollablePane);
 
 } // End of  CEGUI namespace section
 

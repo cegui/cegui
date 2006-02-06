@@ -31,7 +31,7 @@ namespace CEGUI
 {
 const String Thumb::EventNamespace("Thumb");
 const String Thumb::WidgetTypeName("CEGUI/Thumb");
-CEGUI_DEFINE_WINDOW_FACTORY(Thumb);
+
 
 /*************************************************************************
 	Static Properties for this class

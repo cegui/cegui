@@ -34,7 +34,6 @@
 namespace CEGUI
 {
     const String Spinner::WidgetTypeName("CEGUI/Spinner");
-    CEGUI_DEFINE_WINDOW_FACTORY(Spinner);
 
     //////////////////////////////////////////////////////////////////////////
     // event strings

@@ -137,8 +137,6 @@ protected:
     }
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(ItemEntry);
-
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIItemEntry_h_

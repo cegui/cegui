@@ -30,7 +30,6 @@
 namespace CEGUI
 {
     const String Tooltip::WidgetTypeName("CEGUI/Tooltip");
-    CEGUI_DEFINE_WINDOW_FACTORY(Tooltip);
 
     //////////////////////////////////////////////////////////////////////////
     // Event name constants

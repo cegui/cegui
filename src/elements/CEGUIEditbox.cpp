@@ -36,7 +36,6 @@ namespace CEGUI
 {
 const String Editbox::EventNamespace("Editbox");
 const String Editbox::WidgetTypeName("CEGUI/Editbox");
-CEGUI_DEFINE_WINDOW_FACTORY(Editbox);
 
 /*!
 \brief

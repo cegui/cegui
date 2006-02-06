@@ -33,7 +33,6 @@ namespace CEGUI
 {
 const String Slider::EventNamespace("Slider");
 const String Slider::WidgetTypeName("CEGUI/Slider");
-CEGUI_DEFINE_WINDOW_FACTORY(Slider);
 
 /*************************************************************************
     SliderWindowRenderer

@@ -268,8 +268,6 @@ private:
 	virtual void	addChild_impl(Window* wnd);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(MenuItem);
-
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIMenuItem_h_

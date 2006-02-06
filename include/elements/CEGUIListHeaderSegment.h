@@ -480,8 +480,6 @@ private:
 	void	addHeaderSegmentProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(ListHeaderSegment);
-
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

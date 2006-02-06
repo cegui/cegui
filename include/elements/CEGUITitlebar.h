@@ -158,8 +158,6 @@ private:
 	void	addTitlebarProperties(void);
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(Titlebar);
-
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)

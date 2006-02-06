@@ -161,7 +161,6 @@ protected:
 	}
 };
 
-CEGUI_DECLARE_WINDOW_FACTORY(TabButton);
 
 } // End of  CEGUI namespace section
 

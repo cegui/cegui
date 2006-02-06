@@ -42,7 +42,6 @@ PopupMenuProperties::FadeOutTime	PopupMenu::d_fadeOutTimeProperty;
 *************************************************************************/
 const String PopupMenu::WidgetTypeName("CEGUI/PopupMenu");
 const String PopupMenu::EventNamespace("PopupMenu");
-CEGUI_DEFINE_WINDOW_FACTORY(PopupMenu);
 
 
 /*************************************************************************
