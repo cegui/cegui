@@ -63,8 +63,6 @@ TabControl::TabControl(const String& type, const String& name)
 {
 	addTabControlEvents();
 	addTabControlProperties();
-    setTabHeight(cegui_reldim(0.05f));
-    setTabTextPadding(cegui_absdim(5));
 }
 
 
@@ -88,7 +86,11 @@ void TabControl::initialise(void)
 	addChildWindow(tabContentPane);
     addChildWindow(tabButtonPane);
 
-	performChildWindowLayout();
+    // set some initial defaults
+    setTabHeight(cegui_reldim(0.05f));
+    setTabTextPadding(cegui_absdim(5));
+	
+    performChildWindowLayout();
 }
 /*************************************************************************
 Get the number of tabs
