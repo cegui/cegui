@@ -337,8 +337,9 @@ void OpenGLRenderer::initPerFrameStates(void)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_CCW);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
@@ -350,9 +351,14 @@ void OpenGLRenderer::initPerFrameStates(void)
 
 void OpenGLRenderer::exitPerFrameStates(void)
 {
+	glPopMatrix(); 
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix(); 
+	glMatrixMode(GL_MODELVIEW);
+
 	//restore former attributes
-	glPopClientAttrib();
 	glPopAttrib();
+	glPopClientAttrib();
 }
 
 
@@ -494,19 +500,19 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 /*************************************************************************
 	convert colour value to whatever the OpenGL system is expecting.
 *************************************************************************/
-long OpenGLRenderer::colourToOGL(const colour& col) const
+uint32 OpenGLRenderer::colourToOGL(const colour& col) const
 {
-	ulong cval;
+	uint32 cval;
 #ifdef __BIG_ENDIAN__
-    cval =  (static_cast<ulong>(255 * col.getAlpha()));
-    cval |= (static_cast<ulong>(255 * col.getBlue())) << 8;
-    cval |= (static_cast<ulong>(255 * col.getGreen())) << 16;
-    cval |= (static_cast<ulong>(255 * col.getRed())) << 24;
+    cval =  (static_cast<uint32>(255 * col.getAlpha()));
+    cval |= (static_cast<uint32>(255 * col.getBlue())) << 8;
+    cval |= (static_cast<uint32>(255 * col.getGreen())) << 16;
+    cval |= (static_cast<uint32>(255 * col.getRed())) << 24;
 #else
-	cval =	(static_cast<ulong>(255 * col.getAlpha())) << 24;
-	cval |=	(static_cast<ulong>(255 * col.getBlue())) << 16;
-	cval |=	(static_cast<ulong>(255 * col.getGreen())) << 8;
-	cval |= (static_cast<ulong>(255 * col.getRed()));
+	cval =	(static_cast<uint32>(255 * col.getAlpha())) << 24;
+	cval |=	(static_cast<uint32>(255 * col.getBlue())) << 16;
+	cval |=	(static_cast<uint32>(255 * col.getGreen())) << 8;
+	cval |= (static_cast<uint32>(255 * col.getRed()));
 #endif
 	return cval;
 }
