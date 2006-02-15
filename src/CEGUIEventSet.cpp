@@ -141,14 +141,8 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name, Event::Gr
 *************************************************************************/
 Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber subscriber)
 {
-	EventMap::iterator pos = d_events.find(name);
-
-	if (pos == d_events.end())
-	{
-		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
-	}
-
-	return pos->second->subscribe(subscriber);
+    // do subscription & return connection
+    return getEventObject(name)->subscribe(subscriber);
 }
 
 
@@ -157,14 +151,8 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber
 *************************************************************************/
 Event::Connection EventSet::subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber)
 {
-	EventMap::iterator pos = d_events.find(name);
-
-	if (pos == d_events.end())
-	{
-		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
-	}
-
-	return pos->second->subscribe(group, subscriber);
+    // do subscription with group & return connection
+    return getEventObject(name)->subscribe(group, subscriber);
 }
 
 /*************************************************************************
@@ -174,20 +162,8 @@ void EventSet::fireEvent(const String& name, EventArgs& args, const String& even
 {
     // handle global events
     GlobalEventSet::getSingleton().fireEvent(name, args, eventNamespace);
-
-    EventMap::iterator pos = d_events.find(name);
-
-	if (pos == d_events.end())
-	{
-		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
-	}
-
-	// fire the event
-	if (!d_muted)
-	{
-		(*pos->second)(args);
-	}
-
+    // handle local event
+    fireEvent_impl(name, args);
 }
 
 
@@ -206,6 +182,46 @@ bool EventSet::isMuted(void) const
 void EventSet::setMutedState(bool setting)
 {
 	d_muted = setting;
+}
+
+
+/*************************************************************************
+    Return the named Event object, optionally adding it to the set
+    if needed
+*************************************************************************/
+Event* EventSet::getEventObject(const String& name, bool autoAdd)
+{
+    EventMap::iterator pos = d_events.find(name);
+
+    // if event did not exist, add it and then find it.
+    if (pos == d_events.end())
+    {
+        if (autoAdd)
+        {
+            addEvent(name);
+            return d_events.find(name)->second;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    return pos->second;
+}
+
+
+/*************************************************************************
+
+*************************************************************************/
+void EventSet::fireEvent_impl(const String& name, EventArgs& args)
+{
+    // find event object
+    Event* ev = getEventObject(name);
+
+    // fire the event if present and set is not muted
+    if ((ev != 0) && !d_muted)
+        (*ev)(args);
 }
 
 

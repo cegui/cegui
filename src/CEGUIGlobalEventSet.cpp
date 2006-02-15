@@ -67,60 +67,11 @@ namespace CEGUI
 	}
 
 	/*************************************************************************
-		Overridden subscribeEvent which always succeeds.
-	*************************************************************************/
-	Event::Connection GlobalEventSet::subscribeEvent(const String& name, Event::Subscriber subscriber)
-	{
-		EventMap::iterator pos = d_events.find(name);
-
-		// if event did not exist, add it and then find it.
-		if (pos == d_events.end())
-		{
-			Logger::getSingleton().logEvent("Adding event '" + name + "' to GlobalEventSet.", Informative);
-			addEvent(name);
-			pos = d_events.find(name);
-		}
-
-		// do the actual subscription
-		return pos->second->subscribe(subscriber);
-	}
-
-	/*************************************************************************
-		Overridden subscribeEvent (with group) which always succeeds.
-	*************************************************************************/
-	Event::Connection GlobalEventSet::subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber)
-	{
-		EventMap::iterator pos = d_events.find(name);
-
-		// if event did not exist, add it and then find it.
-		if (pos == d_events.end())
-		{
-			addEvent(name);
-			pos = d_events.find(name);
-		}
-
-		// do subscription with group
-		return pos->second->subscribe(group, subscriber);
-	}
-
-	/*************************************************************************
 		Overridden fireEvent which always succeeds.
 	*************************************************************************/
 	void GlobalEventSet::fireEvent(const String& name, EventArgs& args, const String& eventNamespace)
 	{
-		EventMap::iterator pos = d_events.find(eventNamespace + "/" + name);
-
-		// do nothing if the event does not exist
-		if (pos != d_events.end())
-		{
-			// fire the event
-			if (!d_muted)
-			{
-				(*pos->second)(args);
-			}
-
-		}
-
+        fireEvent_impl(eventNamespace + "/" + name, args);
 	}
 
 } // End of  CEGUI namespace section

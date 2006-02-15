@@ -72,47 +72,6 @@ public:
 
 	/*!
 	\brief
-		Subscribes the the named Event.
-
-	\note
-		If the named event does not exist it is added.
-
-	\param name
-		String object containing the name of the Event to subscribe to.
-
-	\param subscriber
-		Function or object that is to be subscribed to the Event.
-
-	\return
-		Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
-	*/
-	virtual Event::Connection	subscribeEvent(const String& name, Event::Subscriber subscriber);
-
-
-	/*!
-	\brief
-		Subscribes the the specified group of the named Event.
-
-	/note
-		If the named event does not exist it is added.
-
-	\param name
-		String object containing the name of the Event to subscribe to.
-
-	\param group
-		Group which is to be subscribed to.  Subscription groups are called in ascending order.
-
-	\param subscriber
-		Function or object that is to be subscribed to the Event.
-
-	\return
-		Connection object that can be used to check the status of the Event connection and to disconnect (unsubscribe) from the Event.
-	*/
-	virtual Event::Connection	subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber);
-
-
-	/*!
-	\brief
 		Fires the named event passing the given EventArgs object.
 
 	\param name
