@@ -3058,12 +3058,6 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Add standard CEGUI::Window events
-    */
-    void addStandardEvents(void);
-
-    /*!
-    \brief
         Cleanup child windows
     */
     virtual void cleanupChildren(void);

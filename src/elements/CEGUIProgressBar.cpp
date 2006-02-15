@@ -52,7 +52,6 @@ ProgressBar::ProgressBar(const String& type, const String& name) :
 	d_progress(0),
 	d_step(0.01f)
 {
-	addProgressBarEvents();
 	addProgressBarProperties();
 }
 
@@ -90,15 +89,6 @@ void ProgressBar::setProgress(float progress)
 
 }
 
-
-/*************************************************************************
-	Add progress bar specific events to the window	
-*************************************************************************/
-void ProgressBar::addProgressBarEvents(void)
-{
-	addEvent(EventProgressChanged);
-	addEvent(EventProgressDone);
-}
 
 /*************************************************************************
 	event triggered when progress changes	

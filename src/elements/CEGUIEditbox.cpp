@@ -108,7 +108,6 @@ Editbox::Editbox(const String& type, const String& name) :
     d_validator(new RegexValidator),
 	d_dragging(false)
 {
-	addEditboxEvents();
 	addEditboxProperties();
 
 	// default to accepting all characters
@@ -917,20 +916,6 @@ void Editbox::handleEnd(uint sysKeys)
 		clearSelection();
 	}
 
-}
-
-
-/*************************************************************************
-	Add edit box specific events
-*************************************************************************/
-void Editbox::addEditboxEvents(void)
-{
-	addEvent(EventReadOnlyModeChanged);				addEvent(EventMaskedRenderingModeChanged);
-	addEvent(EventMaskCodePointChanged);			addEvent(EventValidationStringChanged);
-	addEvent(EventMaximumTextLengthChanged);		addEvent(EventTextInvalidated);
-	addEvent(EventInvalidEntryAttempted);			addEvent(EventCaratMoved);
-	addEvent(EventTextSelectionChanged);			addEvent(EventEditboxFull);
-	addEvent(EventTextAccepted);
 }
 
 

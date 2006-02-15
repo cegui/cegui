@@ -189,13 +189,6 @@ protected:
 
 	/*!
 	\brief
-		Add menuitem specific events
-	*/
-	void	addMenuItemEvents(void);
-
-
-	/*!
-	\brief
 		Recursive function that closes all popups down the hierarcy starting with this one.
 
 	\return

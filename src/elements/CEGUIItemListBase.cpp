@@ -55,9 +55,6 @@ ItemListBase::ItemListBase(const String& type, const String& name)
 	: Window(type, name),
 	d_autoResize(false)
 {
-	// add new events specific to ItemListBase.
-	addItemListBaseEvents();
-
 	// add properties for ItemListBase class
 	addItemListBaseProperties();
 }
@@ -251,15 +248,6 @@ void ItemListBase::handleUpdatedItemData(void)
 {
 	WindowEventArgs args(this);
 	onListContentsChanged(args);
-}
-
-
-/*************************************************************************
-	Add list box specific events
-*************************************************************************/
-void ItemListBase::addItemListBaseEvents(void)
-{
-	addEvent(EventListContentsChanged);
 }
 
 

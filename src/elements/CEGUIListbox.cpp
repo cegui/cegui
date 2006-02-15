@@ -76,9 +76,6 @@ Listbox::Listbox(const String& type, const String& name)
 	d_itemTooltips(false),
 	d_lastSelected(0)
 {
-	// add new events specific to list box.
-	addListboxEvents();
-
 	addListboxProperties();
 }
 
@@ -758,20 +755,6 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 	}
 
 	return 0;
-}
-
-
-/*************************************************************************
-	Add list box specific events
-*************************************************************************/
-void Listbox::addListboxEvents(void)
-{
-	addEvent(EventListContentsChanged);
-	addEvent(EventSelectionChanged);
-	addEvent(EventSortModeChanged);
-	addEvent(EventMultiselectModeChanged);
-	addEvent(EventVertScrollbarModeChanged);
-	addEvent(EventHorzScrollbarModeChanged);
 }
 
 

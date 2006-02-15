@@ -48,7 +48,6 @@ ComboDropList::ComboDropList(const String& type, const String& name) :
 	d_autoArm = false;
 	d_armed = false;
 
-	addComboDropListEvents();
 	hide();
 
     // pass captured inputs to children to enable scrollbars
@@ -74,15 +73,6 @@ void ComboDropList::initialise(void)
 	// set-up scroll bars so they return capture to us.
 	getVertScrollbar()->setRestoreCapture(true);
 	getHorzScrollbar()->setRestoreCapture(true);
-}
-
-
-/*************************************************************************
-	Add drop-list specific events
-*************************************************************************/
-void ComboDropList::addComboDropListEvents(void)
-{
-	addEvent(EventListSelectionAccepted);
 }
 
 

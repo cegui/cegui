@@ -183,9 +183,6 @@ Window::Window(const String& type, const String& name) :
     d_weOwnTip = false;
     d_inheritsTipText = false;
 
-    // add events
-    addStandardEvents();
-
     // set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
     d_minSize = UVector2(cegui_reldim(0), cegui_reldim(0));
     d_maxSize = UVector2(cegui_reldim(1), cegui_reldim(1));
@@ -1219,32 +1216,6 @@ float Window::getParentPixelHeight(void) const
 Size Window::getParentPixelSize(void) const
 {
 	return getWindowSize_impl(d_parent);
-}
-
-
-/*************************************************************************
-	Add standard Window events
-*************************************************************************/
-void Window::addStandardEvents(void)
-{
-	// window events
-	addEvent(EventSized);					addEvent(EventMoved);					addEvent(EventTextChanged);
-	addEvent(EventFontChanged);				addEvent(EventAlphaChanged);			addEvent(EventIDChanged);
-	addEvent(EventActivated);				addEvent(EventDeactivated);				addEvent(EventShown);
-	addEvent(EventHidden);					addEvent(EventEnabled);					addEvent(EventDisabled);
-	addEvent(EventClippedByParentChanged);	addEvent(EventDestroyedByParentChanged);
-	addEvent(EventInheritsAlphaChanged);	addEvent(EventAlwaysOnTopChanged);		addEvent(EventInputCaptureGained);
-	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
-	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
-	addEvent(EventZOrderChanged);			addEvent(EventParentSized);             addEvent(EventDragDropItemEnters);
-    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);     addEvent(EventVerticalAlignmentChanged);
-    addEvent(EventHorizontalAlignmentChanged);
-
-	// general input handling
-	addEvent(EventMouseEnters);				addEvent(EventMouseLeaves);				addEvent(EventMouseMove);
-	addEvent(EventMouseWheel);				addEvent(EventMouseButtonDown);			addEvent(EventMouseButtonUp);
-	addEvent(EventMouseClick);				addEvent(EventMouseDoubleClick);		addEvent(EventMouseTripleClick);
-	addEvent(EventKeyDown);					addEvent(EventKeyUp);					addEvent(EventCharacterKey);
 }
 
 

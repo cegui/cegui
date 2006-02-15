@@ -226,13 +226,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add list header segment specific events
-	*/
-	void	addHeaderSegmentEvents(void);
-
-
-	/*!
-	\brief
 		Update state for drag sizing.
 
 	\param local_mouse

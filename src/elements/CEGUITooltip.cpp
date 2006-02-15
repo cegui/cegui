@@ -50,7 +50,6 @@ namespace CEGUI
         d_displayTime   = 7.5f;
         d_fadeTime      = 0.33f;
 
-        addTooltipEvents();
         addTooltipProperties();
 
         setClippedByParent(false);
@@ -351,15 +350,6 @@ namespace CEGUI
             Logger::getSingleton().logEvent("Tooltip (Name: " + getName() + "of Class: " + getType() + ") is in an unknown state.  Switching to Inactive state.", Errors);
             switchToInactiveState();
         }
-    }
-
-    void Tooltip::addTooltipEvents(void)
-    {
-        addEvent(EventHoverTimeChanged);
-        addEvent(EventDisplayTimeChanged);
-        addEvent(EventFadeTimeChanged);
-        addEvent(EventTooltipActive);
-        addEvent(EventTooltipInactive);
     }
 
     void Tooltip::addTooltipProperties(void)

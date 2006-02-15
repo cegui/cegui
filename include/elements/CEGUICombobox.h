@@ -697,13 +697,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add combo box specific events
-	*/
-	void	addComboboxEvents(void);
-
-
-	/*!
-	\brief
 		Handler function for button clicks.
 	*/
 	bool	button_PressHandler(const EventArgs& e);

@@ -85,7 +85,6 @@ ListHeader::ListHeader(const String& type, const String& name) :
 	d_segmentOffset(0.0f),
 	d_sortDir(ListHeaderSegment::None)
 {
-	addListHeaderEvents();
 	addHeaderProperties();
 }
 
@@ -1013,25 +1012,6 @@ bool ListHeader::segmentDragHandler(const EventArgs& e)
 	return true;
 }
 
-
-/*************************************************************************
-	Add ListHeader specific events	
-*************************************************************************/
-void ListHeader::addListHeaderEvents(void)
-{
-	addEvent(EventSortColumnChanged);
-	addEvent(EventSortDirectionChanged);
-	addEvent(EventSegmentSized);
-	addEvent(EventSegmentClicked);
-	addEvent(EventSplitterDoubleClicked);
-	addEvent(EventSegmentSequenceChanged);
-	addEvent(EventSegmentAdded);
-	addEvent(EventSegmentRemoved);
-	addEvent(EventSortSettingChanged);
-	addEvent(EventDragMoveSettingChanged);
-	addEvent(EventDragSizeSettingChanged);
-	addEvent(EventSegmentRenderOffsetChanged);
-}
 
 /*************************************************************************
 	Add ListHeader specific properties

@@ -100,7 +100,6 @@ Combobox::Combobox(const String& type, const String& name) :
 {
 	d_singleClickOperation = false;
 
-	addComboboxEvents();
 	addComboboxProperties();
 }
 
@@ -481,23 +480,6 @@ void Combobox::setItemSelectState(size_t item_index, bool state)
 void Combobox::handleUpdatedListItemData(void)
 {
     getDropList()->handleUpdatedItemData();
-}
-
-
-/*************************************************************************
-	Add combo box specific events
-*************************************************************************/
-void Combobox::addComboboxEvents(void)
-{
-	addEvent(EventReadOnlyModeChanged);			addEvent(EventValidationStringChanged);
-	addEvent(EventMaximumTextLengthChanged);	addEvent(EventTextInvalidated);
-	addEvent(EventInvalidEntryAttempted);		addEvent(EventCaratMoved);
-	addEvent(EventTextSelectionChanged);		addEvent(EventEditboxFull);
-	addEvent(EventTextAccepted);				addEvent(EventListContentsChanged);
-	addEvent(EventListSelectionChanged);		addEvent(EventSortModeChanged);
-	addEvent(EventVertScrollbarModeChanged);	addEvent(EventHorzScrollbarModeChanged);
-	addEvent(EventDropListDisplayed);			addEvent(EventDropListRemoved);
-	addEvent(EventListSelectionAccepted);
 }
 
 

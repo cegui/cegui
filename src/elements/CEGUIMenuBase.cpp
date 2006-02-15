@@ -55,9 +55,6 @@ MenuBase::MenuBase(const String& type, const String& name)
 	d_popupItem(0),
 	d_allowMultiplePopups(false)
 {
-	// add new events specific to MenuBase.
-	addMenuBaseEvents();
-	
 	// add properties for MenuBase class
 	addMenuBaseProperties();
 }
@@ -95,16 +92,6 @@ void MenuBase::changePopupMenuItem(MenuItem* item)
 		onPopupOpened(we);
 	}
 
-}
-
-
-/*************************************************************************
-	Add MenuBase specific events	
-*************************************************************************/
-void MenuBase::addMenuBaseEvents(void)
-{
-	addEvent(EventPopupOpened);
-	addEvent(EventPopupClosed);
 }
 
 

@@ -268,12 +268,6 @@ protected:
     virtual	void	drawSelf(float z) { /* do nothing; rendering handled by children */ }
 
     /*!
-	\brief
-		Add tab control specific events
-	*/
-	void	addTabControlEvents(void);
-
-    /*!
     \brief
         Add a TabButton for the specified child Window.
     */

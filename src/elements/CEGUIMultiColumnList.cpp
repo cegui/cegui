@@ -92,9 +92,6 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	d_lastSelected(0),
     d_columnCount(0)
 {
-	// add multi-column list box specific events
-	addMultiColumnListboxEvents();
-
 	// add properties
 	addMultiColumnListProperties();
 
@@ -1264,20 +1261,6 @@ void MultiColumnList::handleUpdatedItemData(void)
 void MultiColumnList::setColumnHeaderWidth(uint col_idx, const UDim& width)
 {
     getListHeader()->setColumnWidth(col_idx, width);
-}
-
-
-/*************************************************************************
-	Add multi column list box specific events	
-*************************************************************************/
-void MultiColumnList::addMultiColumnListboxEvents(void)
-{
-	addEvent(EventSelectionModeChanged);			addEvent(EventNominatedSelectColumnChanged);
-	addEvent(EventNominatedSelectRowChanged);		addEvent(EventVertScrollbarModeChanged);
-	addEvent(EventHorzScrollbarModeChanged);		addEvent(EventSelectionChanged);
-	addEvent(EventListContentsChanged);				addEvent(EventSortColumnChanged);
-	addEvent(EventSortDirectionChanged);			addEvent(EventListColumnMoved);
-	addEvent(EventListColumnSized);
 }
 
 

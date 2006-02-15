@@ -66,7 +66,6 @@ namespace CEGUI
         d_minValue(-32768.0f),
         d_inputMode((TextInputMode)-1)
     {
-        addSpinnerEvents();
         addSpinnerProperties();
     }
 
@@ -203,15 +202,6 @@ namespace CEGUI
             WindowEventArgs args(this);
             onTextInputModeChanged(args);
         }
-    }
-
-    void Spinner::addSpinnerEvents(void)
-    {
-        addEvent(EventValueChanged);
-        addEvent(EventStepChanged);
-        addEvent(EventMaximumValueChanged);
-        addEvent(EventMinimumValueChanged);
-        addEvent(EventTextInputModeChanged);
     }
 
     void Spinner::addSpinnerProperties(void)

@@ -234,15 +234,6 @@ namespace CEGUI
         *************************************************************************/
         /*!
         \brief
-            Adds events specific to the Spinner base class.
-        
-        \return
-            Nothing.
-        */
-        void addSpinnerEvents(void);
-
-        /*!
-        \brief
             Returns the numerical representation of the current editbox text.
 
         \return

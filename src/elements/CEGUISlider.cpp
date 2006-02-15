@@ -61,7 +61,6 @@ Slider::Slider(const String& type, const String& name) :
 	d_maxValue(1.0f),
 	d_step(0.01f)
 {
-	addSliderEvents();
 	addSliderProperties();
 }
 
@@ -138,17 +137,6 @@ void Slider::setCurrentValue(float value)
 		onValueChanged(args);
 	}
 
-}
-
-
-/*************************************************************************
-	Add slider specific events	
-*************************************************************************/
-void Slider::addSliderEvents(void)
-{
-	addEvent(EventValueChanged);
-	addEvent(EventThumbTrackStarted);
-	addEvent(EventThumbTrackEnded);
 }
 
 

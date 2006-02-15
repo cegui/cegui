@@ -503,13 +503,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add list box specific events
-	*/
-	void	addListboxEvents(void);
-
-
-	/*!
-	\brief
 		display required integrated scroll bars according to current state of the list box and update their values.
 	*/
 	void	configureScrollbars(void);

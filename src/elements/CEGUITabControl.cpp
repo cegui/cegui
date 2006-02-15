@@ -61,7 +61,6 @@ TabControl::TabControl(const String& type, const String& name)
 	: Window(type, name),
     d_nextTabIndex(0)
 {
-	addTabControlEvents();
 	addTabControlProperties();
 }
 
@@ -487,13 +486,6 @@ void TabControl::onFontChanged(WindowEventArgs& e)
     {
         i->second->setFont(getFont());
     }
-}
-/*************************************************************************
-Add events for this class
-*************************************************************************/
-void TabControl::addTabControlEvents(void)
-{
-    addEvent(EventSelectionChanged);
 }
 /*************************************************************************
 Layout the widgets

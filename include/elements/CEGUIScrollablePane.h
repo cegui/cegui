@@ -360,12 +360,6 @@ namespace CEGUI
         	Implementation Methods
         *************************************************************************/
         /*!
-        \brief
-            Add ScrollablePane specific events
-        */
-        void addScrollablePaneEvents(void);
-
-        /*!
 	    \brief
 		    display required integrated scroll bars according to current size of
             the ScrollablePane view area and the size of the attached ScrolledContainer.

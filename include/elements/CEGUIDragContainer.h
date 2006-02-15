@@ -248,15 +248,6 @@ namespace CEGUI
         *************************************************************************/
         /*!
         \brief
-            Adds events specific to the DragContainer base class.
-        
-        \return
-            Nothing.
-        */
-        void addDragContainerEvents(void);
-
-        /*!
-        \brief
             Return whether the required minimum movement threshold before initiating dragging
             has been exceeded.
 

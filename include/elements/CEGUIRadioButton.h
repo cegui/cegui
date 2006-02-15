@@ -138,13 +138,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add radio button specific events
-	*/
-	void	addRadioButtonEvents(void);
-
-
-	/*!
-	\brief
 		Deselect any selected radio buttons attached to the same parent within the same group
 		(but not do not deselect 'this').
 	*/

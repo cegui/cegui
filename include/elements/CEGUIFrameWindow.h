@@ -582,13 +582,6 @@ protected:
 
 	/*!
 	\brief
-		Add frame window specific events
-	*/
-	void	addFrameWindowEvents(void);
-
-
-	/*!
-	\brief
 		Method to respond to close button click events and fire our close event
 	*/
 	bool	closeClickHandler(const EventArgs& e);

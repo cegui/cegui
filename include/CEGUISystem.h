@@ -789,13 +789,6 @@ private:
 
 	/*!
 	\brief
-		add events for the System object
-	*/
-	void	addSystemEvents(void);
-
-
-	/*!
-	\brief
 		Handler method for display size change notifications
 	*/
 	bool	handleDisplaySizeChange(const EventArgs& e);

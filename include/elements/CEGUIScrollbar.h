@@ -319,13 +319,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add scroll bar specific events
-	*/
-	void	addScrollbarEvents(void);
-
-
-	/*!
-	\brief
 		update the size and location of the thumb to properly represent the current state of the scroll bar
 	*/
 	virtual void	updateThumb(void)	= 0;

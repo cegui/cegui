@@ -136,13 +136,6 @@ namespace CEGUI
         /*************************************************************************
         	Implementation methods
         *************************************************************************/
-        /*!
-        \brief
-            Adds events for this widget type.
-        */
-        void addScrolledContainerEvents(void);
-
-
 		/*!
 		\brief
 			Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.

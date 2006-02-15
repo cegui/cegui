@@ -338,13 +338,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add edit box specific events
-	*/
-	void	addEditboxEvents(void);
-
-
-	/*!
-	\brief
 		Return the text code point index that is rendered closest to screen position \a pt.
 
 	\param pt

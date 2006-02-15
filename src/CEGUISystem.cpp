@@ -173,9 +173,6 @@ System::System(Renderer* renderer,
        PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
        PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
 
-    // add events for Sytem object
-    addSystemEvents();
-
     // perform initialisation of XML parser.
     d_xmlParser->initialise();
 
@@ -1248,21 +1245,6 @@ void System::setMultiClickToleranceAreaSize(const Size&	sz)
 	// fire off event.
 	EventArgs args;
 	onMultiClickAreaSizeChanged(args);
-}
-
-
-/*************************************************************************
-	add events for the System object
-*************************************************************************/
-void System::addSystemEvents(void)
-{
-	addEvent(EventGUISheetChanged);
-	addEvent(EventSingleClickTimeoutChanged);
-	addEvent(EventMultiClickTimeoutChanged);
-	addEvent(EventMultiClickAreaSizeChanged);
-	addEvent(EventDefaultFontChanged);
-	addEvent(EventDefaultMouseCursorChanged);
-	addEvent(EventMouseMoveScalingChanged);
 }
 
 

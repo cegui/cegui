@@ -93,9 +93,6 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	d_forceHorzScroll(false),
 	d_selectionBrush(0)
 {
-	// add events specific to this widget.
-	addMultiLineEditboxEvents();
-
 	addMultiLineEditboxProperties();
 
 	// we always need a terminating \n
@@ -164,22 +161,6 @@ size_t MultiLineEditbox::getSelectionEndIndex(void) const
 size_t MultiLineEditbox::getSelectionLength(void) const
 {
 	return d_selectionEnd - d_selectionStart;
-}
-
-
-/*************************************************************************
-	Add multi-line edit box specific events	
-*************************************************************************/
-void MultiLineEditbox::addMultiLineEditboxEvents(void)
-{
-	addEvent(EventReadOnlyModeChanged);
-	addEvent(EventWordWrapModeChanged);
-	addEvent(EventMaximumTextLengthChanged);
-	addEvent(EventCaratMoved);
-	addEvent(EventTextSelectionChanged);
-	addEvent(EventEditboxFull);
-	addEvent(EventVertScrollbarModeChanged);
-	addEvent(EventHorzScrollbarModeChanged);
 }
 
 

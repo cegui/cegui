@@ -50,9 +50,6 @@ Checkbox::Checkbox(const String& type, const String& name) :
 	ButtonBase(type, name),
 	d_selected(false)
 {
-	// add events for this widget
-	addCheckboxEvents();
-
 	addCheckboxProperties();
 }
 
@@ -118,14 +115,6 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 	ButtonBase::onMouseButtonUp(e);
 }
 
-
-/*************************************************************************
-	Add check-box specific events
-*************************************************************************/
-void Checkbox::addCheckboxEvents(void)
-{
-	addEvent(EventCheckStateChanged);
-}
 
 /*************************************************************************
 	Add properties

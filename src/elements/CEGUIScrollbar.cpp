@@ -69,7 +69,6 @@ Scrollbar::Scrollbar(const String& type, const String& name) :
 	d_overlapSize(0.0f),
 	d_position(0.0f)
 {
-	addScrollbarEvents();
 	addScrollbarProperties();
 }
 
@@ -197,18 +196,6 @@ void Scrollbar::setScrollPosition(float position)
 		onScrollPositionChanged(args);
 	}
 
-}
-
-
-/*************************************************************************
-	Add scroll bar specific events
-*************************************************************************/
-void Scrollbar::addScrollbarEvents(void)
-{
-	addEvent(EventScrollPositionChanged);
-	addEvent(EventThumbTrackStarted);
-	addEvent(EventThumbTrackEnded);
-	addEvent(EventScrollConfigChanged);
 }
 
 

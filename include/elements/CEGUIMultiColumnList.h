@@ -1217,13 +1217,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add multi column list box specific events
-	*/
-	void	addMultiColumnListboxEvents(void);
-
-
-	/*!
-	\brief
 		display required integrated scroll bars according to current state of the list box and update their values.
 	*/
 	void	configureScrollbars(void);

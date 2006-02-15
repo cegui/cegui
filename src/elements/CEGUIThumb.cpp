@@ -64,7 +64,6 @@ Thumb::Thumb(const String& type, const String& name) :
 	d_horzMax(1.0f),
     d_beingDragged(false)
 {
-	addThumbEvents();
 	addThumbProperties();
 }
 
@@ -138,17 +137,6 @@ void Thumb::setHorzRange(float min, float max)
 		setWindowXPosition(cegui_absdim(max));
 	}
 
-}
-
-
-/*************************************************************************
-	Add thumb specific events	
-*************************************************************************/
-void Thumb::addThumbEvents(void)
-{
-	addEvent(EventThumbPositionChanged);
-	addEvent(EventThumbTrackStarted);
-	addEvent(EventThumbTrackEnded);
 }
 
 

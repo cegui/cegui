@@ -127,13 +127,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add check-box specific events
-	*/
-	void	addCheckboxEvents(void);
-
-
-	/*!
-	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
 
 	\param class_name

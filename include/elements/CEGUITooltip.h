@@ -204,12 +204,6 @@ namespace CEGUI
         /*************************************************************************
             Implementation Methods
         *************************************************************************/
-        /*!
-        \brief
-            Add ScrollablePane specific events
-        */
-        void addTooltipEvents(void);
-
         // methods to perform processing for each of the widget states
         void doActiveState(float elapsed);
         void doInactiveState(float elapsed);

@@ -60,7 +60,6 @@ namespace CEGUI
         d_dropTarget(0),
         d_dragCursorImage((const Image*)DefaultMouseCursor)
     {
-        addDragContainerEvents();
         addDragContainerProperties();
     }
 
@@ -153,18 +152,6 @@ namespace CEGUI
     Window* DragContainer::getCurrentDropTarget(void) const
     {
         return d_dropTarget;
-    }
-
-    void DragContainer::addDragContainerEvents(void)
-    {
-        addEvent(EventDragStarted);
-        addEvent(EventDragEnded);
-        addEvent(EventDragPositionChanged);
-        addEvent(EventDragEnabledChanged);
-        addEvent(EventDragAlphaChanged);
-        addEvent(EventDragMouseCursorChanged);
-        addEvent(EventDragThresholdChanged);
-        addEvent(EventDragDropTargetChanged);
     }
 
     void DragContainer::addDragContainerProperties(void)

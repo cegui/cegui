@@ -71,9 +71,6 @@ MouseCursor::MouseCursor(void)
 	// no default image though
 	d_cursorImage = 0;
 
-	// add events
-	addMouseCursorEvents();
-
 	Logger::getSingleton().logEvent("CEGUI::MouseCursor singleton created.");
 }
 
@@ -238,16 +235,6 @@ Point MouseCursor::getDisplayIndependantPosition(void) const
 	Size dsz(System::getSingleton().getRenderer()->getSize());
 
 	return Point(d_position.d_x / (dsz.d_width - 1.0f), d_position.d_y / (dsz.d_height - 1.0f));
-}
-
-
-/*************************************************************************
-	Add MouseCursor events
-*************************************************************************/
-void MouseCursor::addMouseCursorEvents(void)
-{
-	// mouse cursor events
-	addEvent(EventImageChanged);
 }
 
 

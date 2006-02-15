@@ -293,13 +293,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add multi-line edit box specific events
-	*/
-	void	addMultiLineEditboxEvents(void);
-
-
-	/*!
-	\brief
 		Format the text into lines as needed by the current formatting options.
 	*/
 	void	formatText(void);

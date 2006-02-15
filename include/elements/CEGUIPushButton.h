@@ -92,13 +92,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add button specific events
-	*/
-	void	addPushButtonEvents(void);
-
-
-	/*!
-	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
 
 	\param class_name

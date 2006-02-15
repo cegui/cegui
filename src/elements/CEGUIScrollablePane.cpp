@@ -65,7 +65,6 @@ namespace CEGUI
         d_horzStep(0.1f),
         d_horzOverlap(0.01f)
     {
-        addScrollablePaneEvents();
         addScrollablePaneProperties();
     }
 
@@ -243,15 +242,6 @@ namespace CEGUI
 
         // finalise setup
         configureScrollbars();
-    }
-
-    void ScrollablePane::addScrollablePaneEvents(void)
-    {
-        addEvent(EventAutoSizeSettingChanged);
-        addEvent(EventContentPaneChanged);
-        addEvent(EventHorzScrollbarModeChanged);
-        addEvent(EventVertScrollbarModeChanged);
-        addEvent(EventContentPaneScrolled);
     }
 
     void ScrollablePane::configureScrollbars(void)

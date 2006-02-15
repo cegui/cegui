@@ -45,7 +45,6 @@ namespace CEGUI
         d_contentArea(0, 0, 0, 0),
         d_autosizePane(true)
     {
-        addScrolledContainerEvents();
         addScrolledContainerProperties();
     }
 
@@ -86,12 +85,6 @@ namespace CEGUI
             onContentChanged(args);
        }
 
-    }
-
-    void ScrolledContainer::addScrolledContainerEvents(void)
-    {
-        addEvent(EventContentChanged);
-        addEvent(EventAutoSizeSettingChanged);
     }
 
     Rect ScrolledContainer::getChildExtentsArea(void) const

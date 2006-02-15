@@ -79,7 +79,6 @@ ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	d_dragMoving(false),
 	d_allowClicks(true)
 {
-	addHeaderSegmentEvents();
 	addHeaderSegmentProperties();
 }
 
@@ -162,25 +161,6 @@ void ListHeaderSegment::setClickable(bool setting)
 	}
 
 }
-
-
-/*************************************************************************
-	Add list header segment specific events
-*************************************************************************/
-void ListHeaderSegment::addHeaderSegmentEvents(void)
-{
-	addEvent(EventSortDirectionChanged);
-	addEvent(EventSizingSettingChanged);
-	addEvent(EventSplitterDoubleClicked);
-	addEvent(EventSegmentClicked);
-	addEvent(EventSegmentDragStart);
-	addEvent(EventSegmentDragStop);
-	addEvent(EventSegmentDragPositionChanged);
-	addEvent(EventMovableSettingChanged);
-	addEvent(EventSegmentSized);
-	addEvent(EventClickableSettingChanged);
-}
-
 
 
 /*************************************************************************

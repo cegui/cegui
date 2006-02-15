@@ -333,13 +333,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add list box specific events
-	*/
-	void	addItemListBaseEvents(void);
-
-
-	/*!
-	\brief
 		Remove all items from the list.
 
 	\note

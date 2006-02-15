@@ -89,7 +89,6 @@ FrameWindow::FrameWindow(const String& type, const String& name) :
 
 	d_nsSizingCursor = d_ewSizingCursor = d_neswSizingCursor = d_nwseSizingCursor = 0;
 
-	addFrameWindowEvents();
 	addFrameWindowProperties();
 }
 
@@ -473,16 +472,6 @@ void FrameWindow::moveBottomEdge(float delta)
 
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_y += d_pixelSize.d_height - orgHeight;
-}
-
-
-/*************************************************************************
-	Add frame window specific events	
-*************************************************************************/
-void FrameWindow::addFrameWindowEvents(void)
-{
-	addEvent(EventRollupToggled);
-	addEvent(EventCloseClicked);
 }
 
 

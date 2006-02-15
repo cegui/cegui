@@ -183,13 +183,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add slider specific events
-	*/
-	void	addSliderEvents(void);
-
-
-	/*!
-	\brief
 		update the size and location of the thumb to properly represent the current state of the slider
 	*/
 	virtual void	updateThumb(void)	= 0;

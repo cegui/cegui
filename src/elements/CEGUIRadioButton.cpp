@@ -52,9 +52,6 @@ RadioButton::RadioButton(const String& type, const String& name) :
 	d_selected(false),
 	d_groupID(0)
 {
-	// add radio button specific events.
-	addRadioButtonEvents();
-
 	addRadioButtonProperties();
 }
 
@@ -102,15 +99,6 @@ void RadioButton::setGroupID(ulong group)
 		deselectOtherButtonsInGroup();
 	}
 
-}
-
-
-/*************************************************************************
-	Add radio button specific events	
-*************************************************************************/
-void RadioButton::addRadioButtonEvents(void)
-{
-	addEvent(EventSelectStateChanged);
 }
 
 

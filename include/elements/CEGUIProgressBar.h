@@ -152,13 +152,6 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Add progress bar specific events to the window
-	*/
-	void	addProgressBarEvents(void);
-
-
-	/*!
-	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
 
 	\param class_name

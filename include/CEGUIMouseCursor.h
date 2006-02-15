@@ -290,16 +290,6 @@ protected:
 	virtual void	onImageChanged(MouseCursorEventArgs& e);
 
 
-	/*************************************************************************
-		Implementation Functions
-	*************************************************************************/
-	/*!
-	\brief
-		Add mouse cursor specific events
-	*/
-	void	addMouseCursorEvents(void);
-
-
 private:
 	/*************************************************************************
 		Implementation Methods
