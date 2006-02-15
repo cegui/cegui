@@ -142,7 +142,7 @@ Event::Connection EventSet::subscribeScriptedEvent(const String& name, Event::Gr
 Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber subscriber)
 {
     // do subscription & return connection
-    return getEventObject(name)->subscribe(subscriber);
+    return getEventObject(name, true)->subscribe(subscriber);
 }
 
 
@@ -152,7 +152,7 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber
 Event::Connection EventSet::subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber)
 {
     // do subscription with group & return connection
-    return getEventObject(name)->subscribe(group, subscriber);
+    return getEventObject(name, true)->subscribe(group, subscriber);
 }
 
 /*************************************************************************
