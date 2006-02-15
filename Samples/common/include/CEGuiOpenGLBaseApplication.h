@@ -72,6 +72,8 @@ protected:
     static void keySpecial(int key, int x, int y);
     static void handleModifierKeys(void);
 
+    static void doFPSUpdate();
+
     /*************************************************************************
         Data fields
     *************************************************************************/
@@ -79,6 +81,11 @@ protected:
     static bool d_quitFlag;
     static int  d_lastFrameTime;
     static int  d_modifiers;
+    // FPS stuff
+    static int d_fps_lastTime;
+    static int d_fps_frames;
+    static int d_fps_value;
+    static char d_fps_textbuff[16];
 };
 
 

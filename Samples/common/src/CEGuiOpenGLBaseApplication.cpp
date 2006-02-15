@@ -98,6 +98,10 @@ GlutKeyMapping specialKeyMap[] =
 bool CEGuiOpenGLBaseApplication::d_quitFlag = false;
 int  CEGuiOpenGLBaseApplication::d_lastFrameTime = 0;
 int CEGuiOpenGLBaseApplication::d_modifiers = 0;
+int CEGuiOpenGLBaseApplication::d_fps_lastTime = 0;
+int CEGuiOpenGLBaseApplication::d_fps_frames = 0;
+int CEGuiOpenGLBaseApplication::d_fps_value = 0;
+char CEGuiOpenGLBaseApplication::d_fps_textbuff[16];
 
 /*************************************************************************
     Constructor.
@@ -150,7 +154,7 @@ bool CEGuiOpenGLBaseApplication::execute(CEGuiSample* sampleApp)
     sampleApp->initialiseSample();
 
     // set starting time
-    d_lastFrameTime = glutGet(GLUT_ELAPSED_TIME);
+    d_fps_lastTime = d_lastFrameTime = glutGet(GLUT_ELAPSED_TIME);
 
     glutMainLoop();
 
@@ -187,12 +191,15 @@ bool CEGuiOpenGLBaseApplication::isQuitting() const
 *************************************************************************/
 void CEGuiOpenGLBaseApplication::drawFrame(void)
 {
+    CEGUI::System& guiSystem = CEGUI::System::getSingleton();
     // do time based updates
     int thisTime = glutGet(GLUT_ELAPSED_TIME);
     float elapsed = static_cast<float>(thisTime - d_lastFrameTime);
     d_lastFrameTime = thisTime;
     // inject the time pulse
-    CEGUI::System::getSingleton().injectTimePulse(elapsed / 1000.0f);
+    guiSystem.injectTimePulse(elapsed / 1000.0f);
+    // update fps fields
+    doFPSUpdate();
 
     // do rendering for this frame.
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -201,7 +208,15 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     glLoadIdentity();
     gluLookAt(0.0, 0.0, 12, 0.0, 0.0, -100, 0.0, 1.0, 0.0);
 
-    CEGUI::System::getSingleton().renderGUI();
+    guiSystem.renderGUI();
+
+    // render FPS:
+    const CEGUI::Font* fnt = guiSystem.getDefaultFont();
+    if (fnt)
+    {
+        guiSystem.getRenderer()->setQueueingEnabled(false);
+        fnt->drawText(d_fps_textbuff, CEGUI::Vector3(0, 0, 0), guiSystem.getRenderer()->getRect());
+    }
 
     glFlush();
     glutPostRedisplay();
@@ -214,7 +229,7 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     if (d_quitFlag)
     {
         // cleanup cegui system
-        CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
+        CEGUI::Renderer* renderer = guiSystem.getRenderer();
         delete CEGUI::System::getSingletonPtr();
         delete renderer;
 
@@ -378,6 +393,23 @@ void CEGuiOpenGLBaseApplication::handleModifierKeys(void)
     }
     
     d_modifiers = mods;
+}
+
+void CEGuiOpenGLBaseApplication::doFPSUpdate()
+{
+    // another frame
+    ++d_fps_frames;
+
+    // has at least a second passed since we last updated the text?
+    if (d_lastFrameTime - d_fps_lastTime >= 1000)
+    {
+        // update FPS text to output
+        sprintf(d_fps_textbuff , "FPS: %d", d_fps_frames);
+        // reset counter
+        d_fps_frames    = 0;
+        // update timer
+        d_fps_lastTime  = d_lastFrameTime;
+    }
 }
 
 #endif
