@@ -6,17 +6,17 @@
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
     Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
- 
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
- 
+
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -40,6 +40,9 @@
 #include <OpenGL/glu.h>
 #else
 #include <GL/glut.h>
+#ifdef __FREEGLUT_STD_H__
+#   include <GL/freeglut_ext.h>
+#endif
 #include <GL/gl.h>
 #include <GL/glu.h>
 #endif
@@ -127,6 +130,10 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutMouseFunc(&CEGuiOpenGLBaseApplication::mouseButton);
     glutKeyboardFunc(&CEGuiOpenGLBaseApplication::keyChar);
     glutSpecialFunc(&CEGuiOpenGLBaseApplication::keySpecial);
+
+    #ifdef __FREEGLUT_EXT_H__
+        glutMouseWheelFunc(&CEGuiOpenGLBaseApplication::handleMouseWheel_freeglut);
+    #endif
 
     // Set the clear color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -345,7 +352,7 @@ void CEGuiOpenGLBaseApplication::handleModifierKeys(void)
     int mods = glutGetModifiers();
 
     CEGUI::System& cesys = CEGUI::System::getSingleton();
-    
+
     bool shift = mods&GLUT_ACTIVE_SHIFT;
     bool ctrl  = mods&GLUT_ACTIVE_CTRL;
     bool alt   = mods&GLUT_ACTIVE_ALT;
@@ -391,7 +398,7 @@ void CEGuiOpenGLBaseApplication::handleModifierKeys(void)
             cesys.injectKeyUp(sc);
         }
     }
-    
+
     d_modifiers = mods;
 }
 
@@ -409,6 +416,15 @@ void CEGuiOpenGLBaseApplication::doFPSUpdate()
         d_fps_frames    = 0;
         // update timer
         d_fps_lastTime  = d_lastFrameTime;
+    }
+}
+
+// FreeGLUT supports wheel events
+void CEGuiOpenGLBaseApplication::handleMouseWheel_freeglut(int wheel, int dir, int x, int y)
+{
+    if (wheel == 0)
+    {
+        CEGUI::System::getSingleton().injectMouseWheelChange((float)dir);
     }
 }
 

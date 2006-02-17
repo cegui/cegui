@@ -71,6 +71,7 @@ protected:
     static void keyChar(unsigned char key, int x, int y);
     static void keySpecial(int key, int x, int y);
     static void handleModifierKeys(void);
+    static void handleMouseWheel_freeglut(int wheel, int dir, int x, int y);
 
     static void doFPSUpdate();
 
