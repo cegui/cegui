@@ -91,7 +91,8 @@ FactoryModule::FactoryModule(const String& filename) :
 	// check for library load failure
 	if (!d_handle)
 	{
-		throw	GenericException("FactoryModule::FactoryModule - Failed to load module '" + d_moduleName + "'.");
+		throw GenericException("FactoryModule::FactoryModule - Failed to load module '"
+            + d_moduleName + "': " + String(DYNLIB_ERROR()));
 	}
 
     // functions are now optional, and only throw upon the first attempt to use a missing function.
