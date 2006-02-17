@@ -218,7 +218,7 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, Font*>		FontRegistry;
+	typedef	std::map<String, Font*, String::FastLessCompare>		FontRegistry;
 	FontRegistry		d_fonts;
 
 	struct FontManagerImplData;

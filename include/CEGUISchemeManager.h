@@ -139,7 +139,7 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, Scheme*> SchemeRegistry;
+	typedef	std::map<String, Scheme*, String::FastLessCompare> SchemeRegistry;
 	SchemeRegistry	d_schemes;			//!< Collection that tracks the loaded Schemes.
 
 

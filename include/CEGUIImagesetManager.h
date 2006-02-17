@@ -226,7 +226,7 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef	std::map<String, Imageset*>		ImagesetRegistry;
+	typedef	std::map<String, Imageset*, String::FastLessCompare>		ImagesetRegistry;
 	ImagesetRegistry	d_imagesets;
 
 public:

@@ -190,7 +190,7 @@ public:
 	String	getPropertyDefault(const String& name) const;
 
 private:
-	typedef std::map<String, Property*>	PropertyRegistry;
+	typedef std::map<String, Property*, String::FastLessCompare>	PropertyRegistry;
 	PropertyRegistry	d_properties;
 
 

@@ -313,9 +313,9 @@ namespace CEGUI
         void renameChildren(const Window& widget, const String& newBaseName) const;
 
     private:
-        typedef std::map<String, StateImagery>    StateList;
-        typedef std::map<String, ImagerySection>  ImageryList;
-        typedef std::map<String, NamedArea>       NamedAreaList;
+        typedef std::map<String, StateImagery, String::FastLessCompare>    StateList;
+        typedef std::map<String, ImagerySection, String::FastLessCompare>  ImageryList;
+        typedef std::map<String, NamedArea, String::FastLessCompare>       NamedAreaList;
         typedef std::vector<WidgetComponent>      WidgetList;
         typedef std::vector<PropertyInitialiser>  PropertyList;
         typedef std::vector<PropertyDefinition>   PropertyDefinitionList;

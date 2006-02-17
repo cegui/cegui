@@ -345,6 +345,24 @@ public:
 #endif
 
 public:
+    /*!
+    \brief
+        Functor that can be used as comparator in a std::map with String keys.
+        It's faster than using the default, but the map will no longer be sorted alphabetically.
+    */
+    struct FastLessCompare
+    {
+        bool operator() (const String& a, const String& b) const
+        {
+            const size_t la = a.length();
+            const size_t lb = b.length();
+            if (la == lb)
+                return (memcmp(a.ptr(), b.ptr(), la*sizeof(utf32)) < 0);
+            return (la < lb);
+        }
+    };
+
+public:
 	//////////////////////////////////////////////////////////////////////////
 	// Default Construction and Destructor
 	//////////////////////////////////////////////////////////////////////////

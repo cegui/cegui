@@ -380,7 +380,7 @@ public:
     void writeXMLToStream(OutStream& out_stream) const;
 
 
-	friend class std::map<String, Image>;
+	friend class std::map<String, Image, String::FastLessCompare>;
 	friend struct std::pair<const String, Image>;
 
 

@@ -59,7 +59,7 @@ class CEGUIEXPORT Imageset
 {
 	friend class Imageset_xmlHandler;
 private:
-	typedef	std::map<String, Image>	ImageRegistry;
+	typedef	std::map<String, Image, String::FastLessCompare>	ImageRegistry;
 
 	/*************************************************************************
 		Friends to allow access to constructors and destructors

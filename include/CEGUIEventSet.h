@@ -286,7 +286,7 @@ protected:
 	EventSet(EventSet& e) {}
 	EventSet& operator=(EventSet& e) {return *this;}
 
-	typedef std::map<String, Event*>	EventMap;
+	typedef std::map<String, Event*, String::FastLessCompare>	EventMap;
 	EventMap	d_events;
 
 	bool	d_muted;	//!< true if events for this EventSet have been muted.

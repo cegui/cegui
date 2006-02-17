@@ -347,7 +347,7 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef std::map<String, Window*>			WindowRegistry;				//!< Type used to implement registry of Window objects
+	typedef std::map<String, Window*, String::FastLessCompare>			WindowRegistry;				//!< Type used to implement registry of Window objects
     typedef std::vector<Window*>    WindowVector;   //!< Type to use for a collection of Window pointers.
 
 	WindowRegistry			d_windowRegistry;			//!< The container that forms the Window registry

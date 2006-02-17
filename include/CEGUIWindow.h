@@ -2877,7 +2877,7 @@ protected:
     const Image* d_mouseCursor;
 
     // user data
-    typedef std::map<String, String>   UserStringMap;
+    typedef std::map<String, String, String::FastLessCompare>   UserStringMap;
 
     //! Holds a collection of named user string values.
     UserStringMap d_userStrings;
