@@ -3141,8 +3141,8 @@ protected:
     static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
     static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
     static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
-    //static  WindowProperties::WindowRenderer    d_windowRendererProperty;
-    //static  WindowProperties::LookNFeel         d_lookNFeelProperty;
+    static  WindowProperties::WindowRenderer    d_windowRendererProperty;
+    static  WindowProperties::LookNFeel         d_lookNFeelProperty;
 
     /*************************************************************************
         implementation functions

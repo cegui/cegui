@@ -82,8 +82,8 @@ WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
 WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
 WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
-//WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
-//WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
+WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
+WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
 
 /*************************************************************************
 	static data definitions
@@ -1480,8 +1480,8 @@ void Window::addStandardProperties(void)
     addProperty(&d_unifiedMinSizeProperty);
     addProperty(&d_unifiedMaxSizeProperty);
     addProperty(&d_mousePassThroughEnabledProperty);
-    //addProperty(&d_windowRendererProperty);
-    //addProperty(&d_lookNFeelProperty);
+    addProperty(&d_windowRendererProperty);
+    addProperty(&d_lookNFeelProperty);
 }
 
 

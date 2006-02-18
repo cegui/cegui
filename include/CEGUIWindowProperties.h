@@ -980,7 +980,7 @@ class MousePassThroughEnabled : public Property
 
     \par Where [windowRendererName] is the factory name of the window renderer type you wish to assign.
 */
-/*class WindowRenderer : public Property
+class WindowRenderer : public Property
 {
     public:
         WindowRenderer() : Property(
@@ -991,7 +991,7 @@ class MousePassThroughEnabled : public Property
 
         String  get(const PropertyReceiver* receiver) const;
         void    set(PropertyReceiver* receiver, const String& value);
-};*/
+};
 
 
 /*!
@@ -1004,7 +1004,7 @@ class MousePassThroughEnabled : public Property
 
     \par Where [LookNFeelName] is the name of the look'n'feel you wish to assign.
 */
-/*class LookNFeel : public Property
+class LookNFeel : public Property
 {
     public:
         LookNFeel() : Property(
@@ -1015,7 +1015,7 @@ class MousePassThroughEnabled : public Property
 
         String  get(const PropertyReceiver* receiver) const;
         void    set(PropertyReceiver* receiver, const String& value);
-};*/
+};
 
 
 } // End of  WindowProperties namespace section
