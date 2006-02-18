@@ -30,6 +30,52 @@
 #include "CEGUIString.h"
 #include "CEGUIWindow.h"
 
+/*!
+\brief
+    Declares a window factory class.
+
+\param T
+    The window class name.
+
+\note
+    The class that will be generated is is named &lt;classname&gt;Factory.
+    A statement like this:
+        CEGUI_DECLARE_WINDOW_FACTORY(MyWidget);
+    Would generate a factory class named MyWidgetFactory.
+
+    The factory is automatically instantiated and for the example it would
+    be available as:
+        WindowFactory* wf = &MyWidgetFactory::ms_factory;
+*/
+#define CEGUI_DECLARE_WINDOW_FACTORY( T )\
+class T ## Factory : public WindowFactory\
+{\
+    T ## Factory() : WindowFactory( T::WidgetTypeName ) {}\
+public:\
+    Window* createWindow(const String& name)\
+    {\
+        return new T (d_type, name);\
+    }\
+    void destroyWindow(Window* window)\
+    {\
+        delete window;\
+    }\
+    static T ## Factory ms_factory;\
+};
+
+/*!
+\brief
+    Generates code for the constructor for the instance of the window factory generated
+    from the class name \a T
+*/
+#define CEGUI_DEFINE_WINDOW_FACTORY( T )\
+T ## Factory T ## Factory:: ms_factory;
+
+/*!
+\brief
+    Helper macro that return the real factory class name from a given class name \a T
+*/
+#define CEGUI_WINDOW_FACTORY( T ) (T ## Factory::ms_factory)
 
 // Start of CEGUI namespace section
 namespace CEGUI

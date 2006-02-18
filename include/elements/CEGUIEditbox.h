@@ -43,6 +43,32 @@ namespace CEGUI
 // forward declare implementation data type
 struct RegexValidator;
 
+/*!
+\brief
+    Base class for the EditboxWindowRenderer class
+*/
+class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    EditboxWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return the text code point index that is rendered closest to screen position \a pt.
+
+    \param pt
+        Point object describing a position on the screen in pixels.
+
+    \return
+        Code point index into the text that is rendered closest to screen position \a pt.
+    */
+    virtual size_t getTextIndexFromPosition(const Point& pt) const = 0;
+};
+
 
 /*!
 \brief
@@ -52,6 +78,7 @@ class CEGUIEXPORT Editbox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -346,7 +373,20 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
-	virtual	size_t	getTextIndexFromPosition(const Point& pt) const		= 0;
+	size_t	getTextIndexFromPosition(const Point& pt) const;
+
+
+    /*!
+    \brief
+        Return the text code point index that is rendered closest to screen position \a pt.
+
+    \param pt
+        Point object describing a position on the screen in pixels.
+
+    \return
+        Code point index into the text that is rendered closest to screen position \a pt.
+    */
+    //virtual size_t  getTextIndexFromPosition_impl(const Point& pt) const = 0;
 
 
 	/*!
@@ -445,6 +485,12 @@ protected:
 		if (class_name=="Editbox")	return true;
 		return Window::testClassName_impl(class_name);
 	}
+    
+    // validate window renderer
+    virtual bool    validateWindowRenderer(const String& name) const
+    {
+        return (name == "Editbox");
+    }
 
 	/*************************************************************************
 		New event handlers

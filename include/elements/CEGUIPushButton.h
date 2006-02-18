@@ -45,7 +45,7 @@ class CEGUIEXPORT PushButton : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -107,7 +107,6 @@ protected:
 	}
 
 };
-
 
 } // End of  CEGUI namespace section
 

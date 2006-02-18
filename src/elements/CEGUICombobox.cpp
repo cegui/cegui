@@ -42,6 +42,8 @@
 namespace CEGUI
 {
 const String Combobox::EventNamespace("Combobox");
+const String Combobox::WidgetTypeName("CEGUI/Combobox");
+
 
 /*************************************************************************
 	Definitions for Properties for this class
@@ -115,17 +117,13 @@ Combobox::~Combobox(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void Combobox::initialise(void)
+void Combobox::initialiseComponents(void)
 {
 	Editbox* editbox        = getEditbox();
 	ComboDropList* droplist = getDropList();
 	PushButton* button      = getPushButton();
     droplist->setFont(getFont());
     editbox->setFont(getFont());
-
-	addChildWindow(editbox);
-	addChildWindow(droplist);
-	addChildWindow(button);
 
 	// internal event wiring
 	button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));

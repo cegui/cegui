@@ -46,6 +46,7 @@ class CEGUIEXPORT ComboDropList : public Listbox
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 
 	/*************************************************************************
@@ -65,7 +66,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
 
 	/*!

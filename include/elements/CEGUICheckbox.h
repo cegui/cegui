@@ -49,6 +49,7 @@ class CEGUIEXPORT Checkbox : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -161,7 +162,6 @@ private:
 };
 
 } // End of  CEGUI namespace section
-
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)

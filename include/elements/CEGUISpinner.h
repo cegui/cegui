@@ -63,6 +63,7 @@ namespace CEGUI
         /*************************************************************************
             Events system constants
         *************************************************************************/
+        static const String WidgetTypeName;                 //!< Window factory name
         static const String EventNamespace;                 //!< Namespace for global events
         static const String EventValueChanged;              //!< Event fired when the spinner value changes.
         static const String EventStepChanged;               //!< Event fired when the step value changes.
@@ -102,7 +103,7 @@ namespace CEGUI
 	    \return
 		    Nothing
 	    */
-        void initialise(void);
+        void initialiseComponents(void);
 
 
         /*************************************************************************

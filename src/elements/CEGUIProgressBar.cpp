@@ -28,7 +28,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ProgressBar::WidgetTypeName("CEGUI/ProgressBar");
 const String ProgressBar::EventNamespace("ProgressBar");
+
 
 /*************************************************************************
 	Definitions of Properties for this class

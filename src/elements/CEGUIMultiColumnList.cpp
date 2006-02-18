@@ -39,6 +39,15 @@
 namespace CEGUI
 {
 const String MultiColumnList::EventNamespace("MultiColumnList");
+const String MultiColumnList::WidgetTypeName("CEGUI/MultiColumnList");
+
+/*************************************************************************
+    MultiColumnListWindowRenderer
+*************************************************************************/
+MultiColumnListWindowRenderer::MultiColumnListWindowRenderer(const String& name) :
+    WindowRenderer(name, MultiColumnList::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Properties for this class
@@ -608,17 +617,12 @@ MultiColumnList::SelectionMode MultiColumnList::getSelectionMode(void) const
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void MultiColumnList::initialise(void)
+void MultiColumnList::initialiseComponents(void)
 {
-	// create the component sub-widgets
+	// get the component sub-widgets
 	Scrollbar* vertScrollbar = getVertScrollbar();
 	Scrollbar* horzScrollbar = getHorzScrollbar();
 	ListHeader* header       = getListHeader();
-
-	// add components
-	addChildWindow(vertScrollbar);
-	addChildWindow(horzScrollbar);
-	addChildWindow(header);
 
 	// subscribe some events
 	header->subscribeEvent(ListHeader::EventSegmentRenderOffsetChanged, Event::Subscriber(&CEGUI::MultiColumnList::handleHeaderScroll, this));
@@ -2324,6 +2328,25 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
 		}
 
     return propCnt;
+}
+
+
+/*************************************************************************
+    Return a Rect object describing, in un-clipped pixels, the window
+    relative area that is to be used for rendering list items.
+*************************************************************************/
+Rect MultiColumnList::getListRenderArea() const
+{
+    if (d_windowRenderer != 0)
+    {
+        MultiColumnListWindowRenderer* wr = (MultiColumnListWindowRenderer*)d_windowRenderer;
+        return wr->getListRenderArea();
+    }
+    else
+    {
+        //return getListRenderArea_impl();
+        throw InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module");
+    }
 }
 
 

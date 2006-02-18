@@ -53,7 +53,7 @@ class CEGUIEXPORT Thumb : public PushButton
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants

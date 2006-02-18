@@ -112,6 +112,29 @@ void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String SizingCursorImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const ListHeaderSegment*>(receiver)->getSizingCursorImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void SizingCursorImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<ListHeaderSegment*>(receiver)->setSizingCursorImage(PropertyHelper::stringToImage(value));
+}
+
+
+String MovingCursorImage::get(const PropertyReceiver* receiver) const
+{
+    const Image* img = static_cast<const ListHeaderSegment*>(receiver)->getMovingCursorImage();
+    return img ? PropertyHelper::imageToString(img) : String("");
+}
+
+void MovingCursorImage::set(PropertyReceiver* receiver, const String &value)
+{
+    static_cast<ListHeaderSegment*>(receiver)->setMovingCursorImage(PropertyHelper::stringToImage(value));
+}
+
 } // End of  ListHeaderSegmentProperties namespace section
 
 } // End of  CEGUI namespace section

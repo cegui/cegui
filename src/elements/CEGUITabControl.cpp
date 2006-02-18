@@ -34,6 +34,15 @@
 namespace CEGUI
 {
 const String TabControl::EventNamespace("TabControl");
+const String TabControl::WidgetTypeName("CEGUI/TabControl");
+
+/*************************************************************************
+    TabControlWindowRenderer
+*************************************************************************/
+TabControlWindowRenderer::TabControlWindowRenderer(const String& name) :
+    WindowRenderer(name, TabControl::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Definition of Properties for this class
@@ -76,20 +85,9 @@ TabControl::~TabControl(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.
 *************************************************************************/
-void TabControl::initialise(void)
+void TabControl::initialiseComponents(void)
 {
-	// create the component sub-widgets
-	TabPane* tabContentPane = getTabPane();
-    Window* tabButtonPane = getTabButtonPane();
-
-	addChildWindow(tabContentPane);
-    addChildWindow(tabButtonPane);
-
-    // set some initial defaults
-    setTabHeight(cegui_reldim(0.05f));
-    setTabTextPadding(cegui_absdim(5));
-	
-    performChildWindowLayout();
+	performChildWindowLayout();
 }
 /*************************************************************************
 Get the number of tabs
@@ -587,6 +585,24 @@ int TabControl::writeChildWindowsXML(OutStream& out_stream) const
     }
 
     return childOutputCount;
+}
+
+/*************************************************************************
+    create and return a pointer to a TabButton widget for use as a
+    clickable tab header
+*************************************************************************/
+TabButton* TabControl::createTabButton(const String& name) const
+{
+    if (d_windowRenderer != 0)
+    {
+        TabControlWindowRenderer* wr = (TabControlWindowRenderer*)d_windowRenderer;
+        return wr->createTabButton(name);
+    }
+    else
+    {
+        //return createTabButton_impl(name);
+        throw InvalidRequestException("TabControl::createTabButton - This function must be implemented by the window renderer module");
+    }
 }
 
 } // End of  CEGUI namespace section

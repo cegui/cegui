@@ -37,6 +37,30 @@ namespace CEGUI
 {
     /*!
     \brief
+        Base class for Tooltip window renderer objects.
+    */
+    class CEGUIEXPORT TooltipWindowRenderer : public WindowRenderer
+    {
+    public:
+        /*!
+        \brief
+            Constructor
+        */
+        TooltipWindowRenderer(const String& name);
+
+        /*!
+        \brief
+            Return the size of the area that will be occupied by the tooltip text, given
+            any current formatting options.
+
+        \return
+            Size object describing the size of the rendered tooltip text in pixels.
+        */
+        virtual Size getTextSize() const = 0;
+    };
+
+    /*!
+    \brief
         Base class for Tooltip widgets.
         
         The Tooltip class shows a simple pop-up window around the mouse position
@@ -56,6 +80,7 @@ namespace CEGUI
         /*************************************************************************
             Constants
         *************************************************************************/
+        static const String WidgetTypeName;                 //!< Window factory name
         static const String EventNamespace;                 //!< Namespace for global events
         static const String EventHoverTimeChanged;          //!< Event fired when the hover timeout gets changed.
         static const String EventDisplayTimeChanged;        //!< Event fired when the display timeout gets changed.
@@ -200,6 +225,26 @@ namespace CEGUI
         */
         void sizeSelf(void);
 
+        /*!
+        \brief
+            Return the size of the area that will be occupied by the tooltip text, given
+            any current formatting options.
+
+        \return
+            Size object describing the size of the rendered tooltip text in pixels.
+        */
+        Size getTextSize() const;
+
+        /*!
+        \brief
+            Return the size of the area that will be occupied by the tooltip text, given
+            any current formatting options.
+
+        \return
+            Size object describing the size of the rendered tooltip text in pixels.
+        */
+        virtual Size getTextSize_impl() const;
+
     protected:
         /*************************************************************************
             Implementation Methods
@@ -233,15 +278,11 @@ namespace CEGUI
 			return Window::testClassName_impl(class_name);
 		}
 
-        /*!
-        \brief
-            Return the size of the area that will be occupied by the tooltip text, given
-            any current formatting options.
-
-        \return
-            Size object describing the size of the rendered tooltip text in pixels.
-        */
-        virtual Size getTextSize() const;
+        // validate window renderer
+        virtual bool validateWindowRenderer(const String& name) const
+        {
+            return (name == "Tooltip");
+        }
 
         /*************************************************************************
             Event triggers
@@ -352,6 +393,7 @@ namespace CEGUI
         *************************************************************************/
         void addTooltipProperties(void);
     };
+
 
 } // End of  CEGUI namespace section
 

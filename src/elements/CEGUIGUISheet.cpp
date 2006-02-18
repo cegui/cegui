@@ -33,5 +33,15 @@ namespace CEGUI
 // type name for this widget
 const String GUISheet::WidgetTypeName( "DefaultWindow" );
 
+/*************************************************************************
+    Constructor
+*************************************************************************/
+GUISheet::GUISheet(const String& type, const String& name) :
+    Window(type, name)
+{
+    UVector2 sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
+    setWindowMaxSize(sz);
+    setWindowSize(sz);
+}
 
 } // End of  CEGUI namespace section

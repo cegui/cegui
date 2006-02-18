@@ -46,7 +46,7 @@ namespace CEGUI
 
         // set the widget look
         if (!d_imageryName.empty())
-            widget->setLookNFeel("", d_imageryName);
+            widget->setLookNFeel(d_imageryName);
 
         // add the new widget to its parent
         parent.addChildWindow(widget);

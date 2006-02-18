@@ -26,11 +26,21 @@
 #include "elements/CEGUISlider.h"
 #include "elements/CEGUIThumb.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 const String Slider::EventNamespace("Slider");
+const String Slider::WidgetTypeName("CEGUI/Slider");
+
+/*************************************************************************
+    SliderWindowRenderer
+*************************************************************************/
+SliderWindowRenderer::SliderWindowRenderer(const String& name) :
+    WindowRenderer(name, Slider::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Definition of Properties for this class
@@ -76,11 +86,10 @@ Slider::~Slider(void)
 /*************************************************************************
 	Initialises the Window based object ready for use.	
 *************************************************************************/
-void Slider::initialise(void)
+void Slider::initialiseComponents(void)
 {
-	// create and attach thumb
+	// get thumb
 	Thumb* thumb = getThumb();
-	addChildWindow(thumb);
 
 	// bind handler to thumb events
 	thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Slider::handleThumbMoved, this));
@@ -261,6 +270,60 @@ Thumb* Slider::getThumb() const
 {
     return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
                                getName() + ThumbNameSuffix));
+}
+
+/*************************************************************************
+    update the size and location of the thumb to properly represent the
+    current state of the scroll bar
+*************************************************************************/
+void Slider::updateThumb(void)
+{
+    if (d_windowRenderer != 0)
+    {
+        SliderWindowRenderer* wr = (SliderWindowRenderer*)d_windowRenderer;
+        wr->updateThumb();
+    }
+    else
+    {
+        //updateThumb_impl();
+        throw InvalidRequestException("Slider::updateThumb - This function must be implemented by the window renderer module");
+    }
+}
+
+/*************************************************************************
+    return value that best represents current scroll bar position given
+    the current location of the thumb.
+*************************************************************************/
+float Slider::getValueFromThumb(void) const
+{
+    if (d_windowRenderer != 0)
+    {
+        SliderWindowRenderer* wr = (SliderWindowRenderer*)d_windowRenderer;
+        return wr->getValueFromThumb();
+    }
+    else
+    {
+        //return getValueFromThumb_impl();
+        throw InvalidRequestException("Slider::getValueFromThumb - This function must be implemented by the window renderer module");
+    }
+}
+
+/*************************************************************************
+    Given window location 'pt', return a value indicating what change
+    should be made to the scroll bar.
+*************************************************************************/
+float Slider::getAdjustDirectionFromPoint(const Point& pt) const
+{
+    if (d_windowRenderer != 0)
+    {
+        SliderWindowRenderer* wr = (SliderWindowRenderer*)d_windowRenderer;
+        return wr->getAdjustDirectionFromPoint(pt);
+    }
+    else
+    {
+        //return getAdjustDirectionFromPoint_impl(pt);
+        throw InvalidRequestException("Slider::getAdjustDirectionFromPoint - This function must be implemented by the window renderer module");
+    }
 }
 
 } // End of  CEGUI namespace section

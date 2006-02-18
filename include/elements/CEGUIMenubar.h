@@ -49,6 +49,7 @@ class CEGUIEXPORT Menubar : public MenuBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Construction and Destruction
@@ -88,7 +89,7 @@ protected:
 	\return
 		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
-	virtual Size getContentSize();
+	virtual Size getContentSize() const;
 
 
 	/*!
@@ -108,6 +109,7 @@ protected:
 	}
 
 };
+
 
 } // End of  CEGUI namespace section
 

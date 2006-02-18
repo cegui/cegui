@@ -29,6 +29,8 @@
 namespace CEGUI
 {
 const String Checkbox::EventNamespace("Checkbox");
+const String Checkbox::WidgetTypeName("CEGUI/Checkbox");
+
 
 /*************************************************************************
 	Definitions for Properties

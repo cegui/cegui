@@ -46,6 +46,31 @@ namespace CEGUI
 
 /*!
 \brief
+    Base class for ItemListBase window renderer.
+*/
+class CEGUIEXPORT ItemListBaseWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    ItemListBaseWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that is to be used for rendering list items.
+
+    \return
+        Rect object describing the window relative area of the that is to be used for rendering
+        the items.
+    */
+    virtual Rect getItemRenderArea(void) const = 0;
+};
+
+/*!
+\brief
 	Base class for item list widgets.
 */
 class CEGUIEXPORT ItemListBase : public Window
@@ -263,6 +288,18 @@ public:
     virtual void performChildWindowLayout(void);
 
 
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that is to be used for rendering list items.
+
+    \return
+        Rect object describing the window relative area of the that is to be used for rendering
+        the items.
+    */
+    Rect getItemRenderArea(void) const;
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -293,7 +330,7 @@ protected:
 	\return
 		Nothing
 	*/
-	virtual	void	sizeToContent_impl(void)		= 0;
+	virtual void	sizeToContent_impl(void);
 
 
 	/*!
@@ -303,7 +340,7 @@ protected:
 	\return
 		Size object describing in unclipped pixels the size of the content ItemEntries attached to this menu.
 	*/
-	virtual Size getContentSize()		= 0;
+	virtual Size getContentSize() const		= 0;
 
 
 	/*!
@@ -315,7 +352,7 @@ protected:
 		Rect object describing the window relative area of the that is to be used for rendering
 		the items.
 	*/
-	virtual	Rect	getItemRenderArea(void) const		= 0;
+	//virtual	Rect	getItemRenderArea_impl(void) const		= 0;
 
 
 	/*!
@@ -360,6 +397,12 @@ protected:
 		if (class_name=="ItemListBase")	return true;
 		return Window::testClassName_impl(class_name);
 	}
+
+    // validate window renderer
+    virtual bool    validateWindowRenderer(const String& name) const
+    {
+        return (name == EventNamespace);
+    }
 
 	/*************************************************************************
 		New event handlers

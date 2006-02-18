@@ -42,6 +42,7 @@ class CEGUIEXPORT MenuItem : public ItemEntry
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -71,6 +72,13 @@ public:
 		true if the button-type widget is pushed, false if the widget is not pushed.
 	*/
 	bool	isPushed(void) const			{return d_pushed;}
+
+
+    /*!
+    \brief
+        Returns true if the popup menu attached to the menu item is open.
+    */
+    bool    isOpened(void) const            {return d_opened;}
 
 
 	/*!

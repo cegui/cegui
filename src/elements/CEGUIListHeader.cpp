@@ -33,6 +33,15 @@
 namespace CEGUI
 {
 const String ListHeader::EventNamespace("ListHeader");
+const String ListHeader::WidgetTypeName("CEGUI/ListHeader");
+
+/*************************************************************************
+    ListHeaderWindowRenderer constructor
+*************************************************************************/
+ListHeaderWindowRenderer::ListHeaderWindowRenderer(const String& name) :
+    WindowRenderer(name, "ListHeader")
+{
+}
 
 /*************************************************************************
 	Properties for this class
@@ -1025,5 +1034,38 @@ void ListHeader::addHeaderProperties(void)
 	addProperty(&d_sortDirectionProperty);
 }
 
+/*************************************************************************
+    Create new segment
+*************************************************************************/
+ListHeaderSegment* ListHeader::createNewSegment(const String& name) const
+{
+    if (d_windowRenderer != 0)
+    {
+        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
+        return wr->createNewSegment(name);
+    }
+    else
+    {
+        //return createNewSegment_impl(name);
+        throw InvalidRequestException("ListHeader::createNewSegment - This function must be implemented by the window renderer module");
+    }
+}
+
+/*************************************************************************
+    Destroy segment
+*************************************************************************/
+void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
+{
+    if (d_windowRenderer != 0)
+    {
+        ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
+        return wr->destroyListSegment(segment);
+    }
+    else
+    {
+        //return destroyListSegment_impl(segment);
+        throw InvalidRequestException("ListHeader::destroyListSegment - This function must be implemented by the window renderer module");
+    }
+}
 
 } // End of  CEGUI namespace section

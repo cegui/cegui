@@ -144,6 +144,52 @@ public:
 	void	set(PropertyReceiver* receiver, const String& value);
 };
 
+
+/*!
+\brief
+   Property to access the segment sizing cursor image
+
+   \par Usage:
+      - Name: SizingCursorImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class SizingCursorImage : public Property
+{
+public:
+   SizingCursorImage() : Property(
+       "SizingCursorImage",
+       "Property to get/set the sizing cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
+       "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
+
+/*!
+\brief
+   Property to access the segment moving cursor image
+
+   \par Usage:
+      - Name: MovingCursorImage
+      - Format: "set:<imageset> image:<imagename>".
+
+*/
+class MovingCursorImage : public Property
+{
+public:
+   MovingCursorImage() : Property(
+       "MovingCursorImage",
+       "Property to get/set the moving cursor image for the List Header Segment.  Value should be \"set:[imageset name] image:[image name]\".",
+       "")
+   {}
+
+   String   get(const PropertyReceiver* receiver) const;
+   void   set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  ListHeaderSegmentProperties namespace section
 
 } // End of  CEGUI namespace section

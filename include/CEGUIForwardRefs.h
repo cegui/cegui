@@ -68,6 +68,8 @@ class GlobalEventSet;
 class XMLAttributes;
 class XMLHandler;
 class XMLParser;
+class WindowRenderer;
+class WindowRendererManager;
 
 /*************************************************************************
 	Forward reference declarations for GUI element base classes

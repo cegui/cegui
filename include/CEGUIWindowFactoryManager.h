@@ -47,6 +47,10 @@ namespace CEGUI
 /*! 
 \brief
 	Class that manages WindowFactory objects
+
+\todo
+    I think we could clean up the mapping stuff a bit. Possibly make it more generic now
+    with the window renderers and all.
 */
 class CEGUIEXPORT WindowFactoryManager : public Singleton<WindowFactoryManager>
 {
@@ -60,6 +64,7 @@ public:
         String  d_windowType;
         String  d_lookName;
         String  d_baseType;
+        String  d_rendererType;
     };
 
     /*!
@@ -297,10 +302,13 @@ public:
     \param lookName
         The name of the 'look' that will be used by windows of this type.
 
+    \param renderer
+        The type of window renderer to assign for windows of this type.
+
     \return
         Nothing.
     */
-    void addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName);
+    void addFalagardWindowMapping(const String& newType, const String& targetType, const String& lookName, const String& renderer);
 
     /*!
     \brief
@@ -338,6 +346,19 @@ public:
     */
     const String& getMappedLookForType(const String& type) const;
 
+    /*!
+    \brief
+        Return the name of the WindowRenderer assigned to the specified window mapping.
+
+    \param type
+        Name of a window type.  The window type referenced should be a falagard mapped type.
+
+    \return
+        String object holding the name of the window renderer mapped for the requested type.
+
+    \exception InvalidRequestException thrown if \a type is not a falagard mapping type (or maybe the type didn't exist).
+    */
+    const String& getMappedRendererForType(const String& type) const;
 
     /*!
     \brief
@@ -358,6 +379,20 @@ public:
         that is, a type that does not describe an alias to some other type.
     */
     String getDereferencedAliasType(const String& type) const;
+
+    /*!
+    \brief
+        Return the FalagardWindowMapping for the specified window mapping \a type.
+
+    \param type
+        Name of a window type.  The window type referenced should be a falagard mapped type.
+
+    \return
+        FalagardWindowMapping object describing the falagard mapping.
+
+    \exception InvalidRequestException thrown if \a type is not a falagard mapping type (or maybe the type didn't exist).
+    */
+    const FalagardWindowMapping& getFalagardMappingForType(const String& type) const;
 
 private:
 	/*************************************************************************

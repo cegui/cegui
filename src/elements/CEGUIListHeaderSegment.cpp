@@ -26,11 +26,15 @@
 #include "elements/CEGUIListHeaderSegment.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIImagesetManager.h"
+#include "CEGUIImageset.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 const String ListHeaderSegment::EventNamespace("ListHeaderSegment");
+const String ListHeaderSegment::WidgetTypeName("CEGUI/ListHeaderSegment");
+
 
 /*************************************************************************
 	Properties for this class
@@ -39,6 +43,8 @@ ListHeaderSegmentProperties::Clickable		ListHeaderSegment::d_clickableProperty;
 ListHeaderSegmentProperties::Dragable		ListHeaderSegment::d_dragableProperty;
 ListHeaderSegmentProperties::Sizable		ListHeaderSegment::d_sizableProperty;
 ListHeaderSegmentProperties::SortDirection	ListHeaderSegment::d_sortDirectionProperty;
+ListHeaderSegmentProperties::SizingCursorImage   ListHeaderSegment::d_sizingCursorProperty;
+ListHeaderSegmentProperties::MovingCursorImage   ListHeaderSegment::d_movingCursorProperty;
 
 
 /*************************************************************************
@@ -620,8 +626,38 @@ void ListHeaderSegment::addHeaderSegmentProperties(void)
 	addProperty(&d_sizableProperty);
 	addProperty(&d_dragableProperty);
 	addProperty(&d_sortDirectionProperty);
+    addProperty(&d_sizingCursorProperty);
+    addProperty(&d_movingCursorProperty);
 }
 
+const Image* ListHeaderSegment::getSizingCursorImage() const
+{
+    return d_sizingMouseCursor;
+}
 
+void ListHeaderSegment::setSizingCursorImage(const Image* image)
+{
+    d_sizingMouseCursor = image;
+}
+
+void ListHeaderSegment::setSizingCursorImage(const String& imageset, const String& image)
+{
+    d_sizingMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
+
+const Image* ListHeaderSegment::getMovingCursorImage() const
+{
+    return d_movingMouseCursor;
+}
+
+void ListHeaderSegment::setMovingCursorImage(const Image* image)
+{
+    d_movingMouseCursor = image;
+}
+
+void ListHeaderSegment::setMovingCursorImage(const String& imageset, const String& image)
+{
+    d_movingMouseCursor = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
+}
 
 } // End of  CEGUI namespace section

@@ -29,6 +29,8 @@
 namespace CEGUI
 {
 const String RadioButton::EventNamespace("RadioButton");
+const String RadioButton::WidgetTypeName("CEGUI/RadioButton");
+
 
 /*************************************************************************
 	Definitions of Properties for this class

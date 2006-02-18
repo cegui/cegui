@@ -45,13 +45,37 @@ namespace CEGUI
 {
 /*!
 \brief
+    Base class for multi-line edit box window renderer objects.
+*/
+class CEGUIEXPORT MultiLineEditboxWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    MultiLineEditboxWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that the text should be rendered in to.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering text.
+    */
+    virtual Rect getTextRenderArea(void) const = 0;
+};
+
+/*!
+\brief
 	Base class for the multi-line edit box widget.
 */
 class CEGUIEXPORT MultiLineEditbox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Constants
@@ -71,6 +95,22 @@ public:
     *************************************************************************/
     static const String VertScrollbarNameSuffix;   //!< Widget name suffix for the vertical scrollbar component.
     static const String HorzScrollbarNameSuffix;   //!< Widget name suffix for the horizontal scrollbar component.
+
+    /*************************************************************************
+        Implementation struct
+    *************************************************************************/
+    /*!
+    \brief
+        struct used to store information about a formatted line within the
+        paragraph.
+    */
+    struct LineInfo
+    {
+        size_t  d_startIdx;     //!< Starting index for this line.
+        size_t  d_length;       //!< Code point length of this line.
+        float   d_extent;       //!< Rendered extent of this line.
+    };
+    typedef std::vector<LineInfo>   LineList;   //!< Type for collection of LineInfos.
 
 	/*************************************************************************
 		Accessor Functions
@@ -160,6 +200,54 @@ public:
 	bool	isWordWrapped(void) const;
 
 
+    /*!
+    \brief
+        Return a pointer to the vertical scrollbar component widget for this
+        MultiLineEditbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+
+    /*!
+    \brief
+        Return a pointer to the horizontal scrollbar component widget for this
+        MultiLineEditbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
+
+
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that the text should be rendered in to.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering text.
+    */
+    Rect    getTextRenderArea(void) const;
+
+    // get d_lines
+    const LineList& getFormattedLines(void) const   {return d_lines;}
+
+    /*!
+    \brief
+        Return the line number a given index falls on with the current formatting.  Will return last line
+        if index is out of range.
+    */
+    size_t  getLineNumberFromIndex(size_t index) const;
+
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
@@ -173,7 +261,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
 
 	/*!
@@ -255,6 +343,9 @@ public:
 	*/
 	void	setWordWrapping(bool setting);
 
+    // selection brush image property support
+    void setSelectionBrushImage(const Image* image);
+    const Image* getSelectionBrushImage() const;
 
 	/*************************************************************************
 		Construction and Destruction
@@ -285,7 +376,7 @@ protected:
 	\return
 		Rect object describing the area of the Window to be used for rendering text.
 	*/
-	virtual	Rect	getTextRenderArea(void) const		= 0;
+	//virtual	Rect	getTextRenderArea_impl(void) const		= 0;
 
 
 	/*************************************************************************
@@ -329,14 +420,6 @@ protected:
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
 	size_t	getTextIndexFromPosition(const Point& pt) const;
-
-
-	/*!
-	\brief
-		Return the line number a given index falls on with the current formatting.  Will return last line
-		if index is out of range.
-	*/
-	size_t	getLineNumberFromIndex(size_t index) const;
 
 
 	/*!
@@ -488,31 +571,11 @@ protected:
     */
     bool handle_scrollChange(const EventArgs& args);
 
-    /*!
-    \brief
-        Return a pointer to the vertical scrollbar component widget for this
-        MultiLineEditbox.
-
-    \return
-        Pointer to a Scrollbar object.
-
-    \exception UnknownObjectException
-        Thrown if the vertical Scrollbar component does not exist.
-    */
-    Scrollbar* getVertScrollbar() const;
-
-    /*!
-    \brief
-        Return a pointer to the horizontal scrollbar component widget for this
-        MultiLineEditbox.
-
-    \return
-        Pointer to a Scrollbar object.
-
-    \exception UnknownObjectException
-        Thrown if the horizontal Scrollbar component does not exist.
-    */
-    Scrollbar* getHorzScrollbar() const;
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == EventNamespace);
+    }
 
 	/*************************************************************************
 		New event handlers
@@ -590,22 +653,6 @@ protected:
 
 
 	/*************************************************************************
-		Implementation struct
-	*************************************************************************/
-	/*!
-	\brief
-		struct used to store information about a formatted line within the
-		paragraph.
-	*/
-	struct LineInfo
-	{
-		size_t	d_startIdx;		//!< Starting index for this line.
-		size_t	d_length;		//!< Code point length of this line.
-		float	d_extent;		//!< Rendered extent of this line.
-	};
-
-
-	/*************************************************************************
 		Implementation data
 	*************************************************************************/
 	bool	d_readOnly;			//!< true if the edit box is in read-only mode
@@ -616,7 +663,6 @@ protected:
 	bool	d_dragging;			//!< true when a selection is being dragged.
 	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
-	typedef	std::vector<LineInfo>	LineList;	//!< Type for collection of LineInfos.
 	static String d_lineBreakChars;	//!< Holds what we consider to be line break characters.
 	bool		d_wordWrap;			//!< true when formatting uses word-wrapping.
 	LineList	d_lines;			//!< Holds the lines for the current formatting.
@@ -640,6 +686,7 @@ private:
 	static MultiLineEditboxProperties::SelectionStart			d_selectionStartProperty;
 	static MultiLineEditboxProperties::SelectionLength			d_selectionLengthProperty;
 	static MultiLineEditboxProperties::MaxTextLength			d_maxTextLengthProperty;
+    static MultiLineEditboxProperties::SelectionBrushImage      d_selectionBrushProperty;
 
 
 	/*************************************************************************

@@ -25,11 +25,14 @@
 #include "elements/CEGUIScrolledContainer.h"
 #include "elements/CEGUIScrollbar.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
 #include <math.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    const String ScrollablePane::WidgetTypeName("CEGUI/ScrollablePane");
+
     //////////////////////////////////////////////////////////////////////////
     // Event name constants
     const String ScrollablePane::EventNamespace("ScrollablePane");
@@ -55,6 +58,15 @@ namespace CEGUI
     ScrollablePaneProperties::VertScrollPosition   ScrollablePane::d_vertScrollPositionProperty;
     //////////////////////////////////////////////////////////////////////////
 
+    /*************************************************************************
+        ScrollablePaneWindowRenderer
+    *************************************************************************/
+    ScrollablePaneWindowRenderer::ScrollablePaneWindowRenderer(const String& name) :
+        WindowRenderer(name, ScrollablePane::EventNamespace)
+    {
+    }
+
+    //////////////////////////////////////////////////////////////////////////
     ScrollablePane::ScrollablePane(const String& type, const String& name) :
         Window(type, name),
         d_forceVertScroll(false),
@@ -66,6 +78,13 @@ namespace CEGUI
         d_horzOverlap(0.01f)
     {
         addScrollablePaneProperties();
+		
+		// create scrolled container widget
+        ScrolledContainer* container =
+            static_cast<ScrolledContainer*>(WindowManager::getSingleton().createWindow(
+                ScrolledContainer::WidgetTypeName, d_name + ScrolledContainerNameSuffix));
+        // add scrolled container widget as child
+        addChildWindow(container);
     }
 
     ScrollablePane::~ScrollablePane(void)
@@ -201,7 +220,7 @@ namespace CEGUI
         vertScrollbar->setScrollPosition(vertScrollbar->getDocumentSize() * position);
     }
 
-    void ScrollablePane::initialise(void)
+    void ScrollablePane::initialiseComponents(void)
     {
         // get horizontal scrollbar
         Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -209,15 +228,8 @@ namespace CEGUI
         // get vertical scrollbar
         Scrollbar* vertScrollbar = getVertScrollbar();
 
-        // create scrolled container widget
-        ScrolledContainer* container =
-            static_cast<ScrolledContainer*>(WindowManager::getSingleton().createWindow(
-                ScrolledContainer::WidgetTypeName, d_name + ScrolledContainerNameSuffix));
-
-        // add child controls
-        addChildWindow(horzScrollbar);
-        addChildWindow(vertScrollbar);
-        addChildWindow(container);
+        // get scrolled container widget
+        ScrolledContainer* container = getScrolledContainer();
 
         // do a bit of initialisation
         horzScrollbar->setAlwaysOnTop(true);
@@ -483,6 +495,20 @@ namespace CEGUI
         return static_cast<ScrolledContainer*>(
                     WindowManager::getSingleton().getWindow(
                     getName() + ScrolledContainerNameSuffix));
+    }
+
+    Rect ScrollablePane::getViewableArea() const
+    {
+        if (d_windowRenderer != 0)
+        {
+            ScrollablePaneWindowRenderer* wr = (ScrollablePaneWindowRenderer*)d_windowRenderer;
+            return wr->getViewableArea();
+        }
+        else
+        {
+            //return getViewableArea_impl();
+            throw InvalidRequestException("ScrollablePane::getViewableArea - This function must be implemented by the window renderer module");
+        }
     }
 
 } // End of  CEGUI namespace section

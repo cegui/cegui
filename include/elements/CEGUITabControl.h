@@ -48,13 +48,37 @@ namespace CEGUI
 
 /*!
 \brief
+    Base class for TabControl window renderer objects.
+*/
+class CEGUIEXPORT TabControlWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    TabControlWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        create and return a pointer to a TabButton widget for use as a clickable tab header
+    \param name
+        Button name
+    \return
+        Pointer to a TabButton to be used for changing tabs.
+    */
+    virtual TabButton*  createTabButton(const String& name) const       = 0;
+};
+
+/*!
+\brief
 	Base class for standard Tab Control widget.
 */
 class CEGUIEXPORT TabControl : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Constants
@@ -194,7 +218,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
     /*!
     \brief
@@ -343,6 +367,22 @@ protected:
 	void performChildWindowLayout();
     int writeChildWindowsXML(OutStream& out_stream) const;
 
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "TabControl");
+    }
+
+    /*!
+    \brief
+        create and return a pointer to a TabButton widget for use as a clickable tab header
+    \param name
+        Button name
+    \return
+        Pointer to a TabButton to be used for changing tabs.
+    */
+    TabButton*  createTabButton(const String& name) const;
+
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
@@ -382,7 +422,7 @@ protected:
     \return
         Pointer to a TabButton to be used for changing tabs.
     */
-    virtual TabButton*	createTabButton(const String& name) const		= 0;
+    //virtual TabButton*	createTabButton_impl(const String& name) const		= 0;
 
     /*!
     \brief
@@ -418,7 +458,6 @@ protected:
     bool handleContentWindowTextChanged(const EventArgs& args);
     bool handleTabButtonClicked(const EventArgs& args);
 };
-
 
 
 } // End of  CEGUI namespace section

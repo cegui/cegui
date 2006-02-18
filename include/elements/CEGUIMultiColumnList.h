@@ -63,6 +63,30 @@ struct CEGUIEXPORT MCLGridRef
 	bool operator!=(const MCLGridRef& rhs) const;
 };
 
+/*!
+\brief
+    Base class for the multi column list window renderer.
+*/
+class CEGUIEXPORT MultiColumnListWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    MultiColumnListWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that is to be used for rendering list items.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering
+        list box items.
+    */
+    virtual Rect    getListRenderArea(void) const = 0;
+};
 
 /*!
 \brief
@@ -72,7 +96,7 @@ class CEGUIEXPORT MultiColumnList : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Constants
@@ -611,6 +635,75 @@ public:
 	uint	getRowWithID(uint row_id) const;
 
 
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that is to be used for rendering list items.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering
+        list box items.
+    */
+    Rect    getListRenderArea(void) const;
+
+
+    /*!
+    \brief
+        Return a pointer to the vertical scrollbar component widget for this
+        MultiColumnList.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the horizontal scrollbar component widget for this
+        MultiColumnList.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the list header component widget for this
+        MultiColumnList.
+
+    \return
+        Pointer to a ListHeader object.
+
+    \exception UnknownObjectException
+        Thrown if the list header component does not exist.
+    */
+    ListHeader* getListHeader() const;
+
+    /*!
+    \brief
+        Return the sum of all row heights in pixels.
+    */
+    float   getTotalRowsHeight(void) const;
+
+    /*!
+    \brief
+        Return the pixel width of the widest item in the given column
+    */
+    float   getWidestColumnItemWidth(uint col_idx) const;
+
+    /*!
+    \brief
+        Return, in pixels, the height of the highest item in the given row.
+    */
+    float   getHighestRowItemHeight(uint row_idx) const;
+
 	/*************************************************************************
 		Manipulator Methods
 	*************************************************************************/
@@ -624,7 +717,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
 
 	/*!
@@ -1209,7 +1302,7 @@ protected:
 		Rect object describing the area of the Window to be used for rendering
 		list box items.
 	*/
-	virtual	Rect	getListRenderArea(void) const		= 0;
+	//virtual	Rect	getListRenderArea_impl(void) const		= 0;
 
 
 	/*************************************************************************
@@ -1227,27 +1320,6 @@ protected:
 		select all strings between positions \a start and \a end.  (inclusive).  Returns true if something was modified.
 	*/
 	bool	selectRange(const MCLGridRef& start, const MCLGridRef& end);
-
-
-	/*!
-	\brief
-		Return the sum of all row heights in pixels.
-	*/
-	float	getTotalRowsHeight(void) const;
-
-
-	/*!
-	\brief
-		Return the pixel width of the widest item in the given column
-	*/
-	float	getWidestColumnItemWidth(uint col_idx) const;
-
-
-	/*!
-	\brief
-		Return, in pixels, the height of the highest item in the given row.
-	*/
-	float	getHighestRowItemHeight(uint row_idx) const;
 
 
 	/*!
@@ -1333,45 +1405,13 @@ protected:
 		if (class_name=="MultiColumnList")	return true;
 		return Window::testClassName_impl(class_name);
 	}
+    
 
-    /*!
-    \brief
-        Return a pointer to the vertical scrollbar component widget for this
-        MultiColumnList.
-
-    \return
-        Pointer to a Scrollbar object.
-
-    \exception UnknownObjectException
-        Thrown if the vertical Scrollbar component does not exist.
-    */
-    Scrollbar* getVertScrollbar() const;
-
-    /*!
-    \brief
-        Return a pointer to the horizontal scrollbar component widget for this
-        MultiColumnList.
-
-    \return
-        Pointer to a Scrollbar object.
-
-    \exception UnknownObjectException
-        Thrown if the horizontal Scrollbar component does not exist.
-    */
-    Scrollbar* getHorzScrollbar() const;
-
-    /*!
-    \brief
-        Return a pointer to the list header component widget for this
-        MultiColumnList.
-
-    \return
-        Pointer to a ListHeader object.
-
-    \exception UnknownObjectException
-        Thrown if the list header component does not exist.
-    */
-    ListHeader* getListHeader() const;
+    // overrides function in base class.
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "MultiColumnList");
+    }
 
     // overrides function in base class.
     int writePropertiesXML(OutStream& out_stream) const;
@@ -1526,6 +1566,8 @@ protected:
 	// storage of items in the list box.
 	typedef std::vector<ListRow>		ListItemGrid;
 	ListItemGrid	d_grid;			//!< Holds the list box data.
+
+    friend class MultiColumnListWindowRenderer;
 
 
 private:

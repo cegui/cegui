@@ -44,13 +44,38 @@ namespace CEGUI
 
 /*!
 \brief
+    Base class for Listbox window renderer.
+*/
+class ListboxWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    ListboxWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that is to be used for rendering list items.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering
+        list box items.
+    */
+    virtual Rect getListRenderArea(void) const = 0;
+};
+
+/*!
+\brief
 	Base class for standard Listbox widget.
 */
 class CEGUIEXPORT Listbox : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Constants
@@ -250,7 +275,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
 
 	/*!
@@ -465,6 +490,59 @@ public:
 	void	ensureItemIsVisible(const ListboxItem* item);
 
 
+    /*!
+    \brief
+        Return a Rect object describing, in un-clipped pixels, the window relative area
+        that is to be used for rendering list items.
+
+    \return
+        Rect object describing the area of the Window to be used for rendering
+        list box items.
+    */
+    virtual Rect    getListRenderArea(void) const;
+
+
+    /*!
+    \brief
+        Return a pointer to the vertical scrollbar component widget for this
+        Listbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the vertical Scrollbar component does not exist.
+    */
+    Scrollbar* getVertScrollbar() const;
+
+    /*!
+    \brief
+        Return a pointer to the horizontal scrollbar component widget for this
+        Listbox.
+
+    \return
+        Pointer to a Scrollbar object.
+
+    \exception UnknownObjectException
+        Thrown if the horizontal Scrollbar component does not exist.
+    */
+    Scrollbar* getHorzScrollbar() const;
+
+
+    /*!
+    \brief
+        Return the sum of all item heights
+    */
+    float   getTotalItemsHeight(void) const;
+
+
+    /*!
+    \brief
+        Return the width of the widest item
+    */
+    float   getWidestItemWidth(void) const;
+
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -495,7 +573,7 @@ protected:
 		Rect object describing the area of the Window to be used for rendering
 		list box items.
 	*/
-	virtual	Rect	getListRenderArea(void) const		= 0;
+	//virtual	Rect	getListRenderArea_impl(void) const = 0;
 
 
 	/*************************************************************************
@@ -513,20 +591,6 @@ protected:
 		including \a end.
 	*/
 	void	selectRange(size_t start, size_t end);
-
-
-	/*!
-	\brief
-		Return the sum of all item heights
-	*/
-	float	getTotalItemsHeight(void) const;
-
-
-	/*!
-	\brief
-		Return the width of the widest item
-	*/
-	float	getWidestItemWidth(void) const;
 
 
 	/*!
@@ -586,31 +650,12 @@ protected:
     */
     bool handle_scrollChange(const EventArgs& args);
 
-    /*!
-    \brief
-        Return a pointer to the vertical scrollbar component widget for this
-        Listbox.
 
-    \return
-        Pointer to a Scrollbar object.
-
-    \exception UnknownObjectException
-        Thrown if the vertical Scrollbar component does not exist.
-    */
-    Scrollbar* getVertScrollbar() const;
-
-    /*!
-    \brief
-        Return a pointer to the horizontal scrollbar component widget for this
-        Listbox.
-
-    \return
-        Pointer to a Scrollbar object.
-
-    \exception UnknownObjectException
-        Thrown if the horizontal Scrollbar component does not exist.
-    */
-    Scrollbar* getHorzScrollbar() const;
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "Listbox");
+    }
 
 
 	/*************************************************************************
@@ -679,6 +724,7 @@ protected:
 	LBItemList	d_listItems;		//!< list of items in the list box.
 	ListboxItem*	d_lastSelected;	//!< holds pointer to the last selected item (used in range selections)
 
+    friend class ListboxWindowRenderer;
 
 private:
 	/*************************************************************************

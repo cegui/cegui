@@ -34,11 +34,11 @@
 namespace CEGUI
 {
 
-
 /*************************************************************************
 	Constants
 *************************************************************************/
 // event strings
+const String MenuItem::WidgetTypeName("CEGUI/MenuItem");
 const String MenuItem::EventNamespace("MenuItem");
 const String MenuItem::EventClicked("Clicked");
 

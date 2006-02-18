@@ -49,6 +49,8 @@
 #include "CEGUIWindowFactory.h"
 #include "CEGUIWindowFactoryManager.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIWindowRenderer.h"
+#include "CEGUIWindowRendererManager.h"
 #include "CEGUIScheme.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUISystem.h"

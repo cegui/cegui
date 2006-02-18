@@ -32,6 +32,7 @@
 #include "CEGUIImageset.h"
 #include "CEGUIMouseCursor.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIWindowRendererManager.h"
 #include "elements/CEGUITooltip.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
@@ -81,6 +82,8 @@ WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
 WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
 WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
+WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
+WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
 
 /*************************************************************************
 	static data definitions
@@ -121,6 +124,8 @@ const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
 const String Window::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
 const String Window::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
+const String Window::EventWindowRendererAttached("WindowRendererAttached");
+const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventMouseEnters( "MouseEnter" );
 const String Window::EventMouseLeaves( "MouseLeave" );
 const String Window::EventMouseMove( "MouseMove" );
@@ -200,6 +205,9 @@ Window::Window(const String& type, const String& name) :
 
     // event pass through
     d_mousePassThroughEnabled = false;
+
+    // WindowRenderer
+    d_windowRenderer = 0;
 
 	// add properties
 	addStandardProperties();
@@ -497,9 +505,25 @@ float Window::getEffectiveAlpha(void) const
 
 
 /*************************************************************************
-	return a Rect object describing the Window area in screen space.
+    return a Rect object describing the Window area in screen space.
 *************************************************************************/
 Rect Window::getPixelRect(void) const
+{
+    if (d_windowRenderer != 0)
+    {
+        return d_windowRenderer->getPixelRect();
+    }
+    else
+    {
+        return getPixelRect_impl();
+    }
+}
+
+
+/*************************************************************************
+	return a Rect object describing the Window area in screen space.
+*************************************************************************/
+Rect Window::getPixelRect_impl(void) const
 {
 	// clip to parent?
 	if (isClippedByParent() && (d_parent != 0))
@@ -558,7 +582,14 @@ Rect Window::getUnclippedPixelRect(void) const
 *************************************************************************/
 Rect Window::getUnclippedInnerRect(void) const
 {
-	return getUnclippedPixelRect();
+    if (d_windowRenderer != 0)
+    {
+        return d_windowRenderer->getUnclippedInnerRect();
+    }
+    else
+    {
+        return getUnclippedPixelRect();
+    }
 }
 
 
@@ -1154,8 +1185,15 @@ void Window::drawSelf(float z)
     {
         // dispose of already cached imagery.
         d_renderCache.clearCachedImagery();
-        // get derived class to re-populate cache.
-        populateRenderCache();
+        // get derived class or WindowRenderer module to re-populate cache.
+        if (d_windowRenderer != 0)
+        {
+            d_windowRenderer->render();
+        }
+        else
+        {
+            populateRenderCache();
+        }
         // mark ourselves as no longer needed a redraw.
         d_needsRedraw = false;
     }
@@ -1442,6 +1480,8 @@ void Window::addStandardProperties(void)
     addProperty(&d_unifiedMinSizeProperty);
     addProperty(&d_unifiedMaxSizeProperty);
     addProperty(&d_mousePassThroughEnabledProperty);
+    addProperty(&d_windowRendererProperty);
+    addProperty(&d_lookNFeelProperty);
 }
 
 
@@ -1681,6 +1721,14 @@ void Window::destroy(void)
     }
 
     releaseInput();
+
+    // free any assigned WindowRenderer
+    if (d_windowRenderer != 0)
+    {
+        d_windowRenderer->onDetach();
+        WindowRendererManager::getSingleton().destroyWindowRenderer(d_windowRenderer);
+        d_windowRenderer = 0;
+    }
 
     // signal our imminent destruction
     WindowEventArgs args(this);
@@ -1989,23 +2037,33 @@ const String& Window::getLookNFeel() const
     return d_lookName;
 }
 
-void Window::setLookNFeel(const String& falagardType, const String& look)
+void Window::setLookNFeel(const String& look)
 {
-    if (d_lookName.empty())
+    if (d_windowRenderer == 0)
     {
-        d_falagardType = falagardType;
-        d_lookName = look;
-        Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
+        throw NullObjectException("There must be a window renderer assigned to set the look'n'feel");
+    }
 
-        // Work to initialse the look and feel...
-        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(look);
-        // Add property definitions, apply property initialisers and create child widgets.
-        wlf.initialiseWidget(*this);
-    }
-    else
+    WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
+    if (!d_lookName.empty())
     {
-        throw InvalidRequestException("Window::setLookNFeel - The window '" + d_name + "' already has a look assigned (" + d_lookName + ").");
+        d_windowRenderer->onLookNFeelUnassigned();
+        const WidgetLookFeel& wlf = wlMgr.getWidgetLook(d_lookName);
+        wlf.cleanUpWidget(*this);
     }
+    d_lookName = look;
+    Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
+
+    // Work to initialise the look and feel...
+    const WidgetLookFeel& wlf = wlMgr.getWidgetLook(look);
+    // Add property definitions, apply property initialisers and create child widgets.
+    wlf.initialiseWidget(*this);
+    // do the necessary binding to the stuff added by the look and feel
+    initialiseComponents();
+    // let the window renderer know about this
+    d_windowRenderer->onLookNFeelAssigned();
+
+    requestRedraw();
 }
 
 void Window::setModalState(bool state)
@@ -2039,6 +2097,10 @@ void Window::performChildWindowLayout()
         catch (UnknownObjectException)
         {
             Logger::getSingleton().logEvent("Window::performChildWindowLayout - assigned widget look was not found.", Errors);
+        }
+        if (d_windowRenderer != 0)
+        {
+            d_windowRenderer->performChildWindowLayout();
         }
     }
 }
@@ -2682,6 +2744,65 @@ void Window::onVerticalAlignmentChanged(WindowEventArgs& e)
 void Window::onHorizontalAlignmentChanged(WindowEventArgs& e)
 {
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
+}
+
+void Window::setWindowRenderer(const String& name)
+{
+    WindowRendererManager& wrm = WindowRendererManager::getSingleton();
+    if (d_windowRenderer != 0)
+    {
+        if (d_windowRenderer->getName() == name)
+        {
+            return;
+        }
+        WindowEventArgs e(this);
+        onWindowRendererDetached(e);
+        wrm.destroyWindowRenderer(d_windowRenderer);
+    }
+
+    if (!name.empty())
+    {
+        Logger::getSingleton().logEvent("Assigning the window renderer '"+name+"' to the window '"+d_name+"'", Informative);
+        d_windowRenderer = wrm.createWindowRenderer(name);
+        WindowEventArgs e(this);
+        onWindowRendererAttached(e);
+    }
+    else
+    {
+        d_windowRenderer = 0;
+    }
+}
+
+WindowRenderer* Window::getWindowRenderer(void) const
+{
+    return d_windowRenderer;
+}
+
+void Window::onWindowRendererAttached(WindowEventArgs& e)
+{
+    if (!validateWindowRenderer(d_windowRenderer->getClass()))
+    {
+        throw InvalidRequestException("The window renderer '"+d_windowRenderer->getName()+"' is not compatible with this widget ("+getType()+")");
+    }
+    if (!testClassName(d_windowRenderer->getClass()))
+    {
+        throw InvalidRequestException("The window renderer '"+d_windowRenderer->getName()+"' is not compatible with this widget ("+getType()+"). It requires a '"+d_windowRenderer->getClass()+"' based window type");
+    }
+    d_windowRenderer->d_window = this;
+    d_windowRenderer->onAttach();
+    fireEvent(EventWindowRendererAttached, e, EventNamespace);
+}
+
+void Window::onWindowRendererDetached(WindowEventArgs& e)
+{
+    d_windowRenderer->onDetach();
+    d_windowRenderer->d_window = 0;
+    fireEvent(EventWindowRendererDetached, e, EventNamespace);
+}
+
+bool Window::validateWindowRenderer(const String& name) const
+{
+    return true;
 }
 
 } // End of  CEGUI namespace section

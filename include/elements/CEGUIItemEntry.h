@@ -35,13 +35,39 @@ namespace CEGUI
 
 /*!
 \brief
+    Base class for ItemEntry window renderer objects.
+*/
+class CEGUIEXPORT ItemEntryWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    ItemEntryWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Return the "optimal" size for the item
+
+    \return
+        Size describing the size in pixel that this ItemEntry's content requires
+        for non-clipped rendering
+    */
+    virtual Size getItemPixelSize(void) const = 0;
+};
+
+/*!
+\brief
 	Base class for item type widgets.
 */
 class CEGUIEXPORT ItemEntry : public Window
 {
 public:
+    static const String WidgetTypeName;             //!< Window factory name
+
 	/*************************************************************************
-		Abstract Implementation Functions (must be provided by derived class)
+		Accessors
 	*************************************************************************/
 	/*!
 	\brief
@@ -51,7 +77,7 @@ public:
 		Size describing the size in pixel that this ItemEntry's content requires
 		for non-clipped rendering
 	*/
-	virtual Size getItemPixelSize(void) const = 0;
+	Size getItemPixelSize(void) const;
 
 
 	/*************************************************************************
@@ -72,6 +98,19 @@ public:
 
 
 protected:
+    /*************************************************************************
+        Abstract Implementation Functions
+    *************************************************************************/
+    /*!
+    \brief
+        Return the "optimal" size for the item
+
+    \return
+        Size describing the size in pixel that this ItemEntry's content requires
+        for non-clipped rendering
+    */
+    //virtual Size getItemPixelSize_impl(void) const = 0;
+
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
@@ -90,7 +129,12 @@ protected:
 		if (class_name=="ItemEntry")	return true;
 		return Window::testClassName_impl(class_name);
 	}
-   
+
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "ItemEntry");
+    }
 };
 
 } // End of  CEGUI namespace section

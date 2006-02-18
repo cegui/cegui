@@ -53,7 +53,7 @@ public:
         Constants
     *************************************************************************/
     static const String EventNamespace;     //!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
     /*************************************************************************
         Accessor type functions
@@ -183,7 +183,7 @@ protected:
     \return
         Nothing.
     */
-    virtual Size getContentSize(void);
+    virtual Size getContentSize(void) const;
 
 
     /*!
@@ -239,6 +239,7 @@ private:
     *************************************************************************/
     void    addPopupMenuProperties(void);
 };
+
 
 } // End of  CEGUI namespace section
 

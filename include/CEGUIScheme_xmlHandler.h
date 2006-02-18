@@ -92,6 +92,9 @@ namespace CEGUI
         static const String WindowTypeAttribute;            //!< Attribute specifying the type of a window being created via a mapping.
         static const String TargetTypeAttribute;            //!< Attribute specifying the base target type of a falagard mapped window type.
         static const String LookNFeelAttribute;             //!< Attribute specifying the name of a LookNFeel for a falagard mapping..
+        static const String WindowRendererSetElement;       //!< Element specifying a module and set of WindowRendererFactory elements.
+        static const String WindowRendererFactoryElement;   //!< Element specifying a WindowRendererFactory type.
+        static const String WindowRendererAttribute;        //!< Attribute specifying the type name of a window renderer.
 
         /*!
         \brief
@@ -128,6 +131,18 @@ namespace CEGUI
             Method that handles the WindowFactory XML element.
         */
         void elementWindowFactoryStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the WindowRendererSet XML element.
+        */
+        void elementWindowRendererSetStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the WindowRendererFactory XML element.
+        */
+        void elementWindowRendererFactoryStart(const XMLAttributes& attributes);
 
         /*!
         \brief

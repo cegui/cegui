@@ -104,10 +104,10 @@ AC_CONFIG_FILES([Makefile
                  ScriptingModules/CEGUILua/lua_and_tolua++/include/Makefile
                  ScriptingModules/CEGUILua/lua_and_tolua++/src/Makefile
                  ScriptingModules/Makefile
-                 WidgetSets/Makefile
-                 WidgetSets/Falagard/Makefile
-                 WidgetSets/Falagard/include/Makefile
-                 WidgetSets/Falagard/src/Makefile
+                 WindowRendererSets/Makefile
+                 WindowRendererSets/Falagard/Makefile
+                 WindowRendererSets/Falagard/include/Makefile
+                 WindowRendererSets/Falagard/src/Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile

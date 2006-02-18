@@ -38,6 +38,30 @@ namespace CEGUI
 {
     /*!
     \brief
+        Base class for ScrollablePane window renderer objects.
+    */
+    class CEGUIEXPORT ScrollablePaneWindowRenderer : public WindowRenderer
+    {
+    public:
+        /*!
+        \brief
+            Constructor
+        */
+        ScrollablePaneWindowRenderer(const String& name);
+
+        /*!
+        \brief
+            Return a Rect that described the pane's viewable area, relative
+            to this Window, in pixels.
+
+        \return
+            Rect object describing the ScrollablePane's viewable area.
+        */
+        virtual Rect getViewableArea(void) const = 0;
+    };
+
+    /*!
+    \brief
         Base class for the ScrollablePane widget.
 
         The ScrollablePane widget allows child windows to be attached which cover an area
@@ -50,6 +74,7 @@ namespace CEGUI
         /*************************************************************************
             Constants
         *************************************************************************/
+        static const String WidgetTypeName;                 //!< Window factory name
         static const String EventNamespace;                 //!< Namespace for global events
         static const String EventContentPaneChanged;        //!< Event fired when an area on the content pane has been updated.
         static const String EventVertScrollbarModeChanged;	//!< Event triggered when the vertical scroll bar 'force' setting changes.
@@ -337,10 +362,46 @@ namespace CEGUI
         */
         void setVerticalScrollPosition(float position);
 
+        /*!
+        \brief
+            Return a Rect that described the pane's viewable area, relative
+            to this Window, in pixels.
+
+        \return
+            Rect object describing the ScrollablePane's viewable area.
+        */
+        Rect getViewableArea(void) const;
+
+        /*!
+        \brief
+            Return a pointer to the vertical scrollbar component widget for this
+            ScrollablePane.
+
+        \return
+            Pointer to a Scrollbar object.
+
+        \exception UnknownObjectException
+            Thrown if the vertical Scrollbar component does not exist.
+        */
+        Scrollbar* getVertScrollbar() const;
+
+        /*!
+        \brief
+            Return a pointer to the horizontal scrollbar component widget for
+            this ScrollablePane.
+
+        \return
+            Pointer to a Scrollbar object.
+
+        \exception UnknownObjectException
+            Thrown if the horizontal Scrollbar component does not exist.
+        */
+        Scrollbar* getHorzScrollbar() const;
+
         /*************************************************************************
             Overridden from Window
         *************************************************************************/
-        void initialise(void);
+        void initialiseComponents(void);
 
     protected:
         /*************************************************************************
@@ -354,7 +415,7 @@ namespace CEGUI
         \return
             Rect object describing the ScrollablePane's viewable area.
         */
-        virtual Rect getViewableArea(void) const = 0;
+        //virtual Rect getViewableArea_impl(void) const = 0;
 
         /*************************************************************************
         	Implementation Methods
@@ -412,32 +473,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Return a pointer to the vertical scrollbar component widget for this
-            ScrollablePane.
-
-        \return
-            Pointer to a Scrollbar object.
-
-        \exception UnknownObjectException
-            Thrown if the vertical Scrollbar component does not exist.
-        */
-        Scrollbar* getVertScrollbar() const;
-
-        /*!
-        \brief
-            Return a pointer to the horizontal scrollbar component widget for
-            this ScrollablePane.
-
-        \return
-            Pointer to a Scrollbar object.
-
-        \exception UnknownObjectException
-            Thrown if the horizontal Scrollbar component does not exist.
-        */
-        Scrollbar* getHorzScrollbar() const;
-
-        /*!
-        \brief
             Return a pointer to the ScrolledContainer component widget for this
             ScrollablePane.
 
@@ -449,6 +484,11 @@ namespace CEGUI
         */
         ScrolledContainer* getScrolledContainer() const;
 
+        // validate window renderer
+        virtual bool validateWindowRenderer(const String& name) const
+        {
+            return (name == "ScrollablePane");
+        }
 
         /*************************************************************************
         	Event triggers
@@ -581,6 +621,7 @@ namespace CEGUI
 	    *************************************************************************/
 	    void addScrollablePaneProperties(void);
     };
+
 
 } // End of  CEGUI namespace section
 

@@ -24,10 +24,20 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "elements/CEGUIItemEntry.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ItemEntry::WidgetTypeName("CEGUI/ItemEntry");
+
+/*************************************************************************
+    ItemEntryWindowRenderer constructor
+*************************************************************************/
+ItemEntryWindowRenderer::ItemEntryWindowRenderer(const String& name) :
+    WindowRenderer(name, "ItemEntry")
+{
+}
 
 /*************************************************************************
 	Constructor for ItemEntry base class.
@@ -43,6 +53,23 @@ ItemEntry::ItemEntry(const String& type, const String& name)
 *************************************************************************/
 ItemEntry::~ItemEntry(void)
 {
+}
+
+/*************************************************************************
+    Get item pixel size
+*************************************************************************/
+Size ItemEntry::getItemPixelSize(void) const
+{
+    if (d_windowRenderer != 0)
+    {
+        ItemEntryWindowRenderer* wr = (ItemEntryWindowRenderer*)d_windowRenderer;
+        return wr->getItemPixelSize();
+    }
+    else
+    {
+        //return getItemPixelSize_impl();
+        throw InvalidRequestException("ItemEntry::getItemPixelSize - This function must be implemented by the window renderer module");
+    }
 }
 
 } // End of  CEGUI namespace section

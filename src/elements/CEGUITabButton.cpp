@@ -29,6 +29,8 @@
 namespace CEGUI
 {
 const String TabButton::EventNamespace("TabButton");
+const String TabButton::WidgetTypeName("CEGUI/TabButton");
+
 
 /*************************************************************************
 	Event name constants

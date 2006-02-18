@@ -43,6 +43,51 @@ namespace CEGUI
 
 /*!
 \brief
+    Base class for ItemEntry window renderer objects.
+*/
+class CEGUIEXPORT SliderWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    SliderWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        update the size and location of the thumb to properly represent the current state of the slider
+    */
+    virtual void    updateThumb(void)   = 0;
+
+    /*!
+    \brief
+        return value that best represents current slider value given the current location of the thumb.
+
+    \return
+        float value that, given the thumb widget position, best represents the current value for the slider.
+    */
+    virtual float   getValueFromThumb(void) const   = 0;
+
+    /*!
+    \brief
+        Given window location \a pt, return a value indicating what change should be 
+        made to the slider.
+
+    \param pt
+        Point object describing a pixel position in window space.
+
+    \return
+        - -1 to indicate slider should be moved to a lower setting.
+        -  0 to indicate slider should not be moved.
+        - +1 to indicate slider should be moved to a higher setting.
+    */
+    virtual float   getAdjustDirectionFromPoint(const Point& pt) const  = 0;
+};
+
+
+/*!
+\brief
 	Base class for Slider widgets.
 
 	The slider widget has a default range of 0.0f - 1.0f.  This enables use of the slider value to scale
@@ -52,7 +97,7 @@ class CEGUIEXPORT Slider : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -102,6 +147,19 @@ public:
 	float	getClickStep(void) const		{return d_step;}
 
 
+    /*!
+    \brief
+        Return a pointer to the Thumb component widget for this Slider.
+
+    \return
+        Pointer to a Thumb object.
+
+    \exception UnknownObjectException
+        Thrown if the Thumb component does not exist.
+    */
+    Thumb* getThumb() const;
+
+
 	/*************************************************************************
 		Manipulators
 	*************************************************************************/
@@ -115,7 +173,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual	void	initialise(void);
+	virtual	void	initialiseComponents(void);
 
 
 	/*!
@@ -185,7 +243,7 @@ protected:
 	\brief
 		update the size and location of the thumb to properly represent the current state of the slider
 	*/
-	virtual void	updateThumb(void)	= 0;
+	virtual void	updateThumb(void);
 
 
 	/*!
@@ -195,7 +253,7 @@ protected:
 	\return
 		float value that, given the thumb widget position, best represents the current value for the slider.
 	*/
-	virtual float	getValueFromThumb(void) const	= 0;
+	virtual float	getValueFromThumb(void) const;
 
 
 	/*!
@@ -211,8 +269,40 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual float	getAdjustDirectionFromPoint(const Point& pt) const	= 0;
+	virtual float	getAdjustDirectionFromPoint(const Point& pt) const;
 
+
+    /*!
+    \brief
+        update the size and location of the thumb to properly represent the current state of the slider
+    */
+    //virtual void    updateThumb_impl(void)   = 0;
+
+
+    /*!
+    \brief
+        return value that best represents current slider value given the current location of the thumb.
+
+    \return
+        float value that, given the thumb widget position, best represents the current value for the slider.
+    */
+    //virtual float   getValueFromThumb_impl(void) const   = 0;
+
+
+    /*!
+    \brief
+        Given window location \a pt, return a value indicating what change should be 
+        made to the slider.
+
+    \param pt
+        Point object describing a pixel position in window space.
+
+    \return
+        - -1 to indicate slider should be moved to a lower setting.
+        -  0 to indicate slider should not be moved.
+        - +1 to indicate slider should be moved to a higher setting.
+    */
+    //virtual float   getAdjustDirectionFromPoint_impl(const Point& pt) const  = 0;
 
 	/*!
 	\brief
@@ -251,17 +341,12 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
-    /*!
-    \brief
-        Return a pointer to the Thumb component widget for this Slider.
 
-    \return
-        Pointer to a Thumb object.
-
-    \exception UnknownObjectException
-        Thrown if the Thumb component does not exist.
-    */
-    Thumb* getThumb() const;
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "Slider");
+    }
 
 
 	/*************************************************************************

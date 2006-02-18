@@ -38,6 +38,7 @@
 #include "CEGUIWindowProperties.h"
 #include "CEGUIUDim.h"
 #include "CEGUIRenderCache.h"
+#include "CEGUIWindowRenderer.h"
 #include <vector>
 
 
@@ -179,6 +180,10 @@ public:
     static const String EventVerticalAlignmentChanged;
     //! The vertical alignment of the window has changed.
     static const String EventHorizontalAlignmentChanged;
+    //! The a new window renderer was attached.
+    static const String EventWindowRendererAttached;
+    //! The currently assigned window renderer was detached.
+    static const String EventWindowRendererDetached;
 
     // generated externally (inputs)
     //! Mouse cursor has entered the Window.
@@ -600,7 +605,22 @@ public:
         This has now been made virtual to ease some customisations that require
         more specialised clipping requirements.
     */
-    virtual Rect getPixelRect(void) const;
+    Rect getPixelRect(void) const;
+
+    /*!
+    \brief
+        return a Rect object describing the Window area in screen space.
+
+    \return
+        Rect object that describes the area covered by the Window.  The values
+        in the returned Rect are in screen pixels.  The returned Rect is clipped
+        as appropriate and depending upon the 'ClippedByParent' setting.
+
+    \note
+        This has now been made virtual to ease some customisations that require
+        more specialised clipping requirements.
+    */
+    virtual Rect getPixelRect_impl(void) const;
 
     /*!
     \brief
@@ -1105,7 +1125,7 @@ public:
     \return
         Nothing
     */
-    virtual void initialise(void) {}
+    virtual void initialiseComponents(void) {}
 
     /*!
     \brief
@@ -1781,22 +1801,16 @@ public:
     \brief
         Set the LookNFeel that shoule be used for this window.
 
-    \param falagardType
-        String object holding the mapped falagard type name (since actual window
-        type will be "Falagard/something") and not what was passed to
-        WindowManager.  This will be returned from getType instead of the base
-        type.
-
     \param look
         String object holding the name of the look to be assigned to the window.
 
     \return
         Nothing.
 
-    \exception InvalidRequestException
-        thrown if the window already has a look assigned to it.
+    \exception UnknownObjectException
+        thrown if the look'n'feel specified by \a look does not exist.
     */
-    void setLookNFeel(const String& falagardType, const String& look);
+    void setLookNFeel(const String& look);
 
     /*!
     \brief
@@ -2285,6 +2299,19 @@ public:
     */
     bool setMousePassThroughEnabled(bool setting)   {d_mousePassThroughEnabled = setting;}
 
+    /*!
+    \brief
+        Assign the WindowRenderer module to specify the Look'N'Feel specification
+        to be used.
+    */
+    void setWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        Get the currently assigned WindowRenderer module. (Look'N'Feel specification).
+    */
+    WindowRenderer* getWindowRenderer(void) const;
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -2758,6 +2785,28 @@ protected:
     */
     virtual void onHorizontalAlignmentChanged(WindowEventArgs& e);
 
+    /*!
+    \brief
+        Handler called when a new window renderer object is attached.
+
+    \param e
+        WindowEventArgs object initialised as follows:
+        - window field is set to point to the Window object that just got a new
+          window renderer attached. (typically 'this').
+    */
+    virtual void onWindowRendererAttached(WindowEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the currently attached window renderer object is detached.
+
+    \param e
+        WindowEventArgs object initialised as follows:
+        - window field is set to point to the Window object that just got lost its
+          window renderer. (typically 'this').
+    */
+    virtual void onWindowRendererDetached(WindowEventArgs& e);
+
     /*************************************************************************
         Implementation Functions
     *************************************************************************/
@@ -2833,6 +2882,16 @@ protected:
         Fires off a repeated mouse button down event for this window.
     */
     void generateAutoRepeatEvent(MouseButton button);
+
+    /*!
+    \brief
+        Function used in checking if a WindowRenderer is valid for this window.
+
+    \return
+        Returns true if the given WindowRenderer class name is valid for this window.
+        False if not.
+    */
+    virtual bool validateWindowRenderer(const String& name) const;
 
     /*************************************************************************
         Implementation Data
@@ -3002,6 +3061,8 @@ protected:
     // Look'N'Feel stuff
     //! Name of the Look assigned to this window (if any).
     String d_lookName;
+    //! The WindowRenderer module that implements the Look'N'Feel specification
+    WindowRenderer* d_windowRenderer;
 
     //! true when this window is currently being initialised (creating children etc)
     bool d_initialising;
@@ -3052,6 +3113,8 @@ protected:
     static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
     static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
     static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
+    static  WindowProperties::WindowRenderer    d_windowRendererProperty;
+    static  WindowProperties::LookNFeel         d_lookNFeelProperty;
 
     /*************************************************************************
         implementation functions
@@ -3188,6 +3251,8 @@ protected:
 
     //! Type name of the window as defined in a Falagard mapping.
     String    d_falagardType;
+
+    friend class WindowManager;
 };
 
 } // End of  CEGUI namespace section

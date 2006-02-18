@@ -26,11 +26,21 @@
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUIThumb.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 const String Scrollbar::EventNamespace("Scrollbar");
+const String Scrollbar::WidgetTypeName("CEGUI/Scrollbar");
+
+/*************************************************************************
+    ScrollbarWindowRenderer
+*************************************************************************/
+ScrollbarWindowRenderer::ScrollbarWindowRenderer(const String& name) :
+    WindowRenderer(name, Scrollbar::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Definition of Properties for this class
@@ -84,23 +94,20 @@ Scrollbar::~Scrollbar(void)
 /*************************************************************************
 	Initialises the Scrollbar object ready for use.
 *************************************************************************/
-void Scrollbar::initialise(void)
+void Scrollbar::initialiseComponents(void)
 {
 	// Set up thumb
 	Thumb* thumb = getThumb();
-	addChildWindow(thumb);
 	thumb->subscribeEvent(Thumb::EventThumbPositionChanged, Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved, this));
 	thumb->subscribeEvent(Thumb::EventThumbTrackStarted, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted, this));
 	thumb->subscribeEvent(Thumb::EventThumbTrackEnded, Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded, this));
 
 	// set up Increase button
 	PushButton* increase = getIncreaseButton();
-	addChildWindow(increase);
 	increase->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked, this));
 
 	// set up Decrease button
 	PushButton* decrease = getDecreaseButton();
-	addChildWindow(decrease);
 	decrease->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked, this));
 
 	// do initial layout
@@ -396,6 +403,60 @@ Thumb* Scrollbar::getThumb() const
 {
     return static_cast<Thumb*>(WindowManager::getSingleton().getWindow(
                                getName() + ThumbNameSuffix));
+}
+
+/*************************************************************************
+    update the size and location of the thumb to properly represent the
+    current state of the scroll bar
+*************************************************************************/
+void Scrollbar::updateThumb(void)
+{
+    if (d_windowRenderer != 0)
+    {
+        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_windowRenderer;
+        wr->updateThumb();
+    }
+    else
+    {
+        //updateThumb_impl();
+        throw InvalidRequestException("Scrollbar::updateThumb - This function must be implemented by the window renderer module");
+    }
+}
+
+/*************************************************************************
+    return value that best represents current scroll bar position given
+    the current location of the thumb.
+*************************************************************************/
+float Scrollbar::getValueFromThumb(void) const
+{
+    if (d_windowRenderer != 0)
+    {
+        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_windowRenderer;
+        return wr->getValueFromThumb();
+    }
+    else
+    {
+        //return getValueFromThumb_impl();
+        throw InvalidRequestException("Scrollbar::getValueFromThumb - This function must be implemented by the window renderer module");
+    }
+}
+
+/*************************************************************************
+    Given window location 'pt', return a value indicating what change
+    should be made to the scroll bar.
+*************************************************************************/
+float Scrollbar::getAdjustDirectionFromPoint(const Point& pt) const
+{
+    if (d_windowRenderer != 0)
+    {
+        ScrollbarWindowRenderer* wr = (ScrollbarWindowRenderer*)d_windowRenderer;
+        return wr->getAdjustDirectionFromPoint(pt);
+    }
+    else
+    {
+        //return getAdjustDirectionFromPoint_impl(pt);
+        throw InvalidRequestException("Scrollbar::getAdjustDirectionFromPoint - This function must be implemented by the window renderer module");
+    }
 }
 
 } // End of  CEGUI namespace section

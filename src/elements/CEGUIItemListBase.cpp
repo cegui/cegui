@@ -33,6 +33,15 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ItemListBase::EventNamespace("ItemListBase");
+
+/*************************************************************************
+    ItemListBaseWindowRenderer
+*************************************************************************/
+ItemListBaseWindowRenderer::ItemListBaseWindowRenderer(const String& name) :
+    WindowRenderer(name, ItemListBase::EventNamespace)
+{
+}
 
 /*************************************************************************
 	Definition of Properties for this class
@@ -44,7 +53,6 @@ ItemListBaseProperties::AutoResizeEnabled	ItemListBase::d_autoResizeEnabledPrope
 	Constants
 *************************************************************************/
 // event names
-const String ItemListBase::EventNamespace("ItemListBase");
 const String ItemListBase::EventListContentsChanged("ListItemsChanged");
 
 	
@@ -346,7 +354,7 @@ void ItemListBase::addChild_impl(Window* wnd)
 	// if this is an ItemEntry we add it like one. only if it is not already in the list!
 	if (wnd->testClassName("ItemEntry")&&!isItemInList((ItemEntry*)wnd))
 	{
-		// perform normal addItem - please no more infinite recursion !#?¤
+		// perform normal addItem - please no more infinite recursion !#?
 		d_listItems.push_back((ItemEntry*)wnd);
 		handleUpdatedItemData();
 	}
@@ -379,6 +387,40 @@ void ItemListBase::performChildWindowLayout(void)
 	    // It would also cause infinite recursion... so lets just avoid that :)
 	    layoutItemWidgets();
 	}
+}
+
+/************************************************************************
+    Resize to fit content
+************************************************************************/
+void ItemListBase::sizeToContent_impl(void)
+{
+    Rect renderArea(getItemRenderArea());
+    Rect wndArea(getWindowArea().asAbsolute(getParentPixelSize()));
+
+    // get size of content
+    Size sz(getContentSize());
+
+    // calculate the full size with the frame accounted for and resize the window to this
+    sz.d_width  += wndArea.getWidth() - renderArea.getWidth();
+    sz.d_height += wndArea.getHeight() - renderArea.getHeight();
+    setWindowSize(UVector2(cegui_absdim(sz.d_width), cegui_absdim(sz.d_height)));
+}
+
+/************************************************************************
+    Get item render area
+************************************************************************/
+Rect ItemListBase::getItemRenderArea(void) const
+{
+    if (d_windowRenderer != 0)
+    {
+        ItemListBaseWindowRenderer* wr = (ItemListBaseWindowRenderer*)d_windowRenderer;
+        return wr->getItemRenderArea();
+    }
+    else
+    {
+        //return getItemRenderArea_impl();
+        throw InvalidRequestException("ItemListBase::getItemRenderArea - This function must be implemented by the window renderer module");
+    }
 }
 
 } // End of  CEGUI namespace section

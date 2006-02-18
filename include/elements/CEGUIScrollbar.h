@@ -42,6 +42,50 @@ namespace CEGUI
 {
 /*!
 \brief
+    Base class for ItemEntry window renderer objects.
+*/
+class CEGUIEXPORT ScrollbarWindowRenderer : public WindowRenderer
+{
+public:
+    /*!
+    \brief
+        Constructor
+    */
+    ScrollbarWindowRenderer(const String& name);
+
+    /*!
+    \brief
+        update the size and location of the thumb to properly represent the current state of the scroll bar
+    */
+    virtual void    updateThumb(void)   = 0;
+
+    /*!
+    \brief
+        return value that best represents current scroll bar position given the current location of the thumb.
+
+    \return
+        float value that, given the thumb widget position, best represents the current position for the scroll bar.
+    */
+    virtual float   getValueFromThumb(void) const   = 0;
+
+    /*!
+    \brief
+        Given window location \a pt, return a value indicating what change should be 
+        made to the scroll bar.
+
+    \param pt
+        Point object describing a pixel position in window space.
+
+    \return
+        - -1 to indicate scroll bar position should be moved to a lower value.
+        -  0 to indicate scroll bar position should not be changed.
+        - +1 to indicate scroll bar position should be moved to a higher value.
+    */
+    virtual float   getAdjustDirectionFromPoint(const Point& pt) const  = 0;
+};
+
+/*!
+\brief
 	Base scroll bar class.
 
 	This base class for scroll bars does not have any idea of direction - a derived class would
@@ -52,6 +96,7 @@ class CEGUIEXPORT Scrollbar : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants
@@ -167,6 +212,47 @@ public:
 	float	getScrollPosition(void) const		{return d_position;}
 
 
+    /*!
+    \brief
+        Return a pointer to the 'increase' PushButtoncomponent widget for this
+        Scrollbar.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the increase PushButton component does not exist.
+    */
+    PushButton* getIncreaseButton() const;
+
+
+    /*!
+    \brief
+        Return a pointer to the 'decrease' PushButton component widget for this
+        Scrollbar.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the 'decrease' PushButton component does not exist.
+    */
+    PushButton* getDecreaseButton() const;
+
+
+    /*!
+    \brief
+        Return a pointer to the Thumb component widget for this Scrollbar.
+
+    \return
+        Pointer to a Thumb object.
+
+    \exception UnknownObjectException
+        Thrown if the Thumb component does not exist.
+    */
+    Thumb* getThumb() const;
+
+
 	/*************************************************************************
 		Manipulator Commands
 	*************************************************************************/
@@ -180,7 +266,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual void	initialise(void);
+	virtual void	initialiseComponents(void);
 
 
 	/*!
@@ -321,7 +407,7 @@ protected:
 	\brief
 		update the size and location of the thumb to properly represent the current state of the scroll bar
 	*/
-	virtual void	updateThumb(void)	= 0;
+	void	updateThumb(void);
 
 
 	/*!
@@ -331,7 +417,7 @@ protected:
 	\return
 		float value that, given the thumb widget position, best represents the current position for the scroll bar.
 	*/
-	virtual float	getValueFromThumb(void) const	= 0;
+	float	getValueFromThumb(void) const;
 
 
 	/*!
@@ -347,7 +433,40 @@ protected:
 		-  0 to indicate scroll bar position should not be changed.
 		- +1 to indicate scroll bar position should be moved to a higher value.
 	*/
-	virtual float	getAdjustDirectionFromPoint(const Point& pt) const	= 0;
+	float	getAdjustDirectionFromPoint(const Point& pt) const;
+
+
+    /*!
+    \brief
+        update the size and location of the thumb to properly represent the current state of the scroll bar
+    */
+    //virtual void    updateThumb_impl(void)   = 0;
+
+
+    /*!
+    \brief
+        return value that best represents current scroll bar position given the current location of the thumb.
+
+    \return
+        float value that, given the thumb widget position, best represents the current position for the scroll bar.
+    */
+    //virtual float   getValueFromThumb_impl(void) const   = 0;
+
+
+    /*!
+    \brief
+        Given window location \a pt, return a value indicating what change should be 
+        made to the scroll bar.
+
+    \param pt
+        Point object describing a pixel position in window space.
+
+    \return
+        - -1 to indicate scroll bar position should be moved to a lower value.
+        -  0 to indicate scroll bar position should not be changed.
+        - +1 to indicate scroll bar position should be moved to a higher value.
+    */
+    //virtual float   getAdjustDirectionFromPoint_impl(const Point& pt) const  = 0;
 
 
 	/*!
@@ -401,47 +520,11 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
-
-    /*!
-    \brief
-        Return a pointer to the 'increase' PushButtoncomponent widget for this
-        Scrollbar.
-
-    \return
-        Pointer to a PushButton object.
-
-    \exception UnknownObjectException
-        Thrown if the increase PushButton component does not exist.
-    */
-    PushButton* getIncreaseButton() const;
-
-
-    /*!
-    \brief
-        Return a pointer to the 'decrease' PushButton component widget for this
-        Scrollbar.
-
-    \return
-        Pointer to a PushButton object.
-
-    \exception UnknownObjectException
-        Thrown if the 'decrease' PushButton component does not exist.
-    */
-    PushButton* getDecreaseButton() const;
-
-
-    /*!
-    \brief
-        Return a pointer to the Thumb component widget for this Scrollbar.
-
-    \return
-        Pointer to a Thumb object.
-
-    \exception UnknownObjectException
-        Thrown if the Thumb component does not exist.
-    */
-    Thumb* getThumb() const;
-
+    // validate window renderer
+    virtual bool validateWindowRenderer(const String& name) const
+    {
+        return (name == "Scrollbar");
+    }
 
 	/*************************************************************************
 		New event handlers for slider widget
@@ -507,7 +590,6 @@ private:
 	*************************************************************************/
 	void	addScrollbarProperties(void);
 };
-
 
 } // End of  CEGUI namespace section
 

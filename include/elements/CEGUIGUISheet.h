@@ -61,7 +61,7 @@ public:
     \brief
         Constructor for GUISheet windows.
     */
-    GUISheet(const String& type, const String& name) : Window(type, name) {}
+    GUISheet(const String& type, const String& name);
 
 
     /*!
@@ -72,20 +72,6 @@ public:
 
 
 protected:
-    /*!
-    \brief
-        overridden initialise member to set-up our default state.
-    */
-    void initialise(void)
-    {
-        Window::initialise();
-
-        UVector2 sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
-        setWindowMaxSize(sz);
-        setWindowSize(sz);
-    }
-
-
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
@@ -144,7 +130,7 @@ public:
     \return
         Nothing.
     */
-    virtual void    destroyWindow(Window* window)    { if (window->getType() == d_type) delete window; }
+    virtual void    destroyWindow(Window* window)    { delete window; }
 };
 
 /*!

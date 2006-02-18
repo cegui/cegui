@@ -36,6 +36,8 @@ namespace CEGUI
 	Constants
 *************************************************************************/
 const String Menubar::EventNamespace("Menubar");
+const String Menubar::WidgetTypeName("CEGUI/Menubar");
+
 
 /*************************************************************************
 	Constructor for Menubar base class.
@@ -87,7 +89,7 @@ void Menubar::layoutItemWidgets()
 /*************************************************************************
 	Returns the "optimal" size for the content in unclipped pixels
 *************************************************************************/
-Size Menubar::getContentSize()
+Size Menubar::getContentSize() const
 {
 	// find the content sizes
 	float tallest = 0;

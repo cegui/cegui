@@ -37,6 +37,8 @@
 namespace CEGUI
 {
 const String FrameWindow::EventNamespace("FrameWindow");
+const String FrameWindow::WidgetTypeName("CEGUI/FrameWindow");
+
 
 /*************************************************************************
 	Definitions for Properties
@@ -104,17 +106,15 @@ FrameWindow::~FrameWindow(void)
 /*************************************************************************
 	Initialises the Window based object ready for use.
 *************************************************************************/
-void FrameWindow::initialise(void)
+void FrameWindow::initialiseComponents(void)
 {
-    // create child windows
+    // get component windows
     Titlebar* titlebar = getTitlebar();
     PushButton* closeButton = getCloseButton();
 
-    // add child controls
+    // configure titlebar
     titlebar->setDraggingEnabled(d_dragMovable);
-    addChildWindow(titlebar);
-
-    addChildWindow(closeButton);
+    titlebar->setText(d_text);
 
     // bind handler to close button 'Click' event
     closeButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&CEGUI::FrameWindow::closeClickHandler, this));

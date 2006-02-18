@@ -48,6 +48,7 @@ class CEGUIEXPORT ListHeaderSegment : public Window
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
+    static const String WidgetTypeName;             //!< Window factory name
 
 
 	/*************************************************************************
@@ -143,6 +144,45 @@ public:
 	bool	isClickable(void) const		{return d_allowClicks;}
 
 
+    /*!
+    \brief
+        Return whether the segment is currently in its hovering state.
+    */
+    bool    isSegmentHovering(void) const  {return d_segmentHover;}
+
+
+    /*!
+    \brief
+        Return whether the segment is currently in its pushed state.
+    */
+    bool    isSegmentPushed(void) const  {return d_segmentPushed;}
+
+
+    /*!
+    \brief
+        Return whether the splitter is currently in its hovering state.
+    */
+    bool    isSplitterHovering(void) const  {return d_splitterHover;}
+
+
+    /*!
+    \brief
+        Return whether the segment is currently being drag-moved.
+    */
+    bool    isBeingDragMoved(void) const  {return d_dragMoving;}
+
+
+    /*!
+    \brief
+        Return whether the segment is currently being drag-moved.
+    */
+    bool    isBeingDragSized(void) const  {return d_dragSizing;}
+
+
+    const Image* getSizingCursorImage() const;
+    const Image* getMovingCursorImage() const;
+
+
 	/*************************************************************************
 		Manipulator Methods
 	*************************************************************************/
@@ -201,6 +241,12 @@ public:
 		Nothing.
 	*/
 	void setClickable(bool setting);
+
+
+    void setSizingCursorImage(const Image* image);
+    void setSizingCursorImage(const String& imageset, const String& image);
+    void setMovingCursorImage(const Image* image);
+    void setMovingCursorImage(const String& imageset, const String& image);
 
 
 	/*************************************************************************
@@ -409,7 +455,6 @@ protected:
 	Point	d_dragPosition;		//!< position of dragged segment.
 	bool	d_allowClicks;		//!< true if the segment can be clicked.
 
-
 private:
 	/*************************************************************************
 		Static Properties for this class
@@ -418,6 +463,8 @@ private:
 	static ListHeaderSegmentProperties::Dragable		d_dragableProperty;
 	static ListHeaderSegmentProperties::Sizable			d_sizableProperty;
 	static ListHeaderSegmentProperties::SortDirection	d_sortDirectionProperty;
+    static ListHeaderSegmentProperties::SizingCursorImage   d_sizingCursorProperty;
+    static ListHeaderSegmentProperties::MovingCursorImage   d_movingCursorProperty;
 
 
 	/*************************************************************************

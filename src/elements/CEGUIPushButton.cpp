@@ -34,6 +34,7 @@ namespace CEGUI
 *************************************************************************/
 // event strings
 const String PushButton::EventNamespace("PushButton");
+const String PushButton::WidgetTypeName("CEGUI/PushButton");
 const String PushButton::EventClicked( "Clicked" );
 
 

@@ -42,7 +42,7 @@ class CEGUIEXPORT TabButton : public ButtonBase
 {
 public:
 	static const String EventNamespace;				//!< Namespace for global events
-
+    static const String WidgetTypeName;             //!< Window factory name
 
 	/*************************************************************************
 		Event name constants

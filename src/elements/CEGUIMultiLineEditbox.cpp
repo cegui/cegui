@@ -35,6 +35,16 @@
 namespace CEGUI
 {
 const String MultiLineEditbox::EventNamespace("MultiLineEditbox");
+const String MultiLineEditbox::WidgetTypeName("CEGUI/MultiLineEditbox");
+
+
+/*************************************************************************
+    MultiLineEditboxWindowRenderer
+*************************************************************************/
+MultiLineEditboxWindowRenderer::MultiLineEditboxWindowRenderer(const String& name) :
+    WindowRenderer(name, MultiLineEditbox::EventNamespace)
+{
+}
 
 /*************************************************************************
 	TODO:
@@ -51,6 +61,7 @@ MultiLineEditboxProperties::CaratIndex				MultiLineEditbox::d_caratIndexProperty
 MultiLineEditboxProperties::SelectionStart			MultiLineEditbox::d_selectionStartProperty;
 MultiLineEditboxProperties::SelectionLength			MultiLineEditbox::d_selectionLengthProperty;
 MultiLineEditboxProperties::MaxTextLength			MultiLineEditbox::d_maxTextLengthProperty;
+MultiLineEditboxProperties::SelectionBrushImage     MultiLineEditbox::d_selectionBrushProperty;
 
 
 /*************************************************************************
@@ -111,14 +122,11 @@ MultiLineEditbox::~MultiLineEditbox(void)
 /*************************************************************************
 	Initialise the Window based object ready for use.	
 *************************************************************************/
-void MultiLineEditbox::initialise(void)
+void MultiLineEditbox::initialiseComponents(void)
 {
 	// create the component sub-widgets
 	Scrollbar* vertScrollbar = getVertScrollbar();
 	Scrollbar* horzScrollbar = getHorzScrollbar();
-
-	addChildWindow(vertScrollbar);
-	addChildWindow(horzScrollbar);
 
     vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
     horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&MultiLineEditbox::handle_scrollChange, this));
@@ -1496,6 +1504,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 	addProperty(&d_selectionStartProperty);
 	addProperty(&d_selectionLengthProperty);
 	addProperty(&d_maxTextLengthProperty);
+    addProperty(&d_selectionBrushProperty);
 }
 
 /*************************************************************************
@@ -1524,6 +1533,34 @@ Scrollbar* MultiLineEditbox::getHorzScrollbar() const
 {
     return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
                                    getName() + HorzScrollbarNameSuffix));
+}
+
+/*************************************************************************
+    Get the text rendering area
+*************************************************************************/
+Rect MultiLineEditbox::getTextRenderArea() const
+{
+    if (d_windowRenderer != 0)
+    {
+        MultiLineEditboxWindowRenderer* wr = (MultiLineEditboxWindowRenderer*)d_windowRenderer;
+        return wr->getTextRenderArea();
+    }
+    else
+    {
+        //return getTextRenderArea_impl();
+        throw InvalidRequestException("MultiLineEditbox::getTextRenderArea - This function must be implemented by the window renderer module");
+    }
+}
+
+const Image* MultiLineEditbox::getSelectionBrushImage() const
+{
+    return d_selectionBrush;
+}
+
+void MultiLineEditbox::setSelectionBrushImage(const Image* image)
+{
+    d_selectionBrush = image;
+    requestRedraw();
 }
 
 } // End of  CEGUI namespace section

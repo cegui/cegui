@@ -174,6 +174,18 @@ namespace CEGUI
 
         /*!
         \brief
+            Clean up the given window from all properties and component widgets created by this WidgetLookFeel
+
+        \param widget
+            Window based object to be cleaned up.
+
+        \return
+            Nothing.
+        */
+        void cleanUpWidget(Window& widget) const;
+
+        /*!
+        \brief
             Return whether imagery is defined for the given state.
 
         \param state
