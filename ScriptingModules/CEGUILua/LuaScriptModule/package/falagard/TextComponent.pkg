@@ -1,0 +1,16 @@
+/***********************************************************************
+ TextComponent
+ **********************************************************************/
+ class TextComponent : public FalagardComponentBase 
+ {
+    string getText() const;
+    void setText(string text);
+    string getFont() const;
+    void setFont(string font);
+    VerticalTextFormatting getVerticalFormatting() const;
+    void setVerticalTFormatting(VerticalTextFormatting fmt);
+    HorizontalTextFormatting getHorizontalFormatting() const;
+    void setHorizontalFormatting(HorizontalTextFormatting fmt);
+    //void writeXMLToStream(OutStream& out_stream) const;
+    TextComponent();
+ };

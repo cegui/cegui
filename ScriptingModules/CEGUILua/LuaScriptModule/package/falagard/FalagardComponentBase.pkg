@@ -1,0 +1,19 @@
+/******************************************************************************
+  FalagardComponentBase
+******************************************************************************/
+
+class FalagardComponentBase
+{
+  void render(Window& srcWindow, float base_z, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  void render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  const ComponentArea& getComponentArea() const;
+  void setComponentArea(const ComponentArea& area);
+  const ColourRect& getColours() const;
+  void setColours(const ColourRect& cols);
+  void setColoursPropertySource(string property);
+  void setColoursPropertyIsColourRect(bool setting = true);
+  void setVertFormattingPropertySource(string property);
+  void setHorzFormattingPropertySource(string property);
+
+  FalagardComponentBase();
+};

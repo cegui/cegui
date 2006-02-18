@@ -1,0 +1,17 @@
+/******************************************************************************
+  FrameComponent
+******************************************************************************/
+
+class FrameComponent : public FalagardComponentBase
+{
+
+  VerticalFormatting getBackgroundVerticalFormatting() const;
+  void setBackgroundVerticalFormatting(VerticalFormatting fmt);
+  HorizontalFormatting getBackgroundHorizontalFormatting() const;
+  void setBackgroundHorizontalFormatting(HorizontalFormatting fmt);
+  const Image* getImage(FrameImageComponent part) const;
+  void setImage(FrameImageComponent part, const Image* image);
+  void setImage(FrameImageComponent part, string imageset, string image);
+  //void writeXMLToStream(OutStream& out_stream) const;
+  FrameComponent();
+};

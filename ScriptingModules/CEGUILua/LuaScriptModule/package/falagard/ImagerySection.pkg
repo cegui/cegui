@@ -1,0 +1,28 @@
+/******************************************************************************
+  ImagerySection
+******************************************************************************/
+
+class ImagerySection
+{
+  void render(Window& srcWindow, float base_z, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+
+  void render(Window& srcWindow, const Rect& baseRect, float base_z, const ColourRect* modColours = 0, const Rect* clipper = 0, bool clipToDisplay = false) const;
+  void addImageryComponent(const ImageryComponent& img);
+  void clearImageryComponents();
+  void addTextComponent(const TextComponent& text);
+  void clearTextComponents();
+  void clearFrameComponents();
+  void addFrameComponent(const FrameComponent& frame);
+  const ColourRect& getMasterColours() const;
+  void setMasterColours(const ColourRect& cols);
+  string getName() const;
+  void setMasterColoursPropertySource(string property);
+  void setMasterColoursPropertyIsColourRect(bool setting = true);
+  Rect getBoundingRect(const Window& wnd) const;
+  Rect getBoundingRect(const Window& wnd, const Rect& rect) const;
+  //void writeXMLToStream(OutStream& out_stream) const;
+
+  ImagerySection();
+  ImagerySection(string name);
+};
+

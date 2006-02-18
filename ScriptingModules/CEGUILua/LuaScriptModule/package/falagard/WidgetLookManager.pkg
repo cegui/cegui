@@ -1,0 +1,20 @@
+/***********************************************************************
+  WidgetLookManager
+***********************************************************************/
+
+class WidgetLookManager 
+{
+  static WidgetLookManager& getSingleton(void);
+
+  void parseLookNFeelSpecification(string filename, string resourceGroup = "");
+  bool isWidgetLookAvailable(string widget) const;
+  const WidgetLookFeel& getWidgetLook(string widget) const;
+  void eraseWidgetLook(string widget);
+  void addWidgetLook(WidgetLookFeel& look);
+
+  //void writeFalagardXMLHeadToStream(OutStream& out_stream) const;
+  //void writeFalagardXMLTailToStream(OutStream& out_stream) const;
+  //void writeWidgetLookToStream(const String& name, OutStream& out_stream) const;
+  //void writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const;
+  WidgetLookManager();
+};
