@@ -153,10 +153,14 @@ namespace CEGUI
         {}
     }
 
-    void WidgetComponent::writeXMLToStream(OutStream& out_stream) const
+    void WidgetComponent::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
+        String indent(indentLevel, '\t');
+        ++indentLevel;
+        String subindent(indentLevel, '\t');
+
         // output opening tag
-        out_stream << "<Child type=\"" << d_baseType << "\" nameSuffix=\"" << d_nameSuffix << "\"";
+        out_stream << indent << "<Child type=\"" << d_baseType << "\" nameSuffix=\"" << d_nameSuffix << "\"";
 
         if (!d_imageryName.empty())
             out_stream << " look=\"" << d_imageryName << "\"";
@@ -164,22 +168,22 @@ namespace CEGUI
         out_stream << ">" << std::endl;
 
         // output target area
-        d_area.writeXMLToStream(out_stream);
+        d_area.writeXMLToStream(out_stream, indentLevel);
 
         // output vertical alignment
-        out_stream << "<VertAlignment type=\"" << FalagardXMLHelper::vertAlignmentToString(d_vertAlign) << "\" />" << std::endl;
+        out_stream << subindent << "<VertAlignment type=\"" << FalagardXMLHelper::vertAlignmentToString(d_vertAlign) << "\" />" << std::endl;
 
         // output horizontal alignment
-        out_stream << "<HorzAlignment type=\"" << FalagardXMLHelper::horzAlignmentToString(d_horzAlign) << "\" />" << std::endl;
+        out_stream << subindent << "<HorzAlignment type=\"" << FalagardXMLHelper::horzAlignmentToString(d_horzAlign) << "\" />" << std::endl;
 
         //output property initialisers
         for (PropertiesList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
         {
-            (*prop).writeXMLToStream(out_stream);
+            (*prop).writeXMLToStream(out_stream, indentLevel);
         }
 
         // output closing tag
-        out_stream << "</Child>" << std::endl;
+        out_stream << indent << "</Child>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

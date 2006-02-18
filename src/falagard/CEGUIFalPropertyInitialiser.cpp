@@ -54,9 +54,10 @@ namespace CEGUI
         return d_propertyValue;
     }
 
-    void PropertyInitialiser::writeXMLToStream(OutStream& out_stream) const
+    void PropertyInitialiser::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<Property name=\"" << d_propertyName << "\" value=\"" << d_propertyValue << "\" />" << std::endl;
+        String indent(indentLevel, '\t');
+        out_stream << indent << "<Property name=\"" << d_propertyName << "\" value=\"" << d_propertyValue << "\" />" << std::endl;
     }
 
 } // End of  CEGUI namespace section

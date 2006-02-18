@@ -241,7 +241,7 @@ void FontManager::writeFontToStream(const String& name, OutStream& out_stream) c
     out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
 
     // output font data
-    font->writeXMLToStream(out_stream);
+    font->writeXMLToStream(out_stream, 0);
 }
 
 } // End of  CEGUI namespace section

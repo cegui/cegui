@@ -140,10 +140,13 @@ namespace CEGUI
         \param out_stream
             Stream where xml data should be output.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream) const;
+        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
     protected:
         /*!
@@ -566,10 +569,13 @@ namespace CEGUI
         \param out_stream
             Stream where xml data should be output.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream) const;
+        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
     private:
         BaseDim*        d_value;    //!< Pointer to the value for this Dimension.
@@ -625,10 +631,13 @@ namespace CEGUI
         \param out_stream
             Stream where xml data should be output.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream) const;
+        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
         /*!
         \brief

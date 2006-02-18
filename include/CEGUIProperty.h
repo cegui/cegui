@@ -176,7 +176,7 @@ public:
         This would normally have been implemented via XMLGenerator base class, but in this
         case we require the target PropertyReceiver in order to obtain the property value.
     */
-    void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream) const;
+    void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const;
 
 protected:
 	String	d_name;		//!< String that stores the Property name.

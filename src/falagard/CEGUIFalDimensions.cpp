@@ -148,10 +148,13 @@ namespace CEGUI
         d_operand = operand.clone();
     }
 
-    void BaseDim::writeXMLToStream(OutStream& out_stream) const
+    void BaseDim::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
+        String indent(indentLevel, '\t');
+        ++indentLevel;
+        String subindent(indentLevel, '\t');
         // open tag
-        out_stream << "<";
+        out_stream << indent << "<";
         // get sub-class to output the data for this single dimension
         writeXMLElementName_impl(out_stream);
         out_stream << " ";
@@ -162,13 +165,13 @@ namespace CEGUI
             // terminate the opening element tag
             out_stream << ">" << std::endl;
             // write out the DimOperator
-            out_stream << "<DimOperator op=\"" << FalagardXMLHelper::dimensionOperatorToString(d_operator) << "\">" << std::endl;
+            out_stream << subindent << "<DimOperator op=\"" << FalagardXMLHelper::dimensionOperatorToString(d_operator) << "\">" << std::endl;
             // write out the other operand
-            d_operand->writeXMLToStream(out_stream);
+            d_operand->writeXMLToStream(out_stream, indentLevel + 1);
             // write closing tag for DimOperator element
-            out_stream << "</DimOperator>" << std::endl;
+            out_stream << subindent << "</DimOperator>" << std::endl;
             // write closing tag for this dimension element
-            out_stream << "</";
+            out_stream << indent << "</";
             writeXMLElementName_impl(out_stream);
             out_stream << ">" << std::endl;
         }
@@ -588,14 +591,17 @@ namespace CEGUI
         d_type = type;
     }
 
-    void Dimension::writeXMLToStream(OutStream& out_stream) const
+    void Dimension::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<Dim type=\"" << FalagardXMLHelper::dimensionTypeToString(d_type) << "\">" << std::endl;
+        String indent(indentLevel, '\t');
+        ++indentLevel;
+
+        out_stream << indent << "<Dim type=\"" << FalagardXMLHelper::dimensionTypeToString(d_type) << "\">" << std::endl;
 
         if (d_value)
-            d_value->writeXMLToStream(out_stream);
+            d_value->writeXMLToStream(out_stream, indentLevel);
 
-        out_stream << "</Dim>" << std::endl;
+        out_stream << indent << "</Dim>" << std::endl;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -752,24 +758,28 @@ namespace CEGUI
         return pixelRect;
     }
 
-    void ComponentArea::writeXMLToStream(OutStream& out_stream) const
+    void ComponentArea::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<Area>" << std::endl;
+        String indent(indentLevel, '\t');
+        ++indentLevel;
+
+        out_stream << indent << "<Area>" << std::endl;
 
         // see if we should write an AreaProperty element
         if (isAreaFetchedFromProperty())
         {
-            out_stream << "<AreaProperty name=\"" << d_areaProperty << "\" />" << std::endl;
+            String subindent(indentLevel, '\t');
+            out_stream << subindent << "<AreaProperty name=\"" << d_areaProperty << "\" />" << std::endl;
         }
         // not a property, write out individual dimensions explicitly.
         else
         {
-            d_left.writeXMLToStream(out_stream);
-            d_top.writeXMLToStream(out_stream);
-            d_right_or_width.writeXMLToStream(out_stream);
-            d_bottom_or_height.writeXMLToStream(out_stream);
+            d_left.writeXMLToStream(out_stream, indentLevel);
+            d_top.writeXMLToStream(out_stream, indentLevel);
+            d_right_or_width.writeXMLToStream(out_stream, indentLevel);
+            d_bottom_or_height.writeXMLToStream(out_stream, indentLevel);
         }
-        out_stream << "</Area>" << std::endl;
+        out_stream << indent << "</Area>" << std::endl;
     }
 
     bool ComponentArea::isAreaFetchedFromProperty() const

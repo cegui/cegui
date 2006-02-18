@@ -150,7 +150,7 @@ namespace CEGUI
         try
         {
             // output the desired widget look data
-            getWidgetLook(name).writeXMLToStream(out_stream);
+            getWidgetLook(name).writeXMLToStream(out_stream, 1);
         }
         catch (UnknownObjectException)
         {
@@ -169,7 +169,7 @@ namespace CEGUI
         for (WidgetLookList::const_iterator curr = d_widgetLooks.begin(); curr != d_widgetLooks.end(); ++curr)
         {
             if ((*curr).first.compare(0, prefix.length(), prefix) == 0)
-                (*curr).second.writeXMLToStream(out_stream);
+                (*curr).second.writeXMLToStream(out_stream, 1);
         }
 
         // close the root tags to terminate the file

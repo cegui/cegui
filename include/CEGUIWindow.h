@@ -2263,10 +2263,14 @@ public:
     \param out_stream
         Stream where xml data should be output.
 
+    \param indentLevel
+        Current indentation level.  Properties and child windows will be further
+        indented.
+
     \return
         Nothing.
     */
-    virtual void writeXMLToStream(OutStream& out_stream) const;
+    virtual void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
     /*!
     \brief
@@ -3227,8 +3231,8 @@ protected:
     */
     void removeWindowFromDrawList(const Window& wnd);
 
-    virtual int writePropertiesXML(OutStream& out_stream) const;
-    virtual int writeChildWindowsXML(OutStream& out_stream) const;
+    virtual int writePropertiesXML(OutStream& out_stream, uint indentLevel) const;
+    virtual int writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const;
 
     /*************************************************************************
         May not copy or assign Window objects

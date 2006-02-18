@@ -501,10 +501,13 @@ public:
     \param out_stream
         Stream where xml data should be output.
 
+    \param indentLevel
+        Current XML indentation level
+
     \return
         Nothing.
     */
-    void writeXMLToStream(OutStream& out_stream) const;
+    void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
 
 protected:

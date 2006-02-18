@@ -255,14 +255,20 @@ namespace CEGUI
         return bounds;
     }
 
-    void ImagerySection::writeXMLToStream(OutStream& out_stream) const
+    void ImagerySection::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
+        String indent(indentLevel, '\t');
+        ++indentLevel;
+        String subindent(indentLevel, '\t');
+
         // output opening tag
-        out_stream << "<ImagerySection name=\"" << d_name << "\">" << std::endl;
+        out_stream << indent << "<ImagerySection name=\"" << d_name << "\">" << std::endl;
 
         // output modulative colours for this section
         if (!d_colourPropertyName.empty())
         {
+            out_stream << subindent;
+
             if (d_colourProperyIsRect)
                 out_stream << "<ColourRectProperty ";
             else
@@ -272,7 +278,7 @@ namespace CEGUI
         }
         else if (!d_masterColours.isMonochromatic() || d_masterColours.d_top_left != colour(1,1,1,1))
         {
-            out_stream << "<Colours ";
+            out_stream << subindent << "<Colours ";
             out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_masterColours.d_top_left) << "\" ";
             out_stream << "topRight=\"" << PropertyHelper::colourToString(d_masterColours.d_top_right) << "\" ";
             out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_masterColours.d_bottom_left) << "\" ";
@@ -282,23 +288,23 @@ namespace CEGUI
         // output all frame components.
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).writeXMLToStream(out_stream);
+            (*frame).writeXMLToStream(out_stream, indentLevel);
         }
 
         // output all imagery components
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).writeXMLToStream(out_stream);
+            (*image).writeXMLToStream(out_stream, indentLevel);
         }
 
         // output all text components
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).writeXMLToStream(out_stream);
+            (*text).writeXMLToStream(out_stream, indentLevel);
         }
 
         // output closing tag
-        out_stream << "</ImagerySection>" << std::endl;
+        out_stream << indent << "</ImagerySection>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

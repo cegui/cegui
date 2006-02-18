@@ -183,9 +183,11 @@ namespace CEGUI
         d_renderControlProperty = property;
     }
 
-    void SectionSpecification::writeXMLToStream(OutStream& out_stream) const
+    void SectionSpecification::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<Section ";
+        String indent(indentLevel, '\t');
+
+        out_stream << indent << "<Section ";
 
         if (!d_owner.empty())
             out_stream << "look=\"" << d_owner << "\" ";
@@ -198,12 +200,16 @@ namespace CEGUI
 
         if (d_usingColourOverride)
         {
+            String subindent(indentLevel + 1, '\t');
+
             // terminate opening tag
             out_stream << ">" << std::endl;
 
             // output modulative colours for this section
             if (!d_colourPropertyName.empty())
             {
+                out_stream << subindent;
+
                 if (d_colourProperyIsRect)
                     out_stream << "<ColourRectProperty ";
                 else
@@ -213,7 +219,7 @@ namespace CEGUI
             }
             else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != colour(1,1,1,1))
             {
-                out_stream << "<Colours ";
+                out_stream << subindent << "<Colours ";
                 out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_coloursOverride.d_top_left) << "\" ";
                 out_stream << "topRight=\"" << PropertyHelper::colourToString(d_coloursOverride.d_top_right) << "\" ";
                 out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_coloursOverride.d_bottom_left) << "\" ";
@@ -221,7 +227,7 @@ namespace CEGUI
             }
 
             // output closing section tag
-            out_stream << "</Section>" << std::endl;
+            out_stream << indent << "</Section>" << std::endl;
         }
         else
         {

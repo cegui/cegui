@@ -308,10 +308,12 @@ void Imageset::notifyScreenResolution(const Size& size)
 
 }
 
-void Imageset::writeXMLToStream(OutStream& out_stream) const
+void Imageset::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
 {
+    String indent(indentLevel, '\t');
+
     // output opening tag
-    out_stream << "<Imageset Name=\"" << d_name << "\" ";
+    out_stream << indent << "<Imageset Name=\"" << d_name << "\" ";
     out_stream << "Filename=\"" << d_textureFilename << "\" ";
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
@@ -326,16 +328,17 @@ void Imageset::writeXMLToStream(OutStream& out_stream) const
     out_stream << ">" << std::endl;
 
     // output images
+    ++indentLevel;
     ImageIterator image = getIterator();
 
     while (!image.isAtEnd())
     {
-        image.getCurrentValue().writeXMLToStream(out_stream);
+        image.getCurrentValue().writeXMLToStream(out_stream, indentLevel);
         ++image;
     }
 
     // output closing tag
-    out_stream << "</Imageset>" << std::endl;
+    out_stream << indent << "</Imageset>" << std::endl;
 }
 
 

@@ -205,11 +205,14 @@ namespace CEGUI
         \note
             This is intended as a helper method for sub-classes when outputting xml to a stream.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             - true if xml element was written.
             - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
         */
-        bool writeColoursXML(OutStream& out_stream) const;
+        bool writeColoursXML(OutStream& out_stream, uint indentLevel) const;
 
         /*!
         \brief
@@ -218,11 +221,14 @@ namespace CEGUI
         \note
             This is intended as a helper method for sub-classes when outputting xml to a stream.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             - true if xml element was written.
             - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
         */
-        bool writeVertFormatXML(OutStream& out_stream) const;
+        bool writeVertFormatXML(OutStream& out_stream, uint indentLevel) const;
 
         /*!
         \brief
@@ -231,11 +237,14 @@ namespace CEGUI
         \note
             This is intended as a helper method for sub-classes when outputting xml to a stream.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             - true if xml element was written.
             - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
         */
-        bool writeHorzFormatXML(OutStream& out_stream) const;
+        bool writeHorzFormatXML(OutStream& out_stream, uint indentLevel) const;
 
 
         // data fields

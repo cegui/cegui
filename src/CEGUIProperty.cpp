@@ -45,11 +45,13 @@ namespace CEGUI
 		return d_default;
 	}
 
-    void Property::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream) const
+    void Property::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const
     {
+        String indent(indentLevel, '\t');
+
         if (d_writeXML)
         {
-            out_stream << "<Property Name=\"" << d_name <<"\" Value=\"" << get(receiver).c_str() << "\" />"  << std::endl;
+            out_stream << indent << "<Property Name=\"" << d_name <<"\" Value=\"" << get(receiver).c_str() << "\" />"  << std::endl;
         }
     }
 

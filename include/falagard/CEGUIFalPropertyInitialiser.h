@@ -86,10 +86,13 @@ namespace CEGUI
         \param out_stream
             Stream where xml data should be output.
 
+        \param indentLevel
+            Current XML indentation level
+
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream) const;
+        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
     private:
         CEGUI::String   d_propertyName;     //!< Name of a property to be set.

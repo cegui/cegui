@@ -2277,14 +2277,16 @@ ListHeader* MultiColumnList::getListHeader() const
 /*************************************************************************
     Write xml properties for this MultiColumnList to a stream.
 *************************************************************************/
-int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
+int MultiColumnList::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
 {
     // basically this is here to translate the columns in the list into
     // instances of the <ColumnHeader> element.  Because the SortColumnID
     // property requires the column to exist, we also write that out manually.
 
     // Dump all other properties first
-    int propCnt = Window::writePropertiesXML(out_stream);
+    int propCnt = Window::writePropertiesXML(out_stream, indentLevel);
+
+    String indent(indentLevel + 1, '\t');
 
     // create an dump <ColumnHeader> elements
     for (uint i = 0; i < getColumnCount(); ++i)
@@ -2306,7 +2308,7 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
         propString += "\" />";
 
         // write this out to the stream
-        out_stream << propString.c_str() << std::endl;
+        out_stream << indent << propString.c_str() << std::endl;
 
         ++propCnt;
     }
@@ -2317,7 +2319,7 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
 			uint sortColumnID = getColumnWithID(getSortColumn());
 			if (sortColumnID != 0)
 			{
-				  out_stream << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
+				  out_stream << indent << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
 					++propCnt;
 			}
 		}

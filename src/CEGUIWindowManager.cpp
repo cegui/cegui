@@ -267,7 +267,7 @@ void WindowManager::writeWindowLayoutToStream(const Window& window, OutStream& o
     // close opening tag
     out_stream << ">" << std::endl;
     // write windows
-    window.writeXMLToStream(out_stream);
+    window.writeXMLToStream(out_stream, 1);
     // write closing GUILayout element
     out_stream << "</GUILayout>" << std::endl;
 }

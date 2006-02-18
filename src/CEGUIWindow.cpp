@@ -2129,10 +2129,12 @@ void Window::setUserString(const String& name, const String& value)
     d_userStrings[name] = value;
 }
 
-void Window::writeXMLToStream(OutStream& out_stream) const
+void Window::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
 {
+    String indent(indentLevel, '\t');
+
     // output opening Window tag
-    out_stream << "<Window Type=\"" << getType() << "\" ";
+    out_stream << indent << "<Window Type=\"" << getType() << "\" ";
     // write name if not auto-generated
     if (getName().compare(0, WindowManager::GeneratedWindowNameBase.length(), WindowManager::GeneratedWindowNameBase) != 0)
     {
@@ -2142,34 +2144,35 @@ void Window::writeXMLToStream(OutStream& out_stream) const
     out_stream << ">" << std::endl;
 
     // write out properties.
-    writePropertiesXML(out_stream);
+    writePropertiesXML(out_stream, indentLevel);
     // write out attached child windows.
-    writeChildWindowsXML(out_stream);
+    writeChildWindowsXML(out_stream, indentLevel);
     // now ouput closing Window tag
-    out_stream << "</Window>" << std::endl;
+    out_stream << indent << "</Window>" << std::endl;
 }
 
-int Window::writePropertiesXML(OutStream& out_stream) const
+int Window::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
 {
+    ++indentLevel;
     int propertiesWritten = 0;
     PropertyIterator iter =  PropertySet::getIterator();
 
     while(!iter.isAtEnd())
     {
-			try
-			{
-        // only write property if it's not at the default state
-        if (!iter.getCurrentValue()->isDefault(this))
+        try
         {
-            iter.getCurrentValue()->writeXMLToStream(this, out_stream);
-            ++propertiesWritten;
+            // only write property if it's not at the default state
+            if (!iter.getCurrentValue()->isDefault(this))
+            {
+                iter.getCurrentValue()->writeXMLToStream(this, out_stream, indentLevel);
+                ++propertiesWritten;
+            }
         }
-			}
-			catch (InvalidRequestException)
-			{
-				// This catches error(s) from the MultiLineColumnList for example
-				Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);
-			}
+        catch (InvalidRequestException)
+        {
+            // This catches error(s) from the MultiLineColumnList for example
+            Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);
+        }
 
         ++iter;
     }
@@ -2177,8 +2180,9 @@ int Window::writePropertiesXML(OutStream& out_stream) const
     return propertiesWritten;
 }
 
-int Window::writeChildWindowsXML(OutStream& out_stream) const
+int Window::writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const
 {
+    ++indentLevel;
     int windowsWritten = 0;
 
     for (uint i = 0; i < getChildCount(); ++i)
@@ -2188,7 +2192,7 @@ int Window::writeChildWindowsXML(OutStream& out_stream) const
         // conditional to ensure that auto created windows are not written.
         if (child->getName().find(AutoWidgetNameSuffix) == String::npos)
         {
-            child->writeXMLToStream(out_stream);
+            child->writeXMLToStream(out_stream, indentLevel);
             ++windowsWritten;
         }
     }

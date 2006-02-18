@@ -218,7 +218,7 @@ void ImagesetManager::writeImagesetToStream(const String& imageset, OutStream& o
     out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
 
     // output imageset data
-    iset->writeXMLToStream(out_stream);
+    iset->writeXMLToStream(out_stream, 0);
 }
 
 

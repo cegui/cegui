@@ -122,10 +122,14 @@ namespace CEGUI
         d_horzFormatPropertyName = property;
     }
 
-    bool FalagardComponentBase::writeColoursXML(OutStream& out_stream) const
+    bool FalagardComponentBase::writeColoursXML(OutStream& out_stream, uint indentLevel) const
     {
+        String indent(indentLevel, '\t');
+
         if (!d_colourPropertyName.empty())
         {
+            out_stream << indent;
+
             if (d_colourProperyIsRect)
                 out_stream << "<ColourRectProperty ";
             else
@@ -135,7 +139,7 @@ namespace CEGUI
         }
         else if (!d_colours.isMonochromatic() || d_colours.d_top_left != colour(1,1,1,1))
         {
-            out_stream << "<Colours ";
+            out_stream << indent << "<Colours ";
             out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_colours.d_top_left) << "\" ";
             out_stream << "topRight=\"" << PropertyHelper::colourToString(d_colours.d_top_right) << "\" ";
             out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_colours.d_bottom_left) << "\" ";
@@ -149,22 +153,24 @@ namespace CEGUI
         return true;
     }
 
-    bool FalagardComponentBase::writeVertFormatXML(OutStream& out_stream) const
+    bool FalagardComponentBase::writeVertFormatXML(OutStream& out_stream, uint indentLevel) const
     {
         if (!d_vertFormatPropertyName.empty())
         {
-            out_stream << "<VertFormatProperty name=\"" << d_vertFormatPropertyName << "\" />" << std::endl;
+            String indent(indentLevel, '\t');
+            out_stream << indent << "<VertFormatProperty name=\"" << d_vertFormatPropertyName << "\" />" << std::endl;
             return true;
         }
 
         return false;
     }
 
-    bool FalagardComponentBase::writeHorzFormatXML(OutStream& out_stream) const
+    bool FalagardComponentBase::writeHorzFormatXML(OutStream& out_stream, uint indentLevel) const
     {
         if (!d_horzFormatPropertyName.empty())
         {
-            out_stream << "<HorzFormatProperty name=\"" << d_horzFormatPropertyName << "\" />" << std::endl;
+            String indent(indentLevel, '\t');
+            out_stream << indent << "<HorzFormatProperty name=\"" << d_horzFormatPropertyName << "\" />" << std::endl;
             return true;
         }
 

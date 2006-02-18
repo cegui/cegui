@@ -47,11 +47,12 @@ namespace CEGUI
         d_area = area;
     }
 
-    void NamedArea::writeXMLToStream(OutStream& out_stream) const
+    void NamedArea::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<NamedArea name=\"" << d_name << "\">" << std::endl;
-        d_area.writeXMLToStream(out_stream);
-        out_stream << "</NamedArea>" << std::endl;
+        String indent(indentLevel, '\t');
+        out_stream << indent << "<NamedArea name=\"" << d_name << "\">" << std::endl;
+        d_area.writeXMLToStream(out_stream, indentLevel + 1);
+        out_stream << indent << "</NamedArea>" << std::endl;
     }
 
 } // End of  CEGUI namespace section

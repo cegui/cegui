@@ -49,10 +49,11 @@ namespace CEGUI
             static_cast<Window*>(receiver)->requestRedraw();
     }
 
-    void PropertyDefinitionBase::writeXMLToStream(OutStream& out_stream) const
+    void PropertyDefinitionBase::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
+        String indent(indentLevel, '\t');
         // open tag
-        out_stream << "<";
+        out_stream <<indent << "<";
         // write out the element type
         writeXMLElementType(out_stream);
         // ensure there a space between tag name and first attribute

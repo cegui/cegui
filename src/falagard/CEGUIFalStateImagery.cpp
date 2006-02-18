@@ -85,9 +85,10 @@ namespace CEGUI
         d_clipToDisplay = setting;
     }
 
-    void StateImagery::writeXMLToStream(OutStream& out_stream) const
+    void StateImagery::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<StateImagery name=\"" << d_stateName << "\"";
+        String indent(indentLevel, '\t');
+        out_stream << indent << "<StateImagery name=\"" << d_stateName << "\"";
 
         if (d_clipToDisplay)
             out_stream << " clipped=\"false\"";
@@ -99,13 +100,14 @@ namespace CEGUI
         else
         {
             out_stream << ">" << std::endl;
+            ++indentLevel;
 
             // output all layers defined for this state
             for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-                (*curr).writeXMLToStream(out_stream);
+                (*curr).writeXMLToStream(out_stream, indentLevel);
 
             // write closing </StateImagery> tag
-            out_stream << "</StateImagery>" << std::endl;
+            out_stream << indent << "</StateImagery>" << std::endl;
         }
     }
 

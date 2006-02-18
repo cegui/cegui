@@ -1215,10 +1215,13 @@ uint Font::getPointSize(void) const
 /*************************************************************************
     Writes an xml representation of this Font to \a out_stream.
 *************************************************************************/
-void Font::writeXMLToStream(OutStream& out_stream) const
+void Font::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
 {
+    String indent(indentLevel, '\t');
+    String subindent(indentLevel + 1, '\t');
+
     // output starting <Font ... > element
-    out_stream << "<Font Name=\"" << d_name << "\" Filename=\"" << d_sourceFilename << "\" ";
+    out_stream << indent << "<Font Name=\"" << d_name << "\" Filename=\"" << d_sourceFilename << "\" ";
 
     if (d_freetype)
         out_stream << "Size=\"" << d_ptSize << "\" ";
@@ -1247,10 +1250,10 @@ void Font::writeXMLToStream(OutStream& out_stream) const
 
             if (start == idx)
                 // if range is a just a single codepoint
-                out_stream << "<Glyph Codepoint=\"" << d_glyphset[start] << "\" />" << std::endl;
+                out_stream << subindent << "<Glyph Codepoint=\"" << d_glyphset[start] << "\" />" << std::endl;
             else
                 // range contains >1 codepoint
-                out_stream << "<GlyphRange StartCodepoint=\"" << d_glyphset[start] << "\" EndCodepoint=\"" << d_glyphset[idx] << "\" />" << std::endl;
+                out_stream << subindent << "<GlyphRange StartCodepoint=\"" << d_glyphset[start] << "\" EndCodepoint=\"" << d_glyphset[idx] << "\" />" << std::endl;
 
             start = ++idx;
         }
@@ -1260,7 +1263,7 @@ void Font::writeXMLToStream(OutStream& out_stream) const
     {
         for (CodepointMap::const_iterator iter = d_cp_map.begin(); iter != d_cp_map.end(); ++iter)
         {
-            out_stream << "<Mapping Codepoint=\"" << (*iter).first << "\" Image=\"" << (*iter).second.getImage()->getName() << "\" ";
+            out_stream << subindent << "<Mapping Codepoint=\"" << (*iter).first << "\" Image=\"" << (*iter).second.getImage()->getName() << "\" ";
 
             if ((*iter).second.getUnscaledAdvance() != -1)
                 out_stream << "HorzAdvance=\"" << (*iter).second.getUnscaledAdvance() << "\" ";
@@ -1270,7 +1273,7 @@ void Font::writeXMLToStream(OutStream& out_stream) const
     }
 
     // output closing </Font> element.
-    out_stream << "</Font>" << std::endl;
+    out_stream << indent << "</Font>" << std::endl;
 }
 
 

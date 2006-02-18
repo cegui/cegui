@@ -69,9 +69,12 @@ namespace CEGUI
         return d_layerPriority < other.d_layerPriority;
     }
 
-    void LayerSpecification::writeXMLToStream(OutStream& out_stream) const
+    void LayerSpecification::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
-        out_stream << "<Layer";
+        String indent(indentLevel, '\t');
+        ++indentLevel;
+
+        out_stream << indent << "<Layer";
 
         if (d_layerPriority != 0)
             out_stream << " priority=\"" << d_layerPriority << "\"";
@@ -81,10 +84,10 @@ namespace CEGUI
         // ouput all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
         {
-            (*curr).writeXMLToStream(out_stream);
+            (*curr).writeXMLToStream(out_stream, indentLevel);
         }
 
-        out_stream << "</Layer>" << std::endl;
+        out_stream << indent << "</Layer>" << std::endl;
     }
 
 } // End of  CEGUI namespace section
