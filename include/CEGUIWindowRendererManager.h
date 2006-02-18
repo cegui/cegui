@@ -51,7 +51,7 @@ private:
     /*************************************************************************
         Implementation data
     *************************************************************************/
-    typedef std::map<String, WindowRendererFactory*> WR_Registry;
+    typedef std::map<String, WindowRendererFactory*, String::FastLessCompare> WR_Registry;
     WR_Registry d_wrReg;
 };
 

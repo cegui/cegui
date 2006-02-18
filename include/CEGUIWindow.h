@@ -1809,6 +1809,9 @@ public:
 
     \exception UnknownObjectException
         thrown if the look'n'feel specified by \a look does not exist.
+
+    \note
+        Once a look'n'feel has been assigned it is locked - as in cannot be changed.
     */
     void setLookNFeel(const String& look);
 
@@ -2301,20 +2304,41 @@ public:
         true if mouse pass through is enabled.
         false if mouse pass through is not enabled.
     */
-    bool setMousePassThroughEnabled(bool setting)   {d_mousePassThroughEnabled = setting;}
+    void setMousePassThroughEnabled(bool setting)   {d_mousePassThroughEnabled = setting;}
 
     /*!
     \brief
-        Assign the WindowRenderer module to specify the Look'N'Feel specification
+        Assign the WindowRenderer to specify the Look'N'Feel specification
         to be used.
+
+    \param name
+        The factory name of the WindowRenderer to use.
+
+    \note
+        Once a window renderer has been assigned it is locked - as in cannot be changed.
     */
     void setWindowRenderer(const String& name);
 
     /*!
     \brief
-        Get the currently assigned WindowRenderer module. (Look'N'Feel specification).
+        Get the currently assigned WindowRenderer. (Look'N'Feel specification).
+
+    \return
+        A pointer to the assigned window renderer object.
+        0 if no window renderer is assigned.
     */
     WindowRenderer* getWindowRenderer(void) const;
+
+    /*!
+    \brief
+        Get the factory name of the currently assigned WindowRenderer.
+        (Look'N'Feel specification).
+
+    \return
+        The factory name of the currently assigned WindowRenderer.
+        If no WindowRenderer is assigned an empty string is returned.
+    */
+    const String& getWindowRendererName(void) const;
 
 protected:
     /*************************************************************************
@@ -3117,8 +3141,8 @@ protected:
     static  WindowProperties::UnifiedMinSize    d_unifiedMinSizeProperty;
     static  WindowProperties::UnifiedMaxSize    d_unifiedMaxSizeProperty;
     static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
-    static  WindowProperties::WindowRenderer    d_windowRendererProperty;
-    static  WindowProperties::LookNFeel         d_lookNFeelProperty;
+    //static  WindowProperties::WindowRenderer    d_windowRendererProperty;
+    //static  WindowProperties::LookNFeel         d_lookNFeelProperty;
 
     /*************************************************************************
         implementation functions

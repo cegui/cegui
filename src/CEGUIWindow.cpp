@@ -82,8 +82,8 @@ WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
 WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
 WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
-WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
-WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
+//WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
+//WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
 
 /*************************************************************************
 	static data definitions
@@ -1480,8 +1480,8 @@ void Window::addStandardProperties(void)
     addProperty(&d_unifiedMinSizeProperty);
     addProperty(&d_unifiedMaxSizeProperty);
     addProperty(&d_mousePassThroughEnabledProperty);
-    addProperty(&d_windowRendererProperty);
-    addProperty(&d_lookNFeelProperty);
+    //addProperty(&d_windowRendererProperty);
+    //addProperty(&d_lookNFeelProperty);
 }
 
 
@@ -2041,15 +2041,18 @@ void Window::setLookNFeel(const String& look)
 {
     if (d_windowRenderer == 0)
     {
-        throw NullObjectException("There must be a window renderer assigned to set the look'n'feel");
+        throw NullObjectException("Window::setLookNFeel - There must be a window renderer assigned to the window '"+d_name+"' to set its look'n'feel");
     }
 
     WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
     if (!d_lookName.empty())
     {
+        /*
         d_windowRenderer->onLookNFeelUnassigned();
         const WidgetLookFeel& wlf = wlMgr.getWidgetLook(d_lookName);
         wlf.cleanUpWidget(*this);
+        */
+        throw AlreadyExistsException("Window::setLookNFeel - There is already a look'n'feel assigned to the window '"+d_name+"'");
     }
     d_lookName = look;
     Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
@@ -2755,6 +2758,7 @@ void Window::setWindowRenderer(const String& name)
     WindowRendererManager& wrm = WindowRendererManager::getSingleton();
     if (d_windowRenderer != 0)
     {
+        /*
         if (d_windowRenderer->getName() == name)
         {
             return;
@@ -2762,6 +2766,8 @@ void Window::setWindowRenderer(const String& name)
         WindowEventArgs e(this);
         onWindowRendererDetached(e);
         wrm.destroyWindowRenderer(d_windowRenderer);
+        */
+        throw AlreadyExistsException("Window::setWindowRenderer - There is already a window renderer assigned to the window '"+d_name+"'");
     }
 
     if (!name.empty())
@@ -2773,7 +2779,8 @@ void Window::setWindowRenderer(const String& name)
     }
     else
     {
-        d_windowRenderer = 0;
+        //d_windowRenderer = 0;
+        throw InvalidRequestException("Window::setWindowRenderer - Tried to assign a 'null' window renderer");
     }
 }
 
@@ -2786,11 +2793,13 @@ void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer->getClass()))
     {
-        throw InvalidRequestException("The window renderer '"+d_windowRenderer->getName()+"' is not compatible with this widget ("+getType()+")");
+        throw InvalidRequestException("The window renderer '"+d_windowRenderer->getName()+
+        "' is not compatible with this widget ("+getType()+")");
     }
     if (!testClassName(d_windowRenderer->getClass()))
     {
-        throw InvalidRequestException("The window renderer '"+d_windowRenderer->getName()+"' is not compatible with this widget ("+getType()+"). It requires a '"+d_windowRenderer->getClass()+"' based window type");
+        throw InvalidRequestException("The window renderer '"+d_windowRenderer->getName()+
+        "' is not compatible with this widget ("+getType()+"). It requires a '"+d_windowRenderer->getClass()+"' based window type");
     }
     d_windowRenderer->d_window = this;
     d_windowRenderer->onAttach();
@@ -2807,6 +2816,15 @@ void Window::onWindowRendererDetached(WindowEventArgs& e)
 bool Window::validateWindowRenderer(const String& name) const
 {
     return true;
+}
+
+const String& Window::getWindowRendererName(void) const
+{
+    if (d_windowRenderer)
+    {
+        return d_windowRenderer->getName();
+    }
+    return String();
 }
 
 } // End of  CEGUI namespace section

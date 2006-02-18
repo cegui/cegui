@@ -164,14 +164,18 @@ class Window //: public EventSet
     void setVerticalAlignment(const VerticalAlignment alignment);
     void setHorizontalAlignment(const HorizontalAlignment alignment);
 
-	string getLookNFeel();
+	string getLookNFeel() const;
+    tolua_throws|CEGUI::Exception,error| void setLookNFeel(string lnf);
+
+    tolua_throws|CEGUI::Exception,error| void setWindowRenderer(string name);
+    string getWindowRendererName() const;
 
 	//RenderCache& getRenderCache()
 
 	bool getModalState() const;
 	void setModalState(bool state);
 
-    string getUserString(string name) const;
+    tolua_throws|CEGUI::UnknownObjectException,nil| string getUserString(string name) const;
     bool isUserStringDefined(string name) const;
     void setUserString(string name, string value);
 
