@@ -23,5 +23,5 @@ class FrameWindow : public Window
 
 	void toggleRollup();
 
-	void offsetPixelPosition(const Point& offset);
+	void offsetPixelPosition(const Vector2& offset);
 };
