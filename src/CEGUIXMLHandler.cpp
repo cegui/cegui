@@ -39,6 +39,10 @@ namespace CEGUI
 
     void XMLHandler::elementEnd(const String& element)
     {}
-
+  
+    void XMLHandler::text(const String& text)
+    {}
+    
+        
 } // End of  CEGUI namespace section
 

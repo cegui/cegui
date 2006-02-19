@@ -71,6 +71,18 @@ namespace CEGUI
             Nothing.
          */
         virtual void elementEnd(const String& element);
+
+	/*! 
+	\brief
+	    Method called to notify text node, several successiv text node are agregated. 
+	    
+	\param text 
+	    String object holding the content of the text node.
+
+	\return 
+            Nothing.
+	*/
+	virtual void text(const String& text);
     };
 
 } // End of  CEGUI namespace section

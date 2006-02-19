@@ -67,35 +67,45 @@ namespace CEGUI
 
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
+    
 
     void TinyXMLDocument::processElement(const CEGUITinyXML::TiXmlElement* element)
     {
         // build attributes block for the element
         XMLAttributes attrs;
+        
         const CEGUITinyXML::TiXmlAttribute *currAttr = element->FirstAttribute();
-
         while (currAttr)
         {
             attrs.add(currAttr->Name(), currAttr->Value());
             currAttr = currAttr->Next();
         }
-
+        
         // start element
         d_handler->elementStart(element->Value(), attrs);
 
         // do children
-        const CEGUITinyXML::TiXmlElement* childElement = element->FirstChildElement();
-
-        while (childElement)
+        const CEGUITinyXML::TiXmlNode* childNode = element->FirstChild();
+        while (childNode)
         {
-            processElement(childElement);
-            childElement = childElement->NextSiblingElement();
+            switch(childNode->Type())
+            {
+            case CEGUITinyXML::TiXmlNode::ELEMENT:
+                processElement(childNode->ToElement());
+                break;
+            case CEGUITinyXML::TiXmlNode::TEXT:
+                if (childNode->ToText()->Value() != '\0')
+                    d_handler->text((utf8*)childNode->ToText()->Value());
+                break;
+                
+                // Silently ignore unhandled node type 
+            };
+            childNode = childNode->NextSibling();
         }
 
         // end element
         d_handler->elementEnd(element->Value());
     }
-
 
     TinyXMLParser::TinyXMLParser(void)
     {
@@ -114,6 +124,9 @@ namespace CEGUI
 
     bool TinyXMLParser::initialiseImpl(void)
     {
+        // This used to prevent deletion of line ending in the middle of a text. 
+        // WhiteSpace cleaning will be available throught the use of String methods directly 
+        //CEGUITinyXML::TiXmlDocument::SetCondenseWhiteSpace(false);
         return true;
     }
 

@@ -140,14 +140,20 @@
             <Property Name="RelativeMaxSize" Value="w:0.8 h:0.8" />
             <Property Name="Position" Value="x:0.25 y:0.4" />
             <Property Name="Size" Value="w:0.5 h:0.5" />
-            <Property Name="Text" Value="Demo 7 - Window 3" />
+            <Property Name="Text" Value="Demo 7 - Window 3 bis" />
             <Property Name="CloseButtonEnabled" Value="False" />
 
             <Window Type="TaharezLook/MultiLineEditbox" Name="Demo7/Window3/MLEditbox">
                 <Property Name="RelativeMaxSize" Value="w:1.0 h:1.0" />
                 <Property Name="Position" Value="x:0.02 y:0.1" />
                 <Property Name="Size" Value="w:0.96 h:0.85" />
-                <Property Name="Text" Value="Multi-line edit box.  Edit me!" />
+                <Property Name="Text">
+This text is a multiline text:
+Line 1
+Line 2 
+Line 3 
+                </Property>
+                
             </Window>
         </Window>
 

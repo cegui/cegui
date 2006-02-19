@@ -98,9 +98,17 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
     {
         elementWindowEnd();
     }
+    else if (element == PropertyElement)
+    {
+        elementPropertyEnd();
+    }
 }
 
 
+void GUILayout_xmlHandler::text(const String& text)
+{
+    d_propertyValue += text;
+}
 /*************************************************************************
     Destroy all windows created so far.
 *************************************************************************/
@@ -211,31 +219,41 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
     // get property value string
     String propertyValue(attributes.getValueAsString(PropertyValueAttribute));
 
-    try
+    // Short property 
+    if (propertyValue.size())
     {
-        // need a window to be able to set properties!
-        if (!d_stack.empty())
+        try
         {
-            // get current window being defined.
-            Window* curwindow = d_stack.back();
+            // need a window to be able to set properties!
+            if (!d_stack.empty())
+            {
+                // get current window being defined.
+                Window* curwindow = d_stack.back();
 
-            bool useit = true;
+                bool useit = true;
 
-            // if client defined a callback, call it and discover if we should
-            // set the property.
-            if (d_propertyCallback)
-                useit = (*d_propertyCallback)(curwindow,
-                                              propertyName,
-                                              propertyValue,
-                                              d_userData);
-            // set the property as needed
-            if (useit)
-                curwindow->setProperty(propertyName, propertyValue);
+                // if client defined a callback, call it and discover if we should
+                // set the property.
+                if (d_propertyCallback)
+                    useit = (*d_propertyCallback)(curwindow,
+                                                  propertyName,
+                                                  propertyValue,
+                                                  d_userData);
+                // set the property as needed
+                if (useit)
+                    curwindow->setProperty(propertyName, propertyValue);
+            }
+        }
+        catch (Exception exc)
+        {
+            // Don't do anything here, but the error will have been logged.
         }
     }
-    catch (Exception exc)
+    // Long property 
+    else 
     {
-        // Don't do anything here, but the error will have been logged.
+        // Store name for later use 
+        d_propertyName = propertyName;
     }
 }
 
@@ -321,4 +339,36 @@ void GUILayout_xmlHandler::elementWindowEnd()
     }
 }
 
+/*************************************************************************
+    Method that handles the closing Property XML element.
+*************************************************************************/
+void GUILayout_xmlHandler::elementPropertyEnd()
+{
+    try
+    {
+        // need a window to be able to set properties!
+        if (!d_stack.empty())
+        {
+            // get current window being defined.
+            Window* curwindow = d_stack.back();
+
+            bool useit = true;
+
+            // if client defined a callback, call it and discover if we should
+            // set the property.
+            if (d_propertyCallback)
+                useit = (*d_propertyCallback)(curwindow,
+                                              d_propertyName,
+                                              d_propertyValue,
+                                              d_userData);
+            // set the property as needed
+            if (useit)
+                curwindow->setProperty(d_propertyName, d_propertyValue);
+        }
+    }
+    catch (Exception exc)
+    {
+        // Don't do anything here, but the error will have been logged.
+    }
+}
 } // End of  CEGUI namespace section

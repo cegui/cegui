@@ -22,9 +22,9 @@
 		<xsd:attribute name="Name" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
 
-	<xsd:complexType name="PropertyType">
+	<xsd:complexType name="PropertyType" type="xsd:string" >
 		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+		<xsd:attribute name="Value" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 
 	<xsd:complexType name="LayoutImportType">

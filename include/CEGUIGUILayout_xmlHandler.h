@@ -72,6 +72,7 @@ public:
 	*/
     virtual void elementStart(const String& element, const XMLAttributes& attributes);
     virtual void elementEnd(const String& element);
+    virtual void text(const String& text);
 
 	/*************************************************************************
 		Functions used by our implementation
@@ -151,6 +152,11 @@ private:
     */
     void elementWindowEnd();
 
+    /*!
+    \brief 
+        Method that handles the closing of a property XML element.
+    */
+    void elementPropertyEnd();
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -161,6 +167,8 @@ private:
 	const String&		d_namingPrefix;	//!< Prefix that is to prepend all names of created windows.
 	PropertyCallback*	d_propertyCallback; //!< Callback for every property loaded
 	void*				d_userData;			//!< User data for the property callback
+  String d_propertyName; //!< Use for long property value 
+  String d_propertyValue; //!< Use for long property value 
 };
 
 

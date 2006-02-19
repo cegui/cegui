@@ -48,6 +48,7 @@ namespace CEGUI
         // Implementation of methods in Xerces DefaultHandler.
         void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs);
         void endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname);
+	void characters (const XMLCh *const chars, const unsigned int length);
         void warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
         void error (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
         void fatalError (const XERCES_CPP_NAMESPACE::SAXParseException &exc);
@@ -79,8 +80,15 @@ namespace CEGUI
         /*!
         \brief
             Return a CEGUI::String containing the Xerces XMLChar string data in \a xmlch_str.
+	    
+	\param xmlch_str
+	    The string data. 
+	
+	\param length 
+	    The size of the string data. It can be computed using \code XMLString::stringLen(xmlch_str) \endcode
+	    
          */
-        static String transcodeXmlCharToString(const XMLCh* const xmlch_str);
+        static String transcodeXmlCharToString(const XMLCh* const xmlch_str, unsigned int length);
 
     protected:
         static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName, const String& xmlFilename, const String& resourceGroup);

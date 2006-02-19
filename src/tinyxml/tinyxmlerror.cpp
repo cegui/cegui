@@ -26,7 +26,7 @@ distribution.
 
 // The goal of the seperate error file is to make the first
 // step towards localization. tinyxml (currently) only supports
-// latin-1, but at least the error messages could now be translated.
+// english error messages, but the could now be translated.
 //
 // It also cleans up the code a bit.
 //
@@ -49,5 +49,6 @@ const char* TiXmlBase::errorString[ TIXML_ERROR_STRING_COUNT ] =
 	"Error parsing Declaration.",
 	"Error document empty.",
 	"Error null (0) or unexpected EOF found in input stream.",
+	"Error parsing CDATA.",
 };
 }

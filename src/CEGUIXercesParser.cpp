@@ -31,6 +31,7 @@
 #include "CEGUIXMLAttributes.h"
 #include "CEGUIPropertyHelper.h"
 
+#include <iostream> // Debug 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -120,7 +121,7 @@ namespace CEGUI
             message += excmsg;
             XMLString::release(&excmsg);
 
-            // throw a std::exception (because it won't try and use logger, which may not be available)
+            // throw a C string (because it won't try and use logger, which may not be available)
             throw message.c_str();
         }
 
@@ -136,18 +137,20 @@ namespace CEGUI
     
     void XercesParser::populateAttributesBlock(const XERCES_CPP_NAMESPACE::Attributes& src, XMLAttributes& dest)
     {
+        XERCES_CPP_NAMESPACE_USE;
         String attributeName;
         String attributeValue;
 
         for (uint i = 0; i < src.getLength(); ++i)
         {
-            attributeName = transcodeXmlCharToString(src.getLocalName(i));
-            attributeValue = transcodeXmlCharToString(src.getValue(i));
+            // TODO dalfy: Optimize this using temporary value. 
+            attributeName = transcodeXmlCharToString(src.getLocalName(i), XMLString::stringLen(src.getLocalName(i)));
+            attributeValue = transcodeXmlCharToString(src.getValue(i), XMLString::stringLen(src.getValue(i)));
             dest.add(attributeName, attributeValue);
         }
     }
 
-    String XercesParser::transcodeXmlCharToString(const XMLCh* const xmlch_str)
+    String XercesParser::transcodeXmlCharToString(const XMLCh* const xmlch_str, unsigned int inputLength)
     {
         XERCES_CPP_NAMESPACE_USE;
 
@@ -161,7 +164,7 @@ namespace CEGUI
             unsigned int outputLength;
             unsigned int eaten = 0;
             unsigned int offset = 0;
-            unsigned int inputLength = XMLString::stringLen(xmlch_str);
+//            unsigned int inputLength = XMLString::stringLen(xmlch_str); // dalfy caracters node need to transcode but give the size 
 
             while (inputLength)
             {
@@ -295,21 +298,26 @@ namespace CEGUI
 
     void XercesHandler::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attrs)
     {
+        XERCES_CPP_NAMESPACE_USE;
         XMLAttributes cegui_attributes;
         XercesParser::populateAttributesBlock(attrs, cegui_attributes);
-
-        String element(XercesParser::transcodeXmlCharToString(localname));
-
+        String element(XercesParser::transcodeXmlCharToString(localname, XMLString::stringLen(localname)));
         d_handler.elementStart(element, cegui_attributes);
     }
 
     void XercesHandler::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname)
     {
-        String element(XercesParser::transcodeXmlCharToString(localname));
-
+        XERCES_CPP_NAMESPACE_USE;
+        String element(XercesParser::transcodeXmlCharToString(localname,XMLString::stringLen(localname)));
         d_handler.elementEnd(element);
     }
 
+    void XercesHandler::characters (const XMLCh *const chars, const unsigned int length)
+    {
+        d_text = XercesParser::transcodeXmlCharToString(chars, length);
+        d_handler.text(d_text);
+    }
+    
     void XercesHandler::warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
     {
         XERCES_CPP_NAMESPACE_USE;
