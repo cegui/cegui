@@ -4,8 +4,7 @@
 
 class PropertyDefinitionBase : public Property 
 {
-  void set(PropertyReceiver* receiver, string value);
+  //void set(PropertyReceiver* receiver, string value);
+  void set(Window* receiver, string value);
   //virtual void writeXMLToStream(OutStream& out_stream) const;
-  PropertyDefinitionBase(string name, string help, string initialValue, bool redrawOnWrite, bool layoutOnWrite);
-
 };

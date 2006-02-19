@@ -4,7 +4,9 @@
 
 class PropertyLinkDefinition : public PropertyDefinitionBase
 {
-  string get(const PropertyReceiver* receiver) const;
-  void set(PropertyReceiver* receiver, string value);
+  //string get(const PropertyReceiver* receiver) const;
+  //void set(PropertyReceiver* receiver, string value);
+  string get(const Window* receiver) const;
+  void set(Window* receiver, string value);
   PropertyLinkDefinition(string propertyName, string widgetNameSuffix, string targetProperty, string initialValue, bool redrawOnWrite, bool layoutOnWrite);
 };

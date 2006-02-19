@@ -4,8 +4,10 @@
 
 class PropertyDefinition : public PropertyDefinitionBase
 {
-  string get(const PropertyReceiver* receiver) const;
-  void set(PropertyReceiver* receiver, string value);
+  //string get(const PropertyReceiver* receiver) const;
+  //void set(PropertyReceiver* receiver, string value);
+  string get(const Window* receiver) const;
+  void set(Window* receiver, string value);
 
   PropertyDefinition(string name, string initialValue, bool redrawOnWrite, bool layoutOnWrite);
 };

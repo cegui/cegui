@@ -8,7 +8,7 @@
     string getFont() const;
     void setFont(string font);
     VerticalTextFormatting getVerticalFormatting() const;
-    void setVerticalTFormatting(VerticalTextFormatting fmt);
+    void setVerticalFormatting(VerticalTextFormatting fmt);
     HorizontalTextFormatting getHorizontalFormatting() const;
     void setHorizontalFormatting(HorizontalTextFormatting fmt);
     //void writeXMLToStream(OutStream& out_stream) const;

@@ -20,12 +20,12 @@ class MouseCursor : public EventSet
 	void setImage(string imageset, string image);
 	const Image* getImage() const;
 
-	void setPosition(const Point& pos);
-	void offsetPosition(const Point& offset);
+	void setPosition(const Vector2& pos);
+	void offsetPosition(const Vector2& offset);
 	void setConstraintArea(const Rect* area);
-	Point getPosition() const;
+	Vector2 getPosition() const;
 	Rect getConstraintArea() const;
-	Point getDisplayIndependantPosition() const;
+	Vector2 getDisplayIndependantPosition() const;
 
 	void setUnifiedConstraintArea(const URect* area);
 	const URect& getUnifiedConstraintArea(void) const;

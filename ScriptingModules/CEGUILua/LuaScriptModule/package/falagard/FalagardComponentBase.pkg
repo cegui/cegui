@@ -14,6 +14,4 @@ class FalagardComponentBase
   void setColoursPropertyIsColourRect(bool setting = true);
   void setVertFormattingPropertySource(string property);
   void setHorzFormattingPropertySource(string property);
-
-  FalagardComponentBase();
 };

@@ -29,8 +29,8 @@ class UVector2
 	UDim d_x @ x;
 	UDim d_y @ y;
 
-	Point asAbsolute(const Size& base) const;
-	Point asRelative(const Size& base) const;
+	Vector2 asAbsolute(const Size& base) const;
+	Vector2 asRelative(const Size& base) const;
 
 	UVector2 operator+ (const UVector2& other) const;
 	UVector2 operator- (const UVector2& other) const;

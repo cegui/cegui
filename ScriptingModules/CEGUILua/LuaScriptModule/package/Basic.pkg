@@ -1,31 +1,24 @@
 /***********************************************************************
-	Point
-
-    Point is really just a typedef for Vector2, but it seems that
-    the Point variant is most widely used. So we export that.
-    The thing here is that tolua++ does have any easy means for
-    this kind of aliases, and we want them to be completely
-    interchangable.
-    For convenience CEGUI.Vector2 is defined as a copy of CEGUI.Point
+    Vector2
 ***********************************************************************/
-class Point
+class Vector2
 {
-	// rename 'd_x' and 'd_y' to just 'x' and 'y'
-	float d_x @ x;
-	float d_y @ y;
+    // rename 'd_x' and 'd_y' to just 'x' and 'y'
+    float d_x @ x;
+    float d_y @ y;
 
-	Point operator+ (const Point& vec) const;
-	Point operator- (const Point& vec) const;
-	Point operator* (const Point& vec) const;
-	bool operator== (const Point& vec) const;
+    Vector2 operator+ (const Vector2& vec) const;
+    Vector2 operator- (const Vector2& vec) const;
+    Vector2 operator* (const Vector2& vec) const;
+    bool operator== (const Vector2& vec) const;
 
-	Point();
-	Point(float x, float y);
+    Vector2();
+    Vector2(float x, float y);
 };
 
 // do a simple copy of Point to Vector2
 $[
-CEGUI.Vector2 = CEGUI.Point
+CEGUI.Point = CEGUI.Vector2
 $]
 
 
@@ -58,20 +51,20 @@ class Rect
 	float d_left @ left;
 	float d_right @ right;
 
-	Point getPosition() const;
+	Vector2 getPosition() const;
 	float getWidth() const;
 	float getHeight() const;
 	Size getSize() const;
 
 	Rect getIntersection(const Rect& rect) const;
-	bool isPointInRect(const Point& p) const;
+	bool isPointInRect(const Vector2& p) const;
 
-	void setPosition(const Point& p);
+	void setPosition(const Vector2& p);
 	void setWidth(float w);
 	void setHeight(float h);
 	void setSize(const Size& sz);
 
-	Rect& offset(const Point& p);
+	Rect& offset(const Vector2& p);
 	Rect& constrainSizeMax(const Size& sz);
 	Rect& constrainSizeMin(const Size& sz);
 	Rect& constrainSize(const Size& min, const Size& max);

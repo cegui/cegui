@@ -7,7 +7,7 @@ class PropertyHelper
 	static	unsigned int	stringToUint(string str);
 	static	bool			stringToBool(string str);
 	static	Size			stringToSize(string str);
-	static	Point			stringToPoint(string str);
+	static	Vector2			stringToPoint(string str);
 	static	Rect			stringToRect(string str);
 	static	const Image*	stringToImage(string str);
 	static	colour			stringToColour(string str);
@@ -21,7 +21,7 @@ class PropertyHelper
 	static string	uintToString(unsigned int val);
 	static string	boolToString(bool val);
 	static string	sizeToString(const Size& val);
-	static string	pointToString(const Point& val);
+	static string	pointToString(const Vector2& val);
 	static string	rectToString(const Rect& val);
 	static string	imageToString(const Image* val);
 	static string	colourToString(const colour& val);

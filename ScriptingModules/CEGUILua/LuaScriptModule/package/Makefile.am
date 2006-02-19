@@ -21,6 +21,7 @@ EXTRA_DIST = Basic.pkg \
              UnifiedCoordSystem.pkg \
              Window.pkg \
              WindowManager.pkg \
+             exceptions.lua \
              elements/ButtonBase.pkg \
              elements/Checkbox.pkg \
              elements/Combobox.pkg \
@@ -60,4 +61,22 @@ EXTRA_DIST = Basic.pkg \
              elements/TextItem.pkg \
              elements/Thumb.pkg \
              elements/Titlebar.pkg \
-             elements/Tooltip.pkg
+             elements/Tooltip.pkg \
+             falagard/WidgetLookFeel.pkg \
+             falagard/TextComponent.pkg \
+             falagard/NamedArea.pkg \
+             falagard/SectionSpecification.pkg \
+             falagard/WidgetLookManager.pkg \
+             falagard/WidgetComponent.pkg \
+             falagard/StateImagery.pkg \
+             falagard/PropertyLinkDefinition.pkg \
+             falagard/PropertyInitialiser.pkg \
+             falagard/PropertyDefinitionBase.pkg \
+             falagard/PropertyDefinition.pkg \
+             falagard/LayerSpecification.pkg \
+             falagard/ImagerySection.pkg \
+             falagard/ImageryComponent.pkg \
+             falagard/FrameComponent.pkg \
+             falagard/Enums.pkg \
+             falagard/FalagardComponentBase.pkg \
+             falagard/Dimension.pkg

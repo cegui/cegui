@@ -13,11 +13,11 @@ class Imageset
 	Size getImageSize(string name) const;
 	float getImageWidth(string name) const;
 	float getImageHeight(string name) const;
-	Point getImageOffset(string name) const;
+	Vector2 getImageOffset(string name) const;
 	float getImageOffsetX(string name) const;
 	float getImageOffsetY(string name) const;
-	void defineImage(string name, const Point& pos, const Size& size, const Point& render_offset);
-	void defineImage(string name, const Rect& rect, const Point& render_offset);
+	void defineImage(string name, const Vector2& pos, const Size& size, const Vector2& render_offset);
+	void defineImage(string name, const Rect& rect, const Vector2& render_offset);
 	bool isAutoScaled() const;
 	void setAutoScalingEnabled(bool setting);
 	Size getNativeResolution() const;

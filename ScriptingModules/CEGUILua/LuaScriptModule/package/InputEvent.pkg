@@ -82,8 +82,8 @@ enum MouseButton
 ***********************************************************************/
 class MouseEventArgs : public WindowEventArgs
 {
-	Point position;
-	Point moveDelta;
+	Vector2 position;
+	Vector2 moveDelta;
 	MouseButton button;
 	unsigned int sysKeys;
 	float wheelChange;
