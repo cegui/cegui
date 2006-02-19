@@ -2818,7 +2818,7 @@ bool Window::validateWindowRenderer(const String& name) const
     return true;
 }
 
-const String& Window::getWindowRendererName(void) const
+String Window::getWindowRendererName(void) const
 {
     if (d_windowRenderer)
     {

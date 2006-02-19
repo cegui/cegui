@@ -2338,7 +2338,7 @@ public:
         The factory name of the currently assigned WindowRenderer.
         If no WindowRenderer is assigned an empty string is returned.
     */
-    const String& getWindowRendererName(void) const;
+    String getWindowRendererName(void) const;
 
 protected:
     /*************************************************************************
