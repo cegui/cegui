@@ -509,6 +509,29 @@ public:
     */
     void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
+    /*!
+    \brief
+        Sets the default resource group to be used when loading imageset data
+
+    \param resourceGroup
+        String describing the default resource group identifier to be used.
+
+    \return
+        Nothing.
+    */
+    static void setDefaultResourceGroup(const String& resourceGroup)
+        { d_defaultResourceGroup = resourceGroup; }
+
+    /*!
+    \brief
+        Returns the default resource group currently set for Imagesets.
+
+    \return
+        String describing the default resource group identifier that will be
+        used when loading Imageset data.
+    */
+    static const String& getDefaultResourceGroup()
+        { return d_defaultResourceGroup; }
 
 protected:
 	/*************************************************************************
@@ -584,6 +607,8 @@ protected:
 	float	d_vertScaling;			//!< current vertical scaling factor.
 	float	d_nativeHorzRes;		//!< native horizontal resolution for this Imageset.
 	float	d_nativeVertRes;		//!< native vertical resolution for this Imageset.
+    
+    static String d_defaultResourceGroup;   //!< Default resource group specifically for Imagesets.
 };
 
 } // End of  CEGUI namespace section

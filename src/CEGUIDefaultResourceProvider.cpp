@@ -40,7 +40,9 @@ namespace CEGUI
                 "DefaultResourceProvider::load - Filename supplied for data loading must be valid");
         }
 
-        std::ifstream dataFile(filename.c_str(), std::ios::binary|std::ios::ate);
+        String final_filename(getFinalFilename(filename, resourceGroup));
+
+        std::ifstream dataFile(final_filename.c_str(), std::ios::binary|std::ios::ate);
         if( dataFile.fail())
         {
             throw InvalidRequestException(
@@ -62,10 +64,45 @@ namespace CEGUI
 
         dataFile.close();
 
-        //memcpy(container->getDataPtr(), buffer, size);
         output.setData(buffer);
         output.setSize(size);
-        //delete [] buffer;
+    }
+
+    void DefaultResourceProvider::setResourceGroupDirectory(const String& resourceGroup, const String& directory)
+    {
+        d_resourceGroups[resourceGroup] = directory;
+    }
+
+    const String& DefaultResourceProvider::getResourceGroupDirectory(const String& resourceGroup)
+    {
+        return d_resourceGroups[resourceGroup];
+    }
+
+    void DefaultResourceProvider::clearResourceGroupDirectory(const String& resourceGroup)
+    {
+        ResourceGroupMap::iterator iter = d_resourceGroups.find(resourceGroup);
+
+        if (iter != d_resourceGroups.end())
+            d_resourceGroups.erase(iter);
+    }
+
+    String DefaultResourceProvider::getFinalFilename(const String& filename, const String& resourceGroup) const
+    {
+        String final_filename;
+
+        // look up resource group directory
+        ResourceGroupMap::const_iterator iter = d_resourceGroups.find(resourceGroup);
+
+        // if there was an entry for this group, use it's directory as the
+        // first part of the filename
+        if (iter != d_resourceGroups.end())
+            final_filename = (*iter).second;
+
+        // append the filename part that we were passed
+        final_filename += filename;
+
+        // return result
+        return final_filename;
     }
 
 } // End of  CEGUI namespace section

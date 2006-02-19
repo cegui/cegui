@@ -328,6 +328,30 @@ public:
     */
     void renameWindow(Window* window, const String& new_name);
 
+    /*!
+    \brief
+        Returns the default resource group currently set for layouts.
+
+    \return
+        String describing the default resource group identifier that will be
+        used when loading layouts.
+    */
+    static const String& getDefaultResourceGroup()
+        { return d_defaultResourceGroup; }
+
+    /*!
+    \brief
+        Sets the default resource group to be used when loading layouts
+
+    \param resourceGroup
+        String describing the default resource group identifier to be used.
+
+    \return
+        Nothing.
+    */
+    static void setDefaultResourceGroup(const String& resourceGroup)
+        { d_defaultResourceGroup = resourceGroup; }
+
 private:
     /*************************************************************************
         Implementation Methods
@@ -354,6 +378,7 @@ private:
     WindowVector    d_deathrow;     //!< Collection of 'destroyed' windows.
 
     unsigned long   d_uid_counter;  //!< Counter used to generate unique window names.
+    static String d_defaultResourceGroup;   //!< holds default resource group
 
 public:
 	/*************************************************************************

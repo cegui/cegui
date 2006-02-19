@@ -209,12 +209,38 @@ namespace CEGUI
         */
         void writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const;
 
+        /*!
+        \brief
+            Returns the default resource group currently set for LookNFeels.
+
+        \return
+            String describing the default resource group identifier that will be
+            used when loading LookNFeel data.
+        */
+        static const String& getDefaultResourceGroup()
+            { return d_defaultResourceGroup; }
+
+        /*!
+        \brief
+            Sets the default resource group to be used when loading LookNFeel data
+
+        \param resourceGroup
+            String describing the default resource group identifier to be used.
+
+        \return
+            Nothing.
+        */
+        static void setDefaultResourceGroup(const String& resourceGroup)
+            { d_defaultResourceGroup = resourceGroup; }
+
 
     private:
         static const String FalagardSchemaName;     //!< Name of schema file used for XML validation.
 
         typedef std::map<String, WidgetLookFeel, String::FastLessCompare> WidgetLookList;
         WidgetLookList  d_widgetLooks;
+
+        static String d_defaultResourceGroup;   //!< holds default resource group
     };
 
 } // End of  CEGUI namespace section

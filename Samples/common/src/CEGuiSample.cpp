@@ -64,6 +64,9 @@
 // although there will be no renderers available for selection in the samples.
 #include "CEGuiBaseApplication.h"
 
+#include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIImageset.h"
+
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #else
@@ -204,6 +207,13 @@ bool CEGuiSample::initialise()
             // TODO: Throw exception or something!
             break;
         }
+
+        // set the default resource groups to be used
+        CEGUI::Imageset::setDefaultResourceGroup("imagesets");
+        CEGUI::Font::setDefaultResourceGroup("fonts");
+        CEGUI::Scheme::setDefaultResourceGroup("schemes");
+        CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
+        CEGUI::WindowManager::setDefaultResourceGroup("layouts");
 
         // execute the base application (which sets up the demo via 'this' and runs it.
         if (d_sampleApp->execute(this))

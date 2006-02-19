@@ -51,6 +51,7 @@ namespace CEGUI
 *************************************************************************/
 const argb_t Font::DefaultColour     = 0xFFFFFFFF;
 const uint	Font::InterGlyphPadSpace = 2;
+String Font::d_defaultResourceGroup;
 
 // XML related strings
 const char	Font::FontSchemaName[]   = "Font.xsd";
@@ -671,7 +672,8 @@ void Font::constructor_impl(const String& name, const String& fontname, const St
     uint		vertdpi		= System::getSingleton().getRenderer()->getVertScreenDPI();
     String		errMsg;
 
-    System::getSingleton().getResourceProvider()->loadRawDataContainer(fontname, d_impldat->fontData, resourceGroup);
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(fontname,
+        d_impldat->fontData, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
     // create face using input font
     if (FT_New_Memory_Face(d_impldat->library, d_impldat->fontData.getDataPtr(),
@@ -743,7 +745,8 @@ void Font::load(const String& filename, const String& resourceGroup)
     // do parse (which uses handler to create actual data)
     try
     {
-        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, FontSchemaName, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(handler,
+            filename, FontSchemaName, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
     }
     catch(...)
     {

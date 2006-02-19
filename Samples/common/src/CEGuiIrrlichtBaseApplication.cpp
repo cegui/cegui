@@ -31,7 +31,7 @@
 
 #include "CEGuiIrrlichtBaseApplication.h"
 #include "CEGuiSample.h"
-
+#include "CEGUIDefaultResourceProvider.h"
 
 CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
         d_device(0),
@@ -55,11 +55,21 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     d_driver = d_device->getVideoDriver();
     d_smgr = d_device->getSceneManager();
 
-    // create a renderer which uses the irrlicht filesystem to load data
-    d_renderer= new CEGUI::IrrlichtRenderer(d_device, true);
+    // create a renderer which uses the IrrlichtResourceProvider to load data
+    d_renderer= new CEGUI::IrrlichtRenderer(d_device, false);
 
     // create the gui
     new CEGUI::System(d_renderer);
+
+    // initialise the required dirs for the ResourceProvider
+    CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
+        (CEGUI::System::getSingleton().getResourceProvider());
+
+    rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
+    rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
+    rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
+    rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
+    rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
 
     irr::scene::ICameraSceneNode* camera = d_smgr->addCameraSceneNode(0, core::vector3df(0,0,0), core::vector3df(0,0,1));
     camera->setFOV(1.56f);

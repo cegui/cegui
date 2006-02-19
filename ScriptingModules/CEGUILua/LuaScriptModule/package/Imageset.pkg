@@ -25,4 +25,7 @@ class Imageset
 	void notifyScreenResolution(const Size& sz);
 
     ImageIterator getIterator() const;
+
+    static void setDefaultResourceGroup(string resourceGroup);
+    static string getDefaultResourceGroup();
 };

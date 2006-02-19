@@ -37,6 +37,7 @@
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include <stdexcept>
 
 #ifdef _MSC_VER
@@ -80,6 +81,16 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
 
                 // initialise the gui system
                 new CEGUI::System(pimpl->d_renderer);
+
+                // initialise the required dirs for the DefaultResourceProvider
+                CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
+                    (CEGUI::System::getSingleton().getResourceProvider());
+
+                rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
+                rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
+                rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
+                rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
+                rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
 
                 CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
 

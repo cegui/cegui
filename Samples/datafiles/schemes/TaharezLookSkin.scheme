@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="TaharezLookSkin">
-	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
-	<LookNFeel Filename="../datafiles/looknfeel/TaharezLook.looknfeel" />
+	<Imageset Name="TaharezLook" Filename="TaharezLook.imageset" />
+	<LookNFeel Filename="TaharezLook.looknfeel" />
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
 	<FalagardMapping WindowType="TaharezLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Checkbox"    TargetType="CEGUI/Checkbox"    Renderer="Falagard/ToggleButton" LookNFeel="TaharezLook/Checkbox" />

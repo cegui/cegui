@@ -36,7 +36,7 @@ namespace CEGUI
 {
 
 	IrrlichtResourceProvider::IrrlichtResourceProvider(irr::io::IFileSystem* fsys_) 
-		: ResourceProvider(), fsys(fsys_) 
+		: DefaultResourceProvider(), fsys(fsys_) 
 	{
 		if(fsys!=0)fsys->grab();
 	}
@@ -48,17 +48,19 @@ namespace CEGUI
 
 	void IrrlichtResourceProvider::loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup)
 	{
-		if(!fsys->existFile(filename.c_str()))
+        String final_filename(getFinalFilename(filename, resourceGroup));
+
+		if(!fsys->existFile(final_filename.c_str()))
 		{
 			String sMsg("IrrlichtResourceProvider::loadRawDataContainer - Filename supplied for loading must be valid");
-			sMsg+=" ["+filename+"]";
+			sMsg+=" ["+final_filename+"]";
 			throw InvalidRequestException(sMsg);
 		}
 		else
 		{
 			irr::u8* input;
 			irr::u32 input_size;
-			irr::io::IReadFile* f=fsys->createAndOpenFile(filename.c_str());
+			irr::io::IReadFile* f=fsys->createAndOpenFile(final_filename.c_str());
 			input_size=f->getSize();
 			input= new irr::u8[input_size];
 			f->read(input,input_size);

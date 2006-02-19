@@ -399,6 +399,18 @@ public:
 	*/
 	ScriptModule*	getScriptingModule(void) const;
 
+    /*!
+    \brief
+        Set the ScriptModule to be used for scripting within the GUI system.
+
+    \param scriptModule
+        Pointer to a ScriptModule based object, or 0 for none (be careful!)
+
+    \return
+        Nothing
+    */
+    void setScriptingModule(ScriptModule* scriptModule);
+
 	/*!
 	\brief
 		Return a pointer to the ResourceProvider being used within the GUI system.

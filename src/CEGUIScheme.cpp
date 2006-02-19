@@ -49,6 +49,8 @@ namespace CEGUI
 *************************************************************************/
 // name of the xml schema for GUIScheme files
 const char Scheme::GUISchemeSchemaName[]					= "GUIScheme.xsd";
+// default resource group
+String Scheme::d_defaultResourceGroup;
 
 
 /*************************************************************************
@@ -67,7 +69,9 @@ Scheme::Scheme(const String& filename, const String& resourceGroup)
     // do parse (which uses handler to create actual data)
 	try
 	{
-        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, GUISchemeSchemaName, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(
+            handler, filename, GUISchemeSchemaName,
+            resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 	}
 	catch(...)
 	{

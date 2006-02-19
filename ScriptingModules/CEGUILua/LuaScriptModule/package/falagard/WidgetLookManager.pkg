@@ -17,4 +17,7 @@ class WidgetLookManager
   //void writeWidgetLookToStream(const String& name, OutStream& out_stream) const;
   //void writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const;
   WidgetLookManager();
+
+  static void setDefaultResourceGroup(string resourceGroup);
+  static string getDefaultResourceGroup();
 };

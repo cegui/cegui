@@ -7,4 +7,7 @@ class Scheme
 	void unloadResources();
 	bool resourcesLoaded() const;
 	string getName() const;
+
+    static void setDefaultResourceGroup(string resourceGroup);
+    static string getDefaultResourceGroup();
 };

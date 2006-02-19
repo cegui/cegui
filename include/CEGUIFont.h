@@ -551,6 +551,18 @@ public:
 	*/
 	void	setAntiAliased(bool setting);
 
+    /*!
+    \brief
+        Sets the default resource group to be used when loading font data
+
+    \param resourceGroup
+        String describing the default resource group identifier to be used.
+
+    \return
+        Nothing.
+    */
+    static void setDefaultResourceGroup(const String& resourceGroup)
+        { d_defaultResourceGroup = resourceGroup; }
 
 	/*************************************************************************
 		Informational methods
@@ -779,6 +791,17 @@ public:
 	\exception InvalidRequestException		thrown if the font is a static (bitmap based) font which do not support point sizes.
 	*/
 	uint	getPointSize(void) const;
+
+    /*!
+    \brief
+        Returns the default resource group currently set for Fonts.
+
+    \return
+        String describing the default resource group identifier that will be
+        used when loading font data.
+    */
+    static const String& getDefaultResourceGroup()
+        { return d_defaultResourceGroup; }
 
 
 private:
@@ -1265,6 +1288,8 @@ private:
 	float	d_nativeVertRes;		//!< native vertical resolution for this Imageset.
 
 	bool	d_antiAliased;			//!< True if the font should be rendered as anti-alaised by freeType.
+    
+    static String d_defaultResourceGroup;   //!< hold default resource group for font loading.
 };
 
 } // End of  CEGUI namespace section

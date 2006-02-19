@@ -27,12 +27,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define _CEGUIIrrlichtResourceProvider_h_
 
 #include "IrrlichtRendererDef.h"
-#include "CEGUIResourceProvider.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include <IFileSystem.h>
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-	class IRRLICHT_GUIRENDERER_API IrrlichtResourceProvider : public ResourceProvider
+	class IRRLICHT_GUIRENDERER_API IrrlichtResourceProvider : public DefaultResourceProvider
 	{
 	protected:
 		irr::io::IFileSystem* fsys;

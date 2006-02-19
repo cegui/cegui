@@ -51,22 +51,14 @@ bool Demo8Sample::initialiseSample()
 {
     using namespace CEGUI;
 
-    // get a pointer to the renderer created by the base app object.
-    Renderer* renderer = System::getSingleton().getRenderer();
-
-    // delete the CEGUI::System created by the base app.
-    //
-    // NB:  You would not normally do this, we're doing this here
-    // since we need to re-initialise everything in order to use the
-    // scripting support.
-    delete System::getSingletonPtr();
-
     // create a script module.
     LuaScriptModule* scriptmod = new LuaScriptModule();
 
-    // now re-create the CEGUI::System passing in our scripting module
-    // and basically 'bootstrapping' the demo via a config file.
-    new System(renderer, 0, 0, scriptmod, "../datafiles/configs/demo8.config");
+    // tell CEGUI to use this scripting module
+    System::getSingleton().setScriptingModule(scriptmod);
+
+    // execute the demo8 script which controls the rest of this demo
+    System::getSingleton().executeScriptFile("../datafiles/lua_scripts/demo8.lua");
 
     // success!
     return true;

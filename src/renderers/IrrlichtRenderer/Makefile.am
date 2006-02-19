@@ -5,7 +5,8 @@ libCEGUIIrrlichtRenderer_la_LDFLAGS = -version-info @CEGUI_IRRLICHT_VERSION_INFO
 
 libCEGUIIrrlichtRenderer_la_SOURCES = irrlichtrenderer.cpp \
                                       IrrlichtResourceProvider.cpp \
-                                      irrlichttexture.cpp
+                                      irrlichttexture.cpp \
+                                      IrrlichtMemoryFile.cpp
 
 pkginclude_HEADERS = IrrlichtEventPusher.h
 

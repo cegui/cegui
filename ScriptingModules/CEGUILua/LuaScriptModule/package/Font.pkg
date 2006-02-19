@@ -57,4 +57,7 @@ class Font
 
 	unsigned long getFormattedLineCount(string text, const Rect& format_area, TextFormatting fmt, float xscale=1) const;
 	float getFormattedTextExtent(string text, const Rect& format_area, TextFormatting fmt, float xscale=1) const;
+
+    static void setDefaultResourceGroup(string resourceGroup);
+    static string getDefaultResourceGroup();
 };

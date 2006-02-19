@@ -67,7 +67,7 @@ bool FirstWindowSample::initialiseSample()
     // demonstrating, it is not a requirement.
     //
     // Load TaharezLook imageset by making use of the ImagesetManager singleton.
-    Imageset* taharezImages = ImagesetManager::getSingleton().createImageset("../datafiles/imagesets/TaharezLook.imageset");
+    Imageset* taharezImages = ImagesetManager::getSingleton().createImageset("TaharezLook.imageset");
 
     // The next thing we do is to set a default mouse cursor image.  This is
     // not strictly essential, although it is nice to always have a visible
@@ -86,14 +86,14 @@ bool FirstWindowSample::initialiseSample()
     // this step may not usually be performed explicitly.
     //
     // Fonts are loaded via the FontManager singleton.
-    FontManager::getSingleton().createFont("../datafiles/fonts/Commonwealth-10.font");
+    FontManager::getSingleton().createFont("Commonwealth-10.font");
 
     // The widgets that we will be using for this sample are the TaharezLook widgets,
     // and to enable us to use this 'skin' we must load the xml specification - which
     // within cegui is known as a "looknfeel" file.
     //
     // We load the looknfeel via the WidgetLookManager singleton.
-    WidgetLookManager::getSingleton().parseLookNFeelSpecification("../datafiles/looknfeel/TaharezLook.looknfeel");
+    WidgetLookManager::getSingleton().parseLookNFeelSpecification("TaharezLook.looknfeel");
 
     // The final step of basic initialisation that is usually peformed is
     // registering some widgets with the system via a scheme file.  The scheme
@@ -104,7 +104,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // Use the SchemeManager singleton to load in a scheme that registers widgets
     // for TaharezLook.
-    SchemeManager::getSingleton().loadScheme("../datafiles/schemes/TaharezLookWidgets.scheme");
+    SchemeManager::getSingleton().loadScheme("TaharezLookWidgets.scheme");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI

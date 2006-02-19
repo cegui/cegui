@@ -35,6 +35,7 @@ namespace CEGUI
     // Static data definitions.
     template<> WidgetLookManager* Singleton<WidgetLookManager>::ms_Singleton = 0;
     const String WidgetLookManager::FalagardSchemaName("Falagard.xsd");
+    String WidgetLookManager::d_defaultResourceGroup;
     ////////////////////////////////////////////////////////////////////////////////
 
     WidgetLookManager::WidgetLookManager()
@@ -77,7 +78,9 @@ namespace CEGUI
         // perform parse of XML data
         try
         {
-            System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, FalagardSchemaName, resourceGroup);
+            System::getSingleton().getXMLParser()->parseXMLFile(
+                handler, filename, FalagardSchemaName,
+                resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
         }
         catch(...)
         {

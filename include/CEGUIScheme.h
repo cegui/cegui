@@ -94,6 +94,30 @@ public:
 	*/
 	const String& getName(void) const		{return d_name;}
 
+    /*!
+    \brief
+        Returns the default resource group currently set for Schemes.
+
+    \return
+        String describing the default resource group identifier that will be
+        used when loading Scheme xml file data.
+    */
+    static const String& getDefaultResourceGroup()
+        { return d_defaultResourceGroup; }
+
+    /*!
+    \brief
+        Sets the default resource group to be used when loading scheme xml data
+
+    \param resourceGroup
+        String describing the default resource group identifier to be used.
+
+    \return
+        Nothing.
+    */
+    static void setDefaultResourceGroup(const String& resourceGroup)
+        { d_defaultResourceGroup = resourceGroup; }
+
 private:
 	/*************************************************************************
 		Implementation Constants
@@ -331,6 +355,8 @@ private:
 	std::vector<AliasMapping>			d_aliasMappings;
     std::vector<LoadableUIElement>		d_looknfeels;
     std::vector<FalagardMapping>        d_falagardMappings;
+
+    static String d_defaultResourceGroup;   //!< holds default resource group
 };
 
 } // End of  CEGUI namespace section

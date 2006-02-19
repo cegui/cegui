@@ -132,28 +132,34 @@ void CEGuiOgreBaseApplication::cleanup()
 void CEGuiOgreBaseApplication::initialiseResources(void)
 {
     using namespace Ogre;
+    ResourceGroupManager& rgm = ResourceGroupManager::getSingleton();
+
+    // add resource groups that we use
+    rgm.createResourceGroup("imagesets");
+    rgm.createResourceGroup("fonts");
+    rgm.createResourceGroup("layouts");
+    rgm.createResourceGroup("schemes");
+    rgm.createResourceGroup("looknfeels");
 
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
 #ifndef __APPLE__
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/fonts", "FileSystem", "fonts");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/imagesets", "FileSystem", "imagesets");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/layouts", "FileSystem", "layouts");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/looknfeel", "FileSystem", "looknfeels");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/schemes", "FileSystem", "schemes");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/configs", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/fonts", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/imagesets", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/layouts", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/looknfeel", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/lua_scripts", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/schemes", "FileSystem");
 #else
     // Because Ogre/Mac looks in the bundle's Resources folder by default...
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/fonts", "FileSystem", "fonts");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/imagesets", "FileSystem", "imagesets");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/layouts", "FileSystem", "layouts");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/looknfeel", "FileSystem", "looknfeels");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/schemes", "FileSystem", "schemes");
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/configs", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/fonts", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/imagesets", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/layouts", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/looknfeel", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/lua_scripts", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/schemes", "FileSystem");
 #endif
 }
 

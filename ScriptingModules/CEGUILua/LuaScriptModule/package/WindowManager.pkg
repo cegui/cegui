@@ -25,4 +25,7 @@ class WindowManager
     void renameWindow(string window, string new_name);
 
     WindowIterator getIterator() const;
+
+    static void setDefaultResourceGroup(string resourceGroup);
+    static string& getDefaultResourceGroup();
 };

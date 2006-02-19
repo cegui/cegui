@@ -41,7 +41,8 @@ namespace CEGUI
 *************************************************************************/
 // singleton instance pointer
 template<> WindowManager* Singleton<WindowManager>::ms_Singleton	= 0;
-
+// default resource group
+String WindowManager::d_defaultResourceGroup;
 
 /*************************************************************************
 	Definition of constant data for WindowManager
@@ -216,7 +217,8 @@ Window* WindowManager::loadWindowLayout(const String& filename, const String& na
 	// do parse (which uses handler to create actual data)
 	try
 	{
-        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, GUILayoutSchemaName, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(handler,
+            filename, GUILayoutSchemaName, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 	}
 	catch(...)
 	{

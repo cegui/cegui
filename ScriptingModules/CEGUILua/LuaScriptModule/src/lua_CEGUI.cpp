@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.7 on Sun Feb 19 01:03:32 2006.
+** Generated automatically by tolua++-1.0.7 on Sun Feb 19 20:21:13 2006.
 */
 
 #ifndef __cplusplus
@@ -11,7 +11,7 @@
 #include "tolua++.h"
 
 /* Exported function */
-int tolua_CEGUI_open (lua_State* tolua_S);
+TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S);
 
 #include "required.h"
 #include "CEGUIPropertyHelper.h"
@@ -6500,6 +6500,63 @@ static int tolua_CEGUI_CEGUI_Font_getFormattedTextExtent00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setDefaultResourceGroup of class  CEGUI::Font */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_setDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_Font_setDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,2,0));
+ {
+  CEGUI::Font::setDefaultResourceGroup(resourceGroup);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDefaultResourceGroup of class  CEGUI::Font */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_getDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_Font_getDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  string tolua_ret = (string)  CEGUI::Font::getDefaultResourceGroup();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getSingleton of class  CEGUI::FontManager */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_getSingleton00
 static int tolua_CEGUI_CEGUI_FontManager_getSingleton00(lua_State* tolua_S)
@@ -8034,6 +8091,63 @@ static int tolua_CEGUI_CEGUI_Imageset_getIterator00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getIterator'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setDefaultResourceGroup of class  CEGUI::Imageset */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Imageset_setDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_Imageset_setDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Imageset",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,2,0));
+ {
+  CEGUI::Imageset::setDefaultResourceGroup(resourceGroup);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDefaultResourceGroup of class  CEGUI::Imageset */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Imageset_getDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_Imageset_getDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Imageset",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  string tolua_ret = (string)  CEGUI::Imageset::getDefaultResourceGroup();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultResourceGroup'.",&tolua_err);
  return 0;
 #endif
 }
@@ -21581,6 +21695,63 @@ static int tolua_CEGUI_CEGUI_WindowManager_getIterator00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setDefaultResourceGroup of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_setDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_WindowManager_setDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,2,0));
+ {
+  CEGUI::WindowManager::setDefaultResourceGroup(resourceGroup);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDefaultResourceGroup of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_getDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_WindowManager_getDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  string tolua_ret = (string)  CEGUI::WindowManager::getDefaultResourceGroup();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* get function: d_windowType of class  CEGUI::FalagardWindowMapping */
 #ifndef TOLUA_DISABLE_tolua_get_CEGUI__FalagardWindowMapping_windowType
 static int tolua_get_CEGUI__FalagardWindowMapping_windowType(lua_State* tolua_S)
@@ -21932,6 +22103,63 @@ static int tolua_CEGUI_CEGUI_Scheme_getName00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getName'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setDefaultResourceGroup of class  CEGUI::Scheme */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scheme_setDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_Scheme_setDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Scheme",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,2,0));
+ {
+  CEGUI::Scheme::setDefaultResourceGroup(resourceGroup);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDefaultResourceGroup of class  CEGUI::Scheme */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scheme_getDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_Scheme_getDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Scheme",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  string tolua_ret = (string)  CEGUI::Scheme::getDefaultResourceGroup();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultResourceGroup'.",&tolua_err);
  return 0;
 #endif
 }
@@ -43596,6 +43824,63 @@ static int tolua_CEGUI_CEGUI_WidgetLookManager_new00_local(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setDefaultResourceGroup of class  CEGUI::WidgetLookManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetLookManager_setDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_WidgetLookManager_setDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::WidgetLookManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  string resourceGroup = ((string)  tolua_tocppstring(tolua_S,2,0));
+ {
+  CEGUI::WidgetLookManager::setDefaultResourceGroup(resourceGroup);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDefaultResourceGroup of class  CEGUI::WidgetLookManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetLookManager_getDefaultResourceGroup00
+static int tolua_CEGUI_CEGUI_WidgetLookManager_getDefaultResourceGroup00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::WidgetLookManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  string tolua_ret = (string)  CEGUI::WidgetLookManager::getDefaultResourceGroup();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* function: CEGUI::ceguiLua_createListboxTextItem */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_createListboxTextItem00
 static int tolua_CEGUI_CEGUI_createListboxTextItem00(lua_State* tolua_S)
@@ -43941,6 +44226,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getCharAtPixel",tolua_CEGUI_CEGUI_Font_getCharAtPixel01);
    tolua_function(tolua_S,"getFormattedLineCount",tolua_CEGUI_CEGUI_Font_getFormattedLineCount00);
    tolua_function(tolua_S,"getFormattedTextExtent",tolua_CEGUI_CEGUI_Font_getFormattedTextExtent00);
+   tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_Font_setDefaultResourceGroup00);
+   tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_Font_getDefaultResourceGroup00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"FontManager","CEGUI::FontManager","",NULL);
   tolua_beginmodule(tolua_S,"FontManager");
@@ -44001,6 +44288,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_Imageset_setNativeResolution00);
    tolua_function(tolua_S,"notifyScreenResolution",tolua_CEGUI_CEGUI_Imageset_notifyScreenResolution00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_Imageset_getIterator00);
+   tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_Imageset_setDefaultResourceGroup00);
+   tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_Imageset_getDefaultResourceGroup00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ImagesetManager","CEGUI::ImagesetManager","",NULL);
   tolua_beginmodule(tolua_S,"ImagesetManager");
@@ -44912,6 +45201,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"renameWindow",tolua_CEGUI_CEGUI_WindowManager_renameWindow00);
    tolua_function(tolua_S,"renameWindow",tolua_CEGUI_CEGUI_WindowManager_renameWindow01);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_WindowManager_getIterator00);
+   tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_WindowManager_setDefaultResourceGroup00);
+   tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_WindowManager_getDefaultResourceGroup00);
   tolua_endmodule(tolua_S);
 #ifdef __cplusplus
   tolua_cclass(tolua_S,"FalagardWindowMapping","CEGUI::FalagardWindowMapping","",tolua_collect_CEGUI__FalagardWindowMapping);
@@ -44939,6 +45230,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"unloadResources",tolua_CEGUI_CEGUI_Scheme_unloadResources00);
    tolua_function(tolua_S,"resourcesLoaded",tolua_CEGUI_CEGUI_Scheme_resourcesLoaded00);
    tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Scheme_getName00);
+   tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_Scheme_setDefaultResourceGroup00);
+   tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_Scheme_getDefaultResourceGroup00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"SchemeManager","CEGUI::SchemeManager","",NULL);
   tolua_beginmodule(tolua_S,"SchemeManager");
@@ -45976,6 +46269,8 @@ TOLUA_API int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_WidgetLookManager_new00);
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_WidgetLookManager_new00_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_WidgetLookManager_new00_local);
+   tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_WidgetLookManager_setDefaultResourceGroup00);
+   tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_WidgetLookManager_getDefaultResourceGroup00);
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */

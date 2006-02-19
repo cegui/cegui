@@ -565,6 +565,28 @@ ScriptModule* System::getScriptingModule(void) const
 }
 
 /*************************************************************************
+    Set the scripting module
+*************************************************************************/
+void System::setScriptingModule(ScriptModule* scriptModule)
+{
+    // cleanup old bindings
+    if (d_scriptModule)
+        d_scriptModule->destroyBindings();
+    // set new scriptModule
+    d_scriptModule = scriptModule;
+
+    if (d_scriptModule)
+    {
+        // log the new ScriptModule ID string
+        Logger::getSingleton().logEvent("---- Scripting module is now: "
+            + d_scriptModule->getIdentifierString() + " ----");
+
+        // create bindings on the new scriptModule
+        d_scriptModule->createBindings();
+    }
+}
+
+/*************************************************************************
 	Return a pointer to the ResourceProvider being used for within the GUI
     system.
 *************************************************************************/

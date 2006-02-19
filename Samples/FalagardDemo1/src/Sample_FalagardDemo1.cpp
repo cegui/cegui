@@ -61,12 +61,12 @@ bool FalagardDemo1Sample::initialiseSample()
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
     // Load the scheme to initialse the VanillaSkin which we use in this sample
-    SchemeManager::getSingleton().loadScheme("../datafiles/schemes/VanillaSkin.scheme");
+    SchemeManager::getSingleton().loadScheme("VanillaSkin.scheme");
     // set default mouse image
     System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "../datafiles/imagesets/GPN-2000-001437.tga");
+    ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -80,10 +80,10 @@ bool FalagardDemo1Sample::initialiseSample()
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
-    FontManager::getSingleton().createFont("../datafiles/fonts/Iconified-12.font");
+    FontManager::getSingleton().createFont("Iconified-12.font");
 
     // load some demo windows and attach to the background 'root'
-    background->addChildWindow(winMgr.loadWindowLayout("../datafiles/layouts/VanillaWindows.layout"));
+    background->addChildWindow(winMgr.loadWindowLayout("VanillaWindows.layout"));
 
     // create an instance of the console class.
     d_console = new DemoConsole("Demo");
@@ -142,7 +142,7 @@ const unsigned int DemoConsole::HistoryID      = 3;
 
 
 DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
-    d_root(CEGUI::WindowManager::getSingleton().loadWindowLayout("../datafiles/layouts/VanillaConsole.layout", id_name)),
+    d_root(CEGUI::WindowManager::getSingleton().loadWindowLayout("VanillaConsole.layout", id_name)),
     d_historyPos(0)
 {
     using namespace CEGUI;

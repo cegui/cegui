@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="WindowsLook">
-	<Imageset Name="WindowsLook" Filename="../datafiles/imagesets/WindowsLook.imageset" />
-	<LookNFeel Filename="../datafiles/looknfeel/WindowsLook.looknfeel" />
+	<Imageset Name="WindowsLook" Filename="WindowsLook.imageset" />
+	<LookNFeel Filename="WindowsLook.looknfeel" />
 	<WindowSet Filename="CEGUIFalagardBase" />
     <FalagardMapping WindowType="WindowsLook/Button" TargetType="Falagard/Button" LookNFeel="WindowsLook/Button" />
     <FalagardMapping WindowType="WindowsLook/Checkbox" TargetType="Falagard/Checkbox" LookNFeel="WindowsLook/Checkbox" />

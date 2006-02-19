@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="TaharezLook">
-	<Imageset Name="TaharezLook" Filename="../datafiles/imagesets/TaharezLook.imageset" />
-	<Font Name="Commonwealth-10" Filename="../datafiles/fonts/Commonwealth-10.font" />
-	<LookNFeel Filename="../datafiles/looknfeel/TaharezLook.looknfeel" />
+	<Imageset Name="TaharezLook" Filename="TaharezLook.imageset" />
+	<Font Name="Commonwealth-10" Filename="Commonwealth-10.font" />
+	<LookNFeel Filename="TaharezLook.looknfeel" />
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
 	
 	<FalagardMapping WindowType="TaharezLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/Button" />

@@ -112,7 +112,8 @@ void Imageset_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
     // Create a Texture object via the specified filename, and set it as the texture for the Imageset
     try
     {
-        d_imageset->d_texture = System::getSingleton().getRenderer()->createTexture(filename, resourceGroup);
+        d_imageset->d_texture = System::getSingleton().getRenderer()->createTexture(
+            filename, resourceGroup.empty() ? Imageset::getDefaultResourceGroup() : resourceGroup);
     }
     catch(...)
     {

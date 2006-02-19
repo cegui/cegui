@@ -22,6 +22,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "renderers/IrrlichtRenderer/irrlichttexture.h"
+#include "renderers/IrrlichtRenderer/IrrlichtMemoryFile.h"
+#include "CEGUISystem.h"
 
 namespace CEGUI
 {
@@ -83,10 +85,18 @@ namespace CEGUI
 	void IrrlichtTexture::loadFromFile(const String& filename, const String& resourceGroup)
 	{
 		freeTexture();
+
+        RawDataContainer texFile;
+        System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile, resourceGroup);
+
+        IrrlichtMemoryFile imf(filename, texFile.getDataPtr(), texFile.getSize());
+
 		driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS,true);
-		tex=driver->getTexture(filename.c_str());
-		
+		tex=driver->getTexture(&imf);
 		tex->grab();
+
+        // unload file data buffer
+        System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
 	}
 /************************************************************************/
 	void IrrlichtTexture::loadFromMemory(const void* buffPtr, 

@@ -40,10 +40,11 @@ namespace CEGUI
 {
 
 /*************************************************************************
-	Definition of constant data for Imageset (and sub-classes)
+	Definition of static /const data for Imageset (and sub-classes)
 *************************************************************************/
 // Declared in Imageset
 const char	Imageset::ImagesetSchemaName[]			= "Imageset.xsd";
+String Imageset::d_defaultResourceGroup;
 
 
 /*************************************************************************
@@ -83,7 +84,8 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
 {
     // try to load the image file using the renderer
     d_texture =
-        System::getSingleton().getRenderer()->createTexture(filename, resourceGroup);
+        System::getSingleton().getRenderer()->createTexture(filename,
+        resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
     // initialse the auto-scaling for this Imageset
     d_autoScale = true;
@@ -141,7 +143,9 @@ void Imageset::load(const String& filename, const String& resourceGroup)
 	// do parse (which uses handler to create actual data)
 	try
 	{
-        System::getSingleton().getXMLParser()->parseXMLFile(handler, filename, ImagesetSchemaName, resourceGroup);
+        System::getSingleton().getXMLParser()->parseXMLFile(
+                handler, filename, ImagesetSchemaName,
+                resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 	}
 	catch(...)
 	{
