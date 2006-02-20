@@ -314,8 +314,7 @@ namespace CEGUI
 
     void XercesHandler::characters (const XMLCh *const chars, const unsigned int length)
     {
-        d_text = XercesParser::transcodeXmlCharToString(chars, length);
-        d_handler.text(d_text);
+        d_handler.text(XercesParser::transcodeXmlCharToString(chars, length));
     }
     
     void XercesHandler::warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
