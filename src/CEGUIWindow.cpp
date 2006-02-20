@@ -36,6 +36,7 @@
 #include "elements/CEGUITooltip.h"
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "falagard/CEGUIFalWidgetComponent.h"
 #include <algorithm>
 #include <cmath>
 #include <stdio.h>
@@ -208,6 +209,12 @@ Window::Window(const String& type, const String& name) :
 
     // WindowRenderer
     d_windowRenderer = 0;
+
+    // auto window flag
+    d_autoWindow = (d_name.rfind(AutoWidgetNameSuffix) != String::npos);
+
+    // allow writing XML flag
+    d_allowWriteXML = true;
 
 	// add properties
 	addStandardProperties();
@@ -1482,6 +1489,25 @@ void Window::addStandardProperties(void)
     addProperty(&d_mousePassThroughEnabledProperty);
     addProperty(&d_windowRendererProperty);
     addProperty(&d_lookNFeelProperty);
+
+    // we ban some of these properties from xml for auto windows by default
+    if (isAutoWindow())
+    {
+        banPropertyFromXML(&d_destroyedByParentProperty);
+        banPropertyFromXML(&d_vertAlignProperty);
+        banPropertyFromXML(&d_horzAlignProperty);
+        banPropertyFromXML(&d_unifiedAreaRectProperty);
+        banPropertyFromXML(&d_unifiedPositionProperty);
+        banPropertyFromXML(&d_unifiedXPositionProperty);
+        banPropertyFromXML(&d_unifiedYPositionProperty);
+        banPropertyFromXML(&d_unifiedSizeProperty);
+        banPropertyFromXML(&d_unifiedWidthProperty);
+        banPropertyFromXML(&d_unifiedHeightProperty);
+        banPropertyFromXML(&d_unifiedMinSizeProperty);
+        banPropertyFromXML(&d_unifiedMaxSizeProperty);
+        banPropertyFromXML(&d_windowRendererProperty);
+        banPropertyFromXML(&d_lookNFeelProperty);
+    }
 }
 
 
@@ -2134,6 +2160,12 @@ void Window::setUserString(const String& name, const String& value)
 
 void Window::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
 {
+    // just stop now if we are'nt allowed to write XML
+    if (!d_allowWriteXML)
+    {
+        return;
+    }
+
     String indent(indentLevel, '\t');
 
     // output opening Window tag
@@ -2162,19 +2194,23 @@ int Window::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
 
     while(!iter.isAtEnd())
     {
-        try
+        // first we check to make sure the property is'nt banned from XML
+        if (!isPropertyBannedFromXML(iter.getCurrentValue()))
         {
-            // only write property if it's not at the default state
-            if (!iter.getCurrentValue()->isDefault(this))
+            try
             {
-                iter.getCurrentValue()->writeXMLToStream(this, out_stream, indentLevel);
-                ++propertiesWritten;
+                // only write property if it's not at the default state
+                if (!isPropertyAtDefault(iter.getCurrentValue()))
+                {
+                    iter.getCurrentValue()->writeXMLToStream(this, out_stream, indentLevel);
+                    ++propertiesWritten;
+                }
             }
-        }
-        catch (InvalidRequestException)
-        {
-            // This catches error(s) from the MultiLineColumnList for example
-            Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);
+            catch (InvalidRequestException)
+            {
+                // This catches error(s) from the MultiLineColumnList for example
+                Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);
+            }
         }
 
         ++iter;
@@ -2192,15 +2228,60 @@ int Window::writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const
     {
         Window* child = d_children[i];
 
-        // conditional to ensure that auto created windows are not written.
-        if (child->getName().find(AutoWidgetNameSuffix) == String::npos)
+        // conditional to ensure that auto created windows are handled seperately.
+        if (!child->isAutoWindow())
         {
             child->writeXMLToStream(out_stream, indentLevel);
+            ++windowsWritten;
+        }
+        // this is one of those auto created windows so we do some special handling
+        else if (child->writeAutoChildWindowXML(out_stream, indentLevel))
+        {
             ++windowsWritten;
         }
     }
 
     return windowsWritten;
+}
+
+bool Window::writeAutoChildWindowXML(OutStream& out_stream, uint indentLevel) const
+{
+    // just stop now if we are'nt allowed to write XML
+    if (!d_allowWriteXML)
+    {
+        return false;
+    }
+
+    String indent(indentLevel, '\t');
+
+    // we temporarily output to this string stream to see if have to do the tag at all.
+    std::ostringstream ss;
+
+    // write out properties.
+    writePropertiesXML(ss, indentLevel);
+    // write out attached child windows.
+    writeChildWindowsXML(ss, indentLevel);
+
+    if (ss.str().empty())
+    {
+        return false;
+    }
+
+    // output opening AutoWindow tag
+    out_stream << indent << "<AutoWindow ";
+    // extract the name suffix
+    String suffix(getName(), getParent()->getName().length(), String::npos);
+    // write name suffix attribute
+    out_stream << "NameSuffix=\"" << suffix << "\" ";
+    // close opening tag
+    out_stream << ">" << std::endl;
+
+    out_stream << ss.str();
+
+    // now ouput closing Window tag
+    out_stream << indent << "</AutoWindow>" << std::endl;
+
+    return true;
 }
 
 void Window::addWindowToDrawList(Window& wnd, bool at_back)
@@ -2825,6 +2906,60 @@ String Window::getWindowRendererName(void) const
         return d_windowRenderer->getName();
     }
     return String();
+}
+
+void Window::banPropertyFromXML(const Property* property)
+{
+    // check if the insertion failed
+    if (!d_bannedXMLProperties.insert(property->getName()).second)
+    {
+        // just log the incidence
+        AlreadyExistsException("Window::banPropertyFromXML - The property '"+property->getName()+"' is already banned in window '"+d_name+"'");
+    }
+}
+
+bool Window::isPropertyBannedFromXML(const Property* property) const
+{
+    BannedXMLPropertySet::const_iterator i = d_bannedXMLProperties.find(property->getName());
+    return (i != d_bannedXMLProperties.end());
+}
+
+bool Window::isPropertyAtDefault(const Property* property) const
+{
+    // if we have a looknfeel we examine it for defaults
+    if (!d_lookName.empty())
+    {
+        // if we're an autowindow, we check our parent's looknfeel's Child section which
+        // we came from as we might be initialised there
+        if (d_autoWindow && getParent() && !getParent()->getLookNFeel().empty())
+        {
+            const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(getParent()->getLookNFeel());
+
+            // find our name suffix
+            String suffix(getName(), getParent()->getName().length(), String::npos);
+
+            // find the widget component if possible
+            const WidgetComponent* wc = wlf.findWidgetComponent(suffix);
+            if (wc != 0)
+            {
+                const PropertyInitialiser* propinit = wc->findPropertyInitialiser(property->getName());
+                if (propinit != 0)
+                {
+                    return (getProperty(property->getName()) == propinit->getInitialiserValue());
+                }
+            }
+        }
+
+        // if the looknfeel has a new default for this property we compare against that
+        const WidgetLookFeel& wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
+        const PropertyInitialiser* propinit = wlf.findPropertyInitialiser(property->getName());
+        if (propinit != 0)
+        {
+            return (getProperty(property->getName()) == propinit->getInitialiserValue());
+        }
+    }
+    // we dont have a looknfeel with a new value for this property so we rely on the hardcoded default
+    return property->isDefault(this);
 }
 
 } // End of  CEGUI namespace section

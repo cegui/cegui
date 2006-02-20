@@ -317,4 +317,28 @@ namespace CEGUI
                                 newBaseName + (*curr).getWidgetNameSuffix());
     }
 
+    const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(const String& propertyName) const
+    {
+        PropertyList::const_reverse_iterator i = d_properties.rbegin();
+        while (i != d_properties.rend())
+        {
+            if ((*i).getTargetPropertyName() == propertyName)
+                return &(*i);
+            ++i;
+        }
+        return 0;
+    }
+
+    const WidgetComponent* WidgetLookFeel::findWidgetComponent(const String& nameSuffix) const
+    {
+        WidgetList::const_iterator i = d_childWidgets.begin();
+        while (i != d_childWidgets.end())
+        {
+            if ((*i).getWidgetNameSuffix() == nameSuffix)
+                return &(*i);
+            ++i;
+        }
+        return 0;
+    }
+
 } // End of  CEGUI namespace section

@@ -316,7 +316,7 @@ namespace CEGUI
     {
         d_handler.text(XercesParser::transcodeXmlCharToString(chars, length));
     }
-    
+
     void XercesHandler::warning (const XERCES_CPP_NAMESPACE::SAXParseException &exc)
     {
         XERCES_CPP_NAMESPACE_USE;

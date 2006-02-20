@@ -311,6 +311,15 @@ void Thumb::addThumbProperties(void)
 	addProperty(&d_horzFreeProperty);
 	addProperty(&d_vertRangeProperty);
 	addProperty(&d_horzRangeProperty);
+
+    // if we're an autowindow we ban some properties from XML
+    if (isAutoWindow())
+    {
+        banPropertyFromXML(&d_vertRangeProperty);
+        banPropertyFromXML(&d_horzRangeProperty);
+        banPropertyFromXML(&d_vertFreeProperty);
+        banPropertyFromXML(&d_horzRangeProperty);
+    }
 }
 
 

@@ -28,6 +28,7 @@
 #include "CEGUIFont.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIWindowFactoryManager.h"
 #include <cstdlib>
 #include <cstdio>
 
@@ -560,6 +561,15 @@ void WindowRenderer::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->setWindowRenderer(value);
 }
 
+void WindowRenderer::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const
+{
+    const Window* wnd = static_cast<const Window*>(receiver);
+    if (!WindowFactoryManager::getSingleton().isFalagardMappedType(wnd->getType()))
+    {
+        Property::writeXMLToStream(receiver, out_stream, indentLevel);
+    }
+}
+
 
 String LookNFeel::get(const PropertyReceiver* receiver) const
 {
@@ -569,6 +579,15 @@ String LookNFeel::get(const PropertyReceiver* receiver) const
 void LookNFeel::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->setLookNFeel(value);
+}
+
+void LookNFeel::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const
+{
+    const Window* wnd = static_cast<const Window*>(receiver);
+    if (!WindowFactoryManager::getSingleton().isFalagardMappedType(wnd->getType()))
+    {
+        Property::writeXMLToStream(receiver, out_stream, indentLevel);
+    }
 }
 
 

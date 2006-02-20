@@ -371,6 +371,19 @@ void Scrollbar::addScrollbarProperties(void)
 	addProperty(&d_stepSizeProperty);
 	addProperty(&d_overlapSizeProperty);
 	addProperty(&d_scrollPositionProperty);
+
+    // we ban all these properties from xml for auto windows
+    if (isAutoWindow())
+    {
+        banPropertyFromXML(&d_documentSizeProperty);
+        banPropertyFromXML(&d_pageSizeProperty);
+        banPropertyFromXML(&d_stepSizeProperty);
+        banPropertyFromXML(&d_overlapSizeProperty);
+        banPropertyFromXML(&d_scrollPositionProperty);
+
+        // scrollbars tend to have their visibility toggled alot, so we ban that as well
+        banPropertyFromXML(&d_visibleProperty);
+    }
 }
 
 

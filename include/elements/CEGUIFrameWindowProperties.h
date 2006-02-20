@@ -239,7 +239,7 @@ public:
 	SizingBorderThickness() : Property(
 		"SizingBorderThickness",
 		"Property to get/set the setting for the sizing border thickness.  Value is a float specifying the border thickness in pixels.",
-		"8.000000")
+		"8")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;

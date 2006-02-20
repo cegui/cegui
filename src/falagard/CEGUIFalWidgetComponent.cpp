@@ -186,4 +186,16 @@ namespace CEGUI
         out_stream << indent << "</Child>" << std::endl;
     }
 
+    const PropertyInitialiser* WidgetComponent::findPropertyInitialiser(const String& propertyName) const
+    {
+        PropertiesList::const_reverse_iterator i = d_properties.rbegin();
+        while (i != d_properties.rend())
+        {
+            if ((*i).getTargetPropertyName() == propertyName)
+                return &(*i);
+            ++i;
+        }
+        return 0;
+    }
+
 } // End of  CEGUI namespace section

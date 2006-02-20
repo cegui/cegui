@@ -86,7 +86,7 @@ public:
 	Alpha() : Property(
 		"Alpha",
 		"Property to get/set the alpha value of the Window.  Value is floating point number.",
-		"1.000000") 
+		"1") 
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -482,7 +482,7 @@ public:
     AutoRepeatDelay() : Property(
         "AutoRepeatDelay",
         "Property to get/set the autorepeat delay.  Value is a floating point number indicating the delay required in seconds.",
-        "0.300000")
+        "0.3")
     {}
 
     String  get(const PropertyReceiver* receiver) const;
@@ -509,7 +509,7 @@ public:
     AutoRepeatRate() : Property(
         "AutoRepeatRate",
         "Property to get/set the autorepeat rate.  Value is a floating point number indicating the rate required in seconds.",
-        "0.060000")
+        "0.06")
     {}
 
     String  get(const PropertyReceiver* receiver) const;
@@ -720,7 +720,7 @@ class UnifiedAreaRect : public Property
 		UnifiedAreaRect() : Property(
 		"UnifiedAreaRect",
 		"Property to get/set the windows unified area rectangle.  Value is a \"URect\".",
-		"{{0.000000,0.000000},{0.000000,0.000000},{0.000000,0.000000},{0.000000,0.000000}}")
+		"{{0,0},{0,0},{0,0},{0,0}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -748,7 +748,7 @@ class UnifiedPosition : public Property
 		UnifiedPosition() : Property(
 		"UnifiedPosition",
 		"Property to get/set the windows unified position.  Value is a \"UVector2\".",
-		"{{0.000000,0.000000},{0.000000,0.000000}}", false)
+		"{{0,0},{0,0}}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -774,7 +774,7 @@ class UnifiedXPosition : public Property
 		UnifiedXPosition() : Property(
 		"UnifiedXPosition",
 		"Property to get/set the windows unified position x-coordinate.  Value is a \"UDim\".",
-		"{0.000000,0.000000}", false)
+		"{0,0}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -800,7 +800,7 @@ class UnifiedYPosition : public Property
 		UnifiedYPosition() : Property(
 		"UnifiedYPosition",
 		"Property to get/set the windows unified position y-coordinate.  Value is a \"UDim\".",
-		"{0.000000,0.000000}", false)
+		"{0,0}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -828,7 +828,7 @@ class UnifiedSize : public Property
 		UnifiedSize() : Property(
 		"UnifiedSize",
 		"Property to get/set the windows unified size.  Value is a \"UVector2\".",
-		"{{0.000000,0.000000},{0.000000,0.000000}}", false)
+		"{{0,0},{0,0}}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -854,7 +854,7 @@ class UnifiedWidth : public Property
 		UnifiedWidth() : Property(
 		"UnifiedWidth",
 		"Property to get/set the windows unified width.  Value is a \"UDim\".",
-		"{0.000000,0.000000}", false)
+		"{0,0}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -880,7 +880,7 @@ class UnifiedHeight : public Property
 		UnifiedHeight() : Property(
 		"UnifiedHeight",
 		"Property to get/set the windows unified height.  Value is a \"UDim\".",
-		"{0.000000,0.000000}", false)
+		"{0,0}", false)
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -908,7 +908,7 @@ class UnifiedMinSize : public Property
 		UnifiedMinSize() : Property(
 		"UnifiedMinSize",
 		"Property to get/set the windows unified minimum size.  Value is a \"UVector2\".",
-		"{{0.000000,0.000000},{0.000000,0.000000}}")
+		"{{0,0},{0,0}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -936,7 +936,7 @@ class UnifiedMaxSize : public Property
 		UnifiedMaxSize() : Property(
 		"UnifiedMaxSize",
 		"Property to get/set the windows unified maximum size.  Value is a \"UVector2\".",
-		"{{0.000000,0.000000},{0.000000,0.000000}}")
+		"{{0,0},{0,0}}")
 		{}
 
 		String	get(const PropertyReceiver* receiver) const;
@@ -991,6 +991,8 @@ class WindowRenderer : public Property
 
         String  get(const PropertyReceiver* receiver) const;
         void    set(PropertyReceiver* receiver, const String& value);
+
+        void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const;
 };
 
 
@@ -1015,6 +1017,8 @@ class LookNFeel : public Property
 
         String  get(const PropertyReceiver* receiver) const;
         void    set(PropertyReceiver* receiver, const String& value);
+
+        void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const;
 };
 
 

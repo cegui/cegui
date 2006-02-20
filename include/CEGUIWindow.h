@@ -40,6 +40,7 @@
 #include "CEGUIRenderCache.h"
 #include "CEGUIWindowRenderer.h"
 #include <vector>
+#include <set>
 
 
 #if defined(_MSC_VER)
@@ -1098,6 +1099,19 @@ public:
         false if mouse pass through is not enabled.
     */
     bool isMousePassThroughEnabled(void) const  {return d_mousePassThroughEnabled;}
+
+    /*!
+    \brief
+        Returns whether this window is an auto-child window.
+        All auto-child windows have "__auto_" in their name, but this is faster.
+    */
+    bool isAutoWindow(void) const   {return d_autoWindow;}
+
+    /*!
+    \brief
+        Returns whether this window is allowed to write XML.
+    */
+    bool isWritingXMLAllowed(void) const    {return d_allowWriteXML;}
 
     /*************************************************************************
         Manipulator functions
@@ -2340,6 +2354,12 @@ public:
     */
     String getWindowRendererName(void) const;
 
+    /*!
+    \brief
+        Sets whether this window is allowed to write XML
+    */
+    void setWritingXMLAllowed(bool allow)   {d_allowWriteXML = allow;}
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -2921,6 +2941,26 @@ protected:
     */
     virtual bool validateWindowRenderer(const String& name) const;
 
+    /*!
+    \brief
+        Adds a property to the XML ban list
+    */
+    void banPropertyFromXML(const Property* property);
+
+    /*!
+    \brief
+        Returns whether a property is banned from XML
+    */
+    bool isPropertyBannedFromXML(const Property* property) const;
+
+    /*!
+    \brief
+        Returns whether a property is at it's default value.
+        This function is different from Property::isDefatult as it takes the assigned look'n'feel
+        (if the is one) into account.
+    */
+    bool isPropertyAtDefault(const Property* property) const;
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
@@ -3103,6 +3143,20 @@ protected:
     */
     bool d_mousePassThroughEnabled;  
 
+    //! true when this window is an auto-window (it's name contains __auto_)
+    bool d_autoWindow;
+
+    /*!
+    \brief
+        std::set used to determine whether a window should write a property to XML or not.
+        if the property name is present the property will not be written
+    */
+    typedef std::set<String, String::FastLessCompare> BannedXMLPropertySet;
+    BannedXMLPropertySet d_bannedXMLProperties;
+
+    //! true if this window is allowed to write XML, false if not
+    bool d_allowWriteXML;
+
 protected:
     /*************************************************************************
         Properties for Window base class
@@ -3257,6 +3311,7 @@ protected:
 
     virtual int writePropertiesXML(OutStream& out_stream, uint indentLevel) const;
     virtual int writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const;
+    virtual bool writeAutoChildWindowXML(OutStream& out_stream, uint indentLevel) const;
 
     /*************************************************************************
         May not copy or assign Window objects

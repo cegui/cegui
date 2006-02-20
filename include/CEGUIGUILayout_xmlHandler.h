@@ -96,11 +96,13 @@ private:
 	*************************************************************************/
 	static const String GUILayoutElement;				//!< Tag name for GUILayout elements.
 	static const String WindowElement;				//!< Tag name for Window elements.
+    static const String AutoWindowElement;              //!< Tag name for AutoWindow elements.
 	static const String PropertyElement;				//!< Tag name for Property elements.
 	static const String LayoutImportElement;			//!< Tag name for LayoutImport elements.
 	static const String EventElement;					//!< Tag name for Event elements.
 	static const String WindowTypeAttribute;			//!< Attribute name that stores the type of Window to create.
 	static const String WindowNameAttribute;			//!< Attribute name that stores the name of the window to create.
+    static const String AutoWindowNameSuffixAttribute;  //!< Attribute name that stores the name suffix of the auto window to get.
 	static const String PropertyNameAttribute;		//!< Attribute name that stores the name of the property to set.
 	static const String PropertyValueAttribute;		//!< Attribute name that stores the value to pass to the property.
 	static const String LayoutParentAttribute;		//!< Attribute name that stores the name of the window to attach the layout to.
@@ -121,6 +123,12 @@ private:
         Method that handles the opening Window XML element.
     */
     void elementWindowStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Method that handles the opening AutoWindow XML element.
+    */
+    void elementAutoWindowStart(const XMLAttributes& attributes);
 
     /*!
     \brief
@@ -153,6 +161,12 @@ private:
     void elementWindowEnd();
 
     /*!
+    \brief
+        Method that handles the closing AutoWindow XML element.
+    */
+    void elementAutoWindowEnd();
+
+    /*!
     \brief 
         Method that handles the closing of a property XML element.
     */
@@ -160,7 +174,8 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	typedef std::vector<Window*>	WindowStack;	
+    typedef std::pair<Window*,bool> WindowStackEntry; //!< Pair used as datatype for the window stack. second is false if the window is an autowindow.
+	typedef std::vector<WindowStackEntry>	WindowStack;
 	Window*	d_root;				//!< Will point to first window created.
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 	String		d_layoutParent;	//!< Name of the parent window to attach the loaded layout to.

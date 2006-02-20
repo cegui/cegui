@@ -1421,6 +1421,7 @@ void System::setDefaultTooltip(Tooltip* tooltip)
     // set new custom tooltip 
     d_weOwnTooltip = false;
     d_defaultTooltip = tooltip;
+    d_defaultTooltip->setWritingXMLAllowed(false);
 }
 
 void System::setDefaultTooltip(const String& tooltipType)
@@ -1440,6 +1441,7 @@ void System::setDefaultTooltip(const String& tooltipType)
         {
             d_defaultTooltip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, "CEGUI::System::default__auto_tooltip__"));
             d_weOwnTooltip = true;
+            d_defaultTooltip->setWritingXMLAllowed(false);
         }
         catch(UnknownObjectException x)
         {

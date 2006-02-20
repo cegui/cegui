@@ -327,6 +327,27 @@ namespace CEGUI
         */
         void renameChildren(const Window& widget, const String& newBaseName) const;
 
+        /*!
+        \brief
+            Takes the name of a property and returns a pointer to the last
+            PropertyInitialiser for this property or 0 if the is no
+            PropertyInitialiser for this property in the WidgetLookFeel
+
+        \param propertyName
+            The name of the property to look for.
+        */
+        const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
+
+        /*!
+        \brief
+            Takes the namesuffix for a widget component and returns a pointer to
+            it if it exists or 0 if it does'nt.
+
+        \param nameSuffix
+            The name suffix of the Child component to look for.
+        */
+        const WidgetComponent* findWidgetComponent(const String& nameSuffix) const;
+
     private:
         typedef std::map<String, StateImagery, String::FastLessCompare>    StateList;
         typedef std::map<String, ImagerySection, String::FastLessCompare>  ImageryList;

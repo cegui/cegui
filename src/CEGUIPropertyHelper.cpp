@@ -29,6 +29,7 @@
 #include "CEGUIExceptions.h"
 
 #include <cstdio>
+#include <sstream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -183,34 +184,46 @@ URect PropertyHelper::stringToURect(const String& str)
 
 String PropertyHelper::floatToString(float val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[64];
 	sprintf(buff, "%f", val);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << val;
+    return String(iss.str());
 }
 
 
 String PropertyHelper::uintToString(uint val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[64];
 	sprintf(buff, "%u", val);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << val;
+    return String(iss.str());
 }
 
 
 String PropertyHelper::intToString(int val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[64];
 	sprintf(buff, "%d", val);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << val;
+    return String(iss.str());
 }
 
 
@@ -230,34 +243,46 @@ String PropertyHelper::boolToString(bool val)
 
 String PropertyHelper::sizeToString(const Size& val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[128];
 	sprintf(buff, "w:%f h:%f", val.d_width, val.d_height);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << "w:" << val.d_width << " h:" << val.d_height;
+    return String(iss.str());
 }
 
 
 String PropertyHelper::pointToString(const Point& val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[128];
 	sprintf(buff, "x:%f y:%f", val.d_x, val.d_y);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << "x:" << val.d_x << " y:" << val.d_y;
+    return String(iss.str());
 }
 
 
 String PropertyHelper::rectToString(const Rect& val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[256];
 	sprintf(buff, "l:%f t:%f r:%f b:%f", val.d_left, val.d_top, val.d_right, val.d_bottom);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << "l:" << val.d_left << " t:" << val.d_top << " r:" << val.d_right << " b:" << val.d_bottom;
+    return String(iss.str());
 }
 
 
@@ -274,29 +299,41 @@ String PropertyHelper::imageToString(const Image* const val)
 
 String PropertyHelper::udimToString(const UDim& val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[128];
 	sprintf(buff, "{%f,%f}", val.d_scale, val.d_offset);
 
-	return String(buff);
+	return String(buff);*/
+
+    std::ostringstream iss;
+    iss << '{' << val.d_scale << ',' << val.d_offset << '}';
+    return String(iss.str());
 }
 
 
 String PropertyHelper::uvector2ToString(const UVector2& val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[256];
 	sprintf(buff, "{{%f,%f},{%f,%f}}", val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
 
-	return String(buff);
+    return String(buff);*/
+
+    std::ostringstream iss;
+
+    iss << "{{"
+        << val.d_x.d_scale << ',' << val.d_x.d_offset << "},{"
+        << val.d_y.d_scale << ',' << val.d_y.d_offset << "}}";
+
+	return String(iss.str());
 }
 
 
 String PropertyHelper::urectToString(const URect& val)
 {
-	using namespace std;
+	/*using namespace std;
 
 	char buff[512];
 	sprintf(
@@ -308,7 +345,17 @@ String PropertyHelper::urectToString(const URect& val)
 		val.d_max.d_y.d_scale,val.d_max.d_y.d_offset
 	);
 
-	return String(buff);
+    return String(buff);*/
+
+    std::ostringstream iss;
+
+    iss << "{{"
+        << val.d_min.d_x.d_scale << ',' << val.d_min.d_x.d_offset << "},{"
+        << val.d_min.d_y.d_scale << ',' << val.d_min.d_y.d_offset << "},{"
+        << val.d_max.d_x.d_scale<< ',' << val.d_max.d_x.d_offset << "},{"
+        << val.d_max.d_y.d_scale << ',' << val.d_max.d_y.d_offset << "}}";
+
+	return String(iss.str());
 }
 
 

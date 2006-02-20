@@ -93,6 +93,17 @@ namespace CEGUI
         */
         void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
+        /*!
+        \brief
+            Takes the name of a property and returns a pointer to the last
+            PropertyInitialiser for this property or 0 if the is no
+            PropertyInitialiser for this property in the WidgetLookFeel
+
+        \param propertyName
+            The name of the property to look for.
+        */
+        const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
+
     private:
         typedef std::vector<PropertyInitialiser> PropertiesList;
 
