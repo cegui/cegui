@@ -318,7 +318,7 @@ void Thumb::addThumbProperties(void)
         banPropertyFromXML(&d_vertRangeProperty);
         banPropertyFromXML(&d_horzRangeProperty);
         banPropertyFromXML(&d_vertFreeProperty);
-        banPropertyFromXML(&d_horzRangeProperty);
+        banPropertyFromXML(&d_horzFreeProperty);
     }
 }
 
