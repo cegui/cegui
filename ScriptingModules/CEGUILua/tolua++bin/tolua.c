@@ -70,15 +70,21 @@ static void error (char* o)
 
 int main (int argc, char* argv[])
 {
+ #ifdef LUA_VERSION_NUM /* lua 5.1 */
+ lua_State* L = luaL_newstate();
+ luaL_openlibs(L);
+ #else
  lua_State* L = lua_open();
-	luaopen_base(L);
-	luaopen_io(L);
-	luaopen_string(L);
-	luaopen_table(L);
-	luaopen_math(L);
-	luaopen_debug(L);
+ luaopen_base(L);
+ luaopen_io(L);
+ luaopen_string(L);
+ luaopen_table(L);
+ luaopen_math(L);
+ luaopen_debug(L);
+ #endif
 
  lua_pushstring(L,TOLUA_VERSION); lua_setglobal(L,"TOLUA_VERSION");
+ lua_pushstring(L,LUA_VERSION); lua_setglobal(L,"TOLUA_LUA_VERSION");
 
  if (argc==1)
  {

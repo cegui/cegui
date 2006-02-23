@@ -37,11 +37,11 @@ function classClass:register (pre)
  pre = pre or ''
  push(self)
 	if _collect[self.type] then
-		output('#ifdef __cplusplus\n')
+		output(pre,'#ifdef __cplusplus\n')
   output(pre..'tolua_cclass(tolua_S,"'..self.lname..'","'..self.type..'","'..self.btype..'",'.._collect[self.type]..');')
-		output('#else\n')
+		output(pre,'#else\n')
   output(pre..'tolua_cclass(tolua_S,"'..self.lname..'","'..self.type..'","'..self.btype..'",NULL);')
-		output('#endif\n')
+		output(pre,'#endif\n')
 	else
   output(pre..'tolua_cclass(tolua_S,"'..self.lname..'","'..self.type..'","'..self.btype..'",NULL);')
 	end
@@ -146,7 +146,8 @@ function Class (n,p,b)
 	end
 
 	-- check for template
-	local t,_,T,I = string.find(b, "TEMPLATE_BIND%s*%(+%s*\"?([^\",]*)\"?%s*,%s*([^%)]*)%s*%)+")
+	b = string.gsub(b, "^{%s*TEMPLATE_BIND", "{\nTOLUA_TEMPLATE_BIND")
+	local t,_,T,I = string.find(b, "^{%s*TOLUA_TEMPLATE_BIND%s*%(+%s*\"?([^\",]*)\"?%s*,%s*([^%)]*)%s*%)+")
 	if t then
 
 		-- remove quotes
@@ -155,7 +156,7 @@ function Class (n,p,b)
 		-- get type list
 		local types = split_c_tokens(I, ",")
 		-- remove TEMPLATE_BIND line
-		local bs = string.gsub(b, "\n[^\n]*TEMPLATE_BIND[^\n]*\n", "\n")
+		local bs = string.gsub(b, "^{%s*TOLUA_TEMPLATE_BIND[^\n]*\n", "{\n")
 
 		-- replace
 		for i =1 , types.n do
@@ -202,6 +203,9 @@ function Class (n,p,b)
 
 	if _global_classes[oname] then
 		c = _global_classes[oname]
+		if mbase and ((not c.base) or c.base == "") then
+			c.base = mbase
+		end
 	else
 		c = _Class(_Container{name=n, base=mbase, extra_bases=p})
 

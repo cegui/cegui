@@ -460,6 +460,16 @@ function classContainer:doparse (s)
   end
  end
 
+ -- try C code for preamble section
+ do
+ 	local b,e,code = string.find(s, "^%s*(%b\5\6)")
+ 	if b then
+ 		code = string.sub(code, 2, -2).."\n"
+		Verbatim(code, '')
+		return string.sub(s, e+1)
+ 	end
+ end
+
  -- try default_property directive
  do
  	local b,e,ptype = strfind(s, "^%s*TOLUA_PROPERTY_TYPE%s*%(+%s*([^%)%s]*)%s*%)+%s*;?")
@@ -567,7 +577,17 @@ function classContainer:doparse (s)
 		 -- try inline
    b,e,decl,kind,arg,const = strfind(s,"^%s*([_%w][_%w%s%*&:<>,]-%s+operator)%s*([^%s][^%s]*)%s*(%b())%s*(c?o?n?s?t?)[%s\n]*%b{}%s*;?%s*")
   end
-		if b then
+  if not b then
+  	-- try cast operator
+  	b,e,decl,kind,arg,const = strfind(s, "^%s*(operator)%s+([%w_:%d<>%*%&%s]+)%s*(%b())%s*(c?o?n?s?t?)");
+  	if b then
+  		local _,ie = string.find(s, "^%s*%b{}", e+1)
+  		if ie then
+  			e = ie
+  		end
+  	end
+  end
+  if b then
    _curr_code = strsub(s,b,e)
    Operator(decl,kind,arg,const)
    return strsub(s,e+1)

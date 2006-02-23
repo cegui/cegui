@@ -61,9 +61,9 @@ function classCode:register (pre)
  output('\n'..pre..' };\n')
  output(pre..' top = lua_gettop(tolua_S);')
  if first_line and first_line ~= "" then
- 	output(pre..' lua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua embedded: '..first_line..'");')
+ 	output(pre..' tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua embedded: '..first_line..'");')
  else
- 	output(pre..' lua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code '..code_n..'");')
+ 	output(pre..' tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code '..code_n..'");')
  end
  output(pre..' lua_settop(tolua_S, top);')
  output(pre..'} /* end of embedded lua code */\n\n')

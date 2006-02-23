@@ -44,6 +44,9 @@ _basic_ctype = {
  state = "lua_State*",
 }
 
+-- functions the are used to do a 'raw push' of basic types
+_basic_raw_push = {}
+
 -- List of user defined types
 -- Each type corresponds to a variable name that stores its tag value.
 _usertype = {}
@@ -116,9 +119,9 @@ end
 
 -- register an user defined type: returns full type
 function regtype (t)
-	if isbasic(t) then
-		return t
-	end
+	--if isbasic(t) then
+	--	return t
+	--end
 	local ft = findtype(t)
 
 	if not _usertype[ft] then
@@ -158,6 +161,7 @@ function split (s,t)
  local f = function (s)
   l.n = l.n + 1
   l[l.n] = s
+  return ""
  end
  local p = "%s*(.-)%s*"..t.."%s*"
  s = gsub(s,"^%s+","")

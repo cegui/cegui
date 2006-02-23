@@ -279,7 +279,6 @@ function classFunction:supcode (local_constructor)
   end
  end
 
-
  --------------------------------------------------
  -- CEGUILua mod
  -- init exception handling
@@ -307,6 +306,8 @@ function classFunction:supcode (local_constructor)
 
  local out = string.find(self.mod, "tolua_outside")
 
+ ---------------
+ -- CEGUILua mod
  -- remove "tolua_outside" from self.mod
  if out then
     self.mod = string.gsub(self.mod, "tolua_outside", "")
@@ -322,7 +323,7 @@ function classFunction:supcode (local_constructor)
     output('  self->operator[](',self.args[1].name,') = ',self.args[2].name,';')
   end
  else
-  -- CEGUILua mod - throws
+  -- CEGUILua mod begin- throws
   if throws then
     for i=1,table.getn(throws) do
         if string.find(throws[i].ret, "error") then
@@ -334,6 +335,7 @@ function classFunction:supcode (local_constructor)
     end
     output("try\n")
   end
+  -- CEGUILua mod end - throws
   output('  {')
   if self.type ~= '' and self.type ~= 'void' then
    output('  ',self.mod,self.type,self.ptr,'tolua_ret = ')
@@ -353,7 +355,11 @@ function classFunction:supcode (local_constructor)
 	if out then
 		output(self.name,'(')
 	else
+	  if self.cast_operator then
+	  	output('static_cast<',self.mod,self.type,self.ptr,'>(*self')
+	  else
 		output('self->'..self.name,'(')
+	  end
 	end
   else
    output(self.name,'(')
@@ -386,7 +392,11 @@ function classFunction:supcode (local_constructor)
    nret = nret + 1
    local t,ct = isbasic(self.type)
    if t then
-    output('   tolua_push'..t..'(tolua_S,(',ct,')tolua_ret);')
+   	if self.cast_operator and _basic_raw_push[t] then
+		output('   ',_basic_raw_push[t],'(tolua_S,(',ct,')tolua_ret);')
+   	else
+	    output('   tolua_push'..t..'(tolua_S,(',ct,')tolua_ret);')
+	end
    else
 			 t = self.type
 			 new_t = string.gsub(t, "const%s+", "")
@@ -418,7 +428,6 @@ function classFunction:supcode (local_constructor)
   end
   output('  }')
 
-
   ------------------------------------------
   -- CEGUILua mod
   -- finish exception handling
@@ -427,7 +436,6 @@ function classFunction:supcode (local_constructor)
    outputExceptionCatchBlocks(self.name, throws, exRaiseError)
   end
   ------------------------------------------
-
 
   -- set array element values
   if class then narg=2 else narg=1 end
@@ -639,9 +647,16 @@ function Function (d,a,c)
  	a = string.gsub(a, "%s*([%(%)])%s*", "%1")
 	local t,strip,last = strip_pars(strsub(a,2,-2));
 	if strip then
-		local ns = string.sub(strsub(a,1,-2), 1, -(string.len(last)+1))
-		ns = string.gsub(ns, "%s*,%s*$", "")..')'
+		--local ns = string.sub(strsub(a,1,-2), 1, -(string.len(last)+1))
+		local ns = join(t, ",", 1, last-1)
+
+		ns = "("..string.gsub(ns, "%s*,%s*$", "")..')'
+		--ns = strip_defaults(ns)
+
 		Function(d, ns, c)
+		for i=1,last do
+			t[i] = string.gsub(t[i], "=.*$", "")
+		end
 	end
 
  while t[i] do
@@ -655,24 +670,61 @@ function Function (d,a,c)
  return _Function(f)
 end
 
+function join(t, sep, first, last)
+
+	first = first or 1
+	last = last or table.getn(t)
+	local lsep = ""
+	local ret = ""
+	local loop = false
+	for i = first,last do
+
+		ret = ret..lsep..t[i]
+		lsep = sep
+		loop = true
+	end
+	if not loop then
+		return ""
+	end
+
+	return ret
+end
+
 function strip_pars(s)
 
 	local t = split_c_tokens(s, ',')
 	local strip = false
 	local last
 
-	for i=1,t.n do
+	for i=t.n,1,-1 do
 
 		if not strip and param_object(t[i]) then
+			last = i
 			strip = true
 		end
-		if strip then
-			last = t[i]
-			t[i] = string.gsub(t[i], "=.*$", "")
-		end
+		--if strip then
+		--	t[i] = string.gsub(t[i], "=.*$", "")
+		--end
 	end
 
 	return t,strip,last
 
 end
+
+function strip_defaults(s)
+
+	s = string.gsub(s, "^%(", "")
+	s = string.gsub(s, "%)$", "")
+
+	local t = split_c_tokens(s, ",")
+	local sep, ret = "",""
+	for i=1,t.n do
+		t[i] = string.gsub(t[i], "=.*$", "")
+		ret = ret..sep..t[i]
+		sep = ","
+	end
+
+	return "("..ret..")"
+end
+
 

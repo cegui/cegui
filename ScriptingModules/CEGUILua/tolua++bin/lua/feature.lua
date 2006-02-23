@@ -121,7 +121,7 @@ function classFeature:cfuncname (n)
   n = self.parent:cfuncname(n)
  end
 
-  n = string.gsub(n..'_'.. (self.lname or self.name), "[<>:, \.%*]", "_")
+  n = string.gsub(n..'_'.. (self.lname or self.name), "[<>:, \.%*&]", "_")
 
   return n
 end

@@ -32,8 +32,6 @@ function classPackage:print ()
 end
 
 function classPackage:preprocess ()
- --self.code = gsub(self.code,"\n%s*#[^d][^\n]*\n", "\n\n") -- eliminate preprocessor directives that don't start with 'd'
- self.code = gsub(self.code,"\n%s*#[^d]", "\n//") -- eliminate preprocessor directives that don't start with 'd'
 
  -- avoid preprocessing embedded Lua code
  local L = {}
@@ -51,6 +49,16 @@ function classPackage:preprocess ()
                                                tinsert(C,c)
                                                return "\n#<"..getn(C)..">#"
                                               end)
+ -- avoid preprocessing embedded C code
+ self.code = gsub(self.code,"\n%s*%$%{","\5") -- deal with embedded C code
+ self.code = gsub(self.code,"\n%s*%$%}","\6")
+ self.code = gsub(self.code,"(%b\5\6)",       function (c)
+                                               tinsert(C,c)
+                                               return "\n#<"..getn(C)..">#"
+                                              end)
+
+ --self.code = gsub(self.code,"\n%s*#[^d][^\n]*\n", "\n\n") -- eliminate preprocessor directives that don't start with 'd'
+ self.code = gsub(self.code,"\n[ \t]*#[ \t]*[^d%<%[]", "\n//") -- eliminate preprocessor directives that don't start with 'd'
 
  -- avoid preprocessing verbatim lines
  local V = {}
@@ -58,6 +66,7 @@ function classPackage:preprocess ()
                                                tinsert(V,v)
                                                return "\n#"..getn(V).."#"
                                               end)
+
  -- perform global substitution
 
  self.code = gsub(self.code,"(//[^\n]*)","")     -- eliminate C++ comments
@@ -164,6 +173,14 @@ function classPackage:register (pre)
  output(pre.." tolua_endmodule(tolua_S);")
  output(pre.." return 1;")
  output(pre.."}")
+
+ output("\n\n")
+ output("#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501\n");
+ output(pre.."TOLUA_API int luaopen_"..self.name.." (lua_State* tolua_S) {")
+ output(pre.." return tolua_"..self.name.."_open(tolua_S);")
+ output(pre.."};")
+ output("#endif\n\n")
+
 	pop()
 end
 

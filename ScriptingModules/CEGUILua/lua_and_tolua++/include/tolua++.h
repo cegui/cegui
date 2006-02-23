@@ -44,7 +44,7 @@
 ******* END CEGUI CHANGES *******
 ********************************/
 
-#define TOLUA_VERSION "tolua++-1.0.7"
+#define TOLUA_VERSION "tolua++-1.0.90"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +54,7 @@ extern "C" {
 #define tolua_iscppstring	tolua_isstring
 
 #define TEMPLATE_BIND(p)
+#define TOLUA_TEMPLATE_BIND(p)
 #define TOLUA_PROTECTED_DESTRUCTOR
 #define TOLUA_PROPERTY_TYPE(p)
 
@@ -69,6 +70,8 @@ struct tolua_Error
 	const char* type;
 };
 typedef struct tolua_Error tolua_Error;
+
+#define TOLUA_NOPEER	LUA_REGISTRYINDEX /* for lua 5.1 */
 
 TOLUA_API const char* tolua_typename (lua_State* L, int lo);
 TOLUA_API void tolua_error (lua_State* L, char* msg, tolua_Error* err);
@@ -144,6 +147,10 @@ TOLUA_API void* tolua_tofieldusertype (lua_State* L, int lo, int index, void* de
 TOLUA_API int tolua_tofieldvalue (lua_State* L, int lo, int index, int def);
 TOLUA_API int tolua_getfieldboolean (lua_State* L, int lo, int index, int def);
 
+TOLUA_API void tolua_dobuffer(lua_State* L, char* B, unsigned int size, const char* name);
+
+TOLUA_API int class_gc_event (lua_State* L);
+
 #ifdef __cplusplus
 static inline const char* tolua_tocppstring (lua_State* L, int narg, const char* def) {
 
@@ -154,7 +161,7 @@ static inline const char* tolua_tocppstring (lua_State* L, int narg, const char*
 #define tolua_tocppstring tolua_tostring
 #endif
 
-TOLUA_API int tolua_fast_isa(lua_State *L, int mt_indexa, int mt_indexb);
+TOLUA_API int tolua_fast_isa(lua_State *L, int mt_indexa, int mt_indexb, int super_index);
 
 #ifdef __cplusplus
 }
