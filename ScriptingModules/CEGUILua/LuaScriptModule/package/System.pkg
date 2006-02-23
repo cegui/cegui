@@ -9,6 +9,7 @@ class System : public EventSet
 
 	void setDefaultFont(string name);
 	void setDefaultFont(Font* font);
+    Font* getDefaultFont() const;
 
 	void signalRedraw();
 	bool isRedrawRequested() const;
