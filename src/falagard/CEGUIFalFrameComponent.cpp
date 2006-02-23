@@ -93,6 +93,7 @@ namespace CEGUI
         Rect backgroundRect(destRect);
         Rect finalRect;
         Size imageSize;
+        Vector2 imageOffsets;
         ColourRect imageColours;
         float leftfactor, rightfactor, topfactor, bottomfactor;
         bool calcColoursPerImage;
@@ -122,22 +123,23 @@ namespace CEGUI
         {
             // calculate final destination area
             imageSize = d_frameImages[FIC_TOP_LEFT_CORNER]->getSize();
+            imageOffsets = d_frameImages[FIC_TOP_LEFT_CORNER]->getOffsets();
             finalRect.d_left = destRect.d_left;
             finalRect.d_top  = destRect.d_top;
             finalRect.setSize(imageSize);
 
             // update adjustments required to edges do to presence of this element.
-            topOffset  += imageSize.d_width;
-            leftOffset += imageSize.d_height;
+            topOffset  += imageSize.d_width + imageOffsets.d_x;
+            leftOffset += imageSize.d_height + imageOffsets.d_y;
             topWidth   -= topOffset;
             leftHeight -= leftOffset;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.d_left + d_frameImages[FIC_TOP_LEFT_CORNER]->getOffsetX()) / destRect.getWidth();
+                leftfactor   = (finalRect.d_left + imageOffsets.d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.d_top + d_frameImages[FIC_TOP_LEFT_CORNER]->getOffsetY()) / destRect.getHeight();
+                topfactor    = (finalRect.d_top + imageOffsets.d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -152,21 +154,22 @@ namespace CEGUI
         {
             // calculate final destination area
             imageSize = d_frameImages[FIC_TOP_RIGHT_CORNER]->getSize();
+            imageOffsets = d_frameImages[FIC_TOP_RIGHT_CORNER]->getOffsets();
             finalRect.d_left = destRect.d_right - imageSize.d_width;
             finalRect.d_top  = destRect.d_top;
             finalRect.setSize(imageSize);
 
             // update adjustments required to edges do to presence of this element.
-            rightOffset += imageSize.d_height;
-            topWidth    -= imageSize.d_width;
+            rightOffset += imageSize.d_height + imageOffsets.d_y;
+            topWidth    -= imageSize.d_width - imageOffsets.d_x;
             rightHeight -= rightOffset;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.d_left + d_frameImages[FIC_TOP_RIGHT_CORNER]->getOffsetX()) / destRect.getWidth();
+                leftfactor   = (finalRect.d_left + imageOffsets.d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.d_top + d_frameImages[FIC_TOP_RIGHT_CORNER]->getOffsetY()) / destRect.getHeight();
+                topfactor    = (finalRect.d_top + imageOffsets.d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -181,21 +184,22 @@ namespace CEGUI
         {
             // calculate final destination area
             imageSize = d_frameImages[FIC_BOTTOM_LEFT_CORNER]->getSize();
+            imageOffsets = d_frameImages[FIC_BOTTOM_LEFT_CORNER]->getOffsets();
             finalRect.d_left = destRect.d_left;
             finalRect.d_top  = destRect.d_bottom - imageSize.d_height;
             finalRect.setSize(imageSize);
 
             // update adjustments required to edges do to presence of this element.
-            bottomOffset += imageSize.d_width;
+            bottomOffset += imageSize.d_width + imageOffsets.d_x;
             bottomWidth  -= bottomOffset;
-            leftHeight   -= imageSize.d_height;
+            leftHeight   -= imageSize.d_height - imageOffsets.d_y;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.d_left + d_frameImages[FIC_BOTTOM_LEFT_CORNER]->getOffsetX()) / destRect.getWidth();
+                leftfactor   = (finalRect.d_left + imageOffsets.d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.d_top + d_frameImages[FIC_BOTTOM_LEFT_CORNER]->getOffsetY()) / destRect.getHeight();
+                topfactor    = (finalRect.d_top + imageOffsets.d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -210,13 +214,14 @@ namespace CEGUI
         {
             // calculate final destination area
             imageSize = d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->getSize();
+            imageOffsets = d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->getOffsets();
             finalRect.d_left = destRect.d_right - imageSize.d_width;
             finalRect.d_top  = destRect.d_bottom - imageSize.d_height;
             finalRect.setSize(imageSize);
 
             // update adjustments required to edges do to presence of this element.
-            bottomWidth -= imageSize.d_width;
-            rightHeight -= imageSize.d_height;
+            bottomWidth -= imageSize.d_width - imageOffsets.d_x;
+            rightHeight -= imageSize.d_height - imageOffsets.d_y;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
