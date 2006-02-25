@@ -91,8 +91,8 @@ FactoryModule::FactoryModule(const String& filename) :
 	// check for library load failure
 	if (!d_handle)
 	{
-		throw GenericException("FactoryModule::FactoryModule - Failed to load module '"
-            + d_moduleName + "': " + String(DYNLIB_ERROR()));
+        throw GenericException("FactoryModule::FactoryModule - Failed to load module '"
+            + d_moduleName + "': " + getFailureString());
 	}
 
     // functions are now optional, and only throw upon the first attempt to use a missing function.
@@ -133,6 +133,42 @@ uint FactoryModule::registerAllFactories() const
     }
 
     return d_regAllFunc();
+}
+
+/*************************************************************************
+    Return a String containing the last failure message from the platforms
+    dynamic loading system.
+*************************************************************************/
+String FactoryModule::getFailureString() const
+{
+#if defined(__linux__) || defined (__APPLE_CC__)
+    return String(DYNLIB_ERROR());
+#elif defined(__WIN32__) || defined(_WIN32)
+    String retMsg;
+    LPVOID msgBuffer;
+
+    if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+                      FORMAT_MESSAGE_FROM_SYSTEM | 
+                      FORMAT_MESSAGE_IGNORE_INSERTS,
+                      0,
+                      GetLastError(),
+                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      reinterpret_cast<LPTSTR>(&msgBuffer),
+                      0,
+                      0))
+    {
+        retMsg = reinterpret_cast<LPTSTR>(msgBuffer);
+        LocalFree(msgBuffer);
+    }
+    else
+    {
+        retMsg = "Unknown Error";
+    }
+
+    return retMsg;
+#else
+    return String("Unknown Error");
+#endif
 }
 
 } // End of  CEGUI namespace section
