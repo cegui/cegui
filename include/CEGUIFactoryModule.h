@@ -37,7 +37,6 @@
 #    define DYNLIB_LOAD( a ) LoadLibrary( a )
 #    define DYNLIB_GETSYM( a, b ) GetProcAddress( a, b )
 #    define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
-#    define DYNLIB_ERROR( )  "Unknown Error"
 
 	struct HINSTANCE__;
 	typedef struct HINSTANCE__* hInstance;
@@ -115,6 +114,13 @@ public:
     uint registerAllFactories() const;
 
 private:
+    /*!
+    \brief
+        Return a String containing the last failure message from the platforms
+        dynamic loading system.
+    */
+    String getFailureString() const;
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
