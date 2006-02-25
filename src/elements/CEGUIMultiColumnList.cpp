@@ -2418,7 +2418,7 @@ bool MultiColumnList::ListRow::operator<(const ListRow& rhs) const
 	}
 	else
 	{
-		return a->getText() < b->getText();
+		return *a < *b;
 	}
 
 }
@@ -2443,7 +2443,7 @@ bool MultiColumnList::ListRow::operator>(const ListRow& rhs) const
 	}
 	else
 	{
-		return a->getText() > b->getText();
+		return *a > *b;
 	}
 
 }
