@@ -2,7 +2,7 @@
 	filename: 	CEGUILogger.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines interface for the Logger class
 *************************************************************************/
 /*************************************************************************
@@ -76,7 +76,7 @@ public:
 	*/
 	~Logger(void);
 
-	
+
 	/*!
 	\brief
 		Return the singleton Logger object
@@ -149,14 +149,14 @@ protected:
 	LoggingLevel	d_level;		//!< Holds current logging level
 	std::ofstream	d_ostream;		//!< Stream used to implement the logger
     std::vector<std::pair<String, LoggingLevel> > d_cache;    //!< Used to cache log entries before log file is created.
-    std::ostringstream d_workstream;//!< Used to build log entry strings. 
+    std::ostringstream d_workstream;//!< Used to build log entry strings.
     bool d_caching;                 //!< true while log entries are beign cached (prior to logfile creation)
-    
+
 private:
 	/*************************************************************************
 		Copy constructor and assignment usage is denied.
 	*************************************************************************/
-	Logger(const Logger& logger) {}
+	Logger(const Logger& logger) : Singleton <Logger>() {}
 	Logger& operator=(const Logger& logger) {return *this;}
 
 };

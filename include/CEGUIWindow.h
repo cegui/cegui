@@ -2,7 +2,7 @@
 	filename: 	CEGUIWindow.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines abstract base class for Window objects
 *************************************************************************/
 /*************************************************************************
@@ -1058,7 +1058,7 @@ public:
     */
     float   getAutoRepeatDelay(void) const;
 
-    
+
     /*!
     \brief
         Return the current auto-repeat rate setting for this window.
@@ -1373,7 +1373,7 @@ public:
 	\brief
 		hide the Window.
 
-	\return	
+	\return
 		Nothing
 	*/
 	void	hide(void)			{setVisible(false);}
@@ -1393,7 +1393,7 @@ public:
 	\brief
 		Deactivate the window.  No further inputs will be received by the window until it is re-activated either programmatically or
 		by the user interacting with the gui.
-	
+
 	\return
 		Nothing.
 	*/
@@ -1412,7 +1412,7 @@ public:
 		Nothing
 	*/
 	void	setClippedByParent(bool setting);
-	
+
 
 	/*!
 	\brief
@@ -1520,7 +1520,7 @@ public:
 
 	/*!
 	\brief
-		Set the current area for the Window, this allows for setting of position and size at the same time.  
+		Set the current area for the Window, this allows for setting of position and size at the same time.
 		Interpretation of the input value \a area is dependant upon the current metrics system set for the Window.
 
 	\param area
@@ -1531,7 +1531,7 @@ public:
 	*/
 	void	setAreaRect(const Rect& area);
 
-	
+
 	/*!
 	\brief
 		Set the font used by this Window.
@@ -1975,7 +1975,7 @@ public:
     */
     void setWantsMultiClickEvents(bool setting);
 
-    
+
     /*!
     \brief
         Set whether mouse button down event autorepeat is enabled for this window.
@@ -2002,7 +2002,7 @@ public:
     */
     void   setAutoRepeatDelay(float delay);
 
-    
+
     /*!
     \brief
         Set the current auto-repeat rate setting for this window.
@@ -2050,13 +2050,13 @@ public:
 
     /*!
     \brief
-        Internal destroy method which actually just adds the window and any 
+        Internal destroy method which actually just adds the window and any
         parent destructed child windows to the dead pool.
 
         This is virtual to allow for specialised cleanup which may be required
         in some advanced cases.  If you override this for the above reason, you
         MUST call this base class version.
-        
+
     \note
         You never have to call this method yourself, use WindowManager to
         destroy your Window objects (which will call this for you).
@@ -2390,8 +2390,8 @@ public:
 		float value describing a screen co-ordinate that is equivalent to window co-ordinate \a y.
 	*/
 	float	windowToScreenY(float y) const;
-	
-	
+
+
 	/*!
 	\brief
 		Convert a window co-ordinate position, specified in whichever metrics mode is active, to a screen relative pixel co-ordinate position.
@@ -2721,18 +2721,18 @@ public:
 
     \param xpos
         UDim describing the new x co-ordinate (left edge) of the window area.
-    
+
     \param ypos
         UDim describing the new y co-ordinate (top-edge) of the window area.
-    
+
     \param width
         UDim describing the new width of the window area.
-    
+
     \param height
         UDim describing the new height of the window area.
      */
     void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
-    
+
     /*!
     \brief
         Set the window area.
@@ -2747,12 +2747,12 @@ public:
 
     \param pos
         UVector2 describing the new position (top-left corner) of the window area.
-        
+
     \param size
         UVector2 describing the new size of the window area.
      */
     void setWindowArea(const UVector2& pos, const UVector2& size);
-    
+
     /*!
     \brief
         Set the window area.
@@ -2769,7 +2769,7 @@ public:
         URect describing the new area rectangle of the window area.
      */
     void setWindowArea(const URect& area);
-    
+
     /*!
     \brief
         Set the window's position.
@@ -3540,7 +3540,7 @@ protected:
     */
     virtual void    onDragDropItemDropped(DragDropEventArgs& e);
 
-    
+
     /*!
     \brief
         Handler called when the vertical alignment setting for the window is changed.
@@ -3551,7 +3551,7 @@ protected:
     */
     virtual void    onVerticalAlignmentChanged(WindowEventArgs& e);
 
-    
+
     /*!
     \brief
         Handler called when the horizontal alignment setting for the window is changed.
@@ -3562,7 +3562,7 @@ protected:
     */
     virtual void    onHorizontalAlignmentChanged(WindowEventArgs& e);
 
-    
+
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
@@ -3712,7 +3712,7 @@ protected:
 	*/
 	MetricsMode getInheritedMetricsMode(void) const;
 
-    
+
     /*!
     \brief
         Fires off a repeated mouse button down event for this window.
@@ -3748,7 +3748,7 @@ protected:
     // positional alignments
     HorizontalAlignment d_horzAlign;    //!< Specifies the base for horizontal alignment.
     VerticalAlignment   d_vertAlign;    //!< Specifies the base for vertical alignment.
-    
+
 	// maximum and minimum sizes
 	UVector2       d_minSize;          //!< current minimum size for the window.
 	UVector2       d_maxSize;          //!< current maximum size for the window.
@@ -3911,7 +3911,7 @@ protected:
      */
     void doRiseOnClick(void);
 
-    
+
     /*!
     \brief
         Implementation method to modify window area while correctly applying min / max size processing, and
@@ -3933,7 +3933,7 @@ protected:
             and so window movement should be inhibited if size is at max or min.
         - false to indicate the operation is not a strict sizing operation on the top and/or left edges and
             that the window position may change as required
-    
+
     /param fireEvents
         - true if events should be fired as normal.
         - false to inhibit firing of events (required, for example, if you need to call this from
@@ -3975,11 +3975,11 @@ protected:
 
     virtual int writePropertiesXML(OutStream& out_stream) const;
     virtual int writeChildWindowsXML(OutStream& out_stream) const;
-	
+
 	/*************************************************************************
 		May not copy or assign Window objects
 	*************************************************************************/
-	Window(const Window& wnd) {}
+	Window(const Window& wnd) : PropertySet(), EventSet() {}
 	Window& operator=(const Window& wnd) {return *this;}
 
 	/*************************************************************************
