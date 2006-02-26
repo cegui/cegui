@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="DirectX9GUIRenderer"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="-1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\..\bin\DirectX9GUIRenderer.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DDIRECTX9_GUIRENDERER_EXPORTS"/>
+					<Add option="-DCEGUIBASE_EXPORTS"/>
+					<Add directory="..\..\..\..\..\include"/>
+					<Add directory="..\..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="dxerr9"/>
+					<Add library="d3dx9d"/>
+					<Add library="CEGUIBase"/>
+					<Add directory="..\..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\..\bin\DirectX9GUIRenderer.dll ..\..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\..\bin\libDirectX9GUIRenderer.a ..\..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\..\bin\DirectX9GUIRenderer_d.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem_d.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_STLP_DEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DDIRECTX9_GUIRENDERER_EXPORTS"/>
+					<Add option="-DCEGUIBASE_EXPORTS"/>
+					<Add directory="..\..\..\..\..\include"/>
+					<Add directory="..\..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="dxerr9"/>
+					<Add library="d3dx9d"/>
+					<Add library="CEGUIBase_d"/>
+					<Add directory="..\..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\..\bin\DirectX9GUIRenderer_d.dll ..\..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\..\bin\libDirectX9GUIRenderer_d.a ..\..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\..\include\renderers\directx9GUIRenderer\d3d9renderer.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\include\renderers\directx9GUIRenderer\d3d9texture.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\src\renderers\directx9GUIRenderer\d3d9renderer.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\src\renderers\directx9GUIRenderer\d3d9texture.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

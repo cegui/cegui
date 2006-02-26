@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="IrrlichtGUIRenderer"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="-1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\..\bin\IrrlichtGUIRenderer.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DIRRRENDERER_EXPORTS"/>
+					<Add directory="..\..\..\..\..\include"/>
+					<Add directory="..\..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="CEGUIBase"/>
+					<Add directory="..\..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\..\bin\IrrlichtGUIRenderer.dll ..\..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\..\bin\libIrrlichtGUIRenderer.a ..\..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\..\bin\IrrlichtGUIRenderer_d.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem_d.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_STLP_DEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DIRRRENDERER_EXPORTS"/>
+					<Add directory="..\..\..\..\..\include"/>
+					<Add directory="..\..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="CEGUIBase_d"/>
+					<Add directory="..\..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\..\bin\IrrlichtGUIRenderer_d.dll ..\..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\..\bin\libIrrlichtGUIRenderer_d.a ..\..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtRendererDef.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\include\renderers\IrrlichtRenderer\IrrlichtResourceProvider.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichtrenderer.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\include\renderers\IrrlichtRenderer\irrlichttexture.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtEventPusher.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\src\renderers\IrrlichtRenderer\IrrlichtResourceProvider.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichtrenderer.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\src\renderers\IrrlichtRenderer\irrlichttexture.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

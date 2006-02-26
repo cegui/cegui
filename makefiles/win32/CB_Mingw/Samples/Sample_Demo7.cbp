@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="Sample_Demo7"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\Samples\bin\Sample_Demo7.exe"/>
+				<Option working_dir="..\..\..\..\Samples\bin"/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem.a;..\..\..\..\Samples\bin\libSampleHelper.a;..\..\..\..\..\bin\libCEGUITaharezLook.a;"/>
+				<Option type="0"/>
+				<Option compiler="0"/>
+				<Option projectResourceIncludeDirsRelation="0"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add directory="..\..\..\..\Samples\common\include"/>
+					<Add directory="..\..\..\..\include"/>
+					<Add directory="..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add option="-enable-runtime-pseudo-reloc"/>
+					<Add library="CEGUIBase"/>
+					<Add library="CEGUISampleHelper"/>
+					<Add library="CEGUITaharezLook"/>
+					<Add directory="..\..\..\..\dependencies\lib"/>
+					<Add directory="..\..\..\..\lib"/>
+				</Linker>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\Samples\bin\Sample_Demo7_d.exe"/>
+				<Option working_dir="..\..\..\..\Samples\bin"/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem_d.a;..\..\..\..\Samples\bin\libSampleHelper_d.a;..\..\..\..\..\bin\libCEGUITaharezLook_d.a;"/>
+				<Option type="0"/>
+				<Option compiler="0"/>
+				<Option projectResourceIncludeDirsRelation="0"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_STLP_DEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add directory="..\..\..\..\Samples\common\include"/>
+					<Add directory="..\..\..\..\include"/>
+					<Add directory="..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add option="-enable-runtime-pseudo-reloc"/>
+					<Add library="CEGUIBase_d"/>
+					<Add library="CEGUISampleHelper_d"/>
+					<Add library="CEGUITaharezLook_d"/>
+					<Add directory="..\..\..\..\dependencies\lib"/>
+					<Add directory="..\..\..\..\lib"/>
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\Samples\Demo7\src\Sample_Demo7.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\Demo7\src\Sample_Demo7.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

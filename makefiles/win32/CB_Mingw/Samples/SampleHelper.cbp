@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="CEGUISampleHelper"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="-1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\bin\CEGUISampleHelper.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem.a;..\..\..\..\..\bin\libDirectX9GUIRenderer.a;..\..\..\..\..\bin\libDirectX81Renderer.a;..\..\..\..\..\bin\libOpenGLRenderer.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DCEGUISAMPLE_EXPORTS"/>
+					<Add option="-DCEGUI_SAMPLES_USE_DIRECTX_9"/>
+					<Add option="-DCEGUI_SAMPLES_USE_OPENGL"/>
+					<Add option="-D_STDCALL_SUPPORTED"/>
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK"/>
+					<Add option="-DCEGUI_SAMPLES_USE_OGRE"/>
+					<Add directory="..\..\..\..\Samples\common\include"/>
+					<Add directory="..\..\..\..\include"/>
+					<Add directory="..\..\..\..\dependencies\include"/>
+					<Add directory="..\..\..\..\..\..\..\Documents and Settings\gst\Mes documents\WorkProg\Cpp\library\ogre-1.0.5\include\OGRE"/>
+				</Compiler>
+				<Linker>
+					<Add option="-enable-runtime-pseudo-reloc"/>
+					<Add library="OgreMain"/>
+					<Add library="CEGUIBase"/>
+					<Add library="DirectX9GUIRenderer"/>
+					<Add library="OpenGLGUIRenderer"/>
+					<Add library="ogreguirenderer"/>
+					<Add library="gdi32"/>
+					<Add library="dxguid"/>
+					<Add library="dinput8"/>
+					<Add library="d3d9"/>
+					<Add library="glut32"/>
+					<Add library="glu32"/>
+					<Add library="opengl32"/>
+					<Add directory="..\..\..\..\dependencies\lib"/>
+					<Add directory="..\..\..\..\..\..\..\..\..\..\..\..\Programs\CodeBlocks\lib"/>
+					<Add directory="..\..\..\..\lib"/>
+					<Add directory="C:\Documents and Settings\gst\Mes documents\WorkProg\Cpp\library\ogre-1.0.5\lib\Ogre"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\bin\CEGUISampleHelper.dll ..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\bin\libCEGUISampleHelper.a ..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\bin\CEGUISampleHelper_d.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem_d.a;..\..\..\..\..\bin\libDirectX9GUIRenderer_d.a;..\..\..\..\..\bin\libDirectX81Renderer_d.a;..\..\..\..\..\bin\libOpenGLRenderer_d.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_STLP_DEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DCEGUISAMPLE_EXPORTS"/>
+					<Add option="-DCEGUI_SAMPLES_USE_DIRECTX_9"/>
+					<Add option="-DCEGUI_SAMPLES_USE_OPENGL"/>
+					<Add option="-D_STDCALL_SUPPORTED"/>
+					<Add option="-DGLUT_DISABLE_ATEXIT_HACK"/>
+					<Add option="-DCEGUI_SAMPLES_USE_OGRE"/>
+					<Add directory="..\..\..\..\Samples\common\include"/>
+					<Add directory="..\..\..\..\include"/>
+					<Add directory="..\..\..\..\dependencies\include"/>
+					<Add directory="..\..\..\..\..\..\..\Documents and Settings\gst\Mes documents\WorkProg\Cpp\library\ogre-1.0.5\include\OGRE"/>
+				</Compiler>
+				<Linker>
+					<Add option="-enable-runtime-pseudo-reloc"/>
+					<Add library="OgreMain_d"/>
+					<Add library="CEGUIBase_d"/>
+					<Add library="DirectX9GUIRenderer_d"/>
+					<Add library="OpenGLGUIRenderer_d"/>
+					<Add library="ogreguirenderer_d"/>
+					<Add library="gdi32"/>
+					<Add library="dxguid"/>
+					<Add library="dinput8"/>
+					<Add library="d3d9"/>
+					<Add library="glut32"/>
+					<Add library="glu32"/>
+					<Add library="opengl32"/>
+					<Add directory="..\..\..\..\dependencies\lib"/>
+					<Add directory="..\..\..\..\..\..\..\..\..\..\..\..\Programs\CodeBlocks\lib"/>
+					<Add directory="..\..\..\..\lib"/>
+					<Add directory="C:\Documents and Settings\gst\Mes documents\WorkProg\Cpp\library\ogre-1.0.5\lib\Ogre"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\bin\CEGUISampleHelper_d.dll ..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\bin\libCEGUISampleHelper_d.a ..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiBaseApplication.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiD3D81BaseApplication.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiD3D9BaseApplication.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiIrrlichtBaseApplication.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiOgreBaseApplication.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiOpenGLBaseApplication.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiRendererSelector.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\CEGuiSample.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\Win32AppHelper.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\include\Win32CEGuiRendererSelector.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiD3D81BaseApplication.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiD3D9BaseApplication.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiIrrlichtBaseApplication.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiOgreBaseApplication.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiOpenGLBaseApplication.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiRendererSelector.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\CEGuiSample.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\Win32AppHelper.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\Samples\common\src\Win32CEGuiRendererSelector.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

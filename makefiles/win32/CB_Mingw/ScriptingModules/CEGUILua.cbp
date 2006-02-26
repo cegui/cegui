@@ -1,0 +1,545 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="CEGUILua"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="-1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\bin\CEGUILua.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\..\lib\liblua_and_tolua++.a;..\..\..\..\bin\libBaseSystem.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DCEGUILUA_EXPORTS"/>
+					<Add directory="..\..\..\..\include"/>
+					<Add directory="..\..\..\..\dependencies\include"/>
+					<Add directory="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include"/>
+					<Add directory="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="CEGUIBase"/>
+					<Add library="lua_and_tolua++"/>
+					<Add directory="..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\bin\CEGUILua.dll ..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\bin\libCEGUILua.a ..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\bin\CEGUILua_d.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\..\lib\liblua_and_tolua++_d.a;..\..\..\..\bin\libBaseSystem_d.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DCEGUILUA_EXPORTS"/>
+					<Add directory="..\..\..\..\include"/>
+					<Add directory="..\..\..\..\dependencies\include"/>
+					<Add directory="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include"/>
+					<Add directory="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="CEGUIBase_d"/>
+					<Add library="lua_and_tolua++_d"/>
+					<Add directory="..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\bin\CEGUILua_d.dll ..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\bin\libCEGUILua_d.a ..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\CEGUILua.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\include\lua_CEGUI.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Basic.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\CEGUI.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\EventSet.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Font.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\FontManager.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\HelperFunctions.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Image.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Imageset.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\ImagesetManager.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\InputEvent.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Key.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Logger.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\MouseCursor.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\PropertyHelper.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Renderer.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Scheme.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\SchemeManager.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\System.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Texture.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\UnifiedCoordSystem.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\Window.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\WindowManager.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ButtonBase.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Checkbox.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ComboDropList.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Combobox.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\DragContainer.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Editbox.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\FrameWindow.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\GUISheet.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ItemEntry.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ItemListBase.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ListHeader.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ListHeaderSegment.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Listbox.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ListboxItem.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ListboxTextItem.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\MenuBase.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\MenuItem.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Menubar.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\MultiColumnList.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\MultiLineEditbox.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\PopupMenu.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ProgressBar.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\PushButton.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\RadioButton.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ScrollablePane.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Scrollbar.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\ScrolledContainer.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Slider.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Spinner.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Static.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\StaticImage.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\StaticText.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\TabButton.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\TabControl.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\TabPane.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\TextItem.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Thumb.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Titlebar.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\package\elements\Tooltip.pkg">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\CEGUILua.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\lua_CEGUI.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\required.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\LuaScriptModule\src\required.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

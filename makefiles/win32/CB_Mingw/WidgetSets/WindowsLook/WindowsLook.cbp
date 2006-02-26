@@ -1,0 +1,475 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="WindowsLook"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="-1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\..\bin\CEGUIWindowsLook.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DWINDOWSLOOK_EXPORTS"/>
+					<Add directory="..\..\..\..\..\WidgetSets\WindowsLook\include"/>
+					<Add directory="..\..\..\..\..\include"/>
+					<Add directory="..\..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="CEGUIBase"/>
+					<Add directory="..\..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\..\bin\CEGUIWindowsLook.dll ..\..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\..\bin\libCEGUIWindowsLook.a ..\..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\..\bin\CEGUIWindowsLook_d.dll"/>
+				<Option working_dir="."/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\..\..\..\bin\libBaseSystem_d.a;"/>
+				<Option type="3"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option createStaticLib="1"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_STLP_DEBUG"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_WINDOWS"/>
+					<Add option="-D_USRDLL"/>
+					<Add option="-DWINDOWSLOOK_EXPORTS"/>
+					<Add directory="..\..\..\..\..\WidgetSets\WindowsLook\include"/>
+					<Add directory="..\..\..\..\..\include"/>
+					<Add directory="..\..\..\..\..\dependencies\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="CEGUIBase_d"/>
+					<Add directory="..\..\..\..\..\lib"/>
+					<Add directory="..\..\..\..\..\dependencies\lib"/>
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp ..\..\..\..\..\bin\CEGUIWindowsLook_d.dll ..\..\..\..\..\Samples\bin"/>
+					<Add after="cp ..\..\..\..\..\bin\libCEGUIWindowsLook_d.a ..\..\..\..\..\lib"/>
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLButton.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLCheckbox.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLCloseButton.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLComboDropList.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLCombobox.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLEditbox.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLFrameWindow.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLHorzScrollbar.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLHorzScrollbarThumb.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListHeader.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListHeaderSegment.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLListbox.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenuItem.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMenubar.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLModule.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMultiColumnList.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLMultiLineEditbox.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLPopupMenu.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLProgressBar.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLRadioButton.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLScrollablePane.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLSlider.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLSliderThumb.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLSpinner.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLStatic.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabButton.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabControl.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTabPane.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTextItem.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTitlebar.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLTooltip.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLVertScrollbar.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\include\WLVertScrollbarThumb.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLButton.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLCheckbox.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLCloseButton.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLComboDropList.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLCombobox.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLEditbox.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLFrameWindow.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLHorzScrollbar.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLHorzScrollbarThumb.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListHeader.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListHeaderSegment.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLListbox.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenuItem.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMenubar.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLModule.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMultiColumnList.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLMultiLineEditbox.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLPopupMenu.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLProgressBar.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLRadioButton.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLScrollablePane.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLSlider.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLSliderThumb.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLSpinner.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLStatic.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabButton.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabControl.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTabPane.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTextItem.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTitlebar.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLTooltip.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLVertScrollbar.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+		<Unit filename="..\..\..\..\..\WidgetSets\WindowsLook\src\WLVertScrollbarThumb.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="Debug"/>
+			<Option target="Release"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

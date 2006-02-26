@@ -1,0 +1,383 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="lua_and_tolua++"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="-1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\lib\liblua_and_tolua++.a"/>
+				<Option working_dir=""/>
+				<Option object_output="Output\Release"/>
+				<Option deps_output=".deps"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-DWIN32"/>
+					<Add option="-DNDEBUG"/>
+					<Add option="-D_LIB"/>
+					<Add directory="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include"/>
+				</Compiler>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\lib\liblua_and_tolua++_d.a"/>
+				<Option working_dir=""/>
+				<Option object_output="Output\Debug"/>
+				<Option deps_output=".deps"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option createDefFile="1"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-O0"/>
+					<Add option="-DWIN32"/>
+					<Add option="-D_DEBUG"/>
+					<Add option="-D_LIB"/>
+					<Add directory="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include"/>
+				</Compiler>
+			</Target>
+		</Build>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include\lauxlib.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include\lua.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include\lualib.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\include\tolua++.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lapi.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lapi.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lcode.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lcode.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ldebug.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ldebug.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ldo.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ldo.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ldump.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lfunc.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lfunc.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lgc.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lgc.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\lauxlib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\lbaselib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\ldblib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\liolib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\lmathlib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\loadlib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\lstrlib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lib\ltablib.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\llex.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\llex.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\llimits.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lmem.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lmem.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lobject.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lobject.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lopcodes.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lopcodes.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lparser.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lparser.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lstate.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lstate.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lstring.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lstring.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ltable.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ltable.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ltests.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ltm.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\ltm.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lundump.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lundump.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lvm.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lvm.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lzio.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\lzio.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\tolua++\tolua_event.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\tolua++\tolua_event.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\tolua++\tolua_is.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\tolua++\tolua_map.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\tolua++\tolua_push.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+		<Unit filename="..\..\..\..\ScriptingModules\CEGUILua\lua_and_tolua++\src\tolua++\tolua_to.c">
+			<Option compilerVar="CC"/>
+			<Option target="Release"/>
+			<Option target="Debug"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_workspace_file>
+<CodeBlocks_workspace_file>
+	<Workspace title="CEGUI workspace">
+		<Project filename="BaseSystem\BaseSystem.cbp" active="1"/>
+		<Project filename="Renderers\DirectX9Renderer\DirectX9GUIRenderer.cbp"/>
+		<Project filename="Renderers\OpenGlRenderer\OpenGLRenderer.cbp"/>
+		<Project filename="WidgetSets\TaharezLook\TaharezLook.cbp"/>
+		<Project filename="WidgetSets\WindowsLook\WindowsLook.cbp"/>
+		<Project filename="WidgetSets\Falagard\Falagard.cbp"/>
+		<Project filename="Samples\SampleHelper.cbp"/>
+		<Project filename="Samples\Sample_FirstWindow.cbp"/>
+		<Project filename="Samples\Sample_FalagardDemo1.cbp"/>
+		<Project filename="Samples\Sample_Demo4.cbp"/>
+		<Project filename="Samples\Sample_Demo6.cbp"/>
+		<Project filename="Samples\Sample_Demo7.cbp"/>
+		<Project filename="ScriptingModules\lua_and_tolua++.cbp"/>
+		<Project filename="ScriptingModules\CEGUILua.cbp"/>
+		<Project filename="Samples\Sample_Demo8.cbp"/>
+		<Project filename="Renderers\IrrlichtGUIRenderer\irrrenderer.cbp"/>
+		<Project filename="Renderers\DirectX81Renderer\DirectX81Renderer.cbp"/>
+	</Workspace>
+</CodeBlocks_workspace_file>
