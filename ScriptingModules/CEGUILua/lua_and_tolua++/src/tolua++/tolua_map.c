@@ -544,7 +544,7 @@ TOLUA_API void tolua_cclass (lua_State* L, char* lname, char* name, char* base, 
 
 	/* now we also need to store the collector table for the const
 	   instances of the class */
-	push_collector(L, name, col);
+	push_collector(L, cname, col);
 	/*
 	luaL_getmetatable(L,cname);
 	lua_pushstring(L,".collector");

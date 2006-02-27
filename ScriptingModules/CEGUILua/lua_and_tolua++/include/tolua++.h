@@ -44,7 +44,7 @@
 ******* END CEGUI CHANGES *******
 ********************************/
 
-#define TOLUA_VERSION "tolua++-1.0.90"
+#define TOLUA_VERSION "tolua++-1.0.91"
 
 #ifdef __cplusplus
 extern "C" {

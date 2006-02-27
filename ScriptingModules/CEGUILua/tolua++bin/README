@@ -1,5 +1,8 @@
-In here we have a modified version of the tolua++ 1.0.90 code generator with
+In here we have a modified version of the tolua++ 1.0.91 code generator with
 added support for exception handling.
+
+The lines that involve Lua 5.1 compatibility in 'tolua_scons.pkg' and 'lua/all.lua'
+have been commented out as we supply Lua 5.01
 
 The original tolua++ readme can be found at: '../lua_and_tolua++/tolua++README'
 if you need more details.
