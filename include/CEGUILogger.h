@@ -2,7 +2,7 @@
 	filename: 	CEGUILogger.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines interface for the Logger class
 *************************************************************************/
 /*************************************************************************
@@ -144,7 +144,7 @@ private:
 	/*************************************************************************
 		Copy constructor and assignment usage is denied.
 	*************************************************************************/
-	Logger(const Logger& logger) {}
+	Logger(const Logger& logger) : Singleton <Logger>() {}
 	Logger& operator=(const Logger& logger) {return *this;}
 
 };

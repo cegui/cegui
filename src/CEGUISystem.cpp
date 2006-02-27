@@ -714,34 +714,44 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 
 	Window* dest_window = getTargetWindow(ma.position);
 
-	// if there is no GUI sheet, then there is nowhere to send input
-	if (dest_window)
-	{
-		if (dest_window != d_wndWithMouse)
-		{
-			if (d_wndWithMouse)
-			{
-				ma.window = d_wndWithMouse;
-				d_wndWithMouse->onMouseLeaves(ma);
-			}
+    // has window containing mouse changed?
+    if (dest_window != d_wndWithMouse)
+    {
+        // store previous window that contained mouse
+        Window* oldWindow = d_wndWithMouse;
+        // set the new window that contains the mouse.
+        d_wndWithMouse = dest_window;
 
-			d_wndWithMouse = dest_window;
-			ma.window = dest_window;
-			dest_window->onMouseEnters(ma);
-		}
+        // inform previous window the mouse has left it
+        if (oldWindow)
+        {
+            ma.window = oldWindow;
+            oldWindow->onMouseLeaves(ma);
+        }
 
-		// ensure event starts as 'not handled'
-		ma.handled = false;
+        // inform window containing mouse that mouse has entered it
+        if (d_wndWithMouse)
+        {
+            ma.window = d_wndWithMouse;
+            ma.handled = false;
+            d_wndWithMouse->onMouseEnters(ma);
+        }
+    }
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (dest_window != 0))
-		{
-			ma.window = dest_window;
-			dest_window->onMouseMove(ma);
-			dest_window = getNextTargetWindow(dest_window);
-		}
+    // inform appropriate window of the mouse movement event
+    if (dest_window)
+    {
+        // ensure event starts as 'not handled'
+        ma.handled = false;
 
-	}
+        // loop backwards until event is handled or we run out of windows.
+        while ((!ma.handled) && (dest_window != 0))
+        {
+            ma.window = dest_window;
+            dest_window->onMouseMove(ma);
+            dest_window = getNextTargetWindow(dest_window);
+        }
+    }
 
 	return ma.handled;
 }

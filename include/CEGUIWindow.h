@@ -3316,7 +3316,7 @@ protected:
     /*************************************************************************
         May not copy or assign Window objects
     *************************************************************************/
-    Window(const Window& wnd) {}
+    Window(const Window& wnd) : PropertySet(), EventSet() {}
     Window& operator=(const Window& wnd) {return *this;}
 
     /*************************************************************************
