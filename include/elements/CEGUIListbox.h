@@ -46,7 +46,7 @@ namespace CEGUI
 \brief
     Base class for Listbox window renderer.
 */
-class ListboxWindowRenderer : public WindowRenderer
+class CEGUIEXPORT ListboxWindowRenderer : public WindowRenderer
 {
 public:
     /*!
