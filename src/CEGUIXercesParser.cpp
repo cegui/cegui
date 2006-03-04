@@ -35,6 +35,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    // Static data definition for default schema resource group name
+    String XercesParser::d_defaultSchemaResourceGroup("");
+
     ////////////////////////////////////////////////////////////////////////////////
     //
     // XercesParser methods
@@ -196,13 +199,14 @@ namespace CEGUI
 
         // load in the raw schema data
         RawDataContainer rawSchemaData;
-        // try base filename first
+        // try base filename first, from default resource group
         try
         {
             Logger::getSingleton().logEvent("XercesParser::initialiseSchema - Attempting to load schema from file '" + schemaName + "'.");
-            System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, resourceGroup);
+            System::getSingleton().getResourceProvider()->loadRawDataContainer(schemaName, rawSchemaData, d_defaultSchemaResourceGroup);
         }
-        // oops, no file.  Try an alternative instead...
+        // oops, no file.  Try an alternative instead, using base path and
+        // resource group from the XML file we're going to be processing.
         catch(InvalidRequestException)
         {
             // get path from filename

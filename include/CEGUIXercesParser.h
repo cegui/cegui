@@ -80,15 +80,38 @@ namespace CEGUI
         /*!
         \brief
             Return a CEGUI::String containing the Xerces XMLChar string data in \a xmlch_str.
-	    
-	\param xmlch_str
-	    The string data. 
-	
-	\param length 
-	    The size of the string data. It can be computed using \code XMLString::stringLen(xmlch_str) \endcode
-	    
+
+        \param xmlch_str
+            The string data.
+
+        \param length
+            The size of the string data. It can be computed using \code XMLString::stringLen(xmlch_str) \endcode
+
          */
         static String transcodeXmlCharToString(const XMLCh* const xmlch_str, unsigned int length);
+
+        /*!
+        \brief
+            Sets the default resource group to be used when loading schema files.
+
+        \param resourceGroup
+            String describing the default resource group identifier to be used.
+
+        \return
+            Nothing.
+        */
+        static void setSchemaDefaultResourceGroup(const String& resourceGroup)
+            { d_defaultSchemaResourceGroup = resourceGroup; }
+
+        /*!
+        \brief
+            Returns the default resource group used when loading schema files.
+
+        \return
+            String describing the default resource group identifier..
+        */
+        static const String& getSchemaDefaultResourceGroup()
+            { return d_defaultSchemaResourceGroup; }
 
     protected:
         static void initialiseSchema(XERCES_CPP_NAMESPACE::SAX2XMLReader* reader, const String& schemaName, const String& xmlFilename, const String& resourceGroup);
@@ -98,6 +121,9 @@ namespace CEGUI
         // Implementation of abstract interface.
         bool initialiseImpl(void);
         void cleanupImpl(void);
+
+        //! holds the default resource group ID for loading schemas.
+        static String d_defaultSchemaResourceGroup;
     };
 
 } // End of  CEGUI namespace section
