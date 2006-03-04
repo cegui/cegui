@@ -32,6 +32,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+// holds the default resource group ID for loading script files.
+String ScriptModule::d_defaultResourceGroup;
+
 ScriptModule::ScriptModule(void) :
     d_identifierString("Unknown scripting module (vendor did not set the ID string!)")
 {}

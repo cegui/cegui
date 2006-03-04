@@ -100,7 +100,8 @@ void LuaScriptModule::executeScriptFile(const String& filename, const String& re
 {
 	// load file
 	RawDataContainer raw;
-	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, raw, resourceGroup);
+	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename,
+        raw, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
 	// load code into lua and call it
 	int top = lua_gettop(d_state);

@@ -196,8 +196,34 @@ public:
     */
     virtual Event::Connection	subscribeEvent(EventSet* target, const String& name, Event::Group group, const String& subscriber_name) = 0;
 
+    /*!
+    \brief
+        Sets the default resource group to be used when loading script files.
+
+    \param resourceGroup
+        String describing the default resource group identifier to be used.
+
+    \return
+        Nothing.
+    */
+    static void setDefaultResourceGroup(const String& resourceGroup)
+        { d_defaultResourceGroup = resourceGroup; }
+
+    /*!
+    \brief
+        Returns the default resource group used when loading script files.
+
+    \return
+        String describing the default resource group identifier..
+    */
+    static const String& getDefaultResourceGroup()
+        { return d_defaultResourceGroup; }
+
 protected:
-    String d_identifierString;                 //!< String that holds some id information about the module.
+    //! String that holds some id information about the module.
+    String d_identifierString;
+    //! holds the default resource group ID for loading script files.
+    static String d_defaultResourceGroup;
 };
 
 
