@@ -50,8 +50,8 @@
 #define CEGUI_DECLARE_WINDOW_FACTORY( T )\
 class T ## Factory : public WindowFactory\
 {\
-    T ## Factory() : WindowFactory( T::WidgetTypeName ) {}\
 public:\
+	T ## Factory() : WindowFactory( T::WidgetTypeName ) {}\
     Window* createWindow(const String& name)\
     {\
         return new T (d_type, name);\
@@ -60,8 +60,8 @@ public:\
     {\
         delete window;\
     }\
-    static T ## Factory ms_factory;\
-};
+};\
+T ## Factory& get ## T ## Factory();
 
 /*!
 \brief
@@ -69,13 +69,18 @@ public:\
     from the class name \a T
 */
 #define CEGUI_DEFINE_WINDOW_FACTORY( T )\
-T ## Factory T ## Factory:: ms_factory;
+T ## Factory& get ## T ## Factory()\
+{\
+	static T ## Factory s_factory;\
+	return s_factory;\
+}
+
 
 /*!
 \brief
     Helper macro that return the real factory class name from a given class name \a T
 */
-#define CEGUI_WINDOW_FACTORY( T ) (T ## Factory::ms_factory)
+#define CEGUI_WINDOW_FACTORY( T ) (get ## T ## Factory())
 
 // Start of CEGUI namespace section
 namespace CEGUI
