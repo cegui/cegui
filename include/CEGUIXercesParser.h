@@ -61,7 +61,7 @@ namespace CEGUI
     \brief
         Implementation of XMLParser using Xerces-C++
      */
-    class XercesParser : public XMLParser
+    class CEGUIEXPORT XercesParser : public XMLParser
     {
     public:
         XercesParser(void);

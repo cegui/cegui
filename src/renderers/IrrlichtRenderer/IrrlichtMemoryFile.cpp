@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "renderers/IrrlichtRenderer/IrrlichtMemoryFile.h"
+#include <memory.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -39,7 +40,7 @@ irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::s32 sizeToRead)
     uint32 realReadSize =
         ((d_position + sizeToRead) > d_size) ? d_size - d_position : sizeToRead;
 
-    std::memcpy(buffer, d_buffer + d_position, realReadSize);
+    memcpy(buffer, d_buffer + d_position, realReadSize);
     d_position += realReadSize;
 
     return realReadSize;

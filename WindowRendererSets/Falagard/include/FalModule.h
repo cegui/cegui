@@ -30,7 +30,7 @@
     Import / Export control macros
 *************************************************************************/
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef FALAGARDBASE_EXPORTS
+#   ifdef FALAGARDWRBASE_EXPORTS
 #       define FALAGARDBASE_API __declspec(dllexport)
 #   else
 #       define FALAGARDBASE_API __declspec(dllimport)

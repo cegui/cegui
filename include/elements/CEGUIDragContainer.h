@@ -452,31 +452,6 @@ namespace CEGUI
         void addDragContainerProperties(void);
     };
 
-    /*!
-    \brief
-        Factory class for producing DragContainer windows
-    */
-    class DragContainerFactory : public WindowFactory
-    {
-    public:
-        DragContainerFactory(void) : WindowFactory(DragContainer::WidgetTypeName) { }
-        ~DragContainerFactory(void){}
-
-        Window* createWindow(const String& name)
-        {
-            DragContainer* wnd = new DragContainer(d_type, name);
-            return wnd;
-        }
-
-        void destroyWindow(Window* window)
-        {
-            //if (window->getType() == d_type)
-                delete window;
-        }
-
-    };
-
-
 } // End of  CEGUI namespace section
 
 

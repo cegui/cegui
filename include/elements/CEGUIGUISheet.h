@@ -92,49 +92,6 @@ protected:
 
 /*!
 \brief
-    Factory class for producing default windows
-*/
-class GUISheetFactory : public WindowFactory
-{
-public:
-    /*************************************************************************
-        Construction and Destruction
-    *************************************************************************/
-    GUISheetFactory(void) : WindowFactory(GUISheet::WidgetTypeName) { }
-    ~GUISheetFactory(void){}
-
-
-    /*!
-    \brief
-        Create a new Window object of whatever type this WindowFactory produces.
-
-    \param name
-        A unique name that is to be assigned to the newly created Window object
-
-    \return
-        Pointer to the new Window object.
-    */
-    Window* createWindow(const String& name)
-    {
-        return new GUISheet(d_type, name);
-    }
-
-
-    /*!
-    \brief
-        Destroys the given Window object.
-
-    \param window
-        Pointer to the Window object to be destroyed.
-
-    \return
-        Nothing.
-    */
-    virtual void    destroyWindow(Window* window)    { delete window; }
-};
-
-/*!
-\brief
     typedef for DefaultWindow, which is the new name for GUISheet.
 */
 typedef GUISheet DefaultWindow;

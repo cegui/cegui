@@ -245,15 +245,12 @@ System::System(Renderer* renderer,
     new WidgetLookManager();
     new WindowRendererManager();
 
-    // Add factories for types that the system supports natively
-    // (mainly because they do no rendering)
-    WindowFactoryManager::getSingleton().addFactory(new GUISheetFactory);
-    WindowFactoryManager::getSingleton().addFactory(new DragContainerFactory);
-    WindowFactoryManager::getSingleton().addFactory(new ScrolledContainerFactory);
-
     // Add factories for types all base elements
-    WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
+	WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
+	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GUISheet));
+	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(DragContainer));
+	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrolledContainer));
+	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PushButton));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(RadioButton));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Combobox));
@@ -380,23 +377,8 @@ System::~System(void)
     WindowManager::getSingleton().destroyAllWindows();
     WindowManager::getSingleton().cleanDeadPool();
 
-	// get pointers to the factories we added
-	WindowFactory* guiSheetFactory =
-        WindowFactoryManager::getSingleton().getFactory(GUISheet::WidgetTypeName);
-
-    WindowFactory* dragContainerFactory =
-        WindowFactoryManager::getSingleton().getFactory(DragContainer::WidgetTypeName);
-
-    WindowFactory* scrolledContainerFactory =
-        WindowFactoryManager::getSingleton().getFactory(ScrolledContainer::WidgetTypeName);
-
     // remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
-
-	// destroy factories we created
-	delete guiSheetFactory;
-    delete dragContainerFactory;
-    delete scrolledContainerFactory;
 
 	// cleanup singletons
 	delete	SchemeManager::getSingletonPtr();

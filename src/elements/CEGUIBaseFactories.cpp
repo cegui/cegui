@@ -28,7 +28,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
+	CEGUI_DEFINE_WINDOW_FACTORY(GUISheet);
+	CEGUI_DEFINE_WINDOW_FACTORY(DragContainer);
+	CEGUI_DEFINE_WINDOW_FACTORY(ScrolledContainer);
     CEGUI_DEFINE_WINDOW_FACTORY(Checkbox);
     CEGUI_DEFINE_WINDOW_FACTORY(ComboDropList);
     CEGUI_DEFINE_WINDOW_FACTORY(Combobox);

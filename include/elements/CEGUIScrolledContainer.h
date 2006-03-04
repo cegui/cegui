@@ -230,30 +230,6 @@ namespace CEGUI
 	    void addScrolledContainerProperties(void);
     };
 
-    /*!
-    \brief
-        Factory class for producing ScrolledContainer windows
-    */
-    class ScrolledContainerFactory : public WindowFactory
-    {
-    public:
-        ScrolledContainerFactory(void) : WindowFactory(ScrolledContainer::WidgetTypeName) { }
-        ~ScrolledContainerFactory(void){}
-
-        Window* createWindow(const String& name)
-        {
-            ScrolledContainer* wnd = new ScrolledContainer(d_type, name);
-            return wnd;
-        }
-
-        void destroyWindow(Window* window)
-        {
-            //if (window->getType() == d_type)
-                delete window;
-        }
-
-    };
-
 } // End of  CEGUI namespace section
 
 
