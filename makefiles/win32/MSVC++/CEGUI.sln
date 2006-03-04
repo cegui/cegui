@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEGUILua", "ScriptingModule
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEGUIFalagardWRBase", "WindowRendererSets\Falagard\CEGUIFalagardWRBase.vcproj", "{B6D5000A-E94C-4BF3-BC34-C7AE1280D4A1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tolua++cegui", "ScriptingModules\CEGUILua\tolua++cegui.vcproj", "{18A95CB5-9708-4753-B59B-5F1E53849827}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -65,6 +67,7 @@ Global
 		{B1A718F5-F9A3-41EF-91E4-5A4792DCCE09}.4 = {7C461F6C-50AC-4C59-B273-30B91C5B84F4}
 		{6787045D-40FF-44E1-B860-70309821EAC9}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
 		{B6D5000A-E94C-4BF3-BC34-C7AE1280D4A1}.0 = {41479B71-4AA0-47FC-9738-12F6DA994CD0}
+		{18A95CB5-9708-4753-B59B-5F1E53849827}.0 = {62B0D668-2497-4E46-BD2E-9705D618A7C5}
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{41479B71-4AA0-47FC-9738-12F6DA994CD0}.Debug.ActiveCfg = Debug|Win32
@@ -125,6 +128,10 @@ Global
 		{B6D5000A-E94C-4BF3-BC34-C7AE1280D4A1}.Debug.Build.0 = Debug|Win32
 		{B6D5000A-E94C-4BF3-BC34-C7AE1280D4A1}.Release.ActiveCfg = Release|Win32
 		{B6D5000A-E94C-4BF3-BC34-C7AE1280D4A1}.Release.Build.0 = Release|Win32
+		{18A95CB5-9708-4753-B59B-5F1E53849827}.Debug.ActiveCfg = Debug|Win32
+		{18A95CB5-9708-4753-B59B-5F1E53849827}.Debug.Build.0 = Debug|Win32
+		{18A95CB5-9708-4753-B59B-5F1E53849827}.Release.ActiveCfg = Release|Win32
+		{18A95CB5-9708-4753-B59B-5F1E53849827}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
