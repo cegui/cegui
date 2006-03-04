@@ -70,6 +70,10 @@ CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :
     rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
     rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
     rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
+    rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
+#ifdef CEGUI_WITH_XERCES
+    rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
+#endif
 
     irr::scene::ICameraSceneNode* camera = d_smgr->addCameraSceneNode(0, core::vector3df(0,0,0), core::vector3df(0,0,1));
     camera->setFOV(1.56f);

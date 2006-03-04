@@ -151,6 +151,10 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
     rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
     rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
+    rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
+#ifdef CEGUI_WITH_XERCES
+    rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
+#endif
 }
 
 

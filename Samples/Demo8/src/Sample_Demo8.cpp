@@ -58,7 +58,7 @@ bool Demo8Sample::initialiseSample()
     System::getSingleton().setScriptingModule(scriptmod);
 
     // execute the demo8 script which controls the rest of this demo
-    System::getSingleton().executeScriptFile("../datafiles/lua_scripts/demo8.lua");
+    System::getSingleton().executeScriptFile("demo8.lua");
 
     // success!
     return true;

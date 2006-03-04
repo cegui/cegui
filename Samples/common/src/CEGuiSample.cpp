@@ -67,6 +67,10 @@
 #include "CEGUIDefaultResourceProvider.h"
 #include "CEGUIImageset.h"
 
+#ifdef CEGUI_WITH_XERCES
+#   include "CEGUIXercesParser.h"
+#endif
+
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #else
@@ -214,6 +218,10 @@ bool CEGuiSample::initialise()
         CEGUI::Scheme::setDefaultResourceGroup("schemes");
         CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
         CEGUI::WindowManager::setDefaultResourceGroup("layouts");
+        CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+#ifdef CEGUI_WITH_XERCES
+        CEGUI::XercesParser::setSchemaDefaultResourceGroup("schemas");
+#endif
 
         // execute the base application (which sets up the demo via 'this' and runs it.
         if (d_sampleApp->execute(this))
