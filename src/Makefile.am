@@ -1,6 +1,6 @@
 SUBDIRS = . renderers
 
-INCLUDES = -I$(top_srcdir)/include $(freetype2_CFLAGS) $(pcre_CFLAGS)
+INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(freetype2_CFLAGS) $(pcre_CFLAGS)
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
@@ -134,22 +134,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalXMLEnumHelper.cpp \
                       falagard/CEGUIFalagard_xmlHandler.cpp
 
-noinst_HEADERS =
+libCEGUIBase_la_LDFLAGS = -L$(top_builddir)/XMLParserModules/XercesParser \
+                          -L$(top_builddir)/XMLParserModules/libxmlParser \
+                          -L$(top_builddir)/XMLParserModules/expatParser \
+                          -version-info @CEGUI_VERSION_INFO@
 
-if CEGUI_USING_TINYXML
-libCEGUIBase_la_SOURCES += CEGUITinyXMLParser.cpp \
-                      tinyxml/tinystr.cpp \
-                      tinyxml/tinyxml.cpp \
-                      tinyxml/tinyxmlerror.cpp \
-                      tinyxml/tinyxmlparser.cpp
-
-noinst_HEADERS += tinyxml/tinystr.h \
-                  tinyxml/tinyxml.h
-endif
-
-if CEGUI_USING_XERCES
-libCEGUIBase_la_SOURCES += CEGUIXercesParser.cpp
-endif
-
-libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
-libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS)
+libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS) $(DefaultParser_LIB)

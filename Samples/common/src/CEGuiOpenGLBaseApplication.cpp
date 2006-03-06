@@ -152,7 +152,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
     rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
     rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
-#ifdef CEGUI_WITH_XERCES
+#if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
     rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
 #endif
 }

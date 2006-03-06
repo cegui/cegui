@@ -36,20 +36,97 @@ AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
 ])
 
 AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
-    AC_ARG_WITH([xerces-c], AC_HELP_STRING([--without-xerces-c], [Disables the use of the external Xerces-C++ XML Parser (will use embedded TinyXML instead)]),
-                [cegui_with_xerces=$withval], [cegui_with_xerces=yes])
-    AC_CHECK_LIB([xerces-c], [main], [cegui_found_xerces=yes], [cegui_found_xerces=no], -lpthread)
+    PKG_CHECK_MODULES(libxml, libxml >= 1.8, [cegui_found_libxml=yes], [cegui_found_libxml=no])
+    CEGUI_CHECK_XERCES(xerces, [cegui_found_xerces=yes], [cegui_found_xerces=no])
+    CEGUI_CHECK_EXPAT(expat, [cegui_found_expat=yes], [cegui_found_expat=no])
 
+    dnl save lots of linker aggro ;)
+    LIBS="$xerces_LIBS $LIBS"
+
+    dnl Find out what user disabled as far as parsers go
+    AC_ARG_ENABLE([xerces-c], AC_HELP_STRING([--disable-xerces-c], [Disables building of the Xerces-C++ XML parser module.]),
+                [cegui_with_xerces=$enableval], [cegui_with_xerces=yes])
+
+    AC_ARG_ENABLE([libxml], AC_HELP_STRING([--disable-libxml], [Disables building of the libxml XML parser module.]),
+                [cegui_with_libxml=$enableval], [cegui_with_libxml=yes])
+
+    AC_ARG_ENABLE([expat], AC_HELP_STRING([--disable-expat], [Disables building of the expat XML parser module.]),
+                [cegui_with_expat=$enableval], [cegui_with_expat=yes])
+
+    dnl Find out which paser user wants as a default
+    AC_ARG_WITH([default-xml-parser], AC_HELP_STRING([--with-default-xml-parser[=PARSER]], [Sets the default XML parser module.]),
+                [cegui_default_parser=$withval], [cegui_default_parser=none])
+
+    dnl define macro to control inclusion of header for xerces parser
     if test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes; then
-        LIBS="-lxerces-c $LIBS"
-        AC_DEFINE(CEGUI_WITH_XERCES, [], [Define to have the system use Xerces-C++ XML Parser as the default.])
-        AC_MSG_NOTICE([Default XML Parser is: Xerces-C++])
-    else
-        AC_MSG_NOTICE([Default XML Parser is: TinyXML])
+        AC_DEFINE(CEGUI_HAS_XERCES, [], [Define if the Xerces-C++ XML Parser is being built.])
     fi
 
-    AM_CONDITIONAL([CEGUI_USING_XERCES], [test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes])
-    AM_CONDITIONAL([CEGUI_USING_TINYXML], [test x$cegui_found_xerces = xno || test x$cegui_with_xerces = xno])
+    dnl define macro to control inclusion of header for libxml parser
+    if test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes; then
+        AC_DEFINE(CEGUI_HAS_LIBXML, [], [Define if the libxml XML Parser is being built.])
+    fi
+
+    dnl define macro to control inclusion of header for expat parser
+    if test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes; then
+        AC_DEFINE(CEGUI_HAS_EXPAT, [], [Define if the expat XML Parser is being built.])
+    fi
+
+    dnl reset default parser to 'none' if current selection will not be built
+    if test x$cegui_default_parser = xXercesParser && test x$cegui_found_xerces = xno || test x$cegui_with_xerces = xno; then
+        cegui_default_parser=none
+    fi
+    if test x$cegui_default_parser = xLibxmlParser && test x$cegui_found_libxml = xno || test x$cegui_with_libxml = xno; then
+        cegui_default_parser=none
+    fi
+    if test x$cegui_default_parser = xExpatParser && test x$cegui_found_expat = xno || test x$cegui_with_expat = xno; then
+        cegui_default_parser=none
+    fi
+
+    dnl if no parser is selected as default, choose one that will be available
+    if test x$cegui_default_parser = xnone; then
+        if test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes; then
+            cegui_default_parser=XercesParser
+        else
+            if test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes; then
+                cegui_default_parser=LibxmlParser
+            else
+                if test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes; then
+                    cegui_default_parser=ExpatParser
+                else
+                    AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue])
+                fi
+            fi
+        fi
+    fi
+
+    dnl define macro for the class of the default xml parser to be used
+    AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_XMLPARSER, $cegui_default_parser, [Set this to the default XMLParser to be used (XercesParser, ExpatParser, or LibxmlParser).])
+    AC_MSG_NOTICE([Default XML Parser will be: $cegui_default_parser])
+
+    dnl define the library of the default parser which is to be linked
+    if test x$cegui_default_parser = xXercesParser; then
+        DefaultParser_LIB="-lCEGUIXercesParser $xerces_LIBS"
+    else
+        if test x$cegui_default_parser = xLibxmlParser; then
+            DefaultParser_LIB="-lCEGUILibxmlParser $libxml_LIBS"
+        else
+            if test x$cegui_default_parser = xExpatParser; then
+                DefaultParser_LIB="-lCEGUIExpatParser $expat_LIBS"
+            fi
+        fi
+    fi
+    AC_SUBST(DefaultParser_LIB)
+
+    dnl automake conditionals
+    AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes])
+    AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes])
+    AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes])
+
+    AC_SUBST(xerces_CFLAGS)
+    AC_SUBST(xerces_LIBS)
+    AC_SUBST(expat_CFLAGS)
+    AC_SUBST(expat_LIBS)
 ])
 
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
@@ -122,7 +199,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
     done
 
     for cegui_path in $cegui_lib_paths; do
-        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $saved_LIBS")
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
         AC_CHECK_LIB(Irrlicht, main, [cegui_irr_l_found=yes; cegui_irr_libs="$cegui_path"; break],[cegui_irr_l_found=no; unset ac_cv_lib_Irrlicht_main])
     done
 
@@ -190,4 +267,104 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
     AC_SUBST(DevIL_CFLAGS)
+])
+
+# CEGUI_CHECK_XERCES(variable, [action-if-found], [action-if-not-found])
+# checks for xerces-c++ headers and libs in some common places.
+AC_DEFUN([CEGUI_CHECK_XERCES],[
+    AC_ARG_WITH([xerces-incdir], AC_HELP_STRING([--with-xerces-incdir=DIR], [Optionally specifies location of the xerces-c++ includes]),
+        [cegui_xerces_incdir=$withval],[cegui_xerces_incdir=[.]])
+    AC_ARG_WITH([xerces-libdir], AC_HELP_STRING([--with-xerces-libdir=DIR], [Optionally specifies location of the xerces-c++ library]),
+        [cegui_xerces_libdir=$withval],[cegui_xerces_libdir=[.]])
+    cegui_lib_paths="$cegui_xerces_libdir"
+    cegui_inc_paths="$cegui_xerces_incdir /usr/local/include/xerces /usr/include/xerces /usr/local/include /usr/include"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <xercesc/sax2/DefaultHandler.hpp>],
+            [cegui_xerces_h_found=yes; cegui_xerces_flags="$cegui_path"; break],
+            [cegui_xerces_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([xerces-c], [main],
+            [cegui_xerces_l_found=yes; cegui_xerces_libs="$cegui_path"; break],
+            [cegui_xerces_l_found=no; unset ac_cv_lib_xerces-c_main], -lpthread)
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_xerces_h_found = xyes && test x$cegui_xerces_l_found = xyes; then
+        if test x$cegui_xerces_flags != x.; then
+            $1_CFLAGS="-I$cegui_xerces_flags"
+        fi
+        if test x$cegui_xerces_libs = x.; then
+            $1_LIBS="-lxerces-c"
+        else
+            $1_LIBS="-L$cegui_xerces_libs -lxerces-c"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+])
+
+# CEGUI_CHECK_EXPAT(variable, [action-if-found], [action-if-not-found])
+# checks for expat headers and libs in some common places.
+AC_DEFUN([CEGUI_CHECK_EXPAT],[
+    AC_ARG_WITH([expat-incdir], AC_HELP_STRING([--with-expat-incdir=DIR], [Optionally specifies location of the expat-c++ includes]),
+        [cegui_expat_incdir=$withval],[cegui_expat_incdir=[.]])
+    AC_ARG_WITH([expat-libdir], AC_HELP_STRING([--with-expat-libdir=DIR], [Optionally specifies location of the expat-c++ library]),
+        [cegui_expat_libdir=$withval],[cegui_expat_libdir=[.]])
+    cegui_lib_paths="$cegui_expat_libdir"
+    cegui_inc_paths="$cegui_expat_incdir /usr/local/include/expat /usr/include/expat /usr/local/include /usr/include"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <expat.h>],
+            [cegui_expat_h_found=yes; cegui_expat_flags="$cegui_path"; break],
+            [cegui_expat_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([expat], [XML_ParserCreate],
+            [cegui_expat_l_found=yes; cegui_expat_libs="$cegui_path"; break],
+            [cegui_expat_l_found=no; unset ac_cv_lib_expat-c_main])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_expat_h_found = xyes && test x$cegui_expat_l_found = xyes; then
+        if test x$cegui_expat_flags != x.; then
+            $1_CFLAGS="-I$cegui_expat_flags"
+        fi
+        if test x$cegui_expat_libs = x.; then
+            $1_LIBS="-lexpat"
+        else
+            $1_LIBS="-L$cegui_expat_libs -lexpat"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
 ])

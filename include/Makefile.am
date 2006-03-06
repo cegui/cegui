@@ -64,11 +64,3 @@ pkginclude_HEADERS = CEGUI.h \
 
 noinst_HEADERS = CEGUIFontManager_implData.h \
              CEGUIFont_implData.h
-
-if CEGUI_USING_TINYXML
-noinst_HEADERS += CEGUITinyXMLParser.h
-endif
-
-if CEGUI_USING_XERCES
-noinst_HEADERS += CEGUIXercesParser.h
-endif

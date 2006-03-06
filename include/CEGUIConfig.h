@@ -71,10 +71,18 @@ Each item in here has a comment to describe what it's for.
 #if defined(_MSC_VER) || defined(__APPLE__)
 
 //////////////////////////////////////////////////////////////////////////
-// Comment this line if you wish to remove the Xerces-C++ dependency.
-// The system will revert to using an embedded version of TinyXML instead.
+// Set this to the default XMLParser to be used.
+// (XercesParser, ExpatParser, or LibxmlParser).
 //////////////////////////////////////////////////////////////////////////
-#define CEGUI_WITH_XERCES
+#define CEGUI_DEFAULT_XMLPARSER XercesParser
+
+//////////////////////////////////////////////////////////////////////////
+// These control inclusion of headers for the different parser
+// implementations.  You should not have to touch these.
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_HAS_EXPAT
+#define CEGUI_HAS_LIBXML
+#define CEGUI_HAS_XERCES
 
 #endif // defined(_MSC_VER) || defined(__APPLE__)
 

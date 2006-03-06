@@ -53,15 +53,16 @@
 #include "CEGUIWindowRendererManager.h"
 #include <time.h>
 
-// set up for whichever default xml parser will be used
-#ifdef CEGUI_WITH_XERCES
-#   include "CEGUIXercesParser.h"
-#   define CEGUI_DEFAULT_XMLPARSER     XercesParser
-#else
-#   include "CEGUITinyXMLParser.h"
-#   define CEGUI_DEFAULT_XMLPARSER     TinyXMLParser
+// include headers for xml parsers we have available.
+#ifdef CEGUI_HAS_XERCES
+#   include "XMLParserModules/XercesParser/CEGUIXercesParser.h"
 #endif
-
+#ifdef CEGUI_HAS_EXPAT
+#   include "XMLParserModules/expatParser/CEGUIExpatParser.h"
+#endif
+#ifdef CEGUI_HAS_LIBXML
+#   include "XMLParserModules/libxmlParser/CEGUILibxmlParser.h"
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
