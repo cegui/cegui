@@ -27,7 +27,7 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIFont.h"
-#include "../pcre/pcre.h"
+#include <pcre.h>
 #include <string.h>
 
 

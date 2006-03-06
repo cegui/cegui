@@ -1,6 +1,6 @@
 SUBDIRS = . renderers
 
-INCLUDES = -I$(top_srcdir)/include $(freetype2_CFLAGS)
+INCLUDES = -I$(top_srcdir)/include $(freetype2_CFLAGS) $(pcre_CFLAGS)
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
@@ -132,20 +132,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalWidgetLookFeel.cpp \
                       falagard/CEGUIFalWidgetLookManager.cpp \
                       falagard/CEGUIFalXMLEnumHelper.cpp \
-                      falagard/CEGUIFalagard_xmlHandler.cpp \
-                      pcre/chartables.c \
-                      pcre/get.c \
-                      pcre/maketables.c \
-                      pcre/pcre.c \
-                      pcre/pcreposix.c \
-                      pcre/study.c
+                      falagard/CEGUIFalagard_xmlHandler.cpp
 
-noinst_HEADERS =      pcre/internal.h \
-                      pcre/ucpinternal.h \
-                      pcre/pcre.h \
-                      pcre/pcreposix.h \
-                      pcre/ucp.h \
-                      pcre/pcreconfig.h
+noinst_HEADERS =
 
 if CEGUI_USING_TINYXML
 libCEGUIBase_la_SOURCES += CEGUITinyXMLParser.cpp \
@@ -163,4 +152,4 @@ libCEGUIBase_la_SOURCES += CEGUIXercesParser.cpp
 endif
 
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
-libCEGUIBase_la_LIBADD = $(freetype2_LIBS)
+libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS)

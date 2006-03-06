@@ -15,11 +15,15 @@ AM_PROG_LIBTOOL
 AC_CHECK_LIB([dl], [main])
 AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
 
-CEGUI_CHECK_XML_PARSERS
-
 PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
 AC_SUBST(freetype2_CFLAGS)
 AC_SUBST(freetype2_LIBS)
+
+PKG_CHECK_MODULES(pcre, libpcre >= 5.0)
+AC_SUBST(pcre_CFLAGS)
+AC_SUBST(pcre_LIBS)
+
+CEGUI_CHECK_XML_PARSERS
 
 # Checks for header files.
 AC_HEADER_STDC
