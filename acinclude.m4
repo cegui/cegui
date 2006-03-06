@@ -36,7 +36,7 @@ AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
 ])
 
 AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
-    PKG_CHECK_MODULES(libxml, libxml >= 1.8, [cegui_found_libxml=yes], [cegui_found_libxml=no])
+    PKG_CHECK_MODULES(libxml, libxml-2.0 >= 2.6, [cegui_found_libxml=yes], [cegui_found_libxml=no])
     CEGUI_CHECK_XERCES(xerces, [cegui_found_xerces=yes], [cegui_found_xerces=no])
     CEGUI_CHECK_EXPAT(expat, [cegui_found_expat=yes], [cegui_found_expat=no])
 
