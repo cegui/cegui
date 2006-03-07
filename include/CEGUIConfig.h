@@ -72,17 +72,10 @@ Each item in here has a comment to describe what it's for.
 
 //////////////////////////////////////////////////////////////////////////
 // Set this to the default XMLParser to be used.
-// (XercesParser, ExpatParser, or LibxmlParser).
+// (XercesParser, ExpatParser, LibxmlParser or TinyXMLParser).
 //////////////////////////////////////////////////////////////////////////
-#define CEGUI_DEFAULT_XMLPARSER XercesParser
+#define CEGUI_DEFAULT_XMLPARSER TinyXMLParser
 
-//////////////////////////////////////////////////////////////////////////
-// These control inclusion of headers for the different parser
-// implementations.  You should not have to touch these.
-//////////////////////////////////////////////////////////////////////////
-#define CEGUI_HAS_EXPAT
-#define CEGUI_HAS_LIBXML
-#define CEGUI_HAS_XERCES
 
 #endif // defined(_MSC_VER) || defined(__APPLE__)
 

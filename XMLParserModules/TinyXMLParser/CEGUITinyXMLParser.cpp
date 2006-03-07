@@ -27,7 +27,7 @@
 #include "CEGUIXMLHandler.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
-#include "tinyxml/tinyxml.h"
+#include "ceguitinyxml/tinyxml.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

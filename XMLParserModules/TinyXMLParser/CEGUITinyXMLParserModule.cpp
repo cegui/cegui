@@ -1,11 +1,11 @@
 /************************************************************************
-	filename: 	CEGUIWin32XMLSelectHack.cpp
-	created:	14/3/2005
-	author:		Paul D Turner
+    filename:   CEGUITinyXMLParserModule.cpp
+    created:    Tue Mar 7 2006
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
-    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
+    Copyright (C)2004 - 2006 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,23 +21,15 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-/*************************************************************************
-    This hack of a file will become source for whichever XML Parser has
-    been selected as the default.  It's easier to do this than to mess
-    about trying to do the same by messing around with the project files
-    for all the different VC++ compiler versions.
-*************************************************************************/
-#include "CEGUIConfig.h"
+#include "CEGUITinyXMLParserModule.h"
+#include "CEGUITinyXMLParser.h"
 
-#ifdef CEGUI_WITH_XERCES
-#   if defined (_MSC_VER)
-#       if defined (DEBUG) || defined (_DEBUG)
-#           pragma comment(lib,"xerces-c_2D.lib")
-#       else
-#           pragma comment(lib,"xerces-c_2.lib")
-#       endif
-#   endif
-#   include "CEGUIXercesParser.cpp"
-#else
-#   include "CEGUITinyXMLParser.cpp"
-#endif
+CEGUI::XMLParser* createParser(void)
+{
+    return new CEGUI::TinyXMLParser();
+}
+
+void destroyParser(CEGUI::XMLParser* parser)
+{
+    delete parser;
+}

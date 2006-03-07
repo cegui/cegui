@@ -1,11 +1,11 @@
 /************************************************************************
-	filename: 	CEGUIWin32XMLSelectHack.cpp
-	created:	14/3/2005
-	author:		Paul D Turner
+    filename:   CEGUITinyXMLParserModule.h
+    created:    Tue Mar 7 2006
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
-    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
+    Copyright (C)2004 - 2006 Paul D Turner (paul@cegui.org.uk)
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,20 +21,23 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-/*************************************************************************
-    This hack of a file will become source for whichever XML Parser has
-    been selected as the default.  It's easier to do this than to mess
-    about trying to do the same by messing around with the project files
-    for all the different VC++ compiler versions.
-*************************************************************************/
-#include "CEGUIConfig.h"
+#ifndef _CEGUITinyXMLParserModule_h_
+#define _CEGUITinyXMLParserModule_h_
 
-#ifdef CEGUI_WITH_XERCES
-#   include "CEGUIXercesParser.cpp"
-#else
-#   include "CEGUITinyXMLParser.cpp"
-#   include "tinyxml/tinystr.cpp"
-#   include "tinyxml/tinyxml.cpp"
-#   include "tinyxml/tinyxmlerror.cpp"
-#   include "tinyxml/tinyxmlparser.cpp"
-#endif
+#include "CEGUIXMLParser.h"
+
+/*!
+\brief
+    exported function that creates an XMLParser based object and returns
+    a pointer to that object.
+*/
+extern "C" CEGUI::XMLParser* createParser(void);
+
+/*!
+\brief
+    exported function that deletes an XMLParser based object previously
+    created by this module.
+*/
+extern "C" void destroyParser(CEGUI::XMLParser* parser);
+
+#endif // end of guard _CEGUITinyXMLParserModule_h_

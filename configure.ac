@@ -113,6 +113,7 @@ AC_CONFIG_FILES([Makefile
                  WindowRendererSets/Falagard/include/Makefile
                  WindowRendererSets/Falagard/src/Makefile
                  XMLParserModules/Makefile
+                 XMLParserModules/TinyXMLParser/Makefile
                  XMLParserModules/XercesParser/Makefile
                  XMLParserModules/expatParser/Makefile
                  XMLParserModules/libxmlParser/Makefile

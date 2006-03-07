@@ -53,24 +53,12 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     AC_ARG_ENABLE([expat], AC_HELP_STRING([--disable-expat], [Disables building of the expat XML parser module.]),
                 [cegui_with_expat=$enableval], [cegui_with_expat=yes])
 
+    AC_ARG_ENABLE([tinyxml], AC_HELP_STRING([--disable-tinyxml], [Disables building of the tinyXML parser module.]),
+                [cegui_with_tinyxml=$enableval], [cegui_with_tinyxml=yes])
+
     dnl Find out which paser user wants as a default
     AC_ARG_WITH([default-xml-parser], AC_HELP_STRING([--with-default-xml-parser[=PARSER]], [Sets the default XML parser module.]),
                 [cegui_default_parser=$withval], [cegui_default_parser=none])
-
-    dnl define macro to control inclusion of header for xerces parser
-    if test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes; then
-        AC_DEFINE(CEGUI_HAS_XERCES, [], [Define if the Xerces-C++ XML Parser is being built.])
-    fi
-
-    dnl define macro to control inclusion of header for libxml parser
-    if test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes; then
-        AC_DEFINE(CEGUI_HAS_LIBXML, [], [Define if the libxml XML Parser is being built.])
-    fi
-
-    dnl define macro to control inclusion of header for expat parser
-    if test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes; then
-        AC_DEFINE(CEGUI_HAS_EXPAT, [], [Define if the expat XML Parser is being built.])
-    fi
 
     dnl reset default parser to 'none' if current selection will not be built
     if test x$cegui_default_parser = xXercesParser && test x$cegui_found_xerces = xno || test x$cegui_with_xerces = xno; then
@@ -80,6 +68,9 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
         cegui_default_parser=none
     fi
     if test x$cegui_default_parser = xExpatParser && test x$cegui_found_expat = xno || test x$cegui_with_expat = xno; then
+        cegui_default_parser=none
+    fi
+    if test x$cegui_default_parser = xTinyXMLParser && test x$cegui_with_tinyxml = xno; then
         cegui_default_parser=none
     fi
 
@@ -94,20 +85,25 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
                 if test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes; then
                     cegui_default_parser=ExpatParser
                 else
-                    AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue])
+                    if test x$cegui_with_tinyxml = xyes; then
+                        cegui_default_parser=TinyXMLParser
+                    else
+                        AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue])
+                    fi
                 fi
             fi
         fi
     fi
 
     dnl define macro for the class of the default xml parser to be used
-    AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_XMLPARSER, $cegui_default_parser, [Set this to the default XMLParser to be used (XercesParser, ExpatParser, or LibxmlParser).])
+    AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_XMLPARSER, $cegui_default_parser, [Set this to the default XMLParser to be used (XercesParser, ExpatParser, LibxmlParser or TinyXMLParser).])
     AC_MSG_NOTICE([Default XML Parser will be: $cegui_default_parser])
 
     dnl automake conditionals
     AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes])
     AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes])
     AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes])
+    AM_CONDITIONAL([BUILD_TINYXML_PARSER], [test x$cegui_with_tinyxml = xyes])
 
     AC_SUBST(xerces_CFLAGS)
     AC_SUBST(xerces_LIBS)
