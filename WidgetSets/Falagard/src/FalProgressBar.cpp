@@ -76,7 +76,7 @@ namespace CEGUI
             }
             else
             {
-                progressClipper.d_top = progressClipper.d_bottom - height;
+                progressRect.d_top = progressRect.d_bottom - height;
             }
         }
         else
@@ -85,7 +85,7 @@ namespace CEGUI
 
             if (d_reversed)
             {
-                progressClipper.d_left = progressClipper.d_right - width;
+                progressRect.d_left = progressRect.d_right - width;
             }
             else
             {
