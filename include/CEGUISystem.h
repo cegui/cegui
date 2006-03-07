@@ -805,6 +805,23 @@ private:
 	*/
 	bool	handleDisplaySizeChange(const EventArgs& e);
 
+    //! output the standard log header
+    void outputLogHeader();
+
+    //! adds factories for all the basic window types
+    void addStandardWindowFactories();
+
+    //! create the other core system singleton objects (except the logger)
+    void createSingletons();
+
+    //! cleanup the core system singleton objects
+    void destroySingletons();
+
+    //! handle creation and initialisation of the XML parser.
+    void setupXMLParser();
+
+    //! handle cleanup of the XML parser
+    void cleanupXMLParser();
 
 	/*************************************************************************
 		Handlers for System events
@@ -899,6 +916,7 @@ private:
 
     XMLParser*  d_xmlParser;        //!< XMLParser object we use to process xml files.
     bool        d_ourXmlParser;     //!< true when we created the xml parser.
+    DynamicModule* d_parserModule;  //! pointer to parser module.
 
     Tooltip* d_defaultTooltip;      //!< System default tooltip object.
     bool     d_weOwnTooltip;        //!< true if System created the custom Tooltip.

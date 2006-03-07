@@ -104,20 +104,6 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_XMLPARSER, $cegui_default_parser, [Set this to the default XMLParser to be used (XercesParser, ExpatParser, or LibxmlParser).])
     AC_MSG_NOTICE([Default XML Parser will be: $cegui_default_parser])
 
-    dnl define the library of the default parser which is to be linked
-    if test x$cegui_default_parser = xXercesParser; then
-        DefaultParser_LIB="-lCEGUIXercesParser $xerces_LIBS"
-    else
-        if test x$cegui_default_parser = xLibxmlParser; then
-            DefaultParser_LIB="-lCEGUILibxmlParser $libxml_LIBS"
-        else
-            if test x$cegui_default_parser = xExpatParser; then
-                DefaultParser_LIB="-lCEGUIExpatParser $expat_LIBS"
-            fi
-        fi
-    fi
-    AC_SUBST(DefaultParser_LIB)
-
     dnl automake conditionals
     AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes])
     AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes])

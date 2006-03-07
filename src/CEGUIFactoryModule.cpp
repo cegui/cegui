@@ -28,22 +28,6 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFactoryModule.h"
 
-#if defined(__WIN32__) || defined(_WIN32)
-#	if defined(_MSC_VER)
-#		pragma warning(disable : 4552)	// warning: operator has no effect; expected operator with side-effect
-#	endif
-#   define WIN32_LEAN_AND_MEAN
-#   include <windows.h>
-#endif
-
-#if defined(__APPLE_CC__)
-#   include "macPlugins.h"
-#endif
-
-#if defined(__linux__)
-#   include "dlfcn.h"
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -59,45 +43,11 @@ const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories
 	module specified.
 *************************************************************************/
 FactoryModule::FactoryModule(const String& filename) :
-	d_moduleName(filename)
+	d_module(filename)
 {
-#if defined(__linux__)
-	// dlopen() does not add .so to the filename, like windows does for .dll
-	if (d_moduleName.substr(d_moduleName.length() - 3, 3) != ".so")
-	{
-		d_moduleName += ".so";
-	}
-
-	// see if we need to add the leading 'lib'
-	if (d_moduleName.substr(0, 3) != "lib")
-	{
-		d_moduleName.insert(0, "lib");
-	}
-#endif
-
-	/// This optionally adds a _d to the loaded module name under the debug config for Win32
-#if defined(__WIN32__) || defined(_WIN32)
-#	if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
-	// if name has .dll extension, assume it's complete and do not touch it.
-	if (d_moduleName.substr(d_moduleName.length() - 4, 4) != ".dll")
-	{
-		d_moduleName += CEGUI_LOAD_MODULE_DEBUG_SUFFIX;
-	}
-#	endif
-#endif
-
-	d_handle = DYNLIB_LOAD(d_moduleName.c_str());
-
-	// check for library load failure
-	if (!d_handle)
-	{
-        throw GenericException("FactoryModule::FactoryModule - Failed to load module '"
-            + d_moduleName + "': " + getFailureString());
-	}
-
     // functions are now optional, and only throw upon the first attempt to use a missing function.
-    d_regFunc = (FactoryRegisterFunction)DYNLIB_GETSYM(d_handle, RegisterFactoryFunctionName);
-    d_regAllFunc = (RegisterAllFunction)DYNLIB_GETSYM(d_handle, RegisterAllFunctionName);
+    d_regFunc = (FactoryRegisterFunction)d_module.getSymbolAddress(RegisterFactoryFunctionName);
+    d_regAllFunc = (RegisterAllFunction)d_module.getSymbolAddress(RegisterAllFunctionName);
 }
 
 
@@ -106,7 +56,6 @@ FactoryModule::FactoryModule(const String& filename) :
 *************************************************************************/
 FactoryModule::~FactoryModule(void)
 {
-	DYNLIB_UNLOAD(d_handle);
 }
 
 
@@ -118,7 +67,8 @@ void FactoryModule::registerFactory(const String& type) const
     // are we attempting to use a missing function export
     if (!d_regFunc)
     {
-        throw InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" + d_moduleName + "'.");
+        throw InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" +
+            d_module.getModuleName() + "'.");
     }
 
 	d_regFunc(type);
@@ -129,46 +79,11 @@ uint FactoryModule::registerAllFactories() const
     // are we attempting to use a missing function export
     if (!d_regAllFunc)
     {
-        throw InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" + d_moduleName + "'.");
+        throw InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" +
+            d_module.getModuleName() + "'.");
     }
 
     return d_regAllFunc();
-}
-
-/*************************************************************************
-    Return a String containing the last failure message from the platforms
-    dynamic loading system.
-*************************************************************************/
-String FactoryModule::getFailureString() const
-{
-#if defined(__linux__) || defined (__APPLE_CC__)
-    return String(DYNLIB_ERROR());
-#elif defined(__WIN32__) || defined(_WIN32)
-    String retMsg;
-    LPVOID msgBuffer;
-
-    if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-                      FORMAT_MESSAGE_FROM_SYSTEM | 
-                      FORMAT_MESSAGE_IGNORE_INSERTS,
-                      0,
-                      GetLastError(),
-                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      reinterpret_cast<LPTSTR>(&msgBuffer),
-                      0,
-                      0))
-    {
-        retMsg = reinterpret_cast<LPTSTR>(msgBuffer);
-        LocalFree(msgBuffer);
-    }
-    else
-    {
-        retMsg = "Unknown Error";
-    }
-
-    return retMsg;
-#else
-    return String("Unknown Error");
-#endif
 }
 
 } // End of  CEGUI namespace section

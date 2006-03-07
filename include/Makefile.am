@@ -8,6 +8,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIDataContainer.h \
                  CEGUIDefaultLogger.h \
                  CEGUIDefaultResourceProvider.h \
+                 CEGUIDynamicModule.h \
                  CEGUIEvent.h \
                  CEGUIEventArgs.h \
                  CEGUIEventSet.h \

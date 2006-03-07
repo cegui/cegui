@@ -9,6 +9,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUICoordConverter.cpp \
                       CEGUIDefaultLogger.cpp \
                       CEGUIDefaultResourceProvider.cpp \
+                      CEGUIDynamicModule.cpp \
                       CEGUIEvent.cpp \
                       CEGUIEventArgs.cpp \
                       CEGUIEventSet.cpp \
@@ -134,9 +135,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalXMLEnumHelper.cpp \
                       falagard/CEGUIFalagard_xmlHandler.cpp
 
-libCEGUIBase_la_LDFLAGS = -L$(top_builddir)/XMLParserModules/XercesParser \
-                          -L$(top_builddir)/XMLParserModules/libxmlParser \
-                          -L$(top_builddir)/XMLParserModules/expatParser \
-                          -version-info @CEGUI_VERSION_INFO@
+libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 
-libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS) $(DefaultParser_LIB)
+libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS)

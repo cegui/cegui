@@ -51,18 +51,12 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUIWindowRendererManager.h"
+#include "CEGUIDynamicModule.h"
+#include "CEGUIXMLParser.h"
 #include <time.h>
 
-// include headers for xml parsers we have available.
-#ifdef CEGUI_HAS_XERCES
-#   include "XMLParserModules/XercesParser/CEGUIXercesParser.h"
-#endif
-#ifdef CEGUI_HAS_EXPAT
-#   include "XMLParserModules/expatParser/CEGUIExpatParser.h"
-#endif
-#ifdef CEGUI_HAS_LIBXML
-#   include "XMLParserModules/libxmlParser/CEGUILibxmlParser.h"
-#endif
+#define S_(X) #X
+#define STRINGIZE(X) S_(X)
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -162,8 +156,9 @@ System::System(Renderer* renderer,
   d_defaultMouseCursor(0),
   d_scriptModule(scriptModule),
   d_mouseScalingFactor(1.0f),
-  d_xmlParser(xmlParser ? xmlParser : new CEGUI_DEFAULT_XMLPARSER),
-  d_ourXmlParser(xmlParser == 0),
+  d_xmlParser(xmlParser),
+  d_ourXmlParser(false),
+  d_parserModule(0),
   d_defaultTooltip(0),
   d_weOwnTooltip(false)
 {
@@ -176,8 +171,8 @@ System::System(Renderer* renderer,
        PropertyHelper::uintToString(CEGUI_VERSION_MINOR) + "." +
        PropertyHelper::uintToString(CEGUI_VERSION_PATCH);
 
-    // perform initialisation of XML parser.
-    d_xmlParser->initialise();
+    // handle initialisation and setup of the XML parser
+    setupXMLParser();
 
     // strings we may get from the configuration file.
     String configLogname, configSchemeName, configLayoutName, configInitScript, defaultFontName;
@@ -235,59 +230,18 @@ System::System(Renderer* renderer,
     // beginning main init
     Logger::getSingleton().logEvent("---- Begining CEGUI System initialisation ----");
 
-    // cause creation of other singleton objects
-    new ImagesetManager();
-    new FontManager();
-    new WindowFactoryManager();
-    new WindowManager();
-    new SchemeManager();
-    new MouseCursor();
-    new GlobalEventSet();
-    new WidgetLookManager();
-    new WindowRendererManager();
+    // create the core system singleton objects
+    createSingletons();
 
-    // Add factories for types all base elements
-	WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
-	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GUISheet));
-	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(DragContainer));
-	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrolledContainer));
-	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PushButton));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(RadioButton));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Combobox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ComboDropList));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Editbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(FrameWindow));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemEntry));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Listbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeader));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeaderSegment));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Menubar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PopupMenu));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MenuItem));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiColumnList));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiLineEditbox));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ProgressBar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrollablePane));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Scrollbar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Slider));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Spinner));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabButton));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabControl));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Thumb));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
-    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
+    // add the window factories for the core window types
+    addStandardWindowFactories();
 
     // GUISheet's name was changed, register an alias so both can be used
     WindowFactoryManager::getSingleton().addWindowTypeAlias("DefaultGUISheet", GUISheet::WidgetTypeName);
 
     // success - we are created!  Log it for prosperity :)
-    Logger::getSingleton().logEvent("CEGUI::System singleton created.");
-    Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
-    Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
-    Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
-    Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
-    Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
+    outputLogHeader();
+
     // subscribe to hear about display mode changes
     d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 
@@ -363,13 +317,8 @@ System::~System(void)
         d_scriptModule->destroyBindings();
     }
 
-	// cleanup XML stuff
-    if (d_xmlParser)
-    {
-        d_xmlParser->cleanup();
-        if (d_ourXmlParser)
-            delete d_xmlParser;
-    }
+    // cleanup XML stuff
+    cleanupXMLParser();
 
     //
 	// perform cleanup in correct sequence
@@ -382,15 +331,7 @@ System::~System(void)
 	WindowFactoryManager::getSingleton().removeAllFactories();
 
 	// cleanup singletons
-	delete	SchemeManager::getSingletonPtr();
-	delete	WindowManager::getSingletonPtr();
-	delete	WindowFactoryManager::getSingletonPtr();
-    delete  WidgetLookManager::getSingletonPtr();
-    delete  WindowRendererManager::getSingletonPtr();
-	delete	FontManager::getSingletonPtr();
-	delete	MouseCursor::getSingletonPtr();
-	delete	ImagesetManager::getSingletonPtr();
-	delete	GlobalEventSet::getSingletonPtr();
+    destroySingletons();
 
 	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed.");
 	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
@@ -1440,6 +1381,119 @@ void System::setDefaultTooltip(const String& tooltipType)
         {
             d_defaultTooltip = 0;
             d_weOwnTooltip = false;
+        }
+    }
+}
+
+void System::outputLogHeader()
+{
+    Logger::getSingleton().logEvent("CEGUI::System singleton created.");
+    Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
+    Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
+    Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
+    Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
+    Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
+}
+
+void System::addStandardWindowFactories()
+{
+    // Add factories for types all base elements
+    WindowFactoryManager& wfMgr = WindowFactoryManager::getSingleton();
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GUISheet));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(DragContainer));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrolledContainer));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PushButton));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(RadioButton));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Combobox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ComboDropList));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Editbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(FrameWindow));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemEntry));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Listbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeader));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ListHeaderSegment));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Menubar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PopupMenu));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MenuItem));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiColumnList));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(MultiLineEditbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ProgressBar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrollablePane));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Scrollbar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Slider));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Spinner));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabButton));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(TabControl));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Thumb));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
+}
+
+void System::createSingletons()
+{
+    // cause creation of other singleton objects
+    new ImagesetManager();
+    new FontManager();
+    new WindowFactoryManager();
+    new WindowManager();
+    new SchemeManager();
+    new MouseCursor();
+    new GlobalEventSet();
+    new WidgetLookManager();
+    new WindowRendererManager();
+}
+
+void System::destroySingletons()
+{
+    delete  SchemeManager::getSingletonPtr();
+    delete  WindowManager::getSingletonPtr();
+    delete  WindowFactoryManager::getSingletonPtr();
+    delete  WidgetLookManager::getSingletonPtr();
+    delete  WindowRendererManager::getSingletonPtr();
+    delete  FontManager::getSingletonPtr();
+    delete  MouseCursor::getSingletonPtr();
+    delete  ImagesetManager::getSingletonPtr();
+    delete  GlobalEventSet::getSingletonPtr();
+}
+
+void System::setupXMLParser()
+{
+    // handle creation / initialisation of XMLParser
+    if (!d_xmlParser)
+    {
+        // load the dynamic module
+        d_parserModule = new DynamicModule(String("CEGUI") + STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
+        // get pointer to parser creation function
+        XMLParser* (*createFunc)(void) =
+            (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
+        // create the parser object
+        d_xmlParser = createFunc();
+        // make sure we know to cleanup afterwards.
+        d_ourXmlParser = true;
+    }
+
+    // perform initialisation of XML parser.
+    d_xmlParser->initialise();
+}
+
+void System::cleanupXMLParser()
+{
+    if (d_xmlParser)
+    {
+        d_xmlParser->cleanup();
+
+        if (d_ourXmlParser && d_parserModule)
+        {
+            // get pointer to parser deletion function
+            void(*deleteFunc)(XMLParser*) =
+                (void(*)(XMLParser*))d_parserModule->getSymbolAddress("destroyParser");
+            // cleanup the xml parser object
+            deleteFunc(d_xmlParser);
+            d_xmlParser = 0;
+            // delete the dynamic module for the xml parser
+            delete d_parserModule;
+            d_parserModule = 0;
         }
     }
 }

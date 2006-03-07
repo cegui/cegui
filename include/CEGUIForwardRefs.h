@@ -63,6 +63,7 @@ class FactoryModule;
 class ScriptModule;
 class ResourceProvider;
 class DefaultResourceProvider;
+class DynamicModule;
 class PropertyReceiver;
 class GlobalEventSet;
 class XMLAttributes;
