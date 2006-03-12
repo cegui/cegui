@@ -16,7 +16,7 @@ command line option.
 Look in '../LuaScriptModule/package/exceptions.lua' to see the format. It's
 fairly simple and gives you alot of control.
 
-You always have 'std::exception' and '...' available.
+You always have 'std::exception' and 'any' (which means ...) available.
 
 This first example would be valid in a .pkg file for tolua++, and would ensure
 that any exceptions based on 'std::exception' thrown by the real C++ function
@@ -42,7 +42,7 @@ Example 1:
 ----------
 Returns 'nil, false' for all exceptions:
 
-	tolua_throws|...,nil,false|
+	tolua_throws|any,nil,false|
 
 Example 2:
 ----------
@@ -55,4 +55,4 @@ Example 3:
 If a CEGUI::Exception is thrown, return 'nil, message'.
 If any other kind of exception is thrown abort (error).
 
-	tolua_throws|CEGUI::Exception|...,error|
+	tolua_throws|CEGUI::Exception|any,error|
