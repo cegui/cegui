@@ -26,6 +26,16 @@
 
 #include "CEGUIXMLParser.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUILIBXMLPARSER_EXPORTS
+#       define CEGUILIBXMLPARSER_API __declspec(dllexport)
+#   else
+#       define CEGUILIBXMLPARSER_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUILIBXMLPARSER_API
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -33,7 +43,7 @@ namespace CEGUI
 \brief
     Implementation of XMLParser using libxml
 */
-class LibxmlParser : public XMLParser
+class CEGUILIBXMLPARSER_API LibxmlParser : public XMLParser
 {
 public:
     LibxmlParser(void);

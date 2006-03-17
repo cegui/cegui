@@ -26,6 +26,17 @@
 
 #include "CEGUIXMLParser.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUIXERCESPARSER_EXPORTS
+#       define CEGUIXERCESPARSER_API __declspec(dllexport)
+#   else
+#       define CEGUIXERCESPARSER_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUIXERCESPARSER_API
+#endif
+
+
 // Xerces-C includes
 #include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
@@ -61,7 +72,7 @@ namespace CEGUI
     \brief
         Implementation of XMLParser using Xerces-C++
      */
-    class CEGUIEXPORT XercesParser : public XMLParser
+    class CEGUIXERCESPARSER_API XercesParser : public XMLParser
     {
     public:
         XercesParser(void);

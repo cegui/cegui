@@ -24,20 +24,20 @@
 #ifndef _CEGUITinyXMLParserModule_h_
 #define _CEGUITinyXMLParserModule_h_
 
-#include "CEGUIXMLParser.h"
+#include "CEGUITinyXMLParser.h"
 
 /*!
 \brief
     exported function that creates an XMLParser based object and returns
     a pointer to that object.
 */
-extern "C" CEGUI::XMLParser* createParser(void);
+extern "C" CEGUITINYXMLPARSER_API CEGUI::XMLParser* createParser(void);
 
 /*!
 \brief
     exported function that deletes an XMLParser based object previously
     created by this module.
 */
-extern "C" void destroyParser(CEGUI::XMLParser* parser);
+extern "C" CEGUITINYXMLPARSER_API void destroyParser(CEGUI::XMLParser* parser);
 
 #endif // end of guard _CEGUITinyXMLParserModule_h_

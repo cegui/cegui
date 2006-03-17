@@ -21,7 +21,7 @@
 				AdditionalOptions="/Zm150"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\include;..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;_STLP_DEBUG;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
+				PreprocessorDefinitions="PCRE_STATIC;WIN32;_STLP_DEBUG;_DEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				DisableLanguageExtensions="FALSE"
@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype2110_D.lib"
+				AdditionalDependencies="freetype2110_D.lib pcre_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
@@ -72,7 +72,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Zm150"
 				AdditionalIncludeDirectories="..\..\..\..\include;..\..\..\..\dependencies\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
+				PreprocessorDefinitions="PCRE_STATIC;WIN32;NDEBUG;_WINDOWS;_USRDLL;CEGUIBASE_EXPORTS"
 				RuntimeLibrary="2"
 				DisableLanguageExtensions="FALSE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -85,7 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype2110.lib"
+				AdditionalDependencies="freetype2110.lib pcre.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\lib;..\..\..\..\dependencies\lib"
@@ -132,6 +132,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIDefaultResourceProvider.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIDynamicModule.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIEvent.cpp">
@@ -513,122 +516,6 @@
 					RelativePath="..\..\..\..\src\elements\CEGUITooltipProperties.cpp">
 				</File>
 			</Filter>
-			<Filter
-				Name="pcre"
-				Filter="">
-				<File
-					RelativePath="..\..\..\..\src\pcre\chartables.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\get.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\maketables.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\pcre.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\pcreposix.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\study.c">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							Detect64BitPortabilityProblems="FALSE"/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="tinyxml"
-				Filter="">
-				<File
-					RelativePath="..\..\..\..\src\tinyxml\tinystr.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tinyxml\tinystr.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tinyxml\tinyxml.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tinyxml\tinyxml.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tinyxml\tinyxmlerror.cpp">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\tinyxml\tinyxmlparser.cpp">
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -659,6 +546,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIDefaultResourceProvider.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\CEGUIDynamicModule.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\CEGUIEvent.h">
@@ -1071,25 +961,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUITooltipProperties.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="pcre"
-				Filter="">
-				<File
-					RelativePath="..\..\..\..\src\pcre\pcre.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\pcreconfig.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\pcreposix.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\ucp.h">
-				</File>
-				<File
-					RelativePath="..\..\..\..\src\pcre\ucpinternal.h">
 				</File>
 			</Filter>
 		</Filter>

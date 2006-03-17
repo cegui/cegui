@@ -26,6 +26,15 @@
 
 #include "CEGUIXMLParser.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUITINYXMLPARSER_EXPORTS
+#       define CEGUITINYXMLPARSER_API __declspec(dllexport)
+#   else
+#       define CEGUITINYXMLPARSER_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUITINYXMLPARSER_API
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -34,7 +43,7 @@ namespace CEGUI
     \brief
     Implementation of XMLParser using TinyXML
      */
-    class TinyXMLParser : public XMLParser
+    class CEGUITINYXMLPARSER_API TinyXMLParser : public XMLParser
     {
     public:
         TinyXMLParser(void);
