@@ -11,6 +11,7 @@ libCEGUIFalagardWRBase_la_SOURCES = FalButton.cpp \
                                   FalEditbox.cpp \
                                   FalFrameWindow.cpp \
                                   FalItemEntry.cpp \
+								  FalItemListbox.cpp \
                                   FalListHeader.cpp \
                                   FalListHeaderProperties.cpp \
                                   FalListHeaderSegment.cpp \

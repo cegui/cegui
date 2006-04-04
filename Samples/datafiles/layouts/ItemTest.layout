@@ -39,7 +39,9 @@
                     <Property Name="Text" Value="Item 1" />
                 </Window>
                 <Window Type="WindowsLook/ListboxItem">
-                    <Property Name="Text" Value="Item 2" />
+                    <Property Name="Text">MultiLine text item ?
+                        yes :) 
+                    </Property>
                 </Window>
                 <Window Type="WindowsLook/ListboxItem">
                     <Property Name="Text" Value="Ridiculously long text for a listbox item but we need it to test..." />

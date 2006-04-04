@@ -72,8 +72,11 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIFrameWindowProperties.cpp \
                       elements/CEGUIGUISheet.cpp \
                       elements/CEGUIItemEntry.cpp \
+					  elements/CEGUIItemEntryProperties.cpp \
                       elements/CEGUIItemListBase.cpp \
                       elements/CEGUIItemListBaseProperties.cpp \
+					  elements/CEGUIItemListbox.cpp\
+					  elements/CEGUIItemListboxProperties.cpp\
                       elements/CEGUIListbox.cpp \
                       elements/CEGUIListboxItem.cpp \
                       elements/CEGUIListboxProperties.cpp \
@@ -103,6 +106,8 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIScrollbarProperties.cpp \
                       elements/CEGUIScrolledContainer.cpp \
                       elements/CEGUIScrolledContainerProperties.cpp \
+					  elements/CEGUIScrolledItemListBase.cpp \
+					  elements/CEGUIScrolledItemListBaseProperties.cpp \
                       elements/CEGUISlider.cpp \
                       elements/CEGUISliderProperties.cpp \
                       elements/CEGUISpinner.cpp \
