@@ -1345,6 +1345,226 @@
 
     <!--
     ***************************************************
+        WindowsLook/ItemListbox
+    ***************************************************
+    -->
+    <WidgetLook name="WindowsLook/ItemListbox">
+        <NamedArea name="ItemRenderArea">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" offset="-16" type="BottomEdge" />
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" offset="-16" type="RightEdge" />
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="WindowsLook" image="StaticFrameBottom" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" offset="-16" type="RightEdge" />
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" offset="-16" type="BottomEdge" />
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="WindowsLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-16" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="16" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+        </Child>
+        <Child  type="WindowsLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><AbsoluteDim value="16" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+        </Child>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image type="TopLeftCorner" imageset="WindowsLook" image="StaticFrameTopLeft" />
+                <Image type="TopRightCorner" imageset="WindowsLook" image="StaticFrameTopRight" />
+                <Image type="BottomLeftCorner" imageset="WindowsLook" image="StaticFrameBottomLeft" />
+                <Image type="BottomRightCorner" imageset="WindowsLook" image="StaticFrameBottomRight" />
+                <Image type="LeftEdge" imageset="WindowsLook" image="StaticFrameLeft" />
+                <Image type="RightEdge" imageset="WindowsLook" image="StaticFrameRight" />
+                <Image type="TopEdge" imageset="WindowsLook" image="StaticFrameTop" />
+                <Image type="BottomEdge" imageset="WindowsLook" image="StaticFrameBottom" />
+                <Image type="Background" imageset="WindowsLook" image="Background" />
+            </FrameComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+
+    <!--
+    ***************************************************
+        WindowsLook/ListboxItem
+    ***************************************************
+    -->
+    <WidgetLook name="WindowsLook/ListboxItem">
+		<PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
+		<PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="SelectionBrush" initialValue="set:WindowsLook image:Background" redrawOnWrite="true" />
+		<PropertyDefinition name="SelectionColour" initialValue="FF3030FF" redrawOnWrite="true" />
+		<Property name="Selectable" value="True" />
+		<NamedArea name="ContentSize">
+			<Area>
+				<Dim type="LeftEdge" >
+					<AbsoluteDim value="0" />
+				</Dim>
+				<Dim type="TopEdge" >
+					<AbsoluteDim value="0" />
+				</Dim>
+				<Dim type="Width" >
+					<FontDim type="HorzExtent" padding="6" />
+				</Dim>
+				<Dim type="Height" >
+					<FontDim type="LineSpacing" />
+				</Dim>
+			</Area>
+		</NamedArea>
+		<ImagerySection name="label">
+			<TextComponent>
+				<Area>
+					<Dim type="TopEdge">
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="LeftEdge">
+						<AbsoluteDim value="3" />
+					</Dim>
+					<Dim type="RightEdge">
+						<UnifiedDim scale="1" offset="-3" type="RightEdge" />
+					</Dim>
+					<Dim type="BottomEdge">
+						<UnifiedDim scale="1" type="BottomEdge" />
+					</Dim>
+				</Area>
+			</TextComponent>
+		</ImagerySection>
+		<ImagerySection name="selection">
+			<ImageryComponent>
+				<Area>
+					<Dim type="TopEdge">
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="LeftEdge">
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="RightEdge">
+						<UnifiedDim scale="1" type="RightEdge" />
+					</Dim>
+					<Dim type="BottomEdge">
+						<UnifiedDim scale="1" type="BottomEdge" />
+					</Dim>
+				</Area>
+				<ImageProperty name="SelectionBrush" />
+				<ColourProperty name="SelectionColour" />
+				<VertFormat type="Stretched" />
+				<HorzFormat type="Stretched" />
+			</ImageryComponent>
+		</ImagerySection>
+		<StateImagery name="Enabled">
+			<Layer>
+				<Section section="label">
+					<ColourProperty name="TextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="Disabled">
+			<Layer>
+				<Section section="label">
+					<ColourProperty name="TextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="SelectedEnabled">
+			<Layer>
+				<Section section="selection" />
+				<Section section="label">
+					<ColourProperty name="SelectedTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="SelectedDisabled">
+			<Layer>
+				<Section section="selection" />
+				<Section section="label">
+					<ColourProperty name="SelectedTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+    </WidgetLook>
+
+
+    <!--
+    ***************************************************
         WindowsLook/Menubar
     ***************************************************
     -->

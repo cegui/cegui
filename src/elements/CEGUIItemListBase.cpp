@@ -43,26 +43,61 @@ ItemListBaseWindowRenderer::ItemListBaseWindowRenderer(const String& name) :
 {
 }
 
+
+/************************************************************************/
+
+
+/*************************************************************************
+    used for < comparisons between ItemEntry pointers
+*************************************************************************/
+static bool ItemEntry_less(const ItemEntry* a, const ItemEntry* b)
+{
+    return a->getText() < b->getText();
+}
+
+
+/*************************************************************************
+    used for > comparisons between ItemEntry pointers
+*************************************************************************/
+static bool ItemEntry_greater(const ItemEntry* a, const ItemEntry* b)
+{
+    return (a->getText() > b->getText());
+}
+
+
+/************************************************************************/
+
+
 /*************************************************************************
 	Definition of Properties for this class
 *************************************************************************/
-ItemListBaseProperties::AutoResizeEnabled	ItemListBase::d_autoResizeEnabledProperty;
-
+ItemListBaseProperties::AutoResizeEnabled ItemListBase::d_autoResizeEnabledProperty;
+ItemListBaseProperties::SortEnabled ItemListBase::d_sortEnabledProperty;
+ItemListBaseProperties::SortMode ItemListBase::d_sortModeProperty;
 
 /*************************************************************************
 	Constants
 *************************************************************************/
 // event names
 const String ItemListBase::EventListContentsChanged("ListItemsChanged");
-
+const String ItemListBase::EventSortEnabledChanged("SortEnabledChanged");
+const String ItemListBase::EventSortModeChanged("SortModeChanged");
 	
 /*************************************************************************
 	Constructor for ItemListBase base class.
 *************************************************************************/
 ItemListBase::ItemListBase(const String& type, const String& name)
 	: Window(type, name),
-	d_autoResize(false)
+	d_autoResize(false),
+	d_sortEnabled(false),
+	d_sortMode(Ascending),
+	d_sortCallback(0),
+	d_resort(false)
 {
+    // by default we dont have a content pane, but to make sure things still work
+    // we "emulate" it by setting it to this
+    d_pane = this;
+
 	// add properties for ItemListBase class
 	addItemListBaseProperties();
 }
@@ -73,7 +108,18 @@ ItemListBase::ItemListBase(const String& type, const String& name)
 *************************************************************************/
 ItemListBase::~ItemListBase(void)
 {
-	resetList_impl();
+    //resetList_impl();
+}
+
+
+/*************************************************************************
+	Initialise components
+*************************************************************************/
+void ItemListBase::initialiseComponents(void)
+{
+    // this pane may be ourselves, and in fact is by default...
+    d_pane->subscribeEvent(Window::EventChildRemoved,
+        Event::Subscriber(&ItemListBase::handle_PaneChildRemoved, this));
 }
 
 
@@ -108,7 +154,6 @@ size_t ItemListBase::getItemIndex(const ItemEntry* item) const
 	{
 		throw InvalidRequestException("ItemListBase::getItemIndex - the specified ItemEntry is not attached to this ItemListBase.");
 	}
-
 }
 
 
@@ -132,7 +177,6 @@ ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* s
 		{
 			index++;
 		}
-
 	}
 
 	// no items matched.
@@ -145,7 +189,8 @@ ItemEntry* ItemListBase::findItemWithText(const String& text, const ItemEntry* s
 *************************************************************************/
 bool ItemListBase::isItemInList(const ItemEntry* item) const
 {
-	return std::find(d_listItems.begin(), d_listItems.end(), item) != d_listItems.end();
+	//return std::find(d_listItems.begin(), d_listItems.end(), item) != d_listItems.end();
+	return (item->d_ownerList == this);
 }
 
 
@@ -158,7 +203,6 @@ void ItemListBase::resetList(void)
 	{
 		handleUpdatedItemData();
 	}
-
 }
 
 
@@ -167,14 +211,26 @@ void ItemListBase::resetList(void)
 *************************************************************************/
 void ItemListBase::addItem(ItemEntry* item)
 {
-	if (item)
+    // make sure the item is valid and that we dont already have it in our list
+	if (item && item->d_ownerList != this)
 	{
-		// just stick it on the end.
-		d_listItems.push_back(item);
+	    // if sorting is enabled, re-sort the list
+        if (d_sortEnabled)
+        {
+            d_listItems.insert(
+                std::upper_bound(d_listItems.begin(), d_listItems.end(), item, getRealSortCallback()),
+                item);
+        }
+        // just stick it on the end.
+        else
+        {
+            d_listItems.push_back(item);
+        }
+        // make sure it gets added properly
+		item->d_ownerList = this;
 		addChildWindow(item);
 		handleUpdatedItemData();
 	}
-
 }
 
 
@@ -184,7 +240,11 @@ void ItemListBase::addItem(ItemEntry* item)
 *************************************************************************/
 void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 {
-	if (item)
+    if (d_sortEnabled)
+    {
+        addItem(item);
+    }
+	else if (item && item->d_ownerList != this)
 	{
 		// if position is NULL begin insert at begining, else insert after item 'position'
 		ItemEntryList::iterator ins_pos;
@@ -206,11 +266,11 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 		}
 		
 		d_listItems.insert(ins_pos, item);
+		(*d_listItems.rbegin())->d_ownerList = this;
 		addChildWindow(item);
 
 		handleUpdatedItemData();
 	}
-
 }
 
 
@@ -219,9 +279,9 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 *************************************************************************/
 void ItemListBase::removeItem(ItemEntry* item)
 {
-	if (item && isItemInList(item))
+	if (item && item->d_ownerList == this)
 	{
-	    removeChildWindow(item);
+	    d_pane->removeChildWindow(item);
 	    if (item->isDestroyedByParent())
 	    {
 	        WindowManager::getSingleton().destroyWindow(item);
@@ -244,7 +304,6 @@ void ItemListBase::setAutoResizeEnabled(bool setting)
 	{
 		sizeToContent();
 	}
-
 }
 
 
@@ -252,10 +311,14 @@ void ItemListBase::setAutoResizeEnabled(bool setting)
 	Causes the list box to update it's internal state after changes have
 	been made to one or more attached ItemEntry objects.	
 *************************************************************************/
-void ItemListBase::handleUpdatedItemData(void)
+void ItemListBase::handleUpdatedItemData(bool resort)
 {
-	WindowEventArgs args(this);
-	onListContentsChanged(args);
+    if (!d_destructionStarted)
+    {
+        d_resort |= resort;
+        WindowEventArgs args(this);
+        onListContentsChanged(args);
+    }
 }
 
 
@@ -271,9 +334,13 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 	    
 	    // if auto resize is enabled - do it
 	    if (d_autoResize)
-	    {
 		    sizeToContent();
-	    }
+
+	    // resort list if requested and enabled
+        if (d_resort && d_sortEnabled)
+            sortList(false);
+        d_resort = false;
+
 	    // redo the item layout and fire our event
 	    layoutItemWidgets();
 	    fireEvent(EventListContentsChanged, e, EventNamespace);
@@ -284,10 +351,12 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 /************************************************************************
     Handler for when a child is removed
 *************************************************************************/
-void ItemListBase::onChildRemoved(WindowEventArgs& e)
+/*void ItemListBase::onChildRemoved(WindowEventArgs& e)
 {
+    // if destruction has already begun, we don't need to do anything.
+    // everything has to go anyway
     // make sure it is removed from the itemlist if we have an ItemEntry
-    if (e.window->testClassName("ItemEntry"))
+    if (!d_destructionStarted && e.window->testClassName("ItemEntry"))
     {
         ItemEntryList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), e.window);
 
@@ -295,12 +364,28 @@ void ItemListBase::onChildRemoved(WindowEventArgs& e)
         if (pos != d_listItems.end())
         {
             // remove item
+            (*pos)->d_ownerList = 0;
             d_listItems.erase(pos);
             // trigger list update
             handleUpdatedItemData();
-		}
+        }
     }
-}
+
+    // base class handling
+    Window::onChildRemoved(e);
+}*/
+
+/************************************************************************
+    Handler for when the window initiates destruction
+*************************************************************************/
+/*void ItemListBase::onDestructionStarted(WindowEventArgs& e)
+{
+    // base class handling
+    Window::onDestructionStarted(e);
+
+    // remove everything from the list properly
+    resetList_impl();
+}*/
 
 
 /*************************************************************************
@@ -319,7 +404,7 @@ bool ItemListBase::resetList_impl(void)
 		// delete any items we are supposed to
 		for (size_t i = 0; i < getItemCount(); ++i)
 		{
-			removeChildWindow(d_listItems[i]);
+			d_pane->removeChildWindow(d_listItems[i]);
 			if (d_listItems[i]->isDestroyedByParent())
 			{
 			    WindowManager::getSingleton().destroyWindow(d_listItems[i]);
@@ -331,7 +416,6 @@ bool ItemListBase::resetList_impl(void)
 
 		return true;
 	}
-
 }
 
 
@@ -341,6 +425,8 @@ bool ItemListBase::resetList_impl(void)
 void ItemListBase::addItemListBaseProperties(void)
 {
     addProperty(&d_autoResizeEnabledProperty);
+    addProperty(&d_sortEnabledProperty);
+    addProperty(&d_sortModeProperty);
 }
 
 
@@ -349,16 +435,45 @@ void ItemListBase::addItemListBaseProperties(void)
 *************************************************************************/
 void ItemListBase::addChild_impl(Window* wnd)
 {
-	Window::addChild_impl(wnd);
+    // if this is an ItemEntry we add it like one, but only if it is not already in the list!
+    if (wnd->testClassName("ItemEntry"))
+    {
+        // add to the pane if we have one
+        if (d_pane != this)
+        {
+            d_pane->addChildWindow(wnd);
+        }
+        // add item directly to us
+        else
+        {
+            Window::addChild_impl(wnd);
+        }
 
-	// if this is an ItemEntry we add it like one. only if it is not already in the list!
-	if (wnd->testClassName("ItemEntry")&&!isItemInList((ItemEntry*)wnd))
-	{
-		// perform normal addItem - please no more infinite recursion !#?
-		d_listItems.push_back((ItemEntry*)wnd);
-		handleUpdatedItemData();
+        ItemEntry* item = static_cast<ItemEntry*>(wnd);
+	    if (item->d_ownerList != this)
+	    {
+	        // perform normal addItem
+	        // if sorting is enabled, re-sort the list
+            if (d_sortEnabled)
+            {
+                d_listItems.insert(
+                    std::upper_bound(d_listItems.begin(), d_listItems.end(), item, getRealSortCallback()),
+                    item);
+            }
+            // just stick it on the end.
+            else
+            {
+                d_listItems.push_back(item);
+            }
+	        item->d_ownerList = this;
+		    handleUpdatedItemData();
+	    }
 	}
-
+	// otherwise it's base class processing
+    else
+    {
+        Window::addChild_impl(wnd);
+    }
 }
 
 
@@ -420,6 +535,130 @@ Rect ItemListBase::getItemRenderArea(void) const
     {
         //return getItemRenderArea_impl();
         throw InvalidRequestException("ItemListBase::getItemRenderArea - This function must be implemented by the window renderer module");
+    }
+}
+
+/************************************************************************
+    Handler to manage items being removed from the content pane
+************************************************************************/
+bool ItemListBase::handle_PaneChildRemoved(const EventArgs& e)
+{
+    Window* w = static_cast<const WindowEventArgs&>(e).window;
+    
+    // make sure it is removed from the itemlist if we have an ItemEntry
+    if (w->testClassName("ItemEntry"))
+    {
+        ItemEntryList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), w);
+
+        // if item is in the list
+        if (pos != d_listItems.end())
+        {
+            // make sure the item is no longer related to us
+            (*pos)->d_ownerList = 0;
+            // remove item
+            d_listItems.erase(pos);
+            // trigger list update
+            handleUpdatedItemData();
+        }
+    }
+    
+    return false;
+}
+
+/************************************************************************
+    Set sorting enabled state
+************************************************************************/
+void ItemListBase::setSortEnabled(bool setting)
+{
+    if (d_sortEnabled != setting)
+    {
+        d_sortEnabled = setting;
+
+        if (d_sortEnabled)
+        {
+            sortList();
+        }
+
+        WindowEventArgs e(this);
+        onSortEnabledChanged(e);
+    }
+}
+
+/************************************************************************
+    Set the user sorting callback
+************************************************************************/
+void ItemListBase::setSortCallback(SortCallback cb)
+{
+    if (d_sortCallback != cb)
+    {
+        d_sortCallback = cb;
+        handleUpdatedItemData(true);
+    }
+}
+
+/************************************************************************
+    Handle sort enabled changed
+************************************************************************/
+void ItemListBase::onSortEnabledChanged(WindowEventArgs& e)
+{
+    fireEvent(EventSortEnabledChanged, e);
+}
+
+/************************************************************************
+    Handle sort mode changed
+************************************************************************/
+void ItemListBase::onSortModeChanged(WindowEventArgs& e)
+{
+    fireEvent(EventSortModeChanged, e);
+}
+
+/************************************************************************
+    Sort list
+************************************************************************/
+void ItemListBase::sortList(bool relayout)
+{
+    std::sort(d_listItems.begin(), d_listItems.end(), getRealSortCallback());
+    if (relayout)
+    {
+        layoutItemWidgets();
+    }
+}
+
+/************************************************************************
+    Get the real function pointer to use for the sorting operation
+************************************************************************/
+ItemListBase::SortCallback ItemListBase::getRealSortCallback() const
+{
+    switch (d_sortMode)
+    {
+    case Ascending:
+        return &ItemEntry_less;
+
+    case Descending:
+        return &ItemEntry_greater;
+
+    case UserSort:
+        return (d_sortCallback!=0) ? d_sortCallback : &ItemEntry_less;
+
+    // we default to ascending sorting
+    default:
+        return &ItemEntry_less;
+    }
+}
+
+/************************************************************************
+    Set sort mode
+************************************************************************/
+void ItemListBase::setSortMode(SortMode mode)
+{
+    if (d_sortMode != mode)
+    {
+        d_sortMode = mode;
+        if (d_sortEnabled)
+            sortList();
+
+        WindowEventArgs e(this);
+        onSortModeChanged(e);
     }
 }
 

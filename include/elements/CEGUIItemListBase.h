@@ -78,13 +78,27 @@ class CEGUIEXPORT ItemListBase : public Window
 public:
 	static const String EventNamespace;				//!< Namespace for global events
 
+    /*!
+    \brief
+        Sort modes for ItemListBase
+    */
+    enum SortMode
+    {
+        Ascending,
+        Descending,
+        UserSort
+    };
+    
+    //!< Sorting callback type
+    typedef bool (*SortCallback)(const ItemEntry* a, const ItemEntry* b);
 
 	/*************************************************************************
 		Constants
 	*************************************************************************/
 	// event names
 	static const String EventListContentsChanged;			//!< Event triggered when the contents of the list is changed.
-
+    static const String EventSortEnabledChanged; //!< Event fired when the sort enabled state changes.
+    static const String EventSortModeChanged; //!< Event fired when the sort mode changes.
 
 	/*************************************************************************
 		Accessor Methods
@@ -169,9 +183,42 @@ public:
 	bool isAutoResizeEnabled() const		{return d_autoResize;}
 
 
+    /*!
+    \brief
+        Returns 'true' if the list is sorted
+    */
+    bool isSortEnabled(void) const          {return d_sortEnabled;}
+
+
+    /*!
+    \brief
+        Get sort mode.
+    */
+    SortMode getSortMode(void) const        {return d_sortMode;}
+
+
+    /*!
+    \brief
+        Get user sorting callback.
+    */
+    SortCallback getSortCallback(void) const {return d_sortCallback;}
+
 	/*************************************************************************
 		Manipulator Methods
 	*************************************************************************/
+    /*!
+    \brief
+        Initialise the Window based object ready for use.
+
+    \note
+        This must be called for every window created.  Normally this is handled automatically by the WindowFactory for each Window type.
+
+    \return
+        Nothing
+    */
+    virtual void initialiseComponents(void);
+
+
 	/*!
 	\brief
 		Remove all items from the list.
@@ -236,10 +283,15 @@ public:
 
 		It should not be necessary to call this from client code, as the ItemEntries themselves call it if their parent is an ItemListBase.
 
+    \param resort
+        'true' to redo the list sorting as well.
+        'false' to only do layout and perhaps auto resize.
+        (defaults to 'false')
+
 	\return
 		Nothing.
 	*/
-	void	handleUpdatedItemData(void);
+	void	handleUpdatedItemData(bool resort=false);
 
 
 	/*!
@@ -299,6 +351,65 @@ public:
     */
     Rect getItemRenderArea(void) const;
 
+    /*!
+    \brief
+        Returns a pointer to the window that all items are directed too.
+        
+    \return
+        A pointer to the content pane window, or 'this' if children are added
+        directly to this window.
+    */
+    Window* getContentPane(void) const  {return d_pane;}
+
+    /*!
+    \brief
+        Notify this ItemListBase that the given item was just clicked.
+        Internal function - NOT to be used from client code.
+    */
+    virtual void notifyItemClicked(ItemEntry* li) {}
+
+    /*!
+    \brief
+        Notify this ItemListBase that the given item just changed selection state.
+        Internal function - NOT to be used from client code.
+    */
+    virtual void notifyItemSelectState(ItemEntry* li, bool state) {}
+
+    /*!
+    \brief
+        Set whether the list should be sorted (by text).
+    */
+    void setSortEnabled(bool setting);
+
+    /*!
+    \brief
+        Set mode to be used when sorting the list.
+    \param mode
+        SortMode enum.
+    */
+    void setSortMode(SortMode mode);
+
+    /*!
+    \brief
+        Set a user callback as sorting function
+
+    \param mode
+        SortCallback
+    */
+    void setSortCallback(SortCallback cb);
+
+    /*!
+    \brief
+        Sort the list.
+
+    \param relayout
+        True if the item layout should be redone after the sorting.
+        False to only sort the internal list. Nothing more.
+
+        This parameter defaults to true and should generally not be
+        used in client code.
+    */
+    void sortList(bool relayout=true);
 
 	/*************************************************************************
 		Construction and Destruction
@@ -381,7 +492,6 @@ protected:
 	*/
 	bool	resetList_impl(void);
 
-
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
@@ -404,6 +514,12 @@ protected:
         return (name == EventNamespace);
     }
 
+    /*!
+    \brief
+        Returns the SortCallback that's really going to be used for the sorting operation.
+    */
+    SortCallback getRealSortCallback(void) const;
+
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
@@ -413,11 +529,23 @@ protected:
 	*/
 	virtual	void	onListContentsChanged(WindowEventArgs& e);
 
+    /*!
+    \brief
+        Handler called internally when sorting gets enabled.
+    */
+    virtual void onSortEnabledChanged(WindowEventArgs& e);
+
+    /*!
+    \brief
+        Handler called internally when the sorting mode is changed.
+    */
+    virtual void onSortModeChanged(WindowEventArgs& e);
 
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-	virtual void    onChildRemoved(WindowEventArgs& e);
+	//virtual void    onChildRemoved(WindowEventArgs& e);
+    //virtual void    onDestructionStarted(WindowEventArgs& e);
 
 
 	/*************************************************************************
@@ -426,15 +554,28 @@ protected:
 	typedef	std::vector<ItemEntry*>	ItemEntryList;
 	ItemEntryList	d_listItems;		//!< list of items in the list.
 
-	bool d_autoResize; //!< True if this ItemListBase widget should automatically resize to fit its content. False if not.
+    //!< True if this ItemListBase widget should automatically resize to fit its content. False if not.
+	bool d_autoResize;
 
+    //!< Pointer to the content pane (for items), 0 if we're not using one
+    Window* d_pane;
+
+    //!< True if this ItemListBase is sorted. False if not.
+    bool d_sortEnabled;
+    //!< The current sorting mode applied if sorting is enabled.
+    SortMode d_sortMode;
+    //!< The user sort callback or 0 if none.
+    SortCallback d_sortCallback;
+    //!< True if the list needs to be resorted.
+    bool d_resort;
 
 private:
 	/*************************************************************************
         Static Properties for this class
 	*************************************************************************/
 	static ItemListBaseProperties::AutoResizeEnabled	d_autoResizeEnabledProperty;
-
+    static ItemListBaseProperties::SortEnabled d_sortEnabledProperty;
+    static ItemListBaseProperties::SortMode d_sortModeProperty;
 
 	/*************************************************************************
 		Private methods
@@ -447,6 +588,13 @@ private:
 		Add given window to child list at an appropriate position
 	*/
 	virtual void	addChild_impl(Window* wnd);
+
+	/*!
+	\brief
+	    Handler to manage items being removed from the content pane.
+	    If there is one!
+	*/
+    bool handle_PaneChildRemoved(const EventArgs& e);
 };
 
 } // End of  CEGUI namespace section

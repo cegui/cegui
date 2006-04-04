@@ -94,5 +94,7 @@
 #include "elements/CEGUIMenuBase.h"
 #include "elements/CEGUIMenubar.h"
 #include "elements/CEGUIPopupMenu.h"
+#include "elements/CEGUIScrolledItemListBase.h"
+#include "elements/CEGUIItemListbox.h"
 
 #endif	// end of guard _CEGUI_h_

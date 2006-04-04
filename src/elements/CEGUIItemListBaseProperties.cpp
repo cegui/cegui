@@ -41,6 +41,37 @@ namespace ItemListBaseProperties
         static_cast<ItemListBase*>(receiver)->setAutoResizeEnabled(PropertyHelper::stringToBool(value));
     }
 
+    String SortEnabled::get(const PropertyReceiver* receiver) const
+    {
+        return PropertyHelper::boolToString(static_cast<const ItemListBase*>(receiver)->isSortEnabled());
+    }
+
+    void SortEnabled::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<ItemListBase*>(receiver)->setSortEnabled(PropertyHelper::stringToBool(value));
+    }
+
+    String SortMode::get(const PropertyReceiver* receiver) const
+    {
+        const char* out = "Ascending";
+        ItemListBase::SortMode sm = static_cast<const ItemListBase*>(receiver)->getSortMode();
+        if (sm == ItemListBase::Descending)
+            out = "Descending";
+        else if (sm == ItemListBase::UserSort)
+            out = "UserSort";
+        return String(out);
+    }
+
+    void SortMode::set(PropertyReceiver* receiver, const String& value)
+    {
+        ItemListBase::SortMode sm = ItemListBase::Ascending;
+        if (value == "Descending")
+            sm = ItemListBase::Descending;
+        else if (value == "UserSort")
+            sm = ItemListBase::UserSort;
+        static_cast<ItemListBase*>(receiver)->setSortMode(sm);
+    }
+
 } // End of  ItemListBaseProperties namespace section
 
 

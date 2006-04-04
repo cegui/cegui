@@ -28,6 +28,12 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
+#include "elements/CEGUIItemEntryProperties.h"
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,11 +66,19 @@ public:
 /*!
 \brief
 	Base class for item type widgets.
+
+\todo
+    Fire events on selection / deselection.
+    (Maybe selectable mode changed as well?)
 */
 class CEGUIEXPORT ItemEntry : public Window
 {
 public:
+    /*************************************************************************
+        Constants
+    *************************************************************************/
     static const String WidgetTypeName;             //!< Window factory name
+    static const String EventSelectionChanged;    //!< Event fired when selection state changes.
 
 	/*************************************************************************
 		Accessors
@@ -79,6 +93,72 @@ public:
 	*/
 	Size getItemPixelSize(void) const;
 
+    /*!
+    \brief
+        Returns a pointer to the owner ItemListBase.
+        0 if there is none.
+    */
+    ItemListBase* getOwnerList(void) const  {return d_ownerList;}
+
+    /*!
+    \brief
+        Returns whether this item is selected or not.
+    */
+    bool isSelected(void) const             {return d_selected;}
+
+    /*!
+    \brief
+        Returns whether this item is selectable or not.
+    */
+    bool isSelectable(void) const           {return d_selectable;}
+
+    /*************************************************************************
+		Set methods
+	*************************************************************************/
+    /*!
+    \brief
+        Sets the selection state of this item (on/off).
+        If this item is not selectable this function does nothing.
+
+    \param setting
+        'true' to select the item.
+        'false' to deselect the item.
+    */
+    void setSelected(bool setting)  {setSelected_impl(setting, true);}
+    
+    /*!
+    \brief
+        Selects the item.
+    */
+    void select(void)               {setSelected_impl(true, true);}
+
+    /*!
+    \brief
+        Deselects the item.
+    */
+    void deselect(void)             {setSelected_impl(false, true);}
+
+    /*!
+    \brief
+        Set the selection state for this ListItem.
+        Internal version. Should NOT be used by client code.
+    */
+    void setSelected_impl(bool state, bool notify);
+
+    /*!
+    \brief
+        Sets whether this item will be selectable.
+
+    \param setting
+        'true' to allow this item to be selected.
+        'false' to disallow this item from ever being selected.
+
+    \note
+        If the item is currently selectable and selected, calling this
+        function with \a setting as 'false' will first deselect the item
+        and then disable selectability.
+    */
+    void setSelectable(bool setting);
 
 	/*************************************************************************
 		Construction and Destruction
@@ -89,13 +169,11 @@ public:
 	*/
 	ItemEntry(const String& type, const String& name);
 
-
 	/*!
 	\brief
 		Destructor for ItemEntry objects
 	*/
-	virtual ~ItemEntry(void);
-
+	virtual ~ItemEntry(void) {}
 
 protected:
     /*************************************************************************
@@ -116,7 +194,8 @@ protected:
 	*************************************************************************/
 	/*!
 	\brief
-		Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
+		Return whether this window was inherited from the given class name at
+		some point in the inheritance heirarchy.
 
 	\param class_name
 		The class name that is to be checked.
@@ -124,7 +203,7 @@ protected:
 	\return
 		true if this window was inherited from \a class_name. false if not.
 	*/
-	virtual bool	testClassName_impl(const String& class_name) const
+	virtual bool testClassName_impl(const String& class_name) const
 	{
 		if (class_name=="ItemEntry")	return true;
 		return Window::testClassName_impl(class_name);
@@ -135,8 +214,51 @@ protected:
     {
         return (name == "ItemEntry");
     }
+
+    /*************************************************************************
+        New Event Handlers
+    *************************************************************************/
+    /*!
+    \brief
+        Handles selection state changes.
+    */
+    virtual void onSelectionChanged(WindowEventArgs& e);
+
+    /*************************************************************************
+		Overridden Event Handlers
+	*************************************************************************/
+	virtual void onMouseClicked(MouseEventArgs& e);
+
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    
+    //!< pointer to the owner ItemListBase. 0 if there is none.
+    ItemListBase* d_ownerList;
+    
+    //!< 'true' when the item is in the selected state, 'false' if not.
+    bool d_selected;
+
+    //!< 'true' when the item is selectable.
+    bool d_selectable;
+    
+    // make the ItemListBase a friend
+    friend class ItemListBase;
+
+private:
+    /************************************************************************
+        Static Properties for this class
+    ************************************************************************/
+    static ItemEntryProperties::Selectable d_selectableProperty;
+    static ItemEntryProperties::Selected d_selectedProperty;
+    
+    void addItemEntryProperties(void);
 };
 
 } // End of  CEGUI namespace section
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIItemEntry_h_

@@ -91,9 +91,9 @@ void MenuItem::updateInternalState(const Point& mouse_pos)
 				d_hovering = true;
 
 				// are we attached to a menu ?
-				if (getParent()->testClassName("MenuBase"))
+				if (d_ownerList && d_ownerList->testClassName("MenuBase"))
 				{
-					MenuBase* menu = (MenuBase*)getParent();
+					MenuBase* menu = static_cast<MenuBase*>(d_ownerList);
 
 					// is item really in list ?
 					if (menu->isItemInList(this))
@@ -183,7 +183,7 @@ void MenuItem::openPopupMenu(bool notify)
 
     // should we notify ?
 	// if so, and we are attached to a menu bar or popup menu, we let it handle the "activation"
-	Window* p = getParent();
+	Window* p = d_ownerList;
 	if (notify && p)
 	{
 	    if (p->testClassName("Menubar"))
@@ -227,8 +227,8 @@ void MenuItem::closePopupMenu(bool notify)
 
 	// should we notify the parent menu base?
 	// if we are attached to a menu base, we let it handle the "deactivation"
-	Window* p = getParent();
-	if (notify && p->testClassName("MenuBase"))
+	Window* p = d_ownerList;
+	if (notify && p && p->testClassName("MenuBase"))
 	{
 	    MenuBase* menu = static_cast<MenuBase*>(p);
 	    // only if the menu base does not allow multiple popups
@@ -274,7 +274,7 @@ bool MenuItem::togglePopupMenu(void)
 void MenuItem::closeAllMenuItemPopups()
 {
 	// are we attached to a PopupMenu?
-	Window* p = getParent();
+	Window* p = d_ownerList;
 	if (p && p->testClassName("PopupMenu"))
 	{
 	    PopupMenu* pop = static_cast<PopupMenu*>(p);
