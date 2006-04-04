@@ -28,6 +28,7 @@
 #ifndef _CEGUISubscriberSlot_h_
 #define _CEGUISubscriberSlot_h_
 
+#include "CEGUIBase.h"
 #include "CEGUIFreeFunctionSlot.h"
 #include "CEGUIFunctorCopySlot.h"
 #include "CEGUIFunctorReferenceSlot.h"
@@ -48,7 +49,7 @@ namespace CEGUI
     exceptions are for subscribing member functions and references to functor
     objects.
 */
-class SubscriberSlot
+class CEGUIEXPORT SubscriberSlot
 {
 public:
     /*!

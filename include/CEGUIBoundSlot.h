@@ -28,6 +28,7 @@
 #ifndef _CEGUIBoundSlot_h_
 #define _CEGUIBoundSlot_h_
 
+#include "CEGUIBase.h"
 #include "CEGUISubscriberSlot.h"
 
 // Start of CEGUI namespace section
@@ -44,7 +45,7 @@ class Event;
     reference counted pointer.  When a BoundSlot is deleted, the connection is
     unsubscribed and the SubscriberSlot is deleted.
 */
-class BoundSlot
+class CEGUIEXPORT BoundSlot
 {
 public:
     typedef unsigned int Group;
