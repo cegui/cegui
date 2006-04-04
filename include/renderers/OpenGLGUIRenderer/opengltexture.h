@@ -198,7 +198,7 @@ private:
 	// Modified by Paul D Turner to accept a raw data buffer & it's length
 	// as input.
 	//
-    tImageTGA* OpenGLTexture::LoadTGA(const unsigned char* buffer, size_t buffer_size);
+    tImageTGA* LoadTGA(const unsigned char* buffer, size_t buffer_size);
 
 #endif
 	/*************************************************************************
