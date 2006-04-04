@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+<GUILayout>
+    <Window Type="DefaultGUISheet" Name="root">
+        <Window Type="WindowsLook/Menubar">
+            <Property Name="UnifiedSize" Value="{{1,0},{0,40}}" />
+            <Window Type="WindowsLook/MenuItem">
+                <Property Name="Text" Value="Test" />
+                <Window Type="WindowsLook/PopupMenu">
+                    <Window Type="WindowsLook/MenuItem">
+                        <Property Name="Text" Value="One" />
+                    </Window>
+                    <Window Type="WindowsLook/MenuItem">
+                        <Property Name="Text" Value="Two" />
+                    </Window>
+                    <Window Type="WindowsLook/MenuItem">
+                        <Property Name="Text" Value="Three" />
+                    </Window>
+                </Window>
+            </Window>
+        </Window>
+        <Window Type="WindowsLook/FrameWindow" Name="FW">
+            <Property Name="UnifiedPosition" Value="{{0.5,0},{0.1,0}}" />
+            <Property Name="UnifiedSize" Value="{{0.333,0},{0.333,0}}" />
+            <Window Type="WindowsLook/ItemListbox" Name="List">
+                <Property Name="MultiSelect" Value="True" />
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 1" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 2" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 3" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 4" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 1" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 2" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Ridiculously long text for a listbox item but we need it to test..." />
+                    <!--<Property Name="Text" Value="Item 666" />-->
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 3" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 4" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Zeta item" />
+                </Window>
+                <Window Type="WindowsLook/MenuItem">
+                    <Property Name="Text" Value="W00t? A MenuItem!" />
+                    <Window Type="WindowsLook/PopupMenu">
+                        <Window Type="WindowsLook/MenuItem">
+                            <Property Name="Text" Value="Yup" />
+                        </Window>
+                    </Window>
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 7" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 8" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 9" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 10" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 11" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Yet another item 12" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 13" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 14" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 15" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Ulp..." />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 1" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 2" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 3" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 4" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 1" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Hmm" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 3" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 4" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 5" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 6" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 7" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 8" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Hello World" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 10" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 11" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Another Item 12" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 13" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 14" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Yet another item 15" />
+                </Window>
+                <Window Type="WindowsLook/ListboxItem">
+                    <Property Name="Text" Value="Item 16" />
+                </Window>
+                <!--<Property Name="SortEnabled" Value="True" />-->
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>
