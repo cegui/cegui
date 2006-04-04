@@ -119,6 +119,9 @@
 				RelativePath="..\..\..\..\src\CEGUIBase.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIBoundSlot.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIColourRect.cpp">
 			</File>
 			<File
@@ -203,9 +206,6 @@
 				RelativePath="..\..\..\..\src\CEGUIRect.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\..\src\CEGUIRefPtr.cpp">
-			</File>
-			<File
 				RelativePath="..\..\..\..\src\CEGUIRenderCache.cpp">
 			</File>
 			<File
@@ -228,6 +228,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIString.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUISubscriberSlot.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUISystem.cpp">
@@ -521,199 +524,226 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc">
 			<File
-				RelativePath="..\..\..\..\include\CEGUI.h">
+				RelativePath="..\..\..\..\include/CEGUI.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIBase.h">
+				RelativePath="..\..\..\..\include/CEGUIBase.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIColourRect.h">
+				RelativePath="..\..\..\..\include/CEGUIBoundSlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIConfig.h">
+				RelativePath="..\..\..\..\include/CEGUIColourRect.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIConfig_xmlHandler.h">
+				RelativePath="..\..\..\..\include/CEGUIConfig.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUICoordConverter.h">
+				RelativePath="..\..\..\..\include/CEGUIConfig_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIDataContainer.h">
+				RelativePath="..\..\..\..\include/CEGUICoordConverter.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIDefaultLogger.h">
+				RelativePath="..\..\..\..\include/CEGUIDataContainer.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIDefaultResourceProvider.h">
+				RelativePath="..\..\..\..\include/CEGUIDefaultLogger.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIDynamicModule.h">
+				RelativePath="..\..\..\..\include/CEGUIDefaultResourceProvider.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIEvent.h">
+				RelativePath="..\..\..\..\include/CEGUIDynamicModule.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIEventArgs.h">
+				RelativePath="..\..\..\..\include/CEGUIEvent.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIEventSet.h">
+				RelativePath="..\..\..\..\include/CEGUIEventArgs.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIExceptions.h">
+				RelativePath="..\..\..\..\include/CEGUIEventSet.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFactoryModule.h">
+				RelativePath="..\..\..\..\include/CEGUIExceptions.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFont.h">
+				RelativePath="..\..\..\..\include/CEGUIFactoryModule.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFontManager.h">
+				RelativePath="..\..\..\..\include/CEGUIFont.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFontManager_implData.h">
+				RelativePath="..\..\..\..\include/CEGUIFontManager.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFont_implData.h">
+				RelativePath="..\..\..\..\include/CEGUIFontManager_implData.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIFont_xmlHandler.h">
+				RelativePath="..\..\..\..\include/CEGUIFont_implData.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIForwardRefs.h">
+				RelativePath="..\..\..\..\include/CEGUIFont_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIGUILayout_xmlHandler.h">
+				RelativePath="..\..\..\..\include/CEGUIForwardRefs.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIGlobalEventSet.h">
+				RelativePath="..\..\..\..\include/CEGUIFreeFunctionSlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImage.h">
+				RelativePath="..\..\..\..\include/CEGUIFunctorCopySlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImageset.h">
+				RelativePath="..\..\..\..\include/CEGUIFunctorPointerSlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImagesetManager.h">
+				RelativePath="..\..\..\..\include/CEGUIFunctorReferenceBinder.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIImageset_xmlHandler.h">
+				RelativePath="..\..\..\..\include/CEGUIFunctorReferenceSlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIInputEvent.h">
+				RelativePath="..\..\..\..\include/CEGUIGUILayout_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIIteratorBase.h">
+				RelativePath="..\..\..\..\include/CEGUIGlobalEventSet.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUILogger.h">
+				RelativePath="..\..\..\..\include/CEGUIImage.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIMouseCursor.h">
+				RelativePath="..\..\..\..\include/CEGUIImageset.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIProperty.h">
+				RelativePath="..\..\..\..\include/CEGUIImagesetManager.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIPropertyHelper.h">
+				RelativePath="..\..\..\..\include/CEGUIImageset_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIPropertySet.h">
+				RelativePath="..\..\..\..\include/CEGUIInputEvent.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIRect.h">
+				RelativePath="..\..\..\..\include/CEGUIIteratorBase.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIRefPtr.h">
+				RelativePath="..\..\..\..\include/CEGUILogger.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIRenderCache.h">
+				RelativePath="..\..\..\..\include/CEGUIMemberFunctionSlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIRenderer.h">
+				RelativePath="..\..\..\..\include/CEGUIMouseCursor.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIResourceProvider.h">
+				RelativePath="..\..\..\..\include/CEGUIProperty.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIScheme.h">
+				RelativePath="..\..\..\..\include/CEGUIPropertyHelper.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUISchemeManager.h">
+				RelativePath="..\..\..\..\include/CEGUIPropertySet.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIScheme_xmlHandler.h">
+				RelativePath="..\..\..\..\include/CEGUIRect.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIScriptModule.h">
+				RelativePath="..\..\..\..\include/CEGUIRefCounted.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUISingleton.h">
+				RelativePath="..\..\..\..\include/CEGUIRenderCache.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUISize.h">
+				RelativePath="..\..\..\..\include/CEGUIRenderer.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIString.h">
+				RelativePath="..\..\..\..\include/CEGUIResourceProvider.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUISystem.h">
+				RelativePath="..\..\..\..\include/CEGUIScheme.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUITextUtils.h">
+				RelativePath="..\..\..\..\include/CEGUISchemeManager.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUITexture.h">
+				RelativePath="..\..\..\..\include/CEGUIScheme_xmlHandler.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIUDim.h">
+				RelativePath="..\..\..\..\include/CEGUIScriptModule.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIVector.h">
+				RelativePath="..\..\..\..\include/CEGUISingleton.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIVersion.h">
+				RelativePath="..\..\..\..\include/CEGUISize.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWidgetModule.h">
+				RelativePath="..\..\..\..\include/CEGUISlotFunctorBase.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindow.h">
+				RelativePath="..\..\..\..\include/CEGUIString.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowFactory.h">
+				RelativePath="..\..\..\..\include/CEGUISubscriberSlot.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowFactoryManager.h">
+				RelativePath="..\..\..\..\include/CEGUISystem.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowManager.h">
+				RelativePath="..\..\..\..\include/CEGUITextUtils.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowProperties.h">
+				RelativePath="..\..\..\..\include/CEGUITexture.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowRenderer.h">
+				RelativePath="..\..\..\..\include/CEGUIUDim.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowRendererManager.h">
+				RelativePath="..\..\..\..\include/CEGUIVector.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIWindowRendererModule.h">
+				RelativePath="..\..\..\..\include/CEGUIVersion.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIXMLAttributes.h">
+				RelativePath="..\..\..\..\include/CEGUIWidgetModule.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIXMLHandler.h">
+				RelativePath="..\..\..\..\include/CEGUIWindow.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIXMLParser.h">
+				RelativePath="..\..\..\..\include/CEGUIWindowFactory.h">
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\CEGUIcolour.h">
+				RelativePath="..\..\..\..\include/CEGUIWindowFactoryManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIWindowManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIWindowProperties.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIWindowRenderer.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIWindowRendererManager.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIWindowRendererModule.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIXMLAttributes.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIXMLHandler.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIXMLParser.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIcolour.h">
 			</File>
 			<Filter
 				Name="falagard"
