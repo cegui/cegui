@@ -34,9 +34,6 @@ Jeff Leigh:
 - Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour
 class) and related fixes.
 
-Gerald Lindsly:
-- Event system re-implementation.
-
 Jose A Milan:
 - Refactoring of XML handling classes to remove public dependency on Xerces-C++.
 - Initial updates to Ogre renderer to support Ogre 1.0.
