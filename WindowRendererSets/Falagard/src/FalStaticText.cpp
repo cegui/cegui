@@ -26,6 +26,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUIScrollbar.h"
+#include "CEGUIEvent.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

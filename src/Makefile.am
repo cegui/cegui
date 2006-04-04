@@ -4,6 +4,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(freetype2_CFLAGS) $(pcre_CF
 lib_LTLIBRARIES=libCEGUIBase.la
 
 libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
+                      CEGUIBoundSlot.cpp \
                       CEGUIColourRect.cpp \
                       CEGUIConfig_xmlHandler.cpp \
                       CEGUICoordConverter.cpp \
@@ -32,7 +33,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
-                      CEGUIRefPtr.cpp \
                       CEGUIRenderCache.cpp \
                       CEGUIRenderer.cpp \
                       CEGUIScheme.cpp \
@@ -41,6 +41,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIScriptModule.cpp \
                       CEGUISize.cpp \
                       CEGUIString.cpp \
+                      CEGUISubscriberSlot.cpp \
                       CEGUISystem.cpp \
                       CEGUITextUtils.cpp \
                       CEGUITexture.cpp \

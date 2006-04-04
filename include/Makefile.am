@@ -1,6 +1,7 @@
 SUBDIRS = . elements renderers falagard
 pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
+                 CEGUIBoundSlot.h \
                  CEGUIColourRect.h \
                  CEGUIConfig.h \
                  CEGUIConfig_xmlHandler.h \
@@ -18,6 +19,11 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFontManager.h \
                  CEGUIFont_xmlHandler.h \
                  CEGUIForwardRefs.h \
+                 CEGUIFreeFunctionSlot.h \
+                 CEGUIFunctorCopySlot.h \
+                 CEGUIFunctorPointerSlot.h \
+                 CEGUIFunctorReferenceBinder.h \
+                 CEGUIFunctorReferenceSlot.h \
                  CEGUIGlobalEventSet.h \
                  CEGUIGUILayout_xmlHandler.h \
                  CEGUIImage.h \
@@ -27,12 +33,13 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIInputEvent.h \
                  CEGUIIteratorBase.h \
                  CEGUILogger.h \
+                 CEGUIMemberFunctionSlot.h \
                  CEGUIMouseCursor.h \
                  CEGUIProperty.h \
                  CEGUIPropertyHelper.h \
                  CEGUIPropertySet.h \
                  CEGUIRect.h \
-                 CEGUIRefPtr.h \
+                 CEGUIRefCounted.h \
                  CEGUIRenderCache.h \
                  CEGUIRenderer.h \
                  CEGUIResourceProvider.h \
@@ -42,7 +49,9 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIScriptModule.h \
                  CEGUISingleton.h \
                  CEGUISize.h \
+                 CEGUISlotFunctorBase.h \
                  CEGUIString.h \
+                 CEGUISubscriberSlot.h \
                  CEGUISystem.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \

@@ -1,6 +1,6 @@
 SRC=tolua.c toluabind.c
 INCLUDE=-I../lua_and_tolua++/include
-LIB=-L../lua_and_tolua++/src/.libs
+LIB=-L../../../debug/ScriptingModules/CEGUILua/lua_and_tolua++/src/.libs
 LINK=-lCEGUIluatoluapp
 PROG=tolua++cegui
 

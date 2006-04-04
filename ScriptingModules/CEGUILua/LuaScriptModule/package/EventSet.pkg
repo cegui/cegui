@@ -6,12 +6,11 @@ class Event
     string getName() const;
 };
 
-
 class EventConnection
 {
-    void release();
+//    bool connected() const;
+//    void disconnect();
 };
-
 
 
 /***********************************************************************

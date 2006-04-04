@@ -1,376 +1,214 @@
 /************************************************************************
-	filename: CEGUIEvent.h
-	created:  15/10/2004
-	authors:  Paul D Turner (High-level design) 
-            Gerald Lindsly (Coder)
-	
-	purpose:  Defines interface for Event class
+    filename:   CEGUIEvent.h
+    created:    Tue Feb 28 2006
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
-/*************************************************************************
-    Crazy Eddie's GUI System (http://www.cegui.org.uk)
-    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining
+ *   a copy of this software and associated documentation files (the
+ *   "Software"), to deal in the Software without restriction, including
+ *   without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to
+ *   permit persons to whom the Software is furnished to do so, subject to
+ *   the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be
+ *   included in all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *   OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************/
 #ifndef _CEGUIEvent_h_
 #define _CEGUIEvent_h_
 
-#if defined (_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4786)
-#	pragma warning(disable : 4251)
-#	if !defined (_MSC_EXTENSIONS)
-#		pragma warning (disable : 4224)
-#	endif
-#endif
-
-#include "CEGUIBase.h"
 #include "CEGUIString.h"
-#include "CEGUIEventArgs.h"
-#include "CEGUIRefPtr.h"
+#include "CEGUIBoundSlot.h"
+#include "CEGUISubscriberSlot.h"
+#include "CEGUIRefCounted.h"
 
 #include <map>
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
 /*!
 \brief
-    The base class for the various binders.  This provides a consistent
-    interface for firing functions bound to an event.
+    Defines an 'event' which can be subscribed to by interested parties.
+
+    An Event can be subscribed by a function, a member function, or a function
+    object.  Whichever option is taken, the function signature needs to be as
+    follows:
+    \par
+    <em>bool function_name(const EventArgs& args);</em>
+    \note
+        An Event object may not be copied.
 */
-template <typename Ret, typename Args>
-class SubscriberInterface {
-public:
-  virtual Ret operator()(Args) const = 0;
-  virtual ~SubscriberInterface() {}
-};
-
-
-/*!
-\brief
-    This class binds a free function.
-*/
-template <typename Ret, typename Args>
-class _freeBinder : public SubscriberInterface<Ret,Args>
-{
-public:
-  virtual Ret operator()(Args args) const 
-  {
-    return d_f(args);
-  }
-  typedef Ret (*SlotFunction)(Args);
-  _freeBinder(SlotFunction f) : d_f(f) {}
-protected:
-  SlotFunction d_f;
-};
-
-
-/*!
-\brief
-    This class binds a copy of a functor.
-*/
-template <class Functor, typename Ret, typename Args>
-class _functorBinder : public SubscriberInterface<Ret,Args>
-{
-public:
-  virtual Ret operator()(Args args) const 
-  {
-    return d_f(args);
-  }
-  _functorBinder(const Functor& f) : d_f(f) {}
-protected:
-  Functor d_f;
-};
-
-
-/*!
-\brief
-    This class binds a member function along with a target object.
-*/
-template <class T, typename Ret, typename Args>
-class _memberBinder : public SubscriberInterface<Ret,Args>
-{
-  typedef Ret (T::*F)(Args);
-public:
-  virtual Ret operator()(Args args) const
-  {
-    return (d_t->*d_f)(args);
-  }
-  _memberBinder(F f, T* t) : d_f(f), d_t(t) {}
-protected:
-  F  d_f;
-  T* d_t;
-};
-
-
-/*!
-\brief
-    This template describes the Subscriber class.  It is a wrapper
-    for a pointer to a SubscriberInterface with various constructors
-    that will by implicit conversion construct the various binders.
-*/
-template <typename Ret, typename Args>
-class SubscriberTemplate
-{
-public:
-  Ret operator()(Args args) const
-  {
-    return (*d_si)(args);  // call the bound function
-  }
-
-  typedef Ret (*SlotFunction)(Args);
-
-  //! construct from a free function
-  SubscriberTemplate(SlotFunction f)
-  {
-    d_si = new _freeBinder<Ret,Args>(f);
-  }
-
-  //! construct from a member function and a pointer to the target object.
-  template <class T>
-  SubscriberTemplate(Ret (T::*f)(Args), T* target)
-  {
-    d_si = new _memberBinder<T,Ret,Args>(f, target);
-  }
-
-  //! construct from a generalized functor by copying it
-  template <typename Functor> 
-  SubscriberTemplate(const Functor& f)
-  {
-    d_si = new _functorBinder<Functor,Ret,Args>(f);
-  }
-
-  /*!
-  \brief
-    construct from a preconstructed SubscriberInterface.
-    used for SubscriberRef().
-  */
-  SubscriberTemplate(SubscriberInterface<Ret,Args>* si) : d_si(si) {}
-
-  //! copy constructor
-  SubscriberTemplate(const SubscriberTemplate<Ret,Args>& copy) : d_si(copy.d_si) {}
-
-  //! 'less than' comparable for insertion in a map
-  bool operator<(const SubscriberTemplate<Ret,Args>& rhs) const { return d_si < rhs.d_si; }
-
-  //! release the binding -- called upon disconnection
-  void release() const
-  {
-    delete d_si;
-  }
-
-protected:
-  SubscriberInterface<Ret,Args>* d_si;
-};
-
-
-/*!
-\brief
-    This class binds a const reference to a generalized functor.
-    Sometimes it may not be appropriate for the functor to be
-    cloned.  In which case, use SubscriberRef() (which uses this).
-*/
-template <class Functor, typename Ret, typename Args>
-class _refBinder : public SubscriberInterface<Ret,Args>
-{
-public:
-  virtual Ret operator()(Args args) const
-  {
-    return d_f(args);
-  }
-  _refBinder(const Functor& f) : d_f(f) {}
-protected:
-  const Functor& d_f;
-};
-
-/*!
-\brief
-    This helper function produces a const reference binding
-*/
-template <class Functor>
-SubscriberInterface<bool, const EventArgs&>*
-SubscriberRef(const Functor& f)
-{
-  return new _refBinder<Functor,bool,const EventArgs&>(f);
-}
-
-
-/*!
-\brief
-	Defines an 'event' which can be subscribed to by interested parties.
-
-	An Event can be subscribed by a function, a member function, or a function object.  Whichever option
-	is taken, the function signature needs to be as follows
-	\par
-	<em>bool function_name(const EventArgs& args);</em>
-	\note
-		An Event object may not be copied.
-*/
-class CEGUIEXPORT Event
+class Event
 {
 public:
     /*!
     \brief
-        Interface to be implemented by connection objects.
+        Connection object.  This is a thin 'smart pointer' wrapper around the
+        actual BoundSlot that represents the connection.  You can use this
+        object to inspect the current connection state and also to disconnect
+        from the event.
     */
-	class ConnectionInterface : public Referenced {
-	public:
-		virtual bool connected() { return false; }
-		virtual void disconnect() {}
-	};
-	typedef RefPtr<ConnectionInterface> Connection;
+    typedef RefCounted<BoundSlot> Connection;
 
     /*!
     \brief
-        A Connection object that automatically disconnects from the event
-        when the ScropedConnection object goes out of scope (and is deleted).
+        Subscriber object type.  This is now just a typedef to SubscriberSlot,
+        the use of the name Event::Subscriber is maintained for hostorical and
+        compatability reasons.
     */
-	class ScopedConnection {
-	public:
-		ScopedConnection(Connection conn_) : conn(conn_) {}
-		~ScopedConnection() { conn->disconnect(); }
-		Connection conn;
-	};
+    typedef CEGUI::SubscriberSlot Subscriber;
 
+    /*!
+    \brief
+        Type for a subscriber group.  You can use the subscriber group to
+        order calls to multiple subscribers.  Groups are called in ascending
+        order, with subscribers with no group called last.
+    */
+    typedef unsigned int Group;
 
-	typedef SubscriberTemplate<bool, const EventArgs&> Subscriber;
-	typedef int Group;
+    /*!
+    \brief
+        Event::Connection wrapper that automatically disconnects the connection
+        when the object is deleted (or goes out of scope).
+    */
+    class ScopedConnection : public Connection
+    {
+        ScopedConnection() {}
 
-	/*************************************************************************
-		Construction and Destruction
-	*************************************************************************/
-	/*!
-	\brief
-		Constructs a new Event object with the specified name
-	*/
-	Event(const String& name);
+        ~ScopedConnection()
+            { disconnect(); }
 
-	/*!
-	\brief
-		Destructor for Event objects
-	*/
-	virtual ~Event(void);
+        ScopedConnection(const Event::Connection& connection) :
+            d_connection(connection)
+        {}
 
+        ScopedConnection& operator=(const Event::Connection& connection)
+        {
+            d_connection = connection;
+            return *this;
+        }
 
-	/*!
-	\brief
-		Return the name given to this Event object when it was created.
+        bool connected() const
+            { return d_connection->connected(); }
 
-	\return
-		String object containing the name of the Event object.
-	*/
-	const String& getName(void) const	{return d_name;}
+        void disconnect()
+            { d_connection->disconnect(); }
 
+    private:
+        Event::Connection d_connection;
+    };
 
-	/*!
-	\brief
-		Subscribes some function / object to the Event
+    /*!
+    \brief
+        Constructs a new Event object with the specified name
+    */
+    Event(const String& name);
 
-	\param subscriber
-		A function, static member function, or function object, with the signature void function_name(const EventArgs& args)
+    /*!
+    \brief
+        Destructor for Event objects.  Note that this is non-virtual and so you
+        should not sub-class Event.
+    */
+    ~Event();
 
-	\return
-		A Connection pointer which can be used to disconnect (unsubscribe) from the Event, and to check the connection state.
-	*/
-	Connection subscribe(Subscriber subscriber) { return subscribe(0, subscriber); }
+    /*!
+    \brief
+        Return the name given to this Event object when it was created.
 
+    \return
+        String object containing the name of the Event object.
+    */
+    const String& getName(void) const
+        { return d_name; }
 
-	/*!
-	\brief
-		Subscribes some function / object to the Event
+    /*!
+    \brief
+        Subscribes some function or object to the Event
 
-	\param group
-		The Event group to subscribe to, subscription groups are called in ascending order, followed by subscriptions with no group.
-		connections to the same group may be called in any order.
+    \param subscriber
+        A function, static member function, or function object, with the
+        signature void function_name(const EventArgs& args).  To subscribe a
+        member function you should explicitly create an Event::Subscriber as
+        this parameter.
 
-	\param subscriber
-		A function, static member function, or function object, with the signature void function_name(const EventArgs& args)
+    \return
+        A Connection object which can be used to disconnect (unsubscribe) from
+        the Event, and also to check the connection state.
+    */
+    Connection subscribe(const Subscriber& slot);
 
-	\return
-		A Connection which can be used to disconnect (unsubscribe) from the Event, and to check the connection state.
-	*/
-	Connection subscribe(Group group, Subscriber subscriber);
-  
+    /*!
+    \brief
+        Subscribes some function or object to the Event
 
-	/*
-	\brief
-		Fires the event.  All event subscribers get called in the appropriate sequence.
+    \param group
+        The Event group to subscribe to, subscription groups are called in
+        ascending order, followed by subscriptions with no group.
+        Note that calling order of connections to the same group is unspecified.
 
-	\param args
-		An object derived from EventArgs to be passed to each event subscriber.
+    \param subscriber
+        A function, static member function, or function object, with the
+        signature void function_name(const EventArgs& args).  To subscribe a
+        member function you should explicitly create an Event::Subscriber as
+        this parameter.
 
-	\return
-		Nothing.
-	*/
-	void	operator()(EventArgs& args);
+    \return
+        A Connection object which can be used to disconnect (unsubscribe) from
+        the Event, and also to check the connection state.
+    */
+    Connection subscribe(Group group, const Subscriber& slot);
+
+    /*!
+    \brief
+        Fires the event.  All event subscribers get called in the appropriate
+        sequence.
+
+    \param args
+        An object derived from EventArgs to be passed to each event subscriber.
+        The 'handled' field will be set to true if any of the called subscribers
+        return that they handled the event.
+
+    \return
+        Nothing.
+    */
+    void operator()(EventArgs& args);
+
 
 private:
-	/*************************************************************************
-		Copy constructor and assignment are not allowed for events
-	*************************************************************************/
-	Event(const Event& evt)	{}
-	Event& operator=(const Event& evt)	{return *this;}
+    friend void CEGUI::BoundSlot::disconnect();
+    /*!
+    \brief
+        Disconnects and removes the given BoundSlot from the collection of bound
+        slots attached to this Event, thus 'unsubscribing' it.
 
-	/*
-	\brief
-		removes the subscriber from the event.
+    \note
+        This is an implementation member, and is not available to client code.
+        In order to detach / unsubscribe from an Event you should be using the
+        Connection object(s) returned when you initially subscribed.
+    */
+    void unsubscribe(const BoundSlot& slot);
 
-	\param subscriber
-		A pointer to a SubscriberInterface which is to be removed from the event.
+    // Copy constructor and assignment are not allowed for events
+    Event(const Event& other) {}
+    Event& operator=(const Event& other)  {return *this;}
 
-	\return
-		- true, if the subscriber was registered with the event in the specified group and it was removed.
-		- false, if not.
-	*/
-	bool unsubscribe(Subscriber subscriber, Group group=0);
-
-	class GroupSubscriber {
-	public:
-		Group group;
-		Subscriber subscriber;
-		GroupSubscriber(Group group_, Subscriber subscriber_) 
-			: group(group_), subscriber(subscriber_) {}
-	};
-
-	struct ltGroupSubscriber
-	{
-		bool operator()(const GroupSubscriber& gs1, const GroupSubscriber& gs2) const
-		{
-			return gs1.group <  gs2.group ||
-				gs1.group == gs2.group && gs1.subscriber < gs2.subscriber;
-		}
-	};
-	typedef std::map<GroupSubscriber, Connection, ltGroupSubscriber> ConnectionOrdering;
-
-
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	const String	d_name;		//!< Name of this event
-	ConnectionOrdering connectionOrdering;
-	friend class ConnectionImpl;
+    typedef std::multimap<Group, Connection> SlotContainer;
+    SlotContainer d_slots;  //!< Collection holding ref-counted bound slots
+    const String d_name;    //!< Name of this event
 };
-
 
 } // End of  CEGUI namespace section
 
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
-#endif	// end of guard _CEGUIEvent_h_
+#endif  // end of guard _CEGUIEvent_h_

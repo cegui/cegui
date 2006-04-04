@@ -27,6 +27,7 @@
 #include "renderers/OpenGLGUIRenderer/openglrenderer.h"
 #include "renderers/OpenGLGUIRenderer/opengltexture.h"
 #include "CEGUIExceptions.h"
+#include "CEGUIEventArgs.h"
 
 
 // Start of CEGUI namespace section

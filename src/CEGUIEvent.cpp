@@ -1,129 +1,118 @@
 /************************************************************************
-	filename: 	CEGUIEvent.cpp
-	created:	15/10/2004
-	author:		Gerald Lindsly
-	
-	purpose:	Implements Event class
+    filename:   CEGUIEvent.cpp
+    created:    Tue Feb 28 2006
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
-/*************************************************************************
-    Crazy Eddie's GUI System (http://www.cegui.org.uk)
-    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining
+ *   a copy of this software and associated documentation files (the
+ *   "Software"), to deal in the Software without restriction, including
+ *   without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to
+ *   permit persons to whom the Software is furnished to do so, subject to
+ *   the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be
+ *   included in all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *   OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************/
 #include "CEGUIEvent.h"
+#include "CEGUIEventArgs.h"
 
-#if defined (_MSC_VER)
-#	pragma warning(disable : 4251)
-#	pragma warning(disable : 4786)
-#	if !defined (_MSC_EXTENSIONS)
-#		pragma warning (disable : 4224)
-#	endif
-#endif
-
+#include <algorithm>
 
 // Start of CEGUI namespace section
-namespace CEGUI {
-
-class ConnectionImpl : public Event::ConnectionInterface {
+namespace CEGUI
+{
+/*!
+\brief
+    Implementation helper functor which is used to locate a BoundSlot in the
+    multimap collection of BoundSlots.
+*/
+class SubComp
+{
 public:
-	ConnectionImpl(Event* event_, Event::Group group_, Event::Subscriber subscriber_) : 
-		event(event_), group(group_), subscriber(subscriber_)
-		{
-		}
+    SubComp(const BoundSlot& s) :
+        d_s(s)
+    {}
 
-		virtual bool connected()
-		{
-			return event != 0;
-		}
+    bool operator()(std::pair<Event::Group, Event::Connection> e) const
+    {
+        return *(e.second) == d_s;
+    }
 
-		virtual void disconnect()
-		{
-			if (event)
-			{
-				event->unsubscribe(subscriber, group);
-			}
-
-		}
-
-protected:
-	Event* event;
-	Event::Group group;
-	Event::Subscriber subscriber;
-
-	friend class Event;
+private:
+    const BoundSlot& d_s;
 };
 
 
-Event::Event(const String& name) : d_name(name)
+
+Event::Event(const String& name) :
+    d_name(name)
 {
 }
 
 
 Event::~Event()
 {
-	ConnectionOrdering::iterator i = connectionOrdering.begin();
-	for (;i != connectionOrdering.end(); i++)
-	{
-		if (((ConnectionImpl*)i->second.get())->event)
-		{
-			i->first.subscriber.release();
-		}
+    SlotContainer::iterator iter(d_slots.begin());
+    const SlotContainer::const_iterator end_iter(d_slots.end());
 
-	}
+    for (; iter != end_iter; ++iter)
+    {
+        iter->second->d_event = 0;
+        iter->second->d_subscriber->cleanup();
+    }
+
+    d_slots.clear();
 }
 
 
-Event::Connection Event::subscribe(Group group, Subscriber subscriber)
+Event::Connection Event::subscribe(const Event::Subscriber& slot)
 {
-	ConnectionImpl* conn = new ConnectionImpl(this, group, subscriber);
-	connectionOrdering[GroupSubscriber(group, subscriber)] = conn;
-	return conn;
+    return subscribe(static_cast<Group>(-1), slot);
+}
+
+
+Event::Connection Event::subscribe(Event::Group group, const Event::Subscriber& slot)
+{
+    Event::Connection c(new BoundSlot(group, slot, *this));
+    d_slots.insert(std::pair<Group, Connection>(group, c));
+    return c;
 }
 
 
 void Event::operator()(EventArgs& args)
 {
-	ConnectionOrdering::iterator i = connectionOrdering.begin();
+    SlotContainer::iterator iter(d_slots.begin());
+    const SlotContainer::const_iterator end_iter(d_slots.end());
 
-	for (;i != connectionOrdering.end(); ++i)
-	{
-		if (((ConnectionImpl*)i->second.get())->event)
-		{
-			args.handled |= i->first.subscriber(args);
-		}
-
-	}
-
+    // execute all subscribers, updating the 'handled' state as we go
+    for (; iter != end_iter; ++iter)
+        args.handled |= (*iter->second->d_subscriber)(args);
 }
 
 
-bool Event::unsubscribe(Subscriber subscriber, Group group)
+void Event::unsubscribe(const BoundSlot& slot)
 {
-	ConnectionOrdering::iterator j = connectionOrdering.find(GroupSubscriber(group, subscriber));
+    // try to find the slot in our collection
+    SlotContainer::iterator curr =
+        std::find_if(d_slots.begin(),
+                     d_slots.end(),
+                     SubComp(slot));
 
-	if (j == connectionOrdering.end())
-	{
-		return false;
-	}
-
-	ConnectionImpl* c = (ConnectionImpl*)j->second.get();
-	c->event = 0;
-	c->subscriber.release();
-	connectionOrdering.erase(j);
-	return true;
+    // erase our reference to the slot, if we had one.
+    if (curr != d_slots.end())
+        d_slots.erase(curr);
 }
 
 } // End of  CEGUI namespace section
