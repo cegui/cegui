@@ -49,55 +49,138 @@ class WidgetLookFeel;
 class CEGUIEXPORT WindowRenderer
 {
 public:
-    /// Constructor
+    /*************************************************************************
+        Constructor / Destructor
+    **************************************************************************/
+    /*!
+    \brief
+        Constructor
+
+    \param name
+        Factory type name
+
+    \param class_name
+        The name of a widget class that is to be the minimum requirement for
+        this window renderer.
+    */
     WindowRenderer(const String& name, const String& class_name="Window");
 
-    /// Destructor
+    /*!
+    \brief
+        Destructor
+    */
     virtual ~WindowRenderer();
 
-    /// Populate render cache
+    /*************************************************************************
+        Public interface
+    **************************************************************************/
+    /*!
+    \brief
+        Populate render cache.
+
+        This method must be implemented by all window renderers and should
+        perform the rendering operations needed for this widget.
+        Normally using the Falagard API...
+    */
     virtual void render() = 0;
 
-    /// Get name
-    const String& getName() const {return d_name;}
+    /*!
+    \brief
+        Returns the factory type name of this window renderer.
+    */
+    const String& getName() const   {return d_name;}
 
-    /// Get the window we are attached to
-    Window* getWindow() const {return d_window;}
+    /*!
+    \brief
+        Get the window this windowrenderer is attached to.
+    */
+    Window* getWindow() const       {return d_window;}
 
-    /// Get the "minimum" Window class this renderer requires
-    const String& getClass() const {return d_class;}
+    /*!
+    \brief
+        Get the "minimum" Window class this renderer requires
+    */
+    const String& getClass() const  {return d_class;}
 
-    /// Get the Look'N'Feel assigned to our window
+    /*!
+    \brief
+        Get the Look'N'Feel assigned to our window
+    */
     const WidgetLookFeel& getLookNFeel() const;
 
-    /// Get unclipped inner rectangle
+    /*!
+    \brief
+        Get unclipped inner rectangle that our window should return from its
+        member function with the same name.
+    */
     virtual Rect getUnclippedInnerRect() const;
 
-    /// Get actual pixel rectangle
+    /*!
+    \brief
+        Get actual pixel rectangle our window is to return from its
+        member function with the same name.
+    */
     virtual Rect getPixelRect() const;
 
-    /// Method called to perform extended laying out of the window's attached child windows.
+    /*!
+    \brief
+        Method called to perform extended laying out of the window's attached
+        child windows.
+    */
     virtual void performChildWindowLayout() {}
 
 protected:
-    friend class Window;
+    /*************************************************************************
+        Implementation methods
+    **************************************************************************/
+    /*!
+    \brief
+        Register a property class that will be properly managed by this window
+        renderer.
 
-    // PROTECTED METHODS
+    \param property
+        Pointer to a static Property object that will be added to the target
+        window.
+    */
     void registerProperty(Property* property);
 
-    // PROTECTED VIRTUAL METHODS
+    /*!
+    \brief
+        Handler called when this windowrenderer is attached to a window
+    */
     virtual void onAttach();
+
+    /*!
+    \brief
+        Handler called when this windowrenderer is detached from its window
+    */
     virtual void onDetach();
+
+    /*!
+    \brief
+        Handler called when a Look'N'Feel is assigned to our window.
+    */
     virtual void onLookNFeelAssigned() {}
+
+    /*!
+    \brief
+        Handler called when a Look'N'Feel is removed/unassigned from our window.
+    */
     virtual void onLookNFeelUnassigned() {}
 
-    // PROTECTED IMPLEMENTATION DATA
-    Window* d_window;
-    const String d_name;
-    const String d_class;
+    /*************************************************************************
+        Implementation data
+    **************************************************************************/
+    Window* d_window;       //!< Pointer to the window this windowrenderer is assigned to.
+    const String d_name;    //!< Name of the factory type used to create this window renderer.
+    const String d_class;   //!< Name of the widget class that is the "minimum" requirement.
 
     typedef std::vector<Property*> PropertyList;
-    PropertyList d_properties;
+    PropertyList d_properties;  //!< The list of properties that this windowrenderer will be handling.
+
+    // Window is friend so it can manipulate our 'd_window' member directly.
+    // We don't want users fiddling with this so no public interface.
+    friend class Window;
 };
 
 /*!
@@ -107,14 +190,41 @@ protected:
 class CEGUIEXPORT WindowRendererFactory
 {
 public:
+    /*!
+    \brief
+        Contructor
+
+    \param name
+        Type name for this window renderer factory
+    */
     WindowRendererFactory(const String& name) : d_factoryName(name) {}
+
+    /*!
+    \brief
+        Destructor
+    */
+    virtual ~WindowRendererFactory() {}
+
+    /*!
+    \brief
+        Returns the type name of this window renderer factory.
+    */
     const String& getName() const {return d_factoryName;}
 
+    /*!
+    \brief
+        Creates and returns a new window renderer object.
+    */
     virtual WindowRenderer* create() = 0;
+
+    /*!
+    \brief
+        Destroys a window renderer object previously created by us.
+    */
     virtual void destroy(WindowRenderer* wr) = 0;
 
 protected:
-    String d_factoryName;
+    String d_factoryName;   //!< Our factory type name.
 };
 
 } // End of CEGUI namespace
