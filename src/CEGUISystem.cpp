@@ -126,6 +126,9 @@ const String System::EventDefaultFontChanged( "DefaultFontChanged" );
 const String System::EventDefaultMouseCursorChanged( "DefaultMouseCursorChanged" );
 const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 
+// Holds name of default XMLParser
+String System::d_defaultXMLParserName(STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
+
 
 /*************************************************************************
     Constructor
@@ -1463,7 +1466,7 @@ void System::setupXMLParser()
     if (!d_xmlParser)
     {
         // load the dynamic module
-        d_parserModule = new DynamicModule(String("CEGUI") + STRINGIZE(CEGUI_DEFAULT_XMLPARSER));
+        d_parserModule = new DynamicModule(String("CEGUI") + d_defaultXMLParserName);
         // get pointer to parser creation function
         XMLParser* (*createFunc)(void) =
             (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
@@ -1497,5 +1500,16 @@ void System::cleanupXMLParser()
         }
     }
 }
+
+void System::setDefaultXMLParserName(const String& parserName)
+{
+    d_defaultXMLParserName = parserName;
+}
+
+const String System::getDefaultXMLParserName()
+{
+    return d_defaultXMLParserName;
+}
+
 
 } // End of  CEGUI namespace section

@@ -572,6 +572,62 @@ public:
 	*/
 	Window* getModalTarget(void) const		{return d_modalTarget;}
 
+    /*!
+    \brief
+        Static member to set the name of the default XML parser module that
+        should be used.
+
+        If you want to modify the default parser from the one compiled in, you
+        need to call this static member prior to instantiating the main
+        CEGUI::System object.
+
+        Note that calling this member to change the name of the default module
+        after CEGUI::System, and therefore the default xml parser, has been
+        created will have no real effect - the default parser name will be
+        updated, though no actual changes to the xml parser module will occur.
+
+        The built-in options for this are:
+         - XercesParser
+         - ExpatParser
+         - LibxmlParser
+         - TinyXMLParser
+
+        Whether these are actually available, depends upon how you built the
+        system.  If you have some custom parser, you can provide the name of
+        that here to have it used as the default, though note that the
+        final filename of the parser module should be of the form:
+
+        [prefix]CEGUI[parserName][suffix]
+
+        where:
+        - [prefix] is some optional prefix; like 'lib' on linux.
+        - CEGUI is a required prefix.
+        - [parserName] is the name of the parser, as supplied to this function.
+        - [suffix] is the filename suffix, like .dll or .so
+
+        Final module filenames are, thus, of the form:
+        - CEGUIXercesParser.dll
+        - libCEGUIXercesParser.so
+
+    \param parserName
+        String describing the name of the xml parser module to be used as the
+        default.
+
+    \return
+        Nothing.
+    */
+    static void setDefaultXMLParserName(const String& parserName);
+
+    /*!
+    \brief
+        Return the name of the currently set default xml parser module.
+
+    \return
+        String holding the currently set default xml parser name.  Note that if
+        this name has been changed after instantiating the system, the name
+        returned may not actually correspond to the module in use.
+    */
+    static const String getDefaultXMLParserName();
 
 	/*************************************************************************
 		Input injection interface
@@ -920,6 +976,8 @@ private:
 
     Tooltip* d_defaultTooltip;      //!< System default tooltip object.
     bool     d_weOwnTooltip;        //!< true if System created the custom Tooltip.
+
+    static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
 };
 
 } // End of  CEGUI namespace section
