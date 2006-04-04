@@ -126,6 +126,8 @@ namespace CEGUI
         static const String HorzFormatPropertyElement;  //!< Tag name for element that specifies a horizontal formatting property..
         static const String AreaPropertyElement;        //!< Tag name for element that specifies a URect property..
         static const String ImagePropertyElement;       //!< Tag name for element that specifies an Image property..
+        static const String TextPropertyElement;        //!< Tag name for element that specifies an Text property.
+        static const String FontPropertyElement;        //!< Tag name for element that specifies an Font property.
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -138,6 +140,7 @@ namespace CEGUI
         static const String PriorityAttribute;          //!< Attribute name that stores an integer priority.
         static const String SectionNameAttribute;       //!< Attribute name that stores an imagery section name.
         static const String NameSuffixAttribute;        //!< Attribute name that stores a widget name suffix.
+        static const String RendererAttribute;          //!< Attribute name that stores the name of a window renderer factory.
         static const String LookAttribute;              //!< Attribute name that stores the name of a widget look.
         static const String ScaleAttribute;             //!< Attribute name that stores a UDim scale value.
         static const String OffsetAttribute;            //!< Attribute name that stores a UDim offset value.
@@ -386,6 +389,18 @@ namespace CEGUI
             Method that handles the opening ImageProperty XML element.
         */
         void elementImagePropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening TextProperty XML element.
+        */
+        void elementTextPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening FontProperty XML element.
+        */
+        void elementFontPropertyStart(const XMLAttributes& attributes);
 
         /*!
         \brief

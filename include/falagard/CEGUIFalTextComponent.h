@@ -147,6 +147,72 @@ namespace CEGUI
         */
         void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
 
+        /*!
+        \brief
+            Return whether this TextComponent fetches it's text string via a property on the target window.
+
+        \return
+            - true if the text string comes via a Propery.
+            - false if the text string is defined explicitly, or will come from the target window.
+        */
+        bool isTextFetchedFromProperty() const;
+
+        /*!
+        \brief
+            Return the name of the property that will be used to determine the text string to render
+            for this TextComponent.
+
+        \return
+            String object holding the name of a Propery.
+        */
+        const String& getTextPropertySource() const;
+
+        /*!
+        \brief
+            Set the name of the property that will be used to determine the text string to render
+            for this TextComponent.
+
+        \param property
+            String object holding the name of a Propery.  The property can contain any text string to render.
+
+        \return
+            Nothing.
+        */
+        void setTextPropertySource(const String& property);
+        
+        /*!
+        \brief
+            Return whether this TextComponent fetches it's font via a property on the target window.
+
+        \return
+            - true if the font comes via a Propery.
+            - false if the font is defined explicitly, or will come from the target window.
+        */
+        bool isFontFetchedFromProperty() const;
+
+        /*!
+        \brief
+            Return the name of the property that will be used to determine the font to use for rendering
+            the text string for this TextComponent.
+
+        \return
+            String object holding the name of a Propery.
+        */
+        const String& getFontPropertySource() const;
+
+        /*!
+        \brief
+            Set the name of the property that will be used to determine the font to use for rendering
+            the text string of this TextComponent.
+
+        \param property
+            String object holding the name of a Propery.  The property should access a valid font name.
+
+        \return
+            Nothing.
+        */
+        void setFontPropertySource(const String& property);
+
     protected:
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const;
@@ -156,6 +222,8 @@ namespace CEGUI
         String               d_font;            //!< name of font to use.
         VerticalTextFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the component.
         HorizontalTextFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the component.
+        String  d_textPropertyName;             //!< Name of the property to access to obtain the text string to render.
+        String  d_fontPropertyName;             //!< Name of the property to access to obtain the font to use for rendering.
     };
 
 } // End of  CEGUI namespace section

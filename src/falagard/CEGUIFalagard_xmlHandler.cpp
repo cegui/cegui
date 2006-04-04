@@ -76,6 +76,8 @@ namespace CEGUI
     const String Falagard_xmlHandler::HorzFormatPropertyElement("HorzFormatProperty");
     const String Falagard_xmlHandler::AreaPropertyElement("AreaProperty");
     const String Falagard_xmlHandler::ImagePropertyElement("ImageProperty");
+    const String Falagard_xmlHandler::TextPropertyElement("TextProperty");
+    const String Falagard_xmlHandler::FontPropertyElement("FontProperty");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -88,6 +90,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::PriorityAttribute("priority");
     const String Falagard_xmlHandler::SectionNameAttribute("section");
     const String Falagard_xmlHandler::NameSuffixAttribute("nameSuffix");
+    const String Falagard_xmlHandler::RendererAttribute("renderer");
     const String Falagard_xmlHandler::LookAttribute("look");
     const String Falagard_xmlHandler::ScaleAttribute("scale");
     const String Falagard_xmlHandler::OffsetAttribute("offset");
@@ -159,6 +162,8 @@ namespace CEGUI
         registerElementStartHandler(HorzFormatPropertyElement, &Falagard_xmlHandler::elementHorzFormatPropertyStart);
         registerElementStartHandler(AreaPropertyElement, &Falagard_xmlHandler::elementAreaPropertyStart);
         registerElementStartHandler(ImagePropertyElement, &Falagard_xmlHandler::elementImagePropertyStart);
+        registerElementStartHandler(TextPropertyElement, &Falagard_xmlHandler::elementTextPropertyStart);
+        registerElementStartHandler(FontPropertyElement, &Falagard_xmlHandler::elementFontPropertyStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -297,7 +302,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementChildStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent == 0);
-        d_childcomponent = new WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute));
+        d_childcomponent = new WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute), attributes.getValueAsString(RendererAttribute));
 
         CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Suffix: " + d_childcomponent->getWidgetNameSuffix() + " Look: " + d_childcomponent->getWidgetLookName());
     }
@@ -795,6 +800,26 @@ namespace CEGUI
         assert(d_imagerycomponent != 0);
 
         d_imagerycomponent->setImagePropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening TextProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementTextPropertyStart(const XMLAttributes& attributes)
+    {
+        assert(d_textcomponent != 0);
+
+        d_textcomponent->setTextPropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening FontProperty XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementFontPropertyStart(const XMLAttributes& attributes)
+    {
+        assert(d_textcomponent != 0);
+
+        d_textcomponent->setFontPropertySource(attributes.getValueAsString(NameAttribute));
     }
 
     /*************************************************************************

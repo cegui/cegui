@@ -30,10 +30,11 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    WidgetComponent::WidgetComponent(const String& type, const String& look, const String& suffix) :
+    WidgetComponent::WidgetComponent(const String& type, const String& look, const String& suffix, const String& renderer) :
         d_baseType(type),
         d_imageryName(look),
         d_nameSuffix(suffix),
+        d_rendererType(renderer),
         d_vertAlign(VA_TOP),
         d_horzAlign(HA_LEFT)
     {}
@@ -43,6 +44,10 @@ namespace CEGUI
         // build final name and create widget.
         String widgetName = parent.getName() + d_nameSuffix;
         Window* widget = WindowManager::getSingleton().createWindow(d_baseType, widgetName);
+
+        // set the window renderer
+        if (!d_rendererType.empty())
+            widget->setWindowRenderer(d_rendererType);
 
         // set the widget look
         if (!d_imageryName.empty())
@@ -107,6 +112,16 @@ namespace CEGUI
         d_nameSuffix = suffix;
     }
 
+    const String& WidgetComponent::getWindowRendererType() const
+    {
+        return d_rendererType;
+    }
+
+    void WidgetComponent::setWindowRendererType(const String& type)
+    {
+        d_rendererType = type;
+    }
+
     VerticalAlignment WidgetComponent::getVerticalWidgetAlignemnt() const
     {
         return d_vertAlign;
@@ -164,6 +179,9 @@ namespace CEGUI
 
         if (!d_imageryName.empty())
             out_stream << " look=\"" << d_imageryName << "\"";
+
+        if (!d_rendererType.empty())
+            out_stream << " renderer=\"" << d_rendererType << "\"";
 
         out_stream << ">" << std::endl;
 

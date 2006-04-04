@@ -83,7 +83,9 @@ namespace CEGUI
 
         try
         {
-            font = d_font.empty() ? srcWindow.getFont() : FontManager::getSingleton().getFont(d_font);
+            font = d_fontPropertyName.empty() ?
+                (d_font.empty() ? srcWindow.getFont() : FontManager::getSingleton().getFont(d_font))
+                : FontManager::getSingleton().getFont(srcWindow.getProperty(d_fontPropertyName));
         }
         catch (UnknownObjectException)
         {
@@ -105,7 +107,9 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // decide which string to render.
-        const String& renderString = d_text.empty() ? srcWindow.getText() : d_text;
+        const String& renderString = d_textPropertyName.empty() ?
+            (d_text.empty() ? srcWindow.getText() : d_text)
+            : srcWindow.getProperty(d_textPropertyName);
 
         // calculate height of formatted text
         float textHeight = font->getFormattedLineCount(renderString, destRect, (TextFormatting)horzFormatting) * font->getLineSpacing();
@@ -144,6 +148,18 @@ namespace CEGUI
         // write text element
         out_stream << subindent << "<Text font=\"" << d_font << "\" string=\"" << d_text << "\" />" << std::endl;
 
+        // write text property element
+        if (!d_textPropertyName.empty())
+        {
+            out_stream << subindent << "<TextProperty name=\"" << d_textPropertyName << "\" />" << std::endl;
+        }
+
+        // write font property element
+        if (!d_fontPropertyName.empty())
+        {
+            out_stream << subindent << "<FontProperty name=\"" << d_fontPropertyName << "\" />" << std::endl;
+        }
+
         // get base class to write colours
         writeColoursXML(out_stream, indentLevel);
 
@@ -163,6 +179,36 @@ namespace CEGUI
 
         // closing tag
         out_stream << indent << "</TextComponent>" << std::endl;
+    }
+
+    bool TextComponent::isTextFetchedFromProperty() const
+    {
+        return !d_textPropertyName.empty();
+    }
+
+    const String& TextComponent::getTextPropertySource() const
+    {
+        return d_textPropertyName;
+    }
+
+    void TextComponent::setTextPropertySource(const String& property)
+    {
+        d_textPropertyName = property;
+    }
+
+    bool TextComponent::isFontFetchedFromProperty() const
+    {
+        return !d_fontPropertyName.empty();
+    }
+
+    const String& TextComponent::getFontPropertySource() const
+    {
+        return d_fontPropertyName;
+    }
+
+    void TextComponent::setFontPropertySource(const String& property)
+    {
+        d_fontPropertyName = property;
     }
 
 } // End of  CEGUI namespace section
