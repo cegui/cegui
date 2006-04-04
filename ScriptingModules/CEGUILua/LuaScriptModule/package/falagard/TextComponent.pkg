@@ -1,8 +1,8 @@
-/***********************************************************************
+/*********************************************************************
  TextComponent
- **********************************************************************/
- class TextComponent : public FalagardComponentBase 
- {
+**********************************************************************/
+class TextComponent : public FalagardComponentBase 
+{
     string getText() const;
     void setText(string text);
     string getFont() const;
@@ -12,5 +12,11 @@
     HorizontalTextFormatting getHorizontalFormatting() const;
     void setHorizontalFormatting(HorizontalTextFormatting fmt);
     //void writeXMLToStream(OutStream& out_stream) const;
+    bool isTextFetchedFromProperty() const;
+    string getTextPropertySource() const;
+    void setTextPropertySource(string property);
+    bool isFontFetchedFromProperty() const;
+    string getFontPropertySource() const;
+    void setFontPropertySource(string property);
     TextComponent();
- };
+};

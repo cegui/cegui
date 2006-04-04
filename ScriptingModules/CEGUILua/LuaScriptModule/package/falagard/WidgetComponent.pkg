@@ -13,6 +13,8 @@ class WidgetComponent
   void setWidgetLookName(string look);
   string getWidgetNameSuffix() const;
   void setWidgetNameSuffix(string suffix);
+  string getWindowRendererType() const;
+  void setWindowRendererType(string type);
   VerticalAlignment getVerticalWidgetAlignemnt() const;
   void setVerticalWidgetAlignment(VerticalAlignment alignment);
   HorizontalAlignment getHorizontalWidgetAlignemnt() const;
@@ -26,6 +28,6 @@ class WidgetComponent
   const PropertyInitialiser* findPropertyInitialiser(string propertyName) const;
 
   WidgetComponent();
-  WidgetComponent(string type, string look, string suffix);
+  WidgetComponent(string type, string look, string suffix, string renderer);
 };
 
