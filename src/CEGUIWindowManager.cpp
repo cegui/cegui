@@ -312,8 +312,21 @@ void WindowManager::renameWindow(Window* window, const String& new_name)
         {
             // erase old window name from registry
             d_windowRegistry.erase(pos);
-            // rename the window
-            window->rename(new_name);
+
+            try
+            {
+                // attempt to rename the window
+                window->rename(new_name);
+            }
+            // rename fails if target name already exists
+            catch (AlreadyExistsException& renameException)
+            {
+                // re-add window to registry under it's old name
+                d_windowRegistry[window->getName()] = window;
+                // rethrow exception.
+                throw;
+            }
+
             // add window to registry under new name
             d_windowRegistry[new_name] = window;
         }

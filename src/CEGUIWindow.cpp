@@ -2375,7 +2375,8 @@ void Window::rename(const String& new_name)
     }
 
     if (winMgr.isWindowPresent(new_name))
-        throw AlreadyExistsException("Window::rename - a Window named '" +
+        throw AlreadyExistsException("Window::rename - Failed to rename Window: " +
+                d_name + " as: " + new_name + ".  A Window named:" +
                 new_name + "' already exists within the system.");
 
     // rename Falagard created child windows
@@ -2405,7 +2406,7 @@ void Window::rename(const String& new_name)
         }
     }
 
-    // log this under insane level
+    // log this under informative level
     Logger::getSingleton().logEvent("Renamed window: " + d_name +
                                     " as: " + new_name,
                                     Informative);
