@@ -64,8 +64,6 @@ TabControl::TabControl(const String& type, const String& name)
 {
 	addTabControlEvents();
 	addTabControlProperties();
-    setRelativeTabHeight(0.05f);
-    setAbsoluteTabTextPadding(5);
 }
 
 
@@ -89,7 +87,8 @@ void TabControl::initialise(void)
 	addChildWindow(d_tabContentPane);
     addChildWindow(d_tabButtonPane);
 
-	performChildWindowLayout();
+    setRelativeTabHeight(0.05f);
+    setAbsoluteTabTextPadding(5);
 }
 /*************************************************************************
 Get the number of tabs
