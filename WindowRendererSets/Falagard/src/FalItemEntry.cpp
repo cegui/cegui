@@ -37,10 +37,23 @@ namespace CEGUI
 
     void FalagardItemEntry::render()
     {
+        ItemEntry* item = static_cast<ItemEntry*>(d_window);
+
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
+
+        const StateImagery* imagery;
         // render basic imagery
-        wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled").render(*d_window);
+        String state = item->isDisabled() ? "Disabled" : "Enabled";
+        if (item->isSelectable() && item->isSelected())
+        {
+            imagery = &wlf.getStateImagery(item->isDisabled()?"SelectedDisabled":"SelectedEnabled");
+        }
+        else
+        {
+            imagery = &wlf.getStateImagery(item->isDisabled()?"Disabled":"Enabled");
+        }
+        imagery->render(*d_window);
     }
 
     Size FalagardItemEntry::getItemPixelSize() const

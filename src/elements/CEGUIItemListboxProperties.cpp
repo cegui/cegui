@@ -1,45 +1,48 @@
 /************************************************************************
-    filename:   FalModule.h
-    created:    Wed Jun 22 2005
-    author:     Paul D Turner <paul@cegui.org.uk>
+    filename:   CEGUIItemListboxProperties.cpp
+    created:    Mon Oct 31 2005
+    author:     Tomas Lindquist Olsen
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
     Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
- 
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
- 
+
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalModule_h_
-#define _FalModule_h_
+#include "elements/CEGUIItemListboxProperties.h"
+#include "elements/CEGUIItemListbox.h"
+#include "CEGUIPropertyHelper.h"
 
-/*************************************************************************
-    Import / Export control macros
-*************************************************************************/
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef FALAGARDWRBASE_EXPORTS
-#       define FALAGARDBASE_API __declspec(dllexport)
-#       define CEGUIWRMODULE_EXPORTS
-#   else
-#       define FALAGARDBASE_API __declspec(dllimport)
-#   endif
-#else
-#   define FALAGARDBASE_API
-#endif
+// Start of CEGUI namespace section
+namespace CEGUI
+{
 
-#include "CEGUIWindowRendererModule.h"
+// Start of ItemListboxProperties namespace section
+namespace ItemListboxProperties
+{
 
-CEGUI_DECLARE_WR_MODULE( Falagard )
+    String MultiSelect::get(const PropertyReceiver* receiver) const
+    {
+        return PropertyHelper::boolToString(static_cast<const ItemListbox*>(receiver)->isMultiSelectEnabled());
+    }
 
-#endif  // end of guard _FalModule_h_
+    void MultiSelect::set(PropertyReceiver* receiver, const String& value)
+    {
+        static_cast<ItemListbox*>(receiver)->setMultiSelectEnabled(PropertyHelper::stringToBool(value));
+    }
+
+} // End of ItemListboxProperties namespace section
+
+} // End of CEGUI namespace section

@@ -1113,6 +1113,28 @@ public:
     */
     bool isWritingXMLAllowed(void) const    {return d_allowWriteXML;}
 
+    /*!
+    \brief
+        Return whether this window is using a custom clipping rectangle when rendered.
+    */
+    bool isUsingCustomClipper(void) const       {return d_useCustomClipper;}
+
+    /*!
+    \brief
+        Return the current custom clipping rectangle.
+
+    \return
+        Rect object describing the clipping area in pixel that will be applied during rendering
+        if the custom clipper is enabled.
+    */
+    Rect getCustomClipArea(void) const          {return d_customClipArea;}
+
+    /*!
+    \brief
+        Returns the reference window used for converting the custom clipper rect to screen space.
+    */
+    Window* getCustomClipperWindow(void) const  {return d_customClipperWindow;}
+
     /*************************************************************************
         Manipulator functions
     *************************************************************************/
@@ -2360,6 +2382,28 @@ public:
     */
     void setWritingXMLAllowed(bool allow)   {d_allowWriteXML = allow;}
 
+    /*!
+    \brief
+        Set whether the custom clipping rectangle should be applied when rendering.
+    */
+    void setCustomClipperEnabled(bool setting);
+
+    /*!
+    \brief
+        Set the custom clipper area in pixels.
+    */
+    void setCustomClipArea(const Rect& r);
+
+    /*!
+    \brief
+        Set the clipper reference window.
+
+    \param w
+        The window to be used a base for converting the custom clipper rect to
+        screen space. NULL if the clipper rect is relative to the screen.
+    */
+    void setCustomClipperWindow(Window* w);
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -3134,6 +3178,8 @@ protected:
 
     //! true when this window is currently being initialised (creating children etc)
     bool d_initialising;
+    //! true when this window is being destroyed.
+    bool d_destructionStarted;
 
     // Event pass through
     /*!
@@ -3156,6 +3202,13 @@ protected:
 
     //! true if this window is allowed to write XML, false if not
     bool d_allowWriteXML;
+
+    //! true when custom clipping is enabled.
+    bool d_useCustomClipper;
+    //! the custom pixel rect to be used for clipping relative to either a window or the screen.
+    Rect d_customClipArea;
+    //! the base window which the custom clipping rect is relative to.
+    Window* d_customClipperWindow;
 
 protected:
     /*************************************************************************

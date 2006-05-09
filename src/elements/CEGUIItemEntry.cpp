@@ -23,13 +23,12 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "elements/CEGUIItemEntry.h"
+#include "elements/CEGUIItemListBase.h"
 #include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-const String ItemEntry::WidgetTypeName("CEGUI/ItemEntry");
 
 /*************************************************************************
     ItemEntryWindowRenderer constructor
@@ -40,19 +39,28 @@ ItemEntryWindowRenderer::ItemEntryWindowRenderer(const String& name) :
 }
 
 /*************************************************************************
+    Constants
+*************************************************************************/
+const String ItemEntry::WidgetTypeName("CEGUI/ItemEntry");
+const String ItemEntry::EventSelectionChanged("SelectionChanged");
+
+/*************************************************************************
+	Definition of Properties for this class
+*************************************************************************/
+ItemEntryProperties::Selectable ItemEntry::d_selectableProperty;
+ItemEntryProperties::Selected   ItemEntry::d_selectedProperty;
+
+/*************************************************************************
 	Constructor for ItemEntry base class.
 *************************************************************************/
 ItemEntry::ItemEntry(const String& type, const String& name)
-	: Window(type, name)
+	: Window(type, name),
+	d_ownerList(0),
+    d_selected(false),
+    d_selectable(false)
 {
-}
-
-
-/*************************************************************************
-	Destructor for ItemEntry base class.
-*************************************************************************/
-ItemEntry::~ItemEntry(void)
-{
+    // add the new properties
+    addItemEntryProperties();
 }
 
 /*************************************************************************
@@ -62,14 +70,81 @@ Size ItemEntry::getItemPixelSize(void) const
 {
     if (d_windowRenderer != 0)
     {
-        ItemEntryWindowRenderer* wr = (ItemEntryWindowRenderer*)d_windowRenderer;
-        return wr->getItemPixelSize();
+        return static_cast<ItemEntryWindowRenderer*>(d_windowRenderer)->getItemPixelSize();
     }
     else
     {
         //return getItemPixelSize_impl();
         throw InvalidRequestException("ItemEntry::getItemPixelSize - This function must be implemented by the window renderer module");
     }
+}
+
+/*************************************************************************
+    Set selection state. Internal
+*************************************************************************/
+void ItemEntry::setSelected_impl(bool setting, bool notify)
+{
+    if (d_selectable && setting != d_selected)
+    {
+        d_selected = setting;
+
+        // notify the ItemListbox if there is one that we just got selected
+        // to ensure selection scheme is not broken when setting selection from code
+        if (d_ownerList && notify)
+        {
+            d_ownerList->notifyItemSelectState(this, setting);
+        }
+
+        WindowEventArgs args(this);
+        onSelectionChanged(args);
+    }
+}
+
+/*************************************************************************
+    Set selectable "mode"
+*************************************************************************/
+void ItemEntry::setSelectable(bool setting)
+{
+    if (d_selectable != setting)
+    {
+        setSelected(false);
+        d_selectable = setting;
+    }
+}
+
+/*************************************************************************
+    Handle selection state change
+*************************************************************************/
+void ItemEntry::onSelectionChanged(WindowEventArgs& e)
+{
+    requestRedraw();
+    fireEvent(EventSelectionChanged, e, EventNamespace);
+}
+
+/*************************************************************************
+    Handle 'MouseClicked' event
+*************************************************************************/
+void ItemEntry::onMouseClicked(MouseEventArgs& e)
+{
+    Window::onMouseClicked(e);
+
+    if (d_selectable && e.button == LeftButton)
+    {
+        if (d_ownerList)
+            d_ownerList->notifyItemClicked(this);
+        else
+            setSelected(!isSelected());
+        e.handled = true;
+    }
+}
+
+/*************************************************************************
+    Add ItemEntry specific properties
+*************************************************************************/
+void ItemEntry::addItemEntryProperties(void)
+{
+    addProperty(&d_selectableProperty);
+    addProperty(&d_selectedProperty);
 }
 
 } // End of  CEGUI namespace section

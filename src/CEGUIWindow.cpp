@@ -201,8 +201,9 @@ Window::Window(const String& type, const String& name) :
     d_horzAlign = HA_LEFT;
     d_vertAlign = VA_TOP;
 
-    // initialisation flag
+    // initialisation flags
     d_initialising = false;
+    d_destructionStarted = false;
 
     // event pass through
     d_mousePassThroughEnabled = false;
@@ -215,6 +216,11 @@ Window::Window(const String& type, const String& name) :
 
     // allow writing XML flag
     d_allowWriteXML = true;
+
+    // custom clipping rect flag
+    d_useCustomClipper = false;
+    d_customClipArea = Rect(0,0,0,0);
+    d_customClipperWindow = this;
 
 	// add properties
 	addStandardProperties();
@@ -589,14 +595,24 @@ Rect Window::getUnclippedPixelRect(void) const
 *************************************************************************/
 Rect Window::getUnclippedInnerRect(void) const
 {
+    // a custom user clipper overrides everything
+    if (isUsingCustomClipper())
+    {
+        // relative to window?
+        if (d_customClipperWindow!=0)
+        {
+            return CoordConverter::windowToScreen(*d_customClipperWindow, d_customClipArea);
+        }
+        // already screen space
+        return d_customClipArea;
+    }
+
+    // if we have a window renderer we let it have its say
     if (d_windowRenderer != 0)
-    {
         return d_windowRenderer->getUnclippedInnerRect();
-    }
-    else
-    {
-        return getUnclippedPixelRect();
-    }
+
+    // last resort
+    return getUnclippedPixelRect();
 }
 
 
@@ -858,7 +874,8 @@ void Window::addChildWindow(const String& name)
 void Window::addChildWindow(Window* window)
 {
 	// dont add ourselves as a child
-	if (window == this)
+	// and dont add null windows
+	if (window == this || window == 0)
 	{
 		return;
 	}
@@ -2618,6 +2635,7 @@ void Window::onZChanged(WindowEventArgs& e)
 
 void Window::onDestructionStarted(WindowEventArgs& e)
 {
+    d_destructionStarted = true;
 	fireEvent(EventDestructionStarted, e, EventNamespace);
 }
 
@@ -2638,7 +2656,10 @@ void Window::onDeactivated(ActivationEventArgs& e)
 	{
 		if (d_children[i]->isActive())
 		{
-			d_children[i]->onDeactivated(e);
+			// make sure the child gets itself as the .window member
+			ActivationEventArgs child_e(d_children[i]);
+			child_e.otherWindow = e.otherWindow;
+			d_children[i]->onDeactivated(child_e);
 		}
 
 	}
@@ -2961,6 +2982,45 @@ bool Window::isPropertyAtDefault(const Property* property) const
     }
     // we dont have a looknfeel with a new value for this property so we rely on the hardcoded default
     return property->isDefault(this);
+}
+
+void Window::setCustomClipperEnabled(bool setting)
+{
+    if (d_useCustomClipper != setting)
+    {
+        d_useCustomClipper = setting;
+        if (d_useCustomClipper)
+        {
+            requestRedraw();
+        }
+        // maybe fire an event sometime ?
+    }
+}
+
+void Window::setCustomClipArea(const Rect& r)
+{
+    if (d_customClipArea != r)
+    {
+        d_customClipArea = r;
+        if (d_useCustomClipper)
+        {
+            requestRedraw();
+        }
+        // maybe fire an event sometime ?
+    }
+}
+
+void Window::setCustomClipperWindow(Window* w)
+{
+    if (d_customClipperWindow != w)
+    {
+        d_customClipperWindow = w;
+        if (d_useCustomClipper)
+        {
+            requestRedraw();
+        }
+        // maybe fire an event sometime ?
+    }
 }
 
 } // End of  CEGUI namespace section

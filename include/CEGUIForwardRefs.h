@@ -107,6 +107,8 @@ class ItemListBase;
 class MenuBase;
 class Menubar;
 class PopupMenu;
+class ScrolledItemListBase;
+class ItemListbox;
 
 } // End of  CEGUI namespace section
 

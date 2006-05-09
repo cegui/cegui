@@ -1431,6 +1431,7 @@ void System::addStandardWindowFactories()
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Thumb));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemListbox));
 }
 
 void System::createSingletons()

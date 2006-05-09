@@ -1,11 +1,11 @@
 /************************************************************************
-    filename:   FalItemEntry.h
-    created:    Thu Sep 22 2005
+    filename:   FalItemListbox.h
+    created:    Mon Mar 20 2006
     author:     Tomas Lindquist Olsen
 *************************************************************************/
 /*************************************************************************
     Crazy Eddie's GUI System (http://www.cegui.org.uk)
-    Copyright (C)2004 - 2005 Paul D Turner (paul@cegui.org.uk)
+    Copyright (C)2004 - 2006 Paul D Turner (paul@cegui.org.uk)
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,37 +21,32 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#ifndef _FalItemEntry_h_
-#define _FalItemEntry_h_
+#ifndef _FalItemListbox_h_
+#define _FalItemListbox_h_
 
 #include "FalModule.h"
-#include "elements/CEGUIItemEntry.h"
+#include "elements/CEGUIItemListBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     /*!
     \brief
-        ItemEntry class for the FalagardBase module.
+        ItemListbox class for the FalagardBase module.
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States:
-            - Enabled           - basic rendering for enabled state.
-            - Disabled          - basic rendering for disabled state.
+            - Enabled
+            - Disabled
 
-        Optional states:
-            - SelectedEnabled   - basic rendering for enabled and selected state.
-            - SelectedDisabled  - basic rendering for disabled and selected state.
-
-        You only need to provide the 'Selected' states if the item will be selectable.
-        If if the item is selected (which implies that it is selectable) only the SelectedEnabled
-        state will be rendered.
-
-        Named areas:
-            - ContentSize
+        Named Areas:
+            ItemRenderArea
+            ItemRenderAreaHScroll
+            ItemRenderAreaVScroll
+            ItemRenderAreaHVScroll
     */
-    class FALAGARDBASE_API FalagardItemEntry : public ItemEntryWindowRenderer
+    class FALAGARDBASE_API FalagardItemListbox : public ItemListBaseWindowRenderer
     {
     public:
         static const utf8   TypeName[];       //!< type name for this widget.
@@ -60,13 +55,13 @@ namespace CEGUI
         \brief
             Constructor
         */
-        FalagardItemEntry(const String& type);
+        FalagardItemListbox(const String& type);
 
+        // overridden from ItemListBaseWindowRenderer base class.
         void render();
-        Size getItemPixelSize() const;
+        Rect getItemRenderArea(void) const;
     };
 
 } // End of  CEGUI namespace section
 
-
-#endif  // end of guard _FalItemEntry_h_
+#endif  // end of guard _FalItemListbox_h_
