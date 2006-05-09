@@ -128,6 +128,9 @@
 				RelativePath="..\..\..\..\..\WindowRendererSets\Falagard\src\FalItemEntry.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\..\WindowRendererSets\Falagard\src\FalItemListbox.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\..\WindowRendererSets\Falagard\src\FalListHeader.cpp">
 			</File>
 			<File
@@ -235,6 +238,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WindowRendererSets\Falagard\include\FalItemEntry.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\..\WindowRendererSets\Falagard\include\FalItemListbox.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\..\WindowRendererSets\Falagard\include\FalListHeader.h">

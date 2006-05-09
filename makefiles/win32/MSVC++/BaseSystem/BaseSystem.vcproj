@@ -387,10 +387,19 @@
 					RelativePath="..\..\..\..\src\elements\CEGUIItemEntry.cpp">
 				</File>
 				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemEntryProperties.cpp">
+				</File>
+				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIItemListBase.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIItemListBaseProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemListbox.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIItemListboxProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIListHeader.cpp">
@@ -478,6 +487,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUIScrolledContainerProperties.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIScrolledItemListBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\elements\CEGUIScrolledItemListBaseProperties.cpp">
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\elements\CEGUISlider.cpp">
@@ -858,10 +873,19 @@
 					RelativePath="..\..\..\..\include\elements\CEGUIItemEntry.h">
 				</File>
 				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemEntryProperties.h">
+				</File>
+				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIItemListBase.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIItemListBaseProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemListbox.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIItemListboxProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIListHeader.h">
@@ -949,6 +973,12 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUIScrolledContainerProperties.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIScrolledItemListBase.h">
+				</File>
+				<File
+					RelativePath="..\..\..\..\include\elements\CEGUIScrolledItemListBaseProperties.h">
 				</File>
 				<File
 					RelativePath="..\..\..\..\include\elements\CEGUISlider.h">
