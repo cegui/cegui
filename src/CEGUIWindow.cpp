@@ -3408,16 +3408,20 @@ void Window::setModalState(bool state)
 {
 	bool already_modal = getModalState();
 
-	// if going modal and not already the modal target
-	if (state == true && !already_modal)
+    // do nothing is state is'nt changing
+	if (state != already_modal)
 	{
-		activate();
-		System::getSingleton().setModalTarget(this);
-	}
-	// clear the modal target if we were it
-	else if (already_modal)
-	{
-		System::getSingleton().setModalTarget(NULL);
+	    // if going modal
+	    if (state)
+	    {
+		    activate();
+		    System::getSingleton().setModalTarget(this);
+	    }
+	    // clear the modal target
+	    else
+	    {
+		    System::getSingleton().setModalTarget(NULL);
+	    }
 	}
 }
 
@@ -3889,7 +3893,10 @@ void Window::onDeactivated(ActivationEventArgs& e)
 	{
 		if (d_children[i]->isActive())
 		{
-			d_children[i]->onDeactivated(e);
+			// make sure the child gets itself as the .window member
+			ActivationEventArgs child_e(d_children[i]);
+			child_e.otherWindow = e.otherWindow;
+			d_children[i]->onDeactivated(child_e);
 		}
 
 	}

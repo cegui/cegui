@@ -502,7 +502,11 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	if (start_item != NULL)
 	{
 		startRef = getItemGridReference(start_item);
-		++startRef.column;
+		if (++startRef.column == getColumnCount())
+		{
+		    startRef.column = 0;
+		    ++startRef.row;
+		}
 	}
 
 	// perform the search

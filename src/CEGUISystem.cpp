@@ -347,7 +347,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
     Logger::getSingleton().logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
     Logger::getSingleton().logEvent(d_scriptModule ? "---- Scripting module is: " + d_scriptModule->getIdentifierString() + " ----" : "---- Scripting module is: None ----");
 	// subscribe to hear about display mode changes
-	d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
+	d_rendererCon = d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 
 	// load base scheme
 	if (!configSchemeName.empty())
@@ -415,6 +415,9 @@ System::~System(void)
 		catch (...) {}  // catch all exceptions and continue system shutdown
 
 	}
+
+	// unsubscribe from the renderer
+    d_rendererCon->disconnect();
 
     // Cleanup script module bindings
     if (d_scriptModule)
