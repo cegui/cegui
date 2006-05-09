@@ -977,6 +977,9 @@ private:
     Tooltip* d_defaultTooltip;      //!< System default tooltip object.
     bool     d_weOwnTooltip;        //!< true if System created the custom Tooltip.
 
+    //!< Holds the connection to Renderer::EventDisplaySizeChanged so we can unsubscribe before we die.
+    Event::Connection d_rendererCon;
+
     static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
 };
 
