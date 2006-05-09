@@ -14,8 +14,11 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUIFrameWindowProperties.h \
                      CEGUIGUISheet.h \
                      CEGUIItemEntry.h \
+                     CEGUIItemEntryProperties.h \
                      CEGUIItemListBase.h \
                      CEGUIItemListBaseProperties.h \
+                     CEGUIItemListbox.h \
+                     CEGUIItemListboxProperties.h \
                      CEGUIListHeader.h \
                      CEGUIListHeaderProperties.h \
                      CEGUIListbox.h \
@@ -47,6 +50,8 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUIScrollbarProperties.h \
                      CEGUIScrolledContainer.h \
                      CEGUIScrolledContainerProperties.h \
+                     CEGUIScrolledItemListBase.h \
+                     CEGUIScrolledItemListBaseProperties.h \
                      CEGUISlider.h \
                      CEGUISliderProperties.h \
                      CEGUISpinner.h \
