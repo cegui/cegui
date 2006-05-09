@@ -319,7 +319,7 @@ void WindowManager::renameWindow(Window* window, const String& new_name)
                 window->rename(new_name);
             }
             // rename fails if target name already exists
-            catch (AlreadyExistsException& renameException)
+            catch (AlreadyExistsException&)
             {
                 // re-add window to registry under it's old name
                 d_windowRegistry[window->getName()] = window;

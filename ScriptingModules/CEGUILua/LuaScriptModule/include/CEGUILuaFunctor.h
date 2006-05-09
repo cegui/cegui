@@ -67,7 +67,7 @@ public:
         Pushes the Lua function named \param name on top of the Lua stack.
         The name may contain '.' (dots) character for (nested) table values.
     */
-    static bool pushNamedFunction(lua_State* L, const String& name);
+    static void pushNamedFunction(lua_State* L, const String& name);
 
 private:
     lua_State* L;

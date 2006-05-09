@@ -180,7 +180,7 @@ Event::Connection LuaFunctor::SubscribeEvent(EventSet* self, const String& event
 /*************************************************************************
     Pushes a named function on the stack
 *************************************************************************/
-bool LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
+void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
 {
     int top = lua_gettop(L);
 
