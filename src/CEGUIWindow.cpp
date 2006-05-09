@@ -2655,7 +2655,10 @@ void Window::onDeactivated(ActivationEventArgs& e)
 	{
 		if (d_children[i]->isActive())
 		{
-			d_children[i]->onDeactivated(e);
+			// make sure the child gets itself as the .window member
+			ActivationEventArgs child_e(d_children[i]);
+			child_e.otherWindow = e.otherWindow;
+			d_children[i]->onDeactivated(child_e);
 		}
 
 	}
