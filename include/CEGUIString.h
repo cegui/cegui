@@ -1194,6 +1194,24 @@ public:
 		return build_utf8_buff();
 	}
 
+    /*!
+    \brief
+        Returns a pointer to the buffer in use.
+    */
+	utf32*	ptr(void)
+	{
+		return (d_reserve > STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
+	}
+
+	/*!
+    \brief
+        Returns a pointer to the buffer in use. (const version)
+    */
+	const utf32*	ptr(void) const
+	{
+		return (d_reserve > STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
+	}
+
 	// copy, at most, 'len' code-points of the string, begining with code-point 'idx', into the array 'buf' as valid utf8 encoded data
 	// return number of utf8 code units placed into the buffer
 	/*!
@@ -4771,18 +4789,6 @@ private:
 	{
 		d_cplength = len;
 		ptr()[len] = (utf32)(0);
-	}
-
-	// return a ptr to the buffer in use.
-	utf32*	ptr(void)
-	{
-		return (d_reserve > STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
-	}
-
-	// return a ptr tot he buffer in use (const version)
-	const utf32*	ptr(void) const
-	{
-		return (d_reserve > STR_QUICKBUFF_SIZE) ? d_buffer : d_quickbuff;
 	}
 
 	// initialise string object
