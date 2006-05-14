@@ -64,20 +64,30 @@ namespace CEGUI
         // build name of state we're in
         String stateName(w->isDisabled() ? "Disabled" : "Enabled");
 
+        String suffix;
         if (w->isOpened())
-            stateName += "PopupOpen";
+            suffix = "PopupOpen";
         else if (w->isPushed())
-            stateName += "Pushed";
+            suffix = w->isHovering() ? "Pushed" : "PushedOff";
         else if (w->isHovering())
-            stateName += "Hover";
+            suffix = "Hover";
         else
-            stateName += "Normal";
+            suffix = "Normal";
 
         const StateImagery* imagery;
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
+        
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(stateName);
+        if (wlf.isStateImageryPresent(stateName+suffix))
+        {
+            imagery = &wlf.getStateImagery(stateName+suffix);
+        }
+        else
+        {
+            imagery = &wlf.getStateImagery(stateName+"Normal");
+        }
+        
         // peform the rendering operation.
         imagery->render(*w);
 

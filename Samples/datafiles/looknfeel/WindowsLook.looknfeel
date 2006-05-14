@@ -1654,6 +1654,7 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
         <PropertyDefinition name="HoverColour" initialValue="FFA7C7FF" redrawOnWrite="true" />
         <PropertyDefinition name="PushedColour" initialValue="FF87A7DF" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedOffColour" initialValue="7F87A7DF" redrawOnWrite="true" />
         <PropertyDefinition name="OpenedColour" initialValue="FFEFEFEF" redrawOnWrite="true" />
         <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ContentSize">
@@ -1830,6 +1831,16 @@
                 </Section>
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledPushedOff">
+            <Layer>
+                <Section section="frame">
+                    <ColourProperty name="PushedOffColour" />
+                </Section>
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
         <StateImagery name="EnabledPopupOpen">
             <Layer>
                 <Section section="frame">
@@ -1856,6 +1867,14 @@
             </Layer>
         </StateImagery>
         <StateImagery name="DisabledPushed">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label">
+                    <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledPushedOff">
             <Layer>
                 <Section section="frame" />
                 <Section section="label">

@@ -40,14 +40,16 @@ namespace CEGUI
 
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
-        States:
+        States (missing states will default to '***Normal'):
             - EnabledNormal
             - EnabledHover
             - EnabledPushed
+            - EnabledPushedOff
             - EnabledPopupOpen
             - DisabledNormal
             - DisabledHover
             - DisabledPushed
+            - DisabledPushedOff
             - DisabledPopupOpen
             - PopupClosedIcon   - Additional state drawn when item has a pop-up attached (in closed state)
             - PopupOpenIcon     - Additional state drawn when item has a pop-up attached (in open state)
