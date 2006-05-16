@@ -34,7 +34,6 @@
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef FALAGARDWRBASE_EXPORTS
 #       define FALAGARDBASE_API __declspec(dllexport)
-#       define CEGUIWRMODULE_EXPORTS
 #   else
 #       define FALAGARDBASE_API __declspec(dllimport)
 #   endif
