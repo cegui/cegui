@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME           = "Crazy Eddies GUI System"
-PROJECT_NUMBER         = 1
+PROJECT_NUMBER         = "0.5.0"
 OUTPUT_DIRECTORY       = "documentation/api_reference"
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = YES

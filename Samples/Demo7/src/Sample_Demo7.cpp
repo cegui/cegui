@@ -280,7 +280,7 @@ void Demo7Sample::createDemoWindows(void)
     mleb->setWindowMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
     mleb->setWindowPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.1f)));
     mleb->setWindowSize(UVector2(cegui_reldim(0.96f), cegui_reldim( 0.85f)));
-    mleb->setText("Multi-line edit box.  Edit me!\nCa va marcher que je te dis\nComme ca\nLigne 4");
+    mleb->setText("Multi-line edit box.  Edit me!\n");
 
     //
     // List box setup

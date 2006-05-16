@@ -70,6 +70,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIXMLAttributes.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \
+				 CEGUIXMLSerializer.h \
                  CEGUIcolour.h 
 
 noinst_HEADERS = CEGUIFontManager_implData.h \
