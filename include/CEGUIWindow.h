@@ -402,6 +402,28 @@ public:
 
     /*!
     \brief
+        returns whether at least one window with the given ID code is attached
+        to this Window or any of it's children as a child.
+
+    \note
+        ID codes are client assigned and may or may not be unique, and as such,
+        the return from this function will only have meaning to the client code.
+
+        WARNING! This function can be very expensive and should only be used
+        when you have no other option available. If you decide to use it anyway,
+        make sure the window hierarchy from the entry point is small.
+
+    \param ID
+        uint ID code to look for.
+
+    \return
+        - true if at least one child window was found with the ID code \a ID
+        - false if no child window was found with the ID code \a ID.
+    */
+    bool isChildRecursive(uint ID) const;
+
+    /*!
+    \brief
         return true if the given Window is a child of this window.
 
     \param window
@@ -458,6 +480,34 @@ public:
         thrown if no window with the ID code \a ID is attached to this Window.
     */
     Window* getChild(uint ID) const;
+
+    /*!
+    \brief
+        return a pointer to the first attached child window with the specified
+        ID value. Children are traversed recursively.
+
+        This function will throw an exception if no child object with the given
+        ID is attached.  This decision was made (over returning NULL if no
+        window was found) so that client code can assume that if the call
+        returns it has a valid window pointer.  We provide the isChild()
+        functions for checking if a given window is attached.
+
+    \note
+        WARNING! This function can be very expensive and should only be used
+        when you have no other option available. If you decide to use it anyway,
+        make sure the window hierarchy from the entry point is small.
+
+    \param ID
+        uint value specifying the ID code of the window to return a pointer to.
+
+    \return
+        Pointer to the (first) Window object attached to this window that has
+        the ID code \a ID.
+
+    \exception UnknownObjectException
+        thrown if no window with the ID code \a ID is attached to this Window.
+    */
+    Window* getChildRecursive(uint ID) const;
 
     /*!
     \brief

@@ -322,6 +322,26 @@ bool Window::isChild(uint ID) const
 	return false;
 }
 
+/*************************************************************************
+	returns whether at least one window with the given ID code is
+	attached as a child to us or any of our children.
+*************************************************************************/
+bool Window::isChildRecursive(uint ID) const
+{
+	size_t child_count = getChildCount();
+
+	for (size_t i = 0; i < child_count; ++i)
+	{
+		if (d_children[i]->getID() == ID || d_children[i]->isChildRecursive(ID))
+		{
+			return true;
+		}
+
+	}
+
+	return false;
+}
+
 
 /*************************************************************************
 	return true if the given Window is a child of this window.
@@ -384,6 +404,30 @@ Window* Window::getChild(uint ID) const
 	char strbuf[16];
 	sprintf(strbuf, "%X", ID);
 	throw UnknownObjectException("Window::getChild - The Window with ID: '" + std::string(strbuf) + "' is not attached to Window '" + d_name + "'.");
+}
+
+
+/*************************************************************************
+	return a pointer to the first attached child window with the
+	specified ID. Recursive version.
+*************************************************************************/
+Window* Window::getChildRecursive(uint ID) const
+{
+	size_t child_count = getChildCount();
+
+	for (size_t i = 0; i < child_count; ++i)
+	{
+		if (d_children[i]->getID() == ID || d_children[i]->isChildRecursive(ID))
+		{
+			return d_children[i];
+		}
+
+	}
+
+	// TODO: Update exception to include ID code
+	char strbuf[16];
+	sprintf(strbuf, "%X", ID);
+	throw UnknownObjectException("Window::getChild - The Window with ID: '" + std::string(strbuf) + "' is not attached to Window '" + d_name + "' or any of its children.");
 }
 
 
