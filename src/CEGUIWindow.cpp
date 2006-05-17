@@ -417,17 +417,19 @@ Window* Window::getChildRecursive(uint ID) const
 
 	for (size_t i = 0; i < child_count; ++i)
 	{
-		if (d_children[i]->getID() == ID || d_children[i]->isChildRecursive(ID))
+		if (d_children[i]->getID() == ID)
 		{
 			return d_children[i];
 		}
-
+		
+		Window* tmp = d_children[i]->getChildRecursive(ID);
+		if (tmp != 0)
+        {
+            return tmp;
+        }
 	}
 
-	// TODO: Update exception to include ID code
-	char strbuf[16];
-	sprintf(strbuf, "%X", ID);
-	throw UnknownObjectException("Window::getChild - The Window with ID: '" + std::string(strbuf) + "' is not attached to Window '" + d_name + "' or any of its children.");
+	return 0;
 }
 
 

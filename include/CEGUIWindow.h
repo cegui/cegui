@@ -486,11 +486,8 @@ public:
         return a pointer to the first attached child window with the specified
         ID value. Children are traversed recursively.
 
-        This function will throw an exception if no child object with the given
-        ID is attached.  This decision was made (over returning NULL if no
-        window was found) so that client code can assume that if the call
-        returns it has a valid window pointer.  We provide the isChild()
-        functions for checking if a given window is attached.
+        Contrary to the non recursive version of this function, this one will
+        not throw an exception, but return 0 in case no child was found.
 
     \note
         WARNING! This function can be very expensive and should only be used
@@ -503,9 +500,7 @@ public:
     \return
         Pointer to the (first) Window object attached to this window that has
         the ID code \a ID.
-
-    \exception UnknownObjectException
-        thrown if no window with the ID code \a ID is attached to this Window.
+        If no child is found with the ID code \a ID, 0 is returned.
     */
     Window* getChildRecursive(uint ID) const;
 
