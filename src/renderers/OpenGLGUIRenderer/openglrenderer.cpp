@@ -274,9 +274,17 @@ Texture* OpenGLRenderer::createTexture(void)
 *************************************************************************/
 Texture* OpenGLRenderer::createTexture(const String& filename, const String& resourceGroup)
 {
-	OpenGLTexture* tex = (OpenGLTexture*)createTexture();
-	tex->loadFromFile(filename, resourceGroup);
-
+	OpenGLTexture* tex = new OpenGLTexture(this);
+	try
+	{
+	    tex->loadFromFile(filename, resourceGroup);
+	}
+	catch (RendererException&)
+	{
+	    delete tex;
+	    throw;
+	}
+	d_texturelist.push_back(tex);
 	return tex;
 }
 
@@ -286,9 +294,17 @@ Texture* OpenGLRenderer::createTexture(const String& filename, const String& res
 *************************************************************************/
 Texture* OpenGLRenderer::createTexture(float size)
 {
-	OpenGLTexture* tex = (OpenGLTexture*)createTexture();
-	tex->setOGLTextureSize((uint)size);
-
+	OpenGLTexture* tex = new OpenGLTexture(this);
+	try
+	{
+	    tex->setOGLTextureSize((uint)size);
+	}
+	catch (RendererException&)
+	{
+	    delete tex;
+	    throw;
+	}
+    d_texturelist.push_back(tex);
 	return tex;
 }
 

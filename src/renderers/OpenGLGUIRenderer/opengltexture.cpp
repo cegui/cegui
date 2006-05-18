@@ -215,6 +215,14 @@ void OpenGLTexture::setOGLTextureSize(uint size)
 		size = (2 << log);
 	}
 
+	// make sure size is within boundaries
+	int maxSize;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxSize);
+	if (size > (uint)maxSize)
+	{
+	    throw RendererException("OpenGLTexture::setOGLTextureSize - size too big");
+	}
+
 	// allocate temp buffer for texture
 	uchar* buff = new uchar[size * size * 4];
 

@@ -352,9 +352,17 @@ Texture* DirectX9Renderer::createTexture(void)
 *************************************************************************/
 Texture* DirectX9Renderer::createTexture(const String& filename, const String& resourceGroup)
 {
-	DirectX9Texture* tex = (DirectX9Texture*)createTexture();
-	tex->loadFromFile(filename, resourceGroup);
-
+	DirectX9Texture* tex = new DirectX9Texture(this);
+	try
+	{
+	    tex->loadFromFile(filename, resourceGroup);
+	}
+	catch (RendererException&)
+	{
+	    delete tex;
+	    throw;
+	}
+	d_texturelist.push_back(tex);
 	return tex;
 }
 
@@ -364,9 +372,17 @@ Texture* DirectX9Renderer::createTexture(const String& filename, const String& r
 *************************************************************************/
 Texture* DirectX9Renderer::createTexture(float size)
 {
-	DirectX9Texture* tex = (DirectX9Texture*)createTexture();
-	tex->setD3DTextureSize((uint)size);
-
+	DirectX9Texture* tex = new DirectX9Texture(this);
+	try
+	{
+	    tex->setD3DTextureSize((uint)size);
+	}
+	catch (RendererException&)
+	{
+	    delete tex;
+	    throw;
+	}
+	d_texturelist.push_back(tex);
 	return tex;
 }
 
