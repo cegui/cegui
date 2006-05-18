@@ -30,10 +30,12 @@
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include <vector>
+
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4251)
 #endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -192,4 +194,9 @@ namespace CEGUI
         XMLSerializer& operator=(const XMLSerializer& obj);  
     };
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
 #endif 
