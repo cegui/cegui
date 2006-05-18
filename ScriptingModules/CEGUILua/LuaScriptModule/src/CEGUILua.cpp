@@ -107,14 +107,19 @@ void LuaScriptModule::executeScriptFile(const String& filename, const String& re
 	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename,
         raw, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
-	// load code into lua and call it
+	// load code into lua
 	int top = lua_gettop(d_state);
-	int error = luaL_loadbuffer(d_state, (char*)raw.getDataPtr(), raw.getSize(), filename.c_str()) || lua_pcall(d_state,0,0,0);
-
+	int loaderr = luaL_loadbuffer(d_state, (char*)raw.getDataPtr(), raw.getSize(), filename.c_str());
 	System::getSingleton().getResourceProvider()->unloadRawDataContainer( raw );
-
-	// handle errors
-	if (error)
+	if (loaderr)
+	{
+	    String errMsg = lua_tostring(d_state,-1);
+		lua_settop(d_state,top);
+		throw ScriptException("Unable to execute Lua script file: '"+filename+"'\n\n"+errMsg+"\n");
+	}
+    
+    // call it
+	if (lua_pcall(d_state,0,0,0))
 	{
 	    String errMsg = lua_tostring(d_state,-1);
 		lua_settop(d_state,top);
