@@ -218,16 +218,16 @@ function classDeclaration:outchecktype (narg)
   def = 0
  end
  if self.dim ~= '' then
-	 if t=='string' then
-   return 'tolua_isstring(tolua_S,'..narg..','..def..',&tolua_err)'
-		else
-   return 'tolua_istable(tolua_S,'..narg..',0,&tolua_err)'
-		end
-	elseif t then
-  return 'tolua_is'..t..'(tolua_S,'..narg..','..def..',&tolua_err)'
-	else
+	--if t=='string' then
+	--	return 'tolua_isstringarray(tolua_S,'..narg..','..def..',&tolua_err)'
+	--else
+	return 'tolua_istable(tolua_S,'..narg..',0,&tolua_err)'
+ 	--end
+ elseif t then
+	return 'tolua_is'..t..'(tolua_S,'..narg..','..def..',&tolua_err)'
+ else
   return 'tolua_isusertype(tolua_S,'..narg..',"'..self.type..'",'..def..',&tolua_err)'
-	end
+ end
 end
 
 function classDeclaration:builddeclaration (narg, cplusplus)

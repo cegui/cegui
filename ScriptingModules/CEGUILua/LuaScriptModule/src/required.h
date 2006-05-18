@@ -102,3 +102,9 @@ void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, con
 bool ceguiLua_System_isSystemKeyDown(const System* sys, SystemKey k);
 
 }
+
+// the binding file generates alot of
+// warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+#if defined(_MSC_VER)
+#   pragma warning(disable : 4800)
+#endif

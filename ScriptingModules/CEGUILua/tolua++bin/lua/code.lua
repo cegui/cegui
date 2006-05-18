@@ -48,7 +48,7 @@ function classCode:register (pre)
 
  -- convert to C
  output('\n'..pre..'{ /* begin embedded lua code */\n')
- output(pre..' int top;')
+ output(pre..' int top = lua_gettop(tolua_S);')
  output(pre..' static unsigned char B[] = {\n   ')
  local t={n=0}
  local b = gsub(s,'(.)',function (c)
@@ -59,7 +59,6 @@ function classCode:register (pre)
                )
  output(b..strbyte(" "))
  output('\n'..pre..' };\n')
- output(pre..' top = lua_gettop(tolua_S);')
  if first_line and first_line ~= "" then
  	output(pre..' tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua embedded: '..first_line..'");')
  else

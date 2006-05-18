@@ -91,7 +91,11 @@ function classArray:supcode ()
 		output(' tolua_index = (int)tolua_tonumber(tolua_S,2,0);')
 	end
 	output('#ifndef TOLUA_RELEASE\n')
- output(' if (tolua_index<0 || tolua_index>='..self.dim..')')
+	if self.dim and self.dim ~= '' then
+	  output(' if (tolua_index<0 || tolua_index>='..self.dim..')')
+	else
+	  output(' if (tolua_index<0)')
+	end
  output('  tolua_error(tolua_S,"array indexing out of range.",NULL);')
 	output('#endif\n')
 
@@ -156,7 +160,11 @@ function classArray:supcode ()
 	end
 
 	 output('#ifndef TOLUA_RELEASE\n')
-  output(' if (tolua_index<0 || tolua_index>='..self.dim..')')
+	if self.dim and self.dim ~= '' then
+	  output(' if (tolua_index<0 || tolua_index>='..self.dim..')')
+	else
+	  output(' if (tolua_index<0)')
+	end
   output('  tolua_error(tolua_S,"array indexing out of range.",NULL);')
 		output('#endif\n')
 

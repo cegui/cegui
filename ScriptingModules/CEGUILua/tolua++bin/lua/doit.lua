@@ -11,15 +11,32 @@
 -- the author has no obligation to provide maintenance, support, updates,
 -- enhancements, or modifications.
 
+function parse_extra()
+
+	for k,v in ipairs(_extra_parameters or {}) do
+		
+		local b,e,name,value = string.find(v, "^([^=])=(.*)$")
+		if b then
+			_extra_parameters[name] = value
+		else
+			_extra_parameters[v] = true
+		end
+	end
+end
+
 function doit ()
 	-- define package name, if not provided
 	if not flags.n then
 		if flags.f then
-			flags.n = gsub(flags.f,"%..*","")
+			flags.n = gsub(flags.f,"%..*$","")
+			_,_,flags.n = string.find(flags.n, "([^/\\]*)$")
 		else
 			error("#no package name nor input file provided")
 		end
 	end
+
+	-- parse table with extra paramters
+	parse_extra()
 
 	-- do this after setting the package name
 	if flags['L'] then

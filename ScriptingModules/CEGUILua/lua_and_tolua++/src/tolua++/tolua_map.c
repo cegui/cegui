@@ -495,8 +495,10 @@ static void push_collector(lua_State* L, const char* type, lua_CFunction col) {
 
 	/* push collector function, but only if it's not NULL, or if there's no
 	   collector already */
+	if (!col) return;
 	luaL_getmetatable(L,type);
 	lua_pushstring(L,".collector");
+	/*
 	if (!col) {
 		lua_pushvalue(L, -1);
 		lua_rawget(L, -3);
@@ -506,6 +508,7 @@ static void push_collector(lua_State* L, const char* type, lua_CFunction col) {
 		};
 		lua_pop(L, 1);
 	};
+	//	*/
 	lua_pushcfunction(L,col);
 
 	lua_rawset(L,-3);

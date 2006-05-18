@@ -3,7 +3,7 @@
 ** Written by Waldemar Celes
 ** TeCGraf/PUC-Rio
 ** Aug 2003
-** $Id$
+** $Id:$
 */
 
 /* This code is free software; you can redistribute it and/or modify it.
@@ -37,12 +37,14 @@ static void help (void)
          "  -P       : parse and print structure information (for debug).\n"
          "  -S       : disable support for c++ strings.\n"
          "  -1       : substract 1 to operator[] index (for compatibility with tolua5).\n"
-         "  -L       : run lua file (with dofile()) before doing anything.\n"
+         "  -L  file : run lua file (with dofile()) before doing anything.\n"
          "  -D       : disable automatic exporting of destructors for classes that have\n"
          "             constructors (for compatibility with tolua5)\n"
          "  -W       : disable warnings for unsupported features (for compatibility\n"
          "             with tolua5)\n"
          "  -C       : disable cleanup of included lua code (for easier debugging)\n"
+         "  -E  value[=value] : add extra values to the luastate\n"
+         "  -t       : export a list of types asociates with the C++ typeid name\n"
          "  -h       : print this message.\n"
          "Should the input file be omitted, stdin is assumed;\n"
          "in that case, the package name must be explicitly set.\n\n"
@@ -60,6 +62,15 @@ static void setfield (lua_State* L, int table, char* f, char* v)
  lua_pushstring(L,v);
  lua_settable(L,table);
 }
+
+static void add_extra (lua_State* L, char* value) {
+	int len;
+	lua_getglobal(L, "_extra_parameters");
+	len = luaL_getn(L, -1);
+	lua_pushstring(L, value);
+	lua_rawseti(L, -2, len+1);
+	lua_pop(L, 1);
+};
 
 static void error (char* o)
 {
@@ -95,6 +106,8 @@ int main (int argc, char* argv[])
  {
   int i, t;
   lua_newtable(L);
+  lua_setglobal(L, "_extra_parameters");
+  lua_newtable(L);
   lua_pushvalue(L,-1);
   lua_setglobal(L,"flags");
   t = lua_gettop(L);
@@ -117,6 +130,8 @@ int main (int argc, char* argv[])
      case 'D': setfield(L,t,"D",""); break;
      case 'W': setfield(L,t,"W",""); break;
      case 'C': setfield(L,t,"C",""); break;
+     case 'E': add_extra(L,argv[++i]); break;
+     case 't': setfield(L,t,"t",""); break;
      default: error(argv[i]); break;
     }
    }

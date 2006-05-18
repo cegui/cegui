@@ -44,7 +44,7 @@
 ******* END CEGUI CHANGES *******
 ********************************/
 
-#define TOLUA_VERSION "tolua++-1.0.91"
+#define TOLUA_VERSION "tolua++-1.0.92"
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,6 +52,9 @@ extern "C" {
 
 #define tolua_pushcppstring(x,y)	tolua_pushstring(x,y.c_str())
 #define tolua_iscppstring	tolua_isstring
+
+#define tolua_iscppstringarray tolua_isstringarray
+#define tolua_pushfieldcppstring(L,lo,idx,s) tolua_pushfieldstring(L, lo, idx, s.c_str())
 
 #define TEMPLATE_BIND(p)
 #define TOLUA_TEMPLATE_BIND(p)
@@ -157,8 +160,16 @@ static inline const char* tolua_tocppstring (lua_State* L, int narg, const char*
 	const char* s = tolua_tostring(L, narg, def);
 	return s?s:"";
 };
+
+static inline const char* tolua_tofieldcppstring (lua_State* L, int lo, int index, const char* def) {
+
+	const char* s = tolua_tofieldstring(L, lo, index, def);
+	return s?s:"";
+};
+
 #else
 #define tolua_tocppstring tolua_tostring
+#define tolua_tofieldcppstring tolua_tofieldstring
 #endif
 
 TOLUA_API int tolua_fast_isa(lua_State *L, int mt_indexa, int mt_indexb, int super_index);

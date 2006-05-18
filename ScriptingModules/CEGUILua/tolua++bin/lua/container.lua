@@ -493,6 +493,15 @@ function classContainer:doparse (s)
  	end
  end
 
+ -- try 'extern' keyword
+ do
+ 	local b,e = string.find(s, "^%s*extern%s+")
+ 	if b then
+		-- do nothing
+ 		return strsub(s, e+1)
+ 	end
+ end
+	
  -- try 'virtual' keyworkd
  do
  	local b,e = string.find(s, "^%s*virtual%s+")

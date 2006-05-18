@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.91 on 04/04/06 18:05:59.
+** Generated automatically by tolua++-1.0.92 on 05/19/06 01:41:02.
 */
 
 #ifndef __cplusplus
@@ -14420,6 +14420,40 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: isChildRecursive of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_isChildRecursive00
+static int tolua_CEGUI_CEGUI_Window_isChildRecursive00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  unsigned int ID = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isChildRecursive'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isChildRecursive(ID);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isChildRecursive'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: addChildWindow of class  CEGUI::Window */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_addChildWindow00
 static int tolua_CEGUI_CEGUI_Window_addChildWindow00(lua_State* tolua_S)
@@ -14590,10 +14624,15 @@ static int tolua_CEGUI_CEGUI_Window_getChild00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChild'",NULL);
 #endif
+ try
  {
   CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChild(ID);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
+catch(CEGUI::UnknownObjectException&e)
+{
+ return 0;
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
@@ -14622,10 +14661,15 @@ static int tolua_CEGUI_CEGUI_Window_getChild01(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChild'",NULL);
 #endif
+ try
  {
   CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChild(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
+catch(CEGUI::UnknownObjectException&e)
+{
+ return 0;
+}
  }
  return 1;
 tolua_lerror:
@@ -14762,6 +14806,40 @@ static int tolua_CEGUI_CEGUI_Window_getTargetChildAtPosition00(lua_State* tolua_
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getTargetChildAtPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getChildRecursive of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildRecursive00
+static int tolua_CEGUI_CEGUI_Window_getChildRecursive00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  unsigned int ID = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildRecursive'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChildRecursive(ID);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getChildRecursive'.",&tolua_err);
  return 0;
 #endif
 }
@@ -18107,6 +18185,50 @@ static int tolua_CEGUI_CEGUI_Window_setMousePassThroughEnabled00(lua_State* tolu
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setMousePassThroughEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: rename of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_rename00
+static int tolua_CEGUI_CEGUI_Window_rename00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string new_name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'rename'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  self->rename(new_name);
+ }
+catch(CEGUI::Exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'rename'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'rename'.",&tolua_err);
  return 0;
 #endif
 }
@@ -44314,12 +44436,11 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 80,111,105,110,116, 32, 61, 32,
     67, 69, 71, 85, 73, 46, 86,101, 99,116,111,114, 50,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 1");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44672,7 +44793,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
     46,105,116,101,114, 97,116,111,114, 95,105,109,112,108, 95,
@@ -44689,7 +44810,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    105,116,101,114, 97,116,111,114, 95,105,109,112,108, 95,110,
    101,120,116, 44, 32,115,101,108,102, 59, 10,101,110,100,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 2");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44720,14 +44840,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 80,114,111,112,101,114,116,121,
     73,116,101,114, 97,116,111,114, 46,105,116,101,114, 97,116,
    111,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114,
     97,116,111,114, 95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 3");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44753,14 +44872,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 69,118,101,110,116, 73,116,101,
    114, 97,116,111,114, 46,105,116,101,114, 97,116,111,114, 32,
     61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114, 97,116,111,
    114, 95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 4");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44786,14 +44904,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 73,116,
    101,114, 97,116,111,114, 46,105,116,101,114, 97,116,111,114,
     32, 61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114, 97,116,
    111,114, 95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 5");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44819,7 +44936,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 70, 97,
     99,116,111,114,121, 73,116,101,114, 97,116,111,114, 46,105,
@@ -44827,7 +44944,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     46,105,116,101,114, 97,116,111,114, 95,105,109,112,108, 59,
    32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 6");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44853,7 +44969,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 70, 97,108, 97,103, 97,114,100,
     77, 97,112,112,105,110,103, 73,116,101,114, 97,116,111,114,
@@ -44861,7 +44977,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     85, 73, 46,105,116,101,114, 97,116,111,114, 95,105,109,112,
    108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 7");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44887,14 +45002,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 73,109, 97,103,101,115,101,116,
     73,116,101,114, 97,116,111,114, 46,105,116,101,114, 97,116,
    111,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114,
     97,116,111,114, 95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 8");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44920,14 +45034,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 73,109, 97,103,101, 73,116,101,
    114, 97,116,111,114, 46,105,116,101,114, 97,116,111,114, 32,
     61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114, 97,116,111,
    114, 95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 9");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44953,14 +45066,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 83, 99,104,101,109,101, 73,116,
    101,114, 97,116,111,114, 46,105,116,101,114, 97,116,111,114,
     32, 61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114, 97,116,
    111,114, 95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 10");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -44986,14 +45098,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10, 67, 69, 71, 85, 73, 46, 70,111,110,116, 73,116,101,114,
     97,116,111,114, 46,105,116,101,114, 97,116,111,114, 32, 61,
     32, 67, 69, 71, 85, 73, 46,105,116,101,114, 97,116,111,114,
     95,105,109,112,108, 59,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 11");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
@@ -45337,6 +45448,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isChild",tolua_CEGUI_CEGUI_Window_isChild00);
    tolua_function(tolua_S,"isChild",tolua_CEGUI_CEGUI_Window_isChild01);
    tolua_function(tolua_S,"isChild",tolua_CEGUI_CEGUI_Window_isChild02);
+   tolua_function(tolua_S,"isChildRecursive",tolua_CEGUI_CEGUI_Window_isChildRecursive00);
    tolua_function(tolua_S,"addChildWindow",tolua_CEGUI_CEGUI_Window_addChildWindow00);
    tolua_function(tolua_S,"addChildWindow",tolua_CEGUI_CEGUI_Window_addChildWindow01);
    tolua_function(tolua_S,"removeChildWindow",tolua_CEGUI_CEGUI_Window_removeChildWindow00);
@@ -45348,6 +45460,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getActiveChild",tolua_CEGUI_CEGUI_Window_getActiveChild00);
    tolua_function(tolua_S,"getChildAtPosition",tolua_CEGUI_CEGUI_Window_getChildAtPosition00);
    tolua_function(tolua_S,"getTargetChildAtPosition",tolua_CEGUI_CEGUI_Window_getTargetChildAtPosition00);
+   tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive00);
    tolua_function(tolua_S,"getParent",tolua_CEGUI_CEGUI_Window_getParent00);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor00);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor01);
@@ -45449,6 +45562,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getWindowMinSize",tolua_CEGUI_CEGUI_Window_getWindowMinSize00);
    tolua_function(tolua_S,"isMousePassThroughEnabled",tolua_CEGUI_CEGUI_Window_isMousePassThroughEnabled00);
    tolua_function(tolua_S,"setMousePassThroughEnabled",tolua_CEGUI_CEGUI_Window_setMousePassThroughEnabled00);
+   tolua_function(tolua_S,"rename",tolua_CEGUI_CEGUI_Window_rename00);
    tolua_function(tolua_S,"setProperty",tolua_CEGUI_CEGUI_Window_setProperty00);
    tolua_function(tolua_S,"getProperty",tolua_CEGUI_CEGUI_Window_getProperty00);
    tolua_function(tolua_S,"getPropertyDefault",tolua_CEGUI_CEGUI_Window_getPropertyDefault00);
@@ -46651,7 +46765,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
     46,116,111, 77,111,117,115,101, 67,117,114,115,111,114, 69,
@@ -46729,14 +46843,13 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    115, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,114, 97,
    103, 68,114,111,112, 69,118,101,110,116, 65,114,103,115,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 12");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
 
 
   { /* begin embedded lua code */
-   int top;
+   int top = lua_gettop(tolua_S);
    static unsigned char B[] = {
   10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
     46,116,111, 66,117,116,116,111,110, 66, 97,115,101, 40,119,
@@ -47002,7 +47115,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,111,111,108,116,
    105,112,32
    };
-   top = lua_gettop(tolua_S);
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 13");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
