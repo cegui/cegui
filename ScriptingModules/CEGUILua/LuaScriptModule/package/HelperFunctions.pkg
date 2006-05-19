@@ -94,6 +94,10 @@ function CEGUI.toItemListBase(w)
     return tolua.cast(w,"CEGUI::ItemListBase")
 end
 
+function CEGUI.toItemListbox(w)
+    return tolua.cast(w,"CEGUI::ItemListbox")
+end
+
 function CEGUI.toListbox(w)
     return tolua.cast(w,"CEGUI::Listbox")
 end
@@ -154,6 +158,10 @@ function CEGUI.toScrolledContainer(w)
     return tolua.cast(w,"CEGUI::ScrolledContainer")
 end
 
+function CEGUI.toScrolledItemListBase(w)
+    return tolua.cast(w,"CEGUI::ScrolledItemListBase")
+end
+
 function CEGUI.toSlider(w)
     return tolua.cast(w,"CEGUI::Slider")
 end
@@ -192,6 +200,7 @@ CEGUI.Window.toFrameWindow = CEGUI.toFrameWindow
 CEGUI.Window.toGUISheet = CEGUI.toGUISheet
 CEGUI.Window.toItemEntry = CEGUI.toItemEntry
 CEGUI.Window.toItemListBase = CEGUI.toItemListBase
+CEGUI.Window.toItemListbox = CEGUI.toItemListBase
 CEGUI.Window.toListbox = CEGUI.toListbox
 CEGUI.Window.toListHeader = CEGUI.toListHeader
 CEGUI.Window.toListHeaderSegment = CEGUI.toListHeaderSegment
@@ -207,6 +216,7 @@ CEGUI.Window.toRadioButton = CEGUI.toRadioButton
 CEGUI.Window.toScrollablePane = CEGUI.toScrollablePane
 CEGUI.Window.toScrollbar = CEGUI.toScrollbar
 CEGUI.Window.toScrolledContainer = CEGUI.toScrolledContainer
+CEGUI.Window.toScrolledItemListBase = CEGUI.toScrolledItemListBase
 CEGUI.Window.toSlider = CEGUI.toSlider
 CEGUI.Window.toSpinner = CEGUI.toSpinner
 CEGUI.Window.toTabButton = CEGUI.toTabButton

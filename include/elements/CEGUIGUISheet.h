@@ -88,7 +88,7 @@ protected:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if (class_name=="GUISheet")	return true;
+		if (class_name=="DefaultWindow" || class_name=="GUISheet")	return true;
 		return Window::testClassName_impl(class_name);
 	}
 };

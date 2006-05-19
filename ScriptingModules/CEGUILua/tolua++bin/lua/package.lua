@@ -119,7 +119,8 @@ function classPackage:preamble ()
 
  if not flags.h then
   output('/* Exported function */')
-  output('TOLUA_API int  tolua_'..self.name..'_open (lua_State* tolua_S);')
+  --output('TOLUA_API int  tolua_'..self.name..'_open (lua_State* tolua_S);')
+  output('int  tolua_'..self.name..'_open (lua_State* tolua_S);')
   output('\n')
  end
 
@@ -163,7 +164,8 @@ function classPackage:register (pre)
  pre = pre or ''
  push(self)
  output(pre.."/* Open function */")
- output(pre.."TOLUA_API int tolua_"..self.name.."_open (lua_State* tolua_S)")
+ --output(pre.."TOLUA_API int tolua_"..self.name.."_open (lua_State* tolua_S)")
+ output(pre.."int tolua_"..self.name.."_open (lua_State* tolua_S)")
  output(pre.."{")
  output(pre.." tolua_open(tolua_S);")
  output(pre.." tolua_reg_types(tolua_S);")
@@ -180,7 +182,8 @@ function classPackage:register (pre)
 
  output("\n\n")
  output("#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501\n");
- output(pre.."TOLUA_API int luaopen_"..self.name.." (lua_State* tolua_S) {")
+ --output(pre.."TOLUA_API int luaopen_"..self.name.." (lua_State* tolua_S) {")
+ output(pre.."int luaopen_"..self.name.." (lua_State* tolua_S) {")
  output(pre.." return tolua_"..self.name.."_open(tolua_S);")
  output(pre.."};")
  output("#endif\n\n")
@@ -196,7 +199,8 @@ function classPackage:header ()
 
  if not flags.h then
   output('/* Exported function */')
-  output('TOLUA_API int  tolua_'..self.name..'_open (lua_State* tolua_S);')
+  --output('TOLUA_API int  tolua_'..self.name..'_open (lua_State* tolua_S);')
+  output('int  tolua_'..self.name..'_open (lua_State* tolua_S);')
   output('\n')
  end
 end

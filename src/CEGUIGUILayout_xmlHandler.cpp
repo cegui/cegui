@@ -255,7 +255,7 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
             d_stack.push_back(WindowStackEntry(wnd,false));
         }
     }
-    catch (UnknownObjectException& exc)
+    catch (UnknownObjectException&)
     {
         // delete all windows created
         cleanupLoadedWindows();
@@ -346,7 +346,7 @@ void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attribu
             d_stack.back().first->addChildWindow(subLayout);
     }
     // something failed when loading the sub-layout
-    catch (Exception& exc)
+    catch (Exception&)
     {
         // delete all windows created so far
         cleanupLoadedWindows();

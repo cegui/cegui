@@ -398,7 +398,7 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 bool ItemListBase::resetList_impl(void)
 {
 	// just return false if the list is already empty
-	if (getItemCount() == 0)
+	if (d_listItems.empty())
 	{
 		return false;
 	}
@@ -406,18 +406,17 @@ bool ItemListBase::resetList_impl(void)
 	else
 	{
 		// delete any items we are supposed to
-		for (size_t i = 0; i < getItemCount(); ++i)
+		while (!d_listItems.empty())
 		{
-			d_pane->removeChildWindow(d_listItems[i]);
-			if (d_listItems[i]->isDestroyedByParent())
+		    ItemEntry* item = d_listItems[0];
+			d_pane->removeChildWindow(item);
+			if (item->isDestroyedByParent())
 			{
-			    WindowManager::getSingleton().destroyWindow(d_listItems[i]);
+			    WindowManager::getSingleton().destroyWindow(item);
 			}
 		}
-
-		// clear out the list.
-		d_listItems.clear();
-
+		
+		// list is cleared by the removeChild calls
 		return true;
 	}
 }

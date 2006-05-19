@@ -1,0 +1,15 @@
+/***********************************************************************
+	ItemListbox
+***********************************************************************/
+class ItemListbox : public ScrolledItemListBase
+{
+    unsigned int getSelectedCount() const;
+    ItemEntry* getFirstSelectedItem() const;
+    ItemEntry* getNextSelectedItem(const ItemEntry* start_item) const;
+    bool isMultiSelectEnabled() const;
+    bool isItemSelected(unsigned int index) const;
+    void setMultiSelectEnabled(bool state);
+    void clearAllSelections();
+    void selectRange(unsigned int a, unsigned int z);
+    void selectAllItems();
+};

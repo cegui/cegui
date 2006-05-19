@@ -88,6 +88,8 @@ $pfile "elements/MenuBase.pkg"
 $pfile "elements/Menubar.pkg"
 $pfile "elements/PopupMenu.pkg"
 $pfile "elements/MenuItem.pkg"
+$pfile "elements/ScrolledItemListBase.pkg"
+$pfile "elements/ItemListbox.pkg"
 
 $pfile "falagard/Enums.pkg"
 $pfile "falagard/Dimension.pkg"
