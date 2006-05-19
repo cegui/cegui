@@ -187,57 +187,45 @@ namespace CEGUI
         d_renderControlProperty = property;
     }
 
-    void SectionSpecification::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void SectionSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-
-        out_stream << indent << "<Section ";
+        xml_stream.openTag("Section");
 
         if (!d_owner.empty())
-            out_stream << "look=\"" << d_owner << "\" ";
+            xml_stream.attribute("look", d_owner);
 
-        out_stream << "section=\"" << d_sectionName << "\"";
+        xml_stream.attribute("section", d_sectionName);
 
         // render controlling property name if needed
         if (!d_renderControlProperty.empty())
-            out_stream << " controlProperty=\"" << d_renderControlProperty <<"\"";
+            xml_stream.attribute("controlProperty", d_renderControlProperty);
 
         if (d_usingColourOverride)
         {
-            String subindent(indentLevel + 1, '\t');
-
-            // terminate opening tag
-            out_stream << ">" << std::endl;
-
             // output modulative colours for this section
             if (!d_colourPropertyName.empty())
             {
-                out_stream << subindent;
-
                 if (d_colourProperyIsRect)
-                    out_stream << "<ColourRectProperty ";
+                    xml_stream.openTag("ColourRectProperty");
                 else
-                    out_stream << "<ColourProperty ";
+                    xml_stream.openTag("ColourProperty");
 
-                out_stream << "name=\"" << d_colourPropertyName << "\" />" << std::endl;
+                xml_stream.attribute("name", d_colourPropertyName)
+                    .closeTag();
             }
             else if (!d_coloursOverride.isMonochromatic() || d_coloursOverride.d_top_left != colour(1,1,1,1))
             {
-                out_stream << subindent << "<Colours ";
-                out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_coloursOverride.d_top_left) << "\" ";
-                out_stream << "topRight=\"" << PropertyHelper::colourToString(d_coloursOverride.d_top_right) << "\" ";
-                out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_coloursOverride.d_bottom_left) << "\" ";
-                out_stream << "bottomRight=\"" << PropertyHelper::colourToString(d_coloursOverride.d_bottom_right) << "\" />" << std::endl;
+                xml_stream.openTag("Colours")
+                    .attribute("topLeft", PropertyHelper::colourToString(d_coloursOverride.d_top_left))
+                    .attribute("topRight", PropertyHelper::colourToString(d_coloursOverride.d_top_right))
+                    .attribute("bottomLeft", PropertyHelper::colourToString(d_coloursOverride.d_bottom_left))
+                    .attribute("bottomRight", PropertyHelper::colourToString(d_coloursOverride.d_bottom_right))
+                    .closeTag();
             }
 
-            // output closing section tag
-            out_stream << indent << "</Section>" << std::endl;
         }
-        else
-        {
-            // no sub elements, just terminate opening tag
-            out_stream << " />" << std::endl;
-        }
+        // close section element 
+        xml_stream.closeTag();
     }
 
 } // End of  CEGUI namespace section

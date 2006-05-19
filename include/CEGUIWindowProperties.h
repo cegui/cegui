@@ -31,7 +31,7 @@
 #define _CEGUIWindowProperties_h_
 
 #include "CEGUIProperty.h"
-
+#include "CEGUIXMLSerializer.h" 
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -996,7 +996,7 @@ class WindowRenderer : public Property
         String  get(const PropertyReceiver* receiver) const;
         void    set(PropertyReceiver* receiver, const String& value);
 
-        void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
 };
 
 
@@ -1022,7 +1022,7 @@ class LookNFeel : public Property
         String  get(const PropertyReceiver* receiver) const;
         void    set(PropertyReceiver* receiver, const String& value);
 
-        void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
 };
 
 

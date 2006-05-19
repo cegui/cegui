@@ -217,12 +217,9 @@ ImagesetManager::ImagesetIterator ImagesetManager::getIterator(void) const
 void ImagesetManager::writeImagesetToStream(const String& imageset, OutStream& out_stream) const
 {
     const Imageset* iset = getImageset(imageset);
-
-    // output xml header
-    out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-
-    // output imageset data
-    iset->writeXMLToStream(out_stream, 0);
+    // Create an XMLSerializer which make use of 4 space and UTF-8 encoding 
+    XMLSerializer xml(out_stream);
+    iset->writeXMLToStream(xml);
 }
 
 

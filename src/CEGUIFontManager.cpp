@@ -240,12 +240,9 @@ FontManager::FontIterator FontManager::getIterator(void) const
 void FontManager::writeFontToStream(const String& name, OutStream& out_stream) const
 {
     const Font* font = getFont(name);
-
-    // output xml header
-    out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-
+    XMLSerializer xml(out_stream);
     // output font data
-    font->writeXMLToStream(out_stream, 0);
+    font->writeXMLToStream(xml);
 }
 
 } // End of  CEGUI namespace section

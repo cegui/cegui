@@ -218,42 +218,47 @@ namespace CEGUI
         }
     }
 
-    void ImageryComponent::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void ImageryComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-        String subindent(indentLevel, '\t');
-
         // opening tag
-        out_stream << indent << "<ImageryComponent>" << std::endl;
+        xml_stream.openTag("ImageryComponent");
         // write out area
-        d_area.writeXMLToStream(out_stream, indentLevel);
+        d_area.writeXMLToStream(xml_stream);
 
         // write image
         if (isImageFetchedFromProperty())
-            out_stream << subindent << "<ImageProperty name=\"" << d_imagePropertyName << "\" />" << std::endl;
+            xml_stream.openTag("ImageProperty")
+                .attribute("name", d_imagePropertyName)
+                .closeTag();
         else
-            out_stream << subindent << "<Image imageset=\"" << d_image->getImagesetName() << "\" image=\"" << d_image->getName() << "\" />" << std::endl;
+            xml_stream.openTag("Image")
+                .attribute("imageset", d_image->getImagesetName())
+                .attribute("image", d_image->getName())
+                .closeTag();
 
         // get base class to write colours
-        writeColoursXML(out_stream, indentLevel);
+        writeColoursXML(xml_stream);
 
         // write vert format, allowing base class to do this for us if a propety is in use
-        if (!writeVertFormatXML(out_stream, indentLevel))
+        if (!writeVertFormatXML(xml_stream))
         {
             // was not a property, so write out explicit formatting in use
-            out_stream << subindent << "<VertFormat type=\"" << FalagardXMLHelper::vertFormatToString(d_vertFormatting) << "\" />" << std::endl;
+            xml_stream.openTag("VertFormat")
+                .attribute("type", FalagardXMLHelper::vertFormatToString(d_vertFormatting))
+                .closeTag();
         }
 
         // write horz format, allowing base class to do this for us if a propety is in use
-        if (!writeHorzFormatXML(out_stream, indentLevel))
+        if (!writeHorzFormatXML(xml_stream))
         {
             // was not a property, so write out explicit formatting in use
-            out_stream << subindent << "<HorzFormat type=\"" << FalagardXMLHelper::horzFormatToString(d_horzFormatting) << "\" />" << std::endl;
+            xml_stream.openTag("HorzFormat")
+                .attribute("type", FalagardXMLHelper::horzFormatToString(d_horzFormatting))
+                .closeTag();
         }
 
         // closing tag
-        out_stream << indent << "</ImageryComponent>" << std::endl;
+        xml_stream.closeTag();
     }
 
     bool ImageryComponent::isImageFetchedFromProperty() const

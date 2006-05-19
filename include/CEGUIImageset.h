@@ -37,6 +37,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIIteratorBase.h"
+#include "CEGUIXMLSerializer.h" 
 
 #include <map>
 
@@ -214,7 +215,6 @@ public:
 		Nothing.
 	*/
 	void	undefineImage(const String& name);
-
 
 	/*!
 	\brief
@@ -511,7 +511,7 @@ public:
     \return
         Nothing.
     */
-    void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+    void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     /*!
     \brief

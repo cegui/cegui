@@ -147,23 +147,22 @@ const Rect& Image::getSourceTextureArea(void) const
 /*************************************************************************
     Output XML <Image ... > element for this image
 *************************************************************************/
-void Image::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+void Image::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    String indent(indentLevel, '\t');
-
-    out_stream << indent << "<Image Name=\"" << d_name.c_str() << "\" ";
-    out_stream << "XPos=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.d_left)) << "\" ";
-    out_stream << "YPos=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.d_top)) << "\" ";
-    out_stream << "Width=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.getWidth())) << "\" ";
-    out_stream << "Height=\"" << PropertyHelper::uintToString(static_cast<uint>(d_area.getHeight())) << "\" ";
+    xml_stream.openTag("Image")
+        .attribute("Name=", d_name)
+        .attribute("XPos", PropertyHelper::uintToString(static_cast<uint>(d_area.d_left)))
+        .attribute("YPos", PropertyHelper::uintToString(static_cast<uint>(d_area.d_top)))
+        .attribute("Width", PropertyHelper::uintToString(static_cast<uint>(d_area.getWidth())))
+        .attribute("Height", PropertyHelper::uintToString(static_cast<uint>(d_area.getHeight())));
 
     if (d_offset.d_x != 0.0f)
-        out_stream << "XOffset=\"" << PropertyHelper::intToString(static_cast<int>(d_offset.d_x)) << "\" ";
+        xml_stream.attribute("XOffset", PropertyHelper::intToString(static_cast<int>(d_offset.d_x)));
 
     if (d_offset.d_y != 0.0f)
-        out_stream << "YOffset=\"" << PropertyHelper::intToString(static_cast<int>(d_offset.d_x)) << "\" ";
+        xml_stream.attribute("YOffset", PropertyHelper::intToString(static_cast<int>(d_offset.d_x)));
 
-    out_stream << "/>" << std::endl;
+    xml_stream.closeTag();
 }
 
 

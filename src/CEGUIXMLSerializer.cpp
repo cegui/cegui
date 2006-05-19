@@ -30,18 +30,18 @@
 // Start of CEGUI namespace section 
 namespace CEGUI 
 {
-XMLSerializer::XMLSerializer(OutStream& out, const String& encoding, size_t indentSpace)
+XMLSerializer::XMLSerializer(OutStream& out, size_t indentSpace)
     : d_error(false), d_depth(0), d_indentSpace(indentSpace), 
       d_needClose(false), d_lastIsText(false), d_stream(out)
 {
-    d_stream << "<?xml version=\"1.0\" encoding=\"" << encoding << "\"?>" << std::endl;
+    d_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
     d_error = ! d_stream;
 }
 
 
 XMLSerializer::~XMLSerializer(void)
 {
-    if (!d_error)
+    if (!d_error || !d_tagStack.empty())
     {
         d_stream << std::endl;
     }
@@ -62,7 +62,7 @@ XMLSerializer& XMLSerializer::openTag(const String& name)
             d_stream << std::endl;
             indentLine();
         }
-        d_stream << '<' << name << ' ';
+        d_stream << '<' << name.c_str() << ' ';
         d_tagStack.push_back(name);
         ++d_depth;
         d_needClose = true;
@@ -74,29 +74,28 @@ XMLSerializer& XMLSerializer::openTag(const String& name)
 
 XMLSerializer& XMLSerializer::closeTag(void)
 {
+    String back =  d_tagStack.back();
     if (! d_error)
     {
         --d_depth;
-      if (d_needClose)
-      {
-          d_stream << "/>" <<std::endl;
-          d_tagStack.pop_back();  
-	  
-      }
-      else if (! d_lastIsText)
-      {
-          d_stream << std::endl;
-          indentLine();
-          d_stream << "</" << d_tagStack.back() << '>';
-      }
-      else 
-      {
-          d_stream << "</" << d_tagStack.back() << '>';
-      }
-      d_lastIsText = false;
-      d_needClose = false;
-      d_tagStack.pop_back();
-      d_error = ! d_stream;
+        if (d_needClose)
+        {
+            d_stream << "/>";
+        }
+        else if (! d_lastIsText)
+        {
+            d_stream << std::endl;
+            indentLine();
+            d_stream << "</" << back.c_str() << '>';
+        }
+        else
+        {
+            d_stream << "</" << back.c_str() << '>';
+        }
+        d_lastIsText = false;
+        d_needClose = false;
+        d_tagStack.pop_back();
+        d_error = ! d_stream;
     }
     return *this;
 }
@@ -110,15 +109,9 @@ XMLSerializer& XMLSerializer::attribute(const String& name, const String& value)
     }
     if (!d_error)
     {
-        d_stream << name << "=\"";
-        String::const_iterator iter = value.begin();
-        const String::const_iterator iterEnd = value.end();
-        // use for_each 
-        for(;true != d_error && iter != iterEnd ; ++iter)
-        {
-            convertEntityInAttribute(*iter); 
-        }
-        d_stream << "\" ";
+        d_stream << name.c_str() << "=\""
+            << convertEntityInAttribute(value).c_str()
+            << "\" ";
         d_lastIsText = false;
         d_error = ! d_stream;
     }
@@ -135,13 +128,7 @@ XMLSerializer& XMLSerializer::text(const String& text)
             d_stream << '>';
             d_needClose = false;
         }
-        String::const_iterator iter = text.begin();
-        const String::const_iterator iterEnd = text.end();
-        // use for_each 
-        for(;true != d_error && iter != iterEnd ; ++iter)
-        {
-            convertEntityInText(*iter); 
-        }
+        d_stream << convertEntityInText(text).c_str();
         d_lastIsText = true;
         d_error = ! d_stream;
     }
@@ -159,66 +146,79 @@ void XMLSerializer::indentLine(void)
     }  
 }
 
-void XMLSerializer::convertEntityInText(String::value_type codePoint)
+String XMLSerializer::convertEntityInText(const String& text)
 {
-    switch(codePoint)
-    {  
-    case '<':
-        d_stream << "&lt;";
-        break;
+    String res;
+    res.reserve(text.size()*2);
+    const String::const_iterator iterEnd = text.end();
+    for (String::const_iterator iter = text.begin(); iter != iterEnd ; ++iter)
+    {
+        switch(*iter)
+        {  
+            case '<':
+                res +=(utf8*)"&lt;";
+                break;
+      
+            case '>':
+                res +=(utf8*)"&gt;";
+                break;
         
-    case '>':
-        d_stream << "&gt;";
-        break;
+            case '&':
+                res += (utf8*)"&amp;";
+                break;
         
-    case '&':
-        d_stream << "&amp;";
-        break;
-        
-    case '\'':
-        d_stream << "&apos;";
-        break;
+            case '\'':
+                res += (utf8*)"&apos;";
+                break;
 
-    case '"':
-        d_stream << "&quot;";
-        break;
-
-    default:
-        d_stream << codePoint;
+            case '"':
+                res += (utf8*)"&quot;";
+                break;
+      
+            default:
+                res += *iter;
+        }
     }
-    d_error = ! d_stream;
+    return res;
 }
 
-void XMLSerializer::convertEntityInAttribute(String::value_type codePoint)
+String XMLSerializer::convertEntityInAttribute(const String& attributeValue)
 {
-    switch(codePoint)
-    {  
-    case '<':
-        d_stream << "&lt;";
-        break;
+    // Reserve a lot of space 
+    String res;
+    res.reserve(attributeValue.size()*2);
+    const String::const_iterator iterEnd = attributeValue.end();
+    for (String::const_iterator iter = attributeValue.begin(); iter != iterEnd ; ++iter)
+    {
+        switch(*iter)
+        {  
+            case '<':
+                res +=(utf8*)"&lt;";
+                break;
       
-    case '>':
-        d_stream << "&gt;";
-        break;
+            case '>':
+                res +=(utf8*)"&gt;";
+                break;
         
-    case '&':
-        d_stream << "&amp;";
-        break;
+            case '&':
+                res += (utf8*)"&amp;";
+                break;
         
-    case '\'':
-        d_stream << "&apos;";
-        break;
+            case '\'':
+                res += (utf8*)"&apos;";
+                break;
 
-    case '"':
-        d_stream << "&quot;";
-        break;
+            case '"':
+                res += (utf8*)"&quot;";
+                break;
       
-    case '\n':
-        d_stream << "\\n";
-        break;
-    default:
-        d_stream << codePoint;
+            case '\n':
+                res += (utf8*)"\\n";
+                break;
+            default:
+                res += *iter;
+        }
     }
-    d_error = ! d_stream;
+    return res;
 }
 } // End of CEGUI Namespace 

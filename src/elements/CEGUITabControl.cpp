@@ -575,16 +575,16 @@ TabPane* TabControl::getTabPane() const
                                  getName() + ContentPaneNameSuffix));
 }
 
-int TabControl::writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const
+int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
-    int childOutputCount = Window::writeChildWindowsXML(out_stream, indentLevel);
+    int childOutputCount = Window::writeChildWindowsXML(xml_stream);
 
     // since TabControl content is actually added to the component tab
     // content pane window, this overridden function exists to dump those
     // out as if they were our own children.
     for (size_t i = 0; i < getTabCount(); ++i)
     {
-        getTabContentsAtIndex(i)->writeXMLToStream(out_stream, indentLevel);
+        getTabContentsAtIndex(i)->writeXMLToStream(xml_stream);
         ++childOutputCount;
     }
 

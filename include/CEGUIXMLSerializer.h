@@ -57,10 +57,7 @@ namespace CEGUI
     int main() 
     {
        // Create an encoder that outputs its result on standard output 
-       // The encoding is not handle directly in the XMLSerializer 
-       // Specific stream class should be use to generate valid UTF-8 
-       // document. 
-       XMLSerializer xml(std::cout, "ASCII", 4);
+       XMLSerializer xml(std::cout, 4);
        xml.openTag("Window")
           .attribute("Type", "TaharezLook/StaticText")
           .attribute("Name", "Test")
@@ -94,11 +91,10 @@ namespace CEGUI
          
         \param out The stream to use to export the result 
          
-        \param encodinf The charset use by the stream 
          
         \param indentSpace The indentation level (0 to disable indentation)
         */
-        XMLSerializer(OutStream& out, const String& encoding = "UTF-8", size_t indentSpace = 4);
+        XMLSerializer(OutStream& out, size_t indentSpace = 4);
         
         /*! 
         \brief XMLSerializer destructor
@@ -181,11 +177,11 @@ namespace CEGUI
         /*!
         \brief convert special char to there corresponding entity in text data. 
         */
-        void convertEntityInText(String::value_type codePoint);
+        static String convertEntityInText(const String& text);
         /*!
         \brief convert special char into entities including line ending for use in attributes.
         */
-        void convertEntityInAttribute(String::value_type codePoint);
+        static String convertEntityInAttribute(const String& attributeValue);
         
 
         // Disabled operation 

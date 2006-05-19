@@ -87,7 +87,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     private:
         String d_name;

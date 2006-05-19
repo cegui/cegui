@@ -135,29 +135,17 @@ namespace CEGUI
         d_widgetLooks[look.getName()] = look;
     }
 
-    void WidgetLookManager::writeFalagardXMLHeadToStream(OutStream& out_stream) const
-    {
-        // output xml header
-        out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
-        // output root element
-        out_stream << "<Falagard>" << std::endl;
-    }
-
-    void WidgetLookManager::writeFalagardXMLTailToStream(OutStream& out_stream) const
-    {
-        // close root element
-        out_stream << "</Falagard>" << std::endl;
-    }
-
     void WidgetLookManager::writeWidgetLookToStream(const String& name, OutStream& out_stream) const
     {
         // start of file
-        writeFalagardXMLHeadToStream(out_stream);
-
+        // output xml header
+        XMLSerializer xml(out_stream);
+        // output root element
+        xml.openTag("Falagard");
         try
         {
             // output the desired widget look data
-            getWidgetLook(name).writeXMLToStream(out_stream, 1);
+            getWidgetLook(name).writeXMLToStream(xml);
         }
         catch (UnknownObjectException)
         {
@@ -165,22 +153,24 @@ namespace CEGUI
         }
 
         // close the root tags to terminate the file
-        writeFalagardXMLTailToStream(out_stream);
+        xml.closeTag();
     }
 
     void WidgetLookManager::writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const
     {
         // start of file
-        writeFalagardXMLHeadToStream(out_stream);
-
+        // output xml header
+        XMLSerializer xml(out_stream);
+        // output root element
+        xml.openTag("Falagard");
         for (WidgetLookList::const_iterator curr = d_widgetLooks.begin(); curr != d_widgetLooks.end(); ++curr)
         {
             if ((*curr).first.compare(0, prefix.length(), prefix) == 0)
-                (*curr).second.writeXMLToStream(out_stream, 1);
+                (*curr).second.writeXMLToStream(xml);
         }
 
         // close the root tags to terminate the file
-        writeFalagardXMLTailToStream(out_stream);
+        xml.closeTag();
     }
 
 } // End of  CEGUI namespace section

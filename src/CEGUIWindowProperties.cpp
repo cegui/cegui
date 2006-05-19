@@ -565,12 +565,12 @@ void WindowRenderer::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->setWindowRenderer(value);
 }
 
-void WindowRenderer::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const
+void WindowRenderer::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const
 {
     const Window* wnd = static_cast<const Window*>(receiver);
     if (!WindowFactoryManager::getSingleton().isFalagardMappedType(wnd->getType()))
     {
-        Property::writeXMLToStream(receiver, out_stream, indentLevel);
+        Property::writeXMLToStream(receiver, xml_stream);
     }
 }
 
@@ -585,12 +585,12 @@ void LookNFeel::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->setLookNFeel(value);
 }
 
-void LookNFeel::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const
+void LookNFeel::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const
 {
     const Window* wnd = static_cast<const Window*>(receiver);
     if (!WindowFactoryManager::getSingleton().isFalagardMappedType(wnd->getType()))
     {
-        Property::writeXMLToStream(receiver, out_stream, indentLevel);
+        Property::writeXMLToStream(receiver, xml_stream);
     }
 }
 

@@ -167,20 +167,6 @@ namespace CEGUI
         */
         void addWidgetLook(const WidgetLookFeel& look);
 
-        /*!
-        \brief
-            Writes the xml header and opening 'Falagard' tags to a stream.
-        */
-        void writeFalagardXMLHeadToStream(OutStream& out_stream) const;
-
-        /*!
-        \brief
-            Writes closing xml 'Falagard' tag to a stream.
-
-        \param out_stream
-            OutStream where XML data should be sent.
-        */
-        void writeFalagardXMLTailToStream(OutStream& out_stream) const;
 
         /*!
         \brief

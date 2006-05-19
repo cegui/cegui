@@ -71,16 +71,14 @@ namespace CEGUI
             Writes an xml representation of the PropertyDefinitionBase based
             object to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
 
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.
         */
-        virtual void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        virtual void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     protected:
         /*!
@@ -90,10 +88,10 @@ namespace CEGUI
             as attributes in this function.  The writeExtraAttributes function
             can be used for writing attributes.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
         */
-        virtual void writeXMLElementType(OutStream& out_stream) const = 0;
+        virtual void writeXMLElementType(XMLSerializer& xml_stream) const = 0;
 
         /*!
         \brief
@@ -102,10 +100,10 @@ namespace CEGUI
             information in this function.  You should always call the base class
             implementation of this function when overriding.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
         */
-        virtual void writeXMLAttributes(OutStream& out_stream) const;
+        virtual void writeXMLAttributes(XMLSerializer& xml_stream) const;
 
         bool d_writeCausesRedraw;
         bool d_writeCausesLayout;

@@ -27,7 +27,6 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalPropertyDefinitionBase.h"
 #include "CEGUIWindow.h"
-#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,33 +52,28 @@ namespace CEGUI
             static_cast<Window*>(receiver)->requestRedraw();
     }
 
-    void PropertyDefinitionBase::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void PropertyDefinitionBase::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        // open tag
-        out_stream <<indent << "<";
         // write out the element type
-        writeXMLElementType(out_stream);
-        // ensure there a space between tag name and first attribute
-        out_stream << " ";
+        writeXMLElementType(xml_stream);
         // write attributes
-        writeXMLAttributes(out_stream);
+        writeXMLAttributes(xml_stream);
         // close tag
-        out_stream << "/>" << std::endl;
+        xml_stream.closeTag();
     }
 
-    void PropertyDefinitionBase::writeXMLAttributes(OutStream& out_stream) const
+    void PropertyDefinitionBase::writeXMLAttributes(XMLSerializer& xml_stream) const
     {
         // write the name of the property
-        out_stream << "name=\"" << d_name << "\" ";
+        xml_stream.attribute("name", d_name);
         // write initial value, if any
         if (!d_default.empty())
-            out_stream << "initialValue=\"" << d_default << "\" ";
+            xml_stream.attribute("initialValue", d_default);
         // write option to redraw when property is written
         if (d_writeCausesRedraw)
-            out_stream << "redrawOnWrite=\"true\" ";
+            xml_stream.attribute("redrawOnWrite", "true");
         // write option to loayout children when property is written
         if (d_writeCausesLayout)
-            out_stream << "layoutOnWrite=\"true\" ";
+            xml_stream.attribute("layoutOnWrite", "true");
     }
 } // End of  CEGUI namespace section

@@ -369,7 +369,7 @@ protected:
     TabPane* getTabPane() const;
 
 	void performChildWindowLayout();
-    int writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const;
+    int writeChildWindowsXML(XMLSerializer& xml_stream) const;
 
     // validate window renderer
     virtual bool validateWindowRenderer(const String& name) const

@@ -2285,26 +2285,22 @@ ListHeader* MultiColumnList::getListHeader() const
 /*************************************************************************
     Write xml properties for this MultiColumnList to a stream.
 *************************************************************************/
-int MultiColumnList::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
+int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 {
     // basically this is here to translate the columns in the list into
     // instances of the <ColumnHeader> element.  Because the SortColumnID
     // property requires the column to exist, we also write that out manually.
 
     // Dump all other properties first
-    int propCnt = Window::writePropertiesXML(out_stream, indentLevel);
-
-    String indent(indentLevel + 1, '\t');
+    int propCnt = Window::writePropertiesXML(xml_stream);
 
     // create an dump <ColumnHeader> elements
     for (uint i = 0; i < getColumnCount(); ++i)
     {
         ListHeaderSegment& seg = getHeaderSegmentForColumn(i);
-
-        // start of property element,
-        String propString("<Property Name=\"ColumnHeader\" Value=\"");
+                
         // column text
-        propString += "text:";
+        String propString = "text:";
         propString += seg.getText();
         // column width
         propString += " width:";
@@ -2312,12 +2308,11 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream, uint indentLevel)
         // column id
         propString += " id:";
         propString += PropertyHelper::uintToString(seg.getID());
-        // close the tag
-        propString += "\" />";
-
-        // write this out to the stream
-        out_stream << indent << propString.c_str() << std::endl;
-
+        // create the tag
+        xml_stream.openTag("Property")
+            .attribute("Name", "ColumnHeader")
+            .attribute("Value", propString)
+            .closeTag();
         ++propCnt;
     }
 
@@ -2327,8 +2322,11 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream, uint indentLevel)
 			uint sortColumnID = getColumnWithID(getSortColumn());
 			if (sortColumnID != 0)
 			{
-				  out_stream << indent << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
-					++propCnt;
+                xml_stream.openTag("Property")
+                    .attribute("Name", "SortColumnID")
+                    .attribute("Value", PropertyHelper::uintToString(sortColumnID))
+                    .closeTag();
+			    ++propCnt;
 			}
 		}
 		catch (InvalidRequestException)

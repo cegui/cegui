@@ -2348,17 +2348,13 @@ public:
     \brief
         Writes an xml representation of this window object to \a out_stream.
 
-    \param out_stream
+    \param xml_stream
         Stream where xml data should be output.
-
-    \param indentLevel
-        Current indentation level.  Properties and child windows will be further
-        indented.
 
     \return
         Nothing.
     */
-    virtual void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+    virtual void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     /*!
     \brief
@@ -3411,9 +3407,9 @@ protected:
     */
     void removeWindowFromDrawList(const Window& wnd);
 
-    virtual int writePropertiesXML(OutStream& out_stream, uint indentLevel) const;
-    virtual int writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const;
-    virtual bool writeAutoChildWindowXML(OutStream& out_stream, uint indentLevel) const;
+    virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
+    virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
+    virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
 
     /*************************************************************************
         May not copy or assign Window objects

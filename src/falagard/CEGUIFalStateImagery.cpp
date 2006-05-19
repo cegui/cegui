@@ -89,30 +89,19 @@ namespace CEGUI
         d_clipToDisplay = setting;
     }
 
-    void StateImagery::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void StateImagery::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        out_stream << indent << "<StateImagery name=\"" << d_stateName << "\"";
+        xml_stream.openTag("StateImagery")
+            .attribute("name", d_stateName);
 
         if (d_clipToDisplay)
-            out_stream << " clipped=\"false\"";
+            xml_stream.attribute("clipped", "false");
 
-        if (d_layers.empty())
-        {
-            out_stream << " />" << std::endl;
-        }
-        else
-        {
-            out_stream << ">" << std::endl;
-            ++indentLevel;
-
-            // output all layers defined for this state
-            for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
-                (*curr).writeXMLToStream(out_stream, indentLevel);
-
-            // write closing </StateImagery> tag
-            out_stream << indent << "</StateImagery>" << std::endl;
-        }
+        // output all layers defined for this state
+        for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
+            (*curr).writeXMLToStream(xml_stream);
+        // write closing </StateImagery> tag
+        xml_stream.closeTag();
     }
 
 } // End of  CEGUI namespace section

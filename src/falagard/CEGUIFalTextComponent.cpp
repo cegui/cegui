@@ -138,51 +138,57 @@ namespace CEGUI
         srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
     }
 
-    void TextComponent::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-        String subindent(indentLevel, '\t');
-
         // opening tag
-        out_stream << indent << "<TextComponent>" << std::endl;
+        xml_stream.openTag("TextComponent");
         // write out area
-        d_area.writeXMLToStream(out_stream, indentLevel);
+        d_area.writeXMLToStream(xml_stream);
 
         // write text element
-        out_stream << subindent << "<Text font=\"" << d_font << "\" string=\"" << d_text << "\" />" << std::endl;
-
+        xml_stream.openTag("Text")
+            .attribute("font", d_font)
+            .attribute("string", d_text)
+            .closeTag();
         // write text property element
         if (!d_textPropertyName.empty())
         {
-            out_stream << subindent << "<TextProperty name=\"" << d_textPropertyName << "\" />" << std::endl;
+            xml_stream.openTag("TextProperty")
+                .attribute("name", d_textPropertyName)
+                .closeTag();
         }
 
         // write font property element
         if (!d_fontPropertyName.empty())
         {
-            out_stream << subindent << "<FontProperty name=\"" << d_fontPropertyName << "\" />" << std::endl;
+            xml_stream.openTag("FontProperty")
+                .attribute("name", d_fontPropertyName)
+                .closeTag();
         }
 
         // get base class to write colours
-        writeColoursXML(out_stream, indentLevel);
+        writeColoursXML(xml_stream);
 
         // write vert format, allowing base class to do this for us if a propety is in use
-        if (!writeVertFormatXML(out_stream, indentLevel))
+        if (!writeVertFormatXML(xml_stream))
         {
             // was not a property, so write out explicit formatting in use
-            out_stream << subindent << "<VertFormat type=\"" << FalagardXMLHelper::vertTextFormatToString(d_vertFormatting) << "\" />" << std::endl;
+            xml_stream.openTag("VertFormat")
+                .attribute("type", FalagardXMLHelper::vertTextFormatToString(d_vertFormatting))
+                .closeTag();
         }
 
         // write horz format, allowing base class to do this for us if a propety is in use
-        if (!writeHorzFormatXML(out_stream, indentLevel))
+        if (!writeHorzFormatXML(xml_stream))
         {
             // was not a property, so write out explicit formatting in use
-            out_stream << subindent << "<HorzFormat type=\"" << FalagardXMLHelper::horzTextFormatToString(d_horzFormatting) << "\" />" << std::endl;
+            xml_stream.openTag("HorzFormat")
+                .attribute("type", FalagardXMLHelper::horzTextFormatToString(d_horzFormatting))
+                .closeTag();
         }
 
         // closing tag
-        out_stream << indent << "</TextComponent>" << std::endl;
+        xml_stream.closeTag();
     }
 
     bool TextComponent::isTextFetchedFromProperty() const

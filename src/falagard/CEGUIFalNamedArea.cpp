@@ -26,7 +26,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "falagard/CEGUIFalNamedArea.h"
-#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -51,12 +50,12 @@ namespace CEGUI
         d_area = area;
     }
 
-    void NamedArea::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void NamedArea::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        out_stream << indent << "<NamedArea name=\"" << d_name << "\">" << std::endl;
-        d_area.writeXMLToStream(out_stream, indentLevel + 1);
-        out_stream << indent << "</NamedArea>" << std::endl;
+        xml_stream.openTag("NamedArea")
+            .attribute("name", d_name);
+        d_area.writeXMLToStream(xml_stream);
+        xml_stream.closeTag();
     }
 
 } // End of  CEGUI namespace section

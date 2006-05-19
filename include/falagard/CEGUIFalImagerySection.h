@@ -31,6 +31,7 @@
 #include "falagard/CEGUIFalImageryComponent.h"
 #include "falagard/CEGUIFalTextComponent.h"
 #include "falagard/CEGUIFalFrameComponent.h"
+#include "CEGUIXMLSerializer.h" 
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -235,16 +236,14 @@ namespace CEGUI
         \brief
             Writes an xml representation of this ImagerySection to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
 
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     protected:
         /*!

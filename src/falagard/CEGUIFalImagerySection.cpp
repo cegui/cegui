@@ -259,56 +259,53 @@ namespace CEGUI
         return bounds;
     }
 
-    void ImagerySection::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void ImagerySection::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-        String subindent(indentLevel, '\t');
-
         // output opening tag
-        out_stream << indent << "<ImagerySection name=\"" << d_name << "\">" << std::endl;
+        xml_stream.openTag("ImagerySection")
+            .attribute("name", d_name);
 
         // output modulative colours for this section
         if (!d_colourPropertyName.empty())
         {
-            out_stream << subindent;
-
             if (d_colourProperyIsRect)
-                out_stream << "<ColourRectProperty ";
+                xml_stream.openTag("ColourRectProperty");
             else
-                out_stream << "<ColourProperty ";
+                xml_stream.openTag("ColourProperty");
 
-            out_stream << "name=\"" << d_colourPropertyName << "\" />" << std::endl;
+            xml_stream.attribute("name", d_colourPropertyName)
+                .closeTag();
         }
         else if (!d_masterColours.isMonochromatic() || d_masterColours.d_top_left != colour(1,1,1,1))
         {
-            out_stream << subindent << "<Colours ";
-            out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_masterColours.d_top_left) << "\" ";
-            out_stream << "topRight=\"" << PropertyHelper::colourToString(d_masterColours.d_top_right) << "\" ";
-            out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_masterColours.d_bottom_left) << "\" ";
-            out_stream << "bottomRight=\"" << PropertyHelper::colourToString(d_masterColours.d_bottom_right) << "\" />" << std::endl;
+            xml_stream.openTag("Colours")
+                .attribute("topLeft", PropertyHelper::colourToString(d_masterColours.d_top_left))
+                .attribute("topRight", PropertyHelper::colourToString(d_masterColours.d_top_right))
+                .attribute("bottomLeft", PropertyHelper::colourToString(d_masterColours.d_bottom_left))
+                .attribute("bottomRight", PropertyHelper::colourToString(d_masterColours.d_bottom_right))
+                .closeTag();
         }
 
         // output all frame components.
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).writeXMLToStream(out_stream, indentLevel);
+            (*frame).writeXMLToStream(xml_stream);
         }
 
         // output all imagery components
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).writeXMLToStream(out_stream, indentLevel);
+            (*image).writeXMLToStream(xml_stream);
         }
 
         // output all text components
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).writeXMLToStream(out_stream, indentLevel);
+            (*text).writeXMLToStream(xml_stream);
         }
 
         // output closing tag
-        out_stream << indent << "</ImagerySection>" << std::endl;
+        xml_stream.closeTag();
     }
 
 } // End of  CEGUI namespace section

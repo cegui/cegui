@@ -36,6 +36,8 @@
 #include "CEGUILogger.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUIXMLParser.h"
+#include "CEGUIXMLSerializer.h" 
+#include "CEGUIPropertyHelper.h" 
 #include <iostream>
 #include <cmath>
 
@@ -316,37 +318,33 @@ void Imageset::notifyScreenResolution(const Size& size)
 
 }
 
-void Imageset::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+void Imageset::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    String indent(indentLevel, '\t');
-
-    // output opening tag
-    out_stream << indent << "<Imageset Name=\"" << d_name << "\" ";
-    out_stream << "Filename=\"" << d_textureFilename << "\" ";
+    // output Imageset tag
+    xml_stream.openTag("Imageset")
+        .attribute("Name", d_name)
+        .attribute("Filename", d_textureFilename);
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
-        out_stream << "NativeHorzRes=\"" << static_cast<uint>(d_nativeHorzRes) << "\" ";
-
+        xml_stream.attribute("NativeHorzRes", 
+          PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
     if (d_nativeVertRes != DefaultNativeVertRes)
-        out_stream << "NativeVertRes=\"" << static_cast<uint>(d_nativeVertRes) << "\" ";
+        xml_stream.attribute("NativeVertRes", 
+          PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
-        out_stream << "AutoScaled=\"True\" ";
-
-    out_stream << ">" << std::endl;
-
+        xml_stream.attribute("AutoScaled", "True");
+    
     // output images
-    ++indentLevel;
     ImageIterator image = getIterator();
-
     while (!image.isAtEnd())
     {
-        image.getCurrentValue().writeXMLToStream(out_stream, indentLevel);
+        image.getCurrentValue().writeXMLToStream(xml_stream);
         ++image;
     }
 
     // output closing tag
-    out_stream << indent << "</Imageset>" << std::endl;
+    xml_stream.closeTag();
 }
 
 

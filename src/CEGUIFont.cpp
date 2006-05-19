@@ -40,7 +40,7 @@
 #include "CEGUIFont_implData.h"
 #include "CEGUIResourceProvider.h"
 #include "CEGUIXMLParser.h"
-
+#include "CEGUIPropertyHelper.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -1222,27 +1222,25 @@ uint Font::getPointSize(void) const
 /*************************************************************************
     Writes an xml representation of this Font to \a out_stream.
 *************************************************************************/
-void Font::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 {
-    String indent(indentLevel, '\t');
-    String subindent(indentLevel + 1, '\t');
 
     // output starting <Font ... > element
-    out_stream << indent << "<Font Name=\"" << d_name << "\" Filename=\"" << d_sourceFilename << "\" ";
+    xml_stream.openTag("Font")
+        .attribute("Name", d_name)
+        .attribute("Filename", d_sourceFilename);
 
     if (d_freetype)
-        out_stream << "Size=\"" << d_ptSize << "\" ";
+        xml_stream.attribute("Size",  PropertyHelper::uintToString(d_ptSize));
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
-        out_stream << "NativeHorzRes=\"" << static_cast<uint>(d_nativeHorzRes) << "\" ";
+        xml_stream.attribute("NativeHorzRes", PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
 
     if (d_nativeVertRes != DefaultNativeVertRes)
-        out_stream << "NativeVertRes=\"" << static_cast<uint>(d_nativeVertRes) << "\" ";
+        xml_stream.attribute("NativeVertRes", PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
-        out_stream << "AutoScaled=\"True\" ";
-
-    out_stream << ">" << std::endl;
+        xml_stream.attribute("AutoScaled","True");
 
     // dynamic font so output defined glyphs
     if (d_freetype)
@@ -1257,10 +1255,14 @@ void Font::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
 
             if (start == idx)
                 // if range is a just a single codepoint
-                out_stream << subindent << "<Glyph Codepoint=\"" << d_glyphset[start] << "\" />" << std::endl;
+                xml_stream.openTag("Glypth")
+                    .attribute("Codepoint", PropertyHelper::uintToString(d_glyphset[start])).closeTag();
             else
                 // range contains >1 codepoint
-                out_stream << subindent << "<GlyphRange StartCodepoint=\"" << d_glyphset[start] << "\" EndCodepoint=\"" << d_glyphset[idx] << "\" />" << std::endl;
+                xml_stream.openTag("GlyphRange")
+                    .attribute("StartCodepoint",  PropertyHelper::uintToString(d_glyphset[start]))
+                    .attribute("EndCodepoint", PropertyHelper::uintToString(d_glyphset[idx]))
+                    .closeTag();
 
             start = ++idx;
         }
@@ -1270,17 +1272,18 @@ void Font::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
     {
         for (CodepointMap::const_iterator iter = d_cp_map.begin(); iter != d_cp_map.end(); ++iter)
         {
-            out_stream << subindent << "<Mapping Codepoint=\"" << (*iter).first << "\" Image=\"" << (*iter).second.getImage()->getName() << "\" ";
+            xml_stream.openTag("Mapping")
+                .attribute("Codepoint", PropertyHelper::uintToString((*iter).first))
+                .attribute("Image", (*iter).second.getImage()->getName());
 
             if ((*iter).second.getUnscaledAdvance() != -1)
-                out_stream << "HorzAdvance=\"" << (*iter).second.getUnscaledAdvance() << "\" ";
+                xml_stream.attribute("HorzAdvance", PropertyHelper::floatToString((*iter).second.getUnscaledAdvance()));
 
-            out_stream << "/>" << std::endl;
+            xml_stream.closeTag();
         }
     }
-
     // output closing </Font> element.
-    out_stream << indent << "</Font>" << std::endl;
+    xml_stream.closeTag();
 }
 
 

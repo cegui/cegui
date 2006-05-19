@@ -87,16 +87,14 @@ namespace CEGUI
         \brief
             Writes an xml representation of this PropertyInitialiser to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
 
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     private:
         CEGUI::String   d_propertyName;     //!< Name of a property to be set.

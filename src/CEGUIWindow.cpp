@@ -2229,7 +2229,7 @@ void Window::setUserString(const String& name, const String& value)
     d_userStrings[name] = value;
 }
 
-void Window::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+void Window::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     // just stop now if we are'nt allowed to write XML
     if (!d_allowWriteXML)
@@ -2237,29 +2237,24 @@ void Window::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
         return;
     }
 
-    String indent(indentLevel, '\t');
-
     // output opening Window tag
-    out_stream << indent << "<Window Type=\"" << getType() << "\" ";
+    xml_stream.openTag("Window")
+        .attribute("Type", getType());
     // write name if not auto-generated
     if (getName().compare(0, WindowManager::GeneratedWindowNameBase.length(), WindowManager::GeneratedWindowNameBase) != 0)
     {
-        out_stream << "Name=\"" << getName() << "\" ";
+        xml_stream.attribute("Name", getName());
     }
-    // close opening tag
-    out_stream << ">" << std::endl;
-
     // write out properties.
-    writePropertiesXML(out_stream, indentLevel);
+    writePropertiesXML(xml_stream);
     // write out attached child windows.
-    writeChildWindowsXML(out_stream, indentLevel);
+    writeChildWindowsXML(xml_stream);
     // now ouput closing Window tag
-    out_stream << indent << "</Window>" << std::endl;
+    xml_stream.closeTag();
 }
 
-int Window::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
+int Window::writePropertiesXML(XMLSerializer& xml_stream) const
 {
-    ++indentLevel;
     int propertiesWritten = 0;
     PropertyIterator iter =  PropertySet::getIterator();
 
@@ -2273,7 +2268,7 @@ int Window::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
                 // only write property if it's not at the default state
                 if (!isPropertyAtDefault(iter.getCurrentValue()))
                 {
-                    iter.getCurrentValue()->writeXMLToStream(this, out_stream, indentLevel);
+                    iter.getCurrentValue()->writeXMLToStream(this, xml_stream);
                     ++propertiesWritten;
                 }
             }
@@ -2290,9 +2285,8 @@ int Window::writePropertiesXML(OutStream& out_stream, uint indentLevel) const
     return propertiesWritten;
 }
 
-int Window::writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const
+int Window::writeChildWindowsXML(XMLSerializer& xml_stream) const
 {
-    ++indentLevel;
     int windowsWritten = 0;
 
     for (uint i = 0; i < getChildCount(); ++i)
@@ -2302,11 +2296,11 @@ int Window::writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const
         // conditional to ensure that auto created windows are handled seperately.
         if (!child->isAutoWindow())
         {
-            child->writeXMLToStream(out_stream, indentLevel);
+            child->writeXMLToStream(xml_stream);
             ++windowsWritten;
         }
         // this is one of those auto created windows so we do some special handling
-        else if (child->writeAutoChildWindowXML(out_stream, indentLevel))
+        else if (child->writeAutoChildWindowXML(xml_stream))
         {
             ++windowsWritten;
         }
@@ -2315,43 +2309,38 @@ int Window::writeChildWindowsXML(OutStream& out_stream, uint indentLevel) const
     return windowsWritten;
 }
 
-bool Window::writeAutoChildWindowXML(OutStream& out_stream, uint indentLevel) const
+bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
 {
     // just stop now if we are'nt allowed to write XML
     if (!d_allowWriteXML)
     {
         return false;
     }
-
-    String indent(indentLevel, '\t');
-
-    // we temporarily output to this string stream to see if have to do the tag at all.
+    // we temporarily output to this string stream to see if have to do the tag at all. // Make sure this stream does UTF-8 
     std::ostringstream ss;
-
+    XMLSerializer xml(ss);
+    // Create the XML Child Tree 
     // write out properties.
-    writePropertiesXML(ss, indentLevel);
+    writePropertiesXML(xml);
     // write out attached child windows.
-    writeChildWindowsXML(ss, indentLevel);
+    writeChildWindowsXML(xml);
 
     if (ss.str().empty())
     {
         return false;
     }
-
     // output opening AutoWindow tag
-    out_stream << indent << "<AutoWindow ";
+    xml_stream.openTag("AutoWindow");
     // extract the name suffix
     String suffix(getName(), getParent()->getName().length(), String::npos);
     // write name suffix attribute
-    out_stream << "NameSuffix=\"" << suffix << "\" ";
-    // close opening tag
-    out_stream << ">" << std::endl;
-
-    out_stream << ss.str();
-
-    // now ouput closing Window tag
-    out_stream << indent << "</AutoWindow>" << std::endl;
-
+    xml_stream.attribute("NameSuffix", suffix);
+    // Inefficient : do the XML serialization again 
+    // write out properties.
+    writePropertiesXML(xml_stream);
+    // write out attached child windows.
+    writeChildWindowsXML(xml_stream);
+    xml_stream.closeTag();
     return true;
 }
 

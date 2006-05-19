@@ -33,7 +33,7 @@
 
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
-
+#include "CEGUIXMLSerializer.h" 
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -180,7 +180,7 @@ public:
         This would normally have been implemented via XMLGenerator base class, but in this
         case we require the target PropertyReceiver in order to obtain the property value.
     */
-    virtual void writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const;
+    virtual void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
 
 protected:
 	String	d_name;		//!< String that stores the Property name.

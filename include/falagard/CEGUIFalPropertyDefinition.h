@@ -47,7 +47,7 @@ namespace CEGUI
         void set(PropertyReceiver* receiver, const String& value);
 
     protected:
-        void writeXMLElementType(OutStream& out_stream) const;
+        void writeXMLElementType(XMLSerializer& xml_stream) const;
 
         String d_userStringName;
     };

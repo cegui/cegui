@@ -261,21 +261,19 @@ void WindowManager::cleanDeadPool(void)
 
 void WindowManager::writeWindowLayoutToStream(const Window& window, OutStream& out_stream, bool writeParent) const
 {
-    // output xml header
-    out_stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+
+    XMLSerializer xml(out_stream);
     // output GUILayout start element
-    out_stream << "<GUILayout";
+    xml.openTag("GUILayout");
     // see if we need the parent attribute to be written
     if ((window.getParent() != 0) && writeParent)
     {
-        out_stream << " Parent=\"" << window.getParent()->getName() << "\" ";
+        xml.attribute("Parent", window.getParent()->getName());
     }
-    // close opening tag
-    out_stream << ">" << std::endl;
     // write windows
-    window.writeXMLToStream(out_stream, 1);
+    window.writeXMLToStream(xml);
     // write closing GUILayout element
-    out_stream << "</GUILayout>" << std::endl;
+    xml.closeTag();
 }
 
 void WindowManager::writeWindowLayoutToStream(const String& window, OutStream& out_stream, bool writeParent) const

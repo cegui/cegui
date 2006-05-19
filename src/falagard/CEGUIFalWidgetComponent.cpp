@@ -172,40 +172,41 @@ namespace CEGUI
         {}
     }
 
-    void WidgetComponent::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void WidgetComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-        String subindent(indentLevel, '\t');
-
         // output opening tag
-        out_stream << indent << "<Child type=\"" << d_baseType << "\" nameSuffix=\"" << d_nameSuffix << "\"";
+        xml_stream.openTag("Child")
+            .attribute("type", d_baseType)
+            .attribute("nameSuffix", d_nameSuffix);
 
         if (!d_imageryName.empty())
-            out_stream << " look=\"" << d_imageryName << "\"";
+            xml_stream.attribute("look", d_imageryName);
 
         if (!d_rendererType.empty())
-            out_stream << " renderer=\"" << d_rendererType << "\"";
+            xml_stream.attribute("renderer", d_rendererType);
 
-        out_stream << ">" << std::endl;
 
         // output target area
-        d_area.writeXMLToStream(out_stream, indentLevel);
+        d_area.writeXMLToStream(xml_stream);
 
         // output vertical alignment
-        out_stream << subindent << "<VertAlignment type=\"" << FalagardXMLHelper::vertAlignmentToString(d_vertAlign) << "\" />" << std::endl;
+        xml_stream.openTag("VertAlignment")
+            .attribute("type", FalagardXMLHelper::vertAlignmentToString(d_vertAlign))
+            .closeTag();
 
         // output horizontal alignment
-        out_stream << subindent << "<HorzAlignment type=\"" << FalagardXMLHelper::horzAlignmentToString(d_horzAlign) << "\" />" << std::endl;
+        xml_stream.openTag("HorzAlignment")
+            .attribute("type", FalagardXMLHelper::horzAlignmentToString(d_horzAlign))
+            .closeTag();
 
         //output property initialisers
         for (PropertiesList::const_iterator prop = d_properties.begin(); prop != d_properties.end(); ++prop)
         {
-            (*prop).writeXMLToStream(out_stream, indentLevel);
+            (*prop).writeXMLToStream(xml_stream);
         }
 
         // output closing tag
-        out_stream << indent << "</Child>" << std::endl;
+        xml_stream.closeTag();
     }
 
     const PropertyInitialiser* WidgetComponent::findPropertyInitialiser(const String& propertyName) const

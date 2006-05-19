@@ -37,6 +37,7 @@
 #include "CEGUIVector.h"
 #include "CEGUISize.h"
 #include "CEGUIRenderer.h"
+#include "CEGUIXMLSerializer.h" 
 #include <map>
 
 
@@ -375,16 +376,14 @@ public:
     \brief
         Writes an xml representation of this Image object to \a out_stream.
 
-    \param out_stream
+    \param xml_stream
         Stream where xml data should be output.
 
-    \param indentLevel
-        Current XML indentation level
 
     \return
         Nothing.
     */
-    void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+    void writeXMLToStream(XMLSerializer& xml_stream) const;
 
 
 	friend class std::map<String, Image, String::FastLessCompare>;

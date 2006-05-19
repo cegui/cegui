@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include "falagard/CEGUIFalLayerSpecification.h"
 #include <iostream>
-
+#include "CEGUIPropertyHelper.h"
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -73,25 +73,20 @@ namespace CEGUI
         return d_layerPriority < other.d_layerPriority;
     }
 
-    void LayerSpecification::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void LayerSpecification::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-
-        out_stream << indent << "<Layer";
+        xml_stream.openTag("Layer");
 
         if (d_layerPriority != 0)
-            out_stream << " priority=\"" << d_layerPriority << "\"";
-
-        out_stream << ">" << std::endl;
+            xml_stream.attribute("priority", PropertyHelper::uintToString(d_layerPriority));
 
         // ouput all sections in this layer
         for(SectionList::const_iterator curr = d_sections.begin(); curr != d_sections.end(); ++curr)
         {
-            (*curr).writeXMLToStream(out_stream, indentLevel);
+            (*curr).writeXMLToStream(xml_stream);
         }
 
-        out_stream << indent << "</Layer>" << std::endl;
+        xml_stream.closeTag();
     }
 
 } // End of  CEGUI namespace section

@@ -259,57 +259,56 @@ namespace CEGUI
         d_propertyLinkDefinitions.clear();
     }
 
-    void WidgetLookFeel::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
 
-        out_stream << indent << "<WidgetLook name=\"" << d_lookName << "\">" << std::endl;
+        xml_stream.openTag("WidgetLook")
+                .attribute("name", d_lookName);
 
         // These sub-scobes of the loops avoid the "'curr'-already-initialized" compile error on VC6++
         {
           // output property definitions
           for (PropertyDefinitionList::const_iterator curr = d_propertyDefinitions.begin(); curr != d_propertyDefinitions.end(); ++curr)
-              (*curr).writeXMLToStream(out_stream, indentLevel);
+              (*curr).writeXMLToStream(xml_stream);
         }
 
         {
           // output property link definitions
           for (PropertyLinkDefinitionList::const_iterator curr = d_propertyLinkDefinitions.begin(); curr != d_propertyLinkDefinitions.end(); ++curr)
-              (*curr).writeXMLToStream(out_stream, indentLevel);
+              (*curr).writeXMLToStream(xml_stream);
         }
 
         {
           // output property initialisers.
           for (PropertyList::const_iterator curr = d_properties.begin(); curr != d_properties.end(); ++curr)
-              (*curr).writeXMLToStream(out_stream, indentLevel);
+              (*curr).writeXMLToStream(xml_stream);
         }
 
         {
           // output named areas
           for (NamedAreaList::const_iterator curr = d_namedAreas.begin(); curr != d_namedAreas.end(); ++curr)
-              (*curr).second.writeXMLToStream(out_stream, indentLevel);
+              (*curr).second.writeXMLToStream(xml_stream);
         }
 
         {
           // output child widgets
           for (WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
-              (*curr).writeXMLToStream(out_stream, indentLevel);
+              (*curr).writeXMLToStream(xml_stream);
         }
 
         {
           // output imagery sections
           for (ImageryList::const_iterator curr = d_imagerySections.begin(); curr != d_imagerySections.end(); ++curr)
-              (*curr).second.writeXMLToStream(out_stream, indentLevel);
+              (*curr).second.writeXMLToStream(xml_stream);
         }
 
         {
           // output states
           for (StateList::const_iterator curr = d_stateImagery.begin(); curr != d_stateImagery.end(); ++curr)
-              (*curr).second.writeXMLToStream(out_stream, indentLevel);
+              (*curr).second.writeXMLToStream(xml_stream);
         }
 
-        out_stream << indent << "</WidgetLook>" << std::endl;
+        xml_stream.closeTag();
     }
 
     void WidgetLookFeel::renameChildren(const Window& widget, const String& newBaseName) const

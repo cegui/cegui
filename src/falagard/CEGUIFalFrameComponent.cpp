@@ -490,47 +490,50 @@ namespace CEGUI
         }
     }
 
-    void FrameComponent::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void FrameComponent::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-        String subindent(indentLevel, '\t');
         // opening tag
-        out_stream << indent << "<FrameComponent>" << std::endl;
+        xml_stream.openTag("FrameComponent");
         // write out area
-        d_area.writeXMLToStream(out_stream, indentLevel);
+        d_area.writeXMLToStream(xml_stream);
 
         // write images
         for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
         {
             if (d_frameImages[i])
             {
-                out_stream << subindent << "<Image imageset=\"" << d_frameImages[i]->getImagesetName();
-                out_stream << "\" image=\"" << d_frameImages[i]->getName();
-                out_stream << "\" type=\"" << FalagardXMLHelper::frameImageComponentToString(static_cast<FrameImageComponent>(i));
-                out_stream << "\" />" << std::endl;
+                xml_stream.openTag("Image")
+                    .attribute("imageset", d_frameImages[i]->getImagesetName())
+                    .attribute("image", d_frameImages[i]->getName())
+                    .attribute("type", FalagardXMLHelper::frameImageComponentToString(static_cast<FrameImageComponent>(i)))
+                    .closeTag();
             }
         }
 
         // get base class to write colours
-        writeColoursXML(out_stream, indentLevel);
+        writeColoursXML(xml_stream);
 
         // write vert format, allowing base class to do this for us if a propety is in use
-        if (!writeVertFormatXML(out_stream, indentLevel))
+        if (!writeVertFormatXML(xml_stream))
         {
             // was not a property, so write out explicit formatting in use
-            out_stream << subindent << "<VertFormat type=\"" << FalagardXMLHelper::vertFormatToString(d_vertFormatting) << "\" />" << std::endl;
+            xml_stream.openTag("VertFormat")
+                .attribute("type", FalagardXMLHelper::vertFormatToString(d_vertFormatting))
+                .closeTag();
+
         }
 
         // write horz format, allowing base class to do this for us if a propety is in use
-        if (!writeHorzFormatXML(out_stream, indentLevel))
+        if (!writeHorzFormatXML(xml_stream))
         {
             // was not a property, so write out explicit formatting in use
-            out_stream << subindent << "<HorzFormat type=\"" << FalagardXMLHelper::horzFormatToString(d_horzFormatting) << "\" />" << std::endl;
+            xml_stream.openTag("HorzFormat")
+                .attribute("type", FalagardXMLHelper::horzFormatToString(d_horzFormatting))
+                .closeTag();
         }
 
         // closing tag
-        out_stream << indent << "</FrameComponent>" << std::endl;
+        xml_stream.closeTag();
     }
 
 } // End of  CEGUI namespace section

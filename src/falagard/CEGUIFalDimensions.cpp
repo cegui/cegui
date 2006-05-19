@@ -152,38 +152,22 @@ namespace CEGUI
         d_operand = operand.clone();
     }
 
-    void BaseDim::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void BaseDim::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-        String subindent(indentLevel, '\t');
-        // open tag
-        out_stream << indent << "<";
         // get sub-class to output the data for this single dimension
-        writeXMLElementName_impl(out_stream);
-        out_stream << " ";
-        writeXMLElementAttributes_impl(out_stream);
-
+        writeXMLElementName_impl(xml_stream);
+        writeXMLElementAttributes_impl(xml_stream);
         if (d_operand)
         {
-            // terminate the opening element tag
-            out_stream << ">" << std::endl;
             // write out the DimOperator
-            out_stream << subindent << "<DimOperator op=\"" << FalagardXMLHelper::dimensionOperatorToString(d_operator) << "\">" << std::endl;
+            xml_stream.openTag("DimOperator")
+                .attribute("op", FalagardXMLHelper::dimensionOperatorToString(d_operator));
             // write out the other operand
-            d_operand->writeXMLToStream(out_stream, indentLevel + 1);
+            d_operand->writeXMLToStream(xml_stream);
             // write closing tag for DimOperator element
-            out_stream << subindent << "</DimOperator>" << std::endl;
-            // write closing tag for this dimension element
-            out_stream << indent << "</";
-            writeXMLElementName_impl(out_stream);
-            out_stream << ">" << std::endl;
+            xml_stream.closeTag();
         }
-        // no operand, so just close this tag.
-        else
-        {
-            out_stream << " />" << std::endl;
-        }
+        xml_stream.closeTag();
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -213,14 +197,14 @@ namespace CEGUI
         return ndim;
     }
 
-    void AbsoluteDim::writeXMLElementName_impl(OutStream& out_stream) const
+    void AbsoluteDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "AbsoluteDim";
+        xml_stream.openTag("AbsoluteDim");
     }
 
-    void AbsoluteDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    void AbsoluteDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "value=\"" << d_val << "\"";
+        xml_stream.attribute("value", PropertyHelper::floatToString(d_val));
     }
 
 
@@ -304,14 +288,16 @@ namespace CEGUI
         return ndim;
     }
 
-    void ImageDim::writeXMLElementName_impl(OutStream& out_stream) const
+    void ImageDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "ImageDim";
+        xml_stream.openTag("ImageDim");
     }
 
-    void ImageDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    void ImageDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "imageset=\"" << d_imageset << "\" image=\"" << d_image << "\" dimension=\"" << FalagardXMLHelper::dimensionTypeToString(d_what) << "\"";
+        xml_stream.attribute("imageset", d_imageset)
+            .attribute("image", d_image)
+            .attribute("dimension", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -405,17 +391,17 @@ namespace CEGUI
         return ndim;
     }
 
-    void WidgetDim::writeXMLElementName_impl(OutStream& out_stream) const
+    void WidgetDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "WidgetDim";
+        xml_stream.openTag("WidgetDim");
     }
 
-    void WidgetDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    void WidgetDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
         if (!d_widgetName.empty())
-            out_stream << "widget=\"" << d_widgetName << "\" ";
+            xml_stream.attribute("widget", d_widgetName);
 
-        out_stream << "dimension=\"" << FalagardXMLHelper::dimensionTypeToString(d_what) << "\"";
+        xml_stream.attribute("dimension", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -472,26 +458,26 @@ namespace CEGUI
         return ndim;
     }
 
-    void FontDim::writeXMLElementName_impl(OutStream& out_stream) const
+    void FontDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "FontDim";
+        xml_stream.openTag("FontDim");
     }
 
-    void FontDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    void FontDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
         if (!d_childSuffix.empty())
-            out_stream << "widget=\"" << d_childSuffix << "\" ";
+            xml_stream.attribute("widget", d_childSuffix);
 
         if (!d_font.empty())
-            out_stream << "font=\"" << d_font << "\" ";
+            xml_stream.attribute("font", d_font);
 
         if (!d_text.empty())
-            out_stream << "string=\"" << d_text << "\" ";
+            xml_stream.attribute("string", d_text);
 
         if (d_padding != 0)
-            out_stream << "padding=\"" << d_padding << "\" ";
+            xml_stream.attribute("padding", PropertyHelper::floatToString(d_padding));
 
-        out_stream << "type=\"" << FalagardXMLHelper::fontMetricTypeToString(d_metric) << "\"";
+        xml_stream.attribute("type", FalagardXMLHelper::fontMetricTypeToString(d_metric));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -521,17 +507,16 @@ namespace CEGUI
         return ndim;
     }
 
-    void PropertyDim::writeXMLElementName_impl(OutStream& out_stream) const
+    void PropertyDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
     {
-        if (!d_childSuffix.empty())
-            out_stream << "widget=\"" << d_childSuffix << "\" ";
-
-        out_stream << "PropertyDim";
+        xml_stream.openTag("PropertyDim");
     }
 
-    void PropertyDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    void PropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "name=\"" << d_property << "\"";
+        if (!d_childSuffix.empty())
+            xml_stream.attribute("widget", d_childSuffix);
+        xml_stream.attribute("name", d_property);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -595,17 +580,14 @@ namespace CEGUI
         d_type = type;
     }
 
-    void Dimension::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void Dimension::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-
-        out_stream << indent << "<Dim type=\"" << FalagardXMLHelper::dimensionTypeToString(d_type) << "\">" << std::endl;
+        xml_stream.openTag("Dim")
+            .attribute("type", FalagardXMLHelper::dimensionTypeToString(d_type));
 
         if (d_value)
-            d_value->writeXMLToStream(out_stream, indentLevel);
-
-        out_stream << indent << "</Dim>" << std::endl;
+            d_value->writeXMLToStream(xml_stream);
+        xml_stream.closeTag();
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -674,20 +656,20 @@ namespace CEGUI
         return ndim;
     }
 
-    void UnifiedDim::writeXMLElementName_impl(OutStream& out_stream) const
+    void UnifiedDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
     {
-        out_stream << "UnifiedDim";
+        xml_stream.openTag("UnifiedDim");
     }
 
-    void UnifiedDim::writeXMLElementAttributes_impl(OutStream& out_stream) const
+    void UnifiedDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
         if (d_value.d_scale != 0)
-            out_stream << "scale=\"" << d_value.d_scale << "\" ";
+            xml_stream.attribute("scale", PropertyHelper::floatToString(d_value.d_scale));
 
         if (d_value.d_offset != 0)
-            out_stream << "offset=\"" << d_value.d_offset << "\" ";
+            xml_stream.attribute("offset", PropertyHelper::floatToString(d_value.d_offset));
 
-        out_stream << "type=\"" << FalagardXMLHelper::dimensionTypeToString(d_what) << "\"";
+        xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -762,28 +744,26 @@ namespace CEGUI
         return pixelRect;
     }
 
-    void ComponentArea::writeXMLToStream(OutStream& out_stream, uint indentLevel) const
+    void ComponentArea::writeXMLToStream(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-        ++indentLevel;
-
-        out_stream << indent << "<Area>" << std::endl;
+        xml_stream.openTag("Area");
 
         // see if we should write an AreaProperty element
         if (isAreaFetchedFromProperty())
         {
-            String subindent(indentLevel, '\t');
-            out_stream << subindent << "<AreaProperty name=\"" << d_areaProperty << "\" />" << std::endl;
+            xml_stream.openTag("AreaProperty")
+                .attribute("name", d_areaProperty)
+                .closeTag();
         }
         // not a property, write out individual dimensions explicitly.
         else
         {
-            d_left.writeXMLToStream(out_stream, indentLevel);
-            d_top.writeXMLToStream(out_stream, indentLevel);
-            d_right_or_width.writeXMLToStream(out_stream, indentLevel);
-            d_bottom_or_height.writeXMLToStream(out_stream, indentLevel);
+            d_left.writeXMLToStream(xml_stream);
+            d_top.writeXMLToStream(xml_stream);
+            d_right_or_width.writeXMLToStream(xml_stream);
+            d_bottom_or_height.writeXMLToStream(xml_stream);
         }
-        out_stream << indent << "</Area>" << std::endl;
+        xml_stream.closeTag();
     }
 
     bool ComponentArea::isAreaFetchedFromProperty() const

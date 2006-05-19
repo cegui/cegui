@@ -79,18 +79,18 @@ namespace CEGUI
     }
 
 
-    void PropertyLinkDefinition::writeXMLElementType(OutStream& out_stream) const
+    void PropertyLinkDefinition::writeXMLElementType(XMLSerializer& xml_stream) const
     {
-        out_stream << "PropertyLinkDefinition";
+        xml_stream.openTag("PropertyLinkDefinition");
     }
 
-    void PropertyLinkDefinition::writeXMLAttributes(OutStream& out_stream) const
+    void PropertyLinkDefinition::writeXMLAttributes(XMLSerializer& xml_stream) const
     {
         if (!d_widgetNameSuffix.empty())
-            out_stream << "widget=\"" << d_widgetNameSuffix << "\" ";
+            xml_stream.attribute("widget", d_widgetNameSuffix);
 
         if (!d_targetProperty.empty())
-            out_stream << "targetProperty=\"" << d_targetProperty << "\" ";
+            xml_stream.attribute("targetProperty",  d_targetProperty);
     }
 
 } // End of  CEGUI namespace section

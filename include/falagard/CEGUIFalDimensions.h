@@ -31,6 +31,7 @@
 #include "falagard/CEGUIFalEnums.h"
 #include "CEGUIString.h"
 #include "CEGUIUDim.h"
+#include "CEGUIXMLSerializer.h" 
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -141,16 +142,13 @@ namespace CEGUI
         \brief
             Writes an xml representation of this BaseDim to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
-
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     protected:
         /*!
@@ -177,19 +175,15 @@ namespace CEGUI
 
         /*!
         \brief
-            Implementataion method to output real xml element name to an OutStream.
-            This method should not write the element opening '<' character, nor close the element, it
-            must write just the element name itself.
+            Implementataion method to output real xml element name.
         */
-        virtual void writeXMLElementName_impl(OutStream& out_stream) const = 0;
+        virtual void writeXMLElementName_impl(XMLSerializer& xml_stream) const = 0;
 
         /*!
         \brief
-            Implementataion method to output xml element attributes to an OutStream.
-            This method should not write the element opening '<' character, nor close the element, it
-            must write just the element attributes.
+            Implementataion method to create the element attributes 
         */
-        virtual void writeXMLElementAttributes_impl(OutStream& out_stream) const = 0;
+        virtual void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const = 0;
 
     private:
         DimensionOperator   d_operator;
@@ -223,8 +217,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
-        void writeXMLElementName_impl(OutStream& out_stream) const;
-        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
 
         BaseDim* clone_impl() const;
 
@@ -288,8 +282,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
-        void writeXMLElementName_impl(OutStream& out_stream) const;
-        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -353,8 +347,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
-        void writeXMLElementName_impl(OutStream& out_stream) const;
-        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -388,8 +382,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
-        void writeXMLElementName_impl(OutStream& out_stream) const;
-        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -432,8 +426,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
-        void writeXMLElementName_impl(OutStream& out_stream) const;
-        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -468,8 +462,8 @@ namespace CEGUI
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rect& container) const;
-        void writeXMLElementName_impl(OutStream& out_stream) const;
-        void writeXMLElementAttributes_impl(OutStream& out_stream) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
     private:
@@ -570,16 +564,13 @@ namespace CEGUI
         \brief
             Writes an xml representation of this Dimension to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
-
-        \param indentLevel
-            Current XML indentation level
-
+        
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     private:
         BaseDim*        d_value;    //!< Pointer to the value for this Dimension.
@@ -632,16 +623,14 @@ namespace CEGUI
         \brief
             Writes an xml representation of this ComponentArea to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
 
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
         /*!
         \brief

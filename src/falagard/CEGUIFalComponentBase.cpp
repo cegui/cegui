@@ -126,55 +126,55 @@ namespace CEGUI
         d_horzFormatPropertyName = property;
     }
 
-    bool FalagardComponentBase::writeColoursXML(OutStream& out_stream, uint indentLevel) const
+    bool FalagardComponentBase::writeColoursXML(XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
 
         if (!d_colourPropertyName.empty())
         {
-            out_stream << indent;
-
             if (d_colourProperyIsRect)
-                out_stream << "<ColourRectProperty ";
+                xml_stream.openTag("ColourRectProperty");
             else
-                out_stream << "<ColourProperty ";
+                xml_stream.openTag("<ColourProperty");
 
-            out_stream << "name=\"" << d_colourPropertyName << "\" />" << std::endl;
+            xml_stream.attribute("name", d_colourPropertyName)
+                .closeTag();
         }
         else if (!d_colours.isMonochromatic() || d_colours.d_top_left != colour(1,1,1,1))
         {
-            out_stream << indent << "<Colours ";
-            out_stream << "topLeft=\"" << PropertyHelper::colourToString(d_colours.d_top_left) << "\" ";
-            out_stream << "topRight=\"" << PropertyHelper::colourToString(d_colours.d_top_right) << "\" ";
-            out_stream << "bottomLeft=\"" << PropertyHelper::colourToString(d_colours.d_bottom_left) << "\" ";
-            out_stream << "bottomRight=\"" << PropertyHelper::colourToString(d_colours.d_bottom_right) << "\" />" << std::endl;
+            xml_stream.openTag("Colours")
+                .attribute("topLeft", PropertyHelper::colourToString(d_colours.d_top_left))
+                .attribute("topRight", PropertyHelper::colourToString(d_colours.d_top_right))
+                .attribute("bottomLeft", PropertyHelper::colourToString(d_colours.d_bottom_left))
+                .attribute("bottomRight", PropertyHelper::colourToString(d_colours.d_bottom_right))
+                .closeTag();
         }
         else
         {
             return false;
         }
-
         return true;
     }
 
-    bool FalagardComponentBase::writeVertFormatXML(OutStream& out_stream, uint indentLevel) const
+    bool FalagardComponentBase::writeVertFormatXML(XMLSerializer& xml_stream) const
     {
         if (!d_vertFormatPropertyName.empty())
         {
-            String indent(indentLevel, '\t');
-            out_stream << indent << "<VertFormatProperty name=\"" << d_vertFormatPropertyName << "\" />" << std::endl;
+            xml_stream.openTag("VertFormatProperty")
+                .attribute("name", d_vertFormatPropertyName)
+                .closeTag();
             return true;
         }
 
         return false;
     }
 
-    bool FalagardComponentBase::writeHorzFormatXML(OutStream& out_stream, uint indentLevel) const
+    bool FalagardComponentBase::writeHorzFormatXML(XMLSerializer& xml_stream) const
     {
         if (!d_horzFormatPropertyName.empty())
         {
-            String indent(indentLevel, '\t');
-            out_stream << indent << "<HorzFormatProperty name=\"" << d_horzFormatPropertyName << "\" />" << std::endl;
+            xml_stream.openTag("HorzFormatProperty")
+                .attribute("name", d_horzFormatPropertyName)
+                .closeTag();
             return true;
         }
 

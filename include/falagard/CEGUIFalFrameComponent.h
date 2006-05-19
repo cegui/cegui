@@ -29,6 +29,7 @@
 #define _CEGUIFalFrameComponent_h_
 
 #include "falagard/CEGUIFalComponentBase.h"
+#include "CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -141,16 +142,14 @@ namespace CEGUI
         \brief
             Writes an xml representation of this FrameComponent to \a out_stream.
 
-        \param out_stream
+        \param xml_stream
             Stream where xml data should be output.
 
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.
         */
-        void writeXMLToStream(OutStream& out_stream, uint indentLevel) const;
+        void writeXMLToStream(XMLSerializer& xml_stream) const;
 
     protected:
         // implemets abstract from base

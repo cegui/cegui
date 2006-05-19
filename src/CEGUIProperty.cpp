@@ -49,13 +49,25 @@ namespace CEGUI
 		return d_default;
 	}
 
-    void Property::writeXMLToStream(const PropertyReceiver* receiver, OutStream& out_stream, uint indentLevel) const
+    void Property::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const
     {
-        String indent(indentLevel, '\t');
-
+        // TODO: Create an helper function to extract whether the property 
+        // should be inlined or exported as a text node 
+        // At the moment export only Text property using text node 
+        const String textProperty("Text");
         if (d_writeXML)
         {
-            out_stream << indent << "<Property Name=\"" << d_name <<"\" Value=\"" << get(receiver).c_str() << "\" />"  << std::endl;
+            xml_stream.openTag("Property")
+                .attribute("Name",  d_name);
+            if (textProperty == d_name)
+            {
+                xml_stream.text(get(receiver));
+            }
+            else 
+            {
+                xml_stream.attribute("Value", get(receiver));
+            }
+            xml_stream.closeTag();
         }
     }
 

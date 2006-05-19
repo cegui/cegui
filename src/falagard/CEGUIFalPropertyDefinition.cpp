@@ -56,9 +56,9 @@ namespace CEGUI
         PropertyDefinitionBase::set(receiver, value);
     }
 
-    void PropertyDefinition::writeXMLElementType(OutStream& out_stream) const
+    void PropertyDefinition::writeXMLElementType(XMLSerializer& xml_stream) const
     {
-        out_stream << "PropertyDefinition";
+        xml_stream.openTag("PropertyDefinition");
     }
 
 } // End of  CEGUI namespace section
