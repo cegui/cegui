@@ -79,7 +79,7 @@ Each item in here has a comment to describe what it's for.
 // (XercesParser, ExpatParser, LibxmlParser or TinyXMLParser).
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_DEFAULT_XMLPARSER
-#	define CEGUI_DEFAULT_XMLPARSER TinyXMLParser
+#	define CEGUI_DEFAULT_XMLPARSER ExpatParser
 #endif
 
 #endif // defined(_MSC_VER) || defined(__APPLE__)
