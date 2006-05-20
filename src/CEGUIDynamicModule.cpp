@@ -96,7 +96,7 @@ const String& DynamicModule::getModuleName() const
 
 void* DynamicModule::getSymbolAddress(const String& symbol) const
 {
-    return DYNLIB_GETSYM(d_handle, symbol.c_str());
+    return (void*)DYNLIB_GETSYM(d_handle, symbol.c_str());
 }
 
 
