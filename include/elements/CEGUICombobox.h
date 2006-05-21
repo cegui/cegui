@@ -122,6 +122,44 @@ public:
 	bool	isDropDownListVisible(void) const;
 
 
+    /*!
+    \brief
+        Return a pointer to the Editbox component widget for this Combobox.
+
+    \return
+        Pointer to an Editbox object.
+
+    \exception UnknownObjectException
+        Thrown if the Editbox component does not exist.
+    */
+    Editbox* getEditbox() const;
+
+    /*!
+    \brief
+        Return a pointer to the PushButton component widget for this Combobox.
+
+    \return
+        Pointer to a PushButton object.
+
+    \exception UnknownObjectException
+        Thrown if the PushButton component does not exist.
+    */
+    PushButton* getPushButton() const;
+
+    /*!
+    \brief
+        Return a pointer to the ComboDropList component widget for this
+        Combobox.
+
+    \return
+        Pointer to an ComboDropList object.
+
+    \exception UnknownObjectException
+        Thrown if the ComboDropList component does not exist.
+    */
+    ComboDropList* getDropList() const;
+
+
 	/*************************************************************************
 		Editbox Accessors
 	*************************************************************************/
@@ -744,42 +782,6 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
-    /*!
-    \brief
-        Return a pointer to the Editbox component widget for this Combobox.
-
-    \return
-        Pointer to an Editbox object.
-
-    \exception UnknownObjectException
-        Thrown if the Editbox component does not exist.
-    */
-    Editbox* getEditbox() const;
-
-    /*!
-    \brief
-        Return a pointer to the PushButton component widget for this Combobox.
-
-    \return
-        Pointer to a PushButton object.
-
-    \exception UnknownObjectException
-        Thrown if the PushButton component does not exist.
-    */
-    PushButton* getPushButton() const;
-
-    /*!
-    \brief
-        Return a pointer to the ComboDropList component widget for this
-        Combobox.
-
-    \return
-        Pointer to an ComboDropList object.
-
-    \exception UnknownObjectException
-        Thrown if the ComboDropList component does not exist.
-    */
-    ComboDropList* getDropList() const;
 
 	/*************************************************************************
 		Handlers to relay child widget events so they appear to come from us
