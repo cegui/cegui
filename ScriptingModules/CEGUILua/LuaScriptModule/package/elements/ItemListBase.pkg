@@ -3,12 +3,23 @@
 ***********************************************************************/
 class ItemListBase : public Window
 {
+    enum SortMode
+    {
+        Ascending,
+        Descending,
+        UserSort
+    };
+
 	unsigned int getItemCount() const;
 	ItemEntry* getItemFromIndex(unsigned int index) const;
 	unsigned int getItemIndex(const ItemEntry* item) const;
 	ItemEntry* findItemWithText(string text, const ItemEntry* start_item);
 	bool isItemInList(const ItemEntry* item) const;
 	bool isAutoResizeEnabled() const;
+	bool isSortEnabled() const;
+	SortMode getSortMode() const;
+	Rect getItemRenderArea() const;
+    Window* getContentPane() const;
 
 	void resetList();
 	void addItem(ItemEntry* item);
@@ -17,4 +28,7 @@ class ItemListBase : public Window
 	void handleUpdatedItemData();
 	void setAutoResizeEnabled(bool setting);
 	void sizeToContent();
+    void setSortEnabled(bool setting);
+    void setSortMode(SortMode mode);
+    void sortList();
 };

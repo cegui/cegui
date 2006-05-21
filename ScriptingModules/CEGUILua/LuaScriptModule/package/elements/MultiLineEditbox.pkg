@@ -12,10 +12,18 @@ class MultiLineEditbox : public Window
 	unsigned long getMaxTextLength() const;
 	bool isWordWrapped() const;
 
+    Scrollbar* getVertScrollbar() const;
+    Scrollbar* getHorzScrollbar() const;
+    Rect getTextRenderArea() const;
+    unsigned long getLineNumberFromIndex(unsigned long index) const;
+
 	void setReadOnly(bool setting);
 	void setCaratIndex(unsigned long carat_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaxTextLength(unsigned long max_len);
 	void ensureCaratIsVisible();
 	void setWordWrapping(bool setting);
+
+    void setSelectionBrushImage(const Image* image);
+    const Image* getSelectionBrushImage() const;
 };

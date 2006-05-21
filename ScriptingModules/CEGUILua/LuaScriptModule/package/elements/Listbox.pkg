@@ -31,4 +31,10 @@ class Listbox : public Window
 	void handleUpdatedItemData(void);
 	void ensureItemIsVisible(unsigned long item_index);
 	void ensureItemIsVisible(const ListboxItem* item);
+	
+	Rect getListRenderArea() const;
+	Scrollbar* getVertScrollbar() const;
+	Scrollbar* getHorzScrollbar() const;
+	float getWidestItemWidth() const;
+	float getTotalItemsHeight() const;
 };

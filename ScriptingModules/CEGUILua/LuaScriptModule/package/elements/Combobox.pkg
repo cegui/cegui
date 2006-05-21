@@ -6,6 +6,10 @@ class Combobox : public Window
 	bool getSingleClickEnabled() const;
 	bool isDropDownListVisible() const;
 
+    Editbox* getEditbox() const;
+    PushButton* getPushButton() const;
+    ComboDropList* getDropList() const;
+
 	bool hasInputFocus() const;
 	bool isReadOnly() const;
 	bool isTextValid() const;

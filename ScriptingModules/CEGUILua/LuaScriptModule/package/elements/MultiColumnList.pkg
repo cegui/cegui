@@ -78,7 +78,18 @@ class MultiColumnList : public Window
 	bool isHorzScrollbarAlwaysShown() const;
 
 	unsigned int getColumnID(unsigned int col_idx) const;
+	unsigned int getRowID(unsigned int row_idx) const;
+    unsigned int getRowWithID(unsigned int row_id) const;
 
+    Rect getListRenderArea() const;
+
+    Scrollbar* getVertScrollbar() const;
+    Scrollbar* getHorzScrollbar() const;
+    ListHeader* getListHeader() const;
+
+    float getTotalRowsHeight() const;
+    float getWidestColumnItemWidth(unsigned int col_idx) const;
+    float getHighestRowItemHeight(unsigned int row_idx) const;
 
 	void resetList();
 
@@ -122,4 +133,6 @@ class MultiColumnList : public Window
 	void setUserColumnSizingEnabled(bool setting);
 	void setUserColumnDraggingEnabled(bool setting);
 	void autoSizeColumnHeader(unsigned int col_idx);
+	
+	void setRowID(unsigned int row_idx, unsigned int row_id);
 };
