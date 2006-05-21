@@ -100,6 +100,7 @@ public:
     void clearResourceGroupDirectory(const String& resourceGroup);
 
     void loadRawDataContainer(const String& filename, RawDataContainer& output, const String& resourceGroup);
+    void unloadRawDataContainer(RawDataContainer& data);
 
 protected:
     /*!

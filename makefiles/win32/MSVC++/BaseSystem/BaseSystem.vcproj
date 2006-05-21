@@ -131,6 +131,9 @@
 				RelativePath="..\..\..\..\src\CEGUICoordConverter.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\CEGUIDataContainer.cpp">
+			</File>
+			<File
 				RelativePath="..\..\..\..\src\CEGUIDefaultLogger.cpp">
 			</File>
 			<File
@@ -273,6 +276,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIXMLParser.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\CEGUIXMLSerializer.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\CEGUIcolour.cpp">
@@ -756,6 +762,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include/CEGUIXMLParser.h">
+			</File>
+			<File
+				RelativePath="..\..\..\..\include/CEGUIXMLSerializer.h">
 			</File>
 			<File
 				RelativePath="..\..\..\..\include/CEGUIcolour.h">

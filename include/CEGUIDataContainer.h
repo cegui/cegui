@@ -3,7 +3,7 @@
 	created:	10/8/2004
 	author:		James '_mental_' O'Sullivan
 	
-	purpose:	Defines abstract base class for Window objects
+	purpose:	Declares the RawDataContainer
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -32,15 +32,15 @@
 
 #include "CEGUIBase.h"
 
-#include <malloc.h>
-//#include <xercesc/sax/InputSource.hpp>
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 
-template <class T>
-class CEGUIEXPORT DataContainer
+/*!
+\brief
+    Class used as the databuffer for loading files throughout the library.
+*/
+class CEGUIEXPORT RawDataContainer
 {
 public:
 	/*************************************************************************
@@ -48,9 +48,9 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		Constructor for DataContainer class
+		Constructor for RawDataContainer class
 	*/
-    DataContainer()
+    RawDataContainer()
       : mData(0),
         mSize(0)
     {
@@ -58,9 +58,9 @@ public:
 
 	/*!
 	\brief
-		Destructor for DataContainer class
+		Destructor for RawDataContainer class
 	*/
-	virtual ~DataContainer(void) 
+	~RawDataContainer(void) 
     { 
         release();
     }
@@ -73,22 +73,22 @@ public:
 		Set a pointer to the external data.
 
 	\param data
-        Pointer to a object of type T, where T defined when the template is specialized.
+        Pointer to the uint8 data buffer.
 	*/
-    void setData(T* data) { mData = data; }
+    void setData(uint8* data) { mData = data; }
 
 	/*!
 	\brief
 		Return a pointer to the external data
 
 	\return
-		Pointer to an object of type T, where T defined when the template is specialized.
+		Pointer to an the uint8 data buffer.
 	*/
-    T* getDataPtr(void) { return mData; }
+    uint8* getDataPtr(void) { return mData; }
 
 	/*!
 	\brief
-	    Set the size of the external data.  This maybe zero depending on the type of T.
+	    Set the size of the external data.
 
 	\param size
 	    size_t containing the size of the external data
@@ -97,7 +97,7 @@ public:
 
 	/*!
 	\brief
-		Get the size of the external data.  This maybe zero depending on the type of T.
+		Get the size of the external data.
 
 	\return
 	    size_t containing the size of the external data
@@ -107,52 +107,17 @@ public:
 	/*!
 	\brief
 		Release supplied data.
-
 	*/
-    virtual void release(void)
-    {
-        if(mData)
-        {
-            delete mData;
-            mData = 0;
-        }
-    }
-	/*************************************************************************
+    void release(void);
+
+private:
+    /*************************************************************************
 		Implementation Data
 	*************************************************************************/
-protected:
-    T* mData;
+    uint8* mData;
     size_t mSize;
 };
-
-// Specialized templates
-class RawDataContainer : public DataContainer<unsigned char> 
-{
-public:
-    RawDataContainer() : DataContainer<unsigned char>()
-    {
-    }
-
-    ~RawDataContainer() 
-    {
-        release();
-    }
-
-    void release(void)
-    {
-        if(mData)
-        {
-            delete [] mData;
-            mData = 0;
-        }
-    }
-};
-
-//typedef DataContainer<unsigned char> RawDataContainer;
-//typedef DataContainer<XERCES_CPP_NAMESPACE::InputSource> InputSourceContainer;
 
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIDataContainer_h_
-
-

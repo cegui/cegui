@@ -71,6 +71,14 @@ namespace CEGUI
         output.setData(buffer);
         output.setSize(size);
     }
+    
+    void DefaultResourceProvider::unloadRawDataContainer(RawDataContainer& data)
+    {
+        uint8* ptr = data.getDataPtr();
+        delete [] ptr;
+        data.setData(0);
+        data.setSize(0);
+    }
 
     void DefaultResourceProvider::setResourceGroupDirectory(const String& resourceGroup, const String& directory)
     {
