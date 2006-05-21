@@ -155,7 +155,8 @@ namespace CEGUI
         MultiLineEditbox* w = (MultiLineEditbox*)d_window;
         // text is already formatted, we just grab the lines and render them with the required alignment.
         Rect drawArea(dest_area);
-        drawArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -w->getVertScrollbar()->getScrollPosition()));
+        float vertScrollPos = w->getVertScrollbar()->getScrollPosition();
+        drawArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
 
         Renderer* renderer = System::getSingleton().getRenderer();
         const Font* fnt = w->getFont();
@@ -178,8 +179,17 @@ namespace CEGUI
             selectBrushCol.setAlpha(selectBrushCol.getAlpha() * alpha);
 
             const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
+            const size_t numLines = d_lines.size();
+
+            // calculate the range of visible lines
+            size_t sidx,eidx;
+            sidx = static_cast<size_t>(vertScrollPos / fnt->getLineSpacing());
+            eidx = 1 + sidx + static_cast<size_t>(dest_area.getHeight() / fnt->getLineSpacing());
+            eidx = ceguimin(eidx, numLines);
+            drawArea.d_top += fnt->getLineSpacing()*static_cast<float>(sidx);
+
             // for each formatted line.
-            for (size_t i = 0; i < d_lines.size(); ++i)
+            for (size_t i = sidx; i < eidx; ++i)
             {
                 Rect lineRect(drawArea);
                 const MultiLineEditbox::LineInfo& currLine = d_lines[i];
