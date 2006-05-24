@@ -33,7 +33,7 @@ distribution.
 namespace CEGUITinyXML
 {
 
-bool TiXmlBase::condenseWhiteSpace = true;
+bool TiXmlBase::condenseWhiteSpace = false;
 
 void TiXmlBase::PutString( const TIXML_STRING& str, TIXML_OSTREAM* stream )
 {
