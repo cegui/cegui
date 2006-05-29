@@ -57,7 +57,8 @@
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUIDynamicModule.h"
 #include "CEGUIXMLParser.h"
-#include <time.h>
+#include <ctime>
+#include <clocale>
 
 #define S_(X) #X
 #define STRINGIZE(X) S_(X)
@@ -169,6 +170,10 @@ System::System(Renderer* renderer,
   d_defaultTooltip(0),
   d_weOwnTooltip(false)
 {
+    // start out by fixing the numeric locale to C (we depend on this behaviour)
+    // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
+    setlocale(LC_NUMERIC, "C");
+
     // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
     if (!Logger::getSingletonPtr ())
         new DefaultLogger();
