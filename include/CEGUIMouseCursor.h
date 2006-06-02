@@ -231,6 +231,19 @@ public:
 	void	show(void)		{d_visible = true;}
 
 
+    /*!
+    \brief
+        Set the visibility of the mouse cursor.
+
+    \param visible
+        'true' to show the mouse cursor, 'false' to hide it.
+
+    \return
+        Nothing.
+    */
+    void    setVisible(bool visible)    {d_visible = visible;}
+
+
 	/*!
 	\brief
 		return whether the mouse cursor is visible.
