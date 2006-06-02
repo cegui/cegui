@@ -61,21 +61,69 @@ public:
     *************************************************************************/
     /*!
     \brief
-        Return the number of selected items in this ItemListbox
+        Returns the number of selected items in this ItemListbox.
     */
     size_t getSelectedCount(void) const;
 
     /*!
     \brief
-        Returns a pointer to the first selected item
+        Returns a pointer to the last selected item.
+
+    \return
+        A pointer to the last selected item, 0 is none.
     */
-    ItemEntry* getFirstSelectedItem(void) const;
+    ItemEntry* getLastSelectedItem(void) const      {return d_lastSelected;}
+
+    /*!
+    \brief
+        Returns a pointer to the first selected item
+
+    \param start_index
+        The index where the search should begin. If omitted the search will
+        begin with the first item.
+
+    \return
+        A pointer to the first selected item in the listbox.
+        If no item is selected the return value is 0.
+        If \a start_index is out of bounds the return value is 0.
+
+    \note
+        If multiselect is disabled then this does the equivalent of calling
+        getLastSelectedItem.
+        If multiselect is enabled it will search the array starting at \a start_index
+    */
+    ItemEntry* getFirstSelectedItem(size_t start_index=0) const;
+
+    /*!
+    \brief
+        Returns a pointer to the next seleced item relative to a previous call to
+        getFirstSelectedItem or getNextSelectedItem.
+
+    \return
+        A pointer to the next seleced item. If there are no further selected items
+        the return value is 0.
+        If multiselect is disabled the return value is 0.
+
+    \note
+        This member function will take on from where the last call to
+        getFirstSelectedItem or getNextSelectedItem returned. So be sure to start with a
+        call to getFirstSelectedItem.
+
+        This member function should be preferred over getNextSelectedItemAfter as it will
+        perform better, especially on large lists.
+    */
+    ItemEntry* getNextSelectedItem(void) const;
 
     /*!
     \brief
         Returns a pointer to the next selected item after the item 'start_item' given.
+
+    \note
+        This member function will search the array from the beginning and will be slow
+        for large lists, it will not advance the internal counter used by
+        getFirstSelectedItem and getNextSelectedItem either.
     */
-    ItemEntry* getNextSelectedItem(const ItemEntry* start_item) const;
+    ItemEntry* getNextSelectedItemAfter(const ItemEntry* start_item) const;
 
     /*!
     \brief
@@ -155,7 +203,8 @@ public:
 
     /*!
     \brief
-        Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
+        Return whether this window was inherited from the given class name at some point
+        in the inheritance hierarchy.
 
     \param class_name
         The class name that is to be checked.
@@ -188,6 +237,28 @@ public:
 
 protected:
     /************************************************************************
+        Protected implementation functions
+    ************************************************************************/
+    /*!
+    \brief
+        Returns a pointer to the first selected item starting the search
+        from \a start_index
+
+    \param start_index
+        The index where the search should begin (inclusive)
+
+    \return
+        A pointer to the first selected item in the listbox found
+        If no item is selected the return value is 0
+        If \a start_index is out of bounds the return value is 0
+
+    \note
+        This function advances the internal counter and is made for
+        getFirstSelectedItem and getNextSelectedItem
+    */
+    ItemEntry* findSelectedItem(size_t start_index) const;
+
+    /************************************************************************
         New event handlers
     ************************************************************************/
     virtual void onSelectionChanged(WindowEventArgs& e);
@@ -206,8 +277,9 @@ protected:
     /************************************************************************
         Implementation data
     ************************************************************************/
-    bool d_multiSelect;
-    ItemEntry* d_lastSelected;
+    bool d_multiSelect; //! Controls whether multiple items can be selected simultaneously
+    ItemEntry* d_lastSelected; //! The last item that was selected
+    mutable size_t d_nextSelectionIndex; //! The index of the last item that was returned with the getFirst/NextSelection members
 
 private:
     void addItemListboxProperties(void);

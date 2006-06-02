@@ -52,7 +52,8 @@ ItemListboxProperties::MultiSelect ItemListbox::d_multiSelectProperty;
 ItemListbox::ItemListbox(const String& type, const String& name) :
     ScrolledItemListBase(type, name),
     d_multiSelect(false),
-    d_lastSelected(0)
+    d_lastSelected(0),
+    d_nextSelectionIndex(0)
 {
     addItemListboxProperties();
 }
@@ -67,11 +68,10 @@ void ItemListbox::layoutItemWidgets()
 
     ItemEntryList::iterator i = d_listItems.begin();
     ItemEntryList::iterator end = d_listItems.end();
-    uint count = 0;
+
     while (i!=end)
     {
         ItemEntry* entry = *i;
-
         const Size pxs = entry->getItemPixelSize();
         if (pxs.d_width > widest)
         {
@@ -86,7 +86,6 @@ void ItemListbox::layoutItemWidgets()
         y+=pxs.d_height;
 
         ++i;
-        ++count;
     }
 
     // reconfigure scrollbars
@@ -105,7 +104,7 @@ Size ItemListbox::getContentSize() const
     while (i!=end)
     {
         h += (*i)->getItemPixelSize().d_height;
-        i++;
+        ++i;
     }
 
     return Size(getItemRenderArea().getWidth(), h);
@@ -125,8 +124,7 @@ size_t ItemListbox::getSelectedCount() const
     size_t max = d_listItems.size();
     for (size_t i=0; i<max; ++i)
     {
-        const ItemEntry* li = d_listItems[i];
-        if (li && li->isSelected())
+        if (d_listItems[i]->isSelected())
         {
             ++count;
         }
@@ -136,21 +134,22 @@ size_t ItemListbox::getSelectedCount() const
 }
 
 /************************************************************************
-    Get a pointer to the first selected item
+    Get a pointer to the first selected item starting from the given index
 ************************************************************************/
-ItemEntry* ItemListbox::getFirstSelectedItem() const
+ItemEntry* ItemListbox::findSelectedItem(size_t start_index) const
 {
-    if (!d_multiSelect)
+    size_t max = d_listItems.size();
+    if (start_index >= max)
     {
-        return d_lastSelected;
+        return 0;
     }
 
-    size_t max = d_listItems.size();
-    for (size_t i=0; i<max; ++i)
+    for (size_t i=start_index; i<max; ++i)
     {
         ItemEntry* li = d_listItems[i];
-        if (li && li->isSelected())
+        if (li->isSelected())
         {
+            d_nextSelectionIndex = i;
             return li;
         }
     }
@@ -159,9 +158,33 @@ ItemEntry* ItemListbox::getFirstSelectedItem() const
 }
 
 /************************************************************************
-    Get a pointer to the next selected item
+    Get a pointer to the first selected item
 ************************************************************************/
-ItemEntry* ItemListbox::getNextSelectedItem(const ItemEntry* start_item) const
+ItemEntry* ItemListbox::getFirstSelectedItem(size_t start_index) const
+{
+    if (!d_multiSelect)
+    {
+        return d_lastSelected;
+    }
+    return findSelectedItem(start_index);
+}
+
+/************************************************************************
+    Get a pointer to the next selected item using internal counter
+************************************************************************/
+ItemEntry* ItemListbox::getNextSelectedItem() const
+{
+    if (!d_multiSelect)
+    {
+        return 0;
+    }
+    return findSelectedItem(d_nextSelectionIndex);
+}
+
+/************************************************************************
+    Get a pointer to the next selected item after the given item
+************************************************************************/
+ItemEntry* ItemListbox::getNextSelectedItemAfter(const ItemEntry* start_item) const
 {
     if (start_item==0||!d_multiSelect)
     {
@@ -174,7 +197,7 @@ ItemEntry* ItemListbox::getNextSelectedItem(const ItemEntry* start_item) const
     while (i<max)
     {
         ItemEntry* li = d_listItems[i];
-        if (li && li->isSelected())
+        if (li->isSelected())
         {
             return li;
         }
@@ -294,7 +317,7 @@ bool ItemListbox::isItemSelected(size_t index) const
         throw InvalidRequestException("ItemListbox::isItemSelected - The index given is out of range for this ItemListbox");
     }
     ItemEntry *li = d_listItems[index];
-    return li ? li->isSelected() : false;
+    return li->isSelected();
 }
 
 /*************************************************************************
@@ -305,11 +328,7 @@ void ItemListbox::clearAllSelections()
     size_t max = d_listItems.size();
     for (size_t i=0; i<max; ++i)
     {
-        ItemEntry* item = d_listItems[i];
-        if (item)
-        {
-            item->setSelected_impl(false,false);
-        }
+        d_listItems[i]->setSelected_impl(false,false);
     }
     d_lastSelected = 0;
 
@@ -322,8 +341,13 @@ void ItemListbox::clearAllSelections()
 *************************************************************************/
 void ItemListbox::selectRange(size_t a, size_t z)
 {
-    size_t max = d_listItems.size();
+    // do nothing if the list is empty
+    if (d_listItems.empty())
+    {
+        return;
+    }
 
+    size_t max = d_listItems.size();
     if (a >= max)
     {
         a = 0;
@@ -335,21 +359,17 @@ void ItemListbox::selectRange(size_t a, size_t z)
 
     if (a>z)
     {
-        size_t tmp;
-        tmp = a;
+        size_t tmp = a;
         a = z;
         z = tmp;
     }
 
     for (size_t i=a; i<=z; ++i)
     {
-        ItemEntry* item = d_listItems[i];
-        if (item)
-        {
-            d_lastSelected = item;
-            item->setSelected_impl(true,false);
-        }
+        d_listItems[i]->setSelected_impl(true,false);
     }
+    d_lastSelected = d_listItems[z];
+    
 
     WindowEventArgs e(this);
     onSelectionChanged(e);
@@ -368,12 +388,8 @@ void ItemListbox::selectAllItems()
     size_t max = d_listItems.size();
     for (size_t i=0; i<max; ++i)
     {
-        ItemEntry* item = d_listItems[i];
-        if (item)
-        {
-            d_lastSelected = item;
-            item->setSelected_impl(true,false);
-        }
+        d_lastSelected = d_listItems[i];
+        d_lastSelected->setSelected_impl(true,false);
     }
 
     WindowEventArgs e(this);

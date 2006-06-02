@@ -486,7 +486,7 @@ void ItemListBase::addChild_impl(Window* wnd)
 void ItemListBase::endInitialisation(void)
 {
     Window::endInitialisation();
-    handleUpdatedItemData();
+    handleUpdatedItemData(true);
 }
 
 
@@ -577,7 +577,7 @@ void ItemListBase::setSortEnabled(bool setting)
     {
         d_sortEnabled = setting;
 
-        if (d_sortEnabled)
+        if (d_sortEnabled && !d_initialising)
         {
             sortList();
         }
@@ -595,6 +595,10 @@ void ItemListBase::setSortCallback(SortCallback cb)
     if (d_sortCallback != cb)
     {
         d_sortCallback = cb;
+        if (d_sortEnabled && !d_initialising)
+        {
+            sortList();
+        }
         handleUpdatedItemData(true);
     }
 }
@@ -657,7 +661,7 @@ void ItemListBase::setSortMode(SortMode mode)
     if (d_sortMode != mode)
     {
         d_sortMode = mode;
-        if (d_sortEnabled)
+        if (d_sortEnabled && !d_initialising)
             sortList();
 
         WindowEventArgs e(this);

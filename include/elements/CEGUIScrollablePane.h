@@ -461,7 +461,7 @@ namespace CEGUI
 
 		/*!
 		\brief
-			Return whether this window was inherited from the given class name at some point in the inheritance heirarchy.
+			Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
 
 		\param class_name
 			The class name that is to be checked.
