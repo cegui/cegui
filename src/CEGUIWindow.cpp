@@ -1815,6 +1815,13 @@ void Window::destroy(void)
 
     releaseInput();
 
+    // let go of the tooltip if we have it
+    Tooltip* tip = getTooltip();
+    if (tip && tip->getTargetWindow()==this)
+    {
+        tip->setTargetWindow(0);
+    }
+
     // free any assigned WindowRenderer
     if (d_windowRenderer != 0)
     {

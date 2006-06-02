@@ -28,7 +28,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIcolour.h"
-#include <algorithm>
 
 
 // Start of CEGUI namespace section
@@ -147,6 +146,15 @@ void colour::setARGB(argb_t argb)
 {
 	d_argb = argb;
 
+#ifdef __BIG_ENDIAN__
+    d_alpha	= static_cast<float>(argb & 0xFF) / 255.0f;
+	argb >>= 8;
+	d_red	= static_cast<float>(argb & 0xFF) / 255.0f;
+	argb >>= 8;
+	d_green	= static_cast<float>(argb & 0xFF) / 255.0f;
+	argb >>= 8;
+	d_blue	= static_cast<float>(argb & 0xFF) / 255.0f;
+#else
 	d_blue	= static_cast<float>(argb & 0xFF) / 255.0f;
 	argb >>= 8;
 	d_green	= static_cast<float>(argb & 0xFF) / 255.0f;
@@ -154,6 +162,7 @@ void colour::setARGB(argb_t argb)
 	d_red	= static_cast<float>(argb & 0xFF) / 255.0f;
 	argb >>= 8;
 	d_alpha	= static_cast<float>(argb & 0xFF) / 255.0f;
+#endif
 
 	d_argbValid = true;
 }
@@ -235,12 +244,21 @@ void colour::setHSL(float hue, float saturation, float luminance, float alpha)
 
 argb_t colour::calculateARGB(void) const
 {
+#ifdef __BIG_ENDIAN__
 	return (
+		static_cast<argb_t>(d_blue * 255) << 24 |
+		static_cast<argb_t>(d_green * 255) << 16 |
+		static_cast<argb_t>(d_red * 255) << 8 |
+		static_cast<argb_t>(d_alpha * 255)
+	);
+#else
+    return (
 		static_cast<argb_t>(d_alpha * 255) << 24 |
 		static_cast<argb_t>(d_red * 255) << 16 |
 		static_cast<argb_t>(d_green * 255) << 8 |
 		static_cast<argb_t>(d_blue * 255)
 	);
+#endif
 }
 
 
