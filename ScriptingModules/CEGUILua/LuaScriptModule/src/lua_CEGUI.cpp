@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 05/21/06 06:03:35.
+** Generated automatically by tolua++-1.0.92 on 06/02/06 23:50:51.
 */
 
 #ifndef __cplusplus
@@ -13544,6 +13544,39 @@ static int tolua_CEGUI_CEGUI_MouseCursor_show00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'show'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setVisible of class  CEGUI::MouseCursor */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MouseCursor_setVisible00
+static int tolua_CEGUI_CEGUI_MouseCursor_setVisible00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MouseCursor",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MouseCursor* self = (CEGUI::MouseCursor*)  tolua_tousertype(tolua_S,1,0);
+  bool visible = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setVisible'",NULL);
+#endif
+ {
+  self->setVisible(visible);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setVisible'.",&tolua_err);
  return 0;
 #endif
 }
@@ -38643,7 +38676,7 @@ static int tolua_CEGUI_CEGUI_ItemListbox_getSelectedCount00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getSelectedCount'",NULL);
 #endif
  {
-  unsigned int tolua_ret = (unsigned int)  self->getSelectedCount();
+  unsigned long tolua_ret = (unsigned long)  self->getSelectedCount();
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
@@ -38656,9 +38689,9 @@ static int tolua_CEGUI_CEGUI_ItemListbox_getSelectedCount00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getFirstSelectedItem of class  CEGUI::ItemListbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ItemListbox_getFirstSelectedItem00
-static int tolua_CEGUI_CEGUI_ItemListbox_getFirstSelectedItem00(lua_State* tolua_S)
+/* method: getLastSelectedItem of class  CEGUI::ItemListbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ItemListbox_getLastSelectedItem00
+static int tolua_CEGUI_CEGUI_ItemListbox_getLastSelectedItem00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -38672,10 +38705,44 @@ static int tolua_CEGUI_CEGUI_ItemListbox_getFirstSelectedItem00(lua_State* tolua
  {
   const CEGUI::ItemListbox* self = (const CEGUI::ItemListbox*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getLastSelectedItem'",NULL);
+#endif
+ {
+  CEGUI::ItemEntry* tolua_ret = (CEGUI::ItemEntry*)  self->getLastSelectedItem();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ItemEntry");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getLastSelectedItem'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getFirstSelectedItem of class  CEGUI::ItemListbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ItemListbox_getFirstSelectedItem00
+static int tolua_CEGUI_CEGUI_ItemListbox_getFirstSelectedItem00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ItemListbox",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ItemListbox* self = (const CEGUI::ItemListbox*)  tolua_tousertype(tolua_S,1,0);
+  unsigned long start_index = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFirstSelectedItem'",NULL);
 #endif
  {
-  CEGUI::ItemEntry* tolua_ret = (CEGUI::ItemEntry*)  self->getFirstSelectedItem();
+  CEGUI::ItemEntry* tolua_ret = (CEGUI::ItemEntry*)  self->getFirstSelectedItem(start_index);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ItemEntry");
  }
  }
@@ -38696,6 +38763,38 @@ static int tolua_CEGUI_CEGUI_ItemListbox_getNextSelectedItem00(lua_State* tolua_
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::ItemListbox",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ItemListbox* self = (const CEGUI::ItemListbox*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getNextSelectedItem'",NULL);
+#endif
+ {
+  CEGUI::ItemEntry* tolua_ret = (CEGUI::ItemEntry*)  self->getNextSelectedItem();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ItemEntry");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getNextSelectedItem'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getNextSelectedItemAfter of class  CEGUI::ItemListbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ItemListbox_getNextSelectedItemAfter00
+static int tolua_CEGUI_CEGUI_ItemListbox_getNextSelectedItemAfter00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ItemListbox",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"const CEGUI::ItemEntry",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -38706,17 +38805,17 @@ static int tolua_CEGUI_CEGUI_ItemListbox_getNextSelectedItem00(lua_State* tolua_
   const CEGUI::ItemListbox* self = (const CEGUI::ItemListbox*)  tolua_tousertype(tolua_S,1,0);
   const CEGUI::ItemEntry* start_item = ((const CEGUI::ItemEntry*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getNextSelectedItem'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getNextSelectedItemAfter'",NULL);
 #endif
  {
-  CEGUI::ItemEntry* tolua_ret = (CEGUI::ItemEntry*)  self->getNextSelectedItem(start_item);
+  CEGUI::ItemEntry* tolua_ret = (CEGUI::ItemEntry*)  self->getNextSelectedItemAfter(start_item);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ItemEntry");
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getNextSelectedItem'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getNextSelectedItemAfter'.",&tolua_err);
  return 0;
 #endif
 }
@@ -38770,7 +38869,7 @@ static int tolua_CEGUI_CEGUI_ItemListbox_isItemSelected00(lua_State* tolua_S)
 #endif
  {
   const CEGUI::ItemListbox* self = (const CEGUI::ItemListbox*)  tolua_tousertype(tolua_S,1,0);
-  unsigned int index = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+  unsigned long index = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isItemSelected'",NULL);
 #endif
@@ -38869,8 +38968,8 @@ static int tolua_CEGUI_CEGUI_ItemListbox_selectRange00(lua_State* tolua_S)
 #endif
  {
   CEGUI::ItemListbox* self = (CEGUI::ItemListbox*)  tolua_tousertype(tolua_S,1,0);
-  unsigned int a = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
-  unsigned int z = ((unsigned int)  tolua_tonumber(tolua_S,3,0));
+  unsigned long a = ((unsigned long)  tolua_tonumber(tolua_S,2,0));
+  unsigned long z = ((unsigned long)  tolua_tonumber(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'selectRange'",NULL);
 #endif
@@ -47268,6 +47367,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getUnifiedConstraintArea",tolua_CEGUI_CEGUI_MouseCursor_getUnifiedConstraintArea00);
    tolua_function(tolua_S,"hide",tolua_CEGUI_CEGUI_MouseCursor_hide00);
    tolua_function(tolua_S,"show",tolua_CEGUI_CEGUI_MouseCursor_show00);
+   tolua_function(tolua_S,"setVisible",tolua_CEGUI_CEGUI_MouseCursor_setVisible00);
    tolua_function(tolua_S,"isVisible",tolua_CEGUI_CEGUI_MouseCursor_isVisible00);
    tolua_function(tolua_S,"getEventIterator",tolua_CEGUI_CEGUI_MouseCursor_getEventIterator00);
   tolua_endmodule(tolua_S);
@@ -48211,8 +48311,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"ItemListbox","CEGUI::ItemListbox","CEGUI::ScrolledItemListBase",NULL);
   tolua_beginmodule(tolua_S,"ItemListbox");
    tolua_function(tolua_S,"getSelectedCount",tolua_CEGUI_CEGUI_ItemListbox_getSelectedCount00);
+   tolua_function(tolua_S,"getLastSelectedItem",tolua_CEGUI_CEGUI_ItemListbox_getLastSelectedItem00);
    tolua_function(tolua_S,"getFirstSelectedItem",tolua_CEGUI_CEGUI_ItemListbox_getFirstSelectedItem00);
    tolua_function(tolua_S,"getNextSelectedItem",tolua_CEGUI_CEGUI_ItemListbox_getNextSelectedItem00);
+   tolua_function(tolua_S,"getNextSelectedItemAfter",tolua_CEGUI_CEGUI_ItemListbox_getNextSelectedItemAfter00);
    tolua_function(tolua_S,"isMultiSelectEnabled",tolua_CEGUI_CEGUI_ItemListbox_isMultiSelectEnabled00);
    tolua_function(tolua_S,"isItemSelected",tolua_CEGUI_CEGUI_ItemListbox_isItemSelected00);
    tolua_function(tolua_S,"setMultiSelectEnabled",tolua_CEGUI_CEGUI_ItemListbox_setMultiSelectEnabled00);

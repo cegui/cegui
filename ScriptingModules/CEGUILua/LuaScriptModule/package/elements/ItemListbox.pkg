@@ -3,13 +3,15 @@
 ***********************************************************************/
 class ItemListbox : public ScrolledItemListBase
 {
-    unsigned int getSelectedCount() const;
-    ItemEntry* getFirstSelectedItem() const;
-    ItemEntry* getNextSelectedItem(const ItemEntry* start_item) const;
+    unsigned long getSelectedCount() const;
+    ItemEntry* getLastSelectedItem() const;
+    ItemEntry* getFirstSelectedItem(unsigned long start_index=0) const;
+    ItemEntry* getNextSelectedItem() const;
+    ItemEntry* getNextSelectedItemAfter(const ItemEntry* start_item) const;
     bool isMultiSelectEnabled() const;
-    bool isItemSelected(unsigned int index) const;
+    bool isItemSelected(unsigned long index) const;
     void setMultiSelectEnabled(bool state);
     void clearAllSelections();
-    void selectRange(unsigned int a, unsigned int z);
+    void selectRange(unsigned long a, unsigned long z);
     void selectAllItems();
 };
