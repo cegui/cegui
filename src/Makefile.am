@@ -25,6 +25,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIGlobalEventSet.cpp \
                       CEGUIGUILayout_xmlHandler.cpp \
                       CEGUIImage.cpp \
+					  CEGUIImageCodec.cpp \
                       CEGUIImageset.cpp \
                       CEGUIImagesetManager.cpp \
                       CEGUIImageset_xmlHandler.cpp \

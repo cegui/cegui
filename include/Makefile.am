@@ -27,6 +27,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIGlobalEventSet.h \
                  CEGUIGUILayout_xmlHandler.h \
                  CEGUIImage.h \
+				 CEGUIImageCodec.h \
                  CEGUIImageset.h \
                  CEGUIImagesetManager.h \
                  CEGUIImageset_xmlHandler.h \
