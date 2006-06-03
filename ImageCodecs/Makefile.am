@@ -1,0 +1,1 @@
+SUBDIRS=DevILImageCodec CoronaImageCodec TGAImageCodec

@@ -117,6 +117,10 @@ AC_CONFIG_FILES([Makefile
                  XMLParserModules/XercesParser/Makefile
                  XMLParserModules/expatParser/Makefile
                  XMLParserModules/libxmlParser/Makefile
+                 ImageCodecModules/Makefile
+                 ImageCodecModules/TGAImageCodec/Makefile
+                 ImageCodecModules/DevILImageCodec/Makefile
+                 ImageCodecModules/CoronaImageCodec/Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile
