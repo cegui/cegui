@@ -631,13 +631,13 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 					// setup the 'dragging' state variables
 					d_beingSized = true;
 					d_dragPoint = localPos;
+					e.handled = true;
 				}
 
 			}
 
 		}
 
-		e.handled = true;
 	}
 
 }
@@ -651,7 +651,7 @@ void FrameWindow::onMouseButtonUp(MouseEventArgs& e)
 	// default processing (this is now essential as it controls event firing).
 	Window::onMouseButtonUp(e);
 
-	if (e.button == LeftButton)
+	if (e.button == LeftButton && isCapturedByThis())
 	{
 		// release our capture on the input data
 		releaseInput();
