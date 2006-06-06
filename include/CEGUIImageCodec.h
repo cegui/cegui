@@ -28,11 +28,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #ifndef _CEGUIImageCodec_h_
-#define _CEGUIImageCodec_h_ 1
+#define _CEGUIImageCodec_h_
 
 #include "CEGUIBase.h" 
-#include "CEGUIRawContainer.h"
+#include "CEGUIDataContainer.h"
 #include "CEGUITexture.h" 
+
 // Start of CEGUI namespace section 
 namespace CEGUI 
 {
@@ -93,7 +94,7 @@ public:
      
       \return result on success or 0 if the load failed 
     */
-    virtual Texture* load(const RawContainer& data, Texture* result) = 0;
+    virtual Texture* load(const RawDataContainer& data, Texture* result) = 0;
 
 private:
     String d_identifierString;   //!< display the name of the codec 

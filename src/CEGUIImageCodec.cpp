@@ -27,13 +27,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIImageCodec.h" 
+#include "CEGUIImageCodec.h"
 
 // Start of CEGUI namespace section 
 namespace CEGUI
 {
 
-ImageCodec(const String& name)
+ImageCodec::ImageCodec(const String& name)
     : d_identifierString(name)
 {    
 }

@@ -85,6 +85,7 @@ public:
 		Pointer to an the uint8 data buffer.
 	*/
     uint8* getDataPtr(void) { return mData; }
+    const uint8* getDataPtr(void) const { return mData; }
 
 	/*!
 	\brief
