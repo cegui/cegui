@@ -1,1 +1,8 @@
-SUBDIRS=DevILImageCodec CoronaImageCodec TGAImageCodec
+SUBDIRS=TGAImageCodec
+
+if CEGUI_BUILD_DEVIL_IMAGE_CODEC
+SUBDIRS+=DevILImageCodec
+endif 
+if CEGUI_BUILD_CORONA_IMAGE_CODEC
+SUBDIRS+=CoronaImageCodec 
+endif 

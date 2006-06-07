@@ -30,11 +30,18 @@
  ***************************************************************************/
 #ifndef _CEGUITGAImageCodec_h_
 #define _CEGUITGAImageCodec_h_
-#include "CEGUIImageCodec.h" 
+#include "CEGUIImageCodec.h"
 
 namespace CEGUI 
 {
-class TGAImageCodec : public ImageCodec
+/*!
+  \brief 
+  Default image codec 
+
+  This image codec is able to load TGA file only. 
+  it is always available. 
+*/
+class CEGUIEXPORT TGAImageCodec : public ImageCodec
 {
     /*! 
       \brief 
@@ -62,10 +69,11 @@ class TGAImageCodec : public ImageCodec
       \brief 
       convert 24 bits Image to 32 bits one 
     */
-    static void convert24To32(ImageTGA* img);
+    static void convertRGBToRGBA(ImageTGA* img);
         
 public:
     TGAImageCodec();
+
     ~TGAImageCodec();
     
     // Took this code from http://www.gametutorials.com still ne
@@ -79,12 +87,12 @@ public:
     // Game Programmer
     // DigiBen@GameTutorials.com
     // Co-Web Host of www.GameTutorials.com
-    Texture* load(const RawContainer& data, Texture* result);
+    Texture* load(const RawDataContainer& data, Texture* result);
 
 protected:
 private:
 };
 
-}
+} // End of CEGUI namespace section 
 
-#endif 
+#endif // end of guard _CEGUITGAImageCodec_h_

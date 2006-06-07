@@ -207,8 +207,10 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
 AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_ARG_ENABLE([opengl-renderer], AC_HELP_STRING([--disable-opengl-renderer], [Disable the OpenGL renderer]),
         [cegui_enable_opengl=$enableval], [cegui_enable_opengl=yes])
-    AC_ARG_WITH([devil], AC_HELP_STRING([--without-devil], [Disables image loading via DevIL by OpenGL renderer]),
-        [cegui_with_devil=$withval], [cegui_with_devil=yes])
+    AC_ARG_WITH([devil], AC_HELP_STRING([--without-devil], [Disables image loading via DevIL image codec by OpenGL renderer]),
+        [cegui_with_devil=$withval], [cegui_with_devil=no])
+    AC_ARG_WITH([corona], AC_HELP_STRING([--without-corona], [Disables image loading via Corona image codec by OpenGL renderer]), 
+        [cegui_with_corona=$withval], [cegui_with_corona=no])
 
     AC_PATH_XTRA
     cegui_saved_LIBS="$LIBS"
@@ -226,12 +228,22 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         AC_MSG_NOTICE([OpenGL renderer enabled])
 
         if test x$cegui_with_devil = xyes; then
-            AC_CHECK_LIB(ILU, iluFlipImage,,AC_MSG_ERROR([Library ilu required for DevIL support is missing]),-lIL)
+            AC_CHECK_LIB(ILU, iluFlipImage,[],AC_MSG_ERROR([Library ilu required for DevIL support is missing]),-lIL)
             DevIL_CFLAGS=-DUSE_DEVIL_LIBRARY
             AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer enabled])
         else            
             AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
         fi
+
+        if test x$cegui_with_corona = xyes; then
+            AC_CHECK_PROG(CORONA_CONFIG, corona-config,[],AC_MSG_ERROR([corona-config required for Corona support is missing]))
+            Corona_CFLAGS="-DUSE_CORONA_LIBRARY `corona-config --cflags`"
+            Corona_LIBS="`corona-config --libs`"
+            AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer enabled])
+        else 
+            AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])
+        fi 
+
         if test x$cegui_found_lib_glut = xyes; then
             cegui_samples_use_opengl=yes
             AC_DEFINE(CEGUI_SAMPLES_USE_OPENGL, [], [Define to have the OpenGL CEGUI renderer available in the samples (requires glut)])
@@ -241,14 +253,21 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
             AC_MSG_NOTICE([Use of OpenGL in Samples is disabled])
         fi
     else
+        cegui_with_tga=no
+        cegui_with_devil=no
+        cegui_with_corona=no
         AC_MSG_NOTICE([OpenGL renderer disabled])        
     fi
 
     AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes && test x$cegui_found_lib_GL = xyes && test x$cegui_found_lib_GLU = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_DEVIL_IMAGE_CODEC], [test x$cegui_with_devil = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_CORONA_IMAGE_CODEC], [test x$cegui_with_corona = xyes])
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
     AC_SUBST(DevIL_CFLAGS)
+    AC_SUBST(Corona_CFLAGS)
+    AC_SUBST(Corona_LIBS)
 ])
 
 # CEGUI_CHECK_XERCES(variable, [action-if-found], [action-if-not-found])

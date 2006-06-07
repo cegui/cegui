@@ -32,8 +32,15 @@
 #include "renderers/OpenGLGUIRenderer/opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIEventArgs.h"
+#include "CEGUIImageCodec.h" 
 
-
+#ifdef USE_DEVIL_LIBRARY
+#include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
+#endif 
+#ifdef USE_CORONA_LIBRARY
+#include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h" 
+#endif 
+#include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h"
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -51,7 +58,8 @@ const int OpenGLRenderer::VERTEXBUFFER_CAPACITY		= OGLRENDERER_VBUFF_CAPACITY;
 OpenGLRenderer::OpenGLRenderer(uint max_quads) :
 	d_queueing(true),
 	d_currTexture(0),
-	d_bufferPos(0)
+	d_bufferPos(0),
+    d_imageCodec(0)
 {
 	GLint vp[4];   
 
@@ -62,7 +70,13 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads) :
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= (float)vp[2];
 	d_display_area.d_bottom	= (float)vp[3];
-
+#ifdef USE_DEVIL_LIBRARY 
+    d_imageCodec = new DevILImageCodec;
+#elif USE_CORONA_LIBRARY
+    d_imageCodec = new CoronaImageCodec;
+#else
+    d_imageCodec = new TGAImageCodec;
+#endif 
     setModuleIdentifierString();
 }
 
@@ -589,6 +603,21 @@ void OpenGLRenderer::restoreTextures()
         i++;
     }
 }
+/***********************************************************************
+    Get the current ImageCodec object used 
+************************************************************************/
+ImageCodec* OpenGLRenderer::getImageCodec() 
+{
+    return d_imageCodec;
+}
+/***********************************************************************
+    Set the current ImageCodec object used 
+************************************************************************/
+void OpenGLRenderer::setImageCodec(ImageCodec* codec)
+{
+    d_imageCodec = codec;
+}
+
 
 } // End of  CEGUI namespace section
 

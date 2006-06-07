@@ -1,7 +1,9 @@
-if CEGUI_BUILD_TGA_IMAGECODEC
+INCLUDES=-I$(top_srcdir)/include 
+pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/TGAImageCodec
 
-#Not yet completed 
+noinst_LTLIBRARIES=libCEGUITGAImageCodec.la
+libCEGUITGAImageCodec_la_SOURCES = CEGUITGAImageCodec.cpp
+noinst_HEADERS = CEGUITGAImageCodec.h
 
 
 
-endif

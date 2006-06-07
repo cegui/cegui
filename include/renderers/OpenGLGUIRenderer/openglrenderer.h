@@ -117,7 +117,7 @@ namespace CEGUI
 	Forward refs
 *************************************************************************/
 class OpenGLTexture;
-
+class ImageCodec;
 /*!
 \brief
 Renderer class to interface with OpenGL
@@ -301,6 +301,19 @@ public:
     */
     void restoreTextures(void);
 
+    /*! 
+    \brief 
+        Retrieve the image codec used internaly 
+    */
+    ImageCodec* getImageCodec(void);
+    
+       
+    /*! 
+    \brief 
+        Set the image codec to use for loading textures 
+    */
+    void setImageCodec(ImageCodec* codec);
+
 
 private:
     /************************************************************************
@@ -388,6 +401,7 @@ private:
 
 	std::list<OpenGLTexture*>	d_texturelist;		//!< List used to track textures.
 	GLint       d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
+    ImageCodec* d_imageCodec;           //!< Holds a pointer to the image codec to use.
 };
 
 } // End of  CEGUI namespace section

@@ -28,23 +28,23 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUITGAImageCodec_h_
-#define _CEGUITGAImageCodec_h_
 #include "CEGUITGAImageCodec.h" 
-
+#	define TGA_RGB		 2		// This tells us it's a normal RGB (really BGR) file
+#	define TGA_A		 3		// This tells us it's a ALPHA file
+#	define TGA_RLE		10		// This tells us that the targa is Run-Length Encoded (RLE)
 namespace CEGUI 
 {
 
 TGAImageCodec::TGAImageCodec()
-    : ImageCodec("TGAImageCodec - Official TGA Image codec"), 
-      d_supportedFormat("tga")
+    : ImageCodec("TGAImageCodec - Official TGA image codec")
 {
+    d_supportedFormat = (utf8*)"tga";
 }
 TGAImageCodec::~TGAImageCodec()
 {
 }
 
-Texture* TGAImageCodec::load(const RawContainer& data, Texture* result)
+Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
 {
     ImageTGA* img = loadTGA(data.getDataPtr(), data.getSize());
     if (img == 0)
@@ -57,22 +57,22 @@ Texture* TGAImageCodec::load(const RawContainer& data, Texture* result)
         if (img->channels == 3)
         {
             // Make sure its an RGBA image 
-            convert24to32(img);
+            convertRGBToRGBA(img);
         }
-        result->loadFromMemory(img->data, img->getWidth(), img->getHeight());
+        result->loadFromMemory(img->data, img->sizeX, img->sizeY);
         if (img->data)							
-		{
-			delete[] img->data;
-		}
-		// Free the image structure
-		delete img;
+        {
+            delete[] img->data;
+        }
+        // Free the image structure
+        delete img;
     }
     return result;
 }
 /*************************************************************************
 	flips data for tImageTGA 'img'	
 *************************************************************************/
-void TGAImageCodec::flipImageTGA(ImageTGA* img);
+void TGAImageCodec::flipImageTGA(ImageTGA* img)
 {
     
 	int pitch = img->sizeX * img->channels;
@@ -95,7 +95,7 @@ void TGAImageCodec::flipImageTGA(ImageTGA* img);
 /*************************************************************************
    convert a 24 bits Image to a 32 bit one 
 **************************************************************************/
-void TGAImageCodec::convert24to32(ImageTGA* img)
+void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 {
     unsigned char* data = new unsigned char[img->sizeX * img->sizeY * img->channels];
     int buffer = img->sizeX * img->sizeY * img->channels;
@@ -105,10 +105,12 @@ void TGAImageCodec::convert24to32(ImageTGA* img)
     {
         data[newI++] = img->data[i];
         if (0 == i % 3)
-            data[mewI++] = 0xff;
+            data[newI++] = 0xff;
     }
+    img->channels = 4;
+    delete [] img->data;
+    img->data = data;
 }
-
 ///////////////////////////////// LOAD TGA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
 /////	This loads the TGA file and returns it's data in a tImageTGA struct
@@ -117,15 +119,16 @@ void TGAImageCodec::convert24to32(ImageTGA* img)
 /////   as input.
 /////
 ///////////////////////////////// LOAD TGA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
-ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size)
+ TGAImageCodec::ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size)
 {
+    typedef unsigned char byte;
+    
     ImageTGA *pImageData = 0;		// This stores our important image data
 	short width = 0, height = 0;	// The dimensions of the image
-	GLbyte length = 0;				// The length in bytes to the pixels
-	GLbyte imageType = 0;			// The image type (RLE, RGB, Alpha...)
+	byte length = 0;				// The length in bytes to the pixels
+	byte imageType = 0;	     		// The image type (RLE, RGB, Alpha...)
 
-	GLbyte bits = 0;				// The bits per pixel for the image (16, 24, 32)
+	byte bits = 0;	    			// The bits per pixel for the image (16, 24, 32)
 	int channels = 0;				// The channels of the image (3 = RGA : 4 = RGBA)
 	int stride = 0;					// The stride (channels * width)
 	int i = 0;						// A counter
@@ -147,15 +150,15 @@ ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size
 	pImageData = new ImageTGA;
 
 	// Read in the length in bytes from the header to the pixel data
-	memcpy(&length, buffer, sizeof(GLbyte));
-	buffer += sizeof(GLbyte);
+	memcpy(&length, buffer, sizeof(byte));
+	buffer += sizeof(byte);
 
 	// Jump over one byte
 	++buffer;
 
 	// Read in the imageType (RLE, RGB, etc...)
-	memcpy(&imageType, buffer, sizeof(GLbyte));
-	buffer += sizeof(GLbyte);
+	memcpy(&imageType, buffer, sizeof(byte));
+	buffer += sizeof(byte);
 
 	// Skip past general information we don't care about
 	buffer += 9;
@@ -169,8 +172,8 @@ ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size
     width = ((width & 0xFF00)>>8) | ((width & 0x00FF)<<8);
     height = ((height & 0xFF00)>>8) | ((height & 0x00FF)<<8);
 #endif
-	memcpy(&bits, buffer, sizeof(GLbyte));
-	buffer += sizeof(GLbyte);
+	memcpy(&bits, buffer, sizeof(byte));
+	buffer += sizeof(byte);
 
 	// Now we move the file pointer to the pixel data
 	buffer += length + 1;
@@ -275,7 +278,7 @@ ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size
 		// Next we want to allocate the memory for the pixels and create an array,
 		// depending on the channel count, to read in for each pixel.
 		pImageData->data = new unsigned char[stride * height];
-		GLbyte *pColors = new GLbyte [channels];
+		byte *pColors = new byte [channels];
 
 		// Load in all the pixel data
 		while(i < width*height)
@@ -294,8 +297,8 @@ ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size
 				while(rleID)
 				{
 					// Read in the current color
-					memcpy(pColors, buffer, sizeof(GLbyte) * channels);
-					buffer += sizeof(GLbyte) * channels;
+					memcpy(pColors, buffer, sizeof(byte) * channels);
+					buffer += sizeof(byte) * channels;
 
 					// Store the current pixel in our image array
 					pImageData->data[colorsRead + 0] = pColors[2];
@@ -320,8 +323,8 @@ ImageTGA* TGAImageCodec::loadTGA(const unsigned char* buffer, size_t buffer_size
 				rleID -= 127;
 
 				// Read in the current color, which is the same for a while
-				memcpy(pColors, buffer, sizeof(GLbyte) * channels);
-				buffer += sizeof(GLbyte) * channels;
+				memcpy(pColors, buffer, sizeof(byte) * channels);
+				buffer += sizeof(byte) * channels;
 
 				// Go and read as many pixels as are the same
 				while(rleID)
