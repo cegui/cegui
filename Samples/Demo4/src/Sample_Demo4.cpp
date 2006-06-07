@@ -28,15 +28,9 @@
 #include "Sample_Demo4.h"
 #include "CEGUI.h"
 #include "CEGuiBaseApplication.h"
+#include <cstdlib>
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#define WIN32_LEAN_AND_MEAN
-#include "windows.h"
-
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
-#else
 int main(int argc, char *argv[])
-#endif
 {
     // This is a basic start-up for the sample application which is
     // object orientated in nature, so we just need an instance of
@@ -164,7 +158,7 @@ bool Demo4Sample::initialiseSample()
     Window* st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Static");
     textwnd->addChildWindow(st);
     st->setWindowPosition(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.2f)));
-    st->setWindowSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.6)));
+    st->setWindowSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.6f)));
 
     st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Group label 1");
     textwnd->addChildWindow(st);

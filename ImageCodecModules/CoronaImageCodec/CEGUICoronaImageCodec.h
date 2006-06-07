@@ -30,12 +30,6 @@
 #ifndef _CEGUICoronaImageCodec_h_
 #define _CEGUICoronaImageCodec_h_
 #include "CEGUIImageCodec.h"
-#warn "Corona support is in early stage of development, and is not yet tested"
-#if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4275)
-#	pragma warning(disable : 4251)
-#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,7 +38,7 @@ namespace CEGUI
   \brief 
   Image codec based on the Corona library 
 */
-class CEGUIEXPORT CoronaImageCodec : public ImageCodec 
+class CoronaImageCodec : public ImageCodec 
 {
 public:
     CoronaImageCodec();
@@ -59,10 +53,4 @@ private:
 
 } // End of CEGUI namespace section 
 
-#if defined(_MSC_VER)
-#	pragma warning(pop)
-#endif
-
-
 #endif // end of guard _CEGUICoronaImageCodec_h_
-

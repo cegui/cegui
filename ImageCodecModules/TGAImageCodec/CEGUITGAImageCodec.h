@@ -41,7 +41,7 @@ namespace CEGUI
   This image codec is able to load TGA file only. 
   it is always available. 
 */
-class CEGUIEXPORT TGAImageCodec : public ImageCodec
+class TGAImageCodec : public ImageCodec
 {
     /*! 
       \brief 

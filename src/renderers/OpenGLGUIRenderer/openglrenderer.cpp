@@ -34,13 +34,14 @@
 #include "CEGUIEventArgs.h"
 #include "CEGUIImageCodec.h" 
 
-#ifdef USE_DEVIL_LIBRARY
-#include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
-#endif 
-#ifdef USE_CORONA_LIBRARY
-#include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h" 
-#endif 
-#include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h"
+#if defined(USE_DEVIL_LIBRARY)
+#   include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
+#elif defined(USE_CORONA_LIBRARY)
+#   include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h" 
+#else
+#   include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h"
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -70,13 +71,15 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads) :
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= (float)vp[2];
 	d_display_area.d_bottom	= (float)vp[3];
-#ifdef USE_DEVIL_LIBRARY 
+
+#if defined(USE_DEVIL_LIBRARY)
     d_imageCodec = new DevILImageCodec;
-#elif USE_CORONA_LIBRARY
+#elif defined(USE_CORONA_LIBRARY)
     d_imageCodec = new CoronaImageCodec;
 #else
     d_imageCodec = new TGAImageCodec;
 #endif 
+
     setModuleIdentifierString();
 }
 
@@ -538,17 +541,14 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 *************************************************************************/
 uint32 OpenGLRenderer::colourToOGL(const colour& col) const
 {
-	uint32 cval;
+    const argb_t c = col.getARGB();
+
+    // OpenGL wants RGBA
+
 #ifdef __BIG_ENDIAN__
-    cval =  (static_cast<uint32>(255 * col.getAlpha()));
-    cval |= (static_cast<uint32>(255 * col.getBlue())) << 8;
-    cval |= (static_cast<uint32>(255 * col.getGreen())) << 16;
-    cval |= (static_cast<uint32>(255 * col.getRed())) << 24;
+    uint32 cval = (c << 8) | (c >> 24);
 #else
-	cval =	(static_cast<uint32>(255 * col.getAlpha())) << 24;
-	cval |=	(static_cast<uint32>(255 * col.getBlue())) << 16;
-	cval |=	(static_cast<uint32>(255 * col.getGreen())) << 8;
-	cval |= (static_cast<uint32>(255 * col.getRed()));
+    uint32 cval = ((c&0xFF0000)>>16) | (c&0xFF00) | ((c&0xFF)<<16) | (c&0xFF000000);
 #endif
 	return cval;
 }

@@ -27,9 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CoronaImageCodec.h" 
+#include "CEGUICoronaImageCodec.h" 
 #include <corona.h> 
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -54,15 +53,16 @@ CoronaImageCodec::~CoronaImageCodec()
 
 Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-    corona::File* texFile = corona::CreateMemoryFile(data.getPtrData(), data.getSize());
+    corona::File* texFile = corona::CreateMemoryFile(data.getDataPtr(), (int)data.getSize());
     if (texFile == 0)
     {
         return 0;
     }
-    corona::Image* texImg = corona::OpenImage(textFile, corona::PF_DONTCARE, corona::PF_R8G8B8A8);
+    corona::Image* texImg = corona::OpenImage(texFile, corona::PF_R8G8B8A8);
     if (texImg == 0)
     {
         delete texFile;
+        return 0;
     }
     result->loadFromMemory(texImg->getPixels(), texImg->getWidth(), texImg->getHeight());
     delete texImg;
@@ -72,6 +72,3 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
 
 
 } // End of CEGUI namespace section 
-
-
-  
