@@ -1,8 +1,8 @@
 --
--- CEGUITGAImageCodec premake script
+-- CEGUIDevILImageCodec premake script
 --
 
-cegui_dynamic("CEGUITGAImageCodec", "c++", "lib")
+cegui_dynamic("CEGUIDevILImageCodec", "c++", "lib")
 
 package.files =
 {
@@ -11,5 +11,9 @@ package.files =
 }
 
 include(pkgdir.."include")
+
+library("DevIL")
+library("ILU")
+library("ILUT")
 
 dependency("CEGUIBase")

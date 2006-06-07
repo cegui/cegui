@@ -2,6 +2,7 @@
 -- CEGUI premake script
 -- 
 
+dofile("config.lua")
 dofile("helpers.lua")
 
 --
@@ -17,7 +18,8 @@ project.configs =
 	"Release"
 }
 
-createpackages {
+createpackages
+{
 	"BaseSystem",
 	
 	["WindowRendererSets"] =
@@ -42,9 +44,9 @@ createpackages {
 	
 	["ImageCodecModules"] =
 	{
+        "CoronaImageCodec",
+        "DevILImageCodec",
         "TGAImageCodec",
-        --"CoronaImageCodec",
-        --"DevILImageCodec",
 	},
 	
 	["ScriptingModules"] =

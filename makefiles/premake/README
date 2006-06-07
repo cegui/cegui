@@ -2,6 +2,8 @@ To generate the project files you must download premake 3.1 from:
 http://sourceforge.net/project/showfiles.php?group_id=71616
 and place the executable (premake.exe) in this directory.
 
+First you should edit config.lua to make sure you get what you need.
+
 After this is done you should run the .bat files corresponding to your version
 of 'Microsoft Visual C++' (MSVC). This will generate a solution in this directory.
 

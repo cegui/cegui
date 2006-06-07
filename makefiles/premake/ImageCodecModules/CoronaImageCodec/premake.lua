@@ -1,8 +1,8 @@
 --
--- CEGUITGAImageCodec premake script
+-- CEGUICoronaImageCodec premake script
 --
 
-cegui_dynamic("CEGUITGAImageCodec", "c++", "lib")
+cegui_dynamic("CEGUICoronaImageCodec", "c++", "lib")
 
 package.files =
 {
@@ -11,5 +11,7 @@ package.files =
 }
 
 include(pkgdir.."include")
+
+library("corona", "_d")
 
 dependency("CEGUIBase")
