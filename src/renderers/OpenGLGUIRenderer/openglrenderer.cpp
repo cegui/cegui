@@ -105,6 +105,7 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height) :
 *************************************************************************/
 OpenGLRenderer::~OpenGLRenderer(void)
 {
+    delete d_imageCodec;
 	destroyAllTextures();
 }
 
@@ -615,6 +616,9 @@ ImageCodec* OpenGLRenderer::getImageCodec()
 ************************************************************************/
 void OpenGLRenderer::setImageCodec(ImageCodec* codec)
 {
+    // Destroy the previous codec 
+    if (d_imageCodec)
+        delete d_imageCodec; 
     d_imageCodec = codec;
 }
 
