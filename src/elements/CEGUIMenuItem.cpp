@@ -75,56 +75,45 @@ MenuItem::~MenuItem(void)
 *************************************************************************/
 void MenuItem::updateInternalState(const Point& mouse_pos)
 {
-	bool oldstate = d_hovering;
+    bool oldstate = d_hovering;
 
 	// assume not hovering 
 	d_hovering = false;
 
 	// if input is captured, but not by 'this', then we never hover highlight
 	const Window* capture_wnd = getCaptureWindow();
-
-	if ((capture_wnd == 0) || (capture_wnd == this))
+	if (capture_wnd == 0)
 	{
-		Window* sheet = System::getSingleton().getGUISheet();
-
-		if (sheet)
-		{
-			// check if hovering highlight is required, which is basically ("mouse over widget" XOR "widget pushed").
-			if ((this == sheet->getChildAtPosition(mouse_pos)) != d_pushed)
-			{
-				d_hovering = true;
-
-				// are we attached to a menu ?
-				if (d_ownerList && d_ownerList->testClassName("MenuBase"))
-				{
-					MenuBase* menu = static_cast<MenuBase*>(d_ownerList);
-
-					// is item really in list ?
-					if (menu->isItemInList(this))
-					{
-						// does this menubar only allow one popup open? and is there a popup open?
-						if ( !menu->isMultiplePopupsAllowed() && menu->getPopupMenuItem()!=0 )
-						{
-							// open this popup instead
-							openPopupMenu();
-						}
-
-					}
-
-				}
-
-			}
-
-		}
-
-	}
+	    System* sys = System::getSingletonPtr();
+	    if (sys->getWindowContainingMouse() == this && isHit(mouse_pos))
+	    {
+	        d_hovering = true;
+	    }
+    }
+    else if (capture_wnd == this && isHit(mouse_pos))
+    {
+        d_hovering = true;
+    }
 
 	// if state has changed, trigger a re-draw
+	// and possible make the parent menu open another popup
 	if (oldstate != d_hovering)
 	{
+	    // are we attached to a menu ?
+	    if (d_hovering && d_ownerList && d_ownerList->testClassName("MenuBase"))
+	    {
+		    MenuBase* menu = static_cast<MenuBase*>(d_ownerList);
+		    // does this menubar only allow one popup open? and is there a popup open?
+		    const MenuItem* curpopup = menu->getPopupMenuItem();
+			if (curpopup != this && curpopup != 0 && !menu->isMultiplePopupsAllowed())
+			{
+			    // open this popup instead
+			    openPopupMenu();
+		    }
+	    }
+	    
 		requestRedraw();
 	}
-
 }
 
 
