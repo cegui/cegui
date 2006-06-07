@@ -322,6 +322,7 @@ namespace CEGUI
         virtual void onCaptureLost(WindowEventArgs& e);
         virtual void onAlphaChanged(WindowEventArgs& e);
         virtual void onClippingChanged(WindowEventArgs& e);/*Window::drawSelf(z);*/
+        virtual void onMoved(WindowEventArgs& e);
 
         /*************************************************************************
         	New Event handler methods
@@ -433,6 +434,7 @@ namespace CEGUI
         bool    d_storedClipState;  //!< Parent clip state to re-set.
         Window* d_dropTarget;       //!< Target window for possible drop operation.
         const Image* d_dragCursorImage; //!< Image to use for mouse cursor when dragging.
+        bool d_dropflag;            //!< True when we're being dropped
 
     private:
         /*************************************************************************

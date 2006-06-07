@@ -62,7 +62,8 @@ namespace CEGUI
         d_dragThreshold(8.0f),
         d_dragAlpha(0.5f),
         d_dropTarget(0),
-        d_dragCursorImage((const Image*)DefaultMouseCursor)
+        d_dragCursorImage((const Image*)DefaultMouseCursor),
+        d_dropflag(false)
     {
         addDragContainerProperties();
     }
@@ -331,6 +332,15 @@ namespace CEGUI
         Window::onClippingChanged(e);
     }
 
+    void DragContainer::onMoved(WindowEventArgs& e)
+    {
+        Window::onMoved(e);
+        if (d_dropflag)
+        {
+            d_startPosition = getWindowPosition();
+        }
+    }
+
     void DragContainer::onDragStarted(WindowEventArgs& e)
     {
         initialiseDragging();
@@ -345,8 +355,12 @@ namespace CEGUI
         // did we drop over a window?
         if (d_dropTarget)
         {
+            // set flag - we need to detect if the position changed in a DragDropItemDropped
+            d_dropflag = true;
             // Notify that item was dropped in the target window
             d_dropTarget->notifyDragDropItemDropped(this);
+            // reset flag
+            d_dropflag = false;
         }
     }
 
