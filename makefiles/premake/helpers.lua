@@ -61,15 +61,23 @@ function cegui_dynamic(name, lang, kind)
 	debug = package.config.Debug
 	debug.target = name.."_d"
 	debug.defines =
-	{
-		"_DEBUG"
-	}
+    {
+        "_DEBUG"
+    }
+	debug.buildflags = {}
 
 	-- release with symbols
 	release_sym = package.config.ReleaseWithSymbols
+	release_sym.defines = {}
+	release_sym.buildflags =
+	{
+	   "optimize-speed",
+	}
+	
 
 	-- release (no symbols)
 	release = package.config.Release
+	release.defines = {}
 	release.buildflags =
 	{
 	    "no-symbols",
