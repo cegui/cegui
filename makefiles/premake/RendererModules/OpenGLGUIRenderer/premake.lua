@@ -6,16 +6,16 @@ cegui_dynamic("OpenGLGUIRenderer")
 
 package.files =
 {
-    matchfiles(rootdir.."src/renderers/OpenGLGUIRenderer/*.cpp"),
-    matchfiles(rootdir.."include/renderers/OpenGLGUIRenderer/*.h"),
+    matchfiles(pkgdir.."*.cpp"),
+    matchfiles(pkgdir.."*.h"),
 }
 
-include(rootdir.."include/renderers/OpenGLGUIRenderer")
-include(string.sub(rootdir,1,-2))
+include(pkgdir)
+include(rootdir)
 
 library("OpenGL32")
 library("GLU32")
-library("GLee", "_d")
+--library("GLee", "_d")
 
 dependency("CEGUIBase")
 
