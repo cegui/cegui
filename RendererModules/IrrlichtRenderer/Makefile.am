@@ -1,4 +1,14 @@
 INCLUDES = -I$(top_srcdir)/include $(Irrlicht_CFLAGS)
+
+pkgincludedir=$(prefix)/include/CEGUI/renderers/IrrlichtRenderer
+pkginclude_HEADERS = irrlichtrenderer.h \
+					 IrrlichtEventPusher.h \
+					 IrrlichtRendererDef.h \
+					 IrrlichtResourceProvider.h \
+					 irrlichttexture.h \
+					 IrrlichtMemoryFile.h
+
+
 lib_LTLIBRARIES=libCEGUIIrrlichtRenderer.la
 
 libCEGUIIrrlichtRenderer_la_LDFLAGS = -version-info @CEGUI_IRRLICHT_VERSION_INFO@
@@ -8,6 +18,5 @@ libCEGUIIrrlichtRenderer_la_SOURCES = irrlichtrenderer.cpp \
                                       irrlichttexture.cpp \
                                       IrrlichtMemoryFile.cpp
 
-pkginclude_HEADERS = IrrlichtEventPusher.h
 
 libCEGUIIrrlichtRenderer_la_LIBADD = $(Irrlicht_LIBS)

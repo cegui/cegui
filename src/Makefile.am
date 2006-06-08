@@ -1,5 +1,3 @@
-SUBDIRS = . renderers
-
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(freetype2_CFLAGS) $(pcre_CFLAGS)
 lib_LTLIBRARIES=libCEGUIBase.la
 

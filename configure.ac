@@ -124,13 +124,10 @@ AC_CONFIG_FILES([Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile
-                 include/renderers/IrrlichtRenderer/Makefile
-                 include/renderers/Makefile
-                 include/renderers/OpenGLGUIRenderer/Makefile
                  src/Makefile
-                 src/renderers/IrrlichtRenderer/Makefile
-                 src/renderers/Makefile
-                 src/renderers/OpenGLGUIRenderer/Makefile
+                 RendererModules/IrrlichtRenderer/Makefile
+                 RendererModules/Makefile
+                 RendererModules/OpenGLGUIRenderer/Makefile
                  CEGUI.pc
                  CEGUI-OPENGL.pc
                  CEGUI.spec])

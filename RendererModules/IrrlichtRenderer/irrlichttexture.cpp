@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "renderers/IrrlichtRenderer/irrlichttexture.h"
-#include "renderers/IrrlichtRenderer/IrrlichtMemoryFile.h"
+#include "irrlichttexture.h"
+#include "IrrlichtMemoryFile.h"
 #include "CEGUISystem.h"
 
 namespace CEGUI
