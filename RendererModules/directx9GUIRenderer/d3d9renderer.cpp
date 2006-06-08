@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "renderers/directx9GUIRenderer/d3d9renderer.h"
-#include "renderers/directx9GUIRenderer/d3d9texture.h"
+#include "d3d9renderer.h"
+#include "d3d9texture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 
