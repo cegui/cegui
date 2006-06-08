@@ -28,7 +28,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "renderers/OpenGLGUIRenderer/opengltexture.h"
+#include "opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
 #include "CEGUIImageCodec.h"

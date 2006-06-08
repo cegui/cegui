@@ -1,4 +1,8 @@
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(OpenGL_CFLAGS) $(DevIL_CFLAGS) $(Corona_CFLAGS)
+pkgincludedir=$(prefix)/include/CEGUI/renderers/OpenGLGUIRenderer
+pkginclude_HEADERS = openglrenderer.h \
+					 opengltexture.h
+
 lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
 
 libCEGUIOpenGLRenderer_la_LDFLAGS = -version-info @CEGUI_OPENGL_VERSION_INFO@

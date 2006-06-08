@@ -34,7 +34,7 @@
 #include "CEGUIBase.h"
 #include "CEGUIRenderer.h"
 #include "CEGUITexture.h"
-#include "renderers/OpenGLGUIRenderer/openglrenderer.h"
+#include "openglrenderer.h"
 
 #include <list>
 
