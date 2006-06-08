@@ -20,6 +20,7 @@ package.excludes =
 }
 
 include(pkgdir.."include")
+include(rootdir)
 
 library("freeglut", "_d")
 library("CEGUIBase", "_d")

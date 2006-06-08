@@ -35,7 +35,7 @@ createpackages
 		"XercesParser",
 	},
 	
-	["Renderers"] =
+	["RendererModules"] =
 	{
 	    "OpenGLGUIRenderer",
 	    "DirectX9GUIRenderer",

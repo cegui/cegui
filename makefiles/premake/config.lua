@@ -11,4 +11,4 @@
 -- supported format.
 --
 --USE_DEVIL_LIBRARY = true
-USE_CORONA_LIBRARY = true
+--USE_CORONA_LIBRARY = true
