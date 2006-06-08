@@ -97,15 +97,16 @@ void TGAImageCodec::flipImageTGA(ImageTGA* img)
 **************************************************************************/
 void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 {
-    unsigned char* data = new unsigned char[img->sizeX * img->sizeY * img->channels];
+    unsigned char* data = new unsigned char[img->sizeX * img->sizeY * 4];
     int buffer = img->sizeX * img->sizeY * img->channels;
     int newI = 0;
     
-    for(int i = 0 ; i < buffer ; ++i)
+    for(int i = 0 ; i < buffer ; )
     {
-        data[newI++] = img->data[i];
-        if (0 == i % 3)
-            data[newI++] = 0xff;
+        data[newI++] = img->data[i++];
+        data[newI++] = img->data[i++];
+        data[newI++] = img->data[i++];
+        data[newI++] = 0xff;
     }
     img->channels = 4;
     delete [] img->data;
