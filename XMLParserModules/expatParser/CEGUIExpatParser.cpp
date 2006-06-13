@@ -69,6 +69,8 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
     if ( ! XML_Parse(parser, reinterpret_cast<const char*>(rawXMLData.getDataPtr()), rawXMLData.getSize(), true))
     {
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+        // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
+        XML_ParserFree(parser);
         throw GenericException(String((const utf8*)"ExpatParser::parseXMLFile - XML Parsing error '") +
                                     String((const utf8*)XML_ErrorString(XML_GetErrorCode(parser))) +
                                     String((const utf8*)"' at line ") +
@@ -77,6 +79,8 @@ void ExpatParser::parseXMLFile(XMLHandler& handler, const String& filename, cons
 
     // Release resource
     CEGUI::System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+    // (We know it is a valid pointer, otherwise an exception would have been thrown above.)
+    XML_ParserFree(parser);
 }
 
 bool ExpatParser::initialiseImpl(void)
