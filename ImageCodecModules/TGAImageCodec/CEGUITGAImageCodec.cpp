@@ -29,6 +29,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUITGAImageCodec.h" 
+#include "CEGUILogger.h" 
 #	define TGA_RGB		 2		// This tells us it's a normal RGB (really BGR) file
 #	define TGA_A		 3		// This tells us it's a ALPHA file
 #	define TGA_RLE		10		// This tells us that the targa is Run-Length Encoded (RLE)
@@ -46,6 +47,7 @@ TGAImageCodec::~TGAImageCodec()
 
 Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
 {
+    Logger::getSingleton().logEvent("TGAImageCodec::load()", Standard);
     ImageTGA* img = loadTGA(data.getDataPtr(), data.getSize());
     if (img == 0)
     {
