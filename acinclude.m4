@@ -208,9 +208,11 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_ARG_ENABLE([opengl-renderer], AC_HELP_STRING([--disable-opengl-renderer], [Disable the OpenGL renderer]),
         [cegui_enable_opengl=$enableval], [cegui_enable_opengl=yes])
     AC_ARG_WITH([devil], AC_HELP_STRING([--without-devil], [Disables image loading via DevIL image codec by OpenGL renderer]),
-        [cegui_with_devil=$withval], [cegui_with_devil=no])
+        [cegui_with_devil=$withval], [cegui_with_devil=yes])
     AC_ARG_WITH([corona], AC_HELP_STRING([--without-corona], [Disables image loading via Corona image codec by OpenGL renderer]), 
         [cegui_with_corona=$withval], [cegui_with_corona=no])
+    AC_ARG_WITH([silly], AC_HELP_STRING([--without-silly], [Disables image loading via SILLY image codec by OpenGL renderer]), 
+        [cegui_with_silly=$withval], [cegui_with_silly=yes])
 
     AC_PATH_XTRA
     cegui_saved_LIBS="$LIBS"
@@ -235,8 +237,23 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
             AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
         fi
 
+        if test x$cegui_with_silly = xyes ; then 
+            PKG_CHECK_MODULES([SILLY], [SILLY >= 0.1.0], 
+                              [cegui_with_silly=yes], 
+                              [cegui_with_silly=no])
+            if test x$cegui_with_silly = xyes ; then
+               SILLY_CFLAGS="-DUSE_SILLY_LIBRARY $SILLY_CFLAGS"
+               AC_SUBST(SILLY_CFLAGS)
+               AC_SUBST(SILLY_LIBS)
+               AC_MSG_NOTICE([Image loading via SILLY by OpenGL renderer enabled])
+            else 
+               AC_MSG_NOTICE([Image loading via SILLY by OpenGL renderer disabled])
+            fi
+        else 
+            AC_MSG_NOTICE([Image loading via SILLY by OpenGL renderer disabled])
+        fi 
         if test x$cegui_with_corona = xyes; then
-            AC_CHECK_PROG(CORONA_CONFIG, corona-config,[],AC_MSG_ERROR([corona-config required for Corona support is missing]))
+            AC_CHECK_PROG(CORONA_CONFIG, corona-config --version,[],AC_MSG_ERROR([corona-config required for Corona support is missing]))
             Corona_CFLAGS="-DUSE_CORONA_LIBRARY `corona-config --cflags`"
             Corona_LIBS="`corona-config --libs`"
             AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer enabled])
@@ -263,6 +280,7 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_DEVIL_IMAGE_CODEC], [test x$cegui_with_devil = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_CORONA_IMAGE_CODEC], [test x$cegui_with_corona = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_SILLY_IMAGE_CODEC], [test x$cegui_with_silly = xyes])
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
     AC_SUBST(DevIL_CFLAGS)

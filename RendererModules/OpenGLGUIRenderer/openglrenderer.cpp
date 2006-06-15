@@ -37,17 +37,18 @@
 #if defined(USE_DEVIL_LIBRARY)
 #   include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
 #   define UseCodec DevILImageCodec
+#elif defined(USE_SILLY_LIBRARY)
+#   include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h" 
+#   define UseCodec SILLYImageCodec 
 #elif defined(USE_CORONA_LIBRARY)
 #   include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h" 
 #   define UseCodec CoronaImageCodec
 #elif defined(USE_SILLY_LIBRARY)
 #   include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h" 
 #   define UseCodec SILLYImageCodec
-#elif defined(USE_BUILTIN_TGA)
+#else
 #   include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h"
 #   define UseCodec TGAImageCodec
-#else
-#   error No image codec specified for the OpenGL renderer module
 #endif
 
 // Start of CEGUI namespace section

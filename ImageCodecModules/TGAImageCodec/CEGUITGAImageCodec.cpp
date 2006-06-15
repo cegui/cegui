@@ -93,7 +93,10 @@ void TGAImageCodec::flipImageTGA(ImageTGA* img)
 	}
 }
 /*************************************************************************
-   convert a 24 bits Image to a 32 bit one 
+   convert a 24 bits Image to a 32 bit one
+   This function is a temporary hack used to convert all image to 
+   32 bits per pixel. This function is going to be uneeded as soon as 
+   we introduce a new parameter to loadFromMemory 
 **************************************************************************/
 void TGAImageCodec::convertRGBToRGBA(ImageTGA* img)
 {
