@@ -1,0 +1,139 @@
+/***********************************************************************
+	filename: 	CEGUIClippedContainer.h
+	created:	Sun Jun 11 2006
+	author:		Tomas Lindquist Olsen
+*************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining
+ *   a copy of this software and associated documentation files (the
+ *   "Software"), to deal in the Software without restriction, including
+ *   without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to
+ *   permit persons to whom the Software is furnished to do so, subject to
+ *   the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be
+ *   included in all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *   OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************/
+#ifndef _CEGUIClippedContainer_h_
+#define _CEGUIClippedContainer_h_
+
+#include "CEGUIWindow.h"
+#include "CEGUIWindowFactory.h"
+
+// Start of CEGUI namespace section
+namespace CEGUI
+{
+/*!
+\brief
+    Helper container window that has configurable clipping.
+    Used by the ItemListbox widget.
+*/
+class CEGUIEXPORT ClippedContainer : public Window
+{
+public:
+    /*************************************************************************
+        Constants
+    *************************************************************************/
+    static const String WidgetTypeName;     //!< Type name for ClippedContainer.
+    static const String EventNamespace;     //!< Namespace for global events
+
+    /*************************************************************************
+    	Object construction and destruction
+    *************************************************************************/
+    /*!
+    \brief
+        Constructor for ClippedContainer objects.
+    */
+    ClippedContainer(const String& type, const String& name);
+
+    /*!
+    \brief
+        Destructor for ClippedContainer objects.
+    */
+    ~ClippedContainer(void);
+
+    /*************************************************************************
+    	Public interface methods
+    *************************************************************************/
+    /*!
+    \brief
+        Return the current clipping rectangle.
+
+    \return
+        Rect object describing the clipping area in pixel that will be applied during rendering.
+    */
+    const Rect& getClipArea(void) const;
+
+    /*!
+    \brief
+        Returns the reference window used for converting the clipper rect to screen space.
+    */
+    Window* getClipperWindow(void) const;
+
+    /*!
+    \brief
+        Set the custom clipper area in pixels.
+    */
+    void setClipArea(const Rect& r);
+
+    /*!
+    \brief
+        Set the clipper reference window.
+
+    \param w
+        The window to be used a base for converting the custom clipper rect to
+        screen space. NULL if the clipper rect is relative to the screen.
+    */
+    void setClipperWindow(Window* w);
+
+    // Overridden from Window.
+    virtual Rect getUnclippedInnerRect_impl(void) const;
+
+protected:
+    /*************************************************************************
+    	Implementation methods
+    *************************************************************************/
+	/*!
+	\brief
+		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
+
+	\param class_name
+		The class name that is to be checked.
+
+	\return
+		true if this window was inherited from \a class_name. false if not.
+	*/
+	virtual bool	testClassName_impl(const String& class_name) const
+	{
+		if (class_name=="ClippedContainer")	return true;
+		return Window::testClassName_impl(class_name);
+	}
+
+    /*************************************************************************
+    	Overridden from Window.
+    *************************************************************************/
+    virtual void drawSelf(float) {}
+
+    /*************************************************************************
+    	Data fields
+    *************************************************************************/
+    //! the pixel rect to be used for clipping relative to either a window or the screen.
+    Rect d_clipArea;
+    //! the base window which the clipping rect is relative to.
+    Window* d_clipperWindow;
+};
+
+} // End of  CEGUI namespace section
+
+#endif	// end of guard _CEGUIClippedContainer_h_

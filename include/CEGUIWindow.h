@@ -705,7 +705,20 @@ public:
         Rect object that describes, in unclipped screen pixel co-ordinates, the
         window object's inner rect area.
     */
-    virtual Rect getUnclippedInnerRect(void) const;
+    Rect getUnclippedInnerRect(void) const;
+
+    /*!
+    \brief
+        Return a Rect object that describes, unclipped, the inner rectangle for
+        this window.  The inner rectangle is typically an area that excludes
+        some frame or other rendering that should not be touched by subsequent
+        rendering.
+
+    \return
+        Rect object that describes, in unclipped screen pixel co-ordinates, the
+        window object's inner rect area.
+    */
+    virtual Rect getUnclippedInnerRect_impl(void) const;
 
     /*!
     \brief
@@ -1161,28 +1174,6 @@ public:
         Returns whether this window is allowed to write XML.
     */
     bool isWritingXMLAllowed(void) const    {return d_allowWriteXML;}
-
-    /*!
-    \brief
-        Return whether this window is using a custom clipping rectangle when rendered.
-    */
-    bool isUsingCustomClipper(void) const       {return d_useCustomClipper;}
-
-    /*!
-    \brief
-        Return the current custom clipping rectangle.
-
-    \return
-        Rect object describing the clipping area in pixel that will be applied during rendering
-        if the custom clipper is enabled.
-    */
-    Rect getCustomClipArea(void) const          {return d_customClipArea;}
-
-    /*!
-    \brief
-        Returns the reference window used for converting the custom clipper rect to screen space.
-    */
-    Window* getCustomClipperWindow(void) const  {return d_customClipperWindow;}
 
     /*************************************************************************
         Manipulator functions
@@ -2429,25 +2420,9 @@ public:
 
     /*!
     \brief
-        Set whether the custom clipping rectangle should be applied when rendering.
+        Recursively inform all children that the screen area has changed, and needs to be re-cached
     */
-    void setCustomClipperEnabled(bool setting);
-
-    /*!
-    \brief
-        Set the custom clipper area in pixels.
-    */
-    void setCustomClipArea(const Rect& r);
-
-    /*!
-    \brief
-        Set the clipper reference window.
-
-    \param w
-        The window to be used a base for converting the custom clipper rect to
-        screen space. NULL if the clipper rect is relative to the screen.
-    */
-    void setCustomClipperWindow(Window* w);
+    void notifyScreenAreaChanged(void);
 
 protected:
     /*************************************************************************
@@ -3050,6 +3025,13 @@ protected:
     */
     bool isPropertyAtDefault(const Property* property) const;
 
+    /*!
+    \brief
+        Recursively inform all children that the clipping has changed and screen rects
+        needs to be recached.
+    */
+    void notifyClippingChanged(void);
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
@@ -3248,12 +3230,18 @@ protected:
     //! true if this window is allowed to write XML, false if not
     bool d_allowWriteXML;
 
-    //! true when custom clipping is enabled.
-    bool d_useCustomClipper;
-    //! the custom pixel rect to be used for clipping relative to either a window or the screen.
-    Rect d_customClipArea;
-    //! the base window which the custom clipping rect is relative to.
-    Window* d_customClipperWindow;
+    //! current unclipped screen rect in pixels
+    mutable Rect d_screenUnclippedRect;
+    mutable bool d_screenUnclippedRectValid;
+    //! current unclipped inner screen rect in pixels
+    mutable Rect d_screenUnclippedInnerRect;
+    mutable bool d_screenUnclippedInnerRectValid;
+    //! current fully clipped screen rect in pixels
+    mutable Rect d_screenRect;
+    mutable bool d_screenRectValid;
+    //! current fully clipped inner screen rect in pixels
+    mutable Rect d_screenInnerRect;
+    mutable bool d_screenInnerRectValid;
 
 protected:
     /*************************************************************************

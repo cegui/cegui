@@ -22,6 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
 #include "elements/CEGUIScrolledItemListBase.h"
+#include "elements/CEGUIClippedContainer.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUILogger.h"
 #include "CEGUIPropertyHelper.h"
@@ -75,10 +76,10 @@ void ScrolledItemListBase::initialiseComponents()
 {
     // IMPORTANT:
     // we must do this before the base class handling or we'll loose the onChildRemoved subscriber!!!
-    d_pane = WindowManager::getSingletonPtr()->createWindow("DefaultWindow", d_name+ContentPaneNameSuffix);
-    // we override this "flag" to make sure we clip to _OUR_ inner rectangle
-    d_pane->setCustomClipperEnabled(true);
-    d_pane->setCustomClipperWindow(this);
+    d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", d_name+ContentPaneNameSuffix);
+
+    // set up clipping
+    static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
     addChildWindow(d_pane);
     
     // base class handling
@@ -166,7 +167,7 @@ void ScrolledItemListBase::configureScrollbars(const Size& doc_size)
     render_area_size = render_area.getSize();
 
     // update the pane clipper area
-    d_pane->setCustomClipArea(render_area);
+    static_cast<ClippedContainer*>(d_pane)->setClipArea(render_area);
 
     // setup vertical scrollbar
     v->setDocumentSize(doc_size.d_height);

@@ -166,7 +166,9 @@ namespace CEGUI
                               cegui_absdim(pixelArea.d_right),
                               cegui_absdim(pixelArea.d_bottom));
 
-            WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix)->setWindowArea(window_area);
+            Window* wnd = WindowManager::getSingleton().getWindow(owner.getName() + d_nameSuffix);
+            wnd->setWindowArea(window_area);
+            wnd->notifyScreenAreaChanged();
         }
         catch (UnknownObjectException)
         {}

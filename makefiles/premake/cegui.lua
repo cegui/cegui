@@ -47,6 +47,7 @@ createpackages
         "CoronaImageCodec",
         "DevILImageCodec",
         "TGAImageCodec",
+        "SILLYImageCodec",
 	},
 	
 	["ScriptingModules"] =
