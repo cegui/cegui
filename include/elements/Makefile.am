@@ -3,6 +3,7 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUIButtonBase.h \
                      CEGUICheckbox.h \
                      CEGUICheckboxProperties.h \
+                     CEGUIClippedContainer.h \
                      CEGUIComboDropList.h \
                      CEGUICombobox.h \
                      CEGUIComboboxProperties.h \
