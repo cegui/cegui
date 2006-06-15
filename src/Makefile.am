@@ -61,6 +61,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIBaseFactories.cpp \
                       elements/CEGUIButtonBase.cpp \
                       elements/CEGUICheckbox.cpp \
+                      elements/CEGUIClippedContainer.cpp \
                       elements/CEGUICheckboxProperties.cpp \
                       elements/CEGUICombobox.cpp \
                       elements/CEGUIComboboxProperties.cpp \
