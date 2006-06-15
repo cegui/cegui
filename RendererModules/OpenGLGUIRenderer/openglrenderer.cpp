@@ -36,10 +36,18 @@
 
 #if defined(USE_DEVIL_LIBRARY)
 #   include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
+#   define UseCodec DevILImageCodec
 #elif defined(USE_CORONA_LIBRARY)
 #   include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h" 
-#else
+#   define UseCodec CoronaImageCodec
+#elif defined(USE_SILLY_LIBRARY)
+#   include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h" 
+#   define UseCodec SILLYImageCodec
+#elif defined(USE_BUILTIN_TGA)
 #   include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h"
+#   define UseCodec TGAImageCodec
+#else
+#   error No image codec specified for the OpenGL renderer module
 #endif
 
 // Start of CEGUI namespace section
@@ -72,13 +80,7 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads) :
 	d_display_area.d_right	= (float)vp[2];
 	d_display_area.d_bottom	= (float)vp[3];
 
-#if defined(USE_DEVIL_LIBRARY)
-    d_imageCodec = new DevILImageCodec;
-#elif defined(USE_CORONA_LIBRARY)
-    d_imageCodec = new CoronaImageCodec;
-#else
-    d_imageCodec = new TGAImageCodec;
-#endif 
+    d_imageCodec = new UseCodec;
 
     setModuleIdentifierString();
 }
@@ -98,6 +100,8 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height) :
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= static_cast<float>(width);
 	d_display_area.d_bottom	= static_cast<float>(height);
+
+    d_imageCodec = new UseCodec;
 
     setModuleIdentifierString();
 }

@@ -534,6 +534,7 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     requestRedraw();
+    notifyClippingChanged();
 
 	fireEvent(EventRollupToggled, e, EventNamespace);
 }

@@ -221,10 +221,16 @@ Window::Window(const String& type, const String& name) :
     // allow writing XML flag
     d_allowWriteXML = true;
 
-    // custom clipping rect flag
-    d_useCustomClipper = false;
-    d_customClipArea = Rect(0,0,0,0);
-    d_customClipperWindow = this;
+    // screen rect caching
+    d_screenUnclippedRectValid = false;
+    d_screenUnclippedInnerRectValid = false;
+    d_screenRectValid = false;
+    d_screenInnerRectValid = false;
+    
+    d_screenUnclippedRect = Rect(0,0,0,0);
+    d_screenUnclippedInnerRect = Rect(0,0,0,0);
+    d_screenRect = Rect(0,0,0,0);
+    d_screenInnerRect = Rect(0,0,0,0);
 
 	// add properties
 	addStandardProperties();
@@ -572,14 +578,15 @@ float Window::getEffectiveAlpha(void) const
 *************************************************************************/
 Rect Window::getPixelRect(void) const
 {
-    if (d_windowRenderer != 0)
+    if (!d_screenRectValid)
     {
-        return d_windowRenderer->getPixelRect();
+        d_screenRect = (d_windowRenderer != 0) ?
+            d_windowRenderer->getPixelRect()
+            : getPixelRect_impl();
+        d_screenRectValid = true;
     }
-    else
-    {
-        return getPixelRect_impl();
-    }
+
+    return d_screenRect;
 }
 
 
@@ -607,17 +614,23 @@ Rect Window::getPixelRect_impl(void) const
 *************************************************************************/
 Rect Window::getInnerRect(void) const
 {
-	// clip to parent?
-	if (isClippedByParent() && (d_parent != 0))
-	{
-		return getUnclippedInnerRect().getIntersection(d_parent->getInnerRect());
-	}
-	// else, clip to screen
-	else
-	{
-		return getUnclippedInnerRect().getIntersection(System::getSingleton().getRenderer()->getRect());
-	}
+    if (!d_screenInnerRectValid)
+    {
+        // clip to parent?
+	    if (isClippedByParent() && (d_parent != 0))
+	    {
+		    d_screenInnerRect = getUnclippedInnerRect().getIntersection(d_parent->getInnerRect());
+	    }
+	    // else, clip to screen
+	    else
+	    {
+		    d_screenInnerRect = getUnclippedInnerRect().getIntersection(
+		        System::getSingleton().getRenderer()->getRect());
+	    }
+        d_screenInnerRectValid = true;
+    }
 
+    return d_screenInnerRect;
 }
 
 
@@ -627,13 +640,14 @@ Rect Window::getInnerRect(void) const
 *************************************************************************/
 Rect Window::getUnclippedPixelRect(void) const
 {
-//     URect localArea(cegui_reldim(0),
-//                     cegui_reldim(0),
-//                     cegui_reldim(1),
-//                     cegui_reldim(1));
-    Rect localArea(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+    if (!d_screenUnclippedRectValid)
+    {
+        Rect localArea(0, 0, d_pixelSize.d_width, d_pixelSize.d_height);
+        d_screenUnclippedRect = CoordConverter::windowToScreen(*this, localArea);
+        d_screenUnclippedRectValid = true;
+    }
 
-    return CoordConverter::windowToScreen(*this, localArea);
+    return d_screenUnclippedRect;
 }
 
 
@@ -645,23 +659,28 @@ Rect Window::getUnclippedPixelRect(void) const
 *************************************************************************/
 Rect Window::getUnclippedInnerRect(void) const
 {
-    // a custom user clipper overrides everything
-    if (isUsingCustomClipper())
+    if (!d_screenUnclippedInnerRectValid)
     {
-        // relative to window?
-        if (d_customClipperWindow!=0)
-        {
-            return CoordConverter::windowToScreen(*d_customClipperWindow, d_customClipArea);
-        }
-        // already screen space
-        return d_customClipArea;
+        d_screenUnclippedInnerRect = getUnclippedInnerRect_impl();
+        d_screenUnclippedInnerRectValid = true;
     }
 
-    // if we have a window renderer we let it have its say
-    if (d_windowRenderer != 0)
-        return d_windowRenderer->getUnclippedInnerRect();
+    return d_screenUnclippedInnerRect;
+}
 
-    // last resort
+
+/*************************************************************************
+	Return a Rect object that describes, unclipped, the inner rectangle
+	for this window.  The inner rectangle is typically an area that
+	excludes some frame or other rendering that should not be touched by
+	subsequent rendering.
+*************************************************************************/
+Rect Window::getUnclippedInnerRect_impl(void) const
+{
+    if (d_windowRenderer != 0)
+    {
+        return d_windowRenderer->getUnclippedInnerRect();
+    }
     return getUnclippedPixelRect();
 }
 
@@ -1949,6 +1968,12 @@ void Window::doRiseOnClick(void)
 
 void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)
 {
+    // we make sure the screen areas are recached when this is called as we need it in most cases
+    d_screenUnclippedRectValid = false;
+    d_screenUnclippedInnerRectValid = false;
+    d_screenRectValid = false;
+    d_screenInnerRectValid = false;
+
     // notes of what we did
     bool moved = false, sized;
     
@@ -2493,6 +2518,11 @@ void Window::rename(const String& new_name)
 
 void Window::onSized(WindowEventArgs& e)
 {
+    /*d_screenUnclippedRectValid = false;
+    d_screenUnclippedInnerRectValid = false;
+    d_screenRectValid = false;
+    d_screenInnerRectValid = false;*/
+
 	// inform children their parent has been re-sized
 	size_t child_count = getChildCount();
 	for (size_t i = 0; i < child_count; ++i)
@@ -2511,6 +2541,18 @@ void Window::onSized(WindowEventArgs& e)
 
 void Window::onMoved(WindowEventArgs& e)
 {
+    /*d_screenUnclippedRectValid = false;
+    d_screenUnclippedInnerRectValid = false;
+    d_screenRectValid = false;
+    d_screenInnerRectValid = false;*/
+
+    // inform children their parent has been moved
+	const size_t child_count = getChildCount();
+	for (size_t i = 0; i < child_count; ++i)
+	{
+		d_children[i]->notifyScreenAreaChanged();
+	}
+
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
     System::getSingleton().signalRedraw();
@@ -2611,6 +2653,7 @@ void Window::onDisabled(WindowEventArgs& e)
 void Window::onClippingChanged(WindowEventArgs& e)
 {
 	requestRedraw();
+	notifyClippingChanged();
 	fireEvent(EventClippedByParentChanged, e, EventNamespace);
 }
 
@@ -3034,43 +3077,35 @@ bool Window::isPropertyAtDefault(const Property* property) const
     return property->isDefault(this);
 }
 
-void Window::setCustomClipperEnabled(bool setting)
+void Window::notifyClippingChanged(void)
 {
-    if (d_useCustomClipper != setting)
+    d_screenRectValid = false;
+    d_screenInnerRectValid = false;
+    
+    // inform children that their clipped screen areas must be updated
+    const size_t num = d_children.size();
+    for (size_t i=0; i<num; ++i)
     {
-        d_useCustomClipper = setting;
-        if (d_useCustomClipper)
+        if (d_children[i]->isClippedByParent())
         {
-            requestRedraw();
+            d_children[i]->notifyClippingChanged();
         }
-        // maybe fire an event sometime ?
     }
 }
 
-void Window::setCustomClipArea(const Rect& r)
+void Window::notifyScreenAreaChanged()
 {
-    if (d_customClipArea != r)
-    {
-        d_customClipArea = r;
-        if (d_useCustomClipper)
-        {
-            requestRedraw();
-        }
-        // maybe fire an event sometime ?
-    }
-}
-
-void Window::setCustomClipperWindow(Window* w)
-{
-    if (d_customClipperWindow != w)
-    {
-        d_customClipperWindow = w;
-        if (d_useCustomClipper)
-        {
-            requestRedraw();
-        }
-        // maybe fire an event sometime ?
-    }
+    d_screenUnclippedRectValid = false;
+    d_screenUnclippedInnerRectValid = false;
+    d_screenRectValid = false;
+    d_screenInnerRectValid = false;
+    
+    // inform children that their screen area must be updated
+	const size_t child_count = getChildCount();
+	for (size_t i = 0; i < child_count; ++i)
+	{
+		d_children[i]->notifyScreenAreaChanged();
+	}
 }
 
 } // End of  CEGUI namespace section

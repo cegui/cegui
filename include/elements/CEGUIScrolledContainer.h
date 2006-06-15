@@ -136,6 +136,9 @@ namespace CEGUI
         */
         Rect getChildExtentsArea(void) const;
 
+        // Overridden from Window.
+        Rect getUnclippedInnerRect_impl(void) const;
+
     protected:
         /*************************************************************************
         	Implementation methods
@@ -207,7 +210,6 @@ namespace CEGUI
         /*************************************************************************
         	Overridden from Window.
         *************************************************************************/
-        Rect getUnclippedInnerRect(void) const;
         void onChildAdded(WindowEventArgs& e);
         void onChildRemoved(WindowEventArgs& e);
         void onParentSized(WindowEventArgs& e);

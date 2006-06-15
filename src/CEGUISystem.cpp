@@ -42,10 +42,6 @@
 #include "CEGUIWindow.h"
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
-#include "elements/CEGUIGUISheet.h"
-#include "elements/CEGUIDragContainer.h"
-#include "elements/CEGUIScrolledContainer.h"
-#include "elements/CEGUITooltip.h"
 #include "elements/CEGUIBaseFactories.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUIConfig_xmlHandler.h"
@@ -1417,6 +1413,7 @@ void System::addStandardWindowFactories()
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GUISheet));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(DragContainer));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ScrolledContainer));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ClippedContainer));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Checkbox));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(PushButton));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(RadioButton));

@@ -34,6 +34,7 @@
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIDragContainer.h"
 #include "elements/CEGUIScrolledContainer.h"
+#include "elements/CEGUIClippedContainer.h"
 #include "elements/CEGUICheckbox.h"
 #include "elements/CEGUIPushButton.h"
 #include "elements/CEGUIRadioButton.h"
@@ -65,9 +66,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-	CEGUI_DECLARE_WINDOW_FACTORY(GUISheet);
-	CEGUI_DECLARE_WINDOW_FACTORY(DragContainer);
-	CEGUI_DECLARE_WINDOW_FACTORY(ScrolledContainer);
+    CEGUI_DECLARE_WINDOW_FACTORY(GUISheet);
+    CEGUI_DECLARE_WINDOW_FACTORY(DragContainer);
+    CEGUI_DECLARE_WINDOW_FACTORY(ScrolledContainer);
+    CEGUI_DECLARE_WINDOW_FACTORY(ClippedContainer);
     CEGUI_DECLARE_WINDOW_FACTORY(Checkbox);
     CEGUI_DECLARE_WINDOW_FACTORY(ComboDropList);
     CEGUI_DECLARE_WINDOW_FACTORY(Combobox);

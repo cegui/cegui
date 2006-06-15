@@ -165,12 +165,12 @@ namespace CEGUI
         return true;
     }
 
-    Rect ScrolledContainer::getUnclippedInnerRect(void) const
+    Rect ScrolledContainer::getUnclippedInnerRect_impl(void) const
     {
         // return inner rect of our parent when possible,
         // or of the screen when not.
         return d_parent ?
-            d_parent->getUnclippedInnerRect() :
+            d_parent->getUnclippedInnerRect_impl() :
             System::getSingleton().getRenderer()->getRect();
     }
 

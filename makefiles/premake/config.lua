@@ -12,3 +12,5 @@
 --
 --USE_DEVIL_LIBRARY = true
 --USE_CORONA_LIBRARY = true
+--USE_SILLY_LIBRARY = true
+USE_BUILTIN_TGA = true
