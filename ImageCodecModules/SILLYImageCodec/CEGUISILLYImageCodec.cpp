@@ -30,6 +30,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUISILLYImageCodec.h" 
 #include "SILLY.h"
+#include "CEGUILogger.h" 
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -50,6 +51,7 @@ SILLYImageCodec::~SILLYImageCodec()
 
 Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
 {
+    CEGUI::Logger::getSingleton().logEvent("SILLYImageCodec::load()", Standard);
     SILLY::MemoryDataSource md(static_cast<const SILLY::byte*>(data.getDataPtr()), data.getSize());
     SILLY::Image img(md);
     if (!img.loadImageHeader())
