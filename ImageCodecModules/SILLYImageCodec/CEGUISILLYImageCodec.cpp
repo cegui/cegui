@@ -38,38 +38,32 @@ SILLYImageCodec::SILLYImageCodec()
     : ImageCodec("SILLYImageCodec - Official SILLY based image codec")
 {
     d_supportedFormat = "tga jpg png";
+    if (! SILLY::SILLYInit())
+        throw Exception("SILLYImageCodec::SILLYImageCodec - Unable to initialize SILLY library");
+
 }
 
 SILLYImageCodec::~SILLYImageCodec()
 {
-    
+    SILLY::SILLYCleanup();
 }
 
 Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-    SILLY::MemoryDataSource md(data.getDataPtr(), data.getSize());
+    SILLY::MemoryDataSource md(static_cast<const SILLY::byte*>(data.getDataPtr()), data.getSize());
     SILLY::Image img(md);
-    if (!img.isValid()
-    {
-        Exception("SILLYImageCodec::load - Invalid image source");
-        return 0;
-    }
     if (!img.loadImageHeader())
     {
         Exception("SILLYImageCodec::load - Invalid image header");
         return 0;
     }
-    if (!img.loadImageData())
-    {
+    if (!img.loadImageData(SILLY::PF_RGBA))
+    { 
         Exception("SILLYImageCodec::load - Invalid image data");
         return 0;
     }
-    if (!img.isValid())
-    {
-        Exception("SILLYImageCodec::load - Invalid image");
-        return 0;
-    }
     result->loadFromMemory(img.getPixelsDataPtr(), img.getWidth(), img.getHeight());
+    return result;
 }
 
 } // End of CEGUI namespace section 

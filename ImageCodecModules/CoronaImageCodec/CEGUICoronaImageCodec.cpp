@@ -28,6 +28,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUICoronaImageCodec.h" 
+#include "CEGUILogger.h" 
+
+
 #include <corona.h> 
 
 // Start of CEGUI namespace section
@@ -56,13 +59,21 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
     corona::File* texFile = corona::CreateMemoryFile(data.getDataPtr(), (int)data.getSize());
     if (texFile == 0)
     {
+        Logger::getSingleton().logEvent("Unable to create corona::File object", Errors);
         return 0;
     }
-    corona::Image* texImg = corona::OpenImage(texFile, corona::PF_R8G8B8A8);
+    corona::Image* texImg = corona::OpenImage(texFile);
+    delete texFile;
     if (texImg == 0)
     {
-        delete texFile;
+        Logger::getSingleton().logEvent("Unable to load image, corona::OpenImage failed", Errors);
         return 0;
+    }
+    texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);
+    if (texImg == 0)
+    {
+        Logger::getSingleton().logEvent("Unable to convert image to RGBA", Errors);
+        return 0; 
     }
     result->loadFromMemory(texImg->getPixels(), texImg->getWidth(), texImg->getHeight());
     delete texImg;

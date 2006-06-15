@@ -24,3 +24,8 @@ libCEGUIOpenGLRenderer_la_LIBADD += \
 	$(top_builddir)/ImageCodecModules/DevILImageCodec/libCEGUIDevILImageCodec.la
 endif 
 
+if CEGUI_BUILD_SILLY_IMAGE_CODEC 
+libCEGUIOpenGLRenderer_la_LIBADD += \
+    $(top_builddir)/ImageCodecModules/SILLYImageCodec/libCEGUISILLYImageCodec.la
+endif
+
