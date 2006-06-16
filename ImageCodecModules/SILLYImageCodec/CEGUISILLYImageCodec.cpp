@@ -51,7 +51,6 @@ SILLYImageCodec::~SILLYImageCodec()
 
 Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-    CEGUI::Logger::getSingleton().logEvent("SILLYImageCodec::load()", Standard);
     SILLY::MemoryDataSource md(static_cast<const SILLY::byte*>(data.getDataPtr()), data.getSize());
     SILLY::Image img(md);
     if (!img.loadImageHeader())
@@ -59,7 +58,7 @@ Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
         Exception("SILLYImageCodec::load - Invalid image header");
         return 0;
     }
-    if (!img.loadImageData(SILLY::PF_RGBA))
+    if (!img.loadImageData(SILLY::PF_RGBA, SILLY::PO_TOP_LEFT))
     { 
         Exception("SILLYImageCodec::load - Invalid image data");
         return 0;
