@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "DevILImageCodec.h" 
-
-
+#include "CEGUIDevILImageCodec.h" 
+#include <IL/il.h>
+#include <IL/ilu.h> 
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -37,15 +37,48 @@ namespace CEGUI
 DevILImageCodec::DevILImageCodec()
     : ImageCodec("DevILImageCodec - Official DevIL based image codec")
 {
+    // init DevIL libs we use
+    ilInit();
+    iluInit();
 }
 
 DevILImageCodec::~DevILImageCodec()
 {    
+
 }
 
 Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-   return 0; 
+    ILuint imgName;
+    ilGenImages(1, &imgName);
+    ilBindImage(imgName);
+    
+    if (ilLoadL(IL_TYPE_UNKNOWN, (ILvoid*)data.getDataPtr(), data.getSize()) != IL_FALSE)
+    {
+        // flip the image
+        iluFlipImage();
+        // get details about size of loaded image
+        ILinfo imgInfo;
+        iluGetImageInfo(&imgInfo);
+        // set dimensions of texture
+        size_t width = imgInfo.Width;
+        size_t height = imgInfo.Height;
+        // allocate temp buffer to receive image data
+        uchar* tmpBuff = new uchar[width * height * 4];
+        // get image data in required format
+        ilCopyPixels(0, 0, 0, width, height, 1, IL_RGBA, IL_UNSIGNED_BYTE, (ILvoid*)tmpBuff);
+        result->loadFromMemory(tmpBuff, width, height);
+        // delete DevIL image
+        ilDeleteImages(1, &imgName);   
+        return result;
+    }
+	// failed to load image properly.
+	else
+	{
+		// delete DevIL image
+		ilDeleteImages(1, &imgName);
+        return 0;
+    }
 }
 
 

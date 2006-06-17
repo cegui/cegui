@@ -30,7 +30,7 @@
 #ifndef _CEGUIDevILImageCodec_h_
 #define _CEGUIDevILImageCodec_h_
 #include "CEGUIImageCodec.h"
-#error "DevIL support is under rewrite and thus should not be used"
+
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4275)
