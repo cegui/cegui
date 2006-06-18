@@ -34,11 +34,8 @@ elseif USE_SILLY_LIBRARY then
     library("SILLY", "_d")
     dependency("CEGUISILLYImageCodec")
     define("USE_SILLY_LIBRARY")
-elseif USE_BUILTIN_TGA then
-    dependency("CEGUITGAImageCodec")
-    define("USE_BUILTIN_TGA")
 else
-    error("No image codec specified for the OpenGL renderer module")
+    dependency("CEGUITGAImageCodec")
 end
 
 define("OPENGL_GUIRENDERER_EXPORTS")
