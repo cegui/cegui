@@ -120,6 +120,7 @@ AC_CONFIG_FILES([Makefile
                  ImageCodecModules/Makefile
                  ImageCodecModules/CoronaImageCodec/Makefile
                  ImageCodecModules/DevILImageCodec/Makefile
+                 ImageCodecModules/FreeImageImageCodec/Makefile 
                  ImageCodecModules/SILLYImageCodec/Makefile
                  ImageCodecModules/TGAImageCodec/Makefile
                  include/Makefile

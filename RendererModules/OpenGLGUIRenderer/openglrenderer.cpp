@@ -37,6 +37,9 @@
 #if defined(USE_DEVIL_LIBRARY)
 #   include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
 #   define UseCodec DevILImageCodec
+#elif defined(USE_FREEIMAGE_LIBRARY)
+#   include "ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageCodec.h" 
+#   define UseCodec FreeImageImageCodec 
 #elif defined(USE_SILLY_LIBRARY)
 #   include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h" 
 #   define UseCodec SILLYImageCodec 

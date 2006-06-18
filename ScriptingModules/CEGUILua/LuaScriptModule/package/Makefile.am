@@ -52,13 +52,9 @@ EXTRA_DIST = Basic.pkg \
              elements/ScrolledContainer.pkg \
              elements/Slider.pkg \
              elements/Spinner.pkg \
-             elements/Static.pkg \
-             elements/StaticImage.pkg \
-             elements/StaticText.pkg \
              elements/TabButton.pkg \
              elements/TabControl.pkg \
              elements/TabPane.pkg \
-             elements/TextItem.pkg \
              elements/Thumb.pkg \
              elements/Titlebar.pkg \
              elements/Tooltip.pkg \

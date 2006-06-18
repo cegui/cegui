@@ -22,6 +22,10 @@ dependency("CEGUIBase")
 if USE_DEVIL_LIBRARY then
     dependency("CEGUIDevILImageCodec")
     define("USE_DEVIL_LIBRARY")
+elseif USE_FREEIMAGE_LIBRARY then
+    library("FreeImage", "d")
+    dependency("CEGUIFreeImageImageCodec")
+    define("USE_FREEIMAGE_LIBRARY")
 elseif USE_CORONA_LIBRARY then
     library("corona", "_d")
     dependency("CEGUICoronaImageCodec")
