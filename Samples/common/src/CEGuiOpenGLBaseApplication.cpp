@@ -128,6 +128,9 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutCreateWindow("Crazy Eddie's GUI Mk-2 - Sample Application");
     glutSetCursor(GLUT_CURSOR_NONE);
 
+    d_renderer = new CEGUI::OpenGLRenderer(1024);
+    new CEGUI::System(d_renderer);
+
     glutDisplayFunc(&CEGuiOpenGLBaseApplication::drawFrame);
     glutReshapeFunc(&CEGuiOpenGLBaseApplication::reshape);
     glutMotionFunc(&CEGuiOpenGLBaseApplication::mouseMotion);
@@ -142,9 +145,6 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 
     // Set the clear color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    d_renderer = new CEGUI::OpenGLRenderer(1024);
-    new CEGUI::System(d_renderer);
 
     // initialise the required dirs for the DefaultResourceProvider
     CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
