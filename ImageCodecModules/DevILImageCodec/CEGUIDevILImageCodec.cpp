@@ -56,7 +56,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
     ILuint imgName;
     ilGenImages(1, &imgName);
     ilBindImage(imgName);
-    
+
     if (ilLoadL(IL_TYPE_UNKNOWN, (ILvoid*)data.getDataPtr(), data.getSize()) != IL_FALSE)
     {
         // get details about size of loaded image
@@ -71,7 +71,8 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         ilCopyPixels(0, 0, 0, width, height, 1, IL_RGBA, IL_UNSIGNED_BYTE, (ILvoid*)tmpBuff);
         result->loadFromMemory(tmpBuff, width, height);
         // delete DevIL image
-        ilDeleteImages(1, &imgName);   
+        ilDeleteImages(1, &imgName);
+        ilPopAttrib();
         return result;
     }
 	// failed to load image properly.
@@ -79,6 +80,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
 	{
 		// delete DevIL image
 		ilDeleteImages(1, &imgName);
+		ilPopAttrib();
         return 0;
     }
 }
