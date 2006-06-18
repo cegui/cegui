@@ -254,9 +254,11 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
 
         dnl FreeImage 
         if test x$cegui_with_freeimage = xyes ; then 
-            AC_CHECK_LIB(freeimage, FreeImage_Initialise, [cegui_with_freeimage_lib=yes], [cegui_with_freeimage_lib=no], [])
+            AC_LANG_PUSH(C++)
+            AC_SEARCH_LIBS(FreeImage_GetVersion, freeimage, [cegui_with_freeimage_lib=yes], [cegui_with_freeimage_lib=no])
+            AC_LANG_POP(C++)
             AC_CHECK_HEADER(FreeImage.h, [cegui_with_freeimage_header=yes], [cegui_with_freeimage_header=no], [])
-            if test x$cegui_with_freeimag_lib = xyes -a x$cegui_with_freeimage_header = xyes ; then
+            if test x$cegui_with_freeimage_lib = xyes -a x$cegui_with_freeimage_header = xyes ; then
                 AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer enabled])
                 FreeImage_CFLAGS="-DUSE_FREEIMAGE_LIBRARY"
                 FreeImage_LIBS="-lfreeimage" 

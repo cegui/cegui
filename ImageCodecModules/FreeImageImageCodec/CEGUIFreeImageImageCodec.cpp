@@ -46,7 +46,7 @@ namespace
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-FreeImageImageCodec::FreeImageCodec()
+FreeImageImageCodec::FreeImageImageCodec()
     : ImageCodec("FreeImageCodec - FreeImage based image codec")
 {
     FreeImage_Initialise(true);
@@ -70,7 +70,7 @@ FreeImageImageCodec::FreeImageCodec()
     }
 }
 
-FreeImageImageCodec::~FreeImageCodec()
+FreeImageImageCodec::~FreeImageImageCodec()
 {
     FreeImage_DeInitialise();
 }
