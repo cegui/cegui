@@ -49,14 +49,16 @@ DevILImageCodec::~DevILImageCodec()
 
 Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
 {
+    ilPushAttrib(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
+    ilEnable(IL_ORIGIN_SET);
+
     ILuint imgName;
     ilGenImages(1, &imgName);
     ilBindImage(imgName);
     
     if (ilLoadL(IL_TYPE_UNKNOWN, (ILvoid*)data.getDataPtr(), data.getSize()) != IL_FALSE)
     {
-        // flip the image
-        iluFlipImage();
         // get details about size of loaded image
         ILinfo imgInfo;
         iluGetImageInfo(&imgInfo);
