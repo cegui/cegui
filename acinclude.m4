@@ -207,12 +207,14 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
 AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_ARG_ENABLE([opengl-renderer], AC_HELP_STRING([--disable-opengl-renderer], [Disable the OpenGL renderer]),
         [cegui_enable_opengl=$enableval], [cegui_enable_opengl=yes])
-    AC_ARG_WITH([devil], AC_HELP_STRING([--without-devil], [Disables image loading via DevIL image codec by OpenGL renderer]),
-        [cegui_with_devil=$withval], [cegui_with_devil=yes])
     AC_ARG_WITH([corona], AC_HELP_STRING([--without-corona], [Disables image loading via Corona image codec by OpenGL renderer]), 
         [cegui_with_corona=$withval], [cegui_with_corona=yes])
     AC_ARG_WITH(corona-prefix, AC_HELP_STRING([--with-corona-prefix], [Prefix where corona is installed (optional)]), 
         [cegui_corona_prefix="$withval"], [cegui_corona_prefix=""])
+    AC_ARG_WITH([devil], AC_HELP_STRING([--without-devil], [Disables image loading via DevIL image codec by OpenGL renderer]),
+        [cegui_with_devil=$withval], [cegui_with_devil=yes])
+    AC_ARG_WITH([freeimage], AC_HELP_STRING([--without-freeimage], [Disabled image loading via FreeImage image codec by OpenGL renderer]), 
+        [cegui_with_freeimage=$withval], [cegui_with_freeimage=yes])
     AC_ARG_WITH([silly], AC_HELP_STRING([--without-silly], [Disables image loading via SILLY image codec by OpenGL renderer]), 
         [cegui_with_silly=$withval], [cegui_with_silly=yes])
 
@@ -250,6 +252,24 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
             cegui_with_devil=no
         fi
 
+        dnl FreeImage 
+        if test x$cegui_with_freeimage = xyes ; then 
+            AC_CHECK_LIB(freeimage, FreeImage_Initialise, [cegui_with_freeimage_lib=yes], [cegui_with_freeimage_lib=no], [])
+            AC_CHECK_HEADER(FreeImage.h, [cegui_with_freeimage_header=yes], [cegui_with_freeimage_header=no], [])
+            if test x$cegui_with_freeimag_lib = xyes -a x$cegui_with_freeimage_header = xyes ; then
+                AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer enabled])
+                FreeImage_CFLAGS="-DUSE_FREEIMAGE_LIBRARY"
+                FreeImage_LIBS="-lfreeimage" 
+                AC_SUBST(FreeImage_CFLAGS)
+                AC_SUBST(FreeImage_LIBS)
+                cegui_with_freeimage=yes
+             else 
+                AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer disabled])
+                cegui_with_freeimage=no
+             fi
+        else 
+            AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer disabled])
+        fi 
         dnl Silly 
         if test x$cegui_with_silly = xyes ; then 
             PKG_CHECK_MODULES([SILLY], [SILLY >= 0.1.0], [cegui_with_silly=yes], [cegui_with_silly=no])
@@ -322,11 +342,9 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AM_CONDITIONAL([CEGUI_BUILD_DEVIL_IMAGE_CODEC], [test x$cegui_with_devil = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_CORONA_IMAGE_CODEC], [test x$cegui_with_corona = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_SILLY_IMAGE_CODEC], [test x$cegui_with_silly = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_FREE_IMAGE_IMAGE_CODEC], [test x$cegui_with_freeimage = xyes])
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
-    AC_SUBST(DevIL_CFLAGS)
-    AC_SUBST(Corona_CFLAGS)
-    AC_SUBST(Corona_LIBS)
 ])
 
 # CEGUI_CHECK_XERCES(variable, [action-if-found], [action-if-not-found])

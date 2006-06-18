@@ -11,7 +11,6 @@ endif
 EXTRA_DIST = ReadMe.txt \
              bin/keepme \
              datafiles/configs/CEGUIConfig.xsd \
-             datafiles/configs/demo8.config \
              datafiles/fonts/Commonv2c.ttf \
              datafiles/fonts/Commonwealth-10.font \
              datafiles/fonts/Font.xsd \

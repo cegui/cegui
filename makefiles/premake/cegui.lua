@@ -46,6 +46,7 @@ createpackages
 	{
         "CoronaImageCodec",
         "DevILImageCodec",
+        "FreeImageImageCodec", 
         "TGAImageCodec",
         "SILLYImageCodec",
 	},
