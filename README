@@ -3,12 +3,13 @@ http://www.cegui.org.uk
 
 Copyright ©2004 - 2005 CEGUI Team & Contributing Authors
 
-This sofware contains an embedded version of PCRE by Philip Hazel.
+This sofware uses the PCRE library by Philip Hazel.
 PCRE is Copyright (c) 1997-2004 University of Cambridge, All rights reserved.
 Please see PCRE-LICENSE for additional licensing information.
 
 This sofware can be compiled to optionally contain an embedded version of
-TinyXML.  Please the file TinyXML-License for additional licensing information.
+TinyXML.  Please see the file TinyXML-License for additional licensing
+information.
 
 This software uses the Freetype2 library to provide most of the font loading and
 rendering support.  Freetype2 is a free, high-quality, and portable font engine;
@@ -51,7 +52,7 @@ following systems:
 
 Various flavors of Linux using gcc.
 Microsoft Windows running VC++6 (sp6), VC++7.0, or VC++7.1.
-Apple Mac OS X running Xcode.
+Apple Mac OS X running Xcode. (out of sync - we need a maintainer)
 
 It is very possible that the system will compile and run on other systems and
 compilers, though the above systems have been tested.
@@ -64,6 +65,13 @@ also requires the use of some third party external libraries.  These libraries
 are as follows:
 
 Freetype2 (http://www.freetype.org)
+PCRE (http://www.pcre.org)
+
 Optionally: Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
+Optionally: Expat XML parser (http://expat.sourceforge.net)
+Optionally: LibXML XML parser (http://www.xmlsoft.org)
+Optionally: DevIL image loading library (http://openil.sourceforge.net)
+Optionally: Corona image loading library (http://corona.sourceforge.net)
+Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
 
 Have Fun!
