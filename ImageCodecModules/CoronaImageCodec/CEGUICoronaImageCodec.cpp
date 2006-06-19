@@ -69,13 +69,25 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
         Logger::getSingleton().logEvent("Unable to load image, corona::OpenImage failed", Errors);
         return 0;
     }
+    Texture::PixelFormat cefmt;
+    switch(texImg->getPixelFormat())
+    {
+        case PF_R8G8B8:
+            texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8);
+            cefmt = Texture::PF_RGB;
+            break;
+        default:
+            texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);
+            cefmt = Texture::PF_RGBA;
+            break;
+    }
     texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8A8);
     if (texImg == 0)
     {
         Logger::getSingleton().logEvent("Unable to convert image to RGBA", Errors);
         return 0; 
     }
-    result->loadFromMemory(texImg->getPixels(), texImg->getWidth(), texImg->getHeight());
+    result->loadFromMemory(texImg->getPixels(), texImg->getWidth(), texImg->getHeight(), cefmt);
     delete texImg;
     delete texFile;
     return result;    

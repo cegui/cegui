@@ -154,7 +154,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         FreeImage_Unload(img);
         img = NULL;
 
-        result->loadFromMemory(dstBuf, width, height);
+        result->loadFromMemory(dstBuf, width, height, Texture::PF_RGBA);
         delete [] dstBuf;
         retval = result;
     }
