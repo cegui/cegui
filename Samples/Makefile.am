@@ -20,6 +20,8 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/fonts/fkp-16.font \
              datafiles/fonts/fkp.de.pcf \
              datafiles/fonts/Font.xsd \
+			 datafiles/fonts/Iconified-12.font \
+			 datafiles/fonts/Iconiv2.ttf \
              datafiles/fonts/README \
              datafiles/fonts/common.txt \
              datafiles/fonts/Legal.txt \
