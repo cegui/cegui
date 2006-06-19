@@ -27,7 +27,7 @@ createpackages {
         "Demo7",
         "Demo8",
         "FalagardDemo1",
-        --"Medieval",
+        "FontDemo",
     }
 }
 
