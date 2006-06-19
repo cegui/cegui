@@ -22,10 +22,19 @@ package.excludes =
 include(pkgdir.."include")
 include(rootdir)
 
-library("freeglut", "_d")
 library("CEGUIBase", "_d")
-library("OpenGLGUIRenderer", "_d")
-library("DirectX9GUIRenderer", "_d")
---library("DirectX81GUIRenderer")
+
+if SAMPLES_GL then
+    library("freeglut", "_d")
+    library("OpenGLGUIRenderer", "_d")
+end
+
+if DIRECTX9_RENDERER and SAMPLES_DX9 then
+    library("DirectX9GUIRenderer", "_d")
+end
+
+if DIRECTX81_RENDERER and SAMPLES_DX81 then
+    library("DirectX81GUIRenderer")
+end
 
 define("CEGUISAMPLE_EXPORTS")

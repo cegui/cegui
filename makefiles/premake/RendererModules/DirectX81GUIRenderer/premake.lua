@@ -17,4 +17,6 @@ library("d3dx8")
 
 dependency("CEGUIBase")
 
+tinsert(package.linkoptions, "/NODEFAULTLIB:libci.lib")
+
 define("DIRECTX81_GUIRENDERER_EXPORTS")

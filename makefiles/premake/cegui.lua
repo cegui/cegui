@@ -18,7 +18,7 @@ project.configs =
 	"Release"
 }
 
-createpackages
+pkg_table =
 {
 	"BaseSystem",
 	
@@ -36,20 +36,11 @@ createpackages
 	},
 	
 	["RendererModules"] =
-	{
-	    "OpenGLGUIRenderer",
-	    "DirectX9GUIRenderer",
-	    --"DirectX81GUIRenderer",
-	},
+    {
+        "OpenGLGUIRenderer",
+    },
 	
-	["ImageCodecModules"] =
-	{
-        "CoronaImageCodec",
-        "DevILImageCodec",
-        "FreeImageImageCodec", 
-        "TGAImageCodec",
-        "SILLYImageCodec",
-	},
+	["ImageCodecModules"] = {},
 	
 	["ScriptingModules"] =
 	{
@@ -61,5 +52,25 @@ createpackages
         },
 	},
 }
+
+local image_codec =
+{
+    corona="CoronaImageCodec",
+    devil="DevILImageCodec",
+    freeimage="FreeImageImageCodec", 
+    tga="TGAImageCodec",
+    silly="SILLYImageCodec",
+}
+tinsert(pkg_table.ImageCodecModules, image_codec[OPENGL_IMAGECODEC])
+
+if DIRECTX9_RENDERER then
+    tinsert(pkg_table.RendererModules, "DirectX9GUIRenderer")
+end
+
+if DIRECTX81_RENDERER then
+    tinsert(pkg_table.RendererModules, "DirectX81GUIRenderer")
+end
+
+createpackages(pkg_table)
 
 -- the end
