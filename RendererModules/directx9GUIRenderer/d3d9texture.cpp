@@ -97,7 +97,7 @@ void DirectX9Texture::loadFromFile(const String& filename, const String& resourc
 /*************************************************************************
 	Load texture from raw memory.	
 *************************************************************************/
-void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight)
+void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight, Texture::PixelFormat pixFormat)
 {
 	using namespace std;
 
@@ -109,7 +109,19 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 
 	// create a texture
 	// TODO: Check resulting pixel format and react appropriately.
-	HRESULT hr = D3DXCreateTexture(((DirectX9Renderer*)getRenderer())->getDevice(), tex_size, tex_size, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &d_d3dtexture);
+	D3DFORMAT pixfmt;
+	switch (pixFormat)
+	{
+	case PF_RGB:
+	    pixfmt = D3DFMT_R8G8B8;
+	    break;
+	case PF_RGBA:
+	    pixfmt = D3DFMT_A8B8G8R8;
+	    break;
+	default:
+	    throw RendererException("Failed to load texture from memory: Invalid pixelformat.");
+	}
+	HRESULT hr = D3DXCreateTexture(((DirectX9Renderer*)getRenderer())->getDevice(), tex_size, tex_size, 1, 0, pixfmt, D3DPOOL_MANAGED, &d_d3dtexture);
 
 	if (FAILED(hr))
 	{
@@ -141,16 +153,40 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 			ulong* dst = (ulong*)rect.pBits;
 			ulong* src = (ulong*)buffPtr;
 
-			for (uint i = 0; i < buffHeight; ++i)
-			{
-				for (uint j = 0; j < buffWidth; ++j)
-				{
-					dst[j] = src[j];
-				}
+            // RGBA
+            if (pixFormat == PF_RGBA)
+            {
+                for (uint i = 0; i < buffHeight; ++i)
+			    {
+				    for (uint j = 0; j < buffWidth; ++j)
+				    {
+				        // we dont need endian safety on microsoft
+					    uchar r = (uchar)(src[j] & 0xFF);
+					    uchar g = (uchar)((src[j] >> 8) & 0xFF);
+					    uchar b = (uchar)((src[j] >> 16)  & 0xFF);
+					    uchar a = (uchar)((src[j] >> 24) & 0xFF);
 
-				dst += rect.Pitch / sizeof(ulong);
-				src += buffWidth;
-			}
+					    dst[j] = D3DCOLOR_ARGB(a, r, g, b);
+				    }
+
+				    dst += rect.Pitch / sizeof(ulong);
+				    src += buffWidth;
+			    }
+            }
+            // RGB
+            else
+            {
+                for (uint i = 0; i < buffHeight; ++i)
+			    {
+				    for (uint j = 0; j < buffWidth; ++j)
+				    {
+				        dst[j] = src[j];
+				    }
+
+				    dst += rect.Pitch / sizeof(ulong);
+				    src += buffWidth;
+			    }
+            }
 
 			d_d3dtexture->UnlockRect(0);
 		}

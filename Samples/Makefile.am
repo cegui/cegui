@@ -5,7 +5,8 @@ SUBDIRS = common \
           Demo7 \
           Demo8 \
           FirstWindow \
-          FalagardDemo1
+          FalagardDemo1 \
+          FontDemo
 endif
 
 EXTRA_DIST = ReadMe.txt \
@@ -13,9 +14,15 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/configs/CEGUIConfig.xsd \
              datafiles/fonts/Commonv2c.ttf \
              datafiles/fonts/Commonwealth-10.font \
+             datafiles/fonts/DejaVuSans-10.font \
+             datafiles/fonts/DejaVuSans.ttf \
+             datafiles/fonts/FairChar.font \
+             datafiles/fonts/fkp-16.font \
+             datafiles/fonts/fkp.de.pcf \
              datafiles/fonts/Font.xsd \
              datafiles/fonts/README \
              datafiles/fonts/common.txt \
+             datafiles/fonts/Legal.txt \
              datafiles/imagesets/GPN-2000-001437.tga \
              datafiles/imagesets/Imageset.xsd \
              datafiles/imagesets/ReadMe.txt \
@@ -25,6 +32,8 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/imagesets/WindowsLook.imageset \
              datafiles/imagesets/WindowsLook.tga \
              datafiles/imagesets/vanilla.tga \
+             datafiles/imagesets/FairChar.imageset \
+             datafiles/imagesets/FairChar.tga \
              datafiles/layouts/Demo7Windows.layout \
              datafiles/layouts/Demo8.layout \
              datafiles/layouts/GUILayout.xsd \

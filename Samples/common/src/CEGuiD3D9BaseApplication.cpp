@@ -37,7 +37,7 @@
 #undef min
 #undef max
 
-#include "renderers/directx9GUIRenderer/d3d9renderer.h"
+#include "RendererModules/directx9GUIRenderer/d3d9renderer.h"
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
@@ -194,7 +194,7 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
             guiSystem.renderGUI();
 
             // render FPS:
-            const CEGUI::Font* fnt = guiSystem.getDefaultFont();
+            CEGUI::Font* fnt = guiSystem.getDefaultFont();
             if (fnt)
             {
                 guiSystem.getRenderer()->setQueueingEnabled(false);

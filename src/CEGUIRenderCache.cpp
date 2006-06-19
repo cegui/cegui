@@ -43,7 +43,7 @@ namespace CEGUI
         return !(d_cachedImages.empty() && d_cachedTexts.empty());
     }
 
-    void RenderCache::render(const Point& basePos, float baseZ, const Rect& clipper) const
+    void RenderCache::render(const Point& basePos, float baseZ, const Rect& clipper)
     {
         Rect displayArea(System::getSingleton().getRenderer()->getRect());
         Rect custClipper;
@@ -120,7 +120,7 @@ namespace CEGUI
         d_cachedImages.push_back(imginf);
     }
 
-    void RenderCache::cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper, bool clipToDisplay)
+    void RenderCache::cacheText(const String& text, Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper, bool clipToDisplay)
     {
         TextInfo txtinf;
         txtinf.text         = text;

@@ -237,7 +237,7 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     guiSystem.renderGUI();
 
     // render FPS:
-    const CEGUI::Font* fnt = guiSystem.getDefaultFont();
+    CEGUI::Font* fnt = guiSystem.getDefaultFont();
     if (fnt)
     {
         guiSystem.getRenderer()->setQueueingEnabled(false);

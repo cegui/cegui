@@ -51,6 +51,9 @@ Mark Strom:
 Thomas Suter:
 - Irrlicht GUI renderer module.
 
+Andrew Zabolotny:
+- Font class rewrite.
+
 
 Other Contributors
 ------------------

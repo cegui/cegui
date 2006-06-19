@@ -19,7 +19,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIFactoryModule.cpp \
                       CEGUIFont.cpp \
                       CEGUIFontManager.cpp \
+                      CEGUIFontProperties.cpp \
                       CEGUIFont_xmlHandler.cpp \
+                      CEGUIFreeTypeFont.cpp \
                       CEGUIGlobalEventSet.cpp \
                       CEGUIGUILayout_xmlHandler.cpp \
                       CEGUIImage.cpp \
@@ -29,6 +31,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIImageset_xmlHandler.cpp \
                       CEGUILogger.cpp \
                       CEGUIMouseCursor.cpp \
+                      CEGUIPixmapFont.cpp \
                       CEGUIProperty.cpp \
                       CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \

@@ -361,7 +361,7 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, size_t targetInd
         btn->setWindowXPosition(cegui_absdim(0));
     }
     // Width is based on font size (expressed as absolute)
-    const Font* fnt = btn->getFont();
+    Font* fnt = btn->getFont();
     btn->setWindowWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
                                      getTabTextPadding() +
                                      getTabTextPadding());

@@ -94,7 +94,7 @@ namespace CEGUI
     void FalagardMultiLineEditbox::cacheCaratImagery(const Rect& textArea)
     {
         MultiLineEditbox* w = (MultiLineEditbox*)d_window;
-        const Font* fnt = w->getFont();
+        Font* fnt = w->getFont();
 
         // require a font so that we can calculate carat position.
         if (fnt)
@@ -159,7 +159,7 @@ namespace CEGUI
         drawArea.offset(Point(-w->getHorzScrollbar()->getScrollPosition(), -vertScrollPos));
 
         Renderer* renderer = System::getSingleton().getRenderer();
-        const Font* fnt = w->getFont();
+        Font* fnt = w->getFont();
 
         if (fnt)
         {
@@ -194,6 +194,10 @@ namespace CEGUI
                 Rect lineRect(drawArea);
                 const MultiLineEditbox::LineInfo& currLine = d_lines[i];
                 String lineText(w->getText().substr(currLine.d_startIdx, currLine.d_length));
+
+                // offset the font little down so that it's centered within its own spacing
+                float old_top = lineRect.d_top;
+                lineRect.d_top += (fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f;
 
                 // if it is a simple 'no selection area' case
                 if ((currLine.d_startIdx >= w->getSelectionEndIndex()) ||
@@ -263,6 +267,8 @@ namespace CEGUI
                         colours.setColours(normalTextCol);
                         w->getRenderCache().cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
                     }
+
+                    lineRect.d_top = old_top;
 
                     // calculate area for the selection brush on this line
                     lineRect.d_left = drawArea.d_left + selStartOffset;

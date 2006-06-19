@@ -229,7 +229,7 @@ void Scheme::loadFonts()
             Font* font = fntmgr.createFont((*pos).filename, (*pos).resourceGroup);
 
             // check for wrong font for specified name
-            String realname = font->getName();
+            String realname = font->getProperty ("Name");
 
             if (realname != (*pos).name)
             {

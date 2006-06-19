@@ -15,49 +15,39 @@ enum TextFormatting
 
 
 /***********************************************************************
-	FontFlag
-***********************************************************************/
-enum FontFlag
-{
-	Default,
-	NoAntiAlias
-};
-
-
-/***********************************************************************
 	Font
 ***********************************************************************/
-class Font
+class Font //: public PropertySet
 {
-	string getName() const;
+	//////////////////////////////////////////////
+	// PropertySet
+	void setProperty(string name, string value);
+	string getProperty(string name) const;
+	string getPropertyDefault(string name) const;
+	string getPropertyHelp(string name) const;
 
-	void defineFontGlyphs(unsigned long first, unsigned long last);
-	void defineFontGlyphs(string glyph_set);
-	void defineFontGlyphs(const String& glyph_set);
+	bool isPropertyPresent(string name) const;
+	bool isPropertyDefault(string name) const;
 
-	bool isCodepointAvailable(unsigned long cp) const;
-	string getAvailableGlyphs() const;
-	unsigned int getPointSize() const;
-
-	void setNativeResolution(const Size& sz);
-	Size getNativeResolution() const;
-	void notifyScreenResolution(const Size& sz);
-
-	void setAutoScalingEnabled(bool setting);
-	bool isAutoScaled() const;
-	void setAntiAliased(bool setting);
-	bool isAntiAliased() const;
-
-	float getTextExtent(string text, float xscale=1) const;
-	float getLineSpacing(float yscale=1) const;
-	float getFontHeight(float yscale=1) const;
-
-	unsigned long getCharAtPixel(string text, unsigned long start_char, float pixel, float xscale=1) const;
-	unsigned long getCharAtPixel(string text, float pixel, float xscale=1) const;
-
-	unsigned long getFormattedLineCount(string text, const Rect& format_area, TextFormatting fmt, float xscale=1) const;
-	float getFormattedTextExtent(string text, const Rect& format_area, TextFormatting fmt, float xscale=1) const;
+    tolua_outside PropertyIterator ceguiLua_getPropertyIterator @ getPropertyIterator() const;
 
     static void setDefaultResourceGroup(string resourceGroup);
     static string getDefaultResourceGroup();
+
+    void load ();
+
+	bool isCodepointAvailable(unsigned long cp) const;
+
+	void setNativeResolution(const Size& sz);
+	void notifyScreenResolution(const Size& sz);
+
+	float getTextExtent(string text, float xscale=1);
+	float getLineSpacing(float yscale=1) const;
+	float getFontHeight(float yscale=1) const;
+
+	unsigned long getCharAtPixel(string text, unsigned long start_char, float pixel, float xscale=1);
+	unsigned long getCharAtPixel(string text, float pixel, float xscale=1);
+
+	unsigned long getFormattedLineCount(string text, const Rect& format_area, TextFormatting fmt, float xscale=1);
+	float getFormattedTextExtent(string text, const Rect& format_area, TextFormatting fmt, float xscale=1);
 };

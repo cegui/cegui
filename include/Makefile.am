@@ -18,6 +18,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIFont.h \
                  CEGUIFontManager.h \
                  CEGUIFont_xmlHandler.h \
+                 CEGUIFreeTypeFont.h \
                  CEGUIForwardRefs.h \
                  CEGUIFreeFunctionSlot.h \
                  CEGUIFunctorCopySlot.h \
@@ -36,6 +37,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUILogger.h \
                  CEGUIMemberFunctionSlot.h \
                  CEGUIMouseCursor.h \
+                 CEGUIPixmapFont.h \
                  CEGUIProperty.h \
                  CEGUIPropertyHelper.h \
                  CEGUIPropertySet.h \
@@ -71,8 +73,8 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIXMLAttributes.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \
-				 CEGUIXMLSerializer.h \
+                 CEGUIXMLSerializer.h \
                  CEGUIcolour.h 
 
-noinst_HEADERS = CEGUIFontManager_implData.h \
-             CEGUIFont_implData.h
+noinst_HEADERS = CEGUIFreeTypeFont.h \
+                 CEGUIPixmapFont.h

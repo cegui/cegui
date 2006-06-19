@@ -100,10 +100,24 @@ void OpenGLTexture::loadFromFile(const String& filename, const String& resourceG
 /*************************************************************************
 	Load texture from raw memory.	
 *************************************************************************/
-void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight)
+void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight, Texture::PixelFormat pixFormat)
 {
+	GLint comps;
+	GLenum format;
+	switch (pixFormat)
+	{
+	    case PF_RGB:
+	        comps = 3;
+	        format = GL_RGB;
+	        break;
+	    case PF_RGBA:
+	        comps = 4;
+	        format = GL_RGBA;
+	        break;
+	};
+
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, buffWidth, buffHeight, 0, GL_RGBA ,GL_UNSIGNED_BYTE, buffPtr);
+	glTexImage2D(GL_TEXTURE_2D, 0, comps, buffWidth, buffHeight, 0, format ,GL_UNSIGNED_BYTE, buffPtr);
 
 	d_width  = static_cast<ushort>(buffWidth);
 	d_height = static_cast<ushort>(buffHeight);

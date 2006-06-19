@@ -55,15 +55,35 @@ Texture* SILLYImageCodec::load(const RawDataContainer& data, Texture* result)
     SILLY::Image img(md);
     if (!img.loadImageHeader())
     {
-        Exception("SILLYImageCodec::load - Invalid image header");
+        Logger::getSingletonPtr()->logEvent("SILLYImageCodec::load - Invalid image header", Errors);
         return 0;
     }
-    if (!img.loadImageData(SILLY::PF_RGBA, SILLY::PO_TOP_LEFT))
+
+    SILLY::PixelFormat dstfmt;
+    Texture::PixelFormat cefmt;
+    switch (img.getSourcePixelFormat())
+    {
+    case SILLY::PF_RGB:
+        dstfmt = SILLY::PF_RGB;
+        cefmt = Texture::PF_RGB;
+        break;
+    case SILLY::PF_RGBA:
+    case SILLY::PF_A1B5G5R5:
+        dstfmt = SILLY::PF_RGBA;
+        cefmt = Texture::PF_RGBA;
+        break;
+    default:
+        Logger::getSingletonPtr()->logEvent("SILLYImageCodec::load - Unsupported pixel format", Errors);
+        return 0;
+    }
+
+    if (!img.loadImageData(dstfmt, SILLY::PO_TOP_LEFT))
     { 
-        Exception("SILLYImageCodec::load - Invalid image data");
+        Logger::getSingletonPtr()->logEvent("SILLYImageCodec::load - Invalid image data", Errors);
         return 0;
     }
-    result->loadFromMemory(img.getPixelsDataPtr(), img.getWidth(), img.getHeight());
+
+    result->loadFromMemory(img.getPixelsDataPtr(), img.getWidth(), img.getHeight(), cefmt);
     return result;
 }
 

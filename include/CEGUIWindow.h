@@ -591,7 +591,7 @@ public:
         assigned font, and \a useDefault is true, then the default system font
         is returned.
     */
-    const Font* getFont(bool useDefault = true) const;
+    Font* getFont(bool useDefault = true) const;
 
     /*!
     \brief
@@ -1366,7 +1366,7 @@ public:
     \return
         Nothing
     */
-    void setFont(const Font* font);
+    void setFont(Font* font);
 
     /*!
     \brief
@@ -3054,7 +3054,7 @@ protected:
     Window* d_parent;
 
     //! Holds pointer to the Window objects current Font.
-    const Font* d_font;
+    Font* d_font;
 
     //! Holds the text / label / caption for this Window.
     String d_text;

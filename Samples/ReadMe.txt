@@ -9,3 +9,4 @@ Demo7         - A version of the original CEGUI Mk-2 preview application "Demo7"
 Demo8         - A version of the original CEGUI Mk-2 preview application "Demo8"
 FalagardDemo1 - A sample application showing the Falagard skinning system in use.
 FirstWindow   - Initial sample app showing initialisation of data files and creation of a simple window.
+FontDemo      - A demonstration of what the Font rendering subsystem can do

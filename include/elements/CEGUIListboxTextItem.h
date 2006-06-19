@@ -78,7 +78,7 @@ public:
 	\return
 		Font to be used for rendering this item
 	*/
-	const Font*	getFont(void) const;
+	Font*	getFont(void) const;
 
 
 	/*!
@@ -104,7 +104,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	setFont(const Font* font)		{d_font = font;}
+	void	setFont(Font* font)		{d_font = font;}
 
 
 	/*!
@@ -179,8 +179,8 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	ColourRect		d_textCols;			//!< Colours used for rendering the text.
-	const Font*		d_font;				//!< Font used for rendering text.
+	ColourRect	d_textCols;			//!< Colours used for rendering the text.
+	Font*		d_font;				//!< Font used for rendering text.
 };
 
 } // End of  CEGUI namespace section
