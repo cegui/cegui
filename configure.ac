@@ -95,6 +95,8 @@ AC_CONFIG_FILES([Makefile
                  Samples/FirstWindow/Makefile
                  Samples/FirstWindow/include/Makefile
                  Samples/FirstWindow/src/Makefile
+                 Samples/FontDemo/Makefile
+                 Samples/FontDemo/src/Makefile
                  Samples/Makefile
                  Samples/common/Makefile
                  Samples/common/include/Makefile

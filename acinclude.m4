@@ -302,10 +302,10 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
                 cegui_with_corona=no
                 AC_MSG_RESULT([no])
             else 
-                CORONA_CFLAGS=`$cegui_corona_config --cflags`
-                CORONA_LIBS=`$cegui_corona_config --libs`
-                CORONA_VERSION=`$cegui_corona_config --version`
-                if test $CORONA_VERSION > 1.2.0 ; then 
+                CORONA_CFLAGS="`$cegui_corona_config --cflags`"
+                CORONA_LIBS="`$cegui_corona_config --libs`"
+                CORONA_VERSION="`$cegui_corona_config --version`"
+                dnl if test "$CORONA_VERSION" >= "1.2.0" ; then 
                     AC_MSG_RESULT([yes])
                     cegui_with_corona=yes
                     Corona_CFLAGS="$CORONA_CFLAGS -DUSE_CORONA_LIBRARY"
@@ -313,11 +313,11 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
                     AC_SUBST(Corona_CFLAGS)
                     AC_SUBST(Corona_LIBS)
                     AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer enabled])
-                else 
-                    AC_MSG_RESULT([no])
-                    cegui_with_corona=no
-                    AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])
-                fi
+                dnl else 
+                dnl    AC_MSG_RESULT([no])
+                dnl     cegui_with_corona=no
+                dnl     AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])
+                dnl fi
             fi
         else 
             AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])

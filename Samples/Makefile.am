@@ -16,7 +16,7 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/fonts/Commonwealth-10.font \
              datafiles/fonts/DejaVuSans-10.font \
              datafiles/fonts/DejaVuSans.ttf \
-             datafiles/fonts/FairChar.font \
+             datafiles/fonts/FairChar-30.font \
              datafiles/fonts/fkp-16.font \
              datafiles/fonts/fkp.de.pcf \
              datafiles/fonts/Font.xsd \
