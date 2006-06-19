@@ -1,13 +1,152 @@
 Crazy Eddie's GUI System Mk-2
 http://www.cegui.org.uk
 
-Copyright 2004 - 2005 CEGUI Team & Contributing Authors
+Copyright 2004 - 2006 CEGUI Team & Contributing Authors
 
 
 The following is a high-level view of changes made to the system between releases.
 
-CVS 0.5.0
-=========
+Release 0.5.0-RC1
+=================
+CEGUI MK2 has moved to the MIT license.
+
+Various internal code cleanups:
+- Removal of unrequired utf8* casts on string literals.
+- Removed use of NULL macro from the library code.
+- Code refactorings to Font class. Removes some instances of repeated code, and makes some methods shorter / cleaner.
+- Split large methods in Scheme into smaller, more managable, chunks.
+- Removed all the System constructor overloads and replaced with a single method.
+- Removed string literals for component widget names which were scattered throughout the widget code.
+- Replaced virtually all member fields holding pointers to component widgets with getter methods (which basically allows those widgets to be replaced without the parent knowing or caring).
+- Refactoring of XML handler to remove huge if/else if/else construct.
+- Refectored large if / else if / else constructs in all non-falagard XML handlers to use a member function for each element type (rather than having all code in one huge function).
+- Event system has been rewritten.
+
+Added "PushedOff" rendering state for button based widgets and MenuItem.
+Added: Ability to rename windows.
+Added: CEGUISamplesConfig.h file to allow configuration of samples framework independently of the main config (saves recompiling everything just to change some sample setting).
+Added: FPS readout to OpenGL base app in the samples framework.
+Added: "PropertyLinkDefinition" element for Falagard system.
+Added: "controlPropery" attribute to SectionSpecififations under falagard to enable renering of section imagery to be controled via a named boolean property.
+Added: mouse pass through feature in Window, to ignore mouse events. Nice for making a DefaultWindow transparent to the mouse regarding picking windows behind it.
+Added: MSVC++ auto-linking for Ogre base app in samples framework.
+Added: grab/restoreTextures in the OpenGL renderer to cache texture image data, and later restore it.
+Added: Abstracted Logger interface to support user created custom loggers. (SF patch #1414121 by zap)
+Added: DefaultLogger implementation (SF patch #1414121 by zap)
+Added: page up/down key functionality to MultiLineEditbox (SF patch #1347376 by Dalfy)
+Added: small script to recreate the binding generator for tolua++
+Added: customized tolua++ binary. For exception handling support in generated binding code.
+Added: missing exception definitions file needed to generate the bindings.
+Added: README with instructions on how to generate the bindings.
+Added: Documentation for some of the new features in the bundled tolua++ generator.
+Added: When subscribing to events from "inside" Lua a self object can be registered as well to be passed along with the EventArgs.
+Added: New WindowRenderer system, replacing previous system where the Window sub-class controlled the rendering process.
+Added: Major update of the LuaScriptModule to support anonymous functions.
+Added: Exception handling has been added for some functions.
+Added: Falagard derivatives of DefaultWindow, DragContainer and ItemEntry with minimal StateImagery.
+Added: executeEventHandler now accepts functions that are table fields.
+Added: Text node support to both parser (Xerces and TinyXML)
+Added: AutoWindow tag to xml layouts to fetch a window created by the look'n'feel or the base widget itself.
+Added: Window::isAutoWindow member that returns true if the window has "__auto_" in its name. (a flag is set in the constructor). It's faster than checking the actual string.
+Added: A setting to Window to specify that it should never write XML no matter what if activated. Tooltips get this set by default by System.
+Added: A property ban list to provide a system for mapping which properties should (not) be written to XML. In the respective addProperties member functions checks have been added and some properties are banned if we are an auto window.
+Added: Default resource group support to Xerces for use when loading schema files.
+Added: Default resource group support to ScriptingModule, and implemented it's use in the CEGUILua module.
+Added: DynamicModule class to wrap access to a dynamically linked / loaded module.
+Added: New dynamic libraries for Xerces, Expat TinyXMLParser, and libxml Parsers.
+Added: TextProperty and FontProperty elements for Falagard text components.
+Added: New ItemListBase based ItemListbox widget. For Window based listbox items.
+Added: XML Serialization class for all XML writing.
+Added: Recursive versions of Window::getChild and isChild by ID. They are called getChildRecursive and isChildRecursive. Reason for the explicit naming is that it's a pretty expensive operation and should not be used unless necessary.
+Added: Lots of missing members in the Lua bindings.
+Added: setlocale(LC_NUMERIC, "C"); to the System constructor as we depend on this behaviour.
+Added: setVisible member to CEGUI::MouseCursor.
+Added: bat files to make it easier for Windows users to regenerate the Lua bindings and tolua++cegui.
+Added: ImageCodec support to the OpenGL renderer. This allows users to easily write a custom image loader. TGA, SILLY, DevIL, Corona and FreeImage codecs are supplied.
+Added: const version of getDataPtr in RawDataContainer.
+Added: premake scripts to generate MSVC solutions.
+Added: ClippedContainer for situations where more specialized clipping is required.
+
+Modified: Placed the integrated TinyXML into its own namespace (CEGUITinyXML) to prevent clashes in projects using another copy of TinyXML. (Patch #1294002).
+Modified: Changed EventSet to operate without needing events to be pre-added, much like GlabalEventSet always did.
+Modified: Removal of mass pre-specification of events for all classes using events.
+Modified: Cflags to add include dir for CEGUI in CEGUI.pc.in (allows use of <CEGUI/...> form of include statement).
+Modified: The "Lua and tolua++" module has been made a DLL on Windows machines.
+Modified: Renamed System::setTooltip to System::setDefaultTooltip (Mantis #1Cool.
+Modified: In the lua module, updated Window with casting helpers as member functions. eg. w:toFrameWindow()
+Modified: Removed the Static,StaticText and StaticImage from CEGUIBase and implemented them in FalagardBase instead.
+Modified: Updated to tolua++ 1.0.92
+Modified: Moved LuaFunctor into its own files
+Modified: Reimplemented the "late binding" effect from the v04 Lua module. In v04 the function is always looked up by name. In CVS HEAD the actual Lua function is referenced, but now this will only occur the first time the event is triggered. This means that it's no longer necessary to have a function defined to subscribe it to an event. As long as the function has been created before the event occurs everything will be good Smile
+Modified: Moved subscribeScriptedEvent into ScriptModule to allow more customized script subscription functionality.
+Modified: Made the layout XML handler use subscribeScriptedEvent for Event tags instead of subscribeEvent with ScriptFunctor
+Modified: Removal of "tolua_outside" stuff that was no longer needed.
+Modified: Moved the declaration/definition of base window factories into its own files.
+Modified: Removal of WidgetSets folder, and it's contents.
+Modified: Removed unnecessary getSingleton and getSingletonPtr from manager classes.
+Modified: The script module now throws ScriptException.
+Modified: Removal of TextItem as falagard now handles that exclusively.
+Modified: Moved all rendering member functions out of base classes an into Falagard rendering classes.
+Modified: Removal of virtually all rendering and layout related Window properties from CEGUIBase - a few are moved to FalagardBase, the rest must be implemented via XML.
+Modified: Removal of TaharezLook and WindowsLook modules from the system.
+Modified: Removal of MetricsMode system, and all non-unified interface and properties from Window (and related fixes to other classes).
+Modified: Elimination of RenderableElement and derived classes.
+Modified: Moved to a C preprocessor macro system for widget module creation.
+Modified: Removal of abstract createXXX methods from widget base classes - the looknfeel system now auto-creates these widgets when specified within the XML.
+Modified: Updated to TinyXML 2.4.3 in order to allow CDATA section in XML text node (verbatim text)
+Modified: GUILayout handler in order to support long value in properties.
+Modified: Made the XML writing system aware of falagard when determining property default values.
+Modified: Switched PropertyHelper to use std::ostringstream as the output is much nicer. Changed property default values to the new format where needed.
+Modified: Better error reporting for dynamic module load failures.
+Modified: Switched to using external pcre library. Removed embedded copy of pcre.
+Modified: Switched system to use dynamic libs for XML parsers with programatically configurable default.
+Modified: FactoryModule to use DynamicModule.
+Modified: Resolved issue with unneeded member qualification (Patch #1454773).
+Modified: Made String::ptr a public member.
+Modified: The bundled tolua++cegui binding generator will now generate a lua_CEGUI.cpp that compiles out-of-the-box on Windows
+Modified: Removed the DataContainer template class, and made it into just RawDataContainer, non templated.
+Modified: Optimized FalagardMultiLineEditbox to only cache visible lines when rendering.
+Modified: Optimized ButtonBase and MenuItem updateInternalState. Mantis #44
+Modified: Moved the renderers to their own folder named RendererModules.
+Modified: Optimized picking and rendering by caching screen space rectangles.
+
+Bug fix: OpenGLRenderer was producing errors and not cleaning up state changes properly (thanx muhkuh25)
+Bug fix: OpenGLRenderer was broken when compiled for x86-64.
+Bug Fix: ListboxItem::getOwnerWindow should be const
+Bug Fix: ListboxItem::getOwnerWindow should not take a Window* argument.
+Bug Fix: Scheme::resourcesLoaded was always returning true.
+Bug Fix: PropertyHelper::stringToImage was not handling empty string case.
+Bug Fix: Editbox::onCharacter was setting the event as handled even if nothing was done.
+Bug Fix: Added shift/ctrl/alt support to the OpenGL sample driver (injects LeftXXX)
+Bug Fix: The command line renderer selector does no longer ask if there is only one renderer available.
+Bug Fix: Fixed window resizing for the OpenGL Sample driver.
+Bug Fix: fixed const correctness for "String::utf8_stream_len" SF patch #1367423
+Bug Fix: Detect "window->addChildWindow(window);" and do nothing instead of actually trying.
+Bug Fix: Added missing performChildWindowLayout to Scrollbar::onScrollConfigChanged to allow making a look'n'feel with a thumb that sizes to indicate document size.
+Bug fix: const correctness for Window::getLookNFeel
+Bug fix: FrameWindow, isTitlebarEnabled and isCloseButtonEnabled were return the opposite of what they should.
+Bug Fix: FrameWindow should do relayout if text changes to allow using a fontdim in the titlebar dimensions.
+Bug Fix: Changing the default mouse cursor in the System object will now update the cursor immediately where appropriate. (Ticket #17).
+Bug Fix: Fixed case in StaticText where default text area was always used if frame was disabled.
+Bug Fix: Image offsets were'nt being properly handled for the corners in FrameComponent.
+Bug Fix: MultiColumnList would always use item string when sorting, instead of vitual operators on users custom items.
+Bug Fix: System::getWindowContainingMouse would return incorrect Window if called from within Window::EventMouseLeaves handlers.
+Bug Fix: Order of static data creation in C++ is unspecified; we can't have globally defined static data that relies on other such static data within the same module.
+Bug Fix: Falagard/ProgressBar was broken when vertical or reversed-horizontal.
+Bug Fix: Corruption of window registry when rename failed (Patch #1450623).
+Bug Fix: Initialisation issue with TabControl trying to access child widgets before they are created. (Patch #1391727).
+Buf Fix: CEGUI::Window::setModalState(true) removes the modal state from a modal window. Mantis #42
+Bug Fix: MultiColumnList getNextSelection bug. Mantis #47
+Bug Fix: System subscriber to renderer event but does not unsubscribe on destruction. Mantis #48
+Bug Fix: OpenGL and DirectX9 renderers were not handling error correctly when creating textures.
+Bug Fix: Bug in LuaScriptModule where executeScriptFile did not unload the file data buffer correctly in case of an exception (thanks gcarlton).
+Bug Fix: A bug in ItemListBase::resetList_impl where calling resetList would crash (thanks Turtle).
+Bug Fix: Typo in TabPane::testClassName_impl ("Tabpane" instead of "TabPane").
+Bug Fix: Big Endian inconsistency in CEGUI::colour.
+Bug Fix: CEGUI::Window was not detaching the tooltip during destruction. Mantis #38
+Bug Fix: FrameWindow was consuming all LeftButton up events. Down events were affected as well, and now only consume if the event started drag sizing.
+Bug Fix: DragContainer would overwrite any new position applied to the DragContainer during the DragDropItemDropped event. Mantis #53
+Bug Fix: The OpenGL sample driver could cause a stack overflow. Patch #1507826
 
 
 Release 0.4.1
