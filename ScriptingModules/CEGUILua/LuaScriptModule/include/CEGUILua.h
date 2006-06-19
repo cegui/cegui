@@ -47,11 +47,6 @@
 
 #include "CEGUIScriptModule.h"
 
-// include Lua
-extern "C" {
-#include "lua.h"
-}
-
 struct lua_State;
 
 // Start of CEGUI namespace section
