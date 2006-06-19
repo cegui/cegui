@@ -5,7 +5,7 @@ class FontManager
 {
 	static FontManager& getSingleton();
 
-	tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::InvalidRequestException,error| Font* createFont(string name, string fontname, unsigned int size, FontFlag flags, string resourcegroup="");
+	tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::InvalidRequestException,error| Font* createFont(string type, string name, string fontname, string resourcegroup="");
 	tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::InvalidRequestException,error| Font* createFont(string filename, string resourcegroup="");
 
 	void destroyFont(string name);

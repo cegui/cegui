@@ -83,7 +83,7 @@ namespace CEGUI
     void TextComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // get font to use
-        const Font* font;
+        Font* font;
 
         try
         {
@@ -134,6 +134,8 @@ namespace CEGUI
             break;
         }
 
+        // offset the font little down so that it's centered within its own spacing
+        destRect.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
         // add text to the rendering cache for the target window.
         srcWindow.getRenderCache().cacheText(renderString, font, (TextFormatting)horzFormatting, destRect, base_z, finalColours, clipper, clipToDisplay);
     }

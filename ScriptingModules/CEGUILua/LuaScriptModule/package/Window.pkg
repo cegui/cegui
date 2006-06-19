@@ -80,7 +80,7 @@ class Window //: public EventSet
 	bool isAncestor(const Window* window) const;
 
 	void setFont(string name);
-	void setFont(const Font* font);
+	void setFont(Font* font);
 	Font* getFont() const;
 
 	void setText(string text);

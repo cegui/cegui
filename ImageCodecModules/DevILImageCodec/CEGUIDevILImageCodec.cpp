@@ -67,9 +67,25 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
         size_t height = imgInfo.Height;
         // allocate temp buffer to receive image data
         uchar* tmpBuff = new uchar[width * height * 4];
+
         // get image data in required format
-        ilCopyPixels(0, 0, 0, width, height, 1, IL_RGBA, IL_UNSIGNED_BYTE, (ILvoid*)tmpBuff);
-        result->loadFromMemory(tmpBuff, width, height);
+        Texture::PixelFormat cefmt;
+        ILenum ilfmt;
+        switch (imgInfo.Format)
+        {
+        case IL_RGBA:
+        case IL_BGRA:
+            ilfmt = IL_RGBA;
+            cefmt = Texture::PF_RGBA;
+            break;
+        default:
+            ilfmt = IL_RGB;
+            cefmt = Texture::PF_RGB;
+            break;
+        };
+        ilCopyPixels(0, 0, 0, width, height, 1, ilfmt, IL_UNSIGNED_BYTE, (ILvoid*)tmpBuff);
+        result->loadFromMemory(tmpBuff, width, height, cefmt);
+
         // delete DevIL image
         ilDeleteImages(1, &imgName);
         ilPopAttrib();

@@ -22,7 +22,7 @@
 		<xsd:attribute name="Width" type="xsd:nonNegativeInteger" use="required"/>
 		<xsd:attribute name="Height" type="xsd:nonNegativeInteger" use="required"/>
 		<xsd:attribute name="XOffset" type="xsd:integer" use="optional" default="0"/>
-		<xsd:attribute name="YOffset" type="xsd:integer" use="optional" default="0"/>						
+		<xsd:attribute name="YOffset" type="xsd:integer" use="optional" default="0"/>
 	</xsd:complexType>
 
 </xsd:schema>

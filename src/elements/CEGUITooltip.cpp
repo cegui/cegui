@@ -165,7 +165,7 @@ namespace CEGUI
 
     Size Tooltip::getTextSize_impl() const
     {
-        const Font* fnt = getFont();
+        Font* fnt = getFont();
 
         if (fnt)
         {
@@ -173,8 +173,8 @@ namespace CEGUI
 
             // get required size of the tool tip according to the text extents.
             // TODO: Add a proprty to allow specification of text formatting.
-            float height = fnt->getFormattedLineCount(d_text, area, LeftAligned) * fnt->getLineSpacing();
-            float width = fnt->getFormattedTextExtent(d_text, area, LeftAligned);
+            float height = PixelAligned(fnt->getFormattedLineCount(d_text, area, LeftAligned) * fnt->getLineSpacing());
+            float width = PixelAligned(fnt->getFormattedTextExtent(d_text, area, LeftAligned));
 
             return Size(width, height);
         }

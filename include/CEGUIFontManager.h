@@ -92,24 +92,22 @@ public:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& filename, const String& resourceGroup = "");
+    Font *createFont(const String& filename, const String& resourceGroup = "");
 
 
 	/*!
 	\brief
 		Creates a new Font based on a true-type font, and returns a pointer to the new Font object.
 
+	\param type
+		String object containing the type of the font to be created (same as
+		in the "Type" attribute of the font XML).
+
 	\param name
 		String object containing a unique name for the new font.
 
 	\param fontname
 		String object containing the name and path of the true-type font to access.
-
-	\param size
-		Specifies the glyph size (point-size) for the new font.
-
-	\param flags
-		Some combination of FontFlag values to be used for the creation of this font.
 
     \param resourceGroup
         Resource group identifier to be passed to the resource provider when loading the font definition file.
@@ -122,7 +120,18 @@ public:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& name, const String& fontname, uint size, uint flags, const String& resourceGroup = "");
+    Font *createFont (const String &type, const String& name, const String& fontname,
+                      const String& resourceGroup = "");
+
+
+    /*!
+    \brief
+        Create a new font object given its type and the XML attributes.
+
+    \return
+        The new font object or NULL.
+    */
+    Font *createFont (const String &type, const XMLAttributes& attributes);
 
 
 	/*!
@@ -219,27 +228,23 @@ public:
 
 
 private:
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	typedef	std::map<String, Font*, String::FastLessCompare>		FontRegistry;
-	FontRegistry		d_fonts;
-
-	struct FontManagerImplData;
-	FontManagerImplData*	d_implData;
-
+    /*************************************************************************
+        Implementation Data
+    *************************************************************************/
+    typedef std::map<String, Font*, String::FastLessCompare> FontRegistry;
+    FontRegistry d_fonts;
 
 public:
-	/*************************************************************************
-		Iterator stuff
-	*************************************************************************/
-	typedef	ConstBaseIterator<FontRegistry>	FontIterator;
+    /*************************************************************************
+        Iterator stuff
+    *************************************************************************/
+    typedef ConstBaseIterator<FontRegistry> FontIterator;
 
-	/*!
-	\brief
-		Return a FontManager::FontIterator object to iterate over the available Font objects.
-	*/
-	FontIterator	getIterator(void) const;
+    /*!
+    \brief
+        Return a FontManager::FontIterator object to iterate over the available Font objects.
+    */
+    FontIterator getIterator (void) const;
 };
 
 } // End of  CEGUI namespace section

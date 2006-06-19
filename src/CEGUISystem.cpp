@@ -143,6 +143,7 @@ System::System(Renderer* renderer,
 
 : d_renderer(renderer),
   d_resourceProvider(resourceProvider ? resourceProvider : d_renderer->createResourceProvider()),
+  d_defaultFont(0),
   d_wndWithMouse(0),
   d_activeSheet(0),
   d_modalTarget(0),

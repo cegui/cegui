@@ -64,7 +64,7 @@ namespace CEGUI
         //
         // Required preliminary work for text rendering operations
         //
-        const Font* font = w->getFont();
+        Font* font = w->getFont();
 
         // no font == no more rendering
         if (!font)
@@ -129,7 +129,7 @@ namespace CEGUI
         // allow for scroll position
         text_part_rect.d_left += textOffset;
         // centre text vertically within the defined text area
-        text_part_rect.d_top += (textArea.getHeight() - font->getLineSpacing()) * 0.5f;
+        text_part_rect.d_top += (textArea.getHeight() - font->getFontHeight()) * 0.5f;
 
         // get unhighlighted text colour (saves accessing property twice)
         colour unselectedColour(getUnselectedTextColour());

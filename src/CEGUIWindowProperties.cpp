@@ -72,7 +72,7 @@ String Font::get(const PropertyReceiver* receiver) const
 
 	if (fnt)
 	{
-		return fnt->getName();
+		return fnt->getProperty ("Name");
 	}
 	else
 	{

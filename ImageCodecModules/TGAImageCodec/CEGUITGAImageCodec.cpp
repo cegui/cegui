@@ -56,15 +56,11 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     else 
     {
         flipImageTGA(img);
-        if (img->channels == 3)
-        {
-            // Make sure its an RGBA image 
-            convertRGBToRGBA(img);
-        }
-        result->loadFromMemory(img->data, img->sizeX, img->sizeY);
+        Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PF_RGB : Texture::PF_RGBA;
+        result->loadFromMemory(img->data, img->sizeX, img->sizeY, fmt);
         if (img->data)							
         {
-            delete[] img->data;
+            delete[] img->data; 
         }
         // Free the image structure
         delete img;

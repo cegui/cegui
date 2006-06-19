@@ -49,6 +49,18 @@ namespace CEGUI
 class CEGUIEXPORT Texture
 {
 public:
+    /*!
+    \brief
+        Enum containing the list of supported pixel formats that can be passed to loadFromMemory
+    */
+    enum PixelFormat
+    {
+        //! Each pixel is 3 bytes. RGB in that order.
+        PF_RGB,
+        //! Each pixel is 4 bytes. RGBA in that order.
+        PF_RGBA
+    };
+
 	/*************************************************************************
 		Abstract Interface
 	*************************************************************************/
@@ -96,15 +108,18 @@ public:
 		Pointer to the buffer containing the image data
 
 	\param buffWidth
-		Width of the buffer (in 0xAARRGGBB pixels)
+		Width of the buffer (in pixels as specified by \a pixelFormat )
 
 	\param buffHeight
-		Height of the buffer (in 0xAARRGGBB pixels)
+		Height of the buffer (in pixels as specified by \a pixelFormat )
+
+    \param pixelFormat
+        PixelFormat value describing the format contained in \a buffPtr
 
 	\return
 		Nothing.
 	*/
-	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight) = 0;
+	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight, PixelFormat pixelFormat) = 0;
 
 
 	/*!
@@ -127,7 +142,6 @@ protected:
 	*/
 	Texture(Renderer* owner) : d_owner(owner) {}
 
-public:		// luabind compatibility
 	/*!
 	\brief
 		Destructor for Texture base class.  This is never called by client code.

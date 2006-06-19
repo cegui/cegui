@@ -56,7 +56,7 @@ ListboxTextItem::ListboxTextItem(const String& text, uint item_id, void* item_da
 /*************************************************************************
 	Return a pointer to the font being used by this ListboxTextItem
 *************************************************************************/
-const Font* ListboxTextItem::getFont(void) const
+Font* ListboxTextItem::getFont(void) const
 {
 	// prefer out own font
 	if (d_font)
@@ -92,12 +92,12 @@ Size ListboxTextItem::getPixelSize(void) const
 {
 	Size tmp(0,0);
 
-	const Font* fnt = getFont();
+	Font* fnt = getFont();
 
 	if (fnt)
 	{
-		tmp.d_height	= PixelAligned(fnt->getLineSpacing());
-		tmp.d_width		= PixelAligned(fnt->getTextExtent(d_itemText));
+		tmp.d_height = PixelAligned(fnt->getLineSpacing());
+		tmp.d_width = PixelAligned(fnt->getTextExtent(d_itemText));
 	}
 
 	return tmp;
@@ -114,12 +114,12 @@ void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& cli
 		d_selectBrush->draw(clipper, position.d_z, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
 	}
 
-	const Font* fnt = getFont();
+	Font* fnt = getFont();
 
 	if (fnt)
 	{
         Vector3 finalPos(position);
-        finalPos.d_y -= PixelAligned((fnt->getLineSpacing() - fnt->getBaseline()) * 0.5f);
+        finalPos.d_y += PixelAligned((fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f);
 		fnt->drawText(d_itemText, finalPos, clipper, getModulateAlphaColourRect(d_textCols, alpha));
 	}
 
@@ -132,12 +132,12 @@ void ListboxTextItem::draw(RenderCache& cache,const Rect& targetRect, float zBas
         cache.cacheImage(*d_selectBrush, targetRect, zBase, getModulateAlphaColourRect(d_selectCols, alpha), clipper);
     }
 
-    const Font* font = getFont();
+    Font* font = getFont();
 
     if (font)
     {
         Rect finalPos(targetRect);
-        finalPos.d_top -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
+        finalPos.d_top += PixelAligned((font->getLineSpacing() - font->getFontHeight()) * 0.5f);
         cache.cacheText(d_itemText, font, LeftAligned, finalPos, zBase, getModulateAlphaColourRect(d_textCols, alpha), clipper);
     }
 }

@@ -136,6 +136,15 @@ public:
 	*/
 	const String&	getImagesetName(void) const;
 
+	/*!
+	\brief
+		Return the parent Imageset object that contains this Image
+
+	\return
+		The parent Imageset object.
+	*/
+	const Imageset*	getImageset(void) const {return d_owner;}
+
     /*!
     \brief
         Return Rect describing the source texture area used by this Image.

@@ -101,7 +101,7 @@ namespace CEGUI
         \return
             Nothing
         */
-        void render(const Point& basePos, float baseZ, const Rect& clipper) const;
+        void render(const Point& basePos, float baseZ, const Rect& clipper);
 
         /*!
         \brief
@@ -159,7 +159,7 @@ namespace CEGUI
         \return
             Nothing
         */
-        void cacheText(const String& text, const Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper = 0, bool clipToDisplay = false);
+        void cacheText(const String& text, Font* font, TextFormatting format, const Rect& destArea, float zOffset, const ColourRect& cols, const Rect* clipper = 0, bool clipToDisplay = false);
 
     private:
         /*!
@@ -184,7 +184,7 @@ namespace CEGUI
         struct TextInfo
         {
             String text;
-            const Font* source_font;
+            Font* source_font;
             TextFormatting formatting;
             Rect target_area;
             float z_offset;

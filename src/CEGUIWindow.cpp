@@ -546,7 +546,7 @@ bool Window::isAncestor(const Window* window) const
 /*************************************************************************
 	return the Font object active for the Window.
 *************************************************************************/
-const Font* Window::getFont(bool useDefault) const
+Font* Window::getFont(bool useDefault) const
 {
 	if (!d_font)
 	{
@@ -899,7 +899,7 @@ void Window::setText(const String& text)
 /*************************************************************************
 	Set the font used by this Window.
 *************************************************************************/
-void Window::setFont(const Font* font)
+void Window::setFont(Font* font)
 {
 	d_font = font;
     WindowEventArgs args(this);

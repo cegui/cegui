@@ -291,7 +291,7 @@ void MultiLineEditbox::ensureCaratIsVisible(void)
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	// calculate the location of the carat
-	const Font* fnt = getFont();
+	Font* fnt = getFont();
 	size_t caratLine = getLineNumberFromIndex(d_caratPos);
 
 	if (caratLine < d_lines.size())
@@ -435,7 +435,7 @@ void MultiLineEditbox::formatText(void)
 
 	String paraText;
 
-	const Font* fnt = getFont();
+	Font* fnt = getFont();
 
 	if (fnt)
 	{

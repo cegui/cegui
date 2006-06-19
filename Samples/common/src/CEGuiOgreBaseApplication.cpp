@@ -57,7 +57,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_window = d_ogreRoot->initialise(true);
 
         // Create and initialise the camera
-        d_camera = d_ogreRoot->getSceneManager(ST_GENERIC)->createCamera("PlayerCam");
+        d_camera = d_ogreRoot->getSceneManagerIterator().getNext()->createCamera("PlayerCam");
         d_camera->setPosition(Vector3(0,0,500));
         d_camera->lookAt(Vector3(0,0,-300));
         d_camera->setNearClipDistance(5);

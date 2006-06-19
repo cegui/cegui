@@ -87,7 +87,7 @@ namespace CEGUI
     *************************************************************************/
     void FalagardStaticText::renderScrolledText()
     {
-        const Font* font = d_window->getFont();
+        Font* font = d_window->getFont();
         // can't render text without a font :)
         if (font == 0)
             return;
@@ -154,6 +154,8 @@ namespace CEGUI
             break;
         }
 
+        // offset the font little down so that it's centered within its own spacing
+        absarea.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
         // calculate final colours
         ColourRect final_cols(d_textCols);
         final_cols.modulateAlpha(d_window->getEffectiveAlpha());
@@ -223,7 +225,7 @@ namespace CEGUI
     Size FalagardStaticText::getDocumentSize(const Rect& renderArea) const
     {
         // we need a font to really measure anything
-        const Font* font = d_window->getFont();
+        Font* font = d_window->getFont();
         if (font==0)
         {
             return Size(0,0);

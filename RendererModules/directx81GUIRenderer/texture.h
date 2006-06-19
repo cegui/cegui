@@ -108,15 +108,18 @@ public:
 		Pointer to the buffer containing the image data
 
 	\param buffWidth
-		Width of the buffer (in 0xAARRGGBB pixels)
+		Width of the buffer (in pixels as specified by \a pixelFormat )
 
 	\param buffHeight
-		Height of the buffer (in 0xAARRGGBB pixels)
+		Height of the buffer (in pixels as specified by \a pixelFormat )
+
+    \param pixelFormat
+        PixelFormat value describing the format contained in \a buffPtr
 
 	\return
 		Nothing.
 	*/
-	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight);
+	virtual void	loadFromMemory(const void* buffPtr, uint buffWidth, uint buffHeight, PixelFormat pixelFormat);
 
 
 	/*!
