@@ -37,7 +37,7 @@
 #undef min
 #undef max
 
-#include "renderers/directx81GUIRenderer/renderer.h"
+#include "RendererModules/directx81GUIRenderer/renderer.h"
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
