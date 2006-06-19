@@ -21,7 +21,7 @@
 			<xsd:simpleType>
 				<xsd:restriction base="xsd:string">
 					<xsd:enumeration value="FreeType" />
-					<xsd:enumeration value="Image" />
+					<xsd:enumeration value="Pixmap" />
 				</xsd:restriction>
 			</xsd:simpleType>
 		</xsd:attribute>
