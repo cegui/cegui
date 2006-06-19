@@ -38,6 +38,7 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/imagesets/FairChar.tga \
              datafiles/layouts/Demo7Windows.layout \
              datafiles/layouts/Demo8.layout \
+			 datafiles/layouts/FontDemo.layout \
              datafiles/layouts/GUILayout.xsd \
              datafiles/looknfeel/Falagard.xsd \
              datafiles/looknfeel/TaharezLook.looknfeel \
