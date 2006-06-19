@@ -4,12 +4,22 @@
 
 --
 -- OpenGL renderer stuff
+-- we always build the opengl renderer
 --
+-- can be either "tga", "silly", "devil", "freeimage" or "corona"
+OPENGL_IMAGECODEC = "tga"
 
 --
--- Only one image codec can be used, if all are commented, TGA is the only
--- supported format.
+-- DirectX
 --
---USE_DEVIL_LIBRARY = true
---USE_CORONA_LIBRARY = true
---USE_SILLY_LIBRARY = true
+--DIRECTX81_RENDERER = true
+DIRECTX9_RENDERER = true
+
+--
+-- Samples
+-- remember you have to edit CEGUISamplesConfig.h as well this just controls
+-- dependencies etc.
+--
+SAMPLES_GL = true
+SAMPLES_DX81 = true
+SAMPLES_DX9 = true
