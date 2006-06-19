@@ -20,7 +20,8 @@ Various internal code cleanups:
 - Replaced virtually all member fields holding pointers to component widgets with getter methods (which basically allows those widgets to be replaced without the parent knowing or caring).
 - Refactoring of XML handler to remove huge if/else if/else construct.
 - Refectored large if / else if / else constructs in all non-falagard XML handlers to use a member function for each element type (rather than having all code in one huge function).
-- Event system has been rewritten.
+- Event system has been rewritten from scratch.
+- Font system has been rewritten.
 
 Added "PushedOff" rendering state for button based widgets and MenuItem.
 Added: Ability to rename windows.
@@ -109,6 +110,8 @@ Modified: Optimized FalagardMultiLineEditbox to only cache visible lines when re
 Modified: Optimized ButtonBase and MenuItem updateInternalState. Mantis #44
 Modified: Moved the renderers to their own folder named RendererModules.
 Modified: Optimized picking and rendering by caching screen space rectangles.
+Modified: Applied zap's rewrite of the Font system. Patch #1508321
+Modified: Texture::loadFromMemory now takes a Texture::PixelFormat parameter. RGB and RGBA are currently required. Fixes Patch #1455523 as well. 3rd party renderer modules needs to be updated.
 
 Bug fix: OpenGLRenderer was producing errors and not cleaning up state changes properly (thanx muhkuh25)
 Bug fix: OpenGLRenderer was broken when compiled for x86-64.
