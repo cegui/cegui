@@ -38,7 +38,7 @@
 #endif
 
 #include "CEGuiBaseApplication.h"
-#include "renderers/IrrlichtRenderer/irrlichtrenderer.h"
+#include "RendererModules/IrrlichtRenderer/irrlichtrenderer.h"
 #include "CEGUI.h"
 
 class CEGuiIrrlichtBaseApplication : public CEGuiBaseApplication,  public irr::IEventReceiver

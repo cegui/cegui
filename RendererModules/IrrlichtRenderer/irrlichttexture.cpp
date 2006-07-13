@@ -104,7 +104,7 @@ namespace CEGUI
 	}
 /************************************************************************/
 	void IrrlichtTexture::loadFromMemory(const void* buffPtr, 
-		uint buffWidth, uint buffHeight)
+		uint buffWidth, uint buffHeight, PixelFormat pixelFormat)
 	{
 		freeTexture();
 		
@@ -112,13 +112,29 @@ namespace CEGUI
 		irr::core::stringc name=getUniqueName();
 
 		driver->setTextureCreationFlag(irr::video::ETCF_CREATE_MIP_MAPS,true);
-		tex=driver->addTexture(dim,name.c_str(),irr::video::ECF_A8R8G8B8);
+
+        unsigned int pixelSize;
+        irr::video::ECOLOR_FORMAT texFormat;
+
+        switch(pixelFormat)
+        {
+            case PF_RGB:
+                pixelSize = 3;
+                texFormat = irr::video::ECF_R8G8B8;
+                break;
+            case PF_RGBA:
+                pixelSize = 4;
+                texFormat = irr::video::ECF_A8R8G8B8;
+                break;
+        }
+
+		tex=driver->addTexture(dim,name.c_str(), texFormat);
 		
-		if(irr::video::ECF_A8R8G8B8==tex->getColorFormat()) // paranoid!
+		if(texFormat == tex->getColorFormat()) // paranoid!
 		{
 			irr::u32* tt=(irr::u32*)tex->lock(); 
 			irr::core::dimension2d<irr::s32> d=tex->getSize();
-			memcpy(tt,buffPtr,d.Width*d.Height*sizeof(CEGUI::ulong));
+			memcpy(tt,buffPtr,d.Width*d.Height*pixelSize);
 			tex->unlock();
 		}
 		tex->grab();
