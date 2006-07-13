@@ -24,13 +24,19 @@ AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
                 [cegui_with_gtk=$withval], [cegui_with_gtk=no])
 
     if test x$cegui_found_gtk = xyes && test x$cegui_with_gtk = xyes; then
+        cegui_with_gtk=yes
+    else
+        cegui_with_gtk=no
+    fi
+
+    if test x$cegui_with_gtk = xyes; then
         AC_DEFINE(CEGUI_SAMPLES_USE_GTK2, [], [Define to have a GTK2 based dialog used for renderer selection in the samples])
         AC_MSG_NOTICE([GTK2 renderer selection dialog in samples is enabled])
     else
         AC_MSG_NOTICE([GTK2 renderer selection dialog in samples is disabled])
     fi
 
-    AM_CONDITIONAL([CEGUI_USING_GTK2], [test x$cegui_found_gtk = xyes && test x$cegui_with_gtk = xyes])
+    AM_CONDITIONAL([CEGUI_USING_GTK2], [test x$cegui_with_gtk = xyes])
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
 ])
@@ -57,17 +63,36 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
                 [cegui_with_tinyxml=$enableval], [cegui_with_tinyxml=yes])
 
     dnl Find out which paser user wants as a default
-    AC_ARG_WITH([default-xml-parser], AC_HELP_STRING([--with-default-xml-parser[=PARSER]], [Sets the default XML parser module.]),
+    AC_ARG_WITH([default-xml-parser], AC_HELP_STRING([--with-default-xml-parser[=PARSER]], [Sets the default XML parser module.
+Typically this will be one of XercesParser, ExpatParser, LibxmlParser or TinyXMLParser, though you can set it to anything to
+load a custom made parser module as the default.]),
                 [cegui_default_parser=$withval], [cegui_default_parser=none])
 
+    dnl Determine what we will actually be building based on user preference and what's available on the system.
+    if test x$cegui_found_xerces = xyes || test x$cegui_with_xerces = xyes; then
+        cegui_with_xerces=yes
+    else
+        cegui_with_xerces=no
+    fi
+    if test x$cegui_found_libxml = xyes || test x$cegui_with_libxml = xyes; then
+        cegui_with_libxml=yes
+    else
+        cegui_with_libxml=no
+    fi
+    if test x$cegui_found_expat = xyes || test x$cegui_with_expat = xyes; then
+        cegui_with_expat=yes
+    else
+        cegui_with_expat=no
+    fi
+
     dnl reset default parser to 'none' if current selection will not be built
-    if test x$cegui_default_parser = xXercesParser && test x$cegui_found_xerces = xno || test x$cegui_with_xerces = xno; then
+    if test x$cegui_default_parser = xXercesParser && test x$cegui_with_xerces = xno; then
         cegui_default_parser=none
     fi
-    if test x$cegui_default_parser = xLibxmlParser && test x$cegui_found_libxml = xno || test x$cegui_with_libxml = xno; then
+    if test x$cegui_default_parser = xLibxmlParser && test x$cegui_with_libxml = xno; then
         cegui_default_parser=none
     fi
-    if test x$cegui_default_parser = xExpatParser && test x$cegui_found_expat = xno || test x$cegui_with_expat = xno; then
+    if test x$cegui_default_parser = xExpatParser && test x$cegui_with_expat = xno; then
         cegui_default_parser=none
     fi
     if test x$cegui_default_parser = xTinyXMLParser && test x$cegui_with_tinyxml = xno; then
@@ -76,19 +101,19 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
 
     dnl if no parser is selected as default, choose one that will be available
     if test x$cegui_default_parser = xnone; then
-        if test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes; then
+        if test x$cegui_with_xerces = xyes; then
             cegui_default_parser=XercesParser
         else
-            if test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes; then
+            if test x$cegui_with_libxml = xyes; then
                 cegui_default_parser=LibxmlParser
             else
-                if test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes; then
+                if test x$cegui_with_expat = xyes; then
                     cegui_default_parser=ExpatParser
                 else
                     if test x$cegui_with_tinyxml = xyes; then
                         cegui_default_parser=TinyXMLParser
                     else
-                        AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue])
+                        AC_MSG_ERROR([None of the XMLParsers are going to be built - unable to continue.  Either enable a parser or set a custom default.])
                     fi
                 fi
             fi
@@ -100,9 +125,9 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     AC_MSG_NOTICE([Default XML Parser will be: $cegui_default_parser])
 
     dnl automake conditionals
-    AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes])
-    AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes])
-    AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes])
+    AM_CONDITIONAL([BUILD_XERCES_PARSER], [test x$cegui_with_xerces = xyes])
+    AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_with_libxml = xyes])
+    AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_with_expat = xyes])
     AM_CONDITIONAL([BUILD_TINYXML_PARSER], [test x$cegui_with_tinyxml = xyes])
 
     AC_SUBST(xerces_CFLAGS)
@@ -136,10 +161,17 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
     AC_CHECK_LIB([Xxf86vm], XF86VidModeQueryVersion, [cegui_found_xf86vm=yes], [cegui_found_xf86vm=no])
     AC_ARG_ENABLE([irrlicht-renderer], AC_HELP_STRING([--disable-irrlicht-renderer], [Disable the Irrlicht renderer]),
         [cegui_enable_irr=$enableval],[cegui_enable_irr=yes])
-    
+
+    dnl decide if we will actually build the Irrlicht Renderer
     if test x$cegui_enable_irr = xyes && test x$cegui_found_irr = xyes; then
+        cegui_enable_irrlicht=yes
+    else
+        cegui_enable_irrlicht=no
+    fi
+
+    if test x$cegui_enable_irrlicht = xyes; then
         AC_MSG_NOTICE([Irrlicht renderer enabled])
-        
+
         if test x$cegui_found_xf86vm = xyes; then
             Irrlicht_LIBS="-lXxf86vm $Irrlicht_LIBS"
             cegui_samples_use_irrlicht=yes
@@ -150,10 +182,11 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
             AC_MSG_NOTICE([Use of Irrlicht in Samples is disabled])
         fi
     else
+        cegui_samples_use_irrlicht=no
         AC_MSG_NOTICE([Irrlicht renderer disabled])
     fi
     
-    AM_CONDITIONAL([BUILD_IRRLICHT_RENDERER], [test x$cegui_found_irr = xyes && test x$cegui_enable_irr = xyes])
+    AM_CONDITIONAL([BUILD_IRRLICHT_RENDERER], [test x$cegui_enable_irrlicht])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_IRRLICHT], [test x$cegui_samples_use_irrlicht = xyes])
     AC_SUBST(Irrlicht_CFLAGS)
     AC_SUBST(Irrlicht_LIBS)
@@ -221,15 +254,22 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_PATH_XTRA
     cegui_saved_LIBS="$LIBS"
     LIBS="$X_PRE_LIBS $X_LIBS $X_EXTRA_LIBS"
-    
+
     AC_SEARCH_LIBS(glInterleavedArrays, MesaGL GL, cegui_found_lib_GL=yes, cegui_found_lib_GL=no)
     AC_SEARCH_LIBS(gluOrtho2D, MesaGLU GLU, cegui_found_lib_GLU=yes,  cegui_found_lib_GLU=no)
     AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
     OpenGL_CFLAGS="$X_CFLAGS"
     OpenGL_LIBS=$LIBS
     LIBS="$cegui_saved_LIBS"
-    
+
+    dnl decide whether to really build the OpenGL renderer
     if test x$cegui_enable_opengl = xyes && test x$cegui_found_lib_GL = xyes && test x$cegui_found_lib_GLU = xyes; then
+        cegui_enable_opengl=yes
+    else
+        cegui_enable_opengl=no
+    fi
+
+    if test x$cegui_enable_opengl = xyes; then
         AC_MSG_NOTICE([OpenGL renderer enabled])
 
         dnl DevIL 
@@ -322,24 +362,24 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         else 
             AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])
         fi 
-        
+
         if test x$cegui_found_lib_glut = xyes; then
             cegui_samples_use_opengl=yes
             AC_DEFINE(CEGUI_SAMPLES_USE_OPENGL, [], [Define to have the OpenGL CEGUI renderer available in the samples (requires glut)])
             AC_MSG_NOTICE([Use of OpenGL in Samples is enabled])
         else
             cegui_samples_use_opengl=no
-            AC_MSG_NOTICE([Use of OpenGL in Samples is disabled])
+            AC_MSG_NOTICE([Use of OpenGL in Samples is disabled - Did not find GLUT library.])
         fi
 
     else
         cegui_with_tga=no
         cegui_with_devil=no
         cegui_with_corona=no
-        AC_MSG_NOTICE([OpenGL renderer disabled])        
+        AC_MSG_NOTICE([OpenGL renderer disabled])
     fi
 
-    AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes && test x$cegui_found_lib_GL = xyes && test x$cegui_found_lib_GLU = xyes])
+    AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_DEVIL_IMAGE_CODEC], [test x$cegui_with_devil = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_CORONA_IMAGE_CODEC], [test x$cegui_with_corona = xyes])
