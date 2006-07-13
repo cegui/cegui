@@ -1,6 +1,19 @@
 AC_PREREQ(2.59)
-AC_INIT([CEGUI], [0.5.0])
-AM_INIT_AUTOMAKE([CEGUI], 0.5.0)
+
+dnl Define the sub-version numbers for this release
+dnl
+dnl now done like this to save repetition, and make it more explicit where
+dnl we should define these numbers (we could pick up the same info by other means
+dnl though this leaves nobody in any doubt about where this is being defined).
+m4_define([CEGUI_MAJ_VER], 0)
+m4_define([CEGUI_MIN_VER], 5)
+m4_define([CEGUI_REL_VER], 0)
+
+dnl Construct the final version number out of the sub-version values specified above
+m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
+
+AC_INIT([CEGUI], [CEGUI_RELEASE_VERSION])
+AM_INIT_AUTOMAKE([CEGUI], CEGUI_RELEASE_VERSION)
 AC_CONFIG_HEADER([include/config.h])
 
 # Checks for programs.
@@ -136,3 +149,56 @@ AC_CONFIG_FILES([Makefile
                  CEGUI-OPENGL.pc
                  CEGUI.spec])
 AC_OUTPUT
+
+dnl Now generate some output to summarise what we have done here
+echo
+echo "********************************************************************************"
+echo "* Crazy Eddie's GUI System - Configuration Results Summary"
+echo "********************************************************************************"
+echo "* Library Release Version:                              CEGUI_RELEASE_VERSION"
+echo "*"
+echo "* Renderer Modules:"
+echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
+echo "*         Building Irrlict Renderer:                    ${cegui_enable_irrlicht-no}"
+echo "*"
+if test x"$cegui_enable_opengl" = x"yes"; then
+echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
+echo "*         Building Corona Image Codec:                  ${cegui_with_corona-no}"
+echo "*         Building DevIL Image Codec:                   ${cegui_with_devil-no}"
+echo "*         Building FreeImage Image Codec:               ${cegui_with_freeimage-no}"
+echo "*         Building SILLY Image Codec:                   ${cegui_with_silly-no}"
+dnl echo "*"
+dnl echo "*         Default Image Codec will be:                  !!TODO!!"
+echo "*"
+fi
+echo "* XML Parser Modules:"
+echo "*         Building TinyXMLParser:                       ${cegui_with_tinyxml-no}"
+echo "*         Building ExpatParser:                         ${cegui_with_expat-no}"
+echo "*         Building LibXMLParser:                        ${cegui_with_libxml-no}"
+echo "*         Building XercesParser:                        ${cegui_with_xerces-no}"
+echo "*"
+echo "*         Default XML Parser is:                        ${cegui_default_parser-none}"
+if test x"$cegui_default_parser" != x"XercesParser" &&
+   test x"$cegui_default_parser" != x"ExpatParser" &&
+   test x"$cegui_default_parser" != x"LibxmlParser" &&
+   test x"$cegui_default_parser" != x"TinyXMLParser"; then
+echo "*"
+echo "*         WARNING!  Default parser is not set to one of the pre-made parsers:"
+echo "*         WARNING!  XercesParser, ExpatParser, LibxmlParser, or TinyXMLParser."
+echo "*         WARNING!"
+echo "*         WARNING!  This is fine if you meant to do this and are using a custom"
+echo "*         WARNING!  parser as the 'hard-coded' default, else you should go back"
+echo "*         WARNING!  and check the config values specified for building parsers"
+echo "*         WARNING!  and setting the default parser (--with-default-xml-parser)."
+fi
+echo "*"
+echo "* Samples Framework:"
+echo "*         Building Samples:                             ${cegui_build_samples-no}"
+echo "*         GTK2 based dialog for renderer selection:     ${cegui_with_gtk-no}"
+echo "*         OpenGL Renderer available in samples:         ${cegui_samples_use_opengl-no}"
+echo "*         Irrlict Renderer available in samples:        ${cegui_samples_use_irrlicht-no}"
+echo "*         Ogre3D Renderer available in samples:         ${cegui_samples_use_ogre-no}"
+echo "********************************************************************************"
+echo
+echo "Now you can do make && make install.  Good Luck!"
+echo
