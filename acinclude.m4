@@ -374,6 +374,7 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
 
     else
         cegui_with_tga=no
+        cegui_with_freeimage=no
         cegui_with_devil=no
         cegui_with_corona=no
         AC_MSG_NOTICE([OpenGL renderer disabled])
@@ -417,7 +418,7 @@ AC_DEFUN([CEGUI_CHECK_XERCES],[
         ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
         AC_CHECK_LIB([xerces-c], [main],
             [cegui_xerces_l_found=yes; cegui_xerces_libs="$cegui_path"; break],
-            [cegui_xerces_l_found=no; unset ac_cv_lib_xerces-c_main], -lpthread)
+            [cegui_xerces_l_found=no; unset ac_cv_lib_xerces_c_main], -lpthread)
     done
 
     CPPFLAGS="$cegui_saved_CFLAGS"
