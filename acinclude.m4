@@ -186,7 +186,7 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
         AC_MSG_NOTICE([Irrlicht renderer disabled])
     fi
     
-    AM_CONDITIONAL([BUILD_IRRLICHT_RENDERER], [test x$cegui_enable_irrlicht])
+    AM_CONDITIONAL([BUILD_IRRLICHT_RENDERER], [test x$cegui_enable_irrlicht = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_IRRLICHT], [test x$cegui_samples_use_irrlicht = xyes])
     AC_SUBST(Irrlicht_CFLAGS)
     AC_SUBST(Irrlicht_LIBS)
