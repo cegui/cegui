@@ -69,17 +69,17 @@ load a custom made parser module as the default.]),
                 [cegui_default_parser=$withval], [cegui_default_parser=none])
 
     dnl Determine what we will actually be building based on user preference and what's available on the system.
-    if test x$cegui_found_xerces = xyes || test x$cegui_with_xerces = xyes; then
+    if test x$cegui_found_xerces = xyes && test x$cegui_with_xerces = xyes; then
         cegui_with_xerces=yes
     else
         cegui_with_xerces=no
     fi
-    if test x$cegui_found_libxml = xyes || test x$cegui_with_libxml = xyes; then
+    if test x$cegui_found_libxml = xyes && test x$cegui_with_libxml = xyes; then
         cegui_with_libxml=yes
     else
         cegui_with_libxml=no
     fi
-    if test x$cegui_found_expat = xyes || test x$cegui_with_expat = xyes; then
+    if test x$cegui_found_expat = xyes && test x$cegui_with_expat = xyes; then
         cegui_with_expat=yes
     else
         cegui_with_expat=no
