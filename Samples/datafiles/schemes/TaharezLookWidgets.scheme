@@ -32,8 +32,8 @@
 	<FalagardMapping WindowType="TaharezLook/ListHeader"        TargetType="CEGUI/ListHeader"        Renderer="Falagard/ListHeader"        LookNFeel="TaharezLook/ListHeader" />
 	<FalagardMapping WindowType="TaharezLook/ListHeaderSegment" TargetType="CEGUI/ListHeaderSegment" Renderer="Falagard/ListHeaderSegment" LookNFeel="TaharezLook/ListHeaderSegment" />
 	<FalagardMapping WindowType="TaharezLook/MultiColumnList"   TargetType="CEGUI/MultiColumnList"   Renderer="Falagard/MultiColumnList"   LookNFeel="TaharezLook/MultiColumnList" />
-	<FalagardMapping WindowType="TaharezLook/Slider"      TargetType="CEGUI/Slider"      Renderer="Falagard/Slider"  LookNFeel="TaharezLook/Slider" />
-	<FalagardMapping WindowType="TaharezLook/SliderThumb" TargetType="CEGUI/SliderThumb" Renderer="Falagard/Button"  LookNFeel="TaharezLook/SliderThumb" />
+	<FalagardMapping WindowType="TaharezLook/Slider"      TargetType="CEGUI/Slider" Renderer="Falagard/Slider"  LookNFeel="TaharezLook/Slider" />
+	<FalagardMapping WindowType="TaharezLook/SliderThumb" TargetType="CEGUI/Thumb"  Renderer="Falagard/Button"  LookNFeel="TaharezLook/SliderThumb" />
 	<FalagardMapping WindowType="TaharezLook/ScrollablePane" TargetType="CEGUI/ScrollablePane" Renderer="Falagard/ScrollablePane" LookNFeel="TaharezLook/ScrollablePane" />
 	<FalagardMapping WindowType="TaharezLook/Spinner" TargetType="CEGUI/Spinner" Renderer="Falagard/Default" LookNFeel="TaharezLook/Spinner" />
 	<FalagardMapping WindowType="TaharezLook/Tooltip" TargetType="CEGUI/Tooltip" Renderer="Falagard/Tooltip" LookNFeel="TaharezLook/Tooltip" />
