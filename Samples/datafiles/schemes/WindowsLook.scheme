@@ -29,8 +29,8 @@
 	<FalagardMapping WindowType="WindowsLook/ListHeader"        TargetType="CEGUI/ListHeader"        Renderer="Falagard/ListHeader"        LookNFeel="WindowsLook/ListHeader" />
 	<FalagardMapping WindowType="WindowsLook/ListHeaderSegment" TargetType="CEGUI/ListHeaderSegment" Renderer="Falagard/ListHeaderSegment" LookNFeel="WindowsLook/ListHeaderSegment" />
 	<FalagardMapping WindowType="WindowsLook/MultiColumnList"   TargetType="CEGUI/MultiColumnList"   Renderer="Falagard/MultiColumnList"   LookNFeel="WindowsLook/MultiColumnList" />
-	<FalagardMapping WindowType="WindowsLook/Slider"      TargetType="CEGUI/Slider"      Renderer="Falagard/Slider"  LookNFeel="WindowsLook/Slider" />
-	<FalagardMapping WindowType="WindowsLook/SliderThumb" TargetType="CEGUI/SliderThumb" Renderer="Falagard/Button"  LookNFeel="WindowsLook/SliderThumb" />
+	<FalagardMapping WindowType="WindowsLook/Slider"      TargetType="CEGUI/Slider" Renderer="Falagard/Slider"  LookNFeel="WindowsLook/Slider" />
+	<FalagardMapping WindowType="WindowsLook/SliderThumb" TargetType="CEGUI/Thumb"  Renderer="Falagard/Button"  LookNFeel="WindowsLook/SliderThumb" />
 	<FalagardMapping WindowType="WindowsLook/ScrollablePane" TargetType="CEGUI/ScrollablePane" Renderer="Falagard/ScrollablePane" LookNFeel="WindowsLook/ScrollablePane" />
 	<FalagardMapping WindowType="WindowsLook/Spinner" TargetType="CEGUI/Spinner" Renderer="Falagard/Default" LookNFeel="WindowsLook/Spinner" />
 	<FalagardMapping WindowType="WindowsLook/Tooltip" TargetType="CEGUI/Tooltip" Renderer="Falagard/Tooltip" LookNFeel="WindowsLook/Tooltip" />
