@@ -1,30 +1,30 @@
 <?xml version="1.0" ?>
 <Imageset Name="FairChar" Imagefile="FairChar.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
 	<Image Name=" " XPos="0"   YPos="0"  Width="0"  Height="0" />
-	<Image Name="A" XPos="12"  YPos="16" Width="30" Height="30" YOffset="-30" />
-	<Image Name="B" XPos="43"  YPos="16" Width="31" Height="30" YOffset="-30" />
-	<Image Name="C" XPos="76"  YPos="16" Width="31" Height="30" YOffset="-30" />
-	<Image Name="D" XPos="106" YPos="16" Width="32" Height="30" YOffset="-30" />
-	<Image Name="E" XPos="139" YPos="16" Width="32" Height="30" YOffset="-30" />
-	<Image Name="F" XPos="171" YPos="16" Width="32" Height="30" YOffset="-30" />
-	<Image Name="G" XPos="204" YPos="16" Width="30" Height="30" YOffset="-30" />
-	<Image Name="H" XPos="236" YPos="16" Width="30" Height="30" YOffset="-30" />
-	<Image Name="I" XPos="267" YPos="16" Width="25" Height="30" YOffset="-30" />
-	<Image Name="J" XPos="8"   YPos="52" Width="24" Height="30" YOffset="-30" />
-	<Image Name="K" XPos="36"  YPos="52" Width="30" Height="30" YOffset="-30" />
-	<Image Name="L" XPos="68"  YPos="52" Width="30" Height="30" YOffset="-30" />
-	<Image Name="M" XPos="100" YPos="52" Width="30" Height="30" YOffset="-30" />
-	<Image Name="N" XPos="131" YPos="52" Width="31" Height="30" YOffset="-30" />
-	<Image Name="O" XPos="164" YPos="52" Width="30" Height="30" YOffset="-30" />
-	<Image Name="P" XPos="195" YPos="52" Width="31" Height="30" YOffset="-30" />
-	<Image Name="Q" XPos="228" YPos="52" Width="30" Height="30" YOffset="-30" />
-	<Image Name="R" XPos="259" YPos="52" Width="32" Height="30" YOffset="-30" />
-	<Image Name="S" XPos="4"   YPos="97" Width="30" Height="30" YOffset="-30" />
-	<Image Name="T" XPos="34"  YPos="97" Width="24" Height="30" YOffset="-30" />
-	<Image Name="U" XPos="61"  YPos="97" Width="30" Height="30" YOffset="-30" />
-	<Image Name="V" XPos="93"  YPos="97" Width="30" Height="30" YOffset="-30" />
-	<Image Name="W" XPos="125" YPos="97" Width="30" Height="30" YOffset="-30" />
-	<Image Name="X" XPos="157" YPos="97" Width="30" Height="30" YOffset="-30" />
-	<Image Name="Y" XPos="188" YPos="97" Width="30" Height="30" YOffset="-30" />
-	<Image Name="Z" XPos="221" YPos="97" Width="30" Height="30" YOffset="-30" />
+	<Image Name="A" XPos="4"   YPos="1"  Width="30" Height="30" YOffset="-30" />
+	<Image Name="B" XPos="35"  YPos="1"  Width="31" Height="30" YOffset="-30" />
+	<Image Name="C" XPos="68"  YPos="1"  Width="31" Height="30" YOffset="-30" />
+	<Image Name="D" XPos="98"  YPos="1"  Width="32" Height="30" YOffset="-30" />
+	<Image Name="E" XPos="131" YPos="1"  Width="32" Height="30" YOffset="-30" />
+	<Image Name="F" XPos="163" YPos="1"  Width="32" Height="30" YOffset="-30" />
+	<Image Name="G" XPos="196" YPos="1"  Width="30" Height="30" YOffset="-30" />
+	<Image Name="H" XPos="1"   YPos="94" Width="30" Height="30" YOffset="-30" />
+	<Image Name="I" XPos="32"  YPos="94" Width="25" Height="30" YOffset="-30" />
+	<Image Name="J" XPos="1"   YPos="32" Width="24" Height="30" YOffset="-30" />
+	<Image Name="K" XPos="28"  YPos="32" Width="30" Height="30" YOffset="-30" />
+	<Image Name="L" XPos="60"  YPos="32" Width="30" Height="30" YOffset="-30" />
+	<Image Name="M" XPos="92"  YPos="32" Width="30" Height="30" YOffset="-30" />
+	<Image Name="N" XPos="123" YPos="32" Width="31" Height="30" YOffset="-30" />
+	<Image Name="O" XPos="156" YPos="32" Width="30" Height="30" YOffset="-30" />
+	<Image Name="P" XPos="187" YPos="32" Width="31" Height="30" YOffset="-30" />
+	<Image Name="Q" XPos="58"  YPos="94" Width="30" Height="30" YOffset="-30" />
+	<Image Name="R" XPos="89"  YPos="94" Width="32" Height="30" YOffset="-30" />
+	<Image Name="S" XPos="1"   YPos="63" Width="30" Height="30" YOffset="-30" />
+	<Image Name="T" XPos="32"  YPos="63" Width="24" Height="30" YOffset="-30" />
+	<Image Name="U" XPos="59"  YPos="63" Width="30" Height="30" YOffset="-30" />
+	<Image Name="V" XPos="91"  YPos="63" Width="30" Height="30" YOffset="-30" />
+	<Image Name="W" XPos="123" YPos="63" Width="30" Height="30" YOffset="-30" />
+	<Image Name="X" XPos="155" YPos="63" Width="30" Height="30" YOffset="-30" />
+	<Image Name="Y" XPos="186" YPos="63" Width="30" Height="30" YOffset="-30" />
+	<Image Name="Z" XPos="123" YPos="94" Width="30" Height="30" YOffset="-30" />
 </Imageset>
