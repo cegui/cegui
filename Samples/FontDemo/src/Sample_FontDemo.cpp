@@ -60,9 +60,13 @@ static struct
       (utf8 *)"CEI PATRU APOSTOLI\n"
               "au fost trei:\n"
               "Luca şi Matfei\n" },
+    { (utf8 *)"Dansk",
+      (utf8 *)"FARLIGE STORE BOGSTAVER\n"
+              "og flere men små...\n"
+              "Prøv At Fange Den Brune Ræv Mens Den Hopper Over Den Dovne Hund\n" }
 };
 
-#define MIN_POINT_SIZE 6.0
+#define MIN_POINT_SIZE 6.0f
 
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
 // image.  This saves doing it manually every time in the code.
