@@ -1,13 +1,18 @@
 if CEGUI_BUILD_SAMPLES
+
+if CEGUI_BUILD_LUA_MODULE
+CEGUILUA_DEMOS=Demo8
+endif
+
 SUBDIRS = common \
           Demo4 \
           Demo6 \
           Demo7 \
-          Demo8 \
           FirstWindow \
           FalagardDemo1 \
           FontDemo \
-          TabControlDemo
+          TabControlDemo \
+          $(CEGUILUA_DEMOS)
 endif
 
 EXTRA_DIST = ReadMe.txt \

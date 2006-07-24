@@ -1,4 +1,1 @@
-pkginclude_HEADERS = lauxlib.h \
-                 lua.h \
-                 lualib.h \
-                 tolua++.h
+pkginclude_HEADERS = tolua++.h
