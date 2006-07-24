@@ -13,8 +13,11 @@ package.files =
 include(pkgdir)
 include(rootdir)
 
-library("OpenGL32")
-library("GLU32")
+if windows then
+    library("OpenGL32")
+    library("GLU32")
+    define("NOMINMAX")
+end
 
 dependency("CEGUIBase")
 
