@@ -12,8 +12,8 @@ OPENGL_IMAGECODEC = "tga"
 --
 -- DirectX
 --
---DIRECTX81_RENDERER = true
---DIRECTX9_RENDERER = true
+DIRECTX81_RENDERER = false
+DIRECTX9_RENDERER = false
 
 --
 -- Samples
@@ -23,3 +23,8 @@ OPENGL_IMAGECODEC = "tga"
 SAMPLES_GL = true
 SAMPLES_DX81 = true
 SAMPLES_DX9 = true
+
+--
+-- Lua
+--
+TOLUA_STATIC = true

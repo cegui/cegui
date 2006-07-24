@@ -537,7 +537,7 @@ void TabControl::onFontChanged(WindowEventArgs& e)
 /*************************************************************************
 	Calculate size and position for a tab button
 *************************************************************************/
-void TabControl::calculateTabButtonSizePosition(int index)
+void TabControl::calculateTabButtonSizePosition(size_t index)
 {
     TabButton* btn = d_tabButtonVector [index];
     // relative height is always 1.0 for buttons since they are embedded in a
@@ -571,7 +571,7 @@ Layout the widgets
 void TabControl::performChildWindowLayout()
 {
     Window* tabButtonPane = getTabButtonPane();
-    TabPane* tabContentPane = getTabPane();
+    Window* tabContentPane = getTabPane();
 
     // Enable top/bottom edges of the tabPane control,
     // if supported by looknfeel
@@ -682,10 +682,9 @@ Window* TabControl::getTabButtonPane() const
     Return a pointer to the TabPane component widget for
     this TabControl.
 *************************************************************************/
-TabPane* TabControl::getTabPane() const
+Window* TabControl::getTabPane() const
 {
-    return static_cast<TabPane*>(WindowManager::getSingleton().getWindow(
-                                 getName() + ContentPaneNameSuffix));
+    return WindowManager::getSingleton().getWindow(getName() + ContentPaneNameSuffix);
 }
 
 int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const

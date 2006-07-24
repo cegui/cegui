@@ -3,7 +3,7 @@
 ** Written by Waldemar Celes
 ** TeCGraf/PUC-Rio
 ** Apr 2003
-** $Id$
+** $Id: tolua++.h 1141 2006-05-18 23:58:45Z lindquist $
 */
 
 /* This code is free software; you can redistribute it and/or modify it.
@@ -29,8 +29,10 @@
 
 // Win32 import/export
 #ifndef TOLUA_API
-#   if defined( __WIN32__ ) || defined( _WIN32 )
-#      ifdef LUA_AND_TOLUA_EXPORTS
+#   ifdef _WIN32
+#      ifdef TOLUA_STATIC
+#          define TOLUA_API
+#      elif defined(TOLUA_EXPORTS)
 #          define TOLUA_API __declspec(dllexport)
 #      else
 #          define TOLUA_API __declspec(dllimport)

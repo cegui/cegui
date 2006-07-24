@@ -1,1 +1,1 @@
-SUBDIRS =  lua_and_tolua++ LuaScriptModule
+SUBDIRS =  tolua++ LuaScriptModule

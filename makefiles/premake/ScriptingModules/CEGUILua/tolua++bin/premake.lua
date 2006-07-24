@@ -11,6 +11,11 @@ package.files =
 }
 
 --include(pkgdir)
-include(pkgdir.."../lua_and_tolua++/include")
+include(pkgdir.."../tolua++")
 
-dependency("lua_and_tolua++")
+dependency("tolua++")
+library("lua50","_d")
+
+if TOLUA_STATIC then
+    define("TOLUA_STATIC")
+end

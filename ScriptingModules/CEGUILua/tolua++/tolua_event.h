@@ -3,7 +3,7 @@
 ** Written by Waldemar Celes
 ** TeCGraf/PUC-Rio
 ** Apr 2003
-** $Id$
+** $Id: tolua_event.h 1004 2006-02-27 13:03:20Z lindquist $
 */
 
 /* This code is free software; you can redistribute it and/or modify it.

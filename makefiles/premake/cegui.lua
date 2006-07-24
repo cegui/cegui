@@ -46,9 +46,9 @@ pkg_table =
 	{
         ["CEGUILua"] =
         {
-            "lua_and_tolua++",
-            "LuaScriptModule",
+            "tolua++",
             "tolua++bin",
+            "LuaScriptModule",
         },
 	},
 }

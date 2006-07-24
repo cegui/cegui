@@ -134,9 +134,9 @@ end
 -- add lua support to a sample
 --
 local function lua_sample()
-    include(rootdir.."ScriptingModules/CEGUILua/lua_and_tolua++/include")
+    include(rootdir.."ScriptingModules/CEGUILua/tolua++")
     include(rootdir.."ScriptingModules/CEGUILua/LuaScriptModule/include")
-    library("lua_and_tolua++", "_d")
+    library("tolua++", "_d")
     library("CEGUILua", "_d")
 end
 

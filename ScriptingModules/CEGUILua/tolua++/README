@@ -22,11 +22,12 @@ This is tolua++-1.0
             http://www.codenix.com/~tolua/
             http://www.codenix.com/~tolua/tolua++-1.0.tar.bz2
 
-* Installation
-  See INSTALL.
-
 * Contacting the author
   tolua has been designed and implemented by Waldemar Celes.
   tolua++ is maintained by Ariel Manzur.
   Send your comments, bug reports and anything else to 
   tolua@codenix.com
+
+  If you are having issues with the custom generator provided with CEGUI, do not
+  contact Ariel Manzur, instead use the CEGUI Mantis tracker:
+  http://http://www.cegui.org.uk/mantis
