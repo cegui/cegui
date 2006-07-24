@@ -26,8 +26,8 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/fonts/fkp-16.font \
              datafiles/fonts/fkp.de.pcf \
              datafiles/fonts/Font.xsd \
-			 datafiles/fonts/Iconified-12.font \
-			 datafiles/fonts/Iconiv2.ttf \
+             datafiles/fonts/Iconified-12.font \
+             datafiles/fonts/Iconiv2.ttf \
              datafiles/fonts/README \
              datafiles/fonts/common.txt \
              datafiles/fonts/Legal.txt \
@@ -44,7 +44,11 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/imagesets/FairChar.tga \
              datafiles/layouts/Demo7Windows.layout \
              datafiles/layouts/Demo8.layout \
-			 datafiles/layouts/FontDemo.layout \
+             datafiles/layouts/FontDemo.layout \
+             datafiles/layouts/TabControlDemo.layout \
+             datafiles/layouts/TabPage.layout \
+             datafiles/layouts/VanillaConsole.layout \
+             datafiles/layouts/VanillaWindows.layout \
              datafiles/layouts/GUILayout.xsd \
              datafiles/looknfeel/Falagard.xsd \
              datafiles/looknfeel/TaharezLook.looknfeel \
@@ -54,10 +58,8 @@ EXTRA_DIST = ReadMe.txt \
              datafiles/schemes/Demo8.scheme \
              datafiles/schemes/GUIScheme.xsd \
              datafiles/schemes/TaharezLook.scheme \
-             datafiles/schemes/TaharezLookSkin.scheme \
              datafiles/schemes/TaharezLookWidgetAliases.scheme \
              datafiles/schemes/TaharezLookWidgets.scheme \
              datafiles/schemes/VanillaSkin.scheme \
              datafiles/schemes/WindowsLook.scheme \
-             datafiles/schemes/WindowsLookSkin.scheme \
              datafiles/schemes/WindowsLookWidgets.scheme
