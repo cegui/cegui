@@ -33,7 +33,6 @@
 #include "CEGUIBase.h"
 #include "CEGUIWindow.h"
 #include "elements/CEGUITabControlProperties.h"
-#include "elements/CEGUITabPane.h"
 #include <vector>
 
 
@@ -415,16 +414,16 @@ protected:
 
     /*!
     \brief
-        Return a pointer to the TabPane component widget for
+        Return a pointer to the content component widget for
         this TabControl.
 
     \return
-        Pointer to a TabPane object.
+        Pointer to a Window object.
 
     \exception UnknownObjectException
         Thrown if the component does not exist.
     */
-    TabPane* getTabPane() const;
+    Window* getTabPane() const;
 
 	void performChildWindowLayout();
     int writeChildWindowsXML(XMLSerializer& xml_stream) const;
@@ -495,7 +494,7 @@ protected:
     \param index
         The index of the tab button
     */
-    void calculateTabButtonSizePosition(int index);
+    void calculateTabButtonSizePosition(size_t index);
 
 protected:
 	/*************************************************************************

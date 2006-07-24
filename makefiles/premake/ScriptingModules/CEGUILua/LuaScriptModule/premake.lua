@@ -12,9 +12,15 @@ package.files =
 }
 
 include(pkgdir.."include")
-include(pkgdir.."../lua_and_tolua++/include")
+include(pkgdir.."../tolua++")
 
 dependency("CEGUIBase")
-dependency("lua_and_tolua++")
+dependency("tolua++")
+
+library("lua50", "_d")
 
 define("CEGUILUA_EXPORTS")
+
+if TOLUA_STATIC then
+    define("TOLUA_STATIC")
+end

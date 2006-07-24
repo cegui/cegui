@@ -3,7 +3,7 @@
 ** Written by Waldemar Celes
 ** TeCGraf/PUC-Rio
 ** Apr 2003
-** $Id$
+** $Id: tolua_map.c 1141 2006-05-18 23:58:45Z lindquist $
 */
 
 /* This code is free software; you can redistribute it and/or modify it.

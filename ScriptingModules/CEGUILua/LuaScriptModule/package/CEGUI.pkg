@@ -48,7 +48,6 @@ $pfile "elements/Thumb.pkg"
 $pfile "elements/RadioButton.pkg"
 
 $pfile "elements/TabButton.pkg"
-$pfile "elements/TabPane.pkg"
 $pfile "elements/TabControl.pkg"
 
 $pfile "elements/Titlebar.pkg"

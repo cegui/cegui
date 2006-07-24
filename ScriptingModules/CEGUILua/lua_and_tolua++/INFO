@@ -1,5 +1,0 @@
-The source code included in this package is tolua++ 1.0.7.
-
-Tolua++ has been modified to allow building as a shared library on MSVC.
-
-release by Tomas Lindquist Olsen (tomas@famolsen.dk)

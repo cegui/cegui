@@ -86,7 +86,6 @@
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIMultiLineEditbox.h"
 #include "elements/CEGUITabButton.h"
-#include "elements/CEGUITabPane.h"
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUISpinner.h"
 #include "elements/CEGUIDragContainer.h"
