@@ -85,7 +85,7 @@ FreeTypeFont::FreeTypeFont (const String& name, const String& filename,
  *************************************************************************/
 FreeTypeFont::FreeTypeFont (const XMLAttributes& attributes) :
     Font (attributes),
-    d_ptSize (attributes.getValueAsInteger (FontSizeAttribute, 12)),
+    d_ptSize (float(attributes.getValueAsInteger (FontSizeAttribute, 12))),
     d_antiAliased (attributes.getValueAsBool (FontAntiAliasedAttribute, true)),
     d_fontFace (0)
 {
@@ -143,16 +143,13 @@ uint FreeTypeFont::getTextureSize (CodepointMap::const_iterator s,
     // Compute approximatively the optimal texture size for font
     while (texsize < max_texsize)
     {
-        CodepointMap::const_iterator c = s;
         uint x = INTER_GLYPH_PAD_SPACE, y = INTER_GLYPH_PAD_SPACE;
         uint yb = INTER_GLYPH_PAD_SPACE;
-        while (c != e)
+        for (CodepointMap::const_iterator c = s; c != e; ++c)
         {
+            // skip glyphs that are already rendered
             if (c->second.getImage ())
-            {
-                ++c;
-                continue; // glyph already rendered
-            }
+                continue;
 
             // load glyph metrics (don't render)
             if (FT_Load_Char (d_fontFace, c->first, FT_LOAD_DEFAULT))
@@ -176,13 +173,12 @@ uint FreeTypeFont::getTextureSize (CodepointMap::const_iterator s,
             if (yy > yb)
                 yb = yy;
 
-            ++c;
             ++glyph_count;
         }
         // Okay, the texture size is enough for holding our glyphs
         break;
 
-        too_small:
+too_small:
         texsize *= 2;
     }
 
@@ -249,44 +245,47 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
                     err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
                     err << static_cast<unsigned int> (s->first);
                     Logger::getSingleton ().logEvent (err.str (), Errors);
-                    continue;
                 }
-
-                uint glyph_w = d_fontFace->glyph->bitmap.width + INTER_GLYPH_PAD_SPACE;
-                uint glyph_h = d_fontFace->glyph->bitmap.rows + INTER_GLYPH_PAD_SPACE;
-
-                // Check if glyph right margin does not exceed texture size
-                uint x_next = x + glyph_w;
-                if (x_next > texsize)
+                else
                 {
-                    x = INTER_GLYPH_PAD_SPACE;
-                    x_next = x + glyph_w;
-                    y = yb;
+                    uint glyph_w = d_fontFace->glyph->bitmap.width + INTER_GLYPH_PAD_SPACE;
+                    uint glyph_h = d_fontFace->glyph->bitmap.rows + INTER_GLYPH_PAD_SPACE;
+
+                    // Check if glyph right margin does not exceed texture size
+                    uint x_next = x + glyph_w;
+                    if (x_next > texsize)
+                    {
+                        x = INTER_GLYPH_PAD_SPACE;
+                        x_next = x + glyph_w;
+                        y = yb;
+                    }
+
+                    // Check if glyph bottom margine does not exceed texture size
+                    uint y_bot = y + glyph_h;
+                    if (y_bot > texsize)
+                        break;
+
+                    // Copy rendered glyph to memory buffer in RGBA format
+                    drawGlyphToBuffer (mem_buffer + (y * texsize) + x, texsize);
+
+                    // Create a new image in the imageset
+                    Rect area (float(x), float(y), float(x + glyph_w - INTER_GLYPH_PAD_SPACE),
+                               float(y + glyph_h - INTER_GLYPH_PAD_SPACE));
+                    Point offset (d_fontFace->glyph->metrics.horiBearingX * float(FT_POS_COEF),
+                                  -d_fontFace->glyph->metrics.horiBearingY * float(FT_POS_COEF));
+
+                    String name;
+                    name += s->first;
+                    is->defineImage (name, area, offset);
+                    ((FontGlyph &)s->second).setImage (&is->getImage (name));
+
+                    // Advance to next position
+                    x = x_next;
+                    if (y_bot > yb)
+                    {
+                        yb = y_bot;
+                    }
                 }
-
-                // Check if glyph bottom margine does not exceed texture size
-                uint y_bot = y + glyph_h;
-                if (y_bot > texsize)
-                    break;
-
-                // Copy rendered glyph to memory buffer in RGBA format
-                drawGlyphToBuffer (mem_buffer + (y * texsize) + x, texsize);
-
-                // Create a new image in the imageset
-                Rect area (x, y, x + glyph_w - INTER_GLYPH_PAD_SPACE,
-                           y + glyph_h - INTER_GLYPH_PAD_SPACE);
-                Point offset (d_fontFace->glyph->metrics.horiBearingX * FT_POS_COEF,
-                              -d_fontFace->glyph->metrics.horiBearingY * FT_POS_COEF);
-
-                String name;
-                name += s->first;
-                is->defineImage (name, area, offset);
-                ((FontGlyph &)s->second).setImage (&is->getImage (name));
-
-                // Advance to next position
-                x = x_next;
-                if (y_bot > yb)
-                    yb = y_bot;
             }
 
             // Go to next glyph, if we are going forward
@@ -372,7 +371,7 @@ void FreeTypeFont::free ()
 
     FT_Done_Face (d_fontFace);
     d_fontFace = 0;
-    d_fontData.release ();
+    System::getSingleton ().getResourceProvider ()->unloadRawDataContainer (d_fontData);
 }
 
 
@@ -389,7 +388,7 @@ void FreeTypeFont::updateFont ()
 
     // create face using input font
     if (FT_New_Memory_Face (ft_lib, d_fontData.getDataPtr (),
-                            d_fontData.getSize (), 0, &d_fontFace) != 0)
+                            static_cast<FT_Long>(d_fontData.getSize ()), 0, &d_fontFace) != 0)
         throw GenericException ("FreeTypeFont::load - The source font file '" + d_fileName +"' does not contain a valid FreeType font.");
 
     // check that default Unicode character map is available
@@ -404,23 +403,23 @@ void FreeTypeFont::updateFont ()
     uint vertdpi = System::getSingleton ().getRenderer ()->getVertScreenDPI ();
 
     float hps = d_ptSize * 64;
-	float vps = d_ptSize * 64;
-	if (d_autoScale)
-	{
+    float vps = d_ptSize * 64;
+    if (d_autoScale)
+    {
         hps *= d_horzScaling;
         vps *= d_vertScaling;
-	}
+    }
 
     if (FT_Set_Char_Size (d_fontFace, FT_F26Dot6 (hps), FT_F26Dot6 (vps), horzdpi, vertdpi))
     {
         // For bitmap fonts we can render only at specific point sizes.
         // Try to find nearest point size and use it, if that is possible
-        float ptSize_72 = (d_ptSize * 72.0) / vertdpi;
+        float ptSize_72 = (d_ptSize * 72.0f) / vertdpi;
         float best_delta = 99999;
         float best_size = 0;
         for (int i = 0; i < d_fontFace->num_fixed_sizes; i++)
         {
-            float size = d_fontFace->available_sizes [i].size * FT_POS_COEF;
+            float size = d_fontFace->available_sizes [i].size * float(FT_POS_COEF);
             float delta = fabs (size - ptSize_72);
             if (delta < best_delta)
             {
@@ -441,16 +440,16 @@ void FreeTypeFont::updateFont ()
     if (d_fontFace->face_flags & FT_FACE_FLAG_SCALABLE)
     {
         //float x_scale = d_fontFace->size->metrics.x_scale * FT_POS_COEF * (1.0/65536.0);
-        float y_scale = d_fontFace->size->metrics.y_scale * FT_POS_COEF * (1.0/65536.0);
+        float y_scale = d_fontFace->size->metrics.y_scale * float(FT_POS_COEF) * (1.0f/65536.0f);
         d_ascender = d_fontFace->ascender * y_scale;
         d_descender = d_fontFace->descender * y_scale;
         d_height = d_fontFace->height * y_scale;
     }
     else
     {
-        d_ascender = d_fontFace->size->metrics.ascender * FT_POS_COEF;
-        d_descender = d_fontFace->size->metrics.descender * FT_POS_COEF;
-        d_height = d_fontFace->size->metrics.height * FT_POS_COEF;
+        d_ascender = d_fontFace->size->metrics.ascender * float(FT_POS_COEF);
+        d_descender = d_fontFace->size->metrics.descender * float(FT_POS_COEF);
+        d_height = d_fontFace->size->metrics.height * float(FT_POS_COEF);
     }
 
     // Create an empty FontGlyph structure for every glyph of the font
@@ -466,7 +465,7 @@ void FreeTypeFont::updateFont ()
         if (FT_Load_Char (d_fontFace, codepoint, FT_LOAD_DEFAULT))
             continue; // glyph error
 
-        float adv = d_fontFace->glyph->metrics.horiAdvance * FT_POS_COEF;
+        float adv = d_fontFace->glyph->metrics.horiAdvance * float(FT_POS_COEF);
 
         // create a new empty FontGlyph with given character code
         d_cp_map[codepoint] = FontGlyph (adv);

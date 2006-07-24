@@ -89,7 +89,7 @@ void PixmapFont::reinit ()
 
 void PixmapFont::updateFont ()
 {
-    float factor = (d_autoScale ? d_horzScaling : 1.0) / d_origHorzScaling;
+    float factor = (d_autoScale ? d_horzScaling : 1.0f) / d_origHorzScaling;
 
     d_ascender = 0;
     d_descender = 0;
@@ -119,18 +119,14 @@ void PixmapFont::updateFont ()
     d_height = d_ascender - d_descender;
 
     if (d_autoScale)
-    {
         d_origHorzScaling = d_horzScaling;
-//        d_ascender *= d_vertScaling;
-//        d_height *= d_vertScaling;
-    }
     else
         d_origHorzScaling = 1.0;
 }
 
 void PixmapFont::writeXMLToStream_impl (XMLSerializer& xml_stream) const
 {
-    float advscale = 1.0 / d_origHorzScaling;
+    float advscale = 1.0f / d_origHorzScaling;
     for (CodepointMap::const_iterator i = d_cp_map.begin (); i != d_cp_map.end (); ++i)
     {
         xml_stream.openTag ("Mapping")
@@ -155,7 +151,7 @@ void PixmapFont::defineMapping (String image_name, utf32 codepoint, float horzAd
     const Image *image = &d_glyphImages->getImage (image_name);
 
     // calculate advance width if it was not specified
-    if (horzAdvance == -1.0)
+    if (horzAdvance == -1.0f)
         horzAdvance = (int)(image->getWidth () + image->getOffsetX ());
 
     if (d_autoScale)
