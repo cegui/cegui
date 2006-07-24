@@ -489,3 +489,26 @@ AC_DEFUN([CEGUI_CHECK_EXPAT],[
         ifelse([$3], [], :, [$3])
     fi
 ])
+
+AC_DEFUN([CEGUI_CHECK_LUA],[
+    PKG_CHECK_MODULES(Lua, lua >= 5.0 lua < 5.1, [cegui_found_lua=yes], [cegui_found_lua=no])
+
+    AC_ARG_ENABLE([lua-module], AC_HELP_STRING([--disable-lua-module], [Disables building of the Lua scripting module.]),
+                [cegui_with_lua=$enableval], [cegui_with_lua=yes])
+
+    if test x$cegui_found_lua = xyes && test x$cegui_with_lua = xyes; then
+        cegui_with_lua=yes
+    else
+        cegui_with_lua=no
+    fi
+
+    if test x$cegui_with_lua = xyes; then
+        AC_MSG_NOTICE([Building of Lua scripting module is enabled])
+    else
+        AC_MSG_NOTICE([Building of Lua scripting module is disabled])
+    fi
+
+    AM_CONDITIONAL([CEGUI_BUILD_LUA_MODULE], [test x$cegui_with_lua = xyes])
+    AC_SUBST(Lua_CFLAGS)
+    AC_SUBST(Lua_LIBS)
+])

@@ -1,6 +1,5 @@
-The source code included in this package is lua-5.0.2 and tolua++ 1.0.7.
+The source code included in this package is tolua++ 1.0.7.
 
-Lua has been lightly modified to be able to build a shared library on MSVC.
 Tolua++ has been modified to allow building as a shared library on MSVC.
 
 release by Tomas Lindquist Olsen (tomas@famolsen.dk)

@@ -70,6 +70,9 @@ CEGUI_CHECK_GTK_FOR_SAMPLES
 # decide whether to build the samples
 CEGUI_CHECK_WANTS_SAMPLES
 
+# decide whether to build the lua module
+CEGUI_CHECK_LUA
+
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library version
 CEGUI_CURRENT=1
@@ -193,6 +196,9 @@ echo "*         WARNING!  parser as the 'hard-coded' default, else you should go
 echo "*         WARNING!  and check the config values specified for building parsers"
 echo "*         WARNING!  and setting the default parser (--with-default-xml-parser)."
 fi
+echo "*"
+echo "* Scripting:"
+echo "*         Building Lua scripting module:                ${cegui_with_lua-no}"
 echo "*"
 echo "* Samples Framework:"
 echo "*         Building Samples:                             ${cegui_build_samples-no}"
