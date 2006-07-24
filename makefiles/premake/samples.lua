@@ -28,6 +28,7 @@ createpackages {
         "Demo8",
         "FalagardDemo1",
         "FontDemo",
+        "TabControlDemo",
     }
 }
 

@@ -3,7 +3,7 @@
 	<WindowAlias Alias="Taharez AltProgressBar" Target="TaharezLook/AlternateProgressBar" />
 	<WindowAlias Alias="Taharez Button" Target="TaharezLook/Button" />
 	<WindowAlias Alias="Taharez Checkbox" Target="TaharezLook/Checkbox" />
-	<WindowAlias Alias="Taharez Close Button" Target="TaharezLook/CloseButton" />
+	<WindowAlias Alias="Taharez System Button" Target="TaharezLook/SystemButton" />
 	<WindowAlias Alias="Taharez Combobox" Target="TaharezLook/Combobox" />
 	<WindowAlias Alias="Taharez ComboDropList" Target="TaharezLook/ComboDropList" />
 	<WindowAlias Alias="Taharez ComboEditbox" Target="TaharezLook/ComboEditbox" />

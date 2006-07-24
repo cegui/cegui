@@ -310,7 +310,7 @@ void CEGuiOpenGLBaseApplication::mouseButton(int button, int state, int x, int y
     case GLUT_MIDDLE_BUTTON:
         if (state == GLUT_UP)
         {
-            CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::MiddleButton);
+            CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::MiddleButton);
         }
         else
         {

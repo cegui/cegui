@@ -60,6 +60,7 @@
 #include "CEGUISystem.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIPropertyHelper.h"
 
 // Falagard core system include
 #include "falagard/CEGUIFalWidgetLookManager.h"

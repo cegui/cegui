@@ -131,6 +131,7 @@ namespace CEGUI
             finalRect.d_left = destRect.d_left;
             finalRect.d_top  = destRect.d_top;
             finalRect.setSize(imageSize);
+            finalRect = destRect.getIntersection (finalRect);
 
             // update adjustments required to edges do to presence of this element.
             topOffset  += imageSize.d_width + imageOffsets.d_x;
@@ -162,6 +163,7 @@ namespace CEGUI
             finalRect.d_left = destRect.d_right - imageSize.d_width;
             finalRect.d_top  = destRect.d_top;
             finalRect.setSize(imageSize);
+            finalRect = destRect.getIntersection (finalRect);
 
             // update adjustments required to edges do to presence of this element.
             rightOffset += imageSize.d_height + imageOffsets.d_y;
@@ -192,6 +194,7 @@ namespace CEGUI
             finalRect.d_left = destRect.d_left;
             finalRect.d_top  = destRect.d_bottom - imageSize.d_height;
             finalRect.setSize(imageSize);
+            finalRect = destRect.getIntersection (finalRect);
 
             // update adjustments required to edges do to presence of this element.
             bottomOffset += imageSize.d_width + imageOffsets.d_x;
@@ -222,6 +225,7 @@ namespace CEGUI
             finalRect.d_left = destRect.d_right - imageSize.d_width;
             finalRect.d_top  = destRect.d_bottom - imageSize.d_height;
             finalRect.setSize(imageSize);
+            finalRect = destRect.getIntersection (finalRect);
 
             // update adjustments required to edges do to presence of this element.
             bottomWidth -= imageSize.d_width - imageOffsets.d_x;
@@ -251,6 +255,7 @@ namespace CEGUI
             finalRect.d_right  = finalRect.d_left + topWidth;
             finalRect.d_top    = destRect.d_top;
             finalRect.d_bottom = finalRect.d_top + imageSize.d_height;
+            finalRect = destRect.getIntersection (finalRect);
 
             // adjust background area to miss this edge
             backgroundRect.d_top += imageSize.d_height + d_frameImages[FIC_TOP_EDGE]->getOffsetY();;
@@ -279,6 +284,7 @@ namespace CEGUI
             finalRect.d_right  = finalRect.d_left + bottomWidth;
             finalRect.d_bottom = destRect.d_bottom;
             finalRect.d_top    = finalRect.d_bottom - imageSize.d_height;
+            finalRect = destRect.getIntersection (finalRect);
 
             // adjust background area to miss this edge
             backgroundRect.d_bottom -= imageSize.d_height - d_frameImages[FIC_BOTTOM_EDGE]->getOffsetY();;
@@ -307,6 +313,7 @@ namespace CEGUI
             finalRect.d_right  = finalRect.d_left + imageSize.d_width;
             finalRect.d_top    = destRect.d_top + leftOffset;
             finalRect.d_bottom = finalRect.d_top + leftHeight;
+            finalRect = destRect.getIntersection (finalRect);
 
             // adjust background area to miss this edge
             backgroundRect.d_left += imageSize.d_width + d_frameImages[FIC_LEFT_EDGE]->getOffsetX();
@@ -335,6 +342,7 @@ namespace CEGUI
             finalRect.d_bottom = finalRect.d_top + rightHeight;
             finalRect.d_right  = destRect.d_right;
             finalRect.d_left   = finalRect.d_right - imageSize.d_width;
+            finalRect = destRect.getIntersection (finalRect);
 
             // adjust background area to miss this edge
             backgroundRect.d_right -= imageSize.d_width - d_frameImages[FIC_RIGHT_EDGE]->getOffsetX();

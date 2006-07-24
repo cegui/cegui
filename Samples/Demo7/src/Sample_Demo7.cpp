@@ -124,7 +124,7 @@ void Demo7Sample::createDemoWindows(void)
     root->addChildWindow(fwnd2);
     fwnd2->setWindowMinSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     fwnd2->setWindowMaxSize(UVector2(cegui_reldim(0.8f), cegui_reldim( 0.8f)));
-    fwnd2->setWindowPosition(UVector2(cegui_reldim(0.4), cegui_reldim( 0.1f)));
+    fwnd2->setWindowPosition(UVector2(cegui_reldim(0.4f), cegui_reldim( 0.1f)));
     fwnd2->setWindowSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.6f)));
     fwnd2->setText("Demo 7 - Window 2");
     fwnd2->setCloseButtonEnabled(false);

@@ -482,9 +482,11 @@ namespace CEGUI
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    PropertyDim::PropertyDim(const String& name, const String& property) :
+    PropertyDim::PropertyDim(const String& name, const String& property,
+	    DimensionType type) :
         d_property(property),
-        d_childSuffix(name)
+        d_childSuffix(name),
+		d_type (type)
     {
     }
 
@@ -492,8 +494,25 @@ namespace CEGUI
     {
         // get window to use.
         const Window& sourceWindow = d_childSuffix.empty() ? wnd : *WindowManager::getSingleton().getWindow(wnd.getName() + d_childSuffix);
-        // return property value.
-        return PropertyHelper::stringToFloat(sourceWindow.getProperty(d_property));
+
+        if (d_type == DT_INVALID)
+            // return float property value.
+            return PropertyHelper::stringToFloat(sourceWindow.getProperty(d_property));
+
+        UDim d = PropertyHelper::stringToUDim(sourceWindow.getProperty(d_property));
+        Size s = sourceWindow.getPixelSize();
+
+        switch (d_type)
+        {
+            case DT_WIDTH:
+                return d.asAbsolute(s.d_width);
+
+            case DT_HEIGHT:
+                return d.asAbsolute(s.d_height);
+
+            default:
+                throw InvalidRequestException("PropertyDim::getValue - unknown or unsupported DimensionType encountered.");
+        }
     }
 
     float PropertyDim::getValue_impl(const Window& wnd, const Rect& container) const
@@ -503,7 +522,7 @@ namespace CEGUI
 
     BaseDim* PropertyDim::clone_impl() const
     {
-        PropertyDim* ndim = new PropertyDim(d_childSuffix, d_property);
+        PropertyDim* ndim = new PropertyDim(d_childSuffix, d_property, d_type);
         return ndim;
     }
 
@@ -517,6 +536,8 @@ namespace CEGUI
         if (!d_childSuffix.empty())
             xml_stream.attribute("widget", d_childSuffix);
         xml_stream.attribute("name", d_property);
+        if (d_type != DT_INVALID)
+            xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_type));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

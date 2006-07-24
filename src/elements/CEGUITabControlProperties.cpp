@@ -64,6 +64,29 @@ void	TabTextPadding::set(PropertyReceiver* receiver, const String& value)
 }
 
 
+String	TabPanePosition::get(const PropertyReceiver* receiver) const
+{
+    TabControl::TabPanePosition tpp =
+        static_cast<const TabControl*>(receiver)->getTabPanePosition ();
+    if (tpp == TabControl::Top)
+        return String ("Top");
+    return String ("Bottom");
+}
+
+
+void	TabPanePosition::set(PropertyReceiver* receiver, const String& value)
+{
+    TabControl::TabPanePosition tpp;
+    if ((value == "top") || (value == "Top"))
+        tpp = TabControl::Top;
+    else if ((value == "bottom") || (value == "Bottom"))
+        tpp = TabControl::Bottom;
+    else
+        return;
+    static_cast<TabControl*>(receiver)->setTabPanePosition (tpp);
+}
+
+
 } // End of  TabControlProperties namespace section
 
 } // End of  CEGUI namespace section

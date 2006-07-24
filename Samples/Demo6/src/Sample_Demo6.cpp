@@ -111,7 +111,7 @@ void Demo6Sample::createDemoWindows(void)
     // create frame window for control panel
     FrameWindow* fwnd = static_cast<FrameWindow*>(winMgr.createWindow("TaharezLook/FrameWindow", "Demo6/ControlPanel"));
     root->addChildWindow(fwnd);
-    fwnd->setWindowPosition(UVector2(cegui_reldim(0.53), cegui_reldim( 0.03f)));
+    fwnd->setWindowPosition(UVector2(cegui_reldim(0.53f), cegui_reldim( 0.03f)));
     fwnd->setWindowMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
     fwnd->setWindowSize(UVector2(cegui_reldim(0.44f), cegui_reldim( 0.94f)));
     fwnd->setText("Demo 6 - Control Panel");

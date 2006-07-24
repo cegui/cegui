@@ -31,7 +31,7 @@ pkg_table =
 	{
 		"expatParser",
 		--"libxmlParser",
-		"TinyXMLParser",
+		--"TinyXMLParser",
 		"XercesParser",
 	},
 	

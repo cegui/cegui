@@ -30,9 +30,11 @@
 #include "CEGUIExceptions.h"
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
+#include "elements/CEGUIPushButton.h"
 #include "elements/CEGUIGUISheet.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,6 +55,7 @@ TabControlWindowRenderer::TabControlWindowRenderer(const String& name) :
 *************************************************************************/
 TabControlProperties::TabHeight		            TabControl::d_tabHeightProperty;
 TabControlProperties::TabTextPadding		    TabControl::d_tabTextPaddingProperty;
+TabControlProperties::TabPanePosition		    TabControl::d_tabPanePosition;
 
 /*************************************************************************
 	Constants
@@ -66,13 +69,26 @@ const String TabControl::EventSelectionChanged( "TabSelectionChanged" );
 const String TabControl::ContentPaneNameSuffix( "__auto_TabPane__" );
 const String TabControl::TabButtonNameSuffix( "__auto_btn" );
 const String TabControl::TabButtonPaneNameSuffix( "__auto_TabPane__Buttons" );
+const String TabControl::ButtonScrollLeftSuffix( "__auto_TabPane__ScrollLeft" );
+const String TabControl::ButtonScrollRightSuffix( "__auto_TabPane__ScrollRight" );
+
+/*************************************************************************
+    Miscelaneous private strings
+*************************************************************************/
+static const String EnableTop = "EnableTop";
+static const String EnableBottom = "EnableBottom";
+static const String n0 = "0";
+static const String n1 = "1";
 
 /*************************************************************************
 	Constructor for TabControl base class.
 *************************************************************************/
 TabControl::TabControl(const String& type, const String& name)
-	: Window(type, name),
-    d_nextTabIndex(0)
+    : Window(type, name),
+    d_tabHeight(0, -1), // means 'to be initialized later'
+    d_tabPadding(0, 5),
+    d_firstTabOffset(0),
+    d_tabPanePos(Top)
 {
 	addTabControlProperties();
 }
@@ -92,6 +108,18 @@ TabControl::~TabControl(void)
 void TabControl::initialiseComponents(void)
 {
 	performChildWindowLayout();
+
+    String name = getName () + ButtonScrollLeftSuffix;
+    if (WindowManager::getSingleton().isWindowPresent (name))
+        WindowManager::getSingleton().getWindow (name)->subscribeEvent (
+            PushButton::EventClicked, Event::Subscriber(
+                &CEGUI::TabControl::handleScrollPane, this));
+
+    name = getName() + ButtonScrollRightSuffix;
+    if (WindowManager::getSingleton().isWindowPresent (name))
+        WindowManager::getSingleton().getWindow (name)->subscribeEvent (
+            PushButton::EventClicked, Event::Subscriber(
+                &CEGUI::TabControl::handleScrollPane, this));
 }
 /*************************************************************************
 Get the number of tabs
@@ -119,7 +147,9 @@ Get the tab for the given index
 *************************************************************************/
 Window*	TabControl::getTabContentsAtIndex(size_t index) const
 {
-    return d_tabButtonIndexMap.find(index)->second->getTargetWindow();
+    if (index >= d_tabButtonVector.size ())
+        return NULL;
+    return d_tabButtonVector [index]->getTargetWindow();
 }
 
 /*************************************************************************
@@ -136,20 +166,11 @@ Return whether the tab content window is currently selected.
 *************************************************************************/
 size_t TabControl::getSelectedTabIndex() const
 {
-    size_t index;
-    TabButtonIndexMap::const_iterator i, iend;
-    iend = d_tabButtonIndexMap.end();
-    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
-    {
-        // get corresponding tab button and content window
-        TabButton* tb = i->second;
-        if (tb->isSelected())
-        {
-            index = i->first;
-			break;
-        }
-	}
-	return index;
+    for (size_t i = 0; i < d_tabButtonVector.size (); ++i)
+        if (d_tabButtonVector [i]->isSelected ())
+            return i;
+
+	throw UnknownObjectException("TabControl::getSelectedTabIndex - Current tab not in list?");
 }
 
 /*************************************************************************
@@ -157,28 +178,43 @@ Set the selected tab by window name
 *************************************************************************/
 void TabControl::setSelectedTab(const String &name)
 {
-    // get window
-    Window* wnd = getTabPane()->getChild(name);
-
-    selectTab_impl(wnd);
+    selectTab_impl(getTabPane()->getChild(name));
 }
 /*************************************************************************
 Set the selected tab by window ID
 *************************************************************************/
 void TabControl::setSelectedTab(uint ID)
 {
-    // get window
-    Window* wnd = getTabPane()->getChild(ID);
-
-    selectTab_impl(wnd);
+    selectTab_impl(getTabPane()->getChild(ID));
 }
 /*************************************************************************
 Set the selected tab by window name
 *************************************************************************/
 void TabControl::setSelectedTabAtIndex(size_t index)
 {
-	Window* wnd = getTabContentsAtIndex(index);
-	selectTab_impl(wnd);
+	selectTab_impl(getTabContentsAtIndex(index));
+}
+
+/*************************************************************************
+Make the tab by window name visible
+*************************************************************************/
+void TabControl::makeTabVisible(const String &name)
+{
+    makeTabVisible_impl(getTabPane()->getChild(name));
+}
+/*************************************************************************
+Make the tab by window ID visible
+*************************************************************************/
+void TabControl::makeTabVisible(uint ID)
+{
+    makeTabVisible_impl(getTabPane()->getChild(ID));
+}
+/*************************************************************************
+Make the tab by window name visible
+*************************************************************************/
+void TabControl::makeTabVisibleAtIndex(size_t index)
+{
+	makeTabVisible_impl(getTabContentsAtIndex(index));
 }
 
 /*************************************************************************
@@ -212,14 +248,15 @@ void TabControl::addTab(Window* wnd)
     getTabPane()->addChildWindow(wnd);
     // Auto-select?
     if (getTabCount() == 1)
-    {
         setSelectedTab(wnd->getName());
-    }
     else
-    {
         // initialise invisible content
         wnd->setVisible(false);
-    }
+
+	// when adding the 1st page, autosize tab pane height
+    if (d_tabHeight.d_scale == 0 && d_tabHeight.d_offset == -1)
+        d_tabHeight.d_offset = 8 + getFont()->getFontHeight ();
+
     // Just request redraw
     performChildWindowLayout();
     requestRedraw();
@@ -247,14 +284,9 @@ void TabControl::removeTab(const String& name)
     // remove button too
     removeButtonForTabContent(wnd);
 
-    if (reselect)
-    {
+    if (reselect && (getTabCount() > 0))
         // Select another tab
-        if (getTabCount() > 0)
-        {
-            setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
-        }
-    }
+        setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
 
     performChildWindowLayout();
 
@@ -304,17 +336,17 @@ void TabControl::addButtonForTabContent(Window* wnd)
     tb->setFont(getFont());
     // Set target window
     tb->setTargetWindow(wnd);
-    // Set index
-    tb->setTabIndex(d_nextTabIndex++);
     // Instert into map
-    d_tabButtonIndexMap.insert(
-        TabButtonIndexMap::value_type(tb->getTabIndex(), tb));
+    d_tabButtonVector.push_back(tb);
     // add the button
     getTabButtonPane()->addChildWindow(tb);
     // Subscribe to clicked event so that we can change tab
     tb->subscribeEvent(TabButton::EventClicked, 
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
-
+    tb->subscribeEvent(TabButton::EventDragged,
+        Event::Subscriber(&TabControl::handleDraggedPane, this));
+    tb->subscribeEvent(TabButton::EventScrolled,
+        Event::Subscriber(&TabControl::handleWheeledPane, this));
 }
 
 /*************************************************************************
@@ -322,50 +354,11 @@ void TabControl::addButtonForTabContent(Window* wnd)
 *************************************************************************/
 TabButton* TabControl::getButtonForTabContents(Window* wnd) const
 {
-    TabButtonIndexMap::const_iterator i, iend;
-    iend = d_tabButtonIndexMap.end();
-    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
-    {
-        // get corresponding tab button and content window
-        TabButton* tb = i->second;
-        Window* child = tb->getTargetWindow();
-        if (child == wnd)
-        {
-			return tb;
-        }
-	}
-	throw UnknownObjectException("TabControl::getButtonForTabContents - The Window object is not a tab contents.");
-}
-/*************************************************************************
-	Calculate size and position for a tab button
-*************************************************************************/
-void TabControl::calculateTabButtonSizePosition(TabButton* btn, size_t targetIndex)
-{
-    // relative height is always 1.0 for buttons since they are embedded in a
-    // panel of the correct height already
-    btn->setWindowHeight(cegui_reldim(1.0f));
-    btn->setWindowYPosition(cegui_absdim(0.0f));
-    // x position is based on previous button
-    if (targetIndex > 0)
-    {
-		TabButtonIndexMap::iterator iter = d_tabButtonIndexMap.begin();
-		std::advance(iter, targetIndex - 1);
-		Window* prevButton = iter->second;
+    for (size_t i = 0; i < d_tabButtonVector.size (); ++i)
+        if (d_tabButtonVector [i]->getTargetWindow () == wnd)
+            return d_tabButtonVector [i];
 
-		// position is prev pos + width
-        btn->setWindowXPosition(prevButton->getWindowArea().d_max.d_x);
-    }
-    else
-    {
-        // First button
-        btn->setWindowXPosition(cegui_absdim(0));
-    }
-    // Width is based on font size (expressed as absolute)
-    Font* fnt = btn->getFont();
-    btn->setWindowWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
-                                     getTabTextPadding() +
-                                     getTabTextPadding());
-    btn->requestRedraw();
+	throw UnknownObjectException("TabControl::getButtonForTabContents - The Window object is not a tab contents.");
 }
 /*************************************************************************
 Remove tab button
@@ -376,7 +369,13 @@ void TabControl::removeButtonForTabContent(Window* wnd)
     TabButton* tb = static_cast<TabButton*>(
         getTabButtonPane()->getChild(makeButtonName(wnd)));
     // remove
-    d_tabButtonIndexMap.erase(tb->getTabIndex());
+    TabButtonVector::iterator i;
+    for (i = d_tabButtonVector.begin (); i < d_tabButtonVector.end (); ++i)
+        if (*i == tb)
+        {
+            d_tabButtonVector.erase (i);
+            break;
+        }
     getTabButtonPane()->removeChildWindow(tb);
 	// destroy
 	WindowManager::getSingleton().destroyWindow(tb);
@@ -396,24 +395,21 @@ Select tab implementation
 *************************************************************************/
 void TabControl::selectTab_impl(Window* wnd)
 {
+    makeTabVisible_impl(wnd);
+
     bool modified = false;
-    bool foundSelected = false;
     // Iterate in order of tab index
-    TabButtonIndexMap::iterator i, iend;
-    iend = d_tabButtonIndexMap.end();
-    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
+    for (size_t i = 0; i < d_tabButtonVector.size(); ++i)
     {
         // get corresponding tab button and content window
-        TabButton* tb = i->second;
+        TabButton* tb = d_tabButtonVector [i];
         Window* child = tb->getTargetWindow();
         // Should we be selecting?
         bool selectThis = (child == wnd);
         // Are we modifying this tab?
         modified = modified || (tb->isSelected() != selectThis);
-        foundSelected = foundSelected || selectThis;
         // Select tab & set visible if this is the window, not otherwise
         tb->setSelected(selectThis);
-        tb->setRightOfSelected(foundSelected);
         child->setVisible(selectThis);
     }
     // Trigger event?
@@ -424,12 +420,65 @@ void TabControl::selectTab_impl(Window* wnd)
     }
 }
 /*************************************************************************
+Make tab visible implementation
+*************************************************************************/
+void TabControl::makeTabVisible_impl(Window* wnd)
+{
+    TabButton *tb = NULL;
+
+    for (size_t i = 0; i < d_tabButtonVector.size (); ++i)
+    {
+        // get corresponding tab button and content window
+        tb = d_tabButtonVector [i];
+        Window* child = tb->getTargetWindow();
+        if (child == wnd)
+            break;
+        tb = NULL;
+    }
+
+    if (!tb)
+        return;
+
+    float ww = getPixelSize ().d_width;
+    float x = tb->getWindowXPosition().asAbsolute (ww);
+    float w = tb->getPixelSize ().d_width;
+    float lx = 0, rx = ww;
+
+    Window *scrollLeftBtn = NULL, *scrollRightBtn = NULL;
+    String name = getName() + ButtonScrollLeftSuffix;
+    if (WindowManager::getSingleton().isWindowPresent (name))
+    {
+        scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
+        lx = scrollLeftBtn->getWindowArea ().d_max.d_x.asAbsolute (ww);
+    }
+
+    name = getName() + ButtonScrollRightSuffix;
+    if (WindowManager::getSingleton().isWindowPresent (name))
+    {
+        scrollRightBtn = WindowManager::getSingleton().getWindow (name);
+        rx = scrollRightBtn->getWindowXPosition ().asAbsolute (ww);
+    }
+
+    if (x < lx)
+        d_firstTabOffset += lx - x;
+    else
+    {
+        if (x + w <= rx)
+            return; // nothing to do
+
+        d_firstTabOffset += rx - (x + w);
+    }
+
+    performChildWindowLayout ();
+}
+/*************************************************************************
 Add tab control properties
 *************************************************************************/
 void TabControl::addTabControlProperties(void)
 {
     addProperty(&d_tabHeightProperty);
     addProperty(&d_tabTextPaddingProperty);
+    addProperty(&d_tabPanePosition);
 }
 /*************************************************************************
 Internal version of adding a child window
@@ -482,50 +531,114 @@ Font changed event
 void TabControl::onFontChanged(WindowEventArgs& e)
 {
     // Propagate font change to buttons
-    TabButtonIndexMap::iterator i, iend;
-    iend = d_tabButtonIndexMap.end();
-    for (i = d_tabButtonIndexMap.end(); i != iend; ++i)
+    for (size_t i = 0; i < d_tabButtonVector.size(); ++i)
+        d_tabButtonVector [i]->setFont (getFont ());
+}
+/*************************************************************************
+	Calculate size and position for a tab button
+*************************************************************************/
+void TabControl::calculateTabButtonSizePosition(int index)
+{
+    TabButton* btn = d_tabButtonVector [index];
+    // relative height is always 1.0 for buttons since they are embedded in a
+    // panel of the correct height already
+    btn->setWindowHeight(cegui_reldim(1.0f));
+    btn->setWindowYPosition(cegui_absdim(0.0f));
+    // x position is based on previous button
+    if (!index)
+        // First button
+        btn->setWindowXPosition(cegui_absdim(d_firstTabOffset));
+    else
     {
-        i->second->setFont(getFont());
+		Window* prevButton = d_tabButtonVector [index - 1];
+
+		// position is prev pos + width
+        btn->setWindowXPosition(prevButton->getWindowArea().d_max.d_x);
     }
+    // Width is based on font size (expressed as absolute)
+    Font* fnt = btn->getFont();
+    btn->setWindowWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
+                        getTabTextPadding() + getTabTextPadding());
+
+    float left_x = btn->getWindowXPosition ().d_offset;
+    btn->setVisible ((left_x < getPixelSize ().d_width) &&
+                     (left_x + btn->getPixelSize ().d_width > 0));
+    btn->requestRedraw();
 }
 /*************************************************************************
 Layout the widgets
 *************************************************************************/
 void TabControl::performChildWindowLayout()
 {
-    Window::performChildWindowLayout();
-
     Window* tabButtonPane = getTabButtonPane();
     TabPane* tabContentPane = getTabPane();
 
-    // Set the size of the tab button area (full width, height from tab height)
-    tabButtonPane->setWindowSize(
-        UVector2(cegui_reldim(1.0f),
-                    d_tabHeight) );
+    // Enable top/bottom edges of the tabPane control,
+    // if supported by looknfeel
+    if (tabContentPane->isPropertyPresent (EnableTop))
+        tabContentPane->setProperty (EnableTop, (d_tabPanePos == Top) ? n0 : n1);
+    if (tabContentPane->isPropertyPresent (EnableBottom))
+        tabContentPane->setProperty (EnableBottom, (d_tabPanePos == Top) ? n1 : n0);
+    if (tabButtonPane->isPropertyPresent (EnableTop))
+        tabButtonPane->setProperty (EnableTop, (d_tabPanePos == Top) ? n0 : n1);
+    if (tabButtonPane->isPropertyPresent (EnableBottom))
+        tabButtonPane->setProperty (EnableBottom, (d_tabPanePos == Top) ? n1 : n0);
 
-    tabButtonPane->setWindowPosition(
-        UVector2(cegui_absdim(0),
-                    cegui_absdim(0)));
+    Window::performChildWindowLayout();
+
+    // Calculate the size & position of the tab scroll buttons
+    Window *scrollLeftBtn = NULL, *scrollRightBtn = NULL;
+    String name = getName() + ButtonScrollLeftSuffix;
+    if (WindowManager::getSingleton().isWindowPresent (name))
+        scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
+
+    name = getName() + ButtonScrollRightSuffix;
+    if (WindowManager::getSingleton().isWindowPresent (name))
+        scrollRightBtn = WindowManager::getSingleton().getWindow (name);
 
     // Calculate the positions and sizes of the tab buttons
-    TabButtonIndexMap::iterator i, iend;
-    iend = d_tabButtonIndexMap.end();
-    size_t x = 0;
-    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++x)
+    if (d_firstTabOffset > 0)
+        d_firstTabOffset = 0;
+
+    for (;;)
     {
-        TabButton* btn = i->second;
-        calculateTabButtonSizePosition(btn, x);
+        size_t i;
+        for (i = 0; i < d_tabButtonVector.size (); ++i)
+            calculateTabButtonSizePosition (i);
+
+        if (d_tabButtonVector.empty ())
+        {
+            if (scrollRightBtn)
+                scrollRightBtn->setVisible (false);
+            if (scrollLeftBtn)
+                scrollLeftBtn->setVisible (false);
+            break;
+        }
+
+        // Now check if tab pane wasn't scrolled too far
+        --i;
+        float xmax = d_tabButtonVector [i]->getWindowXPosition ().d_offset +
+            d_tabButtonVector [i]->getPixelSize ().d_width;
+        float width = tabContentPane->getPixelSize ().d_width;
+
+        // If right button margin exceeds right window margin,
+        // or leftmost button is at offset 0, finish
+        if ((xmax > (width - 0.5)) || (d_firstTabOffset == 0))
+        {
+            if (scrollLeftBtn)
+                scrollLeftBtn->setVisible (d_firstTabOffset < 0);
+            if (scrollRightBtn)
+                scrollRightBtn->setVisible (xmax > width);
+            break;
+        }
+
+        // Scroll the tab pane until the rightmost button
+        // touches the right margin
+        d_firstTabOffset += width - xmax;
+        // If we scrolled it too far, set leftmost button offset to 0
+        if (d_firstTabOffset > 0)
+            d_firstTabOffset = 0;
     }
-
-    // Set the size of the content area
-    tabContentPane->setWindowSize(
-        UVector2(cegui_reldim(1.0f),
-                    cegui_reldim(1.0f) - d_tabHeight));
-
-    tabContentPane->setWindowPosition(
-        UVector2(cegui_reldim(0.0f), d_tabHeight) );
-
 }
 /*************************************************************************
 Text changed on a content window
@@ -607,6 +720,89 @@ TabButton* TabControl::createTabButton(const String& name) const
         //return createTabButton_impl(name);
         throw InvalidRequestException("TabControl::createTabButton - This function must be implemented by the window renderer module");
     }
+}
+
+/*************************************************************************
+	change the positioning of the tab pane.
+*************************************************************************/
+void TabControl::setTabPanePosition(TabPanePosition pos)
+{
+	d_tabPanePos = pos;
+    performChildWindowLayout();
+}
+
+/*************************************************************************
+    scroll the tab pane to left or right depending of the clicked button
+*************************************************************************/
+bool TabControl::handleScrollPane(const EventArgs& e)
+{
+    const WindowEventArgs& wargs = static_cast<const WindowEventArgs&>(e);
+
+    size_t i;
+    float delta = 0;
+    // Find the leftmost visible button
+    for (i = 0; i < d_tabButtonVector.size(); ++i)
+    {
+        if (d_tabButtonVector [i]->isVisible (true))
+            break;
+        delta = d_tabButtonVector [i]->getPixelSize ().d_width;
+    }
+
+    if (wargs.window->getName () == getName() + ButtonScrollLeftSuffix)
+    {
+        if (delta == 0.0f && i < d_tabButtonVector.size ())
+            delta = d_tabButtonVector [i]->getPixelSize ().d_width;
+
+        // scroll button pane to the right
+        d_firstTabOffset += delta;
+    }
+    else if (i < d_tabButtonVector.size ())
+        // scroll button pane to left
+        d_firstTabOffset -= d_tabButtonVector [i]->getPixelSize ().d_width;
+
+    performChildWindowLayout();
+	return true;
+}
+
+bool TabControl::handleDraggedPane(const EventArgs& e)
+{
+    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+
+    if (me.button == MiddleButton)
+    {
+        // This is the middle-mouse-click event, remember initial drag position
+        Window *but_pane = getTabButtonPane();
+        d_btGrabPos = (me.position.d_x - but_pane->getPixelRect ().d_left) -
+            d_firstTabOffset;
+    }
+    else if (me.button == NoButton)
+    {
+        // Regular mouse move event
+        Window *but_pane = getTabButtonPane();
+        float new_to = (me.position.d_x - but_pane->getPixelRect ().d_left) -
+            d_btGrabPos;
+        if ((new_to < d_firstTabOffset - 0.9) ||
+            (new_to > d_firstTabOffset + 0.9))
+        {
+            d_firstTabOffset = new_to;
+            performChildWindowLayout();
+        }
+    }
+
+    return true;
+}
+
+bool TabControl::handleWheeledPane(const EventArgs& e)
+{
+    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+
+    Window *but_pane = getTabButtonPane();
+    float delta = but_pane->getPixelRect ().getWidth () / 20;
+    
+    d_firstTabOffset -= me.wheelChange * delta;
+    performChildWindowLayout();
+
+    return true;
 }
 
 } // End of  CEGUI namespace section

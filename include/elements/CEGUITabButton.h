@@ -53,6 +53,8 @@ public:
 	*************************************************************************/
 	// generated internally by Window
 	static const String EventClicked;					//!< The button was clicked.
+	static const String EventDragged;					//!< Attempt to drag the button with middle button.
+	static const String EventScrolled;					//!< Scroll wheel activated on top of the button.
 
 	/*************************************************************************
 		Construction and Destruction
@@ -78,14 +80,6 @@ public:
 
     /*!
     \brief
-        Set whether this tab button is on the right of the selected button, 
-        used to disable edges of buttons when deselected (to give an overlapping
-        look)
-    */
-    virtual void setRightOfSelected(bool isRight) { d_rightOfSelected = isRight; requestRedraw(); }
-
-    /*!
-    \brief
         Return whether this tab button is selected or not
     */
     bool isSelected(void) const { return d_selected; }
@@ -104,25 +98,13 @@ public:
     */
     Window* getTargetWindow(void) { return d_targetWindow; }
 
-    /*!
-    \brief
-        Set the index at which this tab is positioned.
-    */
-    void setTabIndex(size_t idx) { d_tabIndex = idx; }
-
-    /*!
-    \brief
-        Get the index at which this tab is positioned.
-    */
-    size_t getTabIndex(void) { return d_tabIndex; }
 protected:
     /*************************************************************************
     Implementation Data
     *************************************************************************/
     bool    d_selected;             //!< Is this button selected?
-    bool    d_rightOfSelected;      //!< Is this button to the right of the selected tab?
+    bool    d_dragging;             //!< In drag mode or not
     Window* d_targetWindow;         //!< The target window which this button is representing
-    size_t  d_tabIndex;             //!< The index at which this tab is positioned
 	/*************************************************************************
 		New Event Handlers
 	*************************************************************************/
@@ -136,8 +118,10 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-
+    virtual void onMouseButtonUp(MouseEventArgs& e);
+    virtual void onMouseButtonDown(MouseEventArgs& e);
+    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onMouseMove(MouseEventArgs& e);
 
 	/*************************************************************************
 		Implementation Functions

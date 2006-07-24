@@ -9,7 +9,7 @@
 	<FalagardMapping WindowType="WindowsLook/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="WindowsLook/RadioButton" />
 	<FalagardMapping WindowType="WindowsLook/FrameWindow"  TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow"  LookNFeel="WindowsLook/FrameWindow" />
 	<FalagardMapping WindowType="WindowsLook/Titlebar"     TargetType="CEGUI/Titlebar"    Renderer="Falagard/Titlebar"     LookNFeel="WindowsLook/Titlebar" />
-	<FalagardMapping WindowType="WindowsLook/CloseButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/SystemButton" LookNFeel="WindowsLook/CloseButton" />
+	<FalagardMapping WindowType="WindowsLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/SystemButton" LookNFeel="WindowsLook/SystemButton" />
 	<FalagardMapping WindowType="WindowsLook/Editbox"          TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"          LookNFeel="WindowsLook/Editbox" />
 	<FalagardMapping WindowType="WindowsLook/MultiLineEditbox" TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox" LookNFeel="WindowsLook/MultiLineEditbox" />
 	<FalagardMapping WindowType="WindowsLook/Menubar"   TargetType="CEGUI/Menubar"   Renderer="Falagard/Menubar"   LookNFeel="WindowsLook/Menubar" />
@@ -22,7 +22,8 @@
 	<FalagardMapping WindowType="WindowsLook/HorizontalScrollbarThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button" LookNFeel="WindowsLook/HorizontalScrollbarThumb" />
 	<FalagardMapping WindowType="WindowsLook/TabButton"  TargetType="CEGUI/TabButton"  Renderer="Falagard/TabButton"  LookNFeel="WindowsLook/TabButton" />
 	<FalagardMapping WindowType="WindowsLook/TabControl" TargetType="CEGUI/TabControl" Renderer="Falagard/TabControl" LookNFeel="WindowsLook/TabControl" />
-	<FalagardMapping WindowType="WindowsLook/TabPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="WindowsLook/TabPane" />
+	<FalagardMapping WindowType="WindowsLook/TabContentPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="WindowsLook/TabContentPane" />
+	<FalagardMapping WindowType="WindowsLook/TabButtonPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="WindowsLook/TabButtonPane" />
 	<FalagardMapping WindowType="WindowsLook/ComboDropList" TargetType="CEGUI/ComboDropList" Renderer="Falagard/Listbox" LookNFeel="WindowsLook/ComboDropList" />
 	<FalagardMapping WindowType="WindowsLook/Combobox"	TargetType="CEGUI/Combobox"	 Renderer="Falagard/Default" LookNFeel="WindowsLook/Combobox" />
 	<FalagardMapping WindowType="WindowsLook/Listbox"           TargetType="CEGUI/Listbox"           Renderer="Falagard/Listbox"           LookNFeel="WindowsLook/Listbox" />
