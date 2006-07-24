@@ -47,7 +47,7 @@ TGAImageCodec::~TGAImageCodec()
 
 Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
 {
-    Logger::getSingleton().logEvent("TGAImageCodec::load()", Standard);
+    Logger::getSingleton().logEvent("TGAImageCodec::load()", Informative);
     ImageTGA* img = loadTGA(data.getDataPtr(), data.getSize());
     if (img == 0)
     {

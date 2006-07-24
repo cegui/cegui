@@ -611,8 +611,14 @@ namespace CEGUI
     *************************************************************************/
     void Falagard_xmlHandler::elementPropertyDimStart(const XMLAttributes& attributes)
     {
+        String str_type = attributes.getValueAsString(TypeAttribute);
+        DimensionType type = DT_INVALID;
+        if (!str_type.empty())
+            type = FalagardXMLHelper::stringToDimensionType(str_type);
+
         PropertyDim base(attributes.getValueAsString(WidgetAttribute),
-                         attributes.getValueAsString(NameAttribute));
+                         attributes.getValueAsString(NameAttribute),
+                         type);
 
         doBaseDimStart(&base);
     }

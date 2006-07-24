@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 06/19/06 01:33:06.
+** Generated automatically by tolua++-1.0.92 on 07/24/06 04:27:41.
 */
 
 #ifndef __cplusplus
@@ -23954,39 +23954,6 @@ static int tolua_CEGUI_CEGUI_TabButton_setSelected00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setRightOfSelected of class  CEGUI::TabButton */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TabButton_setRightOfSelected00
-static int tolua_CEGUI_CEGUI_TabButton_setRightOfSelected00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::TabButton",0,&tolua_err) ||
- !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::TabButton* self = (CEGUI::TabButton*)  tolua_tousertype(tolua_S,1,0);
-  bool isRight = ((bool)  tolua_toboolean(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRightOfSelected'",NULL);
-#endif
- {
-  self->setRightOfSelected(isRight);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setRightOfSelected'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: setTargetWindow of class  CEGUI::TabButton */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TabButton_setTargetWindow00
 static int tolua_CEGUI_CEGUI_TabButton_setTargetWindow00(lua_State* tolua_S)
@@ -24047,71 +24014,6 @@ static int tolua_CEGUI_CEGUI_TabButton_getTargetWindow00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getTargetWindow'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: setTabIndex of class  CEGUI::TabButton */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TabButton_setTabIndex00
-static int tolua_CEGUI_CEGUI_TabButton_setTabIndex00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::TabButton",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::TabButton* self = (CEGUI::TabButton*)  tolua_tousertype(tolua_S,1,0);
-  unsigned int idx = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTabIndex'",NULL);
-#endif
- {
-  self->setTabIndex(idx);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setTabIndex'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getTabIndex of class  CEGUI::TabButton */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TabButton_getTabIndex00
-static int tolua_CEGUI_CEGUI_TabButton_getTabIndex00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::TabButton",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::TabButton* self = (CEGUI::TabButton*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTabIndex'",NULL);
-#endif
- {
-  unsigned int tolua_ret = (unsigned int)  self->getTabIndex();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getTabIndex'.",&tolua_err);
  return 0;
 #endif
 }
@@ -39692,7 +39594,8 @@ static int tolua_CEGUI_CEGUI_PropertyDim_new00(lua_State* tolua_S)
  !tolua_isusertable(tolua_S,1,"CEGUI::PropertyDim",0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,4,&tolua_err)
+ !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -39700,8 +39603,9 @@ static int tolua_CEGUI_CEGUI_PropertyDim_new00(lua_State* tolua_S)
  {
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
   string property = ((string)  tolua_tocppstring(tolua_S,3,0));
+  CEGUI::DimensionType type = ((CEGUI::DimensionType) (int)  tolua_tonumber(tolua_S,4,0));
  {
-  CEGUI::PropertyDim* tolua_ret = (CEGUI::PropertyDim*)  new CEGUI::PropertyDim(name,property);
+  CEGUI::PropertyDim* tolua_ret = (CEGUI::PropertyDim*)  new CEGUI::PropertyDim(name,property,type);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::PropertyDim");
  }
  }
@@ -39724,7 +39628,8 @@ static int tolua_CEGUI_CEGUI_PropertyDim_new00_local(lua_State* tolua_S)
  !tolua_isusertable(tolua_S,1,"CEGUI::PropertyDim",0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,4,&tolua_err)
+ !tolua_isnumber(tolua_S,4,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -39732,8 +39637,9 @@ static int tolua_CEGUI_CEGUI_PropertyDim_new00_local(lua_State* tolua_S)
  {
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
   string property = ((string)  tolua_tocppstring(tolua_S,3,0));
+  CEGUI::DimensionType type = ((CEGUI::DimensionType) (int)  tolua_tonumber(tolua_S,4,0));
  {
-  CEGUI::PropertyDim* tolua_ret = (CEGUI::PropertyDim*)  new CEGUI::PropertyDim(name,property);
+  CEGUI::PropertyDim* tolua_ret = (CEGUI::PropertyDim*)  new CEGUI::PropertyDim(name,property,type);
  tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::PropertyDim");
  }
  }
@@ -47659,11 +47565,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_beginmodule(tolua_S,"TabButton");
    tolua_function(tolua_S,"isSelected",tolua_CEGUI_CEGUI_TabButton_isSelected00);
    tolua_function(tolua_S,"setSelected",tolua_CEGUI_CEGUI_TabButton_setSelected00);
-   tolua_function(tolua_S,"setRightOfSelected",tolua_CEGUI_CEGUI_TabButton_setRightOfSelected00);
    tolua_function(tolua_S,"setTargetWindow",tolua_CEGUI_CEGUI_TabButton_setTargetWindow00);
    tolua_function(tolua_S,"getTargetWindow",tolua_CEGUI_CEGUI_TabButton_getTargetWindow00);
-   tolua_function(tolua_S,"setTabIndex",tolua_CEGUI_CEGUI_TabButton_setTabIndex00);
-   tolua_function(tolua_S,"getTabIndex",tolua_CEGUI_CEGUI_TabButton_getTabIndex00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"TabPane","CEGUI::TabPane","CEGUI::GUISheet",NULL);
   tolua_beginmodule(tolua_S,"TabPane");

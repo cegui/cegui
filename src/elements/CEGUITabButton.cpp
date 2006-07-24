@@ -40,6 +40,8 @@ const String TabButton::WidgetTypeName("CEGUI/TabButton");
 	Event name constants
 *************************************************************************/
 const String TabButton::EventClicked( "Clicked" );
+const String TabButton::EventDragged( "Dragged" );
+const String TabButton::EventScrolled( "Scrolled" );
 
 
 /*************************************************************************
@@ -48,7 +50,7 @@ const String TabButton::EventClicked( "Clicked" );
 TabButton::TabButton(const String& type, const String& name) :
 	ButtonBase(type, name),
     d_selected(false), 
-    d_rightOfSelected(true)
+    d_dragging(false)
 {
 }
 
@@ -58,6 +60,18 @@ TabButton::TabButton(const String& type, const String& name) :
 *************************************************************************/
 TabButton::~TabButton(void)
 {
+}
+
+
+/*************************************************************************
+Set target window
+*************************************************************************/
+void TabButton::setTargetWindow(Window* wnd)
+{
+    d_targetWindow = wnd;
+    // Copy initial text
+    setText(wnd->getText());
+    // Parent control will keep text up to date, since changes affect layout
 }
 
 
@@ -73,6 +87,21 @@ void TabButton::onClicked(WindowEventArgs& e)
 /*************************************************************************
 	Handler for mouse button release events
 *************************************************************************/
+void TabButton::onMouseButtonDown(MouseEventArgs& e)
+{
+    if (e.button == MiddleButton)
+    {
+        captureInput ();
+        e.handled = true;
+        d_dragging = true;
+
+        fireEvent(EventDragged, e, EventNamespace);
+    }
+
+	// default handling
+	ButtonBase::onMouseButtonDown(e);
+}
+
 void TabButton::onMouseButtonUp(MouseEventArgs& e)
 {
 	if ((e.button == LeftButton) && isPushed())
@@ -88,26 +117,39 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 				WindowEventArgs args(this);
 				onClicked(args);
 			}
-
 		}
 
 		e.handled = true;
-	}
+    }
+    else if (e.button == MiddleButton)
+    {
+        d_dragging = false;
+        releaseInput ();
+        e.handled = true;
+    }
 
 	// default handling
 	ButtonBase::onMouseButtonUp(e);
 }
 
-
-/*************************************************************************
-Set target window
-*************************************************************************/
-void TabButton::setTargetWindow(Window* wnd)
+void TabButton::onMouseMove(MouseEventArgs& e)
 {
-    d_targetWindow = wnd;
-    // Copy initial text
-    setText(wnd->getText());
-    // Parent control will keep text up to date, since changes affect layout
+    if (d_dragging)
+    {
+        fireEvent(EventDragged, e, EventNamespace);
+        e.handled = true;
+    }
+
+	// default handling
+	ButtonBase::onMouseMove(e);
+}
+
+void TabButton::onMouseWheel(MouseEventArgs& e)
+{
+    fireEvent(EventScrolled, e, EventNamespace);
+
+	// default handling
+	ButtonBase::onMouseMove(e);
 }
 
 } // End of  CEGUI namespace section

@@ -110,6 +110,8 @@ AC_CONFIG_FILES([Makefile
                  Samples/FirstWindow/src/Makefile
                  Samples/FontDemo/Makefile
                  Samples/FontDemo/src/Makefile
+                 Samples/TabControlDemo/Makefile
+                 Samples/TabControlDemo/src/Makefile
                  Samples/Makefile
                  Samples/common/Makefile
                  Samples/common/include/Makefile

@@ -396,11 +396,14 @@
 
     <!--
     ***************************************************
-        WindowsLook/CloseButton
+        WindowsLook/SystemButton
     ***************************************************
     -->
-    <WidgetLook name="WindowsLook/CloseButton">
+    <WidgetLook name="WindowsLook/SystemButton">
         <Property name="WantsMultiClickEvents" value="False" />
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -417,7 +420,7 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="CloseButtonNormal" />
+                <ImageProperty name="NormalImage" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -438,7 +441,7 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="CloseButtonHover" />
+                <ImageProperty name="HoverImage" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -459,7 +462,7 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image imageset="WindowsLook" image="CloseButtonPushed" />
+                <ImageProperty name="PushedImage" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -896,7 +899,7 @@
             </Area>
             <Property name="AlwaysOnTop" value="False" />
         </Child>
-        <Child type="WindowsLook/CloseButton" nameSuffix="__auto_closebutton__">
+        <Child type="WindowsLook/SystemButton" nameSuffix="__auto_closebutton__">
             <Area>
                 <Dim type="LeftEdge">
                     <UnifiedDim scale="1" type="LeftEdge">
@@ -936,6 +939,9 @@
                 </Dim>
             </Area>
             <Property name="AlwaysOnTop" value="True" />
+            <Property name="NormalImage" value="set:WindowsLook image:CloseButtonNormal" />
+            <Property name="HoverImage" value="set:WindowsLook image:CloseButtonHover" />
+            <Property name="PushedImage" value="set:WindowsLook image:CloseButtonPushed" />
         </Child>
         <ImagerySection name="withtitle_frame">
             <FrameComponent>
@@ -3739,7 +3745,7 @@
         <StateImagery name="NoFrameDisabledBackground">
             <Layer>
                 <Section look="WindowsLook/StaticShared" section="background_noframe">
-					<ColourRectProperty name="BackgroundColours" />
+                    <ColourRectProperty name="BackgroundColours" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -3762,7 +3768,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/StaticText">
-		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" />
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
@@ -3981,6 +3987,7 @@
         <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
         <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
         <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000010" redrawOnWrite="true" />
         <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <ImagerySection name="label">
             <TextComponent>
@@ -4013,7 +4020,7 @@
                 <Image type="Background" imageset="WindowsLook" image="TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
-        <ImagerySection name="selected">
+        <ImagerySection name="top_selected">
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -4022,11 +4029,27 @@
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <Image type="TopLeftCorner" imageset="WindowsLook" image="TabButtonUpperLeftSelected" />
+                <Image type="TopEdge" imageset="WindowsLook" image="TabButtonUpperSelected" />
                 <Image type="TopRightCorner" imageset="WindowsLook" image="TabButtonUpperRightSelected" />
                 <Image type="LeftEdge" imageset="WindowsLook" image="TabButtonLeftSelected" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TabButtonRightSelected" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TabButtonUpperSelected" />
                 <Image type="Background" imageset="WindowsLook" image="TabButtonMiddleSelected" />
+                <Image type="RightEdge" imageset="WindowsLook" image="TabButtonRightSelected" />
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="bot_selected">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image type="LeftEdge" imageset="WindowsLook" image="TabButtonLeftSelected" />
+                <Image type="Background" imageset="WindowsLook" image="TabButtonMiddleSelected" />
+                <Image type="RightEdge" imageset="WindowsLook" image="TabButtonRightSelected" />
+                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TabButtonLowerLeftSelected" />
+                <Image type="BottomEdge" imageset="WindowsLook" image="TabButtonLowerSelected" />
+                <Image type="BottomRightCorner" imageset="WindowsLook" image="TabButtonLowerRightSelected" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Normal">
@@ -4045,11 +4068,19 @@
                 </Section>
             </Layer>
         </StateImagery>
-        <StateImagery name="Selected">
+        <StateImagery name="TopSelected">
             <Layer>
-                <Section section="selected" />
+                <Section section="top_selected" />
                 <Section section="label">
-                    <ColourProperty name="PushedTextColour" />
+                    <ColourProperty name="SelectedTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="BottomSelected">
+            <Layer>
+                <Section section="bot_selected" />
+                <Section section="label">
+                    <ColourProperty name="SelectedTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -4066,25 +4097,77 @@
 
     <!--
     ***************************************************
-        WindowsLook/TabPane
+        WindowsLook/TabContentPane
     ***************************************************
     -->
-    <WidgetLook name="WindowsLook/TabPane">
+    <WidgetLook name="WindowsLook/TabContentPane">
+        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnwrite="true" />
+        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnwrite="true" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                    <Dim type="BottomEdge" >
+                        <ImageDim imageset="WindowsLook" image="TabContentPaneUpperLeft" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="EnableTop" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
                 </Area>
-                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TabPaneLowerLeft" />
-                <Image type="BottomRightCorner" imageset="WindowsLook" image="TabPaneLowerRight" />
-                <Image type="LeftEdge" imageset="WindowsLook" image="TabPaneLeft" />
-                <Image type="RightEdge" imageset="WindowsLook" image="TabPaneRight" />
-                <Image type="TopEdge" imageset="WindowsLook" image="TabControlButtonPaneFiller" />
-                <Image type="BottomEdge" imageset="WindowsLook" image="TabPaneLower" />
-                <Image type="Background" imageset="WindowsLook" image="TabPaneMiddle" />
+                <Image type="TopLeftCorner" imageset="WindowsLook" image="TabContentPaneUpperLeft" />
+                <Image type="TopEdge" imageset="WindowsLook" image="TabContentPaneTop" />
+                <Image type="TopRightCorner" imageset="WindowsLook" image="TabContentPaneUpperRight" />
+            </FrameComponent>
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" >
+                        <ImageDim imageset="WindowsLook" image="TabContentPaneUpperLeft" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="EnableTop" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="WindowsLook" image="TabContentPaneLowerLeft" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="EnableBottom" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+                <Image type="LeftEdge" imageset="WindowsLook" image="TabContentPaneLeft" />
+                <Image type="Background" imageset="WindowsLook" image="TabContentPaneMiddle" />
+                <Image type="RightEdge" imageset="WindowsLook" image="TabContentPaneRight" />
+            </FrameComponent>
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="WindowsLook" image="TabContentPaneLowerLeft" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="EnableBottom" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image type="BottomLeftCorner" imageset="WindowsLook" image="TabContentPaneLowerLeft" />
+                <Image type="BottomEdge" imageset="WindowsLook" image="TabContentPaneLower" />
+                <Image type="BottomRightCorner" imageset="WindowsLook" image="TabContentPaneLowerRight" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4094,7 +4177,92 @@
         </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+
+    <!--
+    ***************************************************
+        WindowsLook/TabButtonPane
+    ***************************************************
+    -->
+    <WidgetLook name="WindowsLook/TabButtonPane">
+        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnwrite="true" />
+        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnwrite="true" />
+        <ImagerySection name="normal">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="BottomEdge" >
+                        <ImageDim imageset="WindowsLook" image="TabHorizontalTopFiller" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="EnableTop" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                </Area>
+                <Image type="TopEdge" imageset="WindowsLook" image="TabHorizontalTopFiller" />
+            </FrameComponent>
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" >
+                        <ImageDim imageset="WindowsLook" image="TabHorizontalTopFiller" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="EnableTop" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="WindowsLook" image="TabHorizontalBottomFiller" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="EnableBottom" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+            </FrameComponent>
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="WindowsLook" image="TabHorizontalBottomFiller" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="EnableBottom" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <Image type="BottomEdge" imageset="WindowsLook" image="TabHorizontalBottomFiller" />
+            </FrameComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
                 <Section section="normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
             </Layer>
         </StateImagery>
     </WidgetLook>
@@ -4107,21 +4275,130 @@
     -->
     <WidgetLook name="WindowsLook/TabControl">
         <Property name="TabButtonType" value="WindowsLook/TabButton" />
-        <Child  type="WindowsLook/TabPane" nameSuffix="__auto_TabPane__">
+        <Property name="TabTextPadding" value="{0,4}" />
+        <Child  type="WindowsLook/TabContentPane" nameSuffix="__auto_TabPane__">
             <Area>
-                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge"><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="TopEdge">
+                    <PropertyDim widget="__auto_TabPane__" name="EnableBottom">
+                        <DimOperator op="Multiply">
+                            <PropertyDim name="TabHeight" type="Height" />
+                        </DimOperator>
+                    </PropertyDim>
+                </Dim>
+                <Dim type="Height">
+                    <UnifiedDim scale="1" type="Height">
+                        <DimOperator op="Subtract">
+                            <PropertyDim name="TabHeight" type="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
             </Area>
         </Child>
-        <Child  type="DefaultWindow" nameSuffix="__auto_TabPane__Buttons">
+        <Child  type="WindowsLook/TabButtonPane" nameSuffix="__auto_TabPane__Buttons">
             <Area>
-                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                <Dim type="RightEdge"><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="TopEdge">
+                    <PropertyDim widget="__auto_TabPane__Buttons" name="EnableTop">
+                        <DimOperator op="Multiply">
+                            <UnifiedDim scale="1" type="Height">
+                                <DimOperator op="Subtract">
+                                    <PropertyDim name="TabHeight" type="Height" />
+                                </DimOperator>
+                            </UnifiedDim>
+                        </DimOperator>
+                    </PropertyDim>
+                </Dim>
+                <Dim type="Height"><PropertyDim name="TabHeight" type="Height" /></Dim>
             </Area>
+        </Child>
+        <Child type="WindowsLook/SystemButton" nameSuffix="__auto_TabPane__ScrollLeft">
+            <Area>
+                <Dim type="LeftEdge"><AbsoluteDim value="6" /></Dim>
+                <Dim type="TopEdge">
+                    <WidgetDim widget="__auto_TabPane__" dimension="TopEdge">
+                        <DimOperator op="Add">
+                            <AbsoluteDim value="4">
+                                <DimOperator op="Add">
+                                    <PropertyDim widget="__auto_TabPane__Buttons" name="EnableTop">
+                                        <DimOperator op="Multiply">
+                                            <WidgetDim widget="__auto_TabPane__" dimension="Height">
+                                                <DimOperator op="Subtract">
+                                                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width">
+                                                        <DimOperator op="Add">
+                                                            <AbsoluteDim value="6" />
+                                                        </DimOperator>
+                                                    </ImageDim>
+                                                </DimOperator>
+                                            </WidgetDim>
+                                        </DimOperator>
+                                    </PropertyDim>
+                                </DimOperator>
+                            </AbsoluteDim>
+                        </DimOperator>
+                    </WidgetDim>
+                </Dim>
+                <Dim type="Width">
+                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width" />
+                </Dim>
+                <Dim type="Height">
+                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Height" />
+                </Dim>
+            </Area>
+            <Property name="AlwaysOnTop" value="True" />
+            <Property name="NormalImage" value="set:WindowsLook image:TabButtonScrollLeftNormal" />
+            <Property name="HoverImage" value="set:WindowsLook image:TabButtonScrollLeftHover" />
+            <Property name="PushedImage" value="set:WindowsLook image:TabButtonScrollLeftHover" />
+        </Child>
+        <Child type="WindowsLook/SystemButton" nameSuffix="__auto_TabPane__ScrollRight">
+            <Area>
+                <Dim type="LeftEdge">
+                    <UnifiedDim scale="1" type="Width">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width">
+                                <DimOperator op="Add">
+                                    <AbsoluteDim value="6" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="TopEdge">
+                    <WidgetDim widget="__auto_TabPane__" dimension="TopEdge">
+                        <DimOperator op="Add">
+                            <AbsoluteDim value="4">
+                                <DimOperator op="Add">
+                                    <PropertyDim widget="__auto_TabPane__Buttons" name="EnableTop">
+                                        <DimOperator op="Multiply">
+                                            <WidgetDim widget="__auto_TabPane__" dimension="Height">
+                                                <DimOperator op="Subtract">
+                                                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width">
+                                                        <DimOperator op="Add">
+                                                            <AbsoluteDim value="6" />
+                                                        </DimOperator>
+                                                    </ImageDim>
+                                                </DimOperator>
+                                            </WidgetDim>
+                                        </DimOperator>
+                                    </PropertyDim>
+                                </DimOperator>
+                            </AbsoluteDim>
+                        </DimOperator>
+                    </WidgetDim>
+                </Dim>
+                <Dim type="Width">
+                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width" />
+                </Dim>
+                <Dim type="Height"><AbsoluteDim value="0" />
+                    <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Height" />
+                </Dim>
+            </Area>
+            <Property name="AlwaysOnTop" value="True" />
+            <Property name="NormalImage" value="set:WindowsLook image:TabButtonScrollRightNormal" />
+            <Property name="HoverImage" value="set:WindowsLook image:TabButtonScrollRightHover" />
+            <Property name="PushedImage" value="set:WindowsLook image:TabButtonScrollRightHover" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />

@@ -84,6 +84,12 @@ public:
 	static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
+	enum TabPanePosition
+	{
+		Top,
+		Bottom
+	};
+
 	/*************************************************************************
 		Constants
 	*************************************************************************/
@@ -96,6 +102,9 @@ public:
     static const String ContentPaneNameSuffix; //!< Widget name suffix for the tab content pane component.
     static const String TabButtonNameSuffix;   //!< Widget name suffix for the tab button components.
     static const String TabButtonPaneNameSuffix; //!< Widget name suffix for the tab button pane component.
+    static const String ButtonScrollLeftSuffix;//!< Widget name suffix for the scroll tabs to right pane component.
+    static const String ButtonScrollRightSuffix; //!< Widget name suffix for the scroll tabs to left pane component.
+
 
 	/*************************************************************************
 		Accessor Methods
@@ -109,17 +118,35 @@ public:
 	*/
 	size_t	getTabCount(void) const;
 
+	/*!
+	\brief
+		Return the positioning of the tab pane.
+	\return
+		The positioning of the tab window within the tab control.
+	*/
+	TabPanePosition getTabPanePosition(void) const
+	{ return d_tabPanePos; }
+
+	/*!
+	\brief
+		Change the positioning of the tab button pane.
+	\param pos
+		The new positioning of the tab pane
+	*/
+	void	setTabPanePosition(TabPanePosition pos);
 
     /*!
     \brief
         Set the selected tab by the name of the root window within it.
-    \exception	InvalidRequestException	thrown if \a index is out of range.
+		Also ensures that the tab is made visible (tab pane is scrolled if required).
+    \exception	InvalidRequestException	thrown if there's no tab named \a name.
     */
     void    setSelectedTab(const String &name);
 
     /*!
     \brief
         Set the selected tab by the ID of the root window within it.
+		Also ensures that the tab is made visible (tab pane is scrolled if required).
     \exception	InvalidRequestException	thrown if \a index is out of range.
     */
     void    setSelectedTab(uint ID);
@@ -127,9 +154,31 @@ public:
     /*!
     \brief
         Set the selected tab by the index position in the tab control.
+		Also ensures that the tab is made visible (tab pane is scrolled if required).
     \exception	InvalidRequestException	thrown if \a index is out of range.
     */
     void    setSelectedTabAtIndex(size_t index);
+
+    /*!
+    \brief
+        Ensure that the tab by the name of the root window within it is visible.
+    \exception	InvalidRequestException	thrown if there's no tab named \a name.
+    */
+    void    makeTabVisible(const String &name);
+
+    /*!
+    \brief
+        Ensure that the tab by the ID of the root window within it is visible.
+    \exception	InvalidRequestException	thrown if \a index is out of range.
+    */
+    void    makeTabVisible(uint ID);
+
+    /*!
+    \brief
+        Ensure that the tab by the index position in the tab control is visible.
+    \exception	InvalidRequestException	thrown if \a index is out of range.
+    */
+    void    makeTabVisibleAtIndex(size_t index);
 
     /*!
 	\brief
@@ -326,6 +375,15 @@ protected:
     virtual void selectTab_impl(Window* wnd);
 
 
+    /*!
+    \brief
+        Internal implementation of make tab visible.
+    \param wnd
+        Pointer to a Window which is the root of the tab content to make visible
+    */
+    virtual void makeTabVisible_impl(Window* wnd);
+
+
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
@@ -412,9 +470,11 @@ protected:
 	*************************************************************************/
     UDim        d_tabHeight;        //!< The height of the tabs in pixels
     UDim        d_tabPadding;       //!< The padding of the tabs relative to parent
-    size_t      d_nextTabIndex;     //!< The index to give the next tab 
-    typedef std::map<size_t, TabButton*> TabButtonIndexMap; 
-    TabButtonIndexMap d_tabButtonIndexMap;  //!< Sorting for tabs
+    typedef std::vector<TabButton*> TabButtonVector;
+    TabButtonVector d_tabButtonVector;  //!< Sorting for tabs
+    float       d_firstTabOffset;   //!< The offset in pixels of the first tab
+    TabPanePosition d_tabPanePos;   //!< The position of the tab pane
+    float       d_btGrabPos;        //!< The position on the button tab where user grabbed
     /*************************************************************************
     Abstract Implementation Functions (must be provided by derived class)
     *************************************************************************/
@@ -432,21 +492,18 @@ protected:
     \brief
         Calculate the correct position and size of a tab button, based on the
         index it is due to be placed at.
-    \param btn
-        Pointer to a button to calculate the size and position for. This button
-        will be updated in place with these metrics.
-    \param targetIndex
-        The index at which the tab is/will be placed. Tabs must exist for all the
-        indexes before this.
+    \param index
+        The index of the tab button
     */
-    void calculateTabButtonSizePosition(TabButton* btn, size_t targetIndex);
+    void calculateTabButtonSizePosition(int index);
 
 protected:
 	/*************************************************************************
 		Static Properties for this class
 	*************************************************************************/
-	static TabControlProperties::TabHeight			d_tabHeightProperty;
-    static TabControlProperties::TabTextPadding			d_tabTextPaddingProperty;
+    static TabControlProperties::TabHeight       d_tabHeightProperty;
+    static TabControlProperties::TabTextPadding  d_tabTextPaddingProperty;
+    static TabControlProperties::TabPanePosition d_tabPanePosition;
 
     /*************************************************************************
 		Private methods
@@ -461,6 +518,9 @@ protected:
     *************************************************************************/
     bool handleContentWindowTextChanged(const EventArgs& args);
     bool handleTabButtonClicked(const EventArgs& args);
+    bool handleScrollPane(const EventArgs& e);
+    bool handleDraggedPane(const EventArgs& e);
+    bool handleWheeledPane(const EventArgs& e);
 };
 
 

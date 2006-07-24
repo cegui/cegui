@@ -10,4 +10,4 @@ Demo6_LDADD = -lCEGUIBase -lCEGUISampleHelper
 
 
 install-exec-local:
-	$(INSTALL_PROGRAM) .libs/Demo6 $(top_builddir)/Samples/bin/Demo6
+	$(LN_S) -f `pwd`/.libs/Demo6 $(top_builddir)/Samples/bin/Demo6

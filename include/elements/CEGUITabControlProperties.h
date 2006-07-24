@@ -88,6 +88,28 @@ public:
     void	set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+Property to query/set the position of the button pane in tab control.
+
+\par Usage:
+- Name: TabPanePosition
+- Format: "top" | "bottom"
+
+*/
+class TabPanePosition : public Property
+{
+public:
+    TabPanePosition() : Property(
+		"TabPanePosition", 
+		"Property to get/set the position of the buttons pane.",
+		"top")
+    {}
+
+    String	get(const PropertyReceiver* receiver) const;
+    void	set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  TabControlProperties namespace section
 
 } // End of  CEGUI namespace section

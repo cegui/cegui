@@ -29,6 +29,7 @@
 #include "falagard/CEGUIFalWidgetLookManager.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "elements/CEGUITabButton.h"
+#include "elements/CEGUITabControl.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -46,33 +47,30 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-        bool norm = false;
+		TabControl* tc = static_cast<TabControl*>(w->getParent()->getParent());
+
         String state;
+		String prefix((tc->getTabPanePosition() == TabControl::Top) ? "Top" : "Bottom");
 
 		if (w->isDisabled())
-		{
 		    state = "Disabled";
-		}
+		else if (w->isSelected())
+		    state = "Selected";
 		else if (w->isPushed())
-		{
 		    state = "Pushed";
-		}
 		else if (w->isHovering())
-		{
 		    state = "Hover";
-		}
 		else
-		{
 		    state = "Normal";
-		    norm = true;
-		}
 
-        if (!norm && !wlf.isStateImageryPresent(state))
+        if (!wlf.isStateImageryPresent(prefix + state))
         {
             state = "Normal";
+			if (!wlf.isStateImageryPresent(prefix + state))
+				prefix = "";
         }
 
-        wlf.getStateImagery(state).render(*w);
+        wlf.getStateImagery(prefix + state).render(*w);
     }
 
 } // End of  CEGUI namespace section

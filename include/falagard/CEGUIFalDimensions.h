@@ -455,8 +455,11 @@ namespace CEGUI
         \param property
             String object holding the name of the property this PropertyDim represents the value of.
             The property named should represent a simple float value.
+
+        \param type
+            DimensionType value indicating what dimension named property represents.
         */
-        PropertyDim(const String& name, const String& property);
+        PropertyDim(const String& name, const String& property, DimensionType type);
 
     protected:
         // Implementation of the base class interface
@@ -468,7 +471,8 @@ namespace CEGUI
 
     private:
         String d_property;      //!< Propery that this object represents.
-        String  d_childSuffix;  //!< String to hold the name suffix of the child to access the property form.
+        String d_childSuffix;   //!< String to hold the name suffix of the child to access the property form.
+        DimensionType d_type;   //!< String to hold the type of dimension
     };
 
     /*!

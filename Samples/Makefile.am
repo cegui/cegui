@@ -6,7 +6,8 @@ SUBDIRS = common \
           Demo8 \
           FirstWindow \
           FalagardDemo1 \
-          FontDemo
+          FontDemo \
+          TabControlDemo
 endif
 
 EXTRA_DIST = ReadMe.txt \

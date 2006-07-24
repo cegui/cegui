@@ -63,7 +63,7 @@ class FontDim : public BaseDim
 ******************************************************************************/
 class PropertyDim : public BaseDim
 {
-  PropertyDim(string name, string property);
+  PropertyDim(string name, string property, DimensionType type);
 };
 
 /******************************************************************************

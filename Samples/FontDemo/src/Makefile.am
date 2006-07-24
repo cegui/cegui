@@ -7,4 +7,4 @@ FontDemo_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/common/src
 FontDemo_LDADD = -lCEGUIBase -lCEGUISampleHelper
 
 install-exec-local:
-	$(INSTALL_PROGRAM) .libs/FontDemo $(top_builddir)/Samples/bin/FontDemo
+	$(LN_S) -f `pwd`/.libs/FontDemo $(top_builddir)/Samples/bin/FontDemo

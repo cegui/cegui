@@ -35,6 +35,10 @@
 #include <cstdio>
 #include <sstream>
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -43,7 +47,7 @@ float PropertyHelper::stringToFloat(const String& str)
 	using namespace std;
 
 	float val = 0;
-	sscanf(str.c_str(), " %f", &val);
+	sscanf(str.c_str(), " %g", &val);
 
 	return val;
 }
@@ -90,7 +94,7 @@ Size PropertyHelper::stringToSize(const String& str)
 	using namespace std;
 
 	Size val(0,0);
-	sscanf(str.c_str(), " w:%f h:%f", &val.d_width, &val.d_height);
+	sscanf(str.c_str(), " w:%g h:%g", &val.d_width, &val.d_height);
 
 	return val;
 }
@@ -101,7 +105,7 @@ Point PropertyHelper::stringToPoint(const String& str)
 	using namespace std;
 
 	Point val(0,0) ;
-	sscanf(str.c_str(), " x:%f y:%f", &val.d_x, &val.d_y);
+	sscanf(str.c_str(), " x:%g y:%g", &val.d_x, &val.d_y);
 
 	return val;
 }
@@ -112,7 +116,7 @@ Rect PropertyHelper::stringToRect(const String& str)
 	using namespace std;
 
 	Rect val(0, 0, 0, 0);
-	sscanf(str.c_str(), " l:%f t:%f r:%f b:%f", &val.d_left, &val.d_top, &val.d_right, &val.d_bottom);
+	sscanf(str.c_str(), " l:%g t:%g r:%g b:%g", &val.d_left, &val.d_top, &val.d_right, &val.d_bottom);
 
 	return val;
 }
@@ -151,7 +155,7 @@ UDim PropertyHelper::stringToUDim(const String& str)
 	using namespace std;
 
 	UDim ud;
-	sscanf(str.c_str()," {%f,%f}", &ud.d_scale, &ud.d_offset);
+	sscanf(str.c_str()," {%g,%g}", &ud.d_scale, &ud.d_offset);
 
 	return ud;
 }
@@ -162,7 +166,7 @@ UVector2 PropertyHelper::stringToUVector2(const String& str)
 	using namespace std;
 
 	UVector2 uv;
-	sscanf(str.c_str(), " {{%f,%f},{%f,%f}}", &uv.d_x.d_scale,&uv.d_x.d_offset, &uv.d_y.d_scale,&uv.d_y.d_offset);
+	sscanf(str.c_str(), " {{%g,%g},{%g,%g}}", &uv.d_x.d_scale,&uv.d_x.d_offset, &uv.d_y.d_scale,&uv.d_y.d_offset);
 
 	return uv;
 }
@@ -175,7 +179,7 @@ URect PropertyHelper::stringToURect(const String& str)
 	URect ur;
 	sscanf(
 		str.c_str(),
-		" {{%f,%f},{%f,%f},{%f,%f},{%f,%f}}",
+		" {{%g,%g},{%g,%g},{%g,%g},{%g,%g}}",
 		&ur.d_min.d_x.d_scale, &ur.d_min.d_x.d_offset,
 		&ur.d_min.d_y.d_scale, &ur.d_min.d_y.d_offset,
 		&ur.d_max.d_x.d_scale, &ur.d_max.d_x.d_offset,
@@ -188,46 +192,52 @@ URect PropertyHelper::stringToURect(const String& str)
 
 String PropertyHelper::floatToString(float val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[64];
-	sprintf(buff, "%f", val);
+	snprintf(buff, sizeof (buff), "%g", val);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0 // slower
     std::ostringstream iss;
     iss << val;
     return String(iss.str());
+#endif
 }
 
 
 String PropertyHelper::uintToString(uint val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[64];
-	sprintf(buff, "%u", val);
+	snprintf(buff, sizeof (buff), "%u", val);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0 // slower
     std::ostringstream iss;
     iss << val;
     return String(iss.str());
+#endif
 }
 
 
 String PropertyHelper::intToString(int val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[64];
-	sprintf(buff, "%d", val);
+	snprintf(buff, sizeof (buff), "%d", val);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0 // slower
     std::ostringstream iss;
     iss << val;
     return String(iss.str());
+#endif
 }
 
 
@@ -247,46 +257,53 @@ String PropertyHelper::boolToString(bool val)
 
 String PropertyHelper::sizeToString(const Size& val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[128];
-	sprintf(buff, "w:%f h:%f", val.d_width, val.d_height);
+	snprintf(buff, sizeof (buff), "w:%g h:%g", val.d_width, val.d_height);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0 // slower
     std::ostringstream iss;
     iss << "w:" << val.d_width << " h:" << val.d_height;
     return String(iss.str());
+#endif
 }
 
 
 String PropertyHelper::pointToString(const Point& val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[128];
-	sprintf(buff, "x:%f y:%f", val.d_x, val.d_y);
+	snprintf(buff, sizeof (buff), "x:%g y:%g", val.d_x, val.d_y);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0 // slower
     std::ostringstream iss;
     iss << "x:" << val.d_x << " y:" << val.d_y;
     return String(iss.str());
+#endif
 }
 
 
 String PropertyHelper::rectToString(const Rect& val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[256];
-	sprintf(buff, "l:%f t:%f r:%f b:%f", val.d_left, val.d_top, val.d_right, val.d_bottom);
+	snprintf(buff, sizeof (buff), "l:%g t:%g r:%g b:%g",
+		     val.d_left, val.d_top, val.d_right, val.d_bottom);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0 // slower
     std::ostringstream iss;
     iss << "l:" << val.d_left << " t:" << val.d_top << " r:" << val.d_right << " b:" << val.d_bottom;
     return String(iss.str());
+#endif
 }
 
 
@@ -303,28 +320,32 @@ String PropertyHelper::imageToString(const Image* const val)
 
 String PropertyHelper::udimToString(const UDim& val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[128];
-	sprintf(buff, "{%f,%f}", val.d_scale, val.d_offset);
+	snprintf(buff, sizeof (buff), "{%g,%g}", val.d_scale, val.d_offset);
 
-	return String(buff);*/
+	return String(buff);
 
+#if 0
     std::ostringstream iss;
     iss << '{' << val.d_scale << ',' << val.d_offset << '}';
     return String(iss.str());
+#endif
 }
 
 
 String PropertyHelper::uvector2ToString(const UVector2& val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[256];
-	sprintf(buff, "{{%f,%f},{%f,%f}}", val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
+	snprintf(buff, sizeof (buff), "{{%g,%g},{%g,%g}}",
+	         val.d_x.d_scale, val.d_x.d_offset, val.d_y.d_scale, val.d_y.d_offset);
 
-    return String(buff);*/
+    return String(buff);
 
+#if 0
     std::ostringstream iss;
 
     iss << "{{"
@@ -332,25 +353,24 @@ String PropertyHelper::uvector2ToString(const UVector2& val)
         << val.d_y.d_scale << ',' << val.d_y.d_offset << "}}";
 
 	return String(iss.str());
+#endif
 }
 
 
 String PropertyHelper::urectToString(const URect& val)
 {
-	/*using namespace std;
+	using namespace std;
 
 	char buff[512];
-	sprintf(
-		buff,
-		"{{%f,%f},{%f,%f},{%f,%f},{%f,%f}}",
-		val.d_min.d_x.d_scale,val.d_min.d_x.d_offset,
-		val.d_min.d_y.d_scale,val.d_min.d_y.d_offset,
-		val.d_max.d_x.d_scale,val.d_max.d_x.d_offset,
-		val.d_max.d_y.d_scale,val.d_max.d_y.d_offset
-	);
+	snprintf(buff, sizeof (buff), "{{%g,%g},{%g,%g},{%g,%g},{%g,%g}}",
+             val.d_min.d_x.d_scale,val.d_min.d_x.d_offset,
+             val.d_min.d_y.d_scale,val.d_min.d_y.d_offset,
+             val.d_max.d_x.d_scale,val.d_max.d_x.d_offset,
+             val.d_max.d_y.d_scale,val.d_max.d_y.d_offset);
 
-    return String(buff);*/
+    return String(buff);
 
+#if 0
     std::ostringstream iss;
 
     iss << "{{"
@@ -360,6 +380,7 @@ String PropertyHelper::urectToString(const URect& val)
         << val.d_max.d_y.d_scale << ',' << val.d_max.d_y.d_offset << "}}";
 
 	return String(iss.str());
+#endif
 }
 
 
@@ -368,7 +389,7 @@ String PropertyHelper::colourToString(const colour& val)
 	using namespace std;
 
 	char buff[16];
-	sprintf(buff, "%.8X", val.getARGB());
+	snprintf(buff, sizeof (buff), "%08X", HOST_TO_LE32 (val.getARGB()));
 
 	return String(buff);
 }
@@ -378,11 +399,10 @@ colour PropertyHelper::stringToColour(const String& str)
 {
 	using namespace std;
 
-	argb_t val = 0xFF000000;
-	sscanf(str.c_str(), " %8X", &val);
+	argb_t val = HOST_TO_LE32 (0xFF000000);
+	sscanf(str.c_str(), " %X", &val);
 
-	return colour(val);
-
+	return colour(LE32_TO_HOST (val));
 }
 
 
@@ -391,7 +411,16 @@ String PropertyHelper::colourRectToString(const ColourRect& val)
 	using namespace std;
 
 	char buff[64];
-	sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
+	if ((val.d_top_left.getARGB() == val.d_top_right.getARGB()) &&
+		(val.d_top_right.getARGB() == val.d_bottom_left.getARGB()) &&
+		(val.d_bottom_left.getARGB() == val.d_bottom_right.getARGB()))
+		snprintf (buff, sizeof (buff), "%08X", HOST_TO_LE32 (val.d_top_left.getARGB()));
+	else
+		sprintf(buff, "tl:%08X tr:%08X bl:%08X br:%08X",
+		    HOST_TO_LE32 (val.d_top_left.getARGB()),
+			HOST_TO_LE32 (val.d_top_right.getARGB()),
+			HOST_TO_LE32 (val.d_bottom_left.getARGB()),
+			HOST_TO_LE32 (val.d_bottom_right.getARGB()));
 
 	return String(buff);
 }
@@ -401,10 +430,17 @@ ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
 	using namespace std;
 
-	argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
-	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &topLeft, &topRight, &bottomLeft, &bottomRight);
+	argb_t topLeft = HOST_TO_LE32 (0xFF000000),
+	       topRight = HOST_TO_LE32 (0xFF000000),
+		   bottomLeft = HOST_TO_LE32 (0xFF000000),
+		   bottomRight = HOST_TO_LE32 (0xFF000000);
+	if (sscanf(str.c_str(), " tl:%X tr:%X bl:%X br:%X",
+	           &topLeft, &topRight, &bottomLeft, &bottomRight) == 0)
+		if (sscanf(str.c_str(), " %X", &topLeft) == 1)
+			topRight = bottomLeft = bottomRight = topLeft;
 
-	return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
+	return ColourRect(LE32_TO_HOST (topLeft), LE32_TO_HOST (topRight),
+	                  LE32_TO_HOST (bottomLeft), LE32_TO_HOST (bottomRight));
 }
 
 } // End of  CEGUI namespace section

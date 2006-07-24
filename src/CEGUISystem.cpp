@@ -643,6 +643,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = 0;
 	ma.clickCount = 0;
+	ma.button = NoButton;
 
 	// move the mouse cursor & update position in args.
 	mouse.offsetPosition(ma.moveDelta);
