@@ -69,7 +69,7 @@ class PropertyDim : public BaseDim
 /******************************************************************************
   Dimension
 ******************************************************************************/
-class Dimension : public BaseDim
+class Dimension
 {
   const BaseDim& getBaseDimension() const;
   void setBaseDimension(const BaseDim& dim);
@@ -86,7 +86,7 @@ class Dimension : public BaseDim
 /******************************************************************************
   ComponentArea 
 ******************************************************************************/
-class ComponentArea : public BaseDim 
+class ComponentArea
 {
   Rect getPixelRect(const Window& wnd) const;
   Rect getPixelRect(const Window& wnd, const Rect& container) const;
@@ -96,6 +96,7 @@ class ComponentArea : public BaseDim
   void setAreaPropertySource(string property);
   Dimension d_left;
   Dimension d_top;
-  Dimension d_right_or_width; 
-  Dimension d_bottom_or_height; 
+  Dimension d_right_or_width;
+  Dimension d_bottom_or_height;
+  ComponentArea();
 };

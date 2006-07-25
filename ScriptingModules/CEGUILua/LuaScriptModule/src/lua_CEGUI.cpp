@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 07/24/06 23:19:30.
+** Generated automatically by tolua++-1.0.92 on 07/25/06 06:53:52.
 */
 
 #ifndef __cplusplus
@@ -96,6 +96,13 @@ static int tolua_collect_CEGUI__WidgetLookManager (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
+{
+ CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_CEGUI__ColourRect (lua_State* tolua_S)
 {
  CEGUI::ColourRect* self = (CEGUI::ColourRect*) tolua_tousertype(tolua_S,1,0);
@@ -103,9 +110,9 @@ static int tolua_collect_CEGUI__ColourRect (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
+static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
 {
- CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::SectionSpecification* self = (CEGUI::SectionSpecification*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -131,16 +138,16 @@ static int tolua_collect_CEGUI__EventConnection (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ImagerySection (lua_State* tolua_S)
 {
- CEGUI::SectionSpecification* self = (CEGUI::SectionSpecification*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ImagerySection* self = (CEGUI::ImagerySection*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__ImagerySection (lua_State* tolua_S)
+static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
 {
- CEGUI::ImagerySection* self = (CEGUI::ImagerySection*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -166,16 +173,16 @@ static int tolua_collect_CEGUI__NamedArea (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
 {
- CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ImageDim* self = (CEGUI::ImageDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
 {
- CEGUI::ImageDim* self = (CEGUI::ImageDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::FrameComponent* self = (CEGUI::FrameComponent*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -222,16 +229,16 @@ static int tolua_collect_CEGUI__ActivationEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyLinkDefinition (lua_State* tolua_S)
 {
- CEGUI::FrameComponent* self = (CEGUI::FrameComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyLinkDefinition* self = (CEGUI::PropertyLinkDefinition*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyLinkDefinition (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
 {
- CEGUI::PropertyLinkDefinition* self = (CEGUI::PropertyLinkDefinition*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyInitialiser* self = (CEGUI::PropertyInitialiser*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -250,9 +257,9 @@ static int tolua_collect_CEGUI__EventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyDefinition (lua_State* tolua_S)
 {
- CEGUI::PropertyInitialiser* self = (CEGUI::PropertyInitialiser*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyDefinition* self = (CEGUI::PropertyDefinition*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -264,9 +271,9 @@ static int tolua_collect_CEGUI__UVector2 (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyDefinition (lua_State* tolua_S)
+static int tolua_collect_CEGUI__ComponentArea (lua_State* tolua_S)
 {
- CEGUI::PropertyDefinition* self = (CEGUI::PropertyDefinition*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::ComponentArea* self = (CEGUI::ComponentArea*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -40239,6 +40246,62 @@ static int tolua_set_CEGUI__ComponentArea_d_bottom_or_height(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: new of class  CEGUI::ComponentArea */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ComponentArea_new00
+static int tolua_CEGUI_CEGUI_ComponentArea_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::ComponentArea",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  CEGUI::ComponentArea* tolua_ret = (CEGUI::ComponentArea*)  new CEGUI::ComponentArea();
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ComponentArea");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  CEGUI::ComponentArea */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ComponentArea_new00_local
+static int tolua_CEGUI_CEGUI_ComponentArea_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::ComponentArea",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  CEGUI::ComponentArea* tolua_ret = (CEGUI::ComponentArea*)  new CEGUI::ComponentArea();
+ tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::ComponentArea");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getName of class  CEGUI::NamedArea */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_NamedArea_getName00
 static int tolua_CEGUI_CEGUI_NamedArea_getName00(lua_State* tolua_S)
@@ -48259,9 +48322,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_PropertyDim_new00_local);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
-  tolua_cclass(tolua_S,"Dimension","CEGUI::Dimension","CEGUI::BaseDim",tolua_collect_CEGUI__Dimension);
+  tolua_cclass(tolua_S,"Dimension","CEGUI::Dimension","",tolua_collect_CEGUI__Dimension);
   #else
-  tolua_cclass(tolua_S,"Dimension","CEGUI::Dimension","CEGUI::BaseDim",NULL);
+  tolua_cclass(tolua_S,"Dimension","CEGUI::Dimension","",NULL);
   #endif
   tolua_beginmodule(tolua_S,"Dimension");
    tolua_function(tolua_S,"getBaseDimension",tolua_CEGUI_CEGUI_Dimension_getBaseDimension00);
@@ -48278,7 +48341,11 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_Dimension_new02_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_Dimension_new02_local);
   tolua_endmodule(tolua_S);
-  tolua_cclass(tolua_S,"ComponentArea","CEGUI::ComponentArea","CEGUI::BaseDim",NULL);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"ComponentArea","CEGUI::ComponentArea","",tolua_collect_CEGUI__ComponentArea);
+  #else
+  tolua_cclass(tolua_S,"ComponentArea","CEGUI::ComponentArea","",NULL);
+  #endif
   tolua_beginmodule(tolua_S,"ComponentArea");
    tolua_function(tolua_S,"getPixelRect",tolua_CEGUI_CEGUI_ComponentArea_getPixelRect00);
    tolua_function(tolua_S,"getPixelRect",tolua_CEGUI_CEGUI_ComponentArea_getPixelRect01);
@@ -48289,6 +48356,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"d_top",tolua_get_CEGUI__ComponentArea_d_top,tolua_set_CEGUI__ComponentArea_d_top);
    tolua_variable(tolua_S,"d_right_or_width",tolua_get_CEGUI__ComponentArea_d_right_or_width,tolua_set_CEGUI__ComponentArea_d_right_or_width);
    tolua_variable(tolua_S,"d_bottom_or_height",tolua_get_CEGUI__ComponentArea_d_bottom_or_height,tolua_set_CEGUI__ComponentArea_d_bottom_or_height);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_ComponentArea_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_ComponentArea_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_ComponentArea_new00_local);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"NamedArea","CEGUI::NamedArea","",tolua_collect_CEGUI__NamedArea);
