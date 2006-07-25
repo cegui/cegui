@@ -1,5 +1,5 @@
 INCLUDES = -I$(top_srcdir)/include \
-           -I$(top_srcdir)/ScriptingModules/CEGUILua/lua_and_tolua++/include \
+           -I$(top_srcdir)/ScriptingModules/CEGUILua/tolua++ \
            -I$(top_srcdir)/ScriptingModules/CEGUILua/LuaScriptModule/include
 lib_LTLIBRARIES = libCEGUILuaScriptModule.la
 

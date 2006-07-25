@@ -124,9 +124,7 @@ AC_CONFIG_FILES([Makefile
                  ScriptingModules/CEGUILua/LuaScriptModule/package/Makefile
                  ScriptingModules/CEGUILua/LuaScriptModule/src/Makefile
                  ScriptingModules/CEGUILua/Makefile
-                 ScriptingModules/CEGUILua/lua_and_tolua++/Makefile
-                 ScriptingModules/CEGUILua/lua_and_tolua++/include/Makefile
-                 ScriptingModules/CEGUILua/lua_and_tolua++/src/Makefile
+                 ScriptingModules/CEGUILua/tolua++/Makefile
                  ScriptingModules/Makefile
                  WindowRendererSets/Makefile
                  WindowRendererSets/Falagard/Makefile
