@@ -495,6 +495,8 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
 
     AC_ARG_ENABLE([lua-module], AC_HELP_STRING([--disable-lua-module], [Disables building of the Lua scripting module.]),
                 [cegui_with_lua=$enableval], [cegui_with_lua=yes])
+    AC_ARG_ENABLE([toluacegui], AC_HELP_STRING([--enable-toluacegui], [Enables building of our custom tolua++ based binding generator tool, tolua++cegui.]),
+                [cegui_build_toluatool=$enableval], [cegui_build_toluatool=no])
 
     if test x$cegui_found_lua = xyes && test x$cegui_with_lua = xyes; then
         cegui_with_lua=yes
@@ -508,7 +510,14 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
         AC_MSG_NOTICE([Building of Lua scripting module is disabled])
     fi
 
+    if test x$cegui_build_toluatool = xyes; then
+        AC_MSG_NOTICE([Building of tolua++cegui generator tool is enabled.])
+    else
+        AC_MSG_NOTICE([Building of tolua++cegui generator tool is disabled.])
+    fi
+
     AM_CONDITIONAL([CEGUI_BUILD_LUA_MODULE], [test x$cegui_with_lua = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_TOLUACEGUI], [test x$cegui_build_toluatool = xyes])
     AC_SUBST(Lua_CFLAGS)
     AC_SUBST(Lua_LIBS)
 ])

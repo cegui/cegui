@@ -4,5 +4,5 @@ added support for exception handling.
 The lines that involve Lua 5.1 compatibility in 'tolua_scons.pkg' and 'lua/all.lua'
 have been commented out as we supply Lua 5.01
 
-The original tolua++ readme can be found at: '../lua_and_tolua++/tolua++README'
+The original tolua++ readme can be found at: '../tolua++/README'
 if you need more details.
