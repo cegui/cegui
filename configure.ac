@@ -125,6 +125,7 @@ AC_CONFIG_FILES([Makefile
                  ScriptingModules/CEGUILua/LuaScriptModule/src/Makefile
                  ScriptingModules/CEGUILua/Makefile
                  ScriptingModules/CEGUILua/tolua++/Makefile
+                 ScriptingModules/CEGUILua/tolua++bin/Makefile
                  ScriptingModules/Makefile
                  WindowRendererSets/Makefile
                  WindowRendererSets/Falagard/Makefile
@@ -197,6 +198,7 @@ fi
 echo "*"
 echo "* Scripting:"
 echo "*         Building Lua scripting module:                ${cegui_with_lua-no}"
+echo "*         Building tolua++cegui generator:              ${cegui_build_toluatool-no}"
 echo "*"
 echo "* Samples Framework:"
 echo "*         Building Samples:                             ${cegui_build_samples-no}"
