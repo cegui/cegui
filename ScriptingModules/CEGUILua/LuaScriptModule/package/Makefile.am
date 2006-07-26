@@ -54,7 +54,6 @@ EXTRA_DIST = Basic.pkg \
              elements/Spinner.pkg \
              elements/TabButton.pkg \
              elements/TabControl.pkg \
-             elements/TabPane.pkg \
              elements/Thumb.pkg \
              elements/Titlebar.pkg \
              elements/Tooltip.pkg \
