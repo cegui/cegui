@@ -446,100 +446,100 @@ void HorizontalAlignment::set(PropertyReceiver* receiver, const String& value)
 
 String UnifiedAreaRect::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::urectToString(static_cast<const Window*>(receiver)->getWindowArea());
+    return PropertyHelper::urectToString(static_cast<const Window*>(receiver)->getArea());
 }
 
 void UnifiedAreaRect::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowArea(PropertyHelper::stringToURect(value));
+    static_cast<Window*>(receiver)->setArea(PropertyHelper::stringToURect(value));
 }
 
 
 String UnifiedPosition::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowPosition());
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getPosition());
 }
 
 void UnifiedPosition::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowPosition(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setPosition(PropertyHelper::stringToUVector2(value));
 }
 
 
 String UnifiedXPosition::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowXPosition());
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getXPosition());
 }
 
 void UnifiedXPosition::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowXPosition(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setXPosition(PropertyHelper::stringToUDim(value));
 }
 
 
 String UnifiedYPosition::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowYPosition());
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getYPosition());
 }
 
 void UnifiedYPosition::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowYPosition(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setYPosition(PropertyHelper::stringToUDim(value));
 }
 
 
 String UnifiedSize::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowSize());
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getSize());
 }
 
 void UnifiedSize::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowSize(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setSize(PropertyHelper::stringToUVector2(value));
 }
 
 
 String UnifiedWidth::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowWidth());
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWidth());
 }
 
 void UnifiedWidth::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowWidth(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setWidth(PropertyHelper::stringToUDim(value));
 }
 
 
 String UnifiedHeight::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getWindowHeight());
+    return PropertyHelper::udimToString(static_cast<const Window*>(receiver)->getHeight());
 }
 
 void UnifiedHeight::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowHeight(PropertyHelper::stringToUDim(value));
+    static_cast<Window*>(receiver)->setHeight(PropertyHelper::stringToUDim(value));
 }
 
 
 String UnifiedMinSize::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowMinSize());
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getMinSize());
 }
 
 void UnifiedMinSize::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowMinSize(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setMinSize(PropertyHelper::stringToUVector2(value));
 }
 
 
 String UnifiedMaxSize::get(const PropertyReceiver* receiver) const
 {
-    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getWindowMaxSize());
+    return PropertyHelper::uvector2ToString(static_cast<const Window*>(receiver)->getMaxSize());
 }
 
 void UnifiedMaxSize::set(PropertyReceiver* receiver, const String& value)
 {
-    static_cast<Window*>(receiver)->setWindowMaxSize(PropertyHelper::stringToUVector2(value));
+    static_cast<Window*>(receiver)->setMaxSize(PropertyHelper::stringToUVector2(value));
 }
 
 

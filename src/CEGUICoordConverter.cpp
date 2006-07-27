@@ -167,7 +167,7 @@ float CoordConverter::getBaseXValue(const Window& window)
     const float parent_width = window.getParentPixelWidth();
     float baseX = window.getParent() ? getBaseXValue(*window.getParent()) : 0;
 
-    baseX += window.getWindowArea().d_min.d_x.asAbsolute(parent_width);
+    baseX += window.getArea().d_min.d_x.asAbsolute(parent_width);
 
     switch(window.getHorizontalAlignment())
     {
@@ -191,7 +191,7 @@ float CoordConverter::getBaseYValue(const Window& window)
     const float parent_height = window.getParentPixelHeight();
     float baseY = window.getParent() ? getBaseYValue(*window.getParent()) : 0;
 
-    baseY += window.getWindowArea().d_min.d_y.asAbsolute(parent_height);
+    baseY += window.getArea().d_min.d_y.asAbsolute(parent_height);
 
     switch(window.getVerticalAlignment())
     {

@@ -357,20 +357,20 @@ namespace CEGUI
 
             case DT_LEFT_EDGE:
             case DT_X_POSITION:
-                return widget->getWindowPosition().d_x.asAbsolute(parentSize.d_width);
+                return widget->getPosition().d_x.asAbsolute(parentSize.d_width);
                 break;
 
             case DT_TOP_EDGE:
             case DT_Y_POSITION:
-                return widget->getWindowPosition().d_y.asAbsolute(parentSize.d_height);
+                return widget->getPosition().d_y.asAbsolute(parentSize.d_height);
                 break;
 
             case DT_RIGHT_EDGE:
-                return widget->getWindowArea().d_max.d_x.asAbsolute(parentSize.d_width);
+                return widget->getArea().d_max.d_x.asAbsolute(parentSize.d_width);
                 break;
 
             case DT_BOTTOM_EDGE:
-                return widget->getWindowArea().d_max.d_y.asAbsolute(parentSize.d_height);
+                return widget->getArea().d_max.d_y.asAbsolute(parentSize.d_height);
                 break;
 
             default:

@@ -78,7 +78,7 @@ void ItemListbox::layoutItemWidgets()
             widest = pxs.d_width;
         }
 
-        entry->setWindowArea(URect(
+        entry->setArea(URect(
             UVector2(cegui_absdim(0), cegui_absdim(y)),
             UVector2(cegui_reldim(1), cegui_absdim(y+pxs.d_height))
             ));

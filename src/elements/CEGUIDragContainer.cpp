@@ -187,7 +187,7 @@ namespace CEGUI
             setClippedByParent(false);
             d_storedAlpha = d_alpha;
             setAlpha(d_dragAlpha);
-            d_startPosition = getWindowPosition();
+            d_startPosition = getPosition();
 
             d_dragging = true;
 
@@ -203,7 +203,7 @@ namespace CEGUI
         offset -= d_dragPoint;
 
         // set new position
-        setWindowPosition(getWindowPosition() + offset);
+        setPosition(getPosition() + offset);
 
         // Perform event notification
         WindowEventArgs args(this);
@@ -294,7 +294,7 @@ namespace CEGUI
         {
             // restore windows 'normal' state.
             d_dragging = false;
-            setWindowPosition(d_startPosition);
+            setPosition(d_startPosition);
             setClippedByParent(d_storedClipState);
             setAlpha(d_storedAlpha);
 
@@ -337,7 +337,7 @@ namespace CEGUI
         Window::onMoved(e);
         if (d_dropflag)
         {
-            d_startPosition = getWindowPosition();
+            d_startPosition = getPosition();
         }
     }
 

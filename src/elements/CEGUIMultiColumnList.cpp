@@ -1543,7 +1543,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
             for (uint j = 0; j < getColumnCount(); ++j)
             {
                 const ListHeaderSegment& seg = header->getSegmentFromColumn(j);
-                x += seg.getWindowWidth().asAbsolute(header->getPixelSize().d_width);
+                x += seg.getWidth().asAbsolute(header->getPixelSize().d_width);
 
                 // was this the column?
                 if (pt.d_x < x)
@@ -2304,7 +2304,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
         propString += seg.getText();
         // column width
         propString += " width:";
-        propString += PropertyHelper::udimToString(seg.getWindowWidth());
+        propString += PropertyHelper::udimToString(seg.getWidth());
         // column id
         propString += " id:";
         propString += PropertyHelper::uintToString(seg.getID());

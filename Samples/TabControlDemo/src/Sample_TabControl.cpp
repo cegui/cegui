@@ -85,7 +85,7 @@ public:
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow (SKIN "/StaticImage");
         // set area rectangle
-        background->setWindowArea (URect (cegui_reldim (0), cegui_reldim (0),
+        background->setArea (URect (cegui_reldim (0), cegui_reldim (0),
                                           cegui_reldim (1), cegui_reldim (1)));
         // disable frame and standard background
         background->setProperty ("FrameEnabled", "false");

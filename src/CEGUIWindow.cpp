@@ -1346,7 +1346,7 @@ float Window::getParentPixelHeight(void) const
 *************************************************************************/
 Size Window::getParentPixelSize(void) const
 {
-	return getWindowSize_impl(d_parent);
+	return getSize_impl(d_parent);
 }
 
 
@@ -1450,7 +1450,7 @@ void Window::onZChange_impl(void)
 /*************************************************************************
 	Return size of window.  If window is NULL return size of display.
 *************************************************************************/
-Size Window::getWindowSize_impl(const Window* window) const
+Size Window::getSize_impl(const Window* window) const
 {
     return window ?
            window->d_pixelSize :
@@ -1966,7 +1966,7 @@ void Window::doRiseOnClick(void)
     }
 }
 
-void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)
+void Window::setArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)
 {
     // we make sure the screen areas are recached when this is called as we need it in most cases
     d_screenUnclippedRectValid = false;
@@ -2029,108 +2029,108 @@ void Window::setWindowArea_impl(const UVector2& pos, const UVector2& size, bool 
     }
 }
 
-void Window::setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
+void Window::setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
 {
-    setWindowArea(UVector2(xpos, ypos), UVector2(width, height));
+    setArea(UVector2(xpos, ypos), UVector2(width, height));
 }
 
-void Window::setWindowArea(const UVector2& pos, const UVector2& size)
+void Window::setArea(const UVector2& pos, const UVector2& size)
 {
-    setWindowArea_impl(pos, size);
+    setArea_impl(pos, size);
 }
 
-void Window::setWindowArea(const URect& area)
+void Window::setArea(const URect& area)
 {
-    setWindowArea(area.d_min, area.getSize());
+    setArea(area.d_min, area.getSize());
 }
 
-void Window::setWindowPosition(const UVector2& pos)
+void Window::setPosition(const UVector2& pos)
 {
-    setWindowArea_impl(pos, d_area.getSize());
+    setArea_impl(pos, d_area.getSize());
 }
 
-void Window::setWindowXPosition(const UDim& x)
+void Window::setXPosition(const UDim& x)
 {
-    setWindowArea_impl(UVector2(x, d_area.d_min.d_y), d_area.getSize());
+    setArea_impl(UVector2(x, d_area.d_min.d_y), d_area.getSize());
 }
 
-void Window::setWindowYPosition(const UDim& y)
+void Window::setYPosition(const UDim& y)
 {
-    setWindowArea_impl(UVector2(d_area.d_min.d_x, y), d_area.getSize());
+    setArea_impl(UVector2(d_area.d_min.d_x, y), d_area.getSize());
 }
 
-void Window::setWindowSize(const UVector2& size)
+void Window::setSize(const UVector2& size)
 {
-    setWindowArea_impl(d_area.getPosition(), size);
+    setArea_impl(d_area.getPosition(), size);
 }
 
-void Window::setWindowWidth(const UDim& width)
+void Window::setWidth(const UDim& width)
 {
-    setWindowArea_impl(d_area.getPosition(), UVector2(width, d_area.getSize().d_y));
+    setArea_impl(d_area.getPosition(), UVector2(width, d_area.getSize().d_y));
 }
 
-void Window::setWindowHeight(const UDim& height)
+void Window::setHeight(const UDim& height)
 {
-    setWindowArea_impl(d_area.getPosition(), UVector2(d_area.getSize().d_x, height));
+    setArea_impl(d_area.getPosition(), UVector2(d_area.getSize().d_x, height));
 }
 
-void Window::setWindowMaxSize(const UVector2& size)
+void Window::setMaxSize(const UVector2& size)
 {
     d_maxSize = size;
 
     // set window area back on itself to cause new maximum size to be applied if required.
-    setWindowArea(d_area);
+    setArea(d_area);
 }
 
-void Window::setWindowMinSize(const UVector2& size)
+void Window::setMinSize(const UVector2& size)
 {
     d_minSize = size;
 
     // set window area back on itself to cause new minimum size to be applied if required.
-    setWindowArea(d_area);
+    setArea(d_area);
 }
 
-const URect& Window::getWindowArea() const
+const URect& Window::getArea() const
 {
     return d_area;
 }
 
-const UVector2& Window::getWindowPosition() const
+const UVector2& Window::getPosition() const
 {
     return d_area.d_min;
 }
 
-const UDim& Window::getWindowXPosition() const
+const UDim& Window::getXPosition() const
 {
     return d_area.d_min.d_x;
 }
 
-const UDim& Window::getWindowYPosition() const
+const UDim& Window::getYPosition() const
 {
     return d_area.d_min.d_y;
 }
 
-UVector2 Window::getWindowSize() const
+UVector2 Window::getSize() const
 {
     return d_area.getSize();
 }
 
-UDim Window::getWindowWidth() const
+UDim Window::getWidth() const
 {
     return d_area.getSize().d_x;
 }
 
-UDim Window::getWindowHeight() const
+UDim Window::getHeight() const
 {
     return d_area.getSize().d_y;
 }
 
-const UVector2& Window::getWindowMaxSize() const
+const UVector2& Window::getMaxSize() const
 {
     return d_maxSize;
 }
 
-const UVector2& Window::getWindowMinSize() const
+const UVector2& Window::getMinSize() const
 {
     return d_minSize;
 }
@@ -2767,7 +2767,7 @@ void Window::onParentSized(WindowEventArgs& e)
 {
     // set window area back on itself to cause minimum and maximum size
     // constraints to be applied as required.  (fire no events though)
-    setWindowArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
+    setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
     // now see if events should be fired.
     if ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0))

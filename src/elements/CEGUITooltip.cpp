@@ -110,7 +110,7 @@ namespace CEGUI
         }
 
         // set final position of tooltip window.
-        setWindowPosition(
+        setPosition(
             UVector2(cegui_absdim(tmpPos.d_x),
                      cegui_absdim(tmpPos.d_y)));
     }
@@ -119,7 +119,7 @@ namespace CEGUI
     {
         Size textSize(getTextSize());
 
-        setWindowSize(
+        setSize(
             UVector2(cegui_absdim(textSize.d_width),
                      cegui_absdim(textSize.d_height)));
     }
