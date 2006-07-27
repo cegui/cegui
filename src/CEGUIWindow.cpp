@@ -2288,7 +2288,7 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
 int Window::writePropertiesXML(XMLSerializer& xml_stream) const
 {
     int propertiesWritten = 0;
-    PropertyIterator iter =  PropertySet::getIterator();
+    PropertySet::Iterator iter =  PropertySet::getIterator();
 
     while(!iter.isAtEnd())
     {
@@ -3106,6 +3106,16 @@ void Window::notifyScreenAreaChanged()
 	{
 		d_children[i]->notifyScreenAreaChanged();
 	}
+}
+
+EventSet::Iterator Window::getEventIterator() const
+{
+    return EventSet::getIterator();
+}
+
+PropertySet::Iterator Window::getPropertyIterator() const
+{
+    return PropertySet::getIterator();
 }
 
 } // End of  CEGUI namespace section

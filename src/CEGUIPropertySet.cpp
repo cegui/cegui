@@ -132,9 +132,9 @@ void PropertySet::setProperty(const String& name,const String& value)
 	Return a PropertySet::PropertyIterator object to iterate over the
 	available Properties.
 *************************************************************************/
-PropertySet::PropertyIterator PropertySet::getIterator(void) const
+PropertySet::Iterator PropertySet::getIterator(void) const
 {
-	return PropertyIterator(d_properties.begin(), d_properties.end());
+	return Iterator(d_properties.begin(), d_properties.end());
 }
 
 

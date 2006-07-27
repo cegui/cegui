@@ -299,13 +299,14 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-	typedef	ConstBaseIterator<EventMap>	EventIterator;
+    typedef	ConstBaseIterator<EventMap> Iterator;
 
-	/*!
-	\brief
-		Return a EventSet::EventIterator object to iterate over the available events.
-	*/
-	EventIterator	getIterator(void) const;
+    /*!
+    \brief
+        Return a EventSet::Iterator object to iterate over the events currently
+        added to the EventSet.
+    */
+    Iterator getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section

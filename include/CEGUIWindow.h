@@ -1175,6 +1175,54 @@ public:
     */
     bool isWritingXMLAllowed(void) const    {return d_allowWriteXML;}
 
+    /*!
+    \brief
+        Helper method that returns an EventSet::Iterator object that can be used
+        to iterate over the events currently added to the EventSet of this Window.
+    \par
+        This helper member is provided as an easy way to avoid some abiguity
+        we have due to using multiple inheritence.  Ultimately it avoids the
+        need to do things like this (which some people don't like!):
+        \code
+        // obtain an iterator for the EventSet
+        EventSet::Iterator evt_iter = myWindow->EventSet::getIterator();
+
+        // obtain an iterator for the PropertySet
+        PropertySet::Iterator prp_iter = myWindow->PropertySet::getIterator();
+        \endcode
+
+    \note
+        Iterating over events in the EventSet is of questionable use these days,
+        since available Events are no longer added in one batch at creation time,
+        but are added individually whenever an event is first subscribed.
+
+    \return
+        EventSet::Iterator object.
+    */
+    EventSet::Iterator getEventIterator() const;
+
+    /*!
+    \brief
+        Helper method that returns a PropertySet::Iterator object that can be
+        used to iterate over the events currently added to the PropertySet of
+        this Window.
+    \par
+        This helper member is provided as an easy way to avoid some abiguity
+        we have due to using multiple inheritence.  Ultimately it avoids the
+        need to do things like this (which some people don't like!):
+        \code
+        // obtain an iterator for the EventSet
+        EventSet:: Iterator evt_iter = myWindow->EventSet::getIterator();
+
+        // obtain an iterator for the PropertySet
+        PropertySet::Iterator prp_iter = myWindow->PropertySet::getIterator();
+        \endcode
+
+    \return
+        PropertySet::Iterator object.
+    */
+    PropertySet::Iterator getPropertyIterator() const;
+
     /*************************************************************************
         Manipulator functions
     *************************************************************************/

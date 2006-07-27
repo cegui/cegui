@@ -65,8 +65,8 @@ ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id
 /************************************************************************
     Stuff needed to make the iterators work
 *************************************************************************/
-typedef PropertySet::PropertyIterator PropertyIterator;
-typedef EventSet::EventIterator EventIterator;
+typedef PropertySet::Iterator PropertyIterator;
+typedef EventSet::Iterator EventIterator;
 typedef WindowManager::WindowIterator WindowIterator;
 typedef WindowFactoryManager::WindowFactoryIterator WindowFactoryIterator;
 typedef WindowFactoryManager::FalagardMappingIterator FalagardMappingIterator;
