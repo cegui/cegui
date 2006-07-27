@@ -440,7 +440,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
         return;
 
     float ww = getPixelSize ().d_width;
-    float x = tb->getWindowXPosition().asAbsolute (ww);
+    float x = tb->getXPosition().asAbsolute (ww);
     float w = tb->getPixelSize ().d_width;
     float lx = 0, rx = ww;
 
@@ -449,14 +449,14 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
         scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
-        lx = scrollLeftBtn->getWindowArea ().d_max.d_x.asAbsolute (ww);
+        lx = scrollLeftBtn->getArea ().d_max.d_x.asAbsolute (ww);
     }
 
     name = getName() + ButtonScrollRightSuffix;
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
         scrollRightBtn = WindowManager::getSingleton().getWindow (name);
-        rx = scrollRightBtn->getWindowXPosition ().asAbsolute (ww);
+        rx = scrollRightBtn->getXPosition ().asAbsolute (ww);
     }
 
     if (x < lx)
@@ -542,25 +542,25 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     TabButton* btn = d_tabButtonVector [index];
     // relative height is always 1.0 for buttons since they are embedded in a
     // panel of the correct height already
-    btn->setWindowHeight(cegui_reldim(1.0f));
-    btn->setWindowYPosition(cegui_absdim(0.0f));
+    btn->setHeight(cegui_reldim(1.0f));
+    btn->setYPosition(cegui_absdim(0.0f));
     // x position is based on previous button
     if (!index)
         // First button
-        btn->setWindowXPosition(cegui_absdim(d_firstTabOffset));
+        btn->setXPosition(cegui_absdim(d_firstTabOffset));
     else
     {
 		Window* prevButton = d_tabButtonVector [index - 1];
 
 		// position is prev pos + width
-        btn->setWindowXPosition(prevButton->getWindowArea().d_max.d_x);
+        btn->setXPosition(prevButton->getArea().d_max.d_x);
     }
     // Width is based on font size (expressed as absolute)
     Font* fnt = btn->getFont();
-    btn->setWindowWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
+    btn->setWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
                         getTabTextPadding() + getTabTextPadding());
 
-    float left_x = btn->getWindowXPosition ().d_offset;
+    float left_x = btn->getXPosition ().d_offset;
     btn->setVisible ((left_x < getPixelSize ().d_width) &&
                      (left_x + btn->getPixelSize ().d_width > 0));
     btn->requestRedraw();
@@ -617,7 +617,7 @@ void TabControl::performChildWindowLayout()
 
         // Now check if tab pane wasn't scrolled too far
         --i;
-        float xmax = d_tabButtonVector [i]->getWindowXPosition ().d_offset +
+        float xmax = d_tabButtonVector [i]->getXPosition ().d_offset +
             d_tabButtonVector [i]->getPixelSize ().d_width;
         float width = tabContentPane->getPixelSize ().d_width;
 

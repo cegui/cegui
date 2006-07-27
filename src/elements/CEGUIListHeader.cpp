@@ -312,7 +312,7 @@ UDim ListHeader::getColumnWidth(uint column) const
 	}
 	else
 	{
-		return d_segments[column]->getWindowWidth();
+		return d_segments[column]->getWidth();
 	}
 
 }
@@ -699,7 +699,7 @@ void ListHeader::setColumnWidth(uint column, const UDim& width)
 	}
 	else
 	{
-		d_segments[column]->setWindowWidth(width);
+		d_segments[column]->setWidth(width);
 
 		layoutSegments();
 
@@ -726,8 +726,8 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	d_uniqueIDNumber++;
 
 	// setup segment;
-	newseg->setWindowSize(UVector2(width, cegui_reldim(1.0f)));
-	newseg->setWindowMinSize(UVector2(cegui_absdim(MinimumSegmentPixelWidth), cegui_absdim(0)));
+	newseg->setSize(UVector2(width, cegui_reldim(1.0f)));
+	newseg->setMinSize(UVector2(cegui_absdim(MinimumSegmentPixelWidth), cegui_absdim(0)));
 	newseg->setText(text);
 	newseg->setID(id);
 
@@ -751,8 +751,8 @@ void ListHeader::layoutSegments(void)
 
 	for (uint i = 0; i < getColumnCount(); ++i)
 	{
-		d_segments[i]->setWindowPosition(pos);
-		pos.d_x += d_segments[i]->getWindowWidth();
+		d_segments[i]->setPosition(pos);
+		pos.d_x += d_segments[i]->getWidth();
 	}
 
 }

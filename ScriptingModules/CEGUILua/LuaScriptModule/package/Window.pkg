@@ -187,27 +187,27 @@ class Window //: public EventSet
     void endInitialisation();
 
 	// unified stuff
-	void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
-	void setWindowArea(const UVector2& pos, const UVector2& size);
-	void setWindowArea(const URect& area);
-	void setWindowPosition(const UVector2& pos);
-	void setWindowXPosition(const UDim& x);
-	void setWindowYPosition(const UDim& y);
-	void setWindowSize(const UVector2& size);
-	void setWindowWidth(const UDim& width);
-	void setWindowHeight(const UDim& height);
-	void setWindowMaxSize(const UVector2& size);
-	void setWindowMinSize(const UVector2& size);
+	void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
+	void setArea(const UVector2& pos, const UVector2& size);
+	void setArea(const URect& area);
+	void setPosition(const UVector2& pos);
+	void setXPosition(const UDim& x);
+	void setYPosition(const UDim& y);
+	void setSize(const UVector2& size);
+	void setWidth(const UDim& width);
+	void setHeight(const UDim& height);
+	void setMaxSize(const UVector2& size);
+	void setMinSize(const UVector2& size);
 
-	const URect& getWindowArea() const;
-	const UVector2& getWindowPosition() const;
-	const UDim& getWindowXPosition() const;
-	const UDim& getWindowYPosition() const;
-	UVector2 getWindowSize() const;
-	UDim getWindowWidth() const;
-	UDim getWindowHeight() const;
-	const UVector2& getWindowMaxSize() const;
-	const UVector2& getWindowMinSize() const;
+	const URect& getArea() const;
+	const UVector2& getPosition() const;
+	const UDim& getXPosition() const;
+	const UDim& getYPosition() const;
+	UVector2 getSize() const;
+	UDim getWidth() const;
+	UDim getHeight() const;
+	const UVector2& getMaxSize() const;
+	const UVector2& getMinSize() const;
 
     // event pass through
     bool isMousePassThroughEnabled() const;

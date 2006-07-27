@@ -183,7 +183,7 @@ void MenuItem::openPopupMenu(bool notify)
 	    {
 		    // align the popup to the bottom-left of the menuitem
 		    UVector2 pos(cegui_absdim(0), cegui_absdim(d_pixelSize.d_height));
-		    d_popup->setWindowPosition(pos);
+		    d_popup->setPosition(pos);
 
 		    static_cast<Menubar*>(p)->changePopupMenuItem(this);
 		    return; // the rest is handled when the menu bar eventually calls us itself
@@ -193,7 +193,7 @@ void MenuItem::openPopupMenu(bool notify)
 	    {
 		    // align the popup to the top-right of the menuitem
             UVector2 pos(cegui_absdim(d_pixelSize.d_width), cegui_absdim(0));
-            d_popup->setWindowPosition(pos);
+            d_popup->setPosition(pos);
 
 		    static_cast<PopupMenu*>(p)->changePopupMenuItem(this);
 		    return; // the rest is handled when the popup menu eventually calls us itself

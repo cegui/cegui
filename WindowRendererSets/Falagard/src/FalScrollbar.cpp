@@ -78,14 +78,14 @@ namespace CEGUI
         {
             slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             theThumb->setVertRange(area.d_top / w->getPixelSize().d_height, (area.d_top + slideExtent) / w->getPixelSize().d_height);
-            theThumb->setWindowPosition(UVector2(cegui_absdim(area.d_left),
+            theThumb->setPosition(UVector2(cegui_absdim(area.d_left),
                                                  cegui_reldim((area.d_top + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_height)));
         }
         else
         {
             slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             theThumb->setHorzRange(area.d_left / w->getPixelSize().d_width, (area.d_left + slideExtent)  / w->getPixelSize().d_width);
-            theThumb->setWindowPosition(UVector2(cegui_reldim((area.d_left + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
+            theThumb->setPosition(UVector2(cegui_reldim((area.d_left + (w->getScrollPosition() * (slideExtent / posExtent))) / w->getPixelSize().d_width),
                                                  cegui_absdim(area.d_top)));
         }
     }
@@ -102,12 +102,12 @@ namespace CEGUI
         if (d_vertical)
         {
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
-            return (theThumb->getWindowYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
+            return (theThumb->getYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / posExtent);
         }
         else
         {
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
-            return (theThumb->getWindowXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
+            return (theThumb->getXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / posExtent);
         }
     }
 

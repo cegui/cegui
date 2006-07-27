@@ -58,7 +58,7 @@ namespace CEGUI
         const WidgetLookFeel& wlf = getLookNFeel();
 
         Rect textArea(wlf.getNamedArea("TextArea").getArea().getPixelRect(*w));
-        Rect wndArea(w->getWindowArea().asAbsolute(w->getParentPixelSize()));
+        Rect wndArea(w->getArea().asAbsolute(w->getParentPixelSize()));
 
         sz.d_width  += wndArea.getWidth() - textArea.getWidth();
         sz.d_height += wndArea.getHeight() - textArea.getHeight();

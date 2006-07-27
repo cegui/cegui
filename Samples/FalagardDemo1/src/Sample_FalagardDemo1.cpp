@@ -67,7 +67,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
     // set area rectangle
-    background->setWindowArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));
+    background->setArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");

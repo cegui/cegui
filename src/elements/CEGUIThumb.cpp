@@ -99,15 +99,15 @@ void Thumb::setVertRange(float min, float max)
 	d_vertMin = min;
 
 	// validate current position.
-	float cp = getWindowYPosition().asRelative(getParentPixelHeight());
+	float cp = getYPosition().asRelative(getParentPixelHeight());
 
 	if (cp < min)
 	{
-		setWindowYPosition(cegui_reldim(min));
+		setYPosition(cegui_reldim(min));
 	}
 	else if (cp > max)
 	{
-		setWindowYPosition(cegui_reldim(max));
+		setYPosition(cegui_reldim(max));
 	}
 
 }
@@ -132,15 +132,15 @@ void Thumb::setHorzRange(float min, float max)
 	d_horzMin = min;
 
 	// validate current position.
-	float cp = getWindowXPosition().asAbsolute(parentSize.d_width);
+	float cp = getXPosition().asAbsolute(parentSize.d_width);
 
 	if (cp < min)
 	{
-		setWindowXPosition(cegui_absdim(min));
+		setXPosition(cegui_absdim(min));
 	}
 	else if (cp > max)
 	{
-		setWindowXPosition(cegui_absdim(max));
+		setXPosition(cegui_absdim(max));
 	}
 
 }
@@ -204,7 +204,7 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 		//
 		// Calculate new (pixel) position for thumb
 		//
-		UVector2 newPos(getWindowPosition());
+		UVector2 newPos(getPosition());
 
 		if (d_horzFree)
 		{
@@ -223,9 +223,9 @@ void Thumb::onMouseMove(MouseEventArgs& e)
 		}
 
 		// update thumb position if needed
-		if (newPos != getWindowPosition())
+		if (newPos != getPosition())
 		{
-			setWindowPosition(newPos);
+			setPosition(newPos);
 
 			// send notification as required
 			if (d_hotTrack)

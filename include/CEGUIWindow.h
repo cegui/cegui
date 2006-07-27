@@ -2007,7 +2007,7 @@ public:
     \param height
         UDim describing the new height of the window area.
      */
-    void setWindowArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
+    void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
 
     /*!
     \brief
@@ -2030,7 +2030,7 @@ public:
     \param size
         UVector2 describing the new size of the window area.
      */
-    void setWindowArea(const UVector2& pos, const UVector2& size);
+    void setArea(const UVector2& pos, const UVector2& size);
 
     /*!
     \brief
@@ -2049,7 +2049,7 @@ public:
     \param area
         URect describing the new area rectangle of the window area.
      */
-    void setWindowArea(const URect& area);
+    void setArea(const URect& area);
 
     /*!
     \brief
@@ -2069,7 +2069,7 @@ public:
         UVector2 describing the new position (top-left corner) of the window
         area.
      */
-    void setWindowPosition(const UVector2& pos);
+    void setPosition(const UVector2& pos);
 
     /*!
     \brief
@@ -2088,7 +2088,7 @@ public:
     \param x
         UDim describing the new x position of the window area.
      */
-    void setWindowXPosition(const UDim& x);
+    void setXPosition(const UDim& x);
 
     /*!
     \brief
@@ -2107,7 +2107,7 @@ public:
     \param y
         UDim describing the new y position of the window area.
      */
-    void setWindowYPosition(const UDim& y);
+    void setYPosition(const UDim& y);
 
     /*!
     \brief
@@ -2123,7 +2123,7 @@ public:
     \param size
         UVector2 describing the new size of the window area.
      */
-    void setWindowSize(const UVector2& size);
+    void setSize(const UVector2& size);
 
     /*!
     \brief
@@ -2139,7 +2139,7 @@ public:
     \param width
         UDim describing the new width of the window area.
      */
-    void setWindowWidth(const UDim& width);
+    void setWidth(const UDim& width);
 
     /*!
     \brief
@@ -2155,7 +2155,7 @@ public:
     \param height
         UDim describing the new height of the window area.
      */
-    void setWindowHeight(const UDim& height);
+    void setHeight(const UDim& height);
 
     /*!
     \brief
@@ -2173,7 +2173,7 @@ public:
     \param size
         UVector2 describing the new maximum size of the window area.
      */
-    void setWindowMaxSize(const UVector2& size);
+    void setMaxSize(const UVector2& size);
 
     /*!
     \brief
@@ -2191,7 +2191,7 @@ public:
     \param size
         UVector2 describing the new minimum size of the window area.
      */
-    void setWindowMinSize(const UVector2& size);
+    void setMinSize(const UVector2& size);
 
     /*!
     \brief
@@ -2210,7 +2210,7 @@ public:
     \return
         URect describing the rectangle of the window area.
      */
-    const URect& getWindowArea() const;
+    const URect& getArea() const;
 
     /*!
     \brief
@@ -2229,7 +2229,7 @@ public:
     \return
         UVector2 describing the position (top-left corner) of the window area.
      */
-    const UVector2& getWindowPosition() const;
+    const UVector2& getPosition() const;
 
     /*!
     \brief
@@ -2248,7 +2248,7 @@ public:
     \return
         UDim describing the x position of the window area.
      */
-    const UDim& getWindowXPosition() const;
+    const UDim& getXPosition() const;
 
     /*!
     \brief
@@ -2267,7 +2267,7 @@ public:
     \return
         UDim describing the y position of the window area.
      */
-    const UDim& getWindowYPosition() const;
+    const UDim& getYPosition() const;
 
     /*!
     \brief
@@ -2283,7 +2283,7 @@ public:
     \return
         UVector2 describing the size of the window area.
      */
-    UVector2 getWindowSize() const;
+    UVector2 getSize() const;
 
     /*!
     \brief
@@ -2299,7 +2299,7 @@ public:
     \return
         UDim describing the width of the window area.
      */
-    UDim getWindowWidth() const;
+    UDim getWidth() const;
 
     /*!
     \brief
@@ -2315,7 +2315,7 @@ public:
     \return
         UDim describing the height of the window area.
      */
-    UDim getWindowHeight() const;
+    UDim getHeight() const;
 
     /*!
     \brief
@@ -2333,7 +2333,7 @@ public:
     \return
         UVector2 describing the maximum size of the window area.
      */
-    const UVector2& getWindowMaxSize() const;
+    const UVector2& getMaxSize() const;
 
     /*!
     \brief
@@ -2351,7 +2351,7 @@ public:
     \return
         UVector2 describing the minimum size of the window area.
      */
-    const UVector2& getWindowMinSize() const;
+    const UVector2& getMinSize() const;
 
     /*!
     \brief
@@ -3035,7 +3035,7 @@ protected:
     */
     void setParent(Window* parent);
 
-    Size getWindowSize_impl(const Window* window) const;
+    Size getSize_impl(const Window* window) const;
 
     /*!
     \brief
@@ -3407,7 +3407,7 @@ protected:
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
      */
-    void setWindowArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing = false, bool fireEvents = true);
+    void setArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing = false, bool fireEvents = true);
 
     /*!
     \brief

@@ -226,7 +226,7 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
     UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
                      cegui_absdim(PixelAligned(offset.d_y)));
 
-    setWindowPosition(d_area.getPosition() + uOffset);
+    setPosition(d_area.getPosition() + uOffset);
 }
 
 
@@ -340,7 +340,7 @@ void FrameWindow::moveLeftEdge(float delta)
         area.d_min.d_x.d_offset += adjustment;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_LEFT);
+    setArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_LEFT);
 }
 /*************************************************************************
 	move the window's right edge by 'delta'.  The rest of the window
@@ -382,7 +382,7 @@ void FrameWindow::moveRightEdge(float delta)
         area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
+    setArea_impl(area.d_min, area.getSize(), d_horzAlign == HA_RIGHT);
 
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
@@ -428,7 +428,7 @@ void FrameWindow::moveTopEdge(float delta)
         area.d_min.d_y.d_offset += adjustment;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_TOP);
+    setArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_TOP);
 }
 
 
@@ -472,7 +472,7 @@ void FrameWindow::moveBottomEdge(float delta)
         area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
-    setWindowArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);
+    setArea_impl(area.d_min, area.getSize(), d_vertAlign == VA_BOTTOM);
 
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_y += d_pixelSize.d_height - orgHeight;

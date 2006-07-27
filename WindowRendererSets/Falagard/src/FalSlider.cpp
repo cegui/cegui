@@ -103,7 +103,7 @@ namespace CEGUI
         }
 
         // set new position for thumb.
-        theThumb->setWindowPosition(thumbPosition);
+        theThumb->setPosition(thumbPosition);
     }
 
     float FalagardSlider::getValueFromThumb(void) const
@@ -121,7 +121,7 @@ namespace CEGUI
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
             // calculate value represented by current thumb position
-            float thumbValue = (theThumb->getWindowYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / w->getMaxValue());
+            float thumbValue = (theThumb->getYPosition().asAbsolute(w->getPixelSize().d_height) - area.d_top) / (slideExtent / w->getMaxValue());
             // return final thumb value according to slider settings
             return d_reversed ? thumbValue : w->getMaxValue() - thumbValue;
         }
@@ -131,7 +131,7 @@ namespace CEGUI
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
             // calculate value represented by current thumb position
-            float thumbValue = (theThumb->getWindowXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / w->getMaxValue());
+            float thumbValue = (theThumb->getXPosition().asAbsolute(w->getPixelSize().d_width) - area.d_left) / (slideExtent / w->getMaxValue());
             // return final thumb value according to slider settings
             return d_reversed ? w->getMaxValue() - thumbValue : thumbValue;
         }

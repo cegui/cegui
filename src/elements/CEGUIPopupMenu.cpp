@@ -265,7 +265,7 @@ void PopupMenu::layoutItemWidgets()
 		// set destination rect
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(y0)) );
 		rect.setSize( sz );
-		(*item)->setWindowArea(rect);
+		(*item)->setArea(rect);
 
 		// next position
 		y0 += PixelAligned(sz.d_y.d_offset + d_itemSpacing);

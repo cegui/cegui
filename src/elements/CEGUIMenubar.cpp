@@ -81,7 +81,7 @@ void Menubar::layoutItemWidgets()
 		rect.setSize( UVector2( cegui_absdim(PixelAligned(optimal.d_width)),
                                 cegui_absdim(PixelAligned(optimal.d_height))));
 
-		(*item)->setWindowArea(rect);
+		(*item)->setArea(rect);
 
 		x0 += optimal.d_width + d_itemSpacing;
 		++item;

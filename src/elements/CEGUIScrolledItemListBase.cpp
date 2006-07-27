@@ -87,7 +87,7 @@ void ScrolledItemListBase::initialiseComponents()
 
     // set default pane position
     Rect r = getItemRenderArea();
-    d_pane->setWindowPosition(UVector2(cegui_absdim(r.d_left),cegui_absdim(r.d_top)));
+    d_pane->setPosition(UVector2(cegui_absdim(r.d_left),cegui_absdim(r.d_top)));
 
     // init scrollbars
     Scrollbar* v = getVertScrollbar();
@@ -137,8 +137,8 @@ void ScrolledItemListBase::configureScrollbars(const Size& doc_size)
     float pane_size_w = ceguimax(doc_size.d_width, render_area_size.d_width);
     UVector2 pane_size(cegui_absdim(pane_size_w), cegui_absdim(doc_size.d_height));
 
-    d_pane->setWindowMinSize(pane_size);
-    d_pane->setWindowMaxSize(pane_size);
+    d_pane->setMinSize(pane_size);
+    d_pane->setMaxSize(pane_size);
     //d_pane->setWindowSize(pane_size);
 
     // "fix" scrollbar visibility
@@ -215,7 +215,7 @@ bool ScrolledItemListBase::handle_VScroll(const EventArgs& e)
     Rect render_area = getItemRenderArea();
     float doc_sz = v->getDocumentSize();
     float newpos = -v->getScrollPosition()+render_area.d_top;
-    d_pane->setWindowYPosition(cegui_absdim(newpos));
+    d_pane->setYPosition(cegui_absdim(newpos));
     return true;
 }
 
@@ -226,7 +226,7 @@ bool ScrolledItemListBase::handle_HScroll(const EventArgs& e)
     Rect render_area = getItemRenderArea();
     float doc_sz = h->getDocumentSize();
     float newpos = -h->getScrollPosition()+render_area.d_left;
-    d_pane->setWindowXPosition(cegui_absdim(newpos));
+    d_pane->setXPosition(cegui_absdim(newpos));
     return true;
 }
 
