@@ -233,9 +233,9 @@ void EventSet::fireEvent_impl(const String& name, EventArgs& args)
 	Return a EventSet::EventIterator object to iterate over the available
 	events.
 *************************************************************************/
-EventSet::EventIterator EventSet::getIterator(void) const
+EventSet::Iterator EventSet::getIterator(void) const
 {
-	return EventIterator(d_events.begin(), d_events.end());
+	return Iterator(d_events.begin(), d_events.end());
 }
 
 

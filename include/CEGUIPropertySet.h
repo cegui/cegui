@@ -202,13 +202,14 @@ public:
 	/*************************************************************************
 		Iterator stuff
 	*************************************************************************/
-	typedef	ConstBaseIterator<PropertyRegistry>	PropertyIterator;
+    typedef	ConstBaseIterator<PropertyRegistry> Iterator;
 
-	/*!
-	\brief
-		Return a PropertySet::PropertyIterator object to iterate over the available Properties.
-	*/
-	PropertyIterator	getIterator(void) const;
+    /*!
+    \brief
+        Return a PropertySet::Iterator object to iterate over the available
+        Properties.
+    */
+    Iterator getIterator(void) const;
 };
 
 } // End of  CEGUI namespace section
