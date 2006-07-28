@@ -171,8 +171,9 @@ echo "*         Building Corona Image Codec:                  ${cegui_with_coron
 echo "*         Building DevIL Image Codec:                   ${cegui_with_devil-no}"
 echo "*         Building FreeImage Image Codec:               ${cegui_with_freeimage-no}"
 echo "*         Building SILLY Image Codec:                   ${cegui_with_silly-no}"
-dnl echo "*"
-dnl echo "*         Default Image Codec will be:                  !!TODO!!"
+echo "*         Building TGA Image Codec:                     ${cegui_with_tga-no}"
+echo "*"
+echo "*         Default Image Codec will be:                  ${cegui_default_image_codec}"
 echo "*"
 fi
 echo "* XML Parser Modules:"

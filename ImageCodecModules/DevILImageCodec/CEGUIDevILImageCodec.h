@@ -31,6 +31,16 @@
 #define _CEGUIDevILImageCodec_h_
 #include "CEGUIImageCodec.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUIDEVILIMAGECODEC_EXPORTS
+#       define CEGUIDEVILIMAGECODEC_API __declspec(dllexport)
+#   else
+#       define CEGUIDEVILIMAGECODEC_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUIDEVILIMAGECODEC_API
+#endif
+
 #if defined(_MSC_VER)
 #	pragma warning(push)
 #	pragma warning(disable : 4275)
@@ -44,7 +54,7 @@ namespace CEGUI
   \brief 
   Image codec based on the DevIL library 
 */
-class CEGUIEXPORT DevILImageCodec : public ImageCodec 
+class CEGUIDEVILIMAGECODEC_API DevILImageCodec : public ImageCodec 
 {
 public:
     DevILImageCodec();

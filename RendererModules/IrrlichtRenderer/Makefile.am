@@ -1,6 +1,6 @@
 INCLUDES = -I$(top_srcdir)/include $(Irrlicht_CFLAGS)
 
-pkgincludedir=$(prefix)/include/CEGUI/renderers/IrrlichtRenderer
+pkgincludedir=$(prefix)/include/CEGUI/RendererModules/IrrlichtRenderer
 pkginclude_HEADERS = irrlichtrenderer.h \
 					 IrrlichtEventPusher.h \
 					 IrrlichtRendererDef.h \

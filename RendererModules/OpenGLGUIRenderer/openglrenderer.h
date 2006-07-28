@@ -113,32 +113,53 @@ typedef unsigned short wchar_t;
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
+  /*************************************************************************
 	Forward refs
-*************************************************************************/
-class OpenGLTexture;
-class ImageCodec;
-/*!
-\brief
-Renderer class to interface with OpenGL
-*/
-class OPENGL_GUIRENDERER_API OpenGLRenderer : public Renderer
-{
-public:
-    /*!
+  *************************************************************************/
+  class OpenGLTexture;
+  class ImageCodec;
+  class DynamicModule;
+  
+  /*!
     \brief
-	    Constructor for OpenGL Renderer object
+    Renderer class to interface with OpenGL
+  */
+  class OPENGL_GUIRENDERER_API OpenGLRenderer : public Renderer
+  {
+  public:
+    /*!
+      \brief
+      Constructor for OpenGL Renderer object
 
-    \param max_quads
-	    obsolete.  Set to 0.
+      \param max_quads
+      obsolete.  Set to 0.
+      
+      \param codecName 
+      the name of the ImageCodec to use 
     */
-    OpenGLRenderer(uint max_quads);
-	OpenGLRenderer(uint max_quads,int width, int height);
+    OpenGLRenderer(uint max_quads, const String& codecName = "");
+    /*!
+      \brief
+      Constructor for OpenGL Renderer object 
+      
+      \param max_quads
+      obsolete. Set to 0.
+      
+      \param width
+      width of the CEGUI viewport.
+      
+      \param height 
+      height of the CEGUI viewport.
+
+      \param codecName 
+      the name of the ImageCodec to use 
+    */
+    OpenGLRenderer(uint max_quads,int width, int height, const String& codecName = "");
 
 
     /*!
-    \brief
-	    Destructor for OpenGLRenderer objects
+      \brief
+      Destructor for OpenGLRenderer objects
     */
     virtual ~OpenGLRenderer(void);
 
@@ -153,19 +174,19 @@ public:
 
 
     /*!
-    \brief
-	    Enable or disable the queuing of quads from this point on.
+      \brief
+      Enable or disable the queuing of quads from this point on.
 
-		This only affects queuing.  If queuing is turned off, any calls to addQuad will cause the quad to be rendered directly.  Note that
-		disabling queuing will not cause currently queued quads to be rendered, nor is the queue cleared - at any time the queue can still
-		be drawn by calling doRender, and the list can be cleared by calling clearRenderList.  Re-enabling the queue causes subsequent quads
-		to be added as if queuing had never been disabled.
+      This only affects queuing.  If queuing is turned off, any calls to addQuad will cause the quad to be rendered directly.  Note that
+      disabling queuing will not cause currently queued quads to be rendered, nor is the queue cleared - at any time the queue can still
+      be drawn by calling doRender, and the list can be cleared by calling clearRenderList.  Re-enabling the queue causes subsequent quads
+      to be added as if queuing had never been disabled.
 
-    \param setting
-	    true to enable queuing, or false to disable queuing (see notes above).
+      \param setting
+      true to enable queuing, or false to disable queuing (see notes above).
 
-    \return
-	    Nothing
+      \return
+      Nothing
     */
     virtual void	setQueueingEnabled(bool setting)		{d_queueing = setting;}
 
@@ -186,136 +207,148 @@ public:
     virtual void		destroyAllTextures(void);
 
     /*!
-    \brief
-	    Return whether queuing is enabled.
+      \brief
+      Return whether queuing is enabled.
 
-    \return
-	    true if queuing is enabled, false if queuing is disabled.
+      \return
+      true if queuing is enabled, false if queuing is disabled.
     */
     virtual bool	isQueueingEnabled(void) const	{return d_queueing;}
 
 
     /*!
-    \brief
-	    Return the current width of the display in pixels
+      \brief
+      Return the current width of the display in pixels
 
-    \return
-		float value equal to the current width of the display in pixels.
+      \return
+      float value equal to the current width of the display in pixels.
     */
     virtual float	getWidth(void) const		{return d_display_area.getWidth();}
 
 
     /*!
-    \brief
-	    Return the current height of the display in pixels
+      \brief
+      Return the current height of the display in pixels
 
-    \return
-	    float value equal to the current height of the display in pixels.
+      \return
+      float value equal to the current height of the display in pixels.
     */
     virtual float	getHeight(void) const		{return d_display_area.getHeight();}
 
 
     /*!
-    \brief
-	    Return the size of the display in pixels
+      \brief
+      Return the size of the display in pixels
 
-    \return
-	    Size object describing the dimensions of the current display.
+      \return
+      Size object describing the dimensions of the current display.
     */
     virtual Size	getSize(void) const			{return d_display_area.getSize();}
 
 
     /*!
-    \brief
-	    Return a Rect describing the screen
+      \brief
+      Return a Rect describing the screen
 
-    \return
-		A Rect object that describes the screen area.  Typically, the top-left values are always 0, and the size of the area described is
-		equal to the screen resolution.
+      \return
+      A Rect object that describes the screen area.  Typically, the top-left values are always 0, and the size of the area described is
+      equal to the screen resolution.
     */
     virtual Rect	getRect(void) const			{return d_display_area;}
 
 
     /*!
-    \brief
-	    Return the maximum texture size available
+      \brief
+      Return the maximum texture size available
 
-    \return
-	    Size of the maximum supported texture in pixels (textures are always assumed to be square)
+      \return
+      Size of the maximum supported texture in pixels (textures are always assumed to be square)
     */
     virtual	uint	getMaxTextureSize(void) const		{return d_maxTextureSize;}
 
 
     /*!
-    \brief
-	    Return the horizontal display resolution dpi
+      \brief
+      Return the horizontal display resolution dpi
 
-    \return
-	    horizontal resolution of the display in dpi.
+      \return
+      horizontal resolution of the display in dpi.
     */
     virtual	uint	getHorzScreenDPI(void) const	{return 96;}
 
 
     /*!
-    \brief
-	    Return the vertical display resolution dpi
+      \brief
+      Return the vertical display resolution dpi
 
-    \return
-	    vertical resolution of the display in dpi.
+      \return
+      vertical resolution of the display in dpi.
     */
     virtual	uint	getVertScreenDPI(void) const	{return 96;}
 
 
-	/*!
-	\brief
-		Set the size of the display in pixels.
+    /*!
+      \brief
+      Set the size of the display in pixels.
 
-		If your viewport size changes, you can call this function with the new size
-		in pixels to update the rendering area.
+      If your viewport size changes, you can call this function with the new size
+      in pixels to update the rendering area.
 
-	\note
-		This method will cause the EventDisplaySizeChanged event to fire if the
-		display size has changed.
+      \note
+      This method will cause the EventDisplaySizeChanged event to fire if the
+      display size has changed.
 
-	\param sz
-		Size object describing the size of the display.
+      \param sz
+      Size object describing the size of the display.
 
-	\return
-		Nothing.
-	*/
-	void	setDisplaySize(const Size& sz);
+      \return
+      Nothing.
+    */
+    void	setDisplaySize(const Size& sz);
 
 
     /*!
-    \brief
-        Grabs all the loaded textures from Texture RAM and stores them in a local data buffer.
-        This function invalidates all textures, and restoreTextures must be called before any
-        CEGUI rendering is done for predictable results
+      \brief
+      Grabs all the loaded textures from Texture RAM and stores them in a local data buffer.
+      This function invalidates all textures, and restoreTextures must be called before any
+      CEGUI rendering is done for predictable results
     */
     void grabTextures(void);
 
 
     /*!
-    \brief
-        Restores all the loaded textures from the local data buffers previously created by 'grabTextures'
+      \brief
+      Restores all the loaded textures from the local data buffers previously created by 'grabTextures'
     */
     void restoreTextures(void);
 
     /*! 
-    \brief 
-        Retrieve the image codec used internaly 
+      \brief 
+      Retrieve the image codec used internaly 
     */
-    ImageCodec* getImageCodec(void);
+    ImageCodec& getImageCodec(void);
     
        
     /*! 
-    \brief 
-        Set the image codec to use for loading textures 
+      \brief 
+      Set the image codec to use for loading textures 
     */
-    void setImageCodec(ImageCodec* codec);
+    void setImageCodec(const String& codecName);
 
+    /*!
+      \brief 
+      Set the name of the default image codec to be used 
+    */
+    static void setDefaultImageCodecName(const String& codecName);
+    
+    /*!
+      \brief 
+      Get the name of the default image codec 
+    */
+    static const String& getDefaultImageCodecName();
+    
 
-private:
+  private:
     /************************************************************************
 		Implementation Constants
     ************************************************************************/
@@ -328,33 +361,33 @@ private:
     *************************************************************************/
     struct MyQuad
     {
-        float tex[2];
-        uint32 color;
-        float vertex[3];
+      float tex[2];
+      uint32 color;
+      float vertex[3];
     };
 
     /*!
-    \brief
-		structure holding details about a quad to be drawn
+      \brief
+      structure holding details about a quad to be drawn
     */
     struct QuadInfo
     {
-        GLuint		texid;  
-        Rect		position;
-        float		z;
-        Rect		texPosition;
-		uint32		topLeftCol;
-		uint32		topRightCol;
-		uint32		bottomLeftCol;
-		uint32		bottomRightCol;
+      GLuint		texid;  
+      Rect		position;
+      float		z;
+      Rect		texPosition;
+      uint32		topLeftCol;
+      uint32		topRightCol;
+      uint32		bottomLeftCol;
+      uint32		bottomRightCol;
 
-        QuadSplitMode   splitMode;
+      QuadSplitMode   splitMode;
 
-		bool operator<(const QuadInfo& other) const
-		{
-			// this is intentionally reversed.
-			return z > other.z;
-		}
+      bool operator<(const QuadInfo& other) const
+      {
+	// this is intentionally reversed.
+	return z > other.z;
+      }
 
     };
 
@@ -377,32 +410,42 @@ private:
     // render a quad directly to the display
     void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
-	// convert colour value to whatever the OpenGL system is expecting.
-	uint32	colourToOGL(const colour& col) const;
+    // convert colour value to whatever the OpenGL system is expecting.
+    uint32	colourToOGL(const colour& col) const;
 
-	// set the module ID string
-	void setModuleIdentifierString();
-
-
+    // set the module ID string
+    void setModuleIdentifierString();
+  
+    // setup image codec 
+    void setupImageCodec(const String& codecName);
+    
+    // cleanup image codec 
+    void cleanupImageCodec();
+    
     /*************************************************************************
 	    Implementation Data
     *************************************************************************/
-	typedef std::multiset<QuadInfo>		QuadList;
-	QuadList d_quadlist;
+    typedef std::multiset<QuadInfo>		QuadList;
+    QuadList d_quadlist;
 
-	Rect		d_display_area;
+    Rect		d_display_area;
 
-	MyQuad		myBuff[OGLRENDERER_VBUFF_CAPACITY];
+    MyQuad		myBuff[OGLRENDERER_VBUFF_CAPACITY];
 
-	bool		d_queueing;			//!< setting for queuing control.
-	uint		d_currTexture;		//!< Currently bound texture.
-	int			d_bufferPos;		//!< index into buffer where next vertex should be put.
-	bool		d_sorted;			//!< true when data in quad list is sorted.
+    bool		d_queueing;			//!< setting for queuing control.
+    uint		d_currTexture;		//!< Currently bound texture.
+    int			d_bufferPos;		//!< index into buffer where next vertex should be put.
+    bool		d_sorted;			//!< true when data in quad list is sorted.
 
-	std::list<OpenGLTexture*>	d_texturelist;		//!< List used to track textures.
-	GLint       d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
+    std::list<OpenGLTexture*>	d_texturelist;		//!< List used to track textures.
+    GLint       d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
     ImageCodec* d_imageCodec;           //!< Holds a pointer to the image codec to use.
-};
+    DynamicModule* d_imageCodecModule; //!< Holds a pointer to the image codec module.
+    
+    static String d_defaultImageCodecName; //!< Holds the name of the default codec to use 
+    
+    
+  };
 
 } // End of  CEGUI namespace section
 

@@ -13,3 +13,4 @@ package.files =
 library("SILLY", "_d")
 
 dependency("CEGUIBase")
+define("CEGUISILLYIMAGECODEC_EXPORTS")

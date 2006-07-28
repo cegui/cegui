@@ -15,3 +15,4 @@ include(pkgdir.."include")
 library("FreeImage", "d")
 
 dependency("CEGUIBase")
+define("CEGUIFREEIMAGEIMAGECODEC_EXPORTS")

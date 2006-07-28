@@ -32,6 +32,16 @@
 #define _CEGUITGAImageCodec_h_
 #include "CEGUIImageCodec.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUITGAIMAGECODEC_EXPORTS
+#       define CEGUITGAIMAGECODEC_API __declspec(dllexport)
+#   else
+#       define CEGUITGAIMAGECODEC_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUITGAIMAGECODEC_API
+#endif
+
 namespace CEGUI 
 {
 /*!
@@ -41,7 +51,7 @@ namespace CEGUI
   This image codec is able to load TGA file only. 
   it is always available. 
 */
-class TGAImageCodec : public ImageCodec
+class CEGUITGAIMAGECODEC_API TGAImageCodec : public ImageCodec
 {
     /*! 
       \brief 

@@ -28,31 +28,19 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif 
 #include "openglrenderer.h"
 #include "opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIEventArgs.h"
 #include "CEGUIImageCodec.h" 
+#include "CEGUIDynamicModule.h"
 
-#if defined(USE_DEVIL_LIBRARY)
-#   include "ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodec.h"
-#   define UseCodec DevILImageCodec
-#elif defined(USE_FREEIMAGE_LIBRARY)
-#   include "ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodec.h" 
-#   define UseCodec FreeImageImageCodec 
-#elif defined(USE_SILLY_LIBRARY)
-#   include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h" 
-#   define UseCodec SILLYImageCodec 
-#elif defined(USE_CORONA_LIBRARY)
-#   include "ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h" 
-#   define UseCodec CoronaImageCodec
-#elif defined(USE_SILLY_LIBRARY)
-#   include "ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodec.h" 
-#   define UseCodec SILLYImageCodec
-#else
-#   include "ImageCodecModules/TGAImageCodec/CEGUITGAImageCodec.h"
-#   define UseCodec TGAImageCodec
-#endif
+#define S_(X) #X
+#define STRINGIZE(X) S_(X)
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -60,22 +48,23 @@ namespace CEGUI
 /*************************************************************************
 	Constants definitions
 *************************************************************************/
-const int OpenGLRenderer::VERTEX_PER_QUAD			= 6;
-const int OpenGLRenderer::VERTEX_PER_TRIANGLE		= 3;
-const int OpenGLRenderer::VERTEXBUFFER_CAPACITY		= OGLRENDERER_VBUFF_CAPACITY;
+const int OpenGLRenderer::VERTEX_PER_QUAD           = 6;
+const int OpenGLRenderer::VERTEX_PER_TRIANGLE       = 3;
+const int OpenGLRenderer::VERTEXBUFFER_CAPACITY     = OGLRENDERER_VBUFF_CAPACITY;
 
 
 /*************************************************************************
 	Constructor
 *************************************************************************/
-OpenGLRenderer::OpenGLRenderer(uint max_quads) :
-	d_queueing(true),
-	d_currTexture(0),
-	d_bufferPos(0),
-    d_imageCodec(0)
+OpenGLRenderer::OpenGLRenderer(uint max_quads, const String& codecName) :
+    d_queueing(true),
+    d_currTexture(0),
+    d_bufferPos(0),
+    d_imageCodec(0),
+    d_imageCodecModule(0)
 {
 	GLint vp[4];   
-
+    
 	// initialise renderer size
 	glGetIntegerv(GL_VIEWPORT, vp);
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &d_maxTextureSize);
@@ -84,16 +73,17 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads) :
 	d_display_area.d_right	= (float)vp[2];
 	d_display_area.d_bottom	= (float)vp[3];
 
-    d_imageCodec = new UseCodec;
-
+    setupImageCodec(codecName);
     setModuleIdentifierString();
 }
 
 
-OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height) :
+OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, const String& codecName) :
 	d_queueing(true),
 	d_currTexture(0),
-	d_bufferPos(0)
+	d_bufferPos(0), 
+    d_imageCodec(0), 
+    d_imageCodecModule(0)
 {
 	GLint vp[4];   
 
@@ -105,8 +95,7 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height) :
 	d_display_area.d_right	= static_cast<float>(width);
 	d_display_area.d_bottom	= static_cast<float>(height);
 
-    d_imageCodec = new UseCodec;
-
+    setupImageCodec(codecName);
     setModuleIdentifierString();
 }
 
@@ -615,20 +604,74 @@ void OpenGLRenderer::restoreTextures()
 /***********************************************************************
     Get the current ImageCodec object used 
 ************************************************************************/
-ImageCodec* OpenGLRenderer::getImageCodec() 
+ImageCodec& OpenGLRenderer::getImageCodec() 
 {
-    return d_imageCodec;
+    return *d_imageCodec;
 }
 /***********************************************************************
     Set the current ImageCodec object used 
 ************************************************************************/
-void OpenGLRenderer::setImageCodec(ImageCodec* codec)
+void OpenGLRenderer::setImageCodec(const String& codecName)
 {
-    // Destroy the previous codec 
-    if (d_imageCodec)
-        delete d_imageCodec; 
-    d_imageCodec = codec;
+    setupImageCodec(codecName);    
 }
+/***********************************************************************
+    setup the ImageCodec object used 
+************************************************************************/
+void OpenGLRenderer::setupImageCodec(const String& codecName)
+{
+    
+    // Cleanup the old image codec 
+    if (d_imageCodec)
+        cleanupImageCodec();
+    // Test whether we should use the default codec or not 
+    if (codecName.empty())
+        d_imageCodecModule = new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
+    else 
+        d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
+    
+    // Create the codec object itself 
+    ImageCodec* (*createFunc)(void) = 
+        (ImageCodec* (*)(void))d_imageCodecModule->getSymbolAddress("createImageCodec");
+    d_imageCodec = createFunc();
+}
+/***********************************************************************
+    cleanup the ImageCodec object used 
+************************************************************************/
+void OpenGLRenderer::cleanupImageCodec()
+{
+    if (d_imageCodec)
+    {
+        void(*deleteFunc)(ImageCodec*) = 
+            (void(*)(ImageCodec*))d_imageCodecModule->getSymbolAddress("destroyImageCodec");
+        deleteFunc(d_imageCodec);
+        d_imageCodec = 0;
+        delete d_imageCodecModule;
+        d_imageCodecModule = 0;
+    }
+    
+}
+/***********************************************************************
+    set the default ImageCodec name 
+************************************************************************/
+void OpenGLRenderer::setDefaultImageCodecName(const String& codecName)
+{
+    d_defaultImageCodecName = codecName;
+}
+
+/***********************************************************************
+    get the default ImageCodec name to be used  
+************************************************************************/
+const String& OpenGLRenderer::getDefaultImageCodecName()
+{
+    return d_defaultImageCodecName;
+    
+}
+
+/***********************************************************************
+    store the name of the default ImageCodec
+************************************************************************/
+String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC)); 
 
 
 } // End of  CEGUI namespace section

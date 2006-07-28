@@ -31,6 +31,15 @@
 #define _CEGUICoronaImageCodec_h_
 #include "CEGUIImageCodec.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUICORONAIMAGECODEC_EXPORTS
+#       define CEGUICORONAIMAGECODEC_API __declspec(dllexport)
+#   else
+#       define CEGUICORONAIMAGECODEC_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUICORONAIMAGECODEC_API
+#endif
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -38,7 +47,7 @@ namespace CEGUI
   \brief 
   Image codec based on the Corona library 
 */
-class CoronaImageCodec : public ImageCodec 
+class CEGUICORONAIMAGECODEC_API CoronaImageCodec : public ImageCodec 
 {
 public:
     CoronaImageCodec();

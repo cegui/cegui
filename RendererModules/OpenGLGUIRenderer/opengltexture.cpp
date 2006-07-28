@@ -79,21 +79,21 @@ OpenGLTexture::~OpenGLTexture(void)
 *************************************************************************/
 void OpenGLTexture::loadFromFile(const String& filename, const String& resourceGroup)
 {
+    OpenGLRenderer* renderer =  static_cast<OpenGLRenderer*>(getRenderer());
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	// load file to memory via resource provider
 	RawDataContainer texFile;
 	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, texFile, resourceGroup);
-    ImageCodec* codec = static_cast<OpenGLRenderer*>(getRenderer())->getImageCodec();
-    Texture* res = codec->load(texFile, this);
-    // unload file data buffer
+	Texture* res = renderer->getImageCodec().load(texFile, this);
+	// unload file data buffer
 	System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
-    if (res == 0)
-    { 
-            
+	if (res == 0)
+    {
         // It's an error 
-		throw RendererException("OpenGLTexture::loadFromFile - " + codec->getIdentifierString() + " failed to load image '" + filename + "'.");
+		throw RendererException("OpenGLTexture::loadFromFile - " + 
+                                renderer->getImageCodec().getIdentifierString() + 
+                                " failed to load image '" + filename + "'.");
     }
-
 }
 
 
