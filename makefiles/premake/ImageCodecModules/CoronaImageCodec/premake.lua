@@ -15,3 +15,6 @@ include(pkgdir.."include")
 library("corona", "_d")
 
 dependency("CEGUIBase")
+
+define("CEGUICORONAIMAGECODEC_EXPORTS")
+

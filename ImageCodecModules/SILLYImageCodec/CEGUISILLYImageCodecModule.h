@@ -1,9 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIFreeImageImageCodec.h
-	created:	Sun Jun 18th 2006
-	author:		Andrzej Krzysztof Haczewski (aka guyver6)
+	filename: 	CEGUISILLYImageCodecModule.h
+	created:	28/07/2006
+	author:		Olivier Delannoy 
 	
-	purpose:	This codec provide FreeImage based image loading 
+	purpose:	This codec provide SILLY based image loading.
+                
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -27,41 +28,24 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIFreeImageImageCodec_h_
-#define _CEGUIFreeImageImageCodec_h_
-#include "CEGUIImageCodec.h"
+#ifndef _CEGUISILLYImageCodecModule_h_
+#define _CEGUISILLYImageCodecModule_h_
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef CEGUIFREEIMAGEIMAGECODEC_EXPORTS
-#       define CEGUIFREEIMAGEIMAGECODEC_API __declspec(dllexport)
-#   else
-#       define CEGUIFREEIMAGEIMAGECODEC_API __declspec(dllimport)
-#   endif
-#else
-#   define CEGUIFREEIMAGEIMAGECODEC_API
-#endif
+#include "CEGUISILLYImageCodec.h" 
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-/*!
+/*! 
   \brief 
-  Image codec based on the FreeImage library 
+  exported function that creates the ImageCodec based object and 
+  returns a pointer to that object.
 */
-class CEGUIFREEIMAGEIMAGECODEC_API FreeImageImageCodec : public ImageCodec 
-{
-public:
-    FreeImageImageCodec();
-    ~FreeImageImageCodec();
-    
-    Texture* load(const RawDataContainer& data, Texture* result);
-protected:
+extern "C" CEGUISILLYIMAGECODEC_API CEGUI::ImageCodec* createImageCodec(void);
 
-private:
+/*!
+  \brief
+  exported function that deletes an ImageCodec based object previously 
+  created by this module.
+*/
+extern "C" CEGUISILLYIMAGECODEC_API void destroyImageCodec(CEGUI::ImageCodec* imageCodec);
 
-};    
 
-} // End of CEGUI namespace section 
-
-#endif // end of guard _CEGUIFreeImageImageCodec_h_
-
+#endif // end of guard _CEGUISILLYImageCodecModule_h_

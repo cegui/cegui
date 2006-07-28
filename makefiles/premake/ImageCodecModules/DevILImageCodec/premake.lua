@@ -17,3 +17,4 @@ library("ILU")
 library("ILUT")
 
 dependency("CEGUIBase")
+define("CEGUIDEVILIMAGECODEC_EXPORTS")

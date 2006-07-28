@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUIExceptions.h"
 #include "CEGUISILLYImageCodec.h" 
-#include "SILLY.h"
+#include <SILLY.h>
 #include "CEGUILogger.h" 
 
 // Start of CEGUI namespace section

@@ -240,17 +240,22 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
 AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_ARG_ENABLE([opengl-renderer], AC_HELP_STRING([--disable-opengl-renderer], [Disable the OpenGL renderer]),
         [cegui_enable_opengl=$enableval], [cegui_enable_opengl=yes])
-    AC_ARG_WITH([corona], AC_HELP_STRING([--without-corona], [Disables image loading via Corona image codec by OpenGL renderer]), 
-        [cegui_with_corona=$withval], [cegui_with_corona=yes])
+    AC_ARG_ENABLE([corona], AC_HELP_STRING([--enable-corona], [Enable image loading via Corona image codec by OpenGL renderer (auto)]), 
+        [cegui_with_corona=$enableval], [cegui_with_corona=yes])
     AC_ARG_WITH(corona-prefix, AC_HELP_STRING([--with-corona-prefix], [Prefix where corona is installed (optional)]), 
         [cegui_corona_prefix="$withval"], [cegui_corona_prefix=""])
-    AC_ARG_WITH([devil], AC_HELP_STRING([--without-devil], [Disables image loading via DevIL image codec by OpenGL renderer]),
-        [cegui_with_devil=$withval], [cegui_with_devil=yes])
-    AC_ARG_WITH([freeimage], AC_HELP_STRING([--without-freeimage], [Disabled image loading via FreeImage image codec by OpenGL renderer]), 
-        [cegui_with_freeimage=$withval], [cegui_with_freeimage=yes])
-    AC_ARG_WITH([silly], AC_HELP_STRING([--without-silly], [Disables image loading via SILLY image codec by OpenGL renderer]), 
-        [cegui_with_silly=$withval], [cegui_with_silly=yes])
-
+    AC_ARG_ENABLE([devil], AC_HELP_STRING([--enable-devil], [Enable image loading via DevIL image codec by OpenGL renderer (auto)]),
+        [cegui_with_devil=$enableval], [cegui_with_devil=yes])
+    AC_ARG_ENABLE([freeimage], AC_HELP_STRING([--enable-freeimage], [Disabled image loading via FreeImage image codec by OpenGL renderer (auto)]), 
+        [cegui_with_freeimage=$enableval], [cegui_with_freeimage=yes])
+    AC_ARG_ENABLE([silly], AC_HELP_STRING([--enable-silly], [Enable image loading via SILLY image codec by OpenGL renderer (auto)]), 
+        [cegui_with_silly=$enableval], [cegui_with_silly=yes])
+    AC_ARG_ENABLE([tga], AC_HELP_STRING([--enable-tga], [Enable image loading via TGA image codec by OpenGL renderer (auto)]), 
+        [cegui_with_tga=$enableval], [cegui_with_tga=yes])
+    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=PARSER]], [Sets the default image codec used by the OpenGL renderer. 
+Tipically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec, though you can set it to anything 
+to load a custom made image codec module as the default.]), 
+    [cegui_default_image_codec=$withval], [cegui_default_image_codec=none])
     AC_PATH_XTRA
     cegui_saved_LIBS="$LIBS"
     LIBS="$X_PRE_LIBS $X_LIBS $X_EXTRA_LIBS"
@@ -377,8 +382,37 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         cegui_with_freeimage=no
         cegui_with_devil=no
         cegui_with_corona=no
+        cegui_with_tga=no
         AC_MSG_NOTICE([OpenGL renderer disabled])
     fi
+    
+    if test x$cegui_default_image_codec = xnone ; then 
+        if test x$cegui_with_devil = xyes ; then
+            cegui_default_image_codec=DevILImageCodec
+        else 
+            if test x$cegui_with_freeimage = xyes ; then 
+                cegui_default_image_codec=FreeImageImageCodec
+            else 
+                if test x$cegui_with_silly = xyes ; then 
+                    cegui_default_image_codec=SILLYImageCodec
+                else 
+                    if test x$cegui_with_corona = xyes ; then
+                        cegui_default_image_codec=CoronaImageCodec
+                    else 
+                        if test x$cegui_with_tga = xyes ; then 
+                            cegui_default_imageCodec=TGAImageCodec
+                        else 
+                            AC_MSG_ERROR([None of the ImageCodec are going to be build - unable to continue. Either enable an image codec or set a custom default.])
+                        fi 
+                    fi
+                fi
+            fi
+        fi
+    fi
+    dnl define macro for the class of the default image codec  to be used
+    AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_IMAGE_CODEC, $cegui_default_image_codec, [Set this to the default ImageCodec to be used (CoronaImageCodec, DevILImageCodec FreeImageImageCode, SILLYImageCodec, TGAImageCodec).])
+    AC_MSG_NOTICE([Default ImageCodec will be: $cegui_default_image_codec])
+        
 
     AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
@@ -386,6 +420,7 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AM_CONDITIONAL([CEGUI_BUILD_CORONA_IMAGE_CODEC], [test x$cegui_with_corona = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_SILLY_IMAGE_CODEC], [test x$cegui_with_silly = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_FREE_IMAGE_IMAGE_CODEC], [test x$cegui_with_freeimage = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_TGA_IMAGE_CODEC], [test x$cegui_with_tga = xyes])
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
 ])

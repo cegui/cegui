@@ -13,3 +13,5 @@ package.files =
 include(pkgdir.."include")
 
 dependency("CEGUIBase")
+define("CEGUITGAIMAGECODEC_EXPORTS")
+

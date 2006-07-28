@@ -31,6 +31,18 @@
 #define _CEGUISILLYImageCodec_h_
 #include "CEGUIImageCodec.h"
 
+
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#   ifdef CEGUISILLYIMAGECODEC_EXPORTS
+#       define CEGUISILLYIMAGECODEC_API __declspec(dllexport)
+#   else
+#       define CEGUISILLYIMAGECODEC_API __declspec(dllimport)
+#   endif
+#else
+#   define CEGUISILLYIMAGECODEC_API
+#endif
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -38,7 +50,7 @@ namespace CEGUI
 \brief
     Image codec based on the SILLY library.
 */
-class SILLYImageCodec : public ImageCodec 
+class CEGUISILLYIMAGECODEC_API SILLYImageCodec : public ImageCodec 
 {
 public:
     SILLYImageCodec();
