@@ -82,9 +82,17 @@ Each item in here has a comment to describe what it's for.
 #	define CEGUI_DEFAULT_XMLPARSER ExpatParser
 #endif
 
+//////////////////////////////////////////////////////////////////////////
+// Set this to the default ImageCodec to be used.
+// CoronaImageCodec, DevILImageCodec, FreeImageImageCodec,
+// SILLYImageCodec, TGAImageCodec 
+//////////////////////////////////////////////////////////////////////////
+#ifndef CEGUI_DEFAULT_IMAGE_CODEC
+#   define CEGUI_DEFAULT_IMAGE_CODEC TGAImageCodec
+#endif 
+
+
 #endif // defined(_MSC_VER) || defined(__APPLE__)
-
-
 //////////////////////////////////////////////////////////////////////////
 // The following are intended for MSVC++ users.
 //////////////////////////////////////////////////////////////////////////
