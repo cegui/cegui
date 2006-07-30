@@ -56,11 +56,11 @@ const int OpenGLRenderer::VERTEXBUFFER_CAPACITY     = OGLRENDERER_VBUFF_CAPACITY
 /*************************************************************************
 	Constructor
 *************************************************************************/
-OpenGLRenderer::OpenGLRenderer(uint max_quads, const String& codecName) :
+OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
     d_queueing(true),
     d_currTexture(0),
     d_bufferPos(0),
-    d_imageCodec(0),
+    d_imageCodec(codec),
     d_imageCodecModule(0)
 {
 	GLint vp[4];   
@@ -73,16 +73,17 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads, const String& codecName) :
 	d_display_area.d_right	= (float)vp[2];
 	d_display_area.d_bottom	= (float)vp[3];
 
-    setupImageCodec(codecName);
+    if (!d_imageCodec)
+        setupImageCodec("");
     setModuleIdentifierString();
 }
 
 
-OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, const String& codecName) :
+OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, ImageCodec* codec) :
 	d_queueing(true),
 	d_currTexture(0),
 	d_bufferPos(0), 
-    d_imageCodec(0), 
+    d_imageCodec(codec), 
     d_imageCodecModule(0)
 {
 	GLint vp[4];   
@@ -94,8 +95,8 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, const Strin
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= static_cast<float>(width);
 	d_display_area.d_bottom	= static_cast<float>(height);
-
-    setupImageCodec(codecName);
+    if (!d_imageCodec)
+        setupImageCodec("");
     setModuleIdentifierString();
 }
 
@@ -105,8 +106,8 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, const Strin
 *************************************************************************/
 OpenGLRenderer::~OpenGLRenderer(void)
 {
-    delete d_imageCodec;
 	destroyAllTextures();
+    cleanupImageCodec();
 }
 
 
@@ -616,6 +617,18 @@ void OpenGLRenderer::setImageCodec(const String& codecName)
     setupImageCodec(codecName);    
 }
 /***********************************************************************
+    Set the current ImageCodec object used 
+************************************************************************/
+void OpenGLRenderer::setImageCodec(ImageCodec* codec)
+{
+    if (codec)
+    {
+        cleanupImageCodec();
+        d_imageCodec = codec;
+        d_imageCodecModule = 0; 
+    }
+}
+/***********************************************************************
     setup the ImageCodec object used 
 ************************************************************************/
 void OpenGLRenderer::setupImageCodec(const String& codecName)
@@ -640,7 +653,7 @@ void OpenGLRenderer::setupImageCodec(const String& codecName)
 ************************************************************************/
 void OpenGLRenderer::cleanupImageCodec()
 {
-    if (d_imageCodec)
+    if (d_imageCodec && d_imageCodecModule)
     {
         void(*deleteFunc)(ImageCodec*) = 
             (void(*)(ImageCodec*))d_imageCodecModule->getSymbolAddress("destroyImageCodec");
