@@ -134,10 +134,11 @@ namespace CEGUI
       \param max_quads
       obsolete.  Set to 0.
       
-      \param codecName 
-      the name of the ImageCodec to use 
+      \param codec
+      A pointer to a user provided image codec. The renderer
+      does not take ownership of the codec object. 
     */
-    OpenGLRenderer(uint max_quads, const String& codecName = "");
+    OpenGLRenderer(uint max_quads, ImageCodec* codec = 0);
     /*!
       \brief
       Constructor for OpenGL Renderer object 
@@ -151,10 +152,11 @@ namespace CEGUI
       \param height 
       height of the CEGUI viewport.
 
-      \param codecName 
-      the name of the ImageCodec to use 
+      \param codec
+      A pointer to a user provided image codec. The renderer
+      does not take ownership of the codec object. 
     */
-    OpenGLRenderer(uint max_quads,int width, int height, const String& codecName = "");
+    OpenGLRenderer(uint max_quads,int width, int height, ImageCodec* codec  = 0);
 
 
     /*!
@@ -336,6 +338,18 @@ namespace CEGUI
     void setImageCodec(const String& codecName);
 
     /*!
+     \brief  
+     Set the image codec to use from an existing image codec.
+     
+     In this case the renderer does not take the ownership of the 
+     image codec object. 
+
+     \param codec a pointer to an image codec object 
+     */
+    void setImageCodec(ImageCodec* codec);
+     
+     
+    /*!
       \brief 
       Set the name of the default image codec to be used 
     */
@@ -439,8 +453,9 @@ namespace CEGUI
 
     std::list<OpenGLTexture*>	d_texturelist;		//!< List used to track textures.
     GLint       d_maxTextureSize;		//!< Holds maximum supported texture size (in pixels).
+    
     ImageCodec* d_imageCodec;           //!< Holds a pointer to the image codec to use.
-    DynamicModule* d_imageCodecModule; //!< Holds a pointer to the image codec module.
+    DynamicModule* d_imageCodecModule; //!< Holds a pointer to the image codec module. If d_imageCodecModule is 0 we are not owner of the image codec object 
     
     static String d_defaultImageCodecName; //!< Holds the name of the default codec to use 
     
