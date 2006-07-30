@@ -51,17 +51,16 @@ namespace CEGUI
 
     void Property::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const
     {
-        // TODO: Create an helper function to extract whether the property 
-        // should be inlined or exported as a text node 
-        // At the moment export only Text property using text node 
-        const String textProperty("Text");
         if (d_writeXML)
         {
             xml_stream.openTag("Property")
                 .attribute("Name",  d_name);
-            if (textProperty == d_name)
+            // Detect wether it is a long property or not 
+            // Long property are needed if 
+            const String& value = get(receiver);
+            if (value.find((utf32)'\n') != String::npos)
             {
-                xml_stream.text(get(receiver));
+                xml_stream.text(value);
             }
             else 
             {
