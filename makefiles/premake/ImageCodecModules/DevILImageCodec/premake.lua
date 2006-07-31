@@ -2,7 +2,7 @@
 -- CEGUIDevILImageCodec premake script
 --
 
-cegui_dynamic("CEGUIDevILImageCodec", "c++", "lib")
+cegui_dynamic("CEGUIDevILImageCodec")
 
 package.files =
 {
