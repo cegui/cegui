@@ -2,7 +2,7 @@
 -- CEGUICoronaImageCodec premake script
 --
 
-cegui_dynamic("CEGUICoronaImageCodec", "c++", "lib")
+cegui_dynamic("CEGUICoronaImageCodec")
 
 package.files =
 {
