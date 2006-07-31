@@ -378,7 +378,6 @@ to load a custom made image codec module as the default.]),
         fi
 
     else
-        cegui_with_tga=no
         cegui_with_freeimage=no
         cegui_with_devil=no
         cegui_with_corona=no
@@ -400,7 +399,7 @@ to load a custom made image codec module as the default.]),
                         cegui_default_image_codec=CoronaImageCodec
                     else 
                         if test x$cegui_with_tga = xyes ; then 
-                            cegui_default_imageCodec=TGAImageCodec
+                            cegui_default_image_codec=TGAImageCodec
                         else 
                             AC_MSG_ERROR([None of the ImageCodec are going to be build - unable to continue. Either enable an image codec or set a custom default.])
                         fi 
