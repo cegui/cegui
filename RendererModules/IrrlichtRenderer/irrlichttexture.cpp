@@ -113,6 +113,7 @@ namespace CEGUI
 
         // unload file data buffer
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
+        updateScales();
 	}
 /************************************************************************/
 	void IrrlichtTexture::loadFromMemory(const void* buffPtr, 
@@ -150,6 +151,7 @@ namespace CEGUI
 			tex->unlock();
 		}
 		tex->grab();
+        updateScales();
 	}
 
 

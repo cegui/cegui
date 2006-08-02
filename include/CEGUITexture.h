@@ -95,7 +95,7 @@ public:
         float value that denotes the scale of the texture compared to the inital 
         size of the texture.
     */
-    float getWidthScale(void) const {return getWidth() / getOriginalWidth(); }
+    float getXScale(void) const {return d_xScale;} // ((float)getWidth() / (float)getOriginalWidth()) / (float) getWidth();
 
 
 
@@ -130,7 +130,7 @@ public:
         float value that denotes the scale of the texture compared to the inital 
         size of the texture.
     */
-    float getHeightScale(void) const {return getHeight() / getOriginalHeight() ; }
+    float getYScale(void) const {return d_yScale; }//((float)getHeight() / (float)getOriginalHeight() ) / (float) getHeight(); 
 
 	/*!
 	\brief
@@ -181,6 +181,16 @@ public:
 
 
 protected:
+    /*!
+    \brief 
+        use this after updating the texture data 
+        
+     */
+    void updateScales()
+    {
+        d_xScale =  ((float) getOriginalWidth() / (float)getWidth());
+        d_yScale = ((float) getOriginalHeight() / (float)getHeight());
+    }
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -188,7 +198,7 @@ protected:
 	\brief
 		Constructor for Texture base class.  This is never called by client code.
 	*/
-	Texture(Renderer* owner) : d_owner(owner) {}
+	Texture(Renderer* owner) : d_owner(owner), d_xScale(1.0), d_yScale(1.0) {}
 
 	/*!
 	\brief
@@ -197,6 +207,8 @@ protected:
 	virtual ~Texture(void) {}
 
 private:
+    float d_xScale;         //<! cached xScale for image set usage 
+    float d_yScale;         //<! cached yScale for image set usage 
 	Renderer* d_owner;		//<! Renderer object that created and owns this texture
 };
 

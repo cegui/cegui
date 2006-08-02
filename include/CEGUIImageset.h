@@ -611,7 +611,6 @@ protected:
 	float	d_vertScaling;			//!< current vertical scaling factor.
 	float	d_nativeHorzRes;		//!< native horizontal resolution for this Imageset.
 	float	d_nativeVertRes;		//!< native vertical resolution for this Imageset.
-    
     static String d_defaultResourceGroup;   //!< Default resource group specifically for Imagesets.
 };
 

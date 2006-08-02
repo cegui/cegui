@@ -31,9 +31,9 @@
 #if defined(_WIN32)
 #  pragma comment(lib, "irrlicht.lib")
 #  if defined(_DEBUG)
-#      pragma comment(lib, "IrrlichtGUIRenderer_d.lib")
+#      pragma comment(lib, "IrrlichtRenderer_d.lib")
 #  else
-#      pragma comment(lib, "IrrlichtGUIRenderer.lib")
+#      pragma comment(lib, "IrrlichtRenderer.lib")
 #  endif
 #endif
 
