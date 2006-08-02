@@ -54,20 +54,28 @@ namespace CEGUI
         d_handler = &handler;
 
         // use resource provider to load file data
-        // TODO: Fix null termination issue.
+        // Fixed using patch from tracker item #000057
+        // cegui_mk2-0.4.1-fixtinyxml.patch
         RawDataContainer rawXMLData;
         System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
+        
+        // Create a buffer with the missing extra byte 
+        size_t size = rawXMLData.getSize();
+        char* buf = new char[size + 1];
+        memcpy(buf, rawXMLData.getDataPtr(), size);
+        buf[size] = 0; 
 
+        // Parse the document 
         CEGUITinyXML::TiXmlDocument doc;
-        doc.Parse((const char*)rawXMLData.getDataPtr());
-
+        doc.Parse((const char*)buf);
         const CEGUITinyXML::TiXmlElement* currElement = doc.RootElement();
-
         if (currElement)
         {
             // function called recursively to parse xml data
             processElement(currElement);
         }
+        // Free memory 
+        delete [] buf;
 
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }

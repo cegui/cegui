@@ -73,6 +73,31 @@ public:
 	*/
 	virtual	ushort	getWidth(void) const = 0;
 
+	/*!
+	\brief
+		Returns the original pixel width of the texture
+
+	\return
+		ushort value that is the original width of the texture in pixels
+
+    \note 
+        for compatibility reason this method is optional the auto scale 
+        issue mantis ticket # 0000045 is not fixed for renderer that do 
+        not handle this. 
+	*/
+	virtual	ushort	getOriginalWidth(void) const { return getWidth();}
+    
+    /*! 
+    \brief 
+        Returns the current scale used for the width of the texture 
+
+    \return 
+        float value that denotes the scale of the texture compared to the inital 
+        size of the texture.
+    */
+    float getWidthScale(void) const {return getWidth() / getOriginalWidth(); }
+
+
 
 	/*!
 	\brief
@@ -83,6 +108,29 @@ public:
 	*/
 	virtual	ushort	getHeight(void) const = 0;
 
+	/*!
+	\brief
+		Returns the original pixel height of the texture
+
+	\return
+		ushort value that is the original height of the texture in pixels
+
+    \note for compatibility reason this method is optional the auto scale 
+    issue mantis ticket # 0000045 is not fixed for renderer that do 
+    not handle this. 
+	*/
+	virtual	ushort	getOriginalHeight(void) const { return getHeight() ; }
+
+
+    /*! 
+    \brief 
+        Returns the current scale used for the height of the texture 
+
+    \return 
+        float value that denotes the scale of the texture compared to the inital 
+        size of the texture.
+    */
+    float getHeightScale(void) const {return getHeight() / getOriginalHeight() ; }
 
 	/*!
 	\brief

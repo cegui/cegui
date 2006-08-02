@@ -74,8 +74,7 @@ public:
 	    ushort value that is the current width of the texture in pixels
     */
     virtual	ushort	getWidth(void) const		{return d_width;}
-
-
+    
     /*!
     \brief
 	    Returns the current pixel height of the texture
@@ -84,7 +83,6 @@ public:
 	    ushort value that is the current height of the texture in pixels
     */
     virtual	ushort	getHeight(void) const		{return d_height;}
-
 
     /*!
     \brief
@@ -166,48 +164,6 @@ public:
 
 
 private:
-#ifndef USE_DEVIL_LIBRARY
-// These defines are used to tell us about the type of TARGA file it is
-#	define TGA_RGB		 2		// This tells us it's a normal RGB (really BGR) file
-#	define TGA_A		 3		// This tells us it's a ALPHA file
-#	define TGA_RLE		10		// This tells us that the targa is Run-Length Encoded (RLE)
-
-	/*************************************************************************
-		Implementation Struct
-	*************************************************************************/
-	// This is our image structure for our targa data
-	struct tImageTGA
-	{
-		int channels;			// The channels in the image (3 = RGB : 4 = RGBA)
-		int sizeX;				// The width of the image in pixels
-		int sizeY;				// The height of the image in pixels
-		unsigned char *data;	// The image pixel data
-	};
-
-
-	// flips data for tImageTGA 'img'
-	static void flipImageTGA(tImageTGA* img);
-    
-
-	// Took this code from http://www.gametutorials.com still ne
-    // tImageTGA *LoadTGA(const char *filename)
-    //
-    // This is our cool function that loads the targa (TGA) file, then returns it's data.  
-    // This tutorial supports 16, 24 and 32 bit images, along with RLE compression.
-    //
-    //
-    // Ben Humphrey (DigiBen)
-    // Game Programmer
-    // DigiBen@GameTutorials.com
-    // Co-Web Host of www.GameTutorials.com
-    //
-	//
-	// Modified by Paul D Turner to accept a raw data buffer & it's length
-	// as input.
-	//
-    tImageTGA* LoadTGA(const unsigned char* buffer, size_t buffer_size);
-
-#endif
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
