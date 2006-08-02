@@ -99,6 +99,7 @@ Font::Font (const XMLAttributes& attributes) :
 *************************************************************************/
 Font::~Font(void)
 {
+    delete [] d_glyphPageLoaded;
 }
 
 
