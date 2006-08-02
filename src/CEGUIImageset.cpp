@@ -64,7 +64,6 @@ Imageset::Imageset(const String& name, Texture* texture) :
 	{
 		throw NullObjectException("Imageset::Imageset - Texture object supplied for Imageset creation must be valid.");
 	}
-
 	// defaults for scaling options
 	d_autoScale = false;
 	setNativeResolution(Size(DefaultNativeHorzRes, DefaultNativeVertRes));
@@ -92,6 +91,7 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
     d_texture =
         System::getSingleton().getRenderer()->createTexture(filename,
         resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
+
 
     // initialse the auto-scaling for this Imageset
     d_autoScale = true;
@@ -213,13 +213,15 @@ void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, con
 	// check if rect was totally clipped
 	if (final_rect.getWidth() != 0)
 	{
-		float x_scale = 1.0f / (float)d_texture->getWidth();
-		float y_scale = 1.0f / (float)d_texture->getHeight();
+        const float x_scale = d_texture->getXScale() / (float)d_texture->getWidth();
+        const float y_scale = d_texture->getYScale() / (float)d_texture->getHeight();
 
 		float tex_per_pix_x = source_rect.getWidth() / dest_rect.getWidth();
 		float tex_per_pix_y = source_rect.getHeight() / dest_rect.getHeight();
 
+        // Fix bug #45
 		// calculate final, clipped, texture co-ordinates
+        // Add texture cached scale ratio 
 		Rect  tex_rect((source_rect.d_left + ((final_rect.d_left - dest_rect.d_left) * tex_per_pix_x)) * x_scale,
 			(source_rect.d_top + ((final_rect.d_top - dest_rect.d_top) * tex_per_pix_y)) * y_scale,
 			(source_rect.d_right + ((final_rect.d_right - dest_rect.d_right) * tex_per_pix_x)) * x_scale,

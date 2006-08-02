@@ -104,6 +104,7 @@ namespace CEGUI
 				//! Left mouse button was pressed down.
 			case EMIE_LMOUSE_PRESSED_DOWN:
 				handled=CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
+                break;
 				//! Right mouse button was pressed down.
 			case EMIE_RMOUSE_PRESSED_DOWN:
 				handled=CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::RightButton);
