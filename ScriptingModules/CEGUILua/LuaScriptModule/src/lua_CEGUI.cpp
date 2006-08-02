@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Thu Jul 27 18:47:59 2006.
+** Generated automatically by tolua++-1.0.92 on 08/01/06 23:05:16.
 */
 
 #ifndef __cplusplus
@@ -8127,10 +8127,21 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_createImageset00(lua_State* tolua_S
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createImageset'",NULL);
 #endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
  {
   CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->createImageset(name,texture);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
+catch(CEGUI::Exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'createImageset'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
@@ -8161,14 +8172,74 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_createImageset01(lua_State* tolua_S
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createImageset'",NULL);
 #endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
  {
   CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->createImageset(filename,resourcegroup);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
+catch(CEGUI::Exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'createImageset'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
  }
  return 1;
 tolua_lerror:
  return tolua_CEGUI_CEGUI_ImagesetManager_createImageset00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createImagesetFromImageFile of class  CEGUI::ImagesetManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImagesetManager_createImagesetFromImageFile00
+static int tolua_CEGUI_CEGUI_ImagesetManager_createImagesetFromImageFile00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImagesetManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,4,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImagesetManager* self = (CEGUI::ImagesetManager*)  tolua_tousertype(tolua_S,1,0);
+  string name = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string filename = ((string)  tolua_tocppstring(tolua_S,3,0));
+  string resourcegroup = ((string)  tolua_tocppstring(tolua_S,4,""));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createImagesetFromImageFile'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->createImagesetFromImageFile(name,filename,resourcegroup);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
+ }
+catch(CEGUI::Exception&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::Exception' was thrown by function 'createImagesetFromImageFile'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'createImagesetFromImageFile'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -8284,10 +8355,15 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_getImageset00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getImageset'",NULL);
 #endif
+ try
  {
   CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->getImageset(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
+catch(CEGUI::Exception&e)
+{
+ return 0;
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
@@ -46618,6 +46694,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_ImagesetManager_getSingleton00);
    tolua_function(tolua_S,"createImageset",tolua_CEGUI_CEGUI_ImagesetManager_createImageset00);
    tolua_function(tolua_S,"createImageset",tolua_CEGUI_CEGUI_ImagesetManager_createImageset01);
+   tolua_function(tolua_S,"createImagesetFromImageFile",tolua_CEGUI_CEGUI_ImagesetManager_createImagesetFromImageFile00);
    tolua_function(tolua_S,"destroyImageset",tolua_CEGUI_CEGUI_ImagesetManager_destroyImageset00);
    tolua_function(tolua_S,"destroyImageset",tolua_CEGUI_CEGUI_ImagesetManager_destroyImageset01);
    tolua_function(tolua_S,"destroyAllImagesets",tolua_CEGUI_CEGUI_ImagesetManager_destroyAllImagesets00);

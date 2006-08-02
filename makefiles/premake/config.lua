@@ -27,4 +27,4 @@ SAMPLES_DX9 = true
 --
 -- Lua
 --
-TOLUA_STATIC = true
+TOLUA_STATIC = false
