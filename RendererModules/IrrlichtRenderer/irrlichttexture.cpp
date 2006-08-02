@@ -86,6 +86,18 @@ namespace CEGUI
 		return 0;
 	}
 /************************************************************************/
+    ushort IrrlichtTexture::getOriginalWidth(void) const
+    {
+        if(tex) return tex->getOriginalSize().Width;
+        return 0;
+    }
+/************************************************************************/
+    ushort IrrlichtTexture::getOriginalHeight(void) const
+    {
+        if(tex) return tex->getOriginalSize().Height;
+        return 0;
+    }
+/************************************************************************/
 	void IrrlichtTexture::loadFromFile(const String& filename, const String& resourceGroup)
 	{
 		freeTexture();

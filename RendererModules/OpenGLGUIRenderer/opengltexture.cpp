@@ -115,7 +115,7 @@ void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buf
 	        format = GL_RGBA;
 	        break;
 	};
-
+    
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, comps, buffWidth, buffHeight, 0, format ,GL_UNSIGNED_BYTE, buffPtr);
 

@@ -64,6 +64,16 @@ namespace CEGUI
 		*/
 		virtual	ushort	getWidth(void) const;
 
+		/*!
+		\brief
+		Returns the original pixel width of the texture
+
+		\return
+		ushort value that is the original width of the texture in pixels
+		*/
+		virtual	ushort	getOriginalWidth(void) const;
+
+
 
 		/*!
 		\brief
@@ -73,6 +83,16 @@ namespace CEGUI
 		ushort value that is the current height of the texture in pixels
 		*/
 		virtual	ushort	getHeight(void) const;
+
+		/*!
+		\brief
+		Returns the original pixel height of the texture
+
+		\return
+		ushort value that is the original height of the texture in pixels
+		*/
+		virtual	ushort	getOriginalHeight(void) const;
+
 
 
 		/*!
