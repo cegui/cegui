@@ -143,38 +143,7 @@ static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical
     Additional typedefs
 *************************************************************************/
 typedef std::ostream OutStream;     //!< Output stream class.
-
-
-/*!
-\brief
-    This simple function swaps all four bytes in a 4-byte integer.
-	Mostly useful to make code endianess-safe.
-\param x
-    The input 32-bit integer
-\return
-    The swapped input value
-*/
-static inline const uint32 swap32 (const uint32 x)
-{ return (x >> 24) | ((x >> 8) & 0xff00) | ((x << 8) & 0xff0000) | (x << 24); }
-
 }  // end of CEGUI namespace section
-
-
-#if defined (_MSC_VER) || defined (__i386) || defined (__i386__)
-/// Convert a 32-bit integer from host format to little-endian format
-#   define HOST_TO_LE32(x) x
-/// Convert a 32-bit integer from host format to big-endian format
-#   define HOST_TO_BE32(x) swap32 (x)
-/// Convert a 32-bit integer from little-endian format to host format
-#   define LE32_TO_HOST(x) x
-/// Convert a 32-bit integer from big-endian format to host format
-#   define BE32_TO_HOST(x) swap32 (x)
-#else
-#   define HOST_TO_LE32(x) swap32 (x)
-#   define HOST_TO_BE32(x) x
-#   define LE32_TO_HOST(x) swap32 (x)
-#   define BE32_TO_HOST(x) x
-#endif
 
 
 /*!

@@ -389,7 +389,7 @@ String PropertyHelper::colourToString(const colour& val)
 	using namespace std;
 
 	char buff[16];
-	snprintf(buff, sizeof (buff), "%08X", HOST_TO_LE32 (val.getARGB()));
+	sprintf(buff, "%.8X", val.getARGB());
 
 	return String(buff);
 }
@@ -399,10 +399,11 @@ colour PropertyHelper::stringToColour(const String& str)
 {
 	using namespace std;
 
-	argb_t val = HOST_TO_LE32 (0xFF000000);
-	sscanf(str.c_str(), " %X", &val);
+	argb_t val = 0xFF000000;
+	sscanf(str.c_str(), " %8X", &val);
 
-	return colour(LE32_TO_HOST (val));
+	return colour(val);
+
 }
 
 
@@ -411,16 +412,7 @@ String PropertyHelper::colourRectToString(const ColourRect& val)
 	using namespace std;
 
 	char buff[64];
-	if ((val.d_top_left.getARGB() == val.d_top_right.getARGB()) &&
-		(val.d_top_right.getARGB() == val.d_bottom_left.getARGB()) &&
-		(val.d_bottom_left.getARGB() == val.d_bottom_right.getARGB()))
-		snprintf (buff, sizeof (buff), "%08X", HOST_TO_LE32 (val.d_top_left.getARGB()));
-	else
-		sprintf(buff, "tl:%08X tr:%08X bl:%08X br:%08X",
-		    HOST_TO_LE32 (val.d_top_left.getARGB()),
-			HOST_TO_LE32 (val.d_top_right.getARGB()),
-			HOST_TO_LE32 (val.d_bottom_left.getARGB()),
-			HOST_TO_LE32 (val.d_bottom_right.getARGB()));
+	sprintf(buff, "tl:%.8X tr:%.8X bl:%.8X br:%.8X", val.d_top_left.getARGB(), val.d_top_right.getARGB(), val.d_bottom_left.getARGB(), val.d_bottom_right.getARGB());
 
 	return String(buff);
 }
@@ -430,17 +422,10 @@ ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
 	using namespace std;
 
-	argb_t topLeft = HOST_TO_LE32 (0xFF000000),
-	       topRight = HOST_TO_LE32 (0xFF000000),
-		   bottomLeft = HOST_TO_LE32 (0xFF000000),
-		   bottomRight = HOST_TO_LE32 (0xFF000000);
-	if (sscanf(str.c_str(), " tl:%X tr:%X bl:%X br:%X",
-	           &topLeft, &topRight, &bottomLeft, &bottomRight) == 0)
-		if (sscanf(str.c_str(), " %X", &topLeft) == 1)
-			topRight = bottomLeft = bottomRight = topLeft;
+	argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
+	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &topLeft, &topRight, &bottomLeft, &bottomRight);
 
-	return ColourRect(LE32_TO_HOST (topLeft), LE32_TO_HOST (topRight),
-	                  LE32_TO_HOST (bottomLeft), LE32_TO_HOST (bottomRight));
+	return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
 }
 
 } // End of  CEGUI namespace section
