@@ -150,7 +150,7 @@ const Rect& Image::getSourceTextureArea(void) const
 void Image::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     xml_stream.openTag("Image")
-        .attribute("Name=", d_name)
+        .attribute("Name", d_name)
         .attribute("XPos", PropertyHelper::uintToString(static_cast<uint>(d_area.d_left)))
         .attribute("YPos", PropertyHelper::uintToString(static_cast<uint>(d_area.d_top)))
         .attribute("Width", PropertyHelper::uintToString(static_cast<uint>(d_area.getWidth())))
