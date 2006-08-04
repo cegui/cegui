@@ -103,7 +103,8 @@ namespace CEGUI
         String final_filename;
 
         // look up resource group directory
-        ResourceGroupMap::const_iterator iter = d_resourceGroups.find(resourceGroup);
+        ResourceGroupMap::const_iterator iter =
+            d_resourceGroups.find(resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
         // if there was an entry for this group, use it's directory as the
         // first part of the filename
