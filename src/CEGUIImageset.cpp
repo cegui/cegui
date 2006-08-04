@@ -92,6 +92,9 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
         System::getSingleton().getRenderer()->createTexture(filename,
         resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
 
+    // store texture filename
+    d_textureFilename = filename;
+    // TODO: Should we store the resource group too?
 
     // initialse the auto-scaling for this Imageset
     d_autoScale = true;
@@ -335,7 +338,7 @@ void Imageset::writeXMLToStream(XMLSerializer& xml_stream) const
           PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
-        xml_stream.attribute("AutoScaled", "True");
+        xml_stream.attribute("AutoScaled", "true");
     
     // output images
     ImageIterator image = getIterator();
