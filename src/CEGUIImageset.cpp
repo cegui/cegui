@@ -328,7 +328,7 @@ void Imageset::writeXMLToStream(XMLSerializer& xml_stream) const
     // output Imageset tag
     xml_stream.openTag("Imageset")
         .attribute("Name", d_name)
-        .attribute("Filename", d_textureFilename);
+        .attribute("Imagefile", d_textureFilename);
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
         xml_stream.attribute("NativeHorzRes", 
