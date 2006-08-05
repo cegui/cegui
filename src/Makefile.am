@@ -48,7 +48,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUISystem.cpp \
                       CEGUITextUtils.cpp \
                       CEGUITexture.cpp \
-                      CEGUIVector.cpp \
                       CEGUIWindow.cpp \
                       CEGUIWindowFactory.cpp \
                       CEGUIWindowFactoryManager.cpp \
