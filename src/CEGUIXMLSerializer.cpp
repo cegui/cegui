@@ -53,6 +53,7 @@ XMLSerializer& XMLSerializer::openTag(const String& name)
 {
     if (! d_error)
     {
+        ++d_tagCount;
         if (d_needClose)
         {
             d_stream << '>';	  
@@ -135,6 +136,10 @@ XMLSerializer& XMLSerializer::text(const String& text)
     return *this;
 }
 
+unsigned int XMLSerializer::getTagCount() const
+{
+    return d_tagCount;
+}
 
 void XMLSerializer::indentLine(void)
 {
