@@ -83,6 +83,8 @@ public:
 	*/
 	virtual	ushort	getHeight(void) const		{return d_height;}
 
+    virtual	ushort getOriginalWidth(void) const { return d_orgWidth; }
+    virtual	ushort getOriginalHeight(void) const { return d_orgHeight; }
 
 	/*!
 	\brief
@@ -180,6 +182,10 @@ private:
 	*************************************************************************/
 	// safely free direc3d texture (can be called multiple times with no ill effect)
 	void	freeD3DTexture(void);
+    // obtain and fill-in the real texture dimensions.
+    // d_orgWidth and d_orgHeight should be set before calling this, since
+    // they are used as fall-back values if the query fails.
+    void obtainActualTextureSize(void);
 
 
 	/*************************************************************************
@@ -192,6 +198,8 @@ private:
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture
+    ushort					d_orgWidth;			//!< width of the source material for the texture
+    ushort					d_orgHeight;		//!< height of the source material for the texture
 };
 
 } // End of  CEGUI namespace section
