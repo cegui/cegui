@@ -2343,6 +2343,7 @@ int Window::writeChildWindowsXML(XMLSerializer& xml_stream) const
 
 bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
 {
+    
     // just stop now if we are'nt allowed to write XML
     if (!d_allowWriteXML)
     {
@@ -2351,13 +2352,14 @@ bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
     // we temporarily output to this string stream to see if have to do the tag at all. // Make sure this stream does UTF-8 
     std::ostringstream ss;
     XMLSerializer xml(ss);
+    xml.openTag("AutoWindow");
     // Create the XML Child Tree 
     // write out properties.
     writePropertiesXML(xml);
     // write out attached child windows.
     writeChildWindowsXML(xml);
-
-    if (ss.str().empty())
+    xml.closeTag();
+    if (xml.getTagCount() <= 1) 
     {
         return false;
     }
