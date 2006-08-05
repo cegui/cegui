@@ -375,10 +375,18 @@ Texture* DirectX81Renderer::createTexture(void)
 *************************************************************************/
 Texture* DirectX81Renderer::createTexture(const String& filename, const String& resourceGroup)
 {
-	DirectX81Texture* tex = (DirectX81Texture*)createTexture();
-	tex->loadFromFile(filename, resourceGroup);
-
-	return tex;
+    DirectX81Texture* tex = new DirectX81Texture(this);
+    try
+    {
+        tex->loadFromFile(filename, resourceGroup);
+    }
+    catch (RendererException&)
+    {
+        delete tex;
+        throw;
+    }
+    d_texturelist.push_back(tex);
+    return tex;
 }
 
 
@@ -387,10 +395,18 @@ Texture* DirectX81Renderer::createTexture(const String& filename, const String& 
 *************************************************************************/
 Texture* DirectX81Renderer::createTexture(float size)
 {
-	DirectX81Texture* tex = (DirectX81Texture*)createTexture();
-	tex->setD3DTextureSize((uint)size);
-
-	return tex;
+    DirectX81Texture* tex = new DirectX81Texture(this);
+    try
+    {
+        tex->setD3DTextureSize((uint)size);
+    }
+    catch (RendererException&)
+    {
+        delete tex;
+        throw;
+    }
+    d_texturelist.push_back(tex);
+    return tex;
 }
 
 /*************************************************************************

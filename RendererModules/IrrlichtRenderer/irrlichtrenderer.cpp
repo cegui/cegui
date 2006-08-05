@@ -158,15 +158,25 @@ namespace CEGUI
 /************************************************************************/
 	Texture* IrrlichtRenderer::createTexture(const String& filename, const String& resourceGroup)
 	{
-		IrrlichtTexture* t=(IrrlichtTexture*)createTexture();
-		t->loadFromFile(filename, resourceGroup);
+        IrrlichtTexture* t = new IrrlichtTexture(this, device);
+        try
+        {
+            t->loadFromFile(filename, resourceGroup);
+        }
+        catch (RendererException&)
+        {
+            delete t;
+            throw;
+        }
+        d_texturelist.push_back(t);
 		return t;
 	}
 /************************************************************************/	
 	Texture* IrrlichtRenderer::createTexture(float size)
 	{
-		IrrlichtTexture* t=(IrrlichtTexture*)createTexture();
-		return t;
+        IrrlichtTexture* t = new IrrlichtTexture(this, device, size);
+        d_texturelist.push_back(t);
+        return t;
 	}
 /************************************************************************/
 	void IrrlichtRenderer::destroyTexture(Texture* texture)

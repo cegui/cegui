@@ -49,6 +49,14 @@ namespace CEGUI
 		driver=device->getVideoDriver();
 	}
 /************************************************************************/
+    IrrlichtTexture::IrrlichtTexture(Renderer* r, irr::IrrlichtDevice* dr, float size)
+        :Texture(r), device(dr),tex(0)
+    {
+        driver=device->getVideoDriver();
+        irr::core::dimension2d texSz(size, size);
+        tex = driver->addTexture(texSz, getUniqueName(), ECF_A8R8G8B8);
+    }
+/************************************************************************/
 	IrrlichtTexture::~IrrlichtTexture(){
 		freeTexture();
 	}
