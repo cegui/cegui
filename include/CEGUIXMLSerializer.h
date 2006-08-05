@@ -138,7 +138,14 @@ namespace CEGUI
         */
         XMLSerializer& text(const String& text);
         
-  
+        /*! 
+        \brief 
+        report the nimber of tags created in the document 
+
+        \return 
+            return the number of tag created in the document 
+        */
+        unsigned int getTagCount() const;
         /*!
         \brief Check wether the XML Serializer status is valid 
         
@@ -163,6 +170,7 @@ namespace CEGUI
     protected:
     private:
         bool d_error; //!< Store the status of the serializer 
+        unsigned int d_tagCount; //!<Return the number of tag in the document 
         size_t d_depth; //!< Store the current depth for indentation purpose 
         size_t d_indentSpace; //!< Store the number of space use for indenting 
         bool d_needClose; //!< Store whether the next operation need to close the tag or not 
