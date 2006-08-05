@@ -595,6 +595,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
                 // set text to the newly modified string
 				setText(tmp);
+
+                // char was accepted into the Editbox - mark event as handled.
+                e.handled = true;
 			}
 			else
 			{
@@ -611,9 +614,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
 			onEditboxFullEvent(args);
 		}
 
-        e.handled = true;
 	}
 
+    // event was (possibly) not handled
 }
 
 
