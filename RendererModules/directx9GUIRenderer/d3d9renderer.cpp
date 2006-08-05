@@ -451,6 +451,9 @@ void DirectX9Renderer::initPerFrameStates(void)
 	d_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	d_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 
+    // disable texture stages we do not need.
+    d_device->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
+
 	// setup scene alpha blending
 	d_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	d_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
