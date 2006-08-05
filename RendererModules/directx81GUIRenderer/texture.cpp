@@ -50,7 +50,11 @@ namespace CEGUI
 DirectX81Texture::DirectX81Texture(Renderer* owner) :
 	Texture(owner),
 	d_d3dtexture(0),
-	d_isMemoryTexture(true)
+	d_isMemoryTexture(true),
+    d_width(0),
+    d_height(0),
+    d_orgWidth(0),
+    d_orgHeight(0)
 {
 }
 
@@ -83,8 +87,11 @@ void DirectX81Texture::loadFromFile(const String& filename, const String& resour
 
 	if (SUCCEEDED(hr))
 	{
-		d_width		= static_cast<ushort>(texInfo.Width);
-		d_height	= static_cast<ushort>(texInfo.Height);
+        // these are the size of the image
+		d_orgWidth	= static_cast<ushort>(texInfo.Width);
+		d_orgHeight	= static_cast<ushort>(texInfo.Height);
+
+        obtainActualTextureSize();
 
 		d_filename = filename;
         d_resourceGroup = resourceGroup;
@@ -133,12 +140,9 @@ void DirectX81Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint 
 	}
 	else
 	{
-		D3DSURFACE_DESC	texdesc;
-		d_d3dtexture->GetLevelDesc(0, &texdesc);
-
-		// store new size;
-		d_width		= static_cast<ushort>(texdesc.Width);
-		d_height	= static_cast<ushort>(texdesc.Height);
+        d_orgWidth = buffWidth;
+        d_orgHeight = buffHeight;
+        obtainActualTextureSize();
 
 		// lock the D3D texture
 		D3DLOCKED_RECT	rect;
@@ -231,12 +235,8 @@ void DirectX81Texture::setD3DTextureSize(uint size)
 	}
 	else
 	{
-		D3DSURFACE_DESC	texdesc;
-		d_d3dtexture->GetLevelDesc(0, &texdesc);
-
-		// store new size;
-		d_width		= static_cast<ushort>(texdesc.Width);
-		d_height	= static_cast<ushort>(texdesc.Height);
+        d_orgWidth = d_orgHeight = size;
+        obtainActualTextureSize();
 	}
 
 }
@@ -286,6 +286,30 @@ void DirectX81Texture::postD3DReset(void)
 		loadFromFile(name, d_resourceGroup);
 	}
 
+}
+
+/*************************************************************************
+    Obtains actual texture size and fills in d_width and d_height.
+*************************************************************************/
+void DirectX81Texture::obtainActualTextureSize(void)
+{
+    // now obtain details of the size of the texture
+    D3DSURFACE_DESC surfDesc;
+    HRESULT hr = d_d3dtexture->GetLevelDesc(0, &surfDesc);
+
+    if (SUCCEEDED(hr))
+    {
+        d_width = static_cast<ushort>(surfDesc.Width);
+        d_height = static_cast<ushort>(surfDesc.Height);
+    }
+    // just use the original sizes again.  This should probably be an exception.
+    else
+    {
+        d_width = d_orgWidth;
+        d_height = d_orgHeight;
+    }
+
+    updateScales();
 }
 
 } // End of  CEGUI namespace section
