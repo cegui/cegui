@@ -422,6 +422,13 @@ ColourRect PropertyHelper::stringToColourRect(const String& str)
 {
 	using namespace std;
 
+    if (str.length() == 8)
+    {
+        argb_t all = 0xFF000000;
+        sscanf(str.c_str(), "%8X", &all);
+        return ColourRect(all);
+    }
+
 	argb_t topLeft = 0xFF000000, topRight = 0xFF000000, bottomLeft = 0xFF000000, bottomRight = 0xFF000000;
 	sscanf(str.c_str(), "tl:%8X tr:%8X bl:%8X br:%8X", &topLeft, &topRight, &bottomLeft, &bottomRight);
 

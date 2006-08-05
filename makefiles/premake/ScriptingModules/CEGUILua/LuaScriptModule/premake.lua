@@ -18,7 +18,6 @@ dependency("CEGUIBase")
 dependency("tolua++")
 
 library("lua50", "_d")
-library("lualib50", "_d")
 
 define("CEGUILUA_EXPORTS")
 
