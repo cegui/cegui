@@ -45,7 +45,7 @@ namespace CEGUI
 		// constructor
 		IrrlichtTexture(Renderer* r, irr::IrrlichtDevice* device);
         // constructor with a predefined size.
-        IrrlichtTexture(Renderer* r, irr::IrrlichtDevice* dr, float size)
+        IrrlichtTexture(Renderer* r, irr::IrrlichtDevice* dr, float size);
 
 		// destructor
 		virtual ~IrrlichtTexture();

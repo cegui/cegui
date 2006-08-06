@@ -168,14 +168,14 @@ namespace CEGUI
             delete t;
             throw;
         }
-        d_texturelist.push_back(t);
+        textures.push_back(t);
 		return t;
 	}
 /************************************************************************/	
 	Texture* IrrlichtRenderer::createTexture(float size)
 	{
         IrrlichtTexture* t = new IrrlichtTexture(this, device, size);
-        d_texturelist.push_back(t);
+        textures.push_back(t);
         return t;
 	}
 /************************************************************************/

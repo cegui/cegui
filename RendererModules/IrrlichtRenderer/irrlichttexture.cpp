@@ -53,8 +53,8 @@ namespace CEGUI
         :Texture(r), device(dr),tex(0)
     {
         driver=device->getVideoDriver();
-        irr::core::dimension2d texSz(size, size);
-        tex = driver->addTexture(texSz, getUniqueName(), ECF_A8R8G8B8);
+        irr::core::dimension2d<irr::s32> texSz(size, size);
+        tex = driver->addTexture(texSz, getUniqueName().c_str(), irr::video::ECF_A8R8G8B8);
     }
 /************************************************************************/
 	IrrlichtTexture::~IrrlichtTexture(){
