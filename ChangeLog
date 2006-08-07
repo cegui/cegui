@@ -6,6 +6,76 @@ Copyright 2004 - 2006 CEGUI Team & Contributing Authors
 
 The following is a high-level view of changes made to the system between releases.
 
+Release 0.5.0-RC2
+=================
+Added: single colour support to PropertyHelper::stringToColourRect
+Added: missing support to Irrlicht renderer for creating a texture with a given size.
+Added: Updates to renderers for D3D8.1 and D3D9 to report correct values for 'original' size and actual texture size.  (Related to Mantis ticket #45).
+Added: Support for using user defined image codec by name (using dso) or directly throught a pointer to an existing image codec.
+Added: Long property export (allows for properties containing multiple lines).
+Added: Helper methods to Window to return EventSet::Iterator and PropertySet::Iterator objects.
+Added: Reworked TabControl by zap.  Mantis #82.
+Added: TabControlDemo sample.  Mantis #82.
+Added: Danish language in the FontDemo sample.
+Added: Output of summary of configure results (for configure based builds)
+Added: Texture extra size information to CEGUI::Texture in order to be able to handle scaled/stretched textures within Imageset.
+Added: Texture Scaling support in IrrlichRenderer 
+
+Removed: Empty source file CEGUIVector.cpp
+Removed: TabPane files.
+
+Modified: Behaviour of Editbox so that EventCharacterKey events are only marked as handled if the key press actually resulted in a change to the Editbox text string. (Related to Mantis #59)
+Modified: Replaced all getWindow<something> with get<something>
+Modified: Replaced all setWindow<something> with set<something>
+Modified: EventSet::EventIterator now known as EventSet::Iterator
+Modified: PropertySet::PropertyIterator now known as PropertySet::Iterator
+Modified: ImageCodec modules are now DynamicModule 
+Modified: Falagard PropertyDim now supports a type attribute for UDim properties.  Mantis #82.
+Modified: Improved TabControl imagery.  Mantis #82.
+Modified: autotools makefiles now symlink the sample binaries (to avoid having to do 'make install').  Mantis #82.
+Modified: PropertyHelper now uses snprintf instead of std::ostringstream again.  Mantis #82.
+Modified: Removed static Makefile for tolua++cegui generator tool and switched to autotools style build, with enable/disable configure option, for tolua++cegui generator tool
+Modified: Moved tolua++ into it's own dir, removed lua_and_tolua++
+Modified: Externalised our use of the Lua library
+Modified: premake updates
+Modified: Updated AUTHORS file.
+Modified: Remove exec file attribute on Falagard.xsd 
+Modified: XMLRefSchema/Font.xsd for font rewrite
+Modified: LuaScriptModule public headers no longer need include lua.h included.
+Modified: Made a bunch of warnings go away in MSVC in the new font code.
+Modified: Deleted the remaining old msvc project files.
+
+Bug Fix: Clean the XMLSerialization code: remove empty autowindow 
+Bug Fix: Added missing glDisable(GL_FOG); in gl renderer
+Bug Fix: Irrlicht and D3D8.1 renderer modules would keep live pointers to Texture objects that failed to fully initialise (file or size errors for example)  Mantis #43.
+Bug Fix: Disable texture stages we do not use in Direct3D renderers. (Mantis #95)
+Bug Fix: Mouse cursor z value.  Mantis #49 
+Bug Fix: Imagset XML attribute for image file name is 'Imagefile' and not 'Filename'.
+Bug Fix: normal attributes use 'true', only properties sometimes use 'True'.
+Bug Fix: Global default resource group was not being used by DefaultResourceProvider.
+Bug Fix: XML output from CEGUI::Image class.
+Bug Fix: Imageset scaling issue when renderer automatically scales the image #45 (this is currently a partial fix)
+Bug Fix: IrrlichtRenderer - Mouse event error.  Mantis #98.
+Bug Fix: IrrlichtRenderer - size error in addQuad.  Mantis #99.
+Bug Fix: IrrlichtRenderer - Sample driver had linker lib name wrong for renderer module.  Mantis #100.
+Bug Fix: TinyXMLParser bug.  Mantis Tracker #57 
+Bug Fix: a bug in the openglrenderer cleanup related to image codec. 
+Bug Fix: Install renderer module includes at the same place as in Win32 (linux / mac autotools) 
+Bug Fix: OpenGL sample driver did not inject middle mouse up (injected it as down).  Mantis #82.
+Bug Fix: Corrected some mistakes in the Falagard Lua bindings
+Bug Fix: Apparently in some cases OpenGLRenderer needs NOMINMAX in Win32 (Mantis #63)
+Bug Fix: FreeTypeFont did not free the font data properly, also fixes a potential infinite loop in FreeTypeFont (Mantis #60)
+Bug Fix: FairChar font texture was not power of 2 (Mantis #64)
+Bug Fix: SliderThumb incorrectly mapped in some schemes (mantis #88)
+Bug Fix: Updated Irrlicht renderer to work with 0.5.0 codebase.
+Bug Fix: some missing data 
+Bug Fix: DirectX 8.1 sample driver
+Bug Fix: some missing files in the make dist command (Mantis #89)
+Bug Fix: Change the name of an enumeration value in schema Font.xsd.
+Bug Fix: Memory leak in Font.
+Bug Fix: Lua bindings was missing ImagesetManager::createImagesetFromImageFile + some missing tolua_throws modifiers
+
+
 Release 0.5.0-RC1
 =================
 CEGUI MK2 has moved to the MIT license.
