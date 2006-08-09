@@ -132,6 +132,7 @@ namespace CEGUI
         static const String ImagePropertyElement;       //!< Tag name for element that specifies an Image property..
         static const String TextPropertyElement;        //!< Tag name for element that specifies an Text property.
         static const String FontPropertyElement;        //!< Tag name for element that specifies an Font property.
+        static const String ColourElement;              //!< Tag name for Colour elements.
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -161,6 +162,7 @@ namespace CEGUI
         static const String RedrawOnWriteAttribute;     //!< Attribute name that stores whether to redraw on write of a property.
         static const String TargetPropertyAttribute;    //!< Attribute name that stores a name of a target property.
         static const String ControlPropertyAttribute;   //!< Attribute name that stores a name of a property to control rendering of a section.
+        static const String ColourAttribute;            //!< Attribute name that stores colour for all corners.
 
         /*************************************************************************
             helper methods
@@ -171,6 +173,7 @@ namespace CEGUI
             implementation methods
         **************************************************************************/
         void assignAreaDimension(Dimension& dim);
+        void assignColours(const ColourRect& colours);
 
         /*!
         \brief
@@ -405,6 +408,12 @@ namespace CEGUI
             Method that handles the opening FontProperty XML element.
         */
         void elementFontPropertyStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening Colour XML element.
+        */
+        void elementColourStart(const XMLAttributes& attributes);
 
         /*!
         \brief

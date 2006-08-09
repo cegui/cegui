@@ -69,7 +69,7 @@ DirectX81Renderer::DirectX81Renderer(LPDIRECT3DDEVICE8 device, uint max_quads)
 	{
 		size = getViewportSize();
 	}
-	catch (std::exception e)
+	catch (std::exception&)
 	{
 		// we'll allow things to continue here, and assume that the user will
 		// be calling DirectX81Renderer::setDisplaySize afterwards.
@@ -679,7 +679,7 @@ void DirectX81Renderer::postD3DReset(void)
 		{
 			setDisplaySize(getViewportSize());
 		}
-		catch (std::exception e)
+		catch (std::exception&)
 		{
 			// Do nothing here, DirectX81Renderer::getViewportSize has set a flag so we never try to do this again!
 			// The user must call DirectX81Renderer::setDisplaySize to ensure correct re-sizing of the view.

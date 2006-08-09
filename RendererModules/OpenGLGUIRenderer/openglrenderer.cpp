@@ -374,6 +374,9 @@ void OpenGLRenderer::initPerFrameStates(void)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_FOG);
+    glDisable(GL_TEXTURE_GEN_S);
+    glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
 
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);

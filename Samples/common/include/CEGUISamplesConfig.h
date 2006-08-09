@@ -43,12 +43,15 @@ Each item in here has a comment to describe what it's for.
 #include "CEGUIConfig.h"
 
 //////////////////////////////////////////////////////////////////////////
-// The following are intended for MSVC++ and X-Code users.
+// The following are intended for X-Code users.
 // 
 // The Linux build can both auto-configure itself, and also take
 // configure parameters which control the settings presented below.
+//
+// The Premake solution will generate these for you according to the
+// config.lua script.
 //////////////////////////////////////////////////////////////////////////
-#if defined(_MSC_VER) || defined(__APPLE__)
+#if defined(__APPLE__)
 
 //////////////////////////////////////////////////////////////////////////
 // Comment/Uncomment these lines to control renderer use in samples where
@@ -58,22 +61,6 @@ Each item in here has a comment to describe what it's for.
 //#define CEGUI_SAMPLES_USE_OGRE
 //#define CEGUI_SAMPLES_USE_IRRLICHT
 
-#endif // defined(_MSC_VER) || defined(__APPLE__)
-
-
-//////////////////////////////////////////////////////////////////////////
-// The following are intended for MSVC++ users.
-//////////////////////////////////////////////////////////////////////////
-#if defined(_MSC_VER)
-
-//////////////////////////////////////////////////////////////////////////
-// Comment/Uncomment these lines to control renderer use in samples where
-// MSVC is used (since it can't auto-detect such things).
-//////////////////////////////////////////////////////////////////////////
-//#define CEGUI_SAMPLES_USE_DIRECTX_8
-//#define CEGUI_SAMPLES_USE_DIRECTX_9
-
-#endif // defined(_MSC_VER)
-
+#endif // defined(__APPLE__)
 
 #endif  // end of guard _CEGUISamplesConfig_h_

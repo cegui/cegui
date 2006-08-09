@@ -141,7 +141,7 @@ const Image* PropertyHelper::stringToImage(const String& str)
 	{
 		image = &ImagesetManager::getSingleton().getImageset(imageSet)->getImage(imageName);
 	}
-	catch (UnknownObjectException)
+	catch (UnknownObjectException&)
 	{
 		image = 0;
 	}

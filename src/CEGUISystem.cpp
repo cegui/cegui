@@ -268,7 +268,7 @@ System::System(Renderer* renderer,
             }
 
         }
-        catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
+        catch (CEGUI::Exception&) {}  // catch exception and try to continue anyway
 
     }
 
@@ -279,7 +279,7 @@ System::System(Renderer* renderer,
         {
             setGUISheet(WindowManager::getSingleton().loadWindowLayout(configLayoutName));
         }
-        catch (CEGUI::Exception exc) {}  // catch exception and try to continue anyway
+        catch (CEGUI::Exception&) {}  // catch exception and try to continue anyway
 
     }
 

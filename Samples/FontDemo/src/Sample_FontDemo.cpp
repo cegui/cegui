@@ -63,7 +63,7 @@ static struct
     { (utf8 *)"Dansk",
       (utf8 *)"FARLIGE STORE BOGSTAVER\n"
               "og flere men små...\n"
-              "Prøv At Fange Den Brune Ræv Mens Den Hopper Over Den Dovne Hund\n" }
+              "Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Walther spillede på xylofon\n" }
 };
 
 #define MIN_POINT_SIZE 6.0f

@@ -146,6 +146,13 @@ typedef std::ostream OutStream;     //!< Output stream class.
 }  // end of CEGUI namespace section
 
 
+//////////////////////////////////////////////////////////////////////////
+// Comment this line to remove the alignment of elements to pixel
+// boundaries.  This may give you a performance boost at the expense
+// of visual quality
+//////////////////////////////////////////////////////////////////////////
+#define CEGUI_ALIGN_ELEMENTS_TO_PIXELS 1
+
 /*!
 \brief
 	Macro used to return a float value rounded to the nearest integer.

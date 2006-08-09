@@ -216,7 +216,7 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
         // tell it that it is being initialised
         wnd->beginInitialisation();
     }
-    catch (AlreadyExistsException exc)
+    catch (AlreadyExistsException&)
     {
         // delete all windows created
         cleanupLoadedWindows();
@@ -224,7 +224,7 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
         // signal error - with more info about what we have done.
         throw InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since Window named '" + windowName + "' already exists.");
     }
-    catch (UnknownObjectException exc)
+    catch (UnknownObjectException&)
     {
         // delete all windows created
         cleanupLoadedWindows();
@@ -306,7 +306,7 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
                     curwindow->setProperty(propertyName, propertyValue);
             }
         }
-        catch (Exception exc)
+        catch (Exception&)
         {
             // Don't do anything here, but the error will have been logged.
         }
@@ -372,7 +372,7 @@ void GUILayout_xmlHandler::elementEventStart(const XMLAttributes& attributes)
         if (!d_stack.empty())
             d_stack.back().first->subscribeScriptedEvent(eventName, functionName);
     }
-    catch (Exception exc)
+    catch (Exception&)
     {
         // Don't do anything here, but the error will have been logged.
     }
@@ -447,7 +447,7 @@ void GUILayout_xmlHandler::elementPropertyEnd()
                 curwindow->setProperty(d_propertyName, d_propertyValue);
         }
     }
-    catch (Exception exc)
+    catch (Exception&)
     {
         // Don't do anything here, but the error will have been logged.
     }

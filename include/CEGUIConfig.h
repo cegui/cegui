@@ -38,41 +38,16 @@ Each item in here has a comment to describe what it's for.
 #ifndef _CEGUIConfig_h_
 #define _CEGUIConfig_h_
 
-
 //////////////////////////////////////////////////////////////////////////
-// Uncomment this line if you are using the 0.14.x or earlier release of Ogre.
-//////////////////////////////////////////////////////////////////////////
-//#define CEGUI_USEOLDOGRESTRING 1
-
-
-//////////////////////////////////////////////////////////////////////////
-// comment this line to suppress the auto appending of '_d' to loaded module
-// names under Win32.
-//////////////////////////////////////////////////////////////////////////
-#define CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG 1
-
-
-//////////////////////////////////////////////////////////////////////////
-// this is what gets appended to module names when 
-// CEGUI_LOAD_MODULE_APPEND_FOR_DEBUG is defined
-//////////////////////////////////////////////////////////////////////////
-#define CEGUI_LOAD_MODULE_DEBUG_SUFFIX	"_d"
-
-
-//////////////////////////////////////////////////////////////////////////
-// Comment this line to remove the alignment of elements to pixel
-// boundaries.  This may give you a performance boost at the expense
-// of visual quality
-//////////////////////////////////////////////////////////////////////////
-#define CEGUI_ALIGN_ELEMENTS_TO_PIXELS 1
-
-//////////////////////////////////////////////////////////////////////////
-// The following are intended for MSVC++ and X-Code users.
+// The following are intended for X-Code users.
 // 
 // The Linux build can both auto-configure itself, and also take
 // configure parameters which control the settings presented below.
+//
+// The Premake solution will generate these for you according to the
+// config.lua script.
 //////////////////////////////////////////////////////////////////////////
-#if defined(_MSC_VER) || defined(__APPLE__)
+#if defined(__APPLE__)
 
 //////////////////////////////////////////////////////////////////////////
 // Set this to the default XMLParser to be used.
@@ -91,19 +66,6 @@ Each item in here has a comment to describe what it's for.
 #   define CEGUI_DEFAULT_IMAGE_CODEC TGAImageCodec
 #endif 
 
-
-#endif // defined(_MSC_VER) || defined(__APPLE__)
-//////////////////////////////////////////////////////////////////////////
-// The following are intended for MSVC++ users.
-//////////////////////////////////////////////////////////////////////////
-#if defined(_MSC_VER)
-
-//////////////////////////////////////////////////////////////////////////
-// It is expected by now you are running a recent PSDK and not one that is
-// seven years old.  If you wish to try your luck, comment this line!
-//////////////////////////////////////////////////////////////////////////
-#define _STLP_NEW_PLATFORM_SDK
-
-#endif // defined(_MSC_VER)
+#endif // defined(__APPLE__)
 
 #endif	// end of guard _CEGUIConfig_h_

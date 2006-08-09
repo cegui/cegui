@@ -82,6 +82,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::ImagePropertyElement("ImageProperty");
     const String Falagard_xmlHandler::TextPropertyElement("TextProperty");
     const String Falagard_xmlHandler::FontPropertyElement("FontProperty");
+    const String Falagard_xmlHandler::ColourElement("Colour");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -111,6 +112,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::RedrawOnWriteAttribute("redrawOnWrite");
     const String Falagard_xmlHandler::TargetPropertyAttribute("targetProperty");
     const String Falagard_xmlHandler::ControlPropertyAttribute("controlProperty");
+    const String Falagard_xmlHandler::ColourAttribute("colour");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -168,6 +170,7 @@ namespace CEGUI
         registerElementStartHandler(ImagePropertyElement, &Falagard_xmlHandler::elementImagePropertyStart);
         registerElementStartHandler(TextPropertyElement, &Falagard_xmlHandler::elementTextPropertyStart);
         registerElementStartHandler(FontPropertyElement, &Falagard_xmlHandler::elementFontPropertyStart);
+        registerElementStartHandler(ColourElement, &Falagard_xmlHandler::elementColourStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -269,6 +272,35 @@ namespace CEGUI
             default:
                 throw InvalidRequestException("Falagard::xmlHandler::assignAreaDimension - Invalid DimensionType specified for area component.");
             }
+        }
+    }
+
+    /*************************************************************************
+        Assign a ColourRect to the current element supporting such a thing
+    *************************************************************************/
+    void Falagard_xmlHandler::assignColours(const ColourRect& cols)
+    {
+        // need to decide what to apply colours to
+        if (d_framecomponent)
+        {
+            d_framecomponent->setColours(cols);
+        }
+        else if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setColours(cols);
+        }
+        else if (d_textcomponent)
+        {
+            d_textcomponent->setColours(cols);
+        }
+        else if (d_imagerysection)
+        {
+            d_imagerysection->setMasterColours(cols);
+        }
+        else if (d_section)
+        {
+            d_section->setOverrideColours(cols);
+            d_section->setUsingOverrideColours(true);
         }
     }
 
@@ -438,28 +470,7 @@ namespace CEGUI
             hexStringToARGB(attributes.getValueAsString(BottomLeftAttribute)),
             hexStringToARGB(attributes.getValueAsString(BottomRightAttribute)));
 
-        // need to decide what to apply colours to
-        if (d_framecomponent)
-        {
-            d_framecomponent->setColours(cols);
-        }
-        else if (d_imagerycomponent)
-        {
-            d_imagerycomponent->setColours(cols);
-        }
-        else if (d_textcomponent)
-        {
-            d_textcomponent->setColours(cols);
-        }
-        else if (d_imagerysection)
-        {
-            d_imagerysection->setMasterColours(cols);
-        }
-        else if (d_section)
-        {
-            d_section->setOverrideColours(cols);
-            d_section->setUsingOverrideColours(true);
-        }
+        assignColours(cols);
     }
 
     /*************************************************************************
@@ -830,6 +841,15 @@ namespace CEGUI
         assert(d_textcomponent != 0);
 
         d_textcomponent->setFontPropertySource(attributes.getValueAsString(NameAttribute));
+    }
+
+    /*************************************************************************
+        Method that handles the opening Colours XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementColourStart(const XMLAttributes& attributes)
+    {
+        ColourRect cols(hexStringToARGB(attributes.getValueAsString(ColourAttribute)));
+        assignColours(cols);
     }
 
     /*************************************************************************

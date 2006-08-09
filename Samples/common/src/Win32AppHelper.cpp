@@ -25,8 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-// this controls conditional compile of file for MSVC
-#include "CEGUISamplesConfig.h"
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9)
 
 #include "Win32AppHelper.h"

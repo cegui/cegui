@@ -61,7 +61,7 @@ namespace CEGUI
         {
             d_image = &ImagesetManager::getSingleton().getImageset(imageset)->getImage(image);
         }
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {
             d_image = 0;
         }
