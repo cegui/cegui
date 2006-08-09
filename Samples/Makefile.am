@@ -13,6 +13,7 @@ SUBDIRS = common \
           FontDemo \
           ScrollablePaneDemo \
           TabControlDemo \
+		  Minesweeper \
           $(CEGUILUA_DEMOS)
 endif
 

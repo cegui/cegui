@@ -2,3 +2,5 @@ SUBDIRS = . XMLParserModules ImageCodecModules RendererModules src include Windo
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = CEGUI.pc CEGUI-OPENGL.pc
+
+EXTRA_DIST=doxyfile
