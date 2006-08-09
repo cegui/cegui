@@ -147,7 +147,7 @@ namespace CEGUI
             // output the desired widget look data
             getWidgetLook(name).writeXMLToStream(xml);
         }
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent("WidgetLookManager::writeWidgetLookToStream - Failed to write widget look XML data to stream.", Errors);
         }

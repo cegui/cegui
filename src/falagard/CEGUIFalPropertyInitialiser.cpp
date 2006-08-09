@@ -44,7 +44,7 @@ namespace CEGUI
             target.setProperty(d_propertyName, d_propertyValue);
         }
         // allow 'missing' properties
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {}
     }
 

@@ -55,6 +55,7 @@
 	</xsd:complexType>
     <xsd:complexType name="sectionSpecType">
         <xsd:choice  minOccurs="0" maxOccurs="1">
+            <xsd:element name="Colour" type="colourType" />
             <xsd:element name="Colours" type="colourRectType" />
             <xsd:element name="ColourProperty" type="settingByPropertyType" />
             <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
@@ -66,6 +67,7 @@
 	<xsd:complexType name="imagerySectionType">
 		<xsd:sequence>
             <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colour" type="colourType" />
                 <xsd:element name="Colours" type="colourRectType" />
                 <xsd:element name="ColourProperty" type="settingByPropertyType" />
                 <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
@@ -81,6 +83,7 @@
             <xsd:element name="Area" type="componentAreaType" />
             <xsd:element name="Image" type="frameImageType" minOccurs="0" maxOccurs="9" />
             <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colour" type="colourType" />
                 <xsd:element name="Colours" type="colourRectType" />
                 <xsd:element name="ColourProperty" type="settingByPropertyType" />
                 <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
@@ -102,6 +105,7 @@
             <xsd:element name="TextProperty" type="textPropertyType" minOccurs="0" maxOccurs="1" />
             <xsd:element name="FontProperty" type="fontPropertyType" minOccurs="0" maxOccurs="1" />
             <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colour" type="colourType" />
                 <xsd:element name="Colours" type="colourRectType" />
                 <xsd:element name="ColourProperty" type="settingByPropertyType" />
                 <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
@@ -124,6 +128,7 @@
                 <xsd:element name="ImageProperty" type="settingByPropertyType" />
             </xsd:choice>
             <xsd:choice  minOccurs="0" maxOccurs="1">
+                <xsd:element name="Colour" type="colourType" />
                 <xsd:element name="Colours" type="colourRectType" />
                 <xsd:element name="ColourProperty" type="settingByPropertyType" />
                 <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
@@ -254,6 +259,9 @@
 		<xsd:attribute name="topRight" type="colourValType" use="required" />
 		<xsd:attribute name="bottomLeft" type="colourValType" use="required" />
 		<xsd:attribute name="bottomRight" type="colourValType" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="colourType">
+		<xsd:attribute name="colour" type="colourValType" use="required" />
 	</xsd:complexType>
 	<xsd:simpleType name="colourValType">
 		<xsd:restriction base="xsd:string">

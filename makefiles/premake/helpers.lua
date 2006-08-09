@@ -8,26 +8,26 @@ rootdir = "../../"
 -- do a package easily
 --
 do
-local _tpkgdir = {}
-local _tpath = {}
-table.insert(_tpath, rootdir)
+    local _tpkgdir = {}
+    local _tpath = {}
+    table.insert(_tpath, rootdir)
 
-local _dopackage = dopackage
+    local _dopackage = dopackage
 
--- ugly path management :/
-function dopackage(name)
-    table.insert(_tpath, string.gsub(name, "([^/]+)", "..").."/")
-	rootdir = table.concat(_tpath)
-	
-	table.insert(_tpkgdir, name)
-	pkgdir = rootdir..table.concat(_tpkgdir).."/"
-	pkgparentdir = string.gsub(pkgdir, "([^/]+/)$", "")
-    
-    _dopackage(name)
-	
-    table.remove(_tpath)
-	table.remove(_tpkgdir)
-end
+    -- ugly path management :/
+    function dopackage(name)
+        table.insert(_tpath, string.gsub(name, "([^/]+)", "..").."/")
+    	rootdir = table.concat(_tpath)
+
+    	table.insert(_tpkgdir, name)
+    	pkgdir = rootdir..table.concat(_tpkgdir).."/"
+    	pkgparentdir = string.gsub(pkgdir, "([^/]+/)$", "")
+
+        _dopackage(name)
+
+        table.remove(_tpath)
+    	table.remove(_tpkgdir)
+    end
 end
 
 --
@@ -54,12 +54,13 @@ function cegui_dynamic(name, lang, kind)
 	}
 	package.defines =
 	{
-		"_CRT_SECURE_NO_DEPRECATE"
+		"_CRT_SECURE_NO_DEPRECATE",
+		"HAVE_CONFIG_H",
 	}
 
 	-- debug
 	debug = package.config.Debug
-	debug.target = name.."_d"
+	debug.target = name..(DEBUG_DLL_SUFFIX or "")
 	debug.defines =
     {
         "_DEBUG"
@@ -73,7 +74,7 @@ function cegui_dynamic(name, lang, kind)
 	{
 	   "optimize-speed",
 	}
-	
+
 
 	-- release (no symbols)
 	release = package.config.Release
@@ -96,6 +97,13 @@ function library(name, debugsuffix)
 end
 
 --
+-- adds library path to the current package
+--
+function librarypath(path)
+    tinsert(package.libpaths, path)
+end
+
+--
 -- adds include path to the current package
 --
 function include(path)
@@ -105,8 +113,12 @@ end
 --
 -- adds defines to the current package
 --
-function define(def)
-	tinsert(package.defines, def)
+function define(def, conf)
+    if conf then
+        tinsert(package.config[conf].defines, def)
+    else
+        tinsert(package.defines, def)
+    end
 end
 
 --
@@ -136,8 +148,13 @@ end
 local function lua_sample()
     include(rootdir.."ScriptingModules/CEGUILua/tolua++")
     include(rootdir.."ScriptingModules/CEGUILua/LuaScriptModule/include")
-    library("tolua++", "_d")
-    library("CEGUILua", "_d")
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("CEGUILua")
+        dependency("tolua++")
+    else
+        library("tolua++", DEBUG_DLL_SUFFIX or "")
+        library("CEGUILua", DEBUG_DLL_SUFFIX or "")
+    end
 end
 
 --
@@ -146,11 +163,45 @@ end
 function sample(name, ext)
     cegui_dynamic("Sample_"..name, "c++", "exe")
     include(pkgparentdir.."common/include")
-    library("CEGUIBase", "_d")
+
     dependency("CEGUISampleHelper")
-    
+
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        package.bindir = rootdir.."Samples/bin"
+        package.libdir = rootdir.."lib"
+        dependency("CEGUIBase")
+    else
+        library("CEGUIBase", DEBUG_DLL_SUFFIX or "")
+    end
+
     -- lua
     if ext == "lua" then
+        if not LUA_SCRIPT_MODULE then error("Cannot build Lua sample without the Lua script module") end
         lua_sample()
+    end
+end
+
+--
+-- returns the include path and library path of some sdk
+--
+function add_sdk_paths(t)
+    local path = t[1]
+    local inc_suffix = t[2] or ""
+    local lib_suffix = t[3] or ""
+
+    local sfind = string.find
+
+    -- we dont want to worry about backslashes
+    path = string.gsub(path, "\\", "/")
+    inc_suffix = string.gsub(inc_suffix, "\\", "/")
+    lib_suffix = string.gsub(lib_suffix, "\\", "/")
+
+    -- check for absolute path
+    if sfind(path, "^/") or sfind(path, "^%a:/") then
+        include(path.."/"..inc_suffix)
+        librarypath(path.."/"..lib_suffix)
+    else
+        include(rootdir..path.."/"..inc_suffix)
+        librarypath(rootdir..path.."/"..lib_suffix)
     end
 end

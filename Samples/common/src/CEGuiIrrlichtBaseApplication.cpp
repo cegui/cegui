@@ -29,7 +29,7 @@
 #   include "config.h"
 #endif
 
-// this controls conditional compile of file for MSVC
+// this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
 
@@ -142,6 +142,16 @@ void CEGuiIrrlichtBaseApplication::cleanup()
 
 bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
 {
+    // cegui samples always quit on escape
+    if (event.EventType == irr::EET_KEY_INPUT_EVENT)
+    {
+        if (event.KeyInput.Key == irr::KEY_ESCAPE)
+        {
+            setQuitting();
+            return true;
+        }
+    }
+
     return (d_renderer != 0) ? d_renderer->OnEvent(event) : false;
 }
 

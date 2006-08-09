@@ -95,7 +95,7 @@ void Font::set(PropertyReceiver* receiver, const String& value)
 			static_cast<Window*>(receiver)->setFont(value);
 		}
 	}
-	catch (UnknownObjectException)
+	catch (UnknownObjectException&)
 	{ }
 }
 

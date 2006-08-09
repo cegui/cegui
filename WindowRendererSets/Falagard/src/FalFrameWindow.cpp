@@ -62,7 +62,7 @@ namespace CEGUI
             // try and get imagery for our current state
             imagery = &wlf.getStateImagery(stateName);
         }
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {
             // log error so we know imagery is missing, and then quit.
             return;

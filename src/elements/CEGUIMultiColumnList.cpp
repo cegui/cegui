@@ -2329,7 +2329,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			    ++propCnt;
 			}
 		}
-		catch (InvalidRequestException)
+		catch (InvalidRequestException&)
 		{
 			// This catches error(s) from the MultiLineColumnList for example
 			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", Errors);

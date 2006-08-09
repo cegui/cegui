@@ -1901,7 +1901,7 @@ void Window::setTooltipType(const String& tooltipType)
             d_customTip = static_cast<Tooltip*>(WindowManager::getSingleton().createWindow(tooltipType, getName() + TooltipNameSuffix));
             d_weOwnTip = true;
         }
-        catch (UnknownObjectException x)
+        catch (UnknownObjectException&)
         {
             d_customTip = 0;
             d_weOwnTip = false;
@@ -2226,7 +2226,7 @@ void Window::performChildWindowLayout()
             // get look'n'feel to layout any child windows it created.
             wlf.layoutChildWidgets(*this);
         }
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {
             Logger::getSingleton().logEvent("Window::performChildWindowLayout - assigned widget look was not found.", Errors);
         }
@@ -2304,7 +2304,7 @@ int Window::writePropertiesXML(XMLSerializer& xml_stream) const
                     ++propertiesWritten;
                 }
             }
-            catch (InvalidRequestException)
+            catch (InvalidRequestException&)
             {
                 // This catches error(s) from the MultiLineColumnList for example
                 Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);

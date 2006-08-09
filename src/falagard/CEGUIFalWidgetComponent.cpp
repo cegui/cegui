@@ -170,7 +170,7 @@ namespace CEGUI
             wnd->setArea(window_area);
             wnd->notifyScreenAreaChanged();
         }
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {}
     }
 

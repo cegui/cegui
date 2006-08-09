@@ -54,7 +54,7 @@ namespace CEGUI
             else
                 imagery = &wlf.getStateImagery("Disabled");
         }
-        catch (UnknownObjectException)
+        catch (UnknownObjectException&)
         {
             // log error so we know imagery is missing, and then quit.
             return;

@@ -77,7 +77,7 @@ namespace CEGUI
                 sect->render(srcWindow, base_z, &finalColours, clipper, clipToDisplay);
             }
             // do nothing here, errors are non-faltal and are logged for debugging purposes.
-            catch (Exception)
+            catch (Exception&)
             {}
         }
     }
@@ -102,7 +102,7 @@ namespace CEGUI
             sect->render(srcWindow, baseRect, base_z, &finalColours, clipper, clipToDisplay);
         }
         // do nothing here, errors are non-faltal and are logged for debugging purposes.
-        catch (Exception)
+        catch (Exception&)
         {}
     }
 

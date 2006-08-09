@@ -29,7 +29,7 @@
 #   include "config.h"
 #endif
 
-// this controls conditional compile of file for MSVC
+// this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_OPENGL
 

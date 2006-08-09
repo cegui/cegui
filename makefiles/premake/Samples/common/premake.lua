@@ -4,6 +4,11 @@
 
 cegui_dynamic("CEGUISampleHelper")
 
+if CEGUI_CORE_LIBRARY_SOLUTION then
+    package.bindir = rootdir.."Samples/bin"
+    package.libdir = rootdir.."lib"
+end
+
 package.files =
 {
 	matchfiles(pkgdir.."src/*.cpp"),
@@ -22,19 +27,47 @@ package.excludes =
 include(pkgdir.."include")
 include(rootdir)
 
-library("CEGUIBase", "_d")
+if CEGUI_CORE_LIBRARY_SOLUTION then
+    dependency("CEGUIBase")
+else
+    library("CEGUIBase", DEBUG_DLL_SUFFIX or "")
+end
 
-if SAMPLES_GL then
+if OPENGL_RENDERER and SAMPLES_GL then
     library("freeglut", "_d")
-    library("OpenGLGUIRenderer", "_d")
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("OpenGLGUIRenderer")
+    else
+        library("OpenGLGUIRenderer", DEBUG_DLL_SUFFIX or "")
+    end
 end
 
 if DIRECTX9_RENDERER and SAMPLES_DX9 then
-    library("DirectX9GUIRenderer", "_d")
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("DirectX9GUIRenderer")
+    else
+        library("DirectX9GUIRenderer", DEBUG_DLL_SUFFIX or "")
+    end
 end
 
 if DIRECTX81_RENDERER and SAMPLES_DX81 then
-    library("DirectX81GUIRenderer")
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("DirectX81GUIRenderer")
+    else
+        library("DirectX81GUIRenderer", DEBUG_DLL_SUFFIX or "")
+    end
+end
+
+if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("IrrlichtRenderer")
+    else
+        library("IrrlichtRenderer", DEBUG_DLL_SUFFIX or "")
+    end
+
+    if IRRLICHT_PATHS then
+        add_sdk_paths(IRRLICHT_PATHS)
+    end
 end
 
 define("CEGUISAMPLE_EXPORTS")

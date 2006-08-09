@@ -21,6 +21,10 @@ library("lua50", "_d")
 
 define("CEGUILUA_EXPORTS")
 
+if not LUA_SCRIPT_MODULE_SAFE then
+    define("TOLUA_RELEASE", "Release")
+end
+
 if TOLUA_STATIC then
     define("TOLUA_STATIC")
 end
