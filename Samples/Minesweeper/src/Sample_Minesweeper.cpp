@@ -63,10 +63,6 @@ protected:
     void gameEnd(bool victory);
     // When a button is clicked
     bool boardDiscover(const Location& location);
-    // Print the board on the standard output 
-    void boardDump();
-
-
     // Store all buttons needed 
     CEGUI::PushButton* d_buttons[MinesweeperSize][MinesweeperSize];
     // Store button location 
@@ -79,6 +75,8 @@ protected:
     CEGUI::Editbox* d_counter;
     // Store the number of second elapsed
     CEGUI::Editbox* d_timer;
+    // Used to display the result text 
+    CEGUI::Window* d_result;
     // True if the game is started false otherwise 
     bool d_gameStarted; 
     // time at the start of the game 
@@ -120,6 +118,8 @@ bool MinesweeperSample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().loadScheme("VanillaSkin.scheme");
+    SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
+    System::getSingleton().setDefaultTooltip("TaharezLook/Tooltip");
     // set default mouse image
     System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
     // Load font 
@@ -156,7 +156,7 @@ bool MinesweeperSample::initialiseSample()
     action->setHeight(UDim(0.1, 0.0));
     d_counter = (Editbox*)winMgr.createWindow("Vanilla/Editbox", "mine_counter");
     action->addChildWindow(d_counter);
-    d_counter->setText("10");
+    d_counter->setText("0");
     d_counter->setTooltipText("Number of mine");
     d_counter->setReadOnly(true);
     d_counter->setXPosition(UDim(0.0, 0.0));
@@ -193,7 +193,6 @@ bool MinesweeperSample::initialiseSample()
     grid->setYPosition(UDim(0.23, 0.0));
     grid->setWidth(    UDim(0.94, 0.0));
     grid->setHeight(   UDim(0.74, 0.0));
-
     const float d_inc = 1.0 / MinesweeperSize; 
     for(size_t i = 0 ; i < MinesweeperSize ; ++i)
     {
@@ -212,6 +211,16 @@ bool MinesweeperSample::initialiseSample()
             d_buttons[i][j]->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MinesweeperSample::handleMineButtonClicked, this));
         }
     }
+    d_result = winMgr.createWindow("Vanilla/StaticText");
+    grid->addChildWindow(d_result);
+    d_result->setXPosition(UDim(0.0, 0.0));
+    d_result->setYPosition(UDim(0.0, 0.0));
+    d_result->setWidth(UDim(1.0, 0.0));
+    d_result->setHeight(UDim(1.0, 0.0));
+    d_result->setAlwaysOnTop(true);
+    d_result->setHorizontalAlignment(CEGUI::HA_CENTRE);
+    d_result->setVerticalAlignment(CEGUI::VA_CENTRE);
+    d_result->setVisible(false);
     // activate the background window
     background->activate();
     // success!
@@ -231,28 +240,9 @@ void MinesweeperSample::cleanupSample()
 *************************************************************************/
 bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs& event)
 {
+    d_result->setVisible(false);
     boardReset();
     boardPositionMines();
-    /*
-    for(size_t i = 0 ; i < MinesweeperSize ; ++i)
-    {
-        for (size_t j = 0 ;  j < MinesweeperSize ; ++j)
-        {
-            if (! d_buttons[i][j]->isDisabled())
-            {
-                if (d_board[i][j] > 8)
-                {
-                    d_buttons[i][j]->setText("B");
-                }
-                else
-                {
-                    d_buttons[i][j]->setText(CEGUI::PropertyHelper::uintToString(d_board[i][j]));
-                }
-            }
-            d_buttons[i][j]->setEnabled(false);
-        }
-    }
-    */
     for (size_t i = 0 ; i < MinesweeperSize ; ++i)
     {
         for(size_t j = 0 ; j < MinesweeperSize ; ++j)
@@ -261,6 +251,7 @@ bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs& event)
             d_buttons[i][j]->setEnabled(true);
         }
     }
+    d_counter->setText(CEGUI::PropertyHelper::uintToString(MineCount));
     // Handle timer 
     d_timerStartTime = ::clock();
     d_timerValue = 0;
@@ -338,7 +329,6 @@ void MinesweeperSample::boardReset()
             d_board[i][j] = 0; 
         }
     }
-    boardDump();
 }
 /************************************************************************
     Position mine on the board 
@@ -360,7 +350,7 @@ void MinesweeperSample::boardPositionMines()
         d_board[x][y] += 10;
         if (x > 0)
         {
-            if (y > 1)
+            if (y > 0)
                ++ d_board[x - 1][y - 1];
 
             ++ d_board[x - 1][y    ];
@@ -386,24 +376,6 @@ void MinesweeperSample::boardPositionMines()
                 ++ d_board[x + 1][y + 1];
         }
     }
-    boardDump();
-}
-#include <iostream>
-void MinesweeperSample::boardDump()
-{
-    for(size_t i = 0 ; i < MinesweeperSize ; ++i)
-    {
-        for(size_t j = 0 ; j < MinesweeperSize ; ++j)
-        {
-            std::cout.width(2);
-            if (d_board[i][j] > 8)
-                std::cout << "*" << " " ;
-            else
-                std::cout <<  d_board[i][j] << " " ;
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
 }
 /************************************************************************
     Check wether the game is won or not 
@@ -416,8 +388,19 @@ bool MinesweeperSample::isGameWin()
 
 void MinesweeperSample::gameEnd(bool victory)
 {
-
+    d_gameStarted = false;
+    CEGUI::String message;
+    if (victory)
+    {
+        message = CEGUI::String((CEGUI::utf8*)"You win");
+    }
+    else 
+    {
+        message = CEGUI::String((CEGUI::utf8*)"You lose");
+    }
     // Display a message to the user 
+    d_result->setText(message);
+    d_result->setVisible(true);
 }
 
 bool MinesweeperSample::boardDiscover(const Location& loc)
