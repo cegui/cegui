@@ -218,8 +218,7 @@ bool MinesweeperSample::initialiseSample()
     d_result->setWidth(UDim(1.0, 0.0));
     d_result->setHeight(UDim(1.0, 0.0));
     d_result->setAlwaysOnTop(true);
-    d_result->setHorizontalAlignment(CEGUI::HA_CENTRE);
-    d_result->setVerticalAlignment(CEGUI::VA_CENTRE);
+    d_result->setProperty("HorzFormatting", "HorzCentred");
     d_result->setVisible(false);
     // activate the background window
     background->activate();
