@@ -50,7 +50,7 @@ namespace CEGUI
     to position 0.0f, 0.0f with a size of 1.0f x 1.0f.
 
 */
-class CEGUIEXPORT Timer : public Window
+class Timer : public Window
 {
 public:
     /*************************************************************************

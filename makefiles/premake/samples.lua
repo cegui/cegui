@@ -33,6 +33,7 @@ local pkg_table =
         "Demo7",
         "FalagardDemo1",
         "FontDemo",
+        "Minesweeper",
         "ScrollablePaneDemo",
         "TabControlDemo",
     }
@@ -44,7 +45,9 @@ local lua_samples =
 }
 
 if LUA_SCRIPT_MODULE then
-    tinsert(pkg_table.Samples, lua_samples)
+    for _,v in ipairs(lua_samples) do
+        tinsert(pkg_table.Samples, v)
+    end
 end
 
 createpackages(pkg_table)
