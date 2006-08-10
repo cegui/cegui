@@ -106,6 +106,16 @@ namespace CEGUI
         return 0;
     }
 /************************************************************************/
+    float IrrlichtTexture::getXScale(void) const
+    {
+        return xScale;
+    }
+/************************************************************************/
+    float IrrlichtTexture::getYScale(void) const
+    {
+        return yScale;
+    }
+/************************************************************************/
 	void IrrlichtTexture::loadFromFile(const String& filename, const String& resourceGroup)
 	{
 		freeTexture();
@@ -121,7 +131,7 @@ namespace CEGUI
 
         // unload file data buffer
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
-        updateScales();
+        updateCachedScaleValues();
 	}
 /************************************************************************/
 	void IrrlichtTexture::loadFromMemory(const void* buffPtr, 
@@ -159,8 +169,39 @@ namespace CEGUI
 			tex->unlock();
 		}
 		tex->grab();
-        updateScales();
+        updateCachedScaleValues();
 	}
+/************************************************************************/
+    void IrrlichtTexture::updateCachedScaleValues()
+    {
+        //
+        // calculate what to use for x scale
+        //
+        ushort orgW = getOriginalWidth();
+        ushort texW = getWidth();
+
+        // if texture and original data width are the same, scale is based
+        // on the original size.
+        // if texture is wider (and source data was not stretched), scale
+        // is based on the size of the resulting texture.
+        xScale = 1.0f / ((orgW == texW) ?
+            static_cast<float>(orgW) :
+            static_cast<float>(texW));
+
+        //
+        // calculate what to use for y scale
+        //
+        ushort orgH = getOriginalHeight();
+        ushort texH = getHeight();
+
+        // if texture and original data height are the same, scale is based
+        // on the original size.
+        // if texture is taller (and source data was not stretched), scale
+        // is based on the size of the resulting texture.
+        yScale = 1.0f / ((orgH == texH) ?
+            static_cast<float>(orgH) :
+            static_cast<float>(texH));
+    }
 
 
 }

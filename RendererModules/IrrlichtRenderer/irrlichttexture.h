@@ -71,11 +71,12 @@ namespace CEGUI
 		Returns the original pixel width of the texture
 
 		\return
-		ushort value that is the original width of the texture in pixels
+		ushort value that is the original width of the texture data
+        in pixels
 		*/
 		virtual	ushort	getOriginalWidth(void) const;
 
-
+        virtual float getXScale(void) const;
 
 		/*!
 		\brief
@@ -91,11 +92,12 @@ namespace CEGUI
 		Returns the original pixel height of the texture
 
 		\return
-		ushort value that is the original height of the texture in pixels
+		ushort value that is the original height of the texture data
+        in pixels
 		*/
 		virtual	ushort	getOriginalHeight(void) const;
 
-
+        virtual float getYScale(void) const;
 
 		/*!
 		\brief
@@ -145,6 +147,9 @@ namespace CEGUI
 		// remove the texture from irrlicht textures
 		void freeTexture();
 
+        // updates cached scale value used to map pixels to texture co-ords.
+        void updateCachedScaleValues();
+
 		// the current texture for rendering
 		irr::video::ITexture* tex;
 
@@ -154,6 +159,11 @@ namespace CEGUI
 		// the irrlicht device
 		irr::IrrlichtDevice* device;
 
+        // cached value for x scale
+        float xScale;
+
+        // cahced value foy y scale
+        float yScale;
 	};
 }
 #endif
