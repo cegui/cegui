@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGuiSample.h"
 #include "CEGUI.h"
+#include "Minesweeper_Timer.h" 
 #include <ctime> 
 #include <cstdlib>
 struct Location
@@ -77,12 +78,15 @@ protected:
     CEGUI::Editbox* d_timer;
     // Used to display the result text 
     CEGUI::Window* d_result;
+
     // True if the game is started false otherwise 
     bool d_gameStarted; 
     // time at the start of the game 
     clock_t d_timerStartTime;
     // current value of the timer 
     clock_t d_timerValue;
+    // Custom window type to force refresh of the timer 
+    Timer* d_alarm;
 };
 ///////////////////////////////////////////////////////////////////////////
 /**************************************************************************
@@ -113,6 +117,9 @@ int main(int argc, char *argv[])
 bool MinesweeperSample::initialiseSample()
 {
     using namespace CEGUI;
+    // Register Timer Window
+    WindowFactoryManager::getSingleton().addFactory( &getTimerFactory() );
+
     d_gameStarted = false;
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
@@ -137,10 +144,13 @@ bool MinesweeperSample::initialiseSample()
     background->setProperty("Image", "set:BackgroundImage image:full_image");
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
+    d_alarm = (Timer*)winMgr.createWindow("Timer");
+    background->addChildWindow(d_alarm);
+    d_alarm->setDelay(0.5); // Tick each 0.5 seconds 
 
     // create the game frame 
     Window* frame = winMgr.createWindow("Vanilla/FrameWindow"); 
-    background->addChildWindow(frame);
+    d_alarm->addChildWindow(frame);
     frame->setXPosition(UDim(0.3, 0.0));
     frame->setYPosition(UDim(0.15, 0.0));
     frame->setWidth(UDim(0.4, 0.0)); 
@@ -184,8 +194,7 @@ bool MinesweeperSample::initialiseSample()
     d_timer->setYPosition(UDim(0.0, 0.0));
     d_timer->setWidth(UDim(0.3, 0.0));
     d_timer->setHeight(UDim(1.0, 0.0));
-    d_timer->subscribeEvent(Window::EventRenderingStarted, Event::Subscriber(&MinesweeperSample::handleUpdateTimer, this));
-
+    d_alarm->subscribeEvent(Timer::EventTimerAlarm, Event::Subscriber(&MinesweeperSample::handleUpdateTimer, this));
     // Board button grid 
     Window* grid = winMgr.createWindow("DefaultWindow"); 
     frame->addChildWindow(grid);
@@ -256,6 +265,7 @@ bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs& event)
     d_timerValue = 0;
     d_timer->setText("0");
     d_gameStarted = true;
+    d_alarm->start();
     return true;
 }
 /************************************************************************
@@ -388,6 +398,7 @@ bool MinesweeperSample::isGameWin()
 void MinesweeperSample::gameEnd(bool victory)
 {
     d_gameStarted = false;
+    d_alarm->stop();
     CEGUI::String message;
     if (victory)
     {

@@ -1,7 +1,7 @@
 /***********************************************************************
-    filename:   CEGUITimer.h
+    filename:   Minesweeper_Timer.h
     created:    08/08/2006
-    author:     Paul D Turner
+    author:     Olivier Delannoy
 
     purpose:    Interface to timer window 
 *************************************************************************/
@@ -27,16 +27,37 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIGUISheet_h_
-#define _CEGUIGUISheet_h_
+#ifndef _Minesweeper_Timer_h_
+#define _Minesweeper_Timer_h_
 
 #include "CEGUIWindow.h"
 #include "CEGUIWindowFactory.h"
+#include "CEGUIProperty.h" 
 
-
-// Start of CEGUI namespace section
-namespace CEGUI
+namespace TimerProperties 
 {
+/*!
+    \brief 
+    Property to access the delay between two alarm 
+
+    \par Usage:
+        - Name: Delay
+        - Format: "[float]".
+
+    \par Where:
+        - [float] represents the current delay of the timer
+*/   
+class Delay : public CEGUI::Property
+{
+public:    
+    Delay() : Property("Delay", "Property to get/set the current delay used by the timer. Value is a float.", "0.000000") {}
+    CEGUI::String get(const CEGUI::PropertyReceiver* receiver) const;
+    void set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value);
+
+};
+  
+}
+
 /*!
 \brief
     Window class intended to be used as a timer. 
@@ -50,14 +71,17 @@ namespace CEGUI
     to position 0.0f, 0.0f with a size of 1.0f x 1.0f.
 
 */
-class Timer : public Window
+class Timer : public CEGUI::Window
 {
 public:
     /*************************************************************************
         Constants
     *************************************************************************/
     // type name for this widget
-    static const String WidgetTypeName;             //!< The unique typename of this widget
+    static const CEGUI::String WidgetTypeName;             //!< The unique typename of this widget
+    static const CEGUI::String EventNamespace;             //!< Store the event namespace related to the timer 
+    static const CEGUI::String EventTimerAlarm;            //!< The name of the event generated  by this widget 
+
 
 
     /*************************************************************************
@@ -67,23 +91,35 @@ public:
     \brief
         Constructor for Timer windows.
     */
-    Timer(const String& type, const String& name);
-
-
+    Timer(const CEGUI::String& type, const CEGUI::String& name);
     /*!
     \brief
         Destructor for Timer windows.
     */
     virtual ~Timer(void) {}
 
+    /*!
+    \brief start the timer in order to generate alarm event 
+    */
+    void start();
+    /*!
+    \brief stop generating alarm event  
+    */
+    void stop();
+    /*!
+    \brief Check wether the timer is started or not 
+    */
+    bool isStarted() const;
     /*! 
     \brief 
-        Set the delay between to event generation 
+        Set the delay between to event generation in seconds 
      */
-    void setDelay(size_t seconds);
+    void setDelay(float delay);
+
+    float getDelay() const;
 
 protected:
-
+    virtual void updateSelf(float elapsed);
 	/*!
 	\brief
 		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
@@ -94,23 +130,31 @@ protected:
 	\return
 		true if this window was inherited from \a class_name. false if not.
 	*/
-	virtual bool	testClassName_impl(const String& class_name) const
+	virtual bool	testClassName_impl(const CEGUI::String& class_name) const
 	{
 		if (class_name=="Timer")	
             return true;
-		return Window::testClassName_impl(class_name);
+		return CEGUI::Window::testClassName_impl(class_name);
 	}
+    
+private:
+    static TimerProperties::Delay d_delayProperty;
+    float d_delay; //!< Store the current delay between two alarm 
+    float d_currentValue; //!< Set the current value 
+    bool  d_started; //!< Store wether the timer should produce event or not 
+    void addTimerProperties(void);
 };
 
+class TimerFactory : public CEGUI::WindowFactory
+{
+public:
+    TimerFactory() : CEGUI::WindowFactory(Timer::WidgetTypeName) {}
+    CEGUI::Window* createWindow(const CEGUI::String& name)
+    { return new Timer(d_type, name); }
+    void destroyWindow(CEGUI::Window* window)
+    { delete window;}
+};
 
-/*!
-\brief
-    typedef for DefaultWindow, which is the new name for GUISheet.
-*/
-typedef GUISheet DefaultWindow;
-
-
-} // End of  CEGUI namespace section
-
+TimerFactory& getTimerFactory();
 
 #endif  // end of guard _CEGUIGUISheet_h_

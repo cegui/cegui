@@ -1,6 +1,6 @@
 /***********************************************************************
 	filename: 	CEGUITimer.cpp
-	created:	08/09/2006
+	created:	08/08/2006
 	author:		Olivier Delannoy 
 *************************************************************************/
 /***************************************************************************
@@ -26,25 +26,90 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Minesweeper_Timer.h"
-
+#include "CEGUIPropertyHelper.h"
 
 // Start of CEGUI namespace section
-namespace CEGUI
+namespace TimerProperties
 {
+CEGUI::String Delay::get(const CEGUI::PropertyReceiver* receiver) const
+{
+    return CEGUI::PropertyHelper::floatToString(static_cast<const Timer*>(receiver)->getDelay());
+}
+void Delay::set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value)
+{
+    static_cast<Timer*>(receiver)->setDelay(CEGUI::PropertyHelper::stringToFloat(value));
+}
+
+}
 /*************************************************************************
 	Constants
 *************************************************************************/
 // type name for this widget
-const String Timer::WidgetTypeName( "Timer" );
-
+const CEGUI::String Timer::WidgetTypeName("Timer");
+const CEGUI::String Timer::EventNamespace("Timer"); 
+const CEGUI::String Timer::EventTimerAlarm("EventTimerAlarm");
+/*************************************************************************
+ * Property definition 
+*************************************************************************/
+TimerProperties::Delay Timer::d_delayProperty;
 /*************************************************************************
     Constructor
 *************************************************************************/
-Timer::Timer(const String& type, const String& name) :
-    Window(type, name)
+Timer::Timer(const CEGUI::String& type, const CEGUI::String& name) :
+    Window(type, name),
+    d_delay(0), 
+    d_started(false), 
+    d_currentValue(0)
 {
-    UVector2 sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
+    CEGUI::UVector2 sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
     setMaxSize(sz);
     setSize(sz);
+    addTimerProperties();
 }
-} // End of  CEGUI namespace section
+
+void Timer::start()
+{
+    d_started = true;
+}
+void Timer::stop()
+{
+    d_started = false;
+}
+bool Timer::isStarted() const
+{
+    return d_started;
+}
+void Timer::setDelay(float delay)
+{
+    d_delay = delay;
+}
+
+float Timer::getDelay() const
+{
+    return d_delay;
+}
+
+void Timer::updateSelf(float elapsed)
+{
+    if (d_delay > 0 && d_started)
+    {
+        d_currentValue += elapsed;
+        if (d_currentValue >= d_delay)
+        {
+            d_currentValue -= d_delay;
+            CEGUI::WindowEventArgs args(this);
+            fireEvent(EventTimerAlarm, args, EventNamespace);
+        }
+    }
+}
+
+void Timer::addTimerProperties(void)
+{
+    addProperty(&d_delayProperty);
+}
+
+TimerFactory& getTimerFactory()
+{
+    static TimerFactory s_factory;
+    return s_factory;
+}
