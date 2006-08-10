@@ -1,3 +1,12 @@
+AC_DEFUN([CEGUI_CODE_OPTIONS], [
+    AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug], [Enable building CEGUI in debugging mode.]), 
+        [cegui_enable_debug=$enableval], [cegui_enable_debug=no])
+    dnl Code options debug
+    if test x$cegui_enable_debug = xyes ; then 
+        CPPFLAGS="$CPPFLAGS -DDEBUG"
+    fi
+])
+
 AC_DEFUN([CEGUI_CHECK_WANTS_SAMPLES],[
     AC_ARG_ENABLE([samples], AC_HELP_STRING([--disable-samples], [Disable building of samples framework and applications.]),
         [cegui_enable_samples=$enableval],[cegui_enable_samples=yes])

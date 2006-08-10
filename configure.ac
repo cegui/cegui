@@ -95,6 +95,10 @@ CEGUI_OPENGL_AGE=0
 CEGUI_OPENGL_VERSION_INFO=$CEGUI_OPENGL_CURRENT:$CEGUI_OPENGL_REVISION:$CEGUI_OPENGL_AGE
 AC_SUBST(CEGUI_OPENGL_VERSION_INFO)
 
+
+
+CEGUI_CODE_OPTIONS 
+
 dnl Create the makefiles
 AC_CONFIG_FILES([Makefile
                  Samples/Demo4/Makefile
@@ -164,6 +168,9 @@ echo "**************************************************************************
 echo "* Crazy Eddie's GUI System - Configuration Results Summary"
 echo "********************************************************************************"
 echo "* Library Release Version:                              CEGUI_RELEASE_VERSION"
+echo "*"
+echo "* Code options:"
+echo "*         Building CEGUI in debug mode:                 ${cegui_enable_debug-no}"
 echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
