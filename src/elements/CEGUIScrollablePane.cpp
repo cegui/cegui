@@ -249,10 +249,10 @@ namespace CEGUI
         horzScrollbar->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
             Event::Subscriber(&ScrollablePane::handleScrollChange, this));
-        container->subscribeEvent(
+        d_contentChangedConn = container->subscribeEvent(
             ScrolledContainer::EventContentChanged,
             Event::Subscriber(&ScrollablePane::handleContentAreaChange, this));
-        container->subscribeEvent(
+        d_autoSizeChangedConn = container->subscribeEvent(
             ScrolledContainer::EventAutoSizeSettingChanged,
             Event::Subscriber(&ScrollablePane::handleAutoSizePaneChanged, this));
 
@@ -513,6 +513,16 @@ namespace CEGUI
             //return getViewableArea_impl();
             throw InvalidRequestException("ScrollablePane::getViewableArea - This function must be implemented by the window renderer module");
         }
+    }
+
+    void ScrollablePane::destroy(void)
+    {
+        // detach from events on content pane
+        d_contentChangedConn->disconnect();
+        d_autoSizeChangedConn->disconnect();
+
+        // now do the cleanup
+        Window::destroy();
     }
 
 } // End of  CEGUI namespace section
