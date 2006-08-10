@@ -41,7 +41,9 @@ namespace CEGUI
 *************************************************************************/
 OpenGLTexture::OpenGLTexture(Renderer* owner) :
 	Texture(owner),
-	d_grabBuffer(0)
+	d_grabBuffer(0),
+    d_xScale(1.0f),
+    d_yScale(1.0f)
 {
 	// generate a OGL texture that we will use.
 	glGenTextures(1, &d_ogltexture);
@@ -79,6 +81,12 @@ OpenGLTexture::~OpenGLTexture(void)
 *************************************************************************/
 void OpenGLTexture::loadFromFile(const String& filename, const String& resourceGroup)
 {
+    // Note from PDT:
+    // There is somewhat tight coupling here between OpenGLTexture and the
+    // ImageCodec classes - we have intimate knowledge of how they are
+    // implemented and that knowledge is relied upon in an unhealthy way; this
+    // should be addressed at some stage.
+
     OpenGLRenderer* renderer =  static_cast<OpenGLRenderer*>(getRenderer());
 	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 	// load file to memory via resource provider
@@ -115,12 +123,18 @@ void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buf
 	        format = GL_RGBA;
 	        break;
 	};
-    
-	glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, comps, buffWidth, buffHeight, 0, format ,GL_UNSIGNED_BYTE, buffPtr);
 
-	d_width  = static_cast<ushort>(buffWidth);
-	d_height = static_cast<ushort>(buffHeight);
+    // At least for now, we will enforce POT and square texture sizes, this way
+    // we do not need to test for, and have adaptations for, missing extensions.
+    setOGLTextureSize(ceguimax(buffWidth, buffHeight));
+    // store sizes of original data we are loading
+    d_orgWidth = buffWidth;
+    d_orgHeight = buffHeight;
+    // update scale values
+    updateCachedScaleValues();
+    // do the real work of getting the data into the texture
+    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, buffWidth, buffHeight, format, GL_UNSIGNED_BYTE, buffPtr);
 }
 
 
@@ -129,20 +143,7 @@ void OpenGLTexture::loadFromMemory(const void* buffPtr, uint buffWidth, uint buf
 *************************************************************************/
 void OpenGLTexture::setOGLTextureSize(uint size)
 {
-	// if not power of 2
-	if ((size & (size - 1)) || !size)
-	{
-		int log = 0;
-
-		// get integer log of 'size' to base 2
-		while (size >>= 1)
-		{
-			++log;
-		}
-
-		// use log to calculate value to use as size.
-		size = (2 << log);
-	}
+    size = getSizeNextPOT(size);
 
 	// make sure size is within boundaries
 	int maxSize;
@@ -162,7 +163,8 @@ void OpenGLTexture::setOGLTextureSize(uint size)
 	// delete buffer
 	delete[] buff;
 
-	d_height = d_width = static_cast<ushort>(size);
+	d_orgWidth = d_orgHeight = d_height = d_width = static_cast<ushort>(size);
+    updateCachedScaleValues();
 }
 
 /************************************************************************
@@ -201,6 +203,62 @@ void OpenGLTexture::restoreTexture(void)
     // free the grabbuffer
     delete [] d_grabBuffer;
     d_grabBuffer = 0;
+}
+
+
+/************************************************************************
+    Update stored scale values for pixel to texture co-ord mapping
+*************************************************************************/
+void OpenGLTexture::updateCachedScaleValues()
+{
+    //
+    // calculate what to use for x scale
+    //
+    ushort orgW = getOriginalWidth();
+    ushort texW = getWidth();
+
+    // if texture and original data width are the same, scale is based
+    // on the original size.
+    // if texture is wider (and source data was not stretched), scale
+    // is based on the size of the resulting texture.
+    d_xScale = 1.0f / ((orgW == texW) ?
+        static_cast<float>(orgW) :
+        static_cast<float>(texW));
+
+    //
+    // calculate what to use for y scale
+    //
+    ushort orgH = getOriginalHeight();
+    ushort texH = getHeight();
+
+    // if texture and original data height are the same, scale is based
+    // on the original size.
+    // if texture is taller (and source data was not stretched), scale
+    // is based on the size of the resulting texture.
+    d_yScale = 1.0f / ((orgH == texH) ?
+        static_cast<float>(orgH) :
+        static_cast<float>(texH));
+}
+
+/************************************************************************
+    Use to ensure power of 2 texture sizes
+*************************************************************************/
+uint OpenGLTexture::getSizeNextPOT(uint size) const
+{
+    // if not power of 2
+    if ((size & (size - 1)) || !size)
+    {
+        int log = 0;
+
+        // get integer log of 'size' to base 2
+        while (size >>= 1)
+            ++log;
+
+        // use log to calculate value to use as size.
+        size = (2 << log);
+    }
+
+    return size;
 }
 
 } // End of  CEGUI namespace section

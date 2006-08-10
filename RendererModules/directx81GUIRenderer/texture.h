@@ -86,7 +86,6 @@ public:
     virtual	ushort getOriginalWidth(void) const { return d_orgWidth; }
     virtual	ushort getOriginalHeight(void) const { return d_orgHeight; }
 
-
 	/*!
 	\brief
 		Loads the specified image file into the texture.  The texture is resized as required to hold the image.
@@ -187,7 +186,6 @@ private:
     // d_orgWidth and d_orgHeight should be set before calling this, since
     // they are used as fall-back values if the query fails.
     void obtainActualTextureSize(void);
-
 
 	/*************************************************************************
 		Implementation Data

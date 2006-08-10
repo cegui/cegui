@@ -84,6 +84,12 @@ public:
     */
     virtual	ushort	getHeight(void) const		{return d_height;}
 
+    virtual ushort getOriginalWidth(void) const { return d_orgWidth; }
+    virtual ushort getOriginalHeight(void) const { return d_orgHeight; }
+
+    virtual float getXScale(void) const { return d_xScale; } 
+    virtual float getYScale(void) const { return d_yScale; } 
+
     /*!
     \brief
 	    Loads the specified image file into the texture.  The texture is resized as required to hold the image.
@@ -164,6 +170,12 @@ public:
 
 
 private:
+    //! updates cached scale value used to map pixels to texture co-ords.
+    void updateCachedScaleValues();
+    
+    //! returns next power of 2 size if \a size is not power of 2
+    uint getSizeNextPOT(uint size) const;
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -171,6 +183,14 @@ private:
     ushort		d_width;			//!< cached width of the texture
     ushort		d_height;			//!< cached height of the texture
     uint8*		d_grabBuffer;       //!< cached image data for restoring the texture
+    //! original pixel width of data loaded into texture
+    ushort d_orgWidth;
+    //! original pixel height of data loaded into texture
+    ushort d_orgHeight;
+    //! cached value for x scale
+    float d_xScale;
+    //! cahced value foy y scale
+    float d_yScale;
 };
 
 } // End of  CEGUI namespace section

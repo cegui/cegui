@@ -308,8 +308,6 @@ void DirectX81Texture::obtainActualTextureSize(void)
         d_width = d_orgWidth;
         d_height = d_orgHeight;
     }
-
-    updateScales();
 }
 
 } // End of  CEGUI namespace section

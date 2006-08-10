@@ -104,7 +104,7 @@ Imageset::Imageset(const String& name, const String& filename, const String& res
     // define the default image for this Imageset
     defineImage(
         "full_image",
-        Rect(0, 0, d_texture->getWidth(), d_texture->getHeight()),
+        Rect(0, 0, d_texture->getOriginalWidth(), d_texture->getOriginalHeight()),
         Point(0, 0)
     );
 }
@@ -216,15 +216,15 @@ void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, con
 	// check if rect was totally clipped
 	if (final_rect.getWidth() != 0)
 	{
-        const float x_scale = d_texture->getXScale() / (float)d_texture->getWidth();
-        const float y_scale = d_texture->getYScale() / (float)d_texture->getHeight();
+        // Fix bug #45
+        // Obtain correct scale vlaue from the texture
+        const float x_scale = d_texture->getXScale();
+        const float y_scale = d_texture->getYScale();
 
 		float tex_per_pix_x = source_rect.getWidth() / dest_rect.getWidth();
 		float tex_per_pix_y = source_rect.getHeight() / dest_rect.getHeight();
 
-        // Fix bug #45
 		// calculate final, clipped, texture co-ordinates
-        // Add texture cached scale ratio 
 		Rect  tex_rect((source_rect.d_left + ((final_rect.d_left - dest_rect.d_left) * tex_per_pix_x)) * x_scale,
 			(source_rect.d_top + ((final_rect.d_top - dest_rect.d_top) * tex_per_pix_y)) * y_scale,
 			(source_rect.d_right + ((final_rect.d_right - dest_rect.d_right) * tex_per_pix_x)) * x_scale,

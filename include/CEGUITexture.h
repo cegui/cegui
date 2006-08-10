@@ -73,31 +73,30 @@ public:
 	*/
 	virtual	ushort	getWidth(void) const = 0;
 
-	/*!
-	\brief
-		Returns the original pixel width of the texture
+    /*!
+    \brief
+        Returns the original pixel width of the data loaded into the texture.
 
-	\return
-		ushort value that is the original width of the texture in pixels
+    \return
+        ushort value that is the original width, in pixels, of the data last
+        loaded into the texture.
 
     \note 
         for compatibility reason this method is optional the auto scale 
         issue mantis ticket # 0000045 is not fixed for renderer that do 
         not handle this. 
-	*/
-	virtual	ushort	getOriginalWidth(void) const { return getWidth();}
-    
+    */
+    virtual ushort getOriginalWidth(void) const { return getWidth(); }
+
     /*! 
     \brief 
         Returns the current scale used for the width of the texture 
 
     \return 
-        float value that denotes the scale of the texture compared to the inital 
-        size of the texture.
+        float value that denotes the horizontal scaling required to
+        accurately map pixel positions to texture co-ords.
     */
-    float getXScale(void) const {return d_xScale;} // ((float)getWidth() / (float)getOriginalWidth()) / (float) getWidth();
-
-
+    virtual float getXScale(void) const { return 1.0f / static_cast<float>(getOriginalWidth()); } 
 
 	/*!
 	\brief
@@ -108,29 +107,29 @@ public:
 	*/
 	virtual	ushort	getHeight(void) const = 0;
 
-	/*!
-	\brief
-		Returns the original pixel height of the texture
+    /*!
+    \brief
+        Returns the original pixel height of the data loaded into the texture.
 
-	\return
-		ushort value that is the original height of the texture in pixels
+    \return
+        ushort value that is the original height, in pixels, of the data last
+        loaded into the texture.
 
     \note for compatibility reason this method is optional the auto scale 
     issue mantis ticket # 0000045 is not fixed for renderer that do 
     not handle this. 
-	*/
-	virtual	ushort	getOriginalHeight(void) const { return getHeight() ; }
-
+    */
+    virtual ushort getOriginalHeight(void) const { return getHeight(); }
 
     /*! 
     \brief 
         Returns the current scale used for the height of the texture 
 
     \return 
-        float value that denotes the scale of the texture compared to the inital 
-        size of the texture.
+        float value that denotes the vertical scaling required to
+        accurately map pixel positions to texture co-ords.
     */
-    float getYScale(void) const {return d_yScale; }//((float)getHeight() / (float)getOriginalHeight() ) / (float) getHeight(); 
+    virtual float getYScale(void) const { return 1.0f / static_cast<float>(getOriginalHeight()); }
 
 	/*!
 	\brief
@@ -181,16 +180,6 @@ public:
 
 
 protected:
-    /*!
-    \brief 
-        use this after updating the texture data 
-        
-     */
-    void updateScales()
-    {
-        d_xScale =  ((float) getOriginalWidth() / (float)getWidth());
-        d_yScale = ((float) getOriginalHeight() / (float)getHeight());
-    }
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -198,7 +187,7 @@ protected:
 	\brief
 		Constructor for Texture base class.  This is never called by client code.
 	*/
-	Texture(Renderer* owner) : d_owner(owner), d_xScale(1.0), d_yScale(1.0) {}
+	Texture(Renderer* owner) : d_owner(owner) {}
 
 	/*!
 	\brief
@@ -207,8 +196,6 @@ protected:
 	virtual ~Texture(void) {}
 
 private:
-    float d_xScale;         //<! cached xScale for image set usage 
-    float d_yScale;         //<! cached yScale for image set usage 
 	Renderer* d_owner;		//<! Renderer object that created and owns this texture
 };
 
