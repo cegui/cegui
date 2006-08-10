@@ -406,6 +406,7 @@ namespace CEGUI
             Overridden from Window
         *************************************************************************/
         void initialiseComponents(void);
+        void destroy(void);
 
     protected:
         /*************************************************************************
@@ -604,6 +605,8 @@ namespace CEGUI
         float   d_vertOverlap;          //!< vertical scroll overlap fraction.
         float   d_horzStep;             //!< horizontal scroll step fraction.
         float   d_horzOverlap;          //!< horizontal scroll overlap fraction.
+        Event::Connection d_contentChangedConn;  //!< Event connection to content pane
+        Event::Connection d_autoSizeChangedConn; //!< Event connection to content pane
 
     private:
 	    /*************************************************************************
