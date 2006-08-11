@@ -52,6 +52,8 @@ protected:
     bool handleGameStartClicked(const CEGUI::EventArgs& event);
     // Handle click on a button of the board 
     bool handleMineButtonClicked(const CEGUI::EventArgs& event);
+    // Handle mouse button down on a button of the board
+    bool handleMineButtonDown(const CEGUI::EventArgs& event);
     // Update the timer if needed 
     bool handleUpdateTimer(const CEGUI::EventArgs& event);
     // reset the board 
@@ -205,19 +207,27 @@ bool MinesweeperSample::initialiseSample()
     const float d_inc = 1.0 / MinesweeperSize; 
     for(size_t i = 0 ; i < MinesweeperSize ; ++i)
     {
+        // create a container for each row
+        Window* row = winMgr.createWindow("DefaultWindow");
+        row->setArea(URect(UDim(0,0), UDim(d_inc * i, 0),
+            UDim(1,0), UDim(d_inc * (i + 1), 0)));
+        grid->addChildWindow(row);
         for(size_t j = 0 ; j < MinesweeperSize ; ++j)
         {
             // Initialize buttons coordinate 
             d_buttonsMapping[i][j].d_col = j;
             d_buttonsMapping[i][j].d_row = i;
             d_buttons[i][j] = (PushButton*)winMgr.createWindow("Vanilla/Button"); 
-            grid->addChildWindow(d_buttons[i][j]); 
-            d_buttons[i][j]->setArea(URect(UDim(d_inc * j, 0.0), UDim(d_inc * i, 0.0), 
-                                 UDim(d_inc * (j + 1), 0.0), UDim(d_inc * (i + 1), 0.0))); 
+            row->addChildWindow(d_buttons[i][j]); 
+            d_buttons[i][j]->setArea(URect(UDim(d_inc * j, 0), UDim(0,0), 
+                                 UDim(d_inc * (j + 1), 0), UDim(1,0))); 
             d_buttons[i][j]->setEnabled(false);
-            // Associate user data and connect event handler 
+            // Associate user data
             d_buttons[i][j]->setUserData(&(d_buttonsMapping[i][j]));
+            d_buttons[i][j]->setID(0);
+            // Connect event handlers
             d_buttons[i][j]->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MinesweeperSample::handleMineButtonClicked, this));
+            d_buttons[i][j]->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&MinesweeperSample::handleMineButtonDown, this));
         }
     }
     d_result = winMgr.createWindow("Vanilla/StaticText");
@@ -229,6 +239,7 @@ bool MinesweeperSample::initialiseSample()
     d_result->setAlwaysOnTop(true);
     d_result->setProperty("HorzFormatting", "HorzCentred");
     d_result->setVisible(false);
+    d_result->setAlpha(0.67f);
     // activate the background window
     background->activate();
     // success!
@@ -276,7 +287,11 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     const CEGUI::WindowEventArgs* evt = static_cast<const CEGUI::WindowEventArgs*>(&event);
     CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(evt->window);
     Location* buttonLoc = static_cast<Location*>(button->getUserData());
-    
+    if (button->getID() > 0)
+    {
+        // dont touch flagged buttons
+        return true;
+    }
     if (boardDiscover(*buttonLoc))
     {
         // We did not find a mine 
@@ -295,6 +310,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
                     if (d_board[i][j] > 8)
                     {
                         d_buttons[i][j]->setText("B");
+                        d_buttons[i][j]->setProperty("DisabledTextColour", "FFFF1010");
                     }
                     else
                     {
@@ -307,6 +323,35 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
         gameEnd(false);
     }
     return true;    
+}
+/************************************************************************
+    Handle click on a mine button (any mouse button)
+************************************************************************/
+bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
+{
+    const CEGUI::MouseEventArgs& me = static_cast<const CEGUI::MouseEventArgs&>(event);
+    if (me.button == CEGUI::RightButton)
+    {
+        CEGUI::Window* button = me.window;
+        if (!button->isDisabled())
+        {
+            Location* buttonLoc = static_cast<Location*>(button->getUserData());
+            size_t x = buttonLoc->d_col;
+            size_t y = buttonLoc->d_row;
+            if (button->getID() == 0)
+            {
+                button->setID(1);
+                button->setText("F");
+            }
+            else
+            {
+                button->setID(0);
+                button->setText("");
+            }
+            return true;
+        }
+    }
+    return false;
 }
 /***********************************************************************
     Handle timer refresh 
@@ -415,7 +460,8 @@ void MinesweeperSample::gameEnd(bool victory)
 
 bool MinesweeperSample::boardDiscover(const Location& loc)
 {
-    if (d_buttons[loc.d_row][loc.d_col]->isDisabled())
+    CEGUI::PushButton* btn = d_buttons[loc.d_row][loc.d_col];
+    if (btn->isDisabled() || btn->getID() > 0)
         return true;
 
     if (d_board[loc.d_row][loc.d_col] > 8)
