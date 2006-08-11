@@ -223,8 +223,10 @@ namespace CEGUI
 
     float Spinner::getValueFromText(void) const
     {
-        // handle empty case
-        if (d_editbox->getText().empty())
+        String tmpTxt(getEditbox()->getText());
+
+        // handle empty and lone '-' cases
+        if (tmpTxt.empty() || (tmpTxt == "-"))
         {
             return 0.0f;
         }
@@ -236,18 +238,18 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case FloatingPoint:
-            res = sscanf(d_editbox->getText().c_str(), "%f", &val);
+            res = sscanf(tmpTxt.c_str(), "%f", &val);
             break;
         case Integer:
-            res = sscanf(d_editbox->getText().c_str(), "%d", &tmp);
+            res = sscanf(tmpTxt.c_str(), "%d", &tmp);
             val = static_cast<float>(tmp);
             break;
         case Hexadecimal:
-            res = sscanf(d_editbox->getText().c_str(), "%x", &utmp);
+            res = sscanf(tmpTxt.c_str(), "%x", &utmp);
             val = static_cast<float>(utmp);
             break;
         case Octal:
-            res = sscanf(d_editbox->getText().c_str(), "%o", &utmp);
+            res = sscanf(tmpTxt.c_str(), "%o", &utmp);
             val = static_cast<float>(utmp);
             break;
         default:
@@ -329,8 +331,9 @@ namespace CEGUI
         d_editbox->setMutedState(true);
 
         // Update text with new value.
-        // (allow special 'empty' case to equal 0 with no text change required)
-        if (!(d_currentValue == 0 && d_editbox->getText().empty()))
+        // (allow empty and '-' cases to equal 0 with no text change required)
+        if (!(d_currentValue == 0 &&
+              (editbox->getText().empty() || editbox->getText() == "-")))
         {
             d_editbox->setText(getTextFromValue());
         }
