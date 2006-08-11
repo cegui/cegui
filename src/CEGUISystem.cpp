@@ -60,7 +60,7 @@
 #   define CEGUI_DEFAULT_XMLPARSER     TinyXMLParser
 #endif
 
-
+#include <locale>
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -207,6 +207,7 @@ System::System(Renderer* renderer, ResourceProvider* resourceProvider, XMLParser
 *************************************************************************/
 void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProvider,  XMLParser* xmlParser, ScriptModule* scriptModule, const String& configFile, const String& logFile)
 {
+    setlocale(LC_NUMERIC, "C");
     // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
     new Logger();
 
