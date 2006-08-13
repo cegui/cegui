@@ -134,7 +134,7 @@ namespace CEGUI
             if (d_colourProperyIsRect)
                 xml_stream.openTag("ColourRectProperty");
             else
-                xml_stream.openTag("<ColourProperty");
+                xml_stream.openTag("ColourProperty");
 
             xml_stream.attribute("name", d_colourPropertyName)
                 .closeTag();

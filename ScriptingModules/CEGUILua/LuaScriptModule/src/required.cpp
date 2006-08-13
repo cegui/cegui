@@ -28,7 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI.h"
-
+#include "required.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -68,21 +68,11 @@ ListboxTextItem* ceguiLua_createListboxTextItem(const String& text, uint item_id
 
 
 /************************************************************************
-    writeWindowLayoutToFile
+    OutStream
 *************************************************************************/
-void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, const Window& window, const String& filename, bool writeParent)
+void ceguiLua_FileStream_open(FileStream* os, const char* filename)
 {
-    std::ofstream os(filename.c_str(), std::ios::binary);
-    wm->writeWindowLayoutToStream(window,os,writeParent);
-    os.close();
-}
-
-
-void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, const String& window, const String& filename, bool writeParent)
-{
-    std::ofstream os(filename.c_str(), std::ios::binary);
-    wm->writeWindowLayoutToStream(window,os,writeParent);
-    os.close();
+    os->open(filename, std::ios::binary);
 }
 
 

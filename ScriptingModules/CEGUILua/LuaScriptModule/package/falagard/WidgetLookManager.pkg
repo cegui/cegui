@@ -2,7 +2,7 @@
   WidgetLookManager
 ***********************************************************************/
 
-class WidgetLookManager 
+class WidgetLookManager
 {
   static WidgetLookManager& getSingleton(void);
 
@@ -12,10 +12,9 @@ class WidgetLookManager
   void eraseWidgetLook(string widget);
   void addWidgetLook(WidgetLookFeel& look);
 
-  //void writeFalagardXMLHeadToStream(OutStream& out_stream) const;
-  //void writeFalagardXMLTailToStream(OutStream& out_stream) const;
-  //void writeWidgetLookToStream(const String& name, OutStream& out_stream) const;
-  //void writeWidgetLookSeriesToStream(const String& prefix, OutStream& out_stream) const;
+  void writeWidgetLookToStream(string name, OutStream& out_stream) const;
+  void writeWidgetLookSeriesToStream(string prefix, OutStream& out_stream) const;
+
   WidgetLookManager();
 
   static void setDefaultResourceGroup(string resourceGroup);
