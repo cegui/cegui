@@ -26,7 +26,7 @@ class WidgetLookFeel
     void addPropertyLinkDefinition(const PropertyLinkDefinition& propdef);
     void clearPropertyDefinitions();
     void clearPropertyLinkDefinitions();
-    //void writeXMLToStream(OutStream& out_stream) const;
+    //void writeXMLToStream(XMLSerializer& out_stream) const;
     void renameChildren(const Window& widget, string newBaseName) const;
 
     const PropertyInitialiser* findPropertyInitialiser(string propertyName) const;

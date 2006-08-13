@@ -30,6 +30,7 @@
 #include "CEGUI.h"
 #include "CEGUILua.h"
 #include "CEGUILuaFunctor.h"
+#include <fstream>
 
 #define __operator_increment    operator++
 #define __operator_decrement    operator--
@@ -47,7 +48,6 @@ namespace CEGUI
 {
 
 typedef Event::Connection EventConnection;
-
 
 /*************************************************************************
 	Functions for getting Thumb range pairs as two return values
@@ -90,10 +90,10 @@ inline EventIterator ceguiLua_getEventIterator(const T* self)
 
 
 /************************************************************************
-    writeWindowLayoutToStream -> file
+    OutStream
 *************************************************************************/
-void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, const String& window, const String& filename, bool writeParent);
-void ceguiLua_WindowManager_writeWindowLayoutToFile(const WindowManager* wm, const Window& window, const String& filename, bool writeParent);
+typedef std::ofstream FileStream;
+void ceguiLua_FileStream_open(FileStream*, const char* filename);
 
 
 /************************************************************************

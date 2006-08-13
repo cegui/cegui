@@ -148,10 +148,16 @@ namespace CEGUI
         d_area.writeXMLToStream(xml_stream);
 
         // write text element
-        xml_stream.openTag("Text")
-            .attribute("font", d_font)
-            .attribute("string", d_text)
-            .closeTag();
+        if (!d_font.empty() && !d_text.empty())
+        {
+            xml_stream.openTag("Text");
+            if (!d_font.empty())
+                xml_stream.attribute("font", d_font);
+            if (!d_text.empty())
+                xml_stream.attribute("string", d_text);
+            xml_stream.closeTag();
+        }
+
         // write text property element
         if (!d_textPropertyName.empty())
         {
