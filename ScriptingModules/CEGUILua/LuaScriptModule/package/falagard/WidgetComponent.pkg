@@ -15,10 +15,10 @@ class WidgetComponent
   void setWidgetNameSuffix(string suffix);
   string getWindowRendererType() const;
   void setWindowRendererType(string type);
-  VerticalAlignment getVerticalWidgetAlignemnt() const;
+  VerticalAlignment getVerticalWidgetAlignment() const;
   void setVerticalWidgetAlignment(VerticalAlignment alignment);
-  HorizontalAlignment getHorizontalWidgetAlignemnt() const;
-  void setHorizontalWidgetAlignemnt(HorizontalAlignment alignment);
+  HorizontalAlignment getHorizontalWidgetAlignment() const;
+  void setHorizontalWidgetAlignment(HorizontalAlignment alignment);
   void addPropertyInitialiser(const PropertyInitialiser& initialiser);
   void clearPropertyInitialisers();
   void layout(const Window& owner) const;
