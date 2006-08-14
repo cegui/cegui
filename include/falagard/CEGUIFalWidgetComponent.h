@@ -74,11 +74,11 @@ namespace CEGUI
         const String& getWindowRendererType() const;
         void setWindowRendererType(const String& type);
 
-        VerticalAlignment getVerticalWidgetAlignemnt() const;
+        VerticalAlignment getVerticalWidgetAlignment() const;
         void setVerticalWidgetAlignment(VerticalAlignment alignment);
 
-        HorizontalAlignment getHorizontalWidgetAlignemnt() const;
-        void setHorizontalWidgetAlignemnt(HorizontalAlignment alignment);
+        HorizontalAlignment getHorizontalWidgetAlignment() const;
+        void setHorizontalWidgetAlignment(HorizontalAlignment alignment);
 
         void addPropertyInitialiser(const PropertyInitialiser& initialiser);
         void clearPropertyInitialisers();

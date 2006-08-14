@@ -126,7 +126,7 @@ namespace CEGUI
         d_rendererType = type;
     }
 
-    VerticalAlignment WidgetComponent::getVerticalWidgetAlignemnt() const
+    VerticalAlignment WidgetComponent::getVerticalWidgetAlignment() const
     {
         return d_vertAlign;
     }
@@ -136,12 +136,12 @@ namespace CEGUI
         d_vertAlign = alignment;
     }
 
-    HorizontalAlignment WidgetComponent::getHorizontalWidgetAlignemnt() const
+    HorizontalAlignment WidgetComponent::getHorizontalWidgetAlignment() const
     {
         return d_horzAlign;
     }
 
-    void WidgetComponent::setHorizontalWidgetAlignemnt(HorizontalAlignment alignment)
+    void WidgetComponent::setHorizontalWidgetAlignment(HorizontalAlignment alignment)
     {
         d_horzAlign = alignment;
     }

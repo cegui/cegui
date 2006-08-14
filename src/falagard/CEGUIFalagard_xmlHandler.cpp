@@ -526,7 +526,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementHorzAlignmentStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent != 0);
-        d_childcomponent->setHorizontalWidgetAlignemnt(FalagardXMLHelper::stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
+        d_childcomponent->setHorizontalWidgetAlignment(FalagardXMLHelper::stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
     }
 
     /*************************************************************************

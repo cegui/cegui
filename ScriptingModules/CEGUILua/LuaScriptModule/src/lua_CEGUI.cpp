@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 08/13/06 14:42:57.
+** Generated automatically by tolua++-1.0.92 on 08/14/06 22:02:58.
 */
 
 #ifndef __cplusplus
@@ -44680,9 +44680,9 @@ static int tolua_CEGUI_CEGUI_WidgetComponent_setWindowRendererType00(lua_State* 
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getVerticalWidgetAlignemnt of class  CEGUI::WidgetComponent */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignemnt00
-static int tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignemnt00(lua_State* tolua_S)
+/* method: getVerticalWidgetAlignment of class  CEGUI::WidgetComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignment00
+static int tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignment00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -44696,17 +44696,17 @@ static int tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignemnt00(lua_St
  {
   const CEGUI::WidgetComponent* self = (const CEGUI::WidgetComponent*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVerticalWidgetAlignemnt'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVerticalWidgetAlignment'",NULL);
 #endif
  {
-  CEGUI::VerticalAlignment tolua_ret = (CEGUI::VerticalAlignment)  self->getVerticalWidgetAlignemnt();
+  CEGUI::VerticalAlignment tolua_ret = (CEGUI::VerticalAlignment)  self->getVerticalWidgetAlignment();
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getVerticalWidgetAlignemnt'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getVerticalWidgetAlignment'.",&tolua_err);
  return 0;
 #endif
 }
@@ -44745,9 +44745,9 @@ static int tolua_CEGUI_CEGUI_WidgetComponent_setVerticalWidgetAlignment00(lua_St
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getHorizontalWidgetAlignemnt of class  CEGUI::WidgetComponent */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignemnt00
-static int tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignemnt00(lua_State* tolua_S)
+/* method: getHorizontalWidgetAlignment of class  CEGUI::WidgetComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignment00
+static int tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignment00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -44761,25 +44761,25 @@ static int tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignemnt00(lua_
  {
   const CEGUI::WidgetComponent* self = (const CEGUI::WidgetComponent*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHorizontalWidgetAlignemnt'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHorizontalWidgetAlignment'",NULL);
 #endif
  {
-  CEGUI::HorizontalAlignment tolua_ret = (CEGUI::HorizontalAlignment)  self->getHorizontalWidgetAlignemnt();
+  CEGUI::HorizontalAlignment tolua_ret = (CEGUI::HorizontalAlignment)  self->getHorizontalWidgetAlignment();
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getHorizontalWidgetAlignemnt'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'getHorizontalWidgetAlignment'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setHorizontalWidgetAlignemnt of class  CEGUI::WidgetComponent */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignemnt00
-static int tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignemnt00(lua_State* tolua_S)
+/* method: setHorizontalWidgetAlignment of class  CEGUI::WidgetComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignment00
+static int tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignment00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -44795,16 +44795,16 @@ static int tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignemnt00(lua_
   CEGUI::WidgetComponent* self = (CEGUI::WidgetComponent*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::HorizontalAlignment alignment = ((CEGUI::HorizontalAlignment) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setHorizontalWidgetAlignemnt'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setHorizontalWidgetAlignment'",NULL);
 #endif
  {
-  self->setHorizontalWidgetAlignemnt(alignment);
+  self->setHorizontalWidgetAlignment(alignment);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setHorizontalWidgetAlignemnt'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setHorizontalWidgetAlignment'.",&tolua_err);
  return 0;
 #endif
 }
@@ -48904,10 +48904,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setWidgetNameSuffix",tolua_CEGUI_CEGUI_WidgetComponent_setWidgetNameSuffix00);
    tolua_function(tolua_S,"getWindowRendererType",tolua_CEGUI_CEGUI_WidgetComponent_getWindowRendererType00);
    tolua_function(tolua_S,"setWindowRendererType",tolua_CEGUI_CEGUI_WidgetComponent_setWindowRendererType00);
-   tolua_function(tolua_S,"getVerticalWidgetAlignemnt",tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignemnt00);
+   tolua_function(tolua_S,"getVerticalWidgetAlignment",tolua_CEGUI_CEGUI_WidgetComponent_getVerticalWidgetAlignment00);
    tolua_function(tolua_S,"setVerticalWidgetAlignment",tolua_CEGUI_CEGUI_WidgetComponent_setVerticalWidgetAlignment00);
-   tolua_function(tolua_S,"getHorizontalWidgetAlignemnt",tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignemnt00);
-   tolua_function(tolua_S,"setHorizontalWidgetAlignemnt",tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignemnt00);
+   tolua_function(tolua_S,"getHorizontalWidgetAlignment",tolua_CEGUI_CEGUI_WidgetComponent_getHorizontalWidgetAlignment00);
+   tolua_function(tolua_S,"setHorizontalWidgetAlignment",tolua_CEGUI_CEGUI_WidgetComponent_setHorizontalWidgetAlignment00);
    tolua_function(tolua_S,"addPropertyInitialiser",tolua_CEGUI_CEGUI_WidgetComponent_addPropertyInitialiser00);
    tolua_function(tolua_S,"clearPropertyInitialisers",tolua_CEGUI_CEGUI_WidgetComponent_clearPropertyInitialisers00);
    tolua_function(tolua_S,"layout",tolua_CEGUI_CEGUI_WidgetComponent_layout00);
