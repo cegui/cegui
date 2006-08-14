@@ -221,6 +221,7 @@
         </xsd:sequence>
         <xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="propertyDimensionTypeEnum" use="optional" default="" />
     </xsd:complexType>
 	<xsd:complexType name="unifiedDimType">
         <xsd:sequence>
@@ -289,6 +290,13 @@
         </xsd:choice>
         <xsd:attribute name="op" type="dimensionOperatorEnum" use="required" />
     </xsd:complexType>
+    <xsd:simpleType name="propertyDimensionTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="" />
+			<xsd:enumeration value="Width" />
+			<xsd:enumeration value="Height" />
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="dimensionTypeEnum">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="LeftEdge" />

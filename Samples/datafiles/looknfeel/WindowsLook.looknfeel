@@ -400,10 +400,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/SystemButton">
-        <Property name="WantsMultiClickEvents" value="False" />
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
+        <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -2154,12 +2154,12 @@
             <Area>
                 <Dim type="LeftEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim imageset="WindowsLook" image="StaticFrameTop" dimension="Height" /></Dim>
-                <Dim type="RightEdge" > 
-                    <UnifiedDim scale="1" type="RightEdge"> 
-                        <DimOperator op="Subtract"> 
-                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" /> 
-                        </DimOperator> 
-                    </UnifiedDim> 
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="WindowsLook" image="StaticFrameRight" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
                 </Dim>
                 <Dim type="Height" >
                     <FontDim type="LineSpacing">
@@ -4101,8 +4101,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/TabContentPane">
-        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnwrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnwrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -4191,8 +4191,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/TabButtonPane">
-        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnwrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnwrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -4391,7 +4391,7 @@
                 <Dim type="Width">
                     <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Width" />
                 </Dim>
-                <Dim type="Height"><AbsoluteDim value="0" />
+                <Dim type="Height">
                     <ImageDim imageset="WindowsLook" image="TabButtonScrollLeftNormal" dimension="Height" />
                 </Dim>
             </Area>
