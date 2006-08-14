@@ -70,4 +70,14 @@ if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
     end
 end
 
+if DEFAULT_XML_PARSER == "xerces" then
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("CEGUIXercesParser")
+    else
+        library("CEGUIXercesParser", DEBUG_DLL_SUFFIX or "")
+    end
+
+    include(rootdir.."XMLParserModules/XercesParser")
+end
+
 define("CEGUISAMPLE_EXPORTS")
