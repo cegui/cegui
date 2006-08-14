@@ -155,6 +155,10 @@ do
         config_h.CEGUI_SAMPLES_USE_IRRLICHT = ""
     end
 
+    if DEFAULT_XML_PARSER == "xerces" then
+        config_h.CEGUI_WITH_XERCES = ""
+    end
+
     local filename = "../../include/config.h"
     local f,err = io.open(filename, "w+")
 
