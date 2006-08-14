@@ -104,8 +104,8 @@ public:
         TabControl *tc = static_cast<TabControl *>(winMgr.getWindow ("TabControlDemo/TabControl"));
 
         // Add some pages to tab control
-        tc->addTab (winMgr.getWindow ("TabControlDemo/Page1"));
-        tc->addTab (winMgr.getWindow ("TabControlDemo/Page2"));
+        tc->addTab (winMgr.loadWindowLayout ("TabPage1.layout", "TabControlDemo/"));
+        tc->addTab (winMgr.loadWindowLayout ("TabPage2.layout", "TabControlDemo/"));
 
         static_cast<PushButton *> (
             winMgr.getWindow("TabControlDemo/Page1/AddTab"))->subscribeEvent (

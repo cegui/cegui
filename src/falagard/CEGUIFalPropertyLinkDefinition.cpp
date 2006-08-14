@@ -86,6 +86,8 @@ namespace CEGUI
 
     void PropertyLinkDefinition::writeXMLAttributes(XMLSerializer& xml_stream) const
     {
+        PropertyDefinitionBase::writeXMLAttributes(xml_stream);
+
         if (!d_widgetNameSuffix.empty())
             xml_stream.attribute("widget", d_widgetNameSuffix);
 

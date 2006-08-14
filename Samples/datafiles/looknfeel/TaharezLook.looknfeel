@@ -145,7 +145,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/RadioButton
@@ -271,7 +271,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Checkbox
@@ -397,7 +397,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Editbox
@@ -488,7 +488,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Titlebar
@@ -617,7 +617,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/FrameWindow
@@ -860,7 +860,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/ProgressBar
@@ -932,7 +932,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/AlternateProgressBar
@@ -1103,7 +1103,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/VUMeter (progress bar)
@@ -1174,7 +1174,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/SliderThumb
@@ -1231,7 +1231,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Slider
@@ -1283,7 +1283,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/HorizontalScrollbarThumb
@@ -1340,7 +1340,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/HorizontalScrollbar
@@ -1425,7 +1425,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/VerticalScrollbarThumb
@@ -1482,7 +1482,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/VerticalScrollbar
@@ -1568,7 +1568,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Listbox
@@ -1705,7 +1705,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/ComboDropList
@@ -1842,7 +1842,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/ComboEditbox
@@ -1932,7 +1932,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Combobox
@@ -1990,7 +1990,7 @@
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Spinner
@@ -2038,7 +2038,7 @@
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/StaticShared
@@ -2108,7 +2108,7 @@
             </ImageryComponent>
         </ImagerySection>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/StaticImage
@@ -2205,7 +2205,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/StaticText
@@ -2403,7 +2403,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/ListHeaderSegment
@@ -2588,7 +2588,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/ListHeader
@@ -2599,7 +2599,7 @@
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/MultiColumnList
@@ -2750,7 +2750,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/MultiLineEditbox
@@ -2911,7 +2911,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/Tooltip
@@ -2995,7 +2995,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/ScrollablePane
@@ -3079,7 +3079,7 @@
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/TabButton
@@ -3296,15 +3296,15 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/TabContentPane
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabContentPane">
-        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnwrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnwrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3385,15 +3385,15 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/TabButtonPane
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabButtonPane">
-        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnwrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnwrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3467,7 +3467,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/TabControl
@@ -3563,7 +3563,7 @@
                 <Dim type="TopEdge">
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="TopEdge" />
                 </Dim>
-                <Dim type="Height"><AbsoluteDim value="0" />
+                <Dim type="Height">
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height" />
                 </Dim>
             </Area>
@@ -3575,7 +3575,7 @@
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/MenuItem
@@ -3818,7 +3818,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/PopupMenu
@@ -3901,8 +3901,8 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
-    
+
+
     <!--
     ***************************************************
         TaharezLook/Menubar
@@ -3985,7 +3985,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/LargeVerticalScrollbarThumb
@@ -4042,7 +4042,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
     <!--
     ***************************************************
         TaharezLook/LargeVerticalScrollbar
