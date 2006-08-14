@@ -266,6 +266,7 @@ bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs& event)
     {
         for(size_t j = 0 ; j < MinesweeperSize ; ++j)
         {
+            d_buttons[i][j]->setProperty("DisabledTextColour", "FF000000");
             d_buttons[i][j]->setText("");
             d_buttons[i][j]->setEnabled(true);
         }
