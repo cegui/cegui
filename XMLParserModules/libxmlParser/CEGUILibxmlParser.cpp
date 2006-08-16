@@ -50,13 +50,13 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
     while (currAttr)
     {
         xmlChar* val = xmlGetProp(node, currAttr->name);
-        attrs.add(currAttr->name, val);
+        attrs.add((utf8*)currAttr->name, (utf8*)val);
         xmlFree(val);
         currAttr = currAttr->next;
     }
 
     // element start processing
-    handler.elementStart(node->name, attrs);
+    handler.elementStart((utf8*)node->name, attrs);
 
     for (xmlNode* cur_node = node->children; cur_node; cur_node = cur_node->next)
     {
@@ -68,13 +68,13 @@ void processXMLElement(XMLHandler& handler, xmlNode* node)
 
         case XML_TEXT_NODE:
             if (cur_node->content != 0 && *cur_node->content!= '\0')
-                handler.text(cur_node->content);
+                handler.text((utf8*)cur_node->content);
             break;
         }
     }
 
     // element end processing
-    handler.elementEnd(node->name);
+    handler.elementEnd((utf8*)node->name);
 }
 
 LibxmlParser::LibxmlParser(void)
