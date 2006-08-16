@@ -90,6 +90,7 @@ public:
     */
     class ScopedConnection : public Connection
     {
+    public:
         ScopedConnection() {}
 
         ~ScopedConnection()
