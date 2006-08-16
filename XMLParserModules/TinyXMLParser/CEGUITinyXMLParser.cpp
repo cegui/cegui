@@ -89,12 +89,12 @@ namespace CEGUI
         const CEGUITinyXML::TiXmlAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
-            attrs.add(currAttr->Name(), currAttr->Value());
+            attrs.add((utf8*)currAttr->Name(), (utf8*)currAttr->Value());
             currAttr = currAttr->Next();
         }
         
         // start element
-        d_handler->elementStart(element->Value(), attrs);
+        d_handler->elementStart((utf8*)element->Value(), attrs);
 
         // do children
         const CEGUITinyXML::TiXmlNode* childNode = element->FirstChild();
@@ -116,7 +116,7 @@ namespace CEGUI
         }
 
         // end element
-        d_handler->elementEnd(element->Value());
+        d_handler->elementEnd((utf8*)element->Value());
     }
 
     TinyXMLParser::TinyXMLParser(void)
