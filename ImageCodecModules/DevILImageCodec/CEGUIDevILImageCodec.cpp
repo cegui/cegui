@@ -84,11 +84,25 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
             break;
         };
         ilCopyPixels(0, 0, 0, width, height, 1, ilfmt, IL_UNSIGNED_BYTE, (ILvoid*)tmpBuff);
-        result->loadFromMemory(tmpBuff, width, height, cefmt);
 
         // delete DevIL image
         ilDeleteImages(1, &imgName);
         ilPopAttrib();
+
+        // create cegui texture
+        try
+        {
+            result->loadFromMemory(tmpBuff, width, height, cefmt);
+        }
+        catch(...)
+        {
+            delete [] tmpBuff;
+            throw;
+        }
+
+        // free temp buffer
+        delete [] tmpBuff;
+
         return result;
     }
 	// failed to load image properly.

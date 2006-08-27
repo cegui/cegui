@@ -6,6 +6,7 @@ class FalagardWindowMapping
     string d_windowType @ windowType;
     string d_lookName @ lookName;
     string d_baseType @ baseType;
+    string d_rendererType @ rendererType;
 };
 
 class WindowFactory
@@ -15,7 +16,18 @@ class WindowFactory
 
 class WindowFactoryManager
 {
-	static WindowFactoryManager& getSingleton();
+    static WindowFactoryManager& getSingleton();
+
+    bool isFactoryPresent(string name) const;
+    void addWindowTypeAlias(string aliasName, string targetType);
+    void removeWindowTypeAlias(string aliasName, string targetType);
+    void addFalagardWindowMapping(string newType, string targetType, string lookName, string renderer);
+    void removeFalagardWindowMapping(string type);
+    bool isFalagardMappedType(string type) const;
+    string getMappedLookForType(string type) const;
+    string getMappedRendererForType(string type) const;
+    String getDereferencedAliasType(string type) const;
+    const FalagardWindowMapping& getFalagardMappingForType(string type) const;
 
     WindowFactoryIterator getIterator() const;
     FalagardMappingIterator getFalagardMappingIterator() const;

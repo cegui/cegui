@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 08/14/06 22:02:58.
+** Generated automatically by tolua++-1.0.92 on 08/27/06 20:58:20.
 */
 
 #ifndef __cplusplus
@@ -22007,6 +22007,36 @@ static int tolua_set_CEGUI__FalagardWindowMapping_baseType(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: d_rendererType of class  CEGUI::FalagardWindowMapping */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__FalagardWindowMapping_rendererType
+static int tolua_get_CEGUI__FalagardWindowMapping_rendererType(lua_State* tolua_S)
+{
+  CEGUI::FalagardWindowMapping* self = (CEGUI::FalagardWindowMapping*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_rendererType'",NULL);
+#endif
+ tolua_pushcppstring(tolua_S,(const char*)self->d_rendererType);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: d_rendererType of class  CEGUI::FalagardWindowMapping */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__FalagardWindowMapping_rendererType
+static int tolua_set_CEGUI__FalagardWindowMapping_rendererType(lua_State* tolua_S)
+{
+  CEGUI::FalagardWindowMapping* self = (CEGUI::FalagardWindowMapping*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'd_rendererType'",NULL);
+ if (!tolua_iscppstring(tolua_S,2,0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->d_rendererType = ((string)  tolua_tocppstring(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getTypeName of class  CEGUI::WindowFactory */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactory_getTypeName00
 static int tolua_CEGUI_CEGUI_WindowFactory_getTypeName00(lua_State* tolua_S)
@@ -22062,6 +22092,360 @@ static int tolua_CEGUI_CEGUI_WindowFactoryManager_getSingleton00(lua_State* tolu
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getSingleton'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isFactoryPresent of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_isFactoryPresent00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_isFactoryPresent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowFactoryManager* self = (const CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isFactoryPresent'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isFactoryPresent(name);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isFactoryPresent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: addWindowTypeAlias of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_addWindowTypeAlias00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_addWindowTypeAlias00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowFactoryManager* self = (CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string aliasName = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string targetType = ((string)  tolua_tocppstring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addWindowTypeAlias'",NULL);
+#endif
+ {
+  self->addWindowTypeAlias(aliasName,targetType);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addWindowTypeAlias'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: removeWindowTypeAlias of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_removeWindowTypeAlias00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_removeWindowTypeAlias00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowFactoryManager* self = (CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string aliasName = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string targetType = ((string)  tolua_tocppstring(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeWindowTypeAlias'",NULL);
+#endif
+ {
+  self->removeWindowTypeAlias(aliasName,targetType);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'removeWindowTypeAlias'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: addFalagardWindowMapping of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_addFalagardWindowMapping00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_addFalagardWindowMapping00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,3,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,4,0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowFactoryManager* self = (CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string newType = ((string)  tolua_tocppstring(tolua_S,2,0));
+  string targetType = ((string)  tolua_tocppstring(tolua_S,3,0));
+  string lookName = ((string)  tolua_tocppstring(tolua_S,4,0));
+  string renderer = ((string)  tolua_tocppstring(tolua_S,5,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addFalagardWindowMapping'",NULL);
+#endif
+ {
+  self->addFalagardWindowMapping(newType,targetType,lookName,renderer);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addFalagardWindowMapping'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: removeFalagardWindowMapping of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_removeFalagardWindowMapping00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_removeFalagardWindowMapping00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowFactoryManager* self = (CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeFalagardWindowMapping'",NULL);
+#endif
+ {
+  self->removeFalagardWindowMapping(type);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'removeFalagardWindowMapping'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isFalagardMappedType of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_isFalagardMappedType00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_isFalagardMappedType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowFactoryManager* self = (const CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isFalagardMappedType'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isFalagardMappedType(type);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isFalagardMappedType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getMappedLookForType of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedLookForType00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedLookForType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowFactoryManager* self = (const CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getMappedLookForType'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getMappedLookForType(type);
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getMappedLookForType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getMappedRendererForType of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedRendererForType00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedRendererForType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowFactoryManager* self = (const CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getMappedRendererForType'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getMappedRendererForType(type);
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getMappedRendererForType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getDereferencedAliasType of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_getDereferencedAliasType00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_getDereferencedAliasType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowFactoryManager* self = (const CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getDereferencedAliasType'",NULL);
+#endif
+ {
+  CEGUI::String tolua_ret = (CEGUI::String)  self->getDereferencedAliasType(type);
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::String(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::String");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::String));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::String");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getDereferencedAliasType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getFalagardMappingForType of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingForType00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingForType00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowFactoryManager* self = (const CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+  string type = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getFalagardMappingForType'",NULL);
+#endif
+ {
+  const CEGUI::FalagardWindowMapping& tolua_ret = (const CEGUI::FalagardWindowMapping&)  self->getFalagardMappingForType(type);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::FalagardWindowMapping");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getFalagardMappingForType'.",&tolua_err);
  return 0;
 #endif
 }
@@ -47837,6 +48221,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"windowType",tolua_get_CEGUI__FalagardWindowMapping_windowType,tolua_set_CEGUI__FalagardWindowMapping_windowType);
    tolua_variable(tolua_S,"lookName",tolua_get_CEGUI__FalagardWindowMapping_lookName,tolua_set_CEGUI__FalagardWindowMapping_lookName);
    tolua_variable(tolua_S,"baseType",tolua_get_CEGUI__FalagardWindowMapping_baseType,tolua_set_CEGUI__FalagardWindowMapping_baseType);
+   tolua_variable(tolua_S,"rendererType",tolua_get_CEGUI__FalagardWindowMapping_rendererType,tolua_set_CEGUI__FalagardWindowMapping_rendererType);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"WindowFactory","CEGUI::WindowFactory","",NULL);
   tolua_beginmodule(tolua_S,"WindowFactory");
@@ -47845,6 +48230,16 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"WindowFactoryManager","CEGUI::WindowFactoryManager","",NULL);
   tolua_beginmodule(tolua_S,"WindowFactoryManager");
    tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_WindowFactoryManager_getSingleton00);
+   tolua_function(tolua_S,"isFactoryPresent",tolua_CEGUI_CEGUI_WindowFactoryManager_isFactoryPresent00);
+   tolua_function(tolua_S,"addWindowTypeAlias",tolua_CEGUI_CEGUI_WindowFactoryManager_addWindowTypeAlias00);
+   tolua_function(tolua_S,"removeWindowTypeAlias",tolua_CEGUI_CEGUI_WindowFactoryManager_removeWindowTypeAlias00);
+   tolua_function(tolua_S,"addFalagardWindowMapping",tolua_CEGUI_CEGUI_WindowFactoryManager_addFalagardWindowMapping00);
+   tolua_function(tolua_S,"removeFalagardWindowMapping",tolua_CEGUI_CEGUI_WindowFactoryManager_removeFalagardWindowMapping00);
+   tolua_function(tolua_S,"isFalagardMappedType",tolua_CEGUI_CEGUI_WindowFactoryManager_isFalagardMappedType00);
+   tolua_function(tolua_S,"getMappedLookForType",tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedLookForType00);
+   tolua_function(tolua_S,"getMappedRendererForType",tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedRendererForType00);
+   tolua_function(tolua_S,"getDereferencedAliasType",tolua_CEGUI_CEGUI_WindowFactoryManager_getDereferencedAliasType00);
+   tolua_function(tolua_S,"getFalagardMappingForType",tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingForType00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_WindowFactoryManager_getIterator00);
    tolua_function(tolua_S,"getFalagardMappingIterator",tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingIterator00);
   tolua_endmodule(tolua_S);
