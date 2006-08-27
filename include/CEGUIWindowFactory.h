@@ -49,7 +49,9 @@
 
     The factory is automatically instantiated and for the example it would
     be available as:
-        WindowFactory* wf = &MyWidgetFactory::ms_factory;
+        WindowFactory* wf = &(getMyWidgetFactory());
+    or
+        WindowFactory* wf = &CEGUI_WINDOW_FACTORY(MyWidget);
 */
 #define CEGUI_DECLARE_WINDOW_FACTORY( T )\
 class T ## Factory : public WindowFactory\

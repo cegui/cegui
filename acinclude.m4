@@ -98,10 +98,10 @@ load a custom made parser module as the default.]),
     if test x$cegui_default_parser = xXercesParser && test x$cegui_with_xerces = xno; then
         cegui_default_parser=none
     fi
-    if test x$cegui_default_parser = xLibxmlParser && test x$cegui_with_libxml = xno; then
+    if test x$cegui_default_parser = xExpatParser && test x$cegui_with_expat = xno; then
         cegui_default_parser=none
     fi
-    if test x$cegui_default_parser = xExpatParser && test x$cegui_with_expat = xno; then
+    if test x$cegui_default_parser = xLibxmlParser && test x$cegui_with_libxml = xno; then
         cegui_default_parser=none
     fi
     if test x$cegui_default_parser = xTinyXMLParser && test x$cegui_with_tinyxml = xno; then
@@ -113,11 +113,11 @@ load a custom made parser module as the default.]),
         if test x$cegui_with_xerces = xyes; then
             cegui_default_parser=XercesParser
         else
-            if test x$cegui_with_libxml = xyes; then
-                cegui_default_parser=LibxmlParser
+            if test x$cegui_with_expat = xyes; then
+                cegui_default_parser=ExpatParser
             else
-                if test x$cegui_with_expat = xyes; then
-                    cegui_default_parser=ExpatParser
+                if test x$cegui_with_libxml = xyes; then
+                    cegui_default_parser=LibxmlParser
                 else
                     if test x$cegui_with_tinyxml = xyes; then
                         cegui_default_parser=TinyXMLParser
