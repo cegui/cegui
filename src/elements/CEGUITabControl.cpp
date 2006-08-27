@@ -452,6 +452,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     {
         scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
         lx = scrollLeftBtn->getArea ().d_max.d_x.asAbsolute (ww);
+        scrollLeftBtn->setWantsMultiClickEvents (false);
     }
 
     name = getName() + ButtonScrollRightSuffix;
@@ -459,6 +460,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     {
         scrollRightBtn = WindowManager::getSingleton().getWindow (name);
         rx = scrollRightBtn->getXPosition ().asAbsolute (ww);
+        scrollRightBtn->setWantsMultiClickEvents (false);
     }
 
     if (x < lx)
