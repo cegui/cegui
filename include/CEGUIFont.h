@@ -60,7 +60,7 @@ namespace FontProperties
     class FileName;
     class ResourceGroup;
     class AutoScaled;
-};
+}
 
 /*!
 \brief
