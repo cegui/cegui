@@ -68,7 +68,8 @@ public:
         d_object(other.d_object),
         d_count(other.d_count)
     {
-        addRef();
+        if (d_count)
+            addRef();
     }
 
     /*!

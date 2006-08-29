@@ -107,10 +107,10 @@ public:
         }
 
         bool connected() const
-            { return d_connection->connected(); }
+            { return d_connection.isValid() ? d_connection->connected() : false; }
 
         void disconnect()
-            { d_connection->disconnect(); }
+            { if (d_connection.isValid()) d_connection->disconnect(); }
 
     private:
         Event::Connection d_connection;
