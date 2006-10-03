@@ -147,7 +147,7 @@ void OpenGLTexture::setOGLTextureSize(uint size)
 
 	// make sure size is within boundaries
 	int maxSize;
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxSize);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*)&maxSize);
 	if (size > (uint)maxSize)
 	{
 	    throw RendererException("OpenGLTexture::setOGLTextureSize - size too big");
