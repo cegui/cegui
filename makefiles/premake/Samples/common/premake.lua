@@ -80,4 +80,9 @@ if DEFAULT_XML_PARSER == "xerces" then
     include(rootdir.."XMLParserModules/XercesParser")
 end
 
+if windows then
+    library("GLU32")
+    library("OpenGL32")
+end
+
 define("CEGUISAMPLE_EXPORTS")

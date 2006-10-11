@@ -56,7 +56,7 @@ namespace CEGUI
 template <typename T> class CEGUIEXPORT Singleton
 {
 protected:
-    static T* ms_Singleton;
+    static CEGUIEXPORT T* ms_Singleton;
 
 public:
     Singleton( void )

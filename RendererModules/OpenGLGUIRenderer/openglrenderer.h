@@ -47,7 +47,7 @@
 #if defined(_WIN32)//  All this taken from glut.h
 #  ifndef APIENTRY
 #   define GLUT_APIENTRY_DEFINED
-#   if (_MSC_VER >= 800) || defined(_STDCALL_SUPPORTED) || defined(__BORLANDC__) || defined(__LCC__)
+#   if (_MSC_VER >= 800) || defined(_STDCALL_SUPPORTED) || defined(__BORLANDC__) || defined(__LCC__) || defined(__GNUC__)
 #    define APIENTRY    __stdcall
 #   else
 #    define APIENTRY
@@ -55,7 +55,7 @@
 #  endif
 /* XXX This is from Win32's <winnt.h> */
 #  ifndef CALLBACK
-#   if (defined(_M_MRX000) || defined(_M_IX86) || defined(_M_ALPHA) || defined(_M_PPC)) && !defined(MIDL_PASS) || defined(__LCC__)
+#   if (defined(_M_MRX000) || defined(_M_IX86) || defined(_M_ALPHA) || defined(_M_PPC)) && !defined(MIDL_PASS) || defined(__LCC__) || defined(__GNUC__)
 #    define CALLBACK __stdcall
 #   else
 #    define CALLBACK
