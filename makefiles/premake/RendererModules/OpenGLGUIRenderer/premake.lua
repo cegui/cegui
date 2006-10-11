@@ -14,8 +14,8 @@ include(pkgdir)
 include(rootdir)
 
 if windows then
-    library("OpenGL32")
     library("GLU32")
+    library("OpenGL32")
     define("NOMINMAX")
 end
 
