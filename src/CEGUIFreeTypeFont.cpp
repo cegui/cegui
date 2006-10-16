@@ -244,7 +244,16 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
                     std::stringstream err;
                     err << "Font::loadFreetypeGlyph - Failed to load glyph for codepoint: ";
                     err << static_cast<unsigned int> (s->first);
+                    err << ".  Will use an empty image for this glyph!";
                     Logger::getSingleton ().logEvent (err.str (), Errors);
+
+                    // Create a 'null' image for this glyph so we do not seg later
+                    Rect area(0, 0, 0, 0);
+                    Point offset(0, 0);
+                    String name;
+                    name += s->first;
+                    is->defineImage(name, area, offset);
+                    ((FontGlyph &)s->second).setImage(&is->getImage(name));
                 }
                 else
                 {
