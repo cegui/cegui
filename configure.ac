@@ -13,7 +13,7 @@ dnl Construct the final version number out of the sub-version values specified a
 m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
 
 AC_INIT([CEGUI], [CEGUI_RELEASE_VERSION])
-AM_INIT_AUTOMAKE([CEGUI], CEGUI_RELEASE_VERSION)
+AM_INIT_AUTOMAKE([dist-bzip2 dist-zip])
 AC_CONFIG_HEADER([include/config.h])
 
 # Checks for programs.
@@ -101,6 +101,15 @@ CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
 AC_CONFIG_FILES([Makefile
+                 ImageCodecModules/Makefile
+                 ImageCodecModules/CoronaImageCodec/Makefile
+                 ImageCodecModules/DevILImageCodec/Makefile
+                 ImageCodecModules/FreeImageImageCodec/Makefile 
+                 ImageCodecModules/SILLYImageCodec/Makefile
+                 ImageCodecModules/TGAImageCodec/Makefile
+                 RendererModules/IrrlichtRenderer/Makefile
+                 RendererModules/Makefile
+                 RendererModules/OpenGLGUIRenderer/Makefile
                  Samples/Demo4/Makefile
                  Samples/Demo4/src/Makefile
                  Samples/Demo6/Makefile
@@ -144,19 +153,13 @@ AC_CONFIG_FILES([Makefile
                  XMLParserModules/XercesParser/Makefile
                  XMLParserModules/expatParser/Makefile
                  XMLParserModules/libxmlParser/Makefile
-                 ImageCodecModules/Makefile
-                 ImageCodecModules/CoronaImageCodec/Makefile
-                 ImageCodecModules/DevILImageCodec/Makefile
-                 ImageCodecModules/FreeImageImageCodec/Makefile 
-                 ImageCodecModules/SILLYImageCodec/Makefile
-                 ImageCodecModules/TGAImageCodec/Makefile
+                 XMLRefSchema/Makefile
+                 documentation/Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile
+                 makefiles/Makefile
                  src/Makefile
-                 RendererModules/IrrlichtRenderer/Makefile
-                 RendererModules/Makefile
-                 RendererModules/OpenGLGUIRenderer/Makefile
                  CEGUI.pc
                  CEGUI-OPENGL.pc
                  CEGUI.spec])
