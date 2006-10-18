@@ -32,8 +32,8 @@
 #include "CEGUIVector.h"
 
 // some macros to aid in the creation of UDims
-#define cegui_absdim(x)     UDim(0,(x))
-#define cegui_reldim(x)     UDim((x),0)
+#define cegui_absdim(x)     CEGUI::UDim(0,(x))
+#define cegui_reldim(x)     CEGUI::UDim((x),0)
 
 
 // Start of CEGUI namespace section
