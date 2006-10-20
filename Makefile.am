@@ -1,3 +1,4 @@
+AUTOMAKE_OPTIONS = dist-bzip2 dist-zip
 SUBDIRS = . XMLParserModules ImageCodecModules RendererModules src include WindowRendererSets ScriptingModules Samples XMLRefSchema documentation makefiles
 
 pkgconfigdir = $(libdir)/pkgconfig

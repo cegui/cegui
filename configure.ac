@@ -13,7 +13,7 @@ dnl Construct the final version number out of the sub-version values specified a
 m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
 
 AC_INIT([CEGUI], [CEGUI_RELEASE_VERSION])
-AM_INIT_AUTOMAKE([dist-bzip2 dist-zip])
+AM_INIT_AUTOMAKE([CEGUI],[CEGUI_RELEASE_VERSION])
 AC_CONFIG_HEADER([include/config.h])
 
 # Checks for programs.
