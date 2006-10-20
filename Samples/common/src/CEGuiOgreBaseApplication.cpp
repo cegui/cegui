@@ -56,8 +56,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // initialise system according to user options.
         d_window = d_ogreRoot->initialise(true);
 
+        // Create the scene manager
+        SceneManager* sm = d_ogreRoot->
+            createSceneManager(ST_GENERIC, "SampleSceneMgr");
         // Create and initialise the camera
-        d_camera = d_ogreRoot->getSceneManagerIterator().getNext()->createCamera("PlayerCam");
+        d_camera = sm->createCamera("SampleCam");
         d_camera->setPosition(Vector3(0,0,500));
         d_camera->lookAt(Vector3(0,0,-300));
         d_camera->setNearClipDistance(5);
@@ -73,7 +76,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
         // initialise GUI system
-        d_renderer = new CEGUI::OgreCEGUIRenderer(d_window);
+        d_renderer = new CEGUI::OgreCEGUIRenderer(d_window, RENDER_QUEUE_OVERLAY, false, 0, sm);
         new CEGUI::System(d_renderer);
 
         // create frame listener
