@@ -154,7 +154,6 @@ AC_CONFIG_FILES([Makefile
                  XMLParserModules/expatParser/Makefile
                  XMLParserModules/libxmlParser/Makefile
                  XMLRefSchema/Makefile
-                 documentation/Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile
