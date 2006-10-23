@@ -56,7 +56,16 @@ namespace CEGUI
 template <typename T> class CEGUIEXPORT Singleton
 {
 protected:
-    static CEGUIEXPORT T* ms_Singleton;
+// TODO: Come up with something better than this!
+// TODO:
+// TODO: This super-nasty piece of nastiness was put in for continued
+// TODO: compatability with MSVC++ and MinGW - the latter apparently
+// TODO: needs this.
+    static
+#ifdef __MINGW32__
+    CEGUIEXPORT
+#endif
+    T* ms_Singleton;
 
 public:
     Singleton( void )
