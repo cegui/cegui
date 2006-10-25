@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Win32CEGuiRendererSelector.h"
-#include <TCHAR.H>
+#include <tchar.h>
 
 
 /*************************************************************************
