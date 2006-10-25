@@ -391,27 +391,30 @@ to load a custom made image codec module as the default.]),
         cegui_with_devil=no
         cegui_with_corona=no
         cegui_with_tga=no
+        cegui_with_silly=no
         AC_MSG_NOTICE([OpenGL renderer disabled])
     fi
-    
-    if test x$cegui_default_image_codec = xnone ; then 
-        if test x$cegui_with_devil = xyes ; then
-            cegui_default_image_codec=DevILImageCodec
-        else 
-            if test x$cegui_with_freeimage = xyes ; then 
-                cegui_default_image_codec=FreeImageImageCodec
+
+    if test x$cegui_enable_opengl = xyes; then
+        if test x$cegui_default_image_codec = xnone ; then 
+            if test x$cegui_with_devil = xyes ; then
+                cegui_default_image_codec=DevILImageCodec
             else 
-                if test x$cegui_with_silly = xyes ; then 
-                    cegui_default_image_codec=SILLYImageCodec
+                if test x$cegui_with_freeimage = xyes ; then 
+                    cegui_default_image_codec=FreeImageImageCodec
                 else 
-                    if test x$cegui_with_corona = xyes ; then
-                        cegui_default_image_codec=CoronaImageCodec
+                    if test x$cegui_with_silly = xyes ; then 
+                        cegui_default_image_codec=SILLYImageCodec
                     else 
-                        if test x$cegui_with_tga = xyes ; then 
-                            cegui_default_image_codec=TGAImageCodec
+                        if test x$cegui_with_corona = xyes ; then
+                            cegui_default_image_codec=CoronaImageCodec
                         else 
-                            AC_MSG_ERROR([None of the ImageCodec are going to be build - unable to continue. Either enable an image codec or set a custom default.])
-                        fi 
+                            if test x$cegui_with_tga = xyes ; then 
+                                cegui_default_image_codec=TGAImageCodec
+                            else 
+                                AC_MSG_ERROR([None of the ImageCodec are going to be build - unable to continue. Either enable an image codec or set a custom default.])
+                            fi 
+                        fi
                     fi
                 fi
             fi
