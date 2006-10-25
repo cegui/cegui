@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = dist-bzip2 dist-zip
-SUBDIRS = . XMLParserModules ImageCodecModules RendererModules src include WindowRendererSets ScriptingModules Samples XMLRefSchema makefiles
+SUBDIRS = . src include XMLParserModules ImageCodecModules RendererModules WindowRendererSets ScriptingModules Samples XMLRefSchema makefiles
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = CEGUI.pc CEGUI-OPENGL.pc
