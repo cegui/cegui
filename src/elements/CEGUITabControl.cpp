@@ -148,7 +148,7 @@ Get the tab for the given index
 Window*	TabControl::getTabContentsAtIndex(size_t index) const
 {
     if (index >= d_tabButtonVector.size ())
-        return NULL;
+        return 0;
     return d_tabButtonVector [index]->getTargetWindow();
 }
 
@@ -426,7 +426,7 @@ Make tab visible implementation
 *************************************************************************/
 void TabControl::makeTabVisible_impl(Window* wnd)
 {
-    TabButton *tb = NULL;
+    TabButton *tb = 0;
 
     for (size_t i = 0; i < d_tabButtonVector.size (); ++i)
     {
@@ -435,7 +435,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
         Window* child = tb->getTargetWindow();
         if (child == wnd)
             break;
-        tb = NULL;
+        tb = 0;
     }
 
     if (!tb)
@@ -446,7 +446,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     float w = tb->getPixelSize ().d_width;
     float lx = 0, rx = ww;
 
-    Window *scrollLeftBtn = NULL, *scrollRightBtn = NULL;
+    Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
     String name = getName() + ButtonScrollLeftSuffix;
     if (WindowManager::getSingleton().isWindowPresent (name))
     {
@@ -591,7 +591,7 @@ void TabControl::performChildWindowLayout()
     Window::performChildWindowLayout();
 
     // Calculate the size & position of the tab scroll buttons
-    Window *scrollLeftBtn = NULL, *scrollRightBtn = NULL;
+    Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
     String name = getName() + ButtonScrollLeftSuffix;
     if (WindowManager::getSingleton().isWindowPresent (name))
         scrollLeftBtn = WindowManager::getSingleton().getWindow (name);
