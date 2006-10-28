@@ -1836,9 +1836,10 @@ void Window::destroy(void)
     // let go of the tooltip if we have it
     Tooltip* tip = getTooltip();
     if (tip && tip->getTargetWindow()==this)
-    {
         tip->setTargetWindow(0);
-    }
+
+    // ensure custom tooltip is cleaned up
+    setTooltip(static_cast<Tooltip*>(0));
 
     // free any assigned WindowRenderer
     if (d_windowRenderer != 0)
