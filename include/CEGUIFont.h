@@ -114,7 +114,7 @@ public:
     \brief
         FontGlyph constructor.
     */
-    FontGlyph (float advance) : d_image (NULL), d_advance (advance)
+    FontGlyph (float advance) : d_image (0), d_advance (advance)
     { }
 
     /*!

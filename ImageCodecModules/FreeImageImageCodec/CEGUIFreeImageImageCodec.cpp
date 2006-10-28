@@ -78,14 +78,14 @@ FreeImageImageCodec::~FreeImageImageCodec()
 Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result)
 {
     int len = (int)data.getSize();
-    FIMEMORY *mem = NULL;
-    FIBITMAP *img = NULL;
-    Texture *retval = NULL;
+    FIMEMORY *mem = 0;
+    FIBITMAP *img = 0;
+    Texture *retval = 0;
 
     try 
     {
         mem = FreeImage_OpenMemory((BYTE*)data.getDataPtr(), len);
-        if (mem == NULL)
+        if (mem == 0)
             throw MemoryException("Unable to open memory stream, FreeImage_OpenMemory failed");
 
         FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(mem, len);
@@ -95,7 +95,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
             fif = FIF_TARGA;
             img = FreeImage_LoadFromMemory(fif, mem, 0);
 
-            if (img == NULL)
+            if (img == 0)
             {
                 fif = FIF_MNG;
                 img = FreeImage_LoadFromMemory(fif, mem, 0);
@@ -104,15 +104,15 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         else
             img = FreeImage_LoadFromMemory(fif, mem, 0);
 
-        if (img == NULL)
+        if (img == 0)
             throw GenericException("Unable to load image, FreeImage_LoadFromMemory failed");
 
         FIBITMAP *newImg = FreeImage_ConvertTo32Bits(img);
-        if (newImg == NULL)
+        if (newImg == 0)
             throw GenericException("Unable to convert image, FreeImage_ConvertTo32Bits failed");
         FreeImage_Unload(img);
         img = newImg;
-        newImg = NULL;
+        newImg = 0;
 
         // FreeImage pixel format for little-endian architecture (which CEGUI
         // supports) is like BGRA. We need to convert that to RGBA.
@@ -152,7 +152,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
             }
         }
         FreeImage_Unload(img);
-        img = NULL;
+        img = 0;
 
         result->loadFromMemory(dstBuf, width, height, Texture::PF_RGBA);
         delete [] dstBuf;
@@ -162,8 +162,8 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
     {
     }
 
-    if (img != NULL) FreeImage_Unload(img);
-    if (mem != NULL) FreeImage_CloseMemory(mem);
+    if (img != 0) FreeImage_Unload(img);
+    if (mem != 0) FreeImage_CloseMemory(mem);
 
     return retval;
 }
