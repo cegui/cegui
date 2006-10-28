@@ -122,7 +122,7 @@ void Font::setMaxCodepoint (utf32 codepoint)
 
     delete [] d_glyphPageLoaded;
 
-    uint npages = (codepoint + GLYPHS_PER_PAGE - 1) / GLYPHS_PER_PAGE;
+    uint npages = (codepoint + GLYPHS_PER_PAGE) / GLYPHS_PER_PAGE;
     uint size = (npages + BITS_PER_UINT - 1) / BITS_PER_UINT;
     d_glyphPageLoaded = new uint [size];
     memset (d_glyphPageLoaded, 0, size * sizeof (uint));
