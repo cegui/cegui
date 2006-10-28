@@ -191,7 +191,7 @@ too_small:
  *************************************************************************/
 void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
 {
-    CodepointMap::const_iterator s = d_cp_map.upper_bound (start_codepoint);
+    CodepointMap::const_iterator s = d_cp_map.lower_bound(start_codepoint);
     if (s == d_cp_map.end ())
         return;
 
