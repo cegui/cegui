@@ -1306,6 +1306,7 @@ void System::onDefaultFontChanged(EventArgs& e)
 
         if (wnd->getFont(false) == 0)
         {
+            args.window = wnd;
             wnd->onFontChanged(args);
             // ensure 'handled' state is reset.
             args.handled = false;
