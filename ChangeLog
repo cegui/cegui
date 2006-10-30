@@ -6,6 +6,70 @@ Copyright 2004 - 2006 CEGUI Team & Contributing Authors
 
 The following is a high-level view of changes made to the system between releases.
 
+Release 0.5.0 (Final)
+=====================
+Added: Partial CEGUI support for MingW. It is now possible to build CEGUI under mingw with support for OpenGL renderer. This approach is going to be generalized later to the other renderer and wiki page explaining the process will follows.
+Added: Missing functions in WindowFactoryManager Lua bindings. Incomplete FalagardWindowMapping binding as well.
+Added: Lua binding for OutStream: FileStream (minimal std::ofstream).
+Added: XML writing function in Lua bindings.
+Added: --enable-debug in configure script instead of using CPPFLAGS=-DDEBUG ./configure ...
+Added: premake files for Minesweeper sample and minor fixes to make it run in windows.
+Added: the minesweeper demo
+Added: missing doxyfile in order to be in make dist
+Added: ScrollablePane sample
+
+Removed: Empty Font 'implData' header files we no longer use.
+Removed: Falagard skinning manual is now a part of the CEGUI manuals sub-project, so is no longer included here as a pdf.
+
+Modified: Win32CEGuiRendererSelector:
+- It is now possible to navigate to the Combobox via keyboard.
+- First available renderer is pre-selected into the dialog.
+- With a single renderer available, it is auto-selected and dialog is not shown.
+Modified: Changed compile order under autotools so CEGUIBase is made before things that use it - related to forthcoming cross-compile support.
+Modified Added some missing bits and a whole load of other stuff to 'make dist' to ease a more unified approach to creating packages for the various platforms.
+Modified: Renamed tolua++bin/remake_pkg..bat to remove extra period
+Modified: Changed Russian text in FontDemo sample - the old text apparently potentially offensive. Thanks to 'Sanya' for the updated text.
+Modified: The RefCounted template now has the CEGUIEXPORT macro as it avoids warnings in client code when using MSVC.
+Modified: Promote Expat to be the second prefered parser under linux in order to act the same under linux and Win32. Note that the prefered parser is still Xerces. The parser order is now the following : Xerces, Expat, Libxml, TinyXML.
+Modified: WidgetComponent had a nasty misspelling of 'Alignemnt'.
+Modified: MSVC no longer uses CEGUIConfig.h and CEGUISamplesConfig.h for anything
+Modified: Premake scripts are now much more flexible.
+
+Coding Standards: Removed various occurrences of the NULL macro.
+
+Bug Fix: CEGuiSample.cpp did not get all required includes with certain renderer combinations.
+Bug Fix: Range emplyed by FreeTypeFont::rasterize was exclusive of the start element; first glyph of every page loaded was missed!
+Bug Fix: CEGUI::Window did not properly clean-up a custom tooltip if it created one.
+Bug Fix: Calculation of number of glyph pages in Font::setMaxCodepoint was incorrect.
+Bug Fix: When the OpenGL renderer was disabled by ./configure, the SILLY codec was still being built.
+Bug Fix: When the OpenGL renderer was disabled by ./configure, the requirement for a default ImageCodec was still enforced.
+Bug Fix: case of included file in Win32CEGuiRendererSelector.cpp changed ready to support cross-compiling in post 0.5.0 versions.
+Bug Fix: Support was broken in the Samples framework for newer versions of Ogre.
+Bug Fix: The cegui_reldim and cegui_absdim macros were missing the CEGUI namespace qualifier.
+Bug Fix: When a glyph failed to load in FreeTypeFont, although we logged the error we did not work around the issue of the missing glyph image, so a seg fault was generated upon attempted use of those missing images. This addresses the issue by creating dummy images for missing font glyphs which use a zero size. Mantis #0000125.
+Bug Fix: RefCounted would call AddRef when the wrapped pointer and its counter were null.
+Bug Fix: Event::ScopedConnection would call members of BoundSlot using a potentially null RefCounted pointer.
+Bug Fix: In C++ a namespace does not have a semicolon after the closing brace.
+Bug Fix: Nasty memory leak in DevIL image codec. thanx to mafm on IRC.
+Bug Fix: fixed a small error in the comment of CEGUI_DECLARE_WINDOW_FACTORY
+Bug Fix: Tab control did not require to hear about multi-clicks on the TabControl scroll buttons. Patch from zap. Mantis #0000117.
+Bug Fix: Issue with utf8 missing conversion in TinyXML and libXML
+Bug Fix: Added missing public visibility specifier to ScopedConnection class members.
+Bug Fix: premake files were not enabling Xerces correctly in the samples.
+Bug Fix: TabControlDemo layout split up. We dont allow multiple root windows in a layout when using a validating XML parser.
+Bug Fix: Falagard.xsd was missing new type attribute for PropertyDim.
+Bug Fix: PropertyLinkDefinition was not writing XML properly (no base class writing).
+Bug Fix: Bugs in Falagard XML writing.
+Bug Fix: Spinner would throw an exception when a lone minus sign was entered. Mantis ticket #110.
+Bug Fix: Input capture bug that broke Combobx - introduced by patch #82.
+Bug Fix: ScrollablePane would cause exceptions on destruction. Mantis ticket #83.
+Bug Fix: a bug in the premake improvements where samples would not generate properly.
+Bug Fix: A number of CEGUI exceptions were being caught by value instead of reference.
+Bug Fix: OpenGL renderer now also disables texture coordinate generation.
+Bug Fix: Irrlicht sample driver now quits on the escape key like the rest.
+Bug Fix: Updates and fixes to resolve the NPOT texture source data issue (mantis #45) in a relatively consistent way - at least for the 0.5.x releases.
+
+
 Release 0.5.0-RC2
 =================
 Added: single colour support to PropertyHelper::stringToColourRect
