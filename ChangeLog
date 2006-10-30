@@ -37,6 +37,10 @@ Modified: Premake scripts are now much more flexible.
 
 Coding Standards: Removed various occurrences of the NULL macro.
 
+Bug Fix: The way in which properties would set a window to use the DefaultFont was incorrect; it explicitly set it to the name of the current default, as opposed to a 'floating default'.
+Bug Fix: FontDim did not work correctly since re-calculation of the layout was not triggered in response to the font being changed.  Added this code to Window::onFontChanged - although more elegant / selective solutions might be considered later on.
+Bug Fix: Added code so that all windows using default font get notified of a change in the default via the normal channel (Window::onFontChanged).
+Bug Fix: There was an issue regarding auto-repeat of mouse button down events not getting their state reset if the mouse button was released outside of the window getting the auto-repeat events.
 Bug Fix: CEGuiSample.cpp did not get all required includes with certain renderer combinations.
 Bug Fix: Range emplyed by FreeTypeFont::rasterize was exclusive of the start element; first glyph of every page loaded was missed!
 Bug Fix: CEGUI::Window did not properly clean-up a custom tooltip if it created one.
