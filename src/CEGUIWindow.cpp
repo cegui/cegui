@@ -2582,6 +2582,11 @@ void Window::onTextChanged(WindowEventArgs& e)
 
 void Window::onFontChanged(WindowEventArgs& e)
 {
+    // This was added to enable the Falagard FontDim to work
+    // properly.  A better, more selective, solution would
+    // probably be to do something funky with events ;)
+    performChildWindowLayout();
+
 	requestRedraw();
 	fireEvent(EventFontChanged, e, EventNamespace);
 }
