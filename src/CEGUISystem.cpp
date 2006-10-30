@@ -1292,6 +1292,28 @@ void System::onMultiClickAreaSizeChanged(EventArgs& e)
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
 {
+    // here we need to inform every window using the default font that
+    // it's font has been changed.
+    WindowManager::WindowIterator iter = 
+        WindowManager::getSingleton().getIterator();
+
+    // Args structure we will re-use for all windows.
+    WindowEventArgs args(0);
+
+    while (!iter.isAtEnd())
+    {
+        Window* wnd = iter.getCurrentValue();
+
+        if (wnd->getFont(false) == 0)
+        {
+            wnd->onFontChanged(args);
+            // ensure 'handled' state is reset.
+            args.handled = false;
+        }
+
+        ++iter;
+    }
+
 	fireEvent(EventDefaultFontChanged, e, EventNamespace);
 }
 
