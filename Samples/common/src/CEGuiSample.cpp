@@ -68,8 +68,7 @@
 // although there will be no renderers available for selection in the samples.
 #include "CEGuiBaseApplication.h"
 
-#include "CEGUIDefaultResourceProvider.h"
-#include "CEGUIImageset.h"
+#include "CEGUI.h"
 
 #ifdef CEGUI_WITH_XERCES
 #   include "CEGUIXercesParser.h"
