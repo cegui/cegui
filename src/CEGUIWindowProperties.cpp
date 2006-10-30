@@ -88,7 +88,7 @@ void Font::set(PropertyReceiver* receiver, const String& value)
 	{
 		if (value.empty())
 		{
-			static_cast<Window*>(receiver)->setFont(System::getSingleton().getDefaultFont());
+			static_cast<Window*>(receiver)->setFont(0);
 		}
 		else
 		{
