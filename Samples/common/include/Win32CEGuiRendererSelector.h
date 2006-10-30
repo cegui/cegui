@@ -68,6 +68,13 @@ public:
 
 
 protected:
+    /*!
+    \brief
+        Helper method to add entries for renderers to the Combobox and pre-select
+        the first item entered.
+    */
+    bool addComboboxOption(HWND combo, const char* name, CEGuiRendererType rendererType);
+
     /*************************************************************************
         Static methods
     *************************************************************************/

@@ -54,13 +54,34 @@ Win32CEGuiRendererSelector::~Win32CEGuiRendererSelector()
 *************************************************************************/
 bool Win32CEGuiRendererSelector::inkokeDialog()
 {
-    if (d_template)
+    // dialog template was not created so abort.
+    if (!d_template)
+        return false;
+
+    int renderer_count = 0;
+    CEGuiRendererType first_available = InvalidGuiRendererType;
+    
+    // Check number of renderer modules available
+    for (int i = 0; i < RendererTypeCount; ++i)
     {
-        // show dialog & return result
-        return (1 == DialogBoxIndirectParam(GetModuleHandle(0), d_template, 0, Win32CEGuiRendererSelector::dialogProcedure, reinterpret_cast<LPARAM>(this)));
+        if (d_rendererAvailability[i])
+        {
+            ++renderer_count;
+
+            if (first_available == InvalidGuiRendererType)
+                first_available = static_cast<CEGuiRendererType>(i);
+        }
     }
 
-    return false;
+    // if there is only one renderer, select that one, but do not show dialog
+    if (renderer_count == 1)
+    {
+        d_lastSelected = first_available;
+        return true;
+    }
+
+    // multiple renderer modules available, so show dialog & return result
+    return (1 == DialogBoxIndirectParam(GetModuleHandle(0), d_template, 0, Win32CEGuiRendererSelector::dialogProcedure, reinterpret_cast<LPARAM>(this)));
 }
 
 
@@ -249,7 +270,7 @@ LPDLGTEMPLATE Win32CEGuiRendererSelector::createDialogTemplate()
         // Combo label
         //
         item = reinterpret_cast<LPDLGITEMTEMPLATE>(buffer);
-        item->style             = SS_LEFT|WS_VISIBLE|WS_CHILD|WS_GROUP;
+        item->style             = SS_LEFT|WS_VISIBLE|WS_CHILD|WS_TABSTOP;
         item->dwExtendedStyle   = 0;
         item->x                 = 8;
         item->y                 = 7;
@@ -317,6 +338,27 @@ LPDLGTEMPLATE Win32CEGuiRendererSelector::createDialogTemplate()
     return 0;
 }
 
+/*************************************************************************
+    Checks availability of a renderer type and adds an entry to the
+    combo box if it's available.  Returns true if the item was added.
+*************************************************************************/
+bool Win32CEGuiRendererSelector::addComboboxOption(HWND combo, const char* name, CEGuiRendererType rendererType)
+{
+    if (d_rendererAvailability[rendererType])
+    {
+        int idx = static_cast<int>(SendMessage(combo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(name)));
+        SendMessage(combo, CB_SETITEMDATA, idx, rendererType);
+
+        // pre-select this item if it's the first one added.
+        if (idx == 0)
+        {
+            SendMessage(combo, CB_SETCURSEL, 0, 0);
+            d_lastSelected = rendererType;
+        }
+    }
+
+    return d_rendererAvailability[rendererType];
+}
 
 /*************************************************************************
     Win32 dialog procedure function
@@ -342,42 +384,18 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
             if (combo)
             {
                 // basic control setup
+                int first_available_idx = -1;
                 int idx;
 
                 // clear old data
                 SendMessage(combo, CB_RESETCONTENT, 0, 0);
 
                 // add new stings according to if item is enabled or not
-                if (obj->d_rendererAvailability[OgreGuiRendererType])
-                {
-                    idx = static_cast<int>(SendMessage(combo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(_TEXT("Ogre Engine Renderer"))));
-                    SendMessage(combo, CB_SETITEMDATA, idx, OgreGuiRendererType);
-                }
-
-                if (obj->d_rendererAvailability[Direct3D81GuiRendererType])
-                {
-                    idx = static_cast<int>(SendMessage(combo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(_TEXT("Microsoft Direct3D 8.1 Renderer"))));
-                    SendMessage(combo, CB_SETITEMDATA, idx, Direct3D81GuiRendererType);
-                }
-
-                if (obj->d_rendererAvailability[Direct3D9GuiRendererType])
-                {
-                    idx = static_cast<int>(SendMessage(combo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(_TEXT("Microsoft Direct3D 9 Renderer"))));
-                    SendMessage(combo, CB_SETITEMDATA, idx, Direct3D9GuiRendererType);
-                }
-
-                if (obj->d_rendererAvailability[OpenGLGuiRendererType])
-                {
-                    idx = static_cast<int>(SendMessage(combo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(_TEXT("OpenGL Renderer"))));
-                    SendMessage(combo, CB_SETITEMDATA, idx, OpenGLGuiRendererType);
-                }
-
-                if (obj->d_rendererAvailability[IrrlichtGuiRendererType])
-                {
-                    idx = static_cast<int>(SendMessage(combo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(_TEXT("Irrlicht Engine Renderer"))));
-                    SendMessage(combo, CB_SETITEMDATA, idx, IrrlichtGuiRendererType);
-                }
-
+                obj->addComboboxOption(combo, "Ogre Engine Renderer", OgreGuiRendererType);
+                obj->addComboboxOption(combo, "Microsoft Direct3D 8.1 Renderer", Direct3D81GuiRendererType);
+                obj->addComboboxOption(combo, "Microsoft Direct3D 9 Renderer", Direct3D9GuiRendererType);
+                obj->addComboboxOption(combo, "OpenGL Renderer", OpenGLGuiRendererType);
+                obj->addComboboxOption(combo, "Irrlicht Engine Renderer", IrrlichtGuiRendererType);
             }
 
             return FALSE;
