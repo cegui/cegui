@@ -1116,20 +1116,21 @@ bool Window::captureInput(void)
     if (!isActive())
         return false;
 
-	Window* current_capture = d_captureWindow;
-	d_captureWindow = this;
-    WindowEventArgs args(this);
+    if (d_captureWindow != this)
+    {
+        Window* current_capture = d_captureWindow;
+        d_captureWindow = this;
+        WindowEventArgs args(this);
 
-	// inform any window which previously had capture that it doesn't anymore!
-	if ((current_capture != 0) && (current_capture != this) && (!d_restoreOldCapture)) {
-		current_capture->onCaptureLost(args);
-	}
+        // inform any window which previously had capture that it doesn't anymore!
+        if ((current_capture != 0) && (current_capture != this) && (!d_restoreOldCapture))
+            current_capture->onCaptureLost(args);
 
-	if (d_restoreOldCapture) {
-		d_oldCapture = current_capture;
-	}
+        if (d_restoreOldCapture)
+            d_oldCapture = current_capture;
 
-	onCaptureGained(args);
+        onCaptureGained(args);
+    }
 
 	return true;
 }
@@ -1682,6 +1683,16 @@ void Window::setMouseAutoRepeatEnabled(bool setting)
     {
         d_autoRepeat = setting;
         d_repeatButton = NoButton;
+
+        // FIXME: There is a potential issue here if this setting is
+        // FIXME: changed _while_ the mouse is auto-repeating, and
+        // FIXME: the 'captured' state of input could get messed up.
+        // FIXME: The alternative is to always release here, but that
+        // FIXME: has a load of side effects too - so for now nothing
+        // FIXME: is done.  This whole aspect of the system needs a
+        // FIXME: review an reworking - though such a change was
+        // FIXME: beyond the scope of the bug-fix that originated this
+        // FIXME: comment block.  PDT - 30/10/06
  
         // TODO: Maybe add a 'setting changed' event for this?
     }
@@ -2871,12 +2882,19 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
     // if auto repeat is enabled and we are not currently tracking
     // the button that was just pushed (need this button check because
     // it could be us that generated this event via auto-repeat).
-    if (d_autoRepeat && d_repeatButton != e.button)
+    if (d_autoRepeat)
     {
-        d_repeatButton = e.button;
-        d_repeatElapsed = 0;
-        d_repeating = false;
+        if (d_repeatButton == NoButton)
+            captureInput();
+
+        if ((d_repeatButton != e.button) && isCapturedByThis())
+        {
+            d_repeatButton = e.button;
+            d_repeatElapsed = 0;
+            d_repeating = false;
+        }
     }
+
 
 	fireEvent(EventMouseButtonDown, e, EventNamespace);
 }
@@ -2885,7 +2903,11 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 void Window::onMouseButtonUp(MouseEventArgs& e)
 {
     // reset auto-repeat state
-    d_repeatButton = NoButton;
+    if (d_autoRepeat && d_repeatButton != NoButton)
+    {
+        releaseInput();
+        d_repeatButton = NoButton;
+    }
 
 	fireEvent(EventMouseButtonUp, e, EventNamespace);
 }
