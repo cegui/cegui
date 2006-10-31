@@ -37,6 +37,7 @@ Modified: Premake scripts are now much more flexible.
 
 Coding Standards: Removed various occurrences of the NULL macro.
 
+Bug Fix: Sometimes compound widgets did not get their components layed out properly when adding the widget to it's parent.
 Bug Fix: The way in which properties would set a window to use the DefaultFont was incorrect; it explicitly set it to the name of the current default, as opposed to a 'floating default'.
 Bug Fix: FontDim did not work correctly since re-calculation of the layout was not triggered in response to the font being changed.  Added this code to Window::onFontChanged - although more elegant / selective solutions might be considered later on.
 Bug Fix: Added code so that all windows using default font get notified of a change in the default via the normal channel (Window::onFontChanged).
