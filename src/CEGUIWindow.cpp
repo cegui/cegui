@@ -2787,19 +2787,26 @@ void Window::onParentSized(WindowEventArgs& e)
     // constraints to be applied as required.  (fire no events though)
     setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
 
+    bool moved = ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0));
+    bool sized = ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0));
+
     // now see if events should be fired.
-    if ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0))
+    if (moved)
     {
         WindowEventArgs args(this);
         onMoved(args);
     }
 
-    if ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0))
+    if (sized)
     {
         WindowEventArgs args(this);
         onSized(args);
     }
-    
+
+    // if we were not moved or sized, do child layout anyway!
+    if (!(moved || sized))
+        performChildWindowLayout();
+
     fireEvent(EventParentSized, e, EventNamespace);
 }
 
