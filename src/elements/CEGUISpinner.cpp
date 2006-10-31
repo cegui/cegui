@@ -218,8 +218,8 @@ namespace CEGUI
     {
         String tmpTxt(getEditbox()->getText());
 
-        // handle empty and lone '-' cases
-        if (tmpTxt.empty() || (tmpTxt == "-"))
+        // handle empty and lone '-' or '.' cases
+        if (tmpTxt.empty() || (tmpTxt == "-") || (tmpTxt == "."))
         {
             return 0.0f;
         }
