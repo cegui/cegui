@@ -88,9 +88,30 @@
                 <Property Name="CurrentProgress" Value="0.7" />
                 <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.16,0},{0.98,0},{0.21,0}}" />
             </Window>
-            <Window Type="TaharezLook/Listbox" Name="Demo7/Window2/Listbox" >
+            <Window Type="TaharezLook/ItemListbox" Name="Demo7/Window2/Listbox" >
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="UnifiedAreaRect" Value="{{0.04,0},{0.25,0},{0.46,0},{0.55,0}}" />
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 1" />
+                </Window>
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 2" />
+                </Window>
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 3" />
+                </Window>
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 4" />
+                </Window>
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 5" />
+                </Window>
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 6" />
+                </Window>
+                <Window Type="TaharezLook/ListboxItem" >
+                    <Property Name="Text" Value="Listbox Item 7" />
+                </Window>
             </Window>
             <Window Type="TaharezLook/Combobox" Name="Demo7/Window2/Combobox" >
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
