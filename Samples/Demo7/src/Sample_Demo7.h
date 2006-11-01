@@ -43,7 +43,7 @@ public:
 
 protected:
     // initialisation helpers
-    void createDemoWindows(void);
+    void createListContent(void);
     void initDemoEventWiring(void);
 
     // methods that process GUI events
