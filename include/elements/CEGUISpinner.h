@@ -48,6 +48,17 @@ namespace CEGUI
         The spinner widget has a text area where numbers may be entered
         and two buttons which may be used to increase or decrease the
         value in the text area by a user specified amount.
+
+    \note
+        While the Spinner widget has support for floating point values, the
+        results of using this support in its current state may not be
+        satisfactory.  The general advice, for the moment, is to avoid
+        very large or very small values in floating point mode, and to
+        perform as little manipulation of the values as possible.  The
+        various issues you may see range from scientific notation appearing
+        in the box, to complete breakdown of 'expected' values upon
+        manipulation.  This is something that we intend to address for a
+        future release.
     */
     class CEGUIEXPORT Spinner : public Window
     {
