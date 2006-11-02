@@ -2,7 +2,7 @@
 	filename: 	CEGUIItemListBase.cpp
 	created:	31/3/2005
 	author:		Tomas Lindquist Olsen (based on original Listbox code by Paul D Turner)
-	
+
 	purpose:	Implementation of ItemListBase widget base class
 *************************************************************************/
 /***************************************************************************
@@ -86,7 +86,7 @@ ItemListBaseProperties::SortMode ItemListBase::d_sortModeProperty;
 const String ItemListBase::EventListContentsChanged("ListItemsChanged");
 const String ItemListBase::EventSortEnabledChanged("SortEnabledChanged");
 const String ItemListBase::EventSortModeChanged("SortModeChanged");
-	
+
 /*************************************************************************
 	Constructor for ItemListBase base class.
 *************************************************************************/
@@ -268,9 +268,9 @@ void ItemListBase::insertItem(ItemEntry* item, const ItemEntry* position)
 			}
 
 		}
-		
+
 		d_listItems.insert(ins_pos, item);
-		(*d_listItems.rbegin())->d_ownerList = this;
+		item->d_ownerList = this;
 		addChildWindow(item);
 
 		handleUpdatedItemData();
@@ -313,7 +313,7 @@ void ItemListBase::setAutoResizeEnabled(bool setting)
 
 /*************************************************************************
 	Causes the list box to update it's internal state after changes have
-	been made to one or more attached ItemEntry objects.	
+	been made to one or more attached ItemEntry objects.
 *************************************************************************/
 void ItemListBase::handleUpdatedItemData(bool resort)
 {
@@ -327,15 +327,15 @@ void ItemListBase::handleUpdatedItemData(bool resort)
 
 
 /*************************************************************************
-	Handler called internally when the list contents are changed	
+	Handler called internally when the list contents are changed
 *************************************************************************/
 void ItemListBase::onListContentsChanged(WindowEventArgs& e)
-{	
+{
     // if we are not currently initialising we might have things todo
 	if (!d_initialising)
 	{
 	    requestRedraw();
-	    
+
 	    // if auto resize is enabled - do it
 	    if (d_autoResize)
 		    sizeToContent();
@@ -415,7 +415,7 @@ bool ItemListBase::resetList_impl(void)
 			    WindowManager::getSingleton().destroyWindow(item);
 			}
 		}
-		
+
 		// list is cleared by the removeChild calls
 		return true;
 	}
@@ -547,7 +547,7 @@ Rect ItemListBase::getItemRenderArea(void) const
 bool ItemListBase::handle_PaneChildRemoved(const EventArgs& e)
 {
     Window* w = static_cast<const WindowEventArgs&>(e).window;
-    
+
     // make sure it is removed from the itemlist if we have an ItemEntry
     if (w->testClassName("ItemEntry"))
     {
@@ -564,7 +564,7 @@ bool ItemListBase::handle_PaneChildRemoved(const EventArgs& e)
             handleUpdatedItemData();
         }
     }
-    
+
     return false;
 }
 
