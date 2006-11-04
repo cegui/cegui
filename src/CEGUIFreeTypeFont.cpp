@@ -229,13 +229,13 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
          * and if there's still free texture space we will go backward
          * from s until we hit d_cp_map.begin().
          */
-        while (s != d_cp_map.end ())
+        while (s != d_cp_map.end())
         {
             // Check if we finished rendering all the required glyphs
             finished |= (s == e);
 
             // Check if glyph already rendered
-            if (!s->second.getImage ())
+            if (!s->second.getImage())
             {
                 // Render the glyph
                 if (FT_Load_Char (d_fontFace, s->first, FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT |
@@ -301,16 +301,14 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
             if (forward)
                 if (++s == d_cp_map.end ())
                 {
+                    finished = true;
                     forward = false;
                     s = orig_s;
                 }
             // Go to previous glyph, if we are going backward
             if (!forward)
                 if (--s == d_cp_map.begin ())
-                {
-                    finished = true;
                     break;
-                }
         }
 
         // Copy our memory buffer into the texture and free it
