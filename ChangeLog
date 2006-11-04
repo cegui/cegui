@@ -8,6 +8,7 @@ The following is a high-level view of changes made to the system between release
 
 Release 0.5.0 (Final)
 =====================
+Added: TaharezLook was missing ItemListbox and ListboxItem windows & skin definitions.
 Added: Partial CEGUI support for MingW. It is now possible to build CEGUI under mingw with support for OpenGL renderer. This approach is going to be generalized later to the other renderer and wiki page explaining the process will follows.
 Added: Missing functions in WindowFactoryManager Lua bindings. Incomplete FalagardWindowMapping binding as well.
 Added: Lua binding for OutStream: FileStream (minimal std::ofstream).
@@ -21,6 +22,8 @@ Added: ScrollablePane sample
 Removed: Empty Font 'implData' header files we no longer use.
 Removed: Falagard skinning manual is now a part of the CEGUI manuals sub-project, so is no longer included here as a pdf.
 
+Modified: Changed Demo7 to use the layout XML file instead of hard-coded window creation.
+Modified: Demo7Window.layout now uses the new ItemListbox, with items defined within the layout, as the Listbox as opposed to the old style list with hard-coded items.
 Modified: Win32CEGuiRendererSelector:
 - It is now possible to navigate to the Combobox via keyboard.
 - First available renderer is pre-selected into the dialog.
@@ -37,6 +40,10 @@ Modified: Premake scripts are now much more flexible.
 
 Coding Standards: Removed various occurrences of the NULL macro.
 
+Docs: Added note to docs for Spinner regarding the lame state of floating point support.
+
+Bug Fix: Resolved issue where the algorithm that ensured font textures were filled would actually end up trying to render every glyph within a font.
+Bug Fix: ItemListBase::insertItem was not setting the ItemEntry::d_ownerList member correctly.
 Bug Fix: Added another 'special case' to Spinner::getValueFromText to support typing an initial decimal point.
 Bug Fix: Sometimes compound widgets did not get their components layed out properly when adding the widget to it's parent.
 Bug Fix: The way in which properties would set a window to use the DefaultFont was incorrect; it explicitly set it to the name of the current default, as opposed to a 'floating default'.
