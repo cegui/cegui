@@ -42,6 +42,7 @@ Coding Standards: Removed various occurrences of the NULL macro.
 
 Docs: Added note to docs for Spinner regarding the lame state of floating point support.
 
+Bug Fix: ListHeader settings for sizing, moving, and clicking were not properly set on newly created segments.
 Bug Fix: Resolved issue where the algorithm that ensured font textures were filled would actually end up trying to render every glyph within a font.
 Bug Fix: ItemListBase::insertItem was not setting the ItemEntry::d_ownerList member correctly.
 Bug Fix: Added another 'special case' to Spinner::getValueFromText to support typing an initial decimal point.

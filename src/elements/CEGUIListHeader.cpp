@@ -730,6 +730,9 @@ ListHeaderSegment* ListHeader::createInitialisedSegment(const String& text, uint
 	newseg->setMinSize(UVector2(cegui_absdim(MinimumSegmentPixelWidth), cegui_absdim(0)));
 	newseg->setText(text);
 	newseg->setID(id);
+    newseg->setSizingEnabled(d_sizingEnabled);
+    newseg->setDragMovingEnabled(d_movingEnabled);
+    newseg->setClickable(d_sortingEnabled);
 
 	// subscribe events we listen to
 	newseg->subscribeEvent(ListHeaderSegment::EventSegmentSized, Event::Subscriber(&CEGUI::ListHeader::segmentSizedHandler, this));
