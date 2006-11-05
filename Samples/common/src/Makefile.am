@@ -32,3 +32,9 @@ if CEGUI_SAMPLES_USE_IRRLICHT
     libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/RendererModules/IrrlichtRenderer
     libCEGUISampleHelper_la_LIBADD += -lCEGUIIrrlichtRenderer $(Irrlicht_LIBS)
 endif
+
+EXTRA_DIST = CEGuiD3D81BaseApplication.cpp \
+             CEGuiD3D9BaseApplication.cpp \
+             MacCEGuiRendererSelector.cpp \
+             Win32AppHelper.cpp \
+             Win32CEGuiRendererSelector.cpp

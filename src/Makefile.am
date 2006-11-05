@@ -148,3 +148,6 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
 libCEGUIBase_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 
 libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS)
+
+EXTRA_DIST = implementations/mac/macPlugins.cpp \
+             implementations/mac/macPlugins.h
