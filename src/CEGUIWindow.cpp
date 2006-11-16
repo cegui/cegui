@@ -89,6 +89,7 @@ WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
 WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
 WindowProperties::WindowRenderer    Window::d_windowRendererProperty;
 WindowProperties::LookNFeel         Window::d_lookNFeelProperty;
+WindowProperties::DragDropTarget    Window::d_dragDropTargetProperty;
 
 /*************************************************************************
 	static data definitions
@@ -180,6 +181,7 @@ Window::Window(const String& type, const String& name) :
     d_wantsMultiClicks  = true;
     d_distCapturedInputs = false;
     d_riseOnClick       = true;
+    d_dragDropTarget    = true;
 
     // initialise mouse button auto-repeat state
     d_repeatButton = NoButton;
@@ -1575,6 +1577,7 @@ void Window::addStandardProperties(void)
     addProperty(&d_mousePassThroughEnabledProperty);
     addProperty(&d_windowRendererProperty);
     addProperty(&d_lookNFeelProperty);
+    addProperty(&d_dragDropTargetProperty);
 
     // we ban some of these properties from xml for auto windows by default
     if (isAutoWindow())
@@ -3152,6 +3155,16 @@ EventSet::Iterator Window::getEventIterator() const
 PropertySet::Iterator Window::getPropertyIterator() const
 {
     return PropertySet::getIterator();
+}
+
+bool Window::isDragDropTarget() const
+{
+    return d_dragDropTarget;
+}
+
+void Window::setDragDropTarget(bool setting)
+{
+    d_dragDropTarget = setting;
 }
 
 } // End of  CEGUI namespace section
