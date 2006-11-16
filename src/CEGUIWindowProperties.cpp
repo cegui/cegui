@@ -595,6 +595,18 @@ void LookNFeel::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer
 }
 
 
+String DragDropTarget::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isDragDropTarget());
+}
+
+
+void DragDropTarget::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setDragDropTarget(PropertyHelper::stringToBool(value));
+}
+
+
 } // End of  WindowProperties namespace section
 
 } // End of  CEGUI namespace section

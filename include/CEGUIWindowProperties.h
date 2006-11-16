@@ -1025,6 +1025,32 @@ class LookNFeel : public Property
         void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
 };
 
+/*!
+\brief
+    Property to get/set whether the Window will receive drag and drop related
+    notifications.
+
+    \par Usage:
+        - Name: DragDropTarget
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" if Window is will receive drag & drop notifications.
+        - "False" if Window is will not receive drag & drop notifications.
+*/
+class DragDropTarget : public Property
+{
+public:
+    DragDropTarget() : Property(
+        "DragDropTarget",
+        "Property to get/set whether the Window will receive drag and drop related notifications.  Value is either \"True\" or \"False\".",
+        "True")
+    {}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
+
 
 } // End of  WindowProperties namespace section
 

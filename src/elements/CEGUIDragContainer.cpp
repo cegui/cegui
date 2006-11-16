@@ -444,8 +444,12 @@ namespace CEGUI
         // update to new target
         d_dropTarget = e.window;
 
+        if ((d_dropTarget != 0) && !d_dropTarget->isDragDropTarget())
+            d_dropTarget = d_dropTarget->getParent();
+
         // Notify new target window that someone has dragged a DragContainer over it
-        d_dropTarget->notifyDragDropItemEnters(this);
+        if (d_dropTarget)
+            d_dropTarget->notifyDragDropItemEnters(this);
     }
 
 } // End of  CEGUI namespace section

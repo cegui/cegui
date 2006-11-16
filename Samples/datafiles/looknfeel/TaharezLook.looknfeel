@@ -624,6 +624,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/FrameWindow">
+        <PropertyDefinition name="ClientAreaColour" initialValue="FF141B38" redrawOnWrite="true" />
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" />
         <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" />
         <Property name="NSSizingCursorImage" value="set:TaharezLook image:MouseNoSoCursor" />
@@ -740,10 +741,31 @@
                 <Image type="LeftEdge" imageset="TaharezLook" image="WindowLeftEdge" />
                 <Image type="RightEdge" imageset="TaharezLook" image="WindowRightEdge" />
                 <Image type="BottomEdge" imageset="TaharezLook" image="WindowBottomEdge" />
-                <Image type="Background" imageset="TaharezLook" image="ClientBrush" />
-                <VertFormat type="Tiled" />
-                <HorzFormat type="Tiled" />
             </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="WindowTopLeft" dimension="Width" /></Dim>
+                    <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                    <Dim type="RightEdge" >
+                        <UnifiedDim scale="1" type="Width">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="TaharezLook" image="WindowTopRight" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="TaharezLook" image="WindowBottomEdge" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="GenericBrush" />
+                <ColourProperty name="ClientAreaColour" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="notitle_frame">
             <FrameComponent>
@@ -760,10 +782,31 @@
                 <Image type="LeftEdge" imageset="TaharezLook" image="WindowLeftEdge" />
                 <Image type="RightEdge" imageset="TaharezLook" image="WindowRightEdge" />
                 <Image type="BottomEdge" imageset="TaharezLook" image="WindowBottomEdge" />
-                <Image type="Background" imageset="TaharezLook" image="ClientBrush" />
-                <VertFormat type="Tiled" />
-                <HorzFormat type="Tiled" />
             </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="WindowTopLeft" dimension="Width" /></Dim>
+                    <Dim type="TopEdge" ><ImageDim imageset="TaharezLook" image="WindowTopEdge" dimension="Width" /></Dim>
+                    <Dim type="RightEdge" >
+                        <UnifiedDim scale="1" type="Width">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="TaharezLook" image="WindowTopRight" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1" type="Height">
+                            <DimOperator op="Subtract">
+                                <ImageDim imageset="TaharezLook" image="WindowBottomEdge" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="GenericBrush" />
+                <ColourProperty name="ClientAreaColour" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="withtitle_noframe_client_area">
             <ImageryComponent>
@@ -773,9 +816,10 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="ClientBrush" />
-                <VertFormat type="Tiled" />
-                <HorzFormat type="Tiled" />
+                <Image imageset="TaharezLook" image="GenericBrush" />
+                <ColourProperty name="ClientAreaColour" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
         <ImagerySection name="notitle_noframe_client_area">
@@ -786,9 +830,10 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="ClientBrush" />
-                <VertFormat type="Tiled" />
-                <HorzFormat type="Tiled" />
+                <Image imageset="TaharezLook" image="GenericBrush" />
+                <ColourProperty name="ClientAreaColour" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
         <StateImagery name="ActiveWithTitleWithFrame">
