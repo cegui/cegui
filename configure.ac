@@ -107,6 +107,8 @@ AC_CONFIG_FILES([Makefile
                  ImageCodecModules/FreeImageImageCodec/Makefile 
                  ImageCodecModules/SILLYImageCodec/Makefile
                  ImageCodecModules/TGAImageCodec/Makefile
+                 RendererModules/directx81GUIRenderer/Makefile
+                 RendererModules/directx9GUIRenderer/Makefile
                  RendererModules/IrrlichtRenderer/Makefile
                  RendererModules/Makefile
                  RendererModules/OpenGLGUIRenderer/Makefile
