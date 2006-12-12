@@ -31,6 +31,7 @@
 #include "CEGUIExceptions.h"
 
 #include <fstream>
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -45,7 +46,7 @@ namespace CEGUI
         }
 
         String final_filename(getFinalFilename(filename, resourceGroup));
-
+         
         std::ifstream dataFile(final_filename.c_str(), std::ios::binary|std::ios::ate);
         if( dataFile.fail())
         {
