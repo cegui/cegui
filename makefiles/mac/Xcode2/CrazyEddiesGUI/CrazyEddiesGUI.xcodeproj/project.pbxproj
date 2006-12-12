@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5B1A18050ADA9AA300BDF9AF /* Build configuration list for PBXAggregateTarget "CEGUIBaseBundles" */;
+			buildPhases = (
+			);
+			dependencies = (
+				5B1A17F00ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17F20ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17F40ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17F60ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17FA0ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17FC0ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B4A81E10B2EF8B3003F1BF5 /* PBXTargetDependency */,
+			);
+			name = CEGUIBaseBundles;
+			productName = CEGUIDeps;
+		};
 		5B991D8608C92230006E6DC9 /* CEGUI */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 5B991D9108C92258006E6DC9 /* Build configuration list for PBXAggregateTarget "CEGUI" */;
@@ -16,7 +33,7 @@
 				5B991D8808C92239006E6DC9 /* PBXTargetDependency */,
 				5B991E1408C93133006E6DC9 /* PBXTargetDependency */,
 				5B991D9008C92239006E6DC9 /* PBXTargetDependency */,
-				5B5F7A5D08CCB7D500C417E6 /* PBXTargetDependency */,
+				5B1A181C0ADA9E6000BDF9AF /* PBXTargetDependency */,
 			);
 			name = CEGUI;
 			productName = CEGUI;
@@ -29,6 +46,10 @@
 			dependencies = (
 				5BF885BA0ACCD53700E8502F /* PBXTargetDependency */,
 				5BF886240ACCD9AE00E8502F /* PBXTargetDependency */,
+				5B1A17820ADA8C3700BDF9AF /* PBXTargetDependency */,
+				5B1A17840ADA8C3700BDF9AF /* PBXTargetDependency */,
+				5B1A17860ADA8C3700BDF9AF /* PBXTargetDependency */,
+				5B1A17880ADA8C3700BDF9AF /* PBXTargetDependency */,
 			);
 			name = Samples;
 			productName = Samples;
@@ -39,6 +60,39 @@
 		5B0CC73008F391BF0052CD0B /* CEGUICoordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B0CC72E08F391BF0052CD0B /* CEGUICoordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B0CC73108F391BF0052CD0B /* CEGUIWidgetModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B0CC72F08F391BF0052CD0B /* CEGUIWidgetModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B0CC73308F391E20052CD0B /* CEGUICoordConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0CC73208F391E20052CD0B /* CEGUICoordConverter.cpp */; };
+		5B1A168D0ADA8AF500BDF9AF /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5B1A17360ADA8AF600BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5B1A17450ADA8B2600BDF9AF /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5B1A17460ADA8B2700BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5B1A174A0ADA8B3D00BDF9AF /* Sample_FirstWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885960ACCD35600E8502F /* Sample_FirstWindow.cpp */; };
+		5B1A17500ADA8B4700BDF9AF /* Sample_FontDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8859B0ACCD35600E8502F /* Sample_FontDemo.cpp */; };
+		5B1A17510ADA8B5A00BDF9AF /* FontDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B1A16680ADA8AA700BDF9AF /* FontDemo-Info.plist */; };
+		5B1A17520ADA8B5F00BDF9AF /* FirstWindow-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B1A17400ADA8B0B00BDF9AF /* FirstWindow-Info.plist */; };
+		5B1A17670ADA8BBD00BDF9AF /* FalagardDemo1-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B1A175D0ADA8B8000BDF9AF /* FalagardDemo1-Info.plist */; };
+		5B1A17680ADA8BBE00BDF9AF /* Sample_FalagardDemo1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8858E0ACCD35600E8502F /* Sample_FalagardDemo1.cpp */; };
+		5B1A178D0ADA907700BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		5B1A178E0ADA907700BDF9AF /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		5B1A178F0ADA907800BDF9AF /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		5B1A17900ADA907B00BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		5B1A17910ADA908300BDF9AF /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		5B1A17A30ADA908500BDF9AF /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
+		5B1A17A70ADA908600BDF9AF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		5B1A17B80ADA908C00BDF9AF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		5B1A17B90ADA908E00BDF9AF /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
+		5B1A17BA0ADA908F00BDF9AF /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		5B1A17BB0ADA909500BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		5B1A17BC0ADA909600BDF9AF /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		5B1A17BD0ADA909800BDF9AF /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		5B1A17BE0ADA909A00BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		5B1A17BF0ADA90A000BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		5B1A17C00ADA90A000BDF9AF /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		5B1A17C10ADA90A100BDF9AF /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		5B1A17C20ADA90A300BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		5B1A17C30ADA90A600BDF9AF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		5B1A17C40ADA90A700BDF9AF /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
+		5B1A17C50ADA90A800BDF9AF /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		5B1A17C70ADA90C900BDF9AF /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5B1A17C80ADA90CC00BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5B1FB7F809EF619700B2EF6B /* CEGUILibxmlParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1FB7F409EF619700B2EF6B /* CEGUILibxmlParser.cpp */; };
 		5B1FB7F909EF619700B2EF6B /* CEGUILibxmlParserModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1FB7F609EF619700B2EF6B /* CEGUILibxmlParserModule.cpp */; };
 		5B1FB7FE09EF61C700B2EF6B /* CEGUIExpatParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1FB7FA09EF61C600B2EF6B /* CEGUIExpatParser.cpp */; };
@@ -59,7 +113,7 @@
 		5B1FB83709EF634900B2EF6B /* CEGUIFunctorPointerSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82809EF634900B2EF6B /* CEGUIFunctorPointerSlot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B1FB83809EF634900B2EF6B /* CEGUIFunctorReferenceBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82909EF634900B2EF6B /* CEGUIFunctorReferenceBinder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B1FB83909EF634900B2EF6B /* CEGUIFunctorReferenceSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82A09EF634900B2EF6B /* CEGUIFunctorReferenceSlot.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5B1FB83A09EF634900B2EF6B /* CEGUIMemberFunctionSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82B09EF634900B2EF6B /* CEGUIMemberFunctionSlot.h */; };
+		5B1FB83A09EF634900B2EF6B /* CEGUIMemberFunctionSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82B09EF634900B2EF6B /* CEGUIMemberFunctionSlot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B1FB83B09EF634900B2EF6B /* CEGUIRefCounted.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82C09EF634900B2EF6B /* CEGUIRefCounted.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B1FB83C09EF634900B2EF6B /* CEGUISlotFunctorBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82D09EF634900B2EF6B /* CEGUISlotFunctorBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B1FB83D09EF634900B2EF6B /* CEGUISubscriberSlot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB82E09EF634900B2EF6B /* CEGUISubscriberSlot.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -80,6 +134,7 @@
 		5B31206308F894FE007E90B2 /* CEGUIFalPropertyLinkDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B31206108F894FE007E90B2 /* CEGUIFalPropertyLinkDefinition.h */; };
 		5B31206608F89531007E90B2 /* CEGUIFalPropertyDefinitionBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B31206408F89531007E90B2 /* CEGUIFalPropertyDefinitionBase.cpp */; };
 		5B31206708F89531007E90B2 /* CEGUIFalPropertyLinkDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B31206508F89531007E90B2 /* CEGUIFalPropertyLinkDefinition.cpp */; };
+		5B4A81DF0B2EF89A003F1BF5 /* expat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4A81C60B2EF89A003F1BF5 /* expat.framework */; };
 		5B4BB54508C5EE2B0088F7FA /* CEGUIRenderCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4BB54308C5EE2B0088F7FA /* CEGUIRenderCache.cpp */; };
 		5B4BB54F08C5EE600088F7FA /* CEGUIRenderCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4BB54908C5EE600088F7FA /* CEGUIRenderCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B4BB55008C5EE600088F7FA /* CEGUIUDim.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4BB54A08C5EE600088F7FA /* CEGUIUDim.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -340,10 +395,8 @@
 		5B69BA9608C418830086C816 /* CEGUIEventSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA5A08C418830086C816 /* CEGUIEventSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9708C418830086C816 /* CEGUIExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA5B08C418830086C816 /* CEGUIExceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9808C418830086C816 /* CEGUIFactoryModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA5C08C418830086C816 /* CEGUIFactoryModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5B69BA9908C418830086C816 /* CEGUIFont_implData.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA5D08C418830086C816 /* CEGUIFont_implData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9A08C418830086C816 /* CEGUIFont_xmlHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA5E08C418830086C816 /* CEGUIFont_xmlHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9B08C418830086C816 /* CEGUIFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA5F08C418830086C816 /* CEGUIFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5B69BA9C08C418830086C816 /* CEGUIFontManager_implData.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA6008C418830086C816 /* CEGUIFontManager_implData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9D08C418830086C816 /* CEGUIFontManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA6108C418830086C816 /* CEGUIFontManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9E08C418830086C816 /* CEGUIForwardRefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA6208C418830086C816 /* CEGUIForwardRefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B69BA9F08C418830086C816 /* CEGUIGlobalEventSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B69BA6308C418830086C816 /* CEGUIGlobalEventSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -390,6 +443,18 @@
 		5B991D9F08C92C69006E6DC9 /* LuaScriptModule-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */; };
 		5B991E1508C9314A006E6DC9 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5B991E1708C9315A006E6DC9 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9B80B247348006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9B90B247348006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5BC3C9C30B24738B006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9C40B24738B006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5BC3C9C50B247399006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9C60B247399006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5BC3C9CB0B2473B7006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9CC0B2473B7006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5BC3C9CD0B2473C1006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9CE0B2473C1006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		5BC3C9CF0B2473D5006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		5BC3C9D00B2473D5006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BC618870AA7DA740080B2ED /* freetype.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6182E0AA7DA740080B2ED /* freetype.framework */; };
 		5BC619330AA7F01B0080B2ED /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BC6193A0AA7F26A0080B2ED /* CEGUITinyXMLParser-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B1FB7D709EF60B200B2EF6B /* CEGUITinyXMLParser-Info.plist */; };
@@ -585,6 +650,167 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5B1A17620ADA8BAD00BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
+			remoteInfo = CEGUIBase;
+		};
+		5B1A17640ADA8BAD00BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9;
+			remoteInfo = CEGUIOpenGLRenderer;
+		};
+		5B1A17690ADA8BCD00BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
+			remoteInfo = CEGUIBase;
+		};
+		5B1A176B0ADA8BCD00BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9;
+			remoteInfo = CEGUIOpenGLRenderer;
+		};
+		5B1A176D0ADA8BD800BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
+			remoteInfo = CEGUIBase;
+		};
+		5B1A176F0ADA8BD800BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9;
+			remoteInfo = CEGUIOpenGLRenderer;
+		};
+		5B1A17710ADA8BE700BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
+			remoteInfo = CEGUIBase;
+		};
+		5B1A17730ADA8BE700BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D6F08C920E5006E6DC9;
+			remoteInfo = CEGUIOpenGLRenderer;
+		};
+		5B1A17810ADA8C3700BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BF8862A0ACCDABB00E8502F;
+			remoteInfo = Minesweeper;
+		};
+		5B1A17830ADA8C3700BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A16650ADA8AA700BDF9AF;
+			remoteInfo = FontDemo;
+		};
+		5B1A17850ADA8C3700BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A173D0ADA8B0B00BDF9AF;
+			remoteInfo = FirstWindow;
+		};
+		5B1A17870ADA8C3700BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A175A0ADA8B8000BDF9AF;
+			remoteInfo = FalagardDemo1;
+		};
+		5B1A17EF0ADA9A4200BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6;
+			remoteInfo = CEGUIFalagardWRBase;
+		};
+		5B1A17F10ADA9A4200BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1FB7CB09EF609F00B2EF6B;
+			remoteInfo = CEGUIXercesParser;
+		};
+		5B1A17F30ADA9A4200BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1FB7D509EF60B200B2EF6B;
+			remoteInfo = CEGUITinyXMLParser;
+		};
+		5B1A17F50ADA9A4200BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BCC7E0D0A8146060017D97C;
+			remoteInfo = CEGUIDevILImageCodec;
+		};
+		5B1A17F90ADA9A4200BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BCC7E210A8146400017D97C;
+			remoteInfo = CEGUIFreeImageImageCodec;
+		};
+		5B1A17FB0ADA9A4200BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BCC7E2B0A8146690017D97C;
+			remoteInfo = CEGUITGAImageCodec;
+		};
+		5B1A17FE0ADA9A6900BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A17EE0ADA9A3300BDF9AF;
+			remoteInfo = CEGUIBaseBundles;
+		};
+		5B1A18000ADA9A7600BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A17EE0ADA9A3300BDF9AF;
+			remoteInfo = CEGUIBaseBundles;
+		};
+		5B1A18020ADA9A7E00BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A17EE0ADA9A3300BDF9AF;
+			remoteInfo = CEGUIBaseBundles;
+		};
+		5B1A181B0ADA9E6000BDF9AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A17EE0ADA9A3300BDF9AF;
+			remoteInfo = CEGUIBaseBundles;
+		};
+		5B4A81E00B2EF8B3003F1BF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1FB7C109EF608C00B2EF6B /* CEGUIExpatParser */;
+			remoteInfo = CEGUIExpatParser;
+		};
 		5B54D2D90A81B5FF00E88F24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -647,13 +873,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
 			remoteInfo = CEGUIBase;
-		};
-		5B5F7A5C08CCB7D500C417E6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5B5F798E08CBD2C900C417E6;
-			remoteInfo = CEGUIFalagard;
 		};
 		5B991D8708C92239006E6DC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -746,6 +965,12 @@
 		5B0CC72E08F391BF0052CD0B /* CEGUICoordConverter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUICoordConverter.h; path = ../../../../include/CEGUICoordConverter.h; sourceTree = SOURCE_ROOT; };
 		5B0CC72F08F391BF0052CD0B /* CEGUIWidgetModule.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIWidgetModule.h; path = ../../../../include/CEGUIWidgetModule.h; sourceTree = SOURCE_ROOT; };
 		5B0CC73208F391E20052CD0B /* CEGUICoordConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUICoordConverter.cpp; path = ../../../../src/CEGUICoordConverter.cpp; sourceTree = SOURCE_ROOT; };
+		5B1A16660ADA8AA700BDF9AF /* FontDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FontDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B1A16680ADA8AA700BDF9AF /* FontDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "FontDemo-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/FontDemo-Info.plist"; sourceTree = "<group>"; };
+		5B1A173E0ADA8B0B00BDF9AF /* FirstWindow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstWindow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B1A17400ADA8B0B00BDF9AF /* FirstWindow-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "FirstWindow-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/FirstWindow-Info.plist"; sourceTree = "<group>"; };
+		5B1A175B0ADA8B8000BDF9AF /* FalagardDemo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FalagardDemo1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B1A175D0ADA8B8000BDF9AF /* FalagardDemo1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "FalagardDemo1-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/FalagardDemo1-Info.plist"; sourceTree = "<group>"; };
 		5B1FB76E09EF561600B2EF6B /* FalButton.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = FalButton.cpp; path = ../../../../WindowRendererSets/Falagard/src/FalButton.cpp; sourceTree = SOURCE_ROOT; };
 		5B1FB76F09EF561600B2EF6B /* FalDefault.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = FalDefault.cpp; path = ../../../../WindowRendererSets/Falagard/src/FalDefault.cpp; sourceTree = SOURCE_ROOT; };
 		5B1FB77009EF561600B2EF6B /* FalEditbox.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = FalEditbox.cpp; path = ../../../../WindowRendererSets/Falagard/src/FalEditbox.cpp; sourceTree = SOURCE_ROOT; };
@@ -876,6 +1101,7 @@
 		5B31206408F89531007E90B2 /* CEGUIFalPropertyDefinitionBase.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalPropertyDefinitionBase.cpp; sourceTree = "<group>"; };
 		5B31206508F89531007E90B2 /* CEGUIFalPropertyLinkDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalPropertyLinkDefinition.cpp; sourceTree = "<group>"; };
 		5B3E843C08C49D1D00D8C077 /* Xerces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Xerces.framework; path = /Library/Frameworks/Xerces.framework; sourceTree = "<absolute>"; };
+		5B4A81C60B2EF89A003F1BF5 /* expat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = expat.framework; path = /Library/Frameworks/expat.framework; sourceTree = "<absolute>"; };
 		5B4BB54308C5EE2B0088F7FA /* CEGUIRenderCache.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderCache.cpp; path = ../../../../src/CEGUIRenderCache.cpp; sourceTree = SOURCE_ROOT; };
 		5B4BB54908C5EE600088F7FA /* CEGUIRenderCache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderCache.h; path = ../../../../include/CEGUIRenderCache.h; sourceTree = SOURCE_ROOT; };
 		5B4BB54A08C5EE600088F7FA /* CEGUIUDim.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIUDim.h; path = ../../../../include/CEGUIUDim.h; sourceTree = SOURCE_ROOT; };
@@ -941,7 +1167,7 @@
 		5B5655C30A8E2525003AADFC /* CEGUIItemListboxProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIItemListboxProperties.cpp; sourceTree = "<group>"; };
 		5B5655C40A8E2525003AADFC /* CEGUIScrolledItemListBase.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIScrolledItemListBase.cpp; sourceTree = "<group>"; };
 		5B5655C50A8E2525003AADFC /* CEGUIScrolledItemListBaseProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIScrolledItemListBaseProperties.cpp; sourceTree = "<group>"; };
-		5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIFalagardBase.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B5F798F08CBD2C900C417E6 /* CEGUIFalagardWRBase.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIFalagardWRBase.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5F799008CBD2C900C417E6 /* CEGUIFalagard-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUIFalagard-Info.plist"; sourceTree = "<group>"; };
 		5B5F7A6508CCC27500C417E6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		5B69B76B08C40CF80086C816 /* OpenGLRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "OpenGLRenderer-Info.plist"; sourceTree = "<group>"; };
@@ -1123,10 +1349,8 @@
 		5B69BA5A08C418830086C816 /* CEGUIEventSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIEventSet.h; path = ../../../../include/CEGUIEventSet.h; sourceTree = SOURCE_ROOT; };
 		5B69BA5B08C418830086C816 /* CEGUIExceptions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIExceptions.h; path = ../../../../include/CEGUIExceptions.h; sourceTree = SOURCE_ROOT; };
 		5B69BA5C08C418830086C816 /* CEGUIFactoryModule.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFactoryModule.h; path = ../../../../include/CEGUIFactoryModule.h; sourceTree = SOURCE_ROOT; };
-		5B69BA5D08C418830086C816 /* CEGUIFont_implData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFont_implData.h; path = ../../../../include/CEGUIFont_implData.h; sourceTree = SOURCE_ROOT; };
 		5B69BA5E08C418830086C816 /* CEGUIFont_xmlHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFont_xmlHandler.h; path = ../../../../include/CEGUIFont_xmlHandler.h; sourceTree = SOURCE_ROOT; };
 		5B69BA5F08C418830086C816 /* CEGUIFont.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFont.h; path = ../../../../include/CEGUIFont.h; sourceTree = SOURCE_ROOT; };
-		5B69BA6008C418830086C816 /* CEGUIFontManager_implData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFontManager_implData.h; path = ../../../../include/CEGUIFontManager_implData.h; sourceTree = SOURCE_ROOT; };
 		5B69BA6108C418830086C816 /* CEGUIFontManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFontManager.h; path = ../../../../include/CEGUIFontManager.h; sourceTree = SOURCE_ROOT; };
 		5B69BA6208C418830086C816 /* CEGUIForwardRefs.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIForwardRefs.h; path = ../../../../include/CEGUIForwardRefs.h; sourceTree = SOURCE_ROOT; };
 		5B69BA6308C418830086C816 /* CEGUIGlobalEventSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIGlobalEventSet.h; path = ../../../../include/CEGUIGlobalEventSet.h; sourceTree = SOURCE_ROOT; };
@@ -1410,6 +1634,42 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5B1A16640ADA8AA700BDF9AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B1A168D0ADA8AF500BDF9AF /* CEGUI.framework in Frameworks */,
+				5B1A17360ADA8AF600BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				5B1A17910ADA908300BDF9AF /* GLUT.framework in Frameworks */,
+				5B1A17A30ADA908500BDF9AF /* PCRE.framework in Frameworks */,
+				5B1A17A70ADA908600BDF9AF /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B1A173C0ADA8B0B00BDF9AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B1A17450ADA8B2600BDF9AF /* CEGUI.framework in Frameworks */,
+				5B1A17460ADA8B2700BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				5B1A17B80ADA908C00BDF9AF /* OpenGL.framework in Frameworks */,
+				5B1A17B90ADA908E00BDF9AF /* PCRE.framework in Frameworks */,
+				5B1A17BA0ADA908F00BDF9AF /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B1A17590ADA8B8000BDF9AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B1A17C30ADA90A600BDF9AF /* OpenGL.framework in Frameworks */,
+				5B1A17C40ADA90A700BDF9AF /* PCRE.framework in Frameworks */,
+				5B1A17C50ADA90A800BDF9AF /* GLUT.framework in Frameworks */,
+				5B1A17C70ADA90C900BDF9AF /* CEGUI.framework in Frameworks */,
+				5B1A17C80ADA90CC00BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B1FB7B609EF607500B2EF6B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1426,6 +1686,7 @@
 			files = (
 				5B55D3A20AC253D5006A2F76 /* CEGUI.framework in Frameworks */,
 				5B55D3A30AC253DA006A2F76 /* PCRE.framework in Frameworks */,
+				5B4A81DF0B2EF89A003F1BF5 /* expat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1579,7 +1840,7 @@
 			isa = PBXGroup;
 			children = (
 				5B69B83008C4106E0086C816 /* CEGUI.framework */,
-				5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */,
+				5B5F798F08CBD2C900C417E6 /* CEGUIFalagardWRBase.bundle */,
 				5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */,
 				5BCC7E4A0A8149370017D97C /* CEGUIIrrlichtRenderer.framework */,
 				5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */,
@@ -1594,6 +1855,9 @@
 				5BF885B10ACCD46100E8502F /* TabControlDemo.app */,
 				5BF886090ACCD81D00E8502F /* ScrollablePaneDemo.app */,
 				5BF8862B0ACCDABB00E8502F /* Minesweeper.app */,
+				5B1A16660ADA8AA700BDF9AF /* FontDemo.app */,
+				5B1A173E0ADA8B0B00BDF9AF /* FirstWindow.app */,
+				5B1A175B0ADA8B8000BDF9AF /* FalagardDemo1.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1618,6 +1882,7 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5B4A81C60B2EF89A003F1BF5 /* expat.framework */,
 				5BF476E10AD06CD900A1E925 /* libxml.framework */,
 				5BF885D90ACCD72D00E8502F /* GLUT.framework */,
 				5B55D36F0AC2537A006A2F76 /* jpeg.framework */,
@@ -1773,6 +2038,13 @@
 			name = ceguitinyxml;
 			path = ../../../../XMLParserModules/TinyXMLParser/ceguitinyxml;
 			sourceTree = SOURCE_ROOT;
+		};
+		5B4A81EF0B2EF9AE003F1BF5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
 		};
 		5B4BB55208C5EE9C0088F7FA /* falagard */ = {
 			isa = PBXGroup;
@@ -2118,6 +2390,7 @@
 				5B69B83108C4106E0086C816 /* CEGUI-Info.plist */,
 				5B69B7F408C40F5D0086C816 /* Headers */,
 				5B69B7F108C40F590086C816 /* Sources */,
+				5B4A81EF0B2EF9AE003F1BF5 /* Resources */,
 			);
 			name = BaseSystem;
 			sourceTree = "<group>";
@@ -2432,9 +2705,7 @@
 				5B69BA5B08C418830086C816 /* CEGUIExceptions.h */,
 				5B69BA5C08C418830086C816 /* CEGUIFactoryModule.h */,
 				5B69BA5F08C418830086C816 /* CEGUIFont.h */,
-				5B69BA5D08C418830086C816 /* CEGUIFont_implData.h */,
 				5B69BA6108C418830086C816 /* CEGUIFontManager.h */,
-				5B69BA6008C418830086C816 /* CEGUIFontManager_implData.h */,
 				5B69BA6208C418830086C816 /* CEGUIForwardRefs.h */,
 				5B1FB82609EF634900B2EF6B /* CEGUIFreeFunctionSlot.h */,
 				5B56559B0A8E15B9003AADFC /* CEGUIFreeTypeFont.h */,
@@ -2491,22 +2762,15 @@
 		5B69B9AE08C417730086C816 /* main */ = {
 			isa = PBXGroup;
 			children = (
-				5B5655B40A8E2514003AADFC /* CEGUIDataContainer.cpp */,
-				5B5655B50A8E2514003AADFC /* CEGUIFontProperties.cpp */,
-				5B5655B60A8E2514003AADFC /* CEGUIFreeTypeFont.cpp */,
-				5B5655B70A8E2514003AADFC /* CEGUIImageCodec.cpp */,
-				5B5655B80A8E2514003AADFC /* CEGUIPixmapFont.cpp */,
-				5B1FB84509EF64BD00B2EF6B /* CEGUIBoundSlot.cpp */,
-				5B1FB84609EF64BD00B2EF6B /* CEGUIDefaultLogger.cpp */,
-				5B1FB84709EF64BD00B2EF6B /* CEGUIDynamicModule.cpp */,
-				5B1FB84809EF64BD00B2EF6B /* CEGUISubscriberSlot.cpp */,
-				5B1FB84909EF64BD00B2EF6B /* CEGUIWindowRenderer.cpp */,
-				5B1FB84A09EF64BD00B2EF6B /* CEGUIWindowRendererManager.cpp */,
 				5B69B83808C416BC0086C816 /* CEGUIBase.cpp */,
+				5B1FB84509EF64BD00B2EF6B /* CEGUIBoundSlot.cpp */,
 				5B69B83908C416BC0086C816 /* CEGUIcolour.cpp */,
 				5B69B83A08C416BC0086C816 /* CEGUIColourRect.cpp */,
 				5B0CC73208F391E20052CD0B /* CEGUICoordConverter.cpp */,
+				5B5655B40A8E2514003AADFC /* CEGUIDataContainer.cpp */,
+				5B1FB84609EF64BD00B2EF6B /* CEGUIDefaultLogger.cpp */,
 				5B69B83C08C416BC0086C816 /* CEGUIDefaultResourceProvider.cpp */,
+				5B1FB84709EF64BD00B2EF6B /* CEGUIDynamicModule.cpp */,
 				5B69B83D08C416BC0086C816 /* CEGUIEvent.cpp */,
 				5B69B83E08C416BC0086C816 /* CEGUIEventArgs.cpp */,
 				5B69B83F08C416BC0086C816 /* CEGUIEventSet.cpp */,
@@ -2516,12 +2780,16 @@
 				5B69B84308C416BC0086C816 /* CEGUIFactoryModule.cpp */,
 				5B69B84508C416BC0086C816 /* CEGUIFont.cpp */,
 				5B69B84608C416BC0086C816 /* CEGUIFontManager.cpp */,
+				5B5655B50A8E2514003AADFC /* CEGUIFontProperties.cpp */,
+				5B5655B60A8E2514003AADFC /* CEGUIFreeTypeFont.cpp */,
 				5B69B84708C416BC0086C816 /* CEGUIGlobalEventSet.cpp */,
 				5B69B84908C416BD0086C816 /* CEGUIImage.cpp */,
+				5B5655B70A8E2514003AADFC /* CEGUIImageCodec.cpp */,
 				5B69B84B08C416BD0086C816 /* CEGUIImageset.cpp */,
 				5B69B84C08C416BD0086C816 /* CEGUIImagesetManager.cpp */,
 				5B69B84D08C416BD0086C816 /* CEGUILogger.cpp */,
 				5B69B84E08C416BD0086C816 /* CEGUIMouseCursor.cpp */,
+				5B5655B80A8E2514003AADFC /* CEGUIPixmapFont.cpp */,
 				5B69B84F08C416BD0086C816 /* CEGUIProperty.cpp */,
 				5B69B85008C416BD0086C816 /* CEGUIPropertyHelper.cpp */,
 				5B69B85108C416BD0086C816 /* CEGUIPropertySet.cpp */,
@@ -2533,6 +2801,7 @@
 				5B69B85B08C416BD0086C816 /* CEGUIScriptModule.cpp */,
 				5B69B85C08C416BD0086C816 /* CEGUISize.cpp */,
 				5B69B85D08C416BD0086C816 /* CEGUIString.cpp */,
+				5B1FB84809EF64BD00B2EF6B /* CEGUISubscriberSlot.cpp */,
 				5B69B85E08C416BD0086C816 /* CEGUISystem.cpp */,
 				5B69B85F08C416BD0086C816 /* CEGUITexture.cpp */,
 				5B69B86008C416BD0086C816 /* CEGUITextUtils.cpp */,
@@ -2541,6 +2810,8 @@
 				5B69B86608C416BD0086C816 /* CEGUIWindowFactoryManager.cpp */,
 				5B69B86708C416BD0086C816 /* CEGUIWindowManager.cpp */,
 				5B69B86808C416BD0086C816 /* CEGUIWindowProperties.cpp */,
+				5B1FB84909EF64BD00B2EF6B /* CEGUIWindowRenderer.cpp */,
+				5B1FB84A09EF64BD00B2EF6B /* CEGUIWindowRendererManager.cpp */,
 			);
 			name = main;
 			sourceTree = "<group>";
@@ -2831,6 +3102,7 @@
 		5BF885870ACCD35600E8502F /* FalagardDemo1 */ = {
 			isa = PBXGroup;
 			children = (
+				5B1A175D0ADA8B8000BDF9AF /* FalagardDemo1-Info.plist */,
 				5BF885880ACCD35600E8502F /* include */,
 				5BF8858C0ACCD35600E8502F /* src */,
 			);
@@ -2857,6 +3129,7 @@
 		5BF8858F0ACCD35600E8502F /* FirstWindow */ = {
 			isa = PBXGroup;
 			children = (
+				5B1A17400ADA8B0B00BDF9AF /* FirstWindow-Info.plist */,
 				5BF885900ACCD35600E8502F /* include */,
 				5BF885940ACCD35600E8502F /* src */,
 			);
@@ -2883,6 +3156,7 @@
 		5BF885970ACCD35600E8502F /* FontDemo */ = {
 			isa = PBXGroup;
 			children = (
+				5B1A16680ADA8AA700BDF9AF /* FontDemo-Info.plist */,
 				5BF885990ACCD35600E8502F /* src */,
 			);
 			name = FontDemo;
@@ -3145,10 +3419,8 @@
 				5B69BA9608C418830086C816 /* CEGUIEventSet.h in Headers */,
 				5B69BA9708C418830086C816 /* CEGUIExceptions.h in Headers */,
 				5B69BA9808C418830086C816 /* CEGUIFactoryModule.h in Headers */,
-				5B69BA9908C418830086C816 /* CEGUIFont_implData.h in Headers */,
 				5B69BA9A08C418830086C816 /* CEGUIFont_xmlHandler.h in Headers */,
 				5B69BA9B08C418830086C816 /* CEGUIFont.h in Headers */,
-				5B69BA9C08C418830086C816 /* CEGUIFontManager_implData.h in Headers */,
 				5B69BA9D08C418830086C816 /* CEGUIFontManager.h in Headers */,
 				5B69BA9E08C418830086C816 /* CEGUIForwardRefs.h in Headers */,
 				5B69BA9F08C418830086C816 /* CEGUIGlobalEventSet.h in Headers */,
@@ -3311,6 +3583,66 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5B1A16650ADA8AA700BDF9AF /* FontDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B1A16890ADA8AA900BDF9AF /* Build configuration list for PBXNativeTarget "FontDemo" */;
+			buildPhases = (
+				5B1A16620ADA8AA700BDF9AF /* Resources */,
+				5B4A83210B2F06CE003F1BF5 /* ShellScript */,
+				5B1A16630ADA8AA700BDF9AF /* Sources */,
+				5B1A16640ADA8AA700BDF9AF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B1A176E0ADA8BD800BDF9AF /* PBXTargetDependency */,
+				5B1A17700ADA8BD800BDF9AF /* PBXTargetDependency */,
+			);
+			name = FontDemo;
+			productName = FontDemo;
+			productReference = 5B1A16660ADA8AA700BDF9AF /* FontDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5B1A173D0ADA8B0B00BDF9AF /* FirstWindow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B1A17410ADA8B0B00BDF9AF /* Build configuration list for PBXNativeTarget "FirstWindow" */;
+			buildPhases = (
+				5B1A173A0ADA8B0B00BDF9AF /* Resources */,
+				5B4A83230B2F06DA003F1BF5 /* ShellScript */,
+				5B1A173B0ADA8B0B00BDF9AF /* Sources */,
+				5B1A173C0ADA8B0B00BDF9AF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B1A176A0ADA8BCD00BDF9AF /* PBXTargetDependency */,
+				5B1A176C0ADA8BCD00BDF9AF /* PBXTargetDependency */,
+			);
+			name = FirstWindow;
+			productName = FirstWindow;
+			productReference = 5B1A173E0ADA8B0B00BDF9AF /* FirstWindow.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5B1A175A0ADA8B8000BDF9AF /* FalagardDemo1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B1A175E0ADA8B8100BDF9AF /* Build configuration list for PBXNativeTarget "FalagardDemo1" */;
+			buildPhases = (
+				5B1A17570ADA8B8000BDF9AF /* Resources */,
+				5B4A83250B2F06EA003F1BF5 /* ShellScript */,
+				5B1A17580ADA8B8000BDF9AF /* Sources */,
+				5B1A17590ADA8B8000BDF9AF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B1A17630ADA8BAD00BDF9AF /* PBXTargetDependency */,
+				5B1A17650ADA8BAD00BDF9AF /* PBXTargetDependency */,
+			);
+			name = FalagardDemo1;
+			productName = FalagardDemo1;
+			productReference = 5B1A175B0ADA8B8000BDF9AF /* FalagardDemo1.app */;
+			productType = "com.apple.product-type.application";
+		};
 		5B1FB7B709EF607500B2EF6B /* CEGUILibxmlParser */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B1FB7BA09EF607600B2EF6B /* Build configuration list for PBXNativeTarget "CEGUILibxmlParser" */;
@@ -3407,7 +3739,7 @@
 			);
 			name = CEGUIFalagardWRBase;
 			productName = CEGUIFalagard;
-			productReference = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardBase.bundle */;
+			productReference = 5B5F798F08CBD2C900C417E6 /* CEGUIFalagardWRBase.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		5B69B82F08C4106E0086C816 /* CEGUIBase */ = {
@@ -3442,6 +3774,7 @@
 			);
 			dependencies = (
 				5B991E1208C93119006E6DC9 /* PBXTargetDependency */,
+				5B1A17FF0ADA9A6900BDF9AF /* PBXTargetDependency */,
 			);
 			name = CEGUIOpenGLRenderer;
 			productName = CEGUIOpenGLRenderer;
@@ -3461,6 +3794,7 @@
 			);
 			dependencies = (
 				5B991DA208C92F70006E6DC9 /* PBXTargetDependency */,
+				5B1A18030ADA9A7E00BDF9AF /* PBXTargetDependency */,
 			);
 			name = CEGUILuaScriptModule;
 			productName = LuaScriptModule;
@@ -3556,6 +3890,7 @@
 			);
 			dependencies = (
 				5BCC7E810A8151200017D97C /* PBXTargetDependency */,
+				5B1A18010ADA9A7600BDF9AF /* PBXTargetDependency */,
 			);
 			name = CEGUIIrrlichtRenderer;
 			productName = CEGUIIrrlichtRenderer;
@@ -3567,6 +3902,7 @@
 			buildConfigurationList = 5BF885B40ACCD46200E8502F /* Build configuration list for PBXNativeTarget "TabControlDemo" */;
 			buildPhases = (
 				5BF885AD0ACCD46100E8502F /* Resources */,
+				5B4A830F0B2F04DA003F1BF5 /* ShellScript */,
 				5BF885AE0ACCD46100E8502F /* Sources */,
 				5BF885AF0ACCD46100E8502F /* Frameworks */,
 			);
@@ -3586,6 +3922,7 @@
 			buildConfigurationList = 5BF8860C0ACCD81E00E8502F /* Build configuration list for PBXNativeTarget "ScrollablePaneDemo" */;
 			buildPhases = (
 				5BF886050ACCD81D00E8502F /* Resources */,
+				5B4A831D0B2F06AE003F1BF5 /* ShellScript */,
 				5BF886060ACCD81D00E8502F /* Sources */,
 				5BF886070ACCD81D00E8502F /* Frameworks */,
 			);
@@ -3605,12 +3942,15 @@
 			buildConfigurationList = 5BF8862E0ACCDABB00E8502F /* Build configuration list for PBXNativeTarget "Minesweeper" */;
 			buildPhases = (
 				5BF886270ACCDABB00E8502F /* Resources */,
+				5B4A831F0B2F06C0003F1BF5 /* ShellScript */,
 				5BF886280ACCDABB00E8502F /* Sources */,
 				5BF886290ACCDABB00E8502F /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5B1A17720ADA8BE700BDF9AF /* PBXTargetDependency */,
+				5B1A17740ADA8BE700BDF9AF /* PBXTargetDependency */,
 			);
 			name = Minesweeper;
 			productName = Minesweeper;
@@ -3630,6 +3970,7 @@
 			targets = (
 				5B991D8608C92230006E6DC9 /* CEGUI */,
 				5B69B82F08C4106E0086C816 /* CEGUIBase */,
+				5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */,
 				5B991D6F08C920E5006E6DC9 /* CEGUIOpenGLRenderer */,
 				5BCC7E490A8149370017D97C /* CEGUIIrrlichtRenderer */,
 				5B991D7A08C920FE006E6DC9 /* CEGUILuaScriptModule */,
@@ -3646,11 +3987,44 @@
 				5BF885B00ACCD46100E8502F /* TabControlDemo */,
 				5BF886080ACCD81D00E8502F /* ScrollablePaneDemo */,
 				5BF8862A0ACCDABB00E8502F /* Minesweeper */,
+				5B1A16650ADA8AA700BDF9AF /* FontDemo */,
+				5B1A173D0ADA8B0B00BDF9AF /* FirstWindow */,
+				5B1A175A0ADA8B8000BDF9AF /* FalagardDemo1 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5B1A16620ADA8AA700BDF9AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BC3C9CB0B2473B7006CC03D /* CEGUI.framework in Resources */,
+				5BC3C9CC0B2473B7006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
+				5B1A17510ADA8B5A00BDF9AF /* FontDemo-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B1A173A0ADA8B0B00BDF9AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BC3C9CF0B2473D5006CC03D /* CEGUI.framework in Resources */,
+				5BC3C9D00B2473D5006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
+				5B1A17520ADA8B5F00BDF9AF /* FirstWindow-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B1A17570ADA8B8000BDF9AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BC3C9CD0B2473C1006CC03D /* CEGUI.framework in Resources */,
+				5BC3C9CE0B2473C1006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
+				5B1A17670ADA8BBD00BDF9AF /* FalagardDemo1-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B1FB7B409EF607500B2EF6B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3830,6 +4204,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BC3C9B80B247348006CC03D /* CEGUI.framework in Resources */,
+				5BC3C9B90B247348006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5BF886210ACCD93500E8502F /* TabControlDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3838,6 +4214,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BC3C9C30B24738B006CC03D /* CEGUI.framework in Resources */,
+				5BC3C9C40B24738B006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5BF886200ACCD92B00E8502F /* ScrollablePaneDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3846,6 +4224,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BC3C9C50B247399006CC03D /* CEGUI.framework in Resources */,
+				5BC3C9C60B247399006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5BF886370ACCDB1000E8502F /* Minesweeper-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3853,6 +4233,84 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5B4A830F0B2F04DA003F1BF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
+		5B4A831D0B2F06AE003F1BF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
+		5B4A831F0B2F06C0003F1BF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
+		5B4A83210B2F06CE003F1BF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
+		5B4A83230B2F06DA003F1BF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
+		5B4A83250B2F06EA003F1BF5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+		};
 		5B5F7A3B08CCB31100C417E6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3986,6 +4444,42 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5B1A16630ADA8AA700BDF9AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B1A17500ADA8B4700BDF9AF /* Sample_FontDemo.cpp in Sources */,
+				5B1A178D0ADA907700BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				5B1A178E0ADA907700BDF9AF /* CEGuiRendererSelector.cpp in Sources */,
+				5B1A178F0ADA907800BDF9AF /* CEGuiSample.cpp in Sources */,
+				5B1A17900ADA907B00BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B1A173B0ADA8B0B00BDF9AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B1A174A0ADA8B3D00BDF9AF /* Sample_FirstWindow.cpp in Sources */,
+				5B1A17BB0ADA909500BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				5B1A17BC0ADA909600BDF9AF /* CEGuiRendererSelector.cpp in Sources */,
+				5B1A17BD0ADA909800BDF9AF /* CEGuiSample.cpp in Sources */,
+				5B1A17BE0ADA909A00BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B1A17580ADA8B8000BDF9AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B1A17680ADA8BBE00BDF9AF /* Sample_FalagardDemo1.cpp in Sources */,
+				5B1A17BF0ADA90A000BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				5B1A17C00ADA90A000BDF9AF /* CEGuiRendererSelector.cpp in Sources */,
+				5B1A17C10ADA90A100BDF9AF /* CEGuiSample.cpp in Sources */,
+				5B1A17C20ADA90A300BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B1FB7B509EF607500B2EF6B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4327,6 +4821,121 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5B1A17630ADA8BAD00BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B1A17620ADA8BAD00BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17650ADA8BAD00BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* CEGUIOpenGLRenderer */;
+			targetProxy = 5B1A17640ADA8BAD00BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A176A0ADA8BCD00BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B1A17690ADA8BCD00BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A176C0ADA8BCD00BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* CEGUIOpenGLRenderer */;
+			targetProxy = 5B1A176B0ADA8BCD00BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A176E0ADA8BD800BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B1A176D0ADA8BD800BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17700ADA8BD800BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* CEGUIOpenGLRenderer */;
+			targetProxy = 5B1A176F0ADA8BD800BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17720ADA8BE700BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = 5B1A17710ADA8BE700BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17740ADA8BE700BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D6F08C920E5006E6DC9 /* CEGUIOpenGLRenderer */;
+			targetProxy = 5B1A17730ADA8BE700BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17820ADA8C3700BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BF8862A0ACCDABB00E8502F /* Minesweeper */;
+			targetProxy = 5B1A17810ADA8C3700BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17840ADA8C3700BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A16650ADA8AA700BDF9AF /* FontDemo */;
+			targetProxy = 5B1A17830ADA8C3700BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17860ADA8C3700BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A173D0ADA8B0B00BDF9AF /* FirstWindow */;
+			targetProxy = 5B1A17850ADA8C3700BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17880ADA8C3700BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A175A0ADA8B8000BDF9AF /* FalagardDemo1 */;
+			targetProxy = 5B1A17870ADA8C3700BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17F00ADA9A4200BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardWRBase */;
+			targetProxy = 5B1A17EF0ADA9A4200BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17F20ADA9A4200BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1FB7CB09EF609F00B2EF6B /* CEGUIXercesParser */;
+			targetProxy = 5B1A17F10ADA9A4200BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17F40ADA9A4200BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1FB7D509EF60B200B2EF6B /* CEGUITinyXMLParser */;
+			targetProxy = 5B1A17F30ADA9A4200BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17F60ADA9A4200BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BCC7E0D0A8146060017D97C /* CEGUIDevILImageCodec */;
+			targetProxy = 5B1A17F50ADA9A4200BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17FA0ADA9A4200BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BCC7E210A8146400017D97C /* CEGUIFreeImageImageCodec */;
+			targetProxy = 5B1A17F90ADA9A4200BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17FC0ADA9A4200BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BCC7E2B0A8146690017D97C /* CEGUITGAImageCodec */;
+			targetProxy = 5B1A17FB0ADA9A4200BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A17FF0ADA9A6900BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */;
+			targetProxy = 5B1A17FE0ADA9A6900BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A18010ADA9A7600BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */;
+			targetProxy = 5B1A18000ADA9A7600BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A18030ADA9A7E00BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */;
+			targetProxy = 5B1A18020ADA9A7E00BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B1A181C0ADA9E6000BDF9AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */;
+			targetProxy = 5B1A181B0ADA9E6000BDF9AF /* PBXContainerItemProxy */;
+		};
+		5B4A81E10B2EF8B3003F1BF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1FB7C109EF608C00B2EF6B /* CEGUIExpatParser */;
+			targetProxy = 5B4A81E00B2EF8B3003F1BF5 /* PBXContainerItemProxy */;
+		};
 		5B54D2DA0A81B5FF00E88F24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
@@ -4371,11 +4980,6 @@
 			isa = PBXTargetDependency;
 			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
 			targetProxy = 5B5F799808CBD2E400C417E6 /* PBXContainerItemProxy */;
-		};
-		5B5F7A5D08CCB7D500C417E6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5B5F798E08CBD2C900C417E6 /* CEGUIFalagardWRBase */;
-			targetProxy = 5B5F7A5C08CCB7D500C417E6 /* PBXContainerItemProxy */;
 		};
 		5B991D8808C92239006E6DC9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4440,6 +5044,278 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5B1A168A0ADA8AA900BDF9AF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FontDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FontDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Development;
+		};
+		5B1A168B0ADA8AA900BDF9AF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FontDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FontDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B1A168C0ADA8AA900BDF9AF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FontDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FontDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B1A17420ADA8B0B00BDF9AF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Development;
+		};
+		5B1A17430ADA8B0B00BDF9AF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B1A17440ADA8B0B00BDF9AF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FirstWindow-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FirstWindow;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B1A175F0ADA8B8100BDF9AF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Development;
+		};
+		5B1A17600ADA8B8100BDF9AF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B1A17610ADA8B8100BDF9AF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FalagardDemo1;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		5B1A18060ADA9AA300BDF9AF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = CEGUIDeps;
+			};
+			name = Development;
+		};
+		5B1A18070ADA9AA300BDF9AF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = CEGUIDeps;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		5B1A18080ADA9AA300BDF9AF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = CEGUIDeps;
+			};
+			name = Default;
+		};
 		5B1FB7BB09EF607600B2EF6B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4538,7 +5414,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/malloc,
+					/Library/Frameworks/expat.framework/Headers,
+				);
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -4565,7 +5444,10 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/malloc,
+					/Library/Frameworks/expat.framework/Headers,
+				);
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -4582,11 +5464,18 @@
 		5B1FB7C709EF608D00B2EF6B /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				HEADER_SEARCH_PATHS = (
+					/usr/include/malloc,
+					/Library/Frameworks/expat.framework/Headers,
+				);
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -4790,7 +5679,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIFalagardBase;
+				PRODUCT_NAME = CEGUIFalagardWRBase;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -4830,7 +5719,7 @@
 				);
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIFalagard;
+				PRODUCT_NAME = CEGUIFalagardWRBase;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -5449,6 +6338,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
+				USER_HEADER_SEARCH_PATHS = "/Library/Frameworks/zlib.framework/Headers /Library/Frameworks/jpeg.framework/Headers /Library/Frameworks/png.framework/Headers $(inherited)";
 				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = NO;
 			};
@@ -5481,6 +6371,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
+				USER_HEADER_SEARCH_PATHS = "/Library/Frameworks/zlib.framework/Headers /Library/Frameworks/jpeg.framework/Headers /Library/Frameworks/png.framework/Headers $(inherited)";
 				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = NO;
 			};
@@ -6001,6 +6892,46 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5B1A16890ADA8AA900BDF9AF /* Build configuration list for PBXNativeTarget "FontDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B1A168A0ADA8AA900BDF9AF /* Development */,
+				5B1A168B0ADA8AA900BDF9AF /* Deployment */,
+				5B1A168C0ADA8AA900BDF9AF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B1A17410ADA8B0B00BDF9AF /* Build configuration list for PBXNativeTarget "FirstWindow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B1A17420ADA8B0B00BDF9AF /* Development */,
+				5B1A17430ADA8B0B00BDF9AF /* Deployment */,
+				5B1A17440ADA8B0B00BDF9AF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B1A175E0ADA8B8100BDF9AF /* Build configuration list for PBXNativeTarget "FalagardDemo1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B1A175F0ADA8B8100BDF9AF /* Development */,
+				5B1A17600ADA8B8100BDF9AF /* Deployment */,
+				5B1A17610ADA8B8100BDF9AF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		5B1A18050ADA9AA300BDF9AF /* Build configuration list for PBXAggregateTarget "CEGUIBaseBundles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B1A18060ADA9AA300BDF9AF /* Development */,
+				5B1A18070ADA9AA300BDF9AF /* Deployment */,
+				5B1A18080ADA9AA300BDF9AF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
 		5B1FB7BA09EF607600B2EF6B /* Build configuration list for PBXNativeTarget "CEGUILibxmlParser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
