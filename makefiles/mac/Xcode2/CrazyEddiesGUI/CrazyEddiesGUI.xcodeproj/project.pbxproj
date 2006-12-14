@@ -4244,7 +4244,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A831D0B2F06AE003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4257,7 +4257,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A831F0B2F06C0003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4270,7 +4270,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A83210B2F06CE003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4283,7 +4283,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A83230B2F06DA003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4296,7 +4296,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A83250B2F06EA003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4309,7 +4309,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\n";
+			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B5F7A3B08CCB31100C417E6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
