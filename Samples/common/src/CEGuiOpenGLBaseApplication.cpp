@@ -161,12 +161,12 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
 #endif
 #else
-    rp->setResourceGroupDirectory("schemes", "schemes/");
-    rp->setResourceGroupDirectory("imagesets", "imagesets/");
-    rp->setResourceGroupDirectory("fonts", "fonts/");
-    rp->setResourceGroupDirectory("layouts", "layouts/");
-    rp->setResourceGroupDirectory("looknfeels", "looknfeel/");
-    rp->setResourceGroupDirectory("lua_scripts", "lua_scripts/");
+    rp->setResourceGroupDirectory("schemes", "datafiles/schemes/");
+    rp->setResourceGroupDirectory("imagesets", "datafiles/imagesets/");
+    rp->setResourceGroupDirectory("fonts", "datafiles/fonts/");
+    rp->setResourceGroupDirectory("layouts", "datafiles/layouts/");
+    rp->setResourceGroupDirectory("looknfeels", "datafiles/looknfeel/");
+    rp->setResourceGroupDirectory("lua_scripts", "datafiles/lua_scripts/");
 #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
     rp->setResourceGroupDirectory("schemas", "XMLRefSchema/");
 #endif
