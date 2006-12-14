@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>CEGUIFalagardBase</string>
+	<string>CEGUIFalagardWRBase</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.crayzedsgui.CEGUIFalagardBase</string>
+	<string>net.sourceforge.crayzedsgui.CEGUIFalagardWRBase</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
