@@ -1,0 +1,8 @@
+/***********************************************************************
+	ScriptWindowHelper
+***********************************************************************/
+class ScriptWindowHelper
+{
+	Window* getWindow(string name);
+	Window* getWindow();
+};

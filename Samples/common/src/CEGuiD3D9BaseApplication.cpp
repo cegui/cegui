@@ -46,13 +46,6 @@
 #include "CEGUIDefaultResourceProvider.h"
 #include <stdexcept>
 
-#ifdef _MSC_VER
-# if defined(DEBUG) || defined (_DEBUG)
-#   pragma comment (lib, "DirectX9GUIRenderer_d.lib")
-# else
-#   pragma comment (lib, "DirectX9GUIRenderer.lib")
-# endif
-#endif
 
 /*************************************************************************
     Impl struct
@@ -184,6 +177,8 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
                 continue;
             }
 
+			CEGUI::System& guiSystem = CEGUI::System::getSingleton();
+			guiSystem.injectTimePulse(GetTickCount() - d_lastTime);
             updateFPS();
             char fpsbuff[16];
             sprintf(fpsbuff, "FPS: %d", d_FPS);
@@ -191,7 +186,6 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
             Win32AppHelper::doDirectInputEvents(pimpl->d_directInput);
 
             // draw display
-			CEGUI::System& guiSystem = CEGUI::System::getSingleton();
             pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
             guiSystem.renderGUI();
 

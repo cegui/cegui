@@ -100,6 +100,7 @@ Window*	Window::d_captureWindow		= 0;
 /*************************************************************************
 	Event name constants
 *************************************************************************/
+const String Window::EventWindowUpdated ( "WindowUpdate" );
 const String Window::EventParentSized( "ParentSized" );
 const String Window::EventSized( "Sized" );
 const String Window::EventMoved( "Moved" );
@@ -380,14 +381,54 @@ Window* Window::getChild(const String& name) const
 
 	for (size_t i = 0; i < child_count; ++i)
 	{
-		if (d_children[i]->getName() == name)
+		String childName = d_children[i]->getName();
+		//We need to check if the current name is available or if the name + prefix is available.. Hopefully not both
+		if(childName == name || childName == m_windowPrefix + name)
 		{
 			return d_children[i];
 		}
 
-	}
+	} // for (size_t i = 0; i < child_count; ++i)
+
+	for(size_t i=0;i<child_count;i++)
+	{
+		Window* temp = d_children[i]->recursiveChildSearch(name);
+		if(temp)
+			return temp;
+	} // for(size_t i=0;i<child_count;i++)
 
 	throw UnknownObjectException("Window::getChild - The Window object named '" + name +"' is not attached to Window '" + d_name + "'.");
+}
+
+/***********************************************************************
+	returns a pointer to a child window... searches recursively for it
+	Use getChild() only. This function should only be used by getChild
+	to find any child windows within it. This function does not throw any
+	exceptions it will return NULL if nothing is found **WARNING**
+************************************************************************/
+Window* Window::recursiveChildSearch( const String& name ) const
+{
+	size_t child_count = getChildCount();
+
+	for (size_t i = 0; i < child_count; ++i)
+	{
+		String childName = d_children[i]->getName();
+		//We need to check if the current name is available or if the name + prefix is available.. Hopefully not both
+		if(childName == name || childName == m_windowPrefix + name)
+		{
+			return d_children[i];
+		}
+
+	} // for (size_t i = 0; i < child_count; ++i)
+
+	for(size_t i=0;i<child_count;i++)
+	{
+		Window* temp = d_children[i]->recursiveChildSearch(name);
+		if(temp)
+			return temp;
+	} // for(size_t i=0;i<child_count;i++)
+
+	return NULL;
 }
 
 
@@ -1743,6 +1784,9 @@ void Window::update(float elapsed)
 
 	// update child windows
 	size_t child_count = getChildCount();
+
+	UpdateEventArgs e(this,elapsed);
+	fireEvent(EventWindowUpdated,e,EventNamespace);
 
 	for (size_t i = 0; i < child_count; ++i)
 	{

@@ -28,6 +28,7 @@ $pfile "MouseCursor.pkg"
 $pfile "Window.pkg"
 $pfile "CoordConverter.pkg"
 $pfile "Renderer.pkg"
+$pfile "ScriptWindowHelper.pkg"
 $pfile "System.pkg"
 
 $pfile "WindowManager.pkg"
@@ -40,6 +41,7 @@ $pfile "PropertyHelper.pkg"
 
 // elements
 $pfile "elements/GUISheet.pkg"
+$pfile "elements/Tree.pkg"
 
 $pfile "elements/ButtonBase.pkg"
 $pfile "elements/Checkbox.pkg"
@@ -51,6 +53,7 @@ $pfile "elements/TabButton.pkg"
 $pfile "elements/TabControl.pkg"
 
 $pfile "elements/Titlebar.pkg"
+$pfile "elements/TreeItem.pkg"
 $pfile "elements/FrameWindow.pkg"
 
 $pfile "elements/Tooltip.pkg"

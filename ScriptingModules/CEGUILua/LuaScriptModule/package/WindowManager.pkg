@@ -7,6 +7,7 @@ class WindowManager
 
 	tolua_throws|CEGUI::AlreadyExistsException,nil| Window* createWindow(string type, string name="");
 	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadWindowLayout(string filename, string name_prefix="", string resourcegroup="");
+	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| Window* loadWindowLayout(string filename, bool generateRandomPrefix);
 
     void writeWindowLayoutToStream(string window, OutStream& out, bool writeParent=false) const;
     void writeWindowLayoutToStream(const Window& window, OutStream& out, bool writeParent=false) const;

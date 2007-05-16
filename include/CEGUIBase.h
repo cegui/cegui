@@ -45,7 +45,7 @@
 	Dynamic Library import / export control conditional
 	(Define CEGUIBASE_EXPORTS to export symbols, else they are imported)
 *************************************************************************/
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIBASE_EXPORTS
 #       define CEGUIEXPORT __declspec(dllexport)
 #   else
@@ -104,7 +104,6 @@
 #    define ceguimin	std::min
 #    define ceguimax	std::max
 #endif
-
 
 /*************************************************************************
 	Documentation for the CEGUI namespace itself

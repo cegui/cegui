@@ -33,7 +33,7 @@
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUILogger.h"
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIWRMODULE_EXPORTS
 #       define CEGUIWRMODULE_API __declspec(dllexport)
 #   else
@@ -48,8 +48,8 @@
 \
 class CEGUI::WindowRendererFactory;\
 \
-extern "C" CEGUIWRMODULE_API void registerFactory(const CEGUI::String& type_name);\
-extern "C" CEGUIWRMODULE_API CEGUI::uint registerAllFactories(void);\
+extern "C" CEGUIWRMODULE_API void registerFactoryFunction(const CEGUI::String& type_name);\
+extern "C" CEGUIWRMODULE_API CEGUI::uint registerAllFactoriesFunction(void);\
 void doSafeFactoryRegistration(CEGUI::WindowRendererFactory* factory);
 
 // define factory
@@ -87,7 +87,7 @@ module ## WRMapEntry module ## WRFactoriesMap[] =\
 
 // define module
 #define CEGUI_DEFINE_WR_MODULE( module )\
-extern "C" void registerFactory(const CEGUI::String& type_name)\
+void registerFactoryFunction(const CEGUI::String& type_name)\
 {\
     module ## WRMapEntry* entry = module ## WRFactoriesMap;\
     while (entry->d_name)\
@@ -103,7 +103,7 @@ extern "C" void registerFactory(const CEGUI::String& type_name)\
     throw CEGUI::UnknownObjectException("::registerFactory - The window renderer factory for type '" + type_name + "' is not known in this module.");\
 }\
 \
-extern "C" CEGUI::uint registerAllFactories(void)\
+extern "C" CEGUI::uint registerAllFactoriesFunction(void)\
 {\
     CEGUI::uint count = 0;\
     module ## WRMapEntry* entry = module ## WRFactoriesMap;\

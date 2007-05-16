@@ -40,10 +40,14 @@
 #include <list>
 #include <set>
 
-#ifdef DIRECTX9_GUIRENDERER_EXPORTS
-#define DIRECTX9_GUIRENDERER_API __declspec(dllexport)
+#if !defined(CEGUI_STATIC)
+	#ifdef DIRECTX9_GUIRENDERER_EXPORTS
+	#define DIRECTX9_GUIRENDERER_API __declspec(dllexport)
+	#else
+	#define DIRECTX9_GUIRENDERER_API __declspec(dllimport)
+	#endif
 #else
-#define DIRECTX9_GUIRENDERER_API __declspec(dllimport)
+	#define DIRECTX9_GUIRENDERER_API
 #endif
 
 

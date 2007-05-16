@@ -1,0 +1,33 @@
+/***********************************************************************
+	TreeItem
+***********************************************************************/
+class TreeItem
+{
+	ColourRect  getTextColours(void) const;
+	void  setTextColours(ColourRect& cols);
+	void  setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void  setTextColours(colour col);
+	string getText(void) const;
+	string getTooltipText(void) const;
+	unsigned int  getID(void) const;
+	void* getUserData(void) const;
+	bool  isSelected(void) const;
+	bool  isDisabled(void) const;
+	bool  isAutoDeleted(void) const;
+	Window*  getOwnerWindow(void);
+	ColourRect  getSelectionColours(void) const;
+	void  setText(string text);
+	void  setTooltipText(string text);
+	void  setUserData(void* item_data);
+	void  setSelected(bool setting);
+	void  setDisabled(bool setting);
+	void  setAutoDeleted(bool setting);
+	void  setSelectionColours(ColourRect& cols);
+	void  setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
+	void  setSelectionColours(colour col);
+	bool  getIsOpen();
+	void toggleIsOpen();
+	size_t getItemCount();
+	void addItem(TreeItem* item);
+	void setIcon(Image& icon);		
+};

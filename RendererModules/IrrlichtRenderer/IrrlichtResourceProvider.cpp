@@ -68,6 +68,7 @@ namespace CEGUI
 			input_size=f->getSize();
 			input= new irr::u8[input_size];
 			f->read(input,input_size);
+			f->drop();
 
 			output.setData(input);
 			output.setSize(input_size);

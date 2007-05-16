@@ -56,6 +56,18 @@
 #include <ctime>
 #include <clocale>
 
+//This block includes the proper headers when static linking
+#if defined(CEGUI_STATIC)
+	#ifdef CEGUI_WITH_EXPAT
+		#include "../XMLParserModules/expatParser/CEGUIExpatParserModule.h"
+	#elif CEGUI_WITH_TINYXML
+		#include "../XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
+	#elif CEGUI_WITH_XERCES
+		#include "../XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
+	#endif
+#endif
+
+
 #define S_(X) #X
 #define STRINGIZE(X) S_(X)
 
@@ -1466,6 +1478,7 @@ void System::addStandardWindowFactories()
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemListbox));
+	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tree));
 }
 
 void System::createSingletons()
@@ -1500,6 +1513,8 @@ void System::setupXMLParser()
     // handle creation / initialisation of XMLParser
     if (!d_xmlParser)
     {
+
+#if !defined(CEGUI_STATIC)
         // load the dynamic module
         d_parserModule = new DynamicModule(String("CEGUI") + d_defaultXMLParserName);
         // get pointer to parser creation function
@@ -1507,6 +1522,10 @@ void System::setupXMLParser()
             (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
         // create the parser object
         d_xmlParser = createFunc();
+#else
+		//Static Linking Call
+		d_xmlParser = createParser();
+#endif
         // make sure we know to cleanup afterwards.
         d_ourXmlParser = true;
     }
@@ -1523,11 +1542,16 @@ void System::cleanupXMLParser()
 
         if (d_ourXmlParser && d_parserModule)
         {
+#if !defined(CEGUI_STATIC)
             // get pointer to parser deletion function
             void(*deleteFunc)(XMLParser*) =
                 (void(*)(XMLParser*))d_parserModule->getSymbolAddress("destroyParser");
             // cleanup the xml parser object
             deleteFunc(d_xmlParser);
+#else
+			//Static Linking Call
+			destroyParser(d_xmlParser);
+#endif
             d_xmlParser = 0;
             // delete the dynamic module for the xml parser
             delete d_parserModule;

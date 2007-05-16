@@ -109,7 +109,17 @@ bool LuaFunctor::operator()(const EventArgs& args) const
         needs_lookup = false;
         CEGUI_LOGINSANE("Late binding of callback '"+function_name+"' performed");
         function_name.clear();
-    }
+    } // if (needs_lookup)
+
+	ScriptWindowHelper* helper = NULL;
+	//Set a global for this window
+	if(args.m_hasWindow)
+	{
+		WindowEventArgs& we = (WindowEventArgs&)args;
+		helper = new ScriptWindowHelper(we.window);
+		tolua_pushusertype(L,(void*)helper,"CEGUI::ScriptWindowHelper");
+		lua_setglobal(L,"this");
+	}
 
     // retrieve function
     lua_rawgeti(L, LUA_REGISTRYINDEX, index);
@@ -134,7 +144,13 @@ bool LuaFunctor::operator()(const EventArgs& args) const
         String errStr(lua_tostring(L, -1));
         lua_pop(L, 1);
         throw ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n");
-    }
+    } // if (error)
+	
+	if(helper)
+	{
+		delete helper;
+		helper = NULL;
+	}
 
     return true;
 }

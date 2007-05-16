@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="TaharezLook">
 	<Imageset Name="TaharezLook" Filename="TaharezLook.imageset" />
+	<Font Name="Commonwealth-10" Filename="Commonwealth-10.font" />
 	<LookNFeel Filename="TaharezLook.looknfeel" />
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
 	<FalagardMapping WindowType="TaharezLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/Button" />
@@ -44,4 +45,5 @@
 	<FalagardMapping WindowType="TaharezLook/StaticText"  TargetType="DefaultWindow" Renderer="Falagard/StaticText"  LookNFeel="TaharezLook/StaticText" />
     <FalagardMapping WindowType="TaharezLook/ItemListbox" TargetType="CEGUI/ItemListbox" Renderer="Falagard/ItemListbox" LookNFeel="TaharezLook/ItemListbox" />
     <FalagardMapping WindowType="TaharezLook/ListboxItem" TargetType="CEGUI/ItemEntry"   Renderer="Falagard/ItemEntry"   LookNFeel="TaharezLook/ListboxItem" />
+    <FalagardMapping WindowType="TaharezLook/Tree" TargetType="CEGUI/Tree"   Renderer="Falagard/Tree"   LookNFeel="TaharezLook/Tree" />
 </GUIScheme>

@@ -33,7 +33,7 @@
 
 #include "CEGUIBase.h"
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef OPENGL_GUIRENDERER_EXPORTS
 #       define OPENGL_GUIRENDERER_API __declspec(dllexport)
 #   else
@@ -94,13 +94,13 @@ typedef unsigned short wchar_t;
 #include "CEGUITexture.h"
 
 
-#if defined(_WIN32)
-#  if defined(_DEBUG)
-#     pragma comment(lib, "CEGUIBase_d.lib")
-#  else
-#     pragma comment(lib, "CEGUIBase.lib")
-#  endif
-#endif
+// #if defined(_WIN32)
+// #  if defined(_DEBUG)
+// #     pragma comment(lib, "CEGUIBase_d.lib")
+// #  else
+// #     pragma comment(lib, "CEGUIBase.lib")
+// #  endif
+// #endif
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

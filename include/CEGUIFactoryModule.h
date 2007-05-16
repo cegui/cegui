@@ -102,7 +102,7 @@ private:
 
 	FactoryRegisterFunction	d_regFunc;	//!< Pointer to the function called to register factories.
     RegisterAllFunction d_regAllFunc;   //!< Pointer to a function called to register all factories in a module.
-    DynamicModule d_module;
+    DynamicModule* d_module;
 };
 
 } // End of  CEGUI namespace section

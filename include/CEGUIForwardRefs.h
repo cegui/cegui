@@ -62,6 +62,7 @@ class WindowFactory;
 class WindowManager;
 class Scheme;
 class SchemeManager;
+class ScriptWindowHelper;
 class System;
 class FactoryModule;
 class ScriptModule;
@@ -115,6 +116,7 @@ class ScrolledItemListBase;
 class ItemListbox;
 class TabButton;
 class TabControl;
+class Tree;
 
 } // End of  CEGUI namespace section
 

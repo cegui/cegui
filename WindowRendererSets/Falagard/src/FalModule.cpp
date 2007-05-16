@@ -54,6 +54,7 @@
 #include "FalToggleButton.h"
 #include "FalTooltip.h"
 #include "FalItemListbox.h"
+#include "FalTree.h"
 
 // Define factories to create Falagard window types
 CEGUI_DEFINE_WR_FACTORY( FalagardButton )
@@ -83,6 +84,7 @@ CEGUI_DEFINE_WR_FACTORY( FalagardTitlebar )
 CEGUI_DEFINE_WR_FACTORY( FalagardToggleButton )
 CEGUI_DEFINE_WR_FACTORY( FalagardTooltip )
 CEGUI_DEFINE_WR_FACTORY( FalagardItemListbox )
+CEGUI_DEFINE_WR_FACTORY( FalagardTree )
 
 // Define the factory map so types can be registered
 CEGUI_START_WR_FACTORY_MAP( Falagard )
@@ -113,6 +115,7 @@ CEGUI_START_WR_FACTORY_MAP( Falagard )
     CEGUI_WR_FACTORY_MAP_ENTRY( FalagardToggleButton )
     CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTooltip )
     CEGUI_WR_FACTORY_MAP_ENTRY( FalagardItemListbox )
+	CEGUI_WR_FACTORY_MAP_ENTRY( FalagardTree )
 CEGUI_END_WR_FACTORY_MAP
 
 // define the widget module for Falagard

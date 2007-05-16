@@ -10,7 +10,11 @@ DEBUG_DLL_SUFFIX = "_d"
 -- SDK / dependency paths
 -- { base, include_suffix, library_suffix }
 -- base can be absolute or relative to the root cegui_mk2 dir
-IRRLICHT_PATHS = { "../irrlicht-1.0", "include", "lib/Win32-visualstudio" }
+IRRLICHT_PATHS = { "irrlicht-1.3", "include", "lib/Win32-visualstudio" }
+
+--- SDK Version
+IRRLICHT_VERSION = 1.3
+
 
 -------------
 -- Renderers
@@ -33,14 +37,25 @@ CORONA_IMAGE_CODEC = false
 -- this setting selects the default image codec module
 -- can be either "tga", "silly", "devil", "freeimage" or "corona"
 -- SILLY was written for CEGUI
-DEFAULT_IMAGE_CODEC = "tga"
+DEFAULT_IMAGE_CODEC = "silly"
+
+---------------
+-- Window Renderers
+-- controls window renderers built
+FALAGARD_WR = true
+
+-- default WR
+-- available: falagard
+DEFAULT_WINDOW_RENDERER = "falagard"
+
+
 
 
 ---------------
 -- XML parsers
 -- this controls which xml parser modules are built
 EXPAT_PARSER = true
-XERCES_PARSER = true
+XERCES_PARSER = false
 TINYXML_PARSER = true
 LIBXML_PARSER = false
 
@@ -70,7 +85,7 @@ TOLUA_STATIC = false
 SAMPLES_GL = true
 SAMPLES_DX81 = true
 SAMPLES_DX9 = true
-SAMPLES_IRRLICHT = true
+SAMPLES_IRRLICHT = false
 
 -- this setting controls if the samples should be included in the same
 -- solution as the core libraries. If this setting is disabled you can

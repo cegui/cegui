@@ -202,7 +202,7 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
     // attempt to create window
     try
     {
-        Window* wnd = WindowManager::getSingleton().createWindow(windowType, d_namingPrefix + windowName);
+        Window* wnd = WindowManager::getSingleton().createWindow(windowType, windowName, d_namingPrefix);
 
         // add this window to the current parent (if any)
         if (!d_stack.empty())

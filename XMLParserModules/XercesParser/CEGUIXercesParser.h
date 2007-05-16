@@ -30,7 +30,7 @@
 
 #include "CEGUIXMLParser.h"
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIXERCESPARSER_EXPORTS
 #       define CEGUIXERCESPARSER_API __declspec(dllexport)
 #   else

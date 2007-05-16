@@ -17,8 +17,10 @@ if not CEGUI_CORE_LIBRARY_SOLUTION then
     project.configs =
     {
     	"Debug",
+    	"Debug_Static",
     	"ReleaseWithSymbols",
     	"Release",
+    	"Release_Static"
     }
 end
 
@@ -36,12 +38,14 @@ local pkg_table =
         "Minesweeper",
         "ScrollablePaneDemo",
         "TabControlDemo",
+        "TreeDemo"
     }
 }
 
 local lua_samples =
 {
     "Demo8",
+    "InstancedWindows",
 }
 
 if LUA_SCRIPT_MODULE then
