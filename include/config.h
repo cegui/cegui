@@ -2,13 +2,11 @@
 // do not edit by hand, instead edit config.lua and regenerate
 // it is important that you use premake recreate this file if changing xml parsers or codecs for the static builds
 #define CEGUI_WITH_EXPAT 1
-#define CEGUI_SAMPLES_USE_IRRLICHT 
-#define CEGUI_SAMPLES_USE_DIRECTX_9 
+#define CEGUI_CODEC_SILLY 1
 #define CEGUI_DEFAULT_IMAGE_CODEC SILLYImageCodec
 #define CEGUI_IRRLICHT_ABOVE_1_3 1
 #define CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG 1
 #define CEGUI_SAMPLES_USE_OPENGL 
 #define CEGUI_FALAGARD_RENDERER 
 #define CEGUI_DEFAULT_XMLPARSER ExpatParser
-#define CEGUI_CODEC_SILLY 1
 #define CEGUI_LOAD_MODULE_DEBUG_SUFFIX "_d"

@@ -143,6 +143,11 @@ bool LuaFunctor::operator()(const EventArgs& args) const
     {
         String errStr(lua_tostring(L, -1));
         lua_pop(L, 1);
+		if(helper)
+		{
+			delete helper;
+			helper = NULL;
+		}
         throw ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n");
     } // if (error)
 	
