@@ -182,6 +182,8 @@ int	LuaScriptModule::executeScriptGlobal(const String& function_name)
 bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, const EventArgs& e)
 {
 
+	LuaFunctor::pushNamedFunction(d_state, handler_name);
+
 	ScriptWindowHelper* helper = NULL;
 	//If this is an event that was triggered by a window then make a "this" pointer to the window for the script.
 	if(e.m_hasWindow)
@@ -191,17 +193,6 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
 		lua_pushlightuserdata(d_state,(void*)helper);
 		lua_setglobal(d_state,"this");
 	} // if(e.m_hasWindow)
-
-
-	try
-	{
-		LuaFunctor::pushNamedFunction(d_state, handler_name);
-	}
-	catch(ScriptException)
-	{
-		//There is one special exception in here that we must handle. Becuase we auto subscribe every window 
-		return false;
-	}
 
     // push EventArgs as the first parameter
     tolua_pushusertype(d_state,(void*)&e,"const CEGUI::EventArgs");

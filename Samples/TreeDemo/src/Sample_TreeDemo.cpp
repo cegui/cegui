@@ -10,6 +10,7 @@
 #define NOMINMAX
 #include "windows.h"
 #include <mmsystem.h>
+#include <time.h>
 
 
 const unsigned int TreeDemoSample::TreeID    = 1;
@@ -89,7 +90,7 @@ bool TreeDemoSample::initialiseSample()
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
    // Windows specific code.
-   srand(timeGetTime());
+   srand(time(NULL));
 #endif
 
    // Get window manager which we will use for a few jobs here.
