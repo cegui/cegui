@@ -49,7 +49,11 @@ function outputExceptionError(f,e,errBuf)
     if nameToEcho == "any" then
         nameToEcho = "..."
     end
-    output("catch(",nameToEcho,exceptionDefs[e.name].var,")\n{\n")
+    if e.ret == "nil" then
+        output("catch(",nameToEcho," CEGUIDeadException(",exceptionDefs[e.name].var,"))\n{\n")
+	else
+    	output("catch(",nameToEcho,exceptionDefs[e.name].var,")\n{\n")
+	end
     
     -- if just a nil
     if e.ret == "nil" then

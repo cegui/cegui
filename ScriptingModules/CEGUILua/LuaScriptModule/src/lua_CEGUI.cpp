@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 05/15/07 01:43:36.
+** Generated automatically by tolua++-1.0.92 on 05/16/07 12:10:27.
 */
 
 #ifndef __cplusplus
@@ -8380,7 +8380,7 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_getImageset00(lua_State* tolua_S)
   CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->getImageset(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
-catch(CEGUI::Exception&e)
+catch(CEGUI::Exception CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -14682,7 +14682,7 @@ static int tolua_CEGUI_CEGUI_Window_getChild00(lua_State* tolua_S)
   CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChild(ID);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
-catch(CEGUI::UnknownObjectException&e)
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -14719,7 +14719,7 @@ static int tolua_CEGUI_CEGUI_Window_getChild01(lua_State* tolua_S)
   CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChild(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
-catch(CEGUI::UnknownObjectException&e)
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -17360,7 +17360,7 @@ static int tolua_CEGUI_CEGUI_Window_getUserString00(lua_State* tolua_S)
   string tolua_ret = (string)  self->getUserString(name);
  tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
  }
-catch(CEGUI::UnknownObjectException&e)
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -21457,7 +21457,7 @@ static int tolua_CEGUI_CEGUI_WindowManager_createWindow00(lua_State* tolua_S)
   CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->createWindow(type,name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
-catch(CEGUI::AlreadyExistsException&e)
+catch(CEGUI::AlreadyExistsException CEGUIDeadException(&e))
 {
  return 0;
 }
@@ -21768,7 +21768,7 @@ static int tolua_CEGUI_CEGUI_WindowManager_getWindow00(lua_State* tolua_S)
   CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getWindow(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
  }
-catch(CEGUI::UnknownObjectException&e)
+catch(CEGUI::UnknownObjectException CEGUIDeadException(&e))
 {
  return 0;
 }
