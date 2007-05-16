@@ -30,11 +30,20 @@
 
 #if defined(_WIN32)
 #  pragma comment(lib, "irrlicht.lib")
+#if !defined(CEGUI_STATIC)
 #  if defined(_DEBUG)
 #      pragma comment(lib, "IrrlichtRenderer_d.lib")
 #  else
 #      pragma comment(lib, "IrrlichtRenderer.lib")
 #  endif
+#else
+#	define _IRR_STATIC_LIB_ //Define this regardless if we are using a dll or not
+#	if defined(_DEBUG)
+#		pragma comment(lib, "IrrlichtRenderer_Static_d.lib")
+#	else
+#		pragma comment(lib, "IrrlichtRenderer_Static.lib")
+#	endif
+#endif
 #endif
 
 #include "CEGuiBaseApplication.h"

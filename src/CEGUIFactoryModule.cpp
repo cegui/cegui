@@ -32,26 +32,42 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFactoryModule.h"
 
+#include "config.h"
+
+#if defined(CEGUI_STATIC)
+#	if defined(CEGUI_FALAGARD_RENDERER)
+#		include "../WindowRendererSets/Falagard/include/FalModule.h"
+#	endif
+#endif
+
+
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*************************************************************************
 	Constants
 *************************************************************************/
-const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactory";
-const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories";
+const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactoryFunction";
+const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactoriesFunction";
 
 
 /*************************************************************************
 	Construct the FactoryModule object by loading the dynamic loadable
 	module specified.
 *************************************************************************/
-FactoryModule::FactoryModule(const String& filename) :
-	d_module(filename)
+FactoryModule::FactoryModule(const String& filename):d_module(NULL)
 {
+#if !defined(CEGUI_STATIC)
+	d_module = new DynamicModule(filename);
+#endif
+
     // functions are now optional, and only throw upon the first attempt to use a missing function.
-    d_regFunc = (FactoryRegisterFunction)d_module.getSymbolAddress(RegisterFactoryFunctionName);
-    d_regAllFunc = (RegisterAllFunction)d_module.getSymbolAddress(RegisterAllFunctionName);
+    if(d_module)
+	{
+		d_regFunc = (FactoryRegisterFunction)d_module->getSymbolAddress(RegisterFactoryFunctionName);
+		d_regAllFunc = (RegisterAllFunction)d_module->getSymbolAddress(RegisterAllFunctionName);
+	}
 }
 
 
@@ -60,6 +76,11 @@ FactoryModule::FactoryModule(const String& filename) :
 *************************************************************************/
 FactoryModule::~FactoryModule(void)
 {
+	if(d_module)
+	{
+		delete(d_module);
+		d_module = NULL;
+	}
 }
 
 
@@ -68,26 +89,49 @@ FactoryModule::~FactoryModule(void)
 *************************************************************************/
 void FactoryModule::registerFactory(const String& type) const
 {
-    // are we attempting to use a missing function export
-    if (!d_regFunc)
-    {
-        throw InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" +
-            d_module.getModuleName() + "'.");
-    }
+	//Make sure we are using a dynamic factory and not the static one.
+	if(d_module)
+	{
+		// are we attempting to use a missing function export
+		if (!d_regFunc)
+		{
+			throw InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" +
+				d_module->getModuleName() + "'.");
+		}
 
-	d_regFunc(type);
+		d_regFunc(type);
+	} // if(d_module)
+	else
+	{
+#if defined(CEGUI_STATIC)
+		//Call the register function for the current static library
+		registerFactoryFunction(type);
+#endif
+	}
 }
 
 uint FactoryModule::registerAllFactories() const
 {
-    // are we attempting to use a missing function export
-    if (!d_regAllFunc)
-    {
-        throw InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" +
-            d_module.getModuleName() + "'.");
-    }
+	//Make sure we are using a dynamic factory and not a static one
+	if(d_module)
+	{
+		// are we attempting to use a missing function export
+		if (!d_regAllFunc)
+		{
+			throw InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" +
+				d_module->getModuleName() + "'.");
+		}
 
-    return d_regAllFunc();
+		return d_regAllFunc();
+	} // if(d_module)
+	else
+	{
+#if defined(CEGUI_STATIC)
+		return registerAllFactoriesFunction();
+#endif
+	}
+
+	return 0;
 }
 
 } // End of  CEGUI namespace section

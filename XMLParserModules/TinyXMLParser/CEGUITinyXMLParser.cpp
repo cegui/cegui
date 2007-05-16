@@ -65,18 +65,26 @@ namespace CEGUI
         memcpy(buf, rawXMLData.getDataPtr(), size);
         buf[size] = 0; 
 
-        // Parse the document 
-        CEGUITinyXML::TiXmlDocument doc;
-        doc.Parse((const char*)buf);
-        const CEGUITinyXML::TiXmlElement* currElement = doc.RootElement();
-        if (currElement)
-        {
-            // function called recursively to parse xml data
-            processElement(currElement);
-        }
-        // Free memory 
+		try 
+		{
+			// Parse the document 
+			CEGUITinyXML::TiXmlDocument doc;
+			doc.Parse((const char*)buf);
+			const CEGUITinyXML::TiXmlElement* currElement = doc.RootElement();
+			if (currElement)
+			{
+				// function called recursively to parse xml data
+				processElement(currElement);
+			} // if (currElement)
+		}
+		catch(...)
+		{
+			delete [] buf;
+			System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+			throw;
+		}
+		// Free memory 
         delete [] buf;
-
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
     

@@ -63,5 +63,6 @@ namespace CEGUI
     CEGUI_DEFINE_WINDOW_FACTORY(Titlebar);
     CEGUI_DEFINE_WINDOW_FACTORY(Tooltip);
     CEGUI_DEFINE_WINDOW_FACTORY(ItemListbox);
+	CEGUI_DEFINE_WINDOW_FACTORY(Tree);
 
 } // End of  CEGUI namespace section

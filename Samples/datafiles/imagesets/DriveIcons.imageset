@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Imageset Name="DriveIcons" Imagefile="DriveIcons.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+	<Image Name="Artic" XPos="0" YPos="0" Width="32" Height="32" />
+	<Image Name="Lime" XPos="32" YPos="0" Width="32" Height="32" />
+	<Image Name="Sunset" XPos="64" YPos="0" Width="32" Height="32" />
+	<Image Name="Black" XPos="96" YPos="0" Width="32" Height="32" />
+	<Image Name="Blue" XPos="128" YPos="0" Width="32" Height="32" />
+	<Image Name="Silver" XPos="0" YPos="32" Width="32" Height="32" />
+	<Image Name="DriveStack" XPos="32" YPos="32" Width="32" Height="32" />
+	<Image Name="GreenCandy" XPos="64" YPos="32" Width="32" Height="32" />
+	<Image Name="GlobalDrive" XPos="96" YPos="32" Width="32" Height="32" />
+</Imageset>

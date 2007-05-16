@@ -133,7 +133,7 @@ public:
 	\exception	UnknownObjectException		No WindowFactory is registered for \a type Window objects.
 	\exception	GenericException			Some other error occurred (Exception message has details).
 	*/
-	Window*	createWindow(const String& type, const String& name = "");
+	Window* createWindow(const String& type, const String& name = "", const String& prefix = "");
 
 
 	/*!
@@ -237,6 +237,8 @@ public:
 	\exception InvalidRequestException	thrown if \a filename appears to be invalid.
 	*/
 	Window*	loadWindowLayout(const String& filename, const String& name_prefix = "", const String& resourceGroup = "", PropertyCallback* callback = 0, void* userdata = 0);
+	
+	Window*	loadWindowLayout(const String& filename, bool generateRandomPrefix);
 
     /*!
     \brief
@@ -365,6 +367,8 @@ private:
         Implementation method to generate a unique name to use for a window.
     */
     String generateUniqueWindowName();
+
+	String generateUniqueWindowPrefix();
 
 	/*************************************************************************
 		Implementation Constants

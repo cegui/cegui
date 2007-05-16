@@ -39,7 +39,11 @@ IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename, const unsigned ch
 {
 }
 
+#if CEGUI_IRRLICHT_ABOVE_1_3 == 1
+irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::u32 sizeToRead)
+#else
 irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::s32 sizeToRead)
+#endif
 {
     uint32 realReadSize =
         ((d_position + sizeToRead) > d_size) ? d_size - d_position : sizeToRead;

@@ -31,7 +31,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowFactoryManager.h"
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIWIDGETMODULE_EXPORTS
 #       define CEGUIWIDGETMODULE_API __declspec(dllexport)
 #   else

@@ -25,6 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifdef HAVE_CONFIG_H
+#	include "config.h"
+#endif
 #include "CEGUIBase.h"
 #include "CEGUIString.h"
 #include <irrlicht.h>
@@ -43,7 +46,11 @@ class IrrlichtMemoryFile : public irr::io::IReadFile
 public:
     IrrlichtMemoryFile(const String& filename, const unsigned char* memory, uint32 size);
     virtual ~IrrlichtMemoryFile() {};
+#if CEGUI_IRRLICHT_ABOVE_1_3 == 1
+	virtual irr::s32 read(void* buffer, irr::u32 sizeToRead);
+#else
     virtual irr::s32 read(void* buffer, irr::s32 sizeToRead);
+#endif
     virtual bool seek(irr::s32 finalPos, bool relativeMovement = false);
     virtual irr::s32 getSize();
     virtual irr::s32 getPos();

@@ -33,10 +33,14 @@
 #ifndef _DirectX81GUIRenderer_h_
 #define _DirectX81GUIRenderer_h_
 
-#ifdef DIRECTX81_GUIRENDERER_EXPORTS
-#define DIRECTX81_GUIRENDERER_API __declspec(dllexport)
+#if !defined(CEGUI_STATIC)
+	#ifdef DIRECTX81_GUIRENDERER_EXPORTS
+	#define DIRECTX81_GUIRENDERER_API __declspec(dllexport)
+	#else
+	#define DIRECTX81_GUIRENDERER_API __declspec(dllimport)
+	#endif
 #else
-#define DIRECTX81_GUIRENDERER_API __declspec(dllimport)
+	#define DIRECTX81_GUIRENDERER_API
 #endif
 
 #include "CEGUIBase.h"

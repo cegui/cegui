@@ -239,9 +239,23 @@ enum SystemKey
 class CEGUIEXPORT WindowEventArgs : public EventArgs
 {
 public:
-	WindowEventArgs(Window* wnd) : window(wnd) {}
+	WindowEventArgs(Window* wnd) : window(wnd) {
+		this->m_hasWindow = true;
+	}
 
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
+};
+
+/*!
+\brief
+	WindowEventArgs class that is primarily used by lua scripts
+*/
+class CEGUIEXPORT UpdateEventArgs : public WindowEventArgs
+{
+public:
+	UpdateEventArgs(Window* window, float tslf):WindowEventArgs(window) {}
+
+	float m_timeSinceLastFrame; //!< Time since the last frame update
 };
 
 

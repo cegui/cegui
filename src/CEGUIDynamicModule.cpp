@@ -57,6 +57,13 @@ namespace CEGUI
 DynamicModule::DynamicModule(const String& name) :
     d_moduleName(name)
 {
+	//If nothing is passed, don't load anything...
+	if(name.empty())
+	{
+		d_handle = NULL;
+		return;
+	} // if(name.empty())
+
 #if defined(__linux__)
     // dlopen() does not add .so to the filename, like windows does for .dll
     if (d_moduleName.substr(d_moduleName.length() - 3, 3) != ".so")
@@ -68,7 +75,7 @@ DynamicModule::DynamicModule(const String& name) :
 #endif
 
     // Optionally add a _d to the module name for the debug config on Win32
-#if defined(__WIN32__) || defined(_WIN32)
+#if (defined(__WIN32__) || defined(_WIN32))
 #   if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
     // if name has .dll extension, assume it's complete and do not touch it.
     if (d_moduleName.substr(d_moduleName.length() - 4, 4) != ".dll")

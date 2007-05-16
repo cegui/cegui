@@ -57,6 +57,7 @@
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUIScheme.h"
 #include "CEGUISchemeManager.h"
+#include "CEGUIScriptWindowHelper.h"
 #include "CEGUISystem.h"
 #include "CEGUIScriptModule.h"
 #include "CEGUICoordConverter.h"
@@ -100,5 +101,7 @@
 #include "elements/CEGUIPopupMenu.h"
 #include "elements/CEGUIScrolledItemListBase.h"
 #include "elements/CEGUIItemListbox.h"
+#include "elements/CEGUITree.h"
+#include "elements/CEGUITreeItem.h"
 
 #endif	// end of guard _CEGUI_h_

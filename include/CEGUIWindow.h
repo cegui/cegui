@@ -125,6 +125,7 @@ public:
     static const String EventNamespace;
 
     // generated internally by Window
+	static const String EventWindowUpdated; //!< Event to signal the window is being updated. Used by lua system!
     //! Parent of this Window has been re-sized.
     static const String EventParentSized;
     //! Window size has changed
@@ -266,6 +267,12 @@ public:
         String object holding the unique Window name.
     */
     const String& getName(void) const  {return d_name;}
+
+	/**
+	 * Return a string to the window prefix
+	 * \return String object holding the prefix of this window
+	 */
+	const String& getPrefix(void) const {return m_windowPrefix;}
 
     /*!
     \brief
@@ -457,6 +464,8 @@ public:
         thrown if no window named \a name is attached to this Window.
     */
     Window* getChild(const String& name) const;
+
+	Window* recursiveChildSearch(const String& name) const;
 
     /*!
     \brief
@@ -1401,6 +1410,12 @@ public:
         Nothing
     */
     void setID(uint ID);
+
+	/**
+	 * Sets the unique prefix for this window.
+	 * \param prefix String object holding the prefix to be used on this window.
+	 */
+	void setPrefix(String prefix) { m_windowPrefix = prefix;}
 
     /*!
     \brief
@@ -3494,6 +3509,9 @@ protected:
 
     //! Type name of the window as defined in a Falagard mapping.
     String    d_falagardType;
+
+	//! The prefix used on this window (if any) when created instanced windows.
+	String    m_windowPrefix;
 
     friend class WindowManager;
 };

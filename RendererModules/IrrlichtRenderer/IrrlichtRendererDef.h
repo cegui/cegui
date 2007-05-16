@@ -38,7 +38,7 @@ changes:
 #ifndef IRRLICHTRENDERERDEF_H_INCLUDED
 #define IRRLICHTRENDERERDEF_H_INCLUDED
 
-#if defined( __WIN32__ ) || defined( _WIN32 ) || defined (WIN32)
+#if (defined( __WIN32__ ) || defined( _WIN32 ) || defined (WIN32)) && !defined(CEGUI_STATIC)
 #   ifdef IRRRENDERER_EXPORTS
 #       define IRRLICHT_GUIRENDERER_API __declspec(dllexport)
 #   else

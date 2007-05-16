@@ -39,12 +39,21 @@
 #   undef max
 #endif
 
+//Updated for linking of static libs
 #if defined(_WIN32)
-#  pragma comment(lib, "d3d9.lib")
+#  pragma comment(lib, "d3d9.lib")	
 #  if defined(_DEBUG)
+#	if defined(CEGUI_STATIC)
+#	   pragma comment(lib, "DirectX9GUIRenderer_Static_d.lib")
+#	else
 #      pragma comment(lib, "DirectX9GUIRenderer_d.lib")
+#	endif
 #  else
+#	if defined(CEGUI_STATIC)
+#	   pragma comment(lib, "DirectX9GUIRenderer_Static.lib")
+#	else
 #      pragma comment(lib, "DirectX9GUIRenderer.lib")
+#	endif
 #  endif
 #endif
 
