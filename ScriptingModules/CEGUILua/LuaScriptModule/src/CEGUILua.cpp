@@ -214,6 +214,12 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
     {
         String errStr(lua_tostring(d_state,-1));
         lua_pop(d_state,1);
+		//cleanup the helper object if any
+		if(helper)
+		{
+			delete helper;
+			helper = NULL;
+		}
         throw ScriptException("Unable to evaluate the Lua event handler: '"+handler_name+"'\n\n"+errStr+"\n");
     } // if (error)
 
