@@ -38,6 +38,9 @@
 
 #define LuaFunctorSubscribeEvent CEGUI::LuaFunctor::SubscribeEvent
 
+//This is used to keep compilers happy
+#define CEGUIDeadException(e)
+
 #if defined(_MSC_VER) && !defined(snprintf)
 #   define snprintf   _snprintf
 #endif
