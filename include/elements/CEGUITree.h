@@ -66,7 +66,7 @@ public:
 */
 class CEGUIEXPORT Tree : public Window
 {
-friend TreeItem;
+friend class TreeItem;
 typedef	std::vector<TreeItem*>	LBItemList;
 
 public:
