@@ -1566,9 +1566,14 @@ void System::setDefaultXMLParserName(const String& parserName)
 	if(d_defaultXMLParserName == parserName)
 		return;
 
-	cleanupXMLParser();
-    d_defaultXMLParserName = parserName;
-	setupXMLParser();
+	//We do this becuase cleanup and setup aren't static functions
+	if(getSingletonPtr())
+	{
+		System* sys = getSingletonPtr();
+		sys->cleanupXMLParser();
+		d_defaultXMLParserName = parserName;
+		sys->setupXMLParser();
+	} // if(getSingletonPtr())
 #endif
 }
 
