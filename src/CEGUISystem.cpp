@@ -1562,7 +1562,14 @@ void System::cleanupXMLParser()
 
 void System::setDefaultXMLParserName(const String& parserName)
 {
+#if !defined(CEGUI_STATIC)
+	if(d_defaultXMLParserName == parserName)
+		return;
+
+	cleanupXMLParser();
     d_defaultXMLParserName = parserName;
+	setupXMLParser();
+#endif
 }
 
 const String System::getDefaultXMLParserName()
