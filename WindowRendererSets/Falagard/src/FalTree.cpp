@@ -89,7 +89,8 @@ namespace CEGUI
 	{
 		Tree* tree = (Tree*)d_window;
 		//Set the render area for this.
-		tree->setItemRenderArea(getTreeRenderArea());
+        Rect rect = getTreeRenderArea();
+        tree->setItemRenderArea(rect);
 		const WidgetLookFeel& wlf = getLookNFeel();
 
 		const StateImagery* imagery;
