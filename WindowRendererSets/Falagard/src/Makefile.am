@@ -40,4 +40,5 @@ libCEGUIFalagardWRBase_la_SOURCES = FalButton.cpp \
                                   FalTabControl.cpp \
                                   FalTabControlProperties.cpp \
                                   FalTitlebar.cpp \
+                                  FalTree.cpp \
                                   FalTooltip.cpp

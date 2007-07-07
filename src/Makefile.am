@@ -42,6 +42,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \
                       CEGUIScriptModule.cpp \
+                      CEGUIScriptWindowHelper.cpp \
                       CEGUISize.cpp \
                       CEGUIString.cpp \
                       CEGUISubscriberSlot.cpp \
@@ -125,6 +126,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUITitlebarProperties.cpp \
                       elements/CEGUITooltip.cpp \
                       elements/CEGUITooltipProperties.cpp \
+                      elements/CEGUITree.cpp \
+                      elements/CEGUITreeProperties.cpp \
+                      elements/CEGUITreeItem.cpp \
                       falagard/CEGUIFalComponentBase.cpp \
                       falagard/CEGUIFalDimensions.cpp \
                       falagard/CEGUIFalFrameComponent.cpp \

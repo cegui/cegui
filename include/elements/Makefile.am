@@ -65,4 +65,8 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUITitlebar.h \
                      CEGUITitlebarProperties.h \
                      CEGUITooltip.h \
-                     CEGUITooltipProperties.h
+                     CEGUITooltipProperties.h \
+                     CEGUITree.h \
+                     CEGUITreeItem.h \
+                     CEGUITreeProperties.h 
+
