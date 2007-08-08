@@ -36,9 +36,6 @@
 #include "CEGuiOgreBaseApplication.h"
 #include "CEGuiSample.h"
 
-#include <OgreKeyEvent.h>
-
-
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_ogreRoot(0),
         d_renderer(0),
@@ -178,13 +175,42 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
 ////////////////////////////////////////////////////////////////////////////////
 CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
 {
-    // create and initialise events processor
-    d_eventProcessor = new Ogre::EventProcessor();
-    d_eventProcessor->initialise(window);
-    d_eventProcessor->addKeyListener(this);
-    d_eventProcessor->addMouseMotionListener(this);
-    d_eventProcessor->addMouseListener(this);
-    d_eventProcessor->startProcessingEvents();
+    // OIS setup
+    OIS::ParamList paramList;
+    size_t windowHnd = 0;
+    std::ostringstream windowHndStr;
+
+    // get window handle
+    window->getCustomAttribute("WINDOW", &windowHnd);
+    
+    // fill param list
+    windowHndStr << (unsigned int)windowHnd;
+    paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+
+    // create input system
+    d_inputManager = OIS::InputManager::createInputSystem(paramList);
+
+    // create buffered keyboard
+    if (d_inputManager->numKeyBoards() > 0)
+    {
+        d_keyboard = static_cast<OIS::Keyboard*>(d_inputManager->createInputObject(OIS::OISKeyboard, true));
+        d_keyboard->setEventCallback(this);
+    }
+
+    // create buffered mouse
+    if (d_inputManager->numMice() > 0)
+    {
+        d_mouse = static_cast<OIS::Mouse*>(d_inputManager->createInputObject(OIS::OISMouse, true));
+        d_mouse->setEventCallback(this);
+        
+        unsigned int width, height, depth;
+        int left, top;
+
+        window->getMetrics(width, height, depth, left, top);
+        const OIS::MouseState& mouseState = d_mouse->getMouseState();
+        mouseState.width = width;
+        mouseState.height = height;
+    }
 
     // store inputs we want to make use of
     d_camera = camera;
@@ -199,7 +225,13 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
 
 CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 {
-    delete d_eventProcessor;
+    if (d_inputManager)
+    {
+        d_inputManager->destroyInputObject(d_mouse);
+        d_inputManager->destroyInputObject(d_keyboard);
+        OIS::InputManager::destroyInputSystem(d_inputManager);
+    }
+
 }
 
 bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
@@ -212,8 +244,16 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
     {
         // always inject a time pulse to enable widget automation
         CEGUI::System::getSingleton().injectTimePulse(static_cast<float>(evt.timeSinceLastFrame));
+
+        // update input system
+        if (d_mouse)
+            d_mouse->capture();
+        if (d_keyboard)
+            d_keyboard->capture();
+
         return true;
     }
+    
 }
 
 bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
@@ -221,109 +261,83 @@ bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
     return true;
 }
 
-void CEGuiDemoFrameListener::mouseMoved(Ogre::MouseEvent *e)
+bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
 {
-    CEGUI::Renderer* rend = CEGUI::System::getSingleton().getRenderer();
-    CEGUI::System::getSingleton().injectMouseMove(e->getRelX() * rend->getWidth(), e->getRelY() * rend->getHeight());
 
-    float wheel = e->getRelZ();
+    CEGUI::System& cegui = CEGUI::System::getSingleton();
 
-    if (wheel != 0)
-    {
-        CEGUI::System::getSingleton().injectMouseWheelChange(wheel * 10);
-    }
+    cegui.injectMouseMove(e.state.X.rel, e.state.Y.rel);
+    cegui.injectMouseWheelChange(e.state.Z.rel * 0.03);
 
-    e->consume();
+    return true;
 }
 
 
-void CEGuiDemoFrameListener::mouseDragged(Ogre::MouseEvent *e)
-{
-    mouseMoved(e);
-}
 
-
-void CEGuiDemoFrameListener::keyPressed(Ogre::KeyEvent *e)
+bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 {
     // give 'quitting' priority
-    if (e->getKey() == Ogre::KC_ESCAPE)
+    if (e.key == OIS::KC_ESCAPE)
     {
         d_quit = true;
-        e->consume();
-        return;
+         return true;
     }
 
     // do event injection
     CEGUI::System& cegui = CEGUI::System::getSingleton();
 
     // key down
-    cegui.injectKeyDown(e->getKey());
+    cegui.injectKeyDown(e.key);
 
     // now character
-    cegui.injectChar(e->getKeyChar());
+    cegui.injectChar(e.text);
 
-    e->consume();
+
+    return true;
 }
 
 
-void CEGuiDemoFrameListener::keyReleased(Ogre::KeyEvent *e)
+bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
 {
-    CEGUI::System::getSingleton().injectKeyUp(e->getKey());
+    CEGUI::System::getSingleton().injectKeyUp(e.key);
+    return true;
 }
 
 
 
-void CEGuiDemoFrameListener::mousePressed(Ogre::MouseEvent *e)
+bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().injectMouseButtonDown(convertOgreButtonToCegui(e->getButtonID()));
-    e->consume();
+    CEGUI::System::getSingleton().injectMouseButtonDown(convertOISButtonToCegui(id));
+
+    return true;
 }
 
 
-void CEGuiDemoFrameListener::mouseReleased(Ogre::MouseEvent *e)
+bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().injectMouseButtonUp(convertOgreButtonToCegui(e->getButtonID()));
-    e->consume();
+    CEGUI::System::getSingleton().injectMouseButtonUp(convertOISButtonToCegui(id));
+
+    return true;
 }
 
-void CEGuiDemoFrameListener::keyClicked(Ogre::KeyEvent *e)
-{}
-
-void CEGuiDemoFrameListener::mouseClicked(Ogre::MouseEvent *e)
-{}
-
-void CEGuiDemoFrameListener::mouseEntered(Ogre::MouseEvent *e)
-{}
-
-void CEGuiDemoFrameListener::mouseExited(Ogre::MouseEvent *e)
-{}
-
-CEGUI::MouseButton CEGuiDemoFrameListener::convertOgreButtonToCegui(int ogre_button_id)
+CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
 {
-    switch (ogre_button_id)
+   using namespace OIS; 
+
+   switch (buttonID)
     {
-    case Ogre::MouseEvent::BUTTON0_MASK:
+   case OIS::MB_Left:
         return CEGUI::LeftButton;
-        break;
-
-    case Ogre::MouseEvent::BUTTON1_MASK:
+   case OIS::MB_Right:
         return CEGUI::RightButton;
-        break;
-
-    case Ogre::MouseEvent::BUTTON2_MASK:
+   case OIS::MB_Middle:
         return CEGUI::MiddleButton;
-        break;
-
-    case Ogre::MouseEvent::BUTTON3_MASK:
-        return CEGUI::X1Button;
-        break;
-
     default:
         return CEGUI::LeftButton;
-        break;
     }
-
 }
 
 #endif
+
+
 

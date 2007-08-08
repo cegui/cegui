@@ -17,9 +17,9 @@ if CEGUI_USING_GTK2
     libCEGUISampleHelper_la_SOURCES += GTK2CEGuiRendererSelector.cpp
 endif
 if CEGUI_SAMPLES_USE_OGRE
-    INCLUDES += $(CEGUIOGRE_CFLAGS)
+    INCLUDES += $(CEGUIOGRE_CFLAGS) $(OIS_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiOgreBaseApplication.cpp
-    libCEGUISampleHelper_la_LIBADD += $(CEGUIOGRE_LIBS)
+    libCEGUISampleHelper_la_LIBADD += $(CEGUIOGRE_LIBS) $(OIS_LIBS)
 endif
 if CEGUI_SAMPLES_USE_OPENGL
     libCEGUISampleHelper_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
