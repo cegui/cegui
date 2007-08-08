@@ -33,7 +33,7 @@
 
 #include <OgreCEGUIRenderer.h>
 #include <Ogre.h>
-#include <OgreEventListeners.h>
+#include <OIS.h>
 
 #if defined(_WIN32)
 #  if defined(_DEBUG)
@@ -90,7 +90,7 @@ protected:
 \brief
     Ogre FrameListener class where we deal with input processing and the like.
 */
-class CEGuiDemoFrameListener: public Ogre::FrameListener, public Ogre::KeyListener, Ogre::MouseMotionListener, Ogre::MouseListener
+class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListener, public OIS::MouseListener
 {
 public:
     // Construction and Destruction
@@ -102,29 +102,23 @@ public:
     bool frameEnded(const Ogre::FrameEvent& evt);
 
     // Raw input handlers that we care about
-    void mouseMoved(Ogre::MouseEvent *e);
-    void mouseDragged(Ogre::MouseEvent *e);
-    void keyPressed(Ogre::KeyEvent *e);
-    void keyReleased(Ogre::KeyEvent *e);
-    void mousePressed(Ogre::MouseEvent *e);
-    void mouseReleased(Ogre::MouseEvent *e);
-
-    // Raw input handlers that we do not care about
-    void keyClicked(Ogre::KeyEvent *e);
-    void mouseClicked(Ogre::MouseEvent *e);
-    void mouseEntered(Ogre::MouseEvent *e);
-    void mouseExited(Ogre::MouseEvent *e);
+    bool mouseMoved(const OIS::MouseEvent &e);
+    bool keyPressed(const OIS::KeyEvent &e);
+    bool keyReleased(const OIS::KeyEvent &e);
+    bool mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id);
+    bool mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id);
 
 protected:
-    // convert an Ogre mouse button into a CEGUI mouse button
-    CEGUI::MouseButton convertOgreButtonToCegui(int ogre_button_id);
+    // convert an OIS mouse button into a CEGUI mouse button
+    CEGUI::MouseButton convertOISButtonToCegui(int buttonID);
 
     /*************************************************************************
         Data Fields
     *************************************************************************/
     Ogre::Overlay* d_statsOverlay;
-    Ogre::EventProcessor* d_eventProcessor;
-
+    OIS::InputManager* d_inputManager;
+    OIS::Keyboard* d_keyboard;
+    OIS::Mouse* d_mouse;
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
     bool d_quit;

@@ -148,10 +148,25 @@ load a custom made parser module as the default.]),
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
     PKG_CHECK_MODULES(CEGUIOGRE, CEGUI-OGRE >= 1.0.0, [cegui_found_ogre_renderer=yes], [cegui_found_ogre_renderer=no])
     PKG_CHECK_MODULES(CEGUI_NULL, CEGUI, [cegui_found_cegui=yes], [cegui_found_cegui=no])    
+	PKG_CHECK_MODULES(OIS, OIS >= 1.0.0, [ois_found=yes],[ois_found=no])
+
     AC_ARG_WITH([ogre-renderer], AC_HELP_STRING([--without-ogre-renderer], [Disables the use of the Ogre3D renderer, when available, in samples]),
                 [cegui_with_ogre=$withval], [cegui_with_ogre=yes])
 
-    if test x$cegui_found_ogre_renderer = xyes && test x$cegui_found_cegui = xyes && test x$cegui_with_ogre = xyes; then
+
+	if test "x$ois_found" = "xno" ; then
+		cegui_samples_use_ogre=no
+		AC_MSG_NOTICE([
+****************************************************************
+* You do not have OIS installed.  This is required to build    *
+* Ogre CEGUI demos. You may find it at:                        *
+* http://www.sourceforge.net/projects/wgois.                   *
+* If you do not want to build the demos, you can safely ignore *
+* this.                                                        *
+****************************************************************])
+	fi
+
+    if test x$cegui_found_ogre_renderer = xyes && test x$cegui_found_cegui = xyes && test x$cegui_with_ogre = xyes && test x$ois_found = xyes; then
         cegui_samples_use_ogre=yes
         AC_DEFINE(CEGUI_SAMPLES_USE_OGRE, [], [Define to have the Ogre3D CEGUI renderer available in the samples])
         AC_MSG_NOTICE([Use of Ogre3D in Samples is enabled])
@@ -161,6 +176,8 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
     fi
 
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OGRE], [test x$cegui_samples_use_ogre = xyes])
+	AC_SUBST(OIS_CFLAGS)
+	AC_SUBST(OIS_LIBS)
     AC_SUBST(CEGUIOGRE_CFLAGS)
     AC_SUBST(CEGUIOGRE_LIBS)
 ])
