@@ -443,6 +443,23 @@ public:
 	*/
 	void	setItemSelectState(size_t item_index, bool state);
 
+    /*!
+    \brief
+        Set the LookNFeel that shoule be used for this window.
+
+    \param look
+        String object holding the name of the look to be assigned to the window.
+
+    \return
+        Nothing.
+
+    \exception UnknownObjectException
+        thrown if the look'n'feel specified by \a look does not exist.
+
+    \note
+        Once a look'n'feel has been assigned it is locked - as in cannot be changed.
+    */
+    virtual void setLookNFeel(const String& look);
 
 	/*!
 	\brief

@@ -79,15 +79,21 @@ namespace CEGUI
 		d_itemTooltips(false),
 		d_lastSelected(NULL),
 		d_horzScrollbar(NULL),
-		d_vertScrollbar(NULL)
+        d_vertScrollbar(NULL),
+        openButtonImagery(NULL),
+        closeButtonImagery(NULL)
 	{
 		// add new events specific to list box.
 		addTreeEvents();
 
 		addTreeProperties();
-		// initialise();
 	}
 
+    void Tree::setLookNFeel(const String& look)
+    {
+        Window::setLookNFeel( look );
+        initialise();
+    }
 
 	/*************************************************************************
 	Destructor for Tree base class.

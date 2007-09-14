@@ -1963,7 +1963,7 @@ public:
     \note
         Once a look'n'feel has been assigned it is locked - as in cannot be changed.
     */
-    void setLookNFeel(const String& look);
+    virtual void setLookNFeel(const String& look);
 
     /*!
     \brief
