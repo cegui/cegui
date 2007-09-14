@@ -4802,6 +4802,7 @@ private:
 		d_encodedbuff		= 0;
 		d_encodedbufflen	= 0;
 		d_encodeddatlen		= 0;
+        d_buffer            = 0;
 		setlen(0);
 	}
 
