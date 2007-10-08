@@ -2230,12 +2230,12 @@ void Window::setLookNFeel(const String& look)
     WidgetLookManager& wlMgr = WidgetLookManager::getSingleton();
     if (!d_lookName.empty())
     {
-        /*
+        // Allow reset of look and feel
+        // NOTE: If you want to prevent this, replace the following lines with the commented exception one
         d_windowRenderer->onLookNFeelUnassigned();
         const WidgetLookFeel& wlf = wlMgr.getWidgetLook(d_lookName);
         wlf.cleanUpWidget(*this);
-        */
-        throw AlreadyExistsException("Window::setLookNFeel - There is already a look'n'feel assigned to the window '"+d_name+"'");
+        //throw AlreadyExistsException("Window::setLookNFeel - There is already a look'n'feel assigned to the window '"+d_name+"'");	
     }
     d_lookName = look;
     Logger::getSingleton().logEvent("Assigning LookNFeel '" + look +"' to window '" + d_name + "'.", Informative);
@@ -3037,7 +3037,8 @@ void Window::setWindowRenderer(const String& name)
     WindowRendererManager& wrm = WindowRendererManager::getSingleton();
     if (d_windowRenderer != 0)
     {
-        /*
+        // Allow reset of renderer
+        // NOTE: If you want to prevent it, replace the following lines with the commented exception one
         if (d_windowRenderer->getName() == name)
         {
             return;
@@ -3045,8 +3046,7 @@ void Window::setWindowRenderer(const String& name)
         WindowEventArgs e(this);
         onWindowRendererDetached(e);
         wrm.destroyWindowRenderer(d_windowRenderer);
-        */
-        throw AlreadyExistsException("Window::setWindowRenderer - There is already a window renderer assigned to the window '"+d_name+"'");
+        //throw AlreadyExistsException("Window::setWindowRenderer - There is already a window renderer assigned to the window '"+d_name+"'");
     }
 
     if (!name.empty())
@@ -3209,6 +3209,35 @@ bool Window::isDragDropTarget() const
 void Window::setDragDropTarget(bool setting)
 {
     d_dragDropTarget = setting;
+}
+
+//-----------------------------------------------------------------------
+void Window::setFalagardType(const String& type, const String& rendererType)
+{
+    // Retrieve the new widget look
+    const String separator("/");
+    String::size_type pos = type.find(separator);
+    String newLook(type, 0, pos);
+
+    // Check if old one is the same. If so, ignore since we don't need to do anything (type 
+    // is already assigned)
+    pos = d_falagardType.find(separator);
+    String oldLook(d_falagardType, 0, pos);
+    if(oldLook == newLook)
+        return;
+
+    // Obtain widget kind
+    String widget(d_falagardType, pos + 1);
+
+    // Build new type (look/widget)
+    d_falagardType = newLook + separator + widget;
+
+    // Set new renderer
+    if(rendererType.length() > 0)
+        setWindowRenderer(rendererType);
+
+    // Apply the new look to the widget
+    setLookNFeel(type);
 }
 
 } // End of  CEGUI namespace section

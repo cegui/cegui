@@ -350,14 +350,34 @@ namespace CEGUI
         */
         const WidgetComponent* findWidgetComponent(const String& nameSuffix) const;
 
+        /** Typedefs for property related lists. */
+        typedef std::vector<PropertyInitialiser>  PropertyList;
+        typedef std::vector<PropertyDefinition>   PropertyDefinitionList;
+        typedef std::vector<PropertyLinkDefinition> PropertyLinkDefinitionList;
+
+        /** Obtains list of properties definitions.
+         * @access public 
+         * @return CEGUI::WidgetLookFeel::PropertyDefinitionList List of properties definitions
+         */
+        const PropertyDefinitionList& getPropertyDefinitions() const { return d_propertyDefinitions; } 
+
+        /** Obtains list of properties link definitions.
+         * @access public 
+         * @return CEGUI::WidgetLookFeel::PropertyLinkDefinitionList List of properties link definitions
+         */
+        const PropertyLinkDefinitionList& getPropertyLinkDefinitions() const { return d_propertyLinkDefinitions; } 
+
+        /** Obtains list of properties.
+         * @access public 
+         * @return CEGUI::WidgetLookFeel::PropertyList List of properties
+         */
+        const PropertyList& getProperties() const { return d_properties; } 
+
     private:
         typedef std::map<String, StateImagery, String::FastLessCompare>    StateList;
         typedef std::map<String, ImagerySection, String::FastLessCompare>  ImageryList;
         typedef std::map<String, NamedArea, String::FastLessCompare>       NamedAreaList;
         typedef std::vector<WidgetComponent>      WidgetList;
-        typedef std::vector<PropertyInitialiser>  PropertyList;
-        typedef std::vector<PropertyDefinition>   PropertyDefinitionList;
-        typedef std::vector<PropertyLinkDefinition> PropertyLinkDefinitionList;
 
         CEGUI::String   d_lookName;         //!< Name of this WidgetLookFeel.
         ImageryList     d_imagerySections;  //!< Collection of ImagerySection objects.
