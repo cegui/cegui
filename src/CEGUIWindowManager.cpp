@@ -372,4 +372,20 @@ WindowManager::WindowIterator WindowManager::getIterator(void) const
 	return WindowIterator(d_windowRegistry.begin(), d_windowRegistry.end());
 }
 
+/*************************************************************************
+    Outputs the names of ALL existing windows to log (DEBUG function).
+*************************************************************************/
+void WindowManager::DEBUG_dumpWindowNames(String zone)
+{
+    Logger::getSingleton().logEvent("WINDOW NAMES DUMP (" + zone + ")");
+    Logger::getSingleton().logEvent("-----------------");
+    CEGUI::WindowManager::WindowIterator windowIt = getIterator();
+    while (!windowIt.isAtEnd())
+    {
+        Logger::getSingleton().logEvent("Window : " + windowIt.getCurrentValue()->getName());
+        ++windowIt;
+    }
+    Logger::getSingleton().logEvent("-----------------");
+}
+
 } // End of  CEGUI namespace section

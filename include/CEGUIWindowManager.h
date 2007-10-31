@@ -399,6 +399,18 @@ public:
 		Return a WindowManager::WindowIterator object to iterate over the currently defined Windows.
 	*/
 	WindowIterator	getIterator(void) const;
+
+    /*!
+    \brief
+    Outputs the names of ALL existing windows to log (DEBUG function).
+
+    \param zone
+    Helper string that can specify where the name dump was made (e.g. "BEFORE FRAME DELETION").
+
+    \return
+    Nothing.
+    */
+    void DEBUG_dumpWindowNames(String zone);    
 };
 
 } // End of  CEGUI namespace section
