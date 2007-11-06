@@ -1503,6 +1503,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
+	virtual	void	onFontChanged(WindowEventArgs& e);
 	virtual void	onSized(WindowEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual	void	onMouseWheel(MouseEventArgs& e);

@@ -690,6 +690,12 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& 
 	getListHeader()->insertColumn(text, col_id, width, position);
     ++d_columnCount;
 
+    // Set the font equal to that of our list
+    for (uint col = 0; col < getColumnCount(); col++) 
+    {
+        getHeaderSegmentForColumn(col).setFont(getFont());
+    }
+
 	// Insert a blank entry at the appropriate position in each row.
 	for (uint i = 0; i < getRowCount(); ++i)
 	{
@@ -1816,6 +1822,21 @@ void MultiColumnList::onListColumnMoved(WindowEventArgs& e)
 	fireEvent(EventListColumnMoved, e, EventNamespace);
 }
 
+/*************************************************************************
+	Handler for when widget font is changed
+*************************************************************************/
+void MultiColumnList::onFontChanged(WindowEventArgs& e)
+{
+    // Propagate to children
+    // Set the font equal to that of our list
+    for (uint col = 0; col < getColumnCount(); col++) 
+    {
+        getHeaderSegmentForColumn(col).setFont(getFont());
+    }
+
+    // Call base class handler
+    Window::onFontChanged(e);
+}
 
 /*************************************************************************
 	Handler for when we are sized
