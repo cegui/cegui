@@ -435,5 +435,8 @@ namespace CEGUI
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUISpinner_h_
