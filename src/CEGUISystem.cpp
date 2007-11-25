@@ -1478,6 +1478,7 @@ void System::addStandardWindowFactories()
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Titlebar));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemListbox));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GroupBox));
 	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tree));
 }
 

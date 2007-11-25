@@ -30,5 +30,7 @@
 	<WindowAlias Alias="Taharez Titlebar" Target="TaharezLook/Titlebar" />
 	<WindowAlias Alias="Taharez VertScrollbar" Target="TaharezLook/LargeVerticalScrollbar" />
 	<WindowAlias Alias="Taharez VertScrollbarThumb" Target="TaharezLook/LargeVerticalScrollbarThumb" />
+	<WindowAlias Alias="Taharez GroupBox" Target="TaharezLook/GroupBox" />
 </GUIScheme>
+
 

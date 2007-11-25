@@ -103,5 +103,6 @@
 #include "elements/CEGUIItemListbox.h"
 #include "elements/CEGUITree.h"
 #include "elements/CEGUITreeItem.h"
+#include "elements/CEGUIGroupBox.h"
 
 #endif	// end of guard _CEGUI_h_

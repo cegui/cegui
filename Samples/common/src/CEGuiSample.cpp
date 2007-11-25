@@ -211,7 +211,7 @@ bool CEGuiSample::initialise()
 #endif
 
         default:
-            throw CEGUI::Exception("No renderer was selected!");
+            throw CEGUI::GenericException("No renderer was selected!");
             break;
         }
 
