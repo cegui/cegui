@@ -37,4 +37,5 @@
 	<FalagardMapping WindowType="WindowsLook/StaticText"  TargetType="DefaultWindow" Renderer="Falagard/StaticText"  LookNFeel="WindowsLook/StaticText" />
 	<FalagardMapping WindowType="WindowsLook/ItemListbox" TargetType="CEGUI/ItemListbox" Renderer="Falagard/ItemListbox" LookNFeel="WindowsLook/ItemListbox" />
 	<FalagardMapping WindowType="WindowsLook/ListboxItem" TargetType="CEGUI/ItemEntry"   Renderer="Falagard/ItemEntry"   LookNFeel="WindowsLook/ListboxItem" />
+	<FalagardMapping WindowType="WindowsLook/GroupBox" TargetType="CEGUI/GroupBox"   Renderer="Falagard/Default"   LookNFeel="WindowsLook/GroupBox" />
 </GUIScheme>

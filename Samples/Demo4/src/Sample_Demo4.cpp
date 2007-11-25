@@ -54,7 +54,7 @@ bool Demo4Sample::initialiseSample()
     // load scheme and set up defaults
     SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-    FontManager::getSingleton().createFont("Commonwealth-10.font");
+    //FontManager::getSingleton().createFont("Commonwealth-10.font");
 
     // load an image to use as a background
     ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
@@ -157,7 +157,7 @@ bool Demo4Sample::initialiseSample()
 
     Window* st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Static");
     textwnd->addChildWindow(st);
-    st->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.2f)));
+    st->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.22f)));
     st->setSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.6f)));
 
     st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Group label 1");
@@ -180,12 +180,19 @@ bool Demo4Sample::initialiseSample()
 
     st = winMgr.createWindow("TaharezLook/StaticText", "TextWindow/Box label");
     textwnd->addChildWindow(st);
-    st->setPosition(UVector2(cegui_reldim(0.12f), cegui_reldim( 0.13f)));
+    st->setPosition(UVector2(cegui_reldim(0.12f), cegui_reldim( 0.15f)));
     st->setSize(UVector2(cegui_reldim(0.35f), cegui_reldim( 0.05f)));
     st->setText("Formatted Output");
     // disable frame and background on static control
     st->setProperty("FrameEnabled", "false");
     st->setProperty("BackgroundEnabled", "false");
+
+	// groupbox
+	st = winMgr.createWindow("TaharezLook/GroupBox", "TextWindow/GroupBox1");
+	textwnd->addChildWindow(st);
+	st->setPosition(UVector2(cegui_reldim(0.03f), cegui_reldim(0.08f)));
+	st->setSize(UVector2(cegui_reldim(0.94f), cegui_reldim(0.90f)));
+	st->setText("Text samples");
 
     // word-wrap checkbox
     Checkbox* cb = static_cast<Checkbox*>(winMgr.createWindow("TaharezLook/Checkbox", "TextWindow/CB1"));
