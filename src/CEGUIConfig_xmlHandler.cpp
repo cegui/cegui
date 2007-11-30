@@ -69,6 +69,10 @@ namespace CEGUI
             {
                 d_logLevel = Errors;
             }
+            else if (logLevelStr == "Warnings")
+            {
+                d_logLevel = Warnings;
+            }
             else if (logLevelStr == "Informative")
             {
                 d_logLevel = Informative;

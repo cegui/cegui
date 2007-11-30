@@ -179,13 +179,21 @@ System::System(Renderer* renderer,
   d_defaultTooltip(0),
   d_weOwnTooltip(false)
 {
-    // start out by fixing the numeric locale to C (we depend on this behaviour)
+    bool userCreatedLogger = true;
+
+    // Start out by fixing the numeric locale to C (we depend on this behaviour)
     // consider a UVector2 as a property {{0.5,0},{0.5,0}} could become {{0,5,0},{0,5,0}}
     setlocale(LC_NUMERIC, "C");
 
     // Instantiate logger first (we have no file at this point, but entries will be cached until we do)
-    if (!Logger::getSingletonPtr ())
+    // NOTE: If the user already created a logger prior to calling this constructor,
+    // we mark it as so and leave the logger untouched. This allows the user to fully customize
+    // the logger as he sees fit without fear of seeing its configuration overwritten by this.
+    if (!Logger::getSingletonPtr())
+    {
         new DefaultLogger();
+        userCreatedLogger = false;
+    }
 
     // Set CEGUI version
     d_strVersion = PropertyHelper::uintToString(CEGUI_VERSION_MAJOR) + "." +
@@ -218,8 +226,9 @@ System::System(Renderer* renderer,
             throw;
         }
 
-        // set the logging level
-        Logger::getSingleton().setLoggingLevel(handler.getLoggingLevel());
+        // Set the logging level if the user didn't create a logger beforehand
+        if(!userCreatedLogger)
+            Logger::getSingleton().setLoggingLevel(handler.getLoggingLevel());
 
         // get the strings read
         configLogname       = handler.getLogFilename();
@@ -236,16 +245,19 @@ System::System(Renderer* renderer,
         }
     }
 
-    // Start up the logger:
-    // prefer log filename from config file
-    if (!configLogname.empty())
+    // Start up the logger if the user didn't create a logger beforehand
+    if(!userCreatedLogger)
     {
-        Logger::getSingleton().setLogFilename(configLogname, false);
-    }
-    // no log specified in configuration, use default / hard-coded option
-    else
-    {
-        Logger::getSingleton().setLogFilename(logFile, false);
+        // Prefer log filename from config file
+        if (!configLogname.empty())
+        {
+            Logger::getSingleton().setLogFilename(configLogname, false);
+        }
+        // No log specified in configuration, use default / hard-coded option
+        else
+        {
+            Logger::getSingleton().setLogFilename(logFile, false);
+        }
     }
 
     // beginning main init

@@ -82,7 +82,7 @@ namespace CEGUI
             setfill('0') << setw(2) << 1 + etm->tm_mon << '/' <<
             setw(4) << (1900 + etm->tm_year) << ' ';
 
-            // wite time
+            // write time
             d_workstream << setfill('0') << setw(2) << etm->tm_hour << ':' <<
             setfill('0') << setw(2) << etm->tm_min << ':' <<
             setfill('0') << setw(2) << etm->tm_sec << ' ';
@@ -94,16 +94,20 @@ namespace CEGUI
                 d_workstream << "(Error)\t";
                 break;
 
+            case Warnings:
+                d_workstream << "(Warn)\t";
+                break;
+
             case Standard:
-                d_workstream << "(InfL1)\t";
+                d_workstream << "(Std) \t";
                 break;
 
             case Informative:
-                d_workstream << "(InfL2)\t";
+                d_workstream << "(Info) \t";
                 break;
 
             case Insane:
-                d_workstream << "(InfL3)\t";
+                d_workstream << "(Insan)\t";
                 break;
 
             default:
@@ -145,7 +149,7 @@ namespace CEGUI
         // initialise width for date & time alignment.
         d_ostream.width(2);
 
-        // write out cahced log strings.
+        // write out cached log strings.
         if (d_caching)
         {
             d_caching = false;
