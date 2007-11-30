@@ -57,6 +57,7 @@ namespace CEGUI
 enum LoggingLevel
 {
 	Errors,			//!< Only actual error conditions will be logged.
+    Warnings,       //!< Warnings will be logged as well.
 	Standard,		//!< Basic events will be logged (default level).
 	Informative,	//!< Useful tracing (object creations etc) information will be logged.
 	Insane			//!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).

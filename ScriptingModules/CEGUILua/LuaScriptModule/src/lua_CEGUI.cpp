@@ -49106,6 +49106,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_URect_new02_local);
   tolua_endmodule(tolua_S);
   tolua_constant(tolua_S,"Errors",CEGUI::Errors);
+  tolua_constant(tolua_S,"Warnings",CEGUI::Warnings);
   tolua_constant(tolua_S,"Standard",CEGUI::Standard);
   tolua_constant(tolua_S,"Informative",CEGUI::Informative);
   tolua_constant(tolua_S,"Insane",CEGUI::Insane);

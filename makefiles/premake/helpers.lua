@@ -38,11 +38,19 @@ function cegui_dynamic(name, lang, kind)
 	package.kind = kind or "dll"
 	package.language = lang or "c++"
 
+	-- NOTE: We are keeping RTTI information, despite adding a little signature. The reasons
+      -- lie in the fact that it is only active in debug builds, helps with 
+      -- exception handling (see CELayoutEditor) and allows dynamic casting if so desired.
+	-- If you wish to prevent RTTI information, uncomment the following line:
+	-- package.buildflags = { "no-rtti" }
+
+	-- We need to remove edit-and-continue in VS2003 (7.1) or older versions because 
+	-- of the __LINE__ expansion macro bug (see http://support.microsoft.com/kb/199057/en)
+	if target=="vs2002" or target=="vs2003" then
+		package.buildflags = { "no-edit-and-continue" }
+	end
+
 	-- defaults
-	package.buildflags =
-	{
-		"no-rtti"
-	}
 	package.includepaths =
 	{
 		rootdir.."include",
