@@ -4,6 +4,7 @@
 enum LoggingLevel
 {
 	Errors,
+	Warnings,
 	Standard,
 	Informative,
 	Insane

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 05/16/07 12:10:27.
+** Generated automatically by tolua++-1.0.92 on 12/02/07 13:04:31.
 */
 
 #ifndef __cplusplus
@@ -428,6 +428,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::WidgetLookFeel");
  tolua_usertype(tolua_S,"CEGUI::OutStream");
  tolua_usertype(tolua_S,"CEGUI::WidgetLookManager");
+ tolua_usertype(tolua_S,"CEGUI::GroupBox");
  tolua_usertype(tolua_S,"CEGUI::EventIterator");
  tolua_usertype(tolua_S,"CEGUI::FileStream");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryIterator");
@@ -41216,6 +41217,40 @@ static int tolua_CEGUI_CEGUI_ItemListbox_selectAllItems00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: drawAroundWidget of class  CEGUI::GroupBox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GroupBox_drawAroundWidget00
+static int tolua_CEGUI_CEGUI_GroupBox_drawAroundWidget00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::GroupBox",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::GroupBox* self = (CEGUI::GroupBox*)  tolua_tousertype(tolua_S,1,0);
+  string name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'drawAroundWidget'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->drawAroundWidget(name);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'drawAroundWidget'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getValue of class  CEGUI::BaseDim */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_BaseDim_getValue00
 static int tolua_CEGUI_CEGUI_BaseDim_getValue00(lua_State* tolua_S)
@@ -50865,6 +50900,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"clearAllSelections",tolua_CEGUI_CEGUI_ItemListbox_clearAllSelections00);
    tolua_function(tolua_S,"selectRange",tolua_CEGUI_CEGUI_ItemListbox_selectRange00);
    tolua_function(tolua_S,"selectAllItems",tolua_CEGUI_CEGUI_ItemListbox_selectAllItems00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"GroupBox","CEGUI::GroupBox","CEGUI::Window",NULL);
+  tolua_beginmodule(tolua_S,"GroupBox");
+   tolua_function(tolua_S,"drawAroundWidget",tolua_CEGUI_CEGUI_GroupBox_drawAroundWidget00);
   tolua_endmodule(tolua_S);
   tolua_constant(tolua_S,"DT_LEFT_EDGE",CEGUI::DT_LEFT_EDGE);
   tolua_constant(tolua_S,"DT_X_POSITION",CEGUI::DT_X_POSITION);

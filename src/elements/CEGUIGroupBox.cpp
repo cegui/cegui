@@ -106,7 +106,9 @@ Window * GroupBox::getContentPane() const
 
 bool GroupBox::drawAroundWidget(const CEGUI::Window * wnd)
 {
-	if (!wnd)
+    Logger::getSingleton().logEvent("TODO: GroupBox::drawAroundWidget");
+    return true;
+	/*if (!wnd)
 	{
 		return false;
 	}
@@ -122,7 +124,7 @@ bool GroupBox::drawAroundWidget(const CEGUI::Window * wnd)
 	this->setSize(newSize);
 	this->setPosition(newPos);
 		
-	return true;
+	return true;*/
 }
 
 bool GroupBox::drawAroundWidget(const String& name)
