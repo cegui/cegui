@@ -421,7 +421,7 @@ void Listbox::setSortingEnabled(bool setting)
 		// if we are enabling sorting, we need to sort the list
 		if (d_sorted)
 		{
-			std::sort(d_listItems.begin(), d_listItems.end(), &lbi_greater);
+			std::sort(d_listItems.begin(), d_listItems.end(), &lbi_less);
 		}
 
         WindowEventArgs args(this);
