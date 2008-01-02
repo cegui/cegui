@@ -13,6 +13,7 @@ pkginclude_HEADERS = CEGUIBaseFactories.h \
                      CEGUIEditboxProperties.h \
                      CEGUIFrameWindow.h \
                      CEGUIFrameWindowProperties.h \
+                     CEGUIGroupBox.h \
                      CEGUIGUISheet.h \
                      CEGUIItemEntry.h \
                      CEGUIItemEntryProperties.h \

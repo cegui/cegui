@@ -75,6 +75,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       elements/CEGUIEditboxProperties.cpp \
                       elements/CEGUIFrameWindow.cpp \
                       elements/CEGUIFrameWindowProperties.cpp \
+                      elements/CEGUIGroupBox.cpp \
                       elements/CEGUIGUISheet.cpp \
                       elements/CEGUIItemEntry.cpp \
                       elements/CEGUIItemEntryProperties.cpp \
