@@ -34,9 +34,10 @@
 	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbar"      TargetType="CEGUI/Scrollbar" Renderer="Falagard/Scrollbar" LookNFeel="TaharezLook/LargeVerticalScrollbar" />
     <FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbarThumb" TargetType="CEGUI/Thumb"     Renderer="Falagard/Button"    LookNFeel="TaharezLook/LargeVerticalScrollbarThumb" />
 
+	<FalagardMapping WindowType="TaharezLook/TabButtonPane"  TargetType="CEGUI/TabButton"  Renderer="Falagard/Default"  LookNFeel="TaharezLook/TabButtonPane" />
 	<FalagardMapping WindowType="TaharezLook/TabButton"  TargetType="CEGUI/TabButton"  Renderer="Falagard/TabButton"  LookNFeel="TaharezLook/TabButton" />
     <FalagardMapping WindowType="TaharezLook/TabControl" TargetType="CEGUI/TabControl" Renderer="Falagard/TabControl" LookNFeel="TaharezLook/TabControl" />
-    <FalagardMapping WindowType="TaharezLook/TabPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="TaharezLook/TabPane" />
+    <FalagardMapping WindowType="TaharezLook/TabContentPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="TaharezLook/TabContentPane" />
 
 	<FalagardMapping WindowType="TaharezLook/ComboDropList" TargetType="CEGUI/ComboDropList" Renderer="Falagard/Listbox" LookNFeel="TaharezLook/ComboDropList" />
     <FalagardMapping WindowType="TaharezLook/ComboEditbox"  TargetType="CEGUI/Editbox"       Renderer="Falagard/Editbox" LookNFeel="TaharezLook/ComboEditbox" />
