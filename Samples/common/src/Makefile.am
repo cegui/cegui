@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/Samples/common/include -I$(top_srcdir)/include -I$(top_srcdir)
+INCLUDES = -I$(top_srcdir)/Samples/common/include -I$(top_srcdir)/include -I$(top_srcdir) $(CEGUI_SAMPLES_CFLAGS)
 
 lib_LTLIBRARIES=libCEGUISampleHelper.la
 

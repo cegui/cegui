@@ -56,7 +56,7 @@ namespace CEGUI
 
 		virtual ~EventPusher(){};
 
-		bool OnEvent(SEvent& event)
+		bool OnEvent(const SEvent& event)
 		{
 			switch(event.EventType)
 			{

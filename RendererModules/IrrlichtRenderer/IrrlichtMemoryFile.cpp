@@ -39,7 +39,7 @@ IrrlichtMemoryFile::IrrlichtMemoryFile(const String& filename, const unsigned ch
 {
 }
 
-#if CEGUI_IRRLICHT_ABOVE_1_3 == 1
+#if CEGUI_IRR_SDK_VERSION >= 13
 irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::u32 sizeToRead)
 #else
 irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::s32 sizeToRead)
@@ -54,7 +54,11 @@ irr::s32 IrrlichtMemoryFile::read(void* buffer, irr::s32 sizeToRead)
     return realReadSize;
 }
 
+#if CEGUI_IRR_SDK_VERSION >= 14
+bool IrrlichtMemoryFile::seek(long finalPos, bool relativeMovement)
+#else
 bool IrrlichtMemoryFile::seek(irr::s32 finalPos, bool relativeMovement)
+#endif
 {
     uint32 targetPosition = relativeMovement ? d_position : 0;
     targetPosition += finalPos;
@@ -70,17 +74,29 @@ bool IrrlichtMemoryFile::seek(irr::s32 finalPos, bool relativeMovement)
     }
 }
 
+#if CEGUI_IRR_SDK_VERSION >= 14
+long IrrlichtMemoryFile::getSize() const
+#else
 irr::s32 IrrlichtMemoryFile::getSize()
+#endif
 {
     return d_size;
 }
 
+#if CEGUI_IRR_SDK_VERSION >= 14
+long IrrlichtMemoryFile::getPos() const
+#else
 irr::s32 IrrlichtMemoryFile::getPos()
+#endif
 {
     return d_position;
 }
 
+#if CEGUI_IRR_SDK_VERSION >= 14
+const irr::c8* IrrlichtMemoryFile::getFileName() const
+#else
 const irr::c8* IrrlichtMemoryFile::getFileName()
+#endif
 {
     return d_filename.c_str();
 }

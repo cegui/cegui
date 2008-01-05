@@ -166,10 +166,8 @@ do
     --end
     if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
         config_h.CEGUI_SAMPLES_USE_IRRLICHT = ""
+        config_h.CEGUI_IRR_SDK_VERSION = CEGUI_IRR_SDK_VERSION
     end
-    if IRRLICHT_VERSION >= 1.3 then
-        config_h.CEGUI_IRRLICHT_ABOVE_1_3 = "1"
-	end
 
     if DEFAULT_XML_PARSER == "xerces" then
         config_h.CEGUI_WITH_XERCES = "1"

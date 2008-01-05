@@ -15,6 +15,7 @@ AC_DEFUN([CEGUI_CHECK_WANTS_SAMPLES],[
         if test x$cegui_samples_use_ogre = xyes || test x$cegui_samples_use_irrlicht = xyes || test x$cegui_samples_use_opengl = xyes; then
             cegui_build_samples=yes
             AC_MSG_NOTICE([Samples framework and applications are enabled.])
+            CEGUI_SAMPLES_CFLAGS='-DCEGUI_SAMPLE_DATAPATH="\"$(datadir)/$(PACKAGE)"\"'
         else
             cegui_build_samples=no
             AC_MSG_NOTICE([No renderers available.  Building of samples framework and applications has been disabled.])
@@ -25,6 +26,7 @@ AC_DEFUN([CEGUI_CHECK_WANTS_SAMPLES],[
     fi
 
     AM_CONDITIONAL([CEGUI_BUILD_SAMPLES], [test x$cegui_build_samples = xyes])
+    AC_SUBST(CEGUI_SAMPLES_CFLAGS)
 ])
 
 AC_DEFUN([CEGUI_CHECK_GTK_FOR_SAMPLES],[
@@ -221,6 +223,7 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
 # CEGUI_CHECK_IRRLICHT(variable, [action-if-found], [action-if-not-found])
 # checks for Irrlicht headers and libs in some common places.
 AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
+    AC_LANG_PUSH([C++])
     AC_ARG_WITH([irrlicht-incdir], AC_HELP_STRING([--with-irrlicht-incdir=DIR], [Optionally specifies location of the Irrlicht includes]),
         [cegui_irr_incdir=$withval],[cegui_irr_incdir=[.]])
     AC_ARG_WITH([irrlicht-libdir], AC_HELP_STRING([--with-irrlicht-libdir=DIR], [Optionally specifies location of the Irrlicht libraries]),
@@ -244,10 +247,74 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         AC_CHECK_LIB(Irrlicht, main, [cegui_irr_l_found=yes; cegui_irr_libs="$cegui_path"; break],[cegui_irr_l_found=no; unset ac_cv_lib_Irrlicht_main])
     done
 
+    dnl The following is all to set a 'usable' macro for the Irrlicht version, as opposed
+    dnl to the IRRLICHT_SDK_VERSION macro in irrlicht which is limited for our purpose.
+    dnl if anyone knows a better way - let us know :)
+    gotirrsdkver=no
+    if test x$cegui_irr_h_found = xyes && test x$cegui_irr_l_found = xyes; then
+        AC_MSG_NOTICE([Trying to determine Irrlicht SDK version])
+        AC_COMPILE_IFELSE(
+        [
+            #include <irrlicht.h>
+            class test : public irr::io::IReadFile
+            {
+            public:
+                bool seek(irr::s32 finalPos, bool relativeMovement = false) {return false; }
+                irr::s32 read(void* buffer, irr::s32 sizeToRead) {return 0;}
+                irr::s32 getSize() {return 0;}
+                irr::s32 getPos() {return 0;}
+                const irr::c8* getFileName() {return 0;}
+            };
+            int main(int argc, char** argv) { test x; return 0; }
+        ],
+        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[12],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
+        gotirrsdkver=yes])
+    
+        if test $gotirrsdkver = no; then
+        AC_COMPILE_IFELSE(
+        [
+            #include <irrlicht.h>
+            class test : public irr::io::IReadFile
+            {
+            public:
+                bool seek(irr::s32 finalPos, bool relativeMovement = false) {return false; }
+                irr::s32 read(void* buffer, irr::u32 sizeToRead) {return 0;}
+                irr::s32 getSize() {return 0;}
+                irr::s32 getPos() {return 0;}
+                const irr::c8* getFileName() {return 0;}
+            };
+            int main(int argc, char** argv) { test x; return 0; }
+        ],
+        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[13],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
+        gotirrsdkver=yes])
+        fi
+    
+        if test $gotirrsdkver = no; then
+        AC_COMPILE_IFELSE(
+        [
+            #include <irrlicht.h>
+            class test : public irr::io::IReadFile
+            {
+            public:
+                bool seek(long finalPos, bool relativeMovement = false) {return false; }
+                irr::s32 read(void* buffer, irr::u32 sizeToRead) {return 0;}
+                long getSize() const {return 0;}
+                long getPos() const {return 0;}
+                const irr::c8* getFileName() const {return 0;}
+            };
+            int main(int argc, char** argv) { test x; return 0; }
+        ],
+        [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[14],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
+        gotirrsdkver=yes],
+        [AC_MSG_NOTICE([Unable to determine Irrlicht sdk version.])
+        ])
+        fi
+    fi
+
     CPPFLAGS="$cegui_saved_CFLAGS"
     LIBS="$cegui_saved_LIBS"
 
-    if test x$cegui_irr_h_found = xyes && test x$cegui_irr_l_found = xyes; then
+    if test x$cegui_irr_h_found = xyes && test x$cegui_irr_l_found = xyes && test x$gotirrsdkver = xyes; then
         if test x$cegui_irr_flags != x.; then
             $1_CFLAGS="-I$cegui_irr_flags"
         fi
@@ -261,6 +328,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
     else
         ifelse([$3], [], :, [$3])
     fi    
+    AC_LANG_POP([C++])
 ])
 
 AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [

@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,6 +28,12 @@
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
+
+#ifdef __linux__
+# include <unistd.h>
+# define DATAPATH_VAR_NAME "CEGUI_SAMPLE_DATAPATH"
+#endif
+
 
 // this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
@@ -158,16 +164,49 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
         (CEGUI::System::getSingleton().getResourceProvider());
 
-#ifndef __APPLE__
+#if defined(__linux__)
+    char dataPathPrefix[PATH_MAX];
+    char resourcePath[PATH_MAX];
+
+    // get data path from environment var
+    char* envDataPath = getenv(DATAPATH_VAR_NAME);
+
+    // set data path prefix / base directory.  This will
+    // be either from an environment variable, or from
+    // a compiled in default based on original configure
+    // options
+    if (envDataPath != 0)
+        strcpy(dataPathPrefix, envDataPath);
+    else
+        strcpy(dataPathPrefix, CEGUI_SAMPLE_DATAPATH);
+
+    // for each resource type, set a resource group directory
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
+    rp->setResourceGroupDirectory("schemes", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
+    rp->setResourceGroupDirectory("imagesets", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
+    rp->setResourceGroupDirectory("fonts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
+    rp->setResourceGroupDirectory("layouts", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
+    rp->setResourceGroupDirectory("looknfeels", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
+    rp->setResourceGroupDirectory("lua_scripts", resourcePath);
+    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+        sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+        rp->setResourceGroupDirectory("schemas", resourcePath);
+    #endif
+#elif !defined(__APPLE__)
     rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
     rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
     rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
     rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
     rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
     rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
-#if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-    rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
-#endif
+    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+        rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
+    #endif
 #else
     rp->setResourceGroupDirectory("schemes", "datafiles/schemes/");
     rp->setResourceGroupDirectory("imagesets", "datafiles/imagesets/");
@@ -175,9 +214,9 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     rp->setResourceGroupDirectory("layouts", "datafiles/layouts/");
     rp->setResourceGroupDirectory("looknfeels", "datafiles/looknfeel/");
     rp->setResourceGroupDirectory("lua_scripts", "datafiles/lua_scripts/");
-#if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-    rp->setResourceGroupDirectory("schemas", "XMLRefSchema/");
-#endif
+    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+        rp->setResourceGroupDirectory("schemas", "XMLRefSchema/");
+    #endif
 #endif
 }
 

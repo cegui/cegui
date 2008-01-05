@@ -81,7 +81,7 @@ namespace CEGUI
 		virtual ResourceProvider* createResourceProvider(void);
 
 		/*! forward event to CEGUI system */
-		bool OnEvent(irr::SEvent& event);
+		bool OnEvent(const irr::SEvent& event);
 
 
 		/*************************************************************************
