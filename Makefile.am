@@ -4,7 +4,7 @@ SUBDIRS = . src include XMLParserModules ImageCodecModules RendererModules Windo
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = CEGUI.pc CEGUI-OPENGL.pc
 
-nobase_pkgdata_DATA = XMLRefSchema/CEGUIConfig.xsd \
+nobase_dist_pkgdata_DATA = XMLRefSchema/CEGUIConfig.xsd \
                       XMLRefSchema/Falagard.xsd \
                       XMLRefSchema/Font.xsd \
                       XMLRefSchema/GUILayout.xsd \
