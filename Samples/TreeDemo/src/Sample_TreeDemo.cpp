@@ -10,6 +10,8 @@
 #define NOMINMAX
 #include "windows.h"
 #include <mmsystem.h>
+#endif
+
 #include <time.h>
 
 
@@ -40,7 +42,6 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 // int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
 // #else
 int main(int argc, char *argv[])
-#endif
    {
    // This is a basic start-up for the sample application which is
    // object orientated in nature, so we just need an instance of
@@ -54,11 +55,11 @@ int main(int argc, char *argv[])
 int randInt(int low, int high)
    {
    int   num;
-   DWORD range;
+   CEGUI::uint32 range;
 
    range = high - low + 1;
    if (range > RAND_MAX)
-      num = (int)(((DWORD)rand() * (DWORD)rand()) % range);
+      num = (int)(((CEGUI::uint32)rand() * (CEGUI::uint32)rand()) % range);
    else
       num = (rand()) % range;
 

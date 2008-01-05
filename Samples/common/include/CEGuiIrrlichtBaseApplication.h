@@ -61,7 +61,11 @@ public:
     void    cleanup();
 
     // irrlicht event listener
+#if CEGUI_IRR_SDK_VERSION >= 14
+    bool OnEvent(const irr::SEvent& event);
+#else
     bool OnEvent(irr::SEvent event);
+#endif
 
 protected:
     irr::IrrlichtDevice*       d_device;

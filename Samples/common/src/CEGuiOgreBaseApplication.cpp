@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,6 +27,11 @@
  ***************************************************************************/
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
+#endif
+
+#ifdef __linux__
+# include <unistd.h>
+# define DATAPATH_VAR_NAME "CEGUI_SAMPLE_DATAPATH"
 #endif
 
 // this controls conditional compile of file for Apple
@@ -144,17 +149,56 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     rgm.createResourceGroup("layouts");
     rgm.createResourceGroup("schemes");
     rgm.createResourceGroup("looknfeels");
+    rgm.createResourceGroup("lua_scripts");
+    rgm.createResourceGroup("schemas");
 
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
-#ifndef __APPLE__
+
+#if defined(__linux__)
+    char dataPathPrefix[PATH_MAX];
+    char resourcePath[PATH_MAX];
+
+    // get data path from environment var
+    char* envDataPath = getenv(DATAPATH_VAR_NAME);
+
+    // set data path prefix / base directory.  This will
+    // be either from an environment variable, or from
+    // a compiled in default based on original configure
+    // options
+    if (envDataPath != 0)
+        strcpy(dataPathPrefix, envDataPath);
+    else
+        strcpy(dataPathPrefix, CEGUI_SAMPLE_DATAPATH);
+
+    // for each resource type, set a resource group directory
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemes");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "imagesets");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "fonts");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "layouts");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "looknfeels");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
+    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+        sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+        ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
+    #endif
+#elif !defined(__APPLE__)
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/fonts", "FileSystem", "fonts");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/imagesets", "FileSystem", "imagesets");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/layouts", "FileSystem", "layouts");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/looknfeel", "FileSystem", "looknfeels");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/schemes", "FileSystem", "schemes");
     ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/configs", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/lua_scripts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("../datafiles/lua_scripts", "FileSystem", "lua_scripts");
+    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+        ResourceGroupManager::getSingleton().addResourceLocation("../../XMLRefSchemma", "FileSystem", "schemas");
+    #endif
 #else
     // Because Ogre/Mac looks in the bundle's Resources folder by default...
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/fonts", "FileSystem", "fonts");
@@ -163,7 +207,11 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/looknfeel", "FileSystem", "looknfeels");
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/schemes", "FileSystem", "schemes");
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/configs", "FileSystem");
-    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/lua_scripts", "FileSystem");
+    ResourceGroupManager::getSingleton().addResourceLocation("datafiles/lua_scripts", "FileSystem", "lua_scripts");
+    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+        // FIXME: I think this is wrong, but still it's how Exsortis had in in the OGL renderer.  5/1/08 PDT
+        ResourceGroupManager::getSingleton().addResourceLocation("XMLRefSchemma", "FileSystem", "schemas");
+    #endif
 #endif
 }
 

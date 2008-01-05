@@ -265,7 +265,7 @@ namespace CEGUI
 	}
 
 	/*! forward event to CEGUI system */
-	bool IrrlichtRenderer::OnEvent(irr::SEvent& event)
+	bool IrrlichtRenderer::OnEvent(const irr::SEvent& event)
 	{
 		return eventpusher->OnEvent(event);
 	}

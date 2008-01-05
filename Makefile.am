@@ -1,8 +1,16 @@
 AUTOMAKE_OPTIONS = dist-bzip2 dist-zip
-SUBDIRS = . src include XMLParserModules ImageCodecModules RendererModules WindowRendererSets ScriptingModules Samples XMLRefSchema makefiles
+SUBDIRS = . src include XMLParserModules ImageCodecModules RendererModules WindowRendererSets ScriptingModules Samples makefiles
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = CEGUI.pc CEGUI-OPENGL.pc
+
+nobase_pkgdata_DATA = XMLRefSchema/CEGUIConfig.xsd \
+                      XMLRefSchema/Falagard.xsd \
+                      XMLRefSchema/Font.xsd \
+                      XMLRefSchema/GUILayout.xsd \
+                      XMLRefSchema/GUIScheme.xsd \
+                      XMLRefSchema/Imageset.xsd \
+                      XMLRefSchema/Readme.txt
 
 EXTRA_DIST=doxyfile \
            TinyXML-License

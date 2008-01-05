@@ -12,8 +12,9 @@ DEBUG_DLL_SUFFIX = "_d"
 -- base can be absolute or relative to the root cegui_mk2 dir
 IRRLICHT_PATHS = { "irrlicht-1.3", "include", "lib/Win32-visualstudio" }
 
---- SDK Version
-IRRLICHT_VERSION = 1.3
+--- Irrlicht SDK Version
+--- 12 is 1.2 (or before?).  13 is 1.3 or 1.3.x, and 14 is 1.4 (and above?)
+CEGUI_IRR_SDK_VERSION = 13
 
 
 -------------

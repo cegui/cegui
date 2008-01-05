@@ -134,10 +134,14 @@ AC_CONFIG_FILES([Makefile
                  Samples/ScrollablePaneDemo/src/Makefile
                  Samples/TabControlDemo/Makefile
                  Samples/TabControlDemo/src/Makefile
+                 Samples/TreeDemo/Makefile
+                 Samples/TreeDemo/include/Makefile
+                 Samples/TreeDemo/src/Makefile
                  Samples/Makefile
                  Samples/common/Makefile
                  Samples/common/include/Makefile
                  Samples/common/src/Makefile
+                 Samples/datafiles/Makefile
                  ScriptingModules/CEGUILua/LuaScriptModule/Makefile
                  ScriptingModules/CEGUILua/LuaScriptModule/include/Makefile
                  ScriptingModules/CEGUILua/LuaScriptModule/package/Makefile
@@ -155,7 +159,6 @@ AC_CONFIG_FILES([Makefile
                  XMLParserModules/XercesParser/Makefile
                  XMLParserModules/expatParser/Makefile
                  XMLParserModules/libxmlParser/Makefile
-                 XMLRefSchema/Makefile
                  include/Makefile
                  include/elements/Makefile
                  include/falagard/Makefile

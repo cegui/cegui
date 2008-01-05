@@ -46,15 +46,24 @@ class IrrlichtMemoryFile : public irr::io::IReadFile
 public:
     IrrlichtMemoryFile(const String& filename, const unsigned char* memory, uint32 size);
     virtual ~IrrlichtMemoryFile() {};
-#if CEGUI_IRRLICHT_ABOVE_1_3 == 1
-	virtual irr::s32 read(void* buffer, irr::u32 sizeToRead);
+
+#if CEGUI_IRR_SDK_VERSION == 14
+    virtual bool seek(long finalPos, bool relativeMovement = false);
+    virtual irr::s32 read(void* buffer, irr::u32 sizeToRead);
+    virtual long getSize() const;
+    virtual long getPos() const;
+    virtual const irr::c8* getFileName() const;
 #else
-    virtual irr::s32 read(void* buffer, irr::s32 sizeToRead);
-#endif
+    #if CEGUI_IRR_SDK_VERSION == 13
+        virtual irr::s32 read(void* buffer, irr::u32 sizeToRead);
+    #else
+        virtual irr::s32 read(void* buffer, irr::s32 sizeToRead);
+    #endif
     virtual bool seek(irr::s32 finalPos, bool relativeMovement = false);
     virtual irr::s32 getSize();
     virtual irr::s32 getPos();
     virtual const irr::c8* getFileName();
+#endif
 
 protected:
     String d_filename;
