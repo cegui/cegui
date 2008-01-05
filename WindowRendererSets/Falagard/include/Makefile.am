@@ -34,4 +34,5 @@ noinst_HEADERS = FalButton.h \
                  FalTabControl.h \
                  FalTabControlProperties.h \
                  FalTitlebar.h \
-                 FalTooltip.h
+                 FalTooltip.h \
+                 FalTree.h
