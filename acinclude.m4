@@ -378,7 +378,7 @@ to load a custom made image codec module as the default.]),
             if test x$cegui_with_il_lib = xyes -a x$cegui_with_ilu_lib = xyes ; then 
                 AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer enabled])
                 DevIL_CFLAGS="-DUSE_DEVIL_LIBRARY"
-                DevIL_LIBS="-LIL -lILU"
+                DevIL_LIBS="-lIL -lILU"
                 AC_SUBST(DevIL_CFLAGS)
                 AC_SUBST(DevIL_LIBS)
                 cegui_with_devil=yes
