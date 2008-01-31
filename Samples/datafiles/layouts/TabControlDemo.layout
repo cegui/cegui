@@ -1,19 +1,20 @@
-<?xml version="1.0" ?>
-<GUILayout>
-    <Window Type="DefaultGUISheet" Name="Root">
-        <Window Type="TaharezLook/FrameWindow">
-            <Property Name="Text" Value="Tab Control Demo" />
-            <Property Name="UnifiedPosition" Value="{{0.1,0},{0.1,0}}" />
-            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
-            <Property Name="UnifiedSize" Value="{{0.8,0},{0.8,0}}" />
-            <Property Name="Tooltip" Value="This is a demonstration of TabControl abilities." />
+<?xml version="1.0" encoding="UTF-8"?>
 
-            <Window Type="TaharezLook/TabControl" Name="TabControl">
-    		    <Property Name="TabPanePosition" Value="Bottom" />
-                <Property Name="UnifiedAreaRect" Value="{{0,10},{0,30},{1,-10},{1,-10}}" />
-                <Property Name="Tooltip" Value="This is the tab control" />
-            </Window>
+<GUILayout >
+    <Window Type="TaharezLook/FrameWindow" Name="Frame" >
+        <Property Name="Text" Value="Tab Control Demo" />
+        <Property Name="Tooltip" Value="This is a demonstration of TabControl abilities." />
+        <Property Name="TitlebarFont" Value="Commonwealth-10" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
+        <Property Name="TitlebarEnabled" Value="True" />
+        <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
+        <Window Type="TaharezLook/TabControl" Name="Frame/TabControl" >
+            <Property Name="Tooltip" Value="This is the tab control" />
+            <Property Name="TabHeight" Value="{0,-1}" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TabPanePosition" Value="Bottom" />
+            <Property Name="UnifiedAreaRect" Value="{{0,10},{0,30},{1,-10},{1,-10}}" />
         </Window>
     </Window>
 </GUILayout>
