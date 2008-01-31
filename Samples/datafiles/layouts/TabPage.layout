@@ -10,22 +10,22 @@
         <Property Name="BackgroundEnabled" Value="False" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Page/Button1">
+    <Window Type="TaharezLook/Button" Name="Button1">
         <Property Name="Text" Value="- One -" />
         <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.1,0},{0.3,0},{0.2,0}}" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Page/Button2">
+    <Window Type="TaharezLook/Button" Name="Button2">
         <Property Name="Text" Value="- Two -" />
         <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.3,0},{0.5,0},{0.4,0}}" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Page/Button3">
+    <Window Type="TaharezLook/Button" Name="Button3">
         <Property Name="Text" Value="- Three -" />
         <Property Name="UnifiedAreaRect" Value="{{0.5,0},{0.5,0},{0.7,0},{0.6,0}}" />
     </Window>
 
-    <Window Type="TaharezLook/Button" Name="Page/Button4">
+    <Window Type="TaharezLook/Button" Name="Button4">
         <Property Name="Text" Value="- Four -" />
         <Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.7,0},{0.9,0},{0.8,0}}" />
     </Window>

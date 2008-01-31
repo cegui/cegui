@@ -83,7 +83,13 @@ WindowManager::~WindowManager(void)
 *************************************************************************/
 Window* WindowManager::createWindow( const String& type, const String& name /*= ""*/, const String& prefix /*= ""*/ )
 {
-    String finalName(name.empty() ? generateUniqueWindowName() : prefix + name);
+    // Make sure that a non-empty name gets passed to the factory
+    String finalName(prefix + name);
+    // Still empty?
+    if (finalName.empty())
+    {
+        finalName = generateUniqueWindowName();
+    }
 
 	if (isWindowPresent(finalName))
 	{
