@@ -7,4 +7,4 @@ FalagardDemo1_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/common/s
 FalagardDemo1_LDADD = -lCEGUIBase -lCEGUISampleHelper
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/FalagardDemo1 $(top_builddir)/Samples/bin/FalagardDemo1
+	$(LN_S) -f `pwd`/.libs/FalagardDemo1$(EXEEXT) $(top_builddir)/Samples/bin/FalagardDemo1$(EXEEXT)

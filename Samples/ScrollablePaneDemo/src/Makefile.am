@@ -7,4 +7,4 @@ ScrollablePaneDemo_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/com
 ScrollablePaneDemo_LDADD = -lCEGUIBase -lCEGUISampleHelper
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/ScrollablePaneDemo $(top_builddir)/Samples/bin/ScrollablePaneDemo
+	$(LN_S) -f `pwd`/.libs/ScrollablePaneDemo$(EXEEXT) $(top_builddir)/Samples/bin/ScrollablePaneDemo$(EXEEXT)

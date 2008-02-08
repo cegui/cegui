@@ -13,4 +13,4 @@ Demo8_LDADD = -lCEGUIBase -lCEGUISampleHelper -lCEGUILuaScriptModule -lCEGUItolu
 
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/Demo8 $(top_builddir)/Samples/bin/Demo8
+	$(LN_S) -f `pwd`/.libs/Demo8$(EXEEXT) $(top_builddir)/Samples/bin/Demo8$(EXEEXT)

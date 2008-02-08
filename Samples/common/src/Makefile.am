@@ -1,5 +1,4 @@
 INCLUDES = -I$(top_srcdir)/Samples/common/include -I$(top_srcdir)/include -I$(top_srcdir) $(CEGUI_SAMPLES_CFLAGS)
-
 lib_LTLIBRARIES=libCEGUISampleHelper.la
 
 libCEGUISampleHelper_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
@@ -11,6 +10,12 @@ libCEGUISampleHelper_la_SOURCES = CEGuiBaseApplication.cpp \
 
 libCEGUISampleHelper_la_LIBADD =
 
+if MINGW32_BUILD
+libCEGUISampleHelper_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
+libCEGUISampleHelper_la_LDFLAGS += -shared -no-undefined
+libCEGUISampleHelper_la_LIBADD += -L$(top_builddir)/src -lCEGUIBase
+libCEGUISampleHelper_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
+endif
 
 if CEGUI_USING_GTK2
     INCLUDES += $(GTK_CFLAGS)

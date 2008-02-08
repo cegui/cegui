@@ -346,20 +346,48 @@ AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
         [cegui_with_silly=$enableval], [cegui_with_silly=yes])
     AC_ARG_ENABLE([tga], AC_HELP_STRING([--enable-tga], [Enable image loading via TGA image codec by OpenGL renderer (auto)]), 
         [cegui_with_tga=$enableval], [cegui_with_tga=yes])
-    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=PARSER]], [Sets the default image codec used by the OpenGL renderer. 
-Tipically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec, though you can set it to anything 
+    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=CODEC]], [Sets the default image codec used by the OpenGL renderer. 
+Typically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec, though you can set it to anything 
 to load a custom made image codec module as the default.]), 
     [cegui_default_image_codec=$withval], [cegui_default_image_codec=none])
-    AC_PATH_XTRA
-    cegui_saved_LIBS="$LIBS"
-    LIBS="$X_PRE_LIBS $X_LIBS $X_EXTRA_LIBS"
 
-    AC_SEARCH_LIBS(glInterleavedArrays, MesaGL GL, cegui_found_lib_GL=yes, cegui_found_lib_GL=no)
-    AC_SEARCH_LIBS(gluOrtho2D, MesaGLU GLU, cegui_found_lib_GLU=yes,  cegui_found_lib_GLU=no)
-    AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
-    OpenGL_CFLAGS="$X_CFLAGS"
-    OpenGL_LIBS=$LIBS
+    cegui_saved_LIBS="$LIBS"
+    cegui_saved_CFLAGS="$CFLAGS"
+
+    dnl detect OpenGL libs (done differently on mingw32 than on other systems)
+    dnl -- On mingw32, checking for functions does not seem to work so well, so we just check for existance and hope for the best :-/
+    case $host_os in
+    *mingw32* )
+        AC_CHECK_LIB([opengl32], [main], [cegui_found_lib_GL=yes; LIBS="-lopengl32 $LIBS"], [cegui_found_lib_GL=no])
+        AC_CHECK_LIB([glu32], [main], [cegui_found_lib_GLU=yes; LIBS="-lglu32 $LIBS"], [cegui_found_lib_GLU=no])
+
+        dnl Check for some glut variants.  Done like this because AC_SEARCH_LIBS did not work at all here
+        AC_CHECK_LIB([freeglut], [main], [cegui_found_lib_glut=yes; LIBS="-lfreeglut $LIBS"], [cegui_found_lib_glut=no])
+        if test x$cegui_found_lib_glut = xno; then
+            AC_CHECK_LIB([glut32], [main], [cegui_found_lib_glut=yes; LIBS="-lglut32 $LIBS"], [cegui_found_lib_glut=no])
+            if test x$cegui_found_lib_glut = xno; then
+                AC_CHECK_LIB([glut], [main], [cegui_found_lib_glut=yes; LIBS="-lglut $LIBS"], [cegui_found_lib_glut=no])
+            fi
+        fi
+
+        OpenGL_CFLAGS=""
+        OpenGL_LIBS=$LIBS
+        echo $LIBS
+        ;;
+    * )
+        AC_PATH_XTRA
+        LIBS="$X_PRE_LIBS $X_LIBS $X_EXTRA_LIBS"
+
+        AC_SEARCH_LIBS(glInterleavedArrays, MesaGL GL, cegui_found_lib_GL=yes, cegui_found_lib_GL=no)
+        AC_SEARCH_LIBS(gluOrtho2D, MesaGLU GLU, cegui_found_lib_GLU=yes,  cegui_found_lib_GLU=no)
+        AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
+        OpenGL_CFLAGS="$X_CFLAGS"
+        OpenGL_LIBS=$LIBS
+        ;;
+    esac
+
     LIBS="$cegui_saved_LIBS"
+    CFLAGS="$cegui_saved_CFLAGS"
 
     dnl decide whether to really build the OpenGL renderer
     if test x$cegui_enable_opengl = xyes && test x$cegui_found_lib_GL = xyes && test x$cegui_found_lib_GLU = xyes; then

@@ -7,4 +7,4 @@ FirstWindow_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/common/src
 FirstWindow_LDADD = -lCEGUIBase -lCEGUISampleHelper
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/FirstWindow $(top_builddir)/Samples/bin/FirstWindow
+	$(LN_S) -f `pwd`/.libs/FirstWindow$(EXEEXT) $(top_builddir)/Samples/bin/FirstWindow$(EXEEXT)

@@ -56,8 +56,6 @@ bool Demo8Sample::initialiseSample()
 
     // execute the demo8 script which controls the rest of this demo
     System::getSingleton().executeScriptFile("demo8.lua");
-	System::getSingleton().executeScriptFile("wnd.lua");
-	System::getSingleton().executeScriptFile("wnd2.lua");
 
     // success!
     return true;
