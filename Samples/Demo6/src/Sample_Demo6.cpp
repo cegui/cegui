@@ -57,7 +57,8 @@ bool Demo6Sample::initialiseSample()
     // load scheme and set up defaults
     SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-    FontManager::getSingleton().createFont("Commonwealth-10.font");
+	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
+		FontManager::getSingleton().createFont("Commonwealth-10.font");
 
     // load an image to use as a background
     ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
@@ -121,6 +122,7 @@ void Demo6Sample::createDemoWindows(void)
     fwnd->addChildWindow(cbbo);
     cbbo->setPosition(UVector2(cegui_reldim(0.04f), cegui_reldim( 0.06f)));
     cbbo->setSize(UVector2(cegui_reldim(0.66f), cegui_reldim( 0.33f)));
+    //cbbo->setSortingEnabled(true);
 
     // populate combobox with possible selection modes
     const CEGUI::Image* sel_img = &ImagesetManager::getSingleton().getImageset("TaharezLook")->getImage("MultiListSelectionBrush");
@@ -148,6 +150,7 @@ void Demo6Sample::createDemoWindows(void)
     itm = new ListboxTextItem("Nominated Column (Multiple)", 7);
     itm->setSelectionBrushImage(sel_img);
     cbbo->addItem(itm);
+    ListboxTextItem* pStore = itm;
     itm = new ListboxTextItem("Nominated Row (Single)", 8);
     itm->setSelectionBrushImage(sel_img);
     cbbo->addItem(itm);
@@ -155,6 +158,11 @@ void Demo6Sample::createDemoWindows(void)
     itm->setSelectionBrushImage(sel_img);
     cbbo->addItem(itm);
     cbbo->setReadOnly(true);
+    // Now change the text to test the sorting
+    pStore->setText("Abracadabra");
+    //cbbo->setSortingEnabled(false);
+    cbbo->setSortingEnabled(true);
+    //cbbo->handleUpdatedListItemData();
 
     // column control section
     Window* st = winMgr.createWindow("TaharezLook/StaticText", "Demo6/ControlPanel/ColumnPanel");
@@ -199,6 +207,7 @@ void Demo6Sample::createDemoWindows(void)
     ebox->setPosition(UVector2(cegui_reldim(0.02f), cegui_reldim( 0.32f)));
     ebox->setSize(UVector2(cegui_reldim(0.2f), cegui_reldim( 0.2f)));
     ebox->setValidationString("\\d*");
+    ebox->setText("Test -- ");
 
     ebox = static_cast<Editbox*>(winMgr.createWindow("TaharezLook/Editbox", "Demo6/ControlPanel/ColumnPanel/NewColWidthBox"));
     st->addChildWindow(ebox);

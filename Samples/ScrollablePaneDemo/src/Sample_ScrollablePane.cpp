@@ -102,7 +102,10 @@ bool ScrollablePaneSample::initialiseSample()
     SchemeManager::getSingleton().loadScheme("WindowsLook.scheme");
 
     // load the default font
-    d_font = FontManager::getSingleton().createFont("DejaVuSans-10.font");
+	if(FontManager::getSingleton().isFontPresent("DejaVuSans-10"))
+		d_font = FontManager::getSingleton().getFont("DejaVuSans-10");
+	else
+		d_font = FontManager::getSingleton().createFont("DejaVuSans-10.font");
 
     // to look more like a real application, we override the autoscale setting
     // for both skin and font

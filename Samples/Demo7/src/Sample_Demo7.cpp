@@ -56,7 +56,8 @@ bool Demo7Sample::initialiseSample()
     // load scheme and set up defaults
     SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-    FontManager::getSingleton().createFont("Commonwealth-10.font");
+	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
+		FontManager::getSingleton().createFont("Commonwealth-10.font");
 
     // load an image to use as a background
     ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
@@ -155,6 +156,8 @@ void Demo7Sample::createListContent(void)
     mclbox->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
     mclbox->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
     mclbox->setItem(new MyListItem("284ms"), 2, 4);
+
+    mclbox->setProperty("Font", "fkp-16");
 }
 
 
