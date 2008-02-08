@@ -15,6 +15,7 @@ m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
 AC_INIT([CEGUI], [CEGUI_RELEASE_VERSION])
 AM_INIT_AUTOMAKE([CEGUI],[CEGUI_RELEASE_VERSION])
 AC_CONFIG_HEADER([include/config.h])
+AC_CANONICAL_HOST
 
 # Checks for programs.
 AC_PROG_CXX
@@ -22,11 +23,26 @@ AC_PROG_CC
 
 # Disable building static library
 AC_DISABLE_STATIC
+
+# We want DLLs on Win32 platform
+AC_LIBTOOL_WIN32_DLL
+
+# Initialise libtool
 AM_PROG_LIBTOOL
 
-# Checks for libraries.
-AC_CHECK_LIB([dl], [main])
-AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
+# Setup some stuff depending on the system we're running on
+case $host_os in
+    *mingw32* ) MINGW32=yes;;
+            * ) MINGW32=no;;
+esac
+
+AM_CONDITIONAL([MINGW32_BUILD], [test x$MINGW32 = xyes])
+
+# Checks for libraries (skip on mingw32).
+if test x$MINGW32 != xyes; then
+    AC_CHECK_LIB([dl], [main])
+    AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
+fi
 
 PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
 AC_SUBST(freetype2_CFLAGS)
@@ -94,8 +110,6 @@ CEGUI_OPENGL_REVISION=1
 CEGUI_OPENGL_AGE=0
 CEGUI_OPENGL_VERSION_INFO=$CEGUI_OPENGL_CURRENT:$CEGUI_OPENGL_REVISION:$CEGUI_OPENGL_AGE
 AC_SUBST(CEGUI_OPENGL_VERSION_INFO)
-
-
 
 CEGUI_CODE_OPTIONS 
 

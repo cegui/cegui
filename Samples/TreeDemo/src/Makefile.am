@@ -7,4 +7,4 @@ TreeDemo_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/common/src
 TreeDemo_LDADD = -lCEGUIBase -lCEGUISampleHelper
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/TreeDemo $(top_builddir)/Samples/bin/TreeDemo
+	$(LN_S) -f `pwd`/.libs/TreeDemo$(EXEEXT) $(top_builddir)/Samples/bin/TreeDemo$(EXEEXT)

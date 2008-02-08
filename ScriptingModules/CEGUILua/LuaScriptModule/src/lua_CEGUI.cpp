@@ -8381,7 +8381,7 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_getImageset00(lua_State* tolua_S)
   CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->getImageset(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
-catch(CEGUI::Exception CEGUIDeadException(&e))
+catch(CEGUI::Exception& CEGUIDeadException(&e))
 {
  return 0;
 }

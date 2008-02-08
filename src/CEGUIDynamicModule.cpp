@@ -60,7 +60,7 @@ DynamicModule::DynamicModule(const String& name) :
 	//If nothing is passed, don't load anything...
 	if(name.empty())
 	{
-		d_handle = NULL;
+		d_handle = 0;
 		return;
 	} // if(name.empty())
 
@@ -68,12 +68,7 @@ DynamicModule::DynamicModule(const String& name) :
     // dlopen() does not add .so to the filename, like windows does for .dll
     if (d_moduleName.substr(d_moduleName.length() - 3, 3) != ".so")
         d_moduleName += ".so";
-
-    // see if we need to add the leading 'lib'
-    if (d_moduleName.substr(0, 3) != "lib")
-        d_moduleName.insert(0, "lib");
 #endif
-
     // Optionally add a _d to the module name for the debug config on Win32
 #if (defined(__WIN32__) || defined(_WIN32))
 #   if defined (_DEBUG) && defined (CEGUI_LOAD_MODULE_APPEND_SUFFIX_FOR_DEBUG)
@@ -84,6 +79,18 @@ DynamicModule::DynamicModule(const String& name) :
 #endif
 
     d_handle = DYNLIB_LOAD(d_moduleName.c_str());
+
+#if defined(__linux__) || defined(__MINGW32__)
+    if (!d_handle)
+    {
+        // see if we need to add the leading 'lib'
+        if (d_moduleName.substr(0, 3) != "lib")
+        {
+            d_moduleName.insert(0, "lib");
+            d_handle = DYNLIB_LOAD(d_moduleName.c_str());
+        }
+    }
+#endif
 
     // check for library load failure
     if (!d_handle)

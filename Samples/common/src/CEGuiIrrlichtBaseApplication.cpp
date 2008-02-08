@@ -31,7 +31,6 @@
 
 #ifdef __linux__
 # include <unistd.h>
-# define DATAPATH_VAR_NAME "CEGUI_SAMPLE_DATAPATH"
 #endif
 
 // this controls conditional compile of file for Apple
