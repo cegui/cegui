@@ -4,7 +4,8 @@ lib_LTLIBRARIES=libCEGUISampleHelper.la
 
 libCEGUISampleHelper_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
 
-libCEGUISampleHelper_la_SOURCES = CEGuiRendererSelector.cpp \
+libCEGUISampleHelper_la_SOURCES = CEGuiBaseApplication.cpp \
+                                  CEGuiRendererSelector.cpp \
                                   CEGuiSample.cpp \
                                   CLICEGuiRendererSelector.cpp
 

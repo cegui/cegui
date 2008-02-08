@@ -28,6 +28,22 @@
 #ifndef _CEGuiBaseApplication_h_
 #define _CEGuiBaseApplication_h_
 
+// If this looks wanky, it's becase it is!  Behold that this is not as fullblown
+// as it could be though.
+#ifndef PATH_MAX
+#   include <stdlib.h>
+#   ifndef PATH_MAX
+#       include <limits.h>
+#   endif
+#   ifndef PATH_MAX
+#      ifdef _MAX_PATH
+#           define PATH_MAX _MAX_PATH
+#       else
+#           define PATH_MAX 260
+#       endif
+#   endif
+#endif
+
 /*************************************************************************
     Forward refs
 *************************************************************************/
@@ -109,6 +125,18 @@ public:
     virtual bool isQuitting() const     { return d_quitting; }
 
 protected:
+    /*!
+    \brief
+        Return the path prefix to use for datafiles.  The value returned
+        is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
+        if the variable is not set, a default will be used depending on the
+        build system in use.
+    */
+    const char* getDataPathPrefix() const;
+
+    //! name of env var that holds the path prefix to the data files.
+    static const char DATAPATH_VAR_NAME[];
+
     bool    d_quitting;     //!< true when the base app should cleanup and exit.
 };
 
