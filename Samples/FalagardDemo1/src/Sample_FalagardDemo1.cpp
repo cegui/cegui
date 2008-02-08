@@ -76,7 +76,8 @@ bool FalagardDemo1Sample::initialiseSample()
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
 
-    FontManager::getSingleton().createFont("Iconified-12.font");
+	if(!FontManager::getSingleton().isFontPresent("Iconified-12"))
+		FontManager::getSingleton().createFont("Iconified-12.font");
 
     // load some demo windows and attach to the background 'root'
     background->addChildWindow(winMgr.loadWindowLayout("VanillaWindows.layout"));

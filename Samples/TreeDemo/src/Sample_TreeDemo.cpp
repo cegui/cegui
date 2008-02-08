@@ -129,8 +129,11 @@ bool TreeDemoSample::initialiseSample()
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 
-   FontManager::getSingleton().createFont("Iconified-12.font");
- //  FontManager::getSingleton().createFont("Commonwealth-10.font");
+	if(!FontManager::getSingleton().isFontPresent("Iconified-12"))
+		FontManager::getSingleton().createFont("Iconified-12.font");
+//	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
+//		FontManager::getSingleton().createFont("Commonwealth-10.font");
+
 
    TreeDemoWindow = winMgr.loadWindowLayout(LAYOUT_FILE_NAME);
 

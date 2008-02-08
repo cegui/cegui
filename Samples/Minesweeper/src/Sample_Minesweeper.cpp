@@ -123,27 +123,38 @@ bool MinesweeperSample::initialiseSample()
     WindowFactoryManager::getSingleton().addFactory( &getTimerFactory() );
 
     d_gameStarted = false;
+
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
-    // Load the scheme to initialse the VanillaSkin which we use in this sample
+
+	// Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().loadScheme("VanillaSkin.scheme");
     SchemeManager::getSingleton().loadScheme("TaharezLook.scheme");
     System::getSingleton().setDefaultTooltip("TaharezLook/Tooltip");
+
     // set default mouse image
     System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
+
     // Load font 
-    FontManager::getSingleton().createFont("Iconified-12.font");
+	if(!FontManager::getSingleton().isFontPresent("Iconified-12"))
+		FontManager::getSingleton().createFont("Iconified-12.font");
+
     // load an image to use as a background
     ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
+
     // set area rectangle
     background->setArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));
+
     // disable frame and standard background
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
+
     // set the background image
     background->setProperty("Image", "set:BackgroundImage image:full_image");
+
     // install this as the root GUI sheet
     System::getSingleton().setGUISheet(background);
     d_alarm = (Timer*)winMgr.createWindow("Timer");
@@ -175,7 +186,6 @@ bool MinesweeperSample::initialiseSample()
     d_counter->setYPosition(UDim(0.0, 0.0));
     d_counter->setWidth(UDim(0.3, 0.0));
     d_counter->setHeight(UDim(1.0, 0.0));
-    
 
     Window* newGame = winMgr.createWindow("Vanilla/Button", "new_game");
     action->addChildWindow(newGame); 
@@ -197,6 +207,7 @@ bool MinesweeperSample::initialiseSample()
     d_timer->setWidth(UDim(0.3, 0.0));
     d_timer->setHeight(UDim(1.0, 0.0));
     d_alarm->subscribeEvent(Timer::EventTimerAlarm, Event::Subscriber(&MinesweeperSample::handleUpdateTimer, this));
+
     // Board button grid 
     Window* grid = winMgr.createWindow("DefaultWindow"); 
     frame->addChildWindow(grid);

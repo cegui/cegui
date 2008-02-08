@@ -95,7 +95,10 @@ public:
 
         // load all the fonts except Commonwealth which has been already loaded
         for (size_t i = 0; i < (sizeof (FontList) / sizeof (FontList [0])); i++)
-            FontManager::getSingleton().createFont (String (FontList [i]) + ".font");
+		{
+			if(!FontManager::getSingleton().isFontPresent(FontList [i]))
+				FontManager::getSingleton().createFont (String (FontList [i]) + ".font");
+		}
 
         // load an image to use as a background
         ImagesetManager::getSingleton().createImagesetFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
