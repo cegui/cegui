@@ -31,9 +31,7 @@
 
 #ifdef __linux__
 # include <unistd.h>
-# define DATAPATH_VAR_NAME "CEGUI_SAMPLE_DATAPATH"
 #endif
-
 
 // this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
@@ -59,7 +57,6 @@
 #endif
 
 #include <stdexcept>
-#include <stdlib.h>
 
 #ifdef _MSC_VER
 # if defined(DEBUG) || defined (_DEBUG)
@@ -164,21 +161,9 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
         (CEGUI::System::getSingleton().getResourceProvider());
 
-#if defined(__linux__)
-    char dataPathPrefix[PATH_MAX];
+#ifndef __APPLE__
+    const char* dataPathPrefix = getDataPathPrefix();
     char resourcePath[PATH_MAX];
-
-    // get data path from environment var
-    char* envDataPath = getenv(DATAPATH_VAR_NAME);
-
-    // set data path prefix / base directory.  This will
-    // be either from an environment variable, or from
-    // a compiled in default based on original configure
-    // options
-    if (envDataPath != 0)
-        strcpy(dataPathPrefix, envDataPath);
-    else
-        strcpy(dataPathPrefix, CEGUI_SAMPLE_DATAPATH);
 
     // for each resource type, set a resource group directory
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
@@ -196,16 +181,6 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
         sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
         rp->setResourceGroupDirectory("schemas", resourcePath);
-    #endif
-#elif !defined(__APPLE__)
-    rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
-    rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
-    rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
-    rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
-    rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
-    rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
-    #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
     #endif
 #else
     rp->setResourceGroupDirectory("schemes", "datafiles/schemes/");

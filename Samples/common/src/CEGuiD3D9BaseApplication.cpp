@@ -85,15 +85,26 @@ CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
                 CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
                     (CEGUI::System::getSingleton().getResourceProvider());
 
-                rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
-                rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
-                rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
-                rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
-                rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
-                rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
-#if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-                rp->setResourceGroupDirectory("schemas", "../../XMLRefSchema/");
-#endif
+                const char* dataPathPrefix = getDataPathPrefix();
+                char resourcePath[PATH_MAX];
+
+                // for each resource type, set a resource group directory
+                sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
+                rp->setResourceGroupDirectory("schemes", resourcePath);
+                sprintf(resourcePath, "%s/%s", dataPathPrefix, "imagesets/");
+                rp->setResourceGroupDirectory("imagesets", resourcePath);
+                sprintf(resourcePath, "%s/%s", dataPathPrefix, "fonts/");
+                rp->setResourceGroupDirectory("fonts", resourcePath);
+                sprintf(resourcePath, "%s/%s", dataPathPrefix, "layouts/");
+                rp->setResourceGroupDirectory("layouts", resourcePath);
+                sprintf(resourcePath, "%s/%s", dataPathPrefix, "looknfeel/");
+                rp->setResourceGroupDirectory("looknfeels", resourcePath);
+                sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
+                rp->setResourceGroupDirectory("lua_scripts", resourcePath);
+                #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
+                    sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+                    rp->setResourceGroupDirectory("schemas", resourcePath);
+                #endif
 
                 CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
 
