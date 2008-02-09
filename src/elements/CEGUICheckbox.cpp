@@ -2,7 +2,7 @@
 	filename: 	CEGUICheckbox.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of Checkbox base class
 *************************************************************************/
 /***************************************************************************
@@ -69,7 +69,7 @@ Checkbox::~Checkbox(void)
 
 
 /*************************************************************************
-	set whether the check-box is selected or not	
+	set whether the check-box is selected or not
 *************************************************************************/
 void Checkbox::setSelected(bool select)
 {
@@ -86,7 +86,7 @@ void Checkbox::setSelected(bool select)
 
 
 /*************************************************************************
-	event triggered internally when state of check-box changes	
+	event triggered internally when state of check-box changes
 *************************************************************************/
 void Checkbox::onSelectStateChange(WindowEventArgs& e)
 {
@@ -106,7 +106,7 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 		if (sheet)
 		{
 			// if mouse was released over this widget
-			if (this == sheet->getChildAtPosition(e.position))
+			if (this == sheet->getTargetChildAtPosition(e.position))
 			{
 				// toggle selected state
 				setSelected(d_selected ^ true);

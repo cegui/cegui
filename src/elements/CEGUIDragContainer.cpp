@@ -378,7 +378,7 @@ namespace CEGUI
             bool wasEnabled = d_enabled;
             d_enabled = false;
             // find out which child of root window has the mouse in it
-            Window* eventWindow = root->getChildAtPosition(MouseCursor::getSingleton().getPosition());
+            Window* eventWindow = root->getTargetChildAtPosition(MouseCursor::getSingleton().getPosition());
             d_enabled = wasEnabled;
 
             // use root itself if no child was hit

@@ -2,7 +2,7 @@
 	filename: 	CEGUIMenuItem.cpp
 	created:	2/4/2005
 	author:		Tomas Lindquist Olsen (based on code by Paul D Turner)
-	
+
 	purpose:	Implementation of MenuItem widget base class
 *************************************************************************/
 /***************************************************************************
@@ -77,7 +77,7 @@ void MenuItem::updateInternalState(const Point& mouse_pos)
 {
     bool oldstate = d_hovering;
 
-	// assume not hovering 
+	// assume not hovering
 	d_hovering = false;
 
 	// if input is captured, but not by 'this', then we never hover highlight
@@ -111,7 +111,7 @@ void MenuItem::updateInternalState(const Point& mouse_pos)
 			    openPopupMenu();
 		    }
 	    }
-	    
+
 		requestRedraw();
 	}
 }
@@ -291,7 +291,7 @@ void MenuItem::closeAllMenuItemPopups()
 
 
 /*************************************************************************
-	handler invoked internally when the menuitem is clicked.	
+	handler invoked internally when the menuitem is clicked.
 *************************************************************************/
 void MenuItem::onClicked(WindowEventArgs& e)
 {
@@ -361,9 +361,9 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
 	if (e.button == LeftButton)
 	{
 		releaseInput();
-		
+
 		// was the button released over this window?
-		if ( !d_popupWasClosed && System::getSingleton().getGUISheet()->getChildAtPosition(e.position) == this )
+		if ( !d_popupWasClosed && System::getSingleton().getGUISheet()->getTargetChildAtPosition(e.position) == this )
 		{
 			WindowEventArgs we(this);
 			onClicked(we);
@@ -413,7 +413,7 @@ void MenuItem::onMouseLeaves(MouseEventArgs& e)
 void MenuItem::onTextChanged(WindowEventArgs& e)
 {
 	ItemEntry::onTextChanged(e);
-	
+
 	// if we are attached to a ItemListBase, we make it update as necessary
 	Window* parent = getParent();
 	if (parent && parent->testClassName("ItemListBase"))

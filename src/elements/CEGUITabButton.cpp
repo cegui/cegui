@@ -2,7 +2,7 @@
 	filename: 	CEGUITabButton.cpp
 	created:	8/8/2004
 	author:		Steve Streeting
-	
+
 	purpose:	Implementation of TabButton widget base class
 *************************************************************************/
 /***************************************************************************
@@ -49,7 +49,7 @@ const String TabButton::EventScrolled( "Scrolled" );
 *************************************************************************/
 TabButton::TabButton(const String& type, const String& name) :
 	ButtonBase(type, name),
-    d_selected(false), 
+    d_selected(false),
     d_dragging(false)
 {
 }
@@ -76,7 +76,7 @@ void TabButton::setTargetWindow(Window* wnd)
 
 
 /*************************************************************************
-	handler invoked internally when the button is clicked.	
+	handler invoked internally when the button is clicked.
 *************************************************************************/
 void TabButton::onClicked(WindowEventArgs& e)
 {
@@ -111,7 +111,7 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 		if (sheet)
 		{
 			// if mouse was released over this widget
-			if (this == sheet->getChildAtPosition(e.position))
+			if (this == sheet->getTargetChildAtPosition(e.position))
 			{
 				// fire event
 				WindowEventArgs args(this);
