@@ -35,6 +35,8 @@
 #include "CEGUIXMLAttributes.h"
 #include "CEGUIPropertyHelper.h"
 
+#include <xercesc/validators/schema/SchemaValidator.hpp>
+
 #include <iostream> // Debug 
 // Start of CEGUI namespace section
 namespace CEGUI
