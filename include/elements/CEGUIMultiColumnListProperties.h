@@ -316,11 +316,11 @@ public:
 
 	\par Usage:
 		- Name: ColumnHeader
-		- Format: "text:[caption] width:[float] id:[uint]"
+		- Format: "text:[caption] width:{s,o} id:[uint]"
 
 	\par where:
 		- [caption] is the column header caption text.
-		- [float] is the width of the column.
+		- [{s,o}] is a UDim specification.
 		- [uint] is the unique ID for the column.
 */
 class ColumnHeader : public Property
