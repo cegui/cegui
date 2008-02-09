@@ -2,7 +2,7 @@
 	filename: 	CEGUIPushButton.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of PushButton widget base class
 *************************************************************************/
 /***************************************************************************
@@ -60,7 +60,7 @@ PushButton::~PushButton(void)
 
 
 /*************************************************************************
-	handler invoked internally when the button is clicked.	
+	handler invoked internally when the button is clicked.
 *************************************************************************/
 void PushButton::onClicked(WindowEventArgs& e)
 {
@@ -80,7 +80,7 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 		if (sheet)
 		{
 			// if mouse was released over this widget
-			if (this == sheet->getChildAtPosition(e.position))
+			if (this == sheet->getTargetChildAtPosition(e.position))
 			{
 				// fire event
 				WindowEventArgs args(this);

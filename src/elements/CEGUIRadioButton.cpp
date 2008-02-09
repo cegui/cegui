@@ -2,7 +2,7 @@
 	filename: 	CEGUIRadioButton.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of RadioButton widget base class
 *************************************************************************/
 /***************************************************************************
@@ -71,7 +71,7 @@ RadioButton::~RadioButton(void)
 
 
 /*************************************************************************
-	set whether the radio button is selected or not	
+	set whether the radio button is selected or not
 *************************************************************************/
 void RadioButton::setSelected(bool select)
 {
@@ -94,7 +94,7 @@ void RadioButton::setSelected(bool select)
 
 
 /*************************************************************************
-	set the groupID for this radio button	
+	set the groupID for this radio button
 *************************************************************************/
 void RadioButton::setGroupID(ulong group)
 {
@@ -164,7 +164,7 @@ void RadioButton::onMouseButtonUp(MouseEventArgs& e)
 		if (sheet)
 		{
 			// if mouse was released over this widget
-			if (this == sheet->getChildAtPosition(e.position))
+			if (this == sheet->getTargetChildAtPosition(e.position))
 			{
 				// select this button & deselect all others in the same group.
 				setSelected(true);
