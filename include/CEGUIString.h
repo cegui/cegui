@@ -2,7 +2,7 @@
 	filename: 	CEGUIString.h
 	created:	26/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines string class used within the GUI system.
 *************************************************************************/
 /***************************************************************************
@@ -127,7 +127,7 @@ public:
 #	pragma warning (push)
 #	pragma warning (disable : 4284)
 #endif
-		const_pointer	operator->() const		
+		const_pointer	operator->() const
 		{
 			return &**this;
 		}
@@ -142,7 +142,7 @@ public:
 			return *this;
 		}
 
-		const_iterator	operator++(int)		
+		const_iterator	operator++(int)
 		{
 			const_iterator temp = *this;
 			++*this;
@@ -155,7 +155,7 @@ public:
 			return *this;
 		}
 
-		const_iterator	operator--(int)		
+		const_iterator	operator--(int)
 		{
 			const_iterator temp = *this;
 			--*this;
@@ -403,7 +403,7 @@ public:
 		init();
 		assign(str);
 	}
-	
+
 
 	/*!
 	\brief
@@ -451,7 +451,7 @@ public:
 		init();
 		assign(std_str);
 	}
-		
+
 	/*!
 	\brief
 		Constructs a new string initialised with characters from the given std::string object.
@@ -578,7 +578,7 @@ public:
 	\param end
 		Iterator describing the (exclusive) end of the data to be used when initialising the String object
 
-	\return 
+	\return
 		Nothing
 	*/
 	String(const_iterator iter_beg, const_iterator iter_end)
@@ -1227,7 +1227,7 @@ public:
 
 	\param len
 		Maximum number of code points from the String that should be encoded into the buffer
-	
+
 	\param idx
 		Index of the first code point to be encoded into the buffer
 
@@ -1321,13 +1321,13 @@ public:
 		if (str.d_cplength < str_idx)
 			throw std::out_of_range("Index was out of range for CEGUI::String object");
 
-		if (str_num == npos)
+		if ((str_num == npos) || (str_num > str.d_cplength - str_idx))
 			str_num = str.d_cplength - str_idx;
 
 		grow(str_num);
 		setlen(str_num);
 		memcpy(ptr(), &str.ptr()[str_idx], str_num * sizeof(utf32));
-		
+
 		return *this;
 	}
 
@@ -1380,7 +1380,7 @@ public:
 		if (std_str.size() < str_idx)
 			throw std::out_of_range("Index was out of range for std::string object");
 
-		if (str_num == npos)
+		if ((str_num == npos) || (str_num > (size_type)std_str.size() - str_idx))
 			str_num = (size_type)std_str.size() - str_idx;
 
 		grow(str_num);
@@ -1666,7 +1666,7 @@ public:
 		if (str.d_cplength < str_idx)
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
-		if (str_num == npos)
+		if ((str_num == npos) || (str_num > str.d_cplength - str_idx))
 			str_num = str.d_cplength - str_idx;
 
 		grow(d_cplength + str_num);
@@ -1725,7 +1725,7 @@ public:
 		if (std_str.size() < str_idx)
 			throw std::out_of_range("Index is out of range for std::string");
 
-		if (str_num == npos)
+		if ((str_num == npos) || (str_num > (size_type)std_str.size() - str_idx))
 			str_num = (size_type)std_str.size() - str_idx;
 
 		size_type newsze = d_cplength + str_num;
@@ -2035,7 +2035,7 @@ public:
 		if ((d_cplength < idx) || (str.d_cplength < str_idx))
 			throw std::out_of_range("Index is out of range for CEGUI::String");
 
-		if (str_num == npos)
+		if ((str_num == npos) || (str_num > str.d_cplength - str_idx))
 			str_num = str.d_cplength - str_idx;
 
 		size_type newsz = d_cplength + str_num;
@@ -2106,7 +2106,7 @@ public:
 		if (std_str.size() < str_idx)
 			throw std::out_of_range("Index is out of range for std::string");
 
-		if (str_num == npos)
+		if ((str_num == npos) || (str_num > (size_type)std_str.size() - str_idx))
 			str_num = (size_type)std_str.size() - str_idx;
 
 		size_type newsz = d_cplength + str_num;
@@ -2115,7 +2115,7 @@ public:
 		memmove(&ptr()[idx + str_num], &ptr()[idx], (d_cplength - idx) * sizeof(utf32));
 
 		utf32* pt = &ptr()[idx + str_num - 1];
-		
+
 		while(str_num--)
 			*pt-- = static_cast<utf32>(static_cast<unsigned char>(std_str[str_idx + str_num]));
 
@@ -2995,7 +2995,7 @@ public:
 	\param newBeg
 		Iterator describing the beginning of the range to insert.
 
-	\param newEnd	
+	\param newEnd
 		Iterator describing the (exclusive) end of the range to insert.
 
 	\return
@@ -4820,7 +4820,7 @@ private:
 	{
 		return (iter1.d_ptr == 0) ? 0 : (iter1 - iter2);
 	}
-	
+
 	// encoding functions
 	// for all:
 	//	src_len is in code units, or 0 for null terminated string.
@@ -5029,7 +5029,7 @@ private:
 
 		while ((--cp_count) && (*buf1 == *buf2))
 			buf1++, buf2++;
-		
+
 		return *buf1 - *buf2;
 	}
 
@@ -5103,7 +5103,7 @@ private:
 	}
 
 	// return index of first occurrence of 'code_point' in utf8 encoded string 'str', or npos if none.  len is in code points.
-	size_type find_codepoint(const utf8* str, size_type len, utf32 code_point) const 
+	size_type find_codepoint(const utf8* str, size_type len, utf32 code_point) const
 	{
 		size_type idx = 0;
 
