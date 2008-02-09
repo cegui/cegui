@@ -917,125 +917,122 @@
 
         <PropertyDefinition name="BackgroundTextColours" initialValue="t1:FF000000 tr:FF000000 b1:FF000000 br:FF000000" redrawOnWrite="true" />
 
-	<PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+	    <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
         <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="TextBackground" initialValue="FF888888" redrawOnWrite="true" />
 
-	<ImagerySection name="label">
-		<TextComponent>
-			<Area>
-			        <Dim type="LeftEdge">
-				        <AbsoluteDim value="15" />
-			        </Dim>
-			        <Dim type="TopEdge">
-			                <AbsoluteDim value="0" />
-			        </Dim>
-			        <Dim type="RightEdge">
-				        <UnifiedDim scale="1" offset="0" type="RightEdge" />
-			        </Dim>
-			        <Dim type="BottomEdge">
-			                <UnifiedDim scale="1" offset="0" type="BottomEdge" />
-				</Dim>					
-			</Area>
-		        <VertFormat type="TopAligned" />
-		        <HorzFormat type="LeftAligned" />
-		</TextComponent>
-	</ImagerySection>
-	<ImagerySection name="frame">
-	        <FrameComponent>
-			<Area>
-				<Dim type="LeftEdge">
-				        <AbsoluteDim value="0" />
-			        </Dim>
-			        <Dim type="TopEdge">
-				        <AbsoluteDim value="11" />
-				</Dim>
-			        <Dim type="RightEdge">
-				        <UnifiedDim scale="1" offset="0" type="RightEdge" />
-			        </Dim>
-				<Dim type="BottomEdge">
-				        <UnifiedDim scale="1" offset="0" type="BottomEdge" />
-			        </Dim>
-			</Area>
-	
-		        <Image type="TopLeftCorner" imageset="TaharezLook" image="StaticTopLeft" />
-	                <Image type="TopRightCorner" imageset="TaharezLook" image="StaticTopRight" />
-		        <Image type="BottomLeftCorner" imageset="TaharezLook" image="StaticBottomLeft" />
-			<Image type="BottomRightCorner" imageset="TaharezLook" image="StaticBottomRight" />
-	                <Image type="LeftEdge" imageset="TaharezLook" image="StaticLeft" />
-	                <Image type="TopEdge" imageset="TaharezLook" image="StaticTop" />
-	                <Image type="RightEdge" imageset="TaharezLook" image="StaticRight" />
-	                <Image type="BottomEdge" imageset="TaharezLook" image="StaticBottom" />
-			<VertFormat type="Stretched" />
-		        <HorzFormat type="Stretched" />
-		</FrameComponent>
-	</ImagerySection>
-	<ImagerySection name="label_bg">
-		<ImageryComponent>
-			<Area>
-			        <Dim type="LeftEdge" >
-			               <AbsoluteDim value="13" />
-		                </Dim>
-				<Dim type="TopEdge" >
-			                <AbsoluteDim value="0" />
-		                </Dim>
-				<Dim type="Width" >
-			                <FontDim type="HorzExtent" padding="5" />
-		                </Dim>
-				<Dim type="Height" >
-			                <FontDim type="LineSpacing" />
-			        </Dim>
-		        </Area>
-			<Image imageset="TaharezLook" image="StaticBackdrop" />
-			<ColourRectProperty name="BackgroundTextColours" />
-			<VertFormat type="Stretched" />
-			<HorzFormat type="Stretched" />
-		</ImageryComponent>
-	</ImagerySection>
-	<Child type="DefaultWindow" nameSuffix="__auto_contentpane__">
-		<Area>
-			<Dim type="LeftEdge">
-				<AbsoluteDim value="8" />
-		        </Dim>
-		        <Dim type="TopEdge">
-				<AbsoluteDim value="20" />
-		        </Dim>
-		        <Dim type="RightEdge">
-			        <UnifiedDim scale="1" offset="0" type="RightEdge">
-		                        <DimOperator op="Subtract">
-						<AbsoluteDim value="8" />
-					</DimOperator>
-				</UnifiedDim>
-		        </Dim>
-		        <Dim type="BottomEdge">
-		                <UnifiedDim scale="1" offset="0" type="BottomEdge">
-					<DimOperator op="Subtract">
-						<AbsoluteDim value="8" />
-					</DimOperator>
-				</UnifiedDim>
-			</Dim>
-		</Area>
-		<VertFormat type="Stretched" />
-		<HorzFormat type="Stretched" />
-	</Child>
-	<StateImagery name="Enabled">
-		<Layer>
-			<Section section="frame" />
-		        <Section section="label_bg" />
-		        <Section section="label">
-				<ColourProperty name="NormalTextColour" />
-			</Section>
-	        </Layer>
-	</StateImagery>
-	<StateImagery name="Disabled">
-		<Layer>
-			<Section section="frame" />
-		        <Section section="label_bg" />
-		        <Section section="label">
-				<ColourProperty name="DisabledTextColour" />
-		        </Section>
-	        </Layer>
-	</StateImagery>
+        <Child type="DefaultWindow" nameSuffix="__auto_contentpane__">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="8" />
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="20" />
+                </Dim>
+                <Dim type="RightEdge">
+                    <UnifiedDim scale="1" offset="0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <AbsoluteDim value="8" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <UnifiedDim scale="1" offset="0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <AbsoluteDim value="8" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </Child>
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="15" />
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0" />
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale="1" offset="0" type="RightEdge" />
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale="1" offset="0" type="BottomEdge" />
+                    </Dim>					
+                </Area>
+                <VertFormat type="TopAligned" />
+                <HorzFormat type="LeftAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="frame">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0" />
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="11" />
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale="1" offset="0" type="RightEdge" />
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale="1" offset="0" type="BottomEdge" />
+                    </Dim>
+                </Area>
+                <Image type="TopLeftCorner" imageset="TaharezLook" image="StaticTopLeft" />
+                <Image type="TopRightCorner" imageset="TaharezLook" image="StaticTopRight" />
+                <Image type="BottomLeftCorner" imageset="TaharezLook" image="StaticBottomLeft" />
+                <Image type="BottomRightCorner" imageset="TaharezLook" image="StaticBottomRight" />
+                <Image type="LeftEdge" imageset="TaharezLook" image="StaticLeft" />
+                <Image type="TopEdge" imageset="TaharezLook" image="StaticTop" />
+                <Image type="RightEdge" imageset="TaharezLook" image="StaticRight" />
+                <Image type="BottomEdge" imageset="TaharezLook" image="StaticBottom" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="label_bg">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" >
+                        <AbsoluteDim value="13" />
+                    </Dim>
+                    <Dim type="TopEdge" >
+                        <AbsoluteDim value="0" />
+                    </Dim>
+                    <Dim type="Width" >
+                        <FontDim type="HorzExtent" padding="5" />
+                    </Dim>
+                    <Dim type="Height" >
+                        <FontDim type="LineSpacing" />
+                    </Dim>
+                </Area>
+                <Image imageset="TaharezLook" image="StaticBackdrop" />
+                <ColourRectProperty name="BackgroundTextColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="frame" />
+                <Section section="label_bg" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="frame" />
+                    <Section section="label_bg" />
+                    <Section section="label">
+                    <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
     </WidgetLook>
 
     <!--
