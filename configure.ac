@@ -40,8 +40,8 @@ AM_CONDITIONAL([MINGW32_BUILD], [test x$MINGW32 = xyes])
 
 # Checks for libraries (skip on mingw32).
 if test x$MINGW32 != xyes; then
-    AC_CHECK_LIB([dl], [main])
-    AC_CHECK_LIB([pthread], [main],, AC_MSG_ERROR([cannot find pthread library]))
+    AC_CHECK_LIB([dl], [dlopen])
+    AC_CHECK_LIB([pthread], [pthread_create],, AC_MSG_ERROR([cannot find pthread library]))
 fi
 
 PKG_CHECK_MODULES(freetype2, freetype2 >= 0.15.0)
