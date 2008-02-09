@@ -78,18 +78,38 @@ const String System::EventNamespace("System");
 
 /*!
 \brief
-	Simple timer class.
+    Simple timer class.
 */
 class SimpleTimer
 {
-	clock_t d_baseTime;
+    double d_baseTime;
 
 public:
-	SimpleTimer() : d_baseTime(clock()) {}
+    static double currentTime(); ///< returns time in seconds
 
-	void	restart()	{ d_baseTime = clock(); }
-	double	elapsed()	{ return static_cast<double>(clock() - d_baseTime) / CLOCKS_PER_SEC; }
+    SimpleTimer() : d_baseTime(currentTime()) {}
+
+    void restart() { d_baseTime = currentTime(); }
+    double elapsed() { return currentTime() - d_baseTime; }
 };
+
+#if defined(__WIN32__) || defined(_WIN32)
+#include <windows.h>
+double SimpleTimer::currentTime()
+{
+    return ::timeGetTime() / 1000.0;
+}
+
+#elif defined(__linux__)
+#include <sys/time.h>
+double SimpleTimer::currentTime()
+{
+    timeval timeStructure;
+    gettimeofday(&timeStructure, 0);
+    return timeStructure.tv_sec + timeStructure.tv_usec / 1000000.0;
+}
+#endif
+
 
 /*!
 \brief
@@ -762,7 +782,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 
     // find the likely destination for generated events.
     Window* dest_window = getTargetWindow(ma.position);
-	
+
     //
 	// Handling for multi-click generation
 	//
@@ -1318,7 +1338,7 @@ void System::onDefaultFontChanged(EventArgs& e)
 {
     // here we need to inform every window using the default font that
     // it's font has been changed.
-    WindowManager::WindowIterator iter = 
+    WindowManager::WindowIterator iter =
         WindowManager::getSingleton().getIterator();
 
     // Args structure we will re-use for all windows.
@@ -1412,7 +1432,7 @@ void System::setDefaultTooltip(Tooltip* tooltip)
     if (d_defaultTooltip && d_weOwnTooltip)
         WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
 
-    // set new custom tooltip 
+    // set new custom tooltip
     d_weOwnTooltip = false;
     d_defaultTooltip = tooltip;
     d_defaultTooltip->setWritingXMLAllowed(false);
