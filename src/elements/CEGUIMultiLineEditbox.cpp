@@ -2,7 +2,7 @@
 	filename: 	CEGUIMultiLineEditbox.cpp
 	created:	30/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of the Multi-line edit box base class
 *************************************************************************/
 /***************************************************************************
@@ -124,7 +124,7 @@ MultiLineEditbox::~MultiLineEditbox(void)
 
 
 /*************************************************************************
-	Initialise the Window based object ready for use.	
+	Initialise the Window based object ready for use.
 *************************************************************************/
 void MultiLineEditbox::initialiseComponents(void)
 {
@@ -141,7 +141,7 @@ void MultiLineEditbox::initialiseComponents(void)
 
 
 /*************************************************************************
-	return true if the edit box has input focus.	
+	return true if the edit box has input focus.
 *************************************************************************/
 bool MultiLineEditbox::hasInputFocus(void) const
 {
@@ -150,7 +150,7 @@ bool MultiLineEditbox::hasInputFocus(void) const
 
 
 /*************************************************************************
-	return the current selection start point.	
+	return the current selection start point.
 *************************************************************************/
 size_t MultiLineEditbox::getSelectionStartIndex(void) const
 {
@@ -168,7 +168,7 @@ size_t MultiLineEditbox::getSelectionEndIndex(void) const
 
 
 /*************************************************************************
-	return the length of the current selection (in code points / characters).	
+	return the length of the current selection (in code points / characters).
 *************************************************************************/
 size_t MultiLineEditbox::getSelectionLength(void) const
 {
@@ -177,7 +177,7 @@ size_t MultiLineEditbox::getSelectionLength(void) const
 
 
 /*************************************************************************
-	Specify whether the edit box is read-only.	
+	Specify whether the edit box is read-only.
 *************************************************************************/
 void MultiLineEditbox::setReadOnly(bool setting)
 {
@@ -193,7 +193,7 @@ void MultiLineEditbox::setReadOnly(bool setting)
 
 
 /*************************************************************************
-	Set the current position of the carat.	
+	Set the current position of the carat.
 *************************************************************************/
 void MultiLineEditbox::setCaratIndex(size_t carat_pos)
 {
@@ -218,7 +218,7 @@ void MultiLineEditbox::setCaratIndex(size_t carat_pos)
 
 
 /*************************************************************************
-	Define the current selection for the edit box	
+	Define the current selection for the edit box
 *************************************************************************/
 void MultiLineEditbox::setSelection(size_t start_pos, size_t end_pos)
 {
@@ -258,7 +258,7 @@ void MultiLineEditbox::setSelection(size_t start_pos, size_t end_pos)
 
 
 /*************************************************************************
-	set the maximum text length for this edit box.	
+	set the maximum text length for this edit box.
 *************************************************************************/
 void MultiLineEditbox::setMaxTextLength(size_t max_len)
 {
@@ -463,7 +463,7 @@ void MultiLineEditbox::formatText(void)
 				// no word wrapping, so we are just one long line.
 				line.d_startIdx = currPos;
 				line.d_length	= paraLen;
-				line.d_extent	= fnt->getTextExtent(paraText); 
+				line.d_extent	= fnt->getTextExtent(paraText);
 				d_lines.push_back(line);
 
 				// update widest, if needed.
@@ -569,7 +569,7 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 
 /*************************************************************************
 	Return the text code point index that is rendered closest to screen
-	position 'pt'.	
+	position 'pt'.
 *************************************************************************/
 size_t MultiLineEditbox::getTextIndexFromPosition(const Point& pt) const
 {
@@ -747,7 +747,7 @@ void MultiLineEditbox::handleCharLeft(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -769,7 +769,7 @@ void MultiLineEditbox::handleWordLeft(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -791,7 +791,7 @@ void MultiLineEditbox::handleCharRight(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -813,7 +813,7 @@ void MultiLineEditbox::handleWordRight(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -835,7 +835,7 @@ void MultiLineEditbox::handleDocHome(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -857,7 +857,7 @@ void MultiLineEditbox::handleDocEnd(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -868,7 +868,7 @@ void MultiLineEditbox::handleDocEnd(uint sysKeys)
 
 
 /*************************************************************************
-	Processing to move carat to the start of the current line.	
+	Processing to move carat to the start of the current line.
 *************************************************************************/
 void MultiLineEditbox::handleLineHome(uint sysKeys)
 {
@@ -885,7 +885,7 @@ void MultiLineEditbox::handleLineHome(uint sysKeys)
 
 		if (sysKeys & Shift)
 		{
-			setSelection(d_caratPos, d_dragAnchorIdx);	
+			setSelection(d_caratPos, d_dragAnchorIdx);
 		}
 		else
 		{
@@ -915,7 +915,7 @@ void MultiLineEditbox::handleLineEnd(uint sysKeys)
 
 		if (sysKeys & Shift)
 		{
-			setSelection(d_caratPos, d_dragAnchorIdx);	
+			setSelection(d_caratPos, d_dragAnchorIdx);
 		}
 		else
 		{
@@ -947,7 +947,7 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -977,7 +977,7 @@ void MultiLineEditbox::handleLineDown(uint sysKeys)
 
 	if (sysKeys & Shift)
 	{
-		setSelection(d_caratPos, d_dragAnchorIdx);	
+		setSelection(d_caratPos, d_dragAnchorIdx);
 	}
 	else
 	{
@@ -1224,6 +1224,8 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
+
+            e.handled = true;
 		}
 		else
 		{
@@ -1234,7 +1236,6 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 
 	}
 
-	e.handled = true;
 }
 
 
@@ -1411,7 +1412,7 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the read-only state of the edit box changes	
+	Handler called when the read-only state of the edit box changes
 *************************************************************************/
 void MultiLineEditbox::onReadOnlyChanged(WindowEventArgs& e)
 {
@@ -1429,7 +1430,7 @@ void MultiLineEditbox::onWordWrapModeChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the maximum text length for the edit box changes	
+	Handler called when the maximum text length for the edit box changes
 *************************************************************************/
 void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
@@ -1438,7 +1439,7 @@ void MultiLineEditbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the carat moves.	
+	Handler called when the carat moves.
 *************************************************************************/
 void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 {
@@ -1448,7 +1449,7 @@ void MultiLineEditbox::onCaratMoved(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the text selection changes	
+	Handler called when the text selection changes
 *************************************************************************/
 void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 {
@@ -1458,7 +1459,7 @@ void MultiLineEditbox::onTextSelectionChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the edit box is full	
+	Handler called when the edit box is full
 *************************************************************************/
 void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 {
@@ -1468,7 +1469,7 @@ void MultiLineEditbox::onEditboxFullEvent(WindowEventArgs& e)
 
 /*************************************************************************
 	Handler called when the 'always show' setting for the vertical
-	scroll bar changes.	
+	scroll bar changes.
 *************************************************************************/
 void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
@@ -1479,7 +1480,7 @@ void MultiLineEditbox::onVertScrollbarModeChanged(WindowEventArgs& e)
 
 /*************************************************************************
 	Handler called when 'always show' setting for the horizontal scroll
-	bar changes.	
+	bar changes.
 *************************************************************************/
 void MultiLineEditbox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
