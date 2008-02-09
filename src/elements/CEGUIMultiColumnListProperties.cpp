@@ -31,6 +31,7 @@
 #include "elements/CEGUIMultiColumnList.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUILogger.h"
+#include "CEGUITextUtils.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -281,22 +282,48 @@ String ColumnHeader::get(const PropertyReceiver* receiver) const
 
 void ColumnHeader::set(PropertyReceiver* receiver, const String& value)
 {
-	// extract data from the value string
+    size_t idstart = value.rfind("id:");
+    size_t wstart = value.rfind("width:");
+    size_t capstart = value.find("text:");
 
-	size_t wstart = value.find("width:");
-	size_t idstart = value.find("id:");
+    // some defaults in case of missing data
+    String caption, id("0"), width("{0.33,0}");
 
-	String caption(value.substr(0, wstart));
-	caption = caption.substr(caption.find_first_of(":") + 1);
+    // extract the caption field
+    if (capstart != String::npos)
+    {
+        capstart = value.find_first_of(":") + 1;
 
-	String width(value.substr(wstart, idstart));
-	width = width.substr(width.find_first_of(":") + 1);
+        if (wstart == String::npos)
+            if (idstart == String::npos)
+                caption = value.substr(capstart);
+            else
+                caption = value.substr(capstart, idstart - capstart);
+        else
+            caption = value.substr(capstart, wstart - capstart);
 
-	String id(value.substr(idstart));
-	id = id.substr(id.find_first_of(":") + 1);
+        // trim trailing whitespace
+        TextUtils::trimTrailingChars(caption, TextUtils::DefaultWhitespace);
+    }
 
-	static_cast<MultiColumnList*>(receiver)->addColumn(
-		caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToUDim(width));
+    // extract the width field
+    if (wstart != String::npos)
+    {
+        width = value.substr(wstart);
+        width = width.substr(width.find_first_of("{"));
+        width = width.substr(0, width.find_last_of("}") + 1);
+    }
+
+    // extract the id field.
+    if (idstart != String::npos)
+    {
+        id = value.substr(idstart);
+        id = id.substr(id.find_first_of(":") + 1);
+    }
+
+    // add the column accordingly
+    static_cast<MultiColumnList*>(receiver)->addColumn(
+        caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToUDim(width));
 }
 
 
