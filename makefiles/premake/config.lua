@@ -16,6 +16,9 @@ IRRLICHT_PATHS = { "irrlicht-1.3", "include", "lib/Win32-visualstudio" }
 --- 12 is 1.2 (or before?).  13 is 1.3 or 1.3.x, and 14 is 1.4 (and above?)
 CEGUI_IRR_SDK_VERSION = 13
 
+--- Lua version
+--- 50 is 5.0.x series.  51 is 5.1 (and above?)
+CEGUI_LUA_VER = 50
 
 -------------
 -- Renderers

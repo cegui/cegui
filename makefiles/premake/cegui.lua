@@ -193,7 +193,8 @@ do
 		config_h.CEGUI_CODEC_FREEIMAGE = "1"
 	end
 	
-	
+	-- Lua library version
+	config_h.CEGUI_LUA_VER = CEGUI_LUA_VER
 	
 	-- It is important that if this changes you re run premake inorder to
 	-- get the correct window renderer with a static build.

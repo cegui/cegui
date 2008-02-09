@@ -3,9 +3,10 @@ INCLUDES = -I$(top_srcdir)/include \
            -I$(top_srcdir)/ScriptingModules/CEGUILua/LuaScriptModule/include
 
 libCEGUILuaScriptModule_la_LDFLAGS =
+libCEGUILuaScriptModule_la_CPPFLAGS = $(Lua_CFLAGS)
 
 if MINGW32_BUILD
-libCEGUILuaScriptModule_la_CPPFLAGS = -DCEGUILUA_EXPORTS
+libCEGUILuaScriptModule_la_CPPFLAGS += -DCEGUILUA_EXPORTS
 libCEGUILuaScriptModule_la_LDFLAGS += -no-undefined -avoid-version
 libCEGUILuaScriptModule_la_LIBADD = -L$(top_builddir)/src/ \
                                     -L$(top_builddir)/ScriptingModules/CEGUILua/tolua++ \
