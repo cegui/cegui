@@ -55,7 +55,7 @@ class ImagerySection;   // forward declaration
 class CEGUIEXPORT TreeEventArgs : public WindowEventArgs
    {
 public:
-	TreeEventArgs(Window* wnd) : WindowEventArgs(wnd) { treeItem = NULL; }
+	TreeEventArgs(Window* wnd) : WindowEventArgs(wnd) { treeItem = 0; }
    TreeItem *treeItem;
    };
 
@@ -102,7 +102,7 @@ public:
 	*/
 	size_t	getItemCount(void) const		{return d_listItems.size();}
 
-	
+
 	/*!
 	\brief
 		Return the number of selected items in the list box.
@@ -314,7 +314,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception InvalidRequestException	thrown if no TreeItem \a position is attached to this list box.
 	*/
 	void	insertItem(TreeItem* item, const TreeItem* position);
@@ -357,7 +357,7 @@ public:
 	*/
 	void	setSortingEnabled(bool setting);
 
-	
+
 	/*!
 	\brief
 		Set whether the list should allow multiple selections or just a single selection
@@ -416,7 +416,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
 	*/
 	void	setItemSelectState(TreeItem* item, bool state);
@@ -438,7 +438,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception	InvalidRequestException	thrown if \a item_index is out of range for the list box
 	*/
 	void	setItemSelectState(size_t item_index, bool state);
@@ -569,10 +569,10 @@ protected:
 	*/
 	virtual	void cacheTreeBaseImagery()
 	{
-		
+
 	}
 
-	
+
 
 
 	/*************************************************************************

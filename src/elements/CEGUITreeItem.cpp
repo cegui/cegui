@@ -56,14 +56,14 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data, bool disab
                   d_selected(false),
                   d_disabled(disabled),
                   d_autoDelete(auto_delete),
-                  d_owner(NULL),
+                  d_owner(0),
                   d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
                   d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-                  d_font(NULL),
+                  d_font(0),
                   d_isOpen(false),
                   d_buttonLocation(Rect(0,0,0,0)),
-                  d_iconImage(NULL),
-                  d_selectBrush(NULL)
+                  d_iconImage(0),
+                  d_selectBrush(0)
    {
    }
 
@@ -110,12 +110,12 @@ Return a pointer to the font being used by this ListboxTextItem
 Font* TreeItem::getFont(void) const
    {
    // prefer out own font
-   if (d_font != NULL)
+   if (d_font != 0)
       {
       return d_font;
       }
    // try our owner window's font setting (may be null if owner uses no existant default font)
-   else if (d_owner != NULL)
+   else if (d_owner != 0)
       {
       return d_owner->getFont();
       }
@@ -146,7 +146,7 @@ Size TreeItem::getPixelSize(void) const
 
    Font* fnt = getFont();
 
-   if (fnt != NULL)
+   if (fnt != 0)
       {
       tmp.d_height	= PixelAligned(fnt->getLineSpacing());
       tmp.d_width	= PixelAligned(fnt->getTextExtent(d_itemText));
@@ -161,7 +161,7 @@ Size TreeItem::getPixelSize(void) const
 *************************************************************************/
 void TreeItem::addItem(TreeItem* item)
    {
-   if (item != NULL)
+   if (item != 0)
       {
       Tree *parentWindow = (Tree *)getOwnerWindow();
 
@@ -188,7 +188,7 @@ void TreeItem::addItem(TreeItem* item)
 TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
    {
    if (itemIndex > d_listItems.size())
-      return NULL;
+      return 0;
 
    return d_listItems[itemIndex];
    }
@@ -199,14 +199,14 @@ TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 *************************************************************************/
 void TreeItem::draw(const Vector3& position, float alpha, const Rect& clipper) const
    {
-   if (d_selected && (d_selectBrush != NULL))
+   if (d_selected && (d_selectBrush != 0))
       {
       d_selectBrush->draw(clipper, position.d_z, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
       }
 
    Font* fnt = getFont();
 
-   if (fnt != NULL)
+   if (fnt != 0)
       {
       Vector3 finalPos(position);
       finalPos.d_y -= PixelAligned((fnt->getLineSpacing() - fnt->getBaseline()) * 0.5f);
@@ -219,7 +219,7 @@ void TreeItem::draw(RenderCache &cache, const Rect &targetRect, float zBase, flo
    {
    Rect finalRect(targetRect);
 
-   if (d_iconImage != NULL)
+   if (d_iconImage != 0)
       {
 //      Size iconSize = d_iconImage->getSize();
       Rect finalPos(finalRect);
@@ -246,7 +246,7 @@ void TreeItem::draw(RenderCache &cache, const Rect &targetRect, float zBase, flo
 
 
 /*************************************************************************
-	Set the colours used for selection highlighting.	
+	Set the colours used for selection highlighting.
 *************************************************************************/
 void TreeItem::setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
    {
@@ -258,7 +258,7 @@ void TreeItem::setSelectionColours(colour top_left_colour, colour top_right_colo
 
 
 /*************************************************************************
-Set the colours used for text rendering.	
+Set the colours used for text rendering.
 *************************************************************************/
 void TreeItem::setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
    {

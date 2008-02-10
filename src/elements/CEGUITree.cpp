@@ -77,11 +77,11 @@ namespace CEGUI
 		d_forceVertScroll(false),
 		d_forceHorzScroll(false),
 		d_itemTooltips(false),
-		d_lastSelected(NULL),
-		d_horzScrollbar(NULL),
-        d_vertScrollbar(NULL),
-        openButtonImagery(NULL),
-        closeButtonImagery(NULL)
+		d_lastSelected(0),
+		d_horzScrollbar(0),
+        d_vertScrollbar(0),
+        openButtonImagery(0),
+        closeButtonImagery(0)
 	{
 		// add new events specific to list box.
 		addTreeEvents();
@@ -132,7 +132,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Return the number of selected items in the list box.  
+	Return the number of selected items in the list box.
 	*************************************************************************/
 	size_t Tree::getSelectedCount(void) const
 	{
@@ -153,7 +153,7 @@ namespace CEGUI
 	*************************************************************************/
 	TreeItem* Tree::getFirstSelectedItem(void) const
 	{
-		return getNextSelectedItemFromList(d_listItems, NULL, true);
+		return getNextSelectedItemFromList(d_listItems, 0, true);
 	}
 
 
@@ -162,8 +162,8 @@ namespace CEGUI
 	*************************************************************************/
 	TreeItem* Tree::getNextSelected(const TreeItem* start_item) const
 	{
-		if (start_item == NULL)
-			return getNextSelectedItemFromList(d_listItems, NULL, true);
+		if (start_item == 0)
+			return getNextSelectedItemFromList(d_listItems, 0, true);
 		else
 			return getNextSelectedItemFromList(d_listItems, start_item, false);
 	}
@@ -195,13 +195,13 @@ namespace CEGUI
 				{
 					TreeItem *foundSelectedTree;
 					foundSelectedTree = getNextSelectedItemFromList(itemList[index]->getItemList(), startItem, foundStartItem);
-					if (foundSelectedTree != NULL)
+					if (foundSelectedTree != 0)
 						return foundSelectedTree;
 				}
 			}
 		}
 
-		return NULL;
+		return 0;
 	}
 
 
@@ -230,12 +230,12 @@ namespace CEGUI
 				// Search the current item's itemList regardless if it's open or not.
 				TreeItem *foundSelectedTree;
 				foundSelectedTree = findItemWithTextFromList(itemList[index]->getItemList(), text, startItem, foundStartItem);
-				if (foundSelectedTree != NULL)
+				if (foundSelectedTree != 0)
 					return foundSelectedTree;
 			}
 		}
 
-		return NULL;
+		return 0;
 	}
 
 
@@ -245,8 +245,8 @@ namespace CEGUI
 	*************************************************************************/
 	TreeItem* Tree::findNextItemWithText(const String& text, const TreeItem* start_item)
 	{
-		if (start_item == NULL)
-			return findItemWithTextFromList(d_listItems, text, NULL, true);
+		if (start_item == 0)
+			return findItemWithTextFromList(d_listItems, text, 0, true);
 		else
 			return findItemWithTextFromList(d_listItems, text, start_item, false);
 	}
@@ -254,7 +254,7 @@ namespace CEGUI
 
 	TreeItem* Tree::findFirstItemWithText(const String& text)
 	{
-		return findItemWithTextFromList(d_listItems, text, NULL, true);
+		return findItemWithTextFromList(d_listItems, text, 0, true);
 	}
 
 
@@ -284,19 +284,19 @@ namespace CEGUI
 				// Search the current item's itemList regardless if it's open or not.
 				TreeItem *foundSelectedTree;
 				foundSelectedTree = findItemWithIDFromList(itemList[index]->getItemList(), searchID, startItem, foundStartItem);
-				if (foundSelectedTree != NULL)
+				if (foundSelectedTree != 0)
 					return foundSelectedTree;
 			}
 		}
 
-		return NULL;
+		return 0;
 	}
 
 
 	TreeItem* Tree::findNextItemWithID(uint searchID, const TreeItem* start_item)
 	{
-		if (start_item == NULL)
-			return findItemWithIDFromList(d_listItems, searchID, NULL, true);
+		if (start_item == 0)
+			return findItemWithIDFromList(d_listItems, searchID, 0, true);
 		else
 			return findItemWithIDFromList(d_listItems, searchID, start_item, false);
 	}
@@ -304,7 +304,7 @@ namespace CEGUI
 
 	TreeItem* Tree::findFirstItemWithID(uint searchID)
 	{
-		return findItemWithIDFromList(d_listItems, searchID, NULL, true);
+		return findItemWithIDFromList(d_listItems, searchID, 0, true);
 	}
 
 
@@ -337,7 +337,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::addItem(TreeItem* item)
 	{
-		if (item != NULL)
+		if (item != 0)
 		{
 			// establish ownership
 			item->setOwnerWindow(this);
@@ -371,7 +371,7 @@ namespace CEGUI
 		{
 			addItem(item);
 		}
-		else if (item != NULL)
+		else if (item != 0)
 		{
 			// establish ownership
 			item->setOwnerWindow(this);
@@ -379,7 +379,7 @@ namespace CEGUI
 			// if position is NULL begin insert at begining, else insert after item 'position'
 			LBItemList::iterator ins_pos;
 
-			if (position == NULL)
+			if (position == 0)
 			{
 				ins_pos = d_listItems.begin();
 			}
@@ -407,7 +407,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::removeItem(const TreeItem* item)
 	{
-		if (item != NULL)
+		if (item != 0)
 		{
 			LBItemList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
 
@@ -415,7 +415,7 @@ namespace CEGUI
 			if (pos != d_listItems.end())
 			{
 				// disown item
-				(*pos)->setOwnerWindow(NULL);
+				(*pos)->setOwnerWindow(0);
 
 				// remove item
 				d_listItems.erase(pos);
@@ -423,7 +423,7 @@ namespace CEGUI
 				// if item was the last selected item, reset that to NULL
 				if (item == d_lastSelected)
 				{
-					d_lastSelected = NULL;
+					d_lastSelected = 0;
 				}
 
 				// if item is supposed to be deleted by us
@@ -564,7 +564,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Set the select state of an attached TreeItem.   
+	Set the select state of an attached TreeItem.
 	*************************************************************************/
 	void Tree::setItemSelectState(size_t item_index, bool state)
 	{
@@ -595,7 +595,7 @@ namespace CEGUI
 
 	/*************************************************************************
 	Causes the list box to update it's internal state after changes have
-	been made to one or more attached TreeItem objects.   
+	been made to one or more attached TreeItem objects.
 	*************************************************************************/
 	void Tree::handleUpdatedItemData(void)
 	{
@@ -844,7 +844,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Return the sum of all item heights  
+	Return the sum of all item heights
 	*************************************************************************/
 	float Tree::getTotalItemsHeight(void) const
 	{
@@ -888,9 +888,9 @@ namespace CEGUI
 		for (size_t index = 0; index < itemCount; ++index)
 		{
 			Rect buttonLocation = itemList[index]->getButtonLocation();
-			float thisWidth = itemList[index]->getPixelSize().d_width + 
-				buttonLocation.getWidth() + 
-				(d_horzScrollbar->getScrollPosition() / HORIZONTAL_STEP_SIZE_DIVISOR) + 
+			float thisWidth = itemList[index]->getPixelSize().d_width +
+				buttonLocation.getWidth() +
+				(d_horzScrollbar->getScrollPosition() / HORIZONTAL_STEP_SIZE_DIVISOR) +
 				(itemDepth * 20);
 
 			if (thisWidth > *widest)
@@ -954,7 +954,7 @@ namespace CEGUI
 				return getItemFromListAtPoint(d_listItems, &y, pt);
 		}
 
-		return NULL;
+		return 0;
 	}
 
 
@@ -976,13 +976,13 @@ namespace CEGUI
 				{
 					TreeItem *foundPointedAtTree;
 					foundPointedAtTree = getItemFromListAtPoint(itemList[i]->getItemList(), bottomY, pt);
-					if (foundPointedAtTree != NULL)
+					if (foundPointedAtTree != 0)
 						return foundPointedAtTree;
 				}
 			}
 		}
 
-		return NULL;
+		return 0;
 	}
 
 
@@ -1004,7 +1004,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Handler called internally when the list contents are changed   
+	Handler called internally when the list contents are changed
 	*************************************************************************/
 	void Tree::onListContentsChanged(WindowEventArgs& e)
 	{
@@ -1120,14 +1120,14 @@ namespace CEGUI
 
 			TreeItem* item = getItemAtPoint(localPos);
 
-			if (item != NULL)
+			if (item != 0)
 			{
 				modified = true;
 				TreeEventArgs args(this);
 				args.treeItem = item;
 				populateRenderCache();
 				Rect buttonLocation = item->getButtonLocation();
-				if ((localPos.d_x >= buttonLocation.d_left) && (localPos.d_x <= buttonLocation.d_right) && 
+				if ((localPos.d_x >= buttonLocation.d_left) && (localPos.d_x <= buttonLocation.d_right) &&
 					(localPos.d_y >= buttonLocation.d_top) && (localPos.d_y <= buttonLocation.d_bottom))
 				{
 					item->toggleIsOpen();
@@ -1157,14 +1157,14 @@ namespace CEGUI
 
 					// select range or item, depending upon keys and last selected item
 #if 0 // TODO: fix this
-					if (((e.sysKeys & Shift) && (d_lastSelected != NULL)) && d_multiselect)
+					if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
 						selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
 					else
 #endif
 						item->setSelected(item->isSelected() ^ true);
 
 					// update last selected item
-					d_lastSelected = item->isSelected() ? item : NULL;
+					d_lastSelected = item->isSelected() ? item : 0;
 					onSelectionChanged(args);
 				}
 			}
@@ -1212,14 +1212,14 @@ namespace CEGUI
 	{
 		if (d_itemTooltips)
 		{
-			static TreeItem* lastItem = NULL;
+			static TreeItem* lastItem = 0;
 
 			Point posi(CoordConverter::screenToWindow(*this, e.position));
 			//      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
 			TreeItem* item = getItemAtPoint(posi);
 			if (item != lastItem)
 			{
-				if (item != NULL)
+				if (item != 0)
 				{
 					setTooltipText(item->getTooltipText());
 				}
@@ -1270,7 +1270,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Ensure the specified item is visible within the list box.  
+	Ensure the specified item is visible within the list box.
 	*************************************************************************/
 	void Tree::ensureItemIsVisible(const TreeItem *treeItem)
 	{
@@ -1332,7 +1332,7 @@ namespace CEGUI
 			else if (bottom >= listHeight)
 			{
 				// position bottom of item at the bottom of the list
-				d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);      
+				d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
 			}
 
 			// Item is already fully visible - nothing more to do.
@@ -1342,7 +1342,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Return whether the vertical scroll bar is always shown.  
+	Return whether the vertical scroll bar is always shown.
 	*************************************************************************/
 	bool Tree::isVertScrollbarAlwaysShown(void) const
 	{
@@ -1351,7 +1351,7 @@ namespace CEGUI
 
 
 	/*************************************************************************
-	Return whether the horizontal scroll bar is always shown.   
+	Return whether the horizontal scroll bar is always shown.
 	*************************************************************************/
 	bool Tree::isHorzScrollbarAlwaysShown(void) const
 	{
@@ -1397,7 +1397,7 @@ namespace CEGUI
 
 			// clear out the list.
 			d_listItems.clear();
-			d_lastSelected = NULL;
+			d_lastSelected = 0;
 			return true;
 		}
 	}
