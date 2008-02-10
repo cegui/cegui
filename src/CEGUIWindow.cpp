@@ -383,7 +383,7 @@ Window* Window::getChild(const String& name) const
 	{
 		String childName = d_children[i]->getName();
 		//We need to check if the current name is available or if the name + prefix is available.. Hopefully not both
-		if(childName == name || childName == m_windowPrefix + name)
+		if(childName == name || childName == d_windowPrefix + name)
 		{
 			return d_children[i];
 		}
@@ -414,7 +414,7 @@ Window* Window::recursiveChildSearch( const String& name ) const
 	{
 		String childName = d_children[i]->getName();
 		//We need to check if the current name is available or if the name + prefix is available.. Hopefully not both
-		if(childName == name || childName == m_windowPrefix + name)
+		if(childName == name || childName == d_windowPrefix + name)
 		{
 			return d_children[i];
 		}

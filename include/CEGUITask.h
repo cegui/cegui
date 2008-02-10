@@ -34,7 +34,7 @@ author:		Jonathan Welch (Kokoro-Sama)
 class CEGUIEXPORT Task
 {
 public:
-	Task(bool destroy = true):m_destroyOnComplete(destroy);
+	Task(bool destroy = true):d_destroyOnComplete(destroy);
 	~Task();
 
 	/**
@@ -45,7 +45,7 @@ public:
 	virtual bool run(float elapsed) = 0;
 
 protected:
-	bool m_destroyOnComplete; //!< Does this task destory itself once it completes?
+	bool d_destroyOnComplete; //!< Does this task destory itself once it completes?
 
 };
 
@@ -69,9 +69,9 @@ public:
 	virtual bool run(float elapsed);
 
 protected:
-	eFadeDirection	m_fadeDirection; //!< Dictates which direction we are fading (in or out)
-	float			m_targetAlpha; //!< What alpha are we fading to/from?
-	Window*			m_widget;//!< what widget are we affecting?
+	eFadeDirection	d_fadeDirection; //!< Dictates which direction we are fading (in or out)
+	float			d_targetAlpha; //!< What alpha are we fading to/from?
+	Window*			d_widget;//!< what widget are we affecting?
 };
 
 #endif

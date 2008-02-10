@@ -36,19 +36,20 @@ purpose:  Implementation of the ScriptWindowHelper class
 namespace CEGUI
 {
 
-ScriptWindowHelper::ScriptWindowHelper(Window* wnd):m_window(wnd)
+ScriptWindowHelper::ScriptWindowHelper(Window* wnd):d_window(wnd)
 {
 
 }
 
 Window* ScriptWindowHelper::getWindow()
 {
-	return m_window;
+	return d_window;
 }
 
 Window* ScriptWindowHelper::getWindow(String& name)
 {
-	return WindowManager::getSingleton().getWindow(m_window->getPrefix() + name);
+	return WindowManager::getSingleton().getWindow(d_window->getPrefix() + name);
 }
 
 }
+
