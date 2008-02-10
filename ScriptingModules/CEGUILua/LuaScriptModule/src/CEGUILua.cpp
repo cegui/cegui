@@ -2,7 +2,7 @@
 	filename: CEGUILua.cpp
 	created:  16/3/2005
 	author:   Tomas Lindquist Olsen
-	
+
 	purpose:  Implementation for LuaScriptModule class
 *************************************************************************/
 /***************************************************************************
@@ -71,7 +71,7 @@ LuaScriptModule::LuaScriptModule()
         #if defined(DEBUG) || defined (_DEBUG)
                 {LUA_DBLIBNAME, luaopen_debug},
         #endif
-            {NULL, NULL}
+            {0, 0}
         };
     #endif /* CEGUI_LUA_VER >= 51 */
 
@@ -148,7 +148,7 @@ void LuaScriptModule::executeScriptFile(const String& filename, const String& re
 		lua_settop(d_state,top);
 		throw ScriptException("Unable to execute Lua script file: '"+filename+"'\n\n"+errMsg+"\n");
 	}
-    
+
     // call it
 	if (lua_pcall(d_state,0,0,0))
 	{
@@ -179,7 +179,7 @@ int	LuaScriptModule::executeScriptGlobal(const String& function_name)
     }
 
     // call it
-    int error = lua_pcall(d_state,0,1,0);		
+    int error = lua_pcall(d_state,0,1,0);
 
     // handle errors
     if (error)
@@ -214,7 +214,7 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
 
 	LuaFunctor::pushNamedFunction(d_state, handler_name);
 
-	ScriptWindowHelper* helper = NULL;
+	ScriptWindowHelper* helper = 0;
 	//If this is an event that was triggered by a window then make a "this" pointer to the window for the script.
 	if(e.d_hasWindow)
 	{
@@ -239,7 +239,7 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
 		if(helper)
 		{
 			delete helper;
-			helper = NULL;
+			helper = 0;
 		}
         throw ScriptException("Unable to evaluate the Lua event handler: '"+handler_name+"'\n\n"+errStr+"\n");
     } // if (error)
@@ -247,7 +247,7 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
 	if(helper)
 	{
 		delete helper;
-		helper = NULL;
+		helper = 0;
 	}
 
     return true;
@@ -272,7 +272,7 @@ void LuaScriptModule::executeString(const String& str)
         throw ScriptException("Unable to execute Lua script string: '"+str+"'\n\n"+errMsg+"\n");
     }
 }
-	
+
 
 /*************************************************************************
 	Create Lua bindings

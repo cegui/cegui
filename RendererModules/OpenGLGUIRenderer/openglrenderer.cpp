@@ -30,12 +30,12 @@
  ***************************************************************************/
 #ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif 
+#endif
 #include "openglrenderer.h"
 #include "opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIEventArgs.h"
-#include "CEGUIImageCodec.h" 
+#include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
 
 //Include the default codec for static builds
@@ -81,8 +81,8 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
     d_imageCodec(codec),
     d_imageCodecModule(0)
 {
-	GLint vp[4];   
-    
+	GLint vp[4];
+
 	// initialise renderer size
 	glGetIntegerv(GL_VIEWPORT, vp);
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &d_maxTextureSize);
@@ -100,11 +100,11 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
 OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, ImageCodec* codec) :
 	d_queueing(true),
 	d_currTexture(0),
-	d_bufferPos(0), 
-    d_imageCodec(codec), 
+	d_bufferPos(0),
+    d_imageCodec(codec),
     d_imageCodecModule(0)
 {
-	GLint vp[4];   
+	GLint vp[4];
 
 	// initialise renderer size
 	glGetIntegerv(GL_VIEWPORT, vp);
@@ -179,19 +179,19 @@ void OpenGLRenderer::doRender(void)
 		const QuadInfo& quad = (*i);
 
 		if(d_currTexture != quad.texid)
-		{            
-			renderVBuffer();           
+		{
+			renderVBuffer();
 			glBindTexture(GL_TEXTURE_2D, quad.texid);
-			d_currTexture = quad.texid;          
+			d_currTexture = quad.texid;
 		}
 
-		//vert0       
+		//vert0
 		myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
 		myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
 		myBuff[d_bufferPos].vertex[2]	= quad.z;
 		myBuff[d_bufferPos].color		= quad.topLeftCol;
 		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;         
+		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
 		++d_bufferPos;
 
 		//vert1
@@ -213,7 +213,7 @@ void OpenGLRenderer::doRender(void)
             myBuff[d_bufferPos].vertex[2]	= quad.z;
             myBuff[d_bufferPos].color		= quad.bottomRightCol;
             myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;         
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
         }
         // bottom-left to top-right diagonal
         else
@@ -223,7 +223,7 @@ void OpenGLRenderer::doRender(void)
             myBuff[d_bufferPos].vertex[2]	= quad.z;
             myBuff[d_bufferPos].color		= quad.topRightCol;
             myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;         
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
         }
 		++d_bufferPos;
 
@@ -246,7 +246,7 @@ void OpenGLRenderer::doRender(void)
             myBuff[d_bufferPos].vertex[2]	= quad.z;
             myBuff[d_bufferPos].color		= quad.topLeftCol;
             myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;         
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
         }
         // bottom-left to top-right diagonal
         else
@@ -256,7 +256,7 @@ void OpenGLRenderer::doRender(void)
             myBuff[d_bufferPos].vertex[2]	= quad.z;
             myBuff[d_bufferPos].color		= quad.bottomLeftCol;
             myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;         
+            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
         }
 		++d_bufferPos;
 
@@ -266,11 +266,11 @@ void OpenGLRenderer::doRender(void)
 		myBuff[d_bufferPos].vertex[2]	= quad.z;
 		myBuff[d_bufferPos].color		= quad.bottomRightCol;
 		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;         
+		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
 		++d_bufferPos;
 
 		if(d_bufferPos > (VERTEXBUFFER_CAPACITY - VERTEX_PER_QUAD))
-		{          
+		{
 			renderVBuffer();
 		}
 
@@ -401,7 +401,7 @@ void OpenGLRenderer::initPerFrameStates(void)
 	glEnable(GL_CULL_FACE);
 
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glEnable(GL_TEXTURE_2D);
@@ -410,9 +410,9 @@ void OpenGLRenderer::initPerFrameStates(void)
 
 void OpenGLRenderer::exitPerFrameStates(void)
 {
-	glPopMatrix(); 
+	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix(); 
+	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 
 	//restore former attributes
@@ -484,7 +484,7 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 	myquad[1].vertex[0] = quad.position.d_left;
 	myquad[1].vertex[1] = quad.position.d_bottom;
 	myquad[1].vertex[2] = z;
-	myquad[1].color     = quad.bottomLeftCol;     
+	myquad[1].color     = quad.bottomLeftCol;
 	myquad[1].tex[0]    = quad.texPosition.d_left;
 	myquad[1].tex[1]    = quad.texPosition.d_bottom;
 
@@ -515,7 +515,7 @@ void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Text
 	myquad[3].vertex[0] = quad.position.d_right;
 	myquad[3].vertex[1] = quad.position.d_top;
 	myquad[3].vertex[2] = z;
-	myquad[3].color     = quad.topRightCol;      
+	myquad[3].color     = quad.topRightCol;
 	myquad[3].tex[0]    = quad.texPosition.d_right;
 	myquad[3].tex[1]    = quad.texPosition.d_top;
 
@@ -575,7 +575,7 @@ uint32 OpenGLRenderer::colourToOGL(const colour& col) const
 
 
 /*************************************************************************
-	Set the size of the display in pixels.	
+	Set the size of the display in pixels.
 *************************************************************************/
 void OpenGLRenderer::setDisplaySize(const Size& sz)
 {
@@ -625,21 +625,21 @@ void OpenGLRenderer::restoreTextures()
     }
 }
 /***********************************************************************
-    Get the current ImageCodec object used 
+    Get the current ImageCodec object used
 ************************************************************************/
-ImageCodec& OpenGLRenderer::getImageCodec() 
+ImageCodec& OpenGLRenderer::getImageCodec()
 {
     return *d_imageCodec;
 }
 /***********************************************************************
-    Set the current ImageCodec object used 
+    Set the current ImageCodec object used
 ************************************************************************/
 void OpenGLRenderer::setImageCodec(const String& codecName)
 {
-    setupImageCodec(codecName);    
+    setupImageCodec(codecName);
 }
 /***********************************************************************
-    Set the current ImageCodec object used 
+    Set the current ImageCodec object used
 ************************************************************************/
 void OpenGLRenderer::setImageCodec(ImageCodec* codec)
 {
@@ -647,35 +647,35 @@ void OpenGLRenderer::setImageCodec(ImageCodec* codec)
     {
         cleanupImageCodec();
         d_imageCodec = codec;
-        d_imageCodecModule = 0; 
+        d_imageCodecModule = 0;
     }
 }
 /***********************************************************************
-    setup the ImageCodec object used 
+    setup the ImageCodec object used
 ************************************************************************/
 void OpenGLRenderer::setupImageCodec(const String& codecName)
 {
-    
-    // Cleanup the old image codec 
+
+    // Cleanup the old image codec
     if (d_imageCodec)
         cleanupImageCodec();
 
-    // Test whether we should use the default codec or not 
+    // Test whether we should use the default codec or not
     if (codecName.empty())
 		//If we are statically linking the default codec will already be in the system
 #if defined(CEGUI_STATIC)
-		d_imageCodecModule = NULL;
+		d_imageCodecModule = 0;
 #else
 		d_imageCodecModule = new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
 #endif
-    else 
+    else
         d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
-    
+
 	//Check to make sure we have a module...
 	if(d_imageCodecModule)
 	{
-		// Create the codec object itself 
-		ImageCodec* (*createFunc)(void) = 
+		// Create the codec object itself
+		ImageCodec* (*createFunc)(void) =
 			(ImageCodec* (*)(void))d_imageCodecModule->getSymbolAddress("createImageCodec");
 		d_imageCodec = createFunc();
 	} // if(d_imageCodecModule)
@@ -690,13 +690,13 @@ void OpenGLRenderer::setupImageCodec(const String& codecName)
 
 }
 /***********************************************************************
-    cleanup the ImageCodec object used 
+    cleanup the ImageCodec object used
 ************************************************************************/
 void OpenGLRenderer::cleanupImageCodec()
 {
     if (d_imageCodec && d_imageCodecModule)
     {
-        void(*deleteFunc)(ImageCodec*) = 
+        void(*deleteFunc)(ImageCodec*) =
             (void(*)(ImageCodec*))d_imageCodecModule->getSymbolAddress("destroyImageCodec");
         deleteFunc(d_imageCodec);
         d_imageCodec = 0;
@@ -709,10 +709,10 @@ void OpenGLRenderer::cleanupImageCodec()
 		destroyImageCodec(d_imageCodec);
 #endif
 	}
-    
+
 }
 /***********************************************************************
-    set the default ImageCodec name 
+    set the default ImageCodec name
 ************************************************************************/
 void OpenGLRenderer::setDefaultImageCodecName(const String& codecName)
 {
@@ -720,18 +720,18 @@ void OpenGLRenderer::setDefaultImageCodecName(const String& codecName)
 }
 
 /***********************************************************************
-    get the default ImageCodec name to be used  
+    get the default ImageCodec name to be used
 ************************************************************************/
 const String& OpenGLRenderer::getDefaultImageCodecName()
 {
     return d_defaultImageCodecName;
-    
+
 }
 
 /***********************************************************************
     store the name of the default ImageCodec
 ************************************************************************/
-String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC)); 
+String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
 
 
 } // End of  CEGUI namespace section

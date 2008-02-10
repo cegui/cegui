@@ -60,7 +60,7 @@ ScrolledItemListBase::ScrolledItemListBase(const String& type, const String& nam
 {
     // Make sure the content pane is initially empty
     // NOTE: initialiseComponents() is responsible for creating it
-    d_pane = NULL;    
+    d_pane = 0;
 
     // add properties for this class
     addScrolledItemListBaseProperties();
@@ -80,12 +80,12 @@ void ScrolledItemListBase::initialiseComponents()
 {
     // Only process the content pane if it hasn't been done in the past
     // NOTE: This ensures that a duplicate content pane is not created. An example where
-    // this would be possible would be when changing the Look'N'Feel of the widget 
+    // this would be possible would be when changing the Look'N'Feel of the widget
     // (for instance an ItemListBox), an operation which would reconstruct the child components
-    // of the widget by destroying the previous ones and creating new ones with the 
-    // new Look'N'Feel. However, since the content pane is not defined in the 
-    // look and feel file and thus not associated with the look'N'Feel itself  
-    // but instead created here manually, the destruction would not contemplate the content 
+    // of the widget by destroying the previous ones and creating new ones with the
+    // new Look'N'Feel. However, since the content pane is not defined in the
+    // look and feel file and thus not associated with the look'N'Feel itself
+    // but instead created here manually, the destruction would not contemplate the content
     // pane itself, so when the children would be rebuilt, a duplicate content pane
     // would be attempted (and an exception would be issued).
     if(!d_pane)
@@ -98,7 +98,7 @@ void ScrolledItemListBase::initialiseComponents()
         static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
         addChildWindow(d_pane);
     }
-    
+
     // base class handling
     ItemListBase::initialiseComponents();
 

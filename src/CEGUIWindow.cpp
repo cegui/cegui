@@ -428,7 +428,7 @@ Window* Window::recursiveChildSearch( const String& name ) const
 			return temp;
 	} // for(size_t i=0;i<child_count;i++)
 
-	return NULL;
+	return 0;
 }
 
 

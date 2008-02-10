@@ -2,7 +2,7 @@
 	filename: 	CEGUIFactoryModule.cpp
 	created:	12/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements FactoryModule for Win32 systems
 *************************************************************************/
 /***************************************************************************
@@ -56,7 +56,7 @@ const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories
 	Construct the FactoryModule object by loading the dynamic loadable
 	module specified.
 *************************************************************************/
-FactoryModule::FactoryModule(const String& filename):d_module(NULL)
+FactoryModule::FactoryModule(const String& filename):d_module(0)
 {
 #if !defined(CEGUI_STATIC)
 	d_module = new DynamicModule(filename);
@@ -79,7 +79,7 @@ FactoryModule::~FactoryModule(void)
 	if(d_module)
 	{
 		delete(d_module);
-		d_module = NULL;
+		d_module = 0;
 	}
 }
 

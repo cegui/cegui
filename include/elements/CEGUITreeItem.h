@@ -59,7 +59,7 @@ public:
    \brief
       base class constructor
    */
-   TreeItem(const String& text, uint item_id = 0, void* item_data = NULL, bool disabled = false, bool auto_delete = true);
+   TreeItem(const String& text, uint item_id = 0, void* item_data = 0, bool disabled = false, bool auto_delete = true);
 
 
    /*!
@@ -153,7 +153,7 @@ public:
    \param bottom_right_colour
       Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
 
-   \return 
+   \return
       Nothing.
    */
    void  setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
@@ -247,7 +247,7 @@ public:
    /*!
    \brief
       Get the owner window for this TreeItem.
-      
+
       The owner of a TreeItem is typically set by the list box widgets when an item is added or inserted.
 
    \return
@@ -413,7 +413,7 @@ public:
    \param bottom_right_colour
       Colour (as ARGB value) to be applied to the bottom-right corner of the selection area.
 
-   \return 
+   \return
       Nothing.
    */
    void  setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
@@ -560,7 +560,7 @@ protected:
    bool     d_selected;    //!< true if this item is selected.  false if the item is not selected.
    bool     d_disabled;    //!< true if this item is disabled.  false if the item is not disabled.
    bool     d_autoDelete;  //!< true if the system should destroy this item, false if client code will destroy the item.
-   Rect     d_buttonLocation; //!< 
+   Rect     d_buttonLocation; //!<
    const Window * d_owner; //!< Pointer to the window that owns this item.
    ColourRect     d_selectCols;     //!< Colours used for selection highlighting.
    const Image *  d_selectBrush;    //!< Image used for rendering selection.
