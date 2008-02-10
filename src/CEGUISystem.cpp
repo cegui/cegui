@@ -97,7 +97,7 @@ public:
 #include <windows.h>
 double SimpleTimer::currentTime()
 {
-    return ::timeGetTime() / 1000.0;
+    return timeGetTime() / 1000.0;
 }
 
 #elif defined(__linux__)
