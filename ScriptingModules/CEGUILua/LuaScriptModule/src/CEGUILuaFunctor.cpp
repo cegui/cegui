@@ -113,7 +113,7 @@ bool LuaFunctor::operator()(const EventArgs& args) const
 
 	ScriptWindowHelper* helper = NULL;
 	//Set a global for this window
-	if(args.m_hasWindow)
+	if(args.d_hasWindow)
 	{
 		WindowEventArgs& we = (WindowEventArgs&)args;
 		helper = new ScriptWindowHelper(we.window);

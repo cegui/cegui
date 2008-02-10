@@ -82,7 +82,7 @@ namespace CEGUI
 		Window* getWindow(String& name);
 
 	protected:
-		Window*		m_window; //!< Window that is being aided by this helper
+		Window*		d_window; //!< Window that is being aided by this helper
 		
 	};
 }

@@ -216,13 +216,13 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
 
 	ScriptWindowHelper* helper = NULL;
 	//If this is an event that was triggered by a window then make a "this" pointer to the window for the script.
-	if(e.m_hasWindow)
+	if(e.d_hasWindow)
 	{
 		WindowEventArgs& we = (WindowEventArgs&)e;
 		helper = new ScriptWindowHelper(we.window);
 		lua_pushlightuserdata(d_state,(void*)helper);
 		lua_setglobal(d_state,"this");
-	} // if(e.m_hasWindow)
+	} // if(e.d_hasWindow)
 
     // push EventArgs as the first parameter
     tolua_pushusertype(d_state,(void*)&e,"const CEGUI::EventArgs");

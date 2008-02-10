@@ -240,7 +240,7 @@ class CEGUIEXPORT WindowEventArgs : public EventArgs
 {
 public:
 	WindowEventArgs(Window* wnd) : window(wnd) {
-		this->m_hasWindow = true;
+		this->d_hasWindow = true;
 	}
 
 	Window*	window;		//!< pointer to a Window object of relevance to the event.
@@ -255,7 +255,7 @@ class CEGUIEXPORT UpdateEventArgs : public WindowEventArgs
 public:
 	UpdateEventArgs(Window* window, float tslf):WindowEventArgs(window) {}
 
-	float m_timeSinceLastFrame; //!< Time since the last frame update
+	float d_timeSinceLastFrame; //!< Time since the last frame update
 };
 
 

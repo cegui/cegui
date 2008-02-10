@@ -272,7 +272,7 @@ public:
 	 * Return a string to the window prefix
 	 * \return String object holding the prefix of this window
 	 */
-	const String& getPrefix(void) const {return m_windowPrefix;}
+	const String& getPrefix(void) const {return d_windowPrefix;}
 
     /*!
     \brief
@@ -1415,7 +1415,7 @@ public:
 	 * Sets the unique prefix for this window.
 	 * \param prefix String object holding the prefix to be used on this window.
 	 */
-	void setPrefix(String prefix) { m_windowPrefix = prefix;}
+	void setPrefix(String prefix) { d_windowPrefix = prefix;}
 
     /*!
     \brief
@@ -3544,7 +3544,7 @@ protected:
     String    d_falagardType;
 
 	//! The prefix used on this window (if any) when created instanced windows.
-	String    m_windowPrefix;
+	String    d_windowPrefix;
 
     friend class WindowManager;
 };

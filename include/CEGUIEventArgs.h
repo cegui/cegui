@@ -55,7 +55,7 @@ public:
 	/*************************************************************************
 		Construction
 	*************************************************************************/
-	EventArgs(void) : handled(false), m_hasWindow(false) {}
+	EventArgs(void) : handled(false), d_hasWindow(false) {}
 	virtual ~EventArgs(void) {}
 
 
@@ -63,7 +63,7 @@ public:
 		Data members
 	*************************************************************************/
 	bool	handled;		//!< handlers should set this to true if they handled the event, or false otherwise.
-	bool	m_hasWindow; //!< Indicates if this event set has a parent window.
+	bool	d_hasWindow; //!< Indicates if this event set has a parent window.
 };
 
 } // End of  CEGUI namespace section
