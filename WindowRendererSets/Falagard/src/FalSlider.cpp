@@ -82,24 +82,41 @@ namespace CEGUI
         {
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getHeight() - theThumb->getPixelSize().d_height;
+
             // Set range of motion for the thumb widget
-            theThumb->setVertRange(area.d_top  / w->getPixelSize().d_height, (area.d_top + slideExtent) / w->getPixelSize().d_height);
+            if (w->getPixelSize().d_height != 0.0f)
+                theThumb->setVertRange(area.d_top  / w->getPixelSize().d_height,
+                                       (area.d_top + slideExtent) / w->getPixelSize().d_height);
+            else
+                theThumb->setVertRange(0.0f, 0.0f);
 
             // calculate vertical positon for thumb
             float thumbOffset = w->getCurrentValue() * (slideExtent / w->getMaxValue());
-            thumbPosition.d_y.d_scale += (d_reversed ? thumbOffset : slideExtent - thumbOffset) / w->getPixelSize().d_height;
+
+            if (w->getPixelSize().d_height != 0.0f)
+                thumbPosition.d_y.d_scale +=
+                    (d_reversed ? thumbOffset : slideExtent - thumbOffset) / w->getPixelSize().d_height;
         }
         // Horizontal slider
         else
         {
             // pixel extent of total available area the thumb moves in
             float slideExtent = area.getWidth() - theThumb->getPixelSize().d_width;
+
             // Set range of motion for the thumb widget
-            theThumb->setHorzRange(area.d_left / w->getPixelSize().d_width, (area.d_left + slideExtent) / w->getPixelSize().d_width);
+            if (w->getPixelSize().d_width != 0.0f)
+                theThumb->setHorzRange(area.d_left / w->getPixelSize().d_width,
+                                       (area.d_left + slideExtent) / w->getPixelSize().d_width);
+            else
+                theThumb->setHorzRange(0.0f, 0.0f);
+
 
             // calculate horizontal positon for thumb
             float thumbOffset = w->getCurrentValue() * (slideExtent / w->getMaxValue());
-            thumbPosition.d_x.d_scale += (d_reversed ? slideExtent - thumbOffset : thumbOffset)  / w->getPixelSize().d_width;
+
+            if (w->getPixelSize().d_width != 0.0f)
+                thumbPosition.d_x.d_scale +=
+                    (d_reversed ? slideExtent - thumbOffset : thumbOffset)  / w->getPixelSize().d_width;
         }
 
         // set new position for thumb.
