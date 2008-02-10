@@ -16,6 +16,7 @@ package.files =
 
 library("freetype221","_D")
 library("pcre", "_d")
+library("Winmm", "")
 
 define("CEGUIBASE_EXPORTS")
 define("PCRE_STATIC")
