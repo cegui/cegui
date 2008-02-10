@@ -3175,6 +3175,10 @@ void Window::notifyClippingChanged(void)
 {
     d_screenRectValid = false;
     d_screenInnerRectValid = false;
+    // make sure everything gets redrawn now that clipping has changed.
+    // NB: this way may not be not ideal, but invalidating the clipped rects
+    // only did not have the desired effect.
+    d_screenUnclippedInnerRectValid = false;
 
     // inform children that their clipped screen areas must be updated
     const size_t num = d_children.size();
