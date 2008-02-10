@@ -2500,14 +2500,14 @@ public:
 
     /*!
     \brief
-        Changes the widget's falagard type, thus changing its look'n'feel and optionally its 
+        Changes the widget's falagard type, thus changing its look'n'feel and optionally its
         renderer in the process.
 
     \param type
-        New look'n'feel of the widget 
+        New look'n'feel of the widget
 
     \param type
-        New renderer of the widget 
+        New renderer of the widget
     */
     void setFalagardType(const String& type, const String& rendererType = "");
 
@@ -3273,7 +3273,7 @@ protected:
         Button we're tracking (implication of this is that we only support one
         button at a time).
     */
-    MouseButton d_repeatButton; 
+    MouseButton d_repeatButton;
 
     //! true if window will receive drag and drop related notifications
     bool d_dragDropTarget;
@@ -3315,7 +3315,7 @@ protected:
         true if this window can never be "hit" by the cursor.
         false for normal mouse event handling.
     */
-    bool d_mousePassThroughEnabled;  
+    bool d_mousePassThroughEnabled;
 
     //! true when this window is an auto-window (it's name contains __auto_)
     bool d_autoWindow;
@@ -3422,14 +3422,21 @@ protected:
     /*!
     \brief
         Implements move to front behavior.
+
+    \return
+        Should return true if some action was taken, or false if there was
+        nothing to be done.
     */
-    virtual void moveToFront_impl(bool wasClicked);
+    virtual bool moveToFront_impl(bool wasClicked);
 
     /*!
     \brief
         Implementation of rise on click functionality.
+
+    \return
+        true if we did something, false if there was nothing to do.
     */
-    void doRiseOnClick(void);
+    bool doRiseOnClick(void);
 
     /*!
     \brief
@@ -3496,6 +3503,19 @@ protected:
         Nothing.
     */
     void removeWindowFromDrawList(const Window& wnd);
+
+    /*!
+    \brief
+        Return whether the window is at the top of the Z-Order.  This will
+        correctly take into account 'Always on top' windows as needed.
+
+    \return
+        - true if the Window is at the top of the z-order in relation to sibling
+          windows with the same 'always on top' setting.
+        - false if the Window is not at the top of the z-order in relation to
+          sibling windows with the same 'always on top' setting.
+    */
+    bool isTopOfZOrder() const;
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
