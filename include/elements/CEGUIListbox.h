@@ -2,7 +2,7 @@
 	filename: 	CEGUIListbox.h
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for Listbox widget
 *************************************************************************/
 /***************************************************************************
@@ -110,7 +110,7 @@ public:
 	*/
 	size_t	getItemCount(void) const		{return d_listItems.size();}
 
-	
+
 	/*!
 	\brief
 		Return the number of selected items in the list box.
@@ -321,7 +321,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception InvalidRequestException	thrown if no ListboxItem \a position is attached to this list box.
 	*/
 	void	insertItem(ListboxItem* item, const ListboxItem* position);
@@ -363,7 +363,7 @@ public:
 	*/
 	void	setSortingEnabled(bool setting);
 
-	
+
 	/*!
 	\brief
 		Set whether the list should allow multiple selections or just a single selection
@@ -422,7 +422,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception	InvalidRequestException	thrown if \a item is not attached to this list box.
 	*/
 	void	setItemSelectState(ListboxItem* item, bool state);
@@ -444,7 +444,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception	InvalidRequestException	thrown if \a item_index is out of range for the list box
 	*/
 	void	setItemSelectState(size_t item_index, bool state);
@@ -661,6 +661,11 @@ protected:
         return (name == "Listbox");
     }
 
+    /*!
+    \brief
+        Causes the internal list to be (re)sorted.
+    */
+    void resortList();
 
 	/*************************************************************************
 		New event handlers

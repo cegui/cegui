@@ -2,7 +2,7 @@
 	filename: 	CEGUIMultiColumnList.h
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for MultiColumnList widget
 *************************************************************************/
 /***************************************************************************
@@ -213,7 +213,7 @@ public:
 	*/
 	uint	getSortColumn(void) const;
 
-	
+
 	/*!
 	\brief
 		Return the zero based column index of the column with the specified ID.
@@ -338,7 +338,7 @@ public:
 	*/
 	MCLGridRef	getItemGridReference(const ListboxItem* item) const;
 
-	
+
 	/*!
 	\brief
 		Return a pointer to the ListboxItem at the specified grid reference.
@@ -451,7 +451,7 @@ public:
 	/*!
 	\brief
 		Return the ListboxItem that has the text string \a text.
-		
+
 	\note
 		List box searching progresses across the columns in each row.
 
@@ -485,7 +485,7 @@ public:
 	/*!
 	\brief
 		Return a pointer to the next selected ListboxItem after \a start_item.
-		
+
 	\note
 		List box searching progresses across the columns in each row.
 
@@ -520,7 +520,7 @@ public:
 	\return
 		- true if there is a ListboxItem at \a grid_ref and it is selected.
 		- false if there is no ListboxItem at \a grid_ref, or if the item is not selected.
-	
+
 	\exception InvalidRequestException	thrown if \a grid_ref contains an invalid grid position.
 	*/
 	bool	isItemSelected(const MCLGridRef& grid_ref) const;
@@ -1009,7 +1009,7 @@ public:
 	\param	col_id
 		ID code of the column to be used in NominatedColumn* selection modes.
 
-	\return	
+	\return
 		Nothing.
 
 	\exception InvalidRequestException	thrown if no column has ID code \a col_id.
@@ -1024,7 +1024,7 @@ public:
 	\param	col_idx
 		zero based index of the column to be used in NominatedColumn* selection modes.
 
-	\return	
+	\return
 		Nothing.
 
 	\exception InvalidRequestException	thrown if \a col_idx is out of range.
@@ -1039,7 +1039,7 @@ public:
 	\param	row_idx
 		zero based index of the row to be used in NominatedRow* selection modes.
 
-	\return	
+	\return
 		Nothing.
 
 	\exception InvalidRequestException	thrown if \a row_idx is out of range.
@@ -1089,7 +1089,7 @@ public:
 	*/
 	void	setSortColumnByID(uint col_id);
 
-	
+
 	/*!
 	\brief
 		Set whether the vertical scroll bar should always be shown, or just when needed.
@@ -1117,7 +1117,7 @@ public:
 	*/
 	void	setShowHorzScrollbar(bool setting);
 
-	
+
 	/*!
 	\brief
 		Removed the selected state from any currently selected ListboxItem attached to the list.
@@ -1145,7 +1145,7 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception InvalidRequestException	thrown if \a item is not attached to the list box.
 	*/
 	void	setItemSelectState(ListboxItem* item, bool state);
@@ -1168,12 +1168,12 @@ public:
 
 	\return
 		Nothing.
-	
+
 	\exception InvalidRequestException	thrown if \a grid_ref is invalid for this list box.
 	*/
 	void	setItemSelectState(const MCLGridRef& grid_ref, bool state);
 
-	
+
 	/*!
 	\brief
 		Inform the list box that one or more attached ListboxItems have been externally modified, and
@@ -1409,7 +1409,7 @@ protected:
 		if (class_name=="MultiColumnList")	return true;
 		return Window::testClassName_impl(class_name);
 	}
-    
+
 
     // overrides function in base class.
     virtual bool validateWindowRenderer(const String& name) const
@@ -1419,6 +1419,12 @@ protected:
 
     // overrides function in base class.
     int writePropertiesXML(XMLSerializer& xml_stream) const;
+
+    /*!
+    \brief
+        Causes the internal list to be (re)sorted.
+    */
+    void resortList();
 
 	/*************************************************************************
 		New event handlers for multi column list
