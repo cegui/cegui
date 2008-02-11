@@ -2,7 +2,7 @@
 	filename: 	CEGUIComboDropList.cpp
 	created:	13/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements the Combobox Drop-List widget base class
 *************************************************************************/
 /***************************************************************************
@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIScrollbar.h"
+#include "elements/CEGUIListboxItem.h"
 #include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -53,6 +54,7 @@ ComboDropList::ComboDropList(const String& type, const String& name) :
 {
 	d_autoArm = false;
 	d_armed = false;
+    d_lastClickSelected = 0;
 
 	hide();
 
@@ -70,7 +72,7 @@ ComboDropList::~ComboDropList(void)
 
 
 /*************************************************************************
-	Initialise the Window based object ready for use.	
+	Initialise the Window based object ready for use.
 *************************************************************************/
 void ComboDropList::initialiseComponents(void)
 {
@@ -87,9 +89,33 @@ void ComboDropList::initialiseComponents(void)
 *************************************************************************/
 void ComboDropList::onListSelectionAccepted(WindowEventArgs& e)
 {
+    d_lastClickSelected = getFirstSelectedItem();
 	fireEvent(EventListSelectionAccepted, e, EventNamespace);
 }
 
+/*************************************************************************
+    Handler for when list content has changed
+*************************************************************************/
+void ComboDropList::onListContentsChanged(WindowEventArgs& e)
+{
+    // basically see if our 'sticky' selection was removed
+    if ((d_lastClickSelected) && !isListboxItemInList(d_lastClickSelected))
+        d_lastClickSelected = 0;
+
+    // base class processing
+    Listbox::onListContentsChanged(e);
+}
+
+/*************************************************************************
+    Handler for when list selection has changed
+*************************************************************************/
+void ComboDropList::onSelectionChanged(WindowEventArgs& e)
+{
+    if (!isActive())
+        d_lastClickSelected = getFirstSelectedItem();
+
+    Listbox::onSelectionChanged(e);
+}
 
 /*************************************************************************
 	Handler for mouse movement events
@@ -184,8 +210,6 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 	{
 		if (d_armed && (getChildAtPosition(e.position) == 0))
 		{
-			releaseInput();
-
 			// if something was selected, confirm that selection.
 			if (getSelectedCount() > 0)
 			{
@@ -193,6 +217,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 				onListSelectionAccepted(args);
 			}
 
+            releaseInput();
 		}
 		// if we are not already armed, in response to a left button up event, we auto-arm.
 		else
@@ -215,6 +240,13 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
 	d_armed = false;
 	hide();
 	e.handled = true;
+
+    // ensure 'sticky' selection remains.
+    if ((d_lastClickSelected) && !d_lastClickSelected->isSelected())
+    {
+        clearAllSelections();
+        setItemSelectState(d_lastClickSelected, true);
+    }
 }
 
 

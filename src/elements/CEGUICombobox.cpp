@@ -2,7 +2,7 @@
 	filename: 	CEGUICombobox.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of Combobox base class
 *************************************************************************/
 /***************************************************************************
@@ -97,7 +97,7 @@ const String Combobox::EditboxNameSuffix( "__auto_editbox__" );
 const String Combobox::DropListNameSuffix( "__auto_droplist__" );
 const String Combobox::ButtonNameSuffix( "__auto_button__" );
 
-	
+
 /*************************************************************************
 	Constructor for Combobox base class
 *************************************************************************/
@@ -313,7 +313,7 @@ void Combobox::setMaxTextLength(size_t max_len)
 
 
 /*************************************************************************
-	Return number of items attached to the list box	
+	Return number of items attached to the list box
 *************************************************************************/
 size_t Combobox::getItemCount(void) const
 {
@@ -322,7 +322,7 @@ size_t Combobox::getItemCount(void) const
 
 
 /*************************************************************************
-	Return a pointer to the currently selected item.	
+	Return a pointer to the currently selected item.
 *************************************************************************/
 ListboxItem* Combobox::getSelectedItem(void) const
 {
@@ -349,7 +349,7 @@ size_t Combobox::getItemIndex(const ListboxItem* item) const
 
 
 /*************************************************************************
-	return whether list sorting is enabled	
+	return whether list sorting is enabled
 *************************************************************************/
 bool Combobox::isSortEnabled(void) const
 {
@@ -358,7 +358,7 @@ bool Combobox::isSortEnabled(void) const
 
 
 /*************************************************************************
-	return whether the string at index position 'index' is selected	
+	return whether the string at index position 'index' is selected
 *************************************************************************/
 bool Combobox::isItemSelected(size_t index) const
 {
@@ -367,7 +367,7 @@ bool Combobox::isItemSelected(size_t index) const
 
 
 /*************************************************************************
-	Search the list for an item with the specified text	
+	Search the list for an item with the specified text
 *************************************************************************/
 ListboxItem* Combobox::findItemWithText(const String& text, const ListboxItem* start_item)
 {
@@ -376,7 +376,7 @@ ListboxItem* Combobox::findItemWithText(const String& text, const ListboxItem* s
 
 
 /*************************************************************************
-	Return whether the specified ListboxItem is in the List	
+	Return whether the specified ListboxItem is in the List
 *************************************************************************/
 bool Combobox::isListboxItemInList(const ListboxItem* item) const
 {
@@ -385,7 +385,7 @@ bool Combobox::isListboxItemInList(const ListboxItem* item) const
 
 
 /*************************************************************************
-	Remove all items from the list.	
+	Remove all items from the list.
 *************************************************************************/
 void Combobox::resetList(void)
 {
@@ -394,7 +394,7 @@ void Combobox::resetList(void)
 
 
 /*************************************************************************
-	Add the given ListboxItem to the list.	
+	Add the given ListboxItem to the list.
 *************************************************************************/
 void Combobox::addItem(ListboxItem* item)
 {
@@ -404,7 +404,7 @@ void Combobox::addItem(ListboxItem* item)
 
 /*************************************************************************
 	Insert an item into the list box after a specified item already in
-	the list.	
+	the list.
 *************************************************************************/
 void Combobox::insertItem(ListboxItem* item, const ListboxItem* position)
 {
@@ -413,7 +413,7 @@ void Combobox::insertItem(ListboxItem* item, const ListboxItem* position)
 
 
 /*************************************************************************
-	Removes the given item from the list box.	
+	Removes the given item from the list box.
 *************************************************************************/
 void Combobox::removeItem(const ListboxItem* item)
 {
@@ -422,7 +422,7 @@ void Combobox::removeItem(const ListboxItem* item)
 
 
 /*************************************************************************
-	Clear the selected state for all items.	
+	Clear the selected state for all items.
 *************************************************************************/
 void Combobox::clearAllSelections(void)
 {
@@ -431,7 +431,7 @@ void Combobox::clearAllSelections(void)
 
 
 /*************************************************************************
-	Set whether the list should be sorted.	
+	Set whether the list should be sorted.
 *************************************************************************/
 void Combobox::setSortingEnabled(bool setting)
 {
@@ -440,7 +440,7 @@ void Combobox::setSortingEnabled(bool setting)
 
 
 /*************************************************************************
-	Set whether the vertical scroll bar should always be shown.	
+	Set whether the vertical scroll bar should always be shown.
 *************************************************************************/
 void Combobox::setShowVertScrollbar(bool setting)
 {
@@ -449,7 +449,7 @@ void Combobox::setShowVertScrollbar(bool setting)
 
 
 /*************************************************************************
-	Set whether the horizontal scroll bar should always be shown.	
+	Set whether the horizontal scroll bar should always be shown.
 *************************************************************************/
 void Combobox::setShowHorzScrollbar(bool setting)
 {
@@ -458,7 +458,7 @@ void Combobox::setShowHorzScrollbar(bool setting)
 
 
 /*************************************************************************
-	Set the select state of an attached ListboxItem.	
+	Set the select state of an attached ListboxItem.
 *************************************************************************/
 void Combobox::setItemSelectState(ListboxItem* item, bool state)
 {
@@ -467,7 +467,7 @@ void Combobox::setItemSelectState(ListboxItem* item, bool state)
 
 
 /*************************************************************************
-	Set the select state of an attached ListboxItem.	
+	Set the select state of an attached ListboxItem.
 *************************************************************************/
 void Combobox::setItemSelectState(size_t item_index, bool state)
 {
@@ -486,7 +486,7 @@ void Combobox::handleUpdatedListItemData(void)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onReadOnlyChanged(WindowEventArgs& e)
 {
@@ -495,7 +495,7 @@ void Combobox::onReadOnlyChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onValidationStringChanged(WindowEventArgs& e)
 {
@@ -504,7 +504,7 @@ void Combobox::onValidationStringChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onMaximumTextLengthChanged(WindowEventArgs& e)
 {
@@ -513,7 +513,7 @@ void Combobox::onMaximumTextLengthChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onTextInvalidatedEvent(WindowEventArgs& e)
 {
@@ -522,7 +522,7 @@ void Combobox::onTextInvalidatedEvent(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onInvalidEntryAttempted(WindowEventArgs& e)
 {
@@ -531,7 +531,7 @@ void Combobox::onInvalidEntryAttempted(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onCaratMoved(WindowEventArgs& e)
 {
@@ -540,7 +540,7 @@ void Combobox::onCaratMoved(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onTextSelectionChanged(WindowEventArgs& e)
 {
@@ -549,7 +549,7 @@ void Combobox::onTextSelectionChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onEditboxFullEvent(WindowEventArgs& e)
 {
@@ -558,7 +558,7 @@ void Combobox::onEditboxFullEvent(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onTextAcceptedEvent(WindowEventArgs& e)
 {
@@ -567,7 +567,7 @@ void Combobox::onTextAcceptedEvent(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onListContentsChanged(WindowEventArgs& e)
 {
@@ -576,7 +576,7 @@ void Combobox::onListContentsChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onListSelectionChanged(WindowEventArgs& e)
 {
@@ -585,7 +585,7 @@ void Combobox::onListSelectionChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onSortModeChanged(WindowEventArgs& e)
 {
@@ -594,7 +594,7 @@ void Combobox::onSortModeChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onVertScrollbarModeChanged(WindowEventArgs& e)
 {
@@ -603,7 +603,7 @@ void Combobox::onVertScrollbarModeChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 {
@@ -612,7 +612,7 @@ void Combobox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onDropListDisplayed(WindowEventArgs& e)
 {
@@ -621,7 +621,7 @@ void Combobox::onDropListDisplayed(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onDroplistRemoved(WindowEventArgs& e)
 {
@@ -630,7 +630,7 @@ void Combobox::onDroplistRemoved(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when 
+	Handler for when
 *************************************************************************/
 void Combobox::onListSelectionAccepted(WindowEventArgs& e)
 {
@@ -680,8 +680,6 @@ bool Combobox::button_PressHandler(const EventArgs& e)
 {
     ComboDropList* droplist = getDropList();
 
-	showDropList();
-
 	// if there is an item with the same text as the edit box, pre-select it
 	ListboxItem* item = droplist->findItemWithText(getEditbox()->getText(), 0);
 
@@ -695,6 +693,8 @@ bool Combobox::button_PressHandler(const EventArgs& e)
 	{
 		droplist->clearAllSelections();
 	}
+
+    showDropList();
 
 	return true;
 }
@@ -748,7 +748,7 @@ bool Combobox::droplist_HiddenHandler(const EventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button down events in editbox	
+	Handler for mouse button down events in editbox
 *************************************************************************/
 bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 {
@@ -761,7 +761,6 @@ bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 		if (editbox->isReadOnly())
 		{
             ComboDropList* droplist = getDropList();
-			showDropList();
 
 			// if there is an item with the same text as the edit box, pre-select it
 			ListboxItem* item = droplist->findItemWithText(editbox->getText(), 0);
@@ -777,6 +776,8 @@ bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 				droplist->clearAllSelections();
 			}
 
+            showDropList();
+
 			return true;
 		}
 	}
@@ -786,7 +787,7 @@ bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
 
 
 /*************************************************************************
-	Return whether the vertical scroll bar is always shown.	
+	Return whether the vertical scroll bar is always shown.
 *************************************************************************/
 bool Combobox::isVertScrollbarAlwaysShown(void) const
 {
@@ -795,7 +796,7 @@ bool Combobox::isVertScrollbarAlwaysShown(void) const
 
 
 /*************************************************************************
-	Return whether the horizontal scroll bar is always shown.	
+	Return whether the horizontal scroll bar is always shown.
 *************************************************************************/
 bool Combobox::isHorzScrollbarAlwaysShown(void) const
 {
