@@ -2,7 +2,7 @@
 	filename: 	CEGUIComboDropList.h
 	created:	13/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface for the Combobox Drop-List widget base class
 *************************************************************************/
 /***************************************************************************
@@ -165,7 +165,7 @@ protected:
 		if (class_name=="ComboDropList")	return true;
 		return Listbox::testClassName_impl(class_name);
 	}
-	
+
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
@@ -184,13 +184,15 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
-
+    virtual void    onListContentsChanged(WindowEventArgs& e);
+    virtual void    onSelectionChanged(WindowEventArgs& e);
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	bool	d_autoArm;		//!< true if the box auto-arms when the mouse enters it.
 	bool	d_armed;		//!< true when item selection has been armed.
+    ListboxItem* d_lastClickSelected; //!< Item last accepted by user.
 };
 
 } // End of  CEGUI namespace section
