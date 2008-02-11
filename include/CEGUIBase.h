@@ -2,10 +2,10 @@
 	filename: 	CEGUIBase.h
 	created:	20/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Base include used within the system
 				This contains various lower level bits required
-				by other parts of the system.  All other library 
+				by other parts of the system.  All other library
 				headers will include this file.
 *************************************************************************/
 /***************************************************************************
@@ -166,7 +166,7 @@ typedef std::ostream OutStream;     //!< Output stream class.
 	\a x after having been rounded
 */
 #if defined(CEGUI_ALIGN_ELEMENTS_TO_PIXELS)
-#	define PixelAligned(x)	( (float)(int)(( x ) + 0.5f) )
+#	define PixelAligned(x)	( (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)) )
 #else
 #	define PixelAligned(x)	( x )
 #endif
