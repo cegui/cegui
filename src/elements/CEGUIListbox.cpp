@@ -2,7 +2,7 @@
 	filename: 	CEGUIListbox.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of Listbox widget base class
 *************************************************************************/
 /***************************************************************************
@@ -120,7 +120,7 @@ void Listbox::initialiseComponents(void)
 
 
 /*************************************************************************
-	Return the number of selected items in the list box.	
+	Return the number of selected items in the list box.
 *************************************************************************/
 size_t Listbox::getSelectedCount(void) const
 {
@@ -294,7 +294,7 @@ void Listbox::addItem(ListboxItem* item)
 		if (isSortEnabled())
 		{
 			d_listItems.insert(std::upper_bound(d_listItems.begin(), d_listItems.end(), item, &lbi_less), item);
-		
+
 		}
 		// not sorted, just stick it on the end.
 		else
@@ -343,7 +343,7 @@ void Listbox::insertItem(ListboxItem* item, const ListboxItem* position)
 			}
 
 		}
-		
+
 		d_listItems.insert(ins_pos, item);
 
 		WindowEventArgs args(this);
@@ -389,7 +389,7 @@ void Listbox::removeItem(const ListboxItem* item)
 		}
 
 	}
-	
+
 }
 
 
@@ -421,7 +421,7 @@ void Listbox::setSortingEnabled(bool setting)
 		// if we are enabling sorting, we need to sort the list
 		if (d_sorted)
 		{
-			std::sort(d_listItems.begin(), d_listItems.end(), &lbi_less);
+            resortList();
 		}
 
         WindowEventArgs args(this);
@@ -522,7 +522,7 @@ void Listbox::setItemSelectState(ListboxItem* item, bool state)
 
 
 /*************************************************************************
-	Set the select state of an attached ListboxItem.	
+	Set the select state of an attached ListboxItem.
 *************************************************************************/
 void Listbox::setItemSelectState(size_t item_index, bool state)
 {
@@ -553,10 +553,13 @@ void Listbox::setItemSelectState(size_t item_index, bool state)
 
 /*************************************************************************
 	Causes the list box to update it's internal state after changes have
-	been made to one or more attached ListboxItem objects.	
+	been made to one or more attached ListboxItem objects.
 *************************************************************************/
 void Listbox::handleUpdatedItemData(void)
 {
+    if (d_sorted)
+        resortList();
+
 	configureScrollbars();
 	requestRedraw();
 }
@@ -677,7 +680,7 @@ void Listbox::selectRange(size_t start, size_t end)
 
 
 /*************************************************************************
-	Return the sum of all item heights	
+	Return the sum of all item heights
 *************************************************************************/
 float Listbox::getTotalItemsHeight(void) const
 {
@@ -769,7 +772,7 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 
 
 /*************************************************************************
-	Handler called internally when the list contents are changed	
+	Handler called internally when the list contents are changed
 *************************************************************************/
 void Listbox::onListContentsChanged(WindowEventArgs& e)
 {
@@ -891,7 +894,7 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 			WindowEventArgs args(this);
 			onSelectionChanged(args);
 		}
-		
+
 		e.handled = true;
 	}
 
@@ -963,7 +966,7 @@ void Listbox::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Ensure the item at the specified index is visible within the list box.	
+	Ensure the item at the specified index is visible within the list box.
 *************************************************************************/
 void Listbox::ensureItemIsVisible(size_t item_index)
 {
@@ -1007,7 +1010,7 @@ void Listbox::ensureItemIsVisible(size_t item_index)
 			// position bottom of item at the bottom of the list
 			vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
 		}
-		
+
 		// Item is already fully visible - nothing more to do.
 	}
 
@@ -1024,7 +1027,7 @@ void Listbox::ensureItemIsVisible(const ListboxItem* item)
 
 
 /*************************************************************************
-	Return whether the vertical scroll bar is always shown.	
+	Return whether the vertical scroll bar is always shown.
 *************************************************************************/
 bool Listbox::isVertScrollbarAlwaysShown(void) const
 {
@@ -1033,7 +1036,7 @@ bool Listbox::isVertScrollbarAlwaysShown(void) const
 
 
 /*************************************************************************
-	Return whether the horizontal scroll bar is always shown.	
+	Return whether the horizontal scroll bar is always shown.
 *************************************************************************/
 bool Listbox::isHorzScrollbarAlwaysShown(void) const
 {
@@ -1133,6 +1136,14 @@ Rect Listbox::getListRenderArea() const
     {
         throw InvalidRequestException("Listbox::getListRenderArea - This function must be implemented by the window renderer module");
     }
+}
+
+/*************************************************************************
+    Function to resort the list data.
+*************************************************************************/
+void Listbox::resortList()
+{
+    std::sort(d_listItems.begin(), d_listItems.end(), &lbi_less);
 }
 
 //////////////////////////////////////////////////////////////////////////

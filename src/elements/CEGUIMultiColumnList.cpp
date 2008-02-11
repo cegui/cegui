@@ -2,7 +2,7 @@
 	filename: 	CEGUIMultiColumnList.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of MultiColumnList widget base class
 *************************************************************************/
 /***************************************************************************
@@ -135,7 +135,7 @@ bool MultiColumnList::isUserSortControlEnabled(void) const
 
 
 /*************************************************************************
-	Return whether the user may size column segments.	
+	Return whether the user may size column segments.
 *************************************************************************/
 bool MultiColumnList::isUserColumnSizingEnabled(void) const
 {
@@ -144,7 +144,7 @@ bool MultiColumnList::isUserColumnSizingEnabled(void) const
 
 
 /*************************************************************************
-	Return whether the user may modify the order of the columns.	
+	Return whether the user may modify the order of the columns.
 *************************************************************************/
 bool MultiColumnList::isUserColumnDraggingEnabled(void) const
 {
@@ -153,7 +153,7 @@ bool MultiColumnList::isUserColumnDraggingEnabled(void) const
 
 
 /*************************************************************************
-	Return the number of columns in the multi-column list	
+	Return the number of columns in the multi-column list
 *************************************************************************/
 uint MultiColumnList::getColumnCount(void) const
 {
@@ -162,7 +162,7 @@ uint MultiColumnList::getColumnCount(void) const
 
 
 /*************************************************************************
-	Return the number of rows in the multi-column list.	
+	Return the number of rows in the multi-column list.
 *************************************************************************/
 uint MultiColumnList::getRowCount(void) const
 {
@@ -191,7 +191,7 @@ uint MultiColumnList::getColumnWithID(uint col_id) const
 
 /*************************************************************************
 	Return the zero based index of the column whos header text matches
-	the specified text.	
+	the specified text.
 *************************************************************************/
 uint MultiColumnList::getColumnWithHeaderText(const String& text) const
 {
@@ -215,7 +215,7 @@ UDim MultiColumnList::getTotalColumnHeadersWidth(void) const
 
 
 /*************************************************************************
-	Return the width of the specified column header.	
+	Return the width of the specified column header.
 *************************************************************************/
 UDim MultiColumnList::getColumnHeaderWidth(uint col_idx) const
 {
@@ -461,7 +461,7 @@ ListboxItem* MultiColumnList::findRowItemWithText(const String& text, uint row_i
 ListboxItem* MultiColumnList::findListItemWithText(const String& text, const ListboxItem* start_item) const
 {
 	MCLGridRef startRef(0, 0);
-	
+
 	// get position of start_item if it's not NULL
 	if (start_item)
 	{
@@ -691,7 +691,7 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, const UDim& 
     ++d_columnCount;
 
     // Set the font equal to that of our list
-    for (uint col = 0; col < getColumnCount(); col++) 
+    for (uint col = 0; col < getColumnCount(); col++)
     {
         getHeaderSegmentForColumn(col).setFont(getFont());
     }
@@ -1267,6 +1267,7 @@ void MultiColumnList::setItemSelectState(const MCLGridRef& grid_ref, bool state)
 *************************************************************************/
 void MultiColumnList::handleUpdatedItemData(void)
 {
+    resortList();
 	configureScrollbars();
 	requestRedraw();
 }
@@ -1274,7 +1275,7 @@ void MultiColumnList::handleUpdatedItemData(void)
 
 /*************************************************************************
 	Set the width of the specified column header (and therefore the
-	column itself).	
+	column itself).
 *************************************************************************/
 void MultiColumnList::setColumnHeaderWidth(uint col_idx, const UDim& width)
 {
@@ -1284,7 +1285,7 @@ void MultiColumnList::setColumnHeaderWidth(uint col_idx, const UDim& width)
 
 /*************************************************************************
 	display required integrated scroll bars according to current state
-	of the list box and update their values.	
+	of the list box and update their values.
 *************************************************************************/
 void MultiColumnList::configureScrollbars(void)
 {
@@ -1356,7 +1357,7 @@ void MultiColumnList::configureScrollbars(void)
 
 
 /*************************************************************************
-	select all strings between positions 'start' and 'end'.  (inclusive)	
+	select all strings between positions 'start' and 'end'.  (inclusive)
 *************************************************************************/
 bool MultiColumnList::selectRange(const MCLGridRef& start, const MCLGridRef& end)
 {
@@ -1399,7 +1400,7 @@ bool MultiColumnList::selectRange(const MCLGridRef& start, const MCLGridRef& end
 
 
 /*************************************************************************
-	Return the sum of all row heights	
+	Return the sum of all row heights
 *************************************************************************/
 float MultiColumnList::getTotalRowsHeight(void) const
 {
@@ -1415,7 +1416,7 @@ float MultiColumnList::getTotalRowsHeight(void) const
 
 
 /*************************************************************************
-	Return the width of the widest item in the given column	
+	Return the width of the widest item in the given column
 *************************************************************************/
 float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 {
@@ -1456,7 +1457,7 @@ float MultiColumnList::getWidestColumnItemWidth(uint col_idx) const
 
 
 /*************************************************************************
-	Return the height of the highest item in the given row.	
+	Return the height of the highest item in the given row.
 *************************************************************************/
 float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 {
@@ -1492,12 +1493,12 @@ float MultiColumnList::getHighestRowItemHeight(uint row_idx) const
 		// return the hightest item.
 		return height;
 	}
-	
+
 }
 
 
 /*************************************************************************
-	Clear the selected state for all items (implementation)	
+	Clear the selected state for all items (implementation)
 *************************************************************************/
 bool MultiColumnList::clearAllSelections_impl(void)
 {
@@ -1528,7 +1529,7 @@ bool MultiColumnList::clearAllSelections_impl(void)
 
 
 /*************************************************************************
-	Return the ListboxItem under the given window local pixel co-ordinate.	
+	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
 ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
 {
@@ -1571,7 +1572,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
 /*************************************************************************
 	Set select state for the given item.  This appropriately selects other
 	items depending upon the select mode.  Returns true if something is
-	changed, else false.	
+	changed, else false.
 *************************************************************************/
 bool MultiColumnList::setItemSelectState_impl(const MCLGridRef grid_ref, bool state)
 {
@@ -1627,7 +1628,7 @@ bool MultiColumnList::setItemSelectState_impl(const MCLGridRef grid_ref, bool st
 
 
 /*************************************************************************
-	Select all items in the given row	
+	Select all items in the given row
 *************************************************************************/
 void MultiColumnList::setSelectForItemsInRow(uint row_idx, bool state)
 {
@@ -1665,7 +1666,7 @@ void MultiColumnList::setSelectForItemsInColumn(uint col_idx, bool state)
 
 /*************************************************************************
 	Move the column at index 'col_idx' so it is at index 'position'.
-	
+
 	Implementation version which does not move the header segment
 	(since that may have already happned).
 *************************************************************************/
@@ -1829,7 +1830,7 @@ void MultiColumnList::onFontChanged(WindowEventArgs& e)
 {
     // Propagate to children
     // Set the font equal to that of our list
-    for (uint col = 0; col < getColumnCount(); col++) 
+    for (uint col = 0; col < getColumnCount(); col++)
     {
         getHeaderSegmentForColumn(col).setFont(getFont());
     }
@@ -1898,7 +1899,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 			WindowEventArgs args(this);
 			onSelectionChanged(args);
 		}
-		
+
 		e.handled = true;
 	}
 
@@ -2006,19 +2007,7 @@ bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
 		d_grid[i].d_sortColumn = col;
 	}
 
-	// re-sort list according to direction
-	ListHeaderSegment::SortDirection dir = getSortDirection();
-
-	if (dir == ListHeaderSegment::Descending)
-	{
-		std::sort(d_grid.begin(), d_grid.end());
-	}
-	else if (dir == ListHeaderSegment::Ascending)
-	{
-		std::sort(d_grid.begin(), d_grid.end(), pred_descend);
-	}
-
-	// else, no direction, so do not sort.
+    resortList();
 
 	// signal change to our clients
 	WindowEventArgs args(this);
@@ -2033,20 +2022,7 @@ bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
 *************************************************************************/
 bool MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 {
-	// re-sort list according to direction
-	ListHeaderSegment::SortDirection dir = getSortDirection();
-
-	if (dir == ListHeaderSegment::Descending)
-	{
-		std::sort(d_grid.begin(), d_grid.end());
-	}
-	else if (dir == ListHeaderSegment::Ascending)
-	{
-		std::sort(d_grid.begin(), d_grid.end(), pred_descend);
-	}
-
-	// else, no direction, so do not sort.
-
+    resortList();
 	// signal change to our clients
 	WindowEventArgs args(this);
 	onSortDirectionChanged(args);
@@ -2071,7 +2047,7 @@ bool MultiColumnList::handleHeaderSegDblClick(const EventArgs& e)
 
 /*************************************************************************
 	Set whether user manipulation of the sort column and direction are
-	enabled.	
+	enabled.
 *************************************************************************/
 void MultiColumnList::setUserSortControlEnabled(bool setting)
 {
@@ -2080,7 +2056,7 @@ void MultiColumnList::setUserSortControlEnabled(bool setting)
 
 
 /*************************************************************************
-	Set whether the user may size column segments.	
+	Set whether the user may size column segments.
 *************************************************************************/
 void MultiColumnList::setUserColumnSizingEnabled(bool setting)
 {
@@ -2089,7 +2065,7 @@ void MultiColumnList::setUserColumnSizingEnabled(bool setting)
 
 
 /*************************************************************************
-	Set whether the user may modify the order of the columns.	
+	Set whether the user may modify the order of the columns.
 *************************************************************************/
 void MultiColumnList::setUserColumnDraggingEnabled(bool setting)
 {
@@ -2319,7 +2295,7 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
     for (uint i = 0; i < getColumnCount(); ++i)
     {
         ListHeaderSegment& seg = getHeaderSegmentForColumn(i);
-                
+
         // column text
         String propString = "text:";
         propString += seg.getText();
@@ -2431,6 +2407,25 @@ bool MultiColumnList::ListRow::operator>(const ListRow& rhs) const
 		return *a > *b;
 	}
 
+}
+
+/*************************************************************************
+    Cause list content to be (re)sorted
+*************************************************************************/
+void MultiColumnList::resortList()
+{
+    // re-sort list according to direction
+    ListHeaderSegment::SortDirection dir = getSortDirection();
+
+    if (dir == ListHeaderSegment::Descending)
+    {
+        std::sort(d_grid.begin(), d_grid.end());
+    }
+    else if (dir == ListHeaderSegment::Ascending)
+    {
+        std::sort(d_grid.begin(), d_grid.end(), pred_descend);
+    }
+    // else no (or invalid) direction, so do not sort.
 }
 
 
