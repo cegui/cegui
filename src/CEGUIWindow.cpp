@@ -3266,7 +3266,7 @@ bool Window::isTopOfZOrder() const
     if (!d_alwaysOnTop)
     {
         // find last non-topmost window
-        while ((pos != d_drawList.rend()) && (*pos)->isAlwaysOnTop())
+        while ((pos != d_parent->d_drawList.rend()) && (*pos)->isAlwaysOnTop())
             ++pos;
     }
 
