@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+        <Property Name="InheritsAlpha" Value="False" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="TaharezLook/FrameWindow" Name="Root/TextDemo" >
+            <Property Name="Text" Value="Text sample" />
+            <Property Name="TitlebarFont" Value="Commonwealth-10" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.0160194,0},{0.0159533,0},{0.869175,0},{0.880739,0}}" />
+            <Window Type="TaharezLook/GroupBox" Name="Root/TextDemo/StaticGroup" >
+                <Property Name="Text" Value="Static text" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0173979,0},{0.078319,0},{0.986007,0},{0.40938,0}}" />
+            </Window>
+            <Window Type="TaharezLook/GroupBox" Name="Root/TextDemo/SingleLineGroup" >
+                <Property Name="Text" Value="Single line editing" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0184568,0},{0.416808,0},{0.984039,0},{0.46811,0}}" />
+            </Window>
+            <Window Type="TaharezLook/StaticText" Name="Root/TextDemo/StaticGroup/Text" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Demonstrates static (non editable) text. Use the controls on your right for formatting options." />
+                <Property Name="HorzFormatting" Value="WordWrapLeftAligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.032217,0},{0.126344,0},{0.42415,0},{0.384995,0}}" />
+            </Window>
+            <Window Type="TaharezLook/StaticText" Name="Root/TextDemo/StaticGroup/lblHorzFormatting" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Horz. formatting" />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.436163,0},{0.124473,0},{0.634902,0},{0.173498,0}}" />
+                <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+            <Window Type="TaharezLook/RadioButton" Name="Root/TextDemo/StaticGroup/HorzLeft" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Left aligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.179757,0},{0.602889,0},{0.228783,0}}" />
+            </Window>
+            <Window Type="TaharezLook/RadioButton" Name="Root/TextDemo/StaticGroup/HorzRight" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Right aligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.223715,0},{0.602889,0},{0.27274,0}}" />
+            </Window>
+            <Window Type="TaharezLook/RadioButton" Name="Root/TextDemo/StaticGroup/HorzCentered" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Center aligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.434561,0},{0.267673,0},{0.602889,0},{0.316698,0}}" />
+            </Window>
+            <Window Type="TaharezLook/StaticText" Name="Root/TextDemo/StaticGroup/lblVertFormatting" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Vert. formatting" />
+                <Property Name="FrameEnabled" Value="False" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.612759,0},{0.124473,0},{0.787369,0},{0.173498,0}}" />
+                <Property Name="BackgroundEnabled" Value="False" />
+            </Window>
+            <Window Type="TaharezLook/RadioButton" Name="Root/TextDemo/StaticGroup/VertTop" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Top aligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.609555,0},{0.190256,0},{0.792699,0},{0.227283,0}}" />
+            </Window>
+            <Window Type="TaharezLook/RadioButton" Name="Root/TextDemo/StaticGroup/VertBottom" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Bottom aligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.609555,0},{0.234214,0},{0.792699,0},{0.27124,0}}" />
+            </Window>
+            <Window Type="TaharezLook/RadioButton" Name="Root/TextDemo/StaticGroup/VertCentered" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Center aligned" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.609555,0},{0.276102,0},{0.792699,0},{0.313129,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Checkbox" Name="Root/TextDemo/StaticGroup/Wrap" >
+                <Property Name="Font" Value="Commonwealth-10" />
+                <Property Name="Text" Value="Word wrap" />
+                <Property Name="Selected" Value="True" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.793054,0},{0.124429,0},{0.944655,0},{0.177953,0}}" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>
