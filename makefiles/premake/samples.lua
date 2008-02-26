@@ -30,7 +30,7 @@ local pkg_table =
     {
         "common",
         "FirstWindow",
-        "Demo4",
+        "TextDemo",
         "Demo6",
         "Demo7",
         "FalagardDemo1",
