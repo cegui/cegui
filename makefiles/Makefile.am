@@ -44,7 +44,7 @@ EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/CEGUI-Info.plist \
              premake/RendererModules/DirectX9GUIRenderer/premake.lua \
              premake/RendererModules/IrrlichtRenderer/premake.lua \
              premake/RendererModules/OpenGLGUIRenderer/premake.lua \
-             premake/Samples/Demo4/premake.lua \
+             premake/Samples/TextDemo/premake.lua \
              premake/Samples/Demo6/premake.lua \
              premake/Samples/Demo7/premake.lua \
              premake/Samples/Demo8/premake.lua \
