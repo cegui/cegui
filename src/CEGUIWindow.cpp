@@ -3262,7 +3262,7 @@ bool Window::isTopOfZOrder() const
         return true;
 
     // get position of window at top of z-order in same group as this window
-    ChildList::const_reverse_iterator pos = d_parent->d_drawList.rbegin();
+    ChildList::reverse_iterator pos = d_parent->d_drawList.rbegin();
     if (!d_alwaysOnTop)
     {
         // find last non-topmost window

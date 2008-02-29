@@ -217,6 +217,15 @@ public:
     */
     Scrollbar* getVertScrollbar() const;
 
+    /*!
+	\brief
+		Return whether the vertical scroll bar is always shown.
+
+	\return
+		- true if the scroll bar will always be shown even if it is not required.
+		- false if the scroll bar will only be shown when it is required.
+	*/
+	bool	isVertScrollbarAlwaysShown(void) const;
 
     /*!
     \brief
@@ -346,6 +355,19 @@ public:
 		Nothing.
 	*/
 	void	setWordWrapping(bool setting);
+
+    /*!
+	\brief
+		Set whether the vertical scroll bar should always be shown.
+
+	\param setting
+		true if the vertical scroll bar should be shown even when it is not required.  false if the vertical
+		scroll bar should only be shown when it is required.
+
+	\return
+		Nothing.
+	*/
+	void	setShowVertScrollbar(bool setting);
 
     // selection brush image property support
     void setSelectionBrushImage(const Image* image);
@@ -691,6 +713,7 @@ private:
 	static MultiLineEditboxProperties::SelectionLength			d_selectionLengthProperty;
 	static MultiLineEditboxProperties::MaxTextLength			d_maxTextLengthProperty;
     static MultiLineEditboxProperties::SelectionBrushImage      d_selectionBrushProperty;
+    static MultiLineEditboxProperties::ForceVertScrollbar	    d_forceVertProperty;
 
 
 	/*************************************************************************

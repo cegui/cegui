@@ -218,6 +218,30 @@ public:
     void   set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+	Property to access the 'always show' setting for the vertical scroll bar of the box.
+
+	\par Usage:
+		- Name: ForceVertScrollbar
+		- Format: "[text]"
+
+	\par Where [Text] is:
+		- "True" to indicate that the vertical scroll bar will always be shown.
+		- "False" to indicate that the vertical scroll bar will only be shown when it is needed.
+*/
+class ForceVertScrollbar : public Property
+{
+public:
+	ForceVertScrollbar() : Property(
+		"ForceVertScrollbar",
+		"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+		"False")
+	{}
+
+	String	get(const PropertyReceiver* receiver) const;
+	void	set(PropertyReceiver* receiver, const String& value);
+};
 
 } // End of  MultiLineEditboxProperties namespace section
 
