@@ -40,6 +40,9 @@ namespace CEGUI
 GroupBox::GroupBox(const String& type, const String& name) :
 	Window(type, name)
 {
+    // When clicked, don't rise. Required because a Groupbox does not have an actual parent child
+    // relation with the widgets which appear inside it.
+    d_riseOnClick = false;
 }
 
 GroupBox::~GroupBox()

@@ -128,6 +128,15 @@ void SelectionBrushImage::set(PropertyReceiver* receiver, const String &value)
     static_cast<MultiLineEditbox*>(receiver)->setSelectionBrushImage(PropertyHelper::stringToImage(value));
 }
 
+String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
+{
+	return PropertyHelper::boolToString(static_cast<const MultiLineEditbox*>(receiver)->isVertScrollbarAlwaysShown());
+}
+
+void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
+{
+	static_cast<MultiLineEditbox*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+}
 
 } // End of  MultiLineEditboxProperties namespace section
 

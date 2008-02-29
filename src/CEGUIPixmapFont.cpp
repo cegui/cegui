@@ -152,7 +152,7 @@ void PixmapFont::defineMapping (String image_name, utf32 codepoint, float horzAd
 
     // calculate advance width if it was not specified
     if (horzAdvance == -1.0f)
-        horzAdvance = (int)(image->getWidth () + image->getOffsetX ());
+        horzAdvance = (float)(int)(image->getWidth () + image->getOffsetX ());
 
     if (d_autoScale)
         horzAdvance *= d_origHorzScaling;

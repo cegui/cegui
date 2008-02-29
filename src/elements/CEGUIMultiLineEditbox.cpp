@@ -66,6 +66,7 @@ MultiLineEditboxProperties::SelectionStart			MultiLineEditbox::d_selectionStartP
 MultiLineEditboxProperties::SelectionLength			MultiLineEditbox::d_selectionLengthProperty;
 MultiLineEditboxProperties::MaxTextLength			MultiLineEditbox::d_maxTextLengthProperty;
 MultiLineEditboxProperties::SelectionBrushImage     MultiLineEditbox::d_selectionBrushProperty;
+MultiLineEditboxProperties::ForceVertScrollbar      MultiLineEditbox::d_forceVertProperty;
 
 
 /*************************************************************************
@@ -1510,6 +1511,7 @@ void MultiLineEditbox::addMultiLineEditboxProperties(void)
 	addProperty(&d_selectionLengthProperty);
 	addProperty(&d_maxTextLengthProperty);
     addProperty(&d_selectionBrushProperty);
+    addProperty(&d_forceVertProperty);
 }
 
 /*************************************************************************
@@ -1529,6 +1531,14 @@ Scrollbar* MultiLineEditbox::getVertScrollbar() const
 {
     return static_cast<Scrollbar*>(WindowManager::getSingleton().getWindow(
                                    getName() + VertScrollbarNameSuffix));
+}
+
+/*************************************************************************
+	Return whether the vertical scroll bar is always shown.
+*************************************************************************/
+bool MultiLineEditbox::isVertScrollbarAlwaysShown(void) const
+{
+	return d_forceVertScroll;
 }
 
 /*************************************************************************
@@ -1566,6 +1576,21 @@ void MultiLineEditbox::setSelectionBrushImage(const Image* image)
 {
     d_selectionBrush = image;
     requestRedraw();
+}
+
+/*************************************************************************
+	Set whether the vertical scroll bar should always be shown.
+*************************************************************************/
+void MultiLineEditbox::setShowVertScrollbar(bool setting)
+{
+	if (d_forceVertScroll != setting)
+	{
+		d_forceVertScroll = setting;
+
+		configureScrollbars();
+		WindowEventArgs args(this);
+		onVertScrollbarModeChanged(args);
+	}
 }
 
 } // End of  CEGUI namespace section
