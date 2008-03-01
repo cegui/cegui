@@ -147,7 +147,7 @@ void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
     }
 }
 
-void TextDemo::subscribeEvent(const String& widget, const String& event, Event::Subscriber& method)
+void TextDemo::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
     if (winMgr.isWindowPresent(widget))
@@ -159,7 +159,7 @@ void TextDemo::subscribeEvent(const String& widget, const String& event, Event::
 
 bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();    
+    WindowManager& winMgr = WindowManager::getSingleton();
     // Check
     if (winMgr.isWindowPresent(radio))
     {
@@ -171,7 +171,7 @@ bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 
 bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();    
+    WindowManager& winMgr = WindowManager::getSingleton();
     // Check
     if (winMgr.isWindowPresent(checkbox))
     {
@@ -223,8 +223,8 @@ bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs& e)
         MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(winMgr.getWindow("TextDemo/editMulti"));
         // Use setter for a change
         multiEdit->setShowVertScrollbar(isCheckboxSelected("TextDemo/forceScroll"));
-    }    
-    
+    }
+
     // event was handled
     return true;
 }

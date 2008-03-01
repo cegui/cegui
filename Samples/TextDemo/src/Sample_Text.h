@@ -53,7 +53,7 @@ private:
     /** Sets group- and selected for given radio name.*/
     void initRadio(const CEGUI::String& radio, int group, bool selected);
     /** Generic subscribe helper.*/
-    void subscribeEvent(const CEGUI::String& widgetName, const CEGUI::String& eventName, CEGUI::Event::Subscriber& method);
+    void subscribeEvent(const CEGUI::String& widgetName, const CEGUI::String& eventName, const CEGUI::Event::Subscriber& method);
     /** Returns whether the given radio is selected.*/
     bool isRadioSelected(const CEGUI::String& radio);
     /** Returns whether the given checkbox is selected.*/

@@ -111,14 +111,14 @@ CEGUI_OPENGL_AGE=0
 CEGUI_OPENGL_VERSION_INFO=$CEGUI_OPENGL_CURRENT:$CEGUI_OPENGL_REVISION:$CEGUI_OPENGL_AGE
 AC_SUBST(CEGUI_OPENGL_VERSION_INFO)
 
-CEGUI_CODE_OPTIONS 
+CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
 AC_CONFIG_FILES([Makefile
                  ImageCodecModules/Makefile
                  ImageCodecModules/CoronaImageCodec/Makefile
                  ImageCodecModules/DevILImageCodec/Makefile
-                 ImageCodecModules/FreeImageImageCodec/Makefile 
+                 ImageCodecModules/FreeImageImageCodec/Makefile
                  ImageCodecModules/SILLYImageCodec/Makefile
                  ImageCodecModules/TGAImageCodec/Makefile
                  RendererModules/directx81GUIRenderer/Makefile
@@ -126,8 +126,6 @@ AC_CONFIG_FILES([Makefile
                  RendererModules/IrrlichtRenderer/Makefile
                  RendererModules/Makefile
                  RendererModules/OpenGLGUIRenderer/Makefile
-                 Samples/Demo4/Makefile
-                 Samples/Demo4/src/Makefile
                  Samples/Demo6/Makefile
                  Samples/Demo6/src/Makefile
                  Samples/Demo7/Makefile
@@ -148,6 +146,8 @@ AC_CONFIG_FILES([Makefile
                  Samples/ScrollablePaneDemo/src/Makefile
                  Samples/TabControlDemo/Makefile
                  Samples/TabControlDemo/src/Makefile
+                 Samples/TextDemo/Makefile
+                 Samples/TextDemo/src/Makefile
                  Samples/TreeDemo/Makefile
                  Samples/TreeDemo/include/Makefile
                  Samples/TreeDemo/src/Makefile
