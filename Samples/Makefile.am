@@ -6,7 +6,6 @@ endif
 
 SUBDIRS = common \
           datafiles \
-          Demo4 \
           Demo6 \
           Demo7 \
           FirstWindow \
@@ -15,6 +14,7 @@ SUBDIRS = common \
           Minesweeper \
           ScrollablePaneDemo \
           TabControlDemo \
+          TextDemo \
           TreeDemo \
           $(CEGUILUA_DEMOS)
 endif
