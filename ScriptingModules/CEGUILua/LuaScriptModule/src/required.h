@@ -2,7 +2,7 @@
 	filename: required.h
 	created:  16/3/2005
 	author:   Tomas Lindquist Olsen
-	
+
 	purpose:  Header that includes the necessary stuff needed for the Lua bindings
 *************************************************************************/
 /***************************************************************************
@@ -39,7 +39,7 @@
 #define LuaFunctorSubscribeEvent CEGUI::LuaFunctor::SubscribeEvent
 
 //This is used to keep compilers happy
-#define CEGUIDeadException(e)
+#define CEGUIDeadException(e) &
 
 #if defined(_MSC_VER) && !defined(snprintf)
 #   define snprintf   _snprintf
