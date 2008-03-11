@@ -56,6 +56,14 @@ namespace CEGUI
     {
 
     public:
+        /************************************************************************/
+        /* DESTRUCTOR
+        /************************************************************************/
+        /*!
+        \brief
+        Virtual destructor.
+        */
+        virtual ~Exception(void);
 
         /************************************************************************/
         /* PUBLIC FUNCTIONS
@@ -100,12 +108,12 @@ namespace CEGUI
     protected:
 
         /************************************************************************/
-        /* CONSTRUCTORS/DESTRUCTORS
+        /* CONSTRUCTORS
         /************************************************************************/
 
         /*!
         \brief
-        Protected constructor that prevents instantiations (users should employ derived 
+        Protected constructor that prevents instantiations (users should employ derived
         exception classes instead) and that is responsible for logging the exception.
 
         \param message
@@ -121,12 +129,6 @@ namespace CEGUI
         Integer representing the line number where the exception occurred.
         */
         Exception(const String& message = "", const String& name ="CEGUI::Exception", const String& filename = "", int line = 0);
-
-        /*!
-        \brief
-        Virtual destructor.
-        */
-        virtual ~Exception(void);
 
         /************************************************************************/
         /* PROTECTED VARIABLES
@@ -188,7 +190,7 @@ namespace CEGUI
         Integer representing the line number where the generic exception occurred.
 
         \remarks
-        The generic exception name is automatically passed to the base class as 
+        The generic exception name is automatically passed to the base class as
         "CEGUI::GenericException".
         */
         GenericException(const String& message, const String& file = "unknown", int line = 0)
@@ -197,18 +199,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the generic 
+    This helper macro ensures the correct filename and line number where the generic
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define GenericException(message)  \
@@ -245,7 +247,7 @@ namespace CEGUI
         Integer representing the line number where the unknown object exception occurred.
 
         \remarks
-        The unknown object exception name is automatically passed to the base class as 
+        The unknown object exception name is automatically passed to the base class as
         "CEGUI::UnknownObjectException".
         */
         UnknownObjectException(const String& message, const String& file = "unknown", int line = 0)
@@ -254,18 +256,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the unknown object 
+    This helper macro ensures the correct filename and line number where the unknown object
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define UnknownObjectException(message)  \
@@ -302,7 +304,7 @@ namespace CEGUI
         Integer representing the line number where the invalid request exception occurred.
 
         \remarks
-        The invalid request exception name is automatically passed to the base class as 
+        The invalid request exception name is automatically passed to the base class as
         "CEGUI::InvalidRequestException".
         */
         InvalidRequestException(const String& message, const String& file = "unknown", int line = 0)
@@ -311,18 +313,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the invalid request 
+    This helper macro ensures the correct filename and line number where the invalid request
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define InvalidRequestException(message)  \
@@ -359,7 +361,7 @@ namespace CEGUI
         Integer representing the line number where the file IO exception occurred.
 
         \remarks
-        The file IO exception name is automatically passed to the base class as 
+        The file IO exception name is automatically passed to the base class as
         "CEGUI::FileIOException".
         */
         FileIOException(const String& message, const String& file = "unknown", int line = 0)
@@ -368,18 +370,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the file IO 
+    This helper macro ensures the correct filename and line number where the file IO
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define FileIOException(message)  \
@@ -416,7 +418,7 @@ namespace CEGUI
         Integer representing the line number where the renderer exception occurred.
 
         \remarks
-        The renderer exception name is automatically passed to the base class as 
+        The renderer exception name is automatically passed to the base class as
         "CEGUI::RendererException".
         */
         RendererException(const String& message, const String& file = "unknown", int line = 0)
@@ -425,18 +427,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the renderer 
+    This helper macro ensures the correct filename and line number where the renderer
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define RendererException(message)  \
@@ -473,7 +475,7 @@ namespace CEGUI
         Integer representing the line number where the already exists exception occurred.
 
         \remarks
-        The already exists exception name is automatically passed to the base class as 
+        The already exists exception name is automatically passed to the base class as
         "CEGUI::AlreadyExistsException".
         */
         AlreadyExistsException(const String& message, const String& file = "unknown", int line = 0)
@@ -482,18 +484,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the already exists 
+    This helper macro ensures the correct filename and line number where the already exists
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define AlreadyExistsException(message)  \
@@ -530,7 +532,7 @@ namespace CEGUI
         Integer representing the line number where the memory exception occurred.
 
         \remarks
-        The memory exception name is automatically passed to the base class as 
+        The memory exception name is automatically passed to the base class as
         "CEGUI::MemoryException".
         */
         MemoryException(const String& message, const String& file = "unknown", int line = 0)
@@ -539,18 +541,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the memory 
+    This helper macro ensures the correct filename and line number where the memory
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define MemoryException(message)  \
@@ -587,7 +589,7 @@ namespace CEGUI
         Integer representing the line number where the null object exception occurred.
 
         \remarks
-        The null object exception name is automatically passed to the base class as 
+        The null object exception name is automatically passed to the base class as
         "CEGUI::NullObjectException".
         */
         NullObjectException(const String& message, const String& file = "unknown", int line = 0)
@@ -596,18 +598,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the null object 
+    This helper macro ensures the correct filename and line number where the null object
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define NullObjectException(message)  \
@@ -644,7 +646,7 @@ namespace CEGUI
         Integer representing the line number where the object in use exception occurred.
 
         \remarks
-        The object in use exception name is automatically passed to the base class as 
+        The object in use exception name is automatically passed to the base class as
         "CEGUI::ObjectInUseException".
         */
         ObjectInUseException(const String& message, const String& file = "unknown", int line = 0)
@@ -653,18 +655,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the object in use 
+    This helper macro ensures the correct filename and line number where the object in use
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define ObjectInUseException(message)  \
@@ -701,7 +703,7 @@ namespace CEGUI
         Integer representing the line number where the script exception occurred.
 
         \remarks
-        The script exception name is automatically passed to the base class as 
+        The script exception name is automatically passed to the base class as
         "CEGUI::ScriptException".
         */
         ScriptException(const String& message, const String& file = "unknown", int line = 0)
@@ -710,18 +712,18 @@ namespace CEGUI
 
     /*!
     \brief
-    This helper macro ensures the correct filename and line number where the script 
+    This helper macro ensures the correct filename and line number where the script
     exception occurred are passed to the exception itself.
 
     \remarks
-    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en) 
-    and lower which leads to incorrect __LINE__ macro expansion if used inside a 
-    function and compiled with "Program Database for Edit & Continue" (/ZI) where 
-    instead of a constant expressing line number you'll get the 
-    following: (__LINE__Var+constant). The workaround consists in using compiler 
-    option "Program Database" (/Zi) instead 
+    There's a bug in Visual Studio 7.1 (see http://support.microsoft.com/kb/199057/en)
+    and lower which leads to incorrect __LINE__ macro expansion if used inside a
+    function and compiled with "Program Database for Edit & Continue" (/ZI) where
+    instead of a constant expressing line number you'll get the
+    following: (__LINE__Var+constant). The workaround consists in using compiler
+    option "Program Database" (/Zi) instead
     --> Project Properties\C/C++\General\Debug Information Format\Program Database (/Zi).
-    Visual Studio 2005 corrects the problem. Premake files were 
+    Visual Studio 2005 corrects the problem. Premake files were
     modified to contemplate this for VS2002 and VS2003.
     */
     #define ScriptException(message)  \
