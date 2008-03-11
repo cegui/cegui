@@ -31,19 +31,19 @@ function outputExceptionError(f,e,errBuf)
     if e.name == "any" then
         messageC_str = false
     end
-    
+
     -- make a default e.ret if empty
     if not e.ret or e.ret == "" then
         e.ret = "nil,message"
     end
-    
+
     -- create a default exceptionDef if we dont have one
     if not exceptionDefs[e.name] then
         exceptionDefs[e.name] = {}
         exceptionDefs[e.name].var = "&e"
         exceptionDefs[e.name].c_str = '"Unknown"'
     end
-    
+
     -- print catch header
     local nameToEcho = e.name
     if nameToEcho == "any" then
@@ -54,7 +54,7 @@ function outputExceptionError(f,e,errBuf)
 	else
     	output("catch(",nameToEcho,exceptionDefs[e.name].var,")\n{\n")
 	end
-    
+
     -- if just a nil
     if e.ret == "nil" then
         output("return 0;\n")
@@ -77,11 +77,11 @@ function outputExceptionError(f,e,errBuf)
         local i,j,retval = string.find(e.ret,retpat)
         while i do
             local code = ""
-            
+
             -- NIL
             if retval == "nil" then
                 code = "tolua_pushnil(tolua_S);\n"
-            
+
             -- MESSAGE
             elseif retval == "message" then
                 if messageC_str then
@@ -89,28 +89,28 @@ function outputExceptionError(f,e,errBuf)
                 else
                     code = "tolua_pushstring(tolua_S,\"Unknown exception thrown by function '"..f.."'\");\n"
                 end
-            
+
             -- TRUE
             elseif retval == "true" then
                 code = "tolua_pushboolean(tolua_S, 1);\n"
-            
+
             -- FALSE
             elseif retval == "false" then
                 code = "tolua_pushboolean(tolua_S, 0);\n"
             end
-            
+
             -- print code for this return value
             if code ~= "" then
                 output(code)
                 numrets = numrets + 1
             end
-            
+
             -- next return value
             i,j,retval = string.find(e.ret,retpat,j+1)
         end
         output("return ",numrets,";\n")
     end
-    
+
     -- print catch footer
     output("}\n")
 end
@@ -119,7 +119,7 @@ function outputExceptionCatchBlocks(func,throws,err)
     for i=1,table.getn(throws) do
         outputExceptionError(func, throws[i], err)
     end
-    
+
     -- if an error should be raised, we do it here
     if err then
         output("if (errorDoIt) {\n")
@@ -292,7 +292,10 @@ function classFunction:supcode (local_constructor)
   local i,j = string.find(self.mod, pattern)
   if i then
    throws = {}
-   table.setn(throws,0)
+   -- ensure table is empty.  Used to be: table.setn(throws,0)
+   for x in pairs(throws) do
+     throws[x] = nil
+   end
    local excepts = string.sub(self.mod, i+12,j)
    local epattern = "|.-|"
    local i,j = string.find(excepts, epattern)
