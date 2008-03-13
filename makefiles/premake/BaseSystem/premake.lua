@@ -14,7 +14,7 @@ package.files =
     matchfiles(rootdir.."include/falagard/*.h"),
 }
 
-library("freetype221","_D")
+library("freetype","_D")
 library("pcre", "_d")
 library("Winmm", "")
 

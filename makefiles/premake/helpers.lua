@@ -221,7 +221,7 @@ local function lua_sample()
         library("CEGUILua", DEBUG_DLL_SUFFIX or "")
         library_static("tolua++", "_Static", DEBUG_DLL_SUFFIX or "")
         library_static("CEGUILua", "_Static", DEBUG_DLL_SUFFIX or "")
-		library_static("lua50","","_d")
+		library_static("lua","","_d")
     end
 end
 
@@ -257,7 +257,7 @@ end
 function setup_static_samples()
 
 -- All Samples using static compiles will need to link against the dependencies
- 	library_static("freetype221","","_D")
+ 	library_static("freetype","","_D")
 	library_static("pcre","", "_d")
 	
 	if DIRECTX9_RENDERER then
@@ -324,7 +324,7 @@ function setup_static_samples()
 		-- Link against any XML Parsers we are compiling
   		if DEFAULT_XML_PARSER == "expat" then
 		    library_static("CEGUIExpatParser", "_Static", DEBUG_DLL_SUFFIX or "")
-		    library_static("libexpatMT","","_d")
+		    library_static("expat","","_d")
 		end
     	if DEFAULT_XML_PARSER == "xerces" then
 		    library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
