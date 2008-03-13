@@ -16,4 +16,4 @@ package.files =
 	matchfiles(pkgdir.."*.h"),
 }
 
-library("lua50", "_d")
+library("lua", "_d")

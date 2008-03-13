@@ -12,7 +12,7 @@ package.files =
 
 include(pkgdir)
 
-library("libexpatMT", "_d")
+library("expat", "_d")
 
 dependency("CEGUIBase")
 
