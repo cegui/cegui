@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on 12/02/07 13:04:31.
+** Generated automatically by tolua++-1.0.92 on Wed Mar 12 09:47:24 2008.
 */
 
 #ifndef __cplusplus
@@ -8381,7 +8381,7 @@ static int tolua_CEGUI_CEGUI_ImagesetManager_getImageset00(lua_State* tolua_S)
   CEGUI::Imageset* tolua_ret = (CEGUI::Imageset*)  self->getImageset(name);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Imageset");
  }
-catch(CEGUI::Exception& CEGUIDeadException(&e))
+catch(CEGUI::Exception CEGUIDeadException(&e))
 {
  return 0;
 }
