@@ -1,10 +1,107 @@
 Crazy Eddie's GUI System Mk-2
 http://www.cegui.org.uk
 
-Copyright 2004 - 2006 CEGUI Team & Contributing Authors
+Copyright 2004 - 2008 CEGUI Team & Contributing Authors
 
 
 The following is a high-level view of changes made to the system between releases.
+
+Release 0.6.0
+=============
+Added: New text demo (rewrite of Demo4)
+Added: First attempt at mingw32 / cross-compile support.
+Added: Extend support of CEGUI_SAMPLE_DATAPATH environment variable to Windows platforms too.
+Added: Missing Samples/datafiles/Makefile.am file
+Added: Levia's GroupBox to the Lua module.
+Added: Warning log level to the Lua module.
+Added: Levia's GroupBox to the code and looknfeel. Thanks :)
+Added: Exception type, line and file info - See http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2799
+Added: CEGUIDeadException Macro to required.h for this purpose.
+Added: Static Build Support
+Added: Imagesets Added
+Added: Tree Widget Added
+Added: ScriptWindowHelper Added
+Added: Tree Demo Added
+Added: Instanced Windows Demo Added
+Added: Tree & TreeItem Packages Added
+Added: ScriptWindowHelper Package Added
+Added: (MacOS) Got most of the samples to build and run, except FalagardDemo1 and Minesweeper.
+Added: support for Expat XML parser on the Mac.
+
+Removed: XMLRefSchema/Makefile.am - this is now no longer needed.
+
+Modified: Applied ticket #173
+Modified: Renamed Demo4 to TextDemo (in progress).
+Modified: linux (and mingw32) will try with and without the 'lib' prefix when loading dynamic modules.
+Modified: Applied this patch: http://www.cegui.org.uk/mantis/view.php?id=168
+Modified: datafiles are now installed on linux (e.g. /usr/local/share/CEGUI/)
+Modified: Minor change to update a contact address (main purpose of this is actually to test the svn change notification system).
+Modified: RTTI and Loggers - See http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2816
+Modified: Updated samples with new exception code
+Modified: Applied large patches. For details see this thread: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2766
+Modified: setDefaultXMLParserName now unloads the default dynamic module and loads a new one provided you are not statically linking.
+Modified: tolua++cegui changes in exception handlers.
+Modified: Large Premake updates
+
+Coding Standards: CEGUI does not use the NULL macro in code.
+Coding Standards: the prefix used for data members on the CEGUI project is d_ and not m_
+
+Bug Fix: Resolve a thousand and one "deprecated conversion from string constant to 'char*'" warnings that spew forth from gcc 4.2.x.
+Bug Fix: Lua 5.1 removes table.setn - update code to use alternate method of ensuring table is indeed empty.
+Bug Fix: The CEGUIDeadException macro was causing the exceptions to be caught by value; this fixes it so they are caught by reference.
+Bug Fix: Exception base class destructor should be public.
+Bug Fix: Minor TextDemo fix - gcc does not like temporary objects passed as arguments for non-const function parameters.
+Bug Fix: Autotool build fix for TextDemo.
+Bug Fix: Small compile fix for VS
+Bug Fix: Groupbox fix (disabled 'ristOnClick')
+Bug Fix: Window::isTopOfZOrder had an incorrectly constructed loop control.  (http://www.cegui.org.uk/mantis/view.php?id=172)
+Bug Fix: PixelAligned macro was incorrect when working with negative values.  (http://www.cegui.org.uk/mantis/view.php?id=167)
+Bug Fix: Listbox and MulticolumnList were not re-sorting the list in resonse to calling handleUpdatedItemData which resulted in an incorrectly ordered list if items had changed in a manner that invalidated the current order (in the simplest case, just by changing an items text). (http://www.cegui.org.uk/mantis/view.php?id=162)
+Bug Fix: The 'selected item' as returned by Combobox would revert to 0 after interaction with the user that did not end with a positive list selection - this is incorrect; any previous selection should be preserved if the user backs out of making a new selection in the list.  NB: A side effect of this fix is a change in the order that some events are fired.  Previously the droplist show/hide event came first (before any selection events), now the show/hide events come after any selection events. (http://www.cegui.org.uk/mantis/view.php?id=164).
+Bug Fix: Slider thumb was not showing up when used within a TabControl.  Actual bug was related to thumb getting initialised with bad data caused by unchecked divide by zero in the Falagard window renderer. (http://www.cegui.org.uk/mantis/view.php?id=145)
+Bug Fix: Invalidating only cached clipped areas for a window was not having the desired effect on child content.  Fix addresses http://www.cegui.org.uk/mantis/view.php?id=165
+Bug Fix: Any window responding to a left mouse button down event would always report the event as 'unhandled' even though it may have taken action based on the event (thus, handling it).  Event is now marked as 'handled' if, but only if, the window has to take action such as activating the window or making a change in the z-order.  (http://www.cegui.org.uk/mantis/view.php?id=136)
+Bug Fix: MultiLineEditbox::onCharacter should only say it handled the event if it really did.  (http://www.cegui.org.uk/mantis/view.php?id=155)
+Bug Fix: Widgets with a push-button-esque behaviour were not behaving correctly as regards to being obscured by a window with mouse pass through enabled.(http://www.cegui.org.uk/mantis/view.php?id=154 and http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2971)
+Bug Fix: We were incorrectly using the clock() function as a timer. (http://www.cegui.org.uk/mantis/view.php?id=153)
+Bug Fix: Certain assign, append, and insert operations in CEGUI::String would illegally operate beyond the length of the object being assigned, appended or inserted. (http://www.cegui.org.uk/mantis/view.php?id=152)
+Bug Fix: Bug where MultiColumnListProperties::MultiColumnListProperties::set was using String::substr incorrectly and accessing chars beyond the end of the string.  This fix is actually a total rewrite that makes the function a lot more robust, and removes a couple of other issues too.  (http://www.cegui.org.uk/mantis/view.php?id=171)
+Bug Fix: Correctly check for dl and pthread libs. (http://www.cegui.org.uk/mantis/view.php?id=143)
+Bug Fix: Lua was not correctly detected on (K)Ubuntu type systems (http://www.cegui.org.uk/mantis/view.php?id=138)
+Bug Fix: Support lua 5.1 in CEGUILua.cpp (not sure of generator status with 5.1) (http://www.cegui.org.uk/mantis/view.php?id=161)
+Bug Fix: CEGUIXercesParser was not compiling with 2.8 version of xerces-c++.  (http://www.cegui.org.uk/mantis/view.php?id=163).
+Bug Fix: TaharezLook.looknfeel did not conform to the required schema (http://www.cegui.org.uk/mantis/view.php?id=163)
+Bug Fix: Ogre and Irrlicht sample base apps still had CEGUI_SAMPLE_DATAPATH defines
+Bug Fix: Demo8 restored to working state.
+Bug Fix: Fixed bug in CreateWindow which would never allow empty name while having a prefix.
+Bug Fix: Fixed/revamped TabControlDemo, because it didn't work anymore because of underlying code changes.
+Bug Fix: Added re-sorting to a listbox after user 
+Bug Fix: There was an incorrect compiler flag when bringing in the DevIL libs (autotools build).
+Bug Fix: 'make dist' should now include everything required (on linux at least)
+Bug Fix: Updated irrlicht support to 1.4 (and beyond?)
+Bug Fix: Updated TreeDemo to build and run on linux
+Bug Fix: Change TabPane into TabContentPane. Thanks to Liberator for pointing this inconsistency out.
+Bug Fix: Autotools build was missing the CEGUIGroupBox files.
+Bug Fix: Resorting of lists and trees happened High to Low. This should be the reverse i think.
+Bug Fix: Resolved ticket 160: Missing #pragma warning(pop) in elements/CEGUISpinner.h 
+Bug Fix: Resolved ticket 158: MultiColumnList Font NOT in ListHeaderSegment!
+Bug Fix: Applied Liberator's tree fix patch.
+Bug Fix: Applied ldb's OIS patch.
+Bug Fix: Applied ldb's patch.
+Bug Fix: Tree Node Button Fixes
+Bug Fix: Static Call Fix in setDefaultXMLParserName
+Bug Fix: Changed 'friend TreeItem;' into 'friend class TreeItem;' for non-MS compilers.  http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2598
+Bug Fix: warnings of unused local variables in lua_CEGUI.cpp fixed.
+Bug Fix: Fixed Memory Leak in Lua Scripting Module when it throws and helper object has already been created.
+Bug Fix: Irrlicht Support Fixed
+Bug Fix: (MacOS) Updated PCRE build to include UTF8 support so Minesweeper will run.  (PCRE project is separate from this.)
+Bug Fix: (MacOS) Added some shell redirects so that the resource copy for the sample apps doesn't spit out false alarm errors about not being able to copy SVN files.
+Bug Fix: (MacOS) Fixed a ID string that prevented the FalagardWRBase bundle from loading properly.
+Bug Fix: Adjusted the pathing for GL sample application so it can find Mac resources.
+Bug Fix: Updated OpenGLBaseApplication to look for Mac resources in the right place.
+Bug Fix: Fixes to build options for Mac sample apps.
+Bug Fix: Changes to v0-5 branch merged in.
+
 
 Release 0.5.0 (Final)
 =====================
