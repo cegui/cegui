@@ -70,9 +70,9 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0;
     }
     Texture::PixelFormat cefmt;
-    switch(texImg->getPixelFormat())
+    switch(texImg->getFormat())
     {
-        case PF_R8G8B8:
+        case corona::PF_R8G8B8:
             texImg = corona::ConvertImage(texImg, corona::PF_R8G8B8);
             cefmt = Texture::PF_RGB;
             break;
