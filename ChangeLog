@@ -46,6 +46,7 @@ Modified: Large Premake updates
 Coding Standards: CEGUI does not use the NULL macro in code.
 Coding Standards: the prefix used for data members on the CEGUI project is d_ and not m_
 
+Bug Fix: Corona based image codec would not build.
 Bug Fix: Resolve a thousand and one "deprecated conversion from string constant to 'char*'" warnings that spew forth from gcc 4.2.x.
 Bug Fix: Lua 5.1 removes table.setn - update code to use alternate method of ensuring table is indeed empty.
 Bug Fix: The CEGUIDeadException macro was causing the exceptions to be caught by value; this fixes it so they are caught by reference.
