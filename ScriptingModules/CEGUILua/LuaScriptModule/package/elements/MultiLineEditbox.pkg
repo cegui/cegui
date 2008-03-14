@@ -13,6 +13,7 @@ class MultiLineEditbox : public Window
 	bool isWordWrapped() const;
 
     Scrollbar* getVertScrollbar() const;
+    bool isVertScrollbarAlwaysShown() const;
     Scrollbar* getHorzScrollbar() const;
     Rect getTextRenderArea() const;
     unsigned long getLineNumberFromIndex(unsigned long index) const;
@@ -23,6 +24,7 @@ class MultiLineEditbox : public Window
 	void setMaxTextLength(unsigned long max_len);
 	void ensureCaratIsVisible();
 	void setWordWrapping(bool setting);
+    void setShowVertScrollbar(bool setting);
 
     void setSelectionBrushImage(const Image* image);
     const Image* getSelectionBrushImage() const;
