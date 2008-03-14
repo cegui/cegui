@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Wed Mar 12 09:47:24 2008.
+** Generated automatically by tolua++-1.0.92 on Fri Mar 14 10:56:37 2008.
 */
 
 #ifndef __cplusplus
@@ -31038,6 +31038,38 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_getVertScrollbar00(lua_State* tolu
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: isVertScrollbarAlwaysShown of class  CEGUI::MultiLineEditbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_isVertScrollbarAlwaysShown00
+static int tolua_CEGUI_CEGUI_MultiLineEditbox_isVertScrollbarAlwaysShown00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::MultiLineEditbox",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::MultiLineEditbox* self = (const CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isVertScrollbarAlwaysShown'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isVertScrollbarAlwaysShown();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isVertScrollbarAlwaysShown'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getHorzScrollbar of class  CEGUI::MultiLineEditbox */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_getHorzScrollbar00
 static int tolua_CEGUI_CEGUI_MultiLineEditbox_getHorzScrollbar00(lua_State* tolua_S)
@@ -31337,6 +31369,39 @@ static int tolua_CEGUI_CEGUI_MultiLineEditbox_setWordWrapping00(lua_State* tolua
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setWordWrapping'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setShowVertScrollbar of class  CEGUI::MultiLineEditbox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiLineEditbox_setShowVertScrollbar00
+static int tolua_CEGUI_CEGUI_MultiLineEditbox_setShowVertScrollbar00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiLineEditbox",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiLineEditbox* self = (CEGUI::MultiLineEditbox*)  tolua_tousertype(tolua_S,1,0);
+  bool setting = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setShowVertScrollbar'",NULL);
+#endif
+ {
+  self->setShowVertScrollbar(setting);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setShowVertScrollbar'.",&tolua_err);
  return 0;
 #endif
 }
@@ -50520,6 +50585,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getMaxTextLength",tolua_CEGUI_CEGUI_MultiLineEditbox_getMaxTextLength00);
    tolua_function(tolua_S,"isWordWrapped",tolua_CEGUI_CEGUI_MultiLineEditbox_isWordWrapped00);
    tolua_function(tolua_S,"getVertScrollbar",tolua_CEGUI_CEGUI_MultiLineEditbox_getVertScrollbar00);
+   tolua_function(tolua_S,"isVertScrollbarAlwaysShown",tolua_CEGUI_CEGUI_MultiLineEditbox_isVertScrollbarAlwaysShown00);
    tolua_function(tolua_S,"getHorzScrollbar",tolua_CEGUI_CEGUI_MultiLineEditbox_getHorzScrollbar00);
    tolua_function(tolua_S,"getTextRenderArea",tolua_CEGUI_CEGUI_MultiLineEditbox_getTextRenderArea00);
    tolua_function(tolua_S,"getLineNumberFromIndex",tolua_CEGUI_CEGUI_MultiLineEditbox_getLineNumberFromIndex00);
@@ -50529,6 +50595,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setMaxTextLength",tolua_CEGUI_CEGUI_MultiLineEditbox_setMaxTextLength00);
    tolua_function(tolua_S,"ensureCaratIsVisible",tolua_CEGUI_CEGUI_MultiLineEditbox_ensureCaratIsVisible00);
    tolua_function(tolua_S,"setWordWrapping",tolua_CEGUI_CEGUI_MultiLineEditbox_setWordWrapping00);
+   tolua_function(tolua_S,"setShowVertScrollbar",tolua_CEGUI_CEGUI_MultiLineEditbox_setShowVertScrollbar00);
    tolua_function(tolua_S,"setSelectionBrushImage",tolua_CEGUI_CEGUI_MultiLineEditbox_setSelectionBrushImage00);
    tolua_function(tolua_S,"getSelectionBrushImage",tolua_CEGUI_CEGUI_MultiLineEditbox_getSelectionBrushImage00);
   tolua_endmodule(tolua_S);
