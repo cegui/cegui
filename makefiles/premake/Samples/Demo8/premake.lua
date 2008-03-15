@@ -9,3 +9,4 @@ package.files =
 }
 
 include(pkgdir.."src")
+library_static("lua","", "_d")
