@@ -1,7 +1,7 @@
 if CEGUI_BUILD_SAMPLES
 
 if CEGUI_BUILD_LUA_MODULE
-CEGUILUA_DEMOS=Demo8
+CEGUILUA_DEMOS=Demo8 InstancedWindows
 endif
 
 SUBDIRS = common \
@@ -11,7 +11,6 @@ SUBDIRS = common \
           FirstWindow \
           FalagardDemo1 \
           FontDemo \
-          InstancedWindows \
           Minesweeper \
           ScrollablePaneDemo \
           TabControlDemo \
