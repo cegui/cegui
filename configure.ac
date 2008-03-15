@@ -140,6 +140,9 @@ AC_CONFIG_FILES([Makefile
                  Samples/FirstWindow/src/Makefile
                  Samples/FontDemo/Makefile
                  Samples/FontDemo/src/Makefile
+                 Samples/InstancedWindows/Makefile
+                 Samples/InstancedWindows/include/Makefile
+                 Samples/InstancedWindows/src/Makefile
                  Samples/Minesweeper/Makefile
                  Samples/Minesweeper/src/Makefile
                  Samples/ScrollablePaneDemo/Makefile
