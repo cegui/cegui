@@ -19,6 +19,7 @@ EXTRA_DIST = Basic.pkg \
              Renderer.pkg \
              Scheme.pkg \
              SchemeManager.pkg \
+             ScriptWindowHelper.pkg \
              System.pkg \
              Texture.pkg \
              UnifiedCoordSystem.pkg \
@@ -33,6 +34,7 @@ EXTRA_DIST = Basic.pkg \
              elements/DragContainer.pkg \
              elements/Editbox.pkg \
              elements/FrameWindow.pkg \
+             elements/GroupBox.pkg \
              elements/GUISheet.pkg \
              elements/ItemEntry.pkg \
              elements/ItemListBase.pkg \
@@ -62,6 +64,8 @@ EXTRA_DIST = Basic.pkg \
              elements/Thumb.pkg \
              elements/Titlebar.pkg \
              elements/Tooltip.pkg \
+             elements/Tree.pkg \
+             elements/TreeItem.pkg \
              falagard/Dimension.pkg \
              falagard/Enums.pkg \
              falagard/FalagardComponentBase.pkg \

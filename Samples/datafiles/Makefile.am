@@ -35,6 +35,7 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              layouts/TabPage.layout \
              layouts/TabPage1.layout \
              layouts/TabPage2.layout \
+             layouts/TextDemo.layout \
              layouts/TreeDemoTaharez.layout \
              layouts/VanillaConsole.layout \
              layouts/VanillaWindows.layout \

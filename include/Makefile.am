@@ -57,6 +57,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIString.h \
                  CEGUISubscriberSlot.h \
                  CEGUISystem.h \
+                 CEGUITask.h \
                  CEGUITextUtils.h \
                  CEGUITexture.h \
                  CEGUIUDim.h \
@@ -75,7 +76,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIXMLHandler.h \
                  CEGUIXMLParser.h \
                  CEGUIXMLSerializer.h \
-                 CEGUIcolour.h 
+                 CEGUIcolour.h
 
 noinst_HEADERS = CEGUIFreeTypeFont.h \
                  CEGUIPixmapFont.h
