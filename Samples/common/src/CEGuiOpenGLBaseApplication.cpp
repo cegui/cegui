@@ -129,10 +129,10 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 {
     // fake args for glutInit
     int argc = 1;
-    char* argv = "SampleApp";
+    const char* argv = "SampleApp";
 
     // Do GLUT init
-    glutInit(&argc, &argv);
+    glutInit(&argc, (char**)&argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowSize(800, 600);
     glutInitWindowPosition(100, 100);
