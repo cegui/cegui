@@ -35,7 +35,7 @@ using namespace CEGUI;
 // for this to work you'll have to change the .layout files
 //#define SKIN "WindowsLook"
 
-static char *PageText [] =
+static const char *PageText [] =
 {
     "This is page three",
     "And this is page four, it's not too different from page three, isn't it?",
@@ -292,7 +292,7 @@ public:
                     continue;
 
                 Window *pg = NULL;
-                try 
+                try
                 {
                     pg = winMgr.loadWindowLayout ("TabPage.layout", CEGUI::String(prefix.str ()));
                 }
