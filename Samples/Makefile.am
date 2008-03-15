@@ -11,6 +11,7 @@ SUBDIRS = common \
           FirstWindow \
           FalagardDemo1 \
           FontDemo \
+          InstancedWindows \
           Minesweeper \
           ScrollablePaneDemo \
           TabControlDemo \
