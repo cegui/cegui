@@ -73,6 +73,7 @@ Optionally: LibXML XML parser (http://www.xmlsoft.org)
 Optionally: DevIL image loading library (http://openil.sourceforge.net)
 Optionally: Corona image loading library (http://corona.sourceforge.net)
 Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
+Optionally: SILLY image loading library (http://www.cegui.org.uk/wiki/index.php/SILLY)
 Optionally: Lua programming language (http://www.lua.org/)
 
 Have Fun!
