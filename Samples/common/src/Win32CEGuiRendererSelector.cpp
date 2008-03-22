@@ -52,7 +52,7 @@ Win32CEGuiRendererSelector::~Win32CEGuiRendererSelector()
 /*************************************************************************
     Display the dialog and wait for user
 *************************************************************************/
-bool Win32CEGuiRendererSelector::inkokeDialog()
+bool Win32CEGuiRendererSelector::invokeDialog()
 {
     // dialog template was not created so abort.
     if (!d_template)
