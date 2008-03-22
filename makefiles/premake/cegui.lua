@@ -164,9 +164,12 @@ do
     --if SAMPLES_OGRE then
     --    config_h.CEGUI_SAMPLES_USE_OGRE = ""
     --end
-    if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
-        config_h.CEGUI_SAMPLES_USE_IRRLICHT = ""
-        config_h.CEGUI_IRR_SDK_VERSION = CEGUI_IRR_SDK_VERSION
+    if IRRLICHT_RENDERER then
+          -- This only used to happen when samples were to build as well
+          config_h.CEGUI_IRR_SDK_VERSION = CEGUI_IRR_SDK_VERSION
+          if SAMPLES_IRRLICHT then
+                config_h.CEGUI_SAMPLES_USE_IRRLICHT = ""
+          end
     end
 
     if DEFAULT_XML_PARSER == "xerces" then

@@ -326,7 +326,7 @@ function setup_static_samples()
 		    library_static("CEGUIExpatParser", "_Static", DEBUG_DLL_SUFFIX or "")
 		    library_static("expat","","_d")
 		end
-    	if DEFAULT_XML_PARSER == "xerces" then
+    	      if DEFAULT_XML_PARSER == "xerces" then
 		    library_static("CEGUIXercesParser", "_Static", DEBUG_DLL_SUFFIX or "")
 		    library_static("xerces-c_2","","D")
 		end
@@ -367,6 +367,9 @@ function setup_static_samples()
 		end
 		if IRRLICHT_RENDERER then
 		    library_static("IrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+                if IRRLICHT_PATHS then
+                     add_sdk_paths(IRRLICHT_PATHS)
+                end
 		end
 		
 		--Window Renderers
