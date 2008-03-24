@@ -26,8 +26,7 @@ CEGUI_LUA_VER = 51
 OPENGL_RENDERER = true
 DIRECTX81_RENDERER = false
 DIRECTX9_RENDERER = true
-IRRLICHT_RENDERER = true
-
+IRRLICHT_RENDERER = false
 
 ----------------
 -- Image Codecs
@@ -59,8 +58,8 @@ DEFAULT_WINDOW_RENDERER = "falagard"
 -- XML parsers
 -- this controls which xml parser modules are built
 EXPAT_PARSER = true
-XERCES_PARSER = true
-TINYXML_PARSER = true
+XERCES_PARSER = false
+TINYXML_PARSER = false
 LIBXML_PARSER = false
 
 -- this selects the default XML parser module
@@ -87,9 +86,9 @@ TOLUA_STATIC = false
 -- remember you have to edit CEGUISamplesConfig.h as well this just controls
 -- dependencies etc. if the renderer is disabled this has no effect
 SAMPLES_GL = true
-SAMPLES_DX81 = true
+SAMPLES_DX81 = false
 SAMPLES_DX9 = true
-SAMPLES_IRRLICHT = true
+SAMPLES_IRRLICHT = false
 
 -- this setting controls if the samples should be included in the same
 -- solution as the core libraries. If this setting is disabled you can
