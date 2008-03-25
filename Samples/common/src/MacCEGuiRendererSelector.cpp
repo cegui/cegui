@@ -42,11 +42,11 @@ MacCEGuiRendererSelector::~MacCEGuiRendererSelector()
 {
 }
 
-bool MacCEGuiRendererSelector::inkokeDialog()
+bool MacCEGuiRendererSelector::invokeDialog()
 {
     CEGuiRendererType renderer_types[2];
     int idx = 0;
-    
+
     // Put items in the combobox for enabled renderers.
     if (d_rendererAvailability[OgreGuiRendererType])
     {
@@ -59,7 +59,7 @@ bool MacCEGuiRendererSelector::inkokeDialog()
         renderer_types[idx++] = OpenGLGuiRendererType;
     }
 
-#if 0    
+#if 0
     gtk_widget_show(d_dialog);
     gtk_main ();
 #endif

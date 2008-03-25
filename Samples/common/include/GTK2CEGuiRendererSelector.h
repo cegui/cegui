@@ -38,14 +38,14 @@ public:
     GTK2CEGuiRendererSelector();
     ~GTK2CEGuiRendererSelector();
 
-    bool inkokeDialog();
+    bool invokeDialog();
 
 private:
     // Renderer name strings
     static const std::string    OgreRendererName;
     static const std::string    OpenGLRendererName;
     static const std::string    IrrlichtRendererName;
-    
+
     // Static member funcs
     void createDialog();
     static void on_cancelButton_clicked(GtkButton* button, gpointer user_data);
@@ -54,7 +54,7 @@ private:
 
     // general data
     bool d_cancelled;
-    
+
     // GTK2 widgets
     GtkWidget* d_dialog;
     GtkWidget* d_vbox1;
