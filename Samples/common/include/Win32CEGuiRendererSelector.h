@@ -64,7 +64,7 @@ public:
     \return
         false if the user cancelled.
     */
-    virtual bool    inkokeDialog();
+    virtual bool    invokeDialog();
 
 
 protected:

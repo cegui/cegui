@@ -26,3 +26,5 @@ libCEGUIIrrlichtRenderer_la_SOURCES = irrlichtrenderer.cpp \
                                       IrrlichtResourceProvider.cpp \
                                       irrlichttexture.cpp \
                                       IrrlichtMemoryFile.cpp
+
+EXTRA_DIST = Readme.txt

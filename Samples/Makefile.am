@@ -1,10 +1,11 @@
 if CEGUI_BUILD_SAMPLES
 
 if CEGUI_BUILD_LUA_MODULE
-CEGUILUA_DEMOS=Demo8
+CEGUILUA_DEMOS=Demo8 InstancedWindows
 endif
 
-SUBDIRS = common \
+SUBDIRS = . \
+          common \
           datafiles \
           Demo6 \
           Demo7 \
@@ -21,3 +22,8 @@ endif
 
 EXTRA_DIST = ReadMe.txt \
              bin/keepme
+
+install-exec-local:
+	if test ! -d $(top_builddir)/Samples/bin ; then \
+		mkdir $(top_builddir)/Samples/bin ; \
+	fi

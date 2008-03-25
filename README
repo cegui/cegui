@@ -37,8 +37,7 @@ See also the following files:
 COPYING   - Contains the license terms for using the library.
 AUTHORS   - Contains a list of authors and contributors.
 
-The main start point for system documentation is the Readme.html file (still
-TODO).  API documentation built from the source by Doxygen
+API documentation built from the source by Doxygen
 (http://www.doxygen.org) is available, and can be found online at
 http://www.cegui.org.uk/api_reference/.  For the very latest
 information and help, visit the project home page at
@@ -50,13 +49,14 @@ Supported Systems
 Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
 following systems:
 
-Various flavors of Linux using gcc.
-Microsoft Windows running VC++6 (sp6), VC++7.0, or VC++7.1.
-Apple Mac OS X running Xcode. (out of sync - we need a maintainer)
+*Various flavors of Linux using gcc.
+*Microsoft Windows running VC++7.0 up and until VC++9, both 'express' and 'professional' versions.
+*Apple Mac OS X running Xcode. (out of sync - we need a maintainer)
 
 It is very possible that the system will compile and run on other systems and
 compilers, though the above systems have been tested.
 
+NOTE: a long while ago VC6 support has been dropped.
 
 Requirements
 ============
@@ -73,5 +73,7 @@ Optionally: LibXML XML parser (http://www.xmlsoft.org)
 Optionally: DevIL image loading library (http://openil.sourceforge.net)
 Optionally: Corona image loading library (http://corona.sourceforge.net)
 Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
+Optionally: SILLY image loading library (http://www.cegui.org.uk/wiki/index.php/SILLY)
+Optionally: Lua programming language (http://www.lua.org/)
 
 Have Fun!

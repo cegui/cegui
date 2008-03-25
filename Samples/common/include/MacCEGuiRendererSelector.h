@@ -37,19 +37,19 @@ public:
     MacCEGuiRendererSelector();
     ~MacCEGuiRendererSelector();
 
-    bool inkokeDialog();
+    bool invokeDialog();
 
 private:
     // Renderer name strings
     static const std::string    OgreRendererName;
     static const std::string    OpenGLRendererName;
-    
+
     // Static member funcs
     void createDialog();
 
     // general data
     bool d_cancelled;
-    
+
     // Mac widgets
 };
 

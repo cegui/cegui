@@ -12,5 +12,11 @@ nobase_dist_pkgdata_DATA = XMLRefSchema/CEGUIConfig.xsd \
                       XMLRefSchema/Imageset.xsd \
                       XMLRefSchema/Readme.txt
 
-EXTRA_DIST=doxyfile \
-           TinyXML-License
+EXTRA_DIST=bootstrap \
+           doxyfile \
+           BuildDocs.bat \
+           ReadMe.html \
+           TinyXML-License \
+           bin \
+           documentation \
+           lib

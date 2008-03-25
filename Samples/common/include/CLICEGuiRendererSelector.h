@@ -46,7 +46,7 @@ public:
     */
     ~CLICEGuiRendererSelector();
 
-    bool inkokeDialog();
+    bool invokeDialog();
 };
 
 #endif  // end of guard _CLICEGuiRendererSelector_h_

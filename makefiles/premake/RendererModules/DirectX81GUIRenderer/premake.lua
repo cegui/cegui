@@ -13,7 +13,7 @@ package.files =
 include(pkgdir)
 
 library("dxerr8")
-library("d3dx8")
+library("d3dx8", "d")
 
 dependency("CEGUIBase")
 

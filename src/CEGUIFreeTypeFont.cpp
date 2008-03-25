@@ -152,7 +152,8 @@ uint FreeTypeFont::getTextureSize (CodepointMap::const_iterator s,
                 continue;
 
             // load glyph metrics (don't render)
-            if (FT_Load_Char (d_fontFace, c->first, FT_LOAD_DEFAULT))
+            if (FT_Load_Char(d_fontFace, c->first,
+                             FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
                 continue;
 
             uint glyph_w = int (ceil (d_fontFace->glyph->metrics.width * FT_POS_COEF)) +
@@ -469,7 +470,8 @@ void FreeTypeFont::updateFont ()
             max_codepoint = codepoint;
 
         // load-up required glyph metrics (don't render)
-        if (FT_Load_Char (d_fontFace, codepoint, FT_LOAD_DEFAULT))
+        if (FT_Load_Char(d_fontFace, codepoint,
+                         FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
             continue; // glyph error
 
         float adv = d_fontFace->glyph->metrics.horiAdvance * float(FT_POS_COEF);
