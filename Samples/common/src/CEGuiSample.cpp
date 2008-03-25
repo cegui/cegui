@@ -177,7 +177,7 @@ bool CEGuiSample::initialise()
 #endif
 
     // get selection from user
-    if (d_rendererSelector->inkokeDialog())
+    if (d_rendererSelector->invokeDialog())
     {
         // create appropriate application type based upon users selection
         switch(d_rendererSelector->getSelectedRendererType())

@@ -15,7 +15,7 @@ include(pkgdir.."../tolua++")
 
 dependency("tolua++")
 library("lua","_d")
-library_static("lua","","_d")
+library_static("lua","", "_d")
 
 if TOLUA_STATIC then
     define("TOLUA_STATIC")

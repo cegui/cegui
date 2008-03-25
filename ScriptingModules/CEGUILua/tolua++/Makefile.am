@@ -21,3 +21,5 @@ libCEGUItoluapp_la_LIBADD = $(Lua_LIBS)
 
 noinst_HEADERS = tolua_event.h
 pkginclude_HEADERS = tolua++.h
+
+EXTRA_DIST = INFO

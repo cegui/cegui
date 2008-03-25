@@ -23,6 +23,7 @@
             <Window Type="TaharezLook/StaticText" Name="TextDemo/StaticText" >
                 <Property Name="Text" Value="Demonstrates static (non editable) text. Use the controls on your right for formatting options." />
                 <Property Name="HorzFormatting" Value="WordWrapLeftAligned" />
+		    <Property Name="VertFormatting" Value="TopAligned" />
                 <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="UnifiedAreaRect" Value="{{0.032217,0},{0.126344,0},{0.42415,0},{0.384995,0}}" />
             </Window>

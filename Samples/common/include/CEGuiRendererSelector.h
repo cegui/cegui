@@ -49,7 +49,7 @@ enum CEGuiRendererType
     Base class for the renderer selection dialog class.
  
     This should be sub-classed to do something useful.  Initialisation should happen in the constructor and cleanup
-    in the destructor.  The inkokeDialog should only display the dialog (and not return until the dialog is dismissed).
+    in the destructor.  The invokeDialog should only display the dialog (and not return until the dialog is dismissed).
 */
 class CEGuiRendererSelector
 {
@@ -75,7 +75,7 @@ public:
     \return
         false if the user cancelled.
     */
-    virtual bool inkokeDialog()  = 0;
+    virtual bool invokeDialog()  = 0;
 
 
     /*!

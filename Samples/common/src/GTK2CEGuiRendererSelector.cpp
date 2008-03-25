@@ -50,11 +50,11 @@ GTK2CEGuiRendererSelector::~GTK2CEGuiRendererSelector()
 {
 }
 
-bool GTK2CEGuiRendererSelector::inkokeDialog()
+bool GTK2CEGuiRendererSelector::invokeDialog()
 {
     CEGuiRendererType renderer_types[3];
     int idx = 0;
-    
+
     // Put items in the combobox for enabled renderers.
     if (d_rendererAvailability[OgreGuiRendererType])
     {
@@ -71,7 +71,7 @@ bool GTK2CEGuiRendererSelector::inkokeDialog()
         gtk_combo_box_append_text(GTK_COMBO_BOX(d_combobox1), IrrlichtRendererName.c_str());
         renderer_types[idx++] = IrrlichtGuiRendererType;
     }
-    
+
     gtk_widget_show(d_dialog);
     gtk_main ();
 

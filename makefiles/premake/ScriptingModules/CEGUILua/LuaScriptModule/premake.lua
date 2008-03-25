@@ -18,6 +18,7 @@ dependency("CEGUIBase")
 dependency("tolua++")
 
 library("lua", "_d")
+-- library_static("lua","","_d")
 
 define("CEGUILUA_EXPORTS")
 

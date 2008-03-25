@@ -13,6 +13,9 @@ EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/CEGUI-Info.plist \
              mac/Xcode2/CrazyEddiesGUI/CEGUIWindowsLook-Info.plist \
              mac/Xcode2/CrazyEddiesGUI/CEGUIXercesParser-Info.plist \
              mac/Xcode2/CrazyEddiesGUI/CrazyEddiesGUI_Prefix.pch \
+             mac/Xcode2/CrazyEddiesGUI/FalagardDemo1-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/FirstWindow-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/FontDemo-Info.plist \
              mac/Xcode2/CrazyEddiesGUI/Info.plist \
              mac/Xcode2/CrazyEddiesGUI/LuaScriptModule-Info.plist \
              mac/Xcode2/CrazyEddiesGUI/Minesweeper-Info.plist \
@@ -51,10 +54,12 @@ EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/CEGUI-Info.plist \
              premake/Samples/FalagardDemo1/premake.lua \
              premake/Samples/FirstWindow/premake.lua \
              premake/Samples/FontDemo/premake.lua \
+             premake/Samples/InstancedWindows/premake.lua \
              premake/Samples/Medieval/premake.lua \
              premake/Samples/Minesweeper/premake.lua \
              premake/Samples/ScrollablePaneDemo/premake.lua \
              premake/Samples/TabControlDemo/premake.lua \
+             premake/Samples/TreeDemo/premake.lua \
              premake/Samples/common/premake.lua \
              premake/ScriptingModules/CEGUILua/LuaScriptModule/premake.lua \
              premake/ScriptingModules/CEGUILua/tolua++/premake.lua \

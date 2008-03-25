@@ -51,7 +51,7 @@ Each item in here has a comment to describe what it's for.
 // The Premake solution will generate these for you according to the
 // config.lua script.
 //////////////////////////////////////////////////////////////////////////
-#if defined(__APPLE__)
+#if (defined( __WIN32__ ) || defined( _WIN32 )) || defined(__APPLE__)
 
 //////////////////////////////////////////////////////////////////////////
 // Comment/Uncomment these lines to control renderer use in samples where
@@ -59,6 +59,9 @@ Each item in here has a comment to describe what it's for.
 //////////////////////////////////////////////////////////////////////////
 #define CEGUI_SAMPLES_USE_OPENGL
 //#define CEGUI_SAMPLES_USE_OGRE
+
+// If you want to enable the Irrlicht renderer in the samples, uncomment the following line. Also,
+// copy a Irrlicht 1.4 SDK next to your 'dependencies' directory in the Cegui SDK's root.
 //#define CEGUI_SAMPLES_USE_IRRLICHT
 
 #endif // defined(__APPLE__)

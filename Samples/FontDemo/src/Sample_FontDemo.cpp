@@ -31,7 +31,7 @@
 
 using namespace CEGUI;
 
-static char *FontList [] =
+static const char *FontList [] =
 {
     "DejaVuSans-10",
     "Commonwealth-10",

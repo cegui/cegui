@@ -34,14 +34,14 @@ CLICEGuiRendererSelector::CLICEGuiRendererSelector()
 CLICEGuiRendererSelector::~CLICEGuiRendererSelector()
 {}
 
-bool CLICEGuiRendererSelector::inkokeDialog()
+bool CLICEGuiRendererSelector::invokeDialog()
 {
     unsigned int selection;
     unsigned int rendererNumber = 0;
 
     std::cout << "-- CEGUI Sample Application Framework --" << std::endl;
     std::cout << "Please select a renderer:" << std::endl;
-    
+
     CEGuiRendererType last_available;
 
     // print options for enabled renderers
