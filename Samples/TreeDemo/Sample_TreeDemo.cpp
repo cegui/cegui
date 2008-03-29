@@ -1,4 +1,4 @@
-#include "../include/Sample_TreeDemo.h"
+#include "Sample_TreeDemo.h"
 #include "CEGUI.h"
 #include "CEGUIPropertyHelper.h"    // for string conversions
 #include "elements/CEGUITree.h"

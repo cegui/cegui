@@ -1,0 +1,4 @@
+if CEGUI_BUILD_TOLUACEGUI
+TOLUACEGUI_DIR=tolua++bin
+endif
+SUBDIRS =  tolua++ $(TOLUACEGUI_DIR)

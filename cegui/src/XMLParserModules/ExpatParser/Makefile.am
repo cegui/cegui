@@ -1,4 +1,6 @@
-INCLUDES = -I$(top_srcdir)/include $(expat_CFLAGS)
+INCLUDES = -I$(top_srcdir)/cegui/include \
+           -I$(top_srcdir)/cegui/include/XMLParserModules/ExpatParser \
+           $(expat_CFLAGS)
 
 libCEGUIExpatParser_la_LIBADD =
 
@@ -15,5 +17,3 @@ lib_LTLIBRARIES=libCEGUIExpatParser.la
 
 libCEGUIExpatParser_la_SOURCES = CEGUIExpatParser.cpp \
                                  CEGUIExpatParserModule.cpp
-pkgincludedir=$(prefix)/include/CEGUI/XMLParserModules/ExpatParser
-pkginclude_HEADERS = CEGUIExpatParser.h CEGUIExpatParserModule.h

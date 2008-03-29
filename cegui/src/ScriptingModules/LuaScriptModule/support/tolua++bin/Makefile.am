@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/ScriptingModules/CEGUILua/tolua++
+INCLUDES = -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
 
 bin_PROGRAMS = tolua++cegui
 tolua__cegui_SOURCES = tolua.c toluabind.c toluabind.h
@@ -29,5 +29,5 @@ EXTRA_DIST = MANUAL README remake_pkg.bat remake_pkg.sh tolua_scons.pkg \
              lua/variable.lua \
              lua/verbatim.lua
 
-tolua__cegui_LDFLAGS = -L$(top_builddir)/ScriptingModules/CEGUILua/tolua++/.libs
+tolua__cegui_LDFLAGS = -L$(top_builddir)/cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/.libs
 tolua__cegui_LDADD = -lCEGUItoluapp

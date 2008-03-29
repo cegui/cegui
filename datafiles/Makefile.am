@@ -53,4 +53,10 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              schemes/TaharezLookWidgets.scheme \
              schemes/VanillaSkin.scheme \
              schemes/WindowsLook.scheme \
-             schemes/WindowsLookWidgets.scheme
+             schemes/WindowsLookWidgets.scheme \
+             xml_schemas/CEGUIConfig.xsd \
+             xml_schemas/Falagard.xsd \
+             xml_schemas/Font.xsd \
+             xml_schemas/GUILayout.xsd \
+             xml_schemas/GUIScheme.xsd \
+             xml_schemas/Imageset.xsd

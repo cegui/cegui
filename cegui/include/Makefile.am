@@ -1,4 +1,5 @@
-SUBDIRS = . elements falagard
+SUBDIRS = . elements falagard ImageCodecModules RendererModules ScriptingModules WindowRendererSets XMLParserModules
+
 pkginclude_HEADERS = CEGUI.h \
                  CEGUIBase.h \
                  CEGUIBoundSlot.h \

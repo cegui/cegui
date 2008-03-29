@@ -1,4 +1,6 @@
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(freetype2_CFLAGS) $(pcre_CFLAGS)
+SUBDIRS = . ImageCodecModules RendererModules ScriptingModules WindowRendererSets XMLParserModules
+
+INCLUDES = -I$(top_srcdir)/cegui/include $(freetype2_CFLAGS) $(pcre_CFLAGS)
 
 libCEGUIBase_la_LDFLAGS =
 

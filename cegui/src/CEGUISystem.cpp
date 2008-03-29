@@ -59,11 +59,11 @@
 //This block includes the proper headers when static linking
 #if defined(CEGUI_STATIC)
 	#ifdef CEGUI_WITH_EXPAT
-		#include "../XMLParserModules/expatParser/CEGUIExpatParserModule.h"
+		#include "XMLParserModules/ExpatParser/CEGUIExpatParserModule.h"
 	#elif CEGUI_WITH_TINYXML
-		#include "../XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
+		#include "XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
 	#elif CEGUI_WITH_XERCES
-		#include "../XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
+		#include "XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
 	#endif
 #endif
 

@@ -14,7 +14,7 @@ m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
 
 AC_INIT([CEGUI], [CEGUI_RELEASE_VERSION])
 AM_INIT_AUTOMAKE([CEGUI],[CEGUI_RELEASE_VERSION])
-AC_CONFIG_HEADER([include/config.h])
+AC_CONFIG_HEADER([cegui/include/config.h])
 AC_CANONICAL_HOST
 
 # Checks for programs.
@@ -114,76 +114,78 @@ AC_SUBST(CEGUI_OPENGL_VERSION_INFO)
 CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
-AC_CONFIG_FILES([Makefile
-                 ImageCodecModules/Makefile
-                 ImageCodecModules/CoronaImageCodec/Makefile
-                 ImageCodecModules/DevILImageCodec/Makefile
-                 ImageCodecModules/FreeImageImageCodec/Makefile
-                 ImageCodecModules/SILLYImageCodec/Makefile
-                 ImageCodecModules/TGAImageCodec/Makefile
-                 RendererModules/directx81GUIRenderer/Makefile
-                 RendererModules/directx9GUIRenderer/Makefile
-                 RendererModules/IrrlichtRenderer/Makefile
-                 RendererModules/Makefile
-                 RendererModules/OpenGLGUIRenderer/Makefile
-                 Samples/Demo6/Makefile
-                 Samples/Demo6/src/Makefile
-                 Samples/Demo7/Makefile
-                 Samples/Demo7/src/Makefile
-                 Samples/Demo8/Makefile
-                 Samples/Demo8/src/Makefile
-                 Samples/FalagardDemo1/Makefile
-                 Samples/FalagardDemo1/include/Makefile
-                 Samples/FalagardDemo1/src/Makefile
-                 Samples/FirstWindow/Makefile
-                 Samples/FirstWindow/include/Makefile
-                 Samples/FirstWindow/src/Makefile
-                 Samples/FontDemo/Makefile
-                 Samples/FontDemo/src/Makefile
-                 Samples/InstancedWindows/Makefile
-                 Samples/InstancedWindows/include/Makefile
-                 Samples/InstancedWindows/src/Makefile
-                 Samples/Minesweeper/Makefile
-                 Samples/Minesweeper/src/Makefile
-                 Samples/ScrollablePaneDemo/Makefile
-                 Samples/ScrollablePaneDemo/src/Makefile
-                 Samples/TabControlDemo/Makefile
-                 Samples/TabControlDemo/src/Makefile
-                 Samples/TextDemo/Makefile
-                 Samples/TextDemo/src/Makefile
-                 Samples/TreeDemo/Makefile
-                 Samples/TreeDemo/include/Makefile
-                 Samples/TreeDemo/src/Makefile
-                 Samples/Makefile
-                 Samples/common/Makefile
+AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
+                 cegui/CEGUI.pc
+                 cegui/CEGUI.spec
+                 cegui/Makefile
+                 cegui/include/elements/Makefile
+                 cegui/include/falagard/Makefile
+                 cegui/include/ImageCodecModules/CoronaImageCodec/Makefile
+                 cegui/include/ImageCodecModules/DevILImageCodec/Makefile
+                 cegui/include/ImageCodecModules/FreeImageImageCodec/Makefile
+                 cegui/include/ImageCodecModules/Makefile
+                 cegui/include/ImageCodecModules/SILLYImageCodec/Makefile
+                 cegui/include/ImageCodecModules/TGAImageCodec/Makefile
+                 cegui/include/Makefile
+                 cegui/include/RendererModules/directx9GUIRenderer/Makefile
+                 cegui/include/RendererModules/IrrlichtRenderer/Makefile
+                 cegui/include/RendererModules/Makefile
+                 cegui/include/RendererModules/OpenGLGUIRenderer/Makefile
+                 cegui/include/ScriptingModules/LuaScriptModule/Makefile
+                 cegui/include/ScriptingModules/LuaScriptModule/support/Makefile
+                 cegui/include/ScriptingModules/LuaScriptModule/support/tolua++/Makefile
+                 cegui/include/ScriptingModules/Makefile
+                 cegui/include/WindowRendererSets/Falagard/Makefile
+                 cegui/include/WindowRendererSets/Makefile
+                 cegui/include/XMLParserModules/ExpatParser/Makefile
+                 cegui/include/XMLParserModules/LibxmlParser/Makefile
+                 cegui/include/XMLParserModules/Makefile
+                 cegui/include/XMLParserModules/TinyXMLParser/Makefile
+                 cegui/include/XMLParserModules/XercesParser/Makefile
+                 cegui/src/ImageCodecModules/CoronaImageCodec/Makefile
+                 cegui/src/ImageCodecModules/DevILImageCodec/Makefile
+                 cegui/src/ImageCodecModules/FreeImageImageCodec/Makefile
+                 cegui/src/ImageCodecModules/Makefile
+                 cegui/src/ImageCodecModules/SILLYImageCodec/Makefile
+                 cegui/src/ImageCodecModules/TGAImageCodec/Makefile
+                 cegui/src/Makefile
+                 cegui/src/RendererModules/directx9GUIRenderer/Makefile
+                 cegui/src/RendererModules/IrrlichtRenderer/Makefile
+                 cegui/src/RendererModules/Makefile
+                 cegui/src/RendererModules/OpenGLGUIRenderer/Makefile
+                 cegui/src/ScriptingModules/LuaScriptModule/Makefile
+                 cegui/src/ScriptingModules/LuaScriptModule/package/Makefile
+                 cegui/src/ScriptingModules/LuaScriptModule/support/Makefile
+                 cegui/src/ScriptingModules/LuaScriptModule/support/tolua++bin/Makefile
+                 cegui/src/ScriptingModules/LuaScriptModule/support/tolua++/Makefile
+                 cegui/src/ScriptingModules/Makefile
+                 cegui/src/WindowRendererSets/Falagard/Makefile
+                 cegui/src/WindowRendererSets/Makefile
+                 cegui/src/XMLParserModules/ExpatParser/Makefile
+                 cegui/src/XMLParserModules/LibxmlParser/Makefile
+                 cegui/src/XMLParserModules/Makefile
+                 cegui/src/XMLParserModules/TinyXMLParser/Makefile
+                 cegui/src/XMLParserModules/XercesParser/Makefile
+                 datafiles/Makefile
+                 doc/Makefile
+                 projects/Makefile
                  Samples/common/include/Makefile
+                 Samples/common/Makefile
                  Samples/common/src/Makefile
-                 Samples/datafiles/Makefile
-                 ScriptingModules/CEGUILua/LuaScriptModule/Makefile
-                 ScriptingModules/CEGUILua/LuaScriptModule/include/Makefile
-                 ScriptingModules/CEGUILua/LuaScriptModule/package/Makefile
-                 ScriptingModules/CEGUILua/LuaScriptModule/src/Makefile
-                 ScriptingModules/CEGUILua/Makefile
-                 ScriptingModules/CEGUILua/tolua++/Makefile
-                 ScriptingModules/CEGUILua/tolua++bin/Makefile
-                 ScriptingModules/Makefile
-                 WindowRendererSets/Makefile
-                 WindowRendererSets/Falagard/Makefile
-                 WindowRendererSets/Falagard/include/Makefile
-                 WindowRendererSets/Falagard/src/Makefile
-                 XMLParserModules/Makefile
-                 XMLParserModules/TinyXMLParser/Makefile
-                 XMLParserModules/XercesParser/Makefile
-                 XMLParserModules/expatParser/Makefile
-                 XMLParserModules/libxmlParser/Makefile
-                 include/Makefile
-                 include/elements/Makefile
-                 include/falagard/Makefile
-                 makefiles/Makefile
-                 src/Makefile
-                 CEGUI.pc
-                 CEGUI-OPENGL.pc
-                 CEGUI.spec])
+                 Samples/Demo6/Makefile
+                 Samples/Demo7/Makefile
+                 Samples/Demo8/Makefile
+                 Samples/FalagardDemo1/Makefile
+                 Samples/FirstWindow/Makefile
+                 Samples/FontDemo/Makefile
+                 Samples/InstancedWindows/Makefile
+                 Samples/Makefile
+                 Samples/Minesweeper/Makefile
+                 Samples/ScrollablePaneDemo/Makefile
+                 Samples/TabControlDemo/Makefile
+                 Samples/TextDemo/Makefile
+                 Samples/TreeDemo/Makefile
+                 Makefile])
 AC_OUTPUT
 
 dnl Now generate some output to summarise what we have done here

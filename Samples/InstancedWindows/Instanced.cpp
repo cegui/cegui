@@ -28,9 +28,9 @@ purpose:    Demonstrates the use of instanced windows with XML and lua
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 
-#include "../include/Instanced.h"
+#include "Instanced.h"
 #include "CEGUI.h"
-#include "CEGUILua.h"
+#include "ScriptingModules/LuaScriptModule/CEGUILua.h"
 
 using namespace CEGUI;
 

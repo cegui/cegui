@@ -1,5 +1,6 @@
-INCLUDES=-I$(top_srcdir)/include $(Corona_CFLAGS)
-pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/CoronaImageCodec
+INCLUDES=-I$(top_srcdir)/cegui/include \
+         -I$(top_srcdir)/cegui/include/ImageCodecModules/CoronamageCodec \
+         $(Corona_CFLAGS)
 
 libCEGUICoronaImageCodec_la_LIBADD =
 
@@ -14,6 +15,3 @@ libCEGUICoronaImageCodec_la_LIBADD += $(Corona_LIBS)
 lib_LTLIBRARIES=libCEGUICoronaImageCodec.la
 
 libCEGUICoronaImageCodec_la_SOURCES = CEGUICoronaImageCodec.cpp CEGUICoronaImageCodecModule.cpp
-
-pkginclude_HEADERS = CEGUICoronaImageCodec.h CEGUICoronaImageCodecModule.h
-

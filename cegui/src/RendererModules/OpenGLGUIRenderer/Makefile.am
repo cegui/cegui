@@ -1,6 +1,6 @@
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(OpenGL_CFLAGS) 
-pkgincludedir=$(prefix)/include/CEGUI/RendererModules/OpenGLGUIRenderer
-pkginclude_HEADERS = openglrenderer.h opengltexture.h
+INCLUDES = -I$(top_srcdir)/cegui/include \
+           -I$(top_srcdir)/cegui/include/RendererModules/OpenGLGUIRenderer \
+           $(OpenGL_CFLAGS) 
 
 libCEGUIOpenGLRenderer_la_LDFLAGS =
 libCEGUIOpenGLRenderer_la_LIBADD =

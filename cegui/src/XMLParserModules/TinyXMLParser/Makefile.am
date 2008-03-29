@@ -1,4 +1,5 @@
-INCLUDES = -I$(top_srcdir)/include
+INCLUDES = -I$(top_srcdir)/cegui/include \
+           -I$(top_srcdir)/cegui/include/XMLParserModules/TinyXMLParser
 
 if MINGW32_BUILD
 libCEGUITinyXMLParser_la_CPPFLAGS = -DCEGUITINYXMLPARSER_EXPORTS
@@ -14,9 +15,6 @@ libCEGUITinyXMLParser_la_SOURCES = CEGUITinyXMLParser.cpp \
                                    ceguitinyxml/tinyxml.cpp \
                                    ceguitinyxml/tinyxmlerror.cpp \
                                    ceguitinyxml/tinyxmlparser.cpp
-
-pkgincludedir=$(prefix)/include/CEGUI/XMLParserModules/TinyXMLParser
-pkginclude_HEADERS = CEGUITinyXMLParser.h CEGUITinyXMLParserModule.h
 
 noinst_HEADERS = ceguitinyxml/tinystr.h \
                  ceguitinyxml/tinyxml.h
