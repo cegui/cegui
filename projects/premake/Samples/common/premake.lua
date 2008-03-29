@@ -11,22 +11,22 @@ end
 
 package.files =
 {
-	matchfiles(pkgdir.."src/*.cpp"),
-	matchfiles(pkgdir.."include/*.h"),
+	matchfiles(rootdir..pkgdir.."src/*.cpp"),
+	matchfiles(rootdir..pkgdir.."include/*.h"),
 }
 
 package.excludes =
 {
-    pkgdir.."include/MacCEGuiRendererSelector.h",
-    pkgdir.."src/MacCEGuiRendererSelector.cpp",
-    pkgdir.."include/GTK2CEGuiRendererSelector.h",
-    pkgdir.."src/GTK2CEGuiRendererSelector.cpp",
-    pkgdir.."include/CLICEGuiRendererSelector.h",
-    pkgdir.."src/CLICEGuiRendererSelector.cpp",
+    rootdir..pkgdir.."include/MacCEGuiRendererSelector.h",
+    rootdir..pkgdir.."src/MacCEGuiRendererSelector.cpp",
+    rootdir..pkgdir.."include/GTK2CEGuiRendererSelector.h",
+    rootdir..pkgdir.."src/GTK2CEGuiRendererSelector.cpp",
+    rootdir..pkgdir.."include/CLICEGuiRendererSelector.h",
+    rootdir..pkgdir.."src/CLICEGuiRendererSelector.cpp",
 }
 
-include(pkgdir.."include")
-include(rootdir)
+include(rootdir..pkgdir.."include")
+include(rootdir.."cegui/include")
 
 if CEGUI_CORE_LIBRARY_SOLUTION then
     dependency("CEGUIBase")

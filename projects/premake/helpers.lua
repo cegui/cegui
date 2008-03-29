@@ -20,8 +20,8 @@ do
     	rootdir = table.concat(_tpath)
 
     	table.insert(_tpkgdir, name)
-    	pkgdir = rootdir..table.concat(_tpkgdir).."/"
-    	pkgparentdir = string.gsub(pkgdir, "([^/]+/)$", "")
+    	pkgdir = table.concat(_tpkgdir).."/"
+    	pkgparentdir = rootdir..string.gsub(pkgdir, "([^/]+/)$", "")
 
         _dopackage(name)
 
@@ -53,7 +53,7 @@ function cegui_dynamic(name, lang, kind)
 	-- defaults
 	package.includepaths =
 	{
-		rootdir.."include",
+		rootdir.."cegui/include",
 		rootdir.."dependencies/include",
 	}
 	package.libpaths =
@@ -211,16 +211,16 @@ end
 -- add lua support to a sample
 --
 local function lua_sample()
-    include(rootdir.."ScriptingModules/CEGUILua/tolua++")
-    include(rootdir.."ScriptingModules/CEGUILua/LuaScriptModule/include")
+    include(rootdir.."cegui/include/ScriptingModules/LuaScriptModule/support/tolua++")
+    include(rootdir.."cegui/include/ScriptingModules/LuaScriptModule")
     if CEGUI_CORE_LIBRARY_SOLUTION then
         dependency("CEGUILua")
         dependency("tolua++")
     else
         library("tolua++", DEBUG_DLL_SUFFIX or "")
-        library("CEGUILua", DEBUG_DLL_SUFFIX or "")
+        library("CEGUILuaScriptModule", DEBUG_DLL_SUFFIX or "")
         library_static("tolua++", "_Static", DEBUG_DLL_SUFFIX or "")
-        library_static("CEGUILua", "_Static", DEBUG_DLL_SUFFIX or "")
+        library_static("CEGUILuaScriptModule", "_Static", DEBUG_DLL_SUFFIX or "")
 		library_static("lua","","_d")
     end
 end
@@ -235,7 +235,7 @@ function sample(name, ext)
     dependency("CEGUISampleHelper")
 
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        package.bindir = rootdir.."Samples/bin"
+        package.bindir = rootdir.."bin"
         package.libdir = rootdir.."lib"
         dependency("CEGUIBase")
     else

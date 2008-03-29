@@ -2,17 +2,17 @@
 -- CEGUILua premake script
 --
 
-cegui_dynamic("CEGUILua")
+cegui_dynamic("CEGUILuaScriptModule")
 
 package.files =
 {
-	matchfiles(pkgdir.."src/*.cpp"),
-	matchfiles(pkgdir.."src/*.h"),
-	matchfiles(pkgdir.."include/*.h"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.h"),
+	matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
 }
 
-include(pkgdir.."include")
-include(pkgdir.."../tolua++")
+include(rootdir.."cegui/include/"..pkgdir)
+include(rootdir.."cegui/include/"..pkgdir.."support/tolua++")
 
 dependency("CEGUIBase")
 dependency("tolua++")

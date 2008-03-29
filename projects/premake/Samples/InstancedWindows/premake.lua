@@ -4,8 +4,8 @@
 sample("InstancedWindows","lua")
 package.files =
 {
-    matchfiles(pkgdir.."src/*.cpp"),
-    matchfiles(pkgdir.."include/*.h")
+    matchfiles(rootdir..pkgdir.."*.cpp"),
+    matchfiles(rootdir..pkgdir.."*.h"),
 }
 
-library_static("lua","", "_d")
+include(rootdir..pkgdir)

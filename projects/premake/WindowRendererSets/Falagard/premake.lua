@@ -6,11 +6,11 @@ cegui_dynamic("CEGUIFalagardWRBase")
 
 package.files =
 {
-	matchfiles(pkgdir.."src/*.cpp"),
-	matchfiles(pkgdir.."include/*.h")
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
+	matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h")
 }
 
-include(pkgdir.."include")
+include(rootdir.."cegui/include/"..pkgdir)
 
 dependency("CEGUIBase")
 

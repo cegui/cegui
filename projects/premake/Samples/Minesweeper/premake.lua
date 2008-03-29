@@ -4,6 +4,8 @@
 sample("Minesweeper")
 package.files =
 {
-    matchfiles(pkgdir.."src/*.cpp"),
-    matchfiles(pkgdir.."src/*.h"),
+    matchfiles(rootdir..pkgdir.."*.cpp"),
+    matchfiles(rootdir..pkgdir.."*.h"),
 }
+
+include(rootdir..pkgdir)

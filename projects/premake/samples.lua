@@ -12,7 +12,7 @@ if not CEGUI_CORE_LIBRARY_SOLUTION then
     --
 
     project.name = "CEGUISamples"
-    project.bindir = rootdir.."Samples/bin"
+    project.bindir = rootdir.."bin"
     project.libdir = rootdir.."lib"
     project.configs =
     {

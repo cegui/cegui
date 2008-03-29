@@ -114,11 +114,11 @@ end
 if LUA_SCRIPT_MODULE then
     pkg_table.ScriptingModules =
     {
-        ["CEGUILua"] =
+	"LuaScriptModule",
+        ["LuaScriptModule"] =
         {
-            "tolua++",
-            "tolua++bin",
-            "LuaScriptModule",
+            "support/tolua++",
+            "support/tolua++bin",
         },
     }
 end
@@ -205,7 +205,7 @@ do
 	    config_h.CEGUI_FALAGARD_RENDERER = ""
 	end
 
-    local filename = "../../include/config.h"
+    local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")
 
     if not f then error("Unable to write config.h: "..err) end

@@ -6,11 +6,11 @@ cegui_dynamic("IrrlichtRenderer")
 
 package.files =
 {
-    matchfiles(pkgdir.."*.cpp"),
-    matchfiles(pkgdir.."*.h"),
+    matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
+    matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
 }
 
-include(pkgdir)
+include(rootdir.."cegui/include/"..pkgdir)
 include(rootdir)
 
 if IRRLICHT_PATHS then

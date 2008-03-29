@@ -6,13 +6,13 @@ cegui_dynamic("CEGUITinyXMLParser")
 
 package.files =
 {
-	matchfiles(pkgdir.."*.cpp"),
-	matchfiles(pkgdir.."*.h"),
-	matchfiles(pkgdir.."ceguitinyxml/*.h"),
-	matchfiles(pkgdir.."ceguitinyxml/*.cpp"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
+	matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."ceguitinyxml/*.h"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."ceguitinyxml/*.cpp"),
 }
 
-include(pkgdir)
+include(rootdir.."cegui/include/"..pkgdir)
 
 dependency("CEGUIBase")
 
