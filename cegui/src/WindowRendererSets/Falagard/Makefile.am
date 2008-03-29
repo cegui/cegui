@@ -1,5 +1,5 @@
-INCLUDES = -I$(top_srcdir)/include \
-           -I$(top_srcdir)/WindowRendererSets/Falagard/include
+INCLUDES = -I$(top_srcdir)/cegui/include \
+           -I$(top_srcdir)/cegui/include/WindowRendererSets/Falagard
 
 libCEGUIFalagardWRBase_la_LDFLAGS =
 

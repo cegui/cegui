@@ -1,11 +1,11 @@
-SUBDIRS = .
-noinst_HEADERS = FalButton.h \
+pkgincludedir=$(includedir)/CEGUI/WindowRendererSets/Falagard
+pkginclude_HEADERS = FalButton.h \
                  FalToggleButton.h \
                  FalDefault.h \
                  FalEditbox.h \
                  FalFrameWindow.h \
                  FalItemEntry.h \
-				 FalItemListbox.h \
+                 FalItemListbox.h \
                  FalListHeader.h \
                  FalListHeaderProperties.h \
                  FalListHeaderSegment.h \

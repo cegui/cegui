@@ -1,4 +1,5 @@
-INCLUDES =  $(Lua_CFLAGS) -I$(top_srcdir)/ScriptingModules/CEGUILua/tolua++
+INCLUDES =  $(Lua_CFLAGS) \
+            -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
 
 libCEGUItoluapp_la_LDFLAGS =
 
@@ -20,6 +21,5 @@ libCEGUItoluapp_la_SOURCES = tolua_event.c \
 libCEGUItoluapp_la_LIBADD = $(Lua_LIBS)
 
 noinst_HEADERS = tolua_event.h
-pkginclude_HEADERS = tolua++.h
 
 EXTRA_DIST = INFO

@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include "Sample_Demo8.h"
 #include "CEGUI.h"
-#include "CEGUILua.h"
+#include "ScriptingModules/LuaScriptModule/CEGUILua.h"
 
 int main(int argc, char *argv[])
 {

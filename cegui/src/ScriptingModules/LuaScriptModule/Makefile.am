@@ -1,6 +1,8 @@
-INCLUDES = -I$(top_srcdir)/include \
-           -I$(top_srcdir)/ScriptingModules/CEGUILua/tolua++ \
-           -I$(top_srcdir)/ScriptingModules/CEGUILua/LuaScriptModule/include
+SUBDIRS = package support
+
+INCLUDES = -I$(top_srcdir)/cegui/include \
+           -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule \
+           -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
 
 libCEGUILuaScriptModule_la_LDFLAGS =
 libCEGUILuaScriptModule_la_CPPFLAGS = $(Lua_CFLAGS)

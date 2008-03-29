@@ -1,5 +1,5 @@
-INCLUDES=-I$(top_srcdir)/include 
-pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/TGAImageCodec
+INCLUDES=-I$(top_srcdir)/cegui/include \
+         -I$(top_srcdir)/cegui/include/ImageCodecModules/TGAImageCodec
 
 if MINGW32_BUILD
 libCEGUITGAImageCodec_la_CPPFLAGS = -DCEGUITGAIMAGECODEC_EXPORTS
@@ -9,7 +9,3 @@ endif
 
 lib_LTLIBRARIES=libCEGUITGAImageCodec.la
 libCEGUITGAImageCodec_la_SOURCES = CEGUITGAImageCodec.cpp CEGUITGAImageCodecModule.cpp
-pkginclude_HEADERS = CEGUITGAImageCodec.h CEGUITGAImageCodecModule.h 
-
-
-

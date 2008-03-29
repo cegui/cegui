@@ -1,6 +1,6 @@
-INCLUDES=-I$(top_srcdir)/include $(DevIL_CFLAGS)
-
-pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/DevILImageCodec
+INCLUDES=-I$(top_srcdir)/cegui/include \
+         -I$(top_srcdir)/cegui/include/ImageCodecModules/DevILImageCodec \
+         $(DevIL_CFLAGS)
 
 libCEGUIDevILImageCodec_la_LIBADD =
 
@@ -15,6 +15,3 @@ libCEGUIDevILImageCodec_la_LIBADD += $(DevIL_LIBS)
 lib_LTLIBRARIES=libCEGUIDevILImageCodec.la
 
 libCEGUIDevILImageCodec_la_SOURCES = CEGUIDevILImageCodec.cpp CEGUIDevILImageCodecModule.cpp
-
-pkginclude_HEADERS = CEGUIDevILImageCodec.h CEGUIDevILImageCodecModule.h
-

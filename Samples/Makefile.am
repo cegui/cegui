@@ -6,7 +6,6 @@ endif
 
 SUBDIRS = . \
           common \
-          datafiles \
           Demo6 \
           Demo7 \
           FirstWindow \
@@ -20,10 +19,9 @@ SUBDIRS = . \
           $(CEGUILUA_DEMOS)
 endif
 
-EXTRA_DIST = ReadMe.txt \
-             bin/keepme
+EXTRA_DIST = ReadMe.txt
 
 install-exec-local:
-	if test ! -d $(top_builddir)/Samples/bin ; then \
-		mkdir $(top_builddir)/Samples/bin ; \
+	if test ! -d $(top_builddir)/bin ; then \
+		mkdir $(top_builddir)/bin ; \
 	fi

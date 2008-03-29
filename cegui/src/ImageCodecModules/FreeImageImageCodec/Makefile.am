@@ -1,5 +1,6 @@
-INCLUDES=-I$(top_srcdir)/include $(FreeImage_CFLAGS)
-pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/FreeImageImageCodec
+INCLUDES=-I$(top_srcdir)/cegui/include \
+         -I$(top_srcdir)/cegui/include/ImageCodecModules/FreeImageImageCodec \
+         $(FreeImage_CFLAGS)
 
 libCEGUIFreeImageImageCodec_la_LIBADD =
 
@@ -14,6 +15,3 @@ libCEGUIFreeImageImageCodec_la_LIBADD += $(FreeImage_LIBS)
 lib_LTLIBRARIES=libCEGUIFreeImageImageCodec.la
 
 libCEGUIFreeImageImageCodec_la_SOURCES = CEGUIFreeImageImageCodec.cpp CEGUIFreeImageImageCodecModule.cpp
-
-pkginclude_HEADERS = CEGUIFreeImageImageCodec.h CEGUIFreeImageImageCodecModule.h
-

@@ -1,4 +1,6 @@
-INCLUDES = -I$(top_srcdir)/include $(xerces_CFLAGS)
+INCLUDES = -I$(top_srcdir)/cegui/include \
+           -I$(top_srcdir)/cegui/include/XMLParserModules/XercesParser \
+           $(xerces_CFLAGS)
 
 libCEGUIXercesParser_la_LIBADD =
 
@@ -14,5 +16,3 @@ lib_LTLIBRARIES=libCEGUIXercesParser.la
 
 libCEGUIXercesParser_la_SOURCES = CEGUIXercesParser.cpp \
                                   CEGUIXercesParserModule.cpp
-pkgincludedir=$(prefix)/include/CEGUI/XMLParserModules/XercesParser
-pkginclude_HEADERS = CEGUIXercesParser.h CEGUIXercesParserModule.h

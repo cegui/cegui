@@ -1,5 +1,6 @@
-INCLUDES=-I$(top_srcdir)/include $(SILLY_CFLAGS)
-pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/SILLYImageCodec
+INCLUDES=-I$(top_srcdir)/cegui/include \
+         -I$(top_srcdir)/cegui/include/ImageCodecModules/SILLYImageCodec \
+         $(SILLY_CFLAGS)
 
 libCEGUISILLYImageCodec_la_LIBADD =
 
@@ -14,6 +15,3 @@ libCEGUISILLYImageCodec_la_LIBADD += $(SILLY_LIBS)
 lib_LTLIBRARIES=libCEGUISILLYImageCodec.la
 
 libCEGUISILLYImageCodec_la_SOURCES = CEGUISILLYImageCodec.cpp CEGUISILLYImageCodecModule.cpp 
-
-pkginclude_HEADERS = CEGUISILLYImageCodec.h CEGUISILLYImageCodecModule.h
-
