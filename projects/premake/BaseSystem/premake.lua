@@ -6,12 +6,12 @@ cegui_dynamic("CEGUIBase")
 
 package.files =
 {
-    matchfiles(rootdir.."src/*.cpp"),
-    matchfiles(rootdir.."include/*.h"),
-    matchfiles(rootdir.."src/elements/*.cpp"),
-    matchfiles(rootdir.."include/elements/*.h"),
-    matchfiles(rootdir.."src/falagard/*.cpp"),
-    matchfiles(rootdir.."include/falagard/*.h"),
+    matchfiles(rootdir.."cegui/src/*.cpp"),
+    matchfiles(rootdir.."cegui/include/*.h"),
+    matchfiles(rootdir.."cegui/src/elements/*.cpp"),
+    matchfiles(rootdir.."cegui/include/elements/*.h"),
+    matchfiles(rootdir.."cegui/src/falagard/*.cpp"),
+    matchfiles(rootdir.."cegui/include/falagard/*.h"),
 }
 
 library("freetype","_D")

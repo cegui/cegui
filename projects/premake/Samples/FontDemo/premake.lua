@@ -4,5 +4,8 @@
 sample("FontDemo")
 package.files =
 {
-    matchfiles(pkgdir.."src/*.cpp"),
+    matchfiles(rootdir..pkgdir.."*.cpp"),
+    matchfiles(rootdir..pkgdir.."*.h"),
 }
+
+include(rootdir..pkgdir)

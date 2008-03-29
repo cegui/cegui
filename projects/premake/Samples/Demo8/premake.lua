@@ -4,9 +4,9 @@
 sample("Demo8", "lua")
 package.files =
 {
-    matchfiles(pkgdir.."src/*.cpp"),
-    matchfiles(pkgdir.."src/*.h"),
+    matchfiles(rootdir..pkgdir.."*.cpp"),
+    matchfiles(rootdir..pkgdir.."*.h"),
 }
 
-include(pkgdir.."src")
+include(rootdir..pkgdir)
 library_static("lua","", "_d")

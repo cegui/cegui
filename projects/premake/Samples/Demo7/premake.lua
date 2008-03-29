@@ -4,8 +4,8 @@
 sample("Demo7")
 package.files =
 {
-    matchfiles(pkgdir.."src/*.cpp"),
-    matchfiles(pkgdir.."src/*.h"),
+    matchfiles(rootdir..pkgdir.."*.cpp"),
+    matchfiles(rootdir..pkgdir.."*.h"),
 }
 
-include(pkgdir.."src")
+include(rootdir..pkgdir)

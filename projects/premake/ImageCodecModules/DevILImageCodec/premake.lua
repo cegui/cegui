@@ -6,11 +6,11 @@ cegui_dynamic("CEGUIDevILImageCodec")
 
 package.files =
 {
-    matchfiles(pkgdir.."*.cpp"),
-    matchfiles(pkgdir.."*.h"),
+    matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
+    matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
 }
 
-include(pkgdir.."include")
+include(rootdir.."cegui/include/"..pkgdir)
 
 library("DevIL")
 library("ILU")

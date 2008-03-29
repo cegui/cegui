@@ -6,12 +6,12 @@ cegui_dynamic("tolua++cegui", "c", "exe")
 
 package.files =
 {
-	matchfiles(pkgdir.."*.c"),
-	matchfiles(pkgdir.."*.h"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.c"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.h"),
 }
 
---include(pkgdir)
-include(pkgdir.."../tolua++")
+--include(rootdir.."cegui/include/"..pkgdir)
+include(rootdir.."cegui/include/"..pkgdir.."../tolua++")
 
 dependency("tolua++")
 library("lua","_d")

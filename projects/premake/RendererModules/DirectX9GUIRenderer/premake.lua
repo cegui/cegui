@@ -6,11 +6,11 @@ cegui_dynamic("DirectX9GUIRenderer")
 
 package.files =
 {
-    matchfiles(pkgdir.."*.cpp"),
-    matchfiles(pkgdir.."*.h"),
+    matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
+    matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
 }
 
-include(pkgdir)
+include(rootdir.."cegui/include/"..pkgdir)
 
 library("dxerr9")
 library("d3dx9", "d")

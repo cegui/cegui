@@ -12,8 +12,11 @@ end
 
 package.files =
 {
-	matchfiles(pkgdir.."*.c"),
-	matchfiles(pkgdir.."*.h"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.c"),
+	matchfiles(rootdir.."cegui/src/"..pkgdir.."*.h"),
+	matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
 }
+
+include(rootdir.."cegui/include/"..pkgdir)
 
 library("lua", "_d")
