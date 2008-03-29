@@ -1,0 +1,124 @@
+/**
+@page authors List of authors and contributors
+The following is a list of primary authors and contributors for Crazy Eddie's GUI System Mk-2.
+
+@section authors_sec_1 Current CEGUI Core Team Members
+- Paul D Turner (crayzed / CrazyEddie / ice-drezday)
+- Patrick Kooman (scriptkid)
+- Stephane (rackle)
+
+
+@section authors_sec_3 Current CEGUI Tools Team Members
+- Frederico Jeronimo (fjeronimo)
+
+
+@section authors_sec_2 Retired or Semi-retired CEGUI Team Members
+- Tomas Lindquist Olsen (lindquist)
+- Olivier Delannoy (Dalfy)
+- Paul Schifferer (Exsortis)
+- James O'Sullivan (_mental_)
+
+
+@section authors_sec_4 Main Contributors
+The following have made large, important, or on-going contributions to the system (these people may have made additional contributions than those specifically mentioned):
+
+<ul>
+    <li>Lars Rinde:
+    <ul>
+        <li>Original TaharezLook graphics design.
+    </ul>
+
+    <li>'Blakharaz':
+    <ul>
+        <li>Initial XmlHandlerHelper class and general cleanup of original XML parsing code.
+    </ul>
+
+    <li>Jeff Leigh:
+    <ul>
+        <li>Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
+    </ul>
+
+    <li>Jose A Milan:
+    <ul>
+        <li>Refactoring of XML handling classes to remove public dependency on Xerces-C++
+        <li>Initial updates to Ogre renderer to support Ogre 1.0.
+    </ul>
+
+    <li>Magnus Osterlind:
+    <ul>
+        <li>Original version of the Direct3D 9 GUI renderer module.
+    </ul>
+
+    <li>Steve Streeting:
+    <ul>
+        <li>TabControl widget base classes & related 'TaharezLook' classes.
+    </ul>
+
+    <li>Mark Strom:
+    <ul>
+        <li>Original version of the OpenGL GUI renderer module.
+    </ul>
+
+    <li>Thomas Suter:
+    <ul>
+        <li>Original version of the Irrlicht engine GUI renderer module.
+    </ul>
+
+    <li>Andrew Zabolotny:
+    <ul>
+        <li>Font class rewrite.
+    </ul>
+
+    <li>Jonathan Welch:
+    <ul>
+        <li>Static build support.
+        <li>Tree widget (based on code by David Durant)
+        <li>Tree Demo.
+        <li>Instanced Windows Demo.
+        <li>Miscellaneous updates and fixes.
+    </ul>
+</ul>
+
+@section authors_sec_5 Other Contributors
+The following have contributed patches, bug reports, and other such valuable things...
+
+- Tupone Alfredo
+- Geoff Carlton
+- Clay Culver
+- Paul Downey
+- Jeff Doyle
+- Jan Eickmann
+- Andrzej Krzysztof Haczewski
+- Markus Henschel
+- Erik Hjortsberg
+- Rafal Jastrzebski
+- Chris Kang
+- Peter Newman
+- Chris Osborn
+- Shane Parker
+- Andrea Santambrogio
+- James Turner
+- Chris Weaver
+- Christopher Wedman
+- armaduck
+- genva
+- Te'ja
+- Xavier
+
+
+@section authors_sec_6 Special Thanks
+- Shawn Carroll   - For his tutorial series.
+- Chris McGuirk   - For his C#.Net port.
+- Shane Parker    - For giving permission to use his "Vanilla GUI" imagery.
+
+Everyone on the GameDev.Net forums who looked at earlier versions of the system
+and gave constructive criticism.
+
+Everyone on the Ogre forums who encouraged the development of this Mk-2 version
+of the system.
+
+
+@section authors_sec_7 Have We Missed You?
+If you feel that we have missed you from some section of this list, then please contact us (team@cegui.org.uk) and let us know who you are and what you did, and we'll correct the mistake as soon as possible.
+
+*/
