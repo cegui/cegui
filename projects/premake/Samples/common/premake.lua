@@ -5,7 +5,7 @@
 cegui_dynamic("CEGUISampleHelper")
 
 if CEGUI_CORE_LIBRARY_SOLUTION then
-    package.bindir = rootdir.."Samples/bin"
+    package.bindir = rootdir.."bin"
     package.libdir = rootdir.."lib"
 end
 

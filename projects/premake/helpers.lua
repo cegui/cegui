@@ -214,7 +214,7 @@ local function lua_sample()
     include(rootdir.."cegui/include/ScriptingModules/LuaScriptModule/support/tolua++")
     include(rootdir.."cegui/include/ScriptingModules/LuaScriptModule")
     if CEGUI_CORE_LIBRARY_SOLUTION then
-        dependency("CEGUILua")
+        dependency("CEGUILuaScriptModule")
         dependency("tolua++")
     else
         library("tolua++", DEBUG_DLL_SUFFIX or "")
