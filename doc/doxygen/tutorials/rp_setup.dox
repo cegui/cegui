@@ -1,0 +1,97 @@
+/**
+@page rp_setup Resource Provider Setup
+@author Paul D Turner
+
+This article explains how to set up resource groups and directories in the DefaultResourceProvider (and also the IrrlichtResourceProvider - since that is a subclass of DefaultResourceProvider) and how to define default resource groups to be used by the system.  People with custom resource providers, like Ogre users, can skip to the @ref rp_setup_sec_2 section.
+
+@section rp_setup_sec_1 Specifying Resource Groups and Directories
+The DefaultResourceProvider allows you to define any number of named resource groups and to specify a directory to be used for each of those resource groups.  What this basically means is that you can create a resource group, say "imagesets", and assign a directory to that, for example "./mygame/datafiles/gui/imagesets/".  Then when loading an Imageset through the ImagesetManager, you could specify the resource group to be used as "imagesets" and the system will look in the predefined location ("./mygame/datafiles/gui/imagesets/").  Note that at present each resource group may only have a single directory assigned to it.
+
+A small code example is in order to clarify what has been said.  Instead of loading resources by giving an explicit path, like this:
+@code
+Imageset* wlis = ImagesetManager::getSingleton().createImageset(
+    "./mygame/datafiles/gui/imagesets/WindowsLook.imageset");
+@endcode
+
+At initialisation time, you can use the resource group system to create a group in the default resource provider, like this:
+@code
+DefaultResourceProvider* rp = static_cast<DefaultResourceProvider*>(
+    CEGUI::System::getSingleton().getResourceProvider());
+
+rp->setResourceGroupDirectory("imagesets", "./mygame/datafiles/gui/imagesets/");
+@endcode
+
+Then later on in the code, when you need to load an imageset, just do this:
+@code
+Imageset* wlis = ImagesetManager::getSingleton().createImageset(
+    "WindowsLook.imageset", "imagesets");
+@endcode
+
+Note how when creating the imageset from a file we do not specify any path information; the path information is obtained from the resource group specified, in the example this is "imagesets".  We will later show you how you set default resource groups for each of the resource types - then you do not have to specify the group when you load a resource (unless you're loading it from a group that is not the default, of course).
+
+Something important to consider is that when using this resource group approach, data files that contain references to other data files should not contain relative path information - they should, in general, just have the actual file name of the file being referred to - this way the resource group system can be put to better use, and it also makes it easier to move files around later - since rather than having to 'fix up' all the relative paths, you just have to update the resource group paths instead.
+
+
+@section rp_setup_sec_2 Default Resource Groups
+Each of the core system classes that represents a loadable resource has static members to set and get a default resource group.  This resource group will be used when loading the specific data files needed by a given class - in the case of the Imageset class, the default resource group should reference a directory holding the imageset xml and texture image files.
+
+For each of the resource consuming classes, the static members are named the same (special exception is xerces - see below):
+@code
+const String& getDefaultResourceGroup();
+void setDefaultResourceGroup(const String& groupname);
+@endcode
+
+The following is a list of the core resource loading classes and the resources that they load:
+@arg @c CEGUI::Imageset          - Imageset xml and texture image files. 
+@arg @c CEGUI::Font              - Font xml and ttf font files.
+@arg @c CEGUI::Scheme            - Scheme xml files.
+@arg @c CEGUI::WindowManager     - Window layout xml files.
+@arg @c CEGUI::WidgetLookManager - LookNFeel xml files
+@arg @c CEGUI::ScriptModule      - Script files in whichever scripted langauge.
+
+There is one special exception, as mentioned above, this is the Xerces-C++ based XML parser.  For this there is a special resource group setting to specify where the schema files can be found (these are the .xsd files used for xml validation).  For this special case, the static members are:
+@code
+ const String& XercesParser::getSchemaDefaultResourceGroup();
+ void XercesParser::setSchemaDefaultResourceGroup(const String& groupname);
+@endcode
+
+One final thing to consider, is that the resource provider class also has a default group.  This should be considered a 'global' default; it is used whenever a specific resource loading class has no default of it's own specified.  This could be useful if you have all your data in a single directory.
+
+
+@section rp_setup_sec_3 A final, Complete Example
+To close, we will show how you might perform the initialisation of resource groups and their target directories to access the data files within the datafiles directory that comes with CEGUI, and how we assign the default groups to be used for all of the resource types.
+
+After initialising the core CEGUI::System object as usual, we then specify a set of resource groups and their target directories (this assumes the working directory will be the 'bin' directory within the CEGUI package:
+@code
+// initialise the required dirs for the DefaultResourceProvider
+CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
+    (CEGUI::System::getSingleton().getResourceProvider());
+
+rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
+rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
+rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
+rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
+rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
+rp->setResourceGroupDirectory("lua_scripts", "../datafiles/lua_scripts/");
+
+// This is only needed if you are using Xerces and need to
+// specify the schemas location
+rp->setResourceGroupDirectory("schemas", "../datafiles/xml_schema/");
+@endcode
+Now that is done, we have a nice set of resource groups defined with their target directories set.  Finally, to get the system to use these directories, we set the default resource groups to be used:
+@code
+// set the default resource groups to be used
+CEGUI::Imageset::setDefaultResourceGroup("imagesets");
+CEGUI::Font::setDefaultResourceGroup("fonts");
+CEGUI::Scheme::setDefaultResourceGroup("schemes");
+CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
+CEGUI::WindowManager::setDefaultResourceGroup("layouts");
+CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+
+// Again, you only need this one if you are using xerces and have
+// defined a group for schemas.
+CEGUI::XercesParser::setSchemaDefaultResourceGroup("schemas");
+@endcode
+
+Anyhow, that's a brief introduction to the resource group abilities of the DefaultResourceProvider class, and also the system for specifying default resource groups for each resource type we have.
+*/

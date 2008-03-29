@@ -1,0 +1,106 @@
+/**
+@page ce_guide_1 The Beginners Guide to Getting CEGUI Rendering
+@author Paul D Turner
+
+
+@section ce_guide_1_sec_0 Introduction
+In order to get CEGUI to render, no matter what your target engine is, there are basically three steps that must be done.
+- Create an instance of a CEGUI::Renderer based object.
+- Create the CEGUI::System object.
+- Call the method to render the GUI.
+
+Obviously you also need to load some data and perform very basic initialisation, which is covered in [[The Beginner Guide to Loading Data Files and Initialisation]], and also you need to get your inputs into the system which is covered in [[The Beginner Guide to Injecting Inputs]].
+
+
+@section ce_guide_1_sec_1 Create an instance of a CEGUI::Renderer based object
+This is fairly straight forward and should pose no major obstacles for any of the supported renderers.  You must of course remember to include the header file for the renderer that you will be using, also remember that for Ogre3D the renderer module now comes with Ogre and not CEGUI.
+
+The basic renderer creation code is:
+
+<em>Direct3D 8.1</em>
+@code
+CEGUI::DirectX81Renderer* myRenderer =
+    new CEGUI::DirectX81Renderer( myD3D8Device );
+@endcode
+
+<em>Direct3D 9</em>
+@code
+CEGUI::DirectX9Renderer* myRenderer =
+    new CEGUI::DirectX9Renderer( myD3D9Device );
+@endcode
+
+<em>OpenGL</em>
+@code
+CEGUI::OpenGLRenderer* myRenderer =
+    new CEGUI::OpenGLRenderer( 0 );
+@endcode
+
+<em>Ogre3D</em>
+@code
+CEGUI::OgreCEGUIRenderer* myRenderer =
+    new CEGUI::OgreCEGUIRenderer( myRenderWindow );
+@endcode
+
+<em>Irrlicht Engine</em>
+@code
+CEGUI::IrrlichtRenderer* myRenderer =
+    new CEGUI::IrrlichtRenderer( myIrrlichtDevice, true );
+@endcode
+
+
+@section ce_guide_1_sec_2 Create the CEGUI::System object to initialise the system
+Another extremely simple step.  Just instantiate the CEGUI::System object by using 'new' and passing in a pointer to the CEGUI::Renderer that you created in the previous step.  This will cause the entire system to initialise itself.
+@code
+new CEGUI::System( myRenderer );
+@endcode
+
+
+@section ce_guide_1_sec_3 Call the method to render the GUI
+This is the only step that, depending upon your target engine, can be done differently.  Basically what you need to do call the CEGUI::System::renderGUI method at the end of your rendering loop.  For lucky users of the Ogre3D engine, this step is taken care of automatically.  For everybody else, some simple example code can be seen below
+
+<em>Direct3D 8.1 / 9</em>
+@code
+// Start the scene
+myD3DDevice->BeginScene();
+// clear display
+myD3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+// user function to draw 3D scene
+draw3DScene();
+
+    // draw GUI
+    CEGUI::System::getSingleton().renderGUI();
+
+// end the scene
+myD3DDevice->EndScene();
+// finally present the frame.
+myD3DDevice->Present(0, 0, 0, 0);
+@endcode
+
+<em>OpenGL</em>
+@code
+// user function to draw 3D scene
+draw3DScene();
+
+    // draw GUI (should not be between glBegin/glEnd pair)
+    CEGUI::System::getSingleton().renderGUI();
+@endcode
+
+<em>Irrlicht</em>
+@code
+// start the scene
+myIrrlichtDriver->beginScene(true, true, irr::video::SColor(150,50,50,50));
+// draw main scene
+myIrrlichtSceneManager->drawAll();
+
+    // draw gui
+    CEGUI::System::getSingleton().renderGUI();
+
+// end the scene
+myIrrlichtDriver->endScene();
+@endcode
+
+
+@section ce_guide_1_sec_4 Conclusion
+This is the <em>most basic</em> introduction to setting up CEGUI to render.  There are things not covered here, such as using different scene managers in Ogre and advanced options such as user specified resource providers, and so on.
+
+*/ 
