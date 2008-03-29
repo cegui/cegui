@@ -1,0 +1,95 @@
+/**
+@page fal_enum_ref Falagard XML Enumeration Reference
+
+@section fal_enum_ref_sec_0 Section Contents
+@ref fal_enum_ref_sec_1 <br>
+@ref fal_enum_ref_sec_2 <br>
+@ref fal_enum_ref_sec_3 <br>
+@ref fal_enum_ref_sec_4 <br>
+@ref fal_enum_ref_sec_5 <br>
+@ref fal_enum_ref_sec_6 <br>
+@ref fal_enum_ref_sec_7 <br>
+@ref fal_enum_ref_sec_8 <br>
+@ref fal_enum_ref_sec_9 <br>
+@ref fal_enum_ref_sec_10 <br>
+@ref fal_enum_ref_sec_11 <br>
+
+
+@section fal_enum_ref_sec_1 DimensionOperator Enumeration
+@arg @c "Noop"  does nothing.
+@arg @c "Add"  Adds two dimensions.
+@arg @c "Subtract"  Subtracts two dimensions.
+@arg @c "Multiply"  Multiplies two dimensions.
+@arg @c "Divide"  Divides two dimensions.
+
+@section fal_enum_ref_sec_2 DimensionType Enumeration
+@arg @c "LeftEdge"  specifies the left edge of the target item.
+@arg @c "TopEdge"  specifies the top edge of the target item.
+@arg @c "RightEdge"  specifies the right edge of the target item.
+@arg @c "BottomEdge"  specifies the bottom edge of the target item.
+@arg @c "XPosition"  specifies the x position co-ordinate of the target item (same as ?LeftEdge?).
+@arg @c "YPosition"  specifies the y position co-ordinate of the target item (same as ?TopEdge?).
+@arg @c "Width"  specifies the width of the target item.
+@arg @c "Height"  specifies the height of the target item.
+@arg @c "XOffset"  specifies the x offset of the target item (only applies to Images).
+@arg @c "YOffset"  specifies the y offset of the target item (only applies to Images).
+
+@section fal_enum_ref_sec_3 FontMetricType Enumeration
+@arg @c "LineSpacing"  gets the vertical line spacing value of the font.
+@arg @c "Baseline"  get the vertical baseline value of the font.
+@arg @c "HorzExtent"  gets the horizontal extent of a string of text.
+
+@section fal_enum_ref_sec_4 FrameImageComponent Enumeration
+@arg @c "TopLeftCorner"  specifies the image be used for the frame's top-left corner.
+@arg @c "TopRightCorner"  specifies the image be used for the frame's top-right corner.
+@arg @c "BottomLeftCorner"  specifies the image be used for the frame's bottom-left corner.
+@arg @c "BottomRightCorner"  specifies the image be used for the frame's bottom-right corner.
+@arg @c "LeftEdge"  specifies the image be used for the frame' left edge.
+@arg @c "RightEdge"  specifies the image be used for the frame's right edge.
+@arg @c "TopEdge"  specifies the image be used for the frame's top edge.
+@arg @c "BottomEdge"  specifies the image be used for the frame bottom edge.
+@arg @c "Background"  specifies the image be used for the frame's background (area formed within all edges).
+
+@section fal_enum_ref_sec_5 HorizontalAlignment Enumeration
+@arg @c "LeftAligned"  x position is an offset of element's left edges.
+@arg @c "CentreAligned"  x position is an offset of element's horizontal centre points.
+@arg @c "RightAligned"  x position is an offset of element's right edges.
+
+@section fal_enum_ref_sec_6 HorizontalFormat Enumeration
+@arg @c "LeftAligned"  Image is left aligned within the prescribed area.
+@arg @c "CentreAligned"  Image is horizontally centred within the prescribed area.
+@arg @c "RightAligned"  Image is right aligned within the prescribed area.
+@arg @c "Stretched"  Image is horizontally stretched to fill the prescribed area.
+@arg @c "Tiled"  Image is horizontally tiled to fill the prescribed area.
+
+@section fal_enum_ref_sec_7 HorizontalTextFormat Enumeration
+@arg @c "LeftAligned"  lines of text are left aligned within the prescribed area.
+@arg @c "CentreAligned"  lines of text are horizontally centred within the prescribed area.
+@arg @c "RightAligned"  lines of text are right aligned within the prescribed area.
+@arg @c "Justified"  lines of text are justified to the prescribed area.
+@arg @c "WordWrapLeftAligned"  text wraps, with lines left aligned within the prescribed area.
+@arg @c "WordWrapCentreAligned"  text wraps, with lines horizontally centred in the prescribed area.
+@arg @c "WordWrapRightAligned"  text wraps, with lines right aligned within the prescribed area.
+@arg @c "WordWrapJustified"  text wraps, within lines justified to the prescribed area.
+
+@section fal_enum_ref_sec_8 PropertyType Enumeration
+@arg @c "Generic"  specifies a general purpose property.
+
+@section fal_enum_ref_sec_9 VerticalAlignment Enumeration
+@arg @c "TopAligned"  y position is an offset of element's top edges.
+@arg @c "CentreAligned"  y position is an offset of element's vertical centre points.
+@arg @c "BottomAligned"  y position is an offset of element's bottom edges.
+
+@section fal_enum_ref_sec_10 VerticalFormat Enumeration
+@arg @c "TopAligned"  Image is aligned with the top of the prescribed area.
+@arg @c "CentreAligned"  Image is vertically centred within the prescribed area.
+@arg @c "BottomAligned"  Image is aligned with the bottom of the prescribed area.
+@arg @c "Stretched"  Image is vertically stretched to fill the prescribed area.
+@arg @c "Tiled"  Image is vertically tiled to fill the prescribed area.
+
+@section fal_enum_ref_sec_11 VerticalTextFormat Enumeration
+@arg @c "TopAligned"  Text line block is aligned with the top of the prescribed area.
+@arg @c "CentreAligned"  Text line block is vertically centred within the prescribed area.
+@arg @c "BottomAligned"  Text line block is aligned with the bottom of the prescribed area.
+
+*/
