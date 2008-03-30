@@ -38,7 +38,7 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #endif
 
 
-// 
+//
 // int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
 // #else
 int main(int argc, char *argv[])
@@ -300,7 +300,6 @@ bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
    using namespace CEGUI;
 
    const TreeEventArgs& treeArgs = static_cast<const TreeEventArgs&>(args);
-   Tree *theTree = (Tree *)TreeDemoWindow->getChild(TreeID);
    Editbox *editBox = (Editbox *)TreeDemoWindow->getChild(EditBoxID);
 
    // Three different ways to get the item selected.

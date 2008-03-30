@@ -29,13 +29,13 @@ if CEGUI_SAMPLES_USE_OGRE
 endif
 if CEGUI_SAMPLES_USE_OPENGL
     libCEGUISampleHelper_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/RendererModules/OpenGLGUIRenderer
+    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/OpenGLGUIRenderer
     libCEGUISampleHelper_la_LIBADD += -lCEGUIOpenGLRenderer $(OpenGL_LIBS)
 endif
 if CEGUI_SAMPLES_USE_IRRLICHT
     INCLUDES += $(Irrlicht_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/RendererModules/IrrlichtRenderer
+    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/IrrlichtRenderer
     libCEGUISampleHelper_la_LIBADD += -lCEGUIIrrlichtRenderer $(Irrlicht_LIBS)
 endif
 

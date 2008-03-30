@@ -2,7 +2,7 @@
 	filename: 	CEGUIPixmapFont.h
 	created:	14/6/2006
 	author:		Andrew Zabolotny
-	
+
 	purpose:    Implementation of the Font class via static imagesets
 *************************************************************************/
 /***************************************************************************
@@ -42,7 +42,7 @@ namespace FontProperties
 {
     class PixmapImageset;
     class PixmapMapping;
-};
+}
 
 /*!
 \brief

@@ -38,14 +38,14 @@ namespace CEGUI
 
 
     FalagardTree::FalagardTree(const String& type, const String& name) :
-		WindowRenderer(type)
+        WindowRenderer(type)
     {
     }
-		FalagardTree::FalagardTree(const String& type) :
-		WindowRenderer(type)
-	{
-		Tree* tree = (Tree*)d_window;
-	}
+
+    FalagardTree::FalagardTree(const String& type) :
+        WindowRenderer(type)
+    {
+    }
 
     FalagardTree::~FalagardTree()
     {
@@ -56,7 +56,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 		Tree* tree = (Tree*)d_window;
-		
+
         bool v_visible = tree->getVertScrollbar()->isVisible(true);
         bool h_visible = tree->getHorzScrollbar()->isVisible(true);
 
