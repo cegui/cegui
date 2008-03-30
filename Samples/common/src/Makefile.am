@@ -13,7 +13,7 @@ libCEGUISampleHelper_la_LIBADD =
 if MINGW32_BUILD
 libCEGUISampleHelper_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
 libCEGUISampleHelper_la_LDFLAGS += -shared -no-undefined
-libCEGUISampleHelper_la_LIBADD += -L$(top_builddir)/src -lCEGUIBase
+libCEGUISampleHelper_la_LIBADD += -L$(top_builddir)/cegui/src -lCEGUIBase
 libCEGUISampleHelper_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
 endif
 
@@ -24,21 +24,21 @@ if CEGUI_USING_GTK2
 endif
 if CEGUI_SAMPLES_USE_OGRE
 #    INCLUDES += $(CEGUIOGRE_CFLAGS) $(OIS_CFLAGS)
-    INCLUDES += -I$(top_srcdir)/RendererModules/OgreGUIRenderer $(OGRE_CFLAGS) $(OIS_CFLAGS)
+    INCLUDES += -I$(top_srcdir)/cegui/include/RendererModules/OgreGUIRenderer $(OGRE_CFLAGS) $(OIS_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiOgreBaseApplication.cpp
 #    libCEGUISampleHelper_la_LIBADD += $(CEGUIOGRE_LIBS) $(OIS_LIBS)
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/RendererModules/OgreGUIRenderer
+    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/OgreGUIRenderer
     libCEGUISampleHelper_la_LIBADD += -lCEGUIOgreRenderer $(OGRE_LIBS) $(OIS_LIBS)
 endif
 if CEGUI_SAMPLES_USE_OPENGL
     libCEGUISampleHelper_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/RendererModules/OpenGLGUIRenderer
+    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/OpenGLGUIRenderer
     libCEGUISampleHelper_la_LIBADD += -lCEGUIOpenGLRenderer $(OpenGL_LIBS)
 endif
 if CEGUI_SAMPLES_USE_IRRLICHT
     INCLUDES += $(Irrlicht_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/RendererModules/IrrlichtRenderer
+    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/IrrlichtRenderer
     libCEGUISampleHelper_la_LIBADD += -lCEGUIIrrlichtRenderer $(Irrlicht_LIBS)
 endif
 
