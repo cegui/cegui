@@ -2,11 +2,11 @@
 	filename: 	CEGUIImageset.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines the interface for the Imageset class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,7 +37,7 @@
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImage.h"
 #include "CEGUIIteratorBase.h"
-#include "CEGUIXMLSerializer.h" 
+#include "CEGUIXMLSerializer.h"
 
 #include <map>
 
@@ -51,7 +51,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
 /*!
 \brief
 	Offers functions to define, access, and draw, a set of image components on a single graphical surface or Texture.
@@ -76,7 +75,7 @@ private:
 
 
 	/*************************************************************************
-		Construction and Destruction (private, only ImagesetManager can 
+		Construction and Destruction (private, only ImagesetManager can
 		create and destroy Imageset objects).
 	*************************************************************************/
 	/*!
@@ -161,7 +160,7 @@ public:
 	\brief
 		return String object holding the name of the Imageset
 
-	\return	
+	\return
 		String object that holds the name of the Imageset.
 	*/
 	const String&	getName(void) const						{return d_name;}
@@ -176,7 +175,7 @@ public:
 	*/
 	uint      getImageCount(void) const               {return (uint)d_images.size();}
 
- 
+
 	/*!
 	\brief
 		return true if an Image with the specified name exists.
@@ -189,7 +188,7 @@ public:
 	*/
 	bool		isImageDefined(const String& name) const	{return d_images.find(name) != d_images.end();}
 
- 
+
 	/*!
 	\brief
 		return a copy of the Image object for the named image
@@ -315,7 +314,7 @@ public:
 	*/
 	float	getImageOffsetY(const String& name) const		{return getImage(name).getOffsetY();}
 
-	
+
 	/*!
 	\brief
 		Define a new Image for this Imageset
@@ -364,72 +363,103 @@ public:
 	void	defineImage(const String& name, const Rect& image_rect, const Point& render_offset);
 
 
-	/*!
-	\brief
-		Queues an area of the associated Texture the be drawn on the screen.  Low-level routine to be used carefully!
+    /*!
+    \brief
+        Queues an area of the associated Texture the be drawn on the given
+        RenderTarget.  Low-level routine to be used carefully!
 
-	\param source_rect
-		Rect object describing the area of the image file / texture that is to be queued for drawing
+    \param target
+        RenderTarget that is the target of the draw operation.
 
-	\param dest_rect
-		Rect describing the area of the screen that will be filled with the imagery from \a source_rect.
+    \param source_rect
+        Rect object describing the area of the image file / texture that is to
+        be queued for drawing
 
-	\param z
-		float value specifying 'z' order.  0 is topmost with increasing values moving back into the screen.
+    \param dest_rect
+        Rect describing the area of the RenderTarget that will be filled with
+        the imagery from \a source_rect.
 
-	\param clip_rect
-		Rect object describing a 'clipping rectangle' that will be applied when drawing the requested imagery
+    \param z
+        float value specifying 'z' order.  0 is topmost with increasing values
+        moving back into the target space.
 
-	\param colours
-		ColourRect object holding the ARGB colours to be applied to the four corners of the rendered imagery.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \param clip_rect
+        Rect object describing a 'clipping rectangle' that will be applied when
+        drawing the requested imagery
 
-	\return
-		Nothing
-	*/
-	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode) const;
+    \param colours
+        ColourRect object holding the ARGB colours to be applied to the four
+        corners of the rendered imagery.
 
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way quads are split into
+        triangles.
 
-	/*!
-	\brief
-		Queues an area of the associated Texture the be drawn on the screen.  Low-level routine to be used carefully!
+    \return
+        Nothing
+    */
+    void draw(RenderTarget& target, const Rect& source_rect,
+              const Rect& dest_rect, float z, const Rect& clip_rect,
+              const ColourRect& colours, QuadSplitMode quad_split_mode) const;
 
-	\param source_rect
-		Rect object describing the area of the image file / texture that is to be queued for drawing
+    /*!
+    \brief
+        Queues an area of the associated Texture the be drawn on the given
+        RenderTarget.  Low-level routine to be used carefully!
 
-	\param dest_rect
-		Rect describing the area of the screen that will be filled with the imagery from \a source_rect.
+    \param target
+        RenderTarget that is the target of the draw operation.
 
-	\param z
-		float value specifying 'z' order.  0 is topmost with increasing values moving back into the screen.
+    \param source_rect
+        Rect object describing the area of the image file / texture that is to
+        be queued for drawing
 
-	\param clip_rect
-		Rect object describing a 'clipping rectangle' that will be applied when drawing the requested imagery
+    \param dest_rect
+        Rect describing the area of the RenderTarget that will be filled with
+        the imagery from \a source_rect.
 
-	\param top_left_colour
-		colour to be applied to the top left corner of the rendered imagery.
+    \param z
+        float value specifying 'z' order.  0 is topmost with increasing values
+        moving back into the target space.
 
-	\param top_right_colour
-		colour to be applied to the top right corner of the rendered imagery.
+    \param clip_rect
+        Rect object describing a 'clipping rectangle' that will be applied when
+        drawing the requested imagery
 
-	\param bottom_left_colour
-		colour to be applied to the bottom left corner of the rendered imagery.
+    \param top_left_colour
+        colour to be applied to the top left corner of the rendered imagery.
 
-	\param bottom_right_colour
-		colour to be applied to the bottom right corner of the rendered imagery.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \param top_right_colour
+        colour to be applied to the top right corner of the rendered imagery.
 
-	\return
-		Nothing
-	*/
-	void	draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF,  const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
-	{
-		draw(source_rect, dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
-	}
+    \param bottom_left_colour
+        colour to be applied to the bottom left corner of the rendered imagery.
+
+    \param bottom_right_colour
+        colour to be applied to the bottom right corner of the rendered imagery.
+
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way quads are split into
+        triangles.
+
+    \return
+        Nothing
+    */
+    void draw(RenderTarget& target, const Rect& source_rect,
+              const Rect& dest_rect, float z, const Rect& clip_rect,
+              const colour& top_left_colour = 0xFFFFFFFF,
+              const colour& top_right_colour = 0xFFFFFFFF,
+              const colour& bottom_left_colour = 0xFFFFFFFF,
+              const colour& bottom_right_colour = 0xFFFFFFFF,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+    {
+        draw(target, source_rect, dest_rect, z, clip_rect,
+             ColourRect(top_left_colour,
+                        top_right_colour,
+                        bottom_left_colour,
+                        bottom_right_colour),
+             quad_split_mode);
+    }
 
 
 	/*!
@@ -562,7 +592,7 @@ protected:
 		Nothing
 
 	\exception	FileIOException		thrown if something goes wrong while processing the file \a filename.
-	*/	
+	*/
 	void	load(const String& filename, const String& resourceGroup);
 
 

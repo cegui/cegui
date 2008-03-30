@@ -259,7 +259,7 @@ void TabControl::addTab(Window* wnd)
 
     // Just request redraw
     performChildWindowLayout();
-    requestRedraw();
+    invalidate();
     // Subscribe to text changed event so that we can resize as needed
     wnd->subscribeEvent(Window::EventTextChanged, 
         Event::Subscriber(&TabControl::handleContentWindowTextChanged, this));
@@ -290,7 +290,7 @@ void TabControl::removeTab(const String& name)
 
     performChildWindowLayout();
 
-    requestRedraw();
+    invalidate();
 }
 /*************************************************************************
 Remove a tab by ID
@@ -322,7 +322,7 @@ void TabControl::removeTab(uint ID)
 
     performChildWindowLayout();
 
-    requestRedraw();
+    invalidate();
 
 }
 /*************************************************************************
@@ -526,7 +526,7 @@ Selection changed event
 *************************************************************************/
 void TabControl::onSelectionChanged(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 /*************************************************************************
@@ -567,7 +567,7 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     float left_x = btn->getXPosition ().d_offset;
     btn->setVisible ((left_x < getPixelSize ().d_width) &&
                      (left_x + btn->getPixelSize ().d_width > 0));
-    btn->requestRedraw();
+    btn->invalidate();
 }
 /*************************************************************************
 Layout the widgets
@@ -656,7 +656,7 @@ bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
     tabButton->setText(wargs.window->getText());
     // sort out the layout
     performChildWindowLayout();
-	requestRedraw();
+	invalidate();
 
 	return true;
 }

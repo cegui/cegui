@@ -1,13 +1,16 @@
 /***********************************************************************
-	filename: 	openglrenderer.cpp
-	created:	9/4/2004
-	author:		Mark Strom
-				mwstrom@gmail.com
+    filename:  openglrenderer.cpp
+    created: 9/4/2004
+    authors:
+        Original OpenGLGUIRenderer code: Mark Strom <mwstrom@gmail.com>
+        ImageCodec system support: Olivier Delannoy
+        Static build support: Jonathan Welch (Kokoro-Sama)
+        RenderTarget modifications & updates: Paul D Turner
 
-	purpose:	Interface to Renderer implemented via Opengl
+    purpose: Interface to Renderer implemented via Opengl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,22 +40,31 @@
 #include "CEGUIEventArgs.h"
 #include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
+#include "CEGUIcolour.h"
+#include "CEGUIOpenGLViewportTarget.h"
+#include "CEGUIOpenGLFBOTextureTarget.h"
+
+#if defined(__linux__)
+#   include "CEGUIOpenGLGLXPBTextureTarget.h"
+#elif defined(_WIN32) || defined(__WIN32__)
+#   include "CEGUIOpenGLWGLPBTextureTarget.h"
+#endif
 
 //Include the default codec for static builds
 #if defined(CEGUI_STATIC)
-#	if defined(CEGUI_CODEC_SILLY)
-#		include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_TGA)
-#		include "../../ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_CORONA)
-#		include "../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_DEVIL)
-#		include "../../ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_FREEIMAGE)
-#		include "../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
-#	else //Make Silly the default
-#		include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-#	endif
+# if defined(CEGUI_CODEC_SILLY)
+#  include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+# elif defined(CEGUI_CODEC_TGA)
+#  include "../../ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
+# elif defined(CEGUI_CODEC_CORONA)
+#  include "../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
+# elif defined(CEGUI_CODEC_DEVIL)
+#  include "../../ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
+# elif defined(CEGUI_CODEC_FREEIMAGE)
+#  include "../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
+# else //Make Silly the default
+#  include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
+# endif
 #endif
 
 
@@ -63,584 +75,230 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Constants definitions
-*************************************************************************/
-const int OpenGLRenderer::VERTEX_PER_QUAD           = 6;
-const int OpenGLRenderer::VERTEX_PER_TRIANGLE       = 3;
-const int OpenGLRenderer::VERTEXBUFFER_CAPACITY     = OGLRENDERER_VBUFF_CAPACITY;
+//----------------------------------------------------------------------------//
+String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
 
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
-OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
-    d_queueing(true),
-    d_currTexture(0),
-    d_bufferPos(0),
-    d_imageCodec(codec),
-    d_imageCodecModule(0)
+//----------------------------------------------------------------------------//
+//
+// Here we have an internal class that allows us to implement a factory template
+// for creating / destroying any type of RenderTarget.  The code that detects
+// the computer's abilities will generate an appropriate factory for a
+// RenderTarget that does caching - or use the default 'null' factory if no
+// suitable RenderTargets are available.
+//
+// base factory class - mainly used as a polymorphic interface
+class OGLCacheTargetFactory
 {
-	GLint vp[4];
+public:
+    OGLCacheTargetFactory() {}
+    virtual ~OGLCacheTargetFactory() {}
+    virtual RenderTarget* create() const
+        { return 0; }
+    virtual void destory(RenderTarget* target) const
+        { delete target; }
+};
 
-	// initialise renderer size
-	glGetIntegerv(GL_VIEWPORT, vp);
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &d_maxTextureSize);
-	d_display_area.d_left	= 0;
-	d_display_area.d_top	= 0;
-	d_display_area.d_right	= (float)vp[2];
-	d_display_area.d_bottom	= (float)vp[3];
+// template specialised class - does the real work
+template<typename T>
+class OGLTemplateCacheFactory : public OGLCacheTargetFactory
+{
+    virtual RenderTarget* create() const
+        { return new T; }
+};
+
+//----------------------------------------------------------------------------//
+OpenGLRenderer::OpenGLRenderer(ImageCodec*  codec) :
+        d_imageCodec(codec),
+        d_imageCodecModule(0),
+        d_cacheFactory(0)
+{
+    // create main view port target for the renderer
+    d_primaryTarget = new OpenGLViewportTarget;
+
+    // create factory that can generate RenderTargets that cache
+    initialiseCacheFactory();
 
     if (!d_imageCodec)
         setupImageCodec("");
+
     setModuleIdentifierString();
+
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &d_maxTextureSize);
 }
 
-
-OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, ImageCodec* codec) :
-	d_queueing(true),
-	d_currTexture(0),
-	d_bufferPos(0),
-    d_imageCodec(codec),
-    d_imageCodecModule(0)
+//----------------------------------------------------------------------------//
+OpenGLRenderer::OpenGLRenderer(const Rect& area, ImageCodec* codec) :
+        d_imageCodec(codec),
+        d_imageCodecModule(0)
 {
-	GLint vp[4];
+    // create main view port target for the renderer
+    d_primaryTarget = new OpenGLViewportTarget(area);
 
-	// initialise renderer size
-	glGetIntegerv(GL_VIEWPORT, vp);
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &d_maxTextureSize);
-	d_display_area.d_left	= 0;
-	d_display_area.d_top	= 0;
-	d_display_area.d_right	= static_cast<float>(width);
-	d_display_area.d_bottom	= static_cast<float>(height);
+    // create factory that can generate RenderTargets that cache
+    initialiseCacheFactory();
+
     if (!d_imageCodec)
         setupImageCodec("");
+
     setModuleIdentifierString();
+
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &d_maxTextureSize);
 }
 
-
-/*************************************************************************
-	Destructor
-*************************************************************************/
-OpenGLRenderer::~OpenGLRenderer(void)
+//----------------------------------------------------------------------------//
+OpenGLRenderer::~OpenGLRenderer()
 {
-	destroyAllTextures();
+    destroyAllTextures();
     cleanupImageCodec();
+    delete d_primaryTarget;
+    delete d_cacheFactory;
 }
 
-
-/*************************************************************************
-	add's a quad to the list to be rendered
-*************************************************************************/
-void OpenGLRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::doRender()
 {
-	// if not queuing, render directly (as in, right now!)
-	if (!d_queueing)
-	{
-		renderQuadDirect(dest_rect, z, tex, texture_rect, colours, quad_split_mode);
-	}
-	else
-	{
-		QuadInfo quad;
-		quad.position			= dest_rect;
-		quad.position.d_bottom	= d_display_area.d_bottom - dest_rect.d_bottom;
-		quad.position.d_top		= d_display_area.d_bottom - dest_rect.d_top;
-		quad.z					= z;
-		quad.texid				= ((OpenGLTexture*)tex)->getOGLTexid();
-		quad.texPosition		= texture_rect;
-		quad.topLeftCol		= colourToOGL(colours.d_top_left);
-		quad.topRightCol	= colourToOGL(colours.d_top_right);
-		quad.bottomLeftCol	= colourToOGL(colours.d_bottom_left);
-		quad.bottomRightCol	= colourToOGL(colours.d_bottom_right);
-
-        // set quad split mode
-        quad.splitMode = quad_split_mode;
-
-		d_quadlist.insert(quad);
-	}
-
+    d_primaryTarget->execute();
 }
 
-
-
-/*************************************************************************
-	perform final rendering for all queued renderable quads.
-*************************************************************************/
-void OpenGLRenderer::doRender(void)
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::clearRenderList()
 {
-	d_currTexture = 0;
-
-	initPerFrameStates();
-	glInterleavedArrays(GL_T2F_C4UB_V3F , 0, myBuff);
-
-	// iterate over each quad in the list
-	for (QuadList::iterator i = d_quadlist.begin(); i != d_quadlist.end(); ++i)
-	{
-		const QuadInfo& quad = (*i);
-
-		if(d_currTexture != quad.texid)
-		{
-			renderVBuffer();
-			glBindTexture(GL_TEXTURE_2D, quad.texid);
-			d_currTexture = quad.texid;
-		}
-
-		//vert0
-		myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
-		myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
-		myBuff[d_bufferPos].vertex[2]	= quad.z;
-		myBuff[d_bufferPos].color		= quad.topLeftCol;
-		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
-		++d_bufferPos;
-
-		//vert1
-		myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
-		myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
-		myBuff[d_bufferPos].vertex[2]	= quad.z;
-		myBuff[d_bufferPos].color		= quad.bottomLeftCol;
-		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
-		++d_bufferPos;
-
-		//vert2
-
-        // top-left to bottom-right diagonal
-        if (quad.splitMode == TopLeftToBottomRight)
-        {
-            myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
-            myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
-            myBuff[d_bufferPos].vertex[2]	= quad.z;
-            myBuff[d_bufferPos].color		= quad.bottomRightCol;
-            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
-        }
-        // bottom-left to top-right diagonal
-        else
-        {
-            myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
-            myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
-            myBuff[d_bufferPos].vertex[2]	= quad.z;
-            myBuff[d_bufferPos].color		= quad.topRightCol;
-            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
-        }
-		++d_bufferPos;
-
-		//vert3
-		myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
-		myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
-		myBuff[d_bufferPos].vertex[2]	= quad.z;
-		myBuff[d_bufferPos].color		= quad.topRightCol;
-		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
-		++d_bufferPos;
-
-		//vert4
-
-        // top-left to bottom-right diagonal
-        if (quad.splitMode == TopLeftToBottomRight)
-        {
-            myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
-            myBuff[d_bufferPos].vertex[1]	= quad.position.d_top;
-            myBuff[d_bufferPos].vertex[2]	= quad.z;
-            myBuff[d_bufferPos].color		= quad.topLeftCol;
-            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_top;
-        }
-        // bottom-left to top-right diagonal
-        else
-        {
-            myBuff[d_bufferPos].vertex[0]	= quad.position.d_left;
-            myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
-            myBuff[d_bufferPos].vertex[2]	= quad.z;
-            myBuff[d_bufferPos].color		= quad.bottomLeftCol;
-            myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_left;
-            myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
-        }
-		++d_bufferPos;
-
-		//vert 5
-		myBuff[d_bufferPos].vertex[0]	= quad.position.d_right;
-		myBuff[d_bufferPos].vertex[1]	= quad.position.d_bottom;
-		myBuff[d_bufferPos].vertex[2]	= quad.z;
-		myBuff[d_bufferPos].color		= quad.bottomRightCol;
-		myBuff[d_bufferPos].tex[0]		= quad.texPosition.d_right;
-		myBuff[d_bufferPos].tex[1]		= quad.texPosition.d_bottom;
-		++d_bufferPos;
-
-		if(d_bufferPos > (VERTEXBUFFER_CAPACITY - VERTEX_PER_QUAD))
-		{
-			renderVBuffer();
-		}
-
-	}
-
-	//Render
-	renderVBuffer();
-
-	exitPerFrameStates();
+    d_primaryTarget->clearRenderList();
 }
 
-
-/*************************************************************************
-	clear the queue
-*************************************************************************/
-void OpenGLRenderer::clearRenderList(void)
+//----------------------------------------------------------------------------//
+Texture* OpenGLRenderer::createTexture()
 {
-	d_quadlist.clear();
+    OpenGLTexture* tex = new OpenGLTexture(this);
+    d_texturelist.push_back(tex);
+    return tex;
 }
 
-
-/*************************************************************************
-	create an empty texture
-*************************************************************************/
-Texture* OpenGLRenderer::createTexture(void)
+//----------------------------------------------------------------------------//
+Texture* OpenGLRenderer::createTexture(const String& filename,
+    const String& resourceGroup)
 {
-	OpenGLTexture* tex = new OpenGLTexture(this);
-	d_texturelist.push_back(tex);
-	return tex;
+    OpenGLTexture* tex = new OpenGLTexture(this);
+    try
+    {
+        tex->loadFromFile(filename, resourceGroup);
+    }
+    catch (RendererException&)
+    {
+        delete tex;
+        throw;
+    }
+    d_texturelist.push_back(tex);
+    return tex;
 }
 
-
-/*************************************************************************
-	Create a new Texture object and load a file into it.
-*************************************************************************/
-Texture* OpenGLRenderer::createTexture(const String& filename, const String& resourceGroup)
-{
-	OpenGLTexture* tex = new OpenGLTexture(this);
-	try
-	{
-	    tex->loadFromFile(filename, resourceGroup);
-	}
-	catch (RendererException&)
-	{
-	    delete tex;
-	    throw;
-	}
-	d_texturelist.push_back(tex);
-	return tex;
-}
-
-
-/*************************************************************************
-	Create a new texture with the given dimensions
-*************************************************************************/
+//----------------------------------------------------------------------------//
 Texture* OpenGLRenderer::createTexture(float size)
 {
-	OpenGLTexture* tex = new OpenGLTexture(this);
-	try
-	{
-	    tex->setOGLTextureSize((uint)size);
-	}
-	catch (RendererException&)
-	{
-	    delete tex;
-	    throw;
-	}
+    OpenGLTexture* tex = new OpenGLTexture(this);
+    try
+    {
+        tex->setOGLTextureSize((uint)size);
+    }
+    catch (RendererException&)
+    {
+        delete tex;
+        throw;
+    }
     d_texturelist.push_back(tex);
-	return tex;
+    return tex;
 }
 
-
-/*************************************************************************
-	Destroy a texture
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::destroyTexture(Texture* texture)
 {
-	if (texture)
-	{
-		OpenGLTexture* tex = (OpenGLTexture*)texture;
-		d_texturelist.remove(tex);
-		delete tex;
-	}
-
-}
-
-
-/*************************************************************************
-	destroy all textures still active
-*************************************************************************/
-void OpenGLRenderer::destroyAllTextures(void)
-{
-	while (!d_texturelist.empty())
-	{
-		destroyTexture(*(d_texturelist.begin()));
-	}
-}
-
-
-/*************************************************************************
-	setup states etc
-*************************************************************************/
-void OpenGLRenderer::initPerFrameStates(void)
-{
-	//save current attributes
-	glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
-
-	glPolygonMode(GL_FRONT, GL_FILL);
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D(0.0, d_display_area.d_right, 0.0, d_display_area.d_bottom);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_FOG);
-    glDisable(GL_TEXTURE_GEN_S);
-    glDisable(GL_TEXTURE_GEN_T);
-    glDisable(GL_TEXTURE_GEN_R);
-
-	glFrontFace(GL_CCW);
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glEnable(GL_TEXTURE_2D);
-}
-
-
-void OpenGLRenderer::exitPerFrameStates(void)
-{
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-
-	//restore former attributes
-	glPopAttrib();
-	glPopClientAttrib();
-}
-
-
-/*************************************************************************
-	renders whatever is in the vertex buffer
-*************************************************************************/
-void OpenGLRenderer::renderVBuffer(void)
-{
-	// if bufferPos is 0 there is no data in the buffer and nothing to render
-	if (d_bufferPos == 0)
-	{
-		return;
-	}
-
-	// render the sprites
-	glDrawArrays(GL_TRIANGLES, 0, d_bufferPos);
-
-	// reset buffer position to 0...
-	d_bufferPos = 0;
-}
-
-
-/*************************************************************************
-	sort quads list according to texture
-*************************************************************************/
-void OpenGLRenderer::sortQuads(void)
-{
-	// no need to do anything here.
-}
-
-
-/*************************************************************************
-	render a quad directly to the display
-*************************************************************************/
-void OpenGLRenderer::renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
-{
-	QuadInfo quad;
-	quad.position.d_left	= dest_rect.d_left;
-	quad.position.d_right	= dest_rect.d_right;
-	quad.position.d_bottom	= d_display_area.d_bottom - dest_rect.d_bottom;
-	quad.position.d_top		= d_display_area.d_bottom - dest_rect.d_top;
-	quad.texPosition		= texture_rect;
-
-	quad.topLeftCol		= colourToOGL(colours.d_top_left);
-	quad.topRightCol	= colourToOGL(colours.d_top_right);
-	quad.bottomLeftCol	= colourToOGL(colours.d_bottom_left);
-	quad.bottomRightCol	= colourToOGL(colours.d_bottom_right);
-
-	MyQuad myquad[VERTEX_PER_QUAD];
-
-	initPerFrameStates();
-	glInterleavedArrays(GL_T2F_C4UB_V3F , 0, myquad);
-	glBindTexture(GL_TEXTURE_2D, ((OpenGLTexture*)tex)->getOGLTexid());
-
-	//vert0
-	myquad[0].vertex[0] = quad.position.d_left;
-	myquad[0].vertex[1] = quad.position.d_top;
-	myquad[0].vertex[2] = z;
-	myquad[0].color     = quad.topLeftCol;
-	myquad[0].tex[0]    = quad.texPosition.d_left;
-	myquad[0].tex[1]    = quad.texPosition.d_top;
-
-	//vert1
-	myquad[1].vertex[0] = quad.position.d_left;
-	myquad[1].vertex[1] = quad.position.d_bottom;
-	myquad[1].vertex[2] = z;
-	myquad[1].color     = quad.bottomLeftCol;
-	myquad[1].tex[0]    = quad.texPosition.d_left;
-	myquad[1].tex[1]    = quad.texPosition.d_bottom;
-
-	//vert2
-
-    // top-left to bottom-right diagonal
-    if (quad_split_mode == TopLeftToBottomRight)
+    if (texture)
     {
-        myquad[2].vertex[0] = quad.position.d_right;
-        myquad[2].vertex[1] = quad.position.d_bottom;
-        myquad[2].vertex[2] = z;
-        myquad[2].color     = quad.bottomRightCol;
-        myquad[2].tex[0]    = quad.texPosition.d_right;
-        myquad[2].tex[1]    = quad.texPosition.d_bottom;
-    }
-    // bottom-left to top-right diagonal
-    else
-    {
-        myquad[2].vertex[0] = quad.position.d_right;
-        myquad[2].vertex[1] = quad.position.d_top;
-        myquad[2].vertex[2] = z;
-        myquad[2].color     = quad.topRightCol;
-        myquad[2].tex[0]    = quad.texPosition.d_right;
-        myquad[2].tex[1]    = quad.texPosition.d_top;
+        OpenGLTexture* tex = (OpenGLTexture*)texture;
+        d_texturelist.remove(tex);
+        delete tex;
     }
 
-	//vert3
-	myquad[3].vertex[0] = quad.position.d_right;
-	myquad[3].vertex[1] = quad.position.d_top;
-	myquad[3].vertex[2] = z;
-	myquad[3].color     = quad.topRightCol;
-	myquad[3].tex[0]    = quad.texPosition.d_right;
-	myquad[3].tex[1]    = quad.texPosition.d_top;
-
-	//vert4
-
-    // top-left to bottom-right diagonal
-    if (quad_split_mode == TopLeftToBottomRight)
-    {
-        myquad[4].vertex[0] = quad.position.d_left;
-        myquad[4].vertex[1] = quad.position.d_top;
-        myquad[4].vertex[2] = z;
-        myquad[4].color     = quad.topLeftCol;
-        myquad[4].tex[0]    = quad.texPosition.d_left;
-        myquad[4].tex[1]    = quad.texPosition.d_top;
-    }
-    // bottom-left to top-right diagonal
-    else
-    {
-        myquad[4].vertex[0] = quad.position.d_left;
-        myquad[4].vertex[1] = quad.position.d_bottom;
-        myquad[4].vertex[2] = z;
-        myquad[4].color     = quad.bottomLeftCol;
-        myquad[4].tex[0]    = quad.texPosition.d_left;
-        myquad[4].tex[1]    = quad.texPosition.d_bottom;
-    }
-
-	//vert5
-	myquad[5].vertex[0] = quad.position.d_right;
-	myquad[5].vertex[1] = quad.position.d_bottom;
-	myquad[5].vertex[2] = z;
-	myquad[5].color     = quad.bottomRightCol;
-	myquad[5].tex[0]    = quad.texPosition.d_right;
-	myquad[5].tex[1]    = quad.texPosition.d_bottom;
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	exitPerFrameStates();
 }
 
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::destroyAllTextures()
+{
+    while (!d_texturelist.empty())
+    {
+        destroyTexture(*(d_texturelist.begin()));
+    }
+}
 
-/*************************************************************************
-	convert colour value to whatever the OpenGL system is expecting.
-*************************************************************************/
-uint32 OpenGLRenderer::colourToOGL(const colour& col) const
+//----------------------------------------------------------------------------//
+uint32 OpenGLRenderer::colourToOGL(const colour& col)
 {
     const argb_t c = col.getARGB();
 
     // OpenGL wants RGBA
-
 #ifdef __BIG_ENDIAN__
     uint32 cval = (c << 8) | (c >> 24);
 #else
-    uint32 cval = ((c&0xFF0000)>>16) | (c&0xFF00) | ((c&0xFF)<<16) | (c&0xFF000000);
+    uint32 cval = ((c & 0xFF0000) >> 16) |
+                   (c & 0xFF00) |
+                   ((c & 0xFF) << 16) |
+                   (c & 0xFF000000);
 #endif
-	return cval;
+    return cval;
 }
 
-
-/*************************************************************************
-	Set the size of the display in pixels.
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::setDisplaySize(const Size& sz)
 {
-	if (d_display_area.getSize() != sz)
-	{
-		d_display_area.setSize(sz);
-
-		EventArgs args;
-		fireEvent(EventDisplaySizeChanged, args, EventNamespace);
-	}
-
+    EventArgs args;
+    fireEvent(EventDisplaySizeChanged, args, EventNamespace);
 }
 
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::setModuleIdentifierString()
 {
     // set ID string
-    d_identifierString = "CEGUI::OpenGLRenderer - Official OpenGL based renderer module for CEGUI";
+    d_identifierString = "CEGUI::OpenGLRenderer - "
+                         "Official OpenGL based renderer module for CEGUI";
 }
 
-
-/************************************************************************
-    Grabs all loaded textures to local buffers and frees them
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::grabTextures()
 {
     typedef std::list<OpenGLTexture*> texlist;
     texlist::iterator i = d_texturelist.begin();
-    while (i!=d_texturelist.end())
+    while (i != d_texturelist.end())
     {
         (*i)->grabTexture();
         i++;
     }
 }
 
-
-/************************************************************************
-    Restores all textures from the previous call to 'grabTextures'
-*************************************************************************/
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::restoreTextures()
 {
     typedef std::list<OpenGLTexture*> texlist;
     texlist::iterator i = d_texturelist.begin();
-    while (i!=d_texturelist.end())
+    while (i != d_texturelist.end())
     {
         (*i)->restoreTexture();
         i++;
     }
 }
-/***********************************************************************
-    Get the current ImageCodec object used
-************************************************************************/
+
+//----------------------------------------------------------------------------//
 ImageCodec& OpenGLRenderer::getImageCodec()
 {
     return *d_imageCodec;
 }
-/***********************************************************************
-    Set the current ImageCodec object used
-************************************************************************/
+
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::setImageCodec(const String& codecName)
 {
     setupImageCodec(codecName);
 }
-/***********************************************************************
-    Set the current ImageCodec object used
-************************************************************************/
+
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::setImageCodec(ImageCodec* codec)
 {
     if (codec)
@@ -650,9 +308,8 @@ void OpenGLRenderer::setImageCodec(ImageCodec* codec)
         d_imageCodecModule = 0;
     }
 }
-/***********************************************************************
-    setup the ImageCodec object used
-************************************************************************/
+
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::setupImageCodec(const String& codecName)
 {
 
@@ -662,77 +319,203 @@ void OpenGLRenderer::setupImageCodec(const String& codecName)
 
     // Test whether we should use the default codec or not
     if (codecName.empty())
-		//If we are statically linking the default codec will already be in the system
+        //If we are statically linking the default codec will already be in the system
 #if defined(CEGUI_STATIC)
-		d_imageCodecModule = 0;
+        d_imageCodecModule = 0;
 #else
-		d_imageCodecModule = new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
+        d_imageCodecModule =
+            new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
 #endif
     else
         d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
 
-	//Check to make sure we have a module...
-	if(d_imageCodecModule)
-	{
-		// Create the codec object itself
-		ImageCodec* (*createFunc)(void) =
-			(ImageCodec* (*)(void))d_imageCodecModule->getSymbolAddress("createImageCodec");
-		d_imageCodec = createFunc();
-	} // if(d_imageCodecModule)
-	else
-	{
+    //Check to make sure we have a module...
+    if (d_imageCodecModule)
+    {
+        // Create the codec object itself
+        ImageCodec*(*createFunc)(void) =
+            (ImageCodec * (*)(void))d_imageCodecModule->
+                getSymbolAddress("createImageCodec");
+        d_imageCodec = createFunc();
+    } // if(d_imageCodecModule)
+    else
+    {
 #if defined(CEGUI_STATIC)
-		d_imageCodec = createImageCodec();
+        d_imageCodec = createImageCodec();
 #else
-		throw InvalidRequestException("Unable to load codec " + codecName);
+        throw InvalidRequestException("Unable to load codec " + codecName);
 #endif
-	}
+    }
 
 }
-/***********************************************************************
-    cleanup the ImageCodec object used
-************************************************************************/
+
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::cleanupImageCodec()
 {
     if (d_imageCodec && d_imageCodecModule)
     {
         void(*deleteFunc)(ImageCodec*) =
-            (void(*)(ImageCodec*))d_imageCodecModule->getSymbolAddress("destroyImageCodec");
+            (void(*)(ImageCodec*))d_imageCodecModule->
+                getSymbolAddress("destroyImageCodec");
         deleteFunc(d_imageCodec);
         d_imageCodec = 0;
         delete d_imageCodecModule;
         d_imageCodecModule = 0;
     } // if (d_imageCodec && d_imageCodecModule)
-	else
-	{
+    else
+    {
 #if defined(CEGUI_STATIC)
-		destroyImageCodec(d_imageCodec);
+        destroyImageCodec(d_imageCodec);
 #endif
-	}
+    }
 
 }
-/***********************************************************************
-    set the default ImageCodec name
-************************************************************************/
+
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::setDefaultImageCodecName(const String& codecName)
 {
     d_defaultImageCodecName = codecName;
 }
 
-/***********************************************************************
-    get the default ImageCodec name to be used
-************************************************************************/
+//----------------------------------------------------------------------------//
 const String& OpenGLRenderer::getDefaultImageCodecName()
 {
     return d_defaultImageCodecName;
 
 }
 
-/***********************************************************************
-    store the name of the default ImageCodec
-************************************************************************/
-String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
+//----------------------------------------------------------------------------//
+RenderTarget* OpenGLRenderer::getPrimaryRenderTarget() const
+{
+    return d_primaryTarget;
+}
 
+//----------------------------------------------------------------------------//
+RenderTarget* OpenGLRenderer::createCachingRenderTarget()
+{
+    if (d_cacheFactory)
+        return d_cacheFactory->create();
+
+    return 0;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::destroyCachingRenderTarget(RenderTarget* target)
+{
+    if (d_cacheFactory)
+        d_cacheFactory->destory(target);
+    else
+        delete target;
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGLRenderer::isExtensionSupported(const std::string& ext)
+{
+    // get extensions string.
+    const std::string glextns(
+        reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
+
+    return isExtensionInString(ext, glextns);
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGLRenderer::isExtensionInString(const std::string& ext,
+    const std::string& extensions)
+{
+    using namespace std;
+    // search for the extension string we want.
+    for (size_t hpos, cpos = 0;
+         string::npos != (hpos = extensions.find(ext, cpos));
+         cpos = hpos + ext.length())
+    {
+        // ensure this 'hit' is not a substring of some other extension
+        if (hpos == 0 || extensions[hpos - 1] == ' ')
+        {
+            const char lastchar = extensions[hpos + ext.length()];
+            if (lastchar == ' ' || lastchar == '\0')
+                return true;
+        }
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+uint OpenGLRenderer::getNextPowerOfTwo(uint size)
+{
+    // if not power of 2
+    if ((size & (size - 1)) || !size)
+    {
+        int log = 0;
+
+        // get integer log of 'size' to base 2
+        while (size >>= 1)
+            ++log;
+
+        // use log to calculate value to use as size.
+        size = (2 << log);
+    }
+
+    return size;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::initialiseCacheFactory()
+{
+    // prefer FBO
+    if (isExtensionSupported("GL_EXT_framebuffer_object"))
+    {
+        d_cacheFactory = new OGLTemplateCacheFactory<OpenGLFBOTextureTarget>;
+        return;
+    }
+#if defined(__linux__)
+    // if on linux, we can try for GLX pbuffer support
+    int glx_maj, glx_min;
+    Display* dpy = glXGetCurrentDisplay();
+    if (glXQueryExtension(dpy, 0, 0))
+        if (glXQueryVersion(dpy, &glx_maj, &glx_min))
+            if (((glx_maj == 1) && (glx_min >= 3)) || (glx_maj > 1))
+            {
+                d_cacheFactory =
+                    new OGLTemplateCacheFactory<OpenGLGLXPBTextureTarget>;
+                return;
+            }
+#elif defined(_WIN32) || defined(__WIN32__)
+    PFNWGLGETEXTENSIONSSTRINGARBPROC
+        wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)
+            wglGetProcAddress("wglGetExtensionsStringARB");
+
+    if (wglGetExtensionsStringARB)
+    {
+        std::string wglexts = wglGetExtensionsStringARB(wglGetCurrentDC());
+
+        if (OpenGLRenderer::isExtensionInString("WGL_ARB_pbuffer", wglexts))
+        {
+            d_cacheFactory =
+                new OGLTemplateCacheFactory<OpenGLWGLPBTextureTarget>;
+
+            return;
+        }
+    }
+#endif
+
+    // oh well, we tried.  Just carry on without caching ability :(
+    d_cacheFactory = new OGLCacheTargetFactory;
+}
+
+//----------------------------------------------------------------------------//
+void* OpenGLRenderer::getGLProcAddr(const std::string& funcion_name)
+{
+    #if defined(_WIN32) || defined(__WIN32__)
+        return (void*)wglGetProcAddress(funcion_name.c_str());
+    #elif defined(__linux__)
+        return (void*)glXGetProcAddressARB((const GLubyte*)funcion_name.c_str());
+    #elif defined(__APPLE__)
+        // FIXME: I think we need a solution similar to what is detailed here:
+        // FIXME: http://developer.apple.com/qa/qa2001/qa1188.html
+        return 0;
+    #endif
+
+}
 
 } // End of  CEGUI namespace section
-

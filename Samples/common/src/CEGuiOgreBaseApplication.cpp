@@ -77,7 +77,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
         // initialise GUI system
-        d_renderer = new CEGUI::OgreCEGUIRenderer(d_window, RENDER_QUEUE_OVERLAY, false, 0, sm);
+        d_renderer = new CEGUI::OgreCEGUIRenderer(d_window, sm, RENDER_QUEUE_OVERLAY, false);
         new CEGUI::System(d_renderer);
 
         // create frame listener
@@ -206,7 +206,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
 
     // get window handle
     window->getCustomAttribute("WINDOW", &windowHnd);
-    
+
     // fill param list
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
@@ -215,7 +215,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     d_inputManager = OIS::InputManager::createInputSystem(paramList);
 
     // create buffered keyboard
-    if (d_inputManager->numKeyBoards() > 0)
+    if (d_inputManager->numKeyboards() > 0)
     {
         d_keyboard = static_cast<OIS::Keyboard*>(d_inputManager->createInputObject(OIS::OISKeyboard, true));
         d_keyboard->setEventCallback(this);
@@ -226,7 +226,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     {
         d_mouse = static_cast<OIS::Mouse*>(d_inputManager->createInputObject(OIS::OISMouse, true));
         d_mouse->setEventCallback(this);
-        
+
         unsigned int width, height, depth;
         int left, top;
 
@@ -277,7 +277,7 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 
         return true;
     }
-    
+
 }
 
 bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
@@ -346,7 +346,7 @@ bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseB
 
 CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
 {
-   using namespace OIS; 
+   using namespace OIS;
 
    switch (buttonID)
     {

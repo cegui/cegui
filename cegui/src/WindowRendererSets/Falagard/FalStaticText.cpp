@@ -242,7 +242,7 @@ namespace CEGUI
     void FalagardStaticText::setTextColours(const ColourRect& colours)
     {
         d_textCols = colours;
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -252,7 +252,7 @@ namespace CEGUI
     {
         d_vertFormatting = v_fmt;
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -262,7 +262,7 @@ namespace CEGUI
     {
         d_horzFormatting = h_fmt;
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -348,7 +348,7 @@ namespace CEGUI
     bool FalagardStaticText::onTextChanged(const EventArgs& e)
     {
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
         return true;
     }
 
@@ -369,7 +369,7 @@ namespace CEGUI
     bool FalagardStaticText::onFontChanged(const EventArgs& event)
     {
         configureScrollbars();
-        d_window->requestRedraw();
+        d_window->invalidate();
         return true;
     }
 
@@ -401,7 +401,7 @@ namespace CEGUI
     *************************************************************************/
     bool FalagardStaticText::handleScrollbarChange(const EventArgs& e)
     {
-        d_window->requestRedraw();
+        d_window->invalidate();
         return true;
     }
 

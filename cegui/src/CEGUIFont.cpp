@@ -6,7 +6,7 @@
     purpose:	Implements Font class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -34,6 +34,7 @@
 #include "CEGUITextUtils.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUIRenderTarget.h"
 #include <algorithm>
 
 namespace CEGUI
@@ -88,7 +89,9 @@ Font::Font (const XMLAttributes& attributes) :
 {
     addFontProperties ();
 
-    Size size = System::getSingleton ().getRenderer()->getSize ();
+    Size size = System::getSingleton().getRenderer()->
+        getPrimaryRenderTarget()->getArea().getSize();
+
     d_horzScaling = size.d_width / d_nativeHorzRes;
     d_vertScaling = size.d_height / d_nativeVertRes;
 }
@@ -281,7 +284,9 @@ size_t Font::getFormattedLineCount(const String& text, const Rect& format_area, 
 /*************************************************************************
     Renders text on the display.  Return number of lines output.
 *************************************************************************/
-size_t Font::drawText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale)
+size_t Font::drawText(RenderTarget& target, const String& text,
+    const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt,
+    const ColourRect& colours, float x_scale, float y_scale)
 {
     size_t thisCount;
     size_t lineCount = 0;
@@ -309,48 +314,48 @@ size_t Font::drawText(const String& text, const Rect& draw_area, float z, const 
         switch(fmt)
         {
         case LeftAligned:
-            drawTextLine(currLine, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(target, currLine, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case RightAligned:
-            drawTextLine(currLine, Vector3(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(target, currLine, Vector3(tmpDrawArea.d_right - getTextExtent(currLine, x_scale), y_base, z), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case Centred:
-            drawTextLine(currLine, Vector3(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLine(target, currLine, Vector3(PixelAligned(tmpDrawArea.d_left + ((tmpDrawArea.getWidth() - getTextExtent(currLine, x_scale)) / 2.0f)), y_base, z), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case Justified:
             // new function in order to keep drawTextLine's signature unchanged
-            drawTextLineJustified(currLine, draw_area, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
+            drawTextLineJustified(target, currLine, draw_area, Vector3(tmpDrawArea.d_left, y_base, z), clip_rect, colours, x_scale, y_scale);
             thisCount = 1;
             y_base += getLineSpacing(y_scale);
             break;
 
         case WordWrapLeftAligned:
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(target, currLine, tmpDrawArea, z, clip_rect, LeftAligned, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapRightAligned:
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, RightAligned, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(target, currLine, tmpDrawArea, z, clip_rect, RightAligned, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapCentred:
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Centred, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(target, currLine, tmpDrawArea, z, clip_rect, Centred, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
         case WordWrapJustified:
             // no change needed
-            thisCount = drawWrappedText(currLine, tmpDrawArea, z, clip_rect, Justified, colours, x_scale, y_scale);
+            thisCount = drawWrappedText(target, currLine, tmpDrawArea, z, clip_rect, Justified, colours, x_scale, y_scale);
             tmpDrawArea.d_top += thisCount * getLineSpacing(y_scale);
             break;
 
@@ -381,7 +386,9 @@ size_t Font::getNextWord(const String& in_string, size_t start_idx, String& out_
 /*************************************************************************
     draws wrapped text
 *************************************************************************/
-size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColourRect& colours, float x_scale, float y_scale)
+size_t Font::drawWrappedText(RenderTarget& target, const String& text,
+    const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt,
+    const ColourRect& colours, float x_scale, float y_scale)
 {
     size_t	line_count = 0;
     Rect	dest_area(draw_area);
@@ -404,7 +411,7 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
         if ((getTextExtent(thisLine, x_scale) + getTextExtent(thisWord, x_scale)) > wrap_width)
         {
             // output what we had until this new word
-            line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
+            line_count += drawText(target, thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
 
             // remove whitespace from next word - it will form start of next line
             thisWord = thisWord.substr(thisWord.find_first_not_of(whitespace));
@@ -423,7 +430,7 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
     // Last line is left aligned
     TextFormatting last_fmt = (fmt == Justified ? LeftAligned : fmt);
     // output last bit of string
-    line_count += drawText(thisLine, dest_area, z, clip_rect, last_fmt, colours, x_scale, y_scale);
+    line_count += drawText(target, thisLine, dest_area, z, clip_rect, last_fmt, colours, x_scale, y_scale);
 
     return line_count;
 }
@@ -432,7 +439,9 @@ size_t Font::drawWrappedText(const String& text, const Rect& draw_area, float z,
 /*************************************************************************
     Draw a line of text.  No formatting is applied.
 *************************************************************************/
-void Font::drawTextLine(const String& text, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale, float y_scale)
+void Font::drawTextLine(RenderTarget& target, const String& text,
+    const Vector3& position, const Rect& clip_rect, const ColourRect& colours,
+    float x_scale, float y_scale)
 {
     Vector3	cur_pos(position);
 
@@ -447,7 +456,7 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
         {
             const Image* img = glyph->getImage();
             cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
+            img->draw(target, cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
             cur_pos.d_x += glyph->getAdvance(x_scale);
         }
     }
@@ -457,7 +466,9 @@ void Font::drawTextLine(const String& text, const Vector3& position, const Rect&
 /*************************************************************************
     Draw a justified line of text.
 *************************************************************************/
-void Font::drawTextLineJustified (const String& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColourRect& colours, float x_scale, float y_scale)
+void Font::drawTextLineJustified(RenderTarget& target, const String& text,
+    const Rect& draw_area, const Vector3& position, const Rect& clip_rect,
+    const ColourRect& colours, float x_scale, float y_scale)
 {
     Vector3	cur_pos(position);
 
@@ -489,7 +500,7 @@ void Font::drawTextLineJustified (const String& text, const Rect& draw_area, con
         {
             const Image* img = glyph->getImage();
             cur_pos.d_y = base_y - (img->getOffsetY() - img->getOffsetY() * y_scale);
-            img->draw(cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
+            img->draw(target, cur_pos, glyph->getSize(x_scale, y_scale), clip_rect, colours);
             cur_pos.d_x += glyph->getAdvance(x_scale);
 
             // That's where we adjust the size of each space character
@@ -509,7 +520,9 @@ void Font::setNativeResolution (const Size& size)
     d_nativeVertRes = size.d_height;
 
     // re-calculate scaling factors & notify images as required
-    notifyScreenResolution (System::getSingleton ().getRenderer()->getSize ());
+    notifyScreenResolution(
+        System::getSingleton().getRenderer()->
+            getPrimaryRenderTarget()->getArea().getSize());
 }
 
 

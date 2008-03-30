@@ -6,7 +6,7 @@ dnl now done like this to save repetition, and make it more explicit where
 dnl we should define these numbers (we could pick up the same info by other means
 dnl though this leaves nobody in any doubt about where this is being defined).
 m4_define([CEGUI_MAJ_VER], 0)
-m4_define([CEGUI_MIN_VER], 6)
+m4_define([CEGUI_MIN_VER], 7)
 m4_define([CEGUI_REL_VER], 0)
 
 dnl Construct the final version number out of the sub-version values specified above
@@ -77,7 +77,8 @@ AC_CHECK_FUNCS([atexit floor memchr memmove memset pow regcomp setlocale sqrt st
 
 # check for renderers
 CEGUI_ENABLE_OPENGL_RENDERER
-CEGUI_ENABLE_OGRE_RENDERER
+#CEGUI_ENABLE_OGRE_RENDERER
+CEGUI_CHECK_OGRE_BUILD
 CEGUI_ENABLE_IRRLICHT_RENDERER
 
 # decide whether to use gtk dialog in samples
@@ -130,6 +131,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/include/RendererModules/directx9GUIRenderer/Makefile
                  cegui/include/RendererModules/IrrlichtRenderer/Makefile
                  cegui/include/RendererModules/Makefile
+                 cegui/include/RendererModules/OgreGUIRenderer/Makefile
                  cegui/include/RendererModules/OpenGLGUIRenderer/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/Makefile
                  cegui/include/ScriptingModules/LuaScriptModule/support/Makefile
@@ -152,6 +154,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/src/RendererModules/directx9GUIRenderer/Makefile
                  cegui/src/RendererModules/IrrlichtRenderer/Makefile
                  cegui/src/RendererModules/Makefile
+                 cegui/src/RendererModules/OgreGUIRenderer/Makefile
                  cegui/src/RendererModules/OpenGLGUIRenderer/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/Makefile
                  cegui/src/ScriptingModules/LuaScriptModule/package/Makefile

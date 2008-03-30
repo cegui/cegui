@@ -2,7 +2,7 @@
 	filename: 	CEGUITitlebar.cpp
 	created:	25/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of common Titlebar parts.
 *************************************************************************/
 /***************************************************************************
@@ -150,9 +150,9 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 				if ((d_parent == 0) || (d_parent->getParent() == 0))
 				{
-					constrainArea = System::getSingleton().getRenderer()->getRect().getIntersection(d_oldCursorArea);
+					constrainArea = getRootRenderTarget()->getArea().getIntersection(d_oldCursorArea);
 				}
-				else 
+				else
 				{
 					constrainArea = d_parent->getParent()->getInnerRect().getIntersection(d_oldCursorArea);
 				}

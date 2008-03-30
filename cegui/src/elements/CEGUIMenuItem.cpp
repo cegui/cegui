@@ -112,7 +112,7 @@ void MenuItem::updateInternalState(const Point& mouse_pos)
 		    }
 	    }
 
-		requestRedraw();
+		invalidate();
 	}
 }
 
@@ -162,7 +162,7 @@ void MenuItem::setPopupMenu_impl(PopupMenu* popup, bool add_as_child)
         addChildWindow(popup);
 	}
 
-    requestRedraw();
+    invalidate();
 }
 
 /*************************************************************************
@@ -205,7 +205,7 @@ void MenuItem::openPopupMenu(bool notify)
     d_popup->openPopupMenu(false);
 
 	d_opened = true;
-	requestRedraw();
+	invalidate();
 }
 
 
@@ -240,7 +240,7 @@ void MenuItem::closePopupMenu(bool notify)
 	}
 
 	d_opened = false;
-	requestRedraw();
+	invalidate();
 }
 
 
@@ -340,7 +340,7 @@ void MenuItem::onMouseButtonDown(MouseEventArgs& e)
 			d_pushed = true;
 			updateInternalState(e.position);
 			d_popupWasClosed = !togglePopupMenu();
-			requestRedraw();
+			invalidate();
 		}
 
 		// event was handled by us.
@@ -385,7 +385,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
 	d_pushed = false;
 	updateInternalState(MouseCursor::getSingleton().getPosition());
-	requestRedraw();
+	invalidate();
 
 	// event was handled by us.
 	e.handled = true;
@@ -401,7 +401,7 @@ void MenuItem::onMouseLeaves(MouseEventArgs& e)
 	ItemEntry::onMouseLeaves(e);
 
 	d_hovering = false;
-	requestRedraw();
+	invalidate();
 
 	e.handled = true;
 }

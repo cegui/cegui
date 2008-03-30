@@ -82,6 +82,10 @@ if IRRLICHT_RENDERER then
     tinsert(pkg_table.RendererModules, "IrrlichtRenderer")
 end
 
+if OGRE_RENDERER then
+    tinsert(pkg_table.RendererModules, "OgreGUIRenderer")
+end
+
 --
 -- Image codec modules
 --
@@ -161,9 +165,9 @@ do
     if DIRECTX9_RENDERER and SAMPLES_DX9 then
         config_h.CEGUI_SAMPLES_USE_DIRECTX_9 = ""
     end
-    --if SAMPLES_OGRE then
-    --    config_h.CEGUI_SAMPLES_USE_OGRE = ""
-    --end
+    if OGRE_RENDERER and SAMPLES_OGRE then
+        config_h.CEGUI_SAMPLES_USE_OGRE = ""
+    end
     if IRRLICHT_RENDERER then
           -- This only used to happen when samples were to build as well
           config_h.CEGUI_IRR_SDK_VERSION = CEGUI_IRR_SDK_VERSION

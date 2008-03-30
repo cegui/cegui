@@ -71,6 +71,25 @@ if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
     end
 end
 
+if OGRE_RENDERER and SAMPLES_OGRE then
+	include(rootdir.."RendererModules/OgreGUIRenderer")
+	library("OgreMain", "_d")
+	library("OIS", "_d")
+	if OGRE_PATHS then
+		add_sdk_paths(OGRE_PATHS)
+	end
+	if OIS_PATHS then
+		add_sdk_paths(OIS_PATHS)
+	end
+
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("OgreGuiRenderer")
+    else
+        library("OgreGuiRenderer", DEBUG_DLL_SUFFIX or "")
+    end
+end
+
+
 if DEFAULT_XML_PARSER == "xerces" then
     if CEGUI_CORE_LIBRARY_SOLUTION then
         dependency("CEGUIXercesParser")

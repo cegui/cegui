@@ -2,11 +2,11 @@
 	filename: 	CEGUIForwardRefs.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Forward declares all core system classes
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,90 +33,180 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
 /*************************************************************************
-	Forward reference declarations of all core GUI system classes
+    Forward reference declarations of core system classes
 *************************************************************************/
-class String;
-class Vector3;
-class Size;
-class Exception;
-class Rect;
+class AbsoluteDim;
+class BaseDim;
+class BoundSlot;
+class ClippedContainer;
 class ColourRect;
-class colour;
-class Texture;
-class Renderer;
-class Image;
-class Imageset;
-class ImagesetManager;
-class MouseCursor;
-class Font;
-class FontManager;
-class EventArgs;
+class ComponentArea;
+class CoordConverter;
+class DefaultLogger;
+class DefaultResourceProvider;
+class Dimension;
+class DynamicModule;
 class Event;
 class EventSet;
+class FactoryModule;
+class FalagardComponentBase;
+class FalagardXMLHelper;
+class Font;
+class FontDim;
+class FontManager;
+class FrameComponent;
+class GlobalEventSet;
+class Image;
+class ImageCodec;
+class ImageDim;
+class ImageryComponent;
+class ImagerySection;
+class Imageset;
+class ImagesetManager;
+class LayerSpecification;
+class Logger;
+class MouseCursor;
+class NamedArea;
 class Property;
+class PropertyDim;
+class PropertyHelper;
+class PropertyInitialiser;
+class PropertyReceiver;
 class PropertySet;
-class Window;
-class WindowFactory;
-class WindowManager;
+class RawDataContainer;
+class Rect;
+template<typename T>
+class RefCounted;
+class RenderCache;
+class RenderTarget;
+class Renderer;
+class ResourceProvider;
 class Scheme;
 class SchemeManager;
-class ScriptWindowHelper;
-class System;
-class FactoryModule;
 class ScriptModule;
-class ResourceProvider;
-class DefaultResourceProvider;
-class DynamicModule;
-class PropertyReceiver;
-class GlobalEventSet;
+class SectionSpecification;
+template <typename T>
+class Singleton;
+class Size;
+class StateImagery;
+class String;
+class SubscriberSlot;
+class System;
+class Task;
+class TextComponent;
+class TextUtils;
+class Texture;
+class UDim;
+class URect;
+class UVector2;
+class UnifiedDim;
+class Vector2;
+class Vector3;
+class WidgetComponent;
+class WidgetDim;
+class WidgetFadeTask;
+class WidgetLookFeel;
+class WidgetLookManager;
+class Window;
+class WindowFactory;
+class WindowFactoryManager;
+class WindowManager;
+class WindowRenderer;
+class WindowRendererFactory;
+class WindowRendererManager;
 class XMLAttributes;
 class XMLHandler;
 class XMLParser;
-class WindowRenderer;
-class WindowRendererManager;
+class XMLSerializer;
+class colour;
 
 /*************************************************************************
-	Forward reference declarations for GUI element base classes
+    Forward reference declarations of exception types
+*************************************************************************/
+class Exception;
+class AlreadyExistsException;
+class FileIOException;
+class GenericException;
+class InvalidRequestException;
+class MemoryException;
+class NullObjectException;
+class ObjectInUseException;
+class RendererException;
+class ScriptException;
+class UnknownObjectException;
+
+/*************************************************************************
+    Forward reference declarations of event argument class types
+*************************************************************************/
+class EventArgs;
+class ActivationEventArgs;
+class DragDropEventArgs;
+class HeaderSequenceEventArgs;
+class KeyEventArgs;
+class MouseCursorEventArgs;
+class MouseEventArgs;
+class TreeEventArgs;
+class UpdateEventArgs;
+class WindowEventArgs;
+
+/*************************************************************************
+    Forward reference declarations of GUI widget elements
 *************************************************************************/
 class ButtonBase;
-class RadioButton;
 class Checkbox;
-class PushButton;
-class Titlebar;
-class FrameWindow;
-class Editbox;
-class Listbox;
+class ComboDropList;
 class Combobox;
-class ListHeaderSegment;
+class DragContainer;
+class Editbox;
+class FrameWindow;
+class GUISheet;
+class ItemEntry;
+class ItemListBase;
+class ItemListbox;
 class ListHeader;
-class MultiColumnList;
-class ProgressBar;
-class Thumb;
-class Scrollbar;
-class Slider;
+class ListHeaderSegment;
+class Listbox;
 class ListboxItem;
 class ListboxTextItem;
-class ComboDropList;
-class MultiLineEditbox;
-class Spinner;
-class GUISheet;
-class DragContainer;
-class ScrollablePane;
-class ScrolledContainer;
-class Tooltip;
-class ItemEntry;
-class MenuItem;
-class ItemListBase;
 class MenuBase;
+class MenuItem;
 class Menubar;
+class MultiColumnList;
+class MultiLineEditbox;
 class PopupMenu;
+class ProgressBar;
+class PushButton;
+class RadioButton;
+class ScrollablePane;
+class Scrollbar;
+class ScrolledContainer;
 class ScrolledItemListBase;
-class ItemListbox;
+class Slider;
+class Spinner;
 class TabButton;
 class TabControl;
+class Thumb;
+class Titlebar;
+class Tooltip;
 class Tree;
+class TreeItem;
+
+/*************************************************************************
+    Forward reference declarations of specialised window renderer types
+*************************************************************************/
+class EditboxWindowRenderer;
+class ItemEntryWindowRenderer;
+class ItemListBaseWindowRenderer;
+class ListHeaderWindowRenderer;
+class ListboxWindowRenderer;
+class MultiColumnListWindowRenderer;
+class MultiLineEditboxWindowRenderer;
+class ScrollablePaneWindowRenderer;
+class ScrollbarWindowRenderer;
+class SliderWindowRenderer;
+class TabControlWindowRenderer;
+class TooltipWindowRenderer;
 
 } // End of  CEGUI namespace section
 

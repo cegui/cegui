@@ -101,7 +101,7 @@ void ProgressBar::setProgress(float progress)
 *************************************************************************/
 void ProgressBar::onProgressChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 
 	fireEvent(EventProgressChanged, e, EventNamespace);
 }

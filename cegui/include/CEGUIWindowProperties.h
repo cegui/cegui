@@ -2,11 +2,11 @@
 	filename: 	CEGUIWindowProperties.h
 	created:	5/7/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to available window base class properties
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,7 +31,7 @@
 #define _CEGUIWindowProperties_h_
 
 #include "CEGUIProperty.h"
-#include "CEGUIXMLSerializer.h" 
+#include "CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -90,7 +90,7 @@ public:
 	Alpha() : Property(
 		"Alpha",
 		"Property to get/set the alpha value of the Window.  Value is floating point number.",
-		"1") 
+		"1")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -143,7 +143,7 @@ class Text : public Property
 {
 public:
 	Text() : Property(
-		"Text", 
+		"Text",
 		"Property to get/set the text / caption for the Window.  Value is the text string to use.",
 		"")
 	{}
@@ -1051,6 +1051,40 @@ public:
     void set(PropertyReceiver* receiver, const String& value);
 };
 
+/*!
+\brief
+    Property to get/set whether the Window will automatically attempt to use a
+    full imagery caching RenderTarget (if available via the renderer).  Here,
+    "full imagery caching" usually will mean caching a window's representation
+    onto a texture (although no such implementation requirement is specified.)
+
+    \par Usage:
+        - Name: AutoRenderTargetCache
+        - Format: "[text]".
+
+    \par Where [Text] is:
+        - "True" if Window should automatically use a full imagery caching
+          RenderTarget.
+        - "False" if Window should not automatically use a full imagery caching
+          RenderTarget.
+*/
+class AutoRenderTargetCache : public Property
+{
+public:
+    AutoRenderTargetCache() : Property(
+        "AutoRenderTargetCache",
+        "Property to get/set whether the Window will automatically attempt to "
+        "use a full imagery caching RenderTarget (if available via the "
+        "renderer).  Here, full imagery caching usually will mean caching a "
+        "window's representation onto a texture (although no such "
+        "implementation requirement is specified.)"
+        "  Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String get(const PropertyReceiver* receiver) const;
+    void set(PropertyReceiver* receiver, const String& value);
+};
 
 } // End of  WindowProperties namespace section
 

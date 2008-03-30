@@ -6,7 +6,7 @@
     purpose:    Defines abstract base class for Window objects
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -1243,6 +1243,54 @@ public:
     */
     bool isDragDropTarget() const;
 
+    /*!
+    \brief
+        Returns whether \e automatic use of an imagery caching RenderTarget
+        is enabled for this window.  The reason we emphasise 'atutomatic' is
+        because the client may manually set a RenderTarget that does exactly
+        the same job.
+
+    \return
+        - true if automatic use of an imagery caching RenderTarget is enabled.
+        - false if automatic use of an imagery caching RenderTarget is enabled.
+    */
+    bool isUsingAutoRenderTargetCache() const;
+
+    /*!
+    \brief
+        Return the RenderTarget associated with this Window, or 0 if none.
+
+    \return
+        Pointer to the RenderTarget object associated with this window.  This
+        function returns 0 if no immediate RenderTarget is in use.
+    */
+    RenderTarget* getRenderTarget() const;
+
+    /*!
+    \brief
+        Returns the window at the root of the hierarchy starting at this
+        Window.  The root window is defined as the first window back up the
+        hierarchy that has no parent window.
+
+    \return
+        A pointer to the root window of the hierarchy that this window is
+        attched to.
+    */
+    const Window* getRootWindow() const;
+    Window* getRootWindow();
+
+    /*!
+    \brief
+        Returns the root RenderTarget for the window hierarchy that this window
+        is a part of.  Generally this will return the RenderTarget set on the
+        root of the window hierarchy, or if none is set the primary render
+        target as obtained via the Renderer object.
+
+    \return
+        A pointer to the RenderTarget at the root of the hierarchy.
+    */
+    RenderTarget* getRootRenderTarget() const;
+
     /*************************************************************************
         Manipulator functions
     *************************************************************************/
@@ -1646,13 +1694,14 @@ public:
 
     /*!
     \brief
-        Signal the System object to redraw (at least) this Window on the next
-        render cycle.
+        Invalidate the window causing it (and maybe others) to be redrawn the
+        next time a rendering pass is made on the hierarchy containing this
+        window.
 
-    \return
-        Nothing
+    \note
+        This effectively replaces the old requestRedraw member function.
     */
-    void requestRedraw(void) const;
+    void invalidate();
 
     /*!
     \brief
@@ -2522,6 +2571,69 @@ public:
     */
     void setDragDropTarget(bool setting);
 
+    /*!
+    \brief
+        Sets whether \e automatic use of an imagery caching RenderTarget
+        is enabled for this window.  The reason we emphasise 'atutomatic' is
+        because the client may manually set a RenderTarget that does exactly
+        the same job.
+    \par
+        Note that this setting really only controls whether the Window
+        automatically creates and manages the RenderTarget, as opposed to the
+        use of the RenderTarget.  If a RenderTarget is set for the Window it
+        will be used regardless of this setting.
+    \par
+        Enabling this option will cause the Window to attempt to obtain a
+        suitable RenderTarget object from the Renderer.  If there is an
+        existing RenderTarget assocated with this Window, it will be removed
+        as the Window's RenderTarget <em>but not destroyed</em>; whoever
+        created the RenderTarget in the first place should take care of its
+        destruction.
+    \par
+        Disabling this option will cause any automatically created RenderTarget
+        to be released.
+    \par
+        It is possible that the renderer in use may not support RenderTargets
+        that are suitable for full imagery caching.  If this is the case,
+        then calling getRenderTarget after enabling this option will return 0.
+        In these cases this option will still show as being 'enabled', this is
+        because Window \e settings should not be influenced by capabilities the
+        renderer in use; for example, this enables correct XML layouts to be
+        written from a Window on a system that does not support such
+        RenderTargets, so that the layout will function as preferred on systems
+        that do.
+    \par
+        If this option is enabled, and the client subsequently assigns a
+        different RenderTarget to the Window, the existing automatically
+        created RenderTarget will be released and this setting will be disabled.
+
+    \param setting
+        - true to enable automatic use of an imagery caching RenderTarget.
+        - false to disable automatic use of an imagery caching RenderTarget.
+    */
+    void setUsingAutoRenderTargetCache(bool setting);
+
+    /*!
+    \brief
+        Set the RenderTarget to be associated with this Window, or 0 if none.
+    \par
+        If this function is called, and the option for automatic use of an
+        imagery caching RenderTarget is enabled, any automatically created
+        RenderTarget will be released, and the affore mentioned option will be
+        disabled.
+    \par
+        If after having set a custom RenderTarget you then subsequently enable
+        the automatic use of an imagery caching RenderTarget by calling
+        setUsingAutoRenderTargetCache, the previously set RenderTarget will be
+        disassociated from the Window.  Note that the previous RenderTarget is
+        not destroyed or cleaned up at all - this is the job of whoever created
+        that object initially.
+
+    \param target
+        Pointer to the RenderTarget object to be associated with this window.
+    */
+    void setRenderTarget(RenderTarget* target);
+
 protected:
     /*************************************************************************
         System object can trigger events directly
@@ -3331,6 +3443,13 @@ protected:
     //! true if this window is allowed to write XML, false if not
     bool d_allowWriteXML;
 
+    //! RenderTarget, if set, for the Window
+    RenderTarget* d_renderTarget;
+    //! true if render target imagery is valid
+    mutable bool d_renderTargetValid;
+    //! holds setting for 'automatic' use of imagery caching
+    bool d_useFullImageryCaching;
+
     //! current unclipped screen rect in pixels
     mutable Rect d_screenUnclippedRect;
     mutable bool d_screenUnclippedRectValid;
@@ -3385,6 +3504,7 @@ protected:
     static  WindowProperties::WindowRenderer    d_windowRendererProperty;
     static  WindowProperties::LookNFeel         d_lookNFeelProperty;
     static  WindowProperties::DragDropTarget    d_dragDropTargetProperty;
+    static  WindowProperties::AutoRenderTargetCache d_autoRenderTargetCacheProperty;
 
     /*************************************************************************
         implementation functions
@@ -3516,6 +3636,53 @@ protected:
           sibling windows with the same 'always on top' setting.
     */
     bool isTopOfZOrder() const;
+
+    /*!
+    \brief
+        Return the first window back up the heirarchy that has a RenderTarget
+    */
+    const Window* getWindowWithRenderTarget() const;
+    Window* getWindowWithRenderTarget();
+
+    /*!
+    \brief
+        Invalidate the render target where our rendering currently goes.
+    */
+    void invalidateRenderTarget();
+
+    /*!
+    \brief
+        Use Renderer to allocate a RenderTarget we can use for caching.  This
+        may result in the RenderTarget being set to 0 if Renderer does not
+        support such a thing.
+    */
+    void allocateCacheRenderTarget();
+
+    /*!
+    \brief
+        Release the RenderTarget set for this window.
+    */
+    void releaseCacheRenderTarget();
+
+    /*!
+    \brief
+        Find destination render target and rendering offset, starting at Window
+        \a start, and fill in the Point \a offset with the offset, and the
+        RenderTarget pointer in \a rt;
+    */
+    void getDestRenderTargetDetails(Window* start, Point& offset,
+                                    RenderTarget** rt);
+
+    /*!
+    \brief
+        Helper function to get our render target to render it's queued imagery
+        and then to render the render target imagery into the next render target
+        back in the chain.
+
+    \param z
+        z co-ordinate to be used for rendering into the next RenderTarget.
+    */
+    void updateRenderTarget(float z);
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;

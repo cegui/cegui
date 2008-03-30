@@ -43,7 +43,7 @@ namespace CEGUI
     ScrolledContainerProperties::ContentArea          ScrolledContainer::d_contentAreaProperty;
     ScrolledContainerProperties::ChildExtentsArea     ScrolledContainer::d_childExtentsAreaProperty;
     //////////////////////////////////////////////////////////////////////////
-    
+
     ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
         Window(type, name),
         d_contentArea(0, 0, 0, 0),
@@ -83,7 +83,7 @@ namespace CEGUI
         if (!d_autosizePane)
         {
             d_contentArea = area;
-            
+
             // Fire event
             WindowEventArgs args(this);
             onContentChanged(args);
@@ -171,7 +171,7 @@ namespace CEGUI
         // or of the screen when not.
         return d_parent ?
             d_parent->getUnclippedInnerRect_impl() :
-            System::getSingleton().getRenderer()->getRect();
+            getRootRenderTarget()->getArea();
     }
 
     void ScrolledContainer::onChildAdded(WindowEventArgs& e)

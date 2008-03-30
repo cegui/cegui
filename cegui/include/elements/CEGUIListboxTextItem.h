@@ -2,7 +2,7 @@
 	filename: 	CEGUIListboxTextItem.h
 	created:	12/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface for list box text items
 *************************************************************************/
 /***************************************************************************
@@ -149,7 +149,7 @@ public:
 	\param bottom_right_colour
 		Colour (as ARGB value) to be applied to the bottom-right corner of each text glyph rendered.
 
-	\return 
+	\return
 		Nothing.
 	*/
 	void	setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
@@ -172,8 +172,10 @@ public:
 		Required implementations of pure virtuals from the base class.
 	*************************************************************************/
     Size getPixelSize(void) const;
-    void draw(const Vector3& position, float alpha, const Rect& clipper) const;
-    void draw(RenderCache& cache,const Rect& targetRect, float zBase,  float alpha, const Rect* clipper) const;
+    void draw(RenderTarget& target, const Vector3& position, float alpha,
+              const Rect& clipper) const;
+    void draw(RenderCache& cache,const Rect& targetRect, float zBase,
+              float alpha, const Rect* clipper) const;
 
 protected:
 	/*************************************************************************

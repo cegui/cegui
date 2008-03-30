@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -43,20 +43,20 @@ namespace CEGUI
         return !(d_cachedImages.empty() && d_cachedTexts.empty());
     }
 
-    void RenderCache::render(const Point& basePos, float baseZ, const Rect& clipper)
+    void RenderCache::render(RenderTarget& target, const Point& pos, float baseZ, const Rect& clipper)
     {
-        Rect displayArea(System::getSingleton().getRenderer()->getRect());
+        Rect displayArea(target.getArea());
         Rect custClipper;
         const Rect* finalClipper;
         Rect finalRect;
 
-        // Send all cached images to renderer.
+        // Send all cached images to render target.
         for(ImageryList::const_iterator image = d_cachedImages.begin(); image != d_cachedImages.end(); ++image)
         {
             if ((*image).usingCustomClipper)
             {
                 custClipper = (*image).customClipper;
-                custClipper.offset(basePos);
+                custClipper.offset(pos);
                 custClipper = (*image).clipToDisplay ? displayArea.getIntersection(custClipper) : clipper.getIntersection(custClipper);
                 finalClipper = &custClipper;
             }
@@ -66,8 +66,8 @@ namespace CEGUI
             }
 
             finalRect = (*image).target_area;
-            finalRect.offset(basePos);
-            (*image).source_image->draw(finalRect, baseZ + (*image).z_offset, *finalClipper, (*image).colours);
+            finalRect.offset(pos);
+            (*image).source_image->draw(target, finalRect, baseZ + (*image).z_offset, *finalClipper, (*image).colours);
         }
 
         // send all cached texts to renderer.
@@ -76,7 +76,7 @@ namespace CEGUI
             if ((*text).usingCustomClipper)
             {
                 custClipper = (*text).customClipper;
-                custClipper.offset(basePos);
+                custClipper.offset(pos);
                 custClipper = (*text).clipToDisplay ? displayArea.getIntersection(custClipper) : clipper.getIntersection(custClipper);
                 finalClipper = &custClipper;
             }
@@ -86,8 +86,8 @@ namespace CEGUI
             }
 
             finalRect = (*text).target_area;
-            finalRect.offset(basePos);
-            (*text).source_font->drawText((*text).text, finalRect, baseZ + (*text).z_offset, *finalClipper, (*text).formatting, (*text).colours);
+            finalRect.offset(pos);
+            (*text).source_font->drawText(target, (*text).text, finalRect, baseZ + (*text).z_offset, *finalClipper, (*text).formatting, (*text).colours);
         }
 
     }

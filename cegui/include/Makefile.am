@@ -45,6 +45,7 @@ pkginclude_HEADERS = CEGUI.h \
                  CEGUIRect.h \
                  CEGUIRefCounted.h \
                  CEGUIRenderCache.h \
+                 CEGUIRenderTarget.h \
                  CEGUIRenderer.h \
                  CEGUIResourceProvider.h \
                  CEGUIScheme.h \

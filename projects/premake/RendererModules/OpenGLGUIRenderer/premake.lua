@@ -10,6 +10,13 @@ package.files =
     matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
 }
 
+-- Windows does not have GLX
+package.excludes =
+{
+    pkgdir.."CEGUIOpenGLGLXPBTextureTarget.cpp",
+    pkgdir.."CEGUIOpenGLGLXPBTextureTarget.h",
+}
+
 include(rootdir.."cegui/include/"..pkgdir)
 include(rootdir)
 

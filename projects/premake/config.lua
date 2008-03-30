@@ -11,6 +11,8 @@ DEBUG_DLL_SUFFIX = "_d"
 -- { base, include_suffix, library_suffix }
 -- base can be absolute or relative to the root cegui_mk2 dir
 IRRLICHT_PATHS = { "irrlicht-1.4", "include", "lib/Win32-visualstudio" }
+OGRE_PATHS = { "C:/OgreSDK", "include", "lib" }
+OIS_PATHS = { "C:/OgreSDK", "include/OIS", "lib" }
 
 --- Irrlicht SDK Version
 --- 12 is 1.2 (or before?).  13 is 1.3 or 1.3.x, and 14 is 1.4 (and above?)
@@ -27,6 +29,7 @@ OPENGL_RENDERER = true
 DIRECTX81_RENDERER = false
 DIRECTX9_RENDERER = true
 IRRLICHT_RENDERER = false
+OGRE_RENDERER = false
 
 ----------------
 -- Image Codecs
@@ -70,7 +73,7 @@ DEFAULT_XML_PARSER = "expat"
 -------
 -- Lua
 -- this controls whether CEGUILua is enabled
-LUA_SCRIPT_MODULE = true
+LUA_SCRIPT_MODULE = false
 
 -- disable this for a smaller and faster, but less safe Lua module
 -- only affects Release builds. Debug and ReleaseWithSymbols always
@@ -89,6 +92,7 @@ SAMPLES_GL = true
 SAMPLES_DX81 = false
 SAMPLES_DX9 = true
 SAMPLES_IRRLICHT = false
+SAMPLES_OGRE = true
 
 -- this setting controls if the samples should be included in the same
 -- solution as the core libraries. If this setting is disabled you can

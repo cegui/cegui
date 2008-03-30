@@ -2,7 +2,7 @@
 	filename: 	CEGUIListboxItem.h
 	created:	8/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to base class for list items
 *************************************************************************/
 /***************************************************************************
@@ -146,7 +146,7 @@ public:
 	/*!
 	\brief
 		Get the owner window for this ListboxItem.
-		
+
 		The owner of a ListboxItem is typically set by the list box widgets when an item is added or inserted.
 
 	\return
@@ -311,7 +311,7 @@ public:
 	\param bottom_right_colour
 		Colour (as ARGB value) to be applied to the bottom-right corner of the selection area.
 
-	\return 
+	\return
 		Nothing.
 	*/
 	void	setSelectionColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour);
@@ -372,25 +372,53 @@ public:
 	virtual	Size	getPixelSize(void) const	= 0;
 
 
-	/*!
-	\brief
-		Draw the list box item in its current state
+    /*!
+    \brief
+        Draw the list box item in its current state onto the specified
+        RenderTarget.
 
-	\param position
-		Vecor3 object describing the upper-left corner of area that should be rendered in to for the draw operation.
+    \param target
+        RenderTarget where the list box item should be drawn
 
-	\param alpha
-		Alpha value to be used when rendering the item (between 0.0f and 1.0f).
+    \param position
+        Vector3 object describing the upper-left corner of area that should be
+        rendered in to for the draw operation.
 
-	\param clipper
-		Rect object describing the clipping rectangle for the draw operation.
+    \param alpha
+        Alpha value to be used when rendering the item (between 0.0f and 1.0f).
 
-	\return
-		Nothing.
-	*/
-	virtual	void	draw(const Vector3& position, float alpha, const Rect& clipper) const	= 0;
+    \param clipper
+        Rect object describing the clipping rectangle for the draw operation.
 
-    virtual void    draw(RenderCache& cache,const Rect& targetRect, float zBase,  float alpha, const Rect* clipper) const = 0;
+    \return
+        Nothing.
+    */
+    virtual void draw(RenderTarget& target, const Vector3& position,
+                      float alpha, const Rect& clipper) const = 0;
+
+    /*!
+    \brief
+        Cache the imagery for the list box item in its current state into the
+        specified RenderCache.
+
+    \param target
+        RenderTarget where the list box item should be drawn
+
+    \param position
+        Vector3 object describing the upper-left corner of area that should be
+        rendered in to for the draw operation.
+
+    \param alpha
+        Alpha value to be used when rendering the item (between 0.0f and 1.0f).
+
+    \param clipper
+        Rect object describing the clipping rectangle for the draw operation.
+
+    \return
+        Nothing.
+    */
+    virtual void draw(RenderCache& cache, const Rect& targetRect, float zBase,
+                      float alpha, const Rect* clipper) const = 0;
 
 	/*************************************************************************
 		Operators

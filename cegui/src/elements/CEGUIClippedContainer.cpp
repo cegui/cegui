@@ -69,7 +69,7 @@ void ClippedContainer::setClipArea(const CEGUI::Rect& r)
     if (d_clipArea != r)
     {
         d_clipArea = r;
-        requestRedraw();
+        invalidate();
         notifyClippingChanged();
     }
 }
@@ -79,7 +79,7 @@ void ClippedContainer::setClipperWindow(CEGUI::Window* w)
     if (d_clipperWindow != w)
     {
         d_clipperWindow = w;
-        requestRedraw();
+        invalidate();
         notifyClippingChanged();
     }
 }

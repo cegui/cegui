@@ -50,6 +50,7 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
                       CEGUIRenderCache.cpp \
+                      CEGUIRenderTarget.cpp \
                       CEGUIRenderer.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \

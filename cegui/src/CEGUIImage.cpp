@@ -2,11 +2,11 @@
 	filename: 	CEGUIImage.cpp
 	created:	13/3/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of Image class members
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,7 +31,6 @@
 #include "CEGUIExceptions.h"
 #include "CEGUITexture.h"
 #include "CEGUIImageset.h"
-#include "CEGUIRenderer.h"
 #include "CEGUIPropertyHelper.h"
 #include <cmath>
 #include <iostream>
@@ -106,7 +105,9 @@ void Image::setVertScaling(float factor)
 /*************************************************************************
 	Clip and then queue the image to be rendered.
 *************************************************************************/
-void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const ColourRect& colours, QuadSplitMode quad_split_mode) const
+void Image::draw(RenderTarget& target, const Rect& dest_rect, float z,
+    const Rect& clip_rect, const ColourRect& colours,
+    QuadSplitMode quad_split_mode) const
 {
 	Rect dest(dest_rect);
 
@@ -114,12 +115,12 @@ void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const Co
 	dest.offset(d_scaledOffset);
 
 	// draw
-	d_owner->draw(d_area, dest, z, clip_rect, colours, quad_split_mode);
+	d_owner->draw(target, d_area, dest, z, clip_rect, colours, quad_split_mode);
 }
 
 
 /*************************************************************************
-	String object containing the name of this Image	
+	String object containing the name of this Image
 *************************************************************************/
 const String& Image::getName(void) const
 {
@@ -128,7 +129,7 @@ const String& Image::getName(void) const
 
 
 /*************************************************************************
-	Return the name of the Imageset that contains this Image	
+	Return the name of the Imageset that contains this Image
 *************************************************************************/
 const String& Image::getImagesetName(void) const
 {

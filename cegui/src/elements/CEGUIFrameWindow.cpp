@@ -2,7 +2,7 @@
 	filename: 	CEGUIFrameWindow.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of FrameWindow base class
 *************************************************************************/
 /***************************************************************************
@@ -146,7 +146,7 @@ bool FrameWindow::isCloseButtonEnabled(void) const
 
 
 /*************************************************************************
-	Enables or disables sizing for this window.	
+	Enables or disables sizing for this window.
 *************************************************************************/
 void FrameWindow::setSizingEnabled(bool setting)
 {
@@ -155,17 +155,17 @@ void FrameWindow::setSizingEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables the frame for this window.	
+	Enables or disables the frame for this window.
 *************************************************************************/
 void FrameWindow::setFrameEnabled(bool setting)
 {
 	d_frameEnabled = setting;
-	requestRedraw();
+	invalidate();
 }
 
 
 /*************************************************************************
-	Enables or disables the title bar for the frame window.	
+	Enables or disables the title bar for the frame window.
 *************************************************************************/
 void FrameWindow::setTitleBarEnabled(bool setting)
 {
@@ -176,7 +176,7 @@ void FrameWindow::setTitleBarEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables the close button for the frame window.	
+	Enables or disables the close button for the frame window.
 *************************************************************************/
 void FrameWindow::setCloseButtonEnabled(bool setting)
 {
@@ -187,7 +187,7 @@ void FrameWindow::setCloseButtonEnabled(bool setting)
 
 
 /*************************************************************************
-	Enables or disables roll-up (shading) for this window.	
+	Enables or disables roll-up (shading) for this window.
 *************************************************************************/
 void FrameWindow::setRollupEnabled(bool setting)
 {
@@ -202,14 +202,14 @@ void FrameWindow::setRollupEnabled(bool setting)
 
 /*************************************************************************
 	Toggles the state of the window between rolled-up (shaded) and normal
-	sizes.  This requires roll-up to be enabled.	
+	sizes.  This requires roll-up to be enabled.
 *************************************************************************/
 void FrameWindow::toggleRollup(void)
 {
     if (isRollupEnabled())
     {
         d_rolledup ^= true;
-        
+
         // event notification.
         WindowEventArgs args(this);
         onRollupToggled(args);
@@ -219,7 +219,7 @@ void FrameWindow::toggleRollup(void)
 
 
 /*************************************************************************
-	Move the window by the pixel offsets specified in 'offset'.	
+	Move the window by the pixel offsets specified in 'offset'.
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const Vector2& offset)
 {
@@ -230,7 +230,7 @@ void FrameWindow::offsetPixelPosition(const Vector2& offset)
 }
 
 
-/*************************************************************************	
+/*************************************************************************
 	check local pixel co-ordinate point 'pt' and return one of the
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
@@ -302,7 +302,7 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Point& pt)
 
 /*************************************************************************
 	move the window's left edge by 'delta'.  The rest of the window
-	does not move, thus this changes the size of the Window.	
+	does not move, thus this changes the size of the Window.
 *************************************************************************/
 void FrameWindow::moveLeftEdge(float delta)
 {
@@ -314,8 +314,8 @@ void FrameWindow::moveLeftEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float maxWidth(d_maxSize.d_x.asAbsolute(getRootRenderTarget()->getArea().getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(getRootRenderTarget()->getArea().getWidth()));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -357,8 +357,8 @@ void FrameWindow::moveRightEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float maxWidth(d_maxSize.d_x.asAbsolute(getRootRenderTarget()->getArea().getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(getRootRenderTarget()->getArea().getWidth()));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -402,8 +402,8 @@ void FrameWindow::moveTopEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float maxHeight(d_maxSize.d_y.asAbsolute(getRootRenderTarget()->getArea().getHeight()));
+    float minHeight(d_minSize.d_y.asAbsolute(getRootRenderTarget()->getArea().getHeight()));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -434,7 +434,7 @@ void FrameWindow::moveTopEdge(float delta)
 
 /*************************************************************************
 	move the window's bottom edge by 'delta'.  The rest of the window
-	does not move, thus this changes the size of the Window.	
+	does not move, thus this changes the size of the Window.
 *************************************************************************/
 void FrameWindow::moveBottomEdge(float delta)
 {
@@ -447,8 +447,8 @@ void FrameWindow::moveBottomEdge(float delta)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(d_maxSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
-    float minHeight(d_minSize.d_y.asAbsolute(System::getSingleton().getRenderer()->getHeight()));
+    float maxHeight(d_maxSize.d_y.asAbsolute(getRootRenderTarget()->getArea().getHeight()));
+    float minHeight(d_minSize.d_y.asAbsolute(getRootRenderTarget()->getArea().getHeight()));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)
@@ -533,7 +533,7 @@ void FrameWindow::setCursorForPoint(const Point& pt) const
 *************************************************************************/
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     notifyClippingChanged();
 
 	fireEvent(EventRollupToggled, e, EventNamespace);
@@ -541,7 +541,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Event generated internally whenever the close button is clicked.	
+	Event generated internally whenever the close button is clicked.
 *************************************************************************/
 void FrameWindow::onCloseClicked(WindowEventArgs& e)
 {
@@ -696,7 +696,7 @@ void FrameWindow::onTextChanged(WindowEventArgs& e)
 void FrameWindow::onActivated(ActivationEventArgs& e)
 {
 	Window::onActivated(e);
-	getTitlebar()->requestRedraw();
+	getTitlebar()->invalidate();
 }
 
 
@@ -706,12 +706,12 @@ void FrameWindow::onActivated(ActivationEventArgs& e)
 void FrameWindow::onDeactivated(ActivationEventArgs& e)
 {
 	Window::onDeactivated(e);
-	getTitlebar()->requestRedraw();
+	getTitlebar()->invalidate();
 }
 
 
 /*************************************************************************
-	Set whether this FrameWindow can be moved by dragging the title bar.	
+	Set whether this FrameWindow can be moved by dragging the title bar.
 *************************************************************************/
 void FrameWindow::setDragMovingEnabled(bool setting)
 {

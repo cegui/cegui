@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -87,13 +87,18 @@ namespace CEGUI
 
         /*!
         \brief
-            Send the contents of the cache to the Renderer.
+            Send the contents of the cache to the specified RenderTarget.
 
-        \param basePos
-            Point that describes a screen offset that cached imagery will be rendered relative to.
+        \param target
+            RenderTarget object where the rendering will be sent.
+
+        \param pos
+            Point that describes an offset into the RenderTarget where cached
+            imagery should be drawn.
 
         \param baseZ
-            Z value that cached imagery will use as a base figure when calculating final z values.
+            Z value that cached imagery will use as a base figure when
+            calculating final z values.
 
         \param clipper
             Rect object describing a rect to which imagery will be clipped.
@@ -101,7 +106,8 @@ namespace CEGUI
         \return
             Nothing
         */
-        void render(const Point& basePos, float baseZ, const Rect& clipper);
+        void render(RenderTarget& target, const Point& pos, float baseZ,
+                    const Rect& clipper);
 
         /*!
         \brief

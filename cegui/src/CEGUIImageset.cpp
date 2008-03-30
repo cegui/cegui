@@ -2,11 +2,11 @@
 	filename: 	CEGUIImageset.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements the Imageset class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -36,8 +36,9 @@
 #include "CEGUILogger.h"
 #include "CEGUIDataContainer.h"
 #include "CEGUIXMLParser.h"
-#include "CEGUIXMLSerializer.h" 
-#include "CEGUIPropertyHelper.h" 
+#include "CEGUIXMLSerializer.h"
+#include "CEGUIPropertyHelper.h"
+#include "CEGUIRenderTarget.h"
 #include <iostream>
 #include <cmath>
 
@@ -166,7 +167,7 @@ void Imageset::load(const String& filename, const String& resourceGroup)
 
 }
 
- 
+
 /*************************************************************************
 	return the Image object for the named image
 *************************************************************************/
@@ -208,7 +209,9 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 	Queues an area of the associated Texture the be drawn on the screen.
 	Low-level routine not normally used!
 *************************************************************************/
-void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode) const
+void Imageset::draw(RenderTarget& target, const Rect& source_rect,
+    const Rect& dest_rect, float z, const Rect& clip_rect,
+    const ColourRect& colours, QuadSplitMode quad_split_mode) const
 {
 	// get the rect area that we will actually draw to (i.e. perform clipping)
 	Rect final_rect(dest_rect.getIntersection(clip_rect));
@@ -235,8 +238,9 @@ void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, con
 		final_rect.d_top	= PixelAligned(final_rect.d_top);
 		final_rect.d_bottom	= PixelAligned(final_rect.d_bottom);
 
-		// queue a quad to be rendered
-		d_texture->getRenderer()->addQuad(final_rect, z, d_texture, tex_rect, colours, quad_split_mode);
+        // queue a quad to be rendered
+        target.queueQuad(final_rect, z, d_texture, tex_rect, colours,
+                         quad_split_mode);
 	}
 
 }
@@ -304,7 +308,9 @@ void Imageset::setNativeResolution(const Size& size)
 	d_nativeVertRes = size.d_height;
 
 	// re-calculate scaling factors & notify images as required
-	notifyScreenResolution(System::getSingleton().getRenderer()->getSize());
+	notifyScreenResolution(
+        System::getSingleton().getRenderer()->
+            getPrimaryRenderTarget()->getArea().getSize());
 }
 
 
@@ -331,15 +337,15 @@ void Imageset::writeXMLToStream(XMLSerializer& xml_stream) const
         .attribute("Imagefile", d_textureFilename);
 
     if (d_nativeHorzRes != DefaultNativeHorzRes)
-        xml_stream.attribute("NativeHorzRes", 
+        xml_stream.attribute("NativeHorzRes",
           PropertyHelper::uintToString(static_cast<uint>(d_nativeHorzRes)));
     if (d_nativeVertRes != DefaultNativeVertRes)
-        xml_stream.attribute("NativeVertRes", 
+        xml_stream.attribute("NativeVertRes",
           PropertyHelper::uintToString(static_cast<uint>(d_nativeVertRes)));
 
     if (d_autoScale)
         xml_stream.attribute("AutoScaled", "true");
-    
+
     // output images
     ImageIterator image = getIterator();
     while (!image.isAtEnd())

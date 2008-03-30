@@ -2,11 +2,11 @@
 	filename: 	CEGUIMouseCursor.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements MouseCursor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -59,7 +59,8 @@ const String MouseCursor::EventImageChanged( "ImageChanged" );
 *************************************************************************/
 MouseCursor::MouseCursor(void)
 {
-    Rect screenArea(System::getSingleton().getRenderer()->getRect());
+    Rect screenArea(System::getSingleton().getRenderer()->
+        getPrimaryRenderTarget()->getArea());
 
 	// mouse defaults to middle of the constrained area
 	d_position.d_x = screenArea.getWidth() / 2;
@@ -116,7 +117,11 @@ void MouseCursor::draw(void) const
 {
 	if (d_visible && (d_cursorImage != 0))
 	{
-		d_cursorImage->draw( d_position, System::getSingleton().getRenderer()->getRect() );
+        Renderer* r = System::getSingleton().getRenderer();
+        RenderTarget* rt = r->getPrimaryRenderTarget();
+        rt->enableQueue(false);
+        d_cursorImage->draw(*rt, d_position, rt->getArea());
+        rt->enableQueue(true);
 	}
 }
 
@@ -170,7 +175,8 @@ void MouseCursor::constrainPosition(void)
 *************************************************************************/
 void MouseCursor::setConstraintArea(const Rect* area)
 {
-	Rect renderer_area = System::getSingleton().getRenderer()->getRect();
+    Rect renderer_area(System::getSingleton().getRenderer()->
+        getPrimaryRenderTarget()->getArea());
 
 	if (!area)
 	{
@@ -197,7 +203,8 @@ void MouseCursor::setConstraintArea(const Rect* area)
 *************************************************************************/
 void MouseCursor::setUnifiedConstraintArea(const URect* area)
 {
-	Rect renderer_area = System::getSingleton().getRenderer()->getRect();
+    Rect renderer_area(System::getSingleton().getRenderer()->
+        getPrimaryRenderTarget()->getArea());
 
 	if (area)
 	{
@@ -219,7 +226,9 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 *************************************************************************/
 Rect MouseCursor::getConstraintArea(void) const
 {
-    return Rect(d_constraints.asAbsolute(System::getSingleton().getRenderer()->getSize()));
+    return Rect(d_constraints.asAbsolute(
+        System::getSingleton().getRenderer()->getPrimaryRenderTarget()
+            ->getArea().getSize()));
 }
 
 /*************************************************************************
@@ -232,11 +241,12 @@ const URect& MouseCursor::getUnifiedConstraintArea(void) const
 
 /*************************************************************************
 	Return the current mouse cursor position in display resolution
-	independant values.	
+	independant values.
 *************************************************************************/
 Point MouseCursor::getDisplayIndependantPosition(void) const
 {
-	Size dsz(System::getSingleton().getRenderer()->getSize());
+	Size dsz(System::getSingleton().getRenderer()->
+        getPrimaryRenderTarget()->getArea().getSize());
 
 	return Point(d_position.d_x / (dsz.d_width - 1.0f), d_position.d_y / (dsz.d_height - 1.0f));
 }

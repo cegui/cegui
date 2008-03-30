@@ -2,11 +2,11 @@
 	filename: 	CEGUIWindowProperties.cpp
 	created:	5/7/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of available window base class properties
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -401,7 +401,7 @@ void VerticalAlignment::set(PropertyReceiver* receiver, const String& value)
     {
         align = VA_TOP;
     }
-    
+
     static_cast<Window*>(receiver)->setVerticalAlignment(align);
 }
 
@@ -439,7 +439,7 @@ void HorizontalAlignment::set(PropertyReceiver* receiver, const String& value)
     {
         align = HA_LEFT;
     }
-    
+
     static_cast<Window*>(receiver)->setHorizontalAlignment(align);
 }
 
@@ -604,6 +604,19 @@ String DragDropTarget::get(const PropertyReceiver* receiver) const
 void DragDropTarget::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->setDragDropTarget(PropertyHelper::stringToBool(value));
+}
+
+String AutoRenderTargetCache::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(
+        static_cast<const Window*>(receiver)->isUsingAutoRenderTargetCache());
+}
+
+
+void AutoRenderTargetCache::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setUsingAutoRenderTargetCache(
+        PropertyHelper::stringToBool(value));
 }
 
 

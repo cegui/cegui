@@ -51,7 +51,7 @@ namespace CEGUI
         if (d_frameEnabled != setting)
         {
             d_frameEnabled = setting;
-            d_window->requestRedraw();
+            d_window->invalidate();
         }
     }
 
@@ -60,7 +60,7 @@ namespace CEGUI
         if (d_backgroundEnabled != setting)
         {
             d_backgroundEnabled = setting;
-            d_window->requestRedraw();
+            d_window->invalidate();
         }
     }
 
@@ -69,7 +69,7 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
 
-		bool is_enabled = !d_window->isDisabled();
+        bool is_enabled = !d_window->isDisabled();
 
         // render frame section
         if (d_frameEnabled)

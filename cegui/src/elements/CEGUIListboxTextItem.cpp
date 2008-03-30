@@ -2,7 +2,7 @@
 	filename: 	CEGUIListboxTextItem.cpp
 	created:	12/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of List box text items
 *************************************************************************/
 /***************************************************************************
@@ -107,11 +107,13 @@ Size ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& clipper) const
+void ListboxTextItem::draw(RenderTarget& target, const Vector3& position,
+    float alpha, const Rect& clipper) const
 {
 	if (d_selected && (d_selectBrush != 0))
 	{
-		d_selectBrush->draw(clipper, position.d_z, clipper, getModulateAlphaColourRect(d_selectCols, alpha));
+		d_selectBrush->draw(target, clipper, position.d_z, clipper,
+                            getModulateAlphaColourRect(d_selectCols, alpha));
 	}
 
 	Font* fnt = getFont();
@@ -120,7 +122,8 @@ void ListboxTextItem::draw(const Vector3& position, float alpha, const Rect& cli
 	{
         Vector3 finalPos(position);
         finalPos.d_y += PixelAligned((fnt->getLineSpacing() - fnt->getFontHeight()) * 0.5f);
-		fnt->drawText(d_itemText, finalPos, clipper, getModulateAlphaColourRect(d_textCols, alpha));
+		fnt->drawText(target, d_itemText, finalPos, clipper,
+                      getModulateAlphaColourRect(d_textCols, alpha));
 	}
 
 }
@@ -144,7 +147,7 @@ void ListboxTextItem::draw(RenderCache& cache,const Rect& targetRect, float zBas
 
 
 /*************************************************************************
-	Set the colours used for text rendering.	
+	Set the colours used for text rendering.
 *************************************************************************/
 void ListboxTextItem::setTextColours(colour top_left_colour, colour top_right_colour, colour bottom_left_colour, colour bottom_right_colour)
 {

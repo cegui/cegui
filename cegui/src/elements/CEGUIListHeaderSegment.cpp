@@ -2,7 +2,7 @@
 	filename: 	CEGUIListHeaderSegment.cpp
 	created:	15/6/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of List header segment widget.
 *************************************************************************/
 /***************************************************************************
@@ -72,7 +72,7 @@ const float	ListHeaderSegment::SegmentMoveThreshold	= 12.0f;
 
 
 /*************************************************************************
-	Constructor for list header segment base class	
+	Constructor for list header segment base class
 *************************************************************************/
 ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 	Window(type, name),
@@ -94,7 +94,7 @@ ListHeaderSegment::ListHeaderSegment(const String& type, const String& name) :
 
 
 /*************************************************************************
-	Destructor for list header segment base class.	
+	Destructor for list header segment base class.
 *************************************************************************/
 ListHeaderSegment::~ListHeaderSegment(void)
 {
@@ -124,7 +124,7 @@ void ListHeaderSegment::setSizingEnabled(bool setting)
 
 
 /*************************************************************************
-	Set the current sort direction set for this segment.	
+	Set the current sort direction set for this segment.
 *************************************************************************/
 void ListHeaderSegment::setSortDirection(SortDirection sort_dir)
 {
@@ -135,14 +135,14 @@ void ListHeaderSegment::setSortDirection(SortDirection sort_dir)
 		WindowEventArgs args(this);
 		onSortDirectionChanged(args);
 
-		requestRedraw();
+		invalidate();
 	}
 
 }
 
 
 /*************************************************************************
-	Set whether drag moving is allowed for this segment.	
+	Set whether drag moving is allowed for this segment.
 *************************************************************************/
 void ListHeaderSegment::setDragMovingEnabled(bool setting)
 {
@@ -174,7 +174,7 @@ void ListHeaderSegment::setClickable(bool setting)
 
 
 /*************************************************************************
-	Handler called when segment is clicked.	
+	Handler called when segment is clicked.
 *************************************************************************/
 void ListHeaderSegment::onSegmentClicked(WindowEventArgs& e)
 {
@@ -183,7 +183,7 @@ void ListHeaderSegment::onSegmentClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the sizer/splitter is double-clicked.	
+	Handler called when the sizer/splitter is double-clicked.
 *************************************************************************/
 void ListHeaderSegment::onSplitterDoubleClicked(WindowEventArgs& e)
 {
@@ -205,7 +205,7 @@ void ListHeaderSegment::onSizingSettingChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSortDirectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSortDirectionChanged, e, EventNamespace);
 }
 
@@ -243,7 +243,7 @@ void ListHeaderSegment::onSegmentDragStop(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSegmentDragPositionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSegmentDragPositionChanged, e, EventNamespace);
 }
 
@@ -253,7 +253,7 @@ void ListHeaderSegment::onSegmentDragPositionChanged(WindowEventArgs& e)
 *************************************************************************/
 void ListHeaderSegment::onSegmentSized(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventSegmentSized, e, EventNamespace);
 }
 
@@ -282,15 +282,15 @@ void ListHeaderSegment::doDragSizing(const Point& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(d_maxSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
-    float minWidth(d_minSize.d_x.asAbsolute(System::getSingleton().getRenderer()->getWidth()));
+    float maxWidth(d_maxSize.d_x.asAbsolute(getRootRenderTarget()->getArea().getWidth()));
+    float minWidth(d_minSize.d_x.asAbsolute(getRootRenderTarget()->getArea().getWidth()));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
         delta = maxWidth - orgWidth;
     else if (newWidth < minWidth)
         delta = minWidth - orgWidth;
-    
+
     // update segment area rect
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
     setArea_impl(area.d_min, area.getSize());
@@ -364,14 +364,14 @@ void ListHeaderSegment::initSizingHoverState(void)
 		MouseCursor::getSingleton().setImage(d_sizingMouseCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
-		requestRedraw();
+		invalidate();
 	}
 
 	// reset segment hover as needed.
 	if (d_segmentHover)
-	{	
+	{
 		d_segmentHover = false;
-		requestRedraw();
+		invalidate();
 	}
 
 }
@@ -387,14 +387,14 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	{
 		d_splitterHover = false;
 		MouseCursor::getSingleton().setImage(getMouseCursor());
-		requestRedraw();
+		invalidate();
 	}
 
 	// set segment hover state if not already set.
 	if ((!d_segmentHover) && isClickable())
 	{
 		d_segmentHover = true;
-		requestRedraw();
+		invalidate();
 	}
 }
 
@@ -480,14 +480,14 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 		{
 			d_splitterHover = false;
 			MouseCursor::getSingleton().setImage(getMouseCursor());
-			requestRedraw();
+			invalidate();
 		}
 
 		// reset segment hover state if not already done.
 		if (d_segmentHover)
-		{	
+		{
 			d_segmentHover = false;
-			requestRedraw();
+			invalidate();
 		}
 
 	}
@@ -557,7 +557,7 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		else if (d_dragMoving)
 		{
 			MouseCursor::getSingleton().setImage(getMouseCursor());
-			
+
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);
 		}
@@ -601,7 +601,7 @@ void ListHeaderSegment::onMouseLeaves(MouseEventArgs& e)
 	d_splitterHover = false;
 	d_dragSizing = false;
 	d_segmentHover = false;
-	requestRedraw();
+	invalidate();
 }
 
 

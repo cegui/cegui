@@ -6,7 +6,7 @@
 	purpose:	Implementation of main system object
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -415,7 +415,6 @@ void System::renderGUI(void)
 	if (d_gui_redraw)
 	{
 		d_renderer->resetZValue();
-		d_renderer->setQueueingEnabled(true);
 		d_renderer->clearRenderList();
 
 		if (d_activeSheet)
@@ -429,7 +428,6 @@ void System::renderGUI(void)
 	d_renderer->doRender();
 
 	// draw mouse
-	d_renderer->setQueueingEnabled(false);
 	MouseCursor::getSingleton().draw();
 
     // do final destruction on dead-pool windows
@@ -1387,7 +1385,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 bool System::handleDisplaySizeChange(const EventArgs& e)
 {
 	// notify the imageset/font manager of the size change
-	Size new_sz = getRenderer()->getSize();
+	Size new_sz = getRenderer()->getPrimaryRenderTarget()->getArea().getSize();
 	ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
 	FontManager::getSingleton().notifyScreenResolution(new_sz);
 

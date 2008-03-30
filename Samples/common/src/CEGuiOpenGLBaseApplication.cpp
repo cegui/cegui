@@ -42,6 +42,7 @@
 #include "CEGuiSample.h"
 #include "CEGUI.h"
 #include "CEGUIDefaultResourceProvider.h"
+#include "CEGUIRenderTarget.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -139,7 +140,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     glutCreateWindow("Crazy Eddie's GUI Mk-2 - Sample Application");
     glutSetCursor(GLUT_CURSOR_NONE);
 
-    d_renderer = new CEGUI::OpenGLRenderer(1024);
+    d_renderer = new CEGUI::OpenGLRenderer;
     new CEGUI::System(d_renderer);
 
     glutDisplayFunc(&CEGuiOpenGLBaseApplication::drawFrame);
@@ -274,8 +275,12 @@ void CEGuiOpenGLBaseApplication::drawFrame(void)
     CEGUI::Font* fnt = guiSystem.getDefaultFont();
     if (fnt)
     {
-        guiSystem.getRenderer()->setQueueingEnabled(false);
-        fnt->drawText(d_fps_textbuff, CEGUI::Vector3(0, 0, 0), guiSystem.getRenderer()->getRect());
+        CEGUI::RenderTarget* rt = guiSystem.getRenderer()->
+            getPrimaryRenderTarget();
+        rt->enableQueue(false);
+        fnt->drawText(*rt, d_fps_textbuff, CEGUI::Vector3(0, 0, 0),
+                      rt->getArea());
+        rt->enableQueue(true);
     }
 
     glFlush();

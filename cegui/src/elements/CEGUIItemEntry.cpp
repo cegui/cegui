@@ -121,7 +121,7 @@ void ItemEntry::setSelectable(bool setting)
 *************************************************************************/
 void ItemEntry::onSelectionChanged(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 

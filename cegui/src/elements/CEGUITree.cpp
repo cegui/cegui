@@ -600,7 +600,7 @@ namespace CEGUI
 	void Tree::handleUpdatedItemData(void)
 	{
 		configureScrollbars();
-		requestRedraw();
+		invalidate();
 	}
 
 
@@ -1009,7 +1009,7 @@ namespace CEGUI
 	void Tree::onListContentsChanged(WindowEventArgs& e)
 	{
 		configureScrollbars();
-		requestRedraw();
+		invalidate();
 		fireEvent(EventListContentsChanged, e, EventNamespace);
 	}
 
@@ -1020,7 +1020,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::onSelectionChanged(TreeEventArgs& e)
 	{
-		requestRedraw();
+		invalidate();
 		fireEvent(EventSelectionChanged, e, EventNamespace);
 	}
 
@@ -1030,7 +1030,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::onSortModeChanged(WindowEventArgs& e)
 	{
-		requestRedraw();
+		invalidate();
 		fireEvent(EventSortModeChanged, e, EventNamespace);
 	}
 
@@ -1050,7 +1050,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::onVertScrollbarModeChanged(WindowEventArgs& e)
 	{
-		requestRedraw();
+		invalidate();
 		fireEvent(EventVertScrollbarModeChanged, e, EventNamespace);
 	}
 
@@ -1061,7 +1061,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::onHorzScrollbarModeChanged(WindowEventArgs& e)
 	{
-		requestRedraw();
+		invalidate();
 		fireEvent(EventHorzScrollbarModeChanged, e, EventNamespace);
 	}
 
@@ -1072,7 +1072,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::onBranchOpened(TreeEventArgs& e)
 	{
-		requestRedraw();
+		invalidate();
 		fireEvent(EventBranchOpened, e, EventNamespace);
 	}
 
@@ -1083,7 +1083,7 @@ namespace CEGUI
 	*************************************************************************/
 	void Tree::onBranchClosed(TreeEventArgs& e)
 	{
-		requestRedraw();
+		invalidate();
 		fireEvent(EventBranchClosed, e, EventNamespace);
 	}
 
@@ -1408,7 +1408,7 @@ namespace CEGUI
 	bool Tree::handle_scrollChange(const EventArgs& args)
 	{
 		// simply trigger a redraw of the Tree.
-		requestRedraw();
+		invalidate();
 		return true;
 	}
 
