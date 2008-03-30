@@ -1,7 +1,7 @@
 /***********************************************************************
 	filename: 	CEGUITimer.cpp
 	created:	08/08/2006
-	author:		Olivier Delannoy 
+	author:		Olivier Delannoy
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -46,10 +46,10 @@ void Delay::set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value)
 *************************************************************************/
 // type name for this widget
 const CEGUI::String Timer::WidgetTypeName("Timer");
-const CEGUI::String Timer::EventNamespace("Timer"); 
+const CEGUI::String Timer::EventNamespace("Timer");
 const CEGUI::String Timer::EventTimerAlarm("EventTimerAlarm");
 /*************************************************************************
- * Property definition 
+ * Property definition
 *************************************************************************/
 TimerProperties::Delay Timer::d_delayProperty;
 /*************************************************************************
@@ -57,9 +57,9 @@ TimerProperties::Delay Timer::d_delayProperty;
 *************************************************************************/
 Timer::Timer(const CEGUI::String& type, const CEGUI::String& name) :
     Window(type, name),
-    d_delay(0), 
-    d_started(false), 
-    d_currentValue(0)
+    d_delay(0),
+    d_currentValue(0),
+    d_started(false)
 {
     CEGUI::UVector2 sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
     setMaxSize(sz);

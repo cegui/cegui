@@ -51846,6 +51846,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
 #if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
  int luaopen_CEGUI (lua_State* tolua_S) {
  return tolua_CEGUI_open(tolua_S);
-};
+}
 #endif
 

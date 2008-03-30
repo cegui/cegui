@@ -230,7 +230,6 @@ bool ScrolledItemListBase::handle_VScroll(const EventArgs& e)
     const WindowEventArgs& we = static_cast<const WindowEventArgs&>(e);
     Scrollbar* v = static_cast<Scrollbar*>(we.window);
     Rect render_area = getItemRenderArea();
-    float doc_sz = v->getDocumentSize();
     float newpos = -v->getScrollPosition()+render_area.d_top;
     d_pane->setYPosition(cegui_absdim(newpos));
     return true;
@@ -241,7 +240,6 @@ bool ScrolledItemListBase::handle_HScroll(const EventArgs& e)
     const WindowEventArgs& we = static_cast<const WindowEventArgs&>(e);
     Scrollbar* h = static_cast<Scrollbar*>(we.window);
     Rect render_area = getItemRenderArea();
-    float doc_sz = h->getDocumentSize();
     float newpos = -h->getScrollPosition()+render_area.d_left;
     d_pane->setXPosition(cegui_absdim(newpos));
     return true;

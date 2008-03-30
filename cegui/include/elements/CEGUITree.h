@@ -767,8 +767,8 @@ protected:
 	Scrollbar*	d_horzScrollbar;	//!< horizontal scroll-bar widget
 	LBItemList	d_listItems;		//!< list of items in the list box.
 	TreeItem*	d_lastSelected;	//!< holds pointer to the last selected item (used in range selections)
-   ImagerySection *openButtonImagery;
-   ImagerySection *closeButtonImagery;
+    ImagerySection* d_openButtonImagery;
+    ImagerySection* d_closeButtonImagery;
 
 
 private:
