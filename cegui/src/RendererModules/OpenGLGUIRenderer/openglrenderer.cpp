@@ -34,21 +34,24 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#include "openglrenderer.h"
-#include "opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIEventArgs.h"
 #include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
 #include "CEGUIcolour.h"
-#include "CEGUIOpenGLViewportTarget.h"
-#include "CEGUIOpenGLFBOTextureTarget.h"
 
 #if defined(__linux__)
+#   define GLX_GLXEXT_PROTOTYPES
+#   include <GL/glx.h>
 #   include "CEGUIOpenGLGLXPBTextureTarget.h"
 #elif defined(_WIN32) || defined(__WIN32__)
 #   include "CEGUIOpenGLWGLPBTextureTarget.h"
 #endif
+
+#include "openglrenderer.h"
+#include "opengltexture.h"
+#include "CEGUIOpenGLViewportTarget.h"
+#include "CEGUIOpenGLFBOTextureTarget.h"
 
 //Include the default codec for static builds
 #if defined(CEGUI_STATIC)
