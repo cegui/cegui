@@ -2,7 +2,7 @@
 	filename: 	CEGUIPropertyHelper.cpp
 	created:	6/7/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of PropertyHelper methods
 *************************************************************************/
 /***************************************************************************
@@ -68,7 +68,7 @@ int PropertyHelper::stringToInt(const String& str)
 {
 	using namespace std;
 
-	uint val = 0;
+	int val = 0;
 	sscanf(str.c_str(), " %d", &val);
 
 	return val;

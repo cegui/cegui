@@ -77,11 +77,11 @@ namespace CEGUI
 		d_forceVertScroll(false),
 		d_forceHorzScroll(false),
 		d_itemTooltips(false),
-		d_lastSelected(0),
-		d_horzScrollbar(0),
         d_vertScrollbar(0),
-        openButtonImagery(0),
-        closeButtonImagery(0)
+		d_horzScrollbar(0),
+        d_lastSelected(0),
+        d_openButtonImagery(0),
+        d_closeButtonImagery(0)
 	{
 		// add new events specific to list box.
 		addTreeEvents();
@@ -113,8 +113,8 @@ namespace CEGUI
 		const WidgetLookFeel &wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
 		const ImagerySection &tempOpenImagery = wlf.getImagerySection("OpenTreeButton");
 		const ImagerySection &tempCloseImagery = wlf.getImagerySection("CloseTreeButton");
-		openButtonImagery = (ImagerySection *)&tempOpenImagery;
-		closeButtonImagery = (ImagerySection *)&tempCloseImagery;
+		d_openButtonImagery = (ImagerySection *)&tempOpenImagery;
+		d_closeButtonImagery = (ImagerySection *)&tempCloseImagery;
 
 		// create the component sub-widgets
 		d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
@@ -678,7 +678,7 @@ namespace CEGUI
 				{
 					// Draw the Close button
 					if (itemIsVisible)
-						closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+						d_closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
 
 					// update position ready for next item
 					itemPos.d_y += itemSize.d_height;
@@ -691,7 +691,7 @@ namespace CEGUI
 				{
 					// Draw the Open button
 					if (itemIsVisible)
-						openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+						d_openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
 
 					// update position ready for next item
 					itemPos.d_y += itemSize.d_height;
@@ -1280,7 +1280,6 @@ namespace CEGUI
 			return;
 
 		float bottom;
-		float listHeight = getTreeRenderArea().getHeight();
 		float top = 0;
 
 		if (!getHeightToItemInList(d_listItems, treeItem, 0, &top))

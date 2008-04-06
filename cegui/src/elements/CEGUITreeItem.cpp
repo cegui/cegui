@@ -50,23 +50,22 @@ const colour TreeItem::DefaultTextColour  = 0xFFFFFFFF;
     Base class constructor
 *************************************************************************/
 TreeItem::TreeItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
-        d_itemText(text),
-        d_itemID(item_id),
-        d_itemData(item_data),
-        d_selected(false),
-        d_disabled(disabled),
-        d_autoDelete(auto_delete),
-        d_owner(0),
-        d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
-        d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
-        d_font(0),
-        d_isOpen(false),
-        d_buttonLocation(Rect(0, 0, 0, 0)),
-        d_iconImage(0),
-        d_selectBrush(0)
+    d_itemText(text),
+    d_itemID(item_id),
+    d_itemData(item_data),
+    d_selected(false),
+    d_disabled(disabled),
+    d_autoDelete(auto_delete),
+    d_buttonLocation(Rect(0,0,0,0)),
+    d_owner(0),
+    d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
+    d_selectBrush(0),
+    d_textCols(DefaultTextColour, DefaultTextColour, DefaultTextColour, DefaultTextColour),
+    d_font(0),
+    d_iconImage(0),
+    d_isOpen(false)
 {
 }
-
 
 /*************************************************************************
     Set the selection highlighting brush image.

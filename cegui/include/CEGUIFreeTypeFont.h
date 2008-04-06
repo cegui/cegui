@@ -2,7 +2,7 @@
 	filename: 	CEGUIFreeTypeFont.h
 	created:	3/6/2006
 	author:		Andrew Zabolotny
-	
+
 	purpose:    Implementation of the Font class via the FreeType library
 *************************************************************************/
 /***************************************************************************
@@ -46,7 +46,7 @@ namespace FontProperties
 {
     class FreeTypePointSize;
     class FreeTypeAntialiased;
-};
+}
 
 /*!
 \brief
