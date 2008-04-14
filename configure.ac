@@ -198,7 +198,7 @@ echo "*         Building CEGUI in debug mode:                 ${cegui_enable_deb
 echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
-echo "*         Building Irrlict Renderer:                    ${cegui_enable_irrlicht-no}"
+echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*"
 if test x"$cegui_enable_opengl" = x"yes"; then
 echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
@@ -240,7 +240,7 @@ echo "* Samples Framework:"
 echo "*         Building Samples:                             ${cegui_build_samples-no}"
 echo "*         GTK2 based dialog for renderer selection:     ${cegui_with_gtk-no}"
 echo "*         OpenGL Renderer available in samples:         ${cegui_samples_use_opengl-no}"
-echo "*         Irrlict Renderer available in samples:        ${cegui_samples_use_irrlicht-no}"
+echo "*         Irrlicht Renderer available in samples:       ${cegui_samples_use_irrlicht-no}"
 echo "*         Ogre3D Renderer available in samples:         ${cegui_samples_use_ogre-no}"
 echo "********************************************************************************"
 echo
