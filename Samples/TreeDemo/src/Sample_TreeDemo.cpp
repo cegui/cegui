@@ -12,7 +12,8 @@
 #include <mmsystem.h>
 #endif
 
-#include <time.h>
+#include <ctime>
+#include <cstdlib>
 
 
 const unsigned int TreeDemoSample::TreeID    = 1;
@@ -38,7 +39,7 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #endif
 
 
-// 
+//
 // int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
 // #else
 int main(int argc, char *argv[])
