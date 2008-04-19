@@ -41,7 +41,7 @@
 
 //Updated for linking of static libs
 #if defined(_WIN32)
-#  pragma comment(lib, "d3d9.lib")	
+#  pragma comment(lib, "d3d9.lib")
 #  if defined(_DEBUG)
 #	if defined(CEGUI_STATIC)
 #	   pragma comment(lib, "DirectX9GUIRenderer_Static_d.lib")
@@ -128,6 +128,8 @@ protected:
     DWORD   d_lastTime;
     int d_frames;
     int d_FPS;
+    // counter used to track elapsed time (for time pulse injection)
+    DWORD d_lastFrameTime;
 };
 
 #endif  // end of guard _CEGuiD3D9BaseApplication_h_

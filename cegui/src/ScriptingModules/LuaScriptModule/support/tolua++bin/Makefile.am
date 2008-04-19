@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
+INCLUDES = $(Lua_CFLAGS) -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
 
 bin_PROGRAMS = tolua++cegui
 tolua__cegui_SOURCES = tolua.c toluabind.c toluabind.h

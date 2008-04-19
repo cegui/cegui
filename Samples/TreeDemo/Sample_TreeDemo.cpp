@@ -12,7 +12,8 @@
 #include <mmsystem.h>
 #endif
 
-#include <time.h>
+#include <ctime>
+#include <cstdlib>
 
 
 const unsigned int TreeDemoSample::TreeID    = 1;
