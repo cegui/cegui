@@ -119,6 +119,8 @@ protected:
     DWORD   d_lastTime;
     int d_frames;
     int d_FPS;
+    // counter used to track elapsed time (for time pulse injection)
+    DWORD d_lastFrameTime;
 };
 
 #endif  // end of guard _CEGuiD3D9BaseApplication_h_

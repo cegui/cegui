@@ -163,6 +163,15 @@ bool CEGuiD3D9BaseApplication::execute(CEGuiSample* sampleApp)
     {
         if (idle)
         {
+            CEGUI::System& guiSystem = CEGUI::System::getSingleton();
+
+            // do time based updates
+            DWORD thisTime = GetTickCount();
+            float elapsed = static_cast<float>(thisTime - d_lastFrameTime);
+            d_lastFrameTime = thisTime;
+            // inject the time pulse
+            guiSystem.injectTimePulse(elapsed / 1000.0f);
+
             // handle D3D lost device stuff
             coop = pimpl->d_3DDevice->TestCooperativeLevel();
 
