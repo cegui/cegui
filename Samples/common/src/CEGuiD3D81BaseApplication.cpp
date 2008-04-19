@@ -173,6 +173,15 @@ bool CEGuiD3D81BaseApplication::execute(CEGuiSample* sampleApp)
     {
         if (idle)
         {
+            CEGUI::System& guiSystem = CEGUI::System::getSingleton();
+
+            // do time based updates
+            DWORD thisTime = GetTickCount();
+            float elapsed = static_cast<float>(thisTime - d_lastFrameTime);
+            d_lastFrameTime = thisTime;
+            // inject the time pulse
+            guiSystem.injectTimePulse(elapsed / 1000.0f);
+
             // handle D3D lost device stuff
             coop = pimpl->d_3DDevice->TestCooperativeLevel();
 
@@ -202,7 +211,6 @@ bool CEGuiD3D81BaseApplication::execute(CEGuiSample* sampleApp)
             Win32AppHelper::doDirectInputEvents(pimpl->d_directInput);
 
             // draw display
-			CEGUI::System& guiSystem = CEGUI::System::getSingleton();
             pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 			guiSystem.renderGUI();
 
