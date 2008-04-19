@@ -6,7 +6,7 @@ dnl now done like this to save repetition, and make it more explicit where
 dnl we should define these numbers (we could pick up the same info by other means
 dnl though this leaves nobody in any doubt about where this is being defined).
 m4_define([CEGUI_MAJ_VER], 0)
-m4_define([CEGUI_MIN_VER], 6)
+m4_define([CEGUI_MIN_VER], 7)
 m4_define([CEGUI_REL_VER], 0)
 
 dnl Construct the final version number out of the sub-version values specified above
@@ -200,7 +200,7 @@ echo "*         Building CEGUI in debug mode:                 ${cegui_enable_deb
 echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
-echo "*         Building Irrlict Renderer:                    ${cegui_enable_irrlicht-no}"
+echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*"
 if test x"$cegui_enable_opengl" = x"yes"; then
 echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
@@ -242,7 +242,7 @@ echo "* Samples Framework:"
 echo "*         Building Samples:                             ${cegui_build_samples-no}"
 echo "*         GTK2 based dialog for renderer selection:     ${cegui_with_gtk-no}"
 echo "*         OpenGL Renderer available in samples:         ${cegui_samples_use_opengl-no}"
-echo "*         Irrlict Renderer available in samples:        ${cegui_samples_use_irrlicht-no}"
+echo "*         Irrlicht Renderer available in samples:       ${cegui_samples_use_irrlicht-no}"
 echo "*         Ogre3D Renderer available in samples:         ${cegui_samples_use_ogre-no}"
 echo "********************************************************************************"
 echo
