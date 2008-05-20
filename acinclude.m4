@@ -361,13 +361,21 @@ to load a custom made image codec module as the default.]),
         AC_CHECK_LIB([opengl32], [main], [cegui_found_lib_GL=yes; LIBS="-lopengl32 $LIBS"], [cegui_found_lib_GL=no])
         AC_CHECK_LIB([glu32], [main], [cegui_found_lib_GLU=yes; LIBS="-lglu32 $LIBS"], [cegui_found_lib_GLU=no])
 
-        dnl Check for some glut variants.  Done like this because AC_SEARCH_LIBS did not work at all here
-        AC_CHECK_LIB([freeglut], [main], [cegui_found_lib_glut=yes; LIBS="-lfreeglut $LIBS"], [cegui_found_lib_glut=no])
-        if test x$cegui_found_lib_glut = xno; then
-            AC_CHECK_LIB([glut32], [main], [cegui_found_lib_glut=yes; LIBS="-lglut32 $LIBS"], [cegui_found_lib_glut=no])
+        dnl Check for glut header
+        AC_CHECK_HEADER([glut.h], [cegui_found_glut_h=yes],
+            [AC_CHECK_HEADER([GL/glut.h], [cegui_found_glut_h=yes], [cegui_found_glut_h=no])])
+
+        if test x$cegui_found_glut_h = xyes; then
+            dnl Check for some glut variants.  Done like this because AC_SEARCH_LIBS did not work at all here
+            AC_CHECK_LIB([freeglut], [main], [cegui_found_lib_glut=yes; LIBS="-lfreeglut $LIBS"], [cegui_found_lib_glut=no])
             if test x$cegui_found_lib_glut = xno; then
-                AC_CHECK_LIB([glut], [main], [cegui_found_lib_glut=yes; LIBS="-lglut $LIBS"], [cegui_found_lib_glut=no])
+                AC_CHECK_LIB([glut32], [main], [cegui_found_lib_glut=yes; LIBS="-lglut32 $LIBS"], [cegui_found_lib_glut=no])
+                if test x$cegui_found_lib_glut = xno; then
+                    AC_CHECK_LIB([glut], [main], [cegui_found_lib_glut=yes; LIBS="-lglut $LIBS"], [cegui_found_lib_glut=no])
+                fi
             fi
+        else
+            cegui_found_lib_glut=no
         fi
 
         OpenGL_CFLAGS=""
