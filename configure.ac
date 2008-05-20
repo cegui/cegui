@@ -138,6 +138,7 @@ AC_CONFIG_FILES([Makefile
                  Samples/Demo7/src/Makefile
                  Samples/Demo8/Makefile
                  Samples/Demo8/src/Makefile
+                 Samples/DragDropDemo/Makefile
                  Samples/FalagardDemo1/Makefile
                  Samples/FalagardDemo1/include/Makefile
                  Samples/FalagardDemo1/src/Makefile

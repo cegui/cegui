@@ -29,6 +29,7 @@ nobase_dist_pkgdata_DATA = configs/CEGUIConfig.xsd \
              layouts/Console.wnd \
              layouts/Demo7Windows.layout \
              layouts/Demo8.layout \
+             layouts/DragDropDemo.layout \
              layouts/FontDemo.layout \
              layouts/GUILayout.xsd \
              layouts/TabControlDemo.layout \
