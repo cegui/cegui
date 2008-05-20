@@ -32,9 +32,15 @@ AM_PROG_LIBTOOL
 
 # Setup some stuff depending on the system we're running on
 case $host_os in
-    *mingw32* ) MINGW32=yes;;
-            * ) MINGW32=no;;
+    *mingw32* ) MINGW32=yes
+                cegui_pc_platform_libs=-lwinmm
+                ;;
+            * ) MINGW32=no
+                cegui_pc_platform_libs=
+                ;;
 esac
+
+AC_SUBST(cegui_pc_platform_libs)
 
 AM_CONDITIONAL([MINGW32_BUILD], [test x$MINGW32 = xyes])
 
