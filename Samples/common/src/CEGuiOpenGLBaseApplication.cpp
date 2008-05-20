@@ -48,6 +48,9 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #else
+#ifdef __MINGW32__
+#define GLUT_DISABLE_ATEXIT_HACK
+#endif
 #include <GL/glut.h>
 #ifdef __FREEGLUT_STD_H__
 #   include <GL/freeglut_ext.h>
