@@ -33,6 +33,7 @@ local pkg_table =
         "TextDemo",
         "Demo6",
         "Demo7",
+        "DragDropDemo",
         "FalagardDemo1",
         "FontDemo",
         "Minesweeper",
