@@ -1,14 +1,16 @@
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir) $(freetype2_CFLAGS) $(pcre_CFLAGS)
 
 libCEGUIBase_la_LDFLAGS =
+libCEGUIBase_la_LIBADD =
 
 if MINGW32_BUILD
 libCEGUIBase_la_CPPFLAGS = -DCEGUIBASE_EXPORTS
 libCEGUIBase_la_LDFLAGS += -shared -no-undefined
+libCEGUIBase_la_LIBADD += -lwinmm
 endif
 
 libCEGUIBase_la_LDFLAGS += -version-info @CEGUI_VERSION_INFO@
-libCEGUIBase_la_LIBADD = $(freetype2_LIBS) $(pcre_LIBS)
+libCEGUIBase_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS)
 
 lib_LTLIBRARIES=libCEGUIBase.la
 
