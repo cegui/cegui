@@ -631,7 +631,7 @@
         <Property name="EWSizingCursorImage" value="set:TaharezLook image:MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="set:TaharezLook image:MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="set:TaharezLook image:MouseNeSwCursor" />
-        <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}" />
+        <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="WindowTopLeft" dimension="Width" /></Dim>
