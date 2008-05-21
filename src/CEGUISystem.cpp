@@ -679,64 +679,22 @@ void System::setMouseMoveScaling(float scaling)
 *************************************************************************/
 bool System::injectMouseMove(float delta_x, float delta_y)
 {
-	MouseEventArgs ma(0);
-	MouseCursor& mouse = MouseCursor::getSingleton();
+    MouseEventArgs ma(0);
+    MouseCursor& mouse = MouseCursor::getSingleton();
 
-	ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
-	ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = 0;
-	ma.clickCount = 0;
-	ma.button = NoButton;
+    ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
+    ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
 
-	// move the mouse cursor & update position in args.
-	mouse.offsetPosition(ma.moveDelta);
-	ma.position = mouse.getPosition();
+    // move the mouse cursor & update position in args.
+    mouse.offsetPosition(ma.moveDelta);
+    ma.position = mouse.getPosition();
 
-	Window* dest_window = getTargetWindow(ma.position);
-
-    // has window containing mouse changed?
-    if (dest_window != d_wndWithMouse)
-    {
-        // store previous window that contained mouse
-        Window* oldWindow = d_wndWithMouse;
-        // set the new window that contains the mouse.
-        d_wndWithMouse = dest_window;
-
-        // inform previous window the mouse has left it
-        if (oldWindow)
-        {
-            ma.window = oldWindow;
-            oldWindow->onMouseLeaves(ma);
-        }
-
-        // inform window containing mouse that mouse has entered it
-        if (d_wndWithMouse)
-        {
-            ma.window = d_wndWithMouse;
-            ma.handled = false;
-            d_wndWithMouse->onMouseEnters(ma);
-        }
-    }
-
-    // inform appropriate window of the mouse movement event
-    if (dest_window)
-    {
-        // ensure event starts as 'not handled'
-        ma.handled = false;
-
-        // loop backwards until event is handled or we run out of windows.
-        while ((!ma.handled) && (dest_window != 0))
-        {
-            ma.window = dest_window;
-            dest_window->onMouseMove(ma);
-            dest_window = getNextTargetWindow(dest_window);
-        }
-    }
-
-	return ma.handled;
+    return mouseMoveInjection_impl(ma);
 }
-
 
 /*************************************************************************
 	Method that injects that the mouse is leaves the application window
@@ -1027,11 +985,23 @@ bool System::injectMouseWheelChange(float delta)
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
-	// set new mouse position
-	MouseCursor::getSingleton().setPosition(Point(x_pos, y_pos));
+    Point new_position(x_pos, y_pos);
+    MouseCursor& mouse = MouseCursor::getSingleton();
 
-	// do the real work
-	return injectMouseMove(0, 0);
+    // setup mouse movement event args object.
+    MouseEventArgs ma(0);
+    ma.moveDelta = new_position - mouse.getPosition();
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
+
+    // move mouse cursor to new position
+    mouse.setPosition(new_position);
+    // update position in args (since actual position may be constrained)
+    ma.position = mouse.getPosition();
+
+    return mouseMoveInjection_impl(ma);
 }
 
 
@@ -1614,6 +1584,55 @@ const String System::getDefaultXMLParserName()
 {
     return d_defaultXMLParserName;
 }
+
+//----------------------------------------------------------------------------//
+bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
+{
+    Window* dest_window = getTargetWindow(ma.position);
+
+    // has window containing mouse changed?
+    if (dest_window != d_wndWithMouse)
+    {
+        // store previous window that contained mouse
+        Window* oldWindow = d_wndWithMouse;
+        // set the new window that contains the mouse.
+        d_wndWithMouse = dest_window;
+
+        // inform previous window the mouse has left it
+        if (oldWindow)
+        {
+            ma.window = oldWindow;
+            oldWindow->onMouseLeaves(ma);
+        }
+
+        // inform window containing mouse that mouse has entered it
+        if (d_wndWithMouse)
+        {
+            ma.window = d_wndWithMouse;
+            ma.handled = false;
+            d_wndWithMouse->onMouseEnters(ma);
+        }
+    }
+
+    // inform appropriate window of the mouse movement event
+    if (dest_window)
+    {
+        // ensure event starts as 'not handled'
+        ma.handled = false;
+
+        // loop backwards until event is handled or we run out of windows.
+        while ((!ma.handled) && (dest_window != 0))
+        {
+            ma.window = dest_window;
+            dest_window->onMouseMove(ma);
+            dest_window = getNextTargetWindow(dest_window);
+        }
+    }
+
+    return ma.handled;
+}
+
+//----------------------------------------------------------------------------//
 
 
 } // End of  CEGUI namespace section
