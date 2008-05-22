@@ -121,13 +121,15 @@ bool CEGuiIrrlichtBaseApplication::execute(CEGuiSample* sampleApp)
 {
     sampleApp->initialiseSample();
 
+    CEGUI::System& guiSystem = CEGUI::System::getSingleton();
+
     // draw everything
     while(d_device->run())
     {
         // draw only if the window is active
         if (d_device->isWindowActive())
         {
-            CEGUI::System& guiSystem = CEGUI::System::getSingleton();
+            checkWindowResize();
 
             // create FPS string
             char fps_buff[16];
@@ -188,6 +190,12 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
     }
 
     return (d_renderer != 0) ? d_renderer->OnEvent(event) : false;
+}
+
+void CEGuiIrrlichtBaseApplication::checkWindowResize()
+{
+    irr::core::dimension2d<irr::s32> cur_size = d_driver->getScreenSize();
+    d_renderer->setDisplaySize(CEGUI::Size(cur_size.Width, cur_size.Height));
 }
 
 #endif
