@@ -1369,6 +1369,11 @@ bool System::handleDisplaySizeChange(const EventArgs& e)
 		d_activeSheet->onParentSized(args);
 	}
 
+    Logger::getSingleton().logEvent(
+        "Display resize:"
+        " w=" + PropertyHelper::floatToString(new_sz.d_width) +
+        " h=" + PropertyHelper::floatToString(new_sz.d_height));
+
 	return true;
 }
 
