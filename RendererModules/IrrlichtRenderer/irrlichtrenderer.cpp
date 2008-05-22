@@ -53,12 +53,12 @@ namespace CEGUI
 		delete eventpusher;
 	};
 /************************************************************************/
-	void IrrlichtRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex, 
+	void IrrlichtRenderer::addQuad(const Rect& dest_rect, float z, const Texture* tex,
 		const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode)
 	{
 
-		/* 
-		irrlicht doesn't support for drawing mode selection 
+		/*
+		irrlicht doesn't support for drawing mode selection
 		so 'quad_split_mode' is neglected at the moment
 		*/
 
@@ -78,7 +78,7 @@ namespace CEGUI
 		dummyQuad.z=z;
 		dummyQuad.colours=colours;
 		dummyQuad.tex=(IrrlichtTexture*)tex;
-		
+
 		if(bQueuingEnabled)
 		{
 			renderlist.push_back(dummyQuad);
@@ -132,7 +132,7 @@ namespace CEGUI
 	irr::video::SColor IrrlichtRenderer::toIrrlichtColor(CEGUI::ulong cecolor)
 	{
 		return irr::video::SColor(
-			((cecolor >> 24) ) , 
+			((cecolor >> 24) ) ,
 			(((cecolor & 0x00FF0000) >> 16) ) ,
 			(((cecolor & 0x0000FF00) >> 8) ) ,
 			((cecolor & 0x000000FF) )
@@ -171,7 +171,7 @@ namespace CEGUI
         textures.push_back(t);
 		return t;
 	}
-/************************************************************************/	
+/************************************************************************/
 	Texture* IrrlichtRenderer::createTexture(float size)
 	{
         IrrlichtTexture* t = new IrrlichtTexture(this, device, size);
@@ -269,4 +269,18 @@ namespace CEGUI
 	{
 		return eventpusher->OnEvent(event);
 	}
+/************************************************************************/
+    void IrrlichtRenderer::setDisplaySize(const Size& sz)
+    {
+        if ((sz.d_width != resolution.Width) ||
+            (sz.d_height != resolution.Height))
+        {
+            resolution.Width  = sz.d_width;
+            resolution.Height = sz.d_height;
+
+            // fire event to notify rest of CEGUI system
+            EventArgs args;
+            fireEvent(EventDisplaySizeChanged, args, EventNamespace);
+        }
+    }
 }
