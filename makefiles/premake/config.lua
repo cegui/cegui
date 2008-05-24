@@ -26,6 +26,7 @@ CEGUI_LUA_VER = 51
 OPENGL_RENDERER = true
 DIRECTX81_RENDERER = false
 DIRECTX9_RENDERER = true
+DIRECTX10_RENDERER = false
 IRRLICHT_RENDERER = false
 
 ----------------
@@ -88,6 +89,7 @@ TOLUA_STATIC = false
 SAMPLES_GL = true
 SAMPLES_DX81 = false
 SAMPLES_DX9 = true
+SAMPLES_DX10 = false
 SAMPLES_IRRLICHT = false
 
 -- this setting controls if the samples should be included in the same
