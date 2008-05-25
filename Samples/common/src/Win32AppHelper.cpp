@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,7 +29,7 @@
 #   include "config.h"
 #endif
 
-#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9)
+#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9) || defined(CEGUI_SAMPLES_USE_DIRECTX_10)
 
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
