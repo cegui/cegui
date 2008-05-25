@@ -2,15 +2,12 @@ INCLUDES=-I$(top_srcdir)/include $(DevIL_CFLAGS)
 
 pkgincludedir=$(prefix)/include/CEGUI/ImageCodecModules/DevILImageCodec
 
-libCEGUIDevILImageCodec_la_LIBADD =
-
 if MINGW32_BUILD
 libCEGUIDevILImageCodec_la_CPPFLAGS = -DCEGUIDEVILIMAGECODEC_EXPORTS
 libCEGUIDevILImageCodec_la_LDFLAGS = -no-undefined -avoid-version
-libCEGUIDevILImageCodec_la_LIBADD += -L$(top_builddir)/src -lCEGUIBase
 endif
 
-libCEGUIDevILImageCodec_la_LIBADD += $(DevIL_LIBS) 
+libCEGUIDevILImageCodec_la_LIBADD = $(DevIL_LIBS) $(top_builddir)/src/libCEGUIBase.la
 
 lib_LTLIBRARIES=libCEGUIDevILImageCodec.la
 
