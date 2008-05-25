@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   DeviceReset_Direct3D81.cpp
+    filename:   DeviceReset_Direct3D10.cpp
     created:    25/5/2008
     author:     Paul D Turner
 *************************************************************************/
@@ -32,7 +32,7 @@
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
 
 #include "CEGUI.h"
-#include "RendererModules/directx9GUIRenderer/d3d10renderer.h"
+#include "RendererModules/directx10GUIRenderer/d3d10renderer.h"
 
 //----------------------------------------------------------------------------//
 // The following function is basically a nasty hack; we just needed to do the
