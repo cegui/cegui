@@ -63,7 +63,7 @@ if DIRECTX10_RENDERER and SAMPLES_DX10 then
     if CEGUI_CORE_LIBRARY_SOLUTION then
         dependency("DirectX10GUIRenderer")
     else
-        library("DirectX81GUIRenderer", DEBUG_DLL_SUFFIX or "")
+        library("DirectX10GUIRenderer", DEBUG_DLL_SUFFIX or "")
     end
 end
 

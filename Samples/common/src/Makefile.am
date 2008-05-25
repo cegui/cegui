@@ -39,8 +39,12 @@ if CEGUI_SAMPLES_USE_IRRLICHT
     libCEGUISampleHelper_la_LIBADD += -lCEGUIIrrlichtRenderer $(Irrlicht_LIBS)
 endif
 
-EXTRA_DIST = CEGuiD3D81BaseApplication.cpp \
+EXTRA_DIST = CEGuiD3D10BaseApplication.cpp \
+             CEGuiD3D81BaseApplication.cpp \
              CEGuiD3D9BaseApplication.cpp \
+             DeviceReset_Direct3D10.cpp \
+             DeviceReset_Direct3D819.cpp \
+             DeviceReset_Direct3D9.cpp \
              MacCEGuiRendererSelector.cpp \
              Win32AppHelper.cpp \
              Win32CEGuiRendererSelector.cpp
