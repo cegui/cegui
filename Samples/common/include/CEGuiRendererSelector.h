@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -37,6 +37,7 @@ enum CEGuiRendererType
     OgreGuiRendererType,            //!< Renderer that uses the Ogre engine.
     Direct3D81GuiRendererType,      //!< Renderer that uses the Direct3D 8.1 API.
     Direct3D9GuiRendererType,       //!< Renderer that uses the Direct3D 9 API.
+    Direct3D10GuiRendererType,      //!< Renderer that uses the Direct3D 10 API.
     OpenGLGuiRendererType,          //!< Renderer that uses the OpenGL API.
     IrrlichtGuiRendererType,        //!< Renderer that uses the Irrlicht engine.
     RendererTypeCount,              //!< Special value that equals the number of renderer types.
