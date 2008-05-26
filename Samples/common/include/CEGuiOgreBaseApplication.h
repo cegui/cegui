@@ -47,7 +47,8 @@
 
 // Frame listener forward ref (see class below)
 class CEGuiDemoFrameListener;
-
+// Window event listener forward ref (see class below)
+class WndEvtListener;
 
 class CEGuiOgreBaseApplication : public CEGuiBaseApplication
 {
@@ -83,6 +84,7 @@ protected:
     bool d_initialised;
 
     CEGuiDemoFrameListener* d_frameListener;
+    WndEvtListener* d_windowEventListener;
 };
 
 
@@ -124,5 +126,17 @@ protected:
     bool d_quit;
     CEGuiBaseApplication* d_baseApp;
 };
+
+//! window event listener class we use to hear abour window resizing
+class WndEvtListener : public Ogre::WindowEventListener
+{
+    CEGUI::OgreCEGUIRenderer* d_renderer;
+
+public:
+    WndEvtListener(CEGUI::OgreCEGUIRenderer* renderer);
+
+    void windowResized(Ogre::RenderWindow* rw);
+};
+
 
 #endif  // end of guard _CEGuiOgreBaseApplication_h_
