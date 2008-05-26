@@ -48,7 +48,6 @@ struct CEGuiBaseApplicationImpl
     HWND d_window;
     IDXGISwapChain* d_swapChain;
     ID3D10Device* d_device;
-    ID3D10RenderTargetView* d_renderTargetView;
     CEGUI::DirectX10Renderer* d_renderer;
     Win32AppHelper::DirectInputState d_directInput;
 };
@@ -64,6 +63,13 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
     {
         if (initialiseDirect3D(800, 600, true))
         {
+            // set the swap chain ptr into window data so we can get access
+            // later.  This is a bit of a hack, but saved us redesigning the
+            // entire framework just for this.
+            SetWindowLongPtr(pimpl->d_window,
+                             GWLP_USERDATA,
+                             (LONG_PTR)pimpl->d_swapChain);
+
             if (Win32AppHelper::initialiseDirectInput(pimpl->d_window,
                                                       pimpl->d_directInput))
             {
@@ -104,10 +110,7 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
                 return;
             }
 
-            // cleanup direct 3d systems
-            pimpl->d_renderTargetView->Release();
-            pimpl->d_swapChain->Release();
-            pimpl->d_device->Release();
+            cleanupDirect3D();
         }
 
         DestroyWindow(pimpl->d_window);
@@ -133,11 +136,8 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
 
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
-    // cleanup direct 3d systems
-    pimpl->d_renderTargetView->Release();
-    pimpl->d_swapChain->Release();
-    pimpl->d_device->Release();
-
+    cleanupDirect3D();
+   
     DestroyWindow(pimpl->d_window);
 
     delete pimpl;
@@ -174,9 +174,14 @@ bool CEGuiD3D10BaseApplication::execute(CEGuiSample* sampleApp)
 
             Win32AppHelper::doDirectInputEvents(pimpl->d_directInput);
 
+            // get render target view
+            // this is a bit wasteful, but done like this for now since the
+            // resize code can change the view from under us.
+            ID3D10RenderTargetView* rtview;
+            pimpl->d_device->OMGetRenderTargets(1, &rtview, 0);
+
             // clear display
-            pimpl->d_device->
-                ClearRenderTargetView(pimpl->d_renderTargetView, clear_colour);
+            pimpl->d_device->ClearRenderTargetView(rtview, clear_colour);
 
             // main CEGUI rendering call
             guiSystem.renderGUI();
@@ -191,6 +196,7 @@ bool CEGuiD3D10BaseApplication::execute(CEGuiSample* sampleApp)
             }
 
             pimpl->d_swapChain->Present(0, 0);
+            rtview->Release();
         }
 
         // check if the application is quitting, and break the loop next time
@@ -244,10 +250,11 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
 
         if (SUCCEEDED(res))
         {
+            ID3D10RenderTargetView* rtview;
+
             // create render target view using the back buffer
             res = pimpl->d_device->
-                CreateRenderTargetView(back_buffer, 0,
-                                       &pimpl->d_renderTargetView);
+                CreateRenderTargetView(back_buffer, 0, &rtview);
 
             // release handle to buffer - we have done all we needed to with it.
             back_buffer->Release();
@@ -256,7 +263,7 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
             {
                 // bind the back-buffer render target to get the output.
                 pimpl->d_device->
-                    OMSetRenderTargets(1, &pimpl->d_renderTargetView, 0);
+                    OMSetRenderTargets(1, &rtview, 0);
 
                 // set a basic viewport.
                 D3D10_VIEWPORT view_port;
@@ -275,12 +282,13 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
                 return true;
             }
 
+            rtview->Release();
         }
 
-        pimpl->d_renderTargetView->Release();
         pimpl->d_swapChain->Release();
-        pimpl->d_renderTargetView = 0;
+        pimpl->d_device->Release();
         pimpl->d_swapChain = 0;
+        pimpl->d_device = 0;
     }
 
     MessageBox(0, "Failed to correctly initialise Direct3D 10",
@@ -305,4 +313,28 @@ void CEGuiD3D10BaseApplication::updateFPS(void)
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiD3D10BaseApplication::cleanupDirect3D()
+{
+    if (pimpl->d_device)
+    {
+        // get render target view
+        ID3D10RenderTargetView* rtview;
+        pimpl->d_device->OMGetRenderTargets(1, &rtview, 0);
+
+        if (rtview)
+        {
+            // we release once for the reference we just asked for
+            rtview->Release();
+            // we release again for the original reference made at creation.
+            rtview->Release();
+        }
+        
+        pimpl->d_swapChain->Release();
+        pimpl->d_device->Release();
+
+        pimpl->d_swapChain = 0;
+        pimpl->d_device = 0;
+    }
+}
+
 #endif
