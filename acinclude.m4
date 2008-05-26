@@ -57,6 +57,16 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     CEGUI_CHECK_XERCES(xerces, [cegui_found_xerces=yes], [cegui_found_xerces=no])
     CEGUI_CHECK_EXPAT(expat, [cegui_found_expat=yes], [cegui_found_expat=no])
 
+    dnl Make some decisions about how to go about using TinyXML
+    AC_ARG_ENABLE([external-tinyxml], AC_HELP_STRING([--disable-external-tinyxml], [Disables the use of any external tinyxml library, forcing the use of the version that accompanies CEGUI.]),
+            [cegui_use_external_tinyxml=$enableval], [cegui_use_external_tinyxml=yes])
+
+    if test x$cegui_use_external_tinyxml = xyes; then
+        CEGUI_CHECK_TINYXML([tinyxml], [cegui_found_tinyxml=yes], [cegui_found_tinyxml=no])
+    else
+        cegui_found_tinyxml=no
+    fi
+
     dnl save lots of linker aggro ;)
     LIBS="$xerces_LIBS $LIBS"
 
@@ -140,11 +150,23 @@ load a custom made parser module as the default.]),
     AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_with_libxml = xyes])
     AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_with_expat = xyes])
     AM_CONDITIONAL([BUILD_TINYXML_PARSER], [test x$cegui_with_tinyxml = xyes])
+    AM_CONDITIONAL([BUILD_USING_INTERNAL_TINYXML], [test x$cegui_with_tinyxml = xyes && test x$cegui_found_tinyxml = xno])
+
+    dnl create a define for the main tinyxml header file
+    if test x$cegui_with_tinyxml = xyes && test x$cegui_found_tinyxml = xno; then
+        AC_DEFINE(CEGUI_TINYXML_H, ["ceguitinyxml/tinyxml.h"], [Set this to the name of the tinyxml.h file])
+        AC_DEFINE(CEGUI_TINYXML_NAMESPACE, [CEGUITinyXML], [Set this to the name of the tinyxml namespace])
+    else
+        AC_DEFINE(CEGUI_TINYXML_H, [<tinyxml.h>], [Set this to the name of the tinyxml.h file])
+        AC_DEFINE(CEGUI_TINYXML_NAMESPACE, [], [Set this to the name of the tinyxml namespace])
+    fi
 
     AC_SUBST(xerces_CFLAGS)
     AC_SUBST(xerces_LIBS)
     AC_SUBST(expat_CFLAGS)
     AC_SUBST(expat_LIBS)
+    AC_SUBST(tinyxml_CFLAGS)
+    AC_SUBST(tinyxml_LIBS)
 ])
 
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
@@ -682,6 +704,17 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
 
     if test x$cegui_found_lua = xyes && test x$cegui_with_lua = xyes; then
         cegui_with_lua=yes
+
+        dnl Decide which tolua++ library to use
+        AC_ARG_ENABLE([external-toluapp], AC_HELP_STRING([--disable-external-toluapp], [Disables the use of any external tolua++ library, forcing the use of the version that accompanies CEGUI.]),
+                [cegui_use_external_tolua=$enableval], [cegui_use_external_tolua=yes])
+
+        if test x$cegui_use_external_tolua = xyes; then
+            CEGUI_CHECK_TOLUAPP([toluapp],[cegui_found_toluapp=yes],[cegui_found_toluapp=no])
+        else
+            cegui_found_toluapp=no
+        fi
+
     else
         cegui_with_lua=no
     fi
@@ -699,7 +732,116 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
     fi
 
     AM_CONDITIONAL([CEGUI_BUILD_LUA_MODULE], [test x$cegui_with_lua = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_TOLUAPPLIB], [test x$cegui_found_toluapp = xno])
     AM_CONDITIONAL([CEGUI_BUILD_TOLUACEGUI], [test x$cegui_build_toluatool = xyes])
     AC_SUBST(Lua_CFLAGS)
     AC_SUBST(Lua_LIBS)
+    AC_SUBST(toluapp_CFLAGS)
+    AC_SUBST(toluapp_LIBS)
+])
+
+# CEGUI_CHECK_TOLUAPP(variable, [action-if-found], [action-if-not-found])
+# Checks for an installed copy of the tolua++ library
+AC_DEFUN([CEGUI_CHECK_TOLUAPP],[
+    AC_ARG_WITH([tolua++-incdir], AC_HELP_STRING([--with-tolua++-incdir=DIR], [Optionally specifies location of the tolua++ includes]),
+        [cegui_tolua_incdir=$withval],[cegui_tolua_incdir=[.]])
+    AC_ARG_WITH([tolua++-libdir], AC_HELP_STRING([--with-tolua++-libdir=DIR], [Optionally specifies location of the tolua++ library]),
+        [cegui_tolua_libdir=$withval],[cegui_tolua_libdir=[.]])
+
+    cegui_lib_paths="$cegui_tolua_libdir"
+    cegui_inc_paths="$cegui_tolua_incdir /usr/local/include/tolua++ /usr/include/tolua++ /usr/local/include /usr/include"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <tolua++.h>],
+            [cegui_tolua_h_found=yes; cegui_tolua_flags="$cegui_path"; break],
+            [cegui_tolua_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([tolua++], [tolua_endmodule],
+            [cegui_tolua_l_found=yes; cegui_tolua_libs="$cegui_path"; break],
+            [cegui_tolua_l_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_tolua_h_found = xyes && test x$cegui_tolua_l_found = xyes; then
+        if test x$cegui_tolua_flags != x.; then
+            $1_CFLAGS="-I$cegui_tolua_flags"
+        fi
+        if test x$cegui_tolua_libs = x.; then
+            $1_LIBS="-ltolua++"
+        else
+            $1_LIBS="-L$cegui_tolua_libs -ltolua++"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+])
+
+# CEGUI_CHECK_TINYXML(variable, [action-if-found], [action-if-not-found])
+# Checks for an installed copy of the TinyXML
+AC_DEFUN([CEGUI_CHECK_TINYXML],[
+    AC_ARG_WITH([tinyxml-incdir], AC_HELP_STRING([--with-tinyxml-incdir=DIR], [Optionally specifies location of the tinyxml includes]),
+        [cegui_tinyxml_incdir=$withval],[cegui_tinyxml_incdir=[.]])
+    AC_ARG_WITH([tinyxml-libdir], AC_HELP_STRING([--with-tinyxml-libdir=DIR], [Optionally specifies location of the tinyxml library]),
+        [cegui_tinyxml_libdir=$withval],[cegui_tinyxml_libdir=[.]])
+
+    AC_LANG_PUSH([C++])
+
+    cegui_lib_paths="$cegui_tinyxml_libdir"
+    cegui_inc_paths="$cegui_tinyxml_incdir /usr/local/include/tinyxml /usr/include/tinyxml /usr/local/include /usr/include"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <tinyxml.h>],
+            [cegui_tinyxml_h_found=yes; cegui_tinyxml_flags="$cegui_path"; break],
+            [cegui_tinyxml_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([tinyxml], [main],
+            [cegui_tinyxml_l_found=yes; cegui_tinyxml_libs="$cegui_path"; break],
+            [cegui_tinyxml_l_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_tinyxml_h_found = xyes && test x$cegui_tinyxml_l_found = xyes; then
+        if test x$cegui_tinyxml_flags != x.; then
+            $1_CFLAGS="-I$cegui_tinyxml_flags"
+        fi
+        if test x$cegui_tinyxml_libs = x.; then
+            $1_LIBS="-ltinyxml"
+        else
+            $1_LIBS="-L$cegui_tinyxml_libs -ltinyxml"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+
+    AC_LANG_POP([C++])
 ])

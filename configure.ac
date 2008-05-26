@@ -221,6 +221,9 @@ echo "*"
 fi
 echo "* XML Parser Modules:"
 echo "*         Building TinyXMLParser:                       ${cegui_with_tinyxml-no}"
+if test x$cegui_with_tinyxml = xyes; then
+echo "*             Using external TinyXML library:           ${cegui_found_tinyxml-no}"
+fi
 echo "*         Building ExpatParser:                         ${cegui_with_expat-no}"
 echo "*         Building LibXMLParser:                        ${cegui_with_libxml-no}"
 echo "*         Building XercesParser:                        ${cegui_with_xerces-no}"
@@ -243,6 +246,9 @@ echo "*"
 echo "* Scripting:"
 echo "*         Building Lua scripting module:                ${cegui_with_lua-no}"
 echo "*         Building tolua++cegui generator:              ${cegui_build_toluatool-no}"
+if test x$cegui_with_lua = xyes; then
+echo "*             Using external tolua++ library:           ${cegui_found_toluapp-no}"
+fi
 echo "*"
 echo "* Samples Framework:"
 echo "*         Building Samples:                             ${cegui_build_samples-no}"
