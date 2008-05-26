@@ -131,7 +131,8 @@ String DynamicModule::getFailureString() const
                       FORMAT_MESSAGE_IGNORE_INSERTS,
                       0,
                       GetLastError(),
-                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+//                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                       reinterpret_cast<LPTSTR>(&msgBuffer),
                       0,
                       0))

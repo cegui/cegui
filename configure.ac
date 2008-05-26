@@ -32,9 +32,15 @@ AM_PROG_LIBTOOL
 
 # Setup some stuff depending on the system we're running on
 case $host_os in
-    *mingw32* ) MINGW32=yes;;
-            * ) MINGW32=no;;
+    *mingw32* ) MINGW32=yes
+                cegui_pc_platform_libs=-lwinmm
+                ;;
+            * ) MINGW32=no
+                cegui_pc_platform_libs=
+                ;;
 esac
+
+AC_SUBST(cegui_pc_platform_libs)
 
 AM_CONDITIONAL([MINGW32_BUILD], [test x$MINGW32 = xyes])
 
@@ -128,6 +134,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/include/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/include/Makefile
                  cegui/include/RendererModules/directx9GUIRenderer/Makefile
+                 cegui/include/RendererModules/directx10GUIRenderer/Makefile
                  cegui/include/RendererModules/IrrlichtRenderer/Makefile
                  cegui/include/RendererModules/Makefile
                  cegui/include/RendererModules/OpenGLGUIRenderer/Makefile
@@ -150,6 +157,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  cegui/src/ImageCodecModules/TGAImageCodec/Makefile
                  cegui/src/Makefile
                  cegui/src/RendererModules/directx9GUIRenderer/Makefile
+                 cegui/src/RendererModules/directx10GUIRenderer/Makefile
                  cegui/src/RendererModules/IrrlichtRenderer/Makefile
                  cegui/src/RendererModules/Makefile
                  cegui/src/RendererModules/OpenGLGUIRenderer/Makefile
@@ -175,6 +183,7 @@ AC_CONFIG_FILES([cegui/CEGUI-OPENGL.pc
                  Samples/Demo6/Makefile
                  Samples/Demo7/Makefile
                  Samples/Demo8/Makefile
+                 Samples/DragDropDemo/Makefile
                  Samples/FalagardDemo1/Makefile
                  Samples/FirstWindow/Makefile
                  Samples/FontDemo/Makefile

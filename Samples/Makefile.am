@@ -8,8 +8,9 @@ SUBDIRS = . \
           common \
           Demo6 \
           Demo7 \
-          FirstWindow \
+          DragDropDemo \
           FalagardDemo1 \
+          FirstWindow \
           FontDemo \
           Minesweeper \
           ScrollablePaneDemo \

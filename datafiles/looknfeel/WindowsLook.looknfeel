@@ -798,6 +798,7 @@
         <Property name="EWSizingCursorImage" value="set:WindowsLook image:MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="set:WindowsLook image:MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="set:WindowsLook image:MouseNeSwCursor" />
+        <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">

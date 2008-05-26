@@ -51,6 +51,7 @@ EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/CEGUI-Info.plist \
              premake/Samples/Demo6/premake.lua \
              premake/Samples/Demo7/premake.lua \
              premake/Samples/Demo8/premake.lua \
+             premake/Samples/DragDropDemo/premake.lua \
              premake/Samples/FalagardDemo1/premake.lua \
              premake/Samples/FirstWindow/premake.lua \
              premake/Samples/FontDemo/premake.lua \

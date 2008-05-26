@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -61,6 +61,9 @@
 #   endif
 #   ifdef CEGUI_SAMPLES_USE_DIRECTX_9
 #       include "CEGuiD3D9BaseApplication.h"
+#   endif
+#   ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+#       include "CEGuiD3D10BaseApplication.h"
 #   endif
 #endif
 // now we include the base CEGuiBaseApplication just in case someone has managed to
@@ -152,6 +155,9 @@ bool CEGuiSample::initialise()
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_9
     d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
 #endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+    d_rendererSelector->setRendererAvailability(Direct3D10GuiRendererType);
+#endif
 
 #elif defined(__linux__)
     // decide which method to use for renderer selection
@@ -198,6 +204,11 @@ bool CEGuiSample::initialise()
             d_sampleApp = new CEGuiD3D9BaseApplication();
             break;
 #endif // DX9
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+        case Direct3D10GuiRendererType:
+            d_sampleApp = new CEGuiD3D10BaseApplication();
+            break;
+#endif // DX10
 #endif // Win32
 #ifdef CEGUI_SAMPLES_USE_OPENGL
         case OpenGLGuiRendererType:
