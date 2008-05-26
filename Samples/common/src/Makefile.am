@@ -1,4 +1,7 @@
-INCLUDES = -I$(top_srcdir)/Samples/common/include -I$(top_srcdir)/include -I$(top_srcdir)/cegui/include $(CEGUI_SAMPLES_CFLAGS)
+INCLUDES = -I$(top_srcdir)/Samples/common/include \
+           -I$(top_srcdir)/cegui/include \
+           $(CEGUI_SAMPLES_CFLAGS)
+
 lib_LTLIBRARIES=libCEGUISampleHelper.la
 
 libCEGUISampleHelper_la_LDFLAGS = -version-info @CEGUI_VERSION_INFO@
@@ -13,7 +16,7 @@ libCEGUISampleHelper_la_LIBADD =
 if MINGW32_BUILD
 libCEGUISampleHelper_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
 libCEGUISampleHelper_la_LDFLAGS += -shared -no-undefined
-libCEGUISampleHelper_la_LIBADD += -L$(top_builddir)/src -lCEGUIBase
+libCEGUISampleHelper_la_LIBADD += -L$(top_builddir)/cegui/src -lCEGUIBase
 libCEGUISampleHelper_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
 endif
 
@@ -39,8 +42,12 @@ if CEGUI_SAMPLES_USE_IRRLICHT
     libCEGUISampleHelper_la_LIBADD += -lCEGUIIrrlichtRenderer $(Irrlicht_LIBS)
 endif
 
-EXTRA_DIST = CEGuiD3D81BaseApplication.cpp \
+EXTRA_DIST = CEGuiD3D10BaseApplication.cpp \
+             CEGuiD3D81BaseApplication.cpp \
              CEGuiD3D9BaseApplication.cpp \
+             DeviceReset_Direct3D10.cpp \
+             DeviceReset_Direct3D819.cpp \
+             DeviceReset_Direct3D9.cpp \
              MacCEGuiRendererSelector.cpp \
              Win32AppHelper.cpp \
              Win32CEGuiRendererSelector.cpp

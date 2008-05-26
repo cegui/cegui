@@ -1340,6 +1340,12 @@ public:
         - true to make the Window visible.
         - false to make the Window hidden.
 
+    \note
+        Hiding the active window will cause that window to become deactivated.
+        Showing a window does not, however, automatically cause that window to
+        become the active window (call Window::activate after making the window
+        visible to activate it).
+
     \return
         Nothing
     */
@@ -1347,7 +1353,12 @@ public:
 
     /*!
     \brief
-        show the Window
+        show the Window.
+
+    \note
+        Showing a window does not automatically activate the window.  If you
+        want the window to also become active you will need to call the
+        Window::activate member also.
 
     \return
         Nothing
@@ -1357,6 +1368,9 @@ public:
     /*!
     \brief
         hide the Window.
+    \note
+        If the window is the active window, it will become deactivated as a
+        result of being hidden.
 
     \return
         Nothing

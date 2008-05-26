@@ -882,6 +882,11 @@ void Window::setVisible(bool setting)
 *************************************************************************/
 void Window::activate(void)
 {
+    // exit if the window is not visible, since a hidden window may not be the
+    // active window.
+    if (!isVisible())
+        return;
+
 	// force complete release of input capture.
 	// NB: This is not done via releaseCapture() because that has
 	// different behaviour depending on the restoreOldCapture setting.
@@ -2686,6 +2691,10 @@ void Window::onShown(WindowEventArgs& e)
 
 void Window::onHidden(WindowEventArgs& e)
 {
+    // first deactivate window if it is the active window.
+    if (isActive())
+        deactivate();
+
 	requestRedraw();
 	fireEvent(EventHidden, e, EventNamespace);
 }

@@ -3,16 +3,15 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
            $(Irrlicht_CFLAGS)
 
 libCEGUIIrrlichtRenderer_la_LDFLAGS =
-libCEGUIIrrlichtRenderer_la_LIBADD =
 
 if MINGW32_BUILD
 libCEGUIIrrlichtRenderer_la_CPPFLAGS = -DIRRRENDERER_EXPORTS
 libCEGUIIrrlichtRenderer_la_LDFLAGS += -no-undefined
-libCEGUIIrrlichtRenderer_la_LIBADD += -L$(top_builddir)/src -lCEGUIBase
 endif
 
 libCEGUIIrrlichtRenderer_la_LDFLAGS += -version-info @CEGUI_IRRLICHT_VERSION_INFO@
-libCEGUIIrrlichtRenderer_la_LIBADD += $(Irrlicht_LIBS)
+libCEGUIIrrlichtRenderer_la_LIBADD = $(Irrlicht_LIBS) \
+                                     $(top_builddir)/cegui/src/libCEGUIBase.la
 
 lib_LTLIBRARIES=libCEGUIIrrlichtRenderer.la
 

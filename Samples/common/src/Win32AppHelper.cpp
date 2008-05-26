@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,12 +29,11 @@
 #   include "config.h"
 #endif
 
-#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9)
+#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9) || defined(CEGUI_SAMPLES_USE_DIRECTX_10)
 
 #include "Win32AppHelper.h"
 #include "CEGUI.h"
 #include <TCHAR.H>
-
 
 /*************************************************************************
     Static Data Definitions
@@ -53,6 +52,15 @@ const TCHAR Win32AppHelper::CREATE_DEVICE_ERROR[]   = _TEXT("Failed to create Di
 // variable for tracking Win32 cursor
 bool Win32AppHelper::d_mouseInWindow = false;
 
+/*************************************************************************
+    Prototypes for internal helper functions a.k.a "The hacks section"
+    The implementations for these are in separate files; this is because
+    we othereise would need multiple versions of the D3D headers included
+    which is obviously a big no-no.
+*************************************************************************/
+void DeviceReset_Direct3D9(HWND window, CEGUI::Renderer* renderer);
+void DeviceReset_Direct3D81(HWND window, CEGUI::Renderer* renderer);
+void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer);
 
 /*************************************************************************
     Create main application window.
@@ -149,7 +157,34 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
         break;
 
     case WM_SIZE:
-        // TODO: Notify about new size
+        {
+            // get CEGUI::System as a pointer so we can detect if it's not
+            // instantiated yet.
+            CEGUI::System* cegui_system = CEGUI::System::getSingletonPtr();
+
+            // only continue if CEGUI is up an running and window was not
+            // minimised (else it's just a waste of time)
+            if ((cegui_system != 0) && (wParam != SIZE_MINIMIZED))
+            {
+                // get renderer identification string
+                CEGUI::Renderer* renderer = cegui_system->getRenderer();
+                CEGUI::String id(renderer->getIdentifierString());
+
+                // invoke correct function based on the renderer we have ID'd
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
+                if (id.find("Official Direct3D 9") != id.npos)
+                    DeviceReset_Direct3D9(hWnd, renderer);
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+                else if (id.find("Official Direct3D 8.1") != id.npos)
+                    DeviceReset_Direct3D81(hWnd, renderer);
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+                else if (id.find("Official Direct3D 10") != id.npos)
+                    DeviceReset_Direct3D10(hWnd, renderer);
+#endif
+            }
+        }
         break;
 
     case WM_PAINT:

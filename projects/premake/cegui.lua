@@ -70,6 +70,10 @@ if OPENGL_RENDERER then
     tinsert(pkg_table.RendererModules, "OpenGLGUIRenderer")
 end
 
+if DIRECTX10_RENDERER then
+    tinsert(pkg_table.RendererModules, "DirectX10GUIRenderer")
+end
+
 if DIRECTX9_RENDERER then
     tinsert(pkg_table.RendererModules, "DirectX9GUIRenderer")
 end
@@ -160,6 +164,9 @@ do
     end
     if DIRECTX9_RENDERER and SAMPLES_DX9 then
         config_h.CEGUI_SAMPLES_USE_DIRECTX_9 = ""
+    end
+    if DIRECTX10_RENDERER and SAMPLES_DX10 then
+        config_h.CEGUI_SAMPLES_USE_DIRECTX_10 = ""
     end
     --if SAMPLES_OGRE then
     --    config_h.CEGUI_SAMPLES_USE_OGRE = ""

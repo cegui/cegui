@@ -59,6 +59,14 @@ if DIRECTX81_RENDERER and SAMPLES_DX81 then
     end
 end
 
+if DIRECTX10_RENDERER and SAMPLES_DX10 then
+    if CEGUI_CORE_LIBRARY_SOLUTION then
+        dependency("DirectX10GUIRenderer")
+    else
+        library("DirectX10GUIRenderer", DEBUG_DLL_SUFFIX or "")
+    end
+end
+
 if IRRLICHT_RENDERER and SAMPLES_IRRLICHT then
     if CEGUI_CORE_LIBRARY_SOLUTION then
         dependency("IrrlichtRenderer")

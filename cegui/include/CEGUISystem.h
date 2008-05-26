@@ -430,7 +430,7 @@ public:
 
 	\param filename
 		String object holding the filename of the script file that is to be executed
-		
+
 	\param resourceGroup
 		Resource group identifier to be passed to the ResourceProvider when loading the script file.
 	*/
@@ -882,6 +882,9 @@ private:
 
     //! handle cleanup of the XML parser
     void cleanupXMLParser();
+
+    //! common function used for injection of mouse positions and movements
+    bool mouseMoveInjection_impl(MouseEventArgs& ma);
 
 	/*************************************************************************
 		Handlers for System events

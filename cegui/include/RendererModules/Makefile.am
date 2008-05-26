@@ -4,4 +4,8 @@ endif
 if BUILD_IRRLICHT_RENDERER
 IRRLICHT=IrrlichtRenderer
 endif
-SUBDIRS = . $(OPENGL) $(IRRLICHT) directx9GUIRenderer
+SUBDIRS = . \
+          $(OPENGL) \
+          $(IRRLICHT) \
+          directx9GUIRenderer \
+          directx10GUIRenderer

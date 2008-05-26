@@ -68,6 +68,9 @@ public:
 #endif
 
 protected:
+    /// member to check and handle resizing of the display window.
+    void checkWindowResize();
+
     irr::IrrlichtDevice*       d_device;
     irr::video::IVideoDriver*  d_driver;
     irr::scene::ISceneManager* d_smgr;

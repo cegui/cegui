@@ -52,17 +52,17 @@ namespace CEGUI
 
 	/*!
 	\brief
-	class implementing the interface for Renderer objects with 
+	class implementing the interface for Renderer objects with
 	the irrlicht graphics engine.
 	*/
 	class IRRLICHT_GUIRENDERER_API IrrlichtRenderer: public Renderer
 	{
 	public:
 
-		/*! constructor 
+		/*! constructor
 		\brief create the irrlicht renderer
 
-		\param dev 
+		\param dev
 		pointer to irr::IrrlichtDevice value specifying the irrlicht device
 
 		\param bWithIrrlichtResourceProvicer
@@ -74,7 +74,7 @@ namespace CEGUI
 		/*!	destructor */
 		virtual ~IrrlichtRenderer();
 
-		
+
 		/*! get an irrlicht resource provider
 		\return irrlicht resourceprovider
 		*/
@@ -112,7 +112,7 @@ namespace CEGUI
 		\return
 		Nothing
 		*/
-		virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, 
+		virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex,
 			const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 
@@ -203,7 +203,7 @@ namespace CEGUI
 		Textures are always created with a size that is a power of 2.  If you specify a size that is not a power of two, the final
 		size will be rounded up.  So if you specify a size of 1024, the texture will be (1024 x 1024), however, if you specify a size
 		of 1025, the texture will be (2048 x 2048).  You can check the ultimate size by querying the texture after creation.
-		*/	
+		*/
 		virtual	Texture*	createTexture(float size);
 
 
@@ -310,6 +310,22 @@ namespace CEGUI
 		*/
 		virtual	uint	getVertScreenDPI(void) const;
 
+    /*!
+    \brief
+        Set the size of the display in pixels.
+
+        If your viewport size changes, you can call this function with the new size
+        in pixels to update the rendering area.
+
+    \note
+        This method will cause the EventDisplaySizeChanged event to fire if the
+        display size has changed.
+
+    \param sz
+        Size object describing the size of the display.
+    */
+    void setDisplaySize(const Size& sz);
+
 		private:
 
 			// the irrlicht device
@@ -333,7 +349,7 @@ namespace CEGUI
 			{
 				RenderQuad(){};
 
-				RenderQuad(float zVal, 
+				RenderQuad(float zVal,
 					const irr::core::rect<irr::s32>& target,
 					const irr::core::rect<irr::s32>& source,
 					ColourRect col,const Texture*t)

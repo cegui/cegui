@@ -6,10 +6,11 @@ libCEGUIFalagardWRBase_la_LDFLAGS =
 if MINGW32_BUILD
 libCEGUIFalagardWRBase_la_CPPFLAGS = -DFALAGARDWRBASE_EXPORTS -DCEGUIWRMODULE_EXPORTS
 libCEGUIFalagardWRBase_la_LDFLAGS += -no-undefined -avoid-version
-libCEGUIFalagardWRBase_la_LIBADD = -L$(top_builddir)/src/ -lCEGUIBase
 endif
 
 libCEGUIFalagardWRBase_la_LDFLAGS += -version-info @CEGUI_VERSION_INFO@
+
+libCEGUIFalagardWRBase_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase.la
 
 lib_LTLIBRARIES=libCEGUIFalagardWRBase.la
 
