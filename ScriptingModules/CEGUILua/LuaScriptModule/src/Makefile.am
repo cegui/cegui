@@ -1,5 +1,4 @@
 INCLUDES = -I$(top_srcdir)/include \
-           -I$(top_srcdir)/ScriptingModules/CEGUILua/tolua++ \
            -I$(top_srcdir)/ScriptingModules/CEGUILua/LuaScriptModule/include
 
 libCEGUILuaScriptModule_la_LDFLAGS =
@@ -20,7 +19,13 @@ libCEGUILuaScriptModule_la_SOURCES = lua_CEGUI.cpp \
                                      CEGUILuaFunctor.cpp \
                                      required.cpp
 libCEGUILuaScriptModule_la_LIBADD = $(top_builddir)/src/libCEGUIBase.la \
-                                    ../../tolua++/libCEGUItoluapp.la \
                                     $(Lua_LIBS)
+if CEGUI_BUILD_TOLUAPPLIB
+INCLUDES += -I$(top_srcdir)/ScriptingModules/CEGUILua/tolua++
+libCEGUILuaScriptModule_la_LIBADD += ../../tolua++/libCEGUItoluapp.la
+else
+INCLUDES += $(toluapp_CFLAGS)
+libCEGUILuaScriptModule_la_LIBADD += $(toluapp_LIBS)
+endif
 
 noinst_HEADERS = required.h
