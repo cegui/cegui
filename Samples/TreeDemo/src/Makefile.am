@@ -3,8 +3,8 @@ INCLUDES = -I$(top_srcdir)/Samples/TreeDemo/include -I$(top_srcdir)/include -I$(
 noinst_PROGRAMS = TreeDemo
 
 TreeDemo_SOURCES = Sample_TreeDemo.cpp
-TreeDemo_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/common/src
-TreeDemo_LDADD = -lCEGUIBase -lCEGUISampleHelper
+TreeDemo_LDADD = $(top_builddir)/src/libCEGUIBase.la \
+                 $(top_builddir)/Samples/common/src/libCEGUISampleHelper.la
 
 install-exec-local:
 	$(LN_S) -f `pwd`/.libs/TreeDemo$(EXEEXT) $(top_builddir)/Samples/bin/TreeDemo$(EXEEXT)

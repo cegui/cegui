@@ -5,8 +5,8 @@ noinst_PROGRAMS = Demo6
 noinst_HEADERS =  Sample_Demo6.h
 
 Demo6_SOURCES = Sample_Demo6.cpp
-Demo6_LDFLAGS = -L$(top_builddir)/src -L$(top_builddir)/Samples/common/src
-Demo6_LDADD = -lCEGUIBase -lCEGUISampleHelper
+Demo6_LDADD = $(top_builddir)/src/libCEGUIBase.la \
+              $(top_builddir)/Samples/common/src/libCEGUISampleHelper.la
 
 
 install-exec-local:
