@@ -2,7 +2,7 @@
 	filename: 	CEGUITabControl.h
 	created:	08/08/2004
 	author:		Steve Streeting
-	
+
 	purpose:	Interface to base class for TabControl widget
 *************************************************************************/
 /***************************************************************************
@@ -110,7 +110,7 @@ public:
 	*************************************************************************/
 	/*!
 	\brief
-		Return number of tabs 
+		Return number of tabs
 
 	\return
 		the number of tabs currently present.
@@ -243,7 +243,7 @@ public:
 		index of the currently selected tab.
 	*/
     size_t	getSelectedTabIndex() const;
-	
+
     /*!
     \brief
         Return the height of the tabs
@@ -285,26 +285,26 @@ public:
     void setTabTextPadding(const UDim& padding);
 
     /*!
-    \brief 
-        Add a new tab to the tab control. 
-    \par 
+    \brief
+        Add a new tab to the tab control.
+    \par
         The new tab will be added with the same text as the window passed in.
     \param wnd
         The Window which will be placed in the content area of this new tab.
     */
     void addTab(Window* wnd);
     /*!
-    \brief 
-        Remove the named tab from the tab control. 
-    \par 
-        The tab content will be destroyed. 
+    \brief
+        Remove the named tab from the tab control.
+    \par
+        The tab content will be destroyed.
     */
     void removeTab(const String& name);
     /*!
-    \brief 
-    Remove the tab with the given ID from the tab control. 
-    \par 
-    The tab content will be destroyed. 
+    \brief
+    Remove the tab with the given ID from the tab control.
+    \par
+    The tab content will be destroyed.
     */
     void removeTab(uint ID);
 
@@ -333,7 +333,7 @@ protected:
 	*************************************************************************/
     /*!
     \brief
-        Perform the actual rendering for this Window. 
+        Perform the actual rendering for this Window.
 
     \param z
         float value specifying the base Z co-ordinate that should be used when rendering
@@ -364,7 +364,7 @@ protected:
         Construct a button name to handle a window.
     */
     String makeButtonName(Window* wnd);
-    
+
     /*!
     \brief
         Internal implementation of select tab.
@@ -443,6 +443,9 @@ protected:
         Pointer to a TabButton to be used for changing tabs.
     */
     TabButton*  createTabButton(const String& name) const;
+
+    //! Implementation function to do main work of removing a tab.
+    void removeTab_impl(Window* window);
 
 	/*************************************************************************
 		New event handlers
