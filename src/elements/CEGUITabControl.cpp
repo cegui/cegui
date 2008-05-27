@@ -261,9 +261,10 @@ void TabControl::addTab(Window* wnd)
     performChildWindowLayout();
     requestRedraw();
     // Subscribe to text changed event so that we can resize as needed
-    wnd->subscribeEvent(Window::EventTextChanged,
-        Event::Subscriber(&TabControl::handleContentWindowTextChanged, this));
-
+    d_eventConnections[wnd] =
+        wnd->subscribeEvent(Window::EventTextChanged,
+            Event::Subscriber(&TabControl::handleContentWindowTextChanged,
+                              this));
 }
 /*************************************************************************
 Remove a tab
@@ -768,6 +769,8 @@ bool TabControl::handleWheeledPane(const EventArgs& e)
 
 void TabControl::removeTab_impl(Window* window)
 {
+    // delete connection to event we subscribed earlier
+    d_eventConnections.erase(window);
     // Was this selected?
     bool reselect = window->isVisible();
     // Tab buttons are the 2nd onward children
