@@ -100,7 +100,7 @@ double SimpleTimer::currentTime()
     return timeGetTime() / 1000.0;
 }
 
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
 #include <sys/time.h>
 double SimpleTimer::currentTime()
 {
@@ -108,6 +108,8 @@ double SimpleTimer::currentTime()
     gettimeofday(&timeStructure, 0);
     return timeStructure.tv_sec + timeStructure.tv_usec / 1000000.0;
 }
+#else
+#error "SimpleTimer not available for this platform, please implement it"
 #endif
 
 
