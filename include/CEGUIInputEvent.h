@@ -2,7 +2,7 @@
 	filename: 	CEGUIInputEvent.h
 	created:	30/5/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines interface to input event classes
 *************************************************************************/
 /***************************************************************************
@@ -210,7 +210,7 @@ enum MouseButton
 	X1Button,
 	X2Button,
 	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
-	NoButton				//!< Value set for no mouse button.  NB: This is not 0, do not assume! 
+	NoButton				//!< Value set for no mouse button.  NB: This is not 0, do not assume!
 };
 
 
@@ -253,7 +253,10 @@ public:
 class CEGUIEXPORT UpdateEventArgs : public WindowEventArgs
 {
 public:
-	UpdateEventArgs(Window* window, float tslf):WindowEventArgs(window) {}
+    UpdateEventArgs(Window* window, float tslf) :
+        WindowEventArgs(window),
+        d_timeSinceLastFrame(tslf)
+    {}
 
 	float d_timeSinceLastFrame; //!< Time since the last frame update
 };
