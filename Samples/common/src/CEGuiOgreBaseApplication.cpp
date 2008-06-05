@@ -224,7 +224,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
 
     // create buffered keyboard
     //if (d_inputManager->getNumberOfDevices(OIS::OISKeyboard) > 0)
-    if (d_inputManager->numKeyBoards() > 0)
+    if (d_inputManager->numKeyboards() > 0)
     {
         d_keyboard = static_cast<OIS::Keyboard*>(d_inputManager->createInputObject(OIS::OISKeyboard, true));
         d_keyboard->setEventCallback(this);

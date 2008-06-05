@@ -168,9 +168,9 @@ do
     if DIRECTX10_RENDERER and SAMPLES_DX10 then
         config_h.CEGUI_SAMPLES_USE_DIRECTX_10 = ""
     end
-    --if SAMPLES_OGRE then
-    --    config_h.CEGUI_SAMPLES_USE_OGRE = ""
-    --end
+    if SAMPLES_OGRE then
+        config_h.CEGUI_SAMPLES_USE_OGRE = ""
+    end
     if IRRLICHT_RENDERER then
           -- This only used to happen when samples were to build as well
           config_h.CEGUI_IRR_SDK_VERSION = CEGUI_IRR_SDK_VERSION
