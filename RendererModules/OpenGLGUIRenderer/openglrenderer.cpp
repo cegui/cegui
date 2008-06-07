@@ -73,6 +73,12 @@ namespace CEGUI
 // This is all done totally internally here; no need for external interface
 // to show any of this.
 //----------------------------------------------------------------------------//
+// we only really need this with MSVC / Windows(?) and by now it should already
+// be defined on that platform, so we just define it as empty macro so the
+// compile does not break on other systems.
+#ifndef APIENTRY
+#   define APIENTRY
+#endif
 //! Function to perform extentsions initialisation.
 void initialiseGLExtensions();
 //! Pointer to a function to use as glActiveTexture
@@ -80,7 +86,7 @@ PFNGLACTIVETEXTUREPROC CEGUI_activeTexture;
 //! Pointer to a function to use as glClientActiveTexture
 PFNGLCLIENTACTIVETEXTUREPROC CEGUI_clientActiveTexture;
 //! Dummy function for if real ones are not present (saves testing each render)
-void activeTextureDummy(GLenum) {}
+void APIENTRY activeTextureDummy(GLenum) {}
 //----------------------------------------------------------------------------//
 
 /*************************************************************************

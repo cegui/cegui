@@ -13,6 +13,7 @@ package.files =
 }
 
 include(pkgdir)
+include(pkgdir.."GLEW")
 include(rootdir)
 
 if windows then
@@ -24,3 +25,4 @@ end
 dependency("CEGUIBase")
 
 define("OPENGL_GUIRENDERER_EXPORTS")
+define("GLEW_STATIC")
