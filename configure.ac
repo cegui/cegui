@@ -206,6 +206,7 @@ echo "*         Building CEGUI in debug mode:                 ${cegui_enable_deb
 echo "*"
 echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
+echo "*             Using external GLEW library:              ${cegui_found_glew-no}"
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*"
 if test x"$cegui_enable_opengl" = x"yes"; then

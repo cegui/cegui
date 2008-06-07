@@ -31,12 +31,17 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#include <GL/glew.h>
+
 #include "openglrenderer.h"
 #include "opengltexture.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIEventArgs.h"
 #include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
+
+#include <sstream>
 
 //Include the default codec for static builds
 #if defined(CEGUI_STATIC)
@@ -63,6 +68,21 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+// The following are some GL extension / version dependant related items.
+// This is all done totally internally here; no need for external interface
+// to show any of this.
+//----------------------------------------------------------------------------//
+//! Function to perform extentsions initialisation.
+void initialiseGLExtensions();
+//! Pointer to a function to use as glActiveTexture
+PFNGLACTIVETEXTUREPROC CEGUI_activeTexture;
+//! Pointer to a function to use as glClientActiveTexture
+PFNGLCLIENTACTIVETEXTUREPROC CEGUI_clientActiveTexture;
+//! Dummy function for if real ones are not present (saves testing each render)
+void activeTextureDummy(GLenum) {}
+//----------------------------------------------------------------------------//
+
 /*************************************************************************
 	Constants definitions
 *************************************************************************/
@@ -93,7 +113,10 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads, ImageCodec*  codec) :
 
     if (!d_imageCodec)
         setupImageCodec("");
+
     setModuleIdentifierString();
+
+    initialiseGLExtensions();
 }
 
 
@@ -113,9 +136,13 @@ OpenGLRenderer::OpenGLRenderer(uint max_quads,int width, int height, ImageCodec*
 	d_display_area.d_top	= 0;
 	d_display_area.d_right	= static_cast<float>(width);
 	d_display_area.d_bottom	= static_cast<float>(height);
+
     if (!d_imageCodec)
         setupImageCodec("");
+
     setModuleIdentifierString();
+
+    initialiseGLExtensions();
 }
 
 
@@ -378,6 +405,9 @@ void OpenGLRenderer::initPerFrameStates(void)
 	//save current attributes
 	glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+    CEGUI_activeTexture(GL_TEXTURE0);
+    CEGUI_clientActiveTexture(GL_TEXTURE0);
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glMatrixMode(GL_PROJECTION);
@@ -733,6 +763,41 @@ const String& OpenGLRenderer::getDefaultImageCodecName()
 ************************************************************************/
 String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
 
+//----------------------------------------------------------------------------//
+void initialiseGLExtensions()
+{
+    // initialise GLEW
+    GLenum err = glewInit();
+    if (GLEW_OK != err)
+    {
+        std::ostringstream err_string;
+        err_string << "OpenGLRenderer failed to initialise the GLEW library. "
+            << glewGetErrorString(err);
+
+        throw RendererException(err_string.str());
+    }
+
+    // GL 1.3 has multi-texture support natively
+    if (GLEW_VERSION_1_3)
+    {
+        CEGUI_activeTexture = glActiveTexture;
+        CEGUI_clientActiveTexture = glClientActiveTexture;
+    }
+    // Maybe there is the ARB_multitexture extension version?
+    else if (GL_ARB_multitexture)
+    {
+        CEGUI_activeTexture = glActiveTextureARB;
+        CEGUI_clientActiveTexture = glClientActiveTextureARB;
+    }
+    // assign dummy functions if no multitexture possibilities
+    else
+    {
+        CEGUI_activeTexture = activeTextureDummy;
+        CEGUI_clientActiveTexture = activeTextureDummy;
+    }
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 

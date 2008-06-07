@@ -413,6 +413,17 @@ to load a custom made image codec module as the default.]),
         AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
         OpenGL_CFLAGS="$X_CFLAGS"
         OpenGL_LIBS=$LIBS
+
+        dnl Deal with possibility / option for external GLEW lib
+        AC_ARG_ENABLE([external-glew], AC_HELP_STRING([--disable-external-glew], [Disables the use of any external GLEW library, forcing the use of the version that accompanies CEGUI.]),
+            [cegui_use_external_glew=$enableval], [cegui_use_external_glew=yes])
+        if test x$cegui_use_external_glew = xyes; then
+            CEGUI_CHECK_GLEW([GLEW],
+                [cegui_found_glew=yes; OpenGL_CFLAGS="$OpenGL_CFLAGS $GLEW_CFLAGS"; OpenGL_LIBS="OpenGL_LIBS $GLEW_LIBS"],
+                [cegui_found_glew=no])
+        else
+            cegui_found_glew=no
+        fi
         ;;
     esac
 
@@ -563,10 +574,10 @@ to load a custom made image codec module as the default.]),
             fi
         fi
     fi
+
     dnl define macro for the class of the default image codec  to be used
     AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_IMAGE_CODEC, $cegui_default_image_codec, [Set this to the default ImageCodec to be used (CoronaImageCodec, DevILImageCodec FreeImageImageCode, SILLYImageCodec, TGAImageCodec).])
     AC_MSG_NOTICE([Default ImageCodec will be: $cegui_default_image_codec])
-
 
     AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
@@ -575,6 +586,8 @@ to load a custom made image codec module as the default.]),
     AM_CONDITIONAL([CEGUI_BUILD_SILLY_IMAGE_CODEC], [test x$cegui_with_silly = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_FREE_IMAGE_IMAGE_CODEC], [test x$cegui_with_freeimage = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_TGA_IMAGE_CODEC], [test x$cegui_with_tga = xyes])
+    AM_CONDITIONAL([BUILD_USING_INTERNAL_GLEW], [test x$cegui_found_glew = xno])
+
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
 ])
@@ -844,4 +857,59 @@ AC_DEFUN([CEGUI_CHECK_TINYXML],[
     fi
 
     AC_LANG_POP([C++])
+])
+
+# CEGUI_CHECK_GLEW(variable, [action-if-found], [action-if-not-found])
+# Checks for an installed copy of GLEW
+AC_DEFUN([CEGUI_CHECK_GLEW],[
+    AC_ARG_WITH([glew-incdir], AC_HELP_STRING([--with-glew-incdir=DIR], [Optionally specifies location of the GL/glew.h headers]),
+        [cegui_glew_incdir=$withval],[cegui_glew_incdir=[.]])
+    AC_ARG_WITH([glew-libdir], AC_HELP_STRING([--with-glew-libdir=DIR], [Optionally specifies location of the glew library]),
+        [cegui_glew_libdir=$withval],[cegui_glew_libdir=[.]])
+
+    AC_LANG_PUSH([C])
+
+    cegui_lib_paths="$cegui_glew_libdir"
+    cegui_inc_paths="$cegui_glew_incdir /usr/local/include/ /usr/include/"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <GL/glew.h>],
+            [cegui_glew_h_found=yes; cegui_glew_flags="$cegui_path"; break],
+            [cegui_glew_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([GLEW], [glewInit],
+            [cegui_glew_l_found=yes; cegui_glew_libs="$cegui_path"; break],
+            [cegui_glew_l_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_glew_h_found = xyes && test x$cegui_glew_l_found = xyes; then
+        if test x$cegui_glew_flags != x.; then
+            $1_CFLAGS="-I$cegui_glew_flags"
+        fi
+        if test x$cegui_glew_libs = x.; then
+            $1_LIBS="-lGLEW"
+        else
+            $1_LIBS="-L$cegui_glew_libs -lGLEW"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+
+    AC_LANG_POP([C])
 ])

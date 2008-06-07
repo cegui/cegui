@@ -1,7 +1,7 @@
 Crazy Eddie's GUI System Mk-2
 http://www.cegui.org.uk
 
-Copyright ©2004 - 2005 CEGUI Team & Contributing Authors
+Copyright ï¿½2004 - 2008 CEGUI Team & Contributing Authors
 
 This sofware uses the PCRE library by Philip Hazel.
 PCRE is Copyright (c) 1997-2004 University of Cambridge, All rights reserved.
@@ -15,10 +15,16 @@ This software uses the Freetype2 library to provide most of the font loading and
 rendering support.  Freetype2 is a free, high-quality, and portable font engine;
 see http://www.freetype.org for more information.
 
-This software can be compiled to optionally contain embedded copies of Lua and
-tolua++.  Please see the files luaCOPYRIGHT and tolua++README in the directory
+This software can be compiled to optionally contain an embedded copy of tolua++.
+Please see the file tolua++README in the directory
 ./ScriptingModules/CEGUILua/lua_and_tolua++/ for additional licensing that may
-apply to the use of these libraries.
+apply to the use of this library.
+
+This software can be compiled in such a way that certain components contain an
+embedded copy of the OpenGL Extension Wrangler (GLEW) library.  Please see the
+file GLEW-LICENSE in the directory RendererModules/OpenGLGUIRenderer/GLEW for
+additional licensing that may apply to the use of this library.
+
 
 This is Crazy Eddie's GUI System Mk-2; a free library providing windowing and
 widgets for graphics APIs and engines where such functionality is not natively
@@ -50,7 +56,8 @@ Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
 following systems:
 
 *Various flavors of Linux using gcc.
-*Microsoft Windows running VC++7.0 up and until VC++9, both 'express' and 'professional' versions.
+*Microsoft Windows running VC++7.0 up and until VC++9, both 'express' and
+ 'professional' versions.
 *Apple Mac OS X running Xcode. (out of sync - we need a maintainer)
 
 It is very possible that the system will compile and run on other systems and
