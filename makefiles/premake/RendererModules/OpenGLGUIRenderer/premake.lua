@@ -8,6 +8,8 @@ package.files =
 {
     matchfiles(pkgdir.."*.cpp"),
     matchfiles(pkgdir.."*.h"),
+    matchfiles(pkgdir.."GLEW/src/*.c"),
+    matchfiles(pkgdir.."GLEW/GL/*.h"),
 }
 
 include(pkgdir)
