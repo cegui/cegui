@@ -63,7 +63,13 @@ namespace CEGUI
     SpinnerProperties::MinimumValue  Spinner::d_minValueProperty;
     SpinnerProperties::TextInputMode Spinner::d_textInputModeProperty;
     //////////////////////////////////////////////////////////////////////////
-    
+    // this is taken from stringencoders lib (and modified)
+    // http://code.google.com/p/stringencoders/
+    //
+    // Thanks to FluXy for the heads-up on this one!
+    String modp_dtoa(double value, int prec);
+
+
     Spinner::Spinner(const String& type, const String& name) :
         Window(type, name),
         d_stepSize(1.0f),
@@ -104,22 +110,22 @@ namespace CEGUI
         performChildWindowLayout();
     }
 
-    float Spinner::getCurrentValue(void) const
+    double Spinner::getCurrentValue(void) const
     {
         return d_currentValue;
     }
 
-    float Spinner::getStepSize(void) const
+    double Spinner::getStepSize(void) const
     {
         return d_stepSize;
     }
 
-    float Spinner::getMaximumValue(void) const
+    double Spinner::getMaximumValue(void) const
     {
         return d_maxValue;
     }
 
-    float Spinner::getMinimumValue(void) const
+    double Spinner::getMinimumValue(void) const
     {
         return d_minValue;
     }
@@ -129,7 +135,7 @@ namespace CEGUI
         return d_inputMode;
     }
 
-    void Spinner::setCurrentValue(float value)
+    void Spinner::setCurrentValue(double value)
     {
         if (value != d_currentValue)
         {
@@ -143,18 +149,18 @@ namespace CEGUI
         }
     }
 
-    void Spinner::setStepSize(float step)
+    void Spinner::setStepSize(double step)
     {
         if (step != d_stepSize)
         {
             d_stepSize = step;
-            
+
             WindowEventArgs args(this);
             onStepChanged(args);
         }
     }
 
-    void Spinner::setMaximumValue(float maxValue)
+    void Spinner::setMaximumValue(double maxValue)
     {
         if (maxValue != d_maxValue)
         {
@@ -165,7 +171,7 @@ namespace CEGUI
         }
     }
 
-    void Spinner::setMinimumValue(float minVaue)
+    void Spinner::setMinimumValue(double minVaue)
     {
         if (minVaue != d_minValue)
         {
@@ -214,7 +220,7 @@ namespace CEGUI
         addProperty(&d_textInputModeProperty);
     }
 
-    float Spinner::getValueFromText(void) const
+    double Spinner::getValueFromText(void) const
     {
         String tmpTxt(getEditbox()->getText());
 
@@ -226,24 +232,24 @@ namespace CEGUI
 
         int res, tmp;
         uint utmp;
-        float val;
+        double val;
 
         switch (d_inputMode)
         {
         case FloatingPoint:
-            res = sscanf(tmpTxt.c_str(), "%f", &val);
+            res = sscanf(tmpTxt.c_str(), "%lf", &val);
             break;
         case Integer:
             res = sscanf(tmpTxt.c_str(), "%d", &tmp);
-            val = static_cast<float>(tmp);
+            val = static_cast<double>(tmp);
             break;
         case Hexadecimal:
             res = sscanf(tmpTxt.c_str(), "%x", &utmp);
-            val = static_cast<float>(utmp);
+            val = static_cast<double>(utmp);
             break;
         case Octal:
             res = sscanf(tmpTxt.c_str(), "%o", &utmp);
-            val = static_cast<float>(utmp);
+            val = static_cast<double>(utmp);
             break;
         default:
             throw InvalidRequestException("Spinner::getValueFromText - An unknown TextInputMode was encountered.");
@@ -264,7 +270,7 @@ namespace CEGUI
         switch (d_inputMode)
         {
         case FloatingPoint:
-            tmp << d_currentValue;
+            return modp_dtoa(d_currentValue, 9);
             break;
         case Integer:
             tmp << static_cast<int>(d_currentValue);
@@ -389,7 +395,7 @@ namespace CEGUI
             setCurrentValue(d_currentValue + d_stepSize);
             return true;
         }
-        
+
         return false;
     }
 
@@ -430,5 +436,164 @@ namespace CEGUI
         return static_cast<Editbox*>(WindowManager::getSingleton().getWindow(
                                      getName() + EditboxNameSuffix));
     }
+
+//////////////////////////////////////////////////////////////////////////
+// The following are slightly modified function(s) taken from the
+// stringencoders library.
+// http://code.google.com/p/stringencoders/
+//
+// Thanks to FluXy for the heads-up on this one!
+/*
+ * Copyright 2005, 2006, 2007
+ * Nick Galbreath -- nickg [at] modp [dot] com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *   Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the modp.com nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * This is the standard "new" BSD license:
+ * http://www.opensource.org/licenses/bsd-license.php
+ */
+
+/**
+ * Powers of 10
+ * 10^0 to 10^9
+ */
+static const double pow10[] =
+{ 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+
+void strreverse(char* begin, char* end)
+{
+    char aux;
+    while (end > begin)
+        aux = *end, *end-- = *begin, *begin++ = aux;
+}
+
+String modp_dtoa(double value, int prec)
+{
+    /* if input is larger than thres_max, revert to exponential */
+    const double thres_max = (double)(0x7FFFFFFF);
+
+    double diff = 0.0;
+    char str[64];
+    char* wstr = str;
+
+    if (prec < 0) {
+        prec = 0;
+    } else if (prec > 9) {
+        /* precision of >= 10 can lead to overflow errors */
+        prec = 9;
+    }
+
+    /* we'll work in positive values and deal with the
+       negative sign issue later */
+    int neg = 0;
+    if (value < 0) {
+        neg = 1;
+        value = -value;
+    }
+
+    int whole = (int) value;
+    double tmp = (value - whole) * pow10[prec];
+    uint32_t frac = (uint32_t)(tmp);
+    diff = tmp - frac;
+
+    if (diff > 0.5) {
+        ++frac;
+        /* handle rollover, e.g.  case 0.99 with prec 1 is 1.0  */
+        if (frac >= pow10[prec]) {
+            frac = 0;
+            ++whole;
+        }
+    } else if (diff == 0.5 && ((frac == 0) || (frac & 1))) {
+        /* if halfway, round up if odd, OR
+           if last digit is 0.  That last part is strange */
+        ++frac;
+    }
+
+    /* for very large numbers switch back to native sprintf for exponentials.
+       anyone want to write code to replace this? */
+    /*
+       normal printf behavior is to print EVERY whole number digit
+       which can be 100s of characters overflowing your buffers == bad
+    */
+    if (value > thres_max) {
+        sprintf(str, "%e", neg ? -value : value);
+        return String(str);
+    }
+
+    if (prec == 0) {
+        diff = value - whole;
+        if (diff > 0.5) {
+            /* greater than 0.5, round up, e.g. 1.6 -> 2 */
+            ++whole;
+        } else if (diff == 0.5 && (whole & 1)) {
+            /* exactly 0.5 and ODD, then round up */
+            /* 1.5 -> 2, but 2.5 -> 2 */
+            ++whole;
+        }
+    } else {
+        // This section has been modifed by the CEGUI project to eliminate
+        // the output of trailing zeros in the fractional part.
+        bool non_zero = false;
+        int count = prec;
+        uint32_t digit = 0;
+        // now do fractional part, as an unsigned number
+        do {
+            --count;
+            digit = (frac % 10);
+            if (non_zero || (digit != 0)) {
+                *wstr++ = 48 + digit;
+                non_zero = true;
+            }
+        } while (frac /= 10);
+        // add extra 0s
+        if (non_zero) {
+            while (count-- > 0) *wstr++ = '0';
+            // add decimal
+            *wstr++ = '.';
+        }
+    }
+
+    // do whole part
+    // Take care of sign
+    // Conversion. Number is reversed.
+    do *wstr++ = 48 + (whole % 10); while (whole /= 10);
+    if (neg) {
+        *wstr++ = '-';
+    }
+    *wstr='\0';
+    strreverse(str, wstr-1);
+
+    return String(str);
+}
+// The above are slightly modified function(s) taken from the
+// stringencoders library.
+// http://code.google.com/p/stringencoders/
+//////////////////////////////////////////////////////////////////////////
 
 } // End of  CEGUI namespace section

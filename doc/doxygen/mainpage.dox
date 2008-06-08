@@ -26,6 +26,11 @@ embedded copy of the OpenGL Extension Wrangler (GLEW) library.  Please see
 @subpage glew_lic for additional licensing that may apply to the use of this
 library.
 
+The Spinner widget contains some modified parts of the stringencoders library
+(http://code.google.com/p/stringencoders).  Please see
+@subpage stringencoders_lic for additional licensing that may apply to the use
+of this component.
+
 
 This is Crazy Eddie's GUI System Mk-2; a free library providing windowing and
 widgets for graphics APIs and engines where such functionality is not natively
