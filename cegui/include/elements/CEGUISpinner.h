@@ -48,17 +48,6 @@ namespace CEGUI
         The spinner widget has a text area where numbers may be entered
         and two buttons which may be used to increase or decrease the
         value in the text area by a user specified amount.
-
-    \note
-        While the Spinner widget has support for floating point values, the
-        results of using this support in its current state may not be
-        satisfactory.  The general advice, for the moment, is to avoid
-        very large or very small values in floating point mode, and to
-        perform as little manipulation of the values as possible.  The
-        various issues you may see range from scientific notation appearing
-        in the box, to complete breakdown of 'expected' values upon
-        manipulation.  This is something that we intend to address for a
-        future release.
     */
     class CEGUIEXPORT Spinner : public Window
     {
@@ -129,19 +118,19 @@ namespace CEGUI
             Return the current spinner value.
 
         \return
-            current float value of the Spinner.
+            current value of the Spinner.
         */
-        float getCurrentValue(void) const;
+        double getCurrentValue(void) const;
 
         /*!
         \brief
             Return the current step value.
 
         \return
-            float step value.  This is the value added to the spinner vaue when the
+            Step value.  This is the value added to the spinner vaue when the
             up / down buttons are clicked.
         */
-        float getStepSize(void) const;
+        double getStepSize(void) const;
 
         /*!
         \brief
@@ -150,7 +139,7 @@ namespace CEGUI
         \return
             Maximum value that is allowed for the spinner.
         */
-        float getMaximumValue(void) const;
+        double getMaximumValue(void) const;
 
         /*!
         \brief
@@ -159,7 +148,7 @@ namespace CEGUI
         \return
             Minimum value that is allowed for the spinner.
         */
-        float getMinimumValue(void) const;
+        double getMinimumValue(void) const;
 
         /*!
         \brief
@@ -184,7 +173,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void setCurrentValue(float value);
+        void setCurrentValue(double value);
 
         /*!
         \brief
@@ -197,7 +186,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void setStepSize(float step);
+        void setStepSize(double step);
 
         /*!
         \brief
@@ -209,7 +198,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void setMaximumValue(float maxValue);
+        void setMaximumValue(double maxValue);
 
         /*!
         \brief
@@ -221,7 +210,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void setMinimumValue(float minVaue);
+        void setMinimumValue(double minVaue);
 
         /*!
         \brief
@@ -253,11 +242,11 @@ namespace CEGUI
             Returns the numerical representation of the current editbox text.
 
         \return
-            float value that is the numerical equivalent of the editbox text.
+            double value that is the numerical equivalent of the editbox text.
 
         \exception InvalidRequestException  thrown if the text can not be converted.
         */
-        virtual float getValueFromText(void) const;
+        virtual double getValueFromText(void) const;
 
         /*!
         \brief
@@ -404,10 +393,10 @@ namespace CEGUI
         /*************************************************************************
         	Data Fields
         *************************************************************************/
-        float   d_stepSize;     //!< Step size value used y the increase & decrease buttons.
-        float   d_currentValue; //!< Numerical copy of the text in d_editbox.
-        float   d_maxValue;     //!< Maximum value for spinner.
-        float   d_minValue;     //!< Minimum value for spinner.
+        double   d_stepSize;     //!< Step size value used y the increase & decrease buttons.
+        double   d_currentValue; //!< Numerical copy of the text in d_editbox.
+        double   d_maxValue;     //!< Maximum value for spinner.
+        double   d_minValue;     //!< Minimum value for spinner.
         TextInputMode   d_inputMode;    //!< Current text display/input mode.
 
     private:
