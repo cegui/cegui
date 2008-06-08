@@ -8,6 +8,7 @@ EXTRA_DIST = ChangeLog \
 			doxygen/code_standards.dox \
 			doxygen/devel.dox \
 			doxygen/doxyfile \
+			doxygen/glew-lic.dox \
 			doxygen/mainpage.dox \
 			doxygen/mitlic.dox \
 			doxygen/pcre-lic.dox \

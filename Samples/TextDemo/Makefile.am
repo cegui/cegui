@@ -5,8 +5,8 @@ noinst_PROGRAMS = TextDemo
 noinst_HEADERS =  Sample_Text.h
 
 TextDemo_SOURCES = Sample_Text.cpp
-TextDemo_LDFLAGS = -L$(top_builddir)/cegui/src -L$(top_builddir)/Samples/common/src
-TextDemo_LDADD = -lCEGUIBase -lCEGUISampleHelper
+TextDemo_LDADD = $(top_builddir)/cegui/src/libCEGUIBase.la \
+                 $(top_builddir)/Samples/common/src/libCEGUISampleHelper.la
 
 
 install-exec-local:

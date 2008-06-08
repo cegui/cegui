@@ -8,9 +8,12 @@ package.files =
 {
     matchfiles(rootdir.."cegui/src/"..pkgdir.."*.cpp"),
     matchfiles(rootdir.."cegui/include/"..pkgdir.."*.h"),
+    matchfiles(rootdir.."cegui/src/"..pkgdir.."GLEW/src/*.c"),
+    matchfiles(rootdir.."cegui/src/"..pkgdir.."GLEW/GL/*.h"),
 }
 
 include(rootdir.."cegui/include/"..pkgdir)
+include(rootdir.."cegui/src/"..pkgdirpkgdir.."GLEW")
 include(rootdir)
 
 if windows then
@@ -22,3 +25,4 @@ end
 dependency("CEGUIBase")
 
 define("OPENGL_GUIRENDERER_EXPORTS")
+define("GLEW_STATIC")

@@ -1,8 +1,8 @@
 AC_DEFUN([CEGUI_CODE_OPTIONS], [
-    AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug], [Enable building CEGUI in debugging mode.]), 
+    AC_ARG_ENABLE([debug], AC_HELP_STRING([--enable-debug], [Enable building CEGUI in debugging mode.]),
         [cegui_enable_debug=$enableval], [cegui_enable_debug=no])
     dnl Code options debug
-    if test x$cegui_enable_debug = xyes ; then 
+    if test x$cegui_enable_debug = xyes ; then
         CPPFLAGS="$CPPFLAGS -DDEBUG"
     fi
 ])
@@ -56,6 +56,16 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
     PKG_CHECK_MODULES(libxml, libxml-2.0 >= 2.6, [cegui_found_libxml=yes], [cegui_found_libxml=no])
     CEGUI_CHECK_XERCES(xerces, [cegui_found_xerces=yes], [cegui_found_xerces=no])
     CEGUI_CHECK_EXPAT(expat, [cegui_found_expat=yes], [cegui_found_expat=no])
+
+    dnl Make some decisions about how to go about using TinyXML
+    AC_ARG_ENABLE([external-tinyxml], AC_HELP_STRING([--disable-external-tinyxml], [Disables the use of any external tinyxml library, forcing the use of the version that accompanies CEGUI.]),
+            [cegui_use_external_tinyxml=$enableval], [cegui_use_external_tinyxml=yes])
+
+    if test x$cegui_use_external_tinyxml = xyes; then
+        CEGUI_CHECK_TINYXML([tinyxml], [cegui_found_tinyxml=yes], [cegui_found_tinyxml=no])
+    else
+        cegui_found_tinyxml=no
+    fi
 
     dnl save lots of linker aggro ;)
     LIBS="$xerces_LIBS $LIBS"
@@ -140,16 +150,28 @@ load a custom made parser module as the default.]),
     AM_CONDITIONAL([BUILD_LIBXML_PARSER], [test x$cegui_with_libxml = xyes])
     AM_CONDITIONAL([BUILD_EXPAT_PARSER], [test x$cegui_with_expat = xyes])
     AM_CONDITIONAL([BUILD_TINYXML_PARSER], [test x$cegui_with_tinyxml = xyes])
+    AM_CONDITIONAL([BUILD_USING_INTERNAL_TINYXML], [test x$cegui_with_tinyxml = xyes && test x$cegui_found_tinyxml = xno])
+
+    dnl create a define for the main tinyxml header file
+    if test x$cegui_with_tinyxml = xyes && test x$cegui_found_tinyxml = xno; then
+        AC_DEFINE(CEGUI_TINYXML_H, ["ceguitinyxml/tinyxml.h"], [Set this to the name of the tinyxml.h file])
+        AC_DEFINE(CEGUI_TINYXML_NAMESPACE, [CEGUITinyXML], [Set this to the name of the tinyxml namespace])
+    else
+        AC_DEFINE(CEGUI_TINYXML_H, [<tinyxml.h>], [Set this to the name of the tinyxml.h file])
+        AC_DEFINE(CEGUI_TINYXML_NAMESPACE, [], [Set this to the name of the tinyxml namespace])
+    fi
 
     AC_SUBST(xerces_CFLAGS)
     AC_SUBST(xerces_LIBS)
     AC_SUBST(expat_CFLAGS)
     AC_SUBST(expat_LIBS)
+    AC_SUBST(tinyxml_CFLAGS)
+    AC_SUBST(tinyxml_LIBS)
 ])
 
 AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
-    PKG_CHECK_MODULES(CEGUIOGRE, CEGUI-OGRE >= 1.0.0, [cegui_found_ogre_renderer=yes], [cegui_found_ogre_renderer=no])
-    PKG_CHECK_MODULES(CEGUI_NULL, CEGUI, [cegui_found_cegui=yes], [cegui_found_cegui=no])    
+    PKG_CHECK_MODULES(CEGUIOGRE, CEGUI-OGRE >= 1.4.0, [cegui_found_ogre_renderer=yes], [cegui_found_ogre_renderer=no])
+    PKG_CHECK_MODULES(CEGUI_NULL, CEGUI, [cegui_found_cegui=yes], [cegui_found_cegui=no])
 	PKG_CHECK_MODULES(OIS, OIS >= 1.0.0, [ois_found=yes],[ois_found=no])
 
     AC_ARG_WITH([ogre-renderer], AC_HELP_STRING([--without-ogre-renderer], [Disables the use of the Ogre3D renderer, when available, in samples]),
@@ -172,7 +194,7 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
         cegui_samples_use_ogre=yes
         AC_DEFINE(CEGUI_SAMPLES_USE_OGRE, [], [Define to have the Ogre3D CEGUI renderer available in the samples])
         AC_MSG_NOTICE([Use of Ogre3D in Samples is enabled])
-    else        
+    else
         cegui_samples_use_ogre=no
         AC_MSG_NOTICE([Use of Ogre3D in Samples is disabled])
     fi
@@ -213,7 +235,7 @@ AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [
         cegui_samples_use_irrlicht=no
         AC_MSG_NOTICE([Irrlicht renderer disabled])
     fi
-    
+
     AM_CONDITIONAL([BUILD_IRRLICHT_RENDERER], [test x$cegui_enable_irrlicht = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_IRRLICHT], [test x$cegui_samples_use_irrlicht = xyes])
     AC_SUBST(Irrlicht_CFLAGS)
@@ -230,13 +252,13 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         [cegui_irr_libdir=$withval],[cegui_irr_libdir=[.]])
     cegui_lib_paths="$cegui_irr_libdir"
     cegui_inc_paths="$cegui_irr_incdir /usr/local/include/irrlicht /usr/include/irrlicht /usr/local/include /usr/include"
-    
+
     $1_CFLAGS=
     $1_LIBS=
-    
+
     cegui_saved_CFLAGS="$CPPFLAGS"
     cegui_saved_LIBS="$LIBS"
-    
+
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
         AC_PREPROC_IFELSE([#include <irrlicht.h>], [cegui_irr_h_found=yes; cegui_irr_flags="$cegui_path"; break],[cegui_irr_h_found=no])
@@ -269,7 +291,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         ],
         [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[12],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
         gotirrsdkver=yes])
-    
+
         if test $gotirrsdkver = no; then
         AC_COMPILE_IFELSE(
         [
@@ -288,7 +310,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[13],[Defines irrlicht SDK version.  12 is 1.2 or below. 13 is 1.3.x and 14 is 1.4 or later.])
         gotirrsdkver=yes])
         fi
-    
+
         if test $gotirrsdkver = no; then
         AC_COMPILE_IFELSE(
         [
@@ -327,28 +349,28 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         ifelse([$2], [], :, [$2])
     else
         ifelse([$3], [], :, [$3])
-    fi    
+    fi
     AC_LANG_POP([C++])
 ])
 
 AC_DEFUN([CEGUI_ENABLE_OPENGL_RENDERER], [
     AC_ARG_ENABLE([opengl-renderer], AC_HELP_STRING([--disable-opengl-renderer], [Disable the OpenGL renderer]),
         [cegui_enable_opengl=$enableval], [cegui_enable_opengl=yes])
-    AC_ARG_ENABLE([corona], AC_HELP_STRING([--enable-corona], [Enable image loading via Corona image codec by OpenGL renderer (auto)]), 
+    AC_ARG_ENABLE([corona], AC_HELP_STRING([--enable-corona], [Enable image loading via Corona image codec by OpenGL renderer (auto)]),
         [cegui_with_corona=$enableval], [cegui_with_corona=yes])
-    AC_ARG_WITH(corona-prefix, AC_HELP_STRING([--with-corona-prefix], [Prefix where corona is installed (optional)]), 
+    AC_ARG_WITH(corona-prefix, AC_HELP_STRING([--with-corona-prefix], [Prefix where corona is installed (optional)]),
         [cegui_corona_prefix="$withval"], [cegui_corona_prefix=""])
     AC_ARG_ENABLE([devil], AC_HELP_STRING([--enable-devil], [Enable image loading via DevIL image codec by OpenGL renderer (auto)]),
         [cegui_with_devil=$enableval], [cegui_with_devil=yes])
-    AC_ARG_ENABLE([freeimage], AC_HELP_STRING([--enable-freeimage], [Disabled image loading via FreeImage image codec by OpenGL renderer (auto)]), 
+    AC_ARG_ENABLE([freeimage], AC_HELP_STRING([--enable-freeimage], [Disabled image loading via FreeImage image codec by OpenGL renderer (auto)]),
         [cegui_with_freeimage=$enableval], [cegui_with_freeimage=yes])
-    AC_ARG_ENABLE([silly], AC_HELP_STRING([--enable-silly], [Enable image loading via SILLY image codec by OpenGL renderer (auto)]), 
+    AC_ARG_ENABLE([silly], AC_HELP_STRING([--enable-silly], [Enable image loading via SILLY image codec by OpenGL renderer (auto)]),
         [cegui_with_silly=$enableval], [cegui_with_silly=yes])
-    AC_ARG_ENABLE([tga], AC_HELP_STRING([--enable-tga], [Enable image loading via TGA image codec by OpenGL renderer (auto)]), 
+    AC_ARG_ENABLE([tga], AC_HELP_STRING([--enable-tga], [Enable image loading via TGA image codec by OpenGL renderer (auto)]),
         [cegui_with_tga=$enableval], [cegui_with_tga=yes])
-    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=CODEC]], [Sets the default image codec used by the OpenGL renderer. 
-Typically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec, though you can set it to anything 
-to load a custom made image codec module as the default.]), 
+    AC_ARG_WITH([default-image-codec], AC_HELP_STRING([--with-default-image-codec[=CODEC]], [Sets the default image codec used by the OpenGL renderer.
+Typically this will be one of TGAImageCodec, SILLYImageCodec, CoronaImageCodec, FreeImageImageCodec, DevILImageCodec, though you can set it to anything
+to load a custom made image codec module as the default.]),
     [cegui_default_image_codec=$withval], [cegui_default_image_codec=none])
 
     cegui_saved_LIBS="$LIBS"
@@ -391,6 +413,17 @@ to load a custom made image codec module as the default.]),
         AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
         OpenGL_CFLAGS="$X_CFLAGS"
         OpenGL_LIBS=$LIBS
+
+        dnl Deal with possibility / option for external GLEW lib
+        AC_ARG_ENABLE([external-glew], AC_HELP_STRING([--disable-external-glew], [Disables the use of any external GLEW library, forcing the use of the version that accompanies CEGUI.]),
+            [cegui_use_external_glew=$enableval], [cegui_use_external_glew=yes])
+        if test x$cegui_use_external_glew = xyes; then
+            CEGUI_CHECK_GLEW([GLEW],
+                [cegui_found_glew=yes; OpenGL_CFLAGS="$OpenGL_CFLAGS $GLEW_CFLAGS"; OpenGL_LIBS="OpenGL_LIBS $GLEW_LIBS"],
+                [cegui_found_glew=no])
+        else
+            cegui_found_glew=no
+        fi
         ;;
     esac
 
@@ -407,11 +440,11 @@ to load a custom made image codec module as the default.]),
     if test x$cegui_enable_opengl = xyes; then
         AC_MSG_NOTICE([OpenGL renderer enabled])
 
-        dnl DevIL 
+        dnl DevIL
         if test x$cegui_with_devil = xyes; then
             AC_CHECK_LIB(IL, ilLoadL, [cegui_with_il_lib=yes], [cegui_with_il_lib=no], [])
             AC_CHECK_LIB(ILU, iluFlipImage, [cegui_with_ilu_lib=yes],[cegui_with_ilu_lib=no], [-lIL])
-            if test x$cegui_with_il_lib = xyes -a x$cegui_with_ilu_lib = xyes ; then 
+            if test x$cegui_with_il_lib = xyes -a x$cegui_with_ilu_lib = xyes ; then
                 AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer enabled])
                 DevIL_CFLAGS="-DUSE_DEVIL_LIBRARY"
                 DevIL_LIBS="-lIL -lILU"
@@ -422,13 +455,13 @@ to load a custom made image codec module as the default.]),
                 AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
                 cegui_with_devil=no
             fi
-        else            
+        else
             AC_MSG_NOTICE([Image loading via DevIL by OpenGL renderer disabled])
             cegui_with_devil=no
         fi
 
-        dnl FreeImage 
-        if test x$cegui_with_freeimage = xyes ; then 
+        dnl FreeImage
+        if test x$cegui_with_freeimage = xyes ; then
             AC_LANG_PUSH(C++)
             AC_SEARCH_LIBS(FreeImage_GetVersion, freeimage, [cegui_with_freeimage_lib=yes], [cegui_with_freeimage_lib=no])
             AC_LANG_POP(C++)
@@ -436,38 +469,38 @@ to load a custom made image codec module as the default.]),
             if test x$cegui_with_freeimage_lib = xyes -a x$cegui_with_freeimage_header = xyes ; then
                 AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer enabled])
                 FreeImage_CFLAGS="-DUSE_FREEIMAGE_LIBRARY"
-                FreeImage_LIBS="-lfreeimage" 
+                FreeImage_LIBS="-lfreeimage"
                 AC_SUBST(FreeImage_CFLAGS)
                 AC_SUBST(FreeImage_LIBS)
                 cegui_with_freeimage=yes
-             else 
+             else
                 AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer disabled])
                 cegui_with_freeimage=no
              fi
-        else 
+        else
             AC_MSG_NOTICE([Image loading via FreeImage by OpenGL renderer disabled])
-        fi 
-        dnl Silly 
-        if test x$cegui_with_silly = xyes ; then 
+        fi
+        dnl Silly
+        if test x$cegui_with_silly = xyes ; then
             PKG_CHECK_MODULES([SILLY], [SILLY >= 0.1.0], [cegui_with_silly=yes], [cegui_with_silly=no])
             if test x$cegui_with_silly = xyes ; then
                SILLY_CFLAGS="-DUSE_SILLY_LIBRARY $SILLY_CFLAGS"
                AC_SUBST(SILLY_CFLAGS)
                AC_SUBST(SILLY_LIBS)
                AC_MSG_NOTICE([Image loading via SILLY by OpenGL renderer enabled])
-            else 
+            else
                AC_MSG_NOTICE([Image loading via SILLY by OpenGL renderer disabled])
             fi
-        else 
+        else
             AC_MSG_NOTICE([Image loading via SILLY by OpenGL renderer disabled])
-        fi 
+        fi
 
         dnl Corona
         if test x$cegui_with_corona = xyes; then
             if test "x$cegui_corona_prefix" != "x" ; then
                 cegui_corona_config=$cegui_corona_prefix/bin/corona-config
-            fi 
-            if test "x$prefix" != xNONE ; then 
+            fi
+            if test "x$prefix" != xNONE ; then
                 PATH="$prefix/bin:$prefix/usr/bin:$PATH"
             fi
             AC_PATH_PROG(cegui_corona_config, corona-config, no, [PATH])
@@ -476,27 +509,27 @@ to load a custom made image codec module as the default.]),
             if test "$cegui_corona_config" = "no" ; then
                 cegui_with_corona=no
                 AC_MSG_RESULT([no])
-            else 
+            else
                 CORONA_CFLAGS="`$cegui_corona_config --cflags`"
                 CORONA_LIBS="`$cegui_corona_config --libs`"
                 CORONA_VERSION="`$cegui_corona_config --version`"
-                dnl if test "$CORONA_VERSION" >= "1.2.0" ; then 
+                dnl if test "$CORONA_VERSION" >= "1.2.0" ; then
                     AC_MSG_RESULT([yes])
                     cegui_with_corona=yes
                     Corona_CFLAGS="$CORONA_CFLAGS -DUSE_CORONA_LIBRARY"
-                    Corona_LIBS="$CORONA_LIBS" 
+                    Corona_LIBS="$CORONA_LIBS"
                     AC_SUBST(Corona_CFLAGS)
                     AC_SUBST(Corona_LIBS)
                     AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer enabled])
-                dnl else 
+                dnl else
                 dnl    AC_MSG_RESULT([no])
                 dnl     cegui_with_corona=no
                 dnl     AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])
                 dnl fi
             fi
-        else 
+        else
             AC_MSG_NOTICE([Image loading via Corona by OpenGL renderer disabled])
-        fi 
+        fi
 
         if test x$cegui_found_lib_glut = xyes; then
             cegui_samples_use_opengl=yes
@@ -517,34 +550,34 @@ to load a custom made image codec module as the default.]),
     fi
 
     if test x$cegui_enable_opengl = xyes; then
-        if test x$cegui_default_image_codec = xnone ; then 
+        if test x$cegui_default_image_codec = xnone ; then
             if test x$cegui_with_devil = xyes ; then
                 cegui_default_image_codec=DevILImageCodec
-            else 
-                if test x$cegui_with_freeimage = xyes ; then 
+            else
+                if test x$cegui_with_freeimage = xyes ; then
                     cegui_default_image_codec=FreeImageImageCodec
-                else 
-                    if test x$cegui_with_silly = xyes ; then 
+                else
+                    if test x$cegui_with_silly = xyes ; then
                         cegui_default_image_codec=SILLYImageCodec
-                    else 
+                    else
                         if test x$cegui_with_corona = xyes ; then
                             cegui_default_image_codec=CoronaImageCodec
-                        else 
-                            if test x$cegui_with_tga = xyes ; then 
+                        else
+                            if test x$cegui_with_tga = xyes ; then
                                 cegui_default_image_codec=TGAImageCodec
-                            else 
+                            else
                                 AC_MSG_ERROR([None of the ImageCodec are going to be build - unable to continue. Either enable an image codec or set a custom default.])
-                            fi 
+                            fi
                         fi
                     fi
                 fi
             fi
         fi
     fi
+
     dnl define macro for the class of the default image codec  to be used
     AC_DEFINE_UNQUOTED(CEGUI_DEFAULT_IMAGE_CODEC, $cegui_default_image_codec, [Set this to the default ImageCodec to be used (CoronaImageCodec, DevILImageCodec FreeImageImageCode, SILLYImageCodec, TGAImageCodec).])
     AC_MSG_NOTICE([Default ImageCodec will be: $cegui_default_image_codec])
-        
 
     AM_CONDITIONAL([BUILD_OPENGL_RENDERER], [test x$cegui_enable_opengl = xyes])
     AM_CONDITIONAL([CEGUI_SAMPLES_USE_OPENGL], [test x$cegui_samples_use_opengl = xyes])
@@ -553,6 +586,8 @@ to load a custom made image codec module as the default.]),
     AM_CONDITIONAL([CEGUI_BUILD_SILLY_IMAGE_CODEC], [test x$cegui_with_silly = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_FREE_IMAGE_IMAGE_CODEC], [test x$cegui_with_freeimage = xyes])
     AM_CONDITIONAL([CEGUI_BUILD_TGA_IMAGE_CODEC], [test x$cegui_with_tga = xyes])
+    AM_CONDITIONAL([BUILD_USING_INTERNAL_GLEW], [test x$cegui_found_glew = xno])
+
     AC_SUBST(OpenGL_CFLAGS)
     AC_SUBST(OpenGL_LIBS)
 ])
@@ -682,6 +717,17 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
 
     if test x$cegui_found_lua = xyes && test x$cegui_with_lua = xyes; then
         cegui_with_lua=yes
+
+        dnl Decide which tolua++ library to use
+        AC_ARG_ENABLE([external-toluapp], AC_HELP_STRING([--disable-external-toluapp], [Disables the use of any external tolua++ library, forcing the use of the version that accompanies CEGUI.]),
+                [cegui_use_external_tolua=$enableval], [cegui_use_external_tolua=yes])
+
+        if test x$cegui_use_external_tolua = xyes; then
+            CEGUI_CHECK_TOLUAPP([toluapp],[cegui_found_toluapp=yes],[cegui_found_toluapp=no])
+        else
+            cegui_found_toluapp=no
+        fi
+
     else
         cegui_with_lua=no
     fi
@@ -699,7 +745,171 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
     fi
 
     AM_CONDITIONAL([CEGUI_BUILD_LUA_MODULE], [test x$cegui_with_lua = xyes])
+    AM_CONDITIONAL([CEGUI_BUILD_TOLUAPPLIB], [test x$cegui_found_toluapp = xno])
     AM_CONDITIONAL([CEGUI_BUILD_TOLUACEGUI], [test x$cegui_build_toluatool = xyes])
     AC_SUBST(Lua_CFLAGS)
     AC_SUBST(Lua_LIBS)
+    AC_SUBST(toluapp_CFLAGS)
+    AC_SUBST(toluapp_LIBS)
+])
+
+# CEGUI_CHECK_TOLUAPP(variable, [action-if-found], [action-if-not-found])
+# Checks for an installed copy of the tolua++ library
+AC_DEFUN([CEGUI_CHECK_TOLUAPP],[
+    AC_ARG_WITH([tolua++-incdir], AC_HELP_STRING([--with-tolua++-incdir=DIR], [Optionally specifies location of the tolua++ includes]),
+        [cegui_tolua_incdir=$withval],[cegui_tolua_incdir=[.]])
+    AC_ARG_WITH([tolua++-libdir], AC_HELP_STRING([--with-tolua++-libdir=DIR], [Optionally specifies location of the tolua++ library]),
+        [cegui_tolua_libdir=$withval],[cegui_tolua_libdir=[.]])
+
+    cegui_lib_paths="$cegui_tolua_libdir"
+    cegui_inc_paths="$cegui_tolua_incdir /usr/local/include/tolua++ /usr/include/tolua++ /usr/local/include /usr/include"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <tolua++.h>],
+            [cegui_tolua_h_found=yes; cegui_tolua_flags="$cegui_path"; break],
+            [cegui_tolua_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([tolua++], [tolua_endmodule],
+            [cegui_tolua_l_found=yes; cegui_tolua_libs="$cegui_path"; break],
+            [cegui_tolua_l_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_tolua_h_found = xyes && test x$cegui_tolua_l_found = xyes; then
+        if test x$cegui_tolua_flags != x.; then
+            $1_CFLAGS="-I$cegui_tolua_flags"
+        fi
+        if test x$cegui_tolua_libs = x.; then
+            $1_LIBS="-ltolua++"
+        else
+            $1_LIBS="-L$cegui_tolua_libs -ltolua++"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+])
+
+# CEGUI_CHECK_TINYXML(variable, [action-if-found], [action-if-not-found])
+# Checks for an installed copy of the TinyXML
+AC_DEFUN([CEGUI_CHECK_TINYXML],[
+    AC_ARG_WITH([tinyxml-incdir], AC_HELP_STRING([--with-tinyxml-incdir=DIR], [Optionally specifies location of the tinyxml includes]),
+        [cegui_tinyxml_incdir=$withval],[cegui_tinyxml_incdir=[.]])
+    AC_ARG_WITH([tinyxml-libdir], AC_HELP_STRING([--with-tinyxml-libdir=DIR], [Optionally specifies location of the tinyxml library]),
+        [cegui_tinyxml_libdir=$withval],[cegui_tinyxml_libdir=[.]])
+
+    AC_LANG_PUSH([C++])
+
+    cegui_lib_paths="$cegui_tinyxml_libdir"
+    cegui_inc_paths="$cegui_tinyxml_incdir /usr/local/include/tinyxml /usr/include/tinyxml /usr/local/include /usr/include"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <tinyxml.h>],
+            [cegui_tinyxml_h_found=yes; cegui_tinyxml_flags="$cegui_path"; break],
+            [cegui_tinyxml_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([tinyxml], [main],
+            [cegui_tinyxml_l_found=yes; cegui_tinyxml_libs="$cegui_path"; break],
+            [cegui_tinyxml_l_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_tinyxml_h_found = xyes && test x$cegui_tinyxml_l_found = xyes; then
+        if test x$cegui_tinyxml_flags != x.; then
+            $1_CFLAGS="-I$cegui_tinyxml_flags"
+        fi
+        if test x$cegui_tinyxml_libs = x.; then
+            $1_LIBS="-ltinyxml"
+        else
+            $1_LIBS="-L$cegui_tinyxml_libs -ltinyxml"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+
+    AC_LANG_POP([C++])
+])
+
+# CEGUI_CHECK_GLEW(variable, [action-if-found], [action-if-not-found])
+# Checks for an installed copy of GLEW
+AC_DEFUN([CEGUI_CHECK_GLEW],[
+    AC_ARG_WITH([glew-incdir], AC_HELP_STRING([--with-glew-incdir=DIR], [Optionally specifies location of the GL/glew.h headers]),
+        [cegui_glew_incdir=$withval],[cegui_glew_incdir=[.]])
+    AC_ARG_WITH([glew-libdir], AC_HELP_STRING([--with-glew-libdir=DIR], [Optionally specifies location of the glew library]),
+        [cegui_glew_libdir=$withval],[cegui_glew_libdir=[.]])
+
+    AC_LANG_PUSH([C])
+
+    cegui_lib_paths="$cegui_glew_libdir"
+    cegui_inc_paths="$cegui_glew_incdir /usr/local/include/ /usr/include/"
+
+    $1_CFLAGS=
+    $1_LIBS=
+
+    cegui_saved_CFLAGS="$CPPFLAGS"
+    cegui_saved_LIBS="$LIBS"
+
+    for cegui_path in $cegui_inc_paths; do
+        ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
+        AC_PREPROC_IFELSE(
+            [#include <GL/glew.h>],
+            [cegui_glew_h_found=yes; cegui_glew_flags="$cegui_path"; break],
+            [cegui_glew_h_found=no])
+    done
+
+    for cegui_path in $cegui_lib_paths; do
+        ifelse($cegui_path, [.], LIBS="$cegui_saved_LIBS", LIBS="-L$cegui_path $cegui_saved_LIBS")
+        AC_CHECK_LIB([GLEW], [glewInit],
+            [cegui_glew_l_found=yes; cegui_glew_libs="$cegui_path"; break],
+            [cegui_glew_l_found=no])
+    done
+
+    CPPFLAGS="$cegui_saved_CFLAGS"
+    LIBS="$cegui_saved_LIBS"
+
+    if test x$cegui_glew_h_found = xyes && test x$cegui_glew_l_found = xyes; then
+        if test x$cegui_glew_flags != x.; then
+            $1_CFLAGS="-I$cegui_glew_flags"
+        fi
+        if test x$cegui_glew_libs = x.; then
+            $1_LIBS="-lGLEW"
+        else
+            $1_LIBS="-L$cegui_glew_libs -lGLEW"
+        fi
+
+        ifelse([$2], [], :, [$2])
+    else
+        ifelse([$3], [], :, [$3])
+    fi
+
+    AC_LANG_POP([C])
 ])

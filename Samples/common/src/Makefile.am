@@ -11,12 +11,11 @@ libCEGUISampleHelper_la_SOURCES = CEGuiBaseApplication.cpp \
                                   CEGuiSample.cpp \
                                   CLICEGuiRendererSelector.cpp
 
-libCEGUISampleHelper_la_LIBADD =
+libCEGUISampleHelper_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase.la
 
 if MINGW32_BUILD
 libCEGUISampleHelper_la_CPPFLAGS = -DCEGUISAMPLE_EXPORTS
 libCEGUISampleHelper_la_LDFLAGS += -shared -no-undefined
-libCEGUISampleHelper_la_LIBADD += -L$(top_builddir)/cegui/src -lCEGUIBase
 libCEGUISampleHelper_la_SOURCES  += Win32AppHelper.cpp Win32CEGuiRendererSelector.cpp
 endif
 
@@ -32,14 +31,14 @@ if CEGUI_SAMPLES_USE_OGRE
 endif
 if CEGUI_SAMPLES_USE_OPENGL
     libCEGUISampleHelper_la_SOURCES += CEGuiOpenGLBaseApplication.cpp
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/OpenGLGUIRenderer
-    libCEGUISampleHelper_la_LIBADD += -lCEGUIOpenGLRenderer $(OpenGL_LIBS)
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/OpenGLGUIRenderer/libCEGUIOpenGLRenderer.la \
+                                      $(OpenGL_LIBS)
 endif
 if CEGUI_SAMPLES_USE_IRRLICHT
     INCLUDES += $(Irrlicht_CFLAGS)
     libCEGUISampleHelper_la_SOURCES += CEGuiIrrlichtBaseApplication.cpp
-    libCEGUISampleHelper_la_LDFLAGS += -L$(top_builddir)/cegui/src/RendererModules/IrrlichtRenderer
-    libCEGUISampleHelper_la_LIBADD += -lCEGUIIrrlichtRenderer $(Irrlicht_LIBS)
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/IrrlichtRenderer/libCEGUIIrrlichtRenderer.la \
+                                      $(Irrlicht_LIBS)
 endif
 
 EXTRA_DIST = CEGuiD3D10BaseApplication.cpp \

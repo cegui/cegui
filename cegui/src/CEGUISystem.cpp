@@ -100,7 +100,7 @@ double SimpleTimer::currentTime()
     return timeGetTime() / 1000.0;
 }
 
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
 #include <sys/time.h>
 double SimpleTimer::currentTime()
 {
@@ -108,6 +108,8 @@ double SimpleTimer::currentTime()
     gettimeofday(&timeStructure, 0);
     return timeStructure.tv_sec + timeStructure.tv_usec / 1000000.0;
 }
+#else
+#error "SimpleTimer not available for this platform, please implement it"
 #endif
 
 
@@ -1516,73 +1518,98 @@ void System::destroySingletons()
     delete  GlobalEventSet::getSingletonPtr();
 }
 
+//----------------------------------------------------------------------------//
 void System::setupXMLParser()
 {
     // handle creation / initialisation of XMLParser
     if (!d_xmlParser)
     {
-
-#if !defined(CEGUI_STATIC)
-        // load the dynamic module
-        d_parserModule = new DynamicModule(String("CEGUI") + d_defaultXMLParserName);
-        // get pointer to parser creation function
-        XMLParser* (*createFunc)(void) =
-            (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
-        // create the parser object
-        d_xmlParser = createFunc();
+#ifndef CEGUI_STATIC
+        setXMLParser(d_defaultXMLParserName);
 #else
-		//Static Linking Call
-		d_xmlParser = createParser();
-#endif
+        //Static Linking Call
+        d_xmlParser = createParser();
         // make sure we know to cleanup afterwards.
         d_ourXmlParser = true;
+#endif
     }
-
-    // perform initialisation of XML parser.
-    d_xmlParser->initialise();
+    // parser object already set, just initialise it.
+    else
+        d_xmlParser->initialise();
 }
 
+//----------------------------------------------------------------------------//
 void System::cleanupXMLParser()
 {
-    if (d_xmlParser)
-    {
-        d_xmlParser->cleanup();
+    // bail out if no parser
+    if (!d_xmlParser)
+        return;
 
-        if (d_ourXmlParser && d_parserModule)
-        {
-#if !defined(CEGUI_STATIC)
-            // get pointer to parser deletion function
-            void(*deleteFunc)(XMLParser*) =
-                (void(*)(XMLParser*))d_parserModule->getSymbolAddress("destroyParser");
-            // cleanup the xml parser object
-            deleteFunc(d_xmlParser);
-#else
-			//Static Linking Call
-			destroyParser(d_xmlParser);
-#endif
-            d_xmlParser = 0;
-            // delete the dynamic module for the xml parser
-            delete d_parserModule;
-            d_parserModule = 0;
-        }
+    // get parser object to do whatever cleanup it needs to
+    d_xmlParser->cleanup();
+
+    // exit if we did not create this parser object
+    if (!d_ourXmlParser)
+        return;
+
+    // if parser module loaded, destroy the parser object & cleanup module
+    if (d_parserModule)
+    {
+        // get pointer to parser deletion function
+        void(*deleteFunc)(XMLParser*) = (void(*)(XMLParser*))d_parserModule->
+            getSymbolAddress("destroyParser");
+        // cleanup the xml parser object
+        deleteFunc(d_xmlParser);
+
+        // delete the dynamic module for the xml parser
+        delete d_parserModule;
+        d_parserModule = 0;
     }
+#ifdef CEGUI_STATIC
+    else
+        //Static Linking Call
+        destroyParser(d_xmlParser);
+#endif
+
+    d_xmlParser = 0;
 }
 
+//----------------------------------------------------------------------------//
+void System::setXMLParser(const String& parserName)
+{
+#ifndef CEGUI_STATIC
+    cleanupXMLParser();
+    // load dynamic module
+    d_parserModule = new DynamicModule(String("CEGUI") + parserName);
+    // get pointer to parser creation function
+    XMLParser* (*createFunc)(void) =
+        (XMLParser* (*)(void))d_parserModule->getSymbolAddress("createParser");
+    // create the parser object
+    d_xmlParser = createFunc();
+    // make sure we know to cleanup afterwards.
+    d_ourXmlParser = true;
+    // perform initialisation of XML parser.
+    d_xmlParser->initialise();
+#else
+    Logger::getSingleton().logEvent(
+        "System::setXMLParser(const String& parserName) called from statically "
+        "linked CEGUI library - unable to load dynamic module!", Errors);
+#endif
+}
+
+//----------------------------------------------------------------------------//
+void System::setXMLParser(XMLParser* parser)
+{
+    cleanupXMLParser();
+    d_xmlParser = parser;
+    d_ourXmlParser = false;
+    setupXMLParser();
+}
+
+//----------------------------------------------------------------------------//
 void System::setDefaultXMLParserName(const String& parserName)
 {
-#if !defined(CEGUI_STATIC)
-	if(d_defaultXMLParserName == parserName)
-		return;
-
-	//We do this becuase cleanup and setup aren't static functions
-	if(getSingletonPtr())
-	{
-		System* sys = getSingletonPtr();
-		sys->cleanupXMLParser();
-		d_defaultXMLParserName = parserName;
-		sys->setupXMLParser();
-	} // if(getSingletonPtr())
-#endif
+    d_defaultXMLParserName = parserName;
 }
 
 const String System::getDefaultXMLParserName()

@@ -37,6 +37,7 @@
 #include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_OGRE
 
+#include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
 #include "CEGuiSample.h"
 
@@ -44,7 +45,8 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_ogreRoot(0),
         d_renderer(0),
         d_initialised(false),
-        d_frameListener(0)
+        d_frameListener(0),
+        d_windowEventListener(0)
 {
     using namespace Ogre;
 
@@ -84,6 +86,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_frameListener= new CEGuiDemoFrameListener(this, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
 
+        // add a listener for OS framework window events (for resizing)
+        d_windowEventListener = new WndEvtListener(d_renderer);
+        WindowEventUtilities::addWindowEventListener(d_window,
+                                                     d_windowEventListener);
+
         d_initialised = true;
     }
     else
@@ -100,6 +107,7 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
     delete CEGUI::System::getSingletonPtr();
     delete d_renderer;
     delete d_ogreRoot;
+    delete d_windowEventListener;
 }
 
 bool CEGuiOgreBaseApplication::execute(CEGuiSample* sampleApp)
@@ -206,7 +214,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
 
     // get window handle
     window->getCustomAttribute("WINDOW", &windowHnd);
-    
+
     // fill param list
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
@@ -215,18 +223,20 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     d_inputManager = OIS::InputManager::createInputSystem(paramList);
 
     // create buffered keyboard
-    if (d_inputManager->numKeyBoards() > 0)
+    //if (d_inputManager->getNumberOfDevices(OIS::OISKeyboard) > 0)
+    if (d_inputManager->numKeyboards() > 0)
     {
         d_keyboard = static_cast<OIS::Keyboard*>(d_inputManager->createInputObject(OIS::OISKeyboard, true));
         d_keyboard->setEventCallback(this);
     }
 
     // create buffered mouse
+    //if (d_inputManager->getNumberOfDevices(OIS::OISMouse) > 0)
     if (d_inputManager->numMice() > 0)
     {
         d_mouse = static_cast<OIS::Mouse*>(d_inputManager->createInputObject(OIS::OISMouse, true));
         d_mouse->setEventCallback(this);
-        
+
         unsigned int width, height, depth;
         int left, top;
 
@@ -277,7 +287,7 @@ bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 
         return true;
     }
-    
+
 }
 
 bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
@@ -346,7 +356,7 @@ bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseB
 
 CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
 {
-   using namespace OIS; 
+   using namespace OIS;
 
    switch (buttonID)
     {
@@ -359,6 +369,22 @@ CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
     default:
         return CEGUI::LeftButton;
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*******************************************************************************
+    Start of WndEvtListener member functions
+*******************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+
+WndEvtListener::WndEvtListener(CEGUI::OgreCEGUIRenderer* renderer) :
+    d_renderer(renderer)
+{}
+
+void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
+{
+    d_renderer->setDisplaySize(CEGUI::Size(static_cast<float>(rw->getWidth()),
+                                           static_cast<float>(rw->getHeight())));
 }
 
 #endif
