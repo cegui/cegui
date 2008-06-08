@@ -3,7 +3,7 @@ filename: 	CEGUIFreeImageImageCodec.cpp
 created:	Sun Jun 18th 2006
 author:		Andrzej Krzysztof Haczewski (aka guyver6)
 
-purpose:	This codec provide FreeImage based image loading 
+purpose:	This codec provide FreeImage based image loading
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -28,8 +28,8 @@ purpose:	This codec provide FreeImage based image loading
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUIExceptions.h"
-#include "CEGUIFreeImageImageCodec.h" 
-#include "CEGUILogger.h" 
+#include "CEGUIFreeImageImageCodec.h"
+#include "CEGUILogger.h"
 
 #include <FreeImage.h>
 
@@ -39,7 +39,7 @@ namespace
     {
         CEGUI::Logger::getSingleton().logEvent(
             CEGUI::String("FreeImage error (") + FreeImage_GetFormatFromFIF(fif) + "): " + message, CEGUI::Errors);
-    };
+    }
 
 }
 
@@ -82,7 +82,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
     FIBITMAP *img = 0;
     Texture *retval = 0;
 
-    try 
+    try
     {
         mem = FreeImage_OpenMemory((BYTE*)data.getDataPtr(), len);
         if (mem == 0)
@@ -169,5 +169,5 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
 }
 
 
-} // End of CEGUI namespace section 
+} // End of CEGUI namespace section
 

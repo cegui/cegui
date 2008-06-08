@@ -35,19 +35,22 @@
 #include <Ogre.h>
 #include <OIS.h>
 
-#if defined(_WIN32)
+#if defined(_MSC_VER)
 #  if defined(_DEBUG)
 #      pragma comment(lib, "OgreGUIRenderer_d.lib")
 #      pragma comment(lib, "OgreMain_d.lib")
+#      pragma comment(lib, "OIS_d.lib")
 #  else
 #      pragma comment(lib, "OgreGUIRenderer.lib")
 #      pragma comment(lib, "OgreMain.lib")
+#      pragma comment(lib, "OIS.lib")
 #  endif
 #endif
 
 // Frame listener forward ref (see class below)
 class CEGuiDemoFrameListener;
-
+// Window event listener forward ref (see class below)
+class WndEvtListener;
 
 class CEGuiOgreBaseApplication : public CEGuiBaseApplication
 {
@@ -83,6 +86,7 @@ protected:
     bool d_initialised;
 
     CEGuiDemoFrameListener* d_frameListener;
+    WndEvtListener* d_windowEventListener;
 };
 
 
@@ -124,5 +128,17 @@ protected:
     bool d_quit;
     CEGuiBaseApplication* d_baseApp;
 };
+
+//! window event listener class we use to hear abour window resizing
+class WndEvtListener : public Ogre::WindowEventListener
+{
+    CEGUI::OgreCEGUIRenderer* d_renderer;
+
+public:
+    WndEvtListener(CEGUI::OgreCEGUIRenderer* renderer);
+
+    void windowResized(Ogre::RenderWindow* rw);
+};
+
 
 #endif  // end of guard _CEGuiOgreBaseApplication_h_

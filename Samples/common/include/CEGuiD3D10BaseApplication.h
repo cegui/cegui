@@ -82,6 +82,9 @@ protected:
     //! Perform update on the FPS counter fields.
     void updateFPS(void);
 
+    //! cleanup D3D objects / interfaces
+    void cleanupDirect3D();
+
     /*************************************************************************
         Data fields
     *************************************************************************/

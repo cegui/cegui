@@ -1,8 +1,7 @@
 SUBDIRS = package support
 
 INCLUDES = -I$(top_srcdir)/cegui/include \
-           -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule \
-           -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
+           -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule
 
 libCEGUILuaScriptModule_la_LDFLAGS =
 libCEGUILuaScriptModule_la_CPPFLAGS = $(Lua_CFLAGS)
@@ -22,7 +21,13 @@ libCEGUILuaScriptModule_la_SOURCES = lua_CEGUI.cpp \
                                      CEGUILuaFunctor.cpp \
                                      required.cpp
 libCEGUILuaScriptModule_la_LIBADD = $(top_builddir)/cegui/src/libCEGUIBase.la \
-                                    support/tolua++/libCEGUItoluapp.la \
                                     $(Lua_LIBS)
+if CEGUI_BUILD_TOLUAPPLIB
+INCLUDES += -I$(top_srcdir)/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++
+libCEGUILuaScriptModule_la_LIBADD += support/tolua++/libCEGUItoluapp.la
+else
+INCLUDES += $(toluapp_CFLAGS)
+libCEGUILuaScriptModule_la_LIBADD += $(toluapp_LIBS)
+endif
 
 noinst_HEADERS = required.h

@@ -168,9 +168,9 @@ do
     if DIRECTX10_RENDERER and SAMPLES_DX10 then
         config_h.CEGUI_SAMPLES_USE_DIRECTX_10 = ""
     end
-    --if SAMPLES_OGRE then
-    --    config_h.CEGUI_SAMPLES_USE_OGRE = ""
-    --end
+    if SAMPLES_OGRE then
+        config_h.CEGUI_SAMPLES_USE_OGRE = ""
+    end
     if IRRLICHT_RENDERER then
           -- This only used to happen when samples were to build as well
           config_h.CEGUI_IRR_SDK_VERSION = CEGUI_IRR_SDK_VERSION
@@ -182,15 +182,15 @@ do
     if DEFAULT_XML_PARSER == "xerces" then
         config_h.CEGUI_WITH_XERCES = "1"
     end
-    
+
     if DEFAULT_XML_PARSER == "expat" then
         config_h.CEGUI_WITH_EXPAT = "1"
 	end
-	
+
 	if DEFAULT_XML_PARSER == "tinyxml" then
 	    config_h.CEGUI_WITH_TINYXML = "1"
 	end
-	
+
 	if DEFAULT_IMAGE_CODEC == "silly" then
 		config_h.CEGUI_CODEC_SILLY = "1"
 	elseif DEFAULT_IMAGE_CODEC == "tga" then
@@ -202,15 +202,19 @@ do
 	elseif DEFAULT_IMAGE_CODEC == "freeimage" then
 		config_h.CEGUI_CODEC_FREEIMAGE = "1"
 	end
-	
+
 	-- Lua library version
 	config_h.CEGUI_LUA_VER = CEGUI_LUA_VER
-	
+
 	-- It is important that if this changes you re run premake inorder to
 	-- get the correct window renderer with a static build.
 	if DEFAULT_WINDOW_RENDERER == "falagard" then
 	    config_h.CEGUI_FALAGARD_RENDERER = ""
 	end
+
+	-- Add a couple of values needed for the TinyXML parser to build.
+	config_h.CEGUI_TINYXML_H = '"ceguitinyxml/tinyxml.h"'
+	config_h.CEGUI_TINYXML_NAMESPACE = "CEGUITinyXML"
 
     local filename = "../../cegui/include/config.h"
     local f,err = io.open(filename, "w+")

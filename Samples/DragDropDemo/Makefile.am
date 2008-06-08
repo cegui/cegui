@@ -5,9 +5,8 @@ noinst_PROGRAMS = DragDropDemo
 noinst_HEADERS =  Sample_DragDropDemo.h
 
 DragDropDemo_SOURCES = Sample_DragDropDemo.cpp
-DragDropDemo_LDFLAGS = -L$(top_builddir)/cegui/src \
-                       -L$(top_builddir)/Samples/common/src
-DragDropDemo_LDADD = -lCEGUIBase -lCEGUISampleHelper
+DragDropDemo_LDADD = $(top_builddir)/cegui/src/libCEGUIBase.la \
+                     $(top_builddir)/Samples/common/src/libCEGUISampleHelper.la
 
 
 install-exec-local:

@@ -2,7 +2,7 @@
 	filename: 	CEGUITabControl.cpp
 	created:	08/08/2004
 	author:		Steve Streeting
-	
+
 	purpose:	Implementation of Tab Control widget base class
 *************************************************************************/
 /***************************************************************************
@@ -125,7 +125,7 @@ void TabControl::initialiseComponents(void)
 Get the number of tabs
 *************************************************************************/
 size_t TabControl::getTabCount(void) const
-{   
+{
     return getTabPane()->getChildCount();
 }
 /*************************************************************************
@@ -261,9 +261,10 @@ void TabControl::addTab(Window* wnd)
     performChildWindowLayout();
     requestRedraw();
     // Subscribe to text changed event so that we can resize as needed
-    wnd->subscribeEvent(Window::EventTextChanged, 
-        Event::Subscriber(&TabControl::handleContentWindowTextChanged, this));
-
+    d_eventConnections[wnd] =
+        wnd->subscribeEvent(Window::EventTextChanged,
+            Event::Subscriber(&TabControl::handleContentWindowTextChanged,
+                              this));
 }
 /*************************************************************************
 Remove a tab
@@ -271,26 +272,8 @@ Remove a tab
 void TabControl::removeTab(const String& name)
 {
     // do nothing if given window is not attached as a tab.
-    if (!getTabPane()->isChild(name))
-        return;
-
-    Window* wnd = getTabPane()->getChild(name);
-
-    // Was this selected?
-    bool reselect = wnd->isVisible();
-    // Tab buttons are the 2nd onward children
-    getTabPane()->removeChildWindow(name);
-
-    // remove button too
-    removeButtonForTabContent(wnd);
-
-    if (reselect && (getTabCount() > 0))
-        // Select another tab
-        setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
-
-    performChildWindowLayout();
-
-    requestRedraw();
+    if (getTabPane()->isChild(name))
+        removeTab_impl(getTabPane()->getChild(name));
 }
 /*************************************************************************
 Remove a tab by ID
@@ -298,32 +281,8 @@ Remove a tab by ID
 void TabControl::removeTab(uint ID)
 {
     // do nothing if given window is not attached as a tab.
-    if (!getTabPane()->isChild(ID))
-        return;
-
-    Window* wnd = getTabPane()->getChild(ID);
-
-    // Was this selected?
-    bool reselect = wnd->isVisible();
-    // Tab buttons are the 2nd onward children
-    getTabPane()->removeChildWindow(ID);
-
-    // remove button too
-    removeButtonForTabContent(wnd);
-
-    if (reselect)
-    {
-        // Select another tab
-        if (getTabCount() > 0)
-        {
-            setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
-        }
-    }
-
-    performChildWindowLayout();
-
-    requestRedraw();
-
+    if (getTabPane()->isChild(ID))
+        removeTab_impl(getTabPane()->getChild(ID));
 }
 /*************************************************************************
 Add tab button
@@ -341,7 +300,7 @@ void TabControl::addButtonForTabContent(Window* wnd)
     // add the button
     getTabButtonPane()->addChildWindow(tb);
     // Subscribe to clicked event so that we can change tab
-    tb->subscribeEvent(TabButton::EventClicked, 
+    tb->subscribeEvent(TabButton::EventClicked,
         Event::Subscriber(&TabControl::handleTabButtonClicked, this));
     tb->subscribeEvent(TabButton::EventDragged,
         Event::Subscriber(&TabControl::handleDraggedPane, this));
@@ -801,11 +760,32 @@ bool TabControl::handleWheeledPane(const EventArgs& e)
 
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getPixelRect ().getWidth () / 20;
-    
+
     d_firstTabOffset -= me.wheelChange * delta;
     performChildWindowLayout();
 
     return true;
+}
+
+void TabControl::removeTab_impl(Window* window)
+{
+    // delete connection to event we subscribed earlier
+    d_eventConnections.erase(window);
+    // Was this selected?
+    bool reselect = window->isVisible();
+    // Tab buttons are the 2nd onward children
+    getTabPane()->removeChildWindow(window);
+
+    // remove button too
+    removeButtonForTabContent(window);
+
+    if (reselect && (getTabCount() > 0))
+        // Select another tab
+        setSelectedTab(getTabPane()->getChildAtIdx(0)->getName());
+
+    performChildWindowLayout();
+
+    requestRedraw();
 }
 
 } // End of  CEGUI namespace section

@@ -2,7 +2,7 @@
 	filename: 	CEGUIInputEvent.h
 	created:	30/5/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Defines interface to input event classes
 *************************************************************************/
 /***************************************************************************
@@ -199,18 +199,25 @@ struct CEGUIEXPORT Key
 
 
 /*!
-/brief
-	Enumeration of mouse buttons
+\brief
+    Enumeration of mouse buttons
 */
 enum MouseButton
 {
-	LeftButton,
-	RightButton,
-	MiddleButton,
-	X1Button,
-	X2Button,
-	MouseButtonCount,		//<! Dummy value that is == to the maximum number of mouse buttons supported.
-	NoButton				//!< Value set for no mouse button.  NB: This is not 0, do not assume! 
+    //! The left mouse button.
+    LeftButton,
+    //! The right mouse button.
+    RightButton,
+    //! The middle mouse button.
+    MiddleButton,
+    //! The first 'extra' mouse button.
+    X1Button,
+    //! The second 'extra' mouse button.
+    X2Button,
+    //! Value that equals the number of mouse buttons supported by CEGUI.
+    MouseButtonCount,
+    //! Value set for no mouse button.  NB: This is not 0, do not assume!
+    NoButton
 };
 
 
@@ -253,7 +260,10 @@ public:
 class CEGUIEXPORT UpdateEventArgs : public WindowEventArgs
 {
 public:
-	UpdateEventArgs(Window* window, float tslf):WindowEventArgs(window) {}
+    UpdateEventArgs(Window* window, float tslf) :
+        WindowEventArgs(window),
+        d_timeSinceLastFrame(tslf)
+    {}
 
 	float d_timeSinceLastFrame; //!< Time since the last frame update
 };

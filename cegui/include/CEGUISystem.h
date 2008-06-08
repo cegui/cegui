@@ -509,6 +509,39 @@ public:
 
     /*!
     \brief
+        Set a new XML parser module to be used.
+
+        The current XMLParser will be cleaned up and, if owned by the system,
+        also deleted, as will any dynamically loaded module associated with the
+        XMLParser object.  The newly created XMLParser object, and the
+        associated module will be owned by the system.
+
+    \param parserName
+        String object describing the name of the XML parser module to be used.
+    */
+    void setXMLParser(const String& parserName);
+
+    /*!
+    \brief
+        Sets the XMLParser object to be used by the system.
+
+        The current XMLParser will be cleaned up and, if owned by the system,
+        also deleted, as will any dynamically loaded module associated with the
+        XMLParser object.
+
+        If the argument passed in the \a parser parameter is 0, the system will
+        cleanup any existing parser as described above, and revert to using
+        the parser provided by the default module (see getDefaultXMLParserName
+        and setDefaultXMLParserName).
+
+    \param parser
+        Pointer to the XMLParser object to be used by the system, or 0 to cause
+        the system to initialise a default parser.
+    */
+    void setXMLParser(XMLParser* parser);
+
+    /*!
+    \brief
         Return the XMLParser object.
      */
     XMLParser* getXMLParser(void) const     { return d_xmlParser; }
