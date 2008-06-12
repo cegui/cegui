@@ -64,7 +64,22 @@ Each item in here has a comment to describe what it's for.
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_DEFAULT_IMAGE_CODEC
 #   define CEGUI_DEFAULT_IMAGE_CODEC TGAImageCodec
-#endif 
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// The following are required to build the integrated copy of TinyXML.
+// If for some reason you decide you need to use an external version of
+// TinyXML, you can change these defines as required (you will also likely
+// need to set up some linker stuff as well).
+//////////////////////////////////////////////////////////////////////////
+// Main tiny xml header file
+#ifndef CEGUI_TINYXML_H
+#   define CEGUI_TINYXML_H "ceguitinyxml/tinyxml.h"
+#endif
+// Namespace that contains TinyXML.
+#ifndef CEGUI_TINYXML_NAMESPACE
+#   define CEGUI_TINYXML_NAMESPACE CEGUITinyXML
+#endif
 
 #endif // defined(__APPLE__)
 
