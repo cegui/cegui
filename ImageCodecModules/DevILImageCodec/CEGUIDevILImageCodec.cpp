@@ -30,6 +30,7 @@
 #include "CEGUIDevILImageCodec.h" 
 #include <IL/il.h>
 #include <IL/ilu.h> 
+#include <string.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -61,6 +62,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         // get details about size of loaded image
         ILinfo imgInfo;
+        memset(&imgInfo, 0, sizeof(ILinfo));
         iluGetImageInfo(&imgInfo);
         // set dimensions of texture
         size_t width = imgInfo.Width;
