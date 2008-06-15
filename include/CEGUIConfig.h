@@ -63,7 +63,7 @@ Each item in here has a comment to describe what it's for.
 // SILLYImageCodec, TGAImageCodec 
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_DEFAULT_IMAGE_CODEC
-#   define CEGUI_DEFAULT_IMAGE_CODEC TGAImageCodec
+#   define CEGUI_DEFAULT_IMAGE_CODEC SILLYImageCodec
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,6 +79,15 @@ Each item in here has a comment to describe what it's for.
 // Namespace that contains TinyXML.
 #ifndef CEGUI_TINYXML_NAMESPACE
 #   define CEGUI_TINYXML_NAMESPACE CEGUITinyXML
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// The following controls the version of Lua that is going to be used.
+// 50 is for Lua 5.0.x versions
+// 51 is for Lua 5.1.x versions (and above?)
+//////////////////////////////////////////////////////////////////////////
+#ifndef CEGUI_LUA_VER
+#   define CEGUI_LUA_VER 51
 #endif
 
 #endif // defined(__APPLE__)
