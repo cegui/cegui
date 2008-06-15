@@ -13,13 +13,15 @@
 			buildPhases = (
 			);
 			dependencies = (
-				5B1A17F00ADA9A4200BDF9AF /* PBXTargetDependency */,
-				5B1A17F20ADA9A4200BDF9AF /* PBXTargetDependency */,
-				5B1A17F40ADA9A4200BDF9AF /* PBXTargetDependency */,
 				5B1A17F60ADA9A4200BDF9AF /* PBXTargetDependency */,
-				5B1A17FA0ADA9A4200BDF9AF /* PBXTargetDependency */,
-				5B1A17FC0ADA9A4200BDF9AF /* PBXTargetDependency */,
 				5B4A81E10B2EF8B3003F1BF5 /* PBXTargetDependency */,
+				5B1A17F00ADA9A4200BDF9AF /* PBXTargetDependency */,
+				DA58C57B0E057C5400C8294E /* PBXTargetDependency */,
+				5B1A17FA0ADA9A4200BDF9AF /* PBXTargetDependency */,
+				DA3759C50E0526CF00299E88 /* PBXTargetDependency */,
+				5B1A17FC0ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17F40ADA9A4200BDF9AF /* PBXTargetDependency */,
+				5B1A17F20ADA9A4200BDF9AF /* PBXTargetDependency */,
 			);
 			name = CEGUIBaseBundles;
 			productName = CEGUIDeps;
@@ -32,6 +34,7 @@
 			dependencies = (
 				5B991D8808C92239006E6DC9 /* PBXTargetDependency */,
 				5B991E1408C93133006E6DC9 /* PBXTargetDependency */,
+				DA58B2B10E05559700C8294E /* PBXTargetDependency */,
 				5B991D9008C92239006E6DC9 /* PBXTargetDependency */,
 				5B1A181C0ADA9E6000BDF9AF /* PBXTargetDependency */,
 			);
@@ -44,12 +47,20 @@
 			buildPhases = (
 			);
 			dependencies = (
-				5BF885BA0ACCD53700E8502F /* PBXTargetDependency */,
-				5BF886240ACCD9AE00E8502F /* PBXTargetDependency */,
-				5B1A17820ADA8C3700BDF9AF /* PBXTargetDependency */,
-				5B1A17840ADA8C3700BDF9AF /* PBXTargetDependency */,
-				5B1A17860ADA8C3700BDF9AF /* PBXTargetDependency */,
+				DA58C4990E057AEE00C8294E /* PBXTargetDependency */,
+				DA58B82F0E055EBD00C8294E /* PBXTargetDependency */,
+				DA58B2F10E05572800C8294E /* PBXTargetDependency */,
+				DA58B6A60E055DFE00C8294E /* PBXTargetDependency */,
+				DA58BE1D0E05635200C8294E /* PBXTargetDependency */,
 				5B1A17880ADA8C3700BDF9AF /* PBXTargetDependency */,
+				5B1A17860ADA8C3700BDF9AF /* PBXTargetDependency */,
+				5B1A17840ADA8C3700BDF9AF /* PBXTargetDependency */,
+				DA58BAA00E0560AE00C8294E /* PBXTargetDependency */,
+				5B1A17820ADA8C3700BDF9AF /* PBXTargetDependency */,
+				5BF886240ACCD9AE00E8502F /* PBXTargetDependency */,
+				5BF885BA0ACCD53700E8502F /* PBXTargetDependency */,
+				DA58BC730E05623A00C8294E /* PBXTargetDependency */,
+				DA58BFB80E05642A00C8294E /* PBXTargetDependency */,
 			);
 			name = Samples;
 			productName = Samples;
@@ -75,10 +86,8 @@
 		5B1A178F0ADA907800BDF9AF /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
 		5B1A17900ADA907B00BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
 		5B1A17910ADA908300BDF9AF /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
-		5B1A17A30ADA908500BDF9AF /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B1A17A70ADA908600BDF9AF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
 		5B1A17B80ADA908C00BDF9AF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
-		5B1A17B90ADA908E00BDF9AF /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B1A17BA0ADA908F00BDF9AF /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
 		5B1A17BB0ADA909500BDF9AF /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
 		5B1A17BC0ADA909600BDF9AF /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
@@ -89,7 +98,6 @@
 		5B1A17C10ADA90A100BDF9AF /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
 		5B1A17C20ADA90A300BDF9AF /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
 		5B1A17C30ADA90A600BDF9AF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
-		5B1A17C40ADA90A700BDF9AF /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B1A17C50ADA90A800BDF9AF /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
 		5B1A17C70ADA90C900BDF9AF /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5B1A17C80ADA90CC00BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
@@ -175,22 +183,11 @@
 		5B4BB5BE08C5EEC50088F7FA /* CEGUIFalWidgetLookManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4BB59C08C5EEC40088F7FA /* CEGUIFalWidgetLookManager.cpp */; };
 		5B4BB5BF08C5EEC50088F7FA /* CEGUIFalXMLEnumHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4BB59D08C5EEC40088F7FA /* CEGUIFalXMLEnumHelper.cpp */; };
 		5B55D28A0AC24F4C006A2F76 /* FreeImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B55D2850AC24F4C006A2F76 /* FreeImage.framework */; };
-		5B55D2B10AC25156006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
-		5B55D2BC0AC251BB006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B55D2C20AC2533D006A2F76 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5B55D36C0AC2533F006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
-		5B55D3940AC2537A006A2F76 /* jpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B55D36F0AC2537A006A2F76 /* jpeg.framework */; };
-		5B55D3950AC2537A006A2F76 /* png.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B55D3700AC2537A006A2F76 /* png.framework */; };
-		5B55D3960AC2537A006A2F76 /* zlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B55D3710AC2537A006A2F76 /* zlib.framework */; };
 		5B55D39A0AC2539A006A2F76 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5B55D39B0AC2539F006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B55D3A20AC253D5006A2F76 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5B55D3A30AC253DA006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
-		5B55D3A40AC253E2006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B55D3A50AC253E3006A2F76 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5B55D3A60AC253EA006A2F76 /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5B55D3A70AC253EC006A2F76 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5B5655870A8E1396003AADFC /* SILLY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5655740A8E1396003AADFC /* SILLY.framework */; };
 		5B56559F0A8E15B9003AADFC /* CEGUIFreeTypeFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B56559B0A8E15B9003AADFC /* CEGUIFreeTypeFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B5655A00A8E15B9003AADFC /* CEGUIImageCodec.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B56559C0A8E15B9003AADFC /* CEGUIImageCodec.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B5655A10A8E15B9003AADFC /* CEGUIPixmapFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B56559D0A8E15B9003AADFC /* CEGUIPixmapFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -443,8 +440,6 @@
 		5B991D9F08C92C69006E6DC9 /* LuaScriptModule-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */; };
 		5B991E1508C9314A006E6DC9 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5B991E1708C9315A006E6DC9 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9B80B247348006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9B90B247348006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BC3C9C30B24738B006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5BC3C9C40B24738B006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BC3C9C50B247399006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
@@ -455,11 +450,10 @@
 		5BC3C9CE0B2473C1006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BC3C9CF0B2473D5006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5BC3C9D00B2473D5006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		5BC618870AA7DA740080B2ED /* freetype.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6182E0AA7DA740080B2ED /* freetype.framework */; };
+		5BC618870AA7DA740080B2ED /* freetype2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6182E0AA7DA740080B2ED /* freetype2.framework */; };
 		5BC619330AA7F01B0080B2ED /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BC6193A0AA7F26A0080B2ED /* CEGUITinyXMLParser-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B1FB7D709EF60B200B2EF6B /* CEGUITinyXMLParser-Info.plist */; };
 		5BC6193D0AA7F2B20080B2ED /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC619F00AA7F3430080B2ED /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BC619F40AA7F3BF0080B2ED /* Xerces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
 		5BCC7E3E0A8147040017D97C /* FalItemListbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BCC7E3D0A8147040017D97C /* FalItemListbox.cpp */; };
 		5BCC7E5A0A8149650017D97C /* IrrlichtEventPusher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BCC7E500A8149650017D97C /* IrrlichtEventPusher.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -519,11 +513,8 @@
 		5BF477130AD06CD900A1E925 /* libxml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF476E10AD06CD900A1E925 /* libxml.framework */; };
 		5BF682860AB8A97E00BBC82E /* IL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF682740AB8A97E00BBC82E /* IL.framework */; };
 		5BF682880AB8A9B600BBC82E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BF683330AB8A9CA00BBC82E /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BF6835A0AB8AAFC00BBC82E /* SILLY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF683470AB8AAFC00BBC82E /* SILLY.framework */; };
 		5BF6838A0AB8AC8400BBC82E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BF684A60AB8AE0500BBC82E /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
-		5BF8850C0ACCD1AC00E8502F /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BF885BD0ACCD55F00E8502F /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5BF885BE0ACCD56800E8502F /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BF885CD0ACCD5D400E8502F /* Sample_TabControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885AC0ACCD35600E8502F /* Sample_TabControl.cpp */; };
@@ -532,12 +523,10 @@
 		5BF885D30ACCD67700E8502F /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
 		5BF885D40ACCD67900E8502F /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
 		5BF885ED0ACCD72D00E8502F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
-		5BF885EE0ACCD73400E8502F /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BF885EF0ACCD74000E8502F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
 		5BF886150ACCD88200E8502F /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5BF886160ACCD88600E8502F /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BF886170ACCD88D00E8502F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
-		5BF886180ACCD89000E8502F /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BF886190ACCD89400E8502F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
 		5BF8861B0ACCD90A00E8502F /* Sample_ScrollablePane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885A70ACCD35600E8502F /* Sample_ScrollablePane.cpp */; };
 		5BF8861C0ACCD91500E8502F /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
@@ -556,9 +545,8 @@
 		5BF8863E0ACCDB3500E8502F /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5BF8863F0ACCDB3600E8502F /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BF886400ACCDB4000E8502F /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
-		5BF886410ACCDB4300E8502F /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BF886420ACCDB4500E8502F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
-		5BFDAC130A97E08B00BBC5C5 /* Lua.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDABF90A97E08A00BBC5C5 /* Lua.framework */; };
+		5BFDAC130A97E08B00BBC5C5 /* lua.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDABF90A97E08A00BBC5C5 /* lua.framework */; };
 		5BFDAC6B0A97E10200BBC5C5 /* Basic.pkg in Resources */ = {isa = PBXBuildFile; fileRef = 5BFDAC160A97E10200BBC5C5 /* Basic.pkg */; };
 		5BFDAC6C0A97E10200BBC5C5 /* CEGUI.pkg in Resources */ = {isa = PBXBuildFile; fileRef = 5BFDAC170A97E10200BBC5C5 /* CEGUI.pkg */; };
 		5BFDAC6D0A97E10200BBC5C5 /* CoordConverter.pkg in Resources */ = {isa = PBXBuildFile; fileRef = 5BFDAC180A97E10200BBC5C5 /* CoordConverter.pkg */; };
@@ -647,6 +635,141 @@
 		5BFF9E780A80EBF7009A53D7 /* CEGUIExpatParserModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB7FD09EF61C600B2EF6B /* CEGUIExpatParserModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BFF9E7C0A80EC41009A53D7 /* CEGUILibxmlParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB7F509EF619700B2EF6B /* CEGUILibxmlParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BFF9E7D0A80EC41009A53D7 /* CEGUILibxmlParserModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB7F709EF619700B2EF6B /* CEGUILibxmlParserModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA3758AD0E051C9300299E88 /* CEGUIScriptWindowHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AB0E051C9300299E88 /* CEGUIScriptWindowHelper.h */; };
+		DA3758AE0E051C9300299E88 /* CEGUITask.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AC0E051C9300299E88 /* CEGUITask.h */; };
+		DA3758B40E051CC300299E88 /* CEGUIClippedContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AF0E051CC300299E88 /* CEGUIClippedContainer.h */; };
+		DA3758B50E051CC300299E88 /* CEGUIGroupBox.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758B00E051CC300299E88 /* CEGUIGroupBox.h */; };
+		DA3758B60E051CC300299E88 /* CEGUITree.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758B10E051CC300299E88 /* CEGUITree.h */; };
+		DA3758B70E051CC300299E88 /* CEGUITreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758B20E051CC300299E88 /* CEGUITreeItem.h */; };
+		DA3758B80E051CC300299E88 /* CEGUITreeProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758B30E051CC300299E88 /* CEGUITreeProperties.h */; };
+		DA3758BD0E051D7800299E88 /* CEGUIGroupBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758B90E051D7800299E88 /* CEGUIGroupBox.cpp */; };
+		DA3758BE0E051D7800299E88 /* CEGUITree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758BA0E051D7800299E88 /* CEGUITree.cpp */; };
+		DA3758BF0E051D7800299E88 /* CEGUITreeItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758BB0E051D7800299E88 /* CEGUITreeItem.cpp */; };
+		DA3758C00E051D7800299E88 /* CEGUITreeProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758BC0E051D7800299E88 /* CEGUITreeProperties.cpp */; };
+		DA3758C20E051D9700299E88 /* CEGUIScriptWindowHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758C10E051D9700299E88 /* CEGUIScriptWindowHelper.cpp */; };
+		DA3758CB0E051DCE00299E88 /* glew.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758C50E051DCE00299E88 /* glew.h */; };
+		DA3758CC0E051DCE00299E88 /* glxew.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758C60E051DCE00299E88 /* glxew.h */; };
+		DA3758CD0E051DCE00299E88 /* wglew.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758C70E051DCE00299E88 /* wglew.h */; };
+		DA3758CE0E051DCE00299E88 /* GLEW-LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = DA3758C80E051DCE00299E88 /* GLEW-LICENSE */; };
+		DA3758CF0E051DCE00299E88 /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = DA3758CA0E051DCE00299E88 /* glew.c */; };
+		DA3758DA0E051F5E00299E88 /* FalTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758D90E051F5E00299E88 /* FalTree.cpp */; };
+		DA3759010E05257600299E88 /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA3759B00E05258D00299E88 /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B23B0E05545500C8294E /* tolua++.h in Headers */ = {isa = PBXBuildFile; fileRef = DA58B2310E05545500C8294E /* tolua++.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA58B23C0E05545500C8294E /* README in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2320E05545500C8294E /* README */; };
+		DA58B23D0E05545500C8294E /* tolua_event.h in Headers */ = {isa = PBXBuildFile; fileRef = DA58B2330E05545500C8294E /* tolua_event.h */; };
+		DA58B23E0E05545500C8294E /* tolua_event.c in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2340E05545500C8294E /* tolua_event.c */; };
+		DA58B23F0E05545500C8294E /* INFO in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2350E05545500C8294E /* INFO */; };
+		DA58B2400E05545500C8294E /* tolua_map.c in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2360E05545500C8294E /* tolua_map.c */; };
+		DA58B2410E05545500C8294E /* tolua_to.c in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2370E05545500C8294E /* tolua_to.c */; };
+		DA58B2420E05545500C8294E /* tolua_is.c in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2380E05545500C8294E /* tolua_is.c */; };
+		DA58B2440E05545500C8294E /* tolua_push.c in Sources */ = {isa = PBXBuildFile; fileRef = DA58B23A0E05545500C8294E /* tolua_push.c */; };
+		DA58B2450E0554B100C8294E /* lua.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDABF90A97E08A00BBC5C5 /* lua.framework */; };
+		DA58B2540E05554300C8294E /* ceguitolua++.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA58B2030E0552D900C8294E /* ceguitolua++.framework */; };
+		DA58B2F20E05574800C8294E /* Sample_Demo7.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8857F0ACCD35600E8502F /* Sample_Demo7.cpp */; };
+		DA58B2F80E05576400C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58B2F90E05576400C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58B2FA0E05576400C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58B2FB0E05576400C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58B3CF0E05578700C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B3D00E05578700C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B3D10E05578700C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58B3D20E05578700C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58B3DC0E0557BA00C8294E /* Demo7-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2E80E0556EC00C8294E /* Demo7-Info.plist */; };
+		DA58B48F0E0557DE00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B4900E0557DE00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B5730E05595C00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B5740E05595C00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B5750E05595C00C8294E /* CEGUILuaScriptModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
+		DA58B62E0E05596B00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B62F0E05596B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B6300E05596B00C8294E /* CEGUILuaScriptModule.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
+		DA58B6310E05598000C8294E /* Demo8-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B4B30E0558DE00C8294E /* Demo8-Info.plist */; };
+		DA58B6380E05599400C8294E /* Sample_Demo8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885850ACCD35600E8502F /* Sample_Demo8.cpp */; };
+		DA58B64B0E0559C200C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58B64C0E0559C200C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58B64D0E0559C200C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58B64E0E0559C200C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58B6570E0559EE00C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58B6580E0559EE00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58B68B0E055C1500C8294E /* ceguitolua++.framework in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2030E0552D900C8294E /* ceguitolua++.framework */; };
+		DA58B6B60E055E4C00C8294E /* Demo6-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B6AD0E055E1300C8294E /* Demo6-Info.plist */; };
+		DA58B6B70E055E4C00C8294E /* Sample_Demo6.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885790ACCD35600E8502F /* Sample_Demo6.cpp */; };
+		DA58B6B80E055E6100C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58B6B90E055E6100C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58B6BA0E055E6100C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58B6BB0E055E6100C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58B76E0E055E7400C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B76F0E055E7400C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B8260E055E8B00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B8270E055E8B00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B82C0E055E9300C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58B82D0E055E9300C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58B9110E05605B00C8294E /* ceguitolua++.framework in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2030E0552D900C8294E /* ceguitolua++.framework */; };
+		DA58B9120E05605B00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58B9130E05605B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58B9140E05605B00C8294E /* CEGUILuaScriptModule.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
+		DA58BA920E05609300C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BA930E05609300C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BA940E05609300C8294E /* CEGUILuaScriptModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
+		DA58BA9D0E05609E00C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58BA9E0E05609E00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58BAA10E0560C300C8294E /* Instanced.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2BE0E05564000C8294E /* Instanced.cpp */; };
+		DA58BAA80E0560D500C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58BAA90E0560D500C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58BAAA0E0560D500C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58BAAB0E0560D500C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58BAE10E05617E00C8294E /* InstancedWindows-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B84C0E055FF700C8294E /* InstancedWindows-Info.plist */; };
+		DA58BBAC0E0561D100C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BBAD0E0561D100C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BC640E0561DD00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BC650E0561DD00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BC6A0E0561E300C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58BC6B0E0561E300C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58BC700E05622C00C8294E /* TextDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58BAF10E0561A300C8294E /* TextDemo-Info.plist */; };
+		DA58BC710E05622C00C8294E /* Sample_Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2D60E05567D00C8294E /* Sample_Text.cpp */; };
+		DA58BC790E05625800C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58BC7A0E05625800C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58BC7B0E05625800C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58BC7C0E05625800C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58BD560E0562EE00C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58BD570E0562EE00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58BD580E0562EE00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BD590E0562EE00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BE0C0E0562FB00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BE0D0E0562FB00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BE1A0E05633B00C8294E /* DragDropDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58BC990E0562D000C8294E /* DragDropDemo-Info.plist */; };
+		DA58BE1B0E05633B00C8294E /* Sample_DragDropDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2B60E05562900C8294E /* Sample_DragDropDemo.cpp */; };
+		DA58BE220E05636300C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58BE230E05636300C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58BE240E05636300C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58BE250E05636300C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58BEF30E0563EB00C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
+		DA58BEF40E0563EB00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
+		DA58BEF50E0563EB00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BEF60E0563EB00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BFA90E0563F500C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
+		DA58BFAA0E0563F500C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58BFB50E05641E00C8294E /* Sample_TreeDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2D10E05567D00C8294E /* Sample_TreeDemo.cpp */; };
+		DA58BFB60E05641E00C8294E /* TreeDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58BE3A0E0563C500C8294E /* TreeDemo-Info.plist */; };
+		DA58BFB90E05644800C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
+		DA58BFBA0E05644800C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
+		DA58BFBB0E05644800C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
+		DA58BFBC0E05644800C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
+		DA58C0DE0E056C3000C8294E /* freetype2.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5BC6182E0AA7DA740080B2ED /* freetype2.framework */; };
+		DA58C0DF0E056C3000C8294E /* PCRE.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
+		DA58C0FB0E056F6000C8294E /* expat.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B4A81C60B2EF89A003F1BF5 /* expat.framework */; };
+		DA58C12E0E05724700C8294E /* Xerces.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B3E843C08C49D1D00D8C077 /* Xerces.framework */; };
+		DA58C4620E05759800C8294E /* lua.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5BFDABF90A97E08A00BBC5C5 /* lua.framework */; };
+		DA58C4BA0E057BBC00C8294E /* CEGUICoronaImageCodec-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58C4AD0E057B5B00C8294E /* CEGUICoronaImageCodec-Info.plist */; };
+		DA58C4BB0E057BBC00C8294E /* CEGUICoronaImageCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BCC7DFC0A8145780017D97C /* CEGUICoronaImageCodec.cpp */; };
+		DA58C4BC0E057BBC00C8294E /* CEGUICoronaImageCodecModule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BCC7DFE0A8145780017D97C /* CEGUICoronaImageCodecModule.cpp */; };
+		DA58C4BE0E057BED00C8294E /* corona.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA58C4BD0E057BED00C8294E /* corona.framework */; };
+		DA58C4CE0E057C3700C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
+		DA58C59E0E057EDC00C8294E /* SILLY.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5BF683470AB8AAFC00BBC82E /* SILLY.framework */; };
+		DA58C6910E05948300C8294E /* IL.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5BF682740AB8A97E00BBC82E /* IL.framework */; };
+		DA58C6CE0E05982C00C8294E /* corona.framework in Resources */ = {isa = PBXBuildFile; fileRef = DA58C4BD0E057BED00C8294E /* corona.framework */; };
+		DA58C6DB0E05987500C8294E /* FreeImage.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B55D2850AC24F4C006A2F76 /* FreeImage.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -775,13 +898,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5BCC7E2B0A8146690017D97C;
 			remoteInfo = CEGUITGAImageCodec;
-		};
-		5B1A17FE0ADA9A6900BDF9AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5B1A17EE0ADA9A3300BDF9AF;
-			remoteInfo = CEGUIBaseBundles;
 		};
 		5B1A18000ADA9A7600BDF9AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -958,6 +1074,153 @@
 			remoteGlobalIDString = 5BF886080ACCD81D00E8502F;
 			remoteInfo = ScrollablePaneDemo;
 		};
+		DA3759C40E0526CF00299E88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BCC7E170A8146270017D97C;
+			remoteInfo = CEGUISILLYImageCodec;
+		};
+		DA375A010E0529DD00299E88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B1A17EE0ADA9A3300BDF9AF;
+			remoteInfo = CEGUIBaseBundles;
+		};
+		DA58B24D0E0554C600C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58B2020E0552D900C8294E;
+			remoteInfo = "ceguitolua++";
+		};
+		DA58B2B00E05559700C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58B2020E0552D900C8294E;
+			remoteInfo = "ceguitolua++";
+		};
+		DA58B2ED0E05570200C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58B2F00E05572800C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58B2E50E0556EC00C8294E;
+			remoteInfo = Demo7;
+		};
+		DA58B63F0E0559A100C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58B6A50E055DFE00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58B4B00E0558DE00C8294E;
+			remoteInfo = Demo8;
+		};
+		DA58B6B20E055E1B00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58B82E0E055EBD00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58B6AA0E055E1300C8294E;
+			remoteInfo = Demo6;
+		};
+		DA58B8590E05604100C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58BA9F0E0560AE00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58B8490E055FF700C8294E;
+			remoteInfo = InstancedWindows;
+		};
+		DA58BAF60E0561A800C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58BC720E05623A00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58BAEE0E0561A300C8294E;
+			remoteInfo = TextDemo;
+		};
+		DA58BC9E0E0562D500C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58BE1C0E05635200C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58BC960E0562D000C8294E;
+			remoteInfo = DragDropDemo;
+		};
+		DA58BE3F0E0563CC00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
+			remoteInfo = CEGUI;
+		};
+		DA58BFB70E05642A00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58BE370E0563C500C8294E;
+			remoteInfo = TreeDemo;
+		};
+		DA58C4980E057AEE00C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			remoteInfo = CEGUI;
+		};
+		DA58C4C30E057C1000C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteInfo = CEGUIBase;
+		};
+		DA58C57A0E057C5400C8294E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA58C4AB0E057B5B00C8294E /* CEGUICoronaImageCodec */;
+			remoteInfo = CEGUICoronaImageCodec;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -1100,8 +1363,8 @@
 		5B31206108F894FE007E90B2 /* CEGUIFalPropertyLinkDefinition.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CEGUIFalPropertyLinkDefinition.h; sourceTree = "<group>"; };
 		5B31206408F89531007E90B2 /* CEGUIFalPropertyDefinitionBase.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalPropertyDefinitionBase.cpp; sourceTree = "<group>"; };
 		5B31206508F89531007E90B2 /* CEGUIFalPropertyLinkDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalPropertyLinkDefinition.cpp; sourceTree = "<group>"; };
-		5B3E843C08C49D1D00D8C077 /* Xerces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Xerces.framework; path = /Library/Frameworks/Xerces.framework; sourceTree = "<absolute>"; };
-		5B4A81C60B2EF89A003F1BF5 /* expat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = expat.framework; path = /Library/Frameworks/expat.framework; sourceTree = "<absolute>"; };
+		5B3E843C08C49D1D00D8C077 /* Xerces.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Xerces.framework; path = dependencies/Xerces.framework; sourceTree = "<group>"; };
+		5B4A81C60B2EF89A003F1BF5 /* expat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = expat.framework; path = dependencies/expat.framework; sourceTree = "<group>"; };
 		5B4BB54308C5EE2B0088F7FA /* CEGUIRenderCache.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIRenderCache.cpp; path = ../../../../src/CEGUIRenderCache.cpp; sourceTree = SOURCE_ROOT; };
 		5B4BB54908C5EE600088F7FA /* CEGUIRenderCache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderCache.h; path = ../../../../include/CEGUIRenderCache.h; sourceTree = SOURCE_ROOT; };
 		5B4BB54A08C5EE600088F7FA /* CEGUIUDim.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIUDim.h; path = ../../../../include/CEGUIUDim.h; sourceTree = SOURCE_ROOT; };
@@ -1141,11 +1404,7 @@
 		5B4BB59B08C5EEC40088F7FA /* CEGUIFalWidgetLookFeel.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalWidgetLookFeel.cpp; sourceTree = "<group>"; };
 		5B4BB59C08C5EEC40088F7FA /* CEGUIFalWidgetLookManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalWidgetLookManager.cpp; sourceTree = "<group>"; };
 		5B4BB59D08C5EEC40088F7FA /* CEGUIFalXMLEnumHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIFalXMLEnumHelper.cpp; sourceTree = "<group>"; };
-		5B55D2850AC24F4C006A2F76 /* FreeImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FreeImage.framework; path = /Library/Frameworks/FreeImage.framework; sourceTree = "<absolute>"; };
-		5B55D36F0AC2537A006A2F76 /* jpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = jpeg.framework; path = /Library/Frameworks/jpeg.framework; sourceTree = "<absolute>"; };
-		5B55D3700AC2537A006A2F76 /* png.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = png.framework; path = /Library/Frameworks/png.framework; sourceTree = "<absolute>"; };
-		5B55D3710AC2537A006A2F76 /* zlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = zlib.framework; path = /Library/Frameworks/zlib.framework; sourceTree = "<absolute>"; };
-		5B5655740A8E1396003AADFC /* SILLY.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SILLY.framework; path = ../../../../../../silly/trunk/build/Debug/SILLY.framework; sourceTree = SOURCE_ROOT; };
+		5B55D2850AC24F4C006A2F76 /* FreeImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FreeImage.framework; path = dependencies/FreeImage.framework; sourceTree = "<group>"; };
 		5B56559B0A8E15B9003AADFC /* CEGUIFreeTypeFont.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFreeTypeFont.h; path = ../../../../include/CEGUIFreeTypeFont.h; sourceTree = SOURCE_ROOT; };
 		5B56559C0A8E15B9003AADFC /* CEGUIImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIImageCodec.h; path = ../../../../include/CEGUIImageCodec.h; sourceTree = SOURCE_ROOT; };
 		5B56559D0A8E15B9003AADFC /* CEGUIPixmapFont.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIPixmapFont.h; path = ../../../../include/CEGUIPixmapFont.h; sourceTree = SOURCE_ROOT; };
@@ -1400,13 +1659,12 @@
 		5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUIOpenGLRenderer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CEGUILuaScriptModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "LuaScriptModule-Info.plist"; sourceTree = "<group>"; };
-		5BC6182E0AA7DA740080B2ED /* freetype.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype.framework; path = /Library/Frameworks/freetype.framework; sourceTree = "<absolute>"; };
-		5BC6192D0AA7F01B0080B2ED /* PCRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCRE.framework; path = /Library/Frameworks/PCRE.framework; sourceTree = "<absolute>"; };
+		5BC6182E0AA7DA740080B2ED /* freetype2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = freetype2.framework; path = dependencies/freetype2.framework; sourceTree = "<group>"; };
+		5BC6192D0AA7F01B0080B2ED /* PCRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PCRE.framework; path = dependencies/PCRE.framework; sourceTree = "<group>"; };
 		5BCC7DFC0A8145780017D97C /* CEGUICoronaImageCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUICoronaImageCodec.cpp; path = ../../../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.cpp; sourceTree = SOURCE_ROOT; };
 		5BCC7DFD0A8145780017D97C /* CEGUICoronaImageCodec.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUICoronaImageCodec.h; path = ../../../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodec.h; sourceTree = SOURCE_ROOT; };
 		5BCC7DFE0A8145780017D97C /* CEGUICoronaImageCodecModule.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUICoronaImageCodecModule.cpp; path = ../../../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.cpp; sourceTree = SOURCE_ROOT; };
 		5BCC7DFF0A8145780017D97C /* CEGUICoronaImageCodecModule.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUICoronaImageCodecModule.h; path = ../../../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h; sourceTree = SOURCE_ROOT; };
-		5BCC7E050A8145BE0017D97C /* CEGUICoronaImageCodec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUICoronaImageCodec-Info.plist"; sourceTree = "<group>"; };
 		5BCC7E0E0A8146060017D97C /* CEGUIDevILImageCodec.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUIDevILImageCodec.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BCC7E0F0A8146060017D97C /* CEGUIDevILImageCodec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CEGUIDevILImageCodec-Info.plist"; sourceTree = "<group>"; };
 		5BCC7E180A8146270017D97C /* CEGUISILLYImageCodec.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUISILLYImageCodec.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1447,9 +1705,8 @@
 		5BCC7E7D0A8150330017D97C /* CEGUIFreeImageImageCodecModule.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CEGUIFreeImageImageCodecModule.h; path = ../../../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h; sourceTree = SOURCE_ROOT; };
 		5BCF867F08C6BDB700DF4B22 /* CrazyEddiesGUI_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CrazyEddiesGUI_Prefix.pch; sourceTree = "<group>"; };
 		5BF476E10AD06CD900A1E925 /* libxml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libxml.framework; path = /Library/Frameworks/libxml.framework; sourceTree = "<absolute>"; };
-		5BF682740AB8A97E00BBC82E /* IL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IL.framework; path = /Library/Frameworks/IL.framework; sourceTree = "<absolute>"; };
-		5BF683470AB8AAFC00BBC82E /* SILLY.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SILLY.framework; path = /Library/Frameworks/SILLY.framework; sourceTree = "<absolute>"; };
-		5BF684AD0AB8AF3D00BBC82E /* BuildNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BuildNotes.txt; sourceTree = "<group>"; };
+		5BF682740AB8A97E00BBC82E /* IL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IL.framework; path = dependencies/IL.framework; sourceTree = "<group>"; };
+		5BF683470AB8AAFC00BBC82E /* SILLY.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SILLY.framework; path = dependencies/SILLY.framework; sourceTree = "<group>"; };
 		5BF885180ACCD35500E8502F /* CEGuiBaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CEGuiBaseApplication.h; sourceTree = "<group>"; };
 		5BF885190ACCD35500E8502F /* CEGuiD3D81BaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CEGuiD3D81BaseApplication.h; sourceTree = "<group>"; };
 		5BF8851A0ACCD35500E8502F /* CEGuiD3D9BaseApplication.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CEGuiD3D9BaseApplication.h; sourceTree = "<group>"; };
@@ -1525,8 +1782,6 @@
 		5BF8856C0ACCD35600E8502F /* VanillaSkin.scheme */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = VanillaSkin.scheme; sourceTree = "<group>"; };
 		5BF8856D0ACCD35600E8502F /* WindowsLook.scheme */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = WindowsLook.scheme; sourceTree = "<group>"; };
 		5BF8856E0ACCD35600E8502F /* WindowsLookWidgets.scheme */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = WindowsLookWidgets.scheme; sourceTree = "<group>"; };
-		5BF885730ACCD35600E8502F /* Sample_Demo4.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Sample_Demo4.cpp; sourceTree = "<group>"; };
-		5BF885740ACCD35600E8502F /* Sample_Demo4.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Sample_Demo4.h; sourceTree = "<group>"; };
 		5BF885790ACCD35600E8502F /* Sample_Demo6.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Sample_Demo6.cpp; sourceTree = "<group>"; };
 		5BF8857A0ACCD35600E8502F /* Sample_Demo6.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Sample_Demo6.h; sourceTree = "<group>"; };
 		5BF8857F0ACCD35600E8502F /* Sample_Demo7.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Sample_Demo7.cpp; sourceTree = "<group>"; };
@@ -1550,7 +1805,7 @@
 		5BF8860B0ACCD81D00E8502F /* ScrollablePaneDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "ScrollablePaneDemo-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/ScrollablePaneDemo-Info.plist"; sourceTree = "<group>"; };
 		5BF8862B0ACCDABB00E8502F /* Minesweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Minesweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BF8862D0ACCDABB00E8502F /* Minesweeper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "Minesweeper-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/Minesweeper-Info.plist"; sourceTree = "<group>"; };
-		5BFDABF90A97E08A00BBC5C5 /* Lua.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lua.framework; path = /Library/Frameworks/Lua.framework; sourceTree = "<absolute>"; };
+		5BFDABF90A97E08A00BBC5C5 /* lua.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = lua.framework; path = dependencies/lua.framework; sourceTree = "<group>"; };
 		5BFDAC160A97E10200BBC5C5 /* Basic.pkg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Basic.pkg; sourceTree = "<group>"; };
 		5BFDAC170A97E10200BBC5C5 /* CEGUI.pkg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = CEGUI.pkg; sourceTree = "<group>"; };
 		5BFDAC180A97E10200BBC5C5 /* CoordConverter.pkg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = CoordConverter.pkg; sourceTree = "<group>"; };
@@ -1631,6 +1886,69 @@
 		5BFDAC680A97E10200BBC5C5 /* Window.pkg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Window.pkg; sourceTree = "<group>"; };
 		5BFDAC690A97E10200BBC5C5 /* WindowFactoryManager.pkg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = WindowFactoryManager.pkg; sourceTree = "<group>"; };
 		5BFDAC6A0A97E10200BBC5C5 /* WindowManager.pkg */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = WindowManager.pkg; sourceTree = "<group>"; };
+		DA3758AB0E051C9300299E88 /* CEGUIScriptWindowHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIScriptWindowHelper.h; path = ../../../../include/CEGUIScriptWindowHelper.h; sourceTree = SOURCE_ROOT; };
+		DA3758AC0E051C9300299E88 /* CEGUITask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUITask.h; path = ../../../../include/CEGUITask.h; sourceTree = SOURCE_ROOT; };
+		DA3758AF0E051CC300299E88 /* CEGUIClippedContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIClippedContainer.h; sourceTree = "<group>"; };
+		DA3758B00E051CC300299E88 /* CEGUIGroupBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUIGroupBox.h; sourceTree = "<group>"; };
+		DA3758B10E051CC300299E88 /* CEGUITree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUITree.h; sourceTree = "<group>"; };
+		DA3758B20E051CC300299E88 /* CEGUITreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUITreeItem.h; sourceTree = "<group>"; };
+		DA3758B30E051CC300299E88 /* CEGUITreeProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGUITreeProperties.h; sourceTree = "<group>"; };
+		DA3758B90E051D7800299E88 /* CEGUIGroupBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUIGroupBox.cpp; sourceTree = "<group>"; };
+		DA3758BA0E051D7800299E88 /* CEGUITree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUITree.cpp; sourceTree = "<group>"; };
+		DA3758BB0E051D7800299E88 /* CEGUITreeItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUITreeItem.cpp; sourceTree = "<group>"; };
+		DA3758BC0E051D7800299E88 /* CEGUITreeProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGUITreeProperties.cpp; sourceTree = "<group>"; };
+		DA3758C10E051D9700299E88 /* CEGUIScriptWindowHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIScriptWindowHelper.cpp; path = ../../../../src/CEGUIScriptWindowHelper.cpp; sourceTree = SOURCE_ROOT; };
+		DA3758C50E051DCE00299E88 /* glew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glew.h; sourceTree = "<group>"; };
+		DA3758C60E051DCE00299E88 /* glxew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glxew.h; sourceTree = "<group>"; };
+		DA3758C70E051DCE00299E88 /* wglew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wglew.h; sourceTree = "<group>"; };
+		DA3758C80E051DCE00299E88 /* GLEW-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "GLEW-LICENSE"; sourceTree = "<group>"; };
+		DA3758CA0E051DCE00299E88 /* glew.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glew.c; sourceTree = "<group>"; };
+		DA3758D80E051F4100299E88 /* FalTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FalTree.h; path = ../../../../WindowRendererSets/Falagard/include/FalTree.h; sourceTree = SOURCE_ROOT; };
+		DA3758D90E051F5E00299E88 /* FalTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FalTree.cpp; path = ../../../../WindowRendererSets/Falagard/src/FalTree.cpp; sourceTree = SOURCE_ROOT; };
+		DA58B2030E0552D900C8294E /* ceguitolua++.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "ceguitolua++.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58B2040E0552D900C8294E /* ceguitolua++-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ceguitolua++-Info.plist"; sourceTree = "<group>"; };
+		DA58B2310E05545500C8294E /* tolua++.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tolua++.h"; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua++.h"; sourceTree = SOURCE_ROOT; };
+		DA58B2320E05545500C8294E /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README; path = "../../../../ScriptingModules/CEGUILua/tolua++/README"; sourceTree = SOURCE_ROOT; };
+		DA58B2330E05545500C8294E /* tolua_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tolua_event.h; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua_event.h"; sourceTree = SOURCE_ROOT; };
+		DA58B2340E05545500C8294E /* tolua_event.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tolua_event.c; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua_event.c"; sourceTree = SOURCE_ROOT; };
+		DA58B2350E05545500C8294E /* INFO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = INFO; path = "../../../../ScriptingModules/CEGUILua/tolua++/INFO"; sourceTree = SOURCE_ROOT; };
+		DA58B2360E05545500C8294E /* tolua_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tolua_map.c; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua_map.c"; sourceTree = SOURCE_ROOT; };
+		DA58B2370E05545500C8294E /* tolua_to.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tolua_to.c; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua_to.c"; sourceTree = SOURCE_ROOT; };
+		DA58B2380E05545500C8294E /* tolua_is.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tolua_is.c; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua_is.c"; sourceTree = SOURCE_ROOT; };
+		DA58B23A0E05545500C8294E /* tolua_push.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tolua_push.c; path = "../../../../ScriptingModules/CEGUILua/tolua++/tolua_push.c"; sourceTree = SOURCE_ROOT; };
+		DA58B2B60E05562900C8294E /* Sample_DragDropDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sample_DragDropDemo.cpp; sourceTree = "<group>"; };
+		DA58B2B70E05562900C8294E /* Sample_DragDropDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_DragDropDemo.h; sourceTree = "<group>"; };
+		DA58B2BA0E05564000C8294E /* Instanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Instanced.h; sourceTree = "<group>"; };
+		DA58B2BE0E05564000C8294E /* Instanced.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Instanced.cpp; sourceTree = "<group>"; };
+		DA58B2CD0E05567D00C8294E /* Sample_TreeDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_TreeDemo.h; sourceTree = "<group>"; };
+		DA58B2D10E05567D00C8294E /* Sample_TreeDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sample_TreeDemo.cpp; sourceTree = "<group>"; };
+		DA58B2D60E05567D00C8294E /* Sample_Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sample_Text.cpp; sourceTree = "<group>"; };
+		DA58B2D70E05567D00C8294E /* Sample_Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sample_Text.h; sourceTree = "<group>"; };
+		DA58B2E60E0556EC00C8294E /* Demo7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo7.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58B2E80E0556EC00C8294E /* Demo7-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Demo7-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/Demo7-Info.plist"; sourceTree = "<group>"; };
+		DA58B4B10E0558DE00C8294E /* Demo8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo8.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58B4B30E0558DE00C8294E /* Demo8-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Demo8-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/Demo8-Info.plist"; sourceTree = "<group>"; };
+		DA58B6AB0E055E1300C8294E /* Demo6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo6.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58B6AD0E055E1300C8294E /* Demo6-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Demo6-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/Demo6-Info.plist"; sourceTree = "<group>"; };
+		DA58B84A0E055FF700C8294E /* InstancedWindows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstancedWindows.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58B84C0E055FF700C8294E /* InstancedWindows-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "InstancedWindows-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/InstancedWindows-Info.plist"; sourceTree = "<group>"; };
+		DA58BAEF0E0561A300C8294E /* TextDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58BAF10E0561A300C8294E /* TextDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TextDemo-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/TextDemo-Info.plist"; sourceTree = "<group>"; };
+		DA58BC970E0562D000C8294E /* DragDropDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DragDropDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58BC990E0562D000C8294E /* DragDropDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DragDropDemo-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/DragDropDemo-Info.plist"; sourceTree = "<group>"; };
+		DA58BE380E0563C500C8294E /* TreeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TreeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58BE3A0E0563C500C8294E /* TreeDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TreeDemo-Info.plist"; path = "../../makefiles/mac/Xcode2/CrazyEddiesGUI/TreeDemo-Info.plist"; sourceTree = "<group>"; };
+		DA58BFC70E0564A700C8294E /* DriveIcons.imageset */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DriveIcons.imageset; sourceTree = "<group>"; };
+		DA58BFC80E0564A700C8294E /* DriveIcons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DriveIcons.png; sourceTree = "<group>"; };
+		DA58BFC90E0564F300C8294E /* Console.wnd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Console.wnd; sourceTree = "<group>"; };
+		DA58BFCA0E0564F300C8294E /* DragDropDemo.layout */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DragDropDemo.layout; sourceTree = "<group>"; };
+		DA58BFCB0E0564F300C8294E /* TextDemo.layout */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TextDemo.layout; sourceTree = "<group>"; };
+		DA58BFCC0E0564F300C8294E /* TreeDemoTaharez.layout */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TreeDemoTaharez.layout; sourceTree = "<group>"; };
+		DA58BFCD0E05651000C8294E /* IConsole.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = IConsole.lua; sourceTree = "<group>"; };
+		DA58BFCE0E05651000C8294E /* InstancedInit.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = InstancedInit.lua; sourceTree = "<group>"; };
+		DA58C4AC0E057B5B00C8294E /* CEGUICoronaImageCodec.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CEGUICoronaImageCodec.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA58C4AD0E057B5B00C8294E /* CEGUICoronaImageCodec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUICoronaImageCodec-Info.plist"; sourceTree = "<group>"; };
+		DA58C4BD0E057BED00C8294E /* corona.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = corona.framework; path = dependencies/corona.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1641,7 +1959,6 @@
 				5B1A168D0ADA8AF500BDF9AF /* CEGUI.framework in Frameworks */,
 				5B1A17360ADA8AF600BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */,
 				5B1A17910ADA908300BDF9AF /* GLUT.framework in Frameworks */,
-				5B1A17A30ADA908500BDF9AF /* PCRE.framework in Frameworks */,
 				5B1A17A70ADA908600BDF9AF /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1653,7 +1970,6 @@
 				5B1A17450ADA8B2600BDF9AF /* CEGUI.framework in Frameworks */,
 				5B1A17460ADA8B2700BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */,
 				5B1A17B80ADA908C00BDF9AF /* OpenGL.framework in Frameworks */,
-				5B1A17B90ADA908E00BDF9AF /* PCRE.framework in Frameworks */,
 				5B1A17BA0ADA908F00BDF9AF /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1663,7 +1979,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B1A17C30ADA90A600BDF9AF /* OpenGL.framework in Frameworks */,
-				5B1A17C40ADA90A700BDF9AF /* PCRE.framework in Frameworks */,
 				5B1A17C50ADA90A800BDF9AF /* GLUT.framework in Frameworks */,
 				5B1A17C70ADA90C900BDF9AF /* CEGUI.framework in Frameworks */,
 				5B1A17C80ADA90CC00BDF9AF /* CEGUIOpenGLRenderer.framework in Frameworks */,
@@ -1674,7 +1989,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B55D3A60AC253EA006A2F76 /* PCRE.framework in Frameworks */,
 				5B55D3A70AC253EC006A2F76 /* CEGUI.framework in Frameworks */,
 				5BF477130AD06CD900A1E925 /* libxml.framework in Frameworks */,
 			);
@@ -1685,7 +1999,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B55D3A20AC253D5006A2F76 /* CEGUI.framework in Frameworks */,
-				5B55D3A30AC253DA006A2F76 /* PCRE.framework in Frameworks */,
 				5B4A81DF0B2EF89A003F1BF5 /* expat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1695,7 +2008,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BC619F40AA7F3BF0080B2ED /* Xerces.framework in Frameworks */,
-				5B55D3A40AC253E2006A2F76 /* PCRE.framework in Frameworks */,
 				5B55D3A50AC253E3006A2F76 /* CEGUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1705,7 +2017,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BC6193D0AA7F2B20080B2ED /* CEGUI.framework in Frameworks */,
-				5BC619F00AA7F3430080B2ED /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1714,7 +2025,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B5F7A7908CCC59900C417E6 /* CEGUI.framework in Frameworks */,
-				5B55D2BC0AC251BB006A2F76 /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1722,7 +2032,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC618870AA7DA740080B2ED /* freetype.framework in Frameworks */,
+				5BC618870AA7DA740080B2ED /* freetype2.framework in Frameworks */,
 				5BC619330AA7F01B0080B2ED /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1733,7 +2043,6 @@
 			files = (
 				5B991E1708C9315A006E6DC9 /* CEGUI.framework in Frameworks */,
 				5B5F7A7808CCC27600C417E6 /* OpenGL.framework in Frameworks */,
-				5B55D2B10AC25156006A2F76 /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1741,9 +2050,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58B2540E05554300C8294E /* ceguitolua++.framework in Frameworks */,
 				5B991E1508C9314A006E6DC9 /* CEGUI.framework in Frameworks */,
-				5BFDAC130A97E08B00BBC5C5 /* Lua.framework in Frameworks */,
-				5BF8850C0ACCD1AC00E8502F /* PCRE.framework in Frameworks */,
+				5BFDAC130A97E08B00BBC5C5 /* lua.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1753,7 +2062,6 @@
 			files = (
 				5BF682860AB8A97E00BBC82E /* IL.framework in Frameworks */,
 				5B55D39A0AC2539A006A2F76 /* CEGUI.framework in Frameworks */,
-				5B55D39B0AC2539F006A2F76 /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1761,13 +2069,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B5655870A8E1396003AADFC /* SILLY.framework in Frameworks */,
 				5BF6835A0AB8AAFC00BBC82E /* SILLY.framework in Frameworks */,
 				5BF6838A0AB8AC8400BBC82E /* CEGUI.framework in Frameworks */,
-				5BF684A60AB8AE0500BBC82E /* PCRE.framework in Frameworks */,
-				5B55D3940AC2537A006A2F76 /* jpeg.framework in Frameworks */,
-				5B55D3950AC2537A006A2F76 /* png.framework in Frameworks */,
-				5B55D3960AC2537A006A2F76 /* zlib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1777,7 +2080,6 @@
 			files = (
 				5B55D28A0AC24F4C006A2F76 /* FreeImage.framework in Frameworks */,
 				5B55D2C20AC2533D006A2F76 /* CEGUI.framework in Frameworks */,
-				5B55D36C0AC2533F006A2F76 /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1786,7 +2088,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BF682880AB8A9B600BBC82E /* CEGUI.framework in Frameworks */,
-				5BF683330AB8A9CA00BBC82E /* PCRE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1804,7 +2105,6 @@
 				5BF885BD0ACCD55F00E8502F /* CEGUI.framework in Frameworks */,
 				5BF885BE0ACCD56800E8502F /* CEGUIOpenGLRenderer.framework in Frameworks */,
 				5BF885ED0ACCD72D00E8502F /* GLUT.framework in Frameworks */,
-				5BF885EE0ACCD73400E8502F /* PCRE.framework in Frameworks */,
 				5BF885EF0ACCD74000E8502F /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1816,7 +2116,6 @@
 				5BF886150ACCD88200E8502F /* CEGUI.framework in Frameworks */,
 				5BF886160ACCD88600E8502F /* CEGUIOpenGLRenderer.framework in Frameworks */,
 				5BF886170ACCD88D00E8502F /* GLUT.framework in Frameworks */,
-				5BF886180ACCD89000E8502F /* PCRE.framework in Frameworks */,
 				5BF886190ACCD89400E8502F /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1828,8 +2127,103 @@
 				5BF8863E0ACCDB3500E8502F /* CEGUI.framework in Frameworks */,
 				5BF8863F0ACCDB3600E8502F /* CEGUIOpenGLRenderer.framework in Frameworks */,
 				5BF886400ACCDB4000E8502F /* GLUT.framework in Frameworks */,
-				5BF886410ACCDB4300E8502F /* PCRE.framework in Frameworks */,
 				5BF886420ACCDB4500E8502F /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B2010E0552D900C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B2450E0554B100C8294E /* lua.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B2E40E0556EC00C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B3CF0E05578700C8294E /* CEGUI.framework in Frameworks */,
+				DA58B3D00E05578700C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				DA58B3D10E05578700C8294E /* GLUT.framework in Frameworks */,
+				DA58B3D20E05578700C8294E /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B4AF0E0558DE00C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B6570E0559EE00C8294E /* GLUT.framework in Frameworks */,
+				DA58B6580E0559EE00C8294E /* OpenGL.framework in Frameworks */,
+				DA58B5730E05595C00C8294E /* CEGUI.framework in Frameworks */,
+				DA58B5740E05595C00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				DA58B5750E05595C00C8294E /* CEGUILuaScriptModule.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B6A90E055E1300C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B82C0E055E9300C8294E /* GLUT.framework in Frameworks */,
+				DA58B82D0E055E9300C8294E /* OpenGL.framework in Frameworks */,
+				DA58B8260E055E8B00C8294E /* CEGUI.framework in Frameworks */,
+				DA58B8270E055E8B00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B8480E055FF700C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BA9D0E05609E00C8294E /* GLUT.framework in Frameworks */,
+				DA58BA9E0E05609E00C8294E /* OpenGL.framework in Frameworks */,
+				DA58BA920E05609300C8294E /* CEGUI.framework in Frameworks */,
+				DA58BA930E05609300C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				DA58BA940E05609300C8294E /* CEGUILuaScriptModule.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BAED0E0561A300C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BC6A0E0561E300C8294E /* GLUT.framework in Frameworks */,
+				DA58BC6B0E0561E300C8294E /* OpenGL.framework in Frameworks */,
+				DA58BC640E0561DD00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				DA58BC650E0561DD00C8294E /* CEGUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BC950E0562D000C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BD560E0562EE00C8294E /* GLUT.framework in Frameworks */,
+				DA58BD570E0562EE00C8294E /* OpenGL.framework in Frameworks */,
+				DA58BD580E0562EE00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				DA58BD590E0562EE00C8294E /* CEGUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BE360E0563C500C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BEF30E0563EB00C8294E /* GLUT.framework in Frameworks */,
+				DA58BEF40E0563EB00C8294E /* OpenGL.framework in Frameworks */,
+				DA58BEF50E0563EB00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */,
+				DA58BEF60E0563EB00C8294E /* CEGUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58C4AA0E057B5B00C8294E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58C4CE0E057C3700C8294E /* CEGUI.framework in Frameworks */,
+				DA58C4BE0E057BED00C8294E /* corona.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1840,24 +2234,33 @@
 			isa = PBXGroup;
 			children = (
 				5B69B83008C4106E0086C816 /* CEGUI.framework */,
-				5B5F798F08CBD2C900C417E6 /* CEGUIFalagardWRBase.bundle */,
 				5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */,
 				5BCC7E4A0A8149370017D97C /* CEGUIIrrlichtRenderer.framework */,
+				DA58B2030E0552D900C8294E /* ceguitolua++.framework */,
 				5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */,
-				5B1FB7B809EF607500B2EF6B /* CEGUILibxmlParser.bundle */,
+				5B5F798F08CBD2C900C417E6 /* CEGUIFalagardWRBase.bundle */,
 				5B1FB7C209EF608C00B2EF6B /* CEGUIExpatParser.bundle */,
-				5B1FB7CC09EF609F00B2EF6B /* CEGUIXercesParser.bundle */,
+				5B1FB7B809EF607500B2EF6B /* CEGUILibxmlParser.bundle */,
 				5B1FB7D609EF60B200B2EF6B /* CEGUITinyXMLParser.bundle */,
+				5B1FB7CC09EF609F00B2EF6B /* CEGUIXercesParser.bundle */,
+				DA58C4AC0E057B5B00C8294E /* CEGUICoronaImageCodec.bundle */,
 				5BCC7E0E0A8146060017D97C /* CEGUIDevILImageCodec.bundle */,
-				5BCC7E180A8146270017D97C /* CEGUISILLYImageCodec.bundle */,
 				5BCC7E220A8146400017D97C /* CEGUIFreeImageImageCodec.bundle */,
+				5BCC7E180A8146270017D97C /* CEGUISILLYImageCodec.bundle */,
 				5BCC7E2C0A8146690017D97C /* CEGUITGAImageCodec.bundle */,
-				5BF885B10ACCD46100E8502F /* TabControlDemo.app */,
-				5BF886090ACCD81D00E8502F /* ScrollablePaneDemo.app */,
-				5BF8862B0ACCDABB00E8502F /* Minesweeper.app */,
-				5B1A16660ADA8AA700BDF9AF /* FontDemo.app */,
-				5B1A173E0ADA8B0B00BDF9AF /* FirstWindow.app */,
+				DA58B6AB0E055E1300C8294E /* Demo6.app */,
+				DA58B2E60E0556EC00C8294E /* Demo7.app */,
+				DA58B4B10E0558DE00C8294E /* Demo8.app */,
+				DA58BC970E0562D000C8294E /* DragDropDemo.app */,
 				5B1A175B0ADA8B8000BDF9AF /* FalagardDemo1.app */,
+				5B1A173E0ADA8B0B00BDF9AF /* FirstWindow.app */,
+				5B1A16660ADA8AA700BDF9AF /* FontDemo.app */,
+				DA58B84A0E055FF700C8294E /* InstancedWindows.app */,
+				5BF8862B0ACCDABB00E8502F /* Minesweeper.app */,
+				5BF886090ACCD81D00E8502F /* ScrollablePaneDemo.app */,
+				5BF885B10ACCD46100E8502F /* TabControlDemo.app */,
+				DA58BAEF0E0561A300C8294E /* TextDemo.app */,
+				DA58BE380E0563C500C8294E /* TreeDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1865,7 +2268,6 @@
 		0867D691FE84028FC02AAC07 /* CrazyEddiesGUI */ = {
 			isa = PBXGroup;
 			children = (
-				5BF684AD0AB8AF3D00BBC82E /* BuildNotes.txt */,
 				5B69B73008C40B4A0086C816 /* BaseSystem */,
 				5B1FB75F09EF557500B2EF6B /* XMLParsers */,
 				5B51387A0A7F034C00A8B085 /* ImageCodecModules */,
@@ -1882,21 +2284,18 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				DA58C4BD0E057BED00C8294E /* corona.framework */,
 				5B4A81C60B2EF89A003F1BF5 /* expat.framework */,
 				5BF476E10AD06CD900A1E925 /* libxml.framework */,
 				5BF885D90ACCD72D00E8502F /* GLUT.framework */,
-				5B55D36F0AC2537A006A2F76 /* jpeg.framework */,
-				5B55D3700AC2537A006A2F76 /* png.framework */,
-				5B55D3710AC2537A006A2F76 /* zlib.framework */,
 				5B55D2850AC24F4C006A2F76 /* FreeImage.framework */,
 				5BF683470AB8AAFC00BBC82E /* SILLY.framework */,
 				5BF682740AB8A97E00BBC82E /* IL.framework */,
 				5BC6192D0AA7F01B0080B2ED /* PCRE.framework */,
-				5BC6182E0AA7DA740080B2ED /* freetype.framework */,
+				5BC6182E0AA7DA740080B2ED /* freetype2.framework */,
 				08FB77AAFE841565C02AAC07 /* Carbon.framework */,
-				5BFDABF90A97E08A00BBC5C5 /* Lua.framework */,
+				5BFDABF90A97E08A00BBC5C5 /* lua.framework */,
 				5B5F7A6508CCC27500C417E6 /* OpenGL.framework */,
-				5B5655740A8E1396003AADFC /* SILLY.framework */,
 				5B3E843C08C49D1D00D8C077 /* Xerces.framework */,
 			);
 			name = "External Frameworks and Libraries";
@@ -2118,16 +2517,19 @@
 			children = (
 				5BF885160ACCD35500E8502F /* common */,
 				5BF885360ACCD35500E8502F /* datafiles */,
-				5BF8856F0ACCD35600E8502F /* Demo4 */,
 				5BF885750ACCD35600E8502F /* Demo6 */,
 				5BF8857B0ACCD35600E8502F /* Demo7 */,
 				5BF885810ACCD35600E8502F /* Demo8 */,
+				DA58B2B40E05562900C8294E /* DragDropDemo */,
 				5BF885870ACCD35600E8502F /* FalagardDemo1 */,
 				5BF8858F0ACCD35600E8502F /* FirstWindow */,
 				5BF885970ACCD35600E8502F /* FontDemo */,
+				DA58B2B80E05564000C8294E /* InstancedWindows */,
 				5BF8859C0ACCD35600E8502F /* Minesweeper */,
 				5BF885A30ACCD35600E8502F /* ScrollablePaneDemo */,
 				5BF885A80ACCD35600E8502F /* TabControlDemo */,
+				DA58B2D20E05567D00C8294E /* TextDemo */,
+				DA58B2CA0E05567D00C8294E /* TreeDemo */,
 			);
 			name = Samples;
 			sourceTree = "<group>";
@@ -2135,7 +2537,7 @@
 		5B5138810A7F03BF00A8B085 /* Corona */ = {
 			isa = PBXGroup;
 			children = (
-				5BCC7E050A8145BE0017D97C /* CEGUICoronaImageCodec-Info.plist */,
+				DA58C4AD0E057B5B00C8294E /* CEGUICoronaImageCodec-Info.plist */,
 				5B5138900A7F049100A8B085 /* Headers */,
 				5B5138930A7F049800A8B085 /* Sources */,
 			);
@@ -2301,6 +2703,7 @@
 		5B5F798508CBD29E00C417E6 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758D90E051F5E00299E88 /* FalTree.cpp */,
 				5B1FB76E09EF561600B2EF6B /* FalButton.cpp */,
 				5B1FB76F09EF561600B2EF6B /* FalDefault.cpp */,
 				5B1FB77009EF561600B2EF6B /* FalEditbox.cpp */,
@@ -2344,6 +2747,7 @@
 		5B5F798A08CBD2AE00C417E6 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758D80E051F4100299E88 /* FalTree.h */,
 				5B1FB79109EF563E00B2EF6B /* FalButton.h */,
 				5B1FB79209EF563E00B2EF6B /* FalDefault.h */,
 				5B1FB79309EF563E00B2EF6B /* FalEditbox.h */,
@@ -2407,20 +2811,18 @@
 		5B69B73808C40B6C0086C816 /* ScriptingModules */ = {
 			isa = PBXGroup;
 			children = (
-				5B69B74208C40BAC0086C816 /* LuaScript */,
+				5B69B74208C40BAC0086C816 /* CEGUILua */,
 			);
 			name = ScriptingModules;
 			sourceTree = "<group>";
 		};
-		5B69B74208C40BAC0086C816 /* LuaScript */ = {
+		5B69B74208C40BAC0086C816 /* CEGUILua */ = {
 			isa = PBXGroup;
 			children = (
-				5BFDAC150A97E10200BBC5C5 /* Packages */,
-				5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */,
-				5B69B81C08C40FB20086C816 /* Headers */,
-				5B69B81908C40FAF0086C816 /* Sources */,
+				DA58B2140E05540B00C8294E /* LuaScriptModule */,
+				DA58B20F0E0553D900C8294E /* ceguitolua++ */,
 			);
-			name = LuaScript;
+			name = CEGUILua;
 			sourceTree = "<group>";
 		};
 		5B69B74508C40BD80086C816 /* Irrlicht */ = {
@@ -2436,6 +2838,7 @@
 		5B69B74808C40BDF0086C816 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758C30E051DCE00299E88 /* GLEW */,
 				5B69B76B08C40CF80086C816 /* OpenGLRenderer-Info.plist */,
 				5B69B80A08C40F920086C816 /* Headers */,
 				5B69B80708C40F8F0086C816 /* Sources */,
@@ -2519,6 +2922,10 @@
 		5B69B86D08C416BD0086C816 /* elements */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758B90E051D7800299E88 /* CEGUIGroupBox.cpp */,
+				DA3758BA0E051D7800299E88 /* CEGUITree.cpp */,
+				DA3758BB0E051D7800299E88 /* CEGUITreeItem.cpp */,
+				DA3758BC0E051D7800299E88 /* CEGUITreeProperties.cpp */,
 				5B5655C00A8E2525003AADFC /* CEGUIClippedContainer.cpp */,
 				5B5655C10A8E2525003AADFC /* CEGUIItemEntryProperties.cpp */,
 				5B5655C20A8E2525003AADFC /* CEGUIItemListbox.cpp */,
@@ -2617,6 +3024,11 @@
 		5B69B9A808C4175F0086C816 /* elements */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758AF0E051CC300299E88 /* CEGUIClippedContainer.h */,
+				DA3758B00E051CC300299E88 /* CEGUIGroupBox.h */,
+				DA3758B10E051CC300299E88 /* CEGUITree.h */,
+				DA3758B20E051CC300299E88 /* CEGUITreeItem.h */,
+				DA3758B30E051CC300299E88 /* CEGUITreeProperties.h */,
 				5B5655A40A8E15FB003AADFC /* CEGUIItemEntryProperties.h */,
 				5B5655A50A8E15FB003AADFC /* CEGUIItemListbox.h */,
 				5B5655A60A8E15FB003AADFC /* CEGUIItemListboxProperties.h */,
@@ -2689,6 +3101,8 @@
 		5B69B9AB08C4176D0086C816 /* main */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758AB0E051C9300299E88 /* CEGUIScriptWindowHelper.h */,
+				DA3758AC0E051C9300299E88 /* CEGUITask.h */,
 				5B69BA5008C418830086C816 /* CEGUI.h */,
 				5B69BA5108C418830086C816 /* CEGUIBase.h */,
 				5B1FB82309EF634900B2EF6B /* CEGUIBoundSlot.h */,
@@ -2762,6 +3176,7 @@
 		5B69B9AE08C417730086C816 /* main */ = {
 			isa = PBXGroup;
 			children = (
+				DA3758C10E051D9700299E88 /* CEGUIScriptWindowHelper.cpp */,
 				5B69B83808C416BC0086C816 /* CEGUIBase.cpp */,
 				5B1FB84509EF64BD00B2EF6B /* CEGUIBoundSlot.cpp */,
 				5B69B83908C416BC0086C816 /* CEGUIcolour.cpp */,
@@ -2961,6 +3376,8 @@
 		5BF885480ACCD35500E8502F /* imagesets */ = {
 			isa = PBXGroup;
 			children = (
+				DA58BFC70E0564A700C8294E /* DriveIcons.imageset */,
+				DA58BFC80E0564A700C8294E /* DriveIcons.png */,
 				5BF885490ACCD35500E8502F /* FairChar.imageset */,
 				5BF8854A0ACCD35500E8502F /* FairChar.tga */,
 				5BF8854B0ACCD35500E8502F /* GPN-2000-001437.tga */,
@@ -2979,6 +3396,10 @@
 		5BF885540ACCD35500E8502F /* layouts */ = {
 			isa = PBXGroup;
 			children = (
+				DA58BFC90E0564F300C8294E /* Console.wnd */,
+				DA58BFCA0E0564F300C8294E /* DragDropDemo.layout */,
+				DA58BFCB0E0564F300C8294E /* TextDemo.layout */,
+				DA58BFCC0E0564F300C8294E /* TreeDemoTaharez.layout */,
 				5BF885550ACCD35500E8502F /* Demo7Windows.layout */,
 				5BF885560ACCD35500E8502F /* Demo8.layout */,
 				5BF885570ACCD35500E8502F /* FontDemo.layout */,
@@ -3007,6 +3428,8 @@
 		5BF885640ACCD35600E8502F /* lua_scripts */ = {
 			isa = PBXGroup;
 			children = (
+				DA58BFCD0E05651000C8294E /* IConsole.lua */,
+				DA58BFCE0E05651000C8294E /* InstancedInit.lua */,
 				5BF885650ACCD35600E8502F /* demo8.lua */,
 			);
 			path = lua_scripts;
@@ -3027,27 +3450,10 @@
 			path = schemes;
 			sourceTree = "<group>";
 		};
-		5BF8856F0ACCD35600E8502F /* Demo4 */ = {
-			isa = PBXGroup;
-			children = (
-				5BF885710ACCD35600E8502F /* src */,
-			);
-			name = Demo4;
-			path = ../../../../Samples/Demo4;
-			sourceTree = SOURCE_ROOT;
-		};
-		5BF885710ACCD35600E8502F /* src */ = {
-			isa = PBXGroup;
-			children = (
-				5BF885730ACCD35600E8502F /* Sample_Demo4.cpp */,
-				5BF885740ACCD35600E8502F /* Sample_Demo4.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
 		5BF885750ACCD35600E8502F /* Demo6 */ = {
 			isa = PBXGroup;
 			children = (
+				DA58B6AD0E055E1300C8294E /* Demo6-Info.plist */,
 				5BF885770ACCD35600E8502F /* src */,
 			);
 			name = Demo6;
@@ -3066,6 +3472,7 @@
 		5BF8857B0ACCD35600E8502F /* Demo7 */ = {
 			isa = PBXGroup;
 			children = (
+				DA58B2E80E0556EC00C8294E /* Demo7-Info.plist */,
 				5BF8857D0ACCD35600E8502F /* src */,
 			);
 			name = Demo7;
@@ -3084,6 +3491,7 @@
 		5BF885810ACCD35600E8502F /* Demo8 */ = {
 			isa = PBXGroup;
 			children = (
+				DA58B4B30E0558DE00C8294E /* Demo8-Info.plist */,
 				5BF885830ACCD35600E8502F /* src */,
 			);
 			name = Demo8;
@@ -3340,6 +3748,147 @@
 			name = ceguitinyxml;
 			sourceTree = "<group>";
 		};
+		DA3758C30E051DCE00299E88 /* GLEW */ = {
+			isa = PBXGroup;
+			children = (
+				DA3758C40E051DCE00299E88 /* GL */,
+				DA3758C80E051DCE00299E88 /* GLEW-LICENSE */,
+				DA3758C90E051DCE00299E88 /* src */,
+			);
+			name = GLEW;
+			path = ../../../../RendererModules/OpenGLGUIRenderer/GLEW;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA3758C40E051DCE00299E88 /* GL */ = {
+			isa = PBXGroup;
+			children = (
+				DA3758C50E051DCE00299E88 /* glew.h */,
+				DA3758C60E051DCE00299E88 /* glxew.h */,
+				DA3758C70E051DCE00299E88 /* wglew.h */,
+			);
+			path = GL;
+			sourceTree = "<group>";
+		};
+		DA3758C90E051DCE00299E88 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DA3758CA0E051DCE00299E88 /* glew.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		DA58B20F0E0553D900C8294E /* ceguitolua++ */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B2310E05545500C8294E /* tolua++.h */,
+				DA58B2320E05545500C8294E /* README */,
+				DA58B2330E05545500C8294E /* tolua_event.h */,
+				DA58B2340E05545500C8294E /* tolua_event.c */,
+				DA58B2350E05545500C8294E /* INFO */,
+				DA58B2360E05545500C8294E /* tolua_map.c */,
+				DA58B2370E05545500C8294E /* tolua_to.c */,
+				DA58B2380E05545500C8294E /* tolua_is.c */,
+				DA58B23A0E05545500C8294E /* tolua_push.c */,
+				DA58B2040E0552D900C8294E /* ceguitolua++-Info.plist */,
+			);
+			name = "ceguitolua++";
+			sourceTree = "<group>";
+		};
+		DA58B2140E05540B00C8294E /* LuaScriptModule */ = {
+			isa = PBXGroup;
+			children = (
+				5B69B81C08C40FB20086C816 /* Headers */,
+				5B69B81908C40FAF0086C816 /* Sources */,
+				5BFDAC150A97E10200BBC5C5 /* Packages */,
+				5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */,
+			);
+			name = LuaScriptModule;
+			sourceTree = "<group>";
+		};
+		DA58B2B40E05562900C8294E /* DragDropDemo */ = {
+			isa = PBXGroup;
+			children = (
+				DA58BC990E0562D000C8294E /* DragDropDemo-Info.plist */,
+				DA58B2B60E05562900C8294E /* Sample_DragDropDemo.cpp */,
+				DA58B2B70E05562900C8294E /* Sample_DragDropDemo.h */,
+			);
+			name = DragDropDemo;
+			path = ../../../../Samples/DragDropDemo;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA58B2B80E05564000C8294E /* InstancedWindows */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B84C0E055FF700C8294E /* InstancedWindows-Info.plist */,
+				DA58B2B90E05564000C8294E /* include */,
+				DA58B2BD0E05564000C8294E /* src */,
+			);
+			name = InstancedWindows;
+			path = ../../../../Samples/InstancedWindows;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA58B2B90E05564000C8294E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B2BA0E05564000C8294E /* Instanced.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		DA58B2BD0E05564000C8294E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B2BE0E05564000C8294E /* Instanced.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		DA58B2CA0E05567D00C8294E /* TreeDemo */ = {
+			isa = PBXGroup;
+			children = (
+				DA58BE3A0E0563C500C8294E /* TreeDemo-Info.plist */,
+				DA58B2CB0E05567D00C8294E /* include */,
+				DA58B2CF0E05567D00C8294E /* src */,
+			);
+			name = TreeDemo;
+			path = ../../../../Samples/TreeDemo;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA58B2CB0E05567D00C8294E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B2CD0E05567D00C8294E /* Sample_TreeDemo.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		DA58B2CF0E05567D00C8294E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B2D10E05567D00C8294E /* Sample_TreeDemo.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		DA58B2D20E05567D00C8294E /* TextDemo */ = {
+			isa = PBXGroup;
+			children = (
+				DA58BAF10E0561A300C8294E /* TextDemo-Info.plist */,
+				DA58B2D40E05567D00C8294E /* src */,
+			);
+			name = TextDemo;
+			path = ../../../../Samples/TextDemo;
+			sourceTree = SOURCE_ROOT;
+		};
+		DA58B2D40E05567D00C8294E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				DA58B2D60E05567D00C8294E /* Sample_Text.cpp */,
+				DA58B2D70E05567D00C8294E /* Sample_Text.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3509,6 +4058,13 @@
 				5B5655AB0A8E15FB003AADFC /* CEGUIItemListboxProperties.h in Headers */,
 				5B5655AC0A8E15FB003AADFC /* CEGUIScrolledItemListBase.h in Headers */,
 				5B5655AD0A8E15FB003AADFC /* CEGUIScrolledItemListBaseProperties.h in Headers */,
+				DA3758AD0E051C9300299E88 /* CEGUIScriptWindowHelper.h in Headers */,
+				DA3758AE0E051C9300299E88 /* CEGUITask.h in Headers */,
+				DA3758B40E051CC300299E88 /* CEGUIClippedContainer.h in Headers */,
+				DA3758B50E051CC300299E88 /* CEGUIGroupBox.h in Headers */,
+				DA3758B60E051CC300299E88 /* CEGUITree.h in Headers */,
+				DA3758B70E051CC300299E88 /* CEGUITreeItem.h in Headers */,
+				DA3758B80E051CC300299E88 /* CEGUITreeProperties.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3518,6 +4074,9 @@
 			files = (
 				5B5F7A6008CCC20900C417E6 /* opengltexture.h in Headers */,
 				5B5F7A6108CCC20A00C417E6 /* openglrenderer.h in Headers */,
+				DA3758CB0E051DCE00299E88 /* glew.h in Headers */,
+				DA3758CC0E051DCE00299E88 /* glxew.h in Headers */,
+				DA3758CD0E051DCE00299E88 /* wglew.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3577,6 +4136,15 @@
 			files = (
 				5BFF9E7C0A80EC41009A53D7 /* CEGUILibxmlParser.h in Headers */,
 				5BFF9E7D0A80EC41009A53D7 /* CEGUILibxmlParserModule.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B1FE0E0552D900C8294E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B23B0E05545500C8294E /* tolua++.h in Headers */,
+				DA58B23D0E05545500C8294E /* tolua_event.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3774,7 +4342,7 @@
 			);
 			dependencies = (
 				5B991E1208C93119006E6DC9 /* PBXTargetDependency */,
-				5B1A17FF0ADA9A6900BDF9AF /* PBXTargetDependency */,
+				DA375A020E0529DD00299E88 /* PBXTargetDependency */,
 			);
 			name = CEGUIOpenGLRenderer;
 			productName = CEGUIOpenGLRenderer;
@@ -3793,6 +4361,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DA58B24E0E0554C600C8294E /* PBXTargetDependency */,
 				5B991DA208C92F70006E6DC9 /* PBXTargetDependency */,
 				5B1A18030ADA9A7E00BDF9AF /* PBXTargetDependency */,
 			);
@@ -3957,39 +4526,220 @@
 			productReference = 5BF8862B0ACCDABB00E8502F /* Minesweeper.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DA58B2020E0552D900C8294E /* ceguitolua++ */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58B2080E0552DA00C8294E /* Build configuration list for PBXNativeTarget "ceguitolua++" */;
+			buildPhases = (
+				DA58B1FE0E0552D900C8294E /* Headers */,
+				DA58B1FF0E0552D900C8294E /* Resources */,
+				DA58B2000E0552D900C8294E /* Sources */,
+				DA58B2010E0552D900C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ceguitolua++";
+			productName = "ceguitolua++";
+			productReference = DA58B2030E0552D900C8294E /* ceguitolua++.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		DA58B2E50E0556EC00C8294E /* Demo7 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58B2EC0E0556ED00C8294E /* Build configuration list for PBXNativeTarget "Demo7" */;
+			buildPhases = (
+				DA58B2E20E0556EC00C8294E /* Resources */,
+				DA58B49A0E0557F700C8294E /* ShellScript */,
+				DA58B2E30E0556EC00C8294E /* Sources */,
+				DA58B2E40E0556EC00C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58B2EE0E05570200C8294E /* PBXTargetDependency */,
+			);
+			name = Demo7;
+			productName = Demo7;
+			productReference = DA58B2E60E0556EC00C8294E /* Demo7.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58B4B00E0558DE00C8294E /* Demo8 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58B4B70E0558DF00C8294E /* Build configuration list for PBXNativeTarget "Demo8" */;
+			buildPhases = (
+				DA58B4AD0E0558DE00C8294E /* Resources */,
+				DA58B4BA0E05593B00C8294E /* ShellScript */,
+				DA58B4AE0E0558DE00C8294E /* Sources */,
+				DA58B4AF0E0558DE00C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58B6400E0559A100C8294E /* PBXTargetDependency */,
+			);
+			name = Demo8;
+			productName = Demo8;
+			productReference = DA58B4B10E0558DE00C8294E /* Demo8.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58B6AA0E055E1300C8294E /* Demo6 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58B6B10E055E1300C8294E /* Build configuration list for PBXNativeTarget "Demo6" */;
+			buildPhases = (
+				DA58B6A70E055E1300C8294E /* Resources */,
+				DA58B6B50E055E3200C8294E /* ShellScript */,
+				DA58B6A80E055E1300C8294E /* Sources */,
+				DA58B6A90E055E1300C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58B6B30E055E1B00C8294E /* PBXTargetDependency */,
+			);
+			name = Demo6;
+			productName = Demo6;
+			productReference = DA58B6AB0E055E1300C8294E /* Demo6.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58B8490E055FF700C8294E /* InstancedWindows */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58B8500E055FF800C8294E /* Build configuration list for PBXNativeTarget "InstancedWindows" */;
+			buildPhases = (
+				DA58B8460E055FF700C8294E /* Resources */,
+				DA58B85C0E05604B00C8294E /* ShellScript */,
+				DA58B8470E055FF700C8294E /* Sources */,
+				DA58B8480E055FF700C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58B85A0E05604100C8294E /* PBXTargetDependency */,
+			);
+			name = InstancedWindows;
+			productName = InstancedWindows;
+			productReference = DA58B84A0E055FF700C8294E /* InstancedWindows.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58BAEE0E0561A300C8294E /* TextDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58BAF50E0561A300C8294E /* Build configuration list for PBXNativeTarget "TextDemo" */;
+			buildPhases = (
+				DA58BAEB0E0561A300C8294E /* Resources */,
+				DA58BAF90E0561C000C8294E /* ShellScript */,
+				DA58BAEC0E0561A300C8294E /* Sources */,
+				DA58BAED0E0561A300C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58BAF70E0561A800C8294E /* PBXTargetDependency */,
+			);
+			name = TextDemo;
+			productName = TextDemo;
+			productReference = DA58BAEF0E0561A300C8294E /* TextDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58BC960E0562D000C8294E /* DragDropDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58BC9D0E0562D100C8294E /* Build configuration list for PBXNativeTarget "DragDropDemo" */;
+			buildPhases = (
+				DA58BC930E0562D000C8294E /* Resources */,
+				DA58BE130E05630200C8294E /* ShellScript */,
+				DA58BC940E0562D000C8294E /* Sources */,
+				DA58BC950E0562D000C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58BC9F0E0562D500C8294E /* PBXTargetDependency */,
+			);
+			name = DragDropDemo;
+			productName = DragDropDemo;
+			productReference = DA58BC970E0562D000C8294E /* DragDropDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58BE370E0563C500C8294E /* TreeDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58BE3E0E0563C600C8294E /* Build configuration list for PBXNativeTarget "TreeDemo" */;
+			buildPhases = (
+				DA58BE340E0563C500C8294E /* Resources */,
+				DA58BFB00E0563FE00C8294E /* ShellScript */,
+				DA58BE350E0563C500C8294E /* Sources */,
+				DA58BE360E0563C500C8294E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58BE400E0563CC00C8294E /* PBXTargetDependency */,
+			);
+			name = TreeDemo;
+			productName = TreeDemo;
+			productReference = DA58BE380E0563C500C8294E /* TreeDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA58C4AB0E057B5B00C8294E /* CEGUICoronaImageCodec */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA58C4B10E057B5C00C8294E /* Build configuration list for PBXNativeTarget "CEGUICoronaImageCodec" */;
+			buildPhases = (
+				DA58C4A80E057B5B00C8294E /* Resources */,
+				DA58C4A90E057B5B00C8294E /* Sources */,
+				DA58C4AA0E057B5B00C8294E /* Frameworks */,
+				DA58C4C20E057BFA00C8294E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA58C4C40E057C1000C8294E /* PBXTargetDependency */,
+			);
+			name = CEGUICoronaImageCodec;
+			productName = CEGUICoronaImageCodec;
+			productReference = DA58C4AC0E057B5B00C8294E /* CEGUICoronaImageCodec.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 5B69B72208C40ADD0086C816 /* Build configuration list for PBXProject "CrazyEddiesGUI" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* CrazyEddiesGUI */;
 			productRefGroup = 034768DDFF38A45A11DB9C8B /* Products */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				5B991D8608C92230006E6DC9 /* CEGUI */,
-				5B69B82F08C4106E0086C816 /* CEGUIBase */,
+				5BF885B80ACCD53300E8502F /* Samples */,
 				5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */,
+				5B69B82F08C4106E0086C816 /* CEGUIBase */,
 				5B991D6F08C920E5006E6DC9 /* CEGUIOpenGLRenderer */,
 				5BCC7E490A8149370017D97C /* CEGUIIrrlichtRenderer */,
+				DA58B2020E0552D900C8294E /* ceguitolua++ */,
 				5B991D7A08C920FE006E6DC9 /* CEGUILuaScriptModule */,
 				5B5F798E08CBD2C900C417E6 /* CEGUIFalagardWRBase */,
-				5B1FB7B709EF607500B2EF6B /* CEGUILibxmlParser */,
 				5B1FB7C109EF608C00B2EF6B /* CEGUIExpatParser */,
-				5B1FB7CB09EF609F00B2EF6B /* CEGUIXercesParser */,
+				5B1FB7B709EF607500B2EF6B /* CEGUILibxmlParser */,
 				5B1FB7D509EF60B200B2EF6B /* CEGUITinyXMLParser */,
+				5B1FB7CB09EF609F00B2EF6B /* CEGUIXercesParser */,
+				DA58C4AB0E057B5B00C8294E /* CEGUICoronaImageCodec */,
 				5BCC7E0D0A8146060017D97C /* CEGUIDevILImageCodec */,
-				5BCC7E170A8146270017D97C /* CEGUISILLYImageCodec */,
 				5BCC7E210A8146400017D97C /* CEGUIFreeImageImageCodec */,
+				5BCC7E170A8146270017D97C /* CEGUISILLYImageCodec */,
 				5BCC7E2B0A8146690017D97C /* CEGUITGAImageCodec */,
-				5BF885B80ACCD53300E8502F /* Samples */,
-				5BF885B00ACCD46100E8502F /* TabControlDemo */,
-				5BF886080ACCD81D00E8502F /* ScrollablePaneDemo */,
-				5BF8862A0ACCDABB00E8502F /* Minesweeper */,
-				5B1A16650ADA8AA700BDF9AF /* FontDemo */,
-				5B1A173D0ADA8B0B00BDF9AF /* FirstWindow */,
+				DA58B6AA0E055E1300C8294E /* Demo6 */,
+				DA58B2E50E0556EC00C8294E /* Demo7 */,
+				DA58B4B00E0558DE00C8294E /* Demo8 */,
+				DA58BC960E0562D000C8294E /* DragDropDemo */,
 				5B1A175A0ADA8B8000BDF9AF /* FalagardDemo1 */,
+				5B1A173D0ADA8B0B00BDF9AF /* FirstWindow */,
+				5B1A16650ADA8AA700BDF9AF /* FontDemo */,
+				DA58B8490E055FF700C8294E /* InstancedWindows */,
+				5BF8862A0ACCDABB00E8502F /* Minesweeper */,
+				5BF886080ACCD81D00E8502F /* ScrollablePaneDemo */,
+				5BF885B00ACCD46100E8502F /* TabControlDemo */,
+				DA58BAEE0E0561A300C8294E /* TextDemo */,
+				DA58BE370E0563C500C8294E /* TreeDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -4036,6 +4786,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C0FB0E056F6000C8294E /* expat.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4043,6 +4794,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C12E0E05724700C8294E /* Xerces.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4065,6 +4817,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C0DE0E056C3000C8294E /* freetype2.framework in Resources */,
+				DA58C0DF0E056C3000C8294E /* PCRE.framework in Resources */,
 				5B69BAD208C419E70086C816 /* CEGUI-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4074,6 +4828,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B5F7A6208CCC20C00C417E6 /* OpenGLRenderer-Info.plist in Resources */,
+				DA3758CE0E051DCE00299E88 /* GLEW-LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4081,6 +4836,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C4620E05759800C8294E /* lua.framework in Resources */,
 				5B991D9F08C92C69006E6DC9 /* LuaScriptModule-Info.plist in Resources */,
 				5BFDAC6B0A97E10200BBC5C5 /* Basic.pkg in Resources */,
 				5BFDAC6C0A97E10200BBC5C5 /* CEGUI.pkg in Resources */,
@@ -4169,6 +4925,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C6910E05948300C8294E /* IL.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4176,6 +4933,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C59E0E057EDC00C8294E /* SILLY.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4183,6 +4941,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA58C6DB0E05987500C8294E /* FreeImage.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4204,8 +4963,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC3C9B80B247348006CC03D /* CEGUI.framework in Resources */,
-				5BC3C9B90B247348006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA3759B00E05258D00299E88 /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA3759010E05257600299E88 /* CEGUI.framework in Resources */,
 				5BF886210ACCD93500E8502F /* TabControlDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4230,6 +4989,98 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA58B1FF0E0552D900C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B23C0E05545500C8294E /* README in Resources */,
+				DA58B23F0E05545500C8294E /* INFO in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B2E20E0556EC00C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B48F0E0557DE00C8294E /* CEGUI.framework in Resources */,
+				DA58B4900E0557DE00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58B3DC0E0557BA00C8294E /* Demo7-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B4AD0E0558DE00C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B68B0E055C1500C8294E /* ceguitolua++.framework in Resources */,
+				DA58B62E0E05596B00C8294E /* CEGUI.framework in Resources */,
+				DA58B62F0E05596B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58B6300E05596B00C8294E /* CEGUILuaScriptModule.framework in Resources */,
+				DA58B6310E05598000C8294E /* Demo8-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B6A70E055E1300C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B76E0E055E7400C8294E /* CEGUI.framework in Resources */,
+				DA58B76F0E055E7400C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58B6B60E055E4C00C8294E /* Demo6-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B8460E055FF700C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B9120E05605B00C8294E /* CEGUI.framework in Resources */,
+				DA58B9130E05605B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58B9140E05605B00C8294E /* CEGUILuaScriptModule.framework in Resources */,
+				DA58B9110E05605B00C8294E /* ceguitolua++.framework in Resources */,
+				DA58BAE10E05617E00C8294E /* InstancedWindows-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BAEB0E0561A300C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BBAC0E0561D100C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58BBAD0E0561D100C8294E /* CEGUI.framework in Resources */,
+				DA58BC700E05622C00C8294E /* TextDemo-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BC930E0562D000C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BE0C0E0562FB00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58BE0D0E0562FB00C8294E /* CEGUI.framework in Resources */,
+				DA58BE1A0E05633B00C8294E /* DragDropDemo-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BE340E0563C500C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BFA90E0563F500C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
+				DA58BFAA0E0563F500C8294E /* CEGUI.framework in Resources */,
+				DA58BFB60E05641E00C8294E /* TreeDemo-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58C4A80E057B5B00C8294E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58C6CE0E05982C00C8294E /* corona.framework in Resources */,
+				DA58C4BA0E057BBC00C8294E /* CEGUICoronaImageCodec-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -4244,7 +5095,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A831D0B2F06AE003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4257,7 +5108,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A831F0B2F06C0003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4270,7 +5121,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A83210B2F06CE003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4283,7 +5134,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A83230B2F06DA003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4296,7 +5147,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B4A83250B2F06EA003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4309,7 +5160,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
 		};
 		5B5F7A3B08CCB31100C417E6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4335,7 +5186,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF884750ACCC3D900E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4348,7 +5199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF884770ACCC3E800E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4361,7 +5212,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF884790ACCC40700E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4374,7 +5225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF8847B0ACCC41200E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4387,7 +5238,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF8847D0ACCC41D00E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4400,7 +5251,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF8847F0ACCC42700E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4413,7 +5264,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF884810ACCC43500E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4426,7 +5277,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 		5BF884830ACCC44200E8502F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4440,6 +5291,110 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+		};
+		DA58B49A0E0557F700C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58B4BA0E05593B00C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58B6B50E055E3200C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58B85C0E05604B00C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58BAF90E0561C000C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58BE130E05630200C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58BFB00E0563FE00C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+		};
+		DA58C4C20E057BFA00C8294E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4560,6 +5515,7 @@
 				5BCC7EA20A81515D0017D97C /* FalTitlebar.cpp in Sources */,
 				5BCC7EA30A81515E0017D97C /* FalToggleButton.cpp in Sources */,
 				5BCC7EA40A81515F0017D97C /* FalTooltip.cpp in Sources */,
+				DA3758DA0E051F5E00299E88 /* FalTree.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4711,6 +5667,11 @@
 				5B5655C90A8E2525003AADFC /* CEGUIItemListboxProperties.cpp in Sources */,
 				5B5655CA0A8E2525003AADFC /* CEGUIScrolledItemListBase.cpp in Sources */,
 				5B5655CB0A8E2525003AADFC /* CEGUIScrolledItemListBaseProperties.cpp in Sources */,
+				DA3758BD0E051D7800299E88 /* CEGUIGroupBox.cpp in Sources */,
+				DA3758BE0E051D7800299E88 /* CEGUITree.cpp in Sources */,
+				DA3758BF0E051D7800299E88 /* CEGUITreeItem.cpp in Sources */,
+				DA3758C00E051D7800299E88 /* CEGUITreeProperties.cpp in Sources */,
+				DA3758C20E051D9700299E88 /* CEGUIScriptWindowHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4720,6 +5681,7 @@
 			files = (
 				5B5F7A6308CCC20D00C417E6 /* openglrenderer.cpp in Sources */,
 				5B5F7A6408CCC20D00C417E6 /* opengltexture.cpp in Sources */,
+				DA3758CF0E051DCE00299E88 /* glew.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4818,6 +5780,111 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA58B2000E0552D900C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B23E0E05545500C8294E /* tolua_event.c in Sources */,
+				DA58B2400E05545500C8294E /* tolua_map.c in Sources */,
+				DA58B2410E05545500C8294E /* tolua_to.c in Sources */,
+				DA58B2420E05545500C8294E /* tolua_is.c in Sources */,
+				DA58B2440E05545500C8294E /* tolua_push.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B2E30E0556EC00C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B2F20E05574800C8294E /* Sample_Demo7.cpp in Sources */,
+				DA58B2F80E05576400C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58B2F90E05576400C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58B2FA0E05576400C8294E /* CEGuiSample.cpp in Sources */,
+				DA58B2FB0E05576400C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B4AE0E0558DE00C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B64B0E0559C200C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58B64C0E0559C200C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58B64D0E0559C200C8294E /* CEGuiSample.cpp in Sources */,
+				DA58B64E0E0559C200C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+				DA58B6380E05599400C8294E /* Sample_Demo8.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B6A80E055E1300C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58B6B80E055E6100C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58B6B90E055E6100C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58B6BA0E055E6100C8294E /* CEGuiSample.cpp in Sources */,
+				DA58B6BB0E055E6100C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+				DA58B6B70E055E4C00C8294E /* Sample_Demo6.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58B8470E055FF700C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BAA80E0560D500C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58BAA90E0560D500C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58BAAA0E0560D500C8294E /* CEGuiSample.cpp in Sources */,
+				DA58BAAB0E0560D500C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+				DA58BAA10E0560C300C8294E /* Instanced.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BAEC0E0561A300C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BC790E05625800C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+				DA58BC7A0E05625800C8294E /* CEGuiSample.cpp in Sources */,
+				DA58BC7B0E05625800C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58BC7C0E05625800C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58BC710E05622C00C8294E /* Sample_Text.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BC940E0562D000C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BE220E05636300C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+				DA58BE230E05636300C8294E /* CEGuiSample.cpp in Sources */,
+				DA58BE240E05636300C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58BE250E05636300C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58BE1B0E05633B00C8294E /* Sample_DragDropDemo.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58BE350E0563C500C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58BFB90E05644800C8294E /* MacCEGuiRendererSelector.cpp in Sources */,
+				DA58BFBA0E05644800C8294E /* CEGuiSample.cpp in Sources */,
+				DA58BFBB0E05644800C8294E /* CEGuiRendererSelector.cpp in Sources */,
+				DA58BFBC0E05644800C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */,
+				DA58BFB50E05641E00C8294E /* Sample_TreeDemo.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA58C4A90E057B5B00C8294E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA58C4BB0E057BBC00C8294E /* CEGUICoronaImageCodec.cpp in Sources */,
+				DA58C4BC0E057BBC00C8294E /* CEGUICoronaImageCodecModule.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -4910,11 +5977,6 @@
 			isa = PBXTargetDependency;
 			target = 5BCC7E2B0A8146690017D97C /* CEGUITGAImageCodec */;
 			targetProxy = 5B1A17FB0ADA9A4200BDF9AF /* PBXContainerItemProxy */;
-		};
-		5B1A17FF0ADA9A6900BDF9AF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */;
-			targetProxy = 5B1A17FE0ADA9A6900BDF9AF /* PBXContainerItemProxy */;
 		};
 		5B1A18010ADA9A7600BDF9AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5040,6 +6102,111 @@
 			isa = PBXTargetDependency;
 			target = 5BF886080ACCD81D00E8502F /* ScrollablePaneDemo */;
 			targetProxy = 5BF886230ACCD9AE00E8502F /* PBXContainerItemProxy */;
+		};
+		DA3759C50E0526CF00299E88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BCC7E170A8146270017D97C /* CEGUISILLYImageCodec */;
+			targetProxy = DA3759C40E0526CF00299E88 /* PBXContainerItemProxy */;
+		};
+		DA375A020E0529DD00299E88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B1A17EE0ADA9A3300BDF9AF /* CEGUIBaseBundles */;
+			targetProxy = DA375A010E0529DD00299E88 /* PBXContainerItemProxy */;
+		};
+		DA58B24E0E0554C600C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58B2020E0552D900C8294E /* ceguitolua++ */;
+			targetProxy = DA58B24D0E0554C600C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B2B10E05559700C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58B2020E0552D900C8294E /* ceguitolua++ */;
+			targetProxy = DA58B2B00E05559700C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B2EE0E05570200C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58B2ED0E05570200C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B2F10E05572800C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58B2E50E0556EC00C8294E /* Demo7 */;
+			targetProxy = DA58B2F00E05572800C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B6400E0559A100C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58B63F0E0559A100C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B6A60E055DFE00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58B4B00E0558DE00C8294E /* Demo8 */;
+			targetProxy = DA58B6A50E055DFE00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B6B30E055E1B00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58B6B20E055E1B00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B82F0E055EBD00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58B6AA0E055E1300C8294E /* Demo6 */;
+			targetProxy = DA58B82E0E055EBD00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58B85A0E05604100C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58B8590E05604100C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BAA00E0560AE00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58B8490E055FF700C8294E /* InstancedWindows */;
+			targetProxy = DA58BA9F0E0560AE00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BAF70E0561A800C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58BAF60E0561A800C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BC730E05623A00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58BAEE0E0561A300C8294E /* TextDemo */;
+			targetProxy = DA58BC720E05623A00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BC9F0E0562D500C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58BC9E0E0562D500C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BE1D0E05635200C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58BC960E0562D000C8294E /* DragDropDemo */;
+			targetProxy = DA58BE1C0E05635200C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BE400E0563CC00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58BE3F0E0563CC00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58BFB80E05642A00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58BE370E0563C500C8294E /* TreeDemo */;
+			targetProxy = DA58BFB70E05642A00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58C4990E057AEE00C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			targetProxy = DA58C4980E057AEE00C8294E /* PBXContainerItemProxy */;
+		};
+		DA58C4C40E057C1000C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			targetProxy = DA58C4C30E057C1000C8294E /* PBXContainerItemProxy */;
+		};
+		DA58C57B0E057C5400C8294E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA58C4AB0E057B5B00C8294E /* CEGUICoronaImageCodec */;
+			targetProxy = DA58C57A0E057C5400C8294E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5407,6 +6574,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -5416,7 +6584,7 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/malloc,
-					/Library/Frameworks/expat.framework/Headers,
+					./dependencies/expat.framework/Headers,
 				);
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
@@ -5439,6 +6607,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
@@ -5446,7 +6615,7 @@
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/malloc,
-					/Library/Frameworks/expat.framework/Headers,
+					./dependencies/expat.framework/Headers,
 				);
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
@@ -5468,13 +6637,14 @@
 					ppc,
 					i386,
 				);
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					/usr/include/malloc,
-					/Library/Frameworks/expat.framework/Headers,
+					./dependencies/expat.framework/Headers,
 				);
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
@@ -5497,6 +6667,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -5504,10 +6675,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/Xerces.framework/Headers,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = ./dependencies/Xerces.framework/Headers;
 				INFOPLIST_FILE = "CEGUIXercesParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -5529,15 +6697,13 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/Xerces.framework/Headers,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = ./dependencies/Xerces.framework/Headers;
 				INFOPLIST_FILE = "CEGUIXercesParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -5554,11 +6720,12 @@
 		5B1FB7D109EF60A000B2EF6B /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
+				HEADER_SEARCH_PATHS = ./dependencies/Xerces.framework/Headers;
 				INFOPLIST_FILE = "CEGUIXercesParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -5792,7 +6959,7 @@
 				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5807,16 +6974,13 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/include/malloc,
 					/sw/include,
-					/Library/Frameworks/PCRE.framework/Headers,
-					/Library/Frameworks/freetype.framework/Headers,
+					./dependencies/PCRE.framework/Headers,
+					./dependencies/freetype2.framework/Headers,
 				);
 				INFOPLIST_FILE = "CEGUI-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/X11R6/lib,
-					/sw/lib,
-				);
+				INSTALL_PATH = "@executable_path/../Resources";
+				LIBRARY_SEARCH_PATHS = /sw/lib;
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
@@ -5849,7 +7013,7 @@
 				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
@@ -5861,16 +7025,13 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/include/malloc,
 					/sw/include,
-					/Library/Frameworks/PCRE.framework/Headers,
-					/Library/Frameworks/freetype.framework/Headers,
+					./dependencies/PCRE.framework/Headers,
+					./dependencies/freetype2.framework/Headers,
 				);
 				INFOPLIST_FILE = "CEGUI-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/X11R6/lib,
-					/sw/lib,
-				);
+				INSTALL_PATH = "@executable_path/../Resources";
+				LIBRARY_SEARCH_PATHS = /sw/lib;
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
@@ -5911,7 +7072,7 @@
 				HEADER_SEARCH_PATHS = ../../../../include;
 				INFOPLIST_FILE = "CEGUI-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				LIBRARY_SEARCH_PATHS = (
 					/usr/X11R6/lib,
 					/sw/lib,
@@ -5953,15 +7114,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
+					../../../../RendererModules/OpenGLGUIRenderer/GLEW,
 					../../../../include,
 					../../../../src/implementations/mac,
 					/usr/include/malloc,
-					/usr/X11R6/include,
-					/usr/X11R6/include/freetype2,
 				);
 				INFOPLIST_FILE = "OpenGLRenderer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
+				INSTALL_PATH = "@executable_path/../Resources";
+				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
@@ -6000,16 +7160,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
+					../../../../RendererModules/OpenGLGUIRenderer/GLEW,
 					../../../../include,
 					../../../../src/implementations/mac,
 					/usr/include/malloc,
-					/usr/X11R6/include,
-					/usr/X11R6/include/freetype2,
-					/Library/Frameworks/Xerces.framework/Headers,
 				);
 				INFOPLIST_FILE = "OpenGLRenderer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LIBRARY_SEARCH_PATHS = /usr/X11R6/lib;
+				INSTALL_PATH = "@executable_path/../Resources";
+				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
@@ -6041,7 +7199,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUIOpenGLRenderer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
+				LIBRARY_SEARCH_PATHS = "";
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -6071,18 +7230,15 @@
 				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/Lua.framework/Headers,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
@@ -6115,18 +7271,15 @@
 				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/Lua.framework/Headers,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
 				OPTIMIZATION_CFLAGS = "-O0";
@@ -6153,13 +7306,15 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -6241,6 +7396,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -6248,7 +7404,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/IL.framework/Headers;
+				HEADER_SEARCH_PATHS = ./dependencies/IL.framework/Headers;
 				INFOPLIST_FILE = "CEGUIDevILImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6270,12 +7426,13 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/IL.framework/Headers;
+				HEADER_SEARCH_PATHS = ./dependencies/IL.framework/Headers;
 				INFOPLIST_FILE = "CEGUIDevILImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6292,10 +7449,12 @@
 		5BCC7E130A8146070017D97C /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/IL.framework/Headers;
 				INFOPLIST_FILE = "CEGUIDevILImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6317,10 +7476,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
-				);
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../../../../silly/trunk/build/Debug\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -6329,7 +7485,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SILLY.framework/Headers;
+				HEADER_SEARCH_PATHS = ./dependencies/SILLY.framework/Headers;
 				INFOPLIST_FILE = "CEGUISILLYImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6338,7 +7494,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
-				USER_HEADER_SEARCH_PATHS = "/Library/Frameworks/zlib.framework/Headers /Library/Frameworks/jpeg.framework/Headers /Library/Frameworks/png.framework/Headers $(inherited)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = NO;
 			};
@@ -6352,17 +7508,14 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
-				);
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../../../../silly/trunk/build/Debug\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SILLY.framework/Headers;
+				HEADER_SEARCH_PATHS = ./dependencies/SILLY.framework/Headers;
 				INFOPLIST_FILE = "CEGUISILLYImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6371,7 +7524,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
-				USER_HEADER_SEARCH_PATHS = "/Library/Frameworks/zlib.framework/Headers /Library/Frameworks/jpeg.framework/Headers /Library/Frameworks/png.framework/Headers $(inherited)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = NO;
 			};
@@ -6380,15 +7533,13 @@
 		5BCC7E1D0A8146270017D97C /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
-				);
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../../../../silly/trunk/build/Debug\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/SILLY.framework/Headers;
 				INFOPLIST_FILE = "CEGUISILLYImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6397,6 +7548,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = YES;
 			};
@@ -6410,6 +7562,7 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -6417,7 +7570,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/FreeImage.framework/Headers;
+				HEADER_SEARCH_PATHS = ./dependencies/FreeImage.framework/Headers;
 				INFOPLIST_FILE = "CEGUIFreeImageImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6439,12 +7592,13 @@
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/FreeImage.framework/Headers;
+				HEADER_SEARCH_PATHS = ./dependencies/FreeImage.framework/Headers;
 				INFOPLIST_FILE = "CEGUIFreeImageImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6461,10 +7615,12 @@
 		5BCC7E270A8146400017D97C /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/FreeImage.framework/Headers;
 				INFOPLIST_FILE = "CEGUIFreeImageImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -6571,7 +7727,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -6599,7 +7755,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -6621,7 +7777,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Resources";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
@@ -6639,6 +7795,7 @@
 					ppc,
 					i386,
 				);
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -6889,6 +8046,726 @@
 			};
 			name = Default;
 		};
+		DA58B2050E0552D900C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
+				INFOPLIST_FILE = "ceguitolua++-Info.plist";
+				INSTALL_PATH = "@executable_path/../Resources";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "ceguitolua++";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58B2060E0552D900C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
+				INFOPLIST_FILE = "ceguitolua++-Info.plist";
+				INSTALL_PATH = "@executable_path/../Resources";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "ceguitolua++";
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58B2070E0552D900C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
+				INFOPLIST_FILE = "ceguitolua++-Info.plist";
+				INSTALL_PATH = "@executable_path/../Resources";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "ceguitolua++";
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58B2E90E0556ED00C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58B2EA0E0556ED00C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58B2EB0E0556ED00C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo7-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo7;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58B4B40E0558DF00C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58B4B50E0558DF00C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58B4B60E0558DF00C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo8-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo8;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58B6AE0E055E1300C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58B6AF0E055E1300C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58B6B00E055E1300C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "Demo6-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Demo6;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58B84D0E055FF800C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "InstancedWindows-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = InstancedWindows;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58B84E0E055FF800C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "InstancedWindows-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = InstancedWindows;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58B84F0E055FF800C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "InstancedWindows-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = InstancedWindows;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58BAF20E0561A300C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "TextDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TextDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58BAF30E0561A300C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "TextDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TextDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58BAF40E0561A300C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "TextDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TextDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58BC9A0E0562D100C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "DragDropDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = DragDropDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58BC9B0E0562D100C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "DragDropDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = DragDropDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58BC9C0E0562D100C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "DragDropDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = DragDropDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58BE3B0E0563C600C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "TreeDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TreeDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58BE3C0E0563C600C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "TreeDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TreeDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58BE3D0E0563C600C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "TreeDemo-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TreeDemo;
+				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		DA58C4AE0E057B5B00C8294E /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/corona.framework/Headers;
+				INFOPLIST_FILE = "CEGUICoronaImageCodec-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUICoronaImageCodec;
+				WRAPPER_EXTENSION = bundle;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		DA58C4AF0E057B5B00C8294E /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/corona.framework/Headers;
+				INFOPLIST_FILE = "CEGUICoronaImageCodec-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUICoronaImageCodec;
+				WRAPPER_EXTENSION = bundle;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DA58C4B00E057B5B00C8294E /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = ./dependencies/corona.framework/Headers;
+				INFOPLIST_FILE = "CEGUICoronaImageCodec-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CEGUICoronaImageCodec;
+				WRAPPER_EXTENSION = bundle;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -7118,6 +8995,96 @@
 				5BF8862F0ACCDABB00E8502F /* Development */,
 				5BF886300ACCDABB00E8502F /* Deployment */,
 				5BF886310ACCDABB00E8502F /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58B2080E0552DA00C8294E /* Build configuration list for PBXNativeTarget "ceguitolua++" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58B2050E0552D900C8294E /* Development */,
+				DA58B2060E0552D900C8294E /* Deployment */,
+				DA58B2070E0552D900C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58B2EC0E0556ED00C8294E /* Build configuration list for PBXNativeTarget "Demo7" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58B2E90E0556ED00C8294E /* Development */,
+				DA58B2EA0E0556ED00C8294E /* Deployment */,
+				DA58B2EB0E0556ED00C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58B4B70E0558DF00C8294E /* Build configuration list for PBXNativeTarget "Demo8" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58B4B40E0558DF00C8294E /* Development */,
+				DA58B4B50E0558DF00C8294E /* Deployment */,
+				DA58B4B60E0558DF00C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58B6B10E055E1300C8294E /* Build configuration list for PBXNativeTarget "Demo6" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58B6AE0E055E1300C8294E /* Development */,
+				DA58B6AF0E055E1300C8294E /* Deployment */,
+				DA58B6B00E055E1300C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58B8500E055FF800C8294E /* Build configuration list for PBXNativeTarget "InstancedWindows" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58B84D0E055FF800C8294E /* Development */,
+				DA58B84E0E055FF800C8294E /* Deployment */,
+				DA58B84F0E055FF800C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58BAF50E0561A300C8294E /* Build configuration list for PBXNativeTarget "TextDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58BAF20E0561A300C8294E /* Development */,
+				DA58BAF30E0561A300C8294E /* Deployment */,
+				DA58BAF40E0561A300C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58BC9D0E0562D100C8294E /* Build configuration list for PBXNativeTarget "DragDropDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58BC9A0E0562D100C8294E /* Development */,
+				DA58BC9B0E0562D100C8294E /* Deployment */,
+				DA58BC9C0E0562D100C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58BE3E0E0563C600C8294E /* Build configuration list for PBXNativeTarget "TreeDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58BE3B0E0563C600C8294E /* Development */,
+				DA58BE3C0E0563C600C8294E /* Deployment */,
+				DA58BE3D0E0563C600C8294E /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		DA58C4B10E057B5C00C8294E /* Build configuration list for PBXNativeTarget "CEGUICoronaImageCodec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA58C4AE0E057B5B00C8294E /* Development */,
+				DA58C4AF0E057B5B00C8294E /* Deployment */,
+				DA58C4B00E057B5B00C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;
