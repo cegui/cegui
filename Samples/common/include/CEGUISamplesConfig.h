@@ -51,7 +51,7 @@ Each item in here has a comment to describe what it's for.
 // The Premake solution will generate these for you according to the
 // config.lua script.
 //////////////////////////////////////////////////////////////////////////
-#if (defined( __WIN32__ ) || defined( _WIN32 )) || defined(__APPLE__)
+#if defined(__APPLE__)
 
 //////////////////////////////////////////////////////////////////////////
 // Comment/Uncomment these lines to control renderer use in samples where
