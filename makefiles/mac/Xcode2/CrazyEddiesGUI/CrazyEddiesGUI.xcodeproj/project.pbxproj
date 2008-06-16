@@ -1204,21 +1204,21 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5B991D8608C92230006E6DC9 /* CEGUI */;
+			remoteGlobalIDString = 5B991D8608C92230006E6DC9;
 			remoteInfo = CEGUI;
 		};
 		DA58C4C30E057C1000C8294E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5B69B82F08C4106E0086C816 /* CEGUIBase */;
+			remoteGlobalIDString = 5B69B82F08C4106E0086C816;
 			remoteInfo = CEGUIBase;
 		};
 		DA58C57A0E057C5400C8294E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DA58C4AB0E057B5B00C8294E /* CEGUICoronaImageCodec */;
+			remoteGlobalIDString = DA58C4AB0E057B5B00C8294E;
 			remoteInfo = CEGUICoronaImageCodec;
 		};
 /* End PBXContainerItemProxy section */
@@ -8708,7 +8708,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUICoronaImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
+				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
@@ -8762,7 +8762,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = CEGUICoronaImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
+				ZERO_LINK = NO;
 			};
 			name = Default;
 		};
