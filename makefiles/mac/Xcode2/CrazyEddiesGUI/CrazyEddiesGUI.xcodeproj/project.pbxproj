@@ -440,16 +440,6 @@
 		5B991D9F08C92C69006E6DC9 /* LuaScriptModule-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7C08C920FE006E6DC9 /* LuaScriptModule-Info.plist */; };
 		5B991E1508C9314A006E6DC9 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		5B991E1708C9315A006E6DC9 /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9C30B24738B006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9C40B24738B006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		5BC3C9C50B247399006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9C60B247399006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		5BC3C9CB0B2473B7006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9CC0B2473B7006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		5BC3C9CD0B2473C1006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9CE0B2473C1006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		5BC3C9CF0B2473D5006CC03D /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		5BC3C9D00B2473D5006CC03D /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		5BC618870AA7DA740080B2ED /* freetype2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6182E0AA7DA740080B2ED /* freetype2.framework */; };
 		5BC619330AA7F01B0080B2ED /* PCRE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC6192D0AA7F01B0080B2ED /* PCRE.framework */; };
 		5BC6193A0AA7F26A0080B2ED /* CEGUITinyXMLParser-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B1FB7D709EF60B200B2EF6B /* CEGUITinyXMLParser-Info.plist */; };
@@ -653,8 +643,6 @@
 		DA3758CE0E051DCE00299E88 /* GLEW-LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = DA3758C80E051DCE00299E88 /* GLEW-LICENSE */; };
 		DA3758CF0E051DCE00299E88 /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = DA3758CA0E051DCE00299E88 /* glew.c */; };
 		DA3758DA0E051F5E00299E88 /* FalTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3758D90E051F5E00299E88 /* FalTree.cpp */; };
-		DA3759010E05257600299E88 /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA3759B00E05258D00299E88 /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58B23B0E05545500C8294E /* tolua++.h in Headers */ = {isa = PBXBuildFile; fileRef = DA58B2310E05545500C8294E /* tolua++.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA58B23C0E05545500C8294E /* README in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2320E05545500C8294E /* README */; };
 		DA58B23D0E05545500C8294E /* tolua_event.h in Headers */ = {isa = PBXBuildFile; fileRef = DA58B2330E05545500C8294E /* tolua_event.h */; };
@@ -676,14 +664,9 @@
 		DA58B3D10E05578700C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
 		DA58B3D20E05578700C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
 		DA58B3DC0E0557BA00C8294E /* Demo7-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2E80E0556EC00C8294E /* Demo7-Info.plist */; };
-		DA58B48F0E0557DE00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA58B4900E0557DE00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58B5730E05595C00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58B5740E05595C00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58B5750E05595C00C8294E /* CEGUILuaScriptModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
-		DA58B62E0E05596B00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA58B62F0E05596B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		DA58B6300E05596B00C8294E /* CEGUILuaScriptModule.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
 		DA58B6310E05598000C8294E /* Demo8-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B4B30E0558DE00C8294E /* Demo8-Info.plist */; };
 		DA58B6380E05599400C8294E /* Sample_Demo8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885850ACCD35600E8502F /* Sample_Demo8.cpp */; };
 		DA58B64B0E0559C200C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
@@ -692,23 +675,16 @@
 		DA58B64E0E0559C200C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
 		DA58B6570E0559EE00C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
 		DA58B6580E0559EE00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
-		DA58B68B0E055C1500C8294E /* ceguitolua++.framework in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2030E0552D900C8294E /* ceguitolua++.framework */; };
 		DA58B6B60E055E4C00C8294E /* Demo6-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B6AD0E055E1300C8294E /* Demo6-Info.plist */; };
 		DA58B6B70E055E4C00C8294E /* Sample_Demo6.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885790ACCD35600E8502F /* Sample_Demo6.cpp */; };
 		DA58B6B80E055E6100C8294E /* CEGuiOpenGLBaseApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852D0ACCD35500E8502F /* CEGuiOpenGLBaseApplication.cpp */; };
 		DA58B6B90E055E6100C8294E /* CEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852E0ACCD35500E8502F /* CEGuiRendererSelector.cpp */; };
 		DA58B6BA0E055E6100C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
 		DA58B6BB0E055E6100C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
-		DA58B76E0E055E7400C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA58B76F0E055E7400C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58B8260E055E8B00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58B8270E055E8B00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58B82C0E055E9300C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
 		DA58B82D0E055E9300C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
-		DA58B9110E05605B00C8294E /* ceguitolua++.framework in Resources */ = {isa = PBXBuildFile; fileRef = DA58B2030E0552D900C8294E /* ceguitolua++.framework */; };
-		DA58B9120E05605B00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA58B9130E05605B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		DA58B9140E05605B00C8294E /* CEGUILuaScriptModule.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
 		DA58BA920E05609300C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58BA930E05609300C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58BA940E05609300C8294E /* CEGUILuaScriptModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7B08C920FE006E6DC9 /* CEGUILuaScriptModule.framework */; };
@@ -720,8 +696,6 @@
 		DA58BAAA0E0560D500C8294E /* CEGuiSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF8852F0ACCD35500E8502F /* CEGuiSample.cpp */; };
 		DA58BAAB0E0560D500C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
 		DA58BAE10E05617E00C8294E /* InstancedWindows-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58B84C0E055FF700C8294E /* InstancedWindows-Info.plist */; };
-		DA58BBAC0E0561D100C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		DA58BBAD0E0561D100C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58BC640E0561DD00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58BC650E0561DD00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58BC6A0E0561E300C8294E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF885D90ACCD72D00E8502F /* GLUT.framework */; };
@@ -736,8 +710,6 @@
 		DA58BD570E0562EE00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
 		DA58BD580E0562EE00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58BD590E0562EE00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA58BE0C0E0562FB00C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		DA58BE0D0E0562FB00C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58BE1A0E05633B00C8294E /* DragDropDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58BC990E0562D000C8294E /* DragDropDemo-Info.plist */; };
 		DA58BE1B0E05633B00C8294E /* Sample_DragDropDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2B60E05562900C8294E /* Sample_DragDropDemo.cpp */; };
 		DA58BE220E05636300C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
@@ -748,8 +720,6 @@
 		DA58BEF40E0563EB00C8294E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B5F7A6508CCC27500C417E6 /* OpenGL.framework */; };
 		DA58BEF50E0563EB00C8294E /* CEGUIOpenGLRenderer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
 		DA58BEF60E0563EB00C8294E /* CEGUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
-		DA58BFA90E0563F500C8294E /* CEGUIOpenGLRenderer.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B991D7008C920E5006E6DC9 /* CEGUIOpenGLRenderer.framework */; };
-		DA58BFAA0E0563F500C8294E /* CEGUI.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B69B83008C4106E0086C816 /* CEGUI.framework */; };
 		DA58BFB50E05641E00C8294E /* Sample_TreeDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA58B2D10E05567D00C8294E /* Sample_TreeDemo.cpp */; };
 		DA58BFB60E05641E00C8294E /* TreeDemo-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA58BE3A0E0563C500C8294E /* TreeDemo-Info.plist */; };
 		DA58BFB90E05644800C8294E /* MacCEGuiRendererSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BF885320ACCD35500E8502F /* MacCEGuiRendererSelector.cpp */; };
@@ -4156,9 +4126,9 @@
 			buildConfigurationList = 5B1A16890ADA8AA900BDF9AF /* Build configuration list for PBXNativeTarget "FontDemo" */;
 			buildPhases = (
 				5B1A16620ADA8AA700BDF9AF /* Resources */,
-				5B4A83210B2F06CE003F1BF5 /* ShellScript */,
 				5B1A16630ADA8AA700BDF9AF /* Sources */,
 				5B1A16640ADA8AA700BDF9AF /* Frameworks */,
+				5B4A83210B2F06CE003F1BF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4176,9 +4146,9 @@
 			buildConfigurationList = 5B1A17410ADA8B0B00BDF9AF /* Build configuration list for PBXNativeTarget "FirstWindow" */;
 			buildPhases = (
 				5B1A173A0ADA8B0B00BDF9AF /* Resources */,
-				5B4A83230B2F06DA003F1BF5 /* ShellScript */,
 				5B1A173B0ADA8B0B00BDF9AF /* Sources */,
 				5B1A173C0ADA8B0B00BDF9AF /* Frameworks */,
+				5B4A83230B2F06DA003F1BF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4196,9 +4166,9 @@
 			buildConfigurationList = 5B1A175E0ADA8B8100BDF9AF /* Build configuration list for PBXNativeTarget "FalagardDemo1" */;
 			buildPhases = (
 				5B1A17570ADA8B8000BDF9AF /* Resources */,
-				5B4A83250B2F06EA003F1BF5 /* ShellScript */,
 				5B1A17580ADA8B8000BDF9AF /* Sources */,
 				5B1A17590ADA8B8000BDF9AF /* Frameworks */,
+				5B4A83250B2F06EA003F1BF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4471,9 +4441,9 @@
 			buildConfigurationList = 5BF885B40ACCD46200E8502F /* Build configuration list for PBXNativeTarget "TabControlDemo" */;
 			buildPhases = (
 				5BF885AD0ACCD46100E8502F /* Resources */,
-				5B4A830F0B2F04DA003F1BF5 /* ShellScript */,
 				5BF885AE0ACCD46100E8502F /* Sources */,
 				5BF885AF0ACCD46100E8502F /* Frameworks */,
+				5B4A830F0B2F04DA003F1BF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4491,9 +4461,9 @@
 			buildConfigurationList = 5BF8860C0ACCD81E00E8502F /* Build configuration list for PBXNativeTarget "ScrollablePaneDemo" */;
 			buildPhases = (
 				5BF886050ACCD81D00E8502F /* Resources */,
-				5B4A831D0B2F06AE003F1BF5 /* ShellScript */,
 				5BF886060ACCD81D00E8502F /* Sources */,
 				5BF886070ACCD81D00E8502F /* Frameworks */,
+				5B4A831D0B2F06AE003F1BF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4511,9 +4481,9 @@
 			buildConfigurationList = 5BF8862E0ACCDABB00E8502F /* Build configuration list for PBXNativeTarget "Minesweeper" */;
 			buildPhases = (
 				5BF886270ACCDABB00E8502F /* Resources */,
-				5B4A831F0B2F06C0003F1BF5 /* ShellScript */,
 				5BF886280ACCDABB00E8502F /* Sources */,
 				5BF886290ACCDABB00E8502F /* Frameworks */,
+				5B4A831F0B2F06C0003F1BF5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4549,9 +4519,9 @@
 			buildConfigurationList = DA58B2EC0E0556ED00C8294E /* Build configuration list for PBXNativeTarget "Demo7" */;
 			buildPhases = (
 				DA58B2E20E0556EC00C8294E /* Resources */,
-				DA58B49A0E0557F700C8294E /* ShellScript */,
 				DA58B2E30E0556EC00C8294E /* Sources */,
 				DA58B2E40E0556EC00C8294E /* Frameworks */,
+				DA58B49A0E0557F700C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4568,9 +4538,9 @@
 			buildConfigurationList = DA58B4B70E0558DF00C8294E /* Build configuration list for PBXNativeTarget "Demo8" */;
 			buildPhases = (
 				DA58B4AD0E0558DE00C8294E /* Resources */,
-				DA58B4BA0E05593B00C8294E /* ShellScript */,
 				DA58B4AE0E0558DE00C8294E /* Sources */,
 				DA58B4AF0E0558DE00C8294E /* Frameworks */,
+				DA58B4BA0E05593B00C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4587,9 +4557,9 @@
 			buildConfigurationList = DA58B6B10E055E1300C8294E /* Build configuration list for PBXNativeTarget "Demo6" */;
 			buildPhases = (
 				DA58B6A70E055E1300C8294E /* Resources */,
-				DA58B6B50E055E3200C8294E /* ShellScript */,
 				DA58B6A80E055E1300C8294E /* Sources */,
 				DA58B6A90E055E1300C8294E /* Frameworks */,
+				DA58B6B50E055E3200C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4606,9 +4576,9 @@
 			buildConfigurationList = DA58B8500E055FF800C8294E /* Build configuration list for PBXNativeTarget "InstancedWindows" */;
 			buildPhases = (
 				DA58B8460E055FF700C8294E /* Resources */,
-				DA58B85C0E05604B00C8294E /* ShellScript */,
 				DA58B8470E055FF700C8294E /* Sources */,
 				DA58B8480E055FF700C8294E /* Frameworks */,
+				DA58B85C0E05604B00C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4625,9 +4595,9 @@
 			buildConfigurationList = DA58BAF50E0561A300C8294E /* Build configuration list for PBXNativeTarget "TextDemo" */;
 			buildPhases = (
 				DA58BAEB0E0561A300C8294E /* Resources */,
-				DA58BAF90E0561C000C8294E /* ShellScript */,
 				DA58BAEC0E0561A300C8294E /* Sources */,
 				DA58BAED0E0561A300C8294E /* Frameworks */,
+				DA58BAF90E0561C000C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4644,9 +4614,9 @@
 			buildConfigurationList = DA58BC9D0E0562D100C8294E /* Build configuration list for PBXNativeTarget "DragDropDemo" */;
 			buildPhases = (
 				DA58BC930E0562D000C8294E /* Resources */,
-				DA58BE130E05630200C8294E /* ShellScript */,
 				DA58BC940E0562D000C8294E /* Sources */,
 				DA58BC950E0562D000C8294E /* Frameworks */,
+				DA58BE130E05630200C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4663,9 +4633,9 @@
 			buildConfigurationList = DA58BE3E0E0563C600C8294E /* Build configuration list for PBXNativeTarget "TreeDemo" */;
 			buildPhases = (
 				DA58BE340E0563C500C8294E /* Resources */,
-				DA58BFB00E0563FE00C8294E /* ShellScript */,
 				DA58BE350E0563C500C8294E /* Sources */,
 				DA58BE360E0563C500C8294E /* Frameworks */,
+				DA58BFB00E0563FE00C8294E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4749,8 +4719,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC3C9CB0B2473B7006CC03D /* CEGUI.framework in Resources */,
-				5BC3C9CC0B2473B7006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5B1A17510ADA8B5A00BDF9AF /* FontDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4759,8 +4727,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC3C9CF0B2473D5006CC03D /* CEGUI.framework in Resources */,
-				5BC3C9D00B2473D5006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5B1A17520ADA8B5F00BDF9AF /* FirstWindow-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4769,8 +4735,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC3C9CD0B2473C1006CC03D /* CEGUI.framework in Resources */,
-				5BC3C9CE0B2473C1006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5B1A17670ADA8BBD00BDF9AF /* FalagardDemo1-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4963,8 +4927,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA3759B00E05258D00299E88 /* CEGUIOpenGLRenderer.framework in Resources */,
-				DA3759010E05257600299E88 /* CEGUI.framework in Resources */,
 				5BF886210ACCD93500E8502F /* TabControlDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4973,8 +4935,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC3C9C30B24738B006CC03D /* CEGUI.framework in Resources */,
-				5BC3C9C40B24738B006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5BF886200ACCD92B00E8502F /* ScrollablePaneDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4983,8 +4943,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BC3C9C50B247399006CC03D /* CEGUI.framework in Resources */,
-				5BC3C9C60B247399006CC03D /* CEGUIOpenGLRenderer.framework in Resources */,
 				5BF886370ACCDB1000E8502F /* Minesweeper-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5002,8 +4960,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58B48F0E0557DE00C8294E /* CEGUI.framework in Resources */,
-				DA58B4900E0557DE00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
 				DA58B3DC0E0557BA00C8294E /* Demo7-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5012,10 +4968,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58B68B0E055C1500C8294E /* ceguitolua++.framework in Resources */,
-				DA58B62E0E05596B00C8294E /* CEGUI.framework in Resources */,
-				DA58B62F0E05596B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
-				DA58B6300E05596B00C8294E /* CEGUILuaScriptModule.framework in Resources */,
 				DA58B6310E05598000C8294E /* Demo8-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5024,8 +4976,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58B76E0E055E7400C8294E /* CEGUI.framework in Resources */,
-				DA58B76F0E055E7400C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
 				DA58B6B60E055E4C00C8294E /* Demo6-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5034,10 +4984,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58B9120E05605B00C8294E /* CEGUI.framework in Resources */,
-				DA58B9130E05605B00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
-				DA58B9140E05605B00C8294E /* CEGUILuaScriptModule.framework in Resources */,
-				DA58B9110E05605B00C8294E /* ceguitolua++.framework in Resources */,
 				DA58BAE10E05617E00C8294E /* InstancedWindows-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5046,8 +4992,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58BBAC0E0561D100C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
-				DA58BBAD0E0561D100C8294E /* CEGUI.framework in Resources */,
 				DA58BC700E05622C00C8294E /* TextDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5056,8 +5000,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58BE0C0E0562FB00C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
-				DA58BE0D0E0562FB00C8294E /* CEGUI.framework in Resources */,
 				DA58BE1A0E05633B00C8294E /* DragDropDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5066,8 +5008,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA58BFA90E0563F500C8294E /* CEGUIOpenGLRenderer.framework in Resources */,
-				DA58BFAA0E0563F500C8294E /* CEGUI.framework in Resources */,
 				DA58BFB60E05641E00C8294E /* TreeDemo-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5095,7 +5035,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		5B4A831D0B2F06AE003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5108,7 +5048,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		5B4A831F0B2F06C0003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5121,7 +5061,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		5B4A83210B2F06CE003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5134,7 +5074,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		5B4A83230B2F06DA003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5147,7 +5087,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		5B4A83250B2F06EA003F1BF5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5160,7 +5100,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		5B5F7A3B08CCB31100C417E6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5303,7 +5243,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58B4BA0E05593B00C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5316,7 +5256,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUILuaScriptModule.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/ceguitolua++.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58B6B50E055E3200C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5329,7 +5269,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58B85C0E05604B00C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5342,7 +5282,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUILuaScriptModule.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/ceguitolua++.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58BAF90E0561C000C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5355,7 +5295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58BE130E05630200C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5368,7 +5308,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58BFB00E0563FE00C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5381,7 +5321,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/datafiles\"\nfi\nif [ -d \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/XMLRefSchema\"\nfi\ncp -Rp \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\ncp -Rp \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"  > /dev/null 2>&1\n";
+			shellScript = "# This has changed from the original approach; now symlinking of files instead of copying.  The result is a much smaller overall footprint, at\n# the cost of some flexibility.\n\n# Link in the data files\nln -sf \"${SRCROOT}/../../../../Samples/datafiles\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${SRCROOT}/../../../../XMLRefSchema\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Link in the frameworks\nln -sf \"${TARGET_BUILD_DIR}/CEGUI.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\nln -sf \"${TARGET_BUILD_DIR}/CEGUIOpenGLRenderer.framework\"  \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" > /dev/null 2>&1\n\n# Finally, link the app into the Samples/bin directory\nmkdir -p \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}\"\nln -sf \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.app\"  \"${SRCROOT}/../../../../Samples/bin/${CONFIGURATION}/\" > /dev/null 2>&1\n";
 		};
 		DA58C4C20E057BFA00C8294E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
