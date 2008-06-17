@@ -248,17 +248,19 @@ public:
 
 	/*!
 	\brief
-		Insert an item into the list after a specified item already in the list.
+		Insert an item into the list before a specified item already in the list.
 
-		Note that if the list is sorted, the item may not end up in the requested position.
+		Note that if the list is sorted, the item may not end up in the
+        requested position.
 
 	\param item
-		Pointer to the ItemEntry to be inserted.  Note that it is the passed object that is added to the
-		list, a copy is not made.  If this parameter is NULL, nothing happens.
+		Pointer to the ItemEntry to be inserted.  Note that it is the passed
+        object that is added to the list, a copy is not made.  If this parameter
+        is NULL, nothing happens.
 
 	\param position
-		Pointer to a ItemEntry that \a item is to be inserted after.  If this parameter is NULL, the item is
-		inserted at the start of the list.
+		Pointer to a ItemEntry that \a item is to be inserted before.  If this
+        parameter is NULL, the item is inserted at the start of the list.
 
 	\return
 		Nothing.
