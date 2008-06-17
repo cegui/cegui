@@ -140,6 +140,9 @@ public:
     /************************************************************************
         Manipulators
     *************************************************************************/
+    // Overridden from base class
+    virtual void initialiseComponents(void);
+
     /*!
     \brief
         Set whether or not multiple selections should be allowed.
@@ -284,6 +287,8 @@ protected:
 private:
     void addItemListboxProperties(void);
     void addItemListboxEvents(void);
+    //! Handler called when window is removed from the content pane
+    bool handle_PaneChildRemoved(const EventArgs& e);
 };
 
 } // end CEGUI namespace

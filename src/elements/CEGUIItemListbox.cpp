@@ -431,4 +431,27 @@ void ItemListbox::onKeyDown(KeyEventArgs& e)
     }
 }
 
+//----------------------------------------------------------------------------//
+void ItemListbox::initialiseComponents(void)
+{
+    // call base implementation
+    ScrolledItemListBase::initialiseComponents();
+    
+    d_pane->subscribeEvent(Window::EventChildRemoved,
+        Event::Subscriber(&ItemListbox::handle_PaneChildRemoved, this));
+}
+
+//----------------------------------------------------------------------------//
+bool ItemListbox::handle_PaneChildRemoved(const EventArgs& e)
+{
+    // get the window that's being removed
+    const Window* w = static_cast<const WindowEventArgs&>(e).window;
+    // Clear last selected pointer if that item was just removed.
+    if (w == d_lastSelected)
+        d_lastSelected = 0;
+
+    return true;
+}
+//----------------------------------------------------------------------------//
+
 } // end CEGUI namespace
