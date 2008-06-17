@@ -635,8 +635,8 @@
 		5BFF9E780A80EBF7009A53D7 /* CEGUIExpatParserModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB7FD09EF61C600B2EF6B /* CEGUIExpatParserModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BFF9E7C0A80EC41009A53D7 /* CEGUILibxmlParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB7F509EF619700B2EF6B /* CEGUILibxmlParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BFF9E7D0A80EC41009A53D7 /* CEGUILibxmlParserModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B1FB7F709EF619700B2EF6B /* CEGUILibxmlParserModule.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DA3758AD0E051C9300299E88 /* CEGUIScriptWindowHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AB0E051C9300299E88 /* CEGUIScriptWindowHelper.h */; };
-		DA3758AE0E051C9300299E88 /* CEGUITask.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AC0E051C9300299E88 /* CEGUITask.h */; };
+		DA3758AD0E051C9300299E88 /* CEGUIScriptWindowHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AB0E051C9300299E88 /* CEGUIScriptWindowHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DA3758AE0E051C9300299E88 /* CEGUITask.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AC0E051C9300299E88 /* CEGUITask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA3758B40E051CC300299E88 /* CEGUIClippedContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758AF0E051CC300299E88 /* CEGUIClippedContainer.h */; };
 		DA3758B50E051CC300299E88 /* CEGUIGroupBox.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758B00E051CC300299E88 /* CEGUIGroupBox.h */; };
 		DA3758B60E051CC300299E88 /* CEGUITree.h in Headers */ = {isa = PBXBuildFile; fileRef = DA3758B10E051CC300299E88 /* CEGUITree.h */; };
