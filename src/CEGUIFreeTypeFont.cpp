@@ -124,7 +124,10 @@ void FreeTypeFont::load ()
 
     updateFont ();
 
-    snprintf (tmp, sizeof (tmp), "Succsessfully loaded %d glyphs", d_cp_map.size ());
+    snprintf(tmp, sizeof(tmp),
+             "Succsessfully loaded %d glyphs",
+             static_cast<int>(d_cp_map.size()));
+
     Logger::getSingleton ().logEvent (tmp);
 }
 
