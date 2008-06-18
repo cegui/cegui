@@ -84,6 +84,8 @@ class Window //: public EventSet
 	Font* getFont() const;
 
 	void setText(string text);
+    void insertText(string text, unsigned long position);
+    void appendText(string text);
 	string getText() const;
 
 	bool inheritsAlpha() const;
