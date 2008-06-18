@@ -3283,4 +3283,24 @@ bool Window::isTopOfZOrder() const
     return *pos == this;
 }
 
+//----------------------------------------------------------------------------//
+void Window::insertText(const String& text, const String::size_type position)
+{
+    d_text.insert(position, text);
+
+    WindowEventArgs args(this);
+    onTextChanged(args);
+}
+    
+//----------------------------------------------------------------------------//
+void Window::appendText(const String& text)
+{
+    d_text.append(text);
+
+    WindowEventArgs args(this);
+    onTextChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section
