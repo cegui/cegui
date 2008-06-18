@@ -41,10 +41,9 @@ namespace CEGUI
 		WindowRenderer(type)
     {
     }
-		FalagardTree::FalagardTree(const String& type) :
+	FalagardTree::FalagardTree(const String& type) :
 		WindowRenderer(type)
 	{
-		Tree* tree = (Tree*)d_window;
 	}
 
     FalagardTree::~FalagardTree()

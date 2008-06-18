@@ -77,9 +77,9 @@ namespace CEGUI
 		d_forceVertScroll(false),
 		d_forceHorzScroll(false),
 		d_itemTooltips(false),
-		d_lastSelected(0),
-		d_horzScrollbar(0),
         d_vertScrollbar(0),
+		d_horzScrollbar(0),
+		d_lastSelected(0),
         openButtonImagery(0),
         closeButtonImagery(0)
 	{
@@ -1280,7 +1280,6 @@ namespace CEGUI
 			return;
 
 		float bottom;
-		float listHeight = getTreeRenderArea().getHeight();
 		float top = 0;
 
 		if (!getHeightToItemInList(d_listItems, treeItem, 0, &top))
