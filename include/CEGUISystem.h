@@ -284,10 +284,17 @@ public:
 	\brief
 		Set the timeout used for generation of single-click events.
 
-		A single-click is defined here as a button being pressed and then released.
+		A single-click is defined here as a button being pressed and then
+        released.
 
 	\param timeout
-		double value equal to the single-click timeout value to be used from now onwards.
+		double value equal to the single-click timeout value to be used from now
+        onwards.
+
+    \note
+        A timeout value of 0 indicates infinity and so no timeout occurrs; as
+        long as the mouse is in the prescribed area, a mouse button 'clicked'
+        event will therefore always be raised.
 
 	\return
 		Nothing.
@@ -299,12 +306,18 @@ public:
 	\brief
 		Set the timeout to be used for the generation of multi-click events.
 
-		A multi-click event is a double-click, or a triple-click.  The value returned
-		here is the maximum allowable time between mouse button down events for which
-		a multi-click event will be generated.
+		A multi-click event is a double-click, or a triple-click.  The value
+        returned here is the maximum allowable time between mouse button down
+        events for which a multi-click event will be generated.
 
 	\param timeout
-		double value equal to the multi-click timeout value to be used from now onwards.
+		double value equal to the multi-click timeout value to be used from now
+        onwards.
+
+    \note
+        A timeout value of 0 indicates infinity and so no timeout occurrs; as
+        long as the mouse is in the prescribed area, an appropriate mouse button
+        event will therefore always be raised.
 
 	\return
 		Nothing.

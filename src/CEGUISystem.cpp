@@ -758,7 +758,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 	tkr.d_click_count++;
 
     // if multi-click requirements are not met
-    if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
+    if (((d_dblclick_timeout > 0) && (tkr.d_timer.elapsed() > d_dblclick_timeout)) ||
         (!tkr.d_click_area.isPointInRect(ma.position)) ||
         (tkr.d_target_window != dest_window) ||
         (tkr.d_click_count > 3))
@@ -851,7 +851,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	bool wasUpHandled = ma.handled;
 
     // if requirements for click events are met
-    if ((tkr.d_timer.elapsed() <= d_click_timeout) &&
+    if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
         (tkr.d_click_area.isPointInRect(ma.position)) &&
         (tkr.d_target_window == initial_dest_window))
     {
