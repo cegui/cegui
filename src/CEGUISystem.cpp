@@ -686,16 +686,23 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 
     ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
     ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
-    ma.sysKeys = d_sysKeys;
-    ma.wheelChange = 0;
-    ma.clickCount = 0;
-    ma.button = NoButton;
 
-    // move the mouse cursor & update position in args.
-    mouse.offsetPosition(ma.moveDelta);
-    ma.position = mouse.getPosition();
+    // only continue setup and injection if mouse position has changed
+    if ((ma.moveDelta.d_x != 0) || (ma.moveDelta.d_y != 0))
+    {
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        ma.clickCount = 0;
+        ma.button = NoButton;
 
-    return mouseMoveInjection_impl(ma);
+        // move the mouse cursor & update position in args.
+        mouse.offsetPosition(ma.moveDelta);
+        ma.position = mouse.getPosition();
+
+        return mouseMoveInjection_impl(ma);
+    }
+    
+    return false;
 }
 
 /*************************************************************************
@@ -993,17 +1000,24 @@ bool System::injectMousePosition(float x_pos, float y_pos)
     // setup mouse movement event args object.
     MouseEventArgs ma(0);
     ma.moveDelta = new_position - mouse.getPosition();
-    ma.sysKeys = d_sysKeys;
-    ma.wheelChange = 0;
-    ma.clickCount = 0;
-    ma.button = NoButton;
 
-    // move mouse cursor to new position
-    mouse.setPosition(new_position);
-    // update position in args (since actual position may be constrained)
-    ma.position = mouse.getPosition();
+    // only continue setup and injection if mouse position has changed
+    if ((ma.moveDelta.d_x != 0) || (ma.moveDelta.d_y != 0))
+    {
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        ma.clickCount = 0;
+        ma.button = NoButton;
 
-    return mouseMoveInjection_impl(ma);
+        // move mouse cursor to new position
+        mouse.setPosition(new_position);
+        // update position in args (since actual position may be constrained)
+        ma.position = mouse.getPosition();
+
+        return mouseMoveInjection_impl(ma);
+    }
+    
+    return false;
 }
 
 
