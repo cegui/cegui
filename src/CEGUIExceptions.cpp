@@ -50,7 +50,7 @@ namespace CEGUI
 
     //------------------------------------------------------------------------
     Exception::Exception(const String& message, const String& name, const String& filename, int line) 
-        : d_filename(filename), d_line(line), d_message(message), d_name(name)
+        : d_message(message), d_filename(filename), d_name(name), d_line(line)
     {
         // Log exception or send it to error stream (if logger not available)
         Logger* logger = Logger::getSingletonPtr();
