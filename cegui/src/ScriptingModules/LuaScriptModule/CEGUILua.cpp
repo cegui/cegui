@@ -32,6 +32,7 @@
 #endif
 
 #include "CEGUI.h"
+#include "CEGUIConfig.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUILua.h"
 #include "CEGUILuaFunctor.h"

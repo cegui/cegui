@@ -32,7 +32,9 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIFactoryModule.h"
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
 
 #if defined(CEGUI_STATIC)
 #	if defined(CEGUI_FALAGARD_RENDERER)

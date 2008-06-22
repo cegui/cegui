@@ -307,22 +307,26 @@ public:
 
 	/*!
 	\brief
-		Insert an item into the list box after a specified item already in the list.
+		Insert an item into the list box before a specified item already in the
+        list.
 
-		Note that if the list is sorted, the item may not end up in the requested position.
+		Note that if the list is sorted, the item may not end up in the
+        requested position.
 
 	\param item
-		Pointer to the ListboxItem to be inserted.  Note that it is the passed object that is added to the
-		list, a copy is not made.  If this parameter is NULL, nothing happens.
+		Pointer to the ListboxItem to be inserted.  Note that it is the passed
+        object that is added to the list, a copy is not made.  If this parameter
+        is NULL, nothing happens.
 
 	\param position
-		Pointer to a ListboxItem that \a item is to be inserted after.  If this parameter is NULL, the item is
-		inserted at the start of the list.
+		Pointer to a ListboxItem that \a item is to be inserted before.  If this
+        parameter is NULL, the item is inserted at the start of the list.
 
 	\return
 		Nothing.
 
-	\exception InvalidRequestException	thrown if no ListboxItem \a position is attached to this list box.
+	\exception InvalidRequestException	thrown if no ListboxItem \a position is
+        attached to this list box.
 	*/
 	void	insertItem(ListboxItem* item, const ListboxItem* position);
 

@@ -63,8 +63,32 @@ Each item in here has a comment to describe what it's for.
 // SILLYImageCodec, TGAImageCodec 
 //////////////////////////////////////////////////////////////////////////
 #ifndef CEGUI_DEFAULT_IMAGE_CODEC
-#   define CEGUI_DEFAULT_IMAGE_CODEC TGAImageCodec
-#endif 
+#   define CEGUI_DEFAULT_IMAGE_CODEC SILLYImageCodec
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// The following are required to build the integrated copy of TinyXML.
+// If for some reason you decide you need to use an external version of
+// TinyXML, you can change these defines as required (you will also likely
+// need to set up some linker stuff as well).
+//////////////////////////////////////////////////////////////////////////
+// Main tiny xml header file
+#ifndef CEGUI_TINYXML_H
+#   define CEGUI_TINYXML_H "ceguitinyxml/tinyxml.h"
+#endif
+// Namespace that contains TinyXML.
+#ifndef CEGUI_TINYXML_NAMESPACE
+#   define CEGUI_TINYXML_NAMESPACE CEGUITinyXML
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// The following controls the version of Lua that is going to be used.
+// 50 is for Lua 5.0.x versions
+// 51 is for Lua 5.1.x versions (and above?)
+//////////////////////////////////////////////////////////////////////////
+#ifndef CEGUI_LUA_VER
+#   define CEGUI_LUA_VER 51
+#endif
 
 #endif // defined(__APPLE__)
 
