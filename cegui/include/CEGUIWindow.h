@@ -1445,6 +1445,32 @@ public:
 
     /*!
     \brief
+        Insert the text string \a text into the current text string for the
+        Window object at the position specified by \a position.
+     
+    \param text
+        String object holding the text that is to be inserted into the Window
+        object's current text string.
+     
+    \param position
+        The characted index position where the string \a text should be
+        inserted.
+    */
+    void insertText(const String& text, const String::size_type position);
+    
+    /*!
+    \brief
+        Append the string \a text to the currect text string for the Window
+        object.
+     
+    \param text
+        String object holding the text that is to be appended to the Window
+        object's current text string.
+    */
+    void appendText(const String& text);
+    
+    /*!
+    \brief
         Set the font used by this Window.
 
     \param font

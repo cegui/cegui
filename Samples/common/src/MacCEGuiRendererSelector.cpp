@@ -33,7 +33,8 @@ const std::string MacCEGuiRendererSelector::OpenGLRendererName("OpenGL Renderer"
 
 
 
-MacCEGuiRendererSelector::MacCEGuiRendererSelector()
+MacCEGuiRendererSelector::MacCEGuiRendererSelector() :
+    d_cancelled(false)
 {
     createDialog();
 }

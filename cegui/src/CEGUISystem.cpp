@@ -686,16 +686,23 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 
     ma.moveDelta.d_x = delta_x * d_mouseScalingFactor;
     ma.moveDelta.d_y = delta_y * d_mouseScalingFactor;
-    ma.sysKeys = d_sysKeys;
-    ma.wheelChange = 0;
-    ma.clickCount = 0;
-    ma.button = NoButton;
 
-    // move the mouse cursor & update position in args.
-    mouse.offsetPosition(ma.moveDelta);
-    ma.position = mouse.getPosition();
+    // only continue setup and injection if mouse position has changed
+    if ((ma.moveDelta.d_x != 0) || (ma.moveDelta.d_y != 0))
+    {
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        ma.clickCount = 0;
+        ma.button = NoButton;
 
-    return mouseMoveInjection_impl(ma);
+        // move the mouse cursor & update position in args.
+        mouse.offsetPosition(ma.moveDelta);
+        ma.position = mouse.getPosition();
+
+        return mouseMoveInjection_impl(ma);
+    }
+    
+    return false;
 }
 
 /*************************************************************************
@@ -751,7 +758,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 	tkr.d_click_count++;
 
     // if multi-click requirements are not met
-    if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
+    if (((d_dblclick_timeout > 0) && (tkr.d_timer.elapsed() > d_dblclick_timeout)) ||
         (!tkr.d_click_area.isPointInRect(ma.position)) ||
         (tkr.d_target_window != dest_window) ||
         (tkr.d_click_count > 3))
@@ -844,7 +851,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 	bool wasUpHandled = ma.handled;
 
     // if requirements for click events are met
-    if ((tkr.d_timer.elapsed() <= d_click_timeout) &&
+    if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
         (tkr.d_click_area.isPointInRect(ma.position)) &&
         (tkr.d_target_window == initial_dest_window))
     {
@@ -993,17 +1000,24 @@ bool System::injectMousePosition(float x_pos, float y_pos)
     // setup mouse movement event args object.
     MouseEventArgs ma(0);
     ma.moveDelta = new_position - mouse.getPosition();
-    ma.sysKeys = d_sysKeys;
-    ma.wheelChange = 0;
-    ma.clickCount = 0;
-    ma.button = NoButton;
 
-    // move mouse cursor to new position
-    mouse.setPosition(new_position);
-    // update position in args (since actual position may be constrained)
-    ma.position = mouse.getPosition();
+    // only continue setup and injection if mouse position has changed
+    if ((ma.moveDelta.d_x != 0) || (ma.moveDelta.d_y != 0))
+    {
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        ma.clickCount = 0;
+        ma.button = NoButton;
 
-    return mouseMoveInjection_impl(ma);
+        // move mouse cursor to new position
+        mouse.setPosition(new_position);
+        // update position in args (since actual position may be constrained)
+        ma.position = mouse.getPosition();
+
+        return mouseMoveInjection_impl(ma);
+    }
+    
+    return false;
 }
 
 

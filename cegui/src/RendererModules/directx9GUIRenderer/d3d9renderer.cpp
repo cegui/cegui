@@ -639,7 +639,9 @@ void DirectX9Renderer::postD3DReset(void)
 	// Recreate a vertex buffer
 	if (FAILED(d_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &d_buffer, 0)))
 	{
-		throw RendererException("DirectX9Renderer::preD3DReset - Failed to create the VertexBuffer for use by the DirectX9Renderer object.");
+		throw RendererException("DirectX9Renderer::postD3DReset - Failed to "
+                                "create the VertexBuffer for use by the "
+                                "DirectX9Renderer object.");
 	}
 
 	// perform post-reset operations on all textures
