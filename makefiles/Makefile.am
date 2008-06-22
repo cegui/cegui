@@ -1,36 +1,46 @@
-EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/CEGUI-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUICoronaImageCodec-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIDevILImageCodec-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIExpatParser-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIFalagard-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIFreeImageImageCodec-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIIrrlichtRenderer-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUILibxmlParser-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUISILLYImageCodec-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUITGAImageCodec-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUITaharezLook-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUITinyXMLParser-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIWindowsLook-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CEGUIXercesParser-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CrazyEddiesGUI_Prefix.pch \
-             mac/Xcode2/CrazyEddiesGUI/FalagardDemo1-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/FirstWindow-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/FontDemo-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/LuaScriptModule-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/Minesweeper-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/OpenGLRenderer-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/ScrollablePaneDemo-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/TabControlDemo-Info.plist \
-             mac/Xcode2/CrazyEddiesGUI/CrazyEddiesGUI.xcodeproj/project.pbxproj \
-             mac/Xcode2/CrazyEddiesGUI/English.lproj/InfoPlist.strings \
+EXTRA_DIST = mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUICoronaImageCodec-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIDevILImageCodec-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIExpatParser-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIFalagard-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIFreeImageImageCodec-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUI-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIIrrlichtRenderer-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUILibxmlParser-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUISILLYImageCodec-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUITaharezLook-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUITGAImageCodec-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUITinyXMLParser-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/ceguitolua++-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIWindowsLook-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CEGUIXercesParser-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CrazyEddiesGUI_Prefix.pch \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/CrazyEddiesGUI.xcodeproj \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/Demo6-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/Demo7-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/Demo8-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/DragDropDemo-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/English.lproj \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/FalagardDemo1-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/FirstWindow-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/FontDemo-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/InstancedWindows-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/LuaScriptModule-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/Minesweeper-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/OpenGLRenderer-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/ScrollablePaneDemo-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/TabControlDemo-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/TextDemo-Info.plist \
+             mac/Xcode2/CrazyEddiesGUI/English.lproj/TreeDemo-Info.plist \
              premake/README \
              premake/build_samples_vs2002.bat \
              premake/build_samples_vs2003.bat \
              premake/build_samples_vs2005.bat \
+             premake/build_samples_vs2008.bat \
              premake/build_vs2002.bat \
              premake/build_vs2003.bat \
              premake/build_vs2005.bat \
+             premake/build_vs2008.bat \
              premake/cegui.lua \
              premake/clean.bat \
              premake/clean_samples.bat \
