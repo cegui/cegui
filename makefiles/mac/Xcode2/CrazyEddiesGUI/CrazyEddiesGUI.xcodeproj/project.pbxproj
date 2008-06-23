@@ -6182,245 +6182,68 @@
 		5B1A168A0ADA8AA900BDF9AF /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "FontDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = FontDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5B1A168B0ADA8AA900BDF9AF /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "FontDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = FontDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1A168C0ADA8AA900BDF9AF /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "FontDemo-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FontDemo;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B1A17420ADA8B0B00BDF9AF /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "FirstWindow-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = FirstWindow;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5B1A17430ADA8B0B00BDF9AF /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "FirstWindow-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = FirstWindow;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1A17440ADA8B0B00BDF9AF /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "FirstWindow-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FirstWindow;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B1A175F0ADA8B8100BDF9AF /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = FalagardDemo1;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ../../../../Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5B1A17600ADA8B8100BDF9AF /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = FalagardDemo1;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ../../../../Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1A17610ADA8B8100BDF9AF /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "FalagardDemo1-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = FalagardDemo1;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B1A18060ADA9AA300BDF9AF /* Development */ = {
 			isa = XCBuildConfiguration;
@@ -6444,643 +6267,214 @@
 			};
 			name = Deployment;
 		};
-		5B1A18080ADA9AA300BDF9AF /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = CEGUIDeps;
-			};
-			name = Default;
-		};
 		5B1FB7BB09EF607600B2EF6B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/libxml.framework/Headers,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /Library/Frameworks/libxml.framework/Headers;
 				INFOPLIST_FILE = "CEGUILibxmlParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUILibxmlParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		5B1FB7BC09EF607600B2EF6B /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/libxml.framework/Headers,
-					/usr/include/malloc,
-				);
+				HEADER_SEARCH_PATHS = /Library/Frameworks/libxml.framework/Headers;
 				INFOPLIST_FILE = "CEGUILibxmlParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUILibxmlParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1FB7BD09EF607600B2EF6B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
-				INFOPLIST_FILE = "CEGUILibxmlParser-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUILibxmlParser;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B1FB7C509EF608D00B2EF6B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/usr/include/malloc,
-					./dependencies/expat.framework/Headers,
-				);
+				HEADER_SEARCH_PATHS = ./dependencies/expat.framework/Headers;
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIExpatParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		5B1FB7C609EF608D00B2EF6B /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/usr/include/malloc,
-					./dependencies/expat.framework/Headers,
-				);
+				HEADER_SEARCH_PATHS = ./dependencies/expat.framework/Headers;
 				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIExpatParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1FB7C709EF608D00B2EF6B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = (
-					/usr/include/malloc,
-					./dependencies/expat.framework/Headers,
-				);
-				INFOPLIST_FILE = "CEGUIExpatParser-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIExpatParser;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B1FB7CF09EF60A000B2EF6B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/Xerces.framework/Headers;
 				INFOPLIST_FILE = "CEGUIXercesParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIXercesParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		5B1FB7D009EF60A000B2EF6B /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/Xerces.framework/Headers;
 				INFOPLIST_FILE = "CEGUIXercesParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIXercesParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1FB7D109EF60A000B2EF6B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/Xerces.framework/Headers;
-				INFOPLIST_FILE = "CEGUIXercesParser-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIXercesParser;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B1FB7D909EF60B300B2EF6B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUITinyXMLParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUITinyXMLParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		5B1FB7DA09EF60B300B2EF6B /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
 				INFOPLIST_FILE = "CEGUITinyXMLParser-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUITinyXMLParser;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5B1FB7DB09EF60B300B2EF6B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = /usr/include/malloc;
-				INFOPLIST_FILE = "CEGUITinyXMLParser-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUITinyXMLParser;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5B5F799208CBD2CB00C417E6 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					../../../../include,
 					../../../../WidgetSets/Falagard/include,
-					/usr/include/malloc,
 				);
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIFalagardWRBase;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Development;
 		};
 		5B5F799308CBD2CB00C417E6 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					../../../../include,
 					../../../../WidgetSets/Falagard/include,
-					/usr/include/malloc,
 				);
 				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIFalagardWRBase;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Deployment;
-		};
-		5B5F799408CBD2CB00C417E6 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "CEGUIFalagard-Info.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				LIBRARY_STYLE = BUNDLE;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIFalagard;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
 		};
 		5B69B72308C40ADD0086C816 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.6.1;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = /System/Library/Frameworks/Carbon.framework/Headers/Carbon.h;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Development;
 		};
 		5B69B72408C40ADD0086C816 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Deployment;
-		};
-		5B69B72508C40ADD0086C816 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Default;
-		};
-		5B69B83308C4106E0086C816 /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				ARCHS = (
-					ppc,
 					i386,
+					ppc,
 				);
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.5.0;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_CPP_EXCEPTIONS = YES;
-				GCC_ENABLE_CPP_RTTI = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G4;
+				CURRENT_PROJECT_VERSION = 0.6.1;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_PREFIX_HEADER = /System/Library/Frameworks/Carbon.framework/Headers/Carbon.h;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GENERATE_PKGINFO_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					/usr/include/malloc,
-					/sw/include,
-					./dependencies/PCRE.framework/Headers,
-					./dependencies/freetype2.framework/Headers,
-				);
-				INFOPLIST_FILE = "CEGUI-Info.plist";
-				INFOPLIST_PREPROCESS = YES;
-				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_SEARCH_PATHS = /sw/lib;
-				LIBRARY_STYLE = DYNAMIC;
-				MACH_O_TYPE = mh_dylib;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Carbon,
 				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUI;
-				SECTORDER_FLAGS = "";
-				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+		5B69B83308C4106E0086C816 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = ./dependencies;
+				HEADER_SEARCH_PATHS = (
+					./dependencies/PCRE.framework/Headers,
+					./dependencies/freetype2.framework/Headers,
 				);
+				INFOPLIST_FILE = "CEGUI-Info.plist";
+				INSTALL_PATH = "@executable_path/../Resources";
+				MACH_O_TYPE = mh_dylib;
+				PRODUCT_NAME = CEGUI;
+				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
 			};
 			name = Development;
 		};
 		5B69B83408C4106E0086C816 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				HEADER_SEARCH_PATHS = (
-					/usr/include/malloc,
-					/sw/include,
 					./dependencies/PCRE.framework/Headers,
 					./dependencies/freetype2.framework/Headers,
 				);
 				INFOPLIST_FILE = "CEGUI-Info.plist";
-				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_SEARCH_PATHS = /sw/lib;
-				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUI;
-				SECTORDER_FLAGS = "";
-				SYMROOT = build;
 				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../src/implementations/mac";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Deployment;
-		};
-		5B69B83508C4106E0086C816 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CURRENT_PROJECT_VERSION = 0.3.0;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				HEADER_SEARCH_PATHS = ../../../../include;
-				INFOPLIST_FILE = "CEGUI-Info.plist";
-				INFOPLIST_PREPROCESS = YES;
-				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_SEARCH_PATHS = (
-					/usr/X11R6/lib,
-					/sw/lib,
-				);
-				LIBRARY_STYLE = STATIC;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUI;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
 		};
 		5B991D7308C920E6006E6DC9 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					../../../../RendererModules/OpenGLGUIRenderer/GLEW,
 					../../../../include,
@@ -7089,44 +6483,17 @@
 				);
 				INFOPLIST_FILE = "OpenGLRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIOpenGLRenderer;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Development;
 		};
 		5B991D7408C920E6006E6DC9 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = /Library/Frameworks;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = (
 					../../../../RendererModules/OpenGLGUIRenderer/GLEW,
 					../../../../include,
@@ -7135,171 +6502,40 @@
 				);
 				INFOPLIST_FILE = "OpenGLRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIOpenGLRenderer;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Deployment;
-		};
-		5B991D7508C920E6006E6DC9 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "CEGUIOpenGLRenderer-Info.plist";
-				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_SEARCH_PATHS = "";
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIOpenGLRenderer;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
 		};
 		5B991D7E08C920FF006E6DC9 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUILuaScriptModule;
-				SECTORDER_FLAGS = "";
 				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../ScriptingModules/CEGUILua/tolua++/include ../../../../ScriptingModules/CEGUILua/LuaScriptModule/include";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Development;
 		};
 		5B991D7F08C920FF006E6DC9 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 0.5.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G4;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUILuaScriptModule;
-				SECTORDER_FLAGS = "";
 				USER_HEADER_SEARCH_PATHS = "../../../../include ../../../../ScriptingModules/CEGUILua/tolua++/include ../../../../ScriptingModules/CEGUILua/LuaScriptModule/include";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
 			};
 			name = Deployment;
-		};
-		5B991D8008C920FF006E6DC9 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
-				INFOPLIST_FILE = "LuaScriptModule-Info.plist";
-				INSTALL_PATH = "@executable_path/../Resources";
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = LuaScriptModule;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
 		};
 		5B991D9208C92258006E6DC9 /* Development */ = {
 			isa = XCBuildConfiguration;
@@ -7339,499 +6575,141 @@
 			};
 			name = Deployment;
 		};
-		5B991D9408C92258006E6DC9 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = CEGUI;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
 		5BCC7E110A8146070017D97C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/IL.framework/Headers;
 				INFOPLIST_FILE = "CEGUIDevILImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIDevILImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BCC7E120A8146070017D97C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/IL.framework/Headers;
 				INFOPLIST_FILE = "CEGUIDevILImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIDevILImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BCC7E130A8146070017D97C /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/IL.framework/Headers;
-				INFOPLIST_FILE = "CEGUIDevILImageCodec-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIDevILImageCodec;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BCC7E1B0A8146270017D97C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../../../../silly/trunk/build/Debug\"";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/SILLY.framework/Headers;
 				INFOPLIST_FILE = "CEGUISILLYImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
-				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BCC7E1C0A8146270017D97C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../../../../silly/trunk/build/Debug\"";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/SILLY.framework/Headers;
 				INFOPLIST_FILE = "CEGUISILLYImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUISILLYImageCodec;
-				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BCC7E1D0A8146270017D97C /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../../../../silly/trunk/build/Debug\"";
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/SILLY.framework/Headers;
-				INFOPLIST_FILE = "CEGUISILLYImageCodec-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUISILLYImageCodec;
-				USER_HEADER_SEARCH_PATHS = "";
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BCC7E250A8146400017D97C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/FreeImage.framework/Headers;
 				INFOPLIST_FILE = "CEGUIFreeImageImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIFreeImageImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BCC7E260A8146400017D97C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/FreeImage.framework/Headers;
 				INFOPLIST_FILE = "CEGUIFreeImageImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIFreeImageImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BCC7E270A8146400017D97C /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/FreeImage.framework/Headers;
-				INFOPLIST_FILE = "CEGUIFreeImageImageCodec-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIFreeImageImageCodec;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BCC7E2F0A8146690017D97C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUITGAImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUITGAImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BCC7E300A8146690017D97C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUITGAImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUITGAImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BCC7E310A8146690017D97C /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "CEGUITGAImageCodec-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUITGAImageCodec;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BCC7E4D0A8149380017D97C /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIIrrlichtRenderer;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BCC7E4E0A8149380017D97C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUIIrrlichtRenderer;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BCC7E4F0A8149380017D97C /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "CEGUIIrrlichtRenderer-Info.plist";
-				INSTALL_PATH = "@executable_path/../Resources";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUIIrrlichtRenderer;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BF885B50ACCD46200E8502F /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "TabControlDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = TabControlDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BF885B60ACCD46200E8502F /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "TabControlDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = TabControlDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BF885B70ACCD46200E8502F /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "TabControlDemo-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = TabControlDemo;
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BF885C40ACCD58600E8502F /* Development */ = {
 			isa = XCBuildConfiguration;
@@ -7855,253 +6733,75 @@
 			};
 			name = Deployment;
 		};
-		5BF885C60ACCD58600E8502F /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = Samples;
-			};
-			name = Default;
-		};
 		5BF8860D0ACCD81E00E8502F /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "ScrollablePaneDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = ScrollablePaneDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BF8860E0ACCD81E00E8502F /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "ScrollablePaneDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = ScrollablePaneDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BF8860F0ACCD81E00E8502F /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "ScrollablePaneDemo-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = ScrollablePaneDemo;
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		5BF8862F0ACCDABB00E8502F /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Minesweeper-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Minesweeper;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		5BF886300ACCDABB00E8502F /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Minesweeper-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Minesweeper;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		5BF886310ACCDABB00E8502F /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "Minesweeper-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Minesweeper;
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58B2050E0552D900C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "ceguitolua++-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = "ceguitolua++";
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		DA58B2060E0552D900C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
 				INFOPLIST_FILE = "ceguitolua++-Info.plist";
 				INSTALL_PATH = "@executable_path/../Resources";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = "ceguitolua++";
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58B2070E0552D900C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/lua.framework/Headers;
-				INFOPLIST_FILE = "ceguitolua++-Info.plist";
-				INSTALL_PATH = "@executable_path/../Resources";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = "ceguitolua++";
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58B2E90E0556ED00C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
@@ -8134,156 +6834,44 @@
 		DA58B2EA0E0556ED00C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Demo7-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Demo7;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58B2EB0E0556ED00C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "Demo7-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Demo7;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58B4B40E0558DF00C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Demo8-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Demo8;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		DA58B4B50E0558DF00C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Demo8-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Demo8;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58B4B60E0558DF00C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "Demo8-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Demo8;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58B6AE0E055E1300C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Demo6-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Demo6;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
@@ -8291,448 +6879,125 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "Demo6-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = Demo6;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58B6B00E055E1300C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "Demo6-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Demo6;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58B84D0E055FF800C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "InstancedWindows-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = InstancedWindows;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		DA58B84E0E055FF800C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "InstancedWindows-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = InstancedWindows;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58B84F0E055FF800C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "InstancedWindows-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = InstancedWindows;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${BUILT_PRODUCTS_DIR}/CEGUILuaScriptModule.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58BAF20E0561A300C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "TextDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = TextDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		DA58BAF30E0561A300C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "TextDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = TextDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58BAF40E0561A300C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "TextDemo-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = TextDemo;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58BC9A0E0562D100C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "DragDropDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = DragDropDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		DA58BC9B0E0562D100C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "DragDropDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = DragDropDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58BC9C0E0562D100C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "DragDropDemo-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = DragDropDemo;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58BE3B0E0563C600C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "TreeDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = TreeDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
 		DA58BE3C0E0563C600C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				INFOPLIST_FILE = "TreeDemo-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = TreeDemo;
 				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58BE3D0E0563C600C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "TreeDemo-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = TreeDemo;
-				USER_HEADER_SEARCH_PATHS = "../../../../ ${BUILT_PRODUCTS_DIR}/CEGUI.framework/Headers ${SRCROOT}/Samples/common/include";
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Default;
 		};
 		DA58C4AE0E057B5B00C8294E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/corona.framework/Headers;
 				INFOPLIST_FILE = "CEGUICoronaImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUICoronaImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
 		DA58C4AF0E057B5B00C8294E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				HEADER_SEARCH_PATHS = ./dependencies/corona.framework/Headers;
 				INFOPLIST_FILE = "CEGUICoronaImageCodec-Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
 				PRODUCT_NAME = CEGUICoronaImageCodec;
 				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
 			};
 			name = Deployment;
-		};
-		DA58C4B00E057B5B00C8294E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				FRAMEWORK_SEARCH_PATHS = ./dependencies;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				HEADER_SEARCH_PATHS = ./dependencies/corona.framework/Headers;
-				INFOPLIST_FILE = "CEGUICoronaImageCodec-Info.plist";
-				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = CEGUICoronaImageCodec;
-				WRAPPER_EXTENSION = bundle;
-				ZERO_LINK = NO;
-			};
-			name = Default;
 		};
 /* End XCBuildConfiguration section */
 
@@ -8742,320 +7007,288 @@
 			buildConfigurations = (
 				5B1A168A0ADA8AA900BDF9AF /* Development */,
 				5B1A168B0ADA8AA900BDF9AF /* Deployment */,
-				5B1A168C0ADA8AA900BDF9AF /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1A17410ADA8B0B00BDF9AF /* Build configuration list for PBXNativeTarget "FirstWindow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1A17420ADA8B0B00BDF9AF /* Development */,
 				5B1A17430ADA8B0B00BDF9AF /* Deployment */,
-				5B1A17440ADA8B0B00BDF9AF /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1A175E0ADA8B8100BDF9AF /* Build configuration list for PBXNativeTarget "FalagardDemo1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1A175F0ADA8B8100BDF9AF /* Development */,
 				5B1A17600ADA8B8100BDF9AF /* Deployment */,
-				5B1A17610ADA8B8100BDF9AF /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1A18050ADA9AA300BDF9AF /* Build configuration list for PBXAggregateTarget "CEGUIBaseBundles" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1A18060ADA9AA300BDF9AF /* Development */,
 				5B1A18070ADA9AA300BDF9AF /* Deployment */,
-				5B1A18080ADA9AA300BDF9AF /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1FB7BA09EF607600B2EF6B /* Build configuration list for PBXNativeTarget "CEGUILibxmlParser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1FB7BB09EF607600B2EF6B /* Development */,
 				5B1FB7BC09EF607600B2EF6B /* Deployment */,
-				5B1FB7BD09EF607600B2EF6B /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1FB7C409EF608D00B2EF6B /* Build configuration list for PBXNativeTarget "CEGUIExpatParser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1FB7C509EF608D00B2EF6B /* Development */,
 				5B1FB7C609EF608D00B2EF6B /* Deployment */,
-				5B1FB7C709EF608D00B2EF6B /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1FB7CE09EF60A000B2EF6B /* Build configuration list for PBXNativeTarget "CEGUIXercesParser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1FB7CF09EF60A000B2EF6B /* Development */,
 				5B1FB7D009EF60A000B2EF6B /* Deployment */,
-				5B1FB7D109EF60A000B2EF6B /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B1FB7D809EF60B300B2EF6B /* Build configuration list for PBXNativeTarget "CEGUITinyXMLParser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B1FB7D909EF60B300B2EF6B /* Development */,
 				5B1FB7DA09EF60B300B2EF6B /* Deployment */,
-				5B1FB7DB09EF60B300B2EF6B /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B5F799108CBD2CB00C417E6 /* Build configuration list for PBXNativeTarget "CEGUIFalagardWRBase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B5F799208CBD2CB00C417E6 /* Development */,
 				5B5F799308CBD2CB00C417E6 /* Deployment */,
-				5B5F799408CBD2CB00C417E6 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B69B72208C40ADD0086C816 /* Build configuration list for PBXProject "CrazyEddiesGUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B69B72308C40ADD0086C816 /* Development */,
 				5B69B72408C40ADD0086C816 /* Deployment */,
-				5B69B72508C40ADD0086C816 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B69B83208C4106E0086C816 /* Build configuration list for PBXNativeTarget "CEGUIBase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B69B83308C4106E0086C816 /* Development */,
 				5B69B83408C4106E0086C816 /* Deployment */,
-				5B69B83508C4106E0086C816 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B991D7208C920E6006E6DC9 /* Build configuration list for PBXNativeTarget "CEGUIOpenGLRenderer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B991D7308C920E6006E6DC9 /* Development */,
 				5B991D7408C920E6006E6DC9 /* Deployment */,
-				5B991D7508C920E6006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B991D7D08C920FF006E6DC9 /* Build configuration list for PBXNativeTarget "CEGUILuaScriptModule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B991D7E08C920FF006E6DC9 /* Development */,
 				5B991D7F08C920FF006E6DC9 /* Deployment */,
-				5B991D8008C920FF006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5B991D9108C92258006E6DC9 /* Build configuration list for PBXAggregateTarget "CEGUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B991D9208C92258006E6DC9 /* Development */,
 				5B991D9308C92258006E6DC9 /* Deployment */,
-				5B991D9408C92258006E6DC9 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BCC7E100A8146070017D97C /* Build configuration list for PBXNativeTarget "CEGUIDevILImageCodec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BCC7E110A8146070017D97C /* Development */,
 				5BCC7E120A8146070017D97C /* Deployment */,
-				5BCC7E130A8146070017D97C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BCC7E1A0A8146270017D97C /* Build configuration list for PBXNativeTarget "CEGUISILLYImageCodec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BCC7E1B0A8146270017D97C /* Development */,
 				5BCC7E1C0A8146270017D97C /* Deployment */,
-				5BCC7E1D0A8146270017D97C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BCC7E240A8146400017D97C /* Build configuration list for PBXNativeTarget "CEGUIFreeImageImageCodec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BCC7E250A8146400017D97C /* Development */,
 				5BCC7E260A8146400017D97C /* Deployment */,
-				5BCC7E270A8146400017D97C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BCC7E2E0A8146690017D97C /* Build configuration list for PBXNativeTarget "CEGUITGAImageCodec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BCC7E2F0A8146690017D97C /* Development */,
 				5BCC7E300A8146690017D97C /* Deployment */,
-				5BCC7E310A8146690017D97C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BCC7E4C0A8149380017D97C /* Build configuration list for PBXNativeTarget "CEGUIIrrlichtRenderer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BCC7E4D0A8149380017D97C /* Development */,
 				5BCC7E4E0A8149380017D97C /* Deployment */,
-				5BCC7E4F0A8149380017D97C /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BF885B40ACCD46200E8502F /* Build configuration list for PBXNativeTarget "TabControlDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BF885B50ACCD46200E8502F /* Development */,
 				5BF885B60ACCD46200E8502F /* Deployment */,
-				5BF885B70ACCD46200E8502F /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BF885C30ACCD58600E8502F /* Build configuration list for PBXAggregateTarget "Samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BF885C40ACCD58600E8502F /* Development */,
 				5BF885C50ACCD58600E8502F /* Deployment */,
-				5BF885C60ACCD58600E8502F /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BF8860C0ACCD81E00E8502F /* Build configuration list for PBXNativeTarget "ScrollablePaneDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BF8860D0ACCD81E00E8502F /* Development */,
 				5BF8860E0ACCD81E00E8502F /* Deployment */,
-				5BF8860F0ACCD81E00E8502F /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		5BF8862E0ACCDABB00E8502F /* Build configuration list for PBXNativeTarget "Minesweeper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BF8862F0ACCDABB00E8502F /* Development */,
 				5BF886300ACCDABB00E8502F /* Deployment */,
-				5BF886310ACCDABB00E8502F /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58B2080E0552DA00C8294E /* Build configuration list for PBXNativeTarget "ceguitolua++" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58B2050E0552D900C8294E /* Development */,
 				DA58B2060E0552D900C8294E /* Deployment */,
-				DA58B2070E0552D900C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58B2EC0E0556ED00C8294E /* Build configuration list for PBXNativeTarget "Demo7" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58B2E90E0556ED00C8294E /* Development */,
 				DA58B2EA0E0556ED00C8294E /* Deployment */,
-				DA58B2EB0E0556ED00C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58B4B70E0558DF00C8294E /* Build configuration list for PBXNativeTarget "Demo8" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58B4B40E0558DF00C8294E /* Development */,
 				DA58B4B50E0558DF00C8294E /* Deployment */,
-				DA58B4B60E0558DF00C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58B6B10E055E1300C8294E /* Build configuration list for PBXNativeTarget "Demo6" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58B6AE0E055E1300C8294E /* Development */,
 				DA58B6AF0E055E1300C8294E /* Deployment */,
-				DA58B6B00E055E1300C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58B8500E055FF800C8294E /* Build configuration list for PBXNativeTarget "InstancedWindows" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58B84D0E055FF800C8294E /* Development */,
 				DA58B84E0E055FF800C8294E /* Deployment */,
-				DA58B84F0E055FF800C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58BAF50E0561A300C8294E /* Build configuration list for PBXNativeTarget "TextDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58BAF20E0561A300C8294E /* Development */,
 				DA58BAF30E0561A300C8294E /* Deployment */,
-				DA58BAF40E0561A300C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58BC9D0E0562D100C8294E /* Build configuration list for PBXNativeTarget "DragDropDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58BC9A0E0562D100C8294E /* Development */,
 				DA58BC9B0E0562D100C8294E /* Deployment */,
-				DA58BC9C0E0562D100C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58BE3E0E0563C600C8294E /* Build configuration list for PBXNativeTarget "TreeDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58BE3B0E0563C600C8294E /* Development */,
 				DA58BE3C0E0563C600C8294E /* Deployment */,
-				DA58BE3D0E0563C600C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 		DA58C4B10E057B5C00C8294E /* Build configuration list for PBXNativeTarget "CEGUICoronaImageCodec" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA58C4AE0E057B5B00C8294E /* Development */,
 				DA58C4AF0E057B5B00C8294E /* Deployment */,
-				DA58C4B00E057B5B00C8294E /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Development;
 		};
 /* End XCConfigurationList section */
 	};
