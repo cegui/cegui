@@ -4304,6 +4304,7 @@
 			buildConfigurationList = 5B991D7208C920E6006E6DC9 /* Build configuration list for PBXNativeTarget "CEGUIOpenGLRenderer" */;
 			buildPhases = (
 				5B991D6B08C920E5006E6DC9 /* Headers */,
+				DABAD88B0E0F9C2300D32C2A /* ShellScript */,
 				5B991D6C08C920E5006E6DC9 /* Resources */,
 				5B991D6D08C920E5006E6DC9 /* Sources */,
 				5B991D6E08C920E5006E6DC9 /* Frameworks */,
@@ -4421,6 +4422,7 @@
 			buildConfigurationList = 5BCC7E4C0A8149380017D97C /* Build configuration list for PBXNativeTarget "CEGUIIrrlichtRenderer" */;
 			buildPhases = (
 				5BCC7E450A8149370017D97C /* Headers */,
+				DABAD8950E0F9E4300D32C2A /* ShellScript */,
 				5BCC7E460A8149370017D97C /* Resources */,
 				5BCC7E470A8149370017D97C /* Sources */,
 				5BCC7E480A8149370017D97C /* Frameworks */,
@@ -5335,6 +5337,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -d \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\" ]; then\n  rm -rf \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/${FULL_PRODUCT_NAME}\"\nfi\ncp -Rp \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/CEGUI.framework/Resources/\"";
+		};
+		DABAD88B0E0F9C2300D32C2A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Xcode has just created the Headers directory, now we can come in and re-arrange things a little :)\n\nCEGUI_HEADERS_SUBDIR=\"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules/OpenGLGUIRenderer\"\n\nmkdir -p \"${CEGUI_HEADERS_SUBDIR}\"\n\nfor HFILE in `find \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\" -name *.h`; do\n\tmv -f \"${HFILE}\" \"${CEGUI_HEADERS_SUBDIR}/\"\ndone\n";
+		};
+		DABAD8950E0F9E4300D32C2A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Xcode has just created the Headers directory, now we can come in and re-arrange things a little :)\n\nCEGUI_HEADERS_SUBDIR=\"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/RendererModules/IrrlichtRenderer\"\n\nmkdir -p \"${CEGUI_HEADERS_SUBDIR}\"\n\nfor HFILE in `find \"${BUILT_PRODUCTS_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\" -name *.h`; do\n\tmv -f \"${HFILE}\" \"${CEGUI_HEADERS_SUBDIR}/\"\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
