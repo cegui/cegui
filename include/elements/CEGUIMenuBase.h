@@ -158,6 +158,8 @@ protected:
 	*/
 	virtual void	onPopupClosed(WindowEventArgs& e);
 
+    // overridden from base
+    virtual void onChildRemoved(WindowEventArgs& e);
 
 	/*************************************************************************
 		Implementation Functions
