@@ -35,6 +35,9 @@ case $host_os in
     *mingw32* ) MINGW32=yes
                 cegui_pc_platform_libs=-lwinmm
                 ;;
+     *darwin* ) MACOSX=yes
+                cegui_pc_platform_libs=
+                ;;
             * ) MINGW32=no
                 cegui_pc_platform_libs=
                 ;;
@@ -43,6 +46,7 @@ esac
 AC_SUBST(cegui_pc_platform_libs)
 
 AM_CONDITIONAL([MINGW32_BUILD], [test x$MINGW32 = xyes])
+AM_CONDITIONAL([MACOSX_BUILD], [test x$MACOSX = xyes])
 
 # Checks for libraries (skip on mingw32).
 if test x$MINGW32 != xyes; then
