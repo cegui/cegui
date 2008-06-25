@@ -30,3 +30,5 @@ endif
 noinst_HEADERS= GLEW/GL/glew.h \
                 GLEW/GL/glxew.h \
                 GLEW/GL/wglew.h
+
+EXTRA_DIST = GLEW/GLEW-LICENSE
