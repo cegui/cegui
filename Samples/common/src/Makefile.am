@@ -42,7 +42,7 @@ EXTRA_DIST = CEGuiD3D10BaseApplication.cpp \
              CEGuiD3D81BaseApplication.cpp \
              CEGuiD3D9BaseApplication.cpp \
              DeviceReset_Direct3D10.cpp \
-             DeviceReset_Direct3D819.cpp \
+             DeviceReset_Direct3D81.cpp \
              DeviceReset_Direct3D9.cpp \
              MacCEGuiRendererSelector.cpp \
              Win32AppHelper.cpp \
