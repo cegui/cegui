@@ -13,7 +13,7 @@ package.files =
 }
 
 include(rootdir.."cegui/include/"..pkgdir)
-include(rootdir.."cegui/src/"..pkgdirpkgdir.."GLEW")
+include(rootdir.."cegui/src/"..pkgdir.."GLEW")
 include(rootdir)
 
 if windows then
