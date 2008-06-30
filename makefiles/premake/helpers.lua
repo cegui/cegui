@@ -265,6 +265,12 @@ function setup_static_samples()
 		library_static("d3dx9")
 		library_static("dxerr9")
 	end
+
+	if DIRECTX10_RENDERER then
+		library_static("d3d10")
+		library_static("dxerr")
+		library_static("d3dx10")
+	end
 	
 
 	if CEGUI_CORE_LIBRARY_SOLUTION then
@@ -309,6 +315,10 @@ function setup_static_samples()
 		if DIRECTX9_RENDERER then
 		    dependency("DirectX9GUIRenderer")
 		end
+		if DIRECTX10_RENDERER then
+		    dependency("DirectX10GUIRenderer")
+		end
+
 		if IRRLICHT_RENDERER then
 		    dependency("IrrlichtRenderer")
 		end
@@ -364,6 +374,9 @@ function setup_static_samples()
 		end
 		if DIRECTX9_RENDERER then
 		    library_static("DirectX9GUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
+		end
+		if DIRECTX10_RENDERER then
+		    library_static("DirectX10GUIRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
 		end
 		if IRRLICHT_RENDERER then
 		    library_static("IrrlichtRenderer", "_Static", DEBUG_DLL_SUFFIX or "")
