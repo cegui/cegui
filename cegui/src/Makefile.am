@@ -165,5 +165,9 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       falagard/CEGUIFalXMLEnumHelper.cpp \
                       falagard/CEGUIFalagard_xmlHandler.cpp
 
-EXTRA_DIST = implementations/mac/macPlugins.cpp \
-             implementations/mac/macPlugins.h
+if MACOSX_BUILD
+INCLUDES += -I$(top_srcdir)/src/implementations/mac
+libCEGUIBase_la_SOURCES += implementations/mac/macPlugins.cpp
+endif
+
+EXTRA_DIST = implementations/mac/macPlugins.h

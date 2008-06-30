@@ -6,6 +6,77 @@ Copyright 2004 - 2008 CEGUI Team & Contributing Authors
 
 The following is a high-level view of changes made to the system between releases.
 
+Release 0.6.1
+=============
+Added: Batch files to invoke premake for VC9 files (seems to work fine)
+Added: Added a supported value to represent infinity to enable the click generation timouts to be set to "no timeout".  See: http://www.cegui.org.uk/mantis/view.php?id=208
+Added: Added Window::appendText and Window::insertText member functions.  See: http://www.cegui.org.uk/mantis/view.php?id=195
+Added: Initial version of a sample base application using Direct3D 10.
+Added: Initial code for the D3D 10 GUI Renderer, originally contributed by Rajko Stojadinovic.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2919
+Added: IrrlichRenderer had no facility for notifying of display size changes.  This adds a setDisplaySize member for that purpose.  (Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187).
+Added: Logging of renderer resize event notifications (prelim work for issue: http://www.cegui.org.uk/mantis/view.php?id=187)
+Added: New drag and drop demo.  Originally written to aid in debugging of an issue, but is otherwise useful as an example :)
+Added: Added FPS readout in sample base app for Irrlicht.  (See: http://www.cegui.org.uk/mantis/view.php?id=176).
+
+Modified: Changed Xcode build for the renderer frameworks so that headers retain their original subdirectory location; this aids in keeping client code portable.
+Modified: Refactored tab removal code to eliminate repetition.
+Modified: On linux, use installed system versions of tolua++ and TinyXML libraries if available (can be disabled to force continued use of internal versions).  See: http://www.cegui.org.uk/mantis/view.php?id=198
+
+Major update of Mac Xcode project.  This attempts to achieve the following:
+- Update all existing targets in relation to added and removed source files.
+- Resolved some minor issues with custom scripts when rebuilding up to date targets.
+- Added targets for Demo6, Demo7, Demo8, DragDropDemo, InstancedWindows, TextDemo and TreeDemo (completing the set).
+- Added target for ceguitolua++ framework (needed for lua support and for lua samples to run).
+- Use of precompiled dependencies package from within local tree (upload to follow shortly, pending resolution of final remaining issues).
+- Dependency frameworks will now be embedded within whichever component uses them (as opposed to needing separate installation).
+- Sample apps now correctly work with embedded CEGUI frameworks and so should run anywhere without additional installation.
+- Modify samples app packaging to symlink the frameworks and datafiles, as opposed to actually copying - this vastly reduces the footprint of the development directory (at a small cost of flexibility).
+- symlink the output sample apps into the ./Samples/bin directory (using subdirs for each config)
+- Added required define in CEGUIConfig.h for Lua support
+- Updated default ImageCodec in CEGUIConfig.h to be SILLY
+- Big cleanup of the various targets so that common settings (virtually all settings, actually) can be set once at the project level rather than needing to be set separately on each target.
+
+Bug Fix: Deleting/removing a menu item from a menu when the item had an active popup would result in a dangling pointer to the deleted/removed item.
+Bug Fix: line endings and set missing svn:eol-style on all Tree related code files.
+Bug Fix: Injection of mouse movements and mouse positions which did not actually reflect a change of mouse cursor position were still firing events and triggering side effects.  See: http://www.cegui.org.uk/mantis/view.php?id=202
+Bug Fix: ItemListbox::removeItem() was not checking if removed item was the one referenced in d_lastSelected, so was leaving a dangling pointer.  See: http://www.cegui.org.uk/mantis/view.php?id=206
+Bug Fix: The docs for the list widgets stated that the insert member would insert anitem after a given item, whereas the widget actually inserted the item before the given item.  See: http://www.cegui.org.uk/mantis/view.php?id=205
+Bug Fix: Exception message in postD3DReset member of the D3D renderers was incorrectly stating the exception as coming from from preD3DReset.  See: http://www.cegui.org.uk/mantis/view.php?id=207
+Bug Fix: double deletion issue in Corona based ImageCodec.
+Bug Fix: MacRendererSelector had uninitialised member variable, causing incorrect behaviour.
+Bug Fix: CEGUISamplesConfig.h is for Mac only now - removed conditionals that would bring in these options for Win32 (which uses premake).
+Bug Fix: Fixed comment blocks to eliminate a constant stream of warnings (gcc) when building anything CEGUI related.
+Bug Fix: Need to bring in CEGUIConfig.h when building CEGUILua.cpp in case we're on a Mac.
+Bug Fix: Bug in CEGUIDevILImageCodec in which ILinfo structure is not inititalised to 0s prior to usage, causing random crashes.
+Bug Fix: inclusion of config.h MUST be protected by a conditional that checks HAVE_CONFIG_H.
+Bug Fix: Between the 0.5.0 and 0.6.0 releases the System::setDefaultXMLParserName function was bastardised to perform a function other than its intended purpose.  This fix restores the intended behaviour of setDefaultXMLParserName and adds functions for setting the XML parser after System instantiation correctly.  See: http://www.cegui.org.uk/mantis/view.php?id=186
+Bug Fix: Issue of missing OpenGL render state initialisation when multitexture support is available.  See: http://www.cegui.org.uk/mantis/view.php?id=201.  NB: This also adds use of GLEW library (external (autotools) or embedded (all platforms)).
+Bug Fix: uncomment part of cegui.lua configuration script that allows use of option to have Ogre in samples.
+Bug Fix: pragmas for link libs in Ogre base app were incorrectly dependant on _WIN32 macro instead of _MSC_VER macro.
+Bug Fix: Added extra pragma lines to bring in required OIS lib for the Ogre base app.
+Bug Fix: Ogre base app now uses numKeyboards (was numKeyBoards) from OIS; this is what the OIS from the Ogre deps expects.
+Bug Fix: Fixed documentation for MouseButton enumeration.  Thanks to 'alphasnd'.
+Bug Fix: UpdateEventArgs::d_timeSinceLastFrame was not being initialised in constructor.
+Bug Fix: Use linux SimpleTimer::currentTime for Apple Macs also.  Thanks go to alphasnd, see: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3247
+Bug Fix: Resolve compilation issue on older gcc versions (gcc 3.x) where casting using functional notation is not good.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=2317
+Bug Fix: TabControl was subscribing to EventTextChanged on added content windows, but not releasing the connection when the content window was removed - causing UnknownObject exceptions and possible crashes when attempting to change the text on a window after it had been added to and then removed from a TabControl.  See: http://www.cegui.org.uk/mantis/view.php?id=192
+Bug Fix: When linking on autotools based systems, ensure we explicitly link with the 'just built' versions of CEGUI libraries; this ensures that we are not inadvertently picking up old installed versions of the same libs.
+Bug Fix: Updated Ogre base application to correctly respond to window resize events and inform the CEGUI renderer of the change.  Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187
+Bug Fix: Fixed samples under D3D 8.1 and 9 so that they correctly notify CEGUI when the window size changes.  Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187.
+Bug Fix: Under gcc/autotools the various libraries and modules were not linking against CEGUIBase (except on MinGW32).  See: http://www.cegui.org.uk/mantis/view.php?id=196
+Bug Fix: Update Irrlicht sample base application to notify the renderer of the display size - in order that it may react properly to any changes.  (Part of fixes for: http://www.cegui.org.uk/mantis/view.php?id=187).
+Bug Fix: When injecting mouse position change information using the System::injectMousePosition member, the resulting MouseEventArgs structure passed to event handlers always had the positional change delta information set to 0.  See: http://www.cegui.org.uk/mantis/view.php?id=194
+Bug Fix: FrameWindow types had no realistic default minimum size specified, meaning the user could resize these windows to such an extent that they totally disappeared and we no longer usable.  See: http://www.cegui.org.uk/mantis/view.php?id=193
+Bug Fix: Issue with detection and usage of glut library under Msys/MinGW.  See: http://www.cegui.org.uk/mantis/view.php?id=184
+Bug Fix: Can't get correct error string on Win32 platform when dynamic module load failed.  See: http://www.cegui.org.uk/mantis/view.php?id=178
+Bug Fix: Missing winmm library dependency for MinGW32 autotool based builds.  See: http://www.cegui.org.uk/mantis/view.php?id=183
+Bug Fix: Hiding the active window would leave the hidden window active and receiving inputs; it was also possible to activate a hidden window which is not logical.  See: http://www.cegui.org.uk/mantis/view.php?id=188
+Bug Fix: Time pulse injection under DirectX sample base app was either missing (DX 8.1) or broken (DX 9).  (See: http://www.cegui.org.uk/mantis/view.php?id=177).
+Bug Fix: TreeDemo - Missing header on some systems, update antiquated time.h to ctime.
+Bug Fix: Typos in the configure summary (Irrlict -> Irrlicht)
+Bug Fix: tolua++cegui generator missing Lua_CFLAGS in autotools build.
+
+
 Release 0.6.0
 =============
 Added: New text demo (rewrite of Demo4)
