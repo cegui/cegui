@@ -5,6 +5,8 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUIFreeImageImageCodec_la_CPPFLAGS = -DCEGUIFREEIMAGEIMAGECODEC_EXPORTS
 libCEGUIFreeImageImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUIFreeImageImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 libCEGUIFreeImageImageCodec_la_LIBADD = $(FreeImage_LIBS) \

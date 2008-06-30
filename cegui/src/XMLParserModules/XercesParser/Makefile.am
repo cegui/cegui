@@ -5,6 +5,8 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUIXercesParser_la_CPPFLAGS = -DCEGUIXERCESPARSER_EXPORTS
 libCEGUIXercesParser_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUIXercesParser_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 libCEGUIXercesParser_la_LIBADD = $(xerces_LIBS) \

@@ -11,7 +11,7 @@ libCEGUILuaScriptModule_la_CPPFLAGS += -DCEGUILUA_EXPORTS
 libCEGUILuaScriptModule_la_LDFLAGS += -no-undefined -avoid-version
 endif
 
-libCEGUILuaScriptModule_la_LDFLAGS += -version-info @CEGUI_VERSION_INFO@
+libCEGUILuaScriptModule_la_LDFLAGS += -release @PACKAGE_VERSION@
 
 
 lib_LTLIBRARIES = libCEGUILuaScriptModule.la

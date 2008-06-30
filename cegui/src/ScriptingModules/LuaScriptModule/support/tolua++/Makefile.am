@@ -8,7 +8,7 @@ libCEGUItoluapp_la_CPPFLAGS = -DTOLUA_EXPORTS
 libCEGUItoluapp_la_LDFLAGS += -no-undefined
 endif
 
-libCEGUItoluapp_la_LDFLAGS += -version-info @CEGUI_VERSION_INFO@
+libCEGUItoluapp_la_LDFLAGS += -release @PACKAGE_VERSION@
 
 lib_LTLIBRARIES = libCEGUItoluapp.la
 

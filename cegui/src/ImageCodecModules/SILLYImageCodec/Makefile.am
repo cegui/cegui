@@ -5,6 +5,8 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUISILLYImageCodec_la_CPPFLAGS = -DCEGUISILLYIMAGECODEC_EXPORTS
 libCEGUISILLYImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUISILLYImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 libCEGUISILLYImageCodec_la_LIBADD = $(SILLY_LIBS) \
