@@ -194,7 +194,7 @@ Window::Window(const String& type, const String& name) :
     // Tooltip setup
     d_customTip = 0;
     d_weOwnTip = false;
-    d_inheritsTipText = false;
+    d_inheritsTipText = true;
 
     // set initial min/max sizes.  These should normally be re-set in derived classes to something appropriate.
     d_minSize = UVector2(cegui_reldim(0), cegui_reldim(0));
@@ -3291,7 +3291,7 @@ void Window::insertText(const String& text, const String::size_type position)
     WindowEventArgs args(this);
     onTextChanged(args);
 }
-    
+
 //----------------------------------------------------------------------------//
 void Window::appendText(const String& text)
 {
