@@ -2,7 +2,7 @@
 	filename: 	CEGUIWindowProperties.h
 	created:	5/7/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Interface to available window base class properties
 *************************************************************************/
 /***************************************************************************
@@ -31,7 +31,7 @@
 #define _CEGUIWindowProperties_h_
 
 #include "CEGUIProperty.h"
-#include "CEGUIXMLSerializer.h" 
+#include "CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -90,7 +90,7 @@ public:
 	Alpha() : Property(
 		"Alpha",
 		"Property to get/set the alpha value of the Window.  Value is floating point number.",
-		"1") 
+		"1")
 	{}
 
 	String	get(const PropertyReceiver* receiver) const;
@@ -143,7 +143,7 @@ class Text : public Property
 {
 public:
 	Text() : Property(
-		"Text", 
+		"Text",
 		"Property to get/set the text / caption for the Window.  Value is the text string to use.",
 		"")
 	{}
@@ -596,14 +596,16 @@ public:
 
 /*!
 \brief
-    Property to access whether the window inherits its tooltip text from its parent whn it has no tooltip text of its own.
+    Property to access whether the window inherits its tooltip text from its
+    parent when it has no tooltip text of its own.  Default state: True
 
     \par Usage:
         - Name: InheritsTooltipText
         - Format: "[text]".
 
     \par Where [Text] is:
-        - "True" to indicate the Window inherits its tooltip text from its parent.
+        - "True" to indicate the Window inherits its tooltip text from its
+          parent.
         - "False" to indicate the Window does not inherit its tooltip text.
 */
 class InheritsTooltipText : public Property
@@ -612,7 +614,7 @@ public:
     InheritsTooltipText() : Property(
         "InheritsTooltipText",
         "Property to get/set whether the window inherits its parents tooltip text when it has none of its own.  Value is either \"True\" or \"False\".",
-        "False")
+        "True")
     {}
 
     String  get(const PropertyReceiver* receiver) const;
