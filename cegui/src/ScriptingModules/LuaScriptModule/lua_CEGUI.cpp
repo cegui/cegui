@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Fri Mar 14 10:56:37 2008.
+** Generated automatically by tolua++-1.0.92 on Mon Jun 23 14:42:20 2008.
 */
 
 #ifndef __cplusplus
@@ -15144,6 +15144,74 @@ static int tolua_CEGUI_CEGUI_Window_setText00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: insertText of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_insertText00
+static int tolua_CEGUI_CEGUI_Window_insertText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string text = ((string)  tolua_tocppstring(tolua_S,2,0));
+  unsigned long position = ((unsigned long)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'insertText'",NULL);
+#endif
+ {
+  self->insertText(text,position);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'insertText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: appendText of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_appendText00
+static int tolua_CEGUI_CEGUI_Window_appendText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string text = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'appendText'",NULL);
+#endif
+ {
+  self->appendText(text);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'appendText'.",&tolua_err);
  return 0;
 #endif
 }
@@ -50003,6 +50071,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setFont",tolua_CEGUI_CEGUI_Window_setFont01);
    tolua_function(tolua_S,"getFont",tolua_CEGUI_CEGUI_Window_getFont00);
    tolua_function(tolua_S,"setText",tolua_CEGUI_CEGUI_Window_setText00);
+   tolua_function(tolua_S,"insertText",tolua_CEGUI_CEGUI_Window_insertText00);
+   tolua_function(tolua_S,"appendText",tolua_CEGUI_CEGUI_Window_appendText00);
    tolua_function(tolua_S,"getText",tolua_CEGUI_CEGUI_Window_getText00);
    tolua_function(tolua_S,"inheritsAlpha",tolua_CEGUI_CEGUI_Window_inheritsAlpha00);
    tolua_function(tolua_S,"getAlpha",tolua_CEGUI_CEGUI_Window_getAlpha00);

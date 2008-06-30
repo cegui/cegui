@@ -37,6 +37,39 @@
 #include "CEGUIBase.h"
 #include "CEGUIRenderer.h"
 #include "CEGUITexture.h"
+
+// Little hack to allow D3D10 to compile on a non-Vista. Of course, actually using this
+// renderer on XP is out of the question. These fixes are not needed in VC9 anymore.
+#if _MSC_VER <= 1400 // VC8 and lower
+	
+	// One fix for VC8
+	#define WINAPI_INLINE WINAPI
+
+	#if _MSC_VER < 1400 // VC7.1 and lower
+
+		#define __out /**/
+		#define __in /**/
+		#define __inout /**/
+
+		#define __in_opt /**/
+		#define __out_opt /**/
+		#define __inout_opt /**/
+
+		#define __in_ecount(THING) /**/
+		#define __in_ecount_opt(THING) /**/
+		#define __out_ecount(THING) /**/
+		#define __out_ecount_opt(THING) /**/
+		#define __inout_ecount(THING) /**/
+		#define __inout_ecount_opt(THING) /**/
+
+		#define __in_bcount_opt(THING) /**/
+		#define __out_bcount_opt(THING) /**/
+		#define __inout_bcount_opt(THING) /**/
+	
+	#endif // < 1400
+
+#endif // <= 1400
+
 #include <d3d10.h>
 #include <list>
 #include <set>

@@ -35,6 +35,9 @@ case $host_os in
     *mingw32* ) MINGW32=yes
                 cegui_pc_platform_libs=-lwinmm
                 ;;
+     *darwin* ) MACOSX=yes
+                cegui_pc_platform_libs=
+                ;;
             * ) MINGW32=no
                 cegui_pc_platform_libs=
                 ;;
@@ -43,6 +46,7 @@ esac
 AC_SUBST(cegui_pc_platform_libs)
 
 AM_CONDITIONAL([MINGW32_BUILD], [test x$MINGW32 = xyes])
+AM_CONDITIONAL([MACOSX_BUILD], [test x$MACOSX = xyes])
 
 # Checks for libraries (skip on mingw32).
 if test x$MINGW32 != xyes; then
@@ -97,23 +101,23 @@ CEGUI_CHECK_LUA
 
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library version
-CEGUI_CURRENT=1
+CEGUI_CURRENT=2
 CEGUI_REVISION=0
-CEGUI_AGE=0
+CEGUI_AGE=1
 CEGUI_VERSION_INFO=$CEGUI_CURRENT:$CEGUI_REVISION:$CEGUI_AGE
 AC_SUBST(CEGUI_VERSION_INFO)
 
 dnl versioning info for the Irrlicht renderer
-CEGUI_IRRLICHT_CURRENT=0
-CEGUI_IRRLICHT_REVISION=1
-CEGUI_IRRLICHT_AGE=0
+CEGUI_IRRLICHT_CURRENT=1
+CEGUI_IRRLICHT_REVISION=0
+CEGUI_IRRLICHT_AGE=1
 CEGUI_IRRLICHT_VERSION_INFO=$CEGUI_IRRLICHT_CURRENT:$CEGUI_IRRLICHT_REVISION:$CEGUI_IRRLICHT_AGE
 AC_SUBST(CEGUI_IRRLICHT_VERSION_INFO)
 
 dnl versioning info for the OpenGL renderer
-CEGUI_OPENGL_CURRENT=0
-CEGUI_OPENGL_REVISION=1
-CEGUI_OPENGL_AGE=0
+CEGUI_OPENGL_CURRENT=1
+CEGUI_OPENGL_REVISION=0
+CEGUI_OPENGL_AGE=1
 CEGUI_OPENGL_VERSION_INFO=$CEGUI_OPENGL_CURRENT:$CEGUI_OPENGL_REVISION:$CEGUI_OPENGL_AGE
 AC_SUBST(CEGUI_OPENGL_VERSION_INFO)
 

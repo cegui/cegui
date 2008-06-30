@@ -142,4 +142,17 @@ void MenuBase::setAllowMultiplePopups(bool setting)
     }
 }
 
+//----------------------------------------------------------------------------//
+void MenuBase::onChildRemoved(WindowEventArgs& e)
+{
+    // if the removed window was our tracked popup item, zero ptr to it.
+    if (e.window == d_popupItem)
+        d_popupItem = 0;
+        
+    // base class version
+    ItemListBase::onChildRemoved(e);
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section
