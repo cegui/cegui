@@ -10,4 +10,4 @@ DragDropDemo_LDADD = $(top_builddir)/cegui/src/libCEGUIBase.la \
 
 
 install-exec-local:
-	$(LN_S) -f `pwd`/.libs/DragDropDemo$(EXEEXT) $(top_builddir)/Samples/bin/DragDropDemo$(EXEEXT)
+	$(LN_S) -f `pwd`/.libs/DragDropDemo$(EXEEXT) $(top_builddir)/bin/DragDropDemo$(EXEEXT)
