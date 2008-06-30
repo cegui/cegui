@@ -11,7 +11,7 @@ libCEGUIBase_la_LDFLAGS += -shared -no-undefined
 libCEGUIBase_la_LIBADD += -lwinmm
 endif
 
-libCEGUIBase_la_LDFLAGS += -version-info @CEGUI_VERSION_INFO@
+libCEGUIBase_la_LDFLAGS += -release @PACKAGE_VERSION@
 libCEGUIBase_la_LIBADD += $(freetype2_LIBS) $(pcre_LIBS)
 
 lib_LTLIBRARIES=libCEGUIBase.la

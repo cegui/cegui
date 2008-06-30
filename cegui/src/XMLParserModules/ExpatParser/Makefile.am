@@ -5,6 +5,8 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUIExpatParser_la_CPPFLAGS = -DCEGUIEXPATPARSER_EXPORTS
 libCEGUIExpatParser_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUIExpatParser_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 libCEGUIExpatParser_la_LIBADD = $(expat_LIBS) \

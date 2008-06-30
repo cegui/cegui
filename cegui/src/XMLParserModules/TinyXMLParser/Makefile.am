@@ -4,6 +4,8 @@ INCLUDES = -I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUITinyXMLParser_la_CPPFLAGS = -DCEGUITINYXMLPARSER_EXPORTS
 libCEGUITinyXMLParser_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUITinyXMLParser_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 lib_LTLIBRARIES=libCEGUITinyXMLParser.la

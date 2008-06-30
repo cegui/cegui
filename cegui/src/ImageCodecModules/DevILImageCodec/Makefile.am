@@ -5,6 +5,8 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUIDevILImageCodec_la_CPPFLAGS = -DCEGUIDEVILIMAGECODEC_EXPORTS
 libCEGUIDevILImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUIDevILImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 libCEGUIDevILImageCodec_la_LIBADD = $(DevIL_LIBS) \

@@ -19,7 +19,7 @@ endif
 libCEGUIOpenGLRenderer_la_LIBADD = $(OpenGL_LIBS) \
                                    $(top_builddir)/cegui/src/libCEGUIBase.la
 
-libCEGUIOpenGLRenderer_la_LDFLAGS += -version-info @CEGUI_OPENGL_VERSION_INFO@
+libCEGUIOpenGLRenderer_la_LDFLAGS += -release @PACKAGE_VERSION@
 
 lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
 libCEGUIOpenGLRenderer_la_SOURCES = openglrenderer.cpp opengltexture.cpp

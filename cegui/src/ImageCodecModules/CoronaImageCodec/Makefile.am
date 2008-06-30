@@ -5,6 +5,8 @@ INCLUDES=-I$(top_srcdir)/cegui/include \
 if MINGW32_BUILD
 libCEGUICoronaImageCodec_la_CPPFLAGS = -DCEGUICORONAIMAGECODEC_EXPORTS
 libCEGUICoronaImageCodec_la_LDFLAGS = -no-undefined -avoid-version
+else
+libCEGUICoronaImageCodec_la_LDFLAGS = -release @PACKAGE_VERSION@
 endif
 
 libCEGUICoronaImageCodec_la_LIBADD = $(Corona_LIBS) \

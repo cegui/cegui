@@ -9,7 +9,7 @@ libCEGUIIrrlichtRenderer_la_CPPFLAGS = -DIRRRENDERER_EXPORTS
 libCEGUIIrrlichtRenderer_la_LDFLAGS += -no-undefined
 endif
 
-libCEGUIIrrlichtRenderer_la_LDFLAGS += -version-info @CEGUI_IRRLICHT_VERSION_INFO@
+libCEGUIIrrlichtRenderer_la_LDFLAGS += -release @PACKAGE_VERSION@
 libCEGUIIrrlichtRenderer_la_LIBADD = $(Irrlicht_LIBS) \
                                      $(top_builddir)/cegui/src/libCEGUIBase.la
 
