@@ -180,7 +180,7 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
     #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+        sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
         ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
     #endif
 #else
@@ -193,8 +193,7 @@ void CEGuiOgreBaseApplication::initialiseResources(void)
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/configs", "FileSystem");
     ResourceGroupManager::getSingleton().addResourceLocation("datafiles/lua_scripts", "FileSystem", "lua_scripts");
     #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        // FIXME: I think this is wrong, but still it's how Exsortis had in in the OGL renderer.  5/1/08 PDT
-        ResourceGroupManager::getSingleton().addResourceLocation("XMLRefSchemma", "FileSystem", "schemas");
+        ResourceGroupManager::getSingleton().addResourceLocation("datafiles/xml_schemas", "FileSystem", "schemas");
     #endif
 #endif
 }

@@ -101,7 +101,7 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
                 sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
                 rp->setResourceGroupDirectory("lua_scripts", resourcePath);
                 #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-                    sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+                    sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
                     rp->setResourceGroupDirectory("schemas", resourcePath);
                 #endif
 
@@ -137,7 +137,7 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
     cleanupDirect3D();
-   
+
     DestroyWindow(pimpl->d_window);
 
     delete pimpl;
@@ -328,7 +328,7 @@ void CEGuiD3D10BaseApplication::cleanupDirect3D()
             // we release again for the original reference made at creation.
             rtview->Release();
         }
-        
+
         pimpl->d_swapChain->Release();
         pimpl->d_device->Release();
 

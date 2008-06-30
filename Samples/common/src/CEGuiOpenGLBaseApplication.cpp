@@ -182,7 +182,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     rp->setResourceGroupDirectory("lua_scripts", resourcePath);
     #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        sprintf(resourcePath, "%s/%s", dataPathPrefix, "XMLRefSchema/");
+        sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
         rp->setResourceGroupDirectory("schemas", resourcePath);
     #endif
 #else
@@ -193,7 +193,7 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
     rp->setResourceGroupDirectory("looknfeels", "datafiles/looknfeel/");
     rp->setResourceGroupDirectory("lua_scripts", "datafiles/lua_scripts/");
     #if defined(CEGUI_WITH_XERCES) && (CEGUI_DEFAULT_XMLPARSER == XercesParser)
-        rp->setResourceGroupDirectory("schemas", "XMLRefSchema/");
+        rp->setResourceGroupDirectory("schemas", "xml_schemas/");
     #endif
 #endif
 }
