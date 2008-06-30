@@ -2,7 +2,7 @@
 	filename: 	CEGUISingleton.h
 	created:	22/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Singleton Base Class
 *************************************************************************/
 /***************************************************************************
@@ -28,7 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 /*************************************************************************
-	
+
 	The code in this file is taken from article 1.3 in the the book:
 	Game Programming Gems from Charles River Media
 
@@ -42,7 +42,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/* Copyright (C) Scott Bilas, 2000. 
+/* Copyright (C) Scott Bilas, 2000.
  * All rights reserved worldwide.
  *
  * This software is provided "as is" without express or implied
@@ -79,6 +79,10 @@ public:
         {  assert( ms_Singleton );  return ( *ms_Singleton );  }
     static T* getSingletonPtr( void )
         {  return ( ms_Singleton );  }
+
+private:
+    Singleton& operator=(const Singleton&) { return this; }
+    Singleton(const Singleton&) {}
 };
 
 } // End of  CEGUI namespace section
