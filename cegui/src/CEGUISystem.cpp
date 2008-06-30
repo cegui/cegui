@@ -148,7 +148,7 @@ const char	System::CEGUIConfigSchemaName[]		= "CEGUIConfig.xsd";
 template<> System* Singleton<System>::ms_Singleton	= 0;
 
 // click event generation defaults
-const double	System::DefaultSingleClickTimeout	= 0.2;
+const double	System::DefaultSingleClickTimeout	= 0.0; // was 0.2
 const double	System::DefaultMultiClickTimeout	= 0.33;
 const Size		System::DefaultMultiClickAreaSize(12,12);
 
@@ -701,7 +701,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 
         return mouseMoveInjection_impl(ma);
     }
-    
+
     return false;
 }
 
@@ -1016,7 +1016,7 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 
         return mouseMoveInjection_impl(ma);
     }
-    
+
     return false;
 }
 
