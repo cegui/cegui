@@ -175,13 +175,13 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
                 if (id.find("Official Direct3D 9") != id.npos)
                     DeviceReset_Direct3D9(hWnd, renderer);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
-                else if (id.find("Official Direct3D 8.1") != id.npos)
-                    DeviceReset_Direct3D81(hWnd, renderer);
-#endif
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
                 else if (id.find("Official Direct3D 10") != id.npos)
                     DeviceReset_Direct3D10(hWnd, renderer);
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+                else if (id.find("Official Direct3D 8.1") != id.npos)
+                    DeviceReset_Direct3D81(hWnd, renderer);
 #endif
             }
         }
