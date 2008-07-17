@@ -314,7 +314,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
                 }
             // Go to previous glyph, if we are going backward
             if (!forward)
-                if (--s == d_cp_map.begin ())
+                if ((s == d_cp_map.begin()) || (--s == d_cp_map.begin()))
                     break;
         }
 
