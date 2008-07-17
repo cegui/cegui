@@ -26,7 +26,7 @@ author:		Jonathan Welch (Based on Code by David Durant)
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "elements/CEGUITreeProperties.h"
-#include "elements/CEGUIListbox.h"
+#include "elements/CEGUITree.h"
 #include "CEGUIPropertyHelper.h"
 
 
@@ -39,60 +39,70 @@ namespace TreeProperties
 {
 String	Sort::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isSortEnabled());
+	return PropertyHelper::boolToString(
+        static_cast<const Tree*>(receiver)->isSortEnabled());
 }
 
 
 void	Sort::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setSortingEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Tree*>(receiver)->setSortingEnabled(
+        PropertyHelper::stringToBool(value));
 }
 
 
 String	MultiSelect::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isMultiselectEnabled());
+	return PropertyHelper::boolToString(
+        static_cast<const Tree*>(receiver)->isMultiselectEnabled());
 }
 
 
 void	MultiSelect::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setMultiselectEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Tree*>(receiver)->setMultiselectEnabled(
+        PropertyHelper::stringToBool(value));
 }
 
 
 String	ForceVertScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isVertScrollbarAlwaysShown());
+	return PropertyHelper::boolToString(
+        static_cast<const Tree*>(receiver)->isVertScrollbarAlwaysShown());
 }
 
 
 void	ForceVertScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setShowVertScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<Tree*>(receiver)->setShowVertScrollbar(
+        PropertyHelper::stringToBool(value));
 }
 
 
 String	ForceHorzScrollbar::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isHorzScrollbarAlwaysShown());
+	return PropertyHelper::boolToString(
+        static_cast<const Tree*>(receiver)->isHorzScrollbarAlwaysShown());
 }
 
 
 void	ForceHorzScrollbar::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setShowHorzScrollbar(PropertyHelper::stringToBool(value));
+	static_cast<Tree*>(receiver)->setShowHorzScrollbar(
+        PropertyHelper::stringToBool(value));
 }
 
 String	ItemTooltips::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::boolToString(static_cast<const Listbox*>(receiver)->isItemTooltipsEnabled());
+	return PropertyHelper::boolToString(
+        static_cast<const Tree*>(receiver)->isItemTooltipsEnabled());
 }
 
 
 void	ItemTooltips::set(PropertyReceiver* receiver, const String& value)
 {
-	static_cast<Listbox*>(receiver)->setItemTooltipsEnabled(PropertyHelper::stringToBool(value));
+	static_cast<Tree*>(receiver)->setItemTooltipsEnabled(
+        PropertyHelper::stringToBool(value));
 }
 
 } // End of  TreeProperties namespace section
