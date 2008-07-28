@@ -182,6 +182,35 @@ void TreeItem::addItem(TreeItem* item)
     }
 }
 
+/*************************************************************************
+    Remove the given TreeItem from this item's list.
+*************************************************************************/
+void TreeItem::removeItem(const TreeItem* item) 
+{ 
+    if (item)
+    {
+        Tree* parentWindow = (Tree*)getOwnerWindow();
+
+        LBItemList::iterator pos = std::find(d_listItems.begin(),
+                                             d_listItems.end(),
+                                             item);
+        if (pos != d_listItems.end())
+        {
+            (*pos)->setOwnerWindow(0);
+            d_listItems.erase(pos);
+
+            if (item == parentWindow->d_lastSelected)
+                parentWindow->d_lastSelected = 0;
+
+            if (item->isAutoDeleted())
+                delete item;
+
+            WindowEventArgs args(parentWindow);
+            parentWindow->onListContentsChanged(args);
+        }
+    }
+}
+
 TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 {
     if (itemIndex > d_listItems.size())

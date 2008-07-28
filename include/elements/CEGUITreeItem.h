@@ -549,6 +549,7 @@ public:
         { return d_listItems; }
 
     void addItem(TreeItem* item);
+    void removeItem(const TreeItem* item);
 
     void setIcon(const Image &theIcon)
         { d_iconImage = (Image *)&theIcon; }
