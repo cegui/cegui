@@ -490,6 +490,15 @@ public:
 	*/
 	void	ensureItemIsVisible(const TreeItem* item);
 
+	/*!
+	\brief
+		Return the TreeItem under the given window local pixel co-ordinate.
+
+	\return
+		TreeItem that is under window pixel co-ordinate \a pt, or NULL if no
+		item is under that position.
+	*/
+	TreeItem*	getItemAtPoint(const Point& pt) const;
 
 	/*************************************************************************
 		Construction and Destruction
@@ -634,15 +643,6 @@ protected:
 	bool	clearAllSelections_impl(void);
 
 
-	/*!
-	\brief
-		Return the TreeItem under the given window local pixel co-ordinate.
-
-	\return
-		TreeItem that is under window pixel co-ordinate \a pt, or NULL if no
-		item is under that position.
-	*/
-	TreeItem*	getItemAtPoint(const Point& pt) const;
    TreeItem*   getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Point& pt) const;
 
 
