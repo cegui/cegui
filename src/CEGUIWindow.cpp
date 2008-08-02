@@ -856,6 +856,8 @@ void Window::setEnabled(bool setting)
         {
             onDisabled(args);
         }
+
+        System::getSingleton().updateWindowContainingMouse();
     }
 }
 
@@ -871,6 +873,8 @@ void Window::setVisible(bool setting)
 		d_visible = setting;
         WindowEventArgs args(this);
 		d_visible ? onShown(args) : onHidden(args);
+        
+        System::getSingleton().updateWindowContainingMouse();
 	}
 
 }
@@ -1502,6 +1506,7 @@ void Window::onZChange_impl(void)
 
 	}
 
+    System::getSingleton().updateWindowContainingMouse();
 }
 
 
@@ -2097,6 +2102,9 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size, bool topLef
             onSized(args);
         }
     }
+    
+    if (moved || sized)
+        System::getSingleton().updateWindowContainingMouse();
 }
 
 void Window::setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
