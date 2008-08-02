@@ -1634,34 +1634,10 @@ const String System::getDefaultXMLParserName()
 //----------------------------------------------------------------------------//
 bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
 {
-    Window* dest_window = getTargetWindow(ma.position);
-
-    // has window containing mouse changed?
-    if (dest_window != d_wndWithMouse)
-    {
-        // store previous window that contained mouse
-        Window* oldWindow = d_wndWithMouse;
-        // set the new window that contains the mouse.
-        d_wndWithMouse = dest_window;
-
-        // inform previous window the mouse has left it
-        if (oldWindow)
-        {
-            ma.window = oldWindow;
-            oldWindow->onMouseLeaves(ma);
-        }
-
-        // inform window containing mouse that mouse has entered it
-        if (d_wndWithMouse)
-        {
-            ma.window = d_wndWithMouse;
-            ma.handled = false;
-            d_wndWithMouse->onMouseEnters(ma);
-        }
-    }
+    updateWindowContainingMouse();
 
     // inform appropriate window of the mouse movement event
-    if (dest_window)
+    if (Window* dest_window = d_wndWithMouse)
     {
         // ensure event starts as 'not handled'
         ma.handled = false;
@@ -1679,6 +1655,42 @@ bool System::mouseMoveInjection_impl(MouseEventArgs& ma)
 }
 
 //----------------------------------------------------------------------------//
+bool System::updateWindowContainingMouse()
+{
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+
+    Window* const curr_wnd_with_mouse = getTargetWindow(ma.position);
+
+    // exit if window containing mouse has not changed.
+    if (curr_wnd_with_mouse == d_wndWithMouse)
+        return false;
+
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
+
+    Window* oldWindow = d_wndWithMouse;
+    d_wndWithMouse = curr_wnd_with_mouse;
+
+    // inform previous window the mouse has left it
+    if (oldWindow)
+    {
+        ma.window = oldWindow;
+        oldWindow->onMouseLeaves(ma);
+    }
+
+    // inform window containing mouse that mouse has entered it
+    if (d_wndWithMouse)
+    {
+        ma.handled = false;
+        ma.window = d_wndWithMouse;
+        d_wndWithMouse->onMouseEnters(ma);
+    }
+    
+    return true;
+}
 
 
 } // End of  CEGUI namespace section
