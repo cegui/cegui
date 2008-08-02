@@ -86,9 +86,17 @@ HWND Win32AppHelper::createApplicationWindow(int width, int height)
     // register class.  Report error & exit upon failure
     if (RegisterClass(&wndClass))
     {
+        // get size of window to use so that client area is desired size
+        RECT wnd_size = {0,0,width,height};
+        AdjustWindowRect(&wnd_size, WS_OVERLAPPEDWINDOW, FALSE);
+
         // create new window
-        window = CreateWindow(APPLICATION_NAME, APPLICATION_NAME, WS_OVERLAPPEDWINDOW,
-                              0, 0, width, height, 0, 0, GetModuleHandle(0), 0);
+        window = CreateWindow(APPLICATION_NAME, APPLICATION_NAME,
+                              WS_OVERLAPPEDWINDOW,
+                              0, 0,
+                              wnd_size.right - wnd_size.left,
+                              wnd_size.bottom - wnd_size.top,
+                              0, 0, GetModuleHandle(0), 0);
     }
     else
     {
@@ -176,11 +184,11 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
                     DeviceReset_Direct3D9(hWnd, renderer);
 #endif
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
-                else if (id.find("Official Direct3D 10") != id.npos)
+                if (id.find("Official Direct3D 10") != id.npos)
                     DeviceReset_Direct3D10(hWnd, renderer);
 #endif
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_8
-                else if (id.find("Official Direct3D 8.1") != id.npos)
+                if (id.find("Official Direct3D 8.1") != id.npos)
                     DeviceReset_Direct3D81(hWnd, renderer);
 #endif
             }
