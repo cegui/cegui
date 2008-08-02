@@ -1797,17 +1797,12 @@ void Window::update(float elapsed)
 	// perform update for 'this' Window
 	updateSelf(elapsed);
 
-	// update child windows
-	size_t child_count = getChildCount();
-
 	UpdateEventArgs e(this,elapsed);
 	fireEvent(EventWindowUpdated,e,EventNamespace);
 
-	for (size_t i = 0; i < child_count; ++i)
-	{
+	// update child windows
+	for (size_t i = 0; i < getChildCount(); ++i)
 		d_children[i]->update(elapsed);
-	}
-
 }
 
 
