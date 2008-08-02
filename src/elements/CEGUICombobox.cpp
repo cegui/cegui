@@ -479,9 +479,9 @@ void Combobox::setItemSelectState(size_t item_index, bool state)
 
     ListboxItem* item = (droplist->getItemCount() > item_index) ?
                             droplist->getListboxItemFromIndex(item_index) :
-                            false;
+                            0;
 
-    bool was_selected = item->isSelected();
+    bool was_selected = (item && item->isSelected());
 
     droplist->setItemSelectState(item_index, state);
 
