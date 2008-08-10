@@ -782,6 +782,13 @@ protected:
 		return Window::testClassName_impl(class_name);
 	}
 
+    /*!
+    \brief
+        Update the Combobox text to reflect programmatically made changes to
+        selected list item.
+    */
+    void itemSelectChangeTextUpdate(const ListboxItem* const item,
+                                    bool new_state, bool old_state);
 
 	/*************************************************************************
 		Handlers to relay child widget events so they appear to come from us

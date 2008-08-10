@@ -678,6 +678,22 @@ public:
         returned may not actually correspond to the module in use.
     */
     static const String getDefaultXMLParserName();
+    
+    /*!
+    \brief
+        Perform updates with regards to the window that contains the mouse
+        cursor, firing any required MouseEnters / MouseLeaves events.
+    
+    \note
+        The CEGUI system components call this member as a matter of course,
+        in most cases there will be no need for user / client code to call this
+        member directly.
+    
+    \return
+        - true if the window containing the mouse had changed.
+        - false if the window containing the mouse had not changed.
+    */
+    bool updateWindowContainingMouse();
 
 	/*************************************************************************
 		Input injection interface

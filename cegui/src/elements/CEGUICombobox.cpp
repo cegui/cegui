@@ -462,7 +462,11 @@ void Combobox::setShowHorzScrollbar(bool setting)
 *************************************************************************/
 void Combobox::setItemSelectState(ListboxItem* item, bool state)
 {
+    bool was_selected = (item && item->isSelected());
+
 	getDropList()->setItemSelectState(item, state);
+
+    itemSelectChangeTextUpdate(item, state, was_selected);
 }
 
 
@@ -471,7 +475,17 @@ void Combobox::setItemSelectState(ListboxItem* item, bool state)
 *************************************************************************/
 void Combobox::setItemSelectState(size_t item_index, bool state)
 {
-	getDropList()->setItemSelectState(item_index, state);
+    ComboDropList* droplist = getDropList();
+
+    ListboxItem* item = (droplist->getItemCount() > item_index) ?
+                            droplist->getListboxItemFromIndex(item_index) :
+                            0;
+
+    bool was_selected = (item && item->isSelected());
+
+    droplist->setItemSelectState(item_index, state);
+
+    itemSelectChangeTextUpdate(item, state, was_selected);
 }
 
 
@@ -905,6 +919,22 @@ ComboDropList* Combobox::getDropList() const
 {
     return static_cast<ComboDropList*>(WindowManager::getSingleton().getWindow(
                                        getName() + DropListNameSuffix));
+}
+
+//----------------------------------------------------------------------------//
+void Combobox::itemSelectChangeTextUpdate(const ListboxItem* const item,
+    bool new_state, bool old_state)
+{
+    if (!new_state)
+    {
+        if (d_text == item->getText())
+            setText("");
+    }
+    else
+    {
+        if (!old_state)
+            setText(item->getText());
+    }
 }
 
 

@@ -413,19 +413,19 @@ to load a custom made image codec module as the default.]),
         AC_SEARCH_LIBS(glutInit, glut, cegui_found_lib_glut=yes, cegui_found_lib_glut=no)
         OpenGL_CFLAGS="$X_CFLAGS"
         OpenGL_LIBS=$LIBS
-
-        dnl Deal with possibility / option for external GLEW lib
-        AC_ARG_ENABLE([external-glew], AC_HELP_STRING([--disable-external-glew], [Disables the use of any external GLEW library, forcing the use of the version that accompanies CEGUI.]),
-            [cegui_use_external_glew=$enableval], [cegui_use_external_glew=yes])
-        if test x$cegui_use_external_glew = xyes; then
-            CEGUI_CHECK_GLEW([GLEW],
-                [cegui_found_glew=yes; OpenGL_CFLAGS="$OpenGL_CFLAGS $GLEW_CFLAGS"; OpenGL_LIBS="OpenGL_LIBS $GLEW_LIBS"],
-                [cegui_found_glew=no])
-        else
-            cegui_found_glew=no
-        fi
         ;;
     esac
+
+    dnl Deal with possibility / option for external GLEW lib
+    AC_ARG_ENABLE([external-glew], AC_HELP_STRING([--disable-external-glew], [Disables the use of any external GLEW library, forcing the use of the version that accompanies CEGUI.]),
+        [cegui_use_external_glew=$enableval], [cegui_use_external_glew=yes])
+    if test x$cegui_use_external_glew = xyes; then
+        CEGUI_CHECK_GLEW([GLEW],
+            [cegui_found_glew=yes; OpenGL_CFLAGS="$OpenGL_CFLAGS $GLEW_CFLAGS"; OpenGL_LIBS="OpenGL_LIBS $GLEW_LIBS"],
+            [cegui_found_glew=no])
+    else
+        cegui_found_glew=no
+    fi
 
     LIBS="$cegui_saved_LIBS"
     CFLAGS="$cegui_saved_CFLAGS"
