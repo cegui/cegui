@@ -70,28 +70,28 @@ namespace CEGUI
         ProgressBar* w = (ProgressBar*)d_window;
         if (d_vertical)
         {
-            float height = progressRect.getHeight() * w->getProgress();
+            float height = progressClipper.getHeight() * w->getProgress();
 
             if (d_reversed)
             {
-                progressRect.setHeight(height);
+                progressClipper.setHeight(height);
             }
             else
             {
-                progressRect.d_top = progressRect.d_bottom - height;
+                progressClipper.d_top = progressClipper.d_bottom - height;
             }
         }
         else
         {
-            float width = progressRect.getWidth() * w->getProgress();
+            float width = progressClipper.getWidth() * w->getProgress();
 
             if (d_reversed)
             {
-                progressRect.d_left = progressRect.d_right - width;
+                progressClipper.d_left = progressClipper.d_right - width;
             }
             else
             {
-                progressRect.setWidth(width);
+                progressClipper.setWidth(width);
             }
         }
 

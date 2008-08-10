@@ -14,6 +14,11 @@ libCEGUIOpenGLRenderer_la_LDFLAGS =
 if MINGW32_BUILD
 libCEGUIOpenGLRenderer_la_CPPFLAGS = -DOPENGL_GUIRENDERER_EXPORTS
 libCEGUIOpenGLRenderer_la_LDFLAGS += -no-undefined
+
+if BUILD_USING_INTERNAL_GLEW
+libCEGUIOpenGLRenderer_la_CPPFLAGS += -DGLEW_STATIC
+endif
+
 endif
 
 libCEGUIOpenGLRenderer_la_LIBADD = $(OpenGL_LIBS) \

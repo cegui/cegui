@@ -1044,12 +1044,22 @@
     <WidgetLook name="TaharezLook/ProgressBar">
         <NamedArea name="ProgressArea">
             <Area>
-                <Dim type="LeftEdge" ><ImageDim imageset="TaharezLook" image="ProgressBarLeft" dimension="Width" /></Dim>
+                <Dim type="LeftEdge" >
+                    <ImageDim imageset="TaharezLook" image="ProgressBarLeft" dimension="Width">
+                        <DimOperator op="Divide">
+                            <AbsoluteDim value="2" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
                 <Dim type="RightEdge" >
                     <UnifiedDim scale="1" type="RightEdge">
                         <DimOperator op="Subtract">
-                            <ImageDim imageset="TaharezLook" image="ProgressBarRight" dimension="Width" />
+                            <ImageDim imageset="TaharezLook" image="ProgressBarRight" dimension="Width">
+                                <DimOperator op="Divide">
+                                    <AbsoluteDim value="2" />
+                                </DimOperator>
+                            </ImageDim>
                         </DimOperator>
                     </UnifiedDim>
                 </Dim>
@@ -1067,6 +1077,7 @@
                 <Image type="LeftEdge" imageset="TaharezLook" image="ProgressBarLeft" />
                 <Image type="RightEdge" imageset="TaharezLook" image="ProgressBarRight" />
                 <Image type="Background" imageset="TaharezLook" image="ProgressBarMiddle" />
+                <HorzFormat type="Tiled" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="progress_lights" >

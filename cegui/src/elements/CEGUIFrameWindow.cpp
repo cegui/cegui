@@ -213,6 +213,8 @@ void FrameWindow::toggleRollup(void)
         // event notification.
         WindowEventArgs args(this);
         onRollupToggled(args);
+
+        System::getSingleton().updateWindowContainingMouse();
     }
 
 }

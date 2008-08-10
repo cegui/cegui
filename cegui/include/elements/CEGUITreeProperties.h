@@ -1,10 +1,10 @@
 /***********************************************************************
-filename:   CEGUITreeProperties.h
-created:	5-13-07
-author:		Jonathan Welch (Based on Code by David Durant)
+    filename:   CEGUITreeProperties.h
+    created:	5-13-07
+    author:		Jonathan Welch (Based on Code by David Durant)
 *************************************************************************/
 /***************************************************************************
-*   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+*   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
 *
 *   Permission is hereby granted, free of charge, to any person obtaining
 *   a copy of this software and associated documentation files (the
@@ -38,28 +38,30 @@ namespace CEGUI
 // Start of TreeProperties namespace section
 /*!
 \brief
-	Namespace containing all classes that make up the properties interface for the Listbox class
+	Namespace containing classes that make up the properties interface specific
+    to the Tree class.
 */
 namespace TreeProperties
 {
 /*!
 \brief
-	Property to access the sort setting of the list box.
+	Property to access the sort setting of the Tree.
 
 	\par Usage:
 		- Name: Sort
 		- Format: "[text]"
 
 	\par Where [Text] is:
-		- "True" to indicate the list items should be sorted.
-		- "False" to indicate the list items should not be sorted.
+		- "True" to indicate the tree items should be sorted.
+		- "False" to indicate the tree items should not be sorted.
 */
 class Sort : public Property
 {
 public:
 	Sort() : Property(
 		"Sort",
-		"Property to get/set the sort setting of the list box.  Value is either \"True\" or \"False\".",
+		"Property to get/set the sort setting of the tree.  "
+        "Value is either \"True\" or \"False\".",
 		"False")
 	{}
 
@@ -70,7 +72,7 @@ public:
 
 /*!
 \brief
-	Property to access the multi-select setting of the list box.
+	Property to access the multi-select setting of the tree.
 
 	\par Usage:
 		- Name: MultiSelect
@@ -85,7 +87,8 @@ class MultiSelect : public Property
 public:
 	MultiSelect() : Property(
 		"MultiSelect",
-		"Property to get/set the multi-select setting of the list box.  Value is either \"True\" or \"False\".",
+		"Property to get/set the multi-select setting of the tree.  "
+        "Value is either \"True\" or \"False\".",
 		"False")
 	{}
 
@@ -96,7 +99,8 @@ public:
 
 /*!
 \brief
-	Property to access the 'always show' setting for the vertical scroll bar of the list box.
+	Property to access the 'always show' setting for the vertical scroll bar of
+    the tree.
 
 	\par Usage:
 		- Name: ForceVertScrollbar
@@ -104,14 +108,16 @@ public:
 
 	\par Where [Text] is:
 		- "True" to indicate that the vertical scroll bar will always be shown.
-		- "False" to indicate that the vertical scroll bar will only be shown when it is needed.
+		- "False" to indicate that the vertical scroll bar will only be shown
+          when it is needed.
 */
 class ForceVertScrollbar : public Property
 {
 public:
 	ForceVertScrollbar() : Property(
 		"ForceVertScrollbar",
-		"Property to get/set the 'always show' setting for the vertical scroll bar of the list box.  Value is either \"True\" or \"False\".",
+		"Property to get/set the 'always show' setting for the vertical scroll "
+        "bar of the tree.  Value is either \"True\" or \"False\".",
 		"False")
 	{}
 
@@ -122,22 +128,26 @@ public:
 
 /*!
 \brief
-	Property to access the 'always show' setting for the horizontal scroll bar of the list box.
+	Property to access the 'always show' setting for the horizontal scroll bar
+    of the tree.
 
 	\par Usage:
 		- Name: ForceHorzScrollbar
 		- Format: "[text]"
 
 	\par Where [Text] is:
-		- "True" to indicate that the horizontal scroll bar will always be shown.
-		- "False" to indicate that the horizontal scroll bar will only be shown when it is needed.
+		- "True" to indicate that the horizontal scroll bar will always be
+          shown.
+		- "False" to indicate that the horizontal scroll bar will only be shown
+          when it is needed.
 */
 class ForceHorzScrollbar : public Property
 {
 public:
 	ForceHorzScrollbar() : Property(
 		"ForceHorzScrollbar",
-		"Property to get/set the 'always show' setting for the horizontal scroll bar of the list box.  Value is either \"True\" or \"False\".",
+		"Property to get/set the 'always show' setting for the horizontal "
+        "scroll bar of the tree.  Value is either \"True\" or \"False\".",
 		"False")
 	{}
 
@@ -147,22 +157,24 @@ public:
 
 /*!
 \brief
-Property to access the show item tooltips setting of the list box.
+    Property to access the show item tooltips setting of the tree.
 
-\par Usage:
-- Name: ItemTooltips
-- Format: "[text]"
+    \par Usage:
+        - Name: ItemTooltips
+        - Format: "[text]"
 
-\par Where [Text] is:
-- "True" to indicate that the tooltip of the list box will be set by the item below the mouse pointer
-- "False" to indicate that the list box has a static tooltip.
+    \par Where [Text] is:
+        - "True" to indicate that the tooltip of the tree will be set by the
+          item below the mouse pointer
+        - "False" to indicate that the tree has a static tooltip.
 */
 class ItemTooltips : public Property
 {
 public:
 	ItemTooltips() : Property(
 		"ItemTooltips",
-		"Property to access the show item tooltips setting of the list box.  Value is either \"True\" or \"False\".",
+		"Property to access the show item tooltips setting of the tree.  "
+        "Value is either \"True\" or \"False\".",
 		"False")
 	{}
 
