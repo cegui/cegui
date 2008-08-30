@@ -79,7 +79,14 @@ void	SortSettingEnabled::set(PropertyReceiver* receiver, const String& value)
 String	SortColumnID::get(const PropertyReceiver* receiver) const
 {
 	const MultiColumnList* mcl = static_cast<const MultiColumnList*>(receiver);
-	return PropertyHelper::uintToString(mcl->getColumnID(mcl->getSortColumn()));
+	// scriptkid: this check was added to fix mantis ticket #219 (editor), but could also get called
+	// from another client app. Also, the API docs state that getSortColumn requires at least one column,
+	// so this check doesn't hurt.
+	if (mcl->getColumnCount() > 0)
+	{
+		return PropertyHelper::uintToString(mcl->getColumnID(mcl->getSortColumn()));
+	}
+	return "0"; // Return default value. For the Setting part, responsibility lies with the caller again.
 }
 
 
@@ -132,7 +139,12 @@ void	SortDirection::set(PropertyReceiver* receiver, const String& value)
 
 String	NominatedSelectionColumnID::get(const PropertyReceiver* receiver) const
 {
-	return PropertyHelper::uintToString(static_cast<const MultiColumnList*>(receiver)->getNominatedSelectionColumnID());
+	const MultiColumnList* mcl = static_cast<const MultiColumnList*>(receiver);
+	if (mcl->getColumnCount() > 0)
+	{
+		return PropertyHelper::uintToString(mcl->getNominatedSelectionColumnID());
+	}
+	return "0"; // Return default value. For the Setting part, responsibility lies with the caller again.
 }
 
 

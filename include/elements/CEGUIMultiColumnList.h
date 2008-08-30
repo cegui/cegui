@@ -529,7 +529,7 @@ public:
 	/*!
 	\brief
 		Return the ID of the currently set nominated selection column to be used when in one of the NominatedColumn*
-		selection modes.
+		selection modes. There must be at least one column to successfully call this method.
 
 	\note
 		You should only ever call this when getColumnCount() returns > 0.
