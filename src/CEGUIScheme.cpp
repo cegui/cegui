@@ -2,7 +2,7 @@
 	filename: 	CEGUIScheme.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements GUI Scheme class
 *************************************************************************/
 /***************************************************************************
@@ -83,7 +83,10 @@ Scheme::Scheme(const String& filename, const String& resourceGroup)
         throw;
 	}
 
-	Logger::getSingleton().logEvent("Loaded GUI scheme '" + d_name + "' from data in file '" + filename + "'.", Informative);
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+	Logger::getSingleton().logEvent("Loaded GUI scheme '" + d_name +
+       "' from data in file '" + filename + "'. " + addr_buff, Informative);
 
 	// attempt to load in resources
 	loadResources();
@@ -97,7 +100,10 @@ Scheme::~Scheme(void)
 {
 	unloadResources();
 
-	Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been unloaded.", Informative);
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+    Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been "
+        "unloaded (object destructor). " + addr_buff, Informative);
 }
 
 
@@ -343,7 +349,7 @@ void Scheme::loadFactoryAliases()
     std::vector<AliasMapping>::iterator alias = d_aliasMappings.begin();
     for (;alias != d_aliasMappings.end(); ++alias)
     {
-        // get iterator 
+        // get iterator
         WindowFactoryManager::TypeAliasIterator iter = wfmgr.getAliasIterator();
 
         // look for this alias
@@ -530,7 +536,7 @@ void Scheme::unloadFactoryAliases()
     // remove all factory aliases
     for (;alias != d_aliasMappings.end(); ++alias)
     {
-        // get iterator 
+        // get iterator
         WindowFactoryManager::TypeAliasIterator iter = wfmgr.getAliasIterator();
 
         // look for this alias
@@ -716,7 +722,7 @@ bool Scheme::areFactoryAliasesLoaded() const
     // check aliases
     for (;alias != d_aliasMappings.end(); ++alias)
     {
-        // get iterator 
+        // get iterator
         WindowFactoryManager::TypeAliasIterator iter = wfmgr.getAliasIterator();
 
         // look for this alias

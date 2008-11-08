@@ -99,7 +99,7 @@ void Imageset_xmlHandler::elementImagesetStart(const XMLAttributes& attributes)
     float hres = static_cast<float>(attributes.getValueAsInteger(ImagesetNativeHorzResAttribute, 640));
     // get native vertical resolution
     float vres = static_cast<float>(attributes.getValueAsInteger(ImagesetNativeVertResAttribute, 480));
-    // set native resolution for imageset 
+    // set native resolution for imageset
     d_imageset->setNativeResolution(Size(hres, vres));
     // enable / disable auto-scaling for this Imageset according to the setting
     d_imageset->setAutoScalingEnabled(attributes.getValueAsBool(ImagesetAutoScaledAttribute, false));
@@ -152,7 +152,10 @@ void Imageset_xmlHandler::elementImageStart(const XMLAttributes& attributes)
 *************************************************************************/
 void Imageset_xmlHandler::elementImagesetEnd()
 {
-    Logger::getSingleton().logEvent("Finished creation of Imageset '" + d_imageset->d_name + "' via XML file.", Informative);
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", d_imageset);
+    Logger::getSingleton().logEvent("Finished creation of Imageset '" +
+        d_imageset->d_name + "' via XML file. " + addr_buff, Informative);
 }
 
 } // End of  CEGUI namespace section

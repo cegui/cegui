@@ -2,7 +2,7 @@
 	filename: 	CEGUIWindowManager.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements the WindowManager class
 *************************************************************************/
 /***************************************************************************
@@ -62,7 +62,10 @@ const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
 WindowManager::WindowManager(void) :
     d_uid_counter(0)
 {
-    Logger::getSingleton().logEvent("CEGUI::WindowManager singleton created");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+    Logger::getSingleton().logEvent(
+        "CEGUI::WindowManager singleton created " + String(addr_buff));
 }
 
 
@@ -74,7 +77,10 @@ WindowManager::~WindowManager(void)
 	destroyAllWindows();
     cleanDeadPool();
 
-	Logger::getSingleton().logEvent("CEGUI::WindowManager singleton destroyed");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+    Logger::getSingleton().logEvent(
+        "CEGUI::WindowManager singleton destroyed " + String(addr_buff));
 }
 
 
@@ -101,7 +107,11 @@ Window* WindowManager::createWindow( const String& type, const String& name /*= 
 
     Window* newWindow = factory->createWindow(finalName);
 	newWindow->setPrefix(prefix);
-    Logger::getSingleton().logEvent("Window '" + finalName +"' of type '" + type + "' has been created.", Informative);
+
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", newWindow);
+    Logger::getSingleton().logEvent("Window '" + finalName +"' of type '" +
+        type + "' has been created. " + addr_buff, Informative);
 
     // see if we need to assign a look to this window
     if (wfMgr.isFalagardMappedType(type))
@@ -162,7 +172,10 @@ void WindowManager::destroyWindow(const String& window)
         // notify system object of the window destruction
         System::getSingleton().notifyWindowDestroyed(wnd);
 
-		Logger::getSingleton().logEvent("Window '" + window + "' has been added to dead pool.", Informative);
+        char addr_buff[32];
+        sprintf(addr_buff, "(%#x)", wnd);
+        Logger::getSingleton().logEvent("Window '" + window + "' has been "
+            "added to dead pool. " + addr_buff, Informative);
 	}
 
 }
@@ -210,7 +223,7 @@ void WindowManager::destroyAllWindows(void)
 
 /*************************************************************************
 	Creates a set of windows (a Gui layout) from the information in the
-	specified XML file.	
+	specified XML file.
 *************************************************************************/
 Window* WindowManager::loadWindowLayout(const String& filename, const String& name_prefix, const String& resourceGroup, PropertyCallback* callback, void* userdata)
 {
@@ -248,8 +261,8 @@ Window* WindowManager::loadWindowLayout( const String& filename, bool generateRa
 	//We really just use the bool to get rid of ambiguity with the other loadWindowLayout. There is no difference between
 	//calling this loadWindowLayout and setting GRP to false, and calling the other one with no argument
 	if(generateRandomPrefix)
-		return loadWindowLayout(filename,generateUniqueWindowPrefix());  
-	
+		return loadWindowLayout(filename,generateUniqueWindowPrefix());
+
 		return loadWindowLayout(filename);
 }
 bool WindowManager::isDeadPoolEmpty(void) const
@@ -270,7 +283,7 @@ void WindowManager::cleanDeadPool(void)
         WindowFactory* factory = WindowFactoryManager::getSingleton().getFactory((*curr)->getType());
         factory->destroyWindow(*curr);
     }
-    
+
     // all done here, so clear all pointers from dead pool
     d_deathrow.clear();
 }
@@ -319,7 +332,7 @@ CEGUI::String WindowManager::generateUniqueWindowPrefix()
 {
 	std::ostringstream prefix;
 	prefix << d_uid_counter << "_";
-	
+
 	// update counter for next time
 	unsigned long old_uid = d_uid_counter;
 	++d_uid_counter;

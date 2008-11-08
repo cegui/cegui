@@ -2,7 +2,7 @@
 	filename: 	CEGUISchemeManager.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements SchemeManager class
 *************************************************************************/
 /***************************************************************************
@@ -48,7 +48,10 @@ template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton	= 0;
 *************************************************************************/
 SchemeManager::SchemeManager(void)
 {
-	Logger::getSingleton().logEvent("CEGUI::SchemeManager singleton created.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+    Logger::getSingleton().logEvent(
+       "CEGUI::SchemeManager singleton created. " + String(addr_buff));
 }
 
 
@@ -61,7 +64,10 @@ SchemeManager::~SchemeManager(void)
 
 	unloadAllSchemes();
 
-	Logger::getSingleton().logEvent("CEGUI::SchemeManager singleton destroyed.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+    Logger::getSingleton().logEvent(
+       "CEGUI::SchemeManager singleton destroyed. " + String(addr_buff));
 }
 
 
@@ -90,10 +96,15 @@ void SchemeManager::unloadScheme(const String& scheme_name)
 	{
 		String tmpName(scheme_name);
 
+        char addr_buff[32];
+        sprintf(addr_buff, "(%#x)", pos->second);
+
 		delete pos->second;
 		d_schemes.erase(pos);
 
-		Logger::getSingleton().logEvent("Scheme '" + tmpName + "' has been unloaded.");
+        Logger::getSingleton().logEvent(
+            "Scheme '" + tmpName + "' has been unloaded via the SchemeManager. "
+            + addr_buff);
 	}
 	else
 	{

@@ -2,7 +2,7 @@
 	filename: 	CEGUIWindowFactoryManager.cpp
 	created:	22/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements the WindowFactoryManager
 *************************************************************************/
 /***************************************************************************
@@ -62,7 +62,10 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 	// add the factory to the registry
 	d_factoryRegistry[factory->getTypeName()] = factory;
 
-	Logger::getSingleton().logEvent("WindowFactory for '" + factory->getTypeName() +"' windows added.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", factory);
+	Logger::getSingleton().logEvent("WindowFactory for '" +
+       factory->getTypeName() +"' windows added. " + addr_buff);
 }
 
 
@@ -208,7 +211,7 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 	{
 		// find the specified target for this alias
 		std::vector<String>::iterator aliasPos = std::find(pos->second.d_targetStack.begin(), pos->second.d_targetStack.end(), targetType);
-		
+
 		// if the target exists for this alias
 		if (aliasPos != pos->second.d_targetStack.end())
 		{
@@ -247,7 +250,11 @@ void WindowFactoryManager::addFalagardWindowMapping(const String& newType, const
         Logger::getSingleton().logEvent("Falagard mapping for type '" + newType + "' already exists - current mapping will be replaced.");
     }
 
-    Logger::getSingleton().logEvent("Creating falagard mapping for type '" + newType + "' using base type '" + targetType + "', window renderer '" + renderer + "' and Look'N'Feel '" + lookName + "'.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", &mapping);
+    Logger::getSingleton().logEvent("Creating falagard mapping for type '" +
+        newType + "' using base type '" + targetType + "', window renderer '" +
+        renderer + "' and Look'N'Feel '" + lookName + "'. " + addr_buff);
 
     d_falagardRegistry[newType] = mapping;
 }

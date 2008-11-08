@@ -91,7 +91,10 @@ void Font_xmlHandler::elementFontStart (const XMLAttributes& attributes)
 void Font_xmlHandler::elementFontEnd ()
 {
 	d_font->load ();
-    Logger::getSingleton ().logEvent ("Finished creation of Font '" + d_font->d_name + "' via XML file.", Informative);
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", d_font);
+    Logger::getSingleton ().logEvent ("Finished creation of Font '" +
+        d_font->d_name + "' via XML file. " + addr_buff, Informative);
 }
 
 } // End of  CEGUI namespace section
