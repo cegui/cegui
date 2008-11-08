@@ -885,7 +885,7 @@ bool System::injectKeyDown(uint key_code)
 
 	KeyEventArgs args(0);
 
-	if (d_activeSheet)
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
@@ -916,7 +916,7 @@ bool System::injectKeyUp(uint key_code)
 
 	KeyEventArgs args(0);
 
-	if (d_activeSheet)
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
@@ -944,7 +944,7 @@ bool System::injectChar(utf32 code_point)
 {
 	KeyEventArgs args(0);
 
-	if (d_activeSheet)
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
@@ -1045,8 +1045,8 @@ Window*	System::getTargetWindow(const Point& pt) const
 {
 	Window* dest_window = 0;
 
-	// if there is no GUI sheet, then there is nowhere to send input
-	if (d_activeSheet)
+	// if there is no GUI sheet visible, then there is nowhere to send input
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		dest_window = Window::getCaptureWindow();
 
