@@ -136,7 +136,7 @@ bool LuaFunctor::operator()(const EventArgs& args) const
     tolua_pushusertype(L, (void*)&args, "const CEGUI::EventArgs");
 
     // call it
-    int error = lua_pcall(L, nargs, 0, 0);
+    int error = lua_pcall(L, nargs, 1, 0);
 
     // handle errors
     if (error)
@@ -151,13 +151,17 @@ bool LuaFunctor::operator()(const EventArgs& args) const
         throw ScriptException("Unable to call Lua event handler:\n\n"+errStr+"\n");
     } // if (error)
 
+    // retrieve result
+    bool ret = lua_isboolean(L, -1) ? lua_toboolean(L, -1 ) : true;
+    lua_pop(L, 1);
+
 	if(helper)
 	{
 		delete helper;
 		helper = 0;
 	}
 
-    return true;
+    return ret;
 }
 
 /*************************************************************************
