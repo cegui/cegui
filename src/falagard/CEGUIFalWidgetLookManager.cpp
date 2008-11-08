@@ -44,12 +44,18 @@ namespace CEGUI
 
     WidgetLookManager::WidgetLookManager()
     {
-        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton created.");
+        char addr_buff[32];
+        sprintf(addr_buff, "(%#x)", this);
+        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
+            "created. " + String(addr_buff));
     }
 
     WidgetLookManager::~ WidgetLookManager()
     {
-        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton destroyed.");
+        char addr_buff[32];
+        sprintf(addr_buff, "(%#x)", this);
+        Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
+            "destroyed. " + String(addr_buff));
     }
 
     /*************************************************************************

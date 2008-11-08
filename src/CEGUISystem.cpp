@@ -391,7 +391,10 @@ System::~System(void)
 	// cleanup singletons
     destroySingletons();
 
-	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
+       String(addr_buff));
 	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
 	delete Logger::getSingletonPtr();
 
@@ -701,7 +704,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 
         return mouseMoveInjection_impl(ma);
     }
-    
+
     return false;
 }
 
@@ -1016,7 +1019,7 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 
         return mouseMoveInjection_impl(ma);
     }
-    
+
     return false;
 }
 
@@ -1458,7 +1461,9 @@ void System::setDefaultTooltip(const String& tooltipType)
 
 void System::outputLogHeader()
 {
-    Logger::getSingleton().logEvent("CEGUI::System singleton created.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%#x)", this);
+    Logger::getSingleton().logEvent("CEGUI::System singleton created. " + String(addr_buff));
     Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
     Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
     Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
@@ -1688,7 +1693,7 @@ bool System::updateWindowContainingMouse()
         ma.window = d_wndWithMouse;
         d_wndWithMouse->onMouseEnters(ma);
     }
-    
+
     return true;
 }
 
