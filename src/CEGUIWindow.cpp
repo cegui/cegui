@@ -297,18 +297,22 @@ bool Window::isActive(void) const
 *************************************************************************/
 bool Window::isChild(const String& name) const
 {
-	size_t child_count = getChildCount();
+    size_t child_count = getChildCount();
 
-	for (size_t i = 0; i < child_count; ++i)
-	{
-		if (d_children[i]->getName() == name)
-		{
-			return true;
-		}
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        const String childName(d_children[i]->getName());
 
-	}
+        if (childName == name ||
+            childName == d_children[i]->d_windowPrefix + name)
 
-	return false;
+        {
+            return true;
+        }
+
+    }
+
+    return false;
 }
 
 /*************************************************************************
@@ -873,7 +877,7 @@ void Window::setVisible(bool setting)
 		d_visible = setting;
         WindowEventArgs args(this);
 		d_visible ? onShown(args) : onHidden(args);
-        
+
         System::getSingleton().updateWindowContainingMouse();
 	}
 
@@ -2102,7 +2106,7 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size, bool topLef
             onSized(args);
         }
     }
-    
+
     if (moved || sized)
         System::getSingleton().updateWindowContainingMouse();
 }
@@ -3294,7 +3298,7 @@ void Window::insertText(const String& text, const String::size_type position)
     WindowEventArgs args(this);
     onTextChanged(args);
 }
-    
+
 //----------------------------------------------------------------------------//
 void Window::appendText(const String& text)
 {
