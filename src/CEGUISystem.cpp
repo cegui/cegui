@@ -591,6 +591,11 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 		{
 			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
+        // Forward script exceptions with line number and file info
+        catch(ScriptException& e)
+        {
+            throw e;
+        }
 		catch(...)
 		{
 			throw GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file.");
@@ -617,6 +622,11 @@ int	System::executeScriptGlobal(const String& function_name) const
 		{
 			return d_scriptModule->executeScriptGlobal(function_name);
 		}
+        // Forward script exceptions with line number and file info
+        catch(ScriptException& e)
+        {
+            throw e;
+        }
 		catch(...)
 		{
 			throw GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
@@ -643,6 +653,11 @@ void System::executeScriptString(const String& str) const
         try
         {
             d_scriptModule->executeString(str);
+        }
+        // Forward script exceptions with line number and file info
+        catch(ScriptException& e)
+        {
+            throw e;
         }
         catch(...)
         {
