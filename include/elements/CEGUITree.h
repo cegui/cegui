@@ -68,7 +68,7 @@ public:
     The CEGUI::Tree, CEGUI::TreeItem and any other associated classes are
     deprecated and thier use should be minimised - preferably eliminated -
     where possible.  It is extremely unfortunate that this widget was ever added
-    to CEGUI since its design and implementation are poor and do not meet 
+    to CEGUI since its design and implementation are poor and do not meet
     established standards for the CEGUI project.
     \par
     While no alternative currently exists, a superior, replacement tree widget
@@ -78,12 +78,12 @@ class CEGUIEXPORT Tree : public Window
 {
     friend class TreeItem;
     typedef	std::vector<TreeItem*>	LBItemList;
-    
+
 public:
     //! Namespace for global events
     static const String EventNamespace;
     static const String WidgetTypeName;
-    
+
     /*************************************************************************
         Constants
      *************************************************************************/
@@ -119,7 +119,7 @@ public:
     /*!
      \brief
         Return number of items attached to the tree
-     
+
      \return
         the number of items currently attached to this tree.
      */
@@ -129,7 +129,7 @@ public:
     /*!
      \brief
         Return the number of selected items in the tree.
-     
+
      \return
         Total number of attached items that are in the selected state.
      */
@@ -138,17 +138,17 @@ public:
     /*!
      \brief
         Return a pointer to the first selected item.
-     
+
      \return
         Pointer to a TreeItem based object that is the first selected item in
         the tree.  will return 0 if no item is selected.
      */
     TreeItem* getFirstSelectedItem(void) const;
-        
+
     /*!
      \brief
         Return a pointer to the first selected item.
-     
+
      \return
         Pointer to a TreeItem based object that is the last item selected by the
         user, not necessarily the last selected in the tree.  Will return 0 if
@@ -160,22 +160,22 @@ public:
     /*!
      \brief
         Return a pointer to the next selected item after item \a start_item
-     
+
      \param start_item
          Pointer to the TreeItem where the search for the next selected item is
          to begin.  If this parameter is 0, the search will begin with the first
          item in the tree.
-     
+
      \return
          Pointer to a TreeItem based object that is the next selected item in
          the tree after the item specified by \a start_item.  Will return 0 if
          no further items were selected.
-     
+
      \exception	InvalidRequestException	thrown if \a start_item is not attached
         to this tree.
      */
     TreeItem* getNextSelected(const TreeItem* start_item) const;
-    
+
     TreeItem* getNextSelectedItemFromList(const LBItemList &itemList,
                                           const TreeItem* start_item,
                                           bool foundStartItem) const;
@@ -183,17 +183,17 @@ public:
     /*!
      \brief
         return whether tree sorting is enabled
-     
+
      \return
         - true if the tree is sorted
         - false if the tree is not sorted
      */
     bool isSortEnabled(void) const
         { return d_sorted; }
-    
+
     void setItemRenderArea(Rect& r)
         { d_itemArea = r; }
-    
+
     Scrollbar* getVertScrollbar()
         { return d_vertScrollbar; }
 
@@ -203,32 +203,32 @@ public:
     /*!
      \brief
         return whether multi-select is enabled
-     
+
      \return
         true if multi-select is enabled, false if multi-select is not enabled.
      */
     bool isMultiselectEnabled(void) const
         { return d_multiselect; }
-    
+
     bool isItemTooltipsEnabled(void) const
         { return d_itemTooltips; }
 
     /*!
      \brief
         Search the tree for an item with the specified text
-     
+
      \param text
         String object containing the text to be searched for.
-     
+
      \param start_item
         TreeItem where the search is to begin, the search will not include \a
         item.  If \a item is 0, the search will begin from the first item in
         the tree.
-     
+
      \return
         Pointer to the first TreeItem in the tree after \a item that has text
         matching \a text.  If no item matches the criteria, 0 is returned.
-     
+
      \exception	InvalidRequestException	thrown if \a item is not attached to
         this tree.
      */
@@ -245,19 +245,19 @@ public:
     /*!
      \brief
         Search the tree for an item with the specified text
-     
+
      \param text
         String object containing the text to be searched for.
-     
+
      \param start_item
         TreeItem where the search is to begin, the search will not include
         \a item.  If \a item is 0, the search will begin from the first item in
         the tree.
-     
+
      \return
         Pointer to the first TreeItem in the tree after \a item that has text
         matching \a text.  If no item matches the criteria 0 is returned.
-     
+
      \exception	InvalidRequestException	thrown if \a item is not attached to
         this tree.
      */
@@ -270,7 +270,7 @@ public:
     /*!
      \brief
         Return whether the specified TreeItem is in the tree
-     
+
      \return
         - true if TreeItem \a item is in the tree
         - false if TreeItem \a item is not in the tree.
@@ -280,7 +280,7 @@ public:
     /*!
      \brief
         Return whether the vertical scroll bar is always shown.
-     
+
      \return
          - true if the scroll bar will always be shown even if it is not required.
          - false if the scroll bar will only be shown when it is required.
@@ -290,7 +290,7 @@ public:
     /*!
      \brief
         Return whether the horizontal scroll bar is always shown.
-     
+
      \return
          - true if the scroll bar will always be shown even if it is not required.
          - false if the scroll bar will only be shown when it is required.
@@ -303,7 +303,7 @@ public:
     /*!
      \brief
         Initialise the Window based object ready for use.
-     
+
      \note
         This must be called for every window created.  Normally this is handled
         automatically by the WindowFactory for each Window type.
@@ -316,7 +316,7 @@ public:
     /*!
      \brief
         Remove all items from the tree.
-     
+
         Note that this will cause 'AutoDelete' items to be deleted.
      */
     void resetList(void);
@@ -324,12 +324,12 @@ public:
     /*!
      \brief
         Add the given TreeItem to the tree.
-     
+
      \param item
          Pointer to the TreeItem to be added to the tree.  Note that it is the
          passed object that is added to the tree, a copy is not made.  If this
          parameter is NULL, nothing happens.
-     
+
      \return
         Nothing.
      */
@@ -339,22 +339,22 @@ public:
      \brief
         Insert an item into the tree after a specified item already in the
         tree.
-     
+
         Note that if the tree is sorted, the item may not end up in the
         requested position.
-     
+
      \param item
          Pointer to the TreeItem to be inserted.  Note that it is the passed
          object that is added to the tree, a copy is not made.  If this
          parameter is 0, nothing happens.
-     
+
      \param position
          Pointer to a TreeItem that \a item is to be inserted after.  If this
          parameter is 0, the item is inserted at the start of the tree.
-     
+
      \return
         Nothing.
-     
+
      \exception InvalidRequestException	thrown if no TreeItem \a position is
         attached to this tree.
      */
@@ -364,11 +364,11 @@ public:
      \brief
         Removes the given item from the tree.  If the item is has the auto
         delete state set, the item will be deleted.
-     
+
      \param item
         Pointer to the TreeItem that is to be removed.  If \a item is not
         attached to this tree then nothing will happen.
-     
+
      \return
         Nothing.
      */
@@ -377,7 +377,7 @@ public:
     /*!
      \brief
         Clear the selected state for all items.
-     
+
      \return
         Nothing.
      */
@@ -387,11 +387,11 @@ public:
     /*!
      \brief
         Set whether the tree should be sorted.
-     
+
      \param setting
         - true if the tree should be sorted
         - false if the tree should not be sorted.
-     
+
      \return
         Nothing.
      */
@@ -401,7 +401,7 @@ public:
      \brief
         Set whether the tree should allow multiple selections or just a single
         selection.
-     
+
      \param  setting
          - true if the widget should allow multiple items to be selected
          - false if the widget should only allow a single selection.
@@ -414,7 +414,7 @@ public:
     /*!
      \brief
         Set whether the vertical scroll bar should always be shown.
-     
+
      \param setting
          - true if the vertical scroll bar should be shown even when it is not
            required.
@@ -429,7 +429,7 @@ public:
     /*!
      \brief
         Set whether the horizontal scroll bar should always be shown.
-     
+
      \param setting
          - true if the horizontal scroll bar should be shown even when it is not
            required.
@@ -440,29 +440,29 @@ public:
         Nothing.
      */
     void setShowHorzScrollbar(bool setting);
-    
+
     void setItemTooltipsEnabled(bool setting);
 
     /*!
      \brief
         Set the select state of an attached TreeItem.
-     
+
         This is the recommended way of selecting and deselecting items attached
         to a tree as it respects the multi-select mode setting.  It is
         possible to modify the setting on TreeItems directly, but that approach
         does not respect the settings of the tree.
-     
+
      \param item
         The TreeItem to be affected.
         This item must be attached to the tree.
-     
+
      \param state
         - true to select the item.
         - false to de-select the item.
-     
+
      \return
         Nothing.
-     
+
      \exception	InvalidRequestException	thrown if \a item is not attached to
         this tree.
      */
@@ -471,12 +471,12 @@ public:
     /*!
      \brief
         Set the select state of an attached TreeItem.
-     
+
         This is the recommended way of selecting and deselecting items attached
         to a tree as it respects the multi-select mode setting.  It is
         possible to modify the setting on TreeItems directly, but that approach
         does not respect the settings of the tree.
-     
+
      \param item_index
         The zero based index of the TreeItem to be affected.
         This must be a valid index (0 <= index < getItemCount())
@@ -484,44 +484,44 @@ public:
      \param state
         - true to select the item.
         - false to de-select the item.
-     
+
      \return
         Nothing.
-     
+
      \exception	InvalidRequestException	thrown if \a item_index is out of range
         for the tree
      */
     void setItemSelectState(size_t item_index, bool state);
-    
+
     /*!
      \brief
         Set the LookNFeel that shoule be used for this window.
-     
+
      \param look
         String object holding the name of the look to be assigned to the window.
-     
+
      \return
         Nothing.
-     
+
      \exception UnknownObjectException
         thrown if the look'n'feel specified by \a look does not exist.
-     
+
      \note
         Once a look'n'feel has been assigned it is locked - as in cannot be
         changed.
      */
     virtual void setLookNFeel(const String& look);
-    
+
     /*!
      \brief
         Causes the tree to update it's internal state after changes have
         been made to one or more attached TreeItem objects.
-     
+
         Client code must call this whenever it has made any changes to TreeItem
         objects already attached to the tree.  If you are just adding items,
         or removed items to update them prior to re-adding them, there is no
         need to call this method.
-     
+
      \return
         Nothing.
      */
@@ -530,19 +530,19 @@ public:
     /*!
      \brief
         Ensure the item at the specified index is visible within the tree.
-     
+
      \param item
         Pointer to the TreeItem to be made visible in the tree.
-     
+
      \return
         Nothing.
-     
+
      \exception	InvalidRequestException	thrown if \a item is not attached to
         this tree.
      */
     void ensureItemIsVisible(const TreeItem* item);
-    
-    
+
+
     /*************************************************************************
      Construction and Destruction
      *************************************************************************/
@@ -566,22 +566,22 @@ protected:
      \brief
         Return a Rect object describing, in un-clipped pixels, the window
         relative area that is to be used for rendering tree items.
-     
+
      \return
         Rect object describing the area of the Window to be used for rendering
         tree items.
      */
     virtual	Rect getTreeRenderArea(void) const
         { return d_itemArea; }
-    
+
     /*!
      \brief
         create and return a pointer to a Scrollbar widget for use as vertical
         scroll bar.
-     
+
      \param name
         String holding the name to be given to the created widget component.
-     
+
      \return
         Pointer to a Scrollbar to be used for scrolling the tree vertically.
      */
@@ -592,10 +592,10 @@ protected:
      \brief
         create and return a pointer to a Scrollbar widget for use as horizontal
         scroll bar.
-     
+
      \param name
         String holding the name to be given to the created widget component.
-     
+
      \return
         Pointer to a Scrollbar to be used for scrolling the tree horizontally.
      */
@@ -608,37 +608,43 @@ protected:
          This method should not render the actual items.  Note that the items
          are typically rendered to layer 3, other layers can be used for
          rendering imagery behind and infront of the items.
-     
+
      \return
         Nothing.
      */
     virtual	void cacheTreeBaseImagery()
     {}
-    
+
     /*************************************************************************
         Implementation Functions
      *************************************************************************/
+    /*!
+    \brief
+        Checks if a tree item is visible (searches sub-items)
+    */
+    bool containsOpenItemRecursive(const LBItemList& itemList, TreeItem* item);
+
     /*!
      \brief
         Add tree specific events
      */
     void addTreeEvents(void);
-    
-    
+
+
     /*!
      \brief
         display required integrated scroll bars according to current state of
         the tree and update their values.
      */
     void configureScrollbars(void);
-    
+
     /*!
      \brief
         select all strings between positions \a start and \a end.  (inclusive)
         including \a end.
      */
     void selectRange(size_t start, size_t end);
-    
+
     /*!
      \brief
         Return the sum of all item heights
@@ -654,11 +660,11 @@ protected:
     float getWidestItemWidth(void) const;
     void getWidestItemWidthInList(const LBItemList &itemList, int itemDepth,
                                   float *widest) const;
-    
+
     /*!
      \brief
         Clear the selected state for all items (implementation)
-     
+
      \return
         - true if treeItem was found in the search.
         - false if it was not.
@@ -671,7 +677,7 @@ protected:
     /*!
      \brief
         Clear the selected state for all items (implementation)
-     
+
      \return
         - true if some selections were cleared
         - false nothing was changed.
@@ -681,7 +687,7 @@ protected:
     /*!
      \brief
         Return the TreeItem under the given window local pixel co-ordinate.
-     
+
      \return
          TreeItem that is under window pixel co-ordinate \a pt, or 0 if no
          item is under that position.
@@ -693,10 +699,10 @@ protected:
     /*!
      \brief
         Remove all items from the tree.
-     
+
      \note
         Note that this will cause 'AutoDelete' items to be deleted.
-     
+
      \return
          - true if the tree contents were changed.
          - false if the tree contents were not changed (tree already empty).
@@ -707,10 +713,10 @@ protected:
      \brief
         Return whether this window was inherited from the given class name at
         some point in the inheritance heirarchy.
-     
+
      \param class_name
         The class name that is to be checked.
-     
+
      \return
         true if this window was inherited from \a class_name. false if not.
      */
@@ -721,17 +727,17 @@ protected:
 
         return Window::testClassName_impl(class_name);
     }
-    
+
     /*!
      \brief
         Internal handler that is triggered when the user interacts with the
         scrollbars.
      */
     bool handle_scrollChange(const EventArgs& args);
-    
+
     // overridden from Window base class.
     virtual void populateRenderCache();
-    
+
     void drawItemList(LBItemList &itemList, Rect &itemsArea, float widest,
                       Vector3 &itemPos, RenderCache& cache, float alpha);
 
@@ -776,19 +782,19 @@ protected:
         scroll bar setting changes.
      */
     virtual	void onHorzScrollbarModeChanged(WindowEventArgs& e);
-    
+
     /*!
      \brief
         Handler called internally when the user opens a branch of the tree.
      */
     virtual	void onBranchOpened(TreeEventArgs& e);
-    
+
     /*!
      \brief
         Handler called internally when the user closes a branch of the tree.
      */
     virtual	void onBranchClosed(TreeEventArgs& e);
-    
+
     /*************************************************************************
         Overridden Event handlers
      *************************************************************************/
@@ -830,7 +836,7 @@ private:
     static TreeProperties::ForceVertScrollbar	d_forceVertProperty;
     static TreeProperties::ForceHorzScrollbar	d_forceHorzProperty;
     static TreeProperties::ItemTooltips			d_itemTooltipsProperty;
-    
+
     /*************************************************************************
         Private methods
      *************************************************************************/
