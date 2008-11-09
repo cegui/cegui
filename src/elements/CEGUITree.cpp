@@ -85,7 +85,7 @@ Tree::Tree(const String& type, const String& name) :
 {
     // add new events specific to tree.
     addTreeEvents();
-    
+
     addTreeProperties();
 }
 
@@ -114,17 +114,17 @@ void Tree::initialise(void)
     const ImagerySection &tempCloseImagery = wlf.getImagerySection("CloseTreeButton");
     openButtonImagery = (ImagerySection *)&tempOpenImagery;
     closeButtonImagery = (ImagerySection *)&tempCloseImagery;
-    
+
     // create the component sub-widgets
     d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
     d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
-    
+
     addChildWindow(d_vertScrollbar);
     addChildWindow(d_horzScrollbar);
-    
+
     d_vertScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Tree::handle_scrollChange, this));
     d_horzScrollbar->subscribeEvent(Scrollbar::EventScrollPositionChanged, Event::Subscriber(&Tree::handle_scrollChange, this));
-    
+
     configureScrollbars();
     performChildWindowLayout();
 }
@@ -135,13 +135,13 @@ void Tree::initialise(void)
 size_t Tree::getSelectedCount(void) const
 {
     size_t count = 0;
-    
+
     for (size_t index = 0; index < d_listItems.size(); ++index)
     {
         if (d_listItems[index]->isSelected())
             count++;
     }
-    
+
     return count;
 }
 
@@ -168,7 +168,7 @@ TreeItem* Tree::getNextSelected(const TreeItem* start_item) const
 TreeItem* Tree::getNextSelectedItemFromList(const LBItemList &itemList, const TreeItem* startItem, bool foundStartItem) const
 {
     size_t itemCount = itemList.size();
-    
+
     for (size_t index = 0; index < itemCount; ++index)
     {
         if (foundStartItem == true)
@@ -183,7 +183,7 @@ TreeItem* Tree::getNextSelectedItemFromList(const LBItemList &itemList, const Tr
             if (itemList[index] == startItem)
                 foundStartItem = true;
         }
-        
+
         if (itemList[index]->getItemCount() > 0)
         {
             if (itemList[index]->getIsOpen())
@@ -195,7 +195,7 @@ TreeItem* Tree::getNextSelectedItemFromList(const LBItemList &itemList, const Tr
             }
         }
     }
-    
+
     return 0;
 }
 
@@ -203,7 +203,7 @@ TreeItem* Tree::getNextSelectedItemFromList(const LBItemList &itemList, const Tr
 TreeItem* Tree::findItemWithTextFromList(const LBItemList &itemList, const String& text, const TreeItem* startItem, bool foundStartItem)
 {
     size_t itemCount = itemList.size();
-    
+
     for (size_t index = 0; index < itemCount; ++index)
     {
         if (foundStartItem == true)
@@ -218,7 +218,7 @@ TreeItem* Tree::findItemWithTextFromList(const LBItemList &itemList, const Strin
             if (itemList[index] == startItem)
                 foundStartItem = true;
         }
-        
+
         if (itemList[index]->getItemCount() > 0)
         {
             // Search the current item's itemList regardless if it's open or not.
@@ -228,7 +228,7 @@ TreeItem* Tree::findItemWithTextFromList(const LBItemList &itemList, const Strin
                 return foundSelectedTree;
         }
     }
-    
+
     return 0;
 }
 
@@ -253,7 +253,7 @@ TreeItem* Tree::findFirstItemWithText(const String& text)
 TreeItem* Tree::findItemWithIDFromList(const LBItemList &itemList, uint searchID, const TreeItem* startItem, bool foundStartItem)
 {
     size_t itemCount = itemList.size();
-    
+
     for (size_t index = 0; index < itemCount; ++index)
     {
         if (foundStartItem == true)
@@ -268,7 +268,7 @@ TreeItem* Tree::findItemWithIDFromList(const LBItemList &itemList, uint searchID
             if (itemList[index] == startItem)
                 foundStartItem = true;
         }
-        
+
         if (itemList[index]->getItemCount() > 0)
         {
             // Search the current item's itemList regardless if it's open or not.
@@ -278,7 +278,7 @@ TreeItem* Tree::findItemWithIDFromList(const LBItemList &itemList, uint searchID
                 return foundSelectedTree;
         }
     }
-    
+
     return 0;
 }
 
@@ -324,7 +324,7 @@ void Tree::addItem(TreeItem* item)
     {
         // establish ownership
         item->setOwnerWindow(this);
-        
+
         // if sorting is enabled, re-sort the list
         if (isSortEnabled())
         {
@@ -335,7 +335,7 @@ void Tree::addItem(TreeItem* item)
         {
             d_listItems.push_back(item);
         }
-        
+
         WindowEventArgs args(this);
         onListContentsChanged(args);
     }
@@ -356,10 +356,10 @@ void Tree::insertItem(TreeItem* item, const TreeItem* position)
     {
         // establish ownership
         item->setOwnerWindow(this);
-        
+
         // if position is NULL begin insert at begining, else insert after item 'position'
         LBItemList::iterator ins_pos;
-        
+
         if (position == 0)
         {
             ins_pos = d_listItems.begin();
@@ -367,16 +367,16 @@ void Tree::insertItem(TreeItem* item, const TreeItem* position)
         else
         {
             ins_pos = std::find(d_listItems.begin(), d_listItems.end(), position);
-            
+
             // throw if item 'position' is not in the list
             if (ins_pos == d_listItems.end())
             {
                 throw InvalidRequestException((utf8*)"Tree::insertItem - the specified TreeItem for parameter 'position' is not attached to this Tree.");
             }
         }
-        
+
         d_listItems.insert(ins_pos, item);
-        
+
         WindowEventArgs args(this);
         onListContentsChanged(args);
     }
@@ -390,29 +390,29 @@ void Tree::removeItem(const TreeItem* item)
     if (item != 0)
     {
         LBItemList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
-        
+
         // if item is in the list
         if (pos != d_listItems.end())
         {
             // disown item
             (*pos)->setOwnerWindow(0);
-            
+
             // remove item
             d_listItems.erase(pos);
-            
+
             // if item was the last selected item, reset that to NULL
             if (item == d_lastSelected)
             {
                 d_lastSelected = 0;
             }
-            
+
             // if item is supposed to be deleted by us
             if (item->isAutoDeleted())
             {
                 // clean up this item.
                 delete item;
             }
-            
+
             WindowEventArgs args(this);
             onListContentsChanged(args);
         }
@@ -441,13 +441,13 @@ void Tree::setSortingEnabled(bool setting)
     if (d_sorted != setting)
     {
         d_sorted = setting;
-        
+
         // if we are enabling sorting, we need to sort the list
         if (d_sorted)
         {
             std::sort(d_listItems.begin(), d_listItems.end(), &lbi_less);
         }
-        
+
         WindowEventArgs args(this);
         onSortModeChanged(args);
     }
@@ -463,21 +463,21 @@ void Tree::setMultiselectEnabled(bool setting)
     if (d_multiselect != setting)
     {
         d_multiselect = setting;
-        
+
         // if we change to single-select, deselect all except the first selected item.
         TreeEventArgs args(this);
         if ((!d_multiselect) && (getSelectedCount() > 1))
         {
             TreeItem* itm = getFirstSelectedItem();
-            
+
             while ((itm = getNextSelected(itm)))
             {
                 itm->setSelected(false);
             }
-            
+
             onSelectionChanged(args);
         }
-        
+
         onMultiselectModeChanged(args);
     }
 }
@@ -496,7 +496,7 @@ void Tree::setShowVertScrollbar(bool setting)
     if (d_forceVertScroll != setting)
     {
         d_forceVertScroll = setting;
-        
+
         configureScrollbars();
         WindowEventArgs args(this);
         onVertScrollbarModeChanged(args);
@@ -511,7 +511,7 @@ void Tree::setShowHorzScrollbar(bool setting)
     if (d_forceHorzScroll != setting)
     {
         d_forceHorzScroll = setting;
-        
+
         configureScrollbars();
         WindowEventArgs args(this);
         onHorzScrollbarModeChanged(args);
@@ -523,16 +523,45 @@ void Tree::setShowHorzScrollbar(bool setting)
 *************************************************************************/
 void Tree::setItemSelectState(TreeItem* item, bool state)
 {
-    LBItemList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
-    
-    if (pos != d_listItems.end())
+    if (containsOpenItemRecursive(d_listItems, item))
     {
-        setItemSelectState(std::distance(d_listItems.begin(), pos), state);
+        TreeEventArgs args(this);
+        args.treeItem = item;
+
+        if (state && !d_multiselect)
+            clearAllSelections_impl();
+
+        item->setSelected(state);
+        d_lastSelected = item->isSelected() ? item : 0;
+        onSelectionChanged(args);
     }
     else
     {
-        throw InvalidRequestException((utf8*)"Tree::setItemSelectState - the specified TreeItem is not attached to this Tree.");
+        throw InvalidRequestException("Tree::setItemSelectState - the "
+            "specified TreeItem is not attached to this Tree or not visible.");
     }
+}
+
+//----------------------------------------------------------------------------//
+bool Tree::containsOpenItemRecursive(const LBItemList& itemList, TreeItem* item)
+{
+    size_t itemCount = itemList.size();
+    for (size_t index = 0; index < itemCount; ++index)
+    {
+        if (itemList[index] == item)
+            return true;
+
+        if (itemList[index]->getItemCount() > 0)
+        {
+            if (itemList[index]->getIsOpen())
+            {
+                if (containsOpenItemRecursive(itemList[index]->getItemList(), item))
+                    return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 /*************************************************************************
@@ -550,7 +579,7 @@ void Tree::setItemSelectState(size_t item_index, bool state)
             {
                 clearAllSelections_impl();
             }
-            
+
             d_listItems[item_index]->setSelected(state);
             TreeEventArgs args(this);
             args.treeItem = d_listItems[item_index];
@@ -561,7 +590,7 @@ void Tree::setItemSelectState(size_t item_index, bool state)
     {
         throw InvalidRequestException((utf8*)"Tree::setItemSelectState - the value passed in the 'item_index' parameter is out of range for this Tree.");
     }
-    
+
 }
 
 /*************************************************************************
@@ -581,20 +610,20 @@ void Tree::populateRenderCache()
 {
     // get the derived class to render general stuff before we handle the items
     cacheTreeBaseImagery();
-    
+
     // Render list items
     Vector3  itemPos;
     float    widest = getWidestItemWidth();
-    
+
     // calculate position of area we have to render into
     //Rect itemsArea(getTreeRenderArea());
     //Rect itemsArea(0,0,500,500);
-    
+
     // set up some initial positional details for items
     itemPos.d_x = d_itemArea.d_left - d_horzScrollbar->getScrollPosition();
     itemPos.d_y = d_itemArea.d_top - d_vertScrollbar->getScrollPosition();
     itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
-    
+
     drawItemList(d_listItems, d_itemArea, widest, itemPos, d_renderCache, getEffectiveAlpha());
 }
 
@@ -603,7 +632,7 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
 {
     if (itemList.empty())
         return;
-    
+
     // loop through the items
     Size     itemSize;
     Rect     itemClipper, itemRect;
@@ -612,17 +641,17 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
     for (size_t i = 0; i < itemCount; ++i)
     {
         itemSize.d_height = itemList[i]->getPixelSize().d_height;
-        
+
         // allow item to have full width of box if this is wider than items
         itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
-        
+
         // calculate destination area for this item.
         itemRect.d_left = itemPos.d_x;
         itemRect.d_top  = itemPos.d_y;
         itemRect.setSize(itemSize);
         itemClipper = itemRect.getIntersection(itemsArea);
         itemRect.d_left += 20;     // start text past open/close buttons
-        
+
         if (itemClipper.getHeight() > 0)
         {
             itemIsVisible = true;
@@ -632,7 +661,7 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
         {
             itemIsVisible = false;
         }
-        
+
         // Process this item's list if it has items in it.
         if (itemList[i]->getItemCount() > 0)
         {
@@ -642,16 +671,16 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
             buttonRenderRect.d_top = itemPos.d_y;
             buttonRenderRect.d_bottom = buttonRenderRect.d_top + 10;
             itemList[i]->setButtonLocation(buttonRenderRect);
-            
+
             if (itemList[i]->getIsOpen())
             {
                 // Draw the Close button
                 if (itemIsVisible)
                     closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
-                
+
                 // update position ready for next item
                 itemPos.d_y += itemSize.d_height;
-                
+
                 itemPos.d_x += 20;
                 drawItemList(itemList[i]->getItemList(), itemsArea, widest, itemPos, cache, alpha);
                 itemPos.d_x -= 20;
@@ -661,7 +690,7 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
                 // Draw the Open button
                 if (itemIsVisible)
                     openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
-                
+
                 // update position ready for next item
                 itemPos.d_y += itemSize.d_height;
             }
@@ -672,7 +701,7 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
             itemPos.d_y += itemSize.d_height;
         }
     }
-    
+
     // Successfully drew all items, so vertical scrollbar not needed.
     //   setShowVertScrollbar(false);
 }
@@ -686,17 +715,17 @@ void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vec
 void Tree::configureScrollbars(void)
 {
     Rect  renderArea(getTreeRenderArea());
-    
-    
+
+
     //This is becuase CEGUI IS GAY! and fires events before the item is initialized
     if(!d_vertScrollbar)
         d_vertScrollbar = createVertScrollbar(getName() + "__auto_vscrollbar__");
     if(!d_horzScrollbar)
         d_horzScrollbar = createHorzScrollbar(getName() + "__auto_hscrollbar__");
-    
+
     float totalHeight = getTotalItemsHeight();
     float widestItem  = getWidestItemWidth() + 20;
-    
+
     //
     // First show or hide the scroll bars as needed (or requested)
     //
@@ -727,7 +756,7 @@ void Tree::configureScrollbars(void)
             d_horzScrollbar->show();
             //         renderArea.d_bottom -= d_horzScrollbar->getAbsoluteHeight();
             renderArea.d_bottom -= d_vertScrollbar->getHeight().d_offset;
-            
+
             // show or hide vertical scroll bar as required (or as specified by option)
             if ((totalHeight > renderArea.getHeight()) || d_forceVertScroll)
             {
@@ -749,22 +778,22 @@ void Tree::configureScrollbars(void)
             d_horzScrollbar->setScrollPosition(0);
         }
     }
-    
+
     //
     // Set up scroll bar values
     //
-    
+
     float itemHeight;
     if (d_listItems.size() > 0)
         itemHeight = d_listItems[0]->getPixelSize().d_height;
     else
         itemHeight = 10;
-    
+
     d_vertScrollbar->setDocumentSize(totalHeight);
     d_vertScrollbar->setPageSize(renderArea.getHeight());
     d_vertScrollbar->setStepSize(ceguimax(1.0f, renderArea.getHeight() / itemHeight));
     d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition());
-    
+
     d_horzScrollbar->setDocumentSize(widestItem + d_vertScrollbar->getWidth().d_offset);
     //   d_horzScrollbar->setDocumentSize(widestItem + d_vertScrollbar->getAbsoluteWidth());
     d_horzScrollbar->setPageSize(renderArea.getWidth());
@@ -785,13 +814,13 @@ void Tree::selectRange(size_t start, size_t end)
         {
             start = 0;
         }
-        
+
         // if end is out of range end at the last item.
         if (end >= d_listItems.size())
         {
             end = d_listItems.size() - 1;
         }
-        
+
         // ensure start becomes before the end.
         if (start > end)
         {
@@ -800,7 +829,7 @@ void Tree::selectRange(size_t start, size_t end)
             start = end;
             end = tmp;
         }
-        
+
         // perform selections
         for( ; start <= end; ++start)
         {
@@ -815,7 +844,7 @@ void Tree::selectRange(size_t start, size_t end)
 float Tree::getTotalItemsHeight(void) const
 {
     float heightSum = 0;
-    
+
     getTotalItemsInListHeight(d_listItems, &heightSum);
     return heightSum;
 }
@@ -839,7 +868,7 @@ void Tree::getTotalItemsInListHeight(const LBItemList &itemList, float *heightSu
 float Tree::getWidestItemWidth(void) const
 {
     float widest = 0;
-    
+
     getWidestItemWidthInList(d_listItems, 0, &widest);
     return widest;
 }
@@ -855,10 +884,10 @@ void Tree::getWidestItemWidthInList(const LBItemList &itemList, int itemDepth, f
         buttonLocation.getWidth() +
         (d_horzScrollbar->getScrollPosition() / HORIZONTAL_STEP_SIZE_DIVISOR) +
         (itemDepth * 20);
-        
+
         if (thisWidth > *widest)
             *widest = thisWidth;
-        
+
         if (itemList[index]->getIsOpen() && (itemList[index]->getItemCount() > 0))
             getWidestItemWidthInList(itemList[index]->getItemList(), itemDepth + 1, widest);
     }
@@ -877,7 +906,7 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 {
     // flag used so we can track if we did anything.
     bool modified = false;
-    
+
     for (size_t index = 0; index < itemList.size(); ++index)
     {
         if (itemList[index]->isSelected())
@@ -885,7 +914,7 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
             itemList[index]->setSelected(false);
             modified = true;
         }
-        
+
         if (itemList[index]->getItemCount() > 0)
         {
             bool modifiedSubList = clearAllSelectionsFromList(itemList[index]->getItemList());
@@ -893,7 +922,7 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
                 modified = true;
         }
     }
-    
+
     return modified;
 }
 
@@ -903,17 +932,17 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 TreeItem* Tree::getItemAtPoint(const Point& pt) const
 {
     Rect renderArea(getTreeRenderArea());
-    
+
     // point must be within the rendering area of the Tree.
     if (renderArea.isPointInRect(pt))
     {
         float y = renderArea.d_top - d_vertScrollbar->getScrollPosition();
-        
+
         // test if point is above first item
         if (pt.d_y >= y)
             return getItemFromListAtPoint(d_listItems, &y, pt);
     }
-    
+
     return 0;
 }
 
@@ -921,13 +950,13 @@ TreeItem* Tree::getItemAtPoint(const Point& pt) const
 TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Point& pt) const
 {
     size_t itemCount = itemList.size();
-    
+
     for (size_t i = 0; i < itemCount; ++i)
     {
         *bottomY += itemList[i]->getPixelSize().d_height;
         if (pt.d_y < *bottomY)
             return itemList[i];
-        
+
         if (itemList[i]->getItemCount() > 0)
         {
             if (itemList[i]->getIsOpen())
@@ -939,7 +968,7 @@ TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottom
             }
         }
     }
-    
+
     return 0;
 }
 
@@ -1042,9 +1071,9 @@ void Tree::onSized(WindowEventArgs& e)
 {
     // base class handling
     Window::onSized(e);
-    
+
     configureScrollbars();
-    
+
     e.handled = true;
 }
 
@@ -1056,16 +1085,16 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     // base class processing
     // populateRenderCache();
     Window::onMouseButtonDown(e);
-    
+
     if (e.button == LeftButton)
     {
         bool modified = false;
-        
+
         Point localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
-        
+
         TreeItem* item = getItemAtPoint(localPos);
-        
+
         if (item != 0)
         {
             modified = true;
@@ -1088,10 +1117,10 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
                 {
                     onBranchClosed(args);
                 }
-                
+
                 // Update the item screen locations, needed to update the scrollbars.
                 //	populateRenderCache();
-                
+
                 // Opened or closed a tree branch, so must update scrollbars.
                 configureScrollbars();
             }
@@ -1100,7 +1129,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
                 // clear old selections if no control key is pressed or if multi-select is off
                 if (!(e.sysKeys & Control) || !d_multiselect)
                     clearAllSelections_impl();
-                
+
                 // select range or item, depending upon keys and last selected item
 #if 0 // TODO: fix this
                 if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
@@ -1108,7 +1137,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
                 else
 #endif
                     item->setSelected(item->isSelected() ^ true);
-                
+
                 // update last selected item
                 d_lastSelected = item->isSelected() ? item : 0;
                 onSelectionChanged(args);
@@ -1128,8 +1157,8 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
                 }
             }
         }
-        
-        
+
+
         e.handled = true;
     }
 }
@@ -1141,12 +1170,12 @@ void Tree::onMouseWheel(MouseEventArgs& e)
 {
     // base class processing.
     Window::onMouseWheel(e);
-    
+
     if (d_vertScrollbar->isVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
         d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
     else if (d_horzScrollbar->isVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
         d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
-    
+
     e.handled = true;
 }
 
@@ -1158,7 +1187,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
     if (d_itemTooltips)
     {
         static TreeItem* lastItem = 0;
-        
+
         Point posi(CoordConverter::screenToWindow(*this, e.position));
         //      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
         TreeItem* item = getItemAtPoint(posi);
@@ -1174,11 +1203,11 @@ void Tree::onMouseMove(MouseEventArgs& e)
             }
             lastItem = item;
         }
-        
+
         // must check the result from getTooltip(), as the tooltip object could
         // be 0 at any time for various reasons.
         Tooltip* tooltip = getTooltip();
-        
+
         if (tooltip)
         {
             if (tooltip->getTargetWindow() != this)
@@ -1187,7 +1216,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
                 tooltip->positionSelf();
         }
     }
-    
+
     Window::onMouseMove(e);
 }
 
@@ -1199,16 +1228,16 @@ bool Tree::getHeightToItemInList(const LBItemList &itemList, const TreeItem *tre
     {
         if (treeItem == itemList[index])
             return true;
-        
+
         *height += itemList[index]->getPixelSize().d_height;
-        
+
         if (itemList[index]->getIsOpen() && (itemList[index]->getItemCount() > 0))
         {
             if (getHeightToItemInList(itemList[index]->getItemList(), treeItem, itemDepth + 1, height))
                 return true;
         }
     }
-    
+
     return false;
 }
 
@@ -1218,25 +1247,25 @@ bool Tree::getHeightToItemInList(const LBItemList &itemList, const TreeItem *tre
 void Tree::ensureItemIsVisible(const TreeItem *treeItem)
 {
     // TODO: finish this (make it work!)
-    
+
     if (!treeItem)
         return;
-    
+
     float bottom;
     float top = 0;
-    
+
     if (!getHeightToItemInList(d_listItems, treeItem, 0, &top))
         return;  // treeItem wasn't found by getHeightToItemInList
-    
+
     // calculate height to bottom of item
     bottom = top + treeItem->getPixelSize().d_height;
-    
+
     // account for current scrollbar value
     float currPos = d_vertScrollbar->getScrollPosition();
     top      -= currPos;
     bottom   -= currPos;
-    
-    
+
+
 #if 0
     // handle simple "scroll to the bottom" case
     if (item_index >= getItemCount())
@@ -1248,22 +1277,22 @@ void Tree::ensureItemIsVisible(const TreeItem *treeItem)
         float bottom;
         float listHeight = getTreeRenderArea().getHeight();
         float top = 0;
-        
+
         // get height to top of item
         size_t i;
         for (i = 0; i < item_index; ++i)
         {
             top += d_listItems[i]->getPixelSize().d_height;
         }
-        
+
         // calculate height to bottom of item
         bottom = top + d_listItems[i]->getPixelSize().d_height;
-        
+
         // account for current scrollbar value
         float currPos = d_vertScrollbar->getScrollPosition();
         top      -= currPos;
         bottom   -= currPos;
-        
+
         // if top is above the view area, or if item is too big to fit
         if ((top < 0.0f) || ((bottom - top) > listHeight))
         {
@@ -1276,7 +1305,7 @@ void Tree::ensureItemIsVisible(const TreeItem *treeItem)
             // position bottom of item at the bottom of the list
             d_vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
         }
-        
+
         // Item is already fully visible - nothing more to do.
     }
 #endif
@@ -1333,7 +1362,7 @@ bool Tree::resetList_impl(void)
                 delete d_listItems[i];
             }
         }
-        
+
         // clear out the list.
         d_listItems.clear();
         d_lastSelected = 0;
