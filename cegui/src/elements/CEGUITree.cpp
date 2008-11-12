@@ -523,16 +523,45 @@ void Tree::setShowHorzScrollbar(bool setting)
 *************************************************************************/
 void Tree::setItemSelectState(TreeItem* item, bool state)
 {
-    LBItemList::iterator pos = std::find(d_listItems.begin(), d_listItems.end(), item);
-    
-    if (pos != d_listItems.end())
+    if (containsOpenItemRecursive(d_listItems, item))
     {
-        setItemSelectState(std::distance(d_listItems.begin(), pos), state);
+        TreeEventArgs args(this);
+        args.treeItem = item;
+
+        if (state && !d_multiselect)
+            clearAllSelections_impl();
+
+        item->setSelected(state);
+        d_lastSelected = item->isSelected() ? item : 0;
+        onSelectionChanged(args);
     }
     else
     {
-        throw InvalidRequestException((utf8*)"Tree::setItemSelectState - the specified TreeItem is not attached to this Tree.");
+        throw InvalidRequestException("Tree::setItemSelectState - the "
+            "specified TreeItem is not attached to this Tree or not visible.");
     }
+    }
+
+//----------------------------------------------------------------------------//
+bool Tree::containsOpenItemRecursive(const LBItemList& itemList, TreeItem* item)
+{
+    size_t itemCount = itemList.size();
+    for (size_t index = 0; index < itemCount; ++index)
+    {
+        if (itemList[index] == item)
+            return true;
+
+        if (itemList[index]->getItemCount() > 0)
+        {
+            if (itemList[index]->getIsOpen())
+            {
+                if (containsOpenItemRecursive(itemList[index]->getItemList(), item))
+                    return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 /*************************************************************************
