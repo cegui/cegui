@@ -55,6 +55,9 @@
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
 #   include "CEGuiIrrlichtBaseApplication.h"
 #endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+#   include "CEGuiDirectFBBaseApplication.h"
+#endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef CEGUI_SAMPLES_USE_DIRECTX_8
 #       include "CEGuiD3D81BaseApplication.h"
@@ -181,6 +184,9 @@ bool CEGuiSample::initialise()
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
     d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
 #endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+    d_rendererSelector->setRendererAvailability(DirectFBGuiRendererType);
+#endif
 
     // get selection from user
     if (d_rendererSelector->invokeDialog())
@@ -218,6 +224,11 @@ bool CEGuiSample::initialise()
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
         case IrrlichtGuiRendererType:
             d_sampleApp = new CEGuiIrrlichtBaseApplication();
+            break;
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+        case DirectFBGuiRendererType:
+            d_sampleApp = new CEGuiDirectFBBaseApplication();
             break;
 #endif
 
