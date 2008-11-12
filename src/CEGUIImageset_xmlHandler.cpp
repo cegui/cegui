@@ -1,9 +1,9 @@
 /***********************************************************************
-filename: 	CEGUIImageset_xmlHandler.cpp
-created:	21/2/2004
-author:		Paul D Turner
+filename:   CEGUIImageset_xmlHandler.cpp
+created:    21/2/2004
+author:     Paul D Turner
 
-purpose:	Implements the Imageset class
+purpose:    Implements the Imageset class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -153,7 +153,7 @@ void Imageset_xmlHandler::elementImageStart(const XMLAttributes& attributes)
 void Imageset_xmlHandler::elementImagesetEnd()
 {
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", d_imageset);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(d_imageset));
     Logger::getSingleton().logEvent("Finished creation of Imageset '" +
         d_imageset->d_name + "' via XML file. " + addr_buff, Informative);
 }

@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUISchemeManager.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
+    filename:   CEGUISchemeManager.cpp
+    created:    21/2/2004
+    author:     Paul D Turner
 
-	purpose:	Implements SchemeManager class
+    purpose:    Implements SchemeManager class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -36,120 +36,120 @@
 namespace CEGUI
 {
 /*************************************************************************
-	Static Data Definitions
+    Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton	= 0;
+template<> SchemeManager* Singleton<SchemeManager>::ms_Singleton    = 0;
 
 
 
 /*************************************************************************
-	constructor
+    constructor
 *************************************************************************/
 SchemeManager::SchemeManager(void)
 {
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
        "CEGUI::SchemeManager singleton created. " + String(addr_buff));
 }
 
 
 /*************************************************************************
-	Destructor
+    Destructor
 *************************************************************************/
 SchemeManager::~SchemeManager(void)
 {
-	Logger::getSingleton().logEvent("---- Begining cleanup of GUI Scheme system ----");
+    Logger::getSingleton().logEvent("---- Begining cleanup of GUI Scheme system ----");
 
-	unloadAllSchemes();
+    unloadAllSchemes();
 
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
        "CEGUI::SchemeManager singleton destroyed. " + String(addr_buff));
 }
 
 
 /*************************************************************************
-	Loads a scheme
+    Loads a scheme
 *************************************************************************/
 Scheme* SchemeManager::loadScheme(const String& scheme_filename, const String& resourceGroup)
 {
-	Logger::getSingleton().logEvent("Attempting to load Scheme from file '" + scheme_filename + "'.");
+    Logger::getSingleton().logEvent("Attempting to load Scheme from file '" + scheme_filename + "'.");
 
-	Scheme* tmp = new Scheme(scheme_filename, resourceGroup);
-	String name = tmp->getName();
-	d_schemes[name] = tmp;
-	return tmp;
+    Scheme* tmp = new Scheme(scheme_filename, resourceGroup);
+    String name = tmp->getName();
+    d_schemes[name] = tmp;
+    return tmp;
 }
 
 
 /*************************************************************************
-	Un-Loads a scheme
+    Un-Loads a scheme
 *************************************************************************/
 void SchemeManager::unloadScheme(const String& scheme_name)
 {
-	SchemeRegistry::iterator pos = d_schemes.find(scheme_name);
+    SchemeRegistry::iterator pos = d_schemes.find(scheme_name);
 
-	if (pos != d_schemes.end())
-	{
-		String tmpName(scheme_name);
+    if (pos != d_schemes.end())
+    {
+        String tmpName(scheme_name);
 
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", pos->second);
+        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
 
-		delete pos->second;
-		d_schemes.erase(pos);
+        delete pos->second;
+        d_schemes.erase(pos);
 
         Logger::getSingleton().logEvent(
             "Scheme '" + tmpName + "' has been unloaded via the SchemeManager. "
             + addr_buff);
-	}
-	else
-	{
-		Logger::getSingleton().logEvent((utf8*)"Unable to unload non-existant scheme '" + scheme_name + "'.", Errors);
-	}
+    }
+    else
+    {
+        Logger::getSingleton().logEvent((utf8*)"Unable to unload non-existant scheme '" + scheme_name + "'.", Errors);
+    }
 
 }
 
 
 /*************************************************************************
-	Returns a pointer to the Scheme object with the specified name.
+    Returns a pointer to the Scheme object with the specified name.
 *************************************************************************/
 Scheme* SchemeManager::getScheme(const String& name) const
 {
-	SchemeRegistry::const_iterator pos = d_schemes.find(name);
+    SchemeRegistry::const_iterator pos = d_schemes.find(name);
 
-	if (pos == d_schemes.end())
-	{
-		throw UnknownObjectException("SchemeManager::getScheme - A Scheme object with the specified name '" + name +"' does not exist within the system");
-	}
+    if (pos == d_schemes.end())
+    {
+        throw UnknownObjectException("SchemeManager::getScheme - A Scheme object with the specified name '" + name +"' does not exist within the system");
+    }
 
-	return pos->second;
+    return pos->second;
 }
 
 
 /*************************************************************************
-	Return a SchemeManager::SchemeIterator object to iterate over the
-	available schemes.
+    Return a SchemeManager::SchemeIterator object to iterate over the
+    available schemes.
 *************************************************************************/
 SchemeManager::SchemeIterator SchemeManager::getIterator(void) const
 {
-	return SchemeIterator(d_schemes.begin(), d_schemes.end());
+    return SchemeIterator(d_schemes.begin(), d_schemes.end());
 }
 
 
 /*************************************************************************
-	Unload all schemes currently defined within the system.
+    Unload all schemes currently defined within the system.
 *************************************************************************/
 void SchemeManager::unloadAllSchemes(void)
 {
-	// unload all schemes
-	while (!d_schemes.empty())
-	{
-		unloadScheme(d_schemes.begin()->first);
-	}
+    // unload all schemes
+    while (!d_schemes.empty())
+    {
+        unloadScheme(d_schemes.begin()->first);
+    }
 
 }
 

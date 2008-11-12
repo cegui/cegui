@@ -1,7 +1,7 @@
 /***********************************************************************
-	filename: 	CEGUIGlobalEventSet.cpp
-	created:	16/1/2005
-	author:		Paul D Turner
+    filename:   CEGUIGlobalEventSet.cpp
+    created:    16/1/2005
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -32,56 +32,56 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-	/*************************************************************************
-		Static Data Definitions
-	*************************************************************************/
-	// singleton instance pointer
-	template<> GlobalEventSet* Singleton<GlobalEventSet>::ms_Singleton	= 0;
+    /*************************************************************************
+        Static Data Definitions
+    *************************************************************************/
+    // singleton instance pointer
+    template<> GlobalEventSet* Singleton<GlobalEventSet>::ms_Singleton  = 0;
 
-	/*************************************************************************
-		GlobalEventSet constructor.
-	*************************************************************************/
-	GlobalEventSet::GlobalEventSet()
-	{
+    /*************************************************************************
+        GlobalEventSet constructor.
+    *************************************************************************/
+    GlobalEventSet::GlobalEventSet()
+    {
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", this);
-		Logger::getSingleton().logEvent(
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+        Logger::getSingleton().logEvent(
           "CEGUI::GlobalEventSet singleton created. " + String(addr_buff));
-	}
+    }
 
-	/*************************************************************************
-		GlobalEventSet destructor.
-	*************************************************************************/
-	GlobalEventSet::~GlobalEventSet()
-	{
+    /*************************************************************************
+        GlobalEventSet destructor.
+    *************************************************************************/
+    GlobalEventSet::~GlobalEventSet()
+    {
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", this);
-		Logger::getSingleton().logEvent(
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+        Logger::getSingleton().logEvent(
           "CEGUI::GlobalEventSet singleton destroyed. " + String(addr_buff));
-	}
+    }
 
-	/*************************************************************************
-		Return singleton object
-	*************************************************************************/
-	GlobalEventSet&	GlobalEventSet::getSingleton(void)
-	{
-		return Singleton<GlobalEventSet>::getSingleton();
-	}
+    /*************************************************************************
+        Return singleton object
+    *************************************************************************/
+    GlobalEventSet& GlobalEventSet::getSingleton(void)
+    {
+        return Singleton<GlobalEventSet>::getSingleton();
+    }
 
-	/*************************************************************************
-		Return singleton pointer
-	*************************************************************************/
-	GlobalEventSet*	GlobalEventSet::getSingletonPtr(void)
-	{
-		return Singleton<GlobalEventSet>::getSingletonPtr();
-	}
+    /*************************************************************************
+        Return singleton pointer
+    *************************************************************************/
+    GlobalEventSet* GlobalEventSet::getSingletonPtr(void)
+    {
+        return Singleton<GlobalEventSet>::getSingletonPtr();
+    }
 
-	/*************************************************************************
-		Overridden fireEvent which always succeeds.
-	*************************************************************************/
-	void GlobalEventSet::fireEvent(const String& name, EventArgs& args, const String& eventNamespace)
-	{
+    /*************************************************************************
+        Overridden fireEvent which always succeeds.
+    *************************************************************************/
+    void GlobalEventSet::fireEvent(const String& name, EventArgs& args, const String& eventNamespace)
+    {
         fireEvent_impl(eventNamespace + "/" + name, args);
-	}
+    }
 
 } // End of  CEGUI namespace section

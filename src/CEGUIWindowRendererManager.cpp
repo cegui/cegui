@@ -55,14 +55,14 @@ WindowRendererManager* WindowRendererManager::getSingletonPtr(void)
 WindowRendererManager::WindowRendererManager()
 {
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
         "CEGUI::WindowRendererManager singleton created " + String(addr_buff));
 }
 WindowRendererManager::~WindowRendererManager()
 {
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent(
         "CEGUI::WindowRendererManager singleton destroyed " + String(addr_buff));
 }
@@ -103,7 +103,7 @@ void WindowRendererManager::addFactory(WindowRendererFactory* wr)
     }
 
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", wr);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(wr));
     Logger::getSingleton().logEvent("WindowRendererFactory '"+wr->getName()+
         "' added. " + addr_buff);
 }

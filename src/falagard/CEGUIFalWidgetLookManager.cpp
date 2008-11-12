@@ -45,7 +45,7 @@ namespace CEGUI
     WidgetLookManager::WidgetLookManager()
     {
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", this);
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
         Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
             "created. " + String(addr_buff));
     }
@@ -53,26 +53,26 @@ namespace CEGUI
     WidgetLookManager::~ WidgetLookManager()
     {
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", this);
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
         Logger::getSingleton().logEvent("CEGUI::WidgetLookManager singleton "
             "destroyed. " + String(addr_buff));
     }
 
     /*************************************************************************
-		Return singleton object
-	  *************************************************************************/
-	  WidgetLookManager&	WidgetLookManager::getSingleton(void)
-	  {
-		  return Singleton<WidgetLookManager>::getSingleton();
-	  }
+        Return singleton object
+      *************************************************************************/
+      WidgetLookManager&    WidgetLookManager::getSingleton(void)
+      {
+          return Singleton<WidgetLookManager>::getSingleton();
+      }
 
-	  /*************************************************************************
-		  Return singleton pointer
-	  *************************************************************************/
-	  WidgetLookManager*	WidgetLookManager::getSingletonPtr(void)
-	  {
-		  return Singleton<WidgetLookManager>::getSingletonPtr();
-  	}
+      /*************************************************************************
+          Return singleton pointer
+      *************************************************************************/
+      WidgetLookManager*    WidgetLookManager::getSingletonPtr(void)
+      {
+          return Singleton<WidgetLookManager>::getSingletonPtr();
+    }
 
     void WidgetLookManager::parseLookNFeelSpecification(const String& filename, const String& resourceGroup)
     {

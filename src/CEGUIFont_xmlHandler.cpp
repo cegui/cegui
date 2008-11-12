@@ -1,7 +1,7 @@
 /***********************************************************************
-filename: 	CEGUIFont_xmlHandler.cpp
-created:	21/2/2004
-author:		Paul D Turner
+filename:   CEGUIFont_xmlHandler.cpp
+created:    21/2/2004
+author:     Paul D Turner
 
 purpose:    Handle the basic XML layout for .font files
 *************************************************************************/
@@ -90,9 +90,9 @@ void Font_xmlHandler::elementFontStart (const XMLAttributes& attributes)
 *************************************************************************/
 void Font_xmlHandler::elementFontEnd ()
 {
-	d_font->load ();
+    d_font->load ();
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", d_font);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(d_font));
     Logger::getSingleton ().logEvent ("Finished creation of Font '" +
         d_font->d_name + "' via XML file. " + addr_buff, Informative);
 }

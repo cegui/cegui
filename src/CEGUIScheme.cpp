@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIScheme.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
+    filename:   CEGUIScheme.cpp
+    created:    21/2/2004
+    author:     Paul D Turner
 
-	purpose:	Implements GUI Scheme class
+    purpose:    Implements GUI Scheme class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -49,66 +49,66 @@ namespace CEGUI
 {
 
 /*************************************************************************
-	Static Data definitions
+    Static Data definitions
 *************************************************************************/
 // name of the xml schema for GUIScheme files
-const char Scheme::GUISchemeSchemaName[]					= "GUIScheme.xsd";
+const char Scheme::GUISchemeSchemaName[]                    = "GUIScheme.xsd";
 // default resource group
 String Scheme::d_defaultResourceGroup;
 
 
 /*************************************************************************
-	Constructor for scheme objects
+    Constructor for scheme objects
 *************************************************************************/
 Scheme::Scheme(const String& filename, const String& resourceGroup)
 {
-	if (filename.empty())
-	{
-		throw InvalidRequestException("Scheme::Scheme - Filename supplied for Scheme loading must be valid");
-	}
+    if (filename.empty())
+    {
+        throw InvalidRequestException("Scheme::Scheme - Filename supplied for Scheme loading must be valid");
+    }
 
     // create handler object
     Scheme_xmlHandler handler(this);
 
     // do parse (which uses handler to create actual data)
-	try
-	{
+    try
+    {
         System::getSingleton().getXMLParser()->parseXMLFile(
             handler, filename, GUISchemeSchemaName,
             resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
-	}
-	catch(...)
-	{
+    }
+    catch(...)
+    {
         Logger::getSingleton().logEvent("Scheme::Scheme - loading of Scheme from file '" + filename +"' failed.", Errors);
         throw;
-	}
+    }
 
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
-	Logger::getSingleton().logEvent("Loaded GUI scheme '" + d_name +
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    Logger::getSingleton().logEvent("Loaded GUI scheme '" + d_name +
        "' from data in file '" + filename + "'. " + addr_buff, Informative);
 
-	// attempt to load in resources
-	loadResources();
+    // attempt to load in resources
+    loadResources();
 }
 
 
 /*************************************************************************
-	Destructor for scheme objects
+    Destructor for scheme objects
 *************************************************************************/
 Scheme::~Scheme(void)
 {
-	unloadResources();
+    unloadResources();
 
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent("GUI scheme '" + d_name + "' has been "
         "unloaded (object destructor). " + addr_buff, Informative);
 }
 
 
 /*************************************************************************
-	Load all resources for this scheme
+    Load all resources for this scheme
 *************************************************************************/
 void Scheme::loadResources(void)
 {
@@ -129,7 +129,7 @@ void Scheme::loadResources(void)
 
 
 /*************************************************************************
-	Unload all resources for this scheme
+    Unload all resources for this scheme
 *************************************************************************/
 void Scheme::unloadResources(void)
 {
@@ -150,7 +150,7 @@ void Scheme::unloadResources(void)
 
 
 /*************************************************************************
-	Check if all resources for this Scheme are loaded
+    Check if all resources for this Scheme are loaded
 *************************************************************************/
 bool Scheme::resourcesLoaded(void) const
 {
