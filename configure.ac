@@ -89,6 +89,7 @@ AC_CHECK_FUNCS([atexit floor memchr memmove memset pow regcomp setlocale sqrt st
 CEGUI_ENABLE_OPENGL_RENDERER
 CEGUI_ENABLE_OGRE_RENDERER
 CEGUI_ENABLE_IRRLICHT_RENDERER
+CEGUI_ENABLE_DIRECTFB_RENDERER
 
 # decide whether to use gtk dialog in samples
 CEGUI_CHECK_GTK_FOR_SAMPLES
@@ -121,6 +122,13 @@ CEGUI_OPENGL_AGE=1
 CEGUI_OPENGL_VERSION_INFO=$CEGUI_OPENGL_CURRENT:$CEGUI_OPENGL_REVISION:$CEGUI_OPENGL_AGE
 AC_SUBST(CEGUI_OPENGL_VERSION_INFO)
 
+dnl versioning info for the DirectFB renderer
+CEGUI_DIRECTFB_CURRENT=0
+CEGUI_DIRECTFB_REVISION=0
+CEGUI_DIRECTFB_AGE=0
+CEGUI_DIRECTFB_VERSION_INFO=$CEGUI_DIRECTFB_CURRENT:$CEGUI_DIRECTFB_REVISION:$CEGUI_DIRECTFB_AGE
+AC_SUBST(CEGUI_DIRECTFB_VERSION_INFO)
+
 CEGUI_CODE_OPTIONS
 
 dnl Create the makefiles
@@ -134,6 +142,7 @@ AC_CONFIG_FILES([Makefile
                  RendererModules/directx81GUIRenderer/Makefile
                  RendererModules/directx9GUIRenderer/Makefile
                  RendererModules/directx10GUIRenderer/Makefile
+                 RendererModules/directfbRenderer/Makefile
                  RendererModules/IrrlichtRenderer/Makefile
                  RendererModules/Makefile
                  RendererModules/OpenGLGUIRenderer/Makefile
@@ -212,6 +221,7 @@ echo "* Renderer Modules:"
 echo "*         Building OpenGL Renderer:                     ${cegui_enable_opengl-no}"
 echo "*             Using external GLEW library:              ${cegui_found_glew-no}"
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
+echo "*         Building DirectFB Renderer:                   ${cegui_enable_directfb-no}"
 echo "*"
 if test x"$cegui_enable_opengl" = x"yes"; then
 echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
@@ -260,6 +270,7 @@ echo "*         Building Samples:                             ${cegui_build_samp
 echo "*         GTK2 based dialog for renderer selection:     ${cegui_with_gtk-no}"
 echo "*         OpenGL Renderer available in samples:         ${cegui_samples_use_opengl-no}"
 echo "*         Irrlicht Renderer available in samples:       ${cegui_samples_use_irrlicht-no}"
+echo "*         DirectFB Renderer available in samples:       ${cegui_samples_use_directfb-no}"
 echo "*         Ogre3D Renderer available in samples:         ${cegui_samples_use_ogre-no}"
 echo "********************************************************************************"
 echo

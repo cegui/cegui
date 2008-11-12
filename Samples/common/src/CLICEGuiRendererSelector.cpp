@@ -64,6 +64,13 @@ bool CLICEGuiRendererSelector::invokeDialog()
         std::cout << rendererNumber << ". Irrlicht GUI Renderer." << std::endl;
     }
 
+    if (d_rendererAvailability[DirectFBGuiRendererType])
+    {
+        ++rendererNumber;
+        last_available = DirectFBGuiRendererType;
+        std::cout << rendererNumber << ". DirectFB GUI Renderer." << std::endl;
+    }
+
     // abort if no renderers are available.
     if (rendererNumber == 0)
     {
@@ -99,6 +106,10 @@ bool CLICEGuiRendererSelector::invokeDialog()
     else if ((d_rendererAvailability[IrrlichtGuiRendererType]) && (--selection == 0))
     {
         d_lastSelected = IrrlichtGuiRendererType;
+    }
+    else if ((d_rendererAvailability[DirectFBGuiRendererType]) && (--selection == 0))
+    {
+        d_lastSelected = DirectFBGuiRendererType;
     }
     else
     {
