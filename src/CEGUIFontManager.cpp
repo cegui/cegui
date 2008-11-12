@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIFontManager.cpp
-	created:	21/2/2004
-	author:		Paul D Turner
+    filename:   CEGUIFontManager.cpp
+    created:    21/2/2004
+    author:     Paul D Turner
 
-	purpose:	Implements the FontManager class
+    purpose:    Implements the FontManager class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -43,7 +43,7 @@ namespace CEGUI
 {
 
 /*************************************************************************
-	Static Data Definitions
+    Static Data Definitions
 *************************************************************************/
 
 // Font schema filename
@@ -52,38 +52,38 @@ static const String FontTypeFreeType ("FreeType");
 static const String FontTypePixmap ("Pixmap");
 
 // singleton instance pointer
-template<> FontManager* Singleton<FontManager>::ms_Singleton	= 0;
+template<> FontManager* Singleton<FontManager>::ms_Singleton    = 0;
 
 
 /*************************************************************************
-	constructor
+    constructor
 *************************************************************************/
 FontManager::FontManager(void)
 {
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
-	Logger::getSingleton().logEvent("CEGUI::FontManager singleton created. "
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    Logger::getSingleton().logEvent("CEGUI::FontManager singleton created. "
         + String(addr_buff));
 }
 
 
 /*************************************************************************
-	Destructor
+    Destructor
 *************************************************************************/
 FontManager::~FontManager(void)
 {
-	Logger::getSingleton().logEvent("---- Begining cleanup of Font system ----");
-	destroyAllFonts();
+    Logger::getSingleton().logEvent("---- Begining cleanup of Font system ----");
+    destroyAllFonts();
 
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
-	Logger::getSingleton().logEvent("CEGUI::FontManager singleton destroyed. "
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    Logger::getSingleton().logEvent("CEGUI::FontManager singleton destroyed. "
         + String(addr_buff));
 }
 
 
 /*************************************************************************
-	Create a font from a definition file
+    Create a font from a definition file
 *************************************************************************/
 Font* FontManager::createFont(const String& filename, const String& resourceGroup)
 {
@@ -120,7 +120,7 @@ Font* FontManager::createFont(const String& filename, const String& resourceGrou
 
 
 /*************************************************************************
-	Create a font from an installed OS font
+    Create a font from an installed OS font
 *************************************************************************/
 Font* FontManager::createFont (const String& type, const String& name, const String& fontname,
                                const String& resourceGroup)
@@ -155,7 +155,7 @@ Font* FontManager::createFont (const String& type, const String& name, const Str
 
 
 /*************************************************************************
-	Create a font given its type and the respective XML attributes
+    Create a font given its type and the respective XML attributes
 *************************************************************************/
 Font *FontManager::createFont (const String &type, const XMLAttributes& attributes)
 {
@@ -185,104 +185,104 @@ Font *FontManager::createFont (const String &type, const XMLAttributes& attribut
 
 
 /*************************************************************************
-	Destroy the named font
+    Destroy the named font
 *************************************************************************/
 void FontManager::destroyFont(const String& name)
 {
     FontRegistry::iterator pos = d_fonts.find(name);
 
-	if (pos != d_fonts.end())
-	{
-		String tmpName(name);
+    if (pos != d_fonts.end())
+    {
+        String tmpName(name);
 
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", pos->second);
+        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
 
         delete pos->second;
-		d_fonts.erase(pos);
+        d_fonts.erase(pos);
 
-		Logger::getSingleton().logEvent("Font '" + tmpName +"' has been "
+        Logger::getSingleton().logEvent("Font '" + tmpName +"' has been "
           "destroyed. " + addr_buff);
-	}
+    }
 
 }
 
 
 /*************************************************************************
-	Destroys the given Font object
+    Destroys the given Font object
 *************************************************************************/
 void FontManager::destroyFont(Font* font)
 {
-	if (font)
-	{
-		destroyFont(font->getProperty ("Name"));
-	}
+    if (font)
+    {
+        destroyFont(font->getProperty ("Name"));
+    }
 
 }
 
 
 /*************************************************************************
-	Destroys all Font objects registered in the system
+    Destroys all Font objects registered in the system
 *************************************************************************/
 void FontManager::destroyAllFonts(void)
 {
-	while (!d_fonts.empty())
-	{
-		destroyFont(d_fonts.begin()->first);
-	}
+    while (!d_fonts.empty())
+    {
+        destroyFont(d_fonts.begin()->first);
+    }
 
 }
 
 
 /*************************************************************************
-	Check to see if a font is available
+    Check to see if a font is available
 *************************************************************************/
 bool FontManager::isFontPresent(const String& name) const
 {
-	return (d_fonts.find(name) != d_fonts.end());
+    return (d_fonts.find(name) != d_fonts.end());
 }
 
 
 /*************************************************************************
-	Return a pointer to the named font
+    Return a pointer to the named font
 *************************************************************************/
 Font* FontManager::getFont(const String& name) const
 {
-	FontRegistry::const_iterator pos = d_fonts.find(name);
+    FontRegistry::const_iterator pos = d_fonts.find(name);
 
-	if (pos == d_fonts.end())
-	{
-		throw UnknownObjectException("FontManager::getFont - A Font object with the specified name '" + name +"' does not exist within the system");
-	}
+    if (pos == d_fonts.end())
+    {
+        throw UnknownObjectException("FontManager::getFont - A Font object with the specified name '" + name +"' does not exist within the system");
+    }
 
-	return pos->second;
+    return pos->second;
 }
 
 
 /*************************************************************************
-	Notify the FontManager of the current (usually new) display
-	resolution.
+    Notify the FontManager of the current (usually new) display
+    resolution.
 *************************************************************************/
 void FontManager::notifyScreenResolution(const Size& size)
 {
-	// notify all attached Font objects of the change in resolution
-	FontRegistry::iterator pos = d_fonts.begin(), end = d_fonts.end();
+    // notify all attached Font objects of the change in resolution
+    FontRegistry::iterator pos = d_fonts.begin(), end = d_fonts.end();
 
-	for (; pos != end; ++pos)
-	{
-		pos->second->notifyScreenResolution(size);
-	}
+    for (; pos != end; ++pos)
+    {
+        pos->second->notifyScreenResolution(size);
+    }
 
 }
 
 
 /*************************************************************************
-	Return a FontManager::FontIterator object to iterate over the
-	available Font objects.
+    Return a FontManager::FontIterator object to iterate over the
+    available Font objects.
 *************************************************************************/
 FontManager::FontIterator FontManager::getIterator(void) const
 {
-	return FontIterator(d_fonts.begin(), d_fonts.end());
+    return FontIterator(d_fonts.begin(), d_fonts.end());
 }
 
 

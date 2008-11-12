@@ -47,7 +47,7 @@ namespace CEGUI
         logEvent("+                          (http://www.cegui.org.uk/)                         +");
         logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
         char addr_buff[32];
-        sprintf(addr_buff, "(%#x)", this);
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
         logEvent("CEGUI::Logger singleton created. " + String(addr_buff));
     }
 
@@ -59,7 +59,7 @@ namespace CEGUI
         if (d_ostream.is_open())
         {
             char addr_buff[32];
-            sprintf(addr_buff, "(%#x)", this);
+            sprintf(addr_buff, "(%p)", static_cast<void*>(this));
             logEvent("CEGUI::Logger singleton destroyed. " + String(addr_buff));
             d_ostream.close();
         }

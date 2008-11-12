@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUISystem.cpp
-	created:	20/2/2004
-	author:		Paul D Turner
+    filename:   CEGUISystem.cpp
+    created:    20/2/2004
+    author:     Paul D Turner
 
-	purpose:	Implementation of main system object
+    purpose:    Implementation of main system object
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
@@ -58,13 +58,13 @@
 
 //This block includes the proper headers when static linking
 #if defined(CEGUI_STATIC)
-	#ifdef CEGUI_WITH_EXPAT
-		#include "../XMLParserModules/expatParser/CEGUIExpatParserModule.h"
-	#elif CEGUI_WITH_TINYXML
-		#include "../XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
-	#elif CEGUI_WITH_XERCES
-		#include "../XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
-	#endif
+    #ifdef CEGUI_WITH_EXPAT
+        #include "../XMLParserModules/expatParser/CEGUIExpatParserModule.h"
+    #elif CEGUI_WITH_TINYXML
+        #include "../XMLParserModules/TinyXMLParser/CEGUITinyXMLParserModule.h"
+    #elif CEGUI_WITH_XERCES
+        #include "../XMLParserModules/XercesParser/CEGUIXercesParserModule.h"
+    #endif
 #endif
 
 
@@ -115,42 +115,42 @@ double SimpleTimer::currentTime()
 
 /*!
 \brief
-	Implementation structure used in tracking up & down mouse button inputs in order to generate click, double-click,
-	and triple-click events.
+    Implementation structure used in tracking up & down mouse button inputs in order to generate click, double-click,
+    and triple-click events.
 */
 struct MouseClickTracker
 {
-	MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
+    MouseClickTracker(void) : d_click_count(0), d_click_area(0, 0, 0, 0) {}
 
-	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
-	int				d_click_count;		//!< count of clicks made so far.
-	Rect			d_click_area;		//!< area used to detect multi-clicks
+    SimpleTimer     d_timer;            //!< Timer used to track clicks for this button.
+    int             d_click_count;      //!< count of clicks made so far.
+    Rect            d_click_area;       //!< area used to detect multi-clicks
     Window*         d_target_window;    //!< target window for any events generated.
 };
 
 
 struct MouseClickTrackerImpl
 {
-	MouseClickTracker	click_trackers[MouseButtonCount];
+    MouseClickTracker   click_trackers[MouseButtonCount];
 };
 
 
 /*************************************************************************
-	Constants definitions
+    Constants definitions
 *************************************************************************/
-const char	System::CEGUIConfigSchemaName[]		= "CEGUIConfig.xsd";
+const char  System::CEGUIConfigSchemaName[]     = "CEGUIConfig.xsd";
 
 
 /*************************************************************************
-	Static Data Definitions
+    Static Data Definitions
 *************************************************************************/
 // singleton instance pointer
-template<> System* Singleton<System>::ms_Singleton	= 0;
+template<> System* Singleton<System>::ms_Singleton  = 0;
 
 // click event generation defaults
-const double	System::DefaultSingleClickTimeout	= 0.2;
-const double	System::DefaultMultiClickTimeout	= 0.33;
-const Size		System::DefaultMultiClickAreaSize(12,12);
+const double    System::DefaultSingleClickTimeout   = 0.2;
+const double    System::DefaultMultiClickTimeout    = 0.33;
+const Size      System::DefaultMultiClickAreaSize(12,12);
 
 // event names
 const String System::EventGUISheetChanged( "GUISheetChanged" );
@@ -349,22 +349,22 @@ System::System(Renderer* renderer,
 
 
 /*************************************************************************
-	Destructor
+    Destructor
 *************************************************************************/
 System::~System(void)
 {
-	Logger::getSingleton().logEvent("---- Begining CEGUI System destruction ----");
+    Logger::getSingleton().logEvent("---- Begining CEGUI System destruction ----");
 
-	// execute shut-down script
-	if (!d_termScriptName.empty())
-	{
-		try
-		{
-			executeScriptFile(d_termScriptName);
-		}
-		catch (...) {}  // catch all exceptions and continue system shutdown
+    // execute shut-down script
+    if (!d_termScriptName.empty())
+    {
+        try
+        {
+            executeScriptFile(d_termScriptName);
+        }
+        catch (...) {}  // catch all exceptions and continue system shutdown
 
-	}
+    }
 
     // unsubscribe from the renderer
     d_rendererCon->disconnect();
@@ -379,63 +379,63 @@ System::~System(void)
     cleanupXMLParser();
 
     //
-	// perform cleanup in correct sequence
-	//
-	// destroy windows so it's safe to destroy factories
+    // perform cleanup in correct sequence
+    //
+    // destroy windows so it's safe to destroy factories
     WindowManager::getSingleton().destroyAllWindows();
     WindowManager::getSingleton().cleanDeadPool();
 
     // remove factories so it's safe to unload GUI modules
-	WindowFactoryManager::getSingleton().removeAllFactories();
+    WindowFactoryManager::getSingleton().removeAllFactories();
 
-	// cleanup singletons
+    // cleanup singletons
     destroySingletons();
 
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
-	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
        String(addr_buff));
-	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
-	delete Logger::getSingletonPtr();
+    Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
+    delete Logger::getSingletonPtr();
 
-	delete d_clickTrackerPimpl;
+    delete d_clickTrackerPimpl;
 }
 
 
 /*************************************************************************
-	Render the GUI for this frame
+    Render the GUI for this frame
 *************************************************************************/
 void System::renderGUI(void)
 {
-	//////////////////////////////////////////////////////////////////////////
-	// This makes use of some tricks the Renderer can do so that we do not
-	// need to do a full redraw every frame - only when some UI element has
-	// changed.
-	//
-	// Since the mouse is likely to move very often, and in order not to
-	// short-circuit the above optimisation, the mouse is not queued, but is
-	// drawn directly to the display every frame.
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // This makes use of some tricks the Renderer can do so that we do not
+    // need to do a full redraw every frame - only when some UI element has
+    // changed.
+    //
+    // Since the mouse is likely to move very often, and in order not to
+    // short-circuit the above optimisation, the mouse is not queued, but is
+    // drawn directly to the display every frame.
+    //////////////////////////////////////////////////////////////////////////
 
-	if (d_gui_redraw)
-	{
-		d_renderer->resetZValue();
-		d_renderer->setQueueingEnabled(true);
-		d_renderer->clearRenderList();
+    if (d_gui_redraw)
+    {
+        d_renderer->resetZValue();
+        d_renderer->setQueueingEnabled(true);
+        d_renderer->clearRenderList();
 
-		if (d_activeSheet)
-		{
-			d_activeSheet->render();
-		}
+        if (d_activeSheet)
+        {
+            d_activeSheet->render();
+        }
 
-		d_gui_redraw = false;
-	}
+        d_gui_redraw = false;
+    }
 
-	d_renderer->doRender();
+    d_renderer->doRender();
 
-	// draw mouse
-	d_renderer->setQueueingEnabled(false);
-	MouseCursor::getSingleton().draw();
+    // draw mouse
+    d_renderer->setQueueingEnabled(false);
+    MouseCursor::getSingleton().draw();
 
     // do final destruction on dead-pool windows
     WindowManager::getSingleton().cleanDeadPool();
@@ -443,12 +443,12 @@ void System::renderGUI(void)
 
 
 /*************************************************************************
-	Set the active GUI sheet (root) window.
+    Set the active GUI sheet (root) window.
 *************************************************************************/
 Window* System::setGUISheet(Window* sheet)
 {
-	Window* old = d_activeSheet;
-	d_activeSheet = sheet;
+    Window* old = d_activeSheet;
+    d_activeSheet = sheet;
 
     // Force and update for the area Rects for 'sheet' so they're correct according
     // to the screen size.
@@ -458,41 +458,41 @@ Window* System::setGUISheet(Window* sheet)
         sheet->onParentSized(sheetargs);
     }
 
-	// fire event
-	WindowEventArgs args(old);
-	onGUISheetChanged(args);
+    // fire event
+    WindowEventArgs args(old);
+    onGUISheetChanged(args);
 
-	return old;
+    return old;
 }
 
 
 /*************************************************************************
-	Set the default font to be used by the system
+    Set the default font to be used by the system
 *************************************************************************/
 void System::setDefaultFont(const String& name)
 {
-	if (name.empty())
-	{
-		setDefaultFont(0);
-	}
-	else
-	{
-		setDefaultFont(FontManager::getSingleton().getFont(name));
-	}
+    if (name.empty())
+    {
+        setDefaultFont(0);
+    }
+    else
+    {
+        setDefaultFont(FontManager::getSingleton().getFont(name));
+    }
 
 }
 
 
 /*************************************************************************
-	Set the default font to be used by the system
+    Set the default font to be used by the system
 *************************************************************************/
 void System::setDefaultFont(Font* font)
 {
-	d_defaultFont = font;
+    d_defaultFont = font;
 
-	// fire event
-	EventArgs args;
-	onDefaultFontChanged(args);
+    // fire event
+    EventArgs args;
+    onDefaultFontChanged(args);
 }
 
 
@@ -532,21 +532,21 @@ void System::setDefaultMouseCursor(const Image* image)
 
 
 /*************************************************************************
-	Set the image to be used as the default mouse cursor.
+    Set the image to be used as the default mouse cursor.
 *************************************************************************/
 void System::setDefaultMouseCursor(const String& imageset, const String& image_name)
 {
-	setDefaultMouseCursor(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name));
+    setDefaultMouseCursor(&ImagesetManager::getSingleton().getImageset(imageset)->getImage(image_name));
 }
 
 
 /*************************************************************************
-	Return a pointer to the ScriptModule being used for scripting within
-	the GUI system.
+    Return a pointer to the ScriptModule being used for scripting within
+    the GUI system.
 *************************************************************************/
 ScriptModule* System::getScriptingModule(void) const
 {
-	return d_scriptModule;
+    return d_scriptModule;
 }
 
 /*************************************************************************
@@ -572,73 +572,73 @@ void System::setScriptingModule(ScriptModule* scriptModule)
 }
 
 /*************************************************************************
-	Return a pointer to the ResourceProvider being used for within the GUI
+    Return a pointer to the ResourceProvider being used for within the GUI
     system.
 *************************************************************************/
 ResourceProvider* System::getResourceProvider(void) const
 {
-	return d_resourceProvider;
+    return d_resourceProvider;
 }
 
 /*************************************************************************
-	Execute a script file if possible.
+    Execute a script file if possible.
 *************************************************************************/
 void System::executeScriptFile(const String& filename, const String& resourceGroup) const
 {
-	if (d_scriptModule)
-	{
-		try
-		{
-			d_scriptModule->executeScriptFile(filename, resourceGroup);
-		}
+    if (d_scriptModule)
+    {
+        try
+        {
+            d_scriptModule->executeScriptFile(filename, resourceGroup);
+        }
         // Forward script exceptions with line number and file info
         catch(ScriptException& e)
         {
             throw e;
         }
-		catch(...)
-		{
-			throw GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file.");
-		}
+        catch(...)
+        {
+            throw GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file.");
+        }
 
-	}
-	else
-	{
-		Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", Errors);
-	}
+    }
+    else
+    {
+        Logger::getSingleton().logEvent("System::executeScriptFile - the script named '" + filename +"' could not be executed as no ScriptModule is available.", Errors);
+    }
 
 }
 
 
 /*************************************************************************
-	Execute a scripted global function if possible.  The function should
-	not take any parameters and should return an integer.
+    Execute a scripted global function if possible.  The function should
+    not take any parameters and should return an integer.
 *************************************************************************/
-int	System::executeScriptGlobal(const String& function_name) const
+int System::executeScriptGlobal(const String& function_name) const
 {
-	if (d_scriptModule)
-	{
-		try
-		{
-			return d_scriptModule->executeScriptGlobal(function_name);
-		}
+    if (d_scriptModule)
+    {
+        try
+        {
+            return d_scriptModule->executeScriptGlobal(function_name);
+        }
         // Forward script exceptions with line number and file info
         catch(ScriptException& e)
         {
             throw e;
         }
-		catch(...)
-		{
-			throw GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
-		}
+        catch(...)
+        {
+            throw GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
+        }
 
-	}
-	else
-	{
-		Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
-	}
+    }
+    else
+    {
+        Logger::getSingleton().logEvent("System::executeScriptGlobal - the global script function named '" + function_name +"' could not be executed as no ScriptModule is available.", Errors);
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -673,29 +673,29 @@ void System::executeScriptString(const String& str) const
 
 
 /*************************************************************************
-	return the current mouse movement scaling factor.
+    return the current mouse movement scaling factor.
 *************************************************************************/
 float System::getMouseMoveScaling(void) const
 {
-	return d_mouseScalingFactor;
+    return d_mouseScalingFactor;
 }
 
 
 /*************************************************************************
-	Set the current mouse movement scaling factor
+    Set the current mouse movement scaling factor
 *************************************************************************/
 void System::setMouseMoveScaling(float scaling)
 {
-	d_mouseScalingFactor = scaling;
+    d_mouseScalingFactor = scaling;
 
-	// fire off event.
-	EventArgs args;
-	onMouseMoveScalingChanged(args);
+    // fire off event.
+    EventArgs args;
+    onMouseMoveScalingChanged(args);
 }
 
 
 /*************************************************************************
-	Method that injects a mouse movement event into the system
+    Method that injects a mouse movement event into the system
 *************************************************************************/
 bool System::injectMouseMove(float delta_x, float delta_y)
 {
@@ -724,56 +724,56 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 }
 
 /*************************************************************************
-	Method that injects that the mouse is leaves the application window
+    Method that injects that the mouse is leaves the application window
 *************************************************************************/
 bool System::injectMouseLeaves(void)
 {
-	MouseEventArgs ma(0);
+    MouseEventArgs ma(0);
 
-	// if there is no window that currently contains the mouse, then
-	// there is nowhere to send input
-	if (d_wndWithMouse)
-	{
-		ma.position = MouseCursor::getSingleton().getPosition();
-		ma.moveDelta = Vector2(0.0f, 0.0f);
-		ma.button = NoButton;
-		ma.sysKeys = d_sysKeys;
-		ma.wheelChange = 0;
-		ma.window = d_wndWithMouse;
-		ma.clickCount = 0;
+    // if there is no window that currently contains the mouse, then
+    // there is nowhere to send input
+    if (d_wndWithMouse)
+    {
+        ma.position = MouseCursor::getSingleton().getPosition();
+        ma.moveDelta = Vector2(0.0f, 0.0f);
+        ma.button = NoButton;
+        ma.sysKeys = d_sysKeys;
+        ma.wheelChange = 0;
+        ma.window = d_wndWithMouse;
+        ma.clickCount = 0;
 
-		d_wndWithMouse->onMouseLeaves(ma);
-		d_wndWithMouse = 0;
-	}
+        d_wndWithMouse->onMouseLeaves(ma);
+        d_wndWithMouse = 0;
+    }
 
-	return ma.handled;
+    return ma.handled;
 }
 
 
 /*************************************************************************
-	Method that injects a mouse button down event into the system.
+    Method that injects a mouse button down event into the system.
 *************************************************************************/
 bool System::injectMouseButtonDown(MouseButton button)
 {
-	// update system keys
-	d_sysKeys |= mouseButtonToSyskey(button);
+    // update system keys
+    d_sysKeys |= mouseButtonToSyskey(button);
 
-	MouseEventArgs ma(0);
-	ma.position = MouseCursor::getSingleton().getPosition();
-	ma.moveDelta = Vector2(0.0f, 0.0f);
-	ma.button = button;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = 0;
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
 
     // find the likely destination for generated events.
     Window* dest_window = getTargetWindow(ma.position);
 
     //
-	// Handling for multi-click generation
-	//
-	MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
+    // Handling for multi-click generation
+    //
+    MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
 
-	tkr.d_click_count++;
+    tkr.d_click_count++;
 
     // if multi-click requirements are not met
     if (((d_dblclick_timeout > 0) && (tkr.d_timer.elapsed() > d_dblclick_timeout)) ||
@@ -793,13 +793,13 @@ bool System::injectMouseButtonDown(MouseButton button)
         tkr.d_target_window = dest_window;
     }
 
-	// set click count in the event args
-	ma.clickCount = tkr.d_click_count;
+    // set click count in the event args
+    ma.clickCount = tkr.d_click_count;
 
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != 0))
-	{
-		ma.window = dest_window;
+    // loop backwards until event is handled or we run out of windows.
+    while ((!ma.handled) && (dest_window != 0))
+    {
+        ma.window = dest_window;
 
         if (dest_window->wantsMultiClickEvents())
         {
@@ -825,30 +825,30 @@ bool System::injectMouseButtonDown(MouseButton button)
             dest_window->onMouseButtonDown(ma);
         }
 
-		dest_window = getNextTargetWindow(dest_window);
-	}
+        dest_window = getNextTargetWindow(dest_window);
+    }
 
-	// reset timer for this tracker.
-	tkr.d_timer.restart();
+    // reset timer for this tracker.
+    tkr.d_timer.restart();
 
-	return ma.handled;
+    return ma.handled;
 }
 
 
 /*************************************************************************
-	Method that injects a mouse button up event into the system.
+    Method that injects a mouse button up event into the system.
 *************************************************************************/
 bool System::injectMouseButtonUp(MouseButton button)
 {
-	// update system keys
-	d_sysKeys &= ~mouseButtonToSyskey(button);
+    // update system keys
+    d_sysKeys &= ~mouseButtonToSyskey(button);
 
-	MouseEventArgs ma(0);
-	ma.position = MouseCursor::getSingleton().getPosition();
-	ma.moveDelta = Vector2(0.0f, 0.0f);
-	ma.button = button;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = 0;
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = 0;
 
     // get the tracker that holds the number of down events seen so far for this button
     MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
@@ -856,159 +856,159 @@ bool System::injectMouseButtonUp(MouseButton button)
     ma.clickCount = tkr.d_click_count;
 
     Window* const initial_dest_window = getTargetWindow(ma.position);
-	Window* dest_window = initial_dest_window;
+    Window* dest_window = initial_dest_window;
 
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != 0))
-	{
-		ma.window = dest_window;
-		dest_window->onMouseButtonUp(ma);
-		dest_window = getNextTargetWindow(dest_window);
-	}
+    // loop backwards until event is handled or we run out of windows.
+    while ((!ma.handled) && (dest_window != 0))
+    {
+        ma.window = dest_window;
+        dest_window->onMouseButtonUp(ma);
+        dest_window = getNextTargetWindow(dest_window);
+    }
 
-	bool wasUpHandled = ma.handled;
+    bool wasUpHandled = ma.handled;
 
     // if requirements for click events are met
     if (((d_click_timeout == 0) || (tkr.d_timer.elapsed() <= d_click_timeout)) &&
         (tkr.d_click_area.isPointInRect(ma.position)) &&
         (tkr.d_target_window == initial_dest_window))
     {
-		ma.handled = false;
+        ma.handled = false;
         dest_window = initial_dest_window;
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((!ma.handled) && (dest_window != 0))
-		{
-			ma.window = dest_window;
-			dest_window->onMouseClicked(ma);
-			dest_window = getNextTargetWindow(dest_window);
-		}
+        // loop backwards until event is handled or we run out of windows.
+        while ((!ma.handled) && (dest_window != 0))
+        {
+            ma.window = dest_window;
+            dest_window->onMouseClicked(ma);
+            dest_window = getNextTargetWindow(dest_window);
+        }
 
-	}
+    }
 
-	return (ma.handled | wasUpHandled);
+    return (ma.handled | wasUpHandled);
 }
 
 
 /*************************************************************************
-	Method that injects a key down event into the system.
+    Method that injects a key down event into the system.
 *************************************************************************/
 bool System::injectKeyDown(uint key_code)
 {
-	// update system keys
-	d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
+    // update system keys
+    d_sysKeys |= keyCodeToSyskey((Key::Scan)key_code, true);
 
-	KeyEventArgs args(0);
+    KeyEventArgs args(0);
 
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		args.scancode = (Key::Scan)key_code;
-		args.sysKeys = d_sysKeys;
+    if (d_activeSheet && d_activeSheet->isVisible())
+    {
+        args.scancode = (Key::Scan)key_code;
+        args.sysKeys = d_sysKeys;
 
-		Window* dest = getKeyboardTargetWindow();
+        Window* dest = getKeyboardTargetWindow();
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((dest != 0) && (!args.handled))
-		{
-			args.window = dest;
-			dest->onKeyDown(args);
-			dest = getNextTargetWindow(dest);
-		}
+        // loop backwards until event is handled or we run out of windows.
+        while ((dest != 0) && (!args.handled))
+        {
+            args.window = dest;
+            dest->onKeyDown(args);
+            dest = getNextTargetWindow(dest);
+        }
 
-	}
+    }
 
-	return args.handled;
+    return args.handled;
 }
 
 
 /*************************************************************************
-	Method that injects a key up event into the system.
+    Method that injects a key up event into the system.
 *************************************************************************/
 bool System::injectKeyUp(uint key_code)
 {
-	// update system keys
-	d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
+    // update system keys
+    d_sysKeys &= ~keyCodeToSyskey((Key::Scan)key_code, false);
 
-	KeyEventArgs args(0);
+    KeyEventArgs args(0);
 
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		args.scancode = (Key::Scan)key_code;
-		args.sysKeys = d_sysKeys;
+    if (d_activeSheet && d_activeSheet->isVisible())
+    {
+        args.scancode = (Key::Scan)key_code;
+        args.sysKeys = d_sysKeys;
 
-		Window* dest = getKeyboardTargetWindow();
+        Window* dest = getKeyboardTargetWindow();
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((dest != 0) && (!args.handled))
-		{
-			args.window = dest;
-			dest->onKeyUp(args);
-			dest = getNextTargetWindow(dest);
-		}
+        // loop backwards until event is handled or we run out of windows.
+        while ((dest != 0) && (!args.handled))
+        {
+            args.window = dest;
+            dest->onKeyUp(args);
+            dest = getNextTargetWindow(dest);
+        }
 
-	}
+    }
 
-	return args.handled;
+    return args.handled;
 }
 
 
 /*************************************************************************
-	Method that injects a typed character event into the system.
+    Method that injects a typed character event into the system.
 *************************************************************************/
 bool System::injectChar(utf32 code_point)
 {
-	KeyEventArgs args(0);
+    KeyEventArgs args(0);
 
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		args.codepoint = code_point;
-		args.sysKeys = d_sysKeys;
+    if (d_activeSheet && d_activeSheet->isVisible())
+    {
+        args.codepoint = code_point;
+        args.sysKeys = d_sysKeys;
 
-		Window* dest = getKeyboardTargetWindow();
+        Window* dest = getKeyboardTargetWindow();
 
-		// loop backwards until event is handled or we run out of windows.
-		while ((dest != 0) && (!args.handled))
-		{
-			args.window = dest;
-			dest->onCharacter(args);
-			dest = getNextTargetWindow(dest);
-		}
+        // loop backwards until event is handled or we run out of windows.
+        while ((dest != 0) && (!args.handled))
+        {
+            args.window = dest;
+            dest->onCharacter(args);
+            dest = getNextTargetWindow(dest);
+        }
 
-	}
+    }
 
-	return args.handled;
+    return args.handled;
 }
 
 
 /*************************************************************************
-	Method that injects a mouse-wheel / scroll-wheel event into the system.
+    Method that injects a mouse-wheel / scroll-wheel event into the system.
 *************************************************************************/
 bool System::injectMouseWheelChange(float delta)
 {
-	MouseEventArgs ma(0);
-	ma.position = MouseCursor::getSingleton().getPosition();
-	ma.moveDelta = Vector2(0.0f, 0.0f);
-	ma.button = NoButton;
-	ma.sysKeys = d_sysKeys;
-	ma.wheelChange = delta;
-	ma.clickCount = 0;
+    MouseEventArgs ma(0);
+    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.moveDelta = Vector2(0.0f, 0.0f);
+    ma.button = NoButton;
+    ma.sysKeys = d_sysKeys;
+    ma.wheelChange = delta;
+    ma.clickCount = 0;
 
-	Window* dest_window = getTargetWindow(ma.position);
+    Window* dest_window = getTargetWindow(ma.position);
 
-	// loop backwards until event is handled or we run out of windows.
-	while ((!ma.handled) && (dest_window != 0))
-	{
-		ma.window = dest_window;
-		dest_window->onMouseWheel(ma);
-		dest_window = getNextTargetWindow(dest_window);
-	}
+    // loop backwards until event is handled or we run out of windows.
+    while ((!ma.handled) && (dest_window != 0))
+    {
+        ma.window = dest_window;
+        dest_window->onMouseWheel(ma);
+        dest_window = getNextTargetWindow(dest_window);
+    }
 
-	return ma.handled;
+    return ma.handled;
 }
 
 
 /*************************************************************************
-	Method that injects a new position for the mouse cursor.
+    Method that injects a new position for the mouse cursor.
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
@@ -1040,43 +1040,43 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 
 
 /*************************************************************************
-	Method to inject time pulses into the system.
+    Method to inject time pulses into the system.
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
-	if (d_activeSheet)
-	{
-		d_activeSheet->update(timeElapsed);
-	}
+    if (d_activeSheet)
+    {
+        d_activeSheet->update(timeElapsed);
+    }
 
-	return true;
+    return true;
 }
 
 
 /*************************************************************************
-	Return window that should get mouse inouts when mouse it at 'pt'
+    Return window that should get mouse inouts when mouse it at 'pt'
 *************************************************************************/
-Window*	System::getTargetWindow(const Point& pt) const
+Window* System::getTargetWindow(const Point& pt) const
 {
-	Window* dest_window = 0;
+    Window* dest_window = 0;
 
-	// if there is no GUI sheet visible, then there is nowhere to send input
-	if (d_activeSheet && d_activeSheet->isVisible())
-	{
-		dest_window = Window::getCaptureWindow();
+    // if there is no GUI sheet visible, then there is nowhere to send input
+    if (d_activeSheet && d_activeSheet->isVisible())
+    {
+        dest_window = Window::getCaptureWindow();
 
-		if (!dest_window)
-		{
-			dest_window = d_activeSheet->getTargetChildAtPosition(pt);
+        if (!dest_window)
+        {
+            dest_window = d_activeSheet->getTargetChildAtPosition(pt);
 
-			if (!dest_window)
-			{
-				dest_window = d_activeSheet;
-			}
+            if (!dest_window)
+            {
+                dest_window = d_activeSheet;
+            }
 
-		}
-		else
-		{
+        }
+        else
+        {
             if (dest_window->distributesCapturedInputs())
             {
                 Window* child_window = dest_window->getTargetChildAtPosition(pt);
@@ -1088,255 +1088,255 @@ Window*	System::getTargetWindow(const Point& pt) const
 
             }
 
-		}
+        }
 
-		// modal target overrules
-		if (d_modalTarget != 0 && dest_window != d_modalTarget)
-		{
-			if (!dest_window->isAncestor(d_modalTarget))
-			{
-				dest_window = d_modalTarget;
-			}
+        // modal target overrules
+        if (d_modalTarget != 0 && dest_window != d_modalTarget)
+        {
+            if (!dest_window->isAncestor(d_modalTarget))
+            {
+                dest_window = d_modalTarget;
+            }
 
-		}
+        }
 
-	}
+    }
 
-	return dest_window;
+    return dest_window;
 }
 
 
 /*************************************************************************
-	Return window that should receive keyboard input
+    Return window that should receive keyboard input
 *************************************************************************/
 Window* System::getKeyboardTargetWindow(void) const
 {
-	Window* target = 0;
+    Window* target = 0;
 
-	if (!d_modalTarget)
-	{
-		target = d_activeSheet->getActiveChild();
-	}
-	else
-	{
-		target = d_modalTarget->getActiveChild();
-		if (!target)
-		{
-			target = d_modalTarget;
-		}
-	}
+    if (!d_modalTarget)
+    {
+        target = d_activeSheet->getActiveChild();
+    }
+    else
+    {
+        target = d_modalTarget->getActiveChild();
+        if (!target)
+        {
+            target = d_modalTarget;
+        }
+    }
 
-	return target;
+    return target;
 }
 
 
 /*************************************************************************
-	Return the next window that should receive input in the chain
+    Return the next window that should receive input in the chain
 *************************************************************************/
 Window* System::getNextTargetWindow(Window* w) const
 {
-	// if we have not reached the modal target, return the parent
-	if (w != d_modalTarget)
-	{
-		return w->getParent();
-	}
+    // if we have not reached the modal target, return the parent
+    if (w != d_modalTarget)
+    {
+        return w->getParent();
+    }
 
-	// otherwise stop now
-	return 0;
+    // otherwise stop now
+    return 0;
 }
 
 
 /*************************************************************************
-	Translate a MouseButton value into the corresponding SystemKey value
+    Translate a MouseButton value into the corresponding SystemKey value
 *************************************************************************/
 SystemKey System::mouseButtonToSyskey(MouseButton btn) const
 {
-	switch (btn)
-	{
-	case LeftButton:
-		return LeftMouse;
+    switch (btn)
+    {
+    case LeftButton:
+        return LeftMouse;
 
-	case RightButton:
-		return RightMouse;
+    case RightButton:
+        return RightMouse;
 
-	case MiddleButton:
-		return MiddleMouse;
+    case MiddleButton:
+        return MiddleMouse;
 
-	case X1Button:
-		return X1Mouse;
+    case X1Button:
+        return X1Mouse;
 
-	case X2Button:
-		return X2Mouse;
+    case X2Button:
+        return X2Mouse;
 
-	default:
-		throw InvalidRequestException("System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value.");
-	}
+    default:
+        throw InvalidRequestException("System::mouseButtonToSyskey - the parameter 'btn' is not a valid MouseButton value.");
+    }
 }
 
 
 /*************************************************************************
-	Translate a Key::Scan value into the corresponding SystemKey value
+    Translate a Key::Scan value into the corresponding SystemKey value
 *************************************************************************/
 SystemKey System::keyCodeToSyskey(Key::Scan key, bool direction)
 {
-	switch (key)
-	{
-	case Key::LeftShift:
-		d_lshift = direction;
+    switch (key)
+    {
+    case Key::LeftShift:
+        d_lshift = direction;
 
-		if (!d_rshift)
-		{
-			return Shift;
-		}
-		break;
+        if (!d_rshift)
+        {
+            return Shift;
+        }
+        break;
 
-	case Key::RightShift:
-		d_rshift = direction;
+    case Key::RightShift:
+        d_rshift = direction;
 
-		if (!d_lshift)
-		{
-			return Shift;
-		}
-		break;
+        if (!d_lshift)
+        {
+            return Shift;
+        }
+        break;
 
 
-	case Key::LeftControl:
-		d_lctrl = direction;
+    case Key::LeftControl:
+        d_lctrl = direction;
 
-		if (!d_rctrl)
-		{
-			return Control;
-		}
-		break;
+        if (!d_rctrl)
+        {
+            return Control;
+        }
+        break;
 
-	case Key::RightControl:
-		d_rctrl = direction;
+    case Key::RightControl:
+        d_rctrl = direction;
 
-		if (!d_lctrl)
-		{
-			return Control;
-		}
-		break;
+        if (!d_lctrl)
+        {
+            return Control;
+        }
+        break;
 
-	case Key::LeftAlt:
-		d_lalt = direction;
+    case Key::LeftAlt:
+        d_lalt = direction;
 
-		if (!d_ralt)
-		{
-			return Alt;
-		}
-		break;
+        if (!d_ralt)
+        {
+            return Alt;
+        }
+        break;
 
-	case Key::RightAlt:
-		d_ralt = direction;
+    case Key::RightAlt:
+        d_ralt = direction;
 
-		if (!d_lalt)
-		{
-			return Alt;
-		}
-		break;
+        if (!d_lalt)
+        {
+            return Alt;
+        }
+        break;
 
     default:
         break;
-	}
+    }
 
-	// if not a system key or overall state unchanged, return 0.
-	return (SystemKey)0;
+    // if not a system key or overall state unchanged, return 0.
+    return (SystemKey)0;
 }
 
 
-System&	System::getSingleton(void)
+System& System::getSingleton(void)
 {
-	return Singleton<System>::getSingleton();
+    return Singleton<System>::getSingleton();
 }
 
 
-System*	System::getSingletonPtr(void)
+System* System::getSingletonPtr(void)
 {
-	return Singleton<System>::getSingletonPtr();
+    return Singleton<System>::getSingletonPtr();
 }
 
 
 
 /*************************************************************************
-	Set the timeout to be used for the generation of single-click events.
+    Set the timeout to be used for the generation of single-click events.
 *************************************************************************/
 void System::setSingleClickTimeout(double timeout)
 {
-	d_click_timeout = timeout;
+    d_click_timeout = timeout;
 
-	// fire off event.
-	EventArgs args;
-	onSingleClickTimeoutChanged(args);
+    // fire off event.
+    EventArgs args;
+    onSingleClickTimeoutChanged(args);
 }
 
 
 /*************************************************************************
-	Set the timeout to be used for the generation of multi-click events.
+    Set the timeout to be used for the generation of multi-click events.
 *************************************************************************/
 void System::setMultiClickTimeout(double timeout)
 {
-	d_dblclick_timeout = timeout;
+    d_dblclick_timeout = timeout;
 
-	// fire off event.
-	EventArgs args;
-	onMultiClickTimeoutChanged(args);
+    // fire off event.
+    EventArgs args;
+    onMultiClickTimeoutChanged(args);
 }
 
 
 /*************************************************************************
-	Set the size of the allowable mouse movement tolerance used when
-	generating multi-click events.
+    Set the size of the allowable mouse movement tolerance used when
+    generating multi-click events.
 *************************************************************************/
-void System::setMultiClickToleranceAreaSize(const Size&	sz)
+void System::setMultiClickToleranceAreaSize(const Size& sz)
 {
-	d_dblclick_size = sz;
+    d_dblclick_size = sz;
 
-	// fire off event.
-	EventArgs args;
-	onMultiClickAreaSizeChanged(args);
+    // fire off event.
+    EventArgs args;
+    onMultiClickAreaSizeChanged(args);
 }
 
 
 /*************************************************************************
-	Handler called when the main system GUI Sheet (or root window) is changed
+    Handler called when the main system GUI Sheet (or root window) is changed
 *************************************************************************/
 void System::onGUISheetChanged(WindowEventArgs& e)
 {
-	fireEvent(EventGUISheetChanged, e, EventNamespace);
+    fireEvent(EventGUISheetChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when the single-click timeout value is changed.
+    Handler called when the single-click timeout value is changed.
 *************************************************************************/
 void System::onSingleClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(EventSingleClickTimeoutChanged, e, EventNamespace);
+    fireEvent(EventSingleClickTimeoutChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when the multi-click timeout value is changed.
+    Handler called when the multi-click timeout value is changed.
 *************************************************************************/
 void System::onMultiClickTimeoutChanged(EventArgs& e)
 {
-	fireEvent(EventMultiClickTimeoutChanged, e, EventNamespace);
+    fireEvent(EventMultiClickTimeoutChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when the size of the multi-click tolerance area is
-	changed.
+    Handler called when the size of the multi-click tolerance area is
+    changed.
 *************************************************************************/
 void System::onMultiClickAreaSizeChanged(EventArgs& e)
 {
-	fireEvent(EventMultiClickAreaSizeChanged, e, EventNamespace);
+    fireEvent(EventMultiClickAreaSizeChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when the default system font is changed.
+    Handler called when the default system font is changed.
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
 {
@@ -1363,75 +1363,75 @@ void System::onDefaultFontChanged(EventArgs& e)
         ++iter;
     }
 
-	fireEvent(EventDefaultFontChanged, e, EventNamespace);
+    fireEvent(EventDefaultFontChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when the default system mouse cursor image is changed.
+    Handler called when the default system mouse cursor image is changed.
 *************************************************************************/
 void System::onDefaultMouseCursorChanged(EventArgs& e)
 {
-	fireEvent(EventDefaultMouseCursorChanged, e, EventNamespace);
+    fireEvent(EventDefaultMouseCursorChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler called when the mouse movement scaling factor is changed.
+    Handler called when the mouse movement scaling factor is changed.
 *************************************************************************/
 void System::onMouseMoveScalingChanged(EventArgs& e)
 {
-	fireEvent(EventMouseMoveScalingChanged, e, EventNamespace);
+    fireEvent(EventMouseMoveScalingChanged, e, EventNamespace);
 }
 
 
 /*************************************************************************
-	Handler method for display size change notifications
+    Handler method for display size change notifications
 *************************************************************************/
 bool System::handleDisplaySizeChange(const EventArgs& e)
 {
-	// notify the imageset/font manager of the size change
-	Size new_sz = getRenderer()->getSize();
-	ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
-	FontManager::getSingleton().notifyScreenResolution(new_sz);
+    // notify the imageset/font manager of the size change
+    Size new_sz = getRenderer()->getSize();
+    ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
+    FontManager::getSingleton().notifyScreenResolution(new_sz);
 
-	// notify gui sheet / root if size change, event propagation will ensure everything else
-	// gets updated as required.
-	if (d_activeSheet)
-	{
-		WindowEventArgs args(0);
-		d_activeSheet->onParentSized(args);
-	}
+    // notify gui sheet / root if size change, event propagation will ensure everything else
+    // gets updated as required.
+    if (d_activeSheet)
+    {
+        WindowEventArgs args(0);
+        d_activeSheet->onParentSized(args);
+    }
 
     Logger::getSingleton().logEvent(
         "Display resize:"
         " w=" + PropertyHelper::floatToString(new_sz.d_width) +
         " h=" + PropertyHelper::floatToString(new_sz.d_height));
 
-	return true;
+    return true;
 }
 
 
 /*************************************************************************
-	Internal method used to inform the System object whenever a window is
-	destroyed, so that System can perform any required housekeeping.
+    Internal method used to inform the System object whenever a window is
+    destroyed, so that System can perform any required housekeeping.
 *************************************************************************/
 void System::notifyWindowDestroyed(const Window* window)
 {
-	if (d_wndWithMouse == window)
-	{
-		d_wndWithMouse = 0;
-	}
+    if (d_wndWithMouse == window)
+    {
+        d_wndWithMouse = 0;
+    }
 
-	if (d_activeSheet == window)
-	{
-		d_activeSheet = 0;
-	}
+    if (d_activeSheet == window)
+    {
+        d_activeSheet = 0;
+    }
 
-	if (d_modalTarget == window)
-	{
-		d_modalTarget = 0;
-	}
+    if (d_modalTarget == window)
+    {
+        d_modalTarget = 0;
+    }
 
 }
 
@@ -1477,7 +1477,7 @@ void System::setDefaultTooltip(const String& tooltipType)
 void System::outputLogHeader()
 {
     char addr_buff[32];
-    sprintf(addr_buff, "(%#x)", this);
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
     Logger::getSingleton().logEvent("CEGUI::System singleton created. " + String(addr_buff));
     Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
     Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
@@ -1522,7 +1522,7 @@ void System::addStandardWindowFactories()
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tooltip));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(ItemListbox));
     wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(GroupBox));
-	wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tree));
+    wfMgr.addFactory(&CEGUI_WINDOW_FACTORY(Tree));
 }
 
 void System::createSingletons()
