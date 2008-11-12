@@ -2,7 +2,7 @@
 	filename: 	CEGUIMouseCursor.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements MouseCursor class
 *************************************************************************/
 /***************************************************************************
@@ -75,7 +75,10 @@ MouseCursor::MouseCursor(void)
 	// no default image though
 	d_cursorImage = 0;
 
-	Logger::getSingleton().logEvent("CEGUI::MouseCursor singleton created.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+	Logger::getSingleton().logEvent(
+       "CEGUI::MouseCursor singleton created. " + String(addr_buff));
 }
 
 
@@ -84,7 +87,10 @@ MouseCursor::MouseCursor(void)
 *************************************************************************/
 MouseCursor::~MouseCursor(void)
 {
-	Logger::getSingleton().logEvent("CEGUI::MouseCursor singleton destroyed.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+	Logger::getSingleton().logEvent(
+       "CEGUI::MouseCursor singleton destroyed. " + String(addr_buff));
 }
 
 
@@ -232,7 +238,7 @@ const URect& MouseCursor::getUnifiedConstraintArea(void) const
 
 /*************************************************************************
 	Return the current mouse cursor position in display resolution
-	independant values.	
+	independant values.
 *************************************************************************/
 Point MouseCursor::getDisplayIndependantPosition(void) const
 {

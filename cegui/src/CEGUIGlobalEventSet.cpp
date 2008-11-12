@@ -43,7 +43,10 @@ namespace CEGUI
 	*************************************************************************/
 	GlobalEventSet::GlobalEventSet()
 	{
-		Logger::getSingleton().logEvent("CEGUI::GlobalEventSet singleton created.");
+        char addr_buff[32];
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+		Logger::getSingleton().logEvent(
+          "CEGUI::GlobalEventSet singleton created. " + String(addr_buff));
 	}
 
 	/*************************************************************************
@@ -51,7 +54,10 @@ namespace CEGUI
 	*************************************************************************/
 	GlobalEventSet::~GlobalEventSet()
 	{
-		Logger::getSingleton().logEvent("CEGUI::GlobalEventSet singleton destroyed.");
+        char addr_buff[32];
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+		Logger::getSingleton().logEvent(
+          "CEGUI::GlobalEventSet singleton destroyed. " + String(addr_buff));
 	}
 
 	/*************************************************************************

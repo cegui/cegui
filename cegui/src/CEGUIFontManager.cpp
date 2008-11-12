@@ -2,7 +2,7 @@
 	filename: 	CEGUIFontManager.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements the FontManager class
 *************************************************************************/
 /***************************************************************************
@@ -60,7 +60,10 @@ template<> FontManager* Singleton<FontManager>::ms_Singleton	= 0;
 *************************************************************************/
 FontManager::FontManager(void)
 {
-	Logger::getSingleton().logEvent("CEGUI::FontManager singleton created.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+	Logger::getSingleton().logEvent("CEGUI::FontManager singleton created. "
+        + String(addr_buff));
 }
 
 
@@ -72,7 +75,10 @@ FontManager::~FontManager(void)
 	Logger::getSingleton().logEvent("---- Begining cleanup of Font system ----");
 	destroyAllFonts();
 
-	Logger::getSingleton().logEvent("CEGUI::FontManager singleton destroyed.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+	Logger::getSingleton().logEvent("CEGUI::FontManager singleton destroyed. "
+        + String(addr_buff));
 }
 
 
@@ -109,7 +115,7 @@ Font* FontManager::createFont(const String& filename, const String& resourceGrou
     if (d_fonts.size () == 1)
         System::getSingleton ().setDefaultFont (handler.d_font);
 
-    return handler.d_font; 
+    return handler.d_font;
 }
 
 
@@ -144,7 +150,7 @@ Font* FontManager::createFont (const String& type, const String& name, const Str
     if (d_fonts.size () == 1)
         System::getSingleton ().setDefaultFont (temp);
 
-    return temp; 
+    return temp;
 }
 
 
@@ -189,10 +195,14 @@ void FontManager::destroyFont(const String& name)
 	{
 		String tmpName(name);
 
+        char addr_buff[32];
+        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
+
 		delete pos->second;
 		d_fonts.erase(pos);
 
-		Logger::getSingleton().logEvent("Font '" + tmpName +"' has been destroyed.");
+		Logger::getSingleton().logEvent("Font '" + tmpName +"' has been "
+          "destroyed. " + addr_buff);
 	}
 
 }

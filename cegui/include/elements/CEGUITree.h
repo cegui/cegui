@@ -620,6 +620,12 @@ protected:
      *************************************************************************/
     /*!
      \brief
+        Checks if a tree item is visible (searches sub-items)
+    */
+    bool containsOpenItemRecursive(const LBItemList& itemList, TreeItem* item);
+
+    /*!
+     \brief
         Add tree specific events
      */
     void addTreeEvents(void);

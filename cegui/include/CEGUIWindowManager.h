@@ -210,6 +210,21 @@ public:
 	\brief
 		Creates a set of windows (a Gui layout) from the information in the specified XML file.	
 
+    \warning
+        When using a C string literal as the value for the second argument
+        \a name_prefix, currently (0.6.x releases) it is likely that the
+        incorrect overload of loadWindowLayout will be invoked (possibly without
+        immediate error or warning).  To avoid the possibility of invoking the
+        incorrect overload by mistake, it is recommended that you explicity use
+        the CEGUI::String type when passing \a name_prefix.
+        \par
+        For example, instead of this:
+        \code winMgr.loadWindowLayout("MyLayout.layout", "aPrefix/"); \endcode
+        \par
+        Do this:
+        \code winMgr.loadWindowLayout("MyLayout.layout", CEGUI::String("aPrefix/"));
+        \endcode
+
 	\param filename
 		String object holding the filename of the XML file to be processed.
 

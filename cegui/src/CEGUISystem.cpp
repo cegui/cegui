@@ -391,7 +391,10 @@ System::~System(void)
 	// cleanup singletons
     destroySingletons();
 
-	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+	Logger::getSingleton().logEvent("CEGUI::System singleton destroyed. " +
+       String(addr_buff));
 	Logger::getSingleton().logEvent("---- CEGUI System destruction completed ----");
 	delete Logger::getSingletonPtr();
 
@@ -588,6 +591,11 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
 		{
 			d_scriptModule->executeScriptFile(filename, resourceGroup);
 		}
+        // Forward script exceptions with line number and file info
+        catch(ScriptException& e)
+        {
+            throw e;
+        }
 		catch(...)
 		{
 			throw GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file.");
@@ -614,6 +622,11 @@ int	System::executeScriptGlobal(const String& function_name) const
 		{
 			return d_scriptModule->executeScriptGlobal(function_name);
 		}
+        // Forward script exceptions with line number and file info
+        catch(ScriptException& e)
+        {
+            throw e;
+        }
 		catch(...)
 		{
 			throw GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function.");
@@ -640,6 +653,11 @@ void System::executeScriptString(const String& str) const
         try
         {
             d_scriptModule->executeString(str);
+        }
+        // Forward script exceptions with line number and file info
+        catch(ScriptException& e)
+        {
+            throw e;
         }
         catch(...)
         {
@@ -882,7 +900,7 @@ bool System::injectKeyDown(uint key_code)
 
 	KeyEventArgs args(0);
 
-	if (d_activeSheet)
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
@@ -913,7 +931,7 @@ bool System::injectKeyUp(uint key_code)
 
 	KeyEventArgs args(0);
 
-	if (d_activeSheet)
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		args.scancode = (Key::Scan)key_code;
 		args.sysKeys = d_sysKeys;
@@ -941,7 +959,7 @@ bool System::injectChar(utf32 code_point)
 {
 	KeyEventArgs args(0);
 
-	if (d_activeSheet)
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		args.codepoint = code_point;
 		args.sysKeys = d_sysKeys;
@@ -1042,8 +1060,8 @@ Window*	System::getTargetWindow(const Point& pt) const
 {
 	Window* dest_window = 0;
 
-	// if there is no GUI sheet, then there is nowhere to send input
-	if (d_activeSheet)
+	// if there is no GUI sheet visible, then there is nowhere to send input
+	if (d_activeSheet && d_activeSheet->isVisible())
 	{
 		dest_window = Window::getCaptureWindow();
 
@@ -1458,7 +1476,9 @@ void System::setDefaultTooltip(const String& tooltipType)
 
 void System::outputLogHeader()
 {
-    Logger::getSingleton().logEvent("CEGUI::System singleton created.");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    Logger::getSingleton().logEvent("CEGUI::System singleton created. " + String(addr_buff));
     Logger::getSingleton().logEvent("---- CEGUI System initialisation completed ----");
     Logger::getSingleton().logEvent("---- Version " + d_strVersion + " ----");
     Logger::getSingleton().logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
@@ -1688,7 +1708,7 @@ bool System::updateWindowContainingMouse()
         ma.window = d_wndWithMouse;
         d_wndWithMouse->onMouseEnters(ma);
     }
-    
+
     return true;
 }
 

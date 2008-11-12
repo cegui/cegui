@@ -242,6 +242,15 @@ Add a new tab
 *************************************************************************/
 void TabControl::addTab(Window* wnd)
 {
+    // abort attempts to add null window pointers, but log it for tracking.
+    if (!wnd)
+    {
+        Logger::getSingleton().logEvent("Attempt to add null window pointer as "
+            "tab to TabControl '" + getName() + "'.  Ignoring!", Informative);
+
+        return;
+    }
+
     // Create a new TabButton
     addButtonForTabContent(wnd);
     // Add the window to the content pane
@@ -769,6 +778,10 @@ bool TabControl::handleWheeledPane(const EventArgs& e)
 
 void TabControl::removeTab_impl(Window* window)
 {
+    // silently abort if window to be removed is 0.
+    if (!window)
+        return;
+
     // delete connection to event we subscribed earlier
     d_eventConnections.erase(window);
     // Was this selected?

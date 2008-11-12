@@ -2,7 +2,7 @@
     filename:   CEGUIDefaultLogger.cpp
     created:    25/1/2006
     author:     Andrew Zabolotny
-    
+
     purpose:    Implementation of the DefaultLogger class
 *************************************************************************/
 /***************************************************************************
@@ -46,7 +46,9 @@ namespace CEGUI
         logEvent("+                     Crazy Eddie's GUI System - Event log                    +");
         logEvent("+                          (http://www.cegui.org.uk/)                         +");
         logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
-        logEvent("CEGUI::Logger singleton created.");
+        char addr_buff[32];
+        sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+        logEvent("CEGUI::Logger singleton created. " + String(addr_buff));
     }
 
     /*************************************************************************
@@ -56,7 +58,9 @@ namespace CEGUI
     {
         if (d_ostream.is_open())
         {
-            logEvent("CEGUI::Logger singleton destroyed.");
+            char addr_buff[32];
+            sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+            logEvent("CEGUI::Logger singleton destroyed. " + String(addr_buff));
             d_ostream.close();
         }
     }
@@ -145,7 +149,7 @@ namespace CEGUI
         {
             throw "Logger::setLogFilename - Failed to open file.";
         }
-        
+
         // initialise width for date & time alignment.
         d_ostream.width(2);
 

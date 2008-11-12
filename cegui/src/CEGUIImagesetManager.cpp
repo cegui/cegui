@@ -2,7 +2,7 @@
 	filename: 	CEGUIImagesetManager.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implements the ImagesetManager class
 *************************************************************************/
 /***************************************************************************
@@ -47,7 +47,10 @@ template<> ImagesetManager* Singleton<ImagesetManager>::ms_Singleton	= 0;
 *************************************************************************/
 ImagesetManager::ImagesetManager(void)
 {
-	Logger::getSingleton().logEvent("CEGUI::ImagesetManager singleton created");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+    Logger::getSingleton().logEvent(
+        "CEGUI::ImagesetManager singleton created " + String(addr_buff));
 }
 
 
@@ -60,7 +63,10 @@ ImagesetManager::~ImagesetManager(void)
 
 	destroyAllImagesets();
 
-	Logger::getSingleton().logEvent("CEGUI::ImagesetManager singleton destroyed");
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
+	Logger::getSingleton().logEvent(
+       "CEGUI::ImagesetManager singleton destroyed " + String(addr_buff));
 }
 
 
@@ -138,10 +144,14 @@ void ImagesetManager::destroyImageset(const String& name)
 	{
 		String tmpName(name);
 
+        char addr_buff[32];
+        sprintf(addr_buff, "(%p)", static_cast<void*>(pos->second));
+
 		delete pos->second;
 		d_imagesets.erase(pos);
 
-		Logger::getSingleton().logEvent("Imageset '" + tmpName +"' has been destroyed.", Informative);
+		Logger::getSingleton().logEvent("Imageset '" + tmpName +
+            "' has been destroyed. " + addr_buff, Informative);
 	}
 
 }
@@ -217,7 +227,7 @@ ImagesetManager::ImagesetIterator ImagesetManager::getIterator(void) const
 void ImagesetManager::writeImagesetToStream(const String& imageset, OutStream& out_stream) const
 {
     const Imageset* iset = getImageset(imageset);
-    // Create an XMLSerializer which make use of 4 space and UTF-8 encoding 
+    // Create an XMLSerializer which make use of 4 space and UTF-8 encoding
     XMLSerializer xml(out_stream);
     iset->writeXMLToStream(xml);
 }
