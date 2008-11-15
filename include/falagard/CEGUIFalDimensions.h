@@ -31,7 +31,7 @@
 #include "falagard/CEGUIFalEnums.h"
 #include "CEGUIString.h"
 #include "CEGUIUDim.h"
-#include "CEGUIXMLSerializer.h" 
+#include "CEGUIXMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -181,7 +181,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Implementataion method to create the element attributes 
+            Implementataion method to create the element attributes
         */
         virtual void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const = 0;
 
@@ -440,7 +440,8 @@ namespace CEGUI
 
     /*!
     \brief
-        Dimension type that represents the value of a Window property.  Implements BaseDim interface.
+        Dimension type that represents the value of a Window property.
+        Implements BaseDim interface.
     */
     class CEGUIEXPORT PropertyDim : public BaseDim
     {
@@ -450,14 +451,25 @@ namespace CEGUI
             Constructor.
 
         \param name
-            String holding the name suffix of the window on which the property is to be accessed.
+            String holding the name suffix of the window on which the property
+            is to be accessed.
 
         \param property
-            String object holding the name of the property this PropertyDim represents the value of.
-            The property named should represent a simple float value.
+            String object holding the name of the property this PropertyDim
+            represents the value of.  The property named should represent either
+            a UDim value or a simple float value - dependning upon what \a type
+            is specified as.
 
         \param type
-            DimensionType value indicating what dimension named property represents.
+            DimensionType value indicating what dimension named property
+            represents.  The possible DimensionType values are as follows:
+            - DT_INVALID the property should represent a simple float value.
+            - DT_WIDTH the property should represent a UDim value where the
+            scale is relative to the targetted Window's width.
+            - DT_HEIGHT the property should represent a UDim value where the
+            scale is relative to the targetted Window's height.
+            - All other values will cause an InvalidRequestException exception
+            to be thrown.
         */
         PropertyDim(const String& name, const String& property, DimensionType type);
 
@@ -570,7 +582,7 @@ namespace CEGUI
 
         \param xml_stream
             Stream where xml data should be output.
-        
+
         \return
             Nothing.
         */
