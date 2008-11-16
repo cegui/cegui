@@ -122,7 +122,7 @@ void WindowFactoryManager::removeFactory(WindowFactory* factory)
 void WindowFactoryManager::removeAllFactories(void)
 {
     while (!d_factoryRegistry.empty())
-        removeFactory((*d_factoryRegistry.begin()).first);
+        removeFactory((*d_factoryRegistry.begin()).second);
 }
 
 
