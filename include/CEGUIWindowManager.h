@@ -129,6 +129,8 @@ public:
 	\return
 		Pointer to the newly created Window object.
 
+    \exception  InvalidRequestException WindowManager is locked and no Windows
+                                        may be created.
 	\exception	AlreadyExistsException		A Window object with the name \a name already exists.
 	\exception	UnknownObjectException		No WindowFactory is registered for \a type Window objects.
 	\exception	GenericException			Some other error occurred (Exception message has details).
@@ -373,6 +375,54 @@ public:
     static void setDefaultResourceGroup(const String& resourceGroup)
         { d_defaultResourceGroup = resourceGroup; }
 
+    /*!
+    \brief
+        Put WindowManager into the locked state.
+
+        While WindowManager is in the locked state all attempts to create a
+        Window of any type will fail with an InvalidRequestException being
+        thrown.  Calls to lock/unlock are recursive; if multiple calls to lock
+        are made, WindowManager is only unlocked after a matching number of
+        calls to unlock.
+
+    \note
+        This is primarily intended for internal use within the system.
+    */
+    void lock();
+
+    /*!
+    \brief
+        Put WindowManager into the unlocked state.
+
+        While WindowManager is in the locked state all attempts to create a
+        Window of any type will fail with an InvalidRequestException being
+        thrown.  Calls to lock/unlock are recursive; if multiple calls to lock
+        are made, WindowManager is only unlocked after a matching number of
+        calls to unlock.
+
+    \note
+        This is primarily intended for internal use within the system.
+    */
+    void unlock();
+
+    /*!
+    \brief
+        Returns whether WindowManager is currently in the locked state.
+
+        While WindowManager is in the locked state all attempts to create a
+        Window of any type will fail with an InvalidRequestException being
+        thrown.  Calls to lock/unlock are recursive; if multiple calls to lock
+        are made, WindowManager is only unlocked after a matching number of
+        calls to unlock.
+
+    \return
+        - true to indicate WindowManager is locked and that any attempt to
+        create Window objects will fail.
+        - false to indicate WindowManager is unlocked and that Window objects
+        may be created as normal.
+    */
+    bool isLocked() const;
+
 private:
     /*************************************************************************
         Implementation Methods
@@ -402,6 +452,8 @@ private:
 
     unsigned long   d_uid_counter;  //!< Counter used to generate unique window names.
     static String d_defaultResourceGroup;   //!< holds default resource group
+    //! count of times WM is locked against new window creation.
+    uint    d_lockCount;
 
 public:
 	/*************************************************************************

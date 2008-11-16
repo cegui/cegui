@@ -60,7 +60,8 @@ const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
     Constructor
 *************************************************************************/
 WindowManager::WindowManager(void) :
-    d_uid_counter(0)
+    d_uid_counter(0),
+    d_lockCount(0)
 {
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));
@@ -89,6 +90,11 @@ WindowManager::~WindowManager(void)
 *************************************************************************/
 Window* WindowManager::createWindow( const String& type, const String& name /*= ""*/, const String& prefix /*= ""*/ )
 {
+    // only allow creation of Window objects if we are in unlocked state
+    if (isLocked())
+        throw InvalidRequestException("WindowManager::createWindow - "
+                                      "WindowManager is in the locked state.");
+
     // Make sure that a non-empty name gets passed to the factory
     String finalName(prefix + name);
     // Still empty?
@@ -406,5 +412,26 @@ void WindowManager::DEBUG_dumpWindowNames(String zone)
     }
     Logger::getSingleton().logEvent("-----------------");
 }
+
+//----------------------------------------------------------------------------//
+void WindowManager::lock()
+{
+    ++d_lockCount;
+}
+
+//----------------------------------------------------------------------------//
+void WindowManager::unlock()
+{
+    if (d_lockCount > 0)
+        --d_lockCount;
+}
+
+//----------------------------------------------------------------------------//
+bool WindowManager::isLocked() const
+{
+    return d_lockCount != 0;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
