@@ -915,6 +915,15 @@ public:
     \brief
         Return whether z-order changes are enabled or disabled for this Window.
 
+    \note
+        This is distinguished from the is/setRiseOnClickEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by clicking the mouse; is still possible to
+        programatically alter the Window z-order by calling the moveToFront or
+        moveToBack member functions.  Whereas if z ordering is disabled the
+        functions moveToFront and moveToBack are also precluded from affecting
+        the Window z position.
+
     \return
         - true if z-order changes are enabled for this window.
           moveToFront/moveToBack work normally as expected.
@@ -1038,6 +1047,15 @@ public:
     \brief
         Return whether this window will rise to the top of the z-order when
         clicked with the left mouse button.
+
+    \note
+        This is distinguished from the is/setZOrderingEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by clicking the mouse; is still possible to
+        programatically alter the Window z-order by calling the moveToFront or
+        moveToBack member functions.  Whereas if z ordering is disabled the
+        functions moveToFront and moveToBack are also precluded from affecting
+        the Window z position.
 
     \return
         - true if the window will come to the top of other windows when the left
@@ -1794,6 +1812,15 @@ public:
     \brief
         Set whether z-order changes are enabled or disabled for this Window.
 
+    \note
+        This is distinguished from the is/setRiseOnClickEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by clicking the mouse; is still possible to
+        programatically alter the Window z-order by calling the moveToFront or
+        moveToBack member functions.  Whereas if z ordering is disabled the
+        functions moveToFront and moveToBack are also precluded from affecting
+        the Window z position.
+
     \param setting
         - true if z-order changes are enabled for this window.
           moveToFront/moveToBack work normally as expected.
@@ -1978,6 +2005,15 @@ public:
     \brief
         Set whether this window will rise to the top of the z-order when clicked
         with the left mouse button.
+
+    \note
+        This is distinguished from the is/setZOrderingEnabled setting in that
+        if rise on click is disabled it only affects the users ability to affect
+        the z order of the Window by clicking the mouse; is still possible to
+        programatically alter the Window z-order by calling the moveToFront or
+        moveToBack member functions.  Whereas if z ordering is disabled the
+        functions moveToFront and moveToBack are also precluded from affecting
+        the Window z position.
 
     \param setting
         - true if the window should come to the top of other windows when the
@@ -3505,6 +3541,11 @@ protected:
     /*!
     \brief
         Implementation of rise on click functionality.
+
+    \deprecated
+        This function is redundant and will be removed for the 0.7.0 release.
+        To achieve what this function was supposed to do - but never actually
+        did - call Window::moveToFront_impl passing true as the parameter.
 
     \return
         true if we did something, false if there was nothing to do.
