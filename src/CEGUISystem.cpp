@@ -369,12 +369,6 @@ System::~System(void)
     // unsubscribe from the renderer
     d_rendererCon->disconnect();
 
-    // Cleanup script module bindings
-    if (d_scriptModule)
-    {
-        d_scriptModule->destroyBindings();
-    }
-
     // cleanup XML stuff
     cleanupXMLParser();
 
@@ -387,6 +381,10 @@ System::~System(void)
 
     // remove factories so it's safe to unload GUI modules
     WindowFactoryManager::getSingleton().removeAllFactories();
+
+    // Cleanup script module bindings
+    if (d_scriptModule)
+        d_scriptModule->destroyBindings();
 
     // cleanup singletons
     destroySingletons();
