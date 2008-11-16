@@ -519,7 +519,7 @@ String modp_dtoa(double value, int prec)
 
     int whole = (int) value;
     double tmp = (value - whole) * pow10[prec];
-    uint32_t frac = (uint32_t)(tmp);
+    uint32 frac = (uint32)(tmp);
     diff = tmp - frac;
 
     if (diff > 0.5) {
@@ -561,7 +561,7 @@ String modp_dtoa(double value, int prec)
         // the output of trailing zeros in the fractional part.
         bool non_zero = false;
         int count = prec;
-        uint32_t digit = 0;
+        uint32 digit = 0;
         // now do fractional part, as an unsigned number
         do {
             --count;
