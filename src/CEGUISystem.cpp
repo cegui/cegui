@@ -375,6 +375,10 @@ System::~System(void)
     //
     // perform cleanup in correct sequence
     //
+    // ensure no windows get created during destruction.  NB: I'm allowing the
+    // potential exception to escape here so as to make it obvious that client
+    // code should really be adjusted to not create windows during cleanup.
+    WindowManager::getSingleton().lock();
     // destroy windows so it's safe to destroy factories
     WindowManager::getSingleton().destroyAllWindows();
     WindowManager::getSingleton().cleanDeadPool();
