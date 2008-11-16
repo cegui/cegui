@@ -466,13 +466,26 @@ void WindowFactoryManager::addFactory()
 {
     // create the factory object
     WindowFactory* factory = new T;
-    d_ownedFactories.push_back(factory);
 
     Logger::getSingleton().logEvent("Created WindowFactory for '" +
                                     factory->getTypeName() +
                                     "' windows.");
     // add the factory we just created
-    addFactory(factory);
+    try
+    {
+        addFactory(factory);
+    }
+    catch (Exception& e)
+    {
+        Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
+                                        factory->getTypeName() +
+                                        "' windows.");
+        // delete the factory object
+        delete factory;
+        throw;
+    }
+
+    d_ownedFactories.push_back(factory);
 }
 
 } // End of  CEGUI namespace section
