@@ -140,7 +140,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
 
         // We need to convert pixel format a little
         // NB: little endian only - I think(!)
-#if defined(__LITTLE_ENDIAN__)
+#if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_BGR
         for (uint i = 0; i < height; ++i)
         {
             for (uint j = 0; j < width; ++j)
