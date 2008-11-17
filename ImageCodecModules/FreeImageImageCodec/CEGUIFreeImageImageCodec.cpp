@@ -132,30 +132,34 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
         uint pitch = FreeImage_GetPitch(img);
         uint height = FreeImage_GetHeight(img);
         uint width = FreeImage_GetWidth(img);
-        BYTE *srcBuf = FreeImage_GetBits(img);
-        uint8 *dstBuf = new uint8[width * height << 2];
+        uint8 *rawBuf = new uint8[width * height << 2];
+
+        // convert the bitmap to raw bits (top-left pixel first) 
+        FreeImage_ConvertToRawBits(rawBuf, img, pitch, 32,
+            FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, true);
 
         // We need to convert pixel format a little
+        // NB: little endian only - I think(!)
+#if defined(__LITTLE_ENDIAN__)
         for (uint i = 0; i < height; ++i)
         {
             for (uint j = 0; j < width; ++j)
             {
-                uint p = *(((uint*)(srcBuf + i * pitch)) + j);
+                uint p = *(((uint*)(rawBuf + i * pitch)) + j);
                 uint r = (p >> 16) & 0x000000FF;
                 uint b = (p << 16) & 0x00FF0000;
                 p &= 0xFF00FF00;
                 p |= r | b;
-                // At the same time we can flip verticaly the image
-                // (since textures are required to be upside down)
-                // hence this funny maths
-                *(((uint*)dstBuf) + (width * (height-1) - i * width) + j) = p;
+                // write the adjusted pixel back
+                *(((uint*)(rawBuf + i * pitch)) + j) = p;
             }
         }
+#endif
         FreeImage_Unload(img);
         img = 0;
 
-        result->loadFromMemory(dstBuf, width, height, Texture::PF_RGBA);
-        delete [] dstBuf;
+        result->loadFromMemory(rawBuf, width, height, Texture::PF_RGBA);
+        delete [] rawBuf;
         retval = result;
     }
     catch(Exception&)
