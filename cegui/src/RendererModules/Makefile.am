@@ -4,8 +4,12 @@ endif
 if BUILD_IRRLICHT_RENDERER
 IRRLICHT=IrrlichtRenderer
 endif
+if BUILD_DIRECTFB_RENDERER
+DIRECTFB=directfbRenderer
+endif
 SUBDIRS = . \
           $(OPENGL) \
           $(IRRLICHT) \
+          $(DIRECTFB) \
           directx9GUIRenderer \
           directx10GUIRenderer

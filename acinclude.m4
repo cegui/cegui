@@ -12,7 +12,7 @@ AC_DEFUN([CEGUI_CHECK_WANTS_SAMPLES],[
         [cegui_enable_samples=$enableval],[cegui_enable_samples=yes])
 
     if test x$cegui_enable_samples = xyes; then
-        if test x$cegui_samples_use_ogre = xyes || test x$cegui_samples_use_irrlicht = xyes || test x$cegui_samples_use_opengl = xyes; then
+        if test x$cegui_samples_use_ogre = xyes || test x$cegui_samples_use_irrlicht = xyes || test x$cegui_samples_use_opengl = xyes || test x$cegui_samples_use_directfb; then
             cegui_build_samples=yes
             AC_MSG_NOTICE([Samples framework and applications are enabled.])
             CEGUI_SAMPLES_CFLAGS='-DCEGUI_SAMPLE_DATAPATH="\"$(datadir)/$(PACKAGE)"\"'
@@ -204,6 +204,33 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
 	AC_SUBST(OIS_LIBS)
     AC_SUBST(CEGUIOGRE_CFLAGS)
     AC_SUBST(CEGUIOGRE_LIBS)
+])
+
+AC_DEFUN([CEGUI_ENABLE_DIRECTFB_RENDERER], [
+    PKG_CHECK_MODULES(directfb, directfb >= 1.0.0, [cegui_found_directfb=yes], [cegui_found_directfb=no])
+    AC_ARG_ENABLE([directfb-renderer], AC_HELP_STRING([--disable-directfb-renderer], [Disable the DirectFB renderer]),
+        [cegui_enable_directfb=$enableval],[cegui_enable_directfb=yes])
+
+    dnl decide if we will actually build the DirectFB Renderer
+    if test x$cegui_enable_directfb = xyes && test x$cegui_found_directfb = xyes; then
+        cegui_enable_directfb=yes
+    else
+        cegui_enable_directfb=no
+    fi
+
+    if test x$cegui_enable_directfb = xyes; then
+        cegui_samples_use_directfb=yes
+        AC_DEFINE(CEGUI_SAMPLES_USE_DIRECTFB, [], [Define to have the DirectFB CEGUI renderer available in the samples])
+        AC_MSG_NOTICE([Use of DirectFB in Samples is enabled])
+    else
+        cegui_samples_use_directfb=no
+        AC_MSG_NOTICE([DirectFB renderer disabled])
+    fi
+
+    AM_CONDITIONAL([BUILD_DIRECTFB_RENDERER], [test x$cegui_enable_directfb = xyes])
+    AM_CONDITIONAL([CEGUI_SAMPLES_USE_DIRECTFB], [test x$cegui_samples_use_directfb = xyes])
+    AC_SUBST(directfb_CFLAGS)
+    AC_SUBST(directfb_LIBS)
 ])
 
 AC_DEFUN([CEGUI_ENABLE_IRRLICHT_RENDERER], [

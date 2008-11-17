@@ -44,6 +44,11 @@ The following have made large, important, or on-going contributions to the syste
         <li>Initial updates to Ogre renderer to support Ogre 1.0.
     </ul>
 
+    <li>Keith Mok:
+    <ul>
+        <li>DirectFB renderer module and supporting sample base application.
+    </ul>
+
     <li>Magnus Osterlind:
     <ul>
         <li>Original version of the Direct3D 9 GUI renderer module.

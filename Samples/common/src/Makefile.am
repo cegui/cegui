@@ -40,6 +40,12 @@ if CEGUI_SAMPLES_USE_IRRLICHT
     libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/IrrlichtRenderer/libCEGUIIrrlichtRenderer.la \
                                       $(Irrlicht_LIBS)
 endif
+if CEGUI_SAMPLES_USE_DIRECTFB
+    INCLUDES += $(directfb_CFLAGS)
+    libCEGUISampleHelper_la_SOURCES += CEGuiDirectFBBaseApplication.cpp
+    libCEGUISampleHelper_la_LIBADD += $(top_builddir)/cegui/src/RendererModules/directfbRenderer/libCEGUIdirectfbRenderer.la \
+                                      $(directfb_LIBS)
+endif
 
 EXTRA_DIST = CEGuiD3D10BaseApplication.cpp \
              CEGuiD3D81BaseApplication.cpp \
