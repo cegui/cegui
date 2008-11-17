@@ -127,10 +127,7 @@ public:
 	\brief
 		Constructs a new WindowFactoryManager object.
 	*/
-	WindowFactoryManager(void)
-	{
-		Logger::getSingleton().logEvent("CEGUI::WindowFactoryManager singleton created");
-	}
+	WindowFactoryManager(void);
 
 
 	/*!
@@ -175,7 +172,7 @@ public:
         Nothing
     */
     template <typename T>
-    void addFactory();
+    static void addFactory();
 
 
 	/*!
@@ -429,7 +426,7 @@ private:
 	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.
     FalagardMapRegistry     d_falagardRegistry;         //!< Container that hold all the falagard window mappings.
     //! Container that tracks WindowFactory objects we created ourselves.
-    OwnedWindowFactoryList  d_ownedFactories;
+    static OwnedWindowFactoryList  d_ownedFactories;
 
 public:
 	/*************************************************************************
@@ -467,22 +464,26 @@ void WindowFactoryManager::addFactory()
     // create the factory object
     WindowFactory* factory = new T;
 
-    Logger::getSingleton().logEvent("Created WindowFactory for '" +
-                                    factory->getTypeName() +
-                                    "' windows.");
-    // add the factory we just created
-    try
+    // only do the actual add now if our singleton has already been created
+    if (WindowFactoryManager::getSingletonPtr())
     {
-        addFactory(factory);
-    }
-    catch (Exception& e)
-    {
-        Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
+        Logger::getSingleton().logEvent("Created WindowFactory for '" +
                                         factory->getTypeName() +
                                         "' windows.");
-        // delete the factory object
-        delete factory;
-        throw;
+        // add the factory we just created
+        try
+        {
+            WindowFactoryManager::getSingleton().addFactory(factory);
+        }
+        catch (Exception& e)
+        {
+            Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
+                                            factory->getTypeName() +
+                                            "' windows.");
+            // delete the factory object
+            delete factory;
+            throw;
+        }
     }
 
     d_ownedFactories.push_back(factory);
