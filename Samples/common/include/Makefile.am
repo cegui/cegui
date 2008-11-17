@@ -4,6 +4,7 @@ noinst_HEADERS = CEGUISamplesConfig.h \
                  CEGuiD3D81BaseApplication.h \
                  CEGuiD3D9BaseApplication.h \
                  CEGuiIrrlichtBaseApplication.h \
+                 CEGuiDirectFBBaseApplication.h \
                  CEGuiOgreBaseApplication.h \
                  CEGuiOpenGLBaseApplication.h \
                  CEGuiRendererSelector.h \
