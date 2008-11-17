@@ -40,7 +40,28 @@ namespace CEGUI
 *************************************************************************/
 // singleton instance pointer
 template<> WindowFactoryManager* Singleton<WindowFactoryManager>::ms_Singleton  = 0;
+// list of owned WindowFactory object pointers
+WindowFactoryManager::OwnedWindowFactoryList WindowFactoryManager::d_ownedFactories;
 
+//----------------------------------------------------------------------------//
+WindowFactoryManager::WindowFactoryManager(void)
+{
+    Logger::getSingleton().logEvent(
+        "CEGUI::WindowFactoryManager singleton created");
+
+    // complete addition of any pre-added WindowFactory objects
+    WindowFactoryManager::OwnedWindowFactoryList::iterator i =
+        d_ownedFactories.begin();
+
+    if (d_ownedFactories.end() != i)
+    {
+        Logger::getSingleton().logEvent(
+        "---- Adding pre-registered WindowFactory objects ----");
+
+        for (; d_ownedFactories.end() != i; ++i)
+            addFactory(*i);
+    }
+}
 
 /*************************************************************************
     Adds a WindowFactory object to the registry
