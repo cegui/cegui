@@ -229,7 +229,7 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
     tolua_pushusertype(d_state,(void*)&e,"const CEGUI::EventArgs");
 
     // call it
-    int error = lua_pcall(d_state,1,0,0);
+    int error = lua_pcall(d_state, 1, 1, 0);
 
     // handle errors
     if (error)
@@ -245,13 +245,17 @@ bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, co
         throw ScriptException("Unable to evaluate the Lua event handler: '"+handler_name+"'\n\n"+errStr+"\n");
     } // if (error)
 
+    // retrieve result
+    bool ret = lua_isboolean(d_state, -1) ? lua_toboolean(d_state, -1 ) : true;
+    lua_pop(d_state, 1);
+
 	if(helper)
 	{
 		delete helper;
 		helper = 0;
 	}
 
-    return true;
+    return ret;
 }
 
 
