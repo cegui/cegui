@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Mon Jun 23 14:42:20 2008.
+** Generated automatically by tolua++-1.0.92 on Sat Nov 22 13:40:59 2008.
 */
 
 #ifndef __cplusplus
@@ -12833,7 +12833,7 @@ static int tolua_CEGUI_CEGUI_EventSet_subscribeEvent00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::EventSet",0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,5,&tolua_err)
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -12843,6 +12843,7 @@ static int tolua_CEGUI_CEGUI_EventSet_subscribeEvent00(lua_State* tolua_S)
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
   lua_Object funcIndex = ((lua_Object)  tolua_tovalue(tolua_S,3,0));
   lua_Object selfIndex = ((lua_Object)  tolua_tovalue(tolua_S,4,LUA_NOREF));
+  lua_Object error_handler = ((lua_Object)  tolua_tovalue(tolua_S,5,LUA_NOREF));
   lua_State* tolua_var_1 =  tolua_S;
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'LuaFunctorSubscribeEvent'",NULL);
@@ -12851,7 +12852,7 @@ static int tolua_CEGUI_CEGUI_EventSet_subscribeEvent00(lua_State* tolua_S)
  bool errorDoIt = false;
  try
  {
-   CEGUI::EventConnection tolua_ret = (  CEGUI::EventConnection)  LuaFunctorSubscribeEvent(self,name,funcIndex,selfIndex,tolua_var_1);
+   CEGUI::EventConnection tolua_ret = (  CEGUI::EventConnection)  LuaFunctorSubscribeEvent(self,name,funcIndex,selfIndex,error_handler,tolua_var_1);
  {
 #ifdef __cplusplus
  void* tolua_obj = new CEGUI::EventConnection(tolua_ret);
@@ -14731,6 +14732,69 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getChildRecursive of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildRecursive00
+static int tolua_CEGUI_CEGUI_Window_getChildRecursive00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  unsigned int ID = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildRecursive'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChildRecursive(ID);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getChildRecursive'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getChildRecursive of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildRecursive01
+static int tolua_CEGUI_CEGUI_Window_getChildRecursive01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  string name = ((string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildRecursive'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChildRecursive(name);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Window_getChildRecursive00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getChildAtIdx of class  CEGUI::Window */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildAtIdx00
 static int tolua_CEGUI_CEGUI_Window_getChildAtIdx00(lua_State* tolua_S)
@@ -14860,40 +14924,6 @@ static int tolua_CEGUI_CEGUI_Window_getTargetChildAtPosition00(lua_State* tolua_
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getTargetChildAtPosition'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getChildRecursive of class  CEGUI::Window */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildRecursive00
-static int tolua_CEGUI_CEGUI_Window_getChildRecursive00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-  unsigned int ID = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildRecursive'",NULL);
-#endif
- {
-  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChildRecursive(ID);
- tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getChildRecursive'.",&tolua_err);
  return 0;
 #endif
 }
@@ -18741,7 +18771,7 @@ static int tolua_CEGUI_CEGUI_Window_subscribeEvent00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
  !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,5,&tolua_err)
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -18751,6 +18781,7 @@ static int tolua_CEGUI_CEGUI_Window_subscribeEvent00(lua_State* tolua_S)
   string name = ((string)  tolua_tocppstring(tolua_S,2,0));
   lua_Object funcIndex = ((lua_Object)  tolua_tovalue(tolua_S,3,0));
   lua_Object selfIndex = ((lua_Object)  tolua_tovalue(tolua_S,4,LUA_NOREF));
+  lua_Object error_handler = ((lua_Object)  tolua_tovalue(tolua_S,5,LUA_NOREF));
   lua_State* tolua_var_2 =  tolua_S;
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'LuaFunctorSubscribeEvent'",NULL);
@@ -18759,7 +18790,7 @@ static int tolua_CEGUI_CEGUI_Window_subscribeEvent00(lua_State* tolua_S)
  bool errorDoIt = false;
  try
  {
-   CEGUI::EventConnection tolua_ret = (  CEGUI::EventConnection)  LuaFunctorSubscribeEvent(self,name,funcIndex,selfIndex,tolua_var_2);
+   CEGUI::EventConnection tolua_ret = (  CEGUI::EventConnection)  LuaFunctorSubscribeEvent(self,name,funcIndex,selfIndex,error_handler,tolua_var_2);
  {
 #ifdef __cplusplus
  void* tolua_obj = new CEGUI::EventConnection(tolua_ret);
@@ -21530,6 +21561,10 @@ catch(CEGUI::AlreadyExistsException CEGUIDeadException(&e))
 {
  return 0;
 }
+ catch(CEGUI::InvalidRequestException CEGUIDeadException(&e))
+{
+ return 0;
+}
  }
  return 1;
 #ifndef TOLUA_RELEASE
@@ -22105,6 +22140,100 @@ static int tolua_CEGUI_CEGUI_WindowManager_getDefaultResourceGroup00(lua_State* 
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: lock of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_lock00
+static int tolua_CEGUI_CEGUI_WindowManager_lock00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowManager* self = (CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'lock'",NULL);
+#endif
+ {
+  self->lock();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'lock'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: unlock of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_unlock00
+static int tolua_CEGUI_CEGUI_WindowManager_unlock00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowManager* self = (CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'unlock'",NULL);
+#endif
+ {
+  self->unlock();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'unlock'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isLocked of class  CEGUI::WindowManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowManager_isLocked00
+static int tolua_CEGUI_CEGUI_WindowManager_isLocked00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::WindowManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::WindowManager* self = (const CEGUI::WindowManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isLocked'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isLocked();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isLocked'.",&tolua_err);
  return 0;
 #endif
 }
@@ -50058,11 +50187,12 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"removeChildWindow",tolua_CEGUI_CEGUI_Window_removeChildWindow02);
    tolua_function(tolua_S,"getChild",tolua_CEGUI_CEGUI_Window_getChild00);
    tolua_function(tolua_S,"getChild",tolua_CEGUI_CEGUI_Window_getChild01);
+   tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive00);
+   tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive01);
    tolua_function(tolua_S,"getChildAtIdx",tolua_CEGUI_CEGUI_Window_getChildAtIdx00);
    tolua_function(tolua_S,"getActiveChild",tolua_CEGUI_CEGUI_Window_getActiveChild00);
    tolua_function(tolua_S,"getChildAtPosition",tolua_CEGUI_CEGUI_Window_getChildAtPosition00);
    tolua_function(tolua_S,"getTargetChildAtPosition",tolua_CEGUI_CEGUI_Window_getTargetChildAtPosition00);
-   tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive00);
    tolua_function(tolua_S,"getParent",tolua_CEGUI_CEGUI_Window_getParent00);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor00);
    tolua_function(tolua_S,"isAncestor",tolua_CEGUI_CEGUI_Window_isAncestor01);
@@ -50293,6 +50423,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_WindowManager_getIterator00);
    tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_WindowManager_setDefaultResourceGroup00);
    tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_WindowManager_getDefaultResourceGroup00);
+   tolua_function(tolua_S,"lock",tolua_CEGUI_CEGUI_WindowManager_lock00);
+   tolua_function(tolua_S,"unlock",tolua_CEGUI_CEGUI_WindowManager_unlock00);
+   tolua_function(tolua_S,"isLocked",tolua_CEGUI_CEGUI_WindowManager_isLocked00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"FalagardWindowMapping","CEGUI::FalagardWindowMapping","",tolua_collect_CEGUI__FalagardWindowMapping);

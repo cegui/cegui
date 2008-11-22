@@ -6,7 +6,7 @@
 	purpose:  Implementation for LuaScriptModule class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -58,7 +58,8 @@ namespace CEGUI
 /*************************************************************************
 	Constructor (creates Lua state)
 *************************************************************************/
-LuaScriptModule::LuaScriptModule()
+LuaScriptModule::LuaScriptModule() :
+    d_errFuncIndex(LUA_NOREF)
 {
     #if CEGUI_LUA_VER >= 51
         static const luaL_Reg lualibs[] = {
@@ -122,43 +123,29 @@ LuaScriptModule::LuaScriptModule(lua_State* state)
 *************************************************************************/
 LuaScriptModule::~LuaScriptModule()
 {
-	if ( d_ownsState && d_state )
-	{
-		lua_close( d_state );
-	}
+    if (d_state)
+    {
+        unrefErrorFunc();
+
+        if (d_ownsState)
+            lua_close( d_state );
+    }
 }
 
 
 /*************************************************************************
 	Execute script file
 *************************************************************************/
-void LuaScriptModule::executeScriptFile(const String& filename, const String& resourceGroup)
+void LuaScriptModule::executeScriptFile(const String& filename,
+    const String& resourceGroup)
 {
-	// load file
-	RawDataContainer raw;
-	System::getSingleton().getResourceProvider()->loadRawDataContainer(filename,
-        raw, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
+    int top = lua_gettop(d_state);
 
-	// load code into lua
-	int top = lua_gettop(d_state);
-	int loaderr = luaL_loadbuffer(d_state, (char*)raw.getDataPtr(), raw.getSize(), filename.c_str());
-	System::getSingleton().getResourceProvider()->unloadRawDataContainer( raw );
-	if (loaderr)
-	{
-	    String errMsg = lua_tostring(d_state,-1);
-		lua_settop(d_state,top);
-		throw ScriptException("Unable to execute Lua script file: '"+filename+"'\n\n"+errMsg+"\n");
-	}
+    executeScriptFile_impl(filename, resourceGroup,
+                           initErrorHandlerFunc(),
+                           top);
 
-    // call it
-	if (lua_pcall(d_state,0,0,0))
-	{
-	    String errMsg = lua_tostring(d_state,-1);
-		lua_settop(d_state,top);
-		throw ScriptException("Unable to execute Lua script file: '"+filename+"'\n\n"+errMsg+"\n");
-	}
-
-	lua_settop(d_state,top); // just in case :P
+    cleanupErrorHandlerFunc();
 }
 
 
@@ -168,94 +155,25 @@ void LuaScriptModule::executeScriptFile(const String& filename, const String& re
 int	LuaScriptModule::executeScriptGlobal(const String& function_name)
 {
     int top = lua_gettop(d_state);
+    int r = executeScriptGlobal_impl(function_name, initErrorHandlerFunc(), top);
+    cleanupErrorHandlerFunc();
 
-    // get the function from lua
-    lua_getglobal(d_state, function_name.c_str());
-
-    // is it a function
-    if (!lua_isfunction(d_state,-1))
-    {
-        lua_settop(d_state,top);
-        throw ScriptException("Unable to get Lua global: '"+function_name+"' as name not represent a global Lua function" );
-    }
-
-    // call it
-    int error = lua_pcall(d_state,0,1,0);
-
-    // handle errors
-    if (error)
-    {
-        String errMsg = lua_tostring(d_state,-1);
-        lua_pop(d_state,1);
-        throw ScriptException("Unable to evaluate Lua global: '"+function_name+"\n\n"+errMsg+"\n");
-    }
-
-    // get return value
-    if (!lua_isnumber(d_state,-1))
-    {
-        // log that return value is invalid. return -1 and move on.
-        lua_settop(d_state,top);
-        ScriptException("Unable to get Lua global : '"+function_name+"' return value as it's not a number" );
-        return -1;
-    }
-
-    int ret = (int)lua_tonumber(d_state,-1);
-    lua_pop(d_state,1);
-
-    // return it
-    return ret;
+    return r;
 }
 
 
 /*************************************************************************
 	Execute scripted event handler
 *************************************************************************/
-bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name, const EventArgs& e)
+bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name,
+    const EventArgs& e)
 {
+    int top = lua_gettop(d_state);
+    bool r = executeScriptedEventHandler_impl(handler_name, e,
+                                              initErrorHandlerFunc(), top);
+    cleanupErrorHandlerFunc();
 
-	LuaFunctor::pushNamedFunction(d_state, handler_name);
-
-	ScriptWindowHelper* helper = 0;
-	//If this is an event that was triggered by a window then make a "this" pointer to the window for the script.
-	if(e.d_hasWindow)
-	{
-		WindowEventArgs& we = (WindowEventArgs&)e;
-		helper = new ScriptWindowHelper(we.window);
-		lua_pushlightuserdata(d_state,(void*)helper);
-		lua_setglobal(d_state,"this");
-	} // if(e.d_hasWindow)
-
-    // push EventArgs as the first parameter
-    tolua_pushusertype(d_state,(void*)&e,"const CEGUI::EventArgs");
-
-    // call it
-    int error = lua_pcall(d_state, 1, 1, 0);
-
-    // handle errors
-    if (error)
-    {
-        String errStr(lua_tostring(d_state,-1));
-        lua_pop(d_state,1);
-		//cleanup the helper object if any
-		if(helper)
-		{
-			delete helper;
-			helper = 0;
-		}
-        throw ScriptException("Unable to evaluate the Lua event handler: '"+handler_name+"'\n\n"+errStr+"\n");
-    } // if (error)
-
-    // retrieve result
-    bool ret = lua_isboolean(d_state, -1) ? lua_toboolean(d_state, -1 ) : true;
-    lua_pop(d_state, 1);
-
-	if(helper)
-	{
-		delete helper;
-		helper = 0;
-	}
-
-    return ret;
+    return r;
 }
 
 
@@ -266,16 +184,8 @@ void LuaScriptModule::executeString(const String& str)
 {
     int top = lua_gettop(d_state);
 
-    // load code into lua and call it
-    int error =	luaL_loadbuffer(d_state, str.c_str(), str.length(), str.c_str()) || lua_pcall(d_state,0,0,0);
-
-    // handle errors
-    if (error)
-    {
-        String errMsg = lua_tostring(d_state,-1);
-        lua_settop(d_state,top);
-        throw ScriptException("Unable to execute Lua script string: '"+str+"'\n\n"+errMsg+"\n");
-    }
+    executeString_impl(str, initErrorHandlerFunc(), top);
+    cleanupErrorHandlerFunc();
 }
 
 
@@ -316,13 +226,23 @@ void LuaScriptModule::setModuleIdentifierString()
 /*************************************************************************
 	Subscribe to a scripted event handler
 *************************************************************************/
-Event::Connection LuaScriptModule::subscribeEvent(EventSet* target, const String& event_name, const String& subscriber_name)
+Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
+    const String& event_name, const String& subscriber_name)
 {
+    const String& err_str = getActivePCallErrorHandlerString();
+    const int err_ref     = getActivePCallErrorHandlerReference();
+
     // do the real subscription
-    LuaFunctor functor(d_state,subscriber_name,LUA_NOREF);
-    Event::Connection con = target->subscribeEvent(event_name, Event::Subscriber(functor));
-    // make sure we don't release the reference we just made when this call returns
+    LuaFunctor functor((err_ref == LUA_NOREF) ?
+                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_str) :
+                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_ref));
+    Event::Connection con =
+        target->subscribeEvent(event_name, Event::Subscriber(functor));
+
+    // make sure we don't release the reference we just made when 'functor' is
+    // destroyed as it goes out of scope.
     functor.index = LUA_NOREF;
+    functor.d_errFuncIndex = LUA_NOREF;
 
     // return the event connection
     return con;
@@ -332,14 +252,462 @@ Event::Connection LuaScriptModule::subscribeEvent(EventSet* target, const String
 /*************************************************************************
 	Subscribe to a scripted event handler
 *************************************************************************/
-Event::Connection LuaScriptModule::subscribeEvent(EventSet* target, const String& event_name, Event::Group group, const String& subscriber_name)
+Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
+    const String& event_name, Event::Group group, const String& subscriber_name)
 {
+    const String& err_str = getActivePCallErrorHandlerString();
+    const int err_ref     = getActivePCallErrorHandlerReference();
+
     // do the real subscription
-    LuaFunctor functor(d_state,subscriber_name,LUA_NOREF);
-    Event::Connection con = target->subscribeEvent(event_name, group, Event::Subscriber(functor));
+    LuaFunctor functor((err_ref == LUA_NOREF) ?
+                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_str) :
+                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_ref));
+    Event::Connection con =
+        target->subscribeEvent(event_name, group, Event::Subscriber(functor));
+
+    // make sure we don't release the reference we just made when 'functor' is
+    // destroyed as it goes out of scope.
+    functor.index = LUA_NOREF;
+    functor.d_errFuncIndex = LUA_NOREF;
 
     // return the event connection
     return con;
 }
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::setDefaultPCallErrorHandler(
+    const String& error_handler_function)
+{
+    unrefErrorFunc();
+
+    d_errFuncName = error_handler_function;
+    d_errFuncIndex = LUA_NOREF;
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::setDefaultPCallErrorHandler(int function_reference)
+{
+    unrefErrorFunc();
+
+    d_errFuncIndex = function_reference;
+    d_errFuncName.clear();
+}
+
+//----------------------------------------------------------------------------//
+const String& LuaScriptModule::getActivePCallErrorHandlerString() const
+{
+    if ((d_activeErrFuncIndex == LUA_NOREF) && d_activeErrFuncName.empty())
+        return d_errFuncName;
+    else
+        return d_activeErrFuncName;
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::getActivePCallErrorHandlerReference() const
+{
+    if ((d_activeErrFuncIndex == LUA_NOREF) && d_activeErrFuncName.empty())
+        return d_errFuncIndex;
+    else
+        return d_activeErrFuncIndex;
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::initErrorHandlerFunc()
+{
+    d_activeErrFuncName = d_errFuncName;
+
+    // should we create a registry reference for named function
+    if ((d_errFuncIndex == LUA_NOREF) && !d_errFuncName.empty())
+    {
+        int top = lua_gettop(d_state);
+
+        LuaFunctor::pushNamedFunction(d_state, d_errFuncName);
+        // reference function
+        d_errFuncIndex = luaL_ref(d_state, LUA_REGISTRYINDEX);
+
+        lua_settop(d_state, top);
+    }
+
+    // init handler via function index in registry
+    return initErrorHandlerFunc(d_errFuncIndex);
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::initErrorHandlerFunc(const String func_name)
+{
+    d_activeErrFuncName = func_name;
+
+    // string has some text in it?
+    if (!func_name.empty())
+    {
+        LuaFunctor::pushNamedFunction(d_state, func_name);
+        return lua_gettop(d_state);
+    }
+
+    // use no error handler function.
+    return 0;
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::initErrorHandlerFunc(int func)
+{
+    d_activeErrFuncIndex = func;
+
+    // check if we have a valid registry index for the error handler function
+    if (func != LUA_NOREF)
+    {
+        lua_rawgeti(d_state, LUA_REGISTRYINDEX, func);
+        return lua_gettop(d_state);
+    }
+
+    // use no error handler function.
+    return 0;
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::cleanupErrorHandlerFunc()
+{
+    d_activeErrFuncIndex = LUA_NOREF;
+    d_activeErrFuncName.clear();
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::unrefErrorFunc()
+{
+    if ((d_errFuncIndex != LUA_NOREF) && !d_errFuncName.empty())
+    {
+        luaL_unref(d_state, LUA_REGISTRYINDEX, d_errFuncIndex);
+        d_errFuncIndex = LUA_NOREF;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::executeScriptFile(const String& filename,
+    const String& resourceGroup, const String& error_handler)
+{
+    int top = lua_gettop(d_state);
+
+    executeScriptFile_impl(filename, resourceGroup,
+                           initErrorHandlerFunc(error_handler),
+                           top);
+    cleanupErrorHandlerFunc();
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::executeScriptFile(const String& filename,
+    const String& resourceGroup, const int error_handler)
+{
+    int top = lua_gettop(d_state);
+
+    executeScriptFile_impl(filename, resourceGroup,
+                           initErrorHandlerFunc(error_handler),
+                           top);
+    cleanupErrorHandlerFunc();
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::executeScriptGlobal(const String& function_name,
+    const String& error_handler)
+{
+    int top = lua_gettop(d_state);
+    int r = executeScriptGlobal_impl(function_name,
+                                     initErrorHandlerFunc(error_handler),
+                                     top);
+    cleanupErrorHandlerFunc();
+
+    return r;
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::executeScriptGlobal(const String& function_name,
+    const int error_handler)
+{
+    int top = lua_gettop(d_state);
+    int r = executeScriptGlobal_impl(function_name,
+                                     initErrorHandlerFunc(error_handler),
+                                     top);
+    cleanupErrorHandlerFunc();
+
+    return r;
+}
+
+//----------------------------------------------------------------------------//
+bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name,
+    const EventArgs& e, const String& error_handler)
+{
+    int top = lua_gettop(d_state);
+
+    bool r =executeScriptedEventHandler_impl(handler_name, e,
+                                             initErrorHandlerFunc(error_handler),
+                                             top);
+    cleanupErrorHandlerFunc();
+
+    return r;
+}
+
+//----------------------------------------------------------------------------//
+bool LuaScriptModule::executeScriptedEventHandler(const String& handler_name,
+    const EventArgs& e, const int error_handler)
+{
+    int top = lua_gettop(d_state);
+    bool r = executeScriptedEventHandler_impl(handler_name, e,
+                                              initErrorHandlerFunc(error_handler),
+                                              top);
+    cleanupErrorHandlerFunc();
+
+    return r;
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::executeString(const String& str,
+    const String& error_handler)
+{
+    int top = lua_gettop(d_state);
+
+    executeString_impl(str, initErrorHandlerFunc(error_handler), top);
+    cleanupErrorHandlerFunc();
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::executeString(const String& str, const int error_handler)
+{
+    int top = lua_gettop(d_state);
+
+    executeString_impl(str, initErrorHandlerFunc(error_handler), top);
+    cleanupErrorHandlerFunc();
+}
+
+//----------------------------------------------------------------------------//
+Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
+    const String& event_name, const String& subscriber_name,
+    const String& error_handler)
+{
+    // do the real subscription
+    LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, error_handler);
+    Event::Connection con =
+        target->subscribeEvent(event_name, Event::Subscriber(functor));
+
+    // make sure we don't release the references we just made when 'functor' is
+    // destroyed as it goes out of scope.
+    functor.index = LUA_NOREF;
+    functor.d_errFuncIndex = LUA_NOREF;
+
+    // return the event connection
+    return con;
+}
+
+//----------------------------------------------------------------------------//
+Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
+    const String& event_name, const String& subscriber_name,
+    const int error_handler)
+{
+    // do the real subscription
+    LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, error_handler);
+    Event::Connection con =
+        target->subscribeEvent(event_name, Event::Subscriber(functor));
+
+    // make sure we don't release the references we just made when 'functor' is
+    // destroyed as it goes out of scope.
+    functor.index = LUA_NOREF;
+    functor.d_errFuncIndex = LUA_NOREF;
+
+    // return the event connection
+    return con;
+}
+
+
+//----------------------------------------------------------------------------//
+Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
+    const String& event_name, Event::Group group, const String& subscriber_name,
+    const String& error_handler)
+{
+    // do the real subscription
+    LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, error_handler);
+    Event::Connection con =
+        target->subscribeEvent(event_name, group, Event::Subscriber(functor));
+
+    // make sure we don't release the references we just made when 'functor' is
+    // destroyed as it goes out of scope.
+    functor.index = LUA_NOREF;
+    functor.d_errFuncIndex = LUA_NOREF;
+
+    // return the event connection
+    return con;
+}
+
+//----------------------------------------------------------------------------//
+Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
+    const String& event_name, Event::Group group, const String& subscriber_name,
+    const int error_handler)
+{
+    // do the real subscription
+    LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, error_handler);
+    Event::Connection con =
+        target->subscribeEvent(event_name, group, Event::Subscriber(functor));
+
+    // make sure we don't release the references we just made when 'functor' is
+    // destroyed as it goes out of scope.
+    functor.index = LUA_NOREF;
+    functor.d_errFuncIndex = LUA_NOREF;
+
+    // return the event connection
+    return con;
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::executeScriptFile_impl(const String& filename,
+    const String& resourceGroup, const int err_idx, const int top)
+{
+    // load file
+    RawDataContainer raw;
+    System::getSingleton().getResourceProvider()->loadRawDataContainer(filename,
+        raw, resourceGroup.empty() ? d_defaultResourceGroup : resourceGroup);
+
+    // load code into lua
+    int loaderr = luaL_loadbuffer(d_state,
+                                  reinterpret_cast<char*>(raw.getDataPtr()),
+                                  raw.getSize(), filename.c_str());
+
+    System::getSingleton().getResourceProvider()->unloadRawDataContainer( raw );
+
+    if (loaderr)
+    {
+        String errMsg = lua_tostring(d_state,-1);
+        lua_settop(d_state,top);
+        throw ScriptException("Unable to execute Lua script file: '" +
+                              filename + "'\n\n" + errMsg + "\n");
+    }
+
+    // call it
+    if (lua_pcall(d_state, 0, 0, err_idx))
+    {
+        String errMsg = lua_tostring(d_state,-1);
+        lua_settop(d_state,top);
+        throw ScriptException("Unable to execute Lua script file: '" +
+                              filename + "'\n\n" + errMsg + "\n");
+    }
+
+    lua_settop(d_state,top); // just in case :P
+}
+
+//----------------------------------------------------------------------------//
+int LuaScriptModule::executeScriptGlobal_impl(const String& function_name,
+    const int err_idx, const int top)
+{
+    // get the function from lua
+    lua_getglobal(d_state, function_name.c_str());
+
+    // is it a function
+    if (!lua_isfunction(d_state,-1))
+    {
+        lua_settop(d_state,top);
+        throw ScriptException("Unable to get Lua global: '" + function_name +
+                              "' as name not represent a global Lua function" );
+    }
+
+    // call it
+    int error = lua_pcall(d_state, 0, 1, err_idx);
+
+    // handle errors
+    if (error)
+    {
+        String errMsg = lua_tostring(d_state,-1);
+        lua_settop(d_state,top);
+        throw ScriptException("Unable to evaluate Lua global: '" + 
+                              function_name + "\n\n" + errMsg + "\n");
+    }
+
+    // get return value
+    if (!lua_isnumber(d_state,-1))
+    {
+        // log that return value is invalid. return -1 and move on.
+        lua_settop(d_state,top);
+        ScriptException("Unable to get Lua global : '" + function_name +
+                        "' return value as it's not a number");
+        return -1;
+    }
+
+    int ret = static_cast<int>(lua_tonumber(d_state,-1));
+    lua_settop(d_state,top);
+
+    // return it
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+bool LuaScriptModule::executeScriptedEventHandler_impl(
+    const String& handler_name, const EventArgs& e, const int err_idx,
+    const int top)
+{
+    LuaFunctor::pushNamedFunction(d_state, handler_name);
+
+    ScriptWindowHelper* helper = 0;
+    // If this is an event that was triggered by a window then make a "this"
+    // pointer to the window for the script.
+    if(e.d_hasWindow)
+    {
+        WindowEventArgs& we = (WindowEventArgs&)e;
+        helper = new ScriptWindowHelper(we.window);
+        lua_pushlightuserdata(d_state,(void*)helper);
+        lua_setglobal(d_state,"this");
+    }
+
+    // push EventArgs as the first parameter
+    tolua_pushusertype(d_state, (void*)&e, "const CEGUI::EventArgs");
+
+    // call it
+    int error = lua_pcall(d_state, 1, 1, err_idx);
+
+    // handle errors
+    if (error)
+    {
+        String errStr(lua_tostring(d_state,-1));
+        lua_settop(d_state,top);
+        //cleanup the helper object if any
+        if(helper)
+        {
+            delete helper;
+            helper = 0;
+        }
+
+        throw ScriptException("Unable to evaluate the Lua event handler: '" +
+                              handler_name + "'\n\n" + errStr + "\n");
+    }
+
+    // retrieve result
+    bool ret = lua_isboolean(d_state, -1) ? lua_toboolean(d_state, -1 ) : true;
+    lua_settop(d_state,top);
+
+    if(helper)
+    {
+        delete helper;
+        helper = 0;
+    }
+
+    return ret;
+}
+
+//----------------------------------------------------------------------------//
+void LuaScriptModule::executeString_impl(const String& str, const int err_idx,
+    const int top)
+{
+    // load code into lua and call it
+    int error = luaL_loadbuffer(d_state, str.c_str(), str.length(), str.c_str()) ||
+                lua_pcall(d_state, 0, 0, err_idx);
+
+    // handle errors
+    if (error)
+    {
+        String errMsg = lua_tostring(d_state,-1);
+        lua_settop(d_state,top);
+        throw ScriptException("Unable to execute Lua script string: '" +
+                              str + "'\n\n" + errMsg + "\n");
+    }
+
+    lua_settop(d_state,top);
+}
+
+//----------------------------------------------------------------------------//
+
 
 } // namespace CEGUI

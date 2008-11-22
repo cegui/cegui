@@ -23,7 +23,7 @@ class EventSet
 	void removeAllEvents();
 	bool isEventPresent(string name);
 
-	tolua_throws|CEGUI::UnknownObjectException,error| tolua_outside EventConnection LuaFunctorSubscribeEvent @ subscribeEvent(string name, lua_Object funcIndex, lua_Object selfIndex=LUA_NOREF, lua_State*);
+    tolua_throws|CEGUI::UnknownObjectException,error| tolua_outside EventConnection LuaFunctorSubscribeEvent @ subscribeEvent(string name, lua_Object funcIndex, lua_Object selfIndex=LUA_NOREF, lua_Object error_handler = LUA_NOREF, lua_State*);
 
 	tolua_throws|CEGUI::UnknownObjectException,error| EventConnection subscribeScriptedEvent @ subscribeEvent(string name, string callback_name);
 
