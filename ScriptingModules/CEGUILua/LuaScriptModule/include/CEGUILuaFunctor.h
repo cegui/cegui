@@ -6,7 +6,7 @@
     purpose:  Defines interface for LuaFunctor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -51,6 +51,16 @@ class LuaFunctor
 public:
     LuaFunctor(lua_State* state, int func, int selfIndex);
     LuaFunctor(lua_State* state, const String& func, int selfIndex);
+
+    LuaFunctor(lua_State* state, const int func, const int selfIndex,
+               const String& error_handler);
+    LuaFunctor(lua_State* state, const String& func, const int selfIndex,
+               const String& error_handler);
+    LuaFunctor(lua_State* state, const int func, const int selfIndex,
+               const int error_handler);
+    LuaFunctor(lua_State* state, const String& func, const int selfIndex,
+               const int error_handler);
+
     LuaFunctor(const LuaFunctor& cp);
     ~LuaFunctor();
 
@@ -62,7 +72,12 @@ public:
         References using the Lua registry.
         To be called from Lua only.
     */
-    static Event::Connection SubscribeEvent(EventSet* self, const String& eventName, int funcIndex, int selfIndex, lua_State* L);
+    static Event::Connection SubscribeEvent(EventSet* self,
+                                            const String& eventName,
+                                            const int funcIndex,
+                                            const int selfIndex,
+                                            const int error_handler,
+                                            lua_State* L);
 
     /*!
     \brief
@@ -77,6 +92,13 @@ private:
     int self;
     mutable bool needs_lookup;
     mutable String function_name;
+
+    //! Error handler function to pass to lua_pcall.
+    mutable String d_errFuncName;
+    //! registry index of the function to pass to lua_pcall.
+    mutable int d_errFuncIndex;
+    //! signfies whether we made the reference index at d_errFuncIndex.
+    mutable bool d_ourErrFuncIndex;
 
     friend class LuaScriptModule;
 };

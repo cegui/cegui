@@ -6,7 +6,7 @@
     purpose:  Implementation for LuaFunctor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUILua.h"
 
 // include Lua libs and tolua++
 extern "C" {
@@ -52,8 +53,19 @@ LuaFunctor::LuaFunctor(lua_State* state, int func, int selfIndex) :
     L(state),
     index(func),
     self(selfIndex),
-    needs_lookup(false)
+    needs_lookup(false),
+    d_ourErrFuncIndex(false)
 {
+    // TODO: This would perhaps be better done another way, to avoid the
+    // TODO: interdependence.
+    LuaScriptModule* sm =
+        static_cast<LuaScriptModule*>(System::getSingleton().getScriptingModule());
+
+    if (sm)
+    {
+        d_errFuncName  = sm->getActivePCallErrorHandlerString();
+        d_errFuncIndex = sm->getActivePCallErrorHandlerReference();
+    }
 }
 
 /*************************************************************************
@@ -64,8 +76,19 @@ LuaFunctor::LuaFunctor(lua_State* state, const String& func, int selfIndex) :
     index(LUA_NOREF),
     self(selfIndex),
     needs_lookup(true),
-    function_name(func)
+    function_name(func),
+    d_ourErrFuncIndex(false)
 {
+    // TODO: This would perhaps be better done another way, to avoid the
+    // TODO: interdependence.
+    LuaScriptModule* sm =
+        static_cast<LuaScriptModule*>(System::getSingleton().getScriptingModule());
+
+    if (sm)
+    {
+        d_errFuncName  = sm->getActivePCallErrorHandlerString();
+        d_errFuncIndex = sm->getActivePCallErrorHandlerReference();
+    }
 }
 
 /*************************************************************************
@@ -76,7 +99,10 @@ LuaFunctor::LuaFunctor(const LuaFunctor& cp) :
     index(cp.index),
     self(cp.self),
     needs_lookup(cp.needs_lookup),
-    function_name(cp.function_name)
+    function_name(cp.function_name),
+    d_errFuncName(cp.d_errFuncName),
+    d_errFuncIndex(cp.d_errFuncIndex),
+    d_ourErrFuncIndex(cp.d_ourErrFuncIndex)
 {
 }
 
@@ -85,14 +111,16 @@ LuaFunctor::LuaFunctor(const LuaFunctor& cp) :
 *************************************************************************/
 LuaFunctor::~LuaFunctor()
 {
-    if (self!=LUA_NOREF)
-    {
+    if (self != LUA_NOREF)
         luaL_unref(L, LUA_REGISTRYINDEX, self);
-    }
-    if (index!=LUA_NOREF)
-    {
+
+    if (index != LUA_NOREF)
         luaL_unref(L, LUA_REGISTRYINDEX, index);
-    }
+
+    if (d_ourErrFuncIndex &&
+        (d_errFuncIndex != LUA_NOREF) &&
+        !d_errFuncName.empty())
+            luaL_unref(L, LUA_REGISTRYINDEX, d_errFuncIndex);
 }
 
 /*************************************************************************
@@ -100,6 +128,14 @@ LuaFunctor::~LuaFunctor()
 *************************************************************************/
 bool LuaFunctor::operator()(const EventArgs& args) const
 {
+    // named error handler needs binding?
+    if ((d_errFuncIndex == LUA_NOREF) && !d_errFuncName.empty())
+    {
+        pushNamedFunction(L, d_errFuncName);
+        d_errFuncIndex = luaL_ref(L, LUA_REGISTRYINDEX);
+        d_ourErrFuncIndex = true;
+    }
+
     // is this a late binding?
     if (needs_lookup)
     {
@@ -110,6 +146,14 @@ bool LuaFunctor::operator()(const EventArgs& args) const
         CEGUI_LOGINSANE("Late binding of callback '"+function_name+"' performed");
         function_name.clear();
     } // if (needs_lookup)
+
+    // put error handler on stack if we're using such a thing
+    int err_idx = 0;
+    if (d_errFuncIndex != LUA_NOREF)
+    {
+        lua_rawgeti(L, LUA_REGISTRYINDEX, d_errFuncIndex);
+        err_idx = lua_gettop(L);
+    }
 
 	ScriptWindowHelper* helper = 0;
 	//Set a global for this window
@@ -136,7 +180,7 @@ bool LuaFunctor::operator()(const EventArgs& args) const
     tolua_pushusertype(L, (void*)&args, "const CEGUI::EventArgs");
 
     // call it
-    int error = lua_pcall(L, nargs, 1, 0);
+    int error = lua_pcall(L, nargs, 1, err_idx);
 
     // handle errors
     if (error)
@@ -162,49 +206,6 @@ bool LuaFunctor::operator()(const EventArgs& args) const
 	}
 
     return ret;
-}
-
-/*************************************************************************
-    do event subscription by reference instead of by name
-*************************************************************************/
-Event::Connection LuaFunctor::SubscribeEvent(EventSet* self, const String& event_name, int funcIndex, int selfIndex, lua_State* L)
-{
-    // should we pass a self to the callback?
-    int thisIndex = LUA_NOREF;
-    if (selfIndex != LUA_NOREF)
-    {
-        // reference self
-        thisIndex = luaL_ref(L, LUA_REGISTRYINDEX);
-    }
-
-    // do the real subscription
-    int type = lua_type(L,-1);
-    Event::Connection con;
-    if (type == LUA_TFUNCTION)
-    {
-        // reference function
-        int index = luaL_ref(L, LUA_REGISTRYINDEX);
-        LuaFunctor functor(L,index,thisIndex);
-        con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
-        // make sure we don't release the reference(s) we just made when this call returns
-        functor.index = LUA_NOREF;
-        functor.self = LUA_NOREF;
-    }
-    else if (type == LUA_TSTRING)
-    {
-        const char* str = lua_tostring(L, -1);
-        LuaFunctor functor(L,String(str),thisIndex);
-        con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
-        // make sure we don't release the reference we just (maybe) made when this call returns
-        functor.self = LUA_NOREF;
-    }
-    else
-    {
-        luaL_error(L,"bad function passed to subscribe function. must be a real function, or a string for late binding");
-    }
-
-    // return the event connection
-    return con;
 }
 
 /*************************************************************************
@@ -280,5 +281,146 @@ void LuaFunctor::pushNamedFunction(lua_State* L, const String& handler_name)
         throw ScriptException("The Lua event handler: '"+handler_name+"' does not represent a Lua function");
     }
 }
+
+//----------------------------------------------------------------------------//
+LuaFunctor::LuaFunctor(lua_State* state, const int func, const int selfIndex,
+    const String& error_handler) :
+    // State initialisation
+    L(state),
+    index(func),
+    self(selfIndex),
+    needs_lookup(false),
+    d_errFuncName(error_handler),
+    d_errFuncIndex(LUA_NOREF),
+    d_ourErrFuncIndex(false)
+{
+}
+
+//----------------------------------------------------------------------------//
+LuaFunctor::LuaFunctor(lua_State* state, const String& func, const int selfIndex,
+    const String& error_handler) :
+    // State initialisation
+    L(state),
+    index(LUA_NOREF),
+    self(selfIndex),
+    needs_lookup(true),
+    function_name(func),
+    d_errFuncName(error_handler),
+    d_errFuncIndex(LUA_NOREF),
+    d_ourErrFuncIndex(false)
+{
+}
+
+//----------------------------------------------------------------------------//
+LuaFunctor::LuaFunctor(lua_State* state, const int func, const int selfIndex,
+    const int error_handler) :
+    // State initialisation
+    L(state),
+    index(func),
+    self(selfIndex),
+    needs_lookup(false),
+    d_errFuncIndex(error_handler),
+    d_ourErrFuncIndex(false)
+{
+}
+
+//----------------------------------------------------------------------------//
+LuaFunctor::LuaFunctor(lua_State* state, const String& func, const int selfIndex,
+    const int error_handler) :
+    // State initialisation
+    L(state),
+    index(LUA_NOREF),
+    self(selfIndex),
+    needs_lookup(true),
+    function_name(func),
+    d_errFuncIndex(error_handler),
+    d_ourErrFuncIndex(false)
+{
+}
+
+//----------------------------------------------------------------------------//
+Event::Connection LuaFunctor::SubscribeEvent(EventSet* self,
+    const String& event_name, const int funcIndex, const int selfIndex,
+    const int error_handler, lua_State* L)
+{
+    // deal with error handler function
+    int err_idx = LUA_NOREF;
+    String err_str;
+    if (error_handler != LUA_NOREF)
+    {
+        int err_handler_type = lua_type(L,-1);
+        switch (err_handler_type)
+        {
+        case LUA_TFUNCTION:
+            // reference function
+            err_idx = luaL_ref(L, LUA_REGISTRYINDEX);
+            break;
+        case LUA_TSTRING:
+            err_str = lua_tostring(L, -1);
+            lua_pop(L, 1);
+            break;
+        default:
+            luaL_error(L, "bad error handler function passed to subscribe "
+                          "function. must be a real function, or a string for "
+                          "late binding");
+            break;
+        }
+
+    }
+
+    // should we pass a self to the callback?
+    int thisIndex = LUA_NOREF;
+    if (selfIndex != LUA_NOREF)
+    {
+        // reference self
+        thisIndex = luaL_ref(L, LUA_REGISTRYINDEX);
+    }
+
+    // do the real subscription
+    int type = lua_type(L,-1);
+    Event::Connection con;
+    if (type == LUA_TFUNCTION)
+    {
+        // reference function
+        int index = luaL_ref(L, LUA_REGISTRYINDEX);
+
+        LuaFunctor functor((err_idx != LUA_NOREF) ?
+                        LuaFunctor(L, index, thisIndex, err_idx) :
+                        (!err_str.empty()) ?
+                            LuaFunctor(L, index, thisIndex, err_str) :
+                            LuaFunctor(L, index, thisIndex));
+        con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
+        // make sure we don't release the reference(s) we just made when the
+        // 'functor' object is destroyed (goes out of scope)
+        functor.index = LUA_NOREF;
+        functor.self = LUA_NOREF;
+        functor.d_errFuncIndex = LUA_NOREF;
+    }
+    else if (type == LUA_TSTRING)
+    {
+        const char* str = lua_tostring(L, -1);
+        LuaFunctor functor((err_idx != LUA_NOREF) ?
+                        LuaFunctor(L, String(str), thisIndex, err_idx) :
+                        (!err_str.empty()) ?
+                            LuaFunctor(L, String(str), thisIndex, err_str) :
+                            LuaFunctor(L, String(str), thisIndex));
+
+        con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
+        // make sure we don't release the reference(s) we just made when the
+        // 'functor' object is destroyed (goes out of scope)
+        functor.self = LUA_NOREF;
+        functor.d_errFuncIndex = LUA_NOREF;
+    }
+    else
+    {
+        luaL_error(L, "bad function passed to subscribe function. must be a "
+                      "real function, or a string for late binding");
+    }
+
+    // return the event connection
+    return con;
+}
+
+//----------------------------------------------------------------------------//
 
 } // namespace CEGUI
