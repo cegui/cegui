@@ -8,8 +8,8 @@ class Event
 
 class EventConnection
 {
-//    bool connected() const;
-//    void disconnect();
+    bool connected() const;
+    void disconnect();
 };
 
 

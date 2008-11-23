@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Sat Nov 22 13:40:59 2008.
+** Generated automatically by tolua++-1.0.92 on Sun Nov 23 17:57:55 2008.
 */
 
 #ifndef __cplusplus
@@ -12688,6 +12688,69 @@ static int tolua_CEGUI_CEGUI_Event_getName00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getName'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: connected of class  CEGUI::EventConnection */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_EventConnection_connected00
+static int tolua_CEGUI_CEGUI_EventConnection_connected00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::EventConnection",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::EventConnection* self = (const CEGUI::EventConnection*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'connected'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->connected();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'connected'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: disconnect of class  CEGUI::EventConnection */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_EventConnection_disconnect00
+static int tolua_CEGUI_CEGUI_EventConnection_disconnect00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::EventConnection",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::EventConnection* self = (CEGUI::EventConnection*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'disconnect'",NULL);
+#endif
+ {
+  self->disconnect();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'disconnect'.",&tolua_err);
  return 0;
 #endif
 }
@@ -50106,6 +50169,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"EventConnection","CEGUI::EventConnection","",NULL);
   #endif
   tolua_beginmodule(tolua_S,"EventConnection");
+   tolua_function(tolua_S,"connected",tolua_CEGUI_CEGUI_EventConnection_connected00);
+   tolua_function(tolua_S,"disconnect",tolua_CEGUI_CEGUI_EventConnection_disconnect00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"EventSet","CEGUI::EventSet","",NULL);
   tolua_beginmodule(tolua_S,"EventSet");
