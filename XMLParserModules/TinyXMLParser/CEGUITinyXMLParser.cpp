@@ -35,6 +35,7 @@
 #include "CEGUIXMLHandler.h"
 #include "CEGUIXMLAttributes.h"
 #include "CEGUILogger.h"
+#include "CEGUIExceptions.h"
 #include CEGUI_TINYXML_H
 
 // Start of CEGUI namespace section
@@ -69,25 +70,37 @@ namespace CEGUI
         memcpy(buf, rawXMLData.getDataPtr(), size);
         buf[size] = 0;
 
-		try
-		{
-			// Parse the document
-			CEGUI_TINYXML_NAMESPACE::TiXmlDocument doc;
-			doc.Parse((const char*)buf);
-			const CEGUI_TINYXML_NAMESPACE::TiXmlElement* currElement = doc.RootElement();
-			if (currElement)
-			{
-				// function called recursively to parse xml data
-				processElement(currElement);
-			} // if (currElement)
-		}
-		catch(...)
-		{
-			delete [] buf;
-			System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
-			throw;
-		}
-		// Free memory
+        // Parse the document
+        CEGUI_TINYXML_NAMESPACE::TiXmlDocument doc;
+        if (!doc.Parse((const char*)buf))
+        {
+            // error detected, cleanup out buffers
+            delete[] buf;
+            System::getSingleton().getResourceProvider()->
+                unloadRawDataContainer(rawXMLData);
+            // throw exception
+            throw FileIOException("TinyXMLParser: an error occurred while "
+                                  "parsing the XML document '" + filename +
+                                  "' - check it for potential errors!.");
+        }
+
+        const CEGUI_TINYXML_NAMESPACE::TiXmlElement* currElement = doc.RootElement();
+        if (currElement)
+        {
+            try
+            {
+                // function called recursively to parse xml data
+                processElement(currElement);
+            }
+            catch(...)
+            {
+                delete [] buf;
+                System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
+                throw;
+            }
+        } // if (currElement)
+
+        // Free memory
         delete [] buf;
         System::getSingleton().getResourceProvider()->unloadRawDataContainer(rawXMLData);
     }
