@@ -40,7 +40,28 @@ namespace CEGUI
 *************************************************************************/
 // singleton instance pointer
 template<> WindowFactoryManager* Singleton<WindowFactoryManager>::ms_Singleton	= 0;
+// list of owned WindowFactory object pointers
+WindowFactoryManager::OwnedWindowFactoryList WindowFactoryManager::d_ownedFactories;
 
+//----------------------------------------------------------------------------//
+WindowFactoryManager::WindowFactoryManager(void)
+{
+    Logger::getSingleton().logEvent(
+        "CEGUI::WindowFactoryManager singleton created");
+
+    // complete addition of any pre-added WindowFactory objects
+    WindowFactoryManager::OwnedWindowFactoryList::iterator i =
+        d_ownedFactories.begin();
+
+    if (d_ownedFactories.end() != i)
+    {
+        Logger::getSingleton().logEvent(
+        "---- Adding pre-registered WindowFactory objects ----");
+
+        for (; d_ownedFactories.end() != i; ++i)
+            addFactory(*i);
+    }
+}
 
 /*************************************************************************
 	Adds a WindowFactory object to the registry
@@ -74,9 +95,35 @@ void WindowFactoryManager::addFactory(WindowFactory* factory)
 *************************************************************************/
 void WindowFactoryManager::removeFactory(const String& name)
 {
+    WindowFactoryRegistry::iterator i = d_factoryRegistry.find(name);
+
+    // exit if no factory exists for this type
+    if (i == d_factoryRegistry.end())
+        return;
+
+    // see if we own this factory
+    OwnedWindowFactoryList::iterator j = std::find(d_ownedFactories.begin(),
+                                                   d_ownedFactories.end(),
+                                                   (*i).second);
+
+    char addr_buff[32];
+    sprintf(addr_buff, "(%p)", static_cast<void*>((*i).second));
+
 	d_factoryRegistry.erase(name);
 
-	Logger::getSingleton().logEvent("WindowFactory for '" + name +"' windows removed.");
+    Logger::getSingleton().logEvent("WindowFactory for '" + name +
+                                    "' windows removed. " + addr_buff);
+
+    // delete factory object if we created it
+    if (j != d_ownedFactories.end())
+    {
+        Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
+                                        (*j)->getTypeName() +
+                                        "' windows.");
+
+        delete (*j);
+        d_ownedFactories.erase(j);
+    }
 }
 
 
@@ -90,6 +137,13 @@ void WindowFactoryManager::removeFactory(WindowFactory* factory)
 		removeFactory(factory->getTypeName());
 	}
 
+}
+
+//----------------------------------------------------------------------------//
+void WindowFactoryManager::removeAllFactories(void)
+{
+    while (!d_factoryRegistry.empty())
+        removeFactory((*d_factoryRegistry.begin()).second);
 }
 
 

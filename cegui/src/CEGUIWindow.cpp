@@ -1134,7 +1134,9 @@ bool Window::moveToFront_impl(bool wasClicked)
     }
 
     // bring us to the front of our siblings
-    if ((d_zOrderingEnabled) && !isTopOfZOrder())
+    if (d_zOrderingEnabled &&
+        (!wasClicked || d_riseOnClick) &&
+        !isTopOfZOrder())
     {
         took_action = true;
 
@@ -2042,17 +2044,7 @@ void Window::setInheritsTooltipText(bool setting)
 
 bool Window::doRiseOnClick(void)
 {
-    // does this window rise on click?
-    if (d_riseOnClick)
-    {
-        return moveToFront_impl(true);
-    }
-    else if (d_parent)
-    {
-        return d_parent->doRiseOnClick();
-    }
-
-    return false;
+    return moveToFront_impl(true);
 }
 
 void Window::setArea_impl(const UVector2& pos, const UVector2& size, bool topLeftSizing, bool fireEvents)

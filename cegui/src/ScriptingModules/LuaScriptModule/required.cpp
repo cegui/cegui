@@ -2,7 +2,7 @@
 	filename: required.cpp
 	created:  16/3/2005
 	author:   Tomas Lindquist Olsen
-	
+
 	purpose:  Implementation of helper functions
 *************************************************************************/
 /***************************************************************************
@@ -84,5 +84,25 @@ bool ceguiLua_System_isSystemKeyDown(const System* sys, SystemKey k)
     return (k & sys->getSystemKeys()) != 0;
 }
 
+/************************************************************************
+    EventConnection helper class implementation
+*************************************************************************/
+EventConnection::EventConnection(RefCounted<BoundSlot> slot) :
+    d_slot(slot)
+{}
+
+//----------------------------------------------------------------------------//
+bool EventConnection::connected() const
+{
+    return d_slot->connected();
+}
+
+//----------------------------------------------------------------------------//
+void EventConnection::disconnect()
+{
+    d_slot->disconnect();
+}
+
+//----------------------------------------------------------------------------//
 
 } // namespace CEGUI

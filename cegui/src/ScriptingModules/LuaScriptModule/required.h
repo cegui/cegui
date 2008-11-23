@@ -50,7 +50,19 @@ typedef CEGUI::String string;
 namespace CEGUI
 {
 
-typedef Event::Connection EventConnection;
+/*************************************************************************
+    Helper class to enable us to represent an Event::Connection object
+    (which is actually a RefCounted<BoundSlot> object)
+*************************************************************************/
+class EventConnection
+{
+    RefCounted<BoundSlot> d_slot;
+
+public:
+    EventConnection(RefCounted<BoundSlot> slot);
+    bool connected() const;
+    void disconnect();
+};
 
 /*************************************************************************
 	Functions for getting Thumb range pairs as two return values
