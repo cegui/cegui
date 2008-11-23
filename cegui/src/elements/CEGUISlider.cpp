@@ -2,7 +2,7 @@
 	filename: 	CEGUISlider.cpp
 	created:	13/4/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Implementation of Slider widget base class
 *************************************************************************/
 /***************************************************************************
@@ -88,7 +88,7 @@ Slider::~Slider(void)
 
 
 /*************************************************************************
-	Initialises the Window based object ready for use.	
+	Initialises the Window based object ready for use.
 *************************************************************************/
 void Slider::initialiseComponents(void)
 {
@@ -106,7 +106,7 @@ void Slider::initialiseComponents(void)
 
 /*************************************************************************
 	set the maximum value for the slider.
-	Note that the minimum value is fixed at 0.	
+	Note that the minimum value is fixed at 0.
 *************************************************************************/
 void Slider::setMaxValue(float maxVal)
 {
@@ -163,7 +163,7 @@ void Slider::onValueChanged(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler triggered when the user begins to drag the slider thumb. 	
+	Handler triggered when the user begins to drag the slider thumb.
 *************************************************************************/
 void Slider::onThumbTrackStarted(WindowEventArgs& e)
 {
@@ -213,7 +213,7 @@ void Slider::onMouseWheel(MouseEventArgs& e)
 	Window::onMouseWheel(e);
 
 	// scroll by e.wheelChange * stepSize
-	setCurrentValue(d_value + d_step * -e.wheelChange);
+	setCurrentValue(d_value + d_step * e.wheelChange);
 
 	// ensure the message does not go to our parent.
 	e.handled = true;
@@ -221,7 +221,7 @@ void Slider::onMouseWheel(MouseEventArgs& e)
 
 
 /*************************************************************************
-	handler function for when thumb moves.	
+	handler function for when thumb moves.
 *************************************************************************/
 bool Slider::handleThumbMoved(const EventArgs& e)
 {

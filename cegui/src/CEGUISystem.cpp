@@ -369,24 +369,26 @@ System::~System(void)
     // unsubscribe from the renderer
     d_rendererCon->disconnect();
 
-    // Cleanup script module bindings
-    if (d_scriptModule)
-    {
-        d_scriptModule->destroyBindings();
-    }
-
     // cleanup XML stuff
     cleanupXMLParser();
 
     //
 	// perform cleanup in correct sequence
 	//
+    // ensure no windows get created during destruction.  NB: I'm allowing the
+    // potential exception to escape here so as to make it obvious that client
+    // code should really be adjusted to not create windows during cleanup.
+    WindowManager::getSingleton().lock();
 	// destroy windows so it's safe to destroy factories
     WindowManager::getSingleton().destroyAllWindows();
     WindowManager::getSingleton().cleanDeadPool();
 
     // remove factories so it's safe to unload GUI modules
 	WindowFactoryManager::getSingleton().removeAllFactories();
+
+    // Cleanup script module bindings
+    if (d_scriptModule)
+        d_scriptModule->destroyBindings();
 
 	// cleanup singletons
     destroySingletons();

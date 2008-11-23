@@ -35,6 +35,7 @@
 #include "CEGUISingleton.h"
 #include "CEGUILogger.h"
 #include "CEGUIIteratorBase.h"
+#include "CEGUIWindowFactory.h"
 #include <map>
 #include <vector>
 
@@ -126,10 +127,7 @@ public:
 	\brief
 		Constructs a new WindowFactoryManager object.
 	*/
-	WindowFactoryManager(void)
-	{
-		Logger::getSingleton().logEvent("CEGUI::WindowFactoryManager singleton created");
-	}
+	WindowFactoryManager(void);
 
 
 	/*!
@@ -159,6 +157,22 @@ public:
 	\exception AlreadyExistsException	\a factory provided a Window type name which is in use by another registered WindowFactory.
 	*/
 	void	addFactory(WindowFactory* factory);
+
+    /*!
+    \brief
+        Creates a WindowFactory of the type \a T and adds it to the system for
+        use.  The created WindowFactory will automatically be deleted when the
+        factory is removed from the system (either directly or at system 
+        deletion time).
+
+    \tparam T
+        Specifies the type of WindowFactory subclass to add a factory for.
+
+    \return
+        Nothing
+    */
+    template <typename T>
+    static void addFactory();
 
 
 	/*!
@@ -202,7 +216,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	removeAllFactories(void)		{d_factoryRegistry.clear();}
+    void removeAllFactories(void);
 
 
 	/*!
@@ -405,10 +419,14 @@ private:
 	typedef	std::map<String, WindowFactory*, String::FastLessCompare>	WindowFactoryRegistry;		//!< Type used to implement registry of WindowFactory objects
 	typedef std::map<String, AliasTargetStack, String::FastLessCompare>	TypeAliasRegistry;		//!< Type used to implement registry of window type aliases.
     typedef std::map<String, FalagardWindowMapping, String::FastLessCompare> FalagardMapRegistry;    //!< Type used to implement registry of falagard window mappings.
+    //! Type used for list of WindowFacory objects that we created ourselves
+    typedef std::vector<WindowFactory*> OwnedWindowFactoryList;
 
 	WindowFactoryRegistry	d_factoryRegistry;			//!< The container that forms the WindowFactory registry
 	TypeAliasRegistry		d_aliasRegistry;			//!< The container that forms the window type alias registry.
     FalagardMapRegistry     d_falagardRegistry;         //!< Container that hold all the falagard window mappings.
+    //! Container that tracks WindowFactory objects we created ourselves.
+    static OwnedWindowFactoryList  d_ownedFactories;
 
 public:
 	/*************************************************************************
@@ -438,6 +456,38 @@ public:
     */
     FalagardMappingIterator getFalagardMappingIterator() const;
 };
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void WindowFactoryManager::addFactory()
+{
+    // create the factory object
+    WindowFactory* factory = new T;
+
+    // only do the actual add now if our singleton has already been created
+    if (WindowFactoryManager::getSingletonPtr())
+    {
+        Logger::getSingleton().logEvent("Created WindowFactory for '" +
+                                        factory->getTypeName() +
+                                        "' windows.");
+        // add the factory we just created
+        try
+        {
+            WindowFactoryManager::getSingleton().addFactory(factory);
+        }
+        catch (Exception& e)
+        {
+            Logger::getSingleton().logEvent("Deleted WindowFactory for '" +
+                                            factory->getTypeName() +
+                                            "' windows.");
+            // delete the factory object
+            delete factory;
+            throw;
+        }
+    }
+
+    d_ownedFactories.push_back(factory);
+}
 
 } // End of  CEGUI namespace section
 
