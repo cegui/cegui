@@ -6,6 +6,50 @@ Copyright 2004 - 2008 CEGUI Team & Contributing Authors
 
 The following is a high-level view of changes made to the system between releases.
 
+Release 0.6.2
+=============
+Added: Added ability to specify a function to be used as the error handler in calls to lua_pcall.  See: http://www.cegui.org.uk/mantis/view.php?id=239
+Added: GUI Renderer module and supporting samples base app for DirectFB (http://www.directfb.org/).  Contributed by Keith Mok.  See: http://www.cegui.org.uk/mantis/view.php?id=233.  Needs additional testing!  SKIP ON MERGE - trunk will get it's own version via the mantis patch (then be rewritten for the new renderer model).
+Added: Member to CEGUI::TreeItem to allow removal of sub-items.  see: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15563#15563
+Added: Templatised addFactory static function to WindowFactory manager that allows the system to create - and therefore own - custom window factory objects; thus alleviating potential cleanup issues when using custom factories.  See: http://www.cegui.org.uk/mantis/view.php?id=249.
+
+Modified: Modify Tree::setItemSelectState(TreeItem* item, bool state) to recurively check subitems also (else we fail when trying to set the selected state on a second level (or greater) item).  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=16197#16197
+Modified: Forward CEGUI::ScriptException from within the CEGUI::System script execution functions as opposed to translating them into less useful CEGUI::GenericException.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3595
+Modified: Enhanced existing logging to include memory addresses when an object is created or destroyed (for most objects).  See: http://www.cegui.org.uk/mantis/view.php?id=224
+Modified: Added warning to WindowManager::loadWindowLayout documentation regarding possible invocation of incorrect overload when using a C string literal for the 'name_prefix'. (Issue is to be resolved in trunk.  Maintaining ABI and API compatibility with previous v0-6 releases prevents a fix in this branch).
+Modified: Tree Code / documentation reformatting, correction and cleanup.
+Modified: Mark Tree and related classes as deprecated.
+
+Bug Fix: Event connection objects returned to lua subscribeEvent calls did not have the connected or disconnect members available for use (making the connection object useless).
+Bug Fix: TinyXML parse failures were going unchecked.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3688.
+Bug Fix: Lua script module based 'executeScriptedEventHandler was still not returning correct value (missed when I did the LuaFunctor version of the same, see: http://www.cegui.org.uk/mantis/view.php?id=225 for original issue).
+Bug Fix: Hopefully resolve issue where the use of FreeImage codec could result in pixel format of loaded data being incorrect.  See: http://www.cegui.org.uk/mantis/view.php?id=230.
+Bug Fix: There was an issue where Windows could be created during system destruction - this fixes that by introducing a 'locked' state for WindowManager whereby any attempt to create a Window throws an InvalidRequestException.  See: http://www.cegui.org.uk/mantis/view.php?id=250.
+Bug Fix: ScriptModule bindings were destroyed out of sequence meaning event handlers could still be fired that needed CEGUI bindings to exist.  See: http://www.cegui.org.uk/mantis/view.php?id=245.
+Bug Fix: The functionality of the "rise on click" setting was totally broken (prize for longest standing issue?).  See: http://www.cegui.org.uk/mantis/view.php?id=244.
+Bug Fix: When using the scrollwheel to change a CEGUI::Slider value, the direction of movement was the opposite to what would have been expected.  See: http://www.cegui.org.uk/mantis/view.php?id=238.
+Bug Fix: PropertyDim documentation did not reflect the updated abilities of the class, and the documentation for the argument 'type' was not clear about how it should be used with regards to affecting interpretation of the property accessed.  Related to: http://www.cegui.org.uk/mantis/view.php?id=247.
+Bug Fix: Endian problem with CEGUI::colour.  This change should fix this: http://www.cegui.org.uk/mantis/view.php?id=229
+Bug Fix: The Window::getChild(const CEGUI::String&) function was incorrectly made recursive after the 0.5.x series of releases.  This fix restores the correct behaviour and adds a Window::getChildRecursive(const CEGUI::String&) function for the highly expensive recursive case.  See: http://www.cegui.org.uk/mantis/view.php?id=237
+Bug Fix: The C++ side of the lua based event mechanism would always return true as if the event were handled, even if some other boolean value (i.e. false) were returned from the lua side.  See: http://www.cegui.org.uk/mantis/view.php?id=225
+Bug Fix: Resolve issue where events were still being injected into an invisible GUI sheet / root window.  See: http://www.cegui.org.uk/mantis/view.php?id=226
+Bug Fix: null window pointers to add/remove functions of TabControl were unchecked and would cause crashes.  See: http://www.cegui.org.uk/mantis/view.php?id=232
+Bug Fix: Resolve incompatibility issue with Xerces-C++ 3.  See: http://www.cegui.org.uk/mantis/view.php?id=235
+Bug Fix: Window::getChild and Window::recursiveChildSearch would use the starting window's prefix when testing the prefix + name case, this is incorrect and should have been using the prefix of the child being tested (load 2 windows from layouts, using different prefixes.  Add the second layout to the first as a child, then call getChild on the first layout window, passing the name of the second layout window, prior to the fix the call would have failed to find the child).
+Bug Fix: Resolve inconsistency where Window::isChild did not consider the Window name prefix, whereas Window::getChild did. See: http://www.cegui.org.uk/mantis/view.php?id=215.
+Bug Fix: Potential crash regarding sorted column ID, when queried by the property system.
+Bug Fix: the value returned by System::getWindowContainingMouse was only updated when the mouse was moved, this caused potenial issues when windows were moved, sized, created, destroyed, or had their visible or enabled states changed.  See: http://www.cegui.org.uk/mantis/view.php?id=213.
+Bug Fix: Programmatically made changes to Combobox selection were not reflected in the Editbox component of the Combobox.  See: http://www.cegui.org.uk/mantis/view.php?id=220.
+Bug Fix: Vector out of bounds in Window::update (see: http://www.cegui.org.uk/mantis/view.php?id=221)
+Bug Fix: Win32 helper did not consider window farme / decorations when creating windows, so the client area was always smaller than requested.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15524.
+Bug Fix: 'else' within preprocessor conditional sections with no guarantee that there was a prior 'if'.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15524.
+Bug Fix: Fix a couple of minor rendering issues with TaharezLook/ProgressBar.
+Bug Fix: Resolves a bug where the progress content was drawn into, rather than clipped by, the intersection of the the full progress area and the current progress area.  NOTE: People relying on the old buggy behaviour can reproduce the same effect by multiplying appropriate part(s) of thier imagery area definitions by the "CurrentProgress" property in their looknfeel files.
+Bug Fix: MinGW configure/make was not building with glew correctly.
+Bug Fix: Issue with Tree related properties casting to Listbox.  See: http://www.cegui.org.uk/mantis/view.php?id=218
+Bug Fix: Resolve issue where iterator at begining of range was decremented uncheked. See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3408
+
+
 Release 0.6.1
 =============
 Added: Batch files to invoke premake for VC9 files (seems to work fine)
