@@ -65,7 +65,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = include/ src/
+INPUT                  = include/ src/ ImageCodecModules/ RendererModules/ ScriptingModules/ WindowRendererSets/ XMLParserModules/
 FILE_PATTERNS          = *.h *.cpp *.hpp
 RECURSIVE              = YES
 EXCLUDE                =
