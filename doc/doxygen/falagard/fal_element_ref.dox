@@ -1104,11 +1104,25 @@ In this example we create a new property named 'CaptionTextColour'.  This is lin
 @section fal_elem_ref_sec_28 \<PropertyDim\> Element
 
 @subsection fal_elem_ref_sec_28_1 Purpose:
-The @c \<PropertyDim\> element is used to define a component dimension for an area rectangle. @c \<PropertyDim\> is used to specify a floating point value, accessed via a window property, for use as an area dimension.
+The @c \<PropertyDim\> element is used to define a component dimension for an area rectangle.
+@c \<PropertyDim\> is used to specify either a UDim or a simple floating point
+value - accessed via a window property - for use as an area dimension.
+
 
 @subsection fal_elem_ref_sec_28_2 Attributes:
 @arg @c widget  specifies the name suffix of a child window to access the property for. The final name used to access the widget will be that of the target window with this suffix appended. If this suffix is not specified, the target window itself is used. Optional attribute.
-@arg @c name  specifies the name of the property that will provide the value for this dimension. The property named should access a simple numerical value.
+@arg @c name  specifies the name of the property that will provide the
+value for this dimension. The property named should access either a
+UDim value or a simple floating point numerical value - the system
+determines which type of value to expect based upon the usage (or not)
+of the optional @c type attribute.
+@arg @c type specifies the dimension for which the relative scale value
+of a UDim value is a portion of, and as such should be set to either
+@c "Width" or @c "Height".  If the property specified by the
+attribute @c name is intended to access a simple floating point
+value rather than a UDim value, this attribute should be omitted.
+Optional attribute.
+
 
 @subsection fal_elem_ref_sec_28_3 Usage:
 <ul>
@@ -1118,12 +1132,33 @@ The @c \<PropertyDim\> element is used to define a component dimension for an ar
 </ul>
 
 @subsection fal_elem_ref_sec_28_4 Examples:
-This example shows a dimension that uses @c \<PropertyDim\> to fetch a property value to use as the dimensions value. We are accessing the 'AbsoluteWidth' property from an attached widget with the name suffix '__auto_button__':
+This example shows a dimension that uses @c \<PropertyDim\>
+to fetch a property value to use as the dimension value. We are accessing
+the 'AbsoluteWidth' property, from an attached widget with the name
+suffix '__auto_button__', that accesses a simple floating point value:
+
 @code
 ...
 <Area>
   <Dim type="LeftEdge">
     <PropertyDim widget="__auto_button__" name="AbsoluteWidth" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+Here we show a dimension that uses @c \<PropertyDim\> to access a property
+named 'UserWidth' on the target window.  We have specified the @c type
+attribute to be 'Width', which indicates to the system that the property will
+access a UDim value and that the scale part of the UDim is relative to the
+width of the target window.
+
+@code
+...
+<Area>
+  ...
+  <Dim type="Width">
+    <PropertyDim name="UserWidth" type="Width" />
   </Dim>
   ...
 </Area>
