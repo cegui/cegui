@@ -33,6 +33,11 @@
 #include "CEGUIColourRect.h"
 #include "CEGUIRenderCache.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -664,5 +669,8 @@ protected:
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif   // end of guard _CEGUITreeItem_h_
