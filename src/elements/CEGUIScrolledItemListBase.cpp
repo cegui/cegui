@@ -296,4 +296,44 @@ void ScrolledItemListBase::addScrolledItemListBaseProperties()
     addProperty(&d_forceHorzScrollbarProperty);
 }
 
+//----------------------------------------------------------------------------//
+void ScrolledItemListBase::ensureItemIsVisibleVert(const ItemEntry& item)
+{
+    const Rect render_area = getItemRenderArea();
+    Scrollbar* const v = getVertScrollbar();
+    const float currPos = v->getScrollPosition();
+
+    const float top =
+        item.getYPosition().asAbsolute(this->getPixelSize().d_height) - currPos;
+    const float bottom = top + item.getItemPixelSize().d_height;
+
+    // if top is above the view area, or if item is too big, scroll item to top
+    if ((top < render_area.d_top) || ((bottom - top) > render_area.getHeight()))
+        v->setScrollPosition(currPos + top);
+    // if bottom is below the view area, scroll item to bottom of list
+    else if (bottom >= render_area.d_bottom)
+        v->setScrollPosition(currPos + bottom - render_area.getHeight());
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledItemListBase::ensureItemIsVisibleHorz(const ItemEntry& item)
+{
+    const Rect render_area = getItemRenderArea();
+    Scrollbar* const h = getHorzScrollbar();
+    const float currPos = h->getScrollPosition();
+
+    const float left =
+        item.getXPosition().asAbsolute(this->getPixelSize().d_width) - currPos;
+    const float right = left + item.getItemPixelSize().d_width;
+
+    // if left is left of the view area, or if item too big, scroll item to left
+    if ((left < render_area.d_left) || ((right - left) > render_area.getWidth()))
+        h->setScrollPosition(currPos + left);
+    // if right is right of the view area, scroll item to right of list
+    else if (right >= render_area.d_right)
+        h->setScrollPosition(currPos + right - render_area.getWidth());
+}
+
+//----------------------------------------------------------------------------//
+
 } // end CEGUI namespace

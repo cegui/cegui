@@ -97,6 +97,36 @@ public:
     */
     void setShowHorzScrollbar(bool mode);
 
+    /*!
+    \brief
+        Scroll the vertical list position if needed to ensure that the ItemEntry
+        \a item is, if possible,  fully visible witin the ScrolledItemListBase
+        viewable area.
+
+    \param item
+        const reference to an ItemEntry attached to this ScrolledItemListBase
+        that should be made visible in the view area.
+
+    \return
+        Nothing.
+    */
+    void ensureItemIsVisibleVert(const ItemEntry& item);
+
+    /*!
+    \brief
+        Scroll the horizontal list position if needed to ensure that the
+        ItemEntry \a item is, if possible, fully visible witin the
+        ScrolledItemListBase viewable area.
+
+    \param item
+        const reference to an ItemEntry attached to this ScrolledItemListBase
+        that should be made visible in the view area.
+
+    \return
+        Nothing.
+    */
+    void ensureItemIsVisibleHorz(const ItemEntry& item);
+
     /************************************************************************
         Object Construction and Destruction
     *************************************************************************/
