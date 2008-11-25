@@ -8,6 +8,7 @@ The following is a high-level view of changes made to the system between release
 
 Release 0.6.2
 =============
+Added: ScrolledItemListBase::ensureItemIsVisibleVert and ScrolledItemListBase::ensureItemIsVisibleHorz members to allow scrolling lists programmatically to ensure a specified item is visible.  See: http://www.cegui.org.uk/mantis/view.php?id=228
 Added: Added ability to specify a function to be used as the error handler in calls to lua_pcall.  See: http://www.cegui.org.uk/mantis/view.php?id=239
 Added: GUI Renderer module and supporting samples base app for DirectFB (http://www.directfb.org/).  Contributed by Keith Mok.  See: http://www.cegui.org.uk/mantis/view.php?id=233.  Needs additional testing!  SKIP ON MERGE - trunk will get it's own version via the mantis patch (then be rewritten for the new renderer model).
 Added: Member to CEGUI::TreeItem to allow removal of sub-items.  see: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=15563#15563
@@ -20,6 +21,7 @@ Modified: Added warning to WindowManager::loadWindowLayout documentation regardi
 Modified: Tree Code / documentation reformatting, correction and cleanup.
 Modified: Mark Tree and related classes as deprecated.
 
+Bug Fix: Disable MSVC++ 4251 warning coming from CEGUITreeItem.h
 Bug Fix: Event connection objects returned to lua subscribeEvent calls did not have the connected or disconnect members available for use (making the connection object useless).
 Bug Fix: TinyXML parse failures were going unchecked.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3688.
 Bug Fix: Lua script module based 'executeScriptedEventHandler was still not returning correct value (missed when I did the LuaFunctor version of the same, see: http://www.cegui.org.uk/mantis/view.php?id=225 for original issue).
