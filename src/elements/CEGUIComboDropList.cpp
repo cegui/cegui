@@ -244,7 +244,7 @@ void ComboDropList::onCaptureLost(WindowEventArgs& e)
     // ensure 'sticky' selection remains.
     if ((d_lastClickSelected) && !d_lastClickSelected->isSelected())
     {
-        clearAllSelections();
+        clearAllSelections_impl();
         setItemSelectState(d_lastClickSelected, true);
     }
 }
