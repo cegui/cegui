@@ -21,6 +21,7 @@ Modified: Added warning to WindowManager::loadWindowLayout documentation regardi
 Modified: Tree Code / documentation reformatting, correction and cleanup.
 Modified: Mark Tree and related classes as deprecated.
 
+Bug Fix: Issue in ComboDropList would cause InvalidRequestException whenever input capture was lost and the highlighted item was different to the last click-selected item.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3693.
 Bug Fix: Disable MSVC++ 4251 warning coming from CEGUITreeItem.h
 Bug Fix: Event connection objects returned to lua subscribeEvent calls did not have the connected or disconnect members available for use (making the connection object useless).
 Bug Fix: TinyXML parse failures were going unchecked.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3688.
