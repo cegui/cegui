@@ -64,11 +64,15 @@ namespace CEGUI
         RawDataContainer rawXMLData;
         System::getSingleton().getResourceProvider()->loadRawDataContainer(filename, rawXMLData, resourceGroup);
 
-        // Create a buffer with the missing extra byte
+        // Create a buffer with extra bytes for a newline and a terminating null
         size_t size = rawXMLData.getSize();
-        char* buf = new char[size + 1];
+        char* buf = new char[size + 2];
         memcpy(buf, rawXMLData.getDataPtr(), size);
-        buf[size] = 0;
+        // PDT: The addition of the newline is a kludge to resolve an issue
+        // whereby parse returns 0 if the xml file has no newline at the end but
+        // is otherwise well formed.
+        buf[size] = '\n';
+        buf[size+1] = 0;
 
         // Parse the document
         CEGUI_TINYXML_NAMESPACE::TiXmlDocument doc;
