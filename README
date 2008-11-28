@@ -58,7 +58,7 @@ following systems:
 *Various flavors of Linux using gcc.
 *Microsoft Windows running VC++7.0 up and until VC++9, both 'express' and
  'professional' versions.
-*Apple Mac OS X running Xcode. (out of sync - we need a maintainer)
+*Apple Mac OS X running Xcode.
 
 It is very possible that the system will compile and run on other systems and
 compilers, though the above systems have been tested.
