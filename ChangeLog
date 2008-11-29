@@ -8,6 +8,7 @@ The following is a high-level view of changes made to the system between release
 
 Release 0.6.2
 =============
+Added: Support for TreeEventArgs in the lua scripting module (patch from kripken, http://www.cegui.org.uk/phpBB2/viewtopic.php?t=3704)
 Added: ScrolledItemListBase::ensureItemIsVisibleVert and ScrolledItemListBase::ensureItemIsVisibleHorz members to allow scrolling lists programmatically to ensure a specified item is visible.  See: http://www.cegui.org.uk/mantis/view.php?id=228
 Added: Added ability to specify a function to be used as the error handler in calls to lua_pcall.  See: http://www.cegui.org.uk/mantis/view.php?id=239
 Added: GUI Renderer module and supporting samples base app for DirectFB (http://www.directfb.org/).  Contributed by Keith Mok.  See: http://www.cegui.org.uk/mantis/view.php?id=233.  Needs additional testing!  SKIP ON MERGE - trunk will get it's own version via the mantis patch (then be rewritten for the new renderer model).
