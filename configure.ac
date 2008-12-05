@@ -102,9 +102,9 @@ CEGUI_CHECK_LUA
 
 dnl versioning info for libtool
 dnl Note this is the ABI version which is not the same as our actual library version
-CEGUI_CURRENT=2
+CEGUI_CURRENT=3
 CEGUI_REVISION=0
-CEGUI_AGE=1
+CEGUI_AGE=2
 CEGUI_VERSION_INFO=$CEGUI_CURRENT:$CEGUI_REVISION:$CEGUI_AGE
 AC_SUBST(CEGUI_VERSION_INFO)
 
