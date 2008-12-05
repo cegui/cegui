@@ -116,3 +116,14 @@ class DragDropEventArgs : public WindowEventArgs
 
     DragDropEventArgs(Window* wnd);
 };
+
+
+/***********************************************************************
+   TreeEventArgs
+***********************************************************************/
+class TreeEventArgs : public WindowEventArgs
+{
+   TreeItem *treeItem;
+
+   TreeEventArgs(Window* wnd);
+};

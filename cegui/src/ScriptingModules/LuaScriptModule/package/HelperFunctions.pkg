@@ -33,6 +33,10 @@ function CEGUI.toDragDropEventArgs(e)
     return tolua.cast(e,"const CEGUI::DragDropEventArgs")
 end
 
+function CEGUI.toTreeEventArgs(e)
+    return tolua.cast(e,"const CEGUI::TreeEventArgs")
+end
+
 CEGUI.EventArgs.toMouseCursorEventArgs      = CEGUI.toMouseCursorEventArgs
 CEGUI.EventArgs.toWindowEventArgs           = CEGUI.toWindowEventArgs
 CEGUI.EventArgs.toActivationEventArgs       = CEGUI.toActivationEventArgs
@@ -40,6 +44,7 @@ CEGUI.EventArgs.toHeaderSequenceEventArgs   = CEGUI.toHeaderSequenceEventArgs
 CEGUI.EventArgs.toMouseEventArgs            = CEGUI.toMouseEventArgs
 CEGUI.EventArgs.toKeyEventArgs              = CEGUI.toKeyEventArgs
 CEGUI.EventArgs.toDragDropEventArgs         = CEGUI.toDragDropEventArgs
+CEGUI.EventArgs.toTreeEventArgs             = CEGUI.toTreeEventArgs
 
 $]
 
