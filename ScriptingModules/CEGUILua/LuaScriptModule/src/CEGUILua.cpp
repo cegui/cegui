@@ -232,17 +232,20 @@ Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
     const String& err_str = getActivePCallErrorHandlerString();
     const int err_ref     = getActivePCallErrorHandlerReference();
 
+    Event::Connection con;
     // do the real subscription
-    LuaFunctor functor((err_ref == LUA_NOREF) ?
-                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_str) :
-                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_ref));
-    Event::Connection con =
-        target->subscribeEvent(event_name, Event::Subscriber(functor));
-
-    // make sure we don't release the reference we just made when 'functor' is
-    // destroyed as it goes out of scope.
-    functor.index = LUA_NOREF;
-    functor.d_errFuncIndex = LUA_NOREF;
+    if (err_ref == LUA_NOREF)
+    {
+        LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, err_str);
+        con = target->subscribeEvent(event_name, Event::Subscriber(functor));
+        functor.invalidateLuaRefs();
+    }
+    else
+    {
+        LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, err_ref);
+        con = target->subscribeEvent(event_name, Event::Subscriber(functor));
+        functor.invalidateLuaRefs();
+    }
 
     // return the event connection
     return con;
@@ -258,17 +261,22 @@ Event::Connection LuaScriptModule::subscribeEvent(EventSet* target,
     const String& err_str = getActivePCallErrorHandlerString();
     const int err_ref     = getActivePCallErrorHandlerReference();
 
+    Event::Connection con;
     // do the real subscription
-    LuaFunctor functor((err_ref == LUA_NOREF) ?
-                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_str) :
-                LuaFunctor(d_state, subscriber_name, LUA_NOREF, err_ref));
-    Event::Connection con =
-        target->subscribeEvent(event_name, group, Event::Subscriber(functor));
-
-    // make sure we don't release the reference we just made when 'functor' is
-    // destroyed as it goes out of scope.
-    functor.index = LUA_NOREF;
-    functor.d_errFuncIndex = LUA_NOREF;
+    if (err_ref == LUA_NOREF)
+    {
+        LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, err_str);
+        con = target->subscribeEvent(event_name, group,
+                                     Event::Subscriber(functor));
+        functor.invalidateLuaRefs();
+    }
+    else
+    {
+        LuaFunctor functor(d_state, subscriber_name, LUA_NOREF, err_ref);
+        con = target->subscribeEvent(event_name, group,
+                                     Event::Subscriber(functor));
+        functor.invalidateLuaRefs();
+    }
 
     // return the event connection
     return con;
