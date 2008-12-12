@@ -260,6 +260,11 @@ function setup_static_samples()
  	library_static("freetype","","_D")
 	library_static("pcre","", "_d")
 	
+	-- Warn user when both DX9 and DX10 are defined during static builds
+	if DIRECTX9_RENDERER and DIRECTX10_RENDERER then
+		print "DX9 and DX10 cannot both be defined for static builds, because it will result in a linker conflict."
+	end
+	
 	if DIRECTX9_RENDERER then
 		library_static("dxguid")
 		library_static("d3dx9")
