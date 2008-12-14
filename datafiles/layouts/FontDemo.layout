@@ -18,6 +18,7 @@
         <Window Type="TaharezLook/Listbox" Name="FontDemo/LangList">
             <Property Name="UnifiedAreaRect" Value="{{0.8,0},{0.1,0},{0.95,0},{0.5,0}}" />
             <Property Name="Tooltip" Value="Contains a list of languages to select sample text from" />
+			<Property Name="Font" Value="DejaVuSans-10"/>
         </Window>
 
         <Window Type="TaharezLook/Listbox" Name="FontDemo/FontList">

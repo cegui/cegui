@@ -25,6 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
+// NOTE: if you don't have Asian fonts installed, the Japanese and Korean
+// sample texts might show up unreadable in this source file. The sample
+// should look okay though when running.
+
 #include "CEGuiSample.h"
 #include "CEGUI.h"
 #include "CEGUIPropertyHelper.h"
@@ -37,7 +42,9 @@ static const char *FontList [] =
     "Commonwealth-10",
     "Iconified-12",
     "fkp-16",
-    "FairChar-30"
+    "FairChar-30",
+	"Sword-26",
+	"Batang-26",
 };
 
 static struct
@@ -63,7 +70,22 @@ static struct
     { (utf8 *)"Dansk",
       (utf8 *)"FARLIGE STORE BOGSTAVER\n"
               "og flere men små...\n"
-              "Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Walther spillede på xylofon\n" }
+              "Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Walther spillede på xylofon\n" },
+	{ (utf8 *)"Japanese",
+      (utf8 *)"日本語を選択\n"
+              "トリガー検知\n"
+              "鉱石備蓄不足\n" },
+	{ (utf8 *)"Korean",
+      (utf8 *)"한국어를 선택\n"
+              "트리거 검지\n"
+              "광석 비축부족\n" },
+    { (utf8 *)"Việt",
+      (utf8 *)"Chào CrazyEddie !\n"
+              "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
+              "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
+              "Cám ơn bạn rất nhiều\n"
+              "Chúc bạn sức khoẻ\n"
+              "Tạm biệt !\n" }
 };
 
 #define MIN_POINT_SIZE 6.0f
@@ -161,6 +183,9 @@ public:
         // me? cleanup? what?
     }
 
+	/** When a fonts get selected from the list, we update the name field. Of course,
+	this can be done easier (by passing the selected font), but this demonstrates how 
+	to query a widget's font. */
     void setFontDesc ()
     {
         WindowManager& winMgr = WindowManager::getSingleton ();
@@ -168,25 +193,31 @@ public:
         MultiLineEditbox *mle = static_cast<MultiLineEditbox *>
             (winMgr.getWindow("FontDemo/FontSample"));
 
+		// Query the font from the textbox
         Font *f = mle->getFont ();
 
+		// Build up the font name...
         String s = f->getProperty ("Name");
         if (f->isPropertyPresent ("PointSize"))
             s += "." + f->getProperty ("PointSize");
 
+		// ...and set it
         winMgr.getWindow("FontDemo/FontDesc")->setText (s);
     }
 
+	/** Called when the used selects a different font from the font list.*/
     bool handleFontSelection (const EventArgs& e)
     {
+		// Access the listbox which sent the event
         Listbox *lbox = static_cast<Listbox*> (
             static_cast<const WindowEventArgs&> (e).window);
 
         if (lbox->getFirstSelectedItem ())
-		{
+		{	// Read the fontname
             Font *f = FontManager::getSingleton ().getFont (
                 lbox->getFirstSelectedItem ()->getText ());
 
+			// Tell the textbox to use the newly selected font
             WindowManager& winMgr = WindowManager::getSingleton ();
             winMgr.getWindow("FontDemo/FontSample")->setFont (f);
 
@@ -268,16 +299,38 @@ public:
         return true;
     }
 
+	/** User selects a new language. Change the textbox content, and start with
+	the recommended font. */
     bool handleLangSelection (const EventArgs& e)
     {
+		// Access the listbox which sent the event
         Listbox *lbox = static_cast<Listbox *> (
             static_cast<const WindowEventArgs&> (e).window);
 
         if (lbox->getFirstSelectedItem ())
         {
             size_t idx = lbox->getItemIndex (lbox->getFirstSelectedItem ());
+			// Set default font to avoid initial glyph errors
+			size_t fontIdx = 0;	// Default to DejaVu Sans for the non-Asian fonts
+			if (idx == 4)	// Japanese
+			{
+				fontIdx = 5;
+			}
+			else if (idx == 5)	// Korean
+			{
+				fontIdx = 6;
+			}			
             WindowManager& winMgr = WindowManager::getSingleton ();
-            winMgr.getWindow ("FontDemo/FontSample")->setText (LangList [idx].Text);
+			// Access the font list
+			Listbox *fontList = static_cast<Listbox*>(winMgr.getWindow ("FontDemo/FontList"));
+			// Select correct font when not set already
+			if (!fontList->isItemSelected(fontIdx))
+			{	// This will cause 'handleFontSelection' to get called(!)
+				fontList->setItemSelectState(fontIdx, true);
+			}
+
+			// Finally, set the sample text for the selected language
+            winMgr.getWindow ("FontDemo/FontSample")->setText ((utf8*)LangList [idx].Text);
         }
 
         return true;
