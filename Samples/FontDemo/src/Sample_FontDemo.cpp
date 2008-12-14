@@ -78,7 +78,14 @@ static struct
 	{ (utf8 *)"Korean",
       (utf8 *)"한국어를 선택\n"
               "트리거 검지\n"
-              "광석 비축부족\n" }
+              "광석 비축부족\n" },
+    { (utf8 *)"Việt",
+      (utf8 *)"Chào CrazyEddie !\n"
+              "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
+              "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
+              "Cám ơn bạn rất nhiều\n"
+              "Chúc bạn sức khoẻ\n"
+              "Tạm biệt !\n" }
 };
 
 #define MIN_POINT_SIZE 6.0f
