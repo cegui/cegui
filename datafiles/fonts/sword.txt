@@ -1,0 +1,80 @@
+
+  The Sword Kanji font FAQ
+
+------------------------------------------------------------------------
+
+    *
+
+      Ok, I have downloaded the font. Now what? How do I install it?
+
+      This is somewhat beyond the scope of this FAQ, but a good start
+      would be to go to the /control panel/ of your computer. From there
+      you should have a /font/ folder. Dropping the file into this
+      folder should make it appear in the font menu of your applications.
+
+    *
+
+      I have installed the font, I can see it in the font menu of my
+      application, now how do I use it to type a japanese word?
+
+      Sorry, but this is /really/ beyond the scope of this FAQ. You
+      should turn to the web site of your operating system's
+      manufacturer for more information on this subject. This is
+      generally refered as installing a japanese IME (Input Method Editor).
+
+    *
+
+      I can't find any roman letter, digit or punctuation in the font!
+
+      These glyphs were missing from the original fonts
+      <http://members.cox.net/jkk/kanji.htm> from Jim Kurrasch. If you
+      find someone skillful enough to draw these glyphs, then I will
+      have them mapped with the rest.
+
+    *
+
+      Some kanjis are missing from the font!
+
+      If it is missing from the font then it was probably missing from
+      the original fonts <http://members.cox.net/jkk/kanji.htm> from Jim
+      Kurrasch. If you find someone skillful enough to draw this glyph,
+      then I will have it mapped with the rest.
+
+    *
+
+      Some glyphs are not nicely space separated! Some overlaping each
+      other, etc.
+
+      You are right! There is definitly a spacing problem but I can't
+      correct this because I don't know much about font design! If you
+      can determine where this problem comes from, then contact me
+      <email-me/email_form.htm> and we will publish a better version of
+      the Sword Kanji font.
+
+    *
+
+      Some glyph is being mapped to an improper unicode!
+
+      Drop me a line <email-me/email_form.htm> with the code of the
+      ideogram, I will have it remapped correctly.
+
+    *
+
+      I inspected the inside of the font file, and found out that some
+      glyphs are not mapped to any unicode yet?
+
+      Right, I could not find the unicode for some of the glyphs that
+      were present in the original fonts
+      <http://members.cox.net/jkk/kanji.htm> from Jim Kurrasch. These
+      are glyphs number |$0197, $0199, $019C, $01A0, $01A2, $01AF,
+      $01B9, $0288, $02B4, $0361, $0401, $04CD, $061D| and all
+      combinated kanas (sha, shu, sho, etc.)
+      If you can find out what are the unicodes for these then drop me a
+      line <email-me/email_form.htm>
+
+    *
+
+      Have you noticed any other problem with the Sword Kanji font?
+
+      Drop me a line <email-me/email_form.htm> describing the problem.
+

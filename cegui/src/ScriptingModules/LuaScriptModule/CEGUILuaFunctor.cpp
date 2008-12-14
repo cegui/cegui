@@ -54,6 +54,7 @@ LuaFunctor::LuaFunctor(lua_State* state, int func, int selfIndex) :
     index(func),
     self(selfIndex),
     needs_lookup(false),
+    d_errFuncIndex(LUA_NOREF),
     d_ourErrFuncIndex(false)
 {
     // TODO: This would perhaps be better done another way, to avoid the
@@ -77,6 +78,7 @@ LuaFunctor::LuaFunctor(lua_State* state, const String& func, int selfIndex) :
     self(selfIndex),
     needs_lookup(true),
     function_name(func),
+    d_errFuncIndex(LUA_NOREF),
     d_ourErrFuncIndex(false)
 {
     // TODO: This would perhaps be better done another way, to avoid the
@@ -384,32 +386,53 @@ Event::Connection LuaFunctor::SubscribeEvent(EventSet* self,
         // reference function
         int index = luaL_ref(L, LUA_REGISTRYINDEX);
 
-        LuaFunctor functor((err_idx != LUA_NOREF) ?
-                        LuaFunctor(L, index, thisIndex, err_idx) :
-                        (!err_str.empty()) ?
-                            LuaFunctor(L, index, thisIndex, err_str) :
-                            LuaFunctor(L, index, thisIndex));
-        con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
-        // make sure we don't release the reference(s) we just made when the
-        // 'functor' object is destroyed (goes out of scope)
-        functor.index = LUA_NOREF;
-        functor.self = LUA_NOREF;
-        functor.d_errFuncIndex = LUA_NOREF;
+        if (err_idx != LUA_NOREF)
+        {
+            LuaFunctor functor(L, index, thisIndex, err_idx);
+            con = self->subscribeEvent(String(event_name),
+                                       Event::Subscriber(functor));
+            functor.invalidateLuaRefs();
+        }
+        else if (!err_str.empty())
+        {
+            LuaFunctor functor(L, index, thisIndex, err_str);
+            con = self->subscribeEvent(String(event_name),
+                                       Event::Subscriber(functor));
+            functor.invalidateLuaRefs();
+        }
+        else
+        {
+            LuaFunctor functor(L, index, thisIndex);
+            con = self->subscribeEvent(String(event_name),
+                                       Event::Subscriber(functor));
+            functor.invalidateLuaRefs();
+        }
     }
     else if (type == LUA_TSTRING)
     {
         const char* str = lua_tostring(L, -1);
-        LuaFunctor functor((err_idx != LUA_NOREF) ?
-                        LuaFunctor(L, String(str), thisIndex, err_idx) :
-                        (!err_str.empty()) ?
-                            LuaFunctor(L, String(str), thisIndex, err_str) :
-                            LuaFunctor(L, String(str), thisIndex));
 
-        con = self->subscribeEvent(String(event_name), Event::Subscriber(functor));
-        // make sure we don't release the reference(s) we just made when the
-        // 'functor' object is destroyed (goes out of scope)
-        functor.self = LUA_NOREF;
-        functor.d_errFuncIndex = LUA_NOREF;
+        if (err_idx != LUA_NOREF)
+        {
+            LuaFunctor functor(L, String(str), thisIndex, err_idx);
+            con = self->subscribeEvent(String(event_name),
+                                       Event::Subscriber(functor));
+            functor.invalidateLuaRefs();
+        }
+        else if (!err_str.empty())
+        {
+            LuaFunctor functor(L, String(str), thisIndex, err_str);
+            con = self->subscribeEvent(String(event_name),
+                                       Event::Subscriber(functor));
+            functor.invalidateLuaRefs();
+        }
+        else
+        {
+            LuaFunctor functor(L, String(str), thisIndex);
+            con = self->subscribeEvent(String(event_name),
+                                       Event::Subscriber(functor));
+            functor.invalidateLuaRefs();
+        }
     }
     else
     {
@@ -419,6 +442,14 @@ Event::Connection LuaFunctor::SubscribeEvent(EventSet* self,
 
     // return the event connection
     return con;
+}
+
+//----------------------------------------------------------------------------//
+void LuaFunctor::invalidateLuaRefs()
+{
+    index = LUA_NOREF;
+    self = LUA_NOREF;
+    d_errFuncIndex = LUA_NOREF;
 }
 
 //----------------------------------------------------------------------------//
