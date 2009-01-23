@@ -49,7 +49,7 @@ namespace CEGUI
             static_cast<Window*>(receiver)->performChildWindowLayout();
 
         if (d_writeCausesRedraw)
-            static_cast<Window*>(receiver)->requestRedraw();
+            static_cast<Window*>(receiver)->invalidate();
     }
 
     void PropertyDefinitionBase::writeXMLToStream(XMLSerializer& xml_stream) const

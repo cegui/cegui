@@ -43,7 +43,7 @@ namespace CEGUI
         d_colourProperyIsRect(false)
     {}
 
-    void ImagerySection::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -57,21 +57,21 @@ namespace CEGUI
         // render all frame components in this section
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).render(srcWindow, base_z, finalColsPtr, clipper, clipToDisplay);
+            (*frame).render(srcWindow, finalColsPtr, clipper, clipToDisplay);
         }
         // render all image components in this section
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).render(srcWindow, base_z, finalColsPtr, clipper, clipToDisplay);
+            (*image).render(srcWindow, finalColsPtr, clipper, clipToDisplay);
         }
         // render all text components in this section
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).render(srcWindow, base_z, finalColsPtr, clipper, clipToDisplay);
+            (*text).render(srcWindow, finalColsPtr, clipper, clipToDisplay);
         }
     }
 
-    void ImagerySection::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void ImagerySection::render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         // decide what to do as far as colours go
         ColourRect finalCols;
@@ -85,17 +85,17 @@ namespace CEGUI
         // render all frame components in this section
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
         {
-            (*frame).render(srcWindow, baseRect, base_z, finalColsPtr, clipper, clipToDisplay);
+            (*frame).render(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
         }
         // render all image components in this section
         for(ImageryList::const_iterator image = d_images.begin(); image != d_images.end(); ++image)
         {
-            (*image).render(srcWindow, baseRect, base_z, finalColsPtr, clipper, clipToDisplay);
+            (*image).render(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
         }
         // render all text components in this section
         for(TextList::const_iterator text = d_texts.begin(); text != d_texts.end(); ++text)
         {
-            (*text).render(srcWindow, baseRect, base_z, finalColsPtr, clipper, clipToDisplay);
+            (*text).render(srcWindow, baseRect, finalColsPtr, clipper, clipToDisplay);
         }
     }
 

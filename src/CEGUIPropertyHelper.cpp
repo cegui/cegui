@@ -435,4 +435,28 @@ ColourRect PropertyHelper::stringToColourRect(const String& str)
 	return ColourRect(topLeft, topRight, bottomLeft, bottomRight);
 }
 
+//----------------------------------------------------------------------------//
+Vector3 PropertyHelper::stringToVector3(const String& str)
+{
+    using namespace std;
+
+    Vector3 val(0, 0, 0);
+    sscanf(str.c_str(), " x:%g y:%g z:%g", &val.d_x, &val.d_y, &val.d_z);
+
+    return val;
+}
+
+//----------------------------------------------------------------------------//
+String PropertyHelper::vector3ToString(const Vector3& val)
+{
+    using namespace std;
+
+    char buff[128];
+    snprintf(buff, sizeof(buff), "x:%g y:%g z:%g", val.d_x, val.d_y, val.d_z);
+
+    return String(buff);
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section

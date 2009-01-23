@@ -89,7 +89,7 @@ public:
 
 	\exception AlreadyExistsException	Thrown if an Imageset named \a name is already present in the system.
 	*/
-	Imageset*	createImageset(const String& name, Texture* texture);
+	Imageset*	createImageset(const String& name, Texture& texture);
 
 	/*!
 	\brief

@@ -49,8 +49,11 @@ libCEGUIBase_la_SOURCES = CEGUIBase.cpp \
                       CEGUIPropertyHelper.cpp \
                       CEGUIPropertySet.cpp \
                       CEGUIRect.cpp \
-                      CEGUIRenderCache.cpp \
                       CEGUIRenderer.cpp \
+                      CEGUIRenderingRoot.cpp \
+                      CEGUIRenderingSurface.cpp \
+                      CEGUIRenderingWindow.cpp \
+                      CEGUIRenderQueue.cpp \
                       CEGUIScheme.cpp \
                       CEGUISchemeManager.cpp \
                       CEGUIScheme_xmlHandler.cpp \

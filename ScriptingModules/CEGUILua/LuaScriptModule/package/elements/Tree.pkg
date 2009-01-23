@@ -3,8 +3,8 @@
 ***********************************************************************/
 class Tree : public Window
 {
-	size_t	getItemCount(void) const;
-	size_t	getSelectedCount(void) const;
+	unsigned long	getItemCount(void) const;
+	unsigned long	getSelectedCount(void) const;
 	
 	TreeItem*	getFirstSelectedItem(void) const;
 	TreeItem*	getLastSelectedItem(void) const;
@@ -28,6 +28,6 @@ class Tree : public Window
 	void	setSortingEnabled(bool setting);
 	void	setMultiselectEnabled(bool setting);
 	void	setItemSelectState(TreeItem* item, bool state);
-	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| void	setItemSelectState(size_t item_index, bool state);
+	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| void	setItemSelectState(unsigned long item_index, bool state);
 	tolua_throws|CEGUI::Exception,error|std::exception,error|any,error| void	ensureItemIsVisible(const TreeItem* item);
 };

@@ -53,6 +53,9 @@
 #include "CEGUIWindowRendererManager.h"
 #include "CEGUIDynamicModule.h"
 #include "CEGUIXMLParser.h"
+#include "CEGUIRenderingRoot.h"
+#include "CEGUIRenderingWindow.h"
+#include "CEGUIRenderingContext.h"
 #include <ctime>
 #include <clocale>
 
@@ -409,35 +412,28 @@ System::~System(void)
 *************************************************************************/
 void System::renderGUI(void)
 {
-    //////////////////////////////////////////////////////////////////////////
-    // This makes use of some tricks the Renderer can do so that we do not
-    // need to do a full redraw every frame - only when some UI element has
-    // changed.
-    //
-    // Since the mouse is likely to move very often, and in order not to
-    // short-circuit the above optimisation, the mouse is not queued, but is
-    // drawn directly to the display every frame.
-    //////////////////////////////////////////////////////////////////////////
+    d_renderer->beginRendering();
 
     if (d_gui_redraw)
     {
-        d_renderer->resetZValue();
-        d_renderer->setQueueingEnabled(true);
-        d_renderer->clearRenderList();
-
         if (d_activeSheet)
         {
-            d_activeSheet->render();
+            RenderingContext ctx;
+            d_activeSheet->getRenderingContext(ctx);
+            ctx.surface->clearGeometry();
+            d_activeSheet->render(ctx);
+
+            if (ctx.surface->isRenderingWindow())
+                static_cast<RenderingWindow*>(ctx.surface)->
+                    getOwner().clearGeometry();
         }
 
         d_gui_redraw = false;
     }
 
-    d_renderer->doRender();
-
-    // draw mouse
-    d_renderer->setQueueingEnabled(false);
+    d_renderer->getDefaultRenderingRoot().draw();
     MouseCursor::getSingleton().draw();
+    d_renderer->endRendering();
 
     // do final destruction on dead-pool windows
     WindowManager::getSingleton().cleanDeadPool();
@@ -1393,7 +1389,7 @@ void System::onMouseMoveScalingChanged(EventArgs& e)
 bool System::handleDisplaySizeChange(const EventArgs& e)
 {
     // notify the imageset/font manager of the size change
-    Size new_sz = getRenderer()->getSize();
+    Size new_sz = getRenderer()->getDisplaySize();
     ImagesetManager::getSingleton().notifyScreenResolution(new_sz);
     FontManager::getSingleton().notifyScreenResolution(new_sz);
 

@@ -61,7 +61,7 @@ namespace CEGUI
     void FalagardStaticImage::setImage(const Image* img)
     {
         d_image = img;
-        d_window->requestRedraw();
+        d_window->invalidate();
     }
 
 } // End of  CEGUI namespace section

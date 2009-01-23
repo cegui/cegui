@@ -7,7 +7,10 @@ endif
 INCLUDES += -I$(top_srcdir)/include -I$(top_srcdir) $(OpenGL_CFLAGS)
 
 pkgincludedir=$(prefix)/include/CEGUI/RendererModules/OpenGLGUIRenderer
-pkginclude_HEADERS = openglrenderer.h opengltexture.h
+pkginclude_HEADERS = CEGUIOpenGLRenderer.h CEGUIOpenGLTexture.h \
+	CEGUIOpenGLGeometryBatch.h CEGUIOpenGLGeometryBuffer.h \
+	CEGUIOpenGLRenderTarget.h CEGUIOpenGLViewportTarget.h \
+	CEGUIOpenGLFBOTextureTarget.h CEGUIOpenGL.h
 
 libCEGUIOpenGLRenderer_la_LDFLAGS =
 
@@ -26,7 +29,10 @@ libCEGUIOpenGLRenderer_la_LIBADD = $(OpenGL_LIBS) $(top_builddir)/src/libCEGUIBa
 libCEGUIOpenGLRenderer_la_LDFLAGS += -version-info @CEGUI_OPENGL_VERSION_INFO@
 
 lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
-libCEGUIOpenGLRenderer_la_SOURCES = openglrenderer.cpp opengltexture.cpp
+libCEGUIOpenGLRenderer_la_SOURCES = CEGUIOpenGLRenderer.cpp \
+    CEGUIOpenGLTexture.cpp CEGUIOpenGLGeometryBatch.cpp \
+    CEGUIOpenGLGeometryBuffer.cpp CEGUIOpenGLRenderTarget.cpp \
+    CEGUIOpenGLViewportTarget.cpp CEGUIOpenGLFBOTextureTarget.cpp
 
 if BUILD_USING_INTERNAL_GLEW
 libCEGUIOpenGLRenderer_la_SOURCES += GLEW/src/glew.c

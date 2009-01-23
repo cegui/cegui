@@ -404,6 +404,7 @@
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
         <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -799,6 +800,7 @@
         <Property name="NWSESizingCursorImage" value="set:WindowsLook image:MouseNwSeCursor" />
         <Property name="NESWSizingCursorImage" value="set:WindowsLook image:MouseNeSwCursor" />
         <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
+        <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -4413,6 +4415,7 @@
     -->
     <WidgetLook name="WindowsLook/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FF000000" redrawOnWrite="true" />
+        <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>

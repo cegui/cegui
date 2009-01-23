@@ -50,6 +50,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class GeometryBuffer;
+
 /*!
 \brief
 	Class that represents a single Image of an Imageset.
@@ -155,231 +157,322 @@ public:
     */
     const Rect& getSourceTextureArea(void) const;
 
-	/*!
-	\brief
-		Queue the image to be drawn. 
-		
-	\note
-		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
-		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
-		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
-		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+    /*!
+    \brief
+        Queue the image to be drawn.
 
-	\param position
-		Vector3 object containing the location where the Image is to be drawn
+    \note
+        The final position of the Image will be adjusted by the offset values
+        defined for this Image object.  If absolute positioning is essential
+        then these values should be taken into account prior to calling the
+        draw() methods.  However, by doing this you take away the ability of the
+        Imageset designer to adjust the alignment and positioning of Images,
+        therefore your component is far less useful since it requires code
+        changes to modify image positioning that could have been handled from a
+        data file.
 
-	\param size
-		Size object describing the size that the Image is to be drawn at.
+    \param buffer
+        GeometryBuffer object where the geometry for the image will be queued.
 
-	\param clip_rect
-		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+    \param position
+        Vector2 object containing the location where the Image is to be drawn
 
-	\param top_left_colour
-		Colour (as 0xAARRGGBB value) to be applied to the top-left corner of the Image.
+    \param size
+        Size object describing the size that the Image is to be drawn at.
 
-	\param top_right_colour
-		Colour (as 0xAARRGGBB value) to be applied to the top-right corner of the Image.
+    \param clip_rect
+        Rect object that defines an on-screen area that the Image will be
+        clipped to when drawing.
 
-	\param bottom_left_colour
-		Colour (as 0xAARRGGBB value) to be applied to the bottom-left corner of the Image.
+    \param top_left_colour
+        Colour to be applied to the top-left corner of the Image.
 
-	\param bottom_right_colour
-		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of the Image.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \param top_right_colour
+        Colour to be applied to the top-right corner of the Image.
 
-	\return
-		Nothing
-	*/
-	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
-	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, 
-			ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
-	}
+    \param bottom_left_colour
+        Colour to be applied to the bottom-left corner of the Image.
 
+    \param bottom_right_colour
+        Colour to be applied to the bottom-right corner of the Image.
 
-	/*!
-	\brief
-		Queue the image to be drawn.
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way the quad geometry for
+        the image is to be split into triangles.
 
-	\note
-		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
-		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
-		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
-		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+    \return
+        Nothing
+    */
+    void draw(GeometryBuffer& buffer, const Vector2& position, const Size& size,
+              const Rect* clip_rect,
+              const colour& top_left_colour = 0xFFFFFFFF,
+              const colour& top_right_colour = 0xFFFFFFFF,
+              const colour& bottom_left_colour = 0xFFFFFFFF,
+              const colour& bottom_right_colour = 0xFFFFFFFF,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+    {
+        draw(buffer, Rect(position.d_x, position.d_y,
+                          position.d_x + size.d_width,
+                          position.d_y + size.d_height),
+             clip_rect,
+             ColourRect(top_left_colour, top_right_colour, bottom_left_colour,
+                        bottom_right_colour),
+             quad_split_mode);
+    }
 
-	\param dest_rect
-		Rect object defining the area on-screen where the Image is to be drawn.  The Image will be scaled to fit the area as required.
+    /*!
+    \brief
+        Queue the image to be drawn.
 
-	\param z
-		Z-order position for the image.  Positions increase "into the screen", so 0.0f is at the top of the z-order.
+    \note
+        The final position of the Image will be adjusted by the offset values
+        defined for this Image object.  If absolute positioning is essential
+        then these values should be taken into account prior to calling the
+        draw() methods.  However, by doing this you take away the ability of the
+        Imageset designer to adjust the alignment and positioning of Images,
+        therefore your component is far less useful since it requires code
+        changes to modify image positioning that could have been handled from a
+        data file.
 
-	\param clip_rect
-		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+    \param buffer
+        GeometryBuffer object where the geometry for the image will be queued.
 
-	\param top_left_colour
-		Colour (as 0xAARRGGBB value) to be applied to the top-left corner of the Image.
+    \param dest_rect
+        Rect object defining the area on-screen where the Image is to be drawn.
+        The Image will be scaled to fill the area as required.
 
-	\param top_right_colour
-		Colour (as 0xAARRGGBB value) to be applied to the top-right corner of the Image.
+    \param clip_rect
+        Rect object that defines an on-screen area that the Image will be
+        clipped to when drawing.
 
-	\param bottom_left_colour
-		Colour (as 0xAARRGGBB value) to be applied to the bottom-left corner of the Image.
+    \param top_left_colour
+        Colour to be applied to the top-left corner of the Image.
 
-	\param bottom_right_colour
-		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of the Image.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \param top_right_colour
+        Colour to be applied to the top-right corner of the Image.
 
-	\return
-		Nothing
-	*/
-	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
-	{
-		draw(dest_rect, z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
-	}
+    \param bottom_left_colour
+        Colour to be applied to the bottom-left corner of the Image.
 
+    \param bottom_right_colour
+        Colour to be applied to the bottom-right corner of the Image.
 
-	/*!
-	\brief
-		Queue the image to be drawn. 
-		
-	\note
-		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
-		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
-		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
-		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way the quad geometry for
+        the image is to be split into triangles.
 
-	\param position
-		Vector3 object containing the location where the Image is to be drawn
+    \return
+        Nothing
+    */
+    void draw(GeometryBuffer& buffer, const Rect& dest_rect,
+              const Rect* clip_rect,
+              const colour& top_left_colour = 0xFFFFFFFF,
+              const colour& top_right_colour = 0xFFFFFFFF,
+              const colour& bottom_left_colour = 0xFFFFFFFF,
+              const colour& bottom_right_colour = 0xFFFFFFFF,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+    {
+        draw(buffer, dest_rect, clip_rect,
+             ColourRect(top_left_colour, top_right_colour,
+                        bottom_left_colour, bottom_right_colour),
+             quad_split_mode);
+    }
 
-	\param size
-		Size object describing the size that the Image is to be drawn at.
+    /*!
+    \brief
+        Queue the image to be drawn. 
 
-	\param clip_rect
-		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+    \note
+        The final position of the Image will be adjusted by the offset values
+        defined for this Image object.  If absolute positioning is essential
+        then these values should be taken into account prior to calling the
+        draw() methods.  However, by doing this you take away the ability of the
+        Imageset designer to adjust the alignment and positioning of Images,
+        therefore your component is far less useful since it requires code
+        changes to modify image positioning that could have been handled from a
+        data file.
 
-	\param colours
-		ColourRect object that describes the colour values to use for each corner of the Image.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \param buffer
+        GeometryBuffer object where the geometry for the image will be queued.
 
-	\return
-		Nothing
-	*/
-	void	draw(const Vector3& position, const Size& size, const Rect& clip_rect, const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
-	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + size.d_width, position.d_y + size.d_height), position.d_z, clip_rect, colours, quad_split_mode);
-	}
+    \param position
+        Vector2 object containing the location where the Image is to be drawn.
 
+    \param size
+        Size object describing the size that the Image is to be drawn at.
 
-	/*!
-	\brief
-		Queue the image to be drawn.
+    \param clip_rect
+        Rect object that defines an on-screen area that the Image will be
+        clipped to when drawing.
 
-	\note
-		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
-		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
-		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
-		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+    \param colours
+        ColourRect object that describes the colour values to use for each
+        corner of the Image.
 
-	\param position
-		Vector3 object containing the location where the Image is to be drawn
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way the quad geometry for
+        the image is to be split into triangles.
 
-	\note
-		The image will be drawn at it's internally defined size.
+    \return
+        Nothing
+    */
+    void draw(GeometryBuffer& buffer, const Vector2& position, const Size& size,
+              const Rect* clip_rect, const ColourRect& colours,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+    {
+        draw(buffer, Rect(position.d_x, position.d_y,
+                          position.d_x + size.d_width,
+                          position.d_y + size.d_height),
+             clip_rect, colours, quad_split_mode);
+    }
 
-	\param clip_rect
-		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+    /*!
+    \brief
+        Queue the image to be drawn.
 
-	\param colours
-		ColourRect object that describes the colour values to use for each corner of the Image.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \note
+        The final position of the Image will be adjusted by the offset values
+        defined for this Image object.  If absolute positioning is essential
+        then these values should be taken into account prior to calling the
+        draw() methods.  However, by doing this you take away the ability of the
+        Imageset designer to adjust the alignment and positioning of Images,
+        therefore your component is far less useful since it requires code
+        changes to modify image positioning that could have been handled from a
+        data file.
 
-	\return
-		Nothing
-	*/
-	void	draw(const Vector3& position, const Rect& clip_rect, const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
-	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, colours, quad_split_mode);
-	}
+    \param buffer
+        GeometryBuffer object where the geometry for the image will be queued.
 
+    \param position
+        Vector2 object containing the location where the Image is to be drawn
 
-	/*!
-	\brief
-		Queue the image to be drawn.
+    \note
+        The image will be drawn at it's internally defined size.
 
-	\note
-		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
-		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
-		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
-		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+    \param clip_rect
+        Rect object that defines an on-screen area that the Image will be
+        clipped to when drawing.
 
-	\param position
-		Vector3 object containing the location where the Image is to be drawn
+    \param colours
+        ColourRect object that describes the colour values to use for each
+        corner of the Image.
 
-	\param clip_rect
-		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way the quad geometry for
+        the image is to be split into triangles.
 
-	\param top_left_colour
-		Colour (as 0xAARRGGBB value) to be applied to the top-left corner of the Image.
+    \return
+        Nothing
+    */
+    void draw(GeometryBuffer& buffer, const Vector2& position,
+              const Rect* clip_rect, const ColourRect& colours,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+    {
+        draw(buffer, Rect(position.d_x, position.d_y,
+                          position.d_x + getWidth(),
+                          position.d_y + getHeight()),
+             clip_rect, colours, quad_split_mode);
+    }
 
-	\param top_right_colour
-		Colour (as 0xAARRGGBB value) to be applied to the top-right corner of the Image.
+    /*!
+    \brief
+        Queue the image to be drawn.
 
-	\param bottom_left_colour
-		Colour (as 0xAARRGGBB value) to be applied to the bottom-left corner of the Image.
+    \note
+        The final position of the Image will be adjusted by the offset values
+        defined for this Image object.  If absolute positioning is essential
+        then these values should be taken into account prior to calling the
+        draw() methods.  However, by doing this you take away the ability of the
+        Imageset designer to adjust the alignment and positioning of Images,
+        therefore your component is far less useful since it requires code
+        changes to modify image positioning that could have been handled from a
+        data file.
 
-	\param bottom_right_colour
-		Colour (as 0xAARRGGBB value) to be applied to the bottom-right corner of the Image.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \param buffer
+        GeometryBuffer object where the geometry for the image will be queued.
 
-	\return
-		Nothing
-	*/
-	void	draw(const Vector3& position, const Rect& clip_rect, const colour& top_left_colour = 0xFFFFFFFF, const colour& top_right_colour = 0xFFFFFFFF, const colour& bottom_left_colour = 0xFFFFFFFF, const colour& bottom_right_colour = 0xFFFFFFFF, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
-	{
-		draw(Rect(position.d_x, position.d_y, position.d_x + getWidth(), position.d_y + getHeight()), position.d_z, clip_rect, ColourRect(top_left_colour, top_right_colour, bottom_left_colour, bottom_right_colour), quad_split_mode);
-	}
+    \param position
+        Vector2 object containing the location where the Image is to be drawn
 
+    \param clip_rect
+        Rect object that defines an on-screen area that the Image will be
+        clipped to when drawing.
 
-	/*!
-	\brief
-		Queue the image to be drawn.
+    \param top_left_colour
+        Colour to be applied to the top-left corner of the Image.
 
-	\note
-		The final position of the Image will be adjusted by the offset values defined for this Image object.  If absolute positioning is
-		essential then these values should be taken into account prior to calling the draw() methods.  However, by doing this you take
-		away the ability of the Imageset designer to adjust the alignment and positioning of Images, therefore your component is far
-		less useful since it requires code changes to modify image positioning that could have been handled from a data file.
+    \param top_right_colour
+        Colour to be applied to the top-right corner of the Image.
 
-	\param dest_rect
-		Rect object defining the area on-screen where the Image is to be drawn.  The Image will be scaled to fit the area as required.
+    \param bottom_left_colour
+        Colour to be applied to the bottom-left corner of the Image.
 
-	\param z
-		Z-order position for the image.  Positions increase "into the screen", so 0.0f is at the top of the z-order.
+    \param bottom_right_colour
+        Colour to be applied to the bottom-right corner of the Image.
 
-	\param clip_rect
-		Rect object that defines an on-screen area that the Image will be clipped to when drawing.
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way the quad geometry for
+        the image is to be split into triangles.
 
-	\param colours
-		ColourRect object that describes the colour values to use for each corner of the Image.
-	
-	\param quad_split_mode
-		One of the QuadSplitMode values specifying the way quads are split into triangles
+    \return
+        Nothing
+    */
+    void draw(GeometryBuffer& buffer, const Vector2& position,
+              const Rect* clip_rect,
+              const colour& top_left_colour = 0xFFFFFFFF,
+              const colour& top_right_colour = 0xFFFFFFFF,
+              const colour& bottom_left_colour = 0xFFFFFFFF,
+              const colour& bottom_right_colour = 0xFFFFFFFF,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const
+    {
+        draw(buffer, Rect(position.d_x, position.d_y,
+                          position.d_x + getWidth(),
+                          position.d_y + getHeight()),
+             clip_rect,
+             ColourRect(top_left_colour, top_right_colour,
+                        bottom_left_colour, bottom_right_colour),
+             quad_split_mode);
+    }
 
-	\return
-		Nothing
-	*/
-	void	draw(const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode = TopLeftToBottomRight) const;
+    /*!
+    \brief
+        Queue the image to be drawn.
 
+    \note
+        The final position of the Image will be adjusted by the offset values
+        defined for this Image object.  If absolute positioning is essential
+        then these values should be taken into account prior to calling the
+        draw() methods.  However, by doing this you take away the ability of the
+        Imageset designer to adjust the alignment and positioning of Images,
+        therefore your component is far less useful since it requires code
+        changes to modify image positioning that could have been handled from a
+        data file.
+
+    \param buffer
+        GeometryBuffer object where the geometry for the image will be queued.
+
+    \param dest_rect
+        Rect object defining the area on-screen where the Image is to be drawn.
+        The Image will be scaled to fill the area as required.
+
+    \param clip_rect
+        Rect object that defines an on-screen area that the Image will be
+        clipped to when drawing.
+
+    \param colours
+        ColourRect object that describes the colour values to use for each
+        corner of the Image.
+
+    \param quad_split_mode
+        One of the QuadSplitMode values specifying the way the quad geometry for
+        the image is to be split into triangles.
+
+    \return
+        Nothing
+    */
+    void draw(GeometryBuffer& buffer, const Rect& dest_rect,
+              const Rect* clip_rect, const ColourRect& colours,
+              QuadSplitMode quad_split_mode = TopLeftToBottomRight) const;
 
     /*!
     \brief

@@ -171,7 +171,8 @@ namespace CEGUI
         // or of the screen when not.
         return d_parent ?
             d_parent->getUnclippedInnerRect_impl() :
-            System::getSingleton().getRenderer()->getRect();
+            Rect(Vector2(0, 0),
+                 System::getSingleton().getRenderer()->getDisplaySize());
     }
 
     void ScrolledContainer::onChildAdded(WindowEventArgs& e)

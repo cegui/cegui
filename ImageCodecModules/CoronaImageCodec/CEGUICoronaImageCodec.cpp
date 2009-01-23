@@ -6,7 +6,7 @@
 	purpose:	This codec provide Corona based image loading 
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUICoronaImageCodec.h" 
 #include "CEGUILogger.h" 
-
+#include "CEGUISize.h"
 
 #include <corona.h> 
 
@@ -87,7 +87,10 @@ Texture* CoronaImageCodec::load(const RawDataContainer& data, Texture* result)
         Logger::getSingleton().logEvent("Unable to convert image to RGBA", Errors);
         return 0; 
     }
-    result->loadFromMemory(texImg->getPixels(), texImg->getWidth(), texImg->getHeight(), cefmt);
+    result->loadFromMemory(texImg->getPixels(),
+                           Size(texImg->getWidth(),
+                                texImg->getHeight()),
+                           cefmt);
     delete texImg;
     return result;    
 }

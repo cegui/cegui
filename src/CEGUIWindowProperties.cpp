@@ -606,6 +606,97 @@ void DragDropTarget::set(PropertyReceiver* receiver, const String& value)
     static_cast<Window*>(receiver)->setDragDropTarget(PropertyHelper::stringToBool(value));
 }
 
+//----------------------------------------------------------------------------//
+String AutoRenderingSurface::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(
+        static_cast<const Window*>(receiver)->isUsingAutoRenderingSurface());
+}
+
+//----------------------------------------------------------------------------//
+void AutoRenderingSurface::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setUsingAutoRenderingSurface(
+        PropertyHelper::stringToBool(value));
+}
+
+//----------------------------------------------------------------------------//
+String Rotation::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::vector3ToString(
+        static_cast<const Window*>(receiver)->getRotation());
+}
+
+//----------------------------------------------------------------------------//
+void Rotation::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->setRotation(
+        PropertyHelper::stringToVector3(value));
+}
+
+//----------------------------------------------------------------------------//
+String XRotation::get(const PropertyReceiver* receiver) const
+{
+    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
+    return PropertyHelper::floatToString(v.d_x);
+}
+
+//----------------------------------------------------------------------------//
+void XRotation::set(PropertyReceiver* receiver, const String& value)
+{
+    const float v = PropertyHelper::stringToFloat(value);
+    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
+    r.d_x = v;
+    static_cast<Window*>(receiver)->setRotation(r);
+}
+
+//----------------------------------------------------------------------------//
+String YRotation::get(const PropertyReceiver* receiver) const
+{
+    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
+    return PropertyHelper::floatToString(v.d_y);
+}
+
+//----------------------------------------------------------------------------//
+void YRotation::set(PropertyReceiver* receiver, const String& value)
+{
+    const float v = PropertyHelper::stringToFloat(value);
+    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
+    r.d_y = v;
+    static_cast<Window*>(receiver)->setRotation(r);
+}
+
+//----------------------------------------------------------------------------//
+String ZRotation::get(const PropertyReceiver* receiver) const
+{
+    const Vector3 v(static_cast<const Window*>(receiver)->getRotation());
+    return PropertyHelper::floatToString(v.d_z);
+}
+
+//----------------------------------------------------------------------------//
+void ZRotation::set(PropertyReceiver* receiver, const String& value)
+{
+    const float v = PropertyHelper::stringToFloat(value);
+    Vector3 r(static_cast<const Window*>(receiver)->getRotation());
+    r.d_z = v;
+    static_cast<Window*>(receiver)->setRotation(r);
+}
+
+//----------------------------------------------------------------------------//
+String NonClient::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(
+        static_cast<const Window*>(receiver)->isNonClientWindow());
+}
+
+//----------------------------------------------------------------------------//
+void NonClient::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<Window*>(receiver)->
+        setNonClientWindow(PropertyHelper::stringToBool(value));
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  WindowProperties namespace section
 

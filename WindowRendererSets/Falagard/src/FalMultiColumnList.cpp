@@ -99,7 +99,7 @@ namespace CEGUI
 
         // set up initial positional details for items
         itemPos.d_y = itemsArea.d_top - vertScrollbar->getScrollPosition();
-        itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
+        itemPos.d_z = 0.0f;
 
         float alpha = w->getEffectiveAlpha();
 
@@ -137,7 +137,7 @@ namespace CEGUI
                     }
 
                     // draw this item
-                    item->draw(w->getRenderCache(), itemRect, itemPos.d_z, alpha, &itemClipper);
+                    item->draw(w->getGeometryBuffer(), itemRect, alpha, &itemClipper);
                 }
 
                 // update position for next column.

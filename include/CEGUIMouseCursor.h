@@ -50,6 +50,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class GeometryBuffer;
 
 /*!
 \brief
@@ -261,7 +262,8 @@ public:
 	\return
 		Point object describing the mouse cursor position in screen pixels.
 	*/
-	Point	getPosition(void) const		{return Point(d_position.d_x, d_position.d_y);}
+	Point	getPosition(void) const
+    { return d_position; }
 
 
 	/*!
@@ -322,9 +324,11 @@ private:
 		Implementation Data
 	*************************************************************************/
 	const Image*	d_cursorImage;		//!< Image that is currently set as the mouse cursor.
-	Vector3	d_position;					//!< Current location of the cursor
+	Vector2	d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
+    //! buffer to hold geometry for mouse cursor imagery.
+    GeometryBuffer* d_geometry;
 };
 
 } // End of  CEGUI namespace section

@@ -74,7 +74,7 @@ ImagesetManager::~ImagesetManager(void)
     Create an empty Imageset that has the given name and uses the
     given Texture
 *************************************************************************/
-Imageset* ImagesetManager::createImageset(const String& name, Texture* texture)
+Imageset* ImagesetManager::createImageset(const String& name, Texture& texture)
 {
     Logger::getSingleton().logEvent("Attempting to create Imageset '" + name +"' with texture only.");
 

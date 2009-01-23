@@ -30,6 +30,7 @@
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIPropertyHelper.h"
 #include "CEGUICoordConverter.h"
+#include "CEGUIFont.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -137,7 +138,7 @@ namespace CEGUI
         String sect = editText->substr(0, w->getSelectionStartIndex());
         colours.setColours(unselectedColour);
         colours.modulateAlpha(alpha_comp);
-        w->getRenderCache().cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
+        font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
 
         // adjust rect for next section
         text_part_rect.d_left += font->getTextExtent(sect);
@@ -146,7 +147,7 @@ namespace CEGUI
         sect = editText->substr(w->getSelectionStartIndex(), w->getSelectionLength());
         colours.setColours(getSelectedTextColour());
         colours.modulateAlpha(alpha_comp);
-        w->getRenderCache().cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
+        font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
 
         // adjust rect for next section
         text_part_rect.d_left += font->getTextExtent(sect);
@@ -155,7 +156,7 @@ namespace CEGUI
         sect = editText->substr(w->getSelectionEndIndex());
         colours.setColours(unselectedColour);
         colours.modulateAlpha(alpha_comp);
-        w->getRenderCache().cacheText(sect, font, LeftAligned, text_part_rect, 0, colours, &textArea);
+        font->drawText(w->getGeometryBuffer(), sect, text_part_rect, &textArea, LeftAligned, colours);
 
         // remember this for next time.
         d_lastTextOffset = textOffset;

@@ -49,6 +49,7 @@ public:
 	static	bool	stringToBool(const String& str);
 	static	Size	stringToSize(const String& str);
 	static	Point	stringToPoint(const String& str);
+    static  Vector3 stringToVector3(const String& str);
 	static	Rect	stringToRect(const String& str);
 	static const Image*	stringToImage(const String& str);
 	static	colour	stringToColour(const String& str);
@@ -63,6 +64,7 @@ public:
 	static String	boolToString(bool val);
 	static String	sizeToString(const Size& val);
 	static String	pointToString(const Point& val);
+    static String   vector3ToString(const Vector3& val);
 	static String	rectToString(const Rect& val);
 	static String	imageToString(const Image* const val);
 	static String	colourToString(const colour& val);

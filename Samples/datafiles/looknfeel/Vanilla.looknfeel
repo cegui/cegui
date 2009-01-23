@@ -80,6 +80,7 @@
 
     <WidgetLook name="Vanilla/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <Property name="NonClient" value="True" />
         <ImagerySection name="caption">
             <TextComponent>
                 <Area>
@@ -180,6 +181,7 @@
         <Property name="NESWSizingCursorImage" value="set:Vanilla-Images image:MouseArrow" />
         <Property name="RollUpEnabled" value="False" />
         <Property name="UnifiedMinSize" value="{{0.1,0},{0.1,0}}" />
+        <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge"><AbsoluteDim value="7" /></Dim>

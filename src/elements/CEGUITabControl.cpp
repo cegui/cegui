@@ -268,7 +268,7 @@ void TabControl::addTab(Window* wnd)
 
     // Just request redraw
     performChildWindowLayout();
-    requestRedraw();
+    invalidate();
     // Subscribe to text changed event so that we can resize as needed
     d_eventConnections[wnd] =
         wnd->subscribeEvent(Window::EventTextChanged,
@@ -494,7 +494,7 @@ Selection changed event
 *************************************************************************/
 void TabControl::onSelectionChanged(WindowEventArgs& e)
 {
-    requestRedraw();
+    invalidate();
     fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 /*************************************************************************
@@ -535,7 +535,7 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     float left_x = btn->getXPosition ().d_offset;
     btn->setVisible ((left_x < getPixelSize ().d_width) &&
                      (left_x + btn->getPixelSize ().d_width > 0));
-    btn->requestRedraw();
+    btn->invalidate();
 }
 /*************************************************************************
 Layout the widgets
@@ -624,7 +624,7 @@ bool TabControl::handleContentWindowTextChanged(const EventArgs& args)
     tabButton->setText(wargs.window->getText());
     // sort out the layout
     performChildWindowLayout();
-	requestRedraw();
+	invalidate();
 
 	return true;
 }
@@ -798,7 +798,7 @@ void TabControl::removeTab_impl(Window* window)
 
     performChildWindowLayout();
 
-    requestRedraw();
+    invalidate();
 }
 
 } // End of  CEGUI namespace section

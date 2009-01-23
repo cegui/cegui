@@ -27,7 +27,7 @@ class TreeItem
 	void  setSelectionColours(colour col);
 	bool  getIsOpen();
 	void toggleIsOpen();
-	size_t getItemCount();
+	unsigned long getItemCount();
 	void addItem(TreeItem* item);
 	void setIcon(Image& icon);		
 };

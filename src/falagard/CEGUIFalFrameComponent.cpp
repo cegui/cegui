@@ -92,7 +92,7 @@ namespace CEGUI
         }
     }
 
-    void FrameComponent::render_impl(Window& srcWindow, Rect& destRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void FrameComponent::render_impl(Window& srcWindow, Rect& destRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         Rect backgroundRect(destRect);
         Rect finalRect;
@@ -151,7 +151,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_TOP_LEFT_CORNER], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_TOP_LEFT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // top-right image
@@ -182,7 +182,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_TOP_RIGHT_CORNER], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_TOP_RIGHT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // bottom-left image
@@ -213,7 +213,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_BOTTOM_LEFT_CORNER], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_BOTTOM_LEFT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // bottom-right image
@@ -243,7 +243,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_BOTTOM_RIGHT_CORNER], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // top image
@@ -272,7 +272,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_TOP_EDGE], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_TOP_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // bottom image
@@ -301,7 +301,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_BOTTOM_EDGE], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_BOTTOM_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // left image
@@ -330,7 +330,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_LEFT_EDGE], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_LEFT_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         // right image
@@ -359,7 +359,7 @@ namespace CEGUI
             }
 
             // draw this element.
-            srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_RIGHT_EDGE], finalRect, base_z, imageColours, 0, clipToDisplay);
+            d_frameImages[FIC_RIGHT_EDGE]->draw(srcWindow.getGeometryBuffer(), finalRect, 0, imageColours);
         }
 
         if (d_frameImages[FIC_BACKGROUND])
@@ -376,11 +376,11 @@ namespace CEGUI
             }
 
             // render background image.
-            doBackgroundRender(srcWindow, backgroundRect, base_z, imageColours, clipper, clipToDisplay);
+            doBackgroundRender(srcWindow, backgroundRect, imageColours, clipper, clipToDisplay);
         }
     }
 
-    void FrameComponent::doBackgroundRender(Window& srcWindow, Rect& destRect, float base_z, const ColourRect& colours, const Rect* clipper, bool clipToDisplay) const
+    void FrameComponent::doBackgroundRender(Window& srcWindow, Rect& destRect, const ColourRect& colours, const Rect* clipper, bool clipToDisplay) const
     {
         HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
             FalagardXMLHelper::stringToHorzFormat(srcWindow.getProperty(d_horzFormatPropertyName));
@@ -487,7 +487,7 @@ namespace CEGUI
                 }
 
                 // add image to the rendering cache for the target window.
-                srcWindow.getRenderCache().cacheImage(*d_frameImages[FIC_BACKGROUND], finalRect, base_z, colours, clippingRect, clipToDisplay);
+                d_frameImages[FIC_BACKGROUND]->draw(srcWindow.getGeometryBuffer(), finalRect, clippingRect, colours);
 
                 finalRect.d_left += imgSz.d_width;
                 finalRect.d_right += imgSz.d_width;

@@ -76,7 +76,7 @@ void Checkbox::setSelected(bool select)
 	if (select != d_selected)
 	{
 		d_selected = select;
-		requestRedraw();
+		invalidate();
 
         WindowEventArgs args(this);
 		onSelectStateChange(args);

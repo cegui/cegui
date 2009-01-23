@@ -28,8 +28,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUITGAImageCodec.h" 
-#include "CEGUILogger.h" 
+#include "CEGUITGAImageCodec.h"
+#include "CEGUILogger.h"
+#include "CEGUISize.h"
 #	define TGA_RGB		 2		// This tells us it's a normal RGB (really BGR) file
 #	define TGA_A		 3		// This tells us it's a ALPHA file
 #	define TGA_RLE		10		// This tells us that the targa is Run-Length Encoded (RLE)
@@ -57,8 +58,8 @@ Texture* TGAImageCodec::load(const RawDataContainer& data, Texture* result)
     {
         flipImageTGA(img);
         Texture::PixelFormat fmt = (img->channels == 3) ? Texture::PF_RGB : Texture::PF_RGBA;
-        result->loadFromMemory(img->data, img->sizeX, img->sizeY, fmt);
-        if (img->data)							
+        result->loadFromMemory(img->data, Size(img->sizeX, img->sizeY), fmt);
+        if (img->data)
         {
             delete[] img->data; 
         }

@@ -133,6 +133,10 @@ int CEGuiSample::run()
     {
         outputExceptionMessage(exc.what());
     }
+    catch(const char* m)
+    {
+        outputExceptionMessage(m);
+    }
     catch(...)
     {
         outputExceptionMessage("Unknown exception was caught!");

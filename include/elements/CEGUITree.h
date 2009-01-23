@@ -735,11 +735,11 @@ protected:
      */
     bool handle_scrollChange(const EventArgs& args);
 
-    // overridden from Window base class.
-    virtual void populateRenderCache();
-
-    void drawItemList(LBItemList &itemList, Rect &itemsArea, float widest,
-                      Vector3 &itemPos, RenderCache& cache, float alpha);
+//     // overridden from Window base class.
+//     virtual void populateRenderCache();
+// 
+//     void drawItemList(LBItemList &itemList, Rect &itemsArea, float widest,
+//                       Vector3 &itemPos, RenderCache& cache, float alpha);
 
     /*************************************************************************
         New event handlers

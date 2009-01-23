@@ -28,6 +28,7 @@
 #include "falagard/CEGUIFalComponentBase.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIPropertyHelper.h"
+#include "CEGUIcolour.h"
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -41,16 +42,16 @@ namespace CEGUI
     FalagardComponentBase::~ FalagardComponentBase()
     {}
 
-    void FalagardComponentBase::render(Window& srcWindow, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void FalagardComponentBase::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         Rect destRect(d_area.getPixelRect(srcWindow));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
+        render_impl(srcWindow, destRect, modColours, clipper, clipToDisplay);
     }
 
-    void FalagardComponentBase::render(Window& srcWindow, const Rect& baseRect, float base_z, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
+    void FalagardComponentBase::render(Window& srcWindow, const Rect& baseRect, const CEGUI::ColourRect* modColours, const Rect* clipper, bool clipToDisplay) const
     {
         Rect destRect(d_area.getPixelRect(srcWindow, baseRect));
-        render_impl(srcWindow, destRect, base_z, modColours, clipper, clipToDisplay);
+        render_impl(srcWindow, destRect, modColours, clipper, clipToDisplay);
     }
 
     const ComponentArea& FalagardComponentBase::getComponentArea() const

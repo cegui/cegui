@@ -7,7 +7,7 @@ dnl we should define these numbers (we could pick up the same info by other mean
 dnl though this leaves nobody in any doubt about where this is being defined).
 m4_define([CEGUI_MAJ_VER], 0)
 m4_define([CEGUI_MIN_VER], 6)
-m4_define([CEGUI_REL_VER], 2)
+m4_define([CEGUI_REL_VER], 9999)
 
 dnl Construct the final version number out of the sub-version values specified above
 m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
@@ -87,9 +87,6 @@ AC_CHECK_FUNCS([atexit floor memchr memmove memset pow regcomp setlocale sqrt st
 
 # check for renderers
 CEGUI_ENABLE_OPENGL_RENDERER
-CEGUI_ENABLE_OGRE_RENDERER
-CEGUI_ENABLE_IRRLICHT_RENDERER
-CEGUI_ENABLE_DIRECTFB_RENDERER
 
 # decide whether to use gtk dialog in samples
 CEGUI_CHECK_GTK_FOR_SAMPLES
@@ -139,11 +136,6 @@ AC_CONFIG_FILES([Makefile
                  ImageCodecModules/FreeImageImageCodec/Makefile
                  ImageCodecModules/SILLYImageCodec/Makefile
                  ImageCodecModules/TGAImageCodec/Makefile
-                 RendererModules/directx81GUIRenderer/Makefile
-                 RendererModules/directx9GUIRenderer/Makefile
-                 RendererModules/directx10GUIRenderer/Makefile
-                 RendererModules/directfbRenderer/Makefile
-                 RendererModules/IrrlichtRenderer/Makefile
                  RendererModules/Makefile
                  RendererModules/OpenGLGUIRenderer/Makefile
                  Samples/Demo6/Makefile

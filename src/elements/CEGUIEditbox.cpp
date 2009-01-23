@@ -941,7 +941,7 @@ void Editbox::handleEnd(uint sysKeys)
 *************************************************************************/
 void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventReadOnlyModeChanged, e, EventNamespace);
 }
 
@@ -952,7 +952,7 @@ void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onMaskedRenderingModeChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventMaskedRenderingModeChanged , e, EventNamespace);
 }
 
@@ -966,7 +966,7 @@ void Editbox::onMaskCodePointChanged(WindowEventArgs& e)
 	// if we are in masked mode, trigger a GUI redraw.
 	if (isTextMasked())
 	{
-		requestRedraw();
+		invalidate();
 	}
 
 	fireEvent(EventMaskCodePointChanged , e, EventNamespace);
@@ -1017,7 +1017,7 @@ void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onCaratMoved(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventCaratMoved , e, EventNamespace);
 }
 
@@ -1027,7 +1027,7 @@ void Editbox::onCaratMoved(WindowEventArgs& e)
 *************************************************************************/
 void Editbox::onTextSelectionChanged(WindowEventArgs& e)
 {
-	requestRedraw();
+	invalidate();
 	fireEvent(EventTextSelectionChanged , e, EventNamespace);
 }
 

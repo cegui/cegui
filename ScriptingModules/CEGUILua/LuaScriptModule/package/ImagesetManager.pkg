@@ -5,7 +5,7 @@ class ImagesetManager
 {
 	static ImagesetManager& getSingleton();
 
-	tolua_throws|CEGUI::Exception,error| Imageset* createImageset(string name, Texture* texture);
+	tolua_throws|CEGUI::Exception,error| Imageset* createImageset(string name, Texture& texture);
 	tolua_throws|CEGUI::Exception,error| Imageset* createImageset(string filename, string resourcegroup="");
 	tolua_throws|CEGUI::Exception,error| Imageset* createImagesetFromImageFile(string name, string filename, string resourcegroup="");
 
