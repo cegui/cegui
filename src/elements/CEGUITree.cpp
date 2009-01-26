@@ -606,105 +606,107 @@ void Tree::handleUpdatedItemData(void)
 /*************************************************************************
     Perform the actual rendering for this Window.
 *************************************************************************/
-// void Tree::populateRenderCache()
-// {
-//     // get the derived class to render general stuff before we handle the items
-//     cacheTreeBaseImagery();
-// 
-//     // Render list items
-//     Vector3  itemPos;
-//     float    widest = getWidestItemWidth();
-// 
-//     // calculate position of area we have to render into
-//     //Rect itemsArea(getTreeRenderArea());
-//     //Rect itemsArea(0,0,500,500);
-// 
-//     // set up some initial positional details for items
-//     itemPos.d_x = d_itemArea.d_left - d_horzScrollbar->getScrollPosition();
-//     itemPos.d_y = d_itemArea.d_top - d_vertScrollbar->getScrollPosition();
-//     itemPos.d_z = System::getSingleton().getRenderer()->getZLayer(3) - System::getSingleton().getRenderer()->getCurrentZ();
-// 
-//     drawItemList(d_listItems, d_itemArea, widest, itemPos, d_renderCache, getEffectiveAlpha());
-// }
-// 
-// // Recursive!
-// void Tree::drawItemList(LBItemList &itemList, Rect &itemsArea, float widest, Vector3 &itemPos, RenderCache& cache, float alpha)
-// {
-//     if (itemList.empty())
-//         return;
-// 
-//     // loop through the items
-//     Size     itemSize;
-//     Rect     itemClipper, itemRect;
-//     size_t   itemCount = itemList.size();
-//     bool     itemIsVisible;
-//     for (size_t i = 0; i < itemCount; ++i)
-//     {
-//         itemSize.d_height = itemList[i]->getPixelSize().d_height;
-// 
-//         // allow item to have full width of box if this is wider than items
-//         itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
-// 
-//         // calculate destination area for this item.
-//         itemRect.d_left = itemPos.d_x;
-//         itemRect.d_top  = itemPos.d_y;
-//         itemRect.setSize(itemSize);
-//         itemClipper = itemRect.getIntersection(itemsArea);
-//         itemRect.d_left += 20;     // start text past open/close buttons
-// 
-//         if (itemClipper.getHeight() > 0)
-//         {
-//             itemIsVisible = true;
-//             itemList[i]->draw(d_renderCache, itemRect, alpha, &itemClipper);
-//         }
-//         else
-//         {
-//             itemIsVisible = false;
-//         }
-// 
-//         // Process this item's list if it has items in it.
-//         if (itemList[i]->getItemCount() > 0)
-//         {
-//             Rect buttonRenderRect;
-//             buttonRenderRect.d_left = itemPos.d_x;
-//             buttonRenderRect.d_right = buttonRenderRect.d_left + 10;
-//             buttonRenderRect.d_top = itemPos.d_y;
-//             buttonRenderRect.d_bottom = buttonRenderRect.d_top + 10;
-//             itemList[i]->setButtonLocation(buttonRenderRect);
-// 
-//             if (itemList[i]->getIsOpen())
-//             {
-//                 // Draw the Close button
-//                 if (itemIsVisible)
-//                     closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
-// 
-//                 // update position ready for next item
-//                 itemPos.d_y += itemSize.d_height;
-// 
-//                 itemPos.d_x += 20;
-//                 drawItemList(itemList[i]->getItemList(), itemsArea, widest, itemPos, cache, alpha);
-//                 itemPos.d_x -= 20;
-//             }
-//             else
-//             {
-//                 // Draw the Open button
-//                 if (itemIsVisible)
-//                     openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
-// 
-//                 // update position ready for next item
-//                 itemPos.d_y += itemSize.d_height;
-//             }
-//         }
-//         else
-//         {
-//             // update position ready for next item
-//             itemPos.d_y += itemSize.d_height;
-//         }
-//     }
-// 
-//     // Successfully drew all items, so vertical scrollbar not needed.
-//     //   setShowVertScrollbar(false);
-// }
+void Tree::populateRenderCache()
+{
+    // get the derived class to render general stuff before we handle the items
+    cacheTreeBaseImagery();
+    
+    // Render list items
+    Vector2  itemPos;
+    float    widest = getWidestItemWidth();
+    
+    // calculate position of area we have to render into
+    //Rect itemsArea(getTreeRenderArea());
+    //Rect itemsArea(0,0,500,500);
+    
+    // set up some initial positional details for items
+    itemPos.d_x = d_itemArea.d_left - d_horzScrollbar->getScrollPosition();
+    itemPos.d_y = d_itemArea.d_top - d_vertScrollbar->getScrollPosition();
+    
+    drawItemList(d_listItems, d_itemArea, widest, itemPos, *d_geometry,
+                 getEffectiveAlpha());
+}
+
+// Recursive!
+void Tree::drawItemList(LBItemList& itemList, Rect& itemsArea, float widest,
+                        Vector2& itemPos, GeometryBuffer& geometry, float alpha)
+{
+    if (itemList.empty())
+        return;
+    
+    // loop through the items
+    Size     itemSize;
+    Rect     itemClipper, itemRect;
+    size_t   itemCount = itemList.size();
+    bool     itemIsVisible;
+    for (size_t i = 0; i < itemCount; ++i)
+    {
+        itemSize.d_height = itemList[i]->getPixelSize().d_height;
+        
+        // allow item to have full width of box if this is wider than items
+        itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
+        
+        // calculate destination area for this item.
+        itemRect.d_left = itemPos.d_x;
+        itemRect.d_top  = itemPos.d_y;
+        itemRect.setSize(itemSize);
+        itemClipper = itemRect.getIntersection(itemsArea);
+        itemRect.d_left += 20;     // start text past open/close buttons
+        
+        if (itemClipper.getHeight() > 0)
+        {
+            itemIsVisible = true;
+            itemList[i]->draw(geometry, itemRect, alpha, &itemClipper);
+        }
+        else
+        {
+            itemIsVisible = false;
+        }
+        
+        // Process this item's list if it has items in it.
+        if (itemList[i]->getItemCount() > 0)
+        {
+            Rect buttonRenderRect;
+            buttonRenderRect.d_left = itemPos.d_x;
+            buttonRenderRect.d_right = buttonRenderRect.d_left + 10;
+            buttonRenderRect.d_top = itemPos.d_y;
+            buttonRenderRect.d_bottom = buttonRenderRect.d_top + 10;
+            itemList[i]->setButtonLocation(buttonRenderRect);
+            
+            if (itemList[i]->getIsOpen())
+            {
+                // Draw the Close button
+                if (itemIsVisible)
+                    closeButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+                
+                // update position ready for next item
+                itemPos.d_y += itemSize.d_height;
+                
+                itemPos.d_x += 20;
+                drawItemList(itemList[i]->getItemList(), itemsArea, widest,
+                             itemPos, geometry, alpha);
+                itemPos.d_x -= 20;
+            }
+            else
+            {
+                // Draw the Open button
+                if (itemIsVisible)
+                    openButtonImagery->render(*this, buttonRenderRect, 0, 0, &itemClipper);
+                
+                // update position ready for next item
+                itemPos.d_y += itemSize.d_height;
+            }
+        }
+        else
+        {
+            // update position ready for next item
+            itemPos.d_y += itemSize.d_height;
+        }
+    }
+    
+    // Successfully drew all items, so vertical scrollbar not needed.
+    //   setShowVertScrollbar(false);
+}
 
 #define HORIZONTAL_STEP_SIZE_DIVISOR   20.0f
 
