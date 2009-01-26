@@ -122,6 +122,27 @@ namespace CEGUI
         ColourRect colours;
         float alpha_comp = w->getEffectiveAlpha();
 
+        // see if the editbox is active or inactive.
+        bool active = (!w->isReadOnly()) && w->hasInputFocus();
+
+        //
+        // Render selection imagery.
+        //
+        if (w->getSelectionLength() != 0)
+        {
+            // calculate required start and end offsets of selection imagery.
+            float selStartOffset = font->getTextExtent(editText->substr(0, w->getSelectionStartIndex()));
+            float selEndOffset   = font->getTextExtent(editText->substr(0, w->getSelectionEndIndex()));
+
+            // calculate area for selection imagery.
+            Rect hlarea(textArea);
+            hlarea.d_left += textOffset + selStartOffset;
+            hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
+
+            // render the selection imagery.
+            wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*w, hlarea, 0, &textArea);
+        }
+
         //
         // Draw label text
         //
@@ -160,27 +181,6 @@ namespace CEGUI
 
         // remember this for next time.
         d_lastTextOffset = textOffset;
-
-        // see if the editbox is active or inactive.
-        bool active = (!w->isReadOnly()) && w->hasInputFocus();
-
-        //
-        // Render selection imagery.
-        //
-        if (w->getSelectionLength() != 0)
-        {
-            // calculate required start and end offsets of selection imagery.
-            float selStartOffset = font->getTextExtent(editText->substr(0, w->getSelectionStartIndex()));
-            float selEndOffset   = font->getTextExtent(editText->substr(0, w->getSelectionEndIndex()));
-
-            // calculate area for selection imagery.
-            Rect hlarea(textArea);
-            hlarea.d_left += textOffset + selStartOffset;
-            hlarea.d_right = hlarea.d_left + (selEndOffset - selStartOffset);
-
-            // render the selection imagery.
-            wlf.getStateImagery(active ? "ActiveSelection" : "InactiveSelection").render(*w, hlarea, 0, &textArea);
-        }
 
         //
         // Render carat
