@@ -47,11 +47,13 @@ ClippedContainer::~ClippedContainer(void)
 
 Rect ClippedContainer::getUnclippedInnerRect_impl() const
 {
-    if (d_clipperWindow != 0)
-    {
-        return CoordConverter::windowToScreen(*d_clipperWindow, d_clipArea);
-    }
-    return d_clipArea;
+    // This is obviously doing nothing.  The reason being that whas this
+    // used to to is now handled correctly via the fixed 'inner rect' usage,
+    // meaning that the looknfeel named areas can be employed to do the correct
+    // clipping.  Fixing the inner rect support actually broke this anyhow,
+    // since it only worked because the inner rect support was broken.  As
+    // such, ClippedContainer serves no useful purpose and will be removed.
+    return Window::getUnclippedInnerRect_impl();
 }
 
 const Rect& ClippedContainer::getClipArea(void) const

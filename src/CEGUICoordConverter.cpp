@@ -168,8 +168,17 @@ Rect CoordConverter::screenToWindow(const Window& window, const Rect& rect)
 
 float CoordConverter::getBaseXValue(const Window& window)
 {
-    const float parent_width = window.getParentPixelWidth();
-    float baseX = window.getParent() ? getBaseXValue(*window.getParent()) : 0;
+    const Window* parent = window.getParent();
+
+    const Rect parent_rect(
+        parent ? window.isNonClientWindow() ? parent->getUnclippedPixelRect() :
+                                              parent->getUnclippedInnerRect() :
+                 Rect(Vector2(0, 0),
+                      System::getSingleton().getRenderer()->getDisplaySize())
+    );
+
+    const float parent_width = parent_rect.getWidth();
+    float baseX = parent_rect.d_left;
 
     baseX += window.getArea().d_min.d_x.asAbsolute(parent_width);
 
@@ -192,8 +201,17 @@ float CoordConverter::getBaseXValue(const Window& window)
 
 float CoordConverter::getBaseYValue(const Window& window)
 {
-    const float parent_height = window.getParentPixelHeight();
-    float baseY = window.getParent() ? getBaseYValue(*window.getParent()) : 0;
+    const Window* parent = window.getParent();
+
+    const Rect parent_rect(
+        parent ? window.isNonClientWindow() ? parent->getUnclippedPixelRect() :
+                                              parent->getUnclippedInnerRect() :
+                 Rect(Vector2(0, 0),
+                      System::getSingleton().getRenderer()->getDisplaySize())
+    );
+
+    const float parent_height = parent_rect.getHeight();
+    float baseY = parent_rect.d_top;
 
     baseY += window.getArea().d_min.d_y.asAbsolute(parent_height);
 

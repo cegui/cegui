@@ -102,10 +102,6 @@ void ScrolledItemListBase::initialiseComponents()
     // base class handling
     ItemListBase::initialiseComponents();
 
-    // set default pane position
-    Rect r = getItemRenderArea();
-    d_pane->setPosition(UVector2(cegui_absdim(r.d_left),cegui_absdim(r.d_top)));
-
     // init scrollbars
     Scrollbar* v = getVertScrollbar();
     Scrollbar* h = getHorzScrollbar();
@@ -229,8 +225,7 @@ bool ScrolledItemListBase::handle_VScroll(const EventArgs& e)
 {
     const WindowEventArgs& we = static_cast<const WindowEventArgs&>(e);
     Scrollbar* v = static_cast<Scrollbar*>(we.window);
-    Rect render_area = getItemRenderArea();
-    float newpos = -v->getScrollPosition()+render_area.d_top;
+    float newpos = -v->getScrollPosition();
     d_pane->setYPosition(cegui_absdim(newpos));
     return true;
 }
@@ -239,8 +234,7 @@ bool ScrolledItemListBase::handle_HScroll(const EventArgs& e)
 {
     const WindowEventArgs& we = static_cast<const WindowEventArgs&>(e);
     Scrollbar* h = static_cast<Scrollbar*>(we.window);
-    Rect render_area = getItemRenderArea();
-    float newpos = -h->getScrollPosition()+render_area.d_left;
+    float newpos = -h->getScrollPosition();
     d_pane->setXPosition(cegui_absdim(newpos));
     return true;
 }

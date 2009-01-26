@@ -672,8 +672,13 @@ Rect Window::getPixelRect(void) const
 *************************************************************************/
 Rect Window::getPixelRect_impl(void) const
 {
+    // in the case of rendering windows, clipping is done only to the bounds
+    // of the window owning the RenderingWindow.
+    if (d_surface && d_surface->isRenderingWindow())
+        return getUnclippedPixelRect();
+
     // clip to parent?
-    if (isClippedByParent() && (d_parent != 0))
+    if (d_parent && d_clippedByParent)
     {
         return getUnclippedPixelRect().getIntersection(
                     d_nonClientContent ? d_parent->getPixelRect() :
@@ -698,8 +703,12 @@ Rect Window::getInnerRect(void) const
 {
     if (!d_screenInnerRectValid)
     {
+        // in the case of rendering windows, clipping is done only to the bounds
+        // of the inner rect of the window owning the RenderingWindow.
+        if (d_surface && d_surface->isRenderingWindow())
+             d_screenInnerRect = getUnclippedInnerRect();
         // clip to parent?
-        if (isClippedByParent() && (d_parent != 0))
+        else if (d_parent && d_clippedByParent)
         {
             d_screenInnerRect = getUnclippedInnerRect().getIntersection(
                     d_nonClientContent ? d_parent->getPixelRect() :
@@ -712,6 +721,7 @@ Rect Window::getInnerRect(void) const
                             System::getSingleton().getRenderer()->getDisplaySize());
             d_screenInnerRect = getUnclippedInnerRect().getIntersection(scrn);
         }
+
         d_screenInnerRectValid = true;
     }
 
@@ -2132,7 +2142,12 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size, bool topLef
     // calculate pixel sizes for everything, so we have a common format for comparisons.
     Vector2 absMax(d_maxSize.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize()));
     Vector2 absMin(d_minSize.asAbsolute(System::getSingleton().getRenderer()->getDisplaySize()));
-    d_pixelSize = size.asAbsolute(getParentPixelSize()).asSize();
+
+    const Size base_size((d_parent && !d_nonClientContent) ?
+                            d_parent->getUnclippedInnerRect().getSize() :
+                            getParentPixelSize());
+
+    d_pixelSize = size.asAbsolute(base_size).asSize();
 
     // limit new pixel size to: minSize <= newSize <= maxSize
     if (d_pixelSize.d_width < absMin.d_x)
@@ -3586,8 +3601,8 @@ void Window::initialiseClippers(const RenderingContext& ctx)
         else if(d_parent && d_clippedByParent)
         {
             Rect parent_area(d_nonClientContent ?
-                                d_parent->getUnclippedPixelRect() :
-                                d_parent->getUnclippedInnerRect()
+                                d_parent->getPixelRect() :
+                                d_parent->getInnerRect()
             );
 
             parent_area.offset(Vector2(-ctx.offset.d_x, -ctx.offset.d_y));
