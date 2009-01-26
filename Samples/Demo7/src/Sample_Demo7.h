@@ -30,6 +30,37 @@
 
 #include "CEGuiSample.h"
 #include "CEGUI.h"
+#include "CEGUIRenderEffect.h"
+#include "CEGUIVertex.h"
+
+// Sample subclass for CEGUI::RenderEffect.  This particluar implementation
+// provides a basic 'wobbly window' type effect.
+class MyEffect : public CEGUI::RenderEffect
+{
+public:
+    MyEffect();
+    
+    // implement required functions from RenderEffect interface.
+    void performPreRenderFunctions();
+    void performPostRenderFunctions();
+    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry);
+    bool update(const float elapsed, CEGUI::RenderingWindow& window);
+
+protected:
+    static const float tess_x;
+    static const float tess_y;
+    // tess_x * tess_y * vertex_per_quad
+    static const int buffsize = (8 * 8 * 6);
+
+    bool initialised;
+
+    float lastX, lastY;
+    float dragX, dragY;
+    float elasX, elasY;
+
+    CEGUI::Vertex vb[buffsize];
+};
+
 
 // Sample class
 class Demo7Sample : public CEGuiSample
@@ -51,6 +82,13 @@ protected:
     bool handleSlider(const CEGUI::EventArgs& e);
     bool handleRadio(const CEGUI::EventArgs& e);
     bool handleCheck(const CEGUI::EventArgs& e);
+
+    // RenderEffect objects - one for each window.  Other efects may not need
+    // to maintain local state, and so it would be possible to share a single
+    // RenderEffect based object between multiple windows.
+    MyEffect d_effect_win1;
+    MyEffect d_effect_win2;
+    MyEffect d_effect_win3;
 };
 
 
