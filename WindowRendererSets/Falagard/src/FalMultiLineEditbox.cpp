@@ -242,9 +242,23 @@ namespace CEGUI
                     // get the extent to use as the width of the selection area highlight
                     selAreaWidth = fnt->getTextExtent(sect);
 
+                    const float text_top = lineRect.d_top;
+                    lineRect.d_top = old_top;
+
+                    // calculate area for the selection brush on this line
+                    lineRect.d_left = drawArea.d_left + selStartOffset;
+                    lineRect.d_right = lineRect.d_left + selAreaWidth;
+                    lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
+
+                    // render the selection area brush for this line
+                    colours.setColours(selectBrushCol);
+                    w->getSelectionBrushImage()->draw(w->getGeometryBuffer(), lineRect, &dest_area, colours);
+
                     // draw the text for this section
                     colours.setColours(selectTextCol);
                     fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
+
+                    lineRect.d_top = text_top;
 
                     // render any text beyond selected region of line
                     if (sectIdx < currLine.d_length)
@@ -262,17 +276,6 @@ namespace CEGUI
                         colours.setColours(normalTextCol);
                         fnt->drawText(w->getGeometryBuffer(), sect, lineRect, &dest_area, LeftAligned, colours);
                     }
-
-                    lineRect.d_top = old_top;
-
-                    // calculate area for the selection brush on this line
-                    lineRect.d_left = drawArea.d_left + selStartOffset;
-                    lineRect.d_right = lineRect.d_left + selAreaWidth;
-                    lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
-
-                    // render the selection area brush for this line
-                    colours.setColours(selectBrushCol);
-                    w->getSelectionBrushImage()->draw(w->getGeometryBuffer(), lineRect, &dest_area, colours);
                 }
 
                 // update master position for next line in paragraph.
