@@ -62,6 +62,7 @@ class RenderTarget;
 class RenderingRoot;
 class OpenGLTextureTarget;
 class OpenGLGeometryBuffer;
+class OGLTextureTargetFactory;
 
 /*!
 \brief
@@ -258,6 +259,9 @@ private:
     //! cleanup the extra GL states enabled via enableExtraStateSettings
     void cleanupExtraStates();
 
+    //! initialise OGLTextureTargetFactory that will generate TextureTargets
+    void initialiseTextureTargetFactory();
+
     //! setup image codec 
     void setupImageCodec(const String& codecName);
 
@@ -265,7 +269,7 @@ private:
     void cleanupImageCodec();
 
     //! String holding the renderer identification text.
-    static const String d_rendererID;
+    static String d_rendererID;
     //! What the renderer considers to be the current display size.
     Size d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
@@ -290,6 +294,8 @@ private:
     uint d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
     bool d_initExtraStates;
+    //! pointer to a helper that creates TextureTargets supported by the system.
+    OGLTextureTargetFactory* d_textureTargetFactory;
     //! Holds a pointer to the image codec to use.
     ImageCodec* d_imageCodec;
     /** Holds a pointer to the image codec module. If d_imageCodecModule is 0 we

@@ -38,12 +38,17 @@
 #include "CEGUIImageCodec.h"
 #include "CEGUIDynamicModule.h"
 #include "CEGUIOpenGLViewportTarget.h"
-#include "CEGUIOpenGLFBOTextureTarget.h"
 #include "CEGUIOpenGLGeometryBuffer.h"
-
 #include "CEGUIRenderingRoot.h"
+#include "CEGUIOpenGLFBOTextureTarget.h"
+
 #include <sstream>
 #include <algorithm>
+
+#if defined(__linux__)
+#   include "CEGUIOpenGLGLXPBTextureTarget.h"
+#endif
+
 
 //Include the default codec for static builds
 #if defined(CEGUI_STATIC)
@@ -91,10 +96,38 @@ PFNGLCLIENTACTIVETEXTUREPROC CEGUI_clientActiveTexture;
 void APIENTRY activeTextureDummy(GLenum) {}
 
 //----------------------------------------------------------------------------//
+//
+// Here we have an internal class that allows us to implement a factory template
+// for creating / destroying any type of TextureTarget.  The code that detects
+// the computer's abilities will generate an appropriate factory for a
+// TextureTarget based on what the host system can provide - or use the default
+// 'null' factory if no suitable TextureTargets are available.
+//
+// base factory class - mainly used as a polymorphic interface
+class OGLTextureTargetFactory
+{
+public:
+    OGLTextureTargetFactory() {}
+    virtual ~OGLTextureTargetFactory() {}
+    virtual TextureTarget* create(OpenGLRenderer& r) const
+        { return 0; }
+    virtual void destory(TextureTarget* target) const
+        { delete target; }
+};
+
+// template specialised class that does the real work for us
+template<typename T>
+class OGLTemplateTargetFactory : public OGLTextureTargetFactory
+{
+    virtual TextureTarget* create(OpenGLRenderer& r) const
+        { return new T(r); }
+};
+
+//----------------------------------------------------------------------------//
 String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
 
 //----------------------------------------------------------------------------//
-const String OpenGLRenderer::d_rendererID(
+String OpenGLRenderer::d_rendererID(
 "CEGUI::OpenGLRenderer - Official OpenGL based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
@@ -137,6 +170,7 @@ OpenGLRenderer::OpenGLRenderer(ImageCodec* codec) :
         setupImageCodec("");
 
     initialiseGLExtensions();
+    initialiseTextureTargetFactory();
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
@@ -159,6 +193,7 @@ OpenGLRenderer::OpenGLRenderer(const Size& display_size, ImageCodec* codec) :
         setupImageCodec("");
 
     initialiseGLExtensions();
+    initialiseTextureTargetFactory();
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
@@ -173,6 +208,7 @@ OpenGLRenderer::~OpenGLRenderer()
 
     delete d_defaultRoot;
     delete d_defaultTarget;
+    delete d_textureTargetFactory;
 }
 
 //----------------------------------------------------------------------------//
@@ -213,7 +249,7 @@ void OpenGLRenderer::destroyAllGeometryBuffers()
 //----------------------------------------------------------------------------//
 TextureTarget* OpenGLRenderer::createTextureTarget()
 {
-    TextureTarget* t= new OpenGLFBOTextureTarget(*this);
+    TextureTarget* t = d_textureTargetFactory->create(*this);
     d_textureTargets.push_back(t);
     return t;
 }
@@ -228,7 +264,7 @@ void OpenGLRenderer::destroyTextureTarget(TextureTarget* target)
     if (d_textureTargets.end() != i)
     {
         d_textureTargets.erase(i);
-        delete target;
+        d_textureTargetFactory->destory(target);
     }
 }
 
@@ -454,6 +490,34 @@ void OpenGLRenderer::restoreTextures()
     {
         (*i)->restoreTexture();
         i++;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::initialiseTextureTargetFactory()
+{
+    // prefer FBO
+    if (GLEW_EXT_framebuffer_object)
+    {
+        d_rendererID += "  TextureTarget support enabled via FBO extension.";
+        d_textureTargetFactory =
+            new OGLTemplateTargetFactory<OpenGLFBOTextureTarget>;
+    }
+
+#if defined(__linux__)
+    // on linux, we can try for GLX pbuffer support
+    else if (GLXEW_VERSION_1_3)
+    {
+        d_rendererID += "  TextureTarget support enabled via GLX pbuffers.";
+        d_textureTargetFactory =
+            new OGLTemplateTargetFactory<OpenGLGLXPBTextureTarget>;
+    }
+#endif
+    // Nothing suitable available, try to carry on without TextureTargets
+    else
+    {
+        d_rendererID += "  TextureTarget support is not available :(";
+        d_textureTargetFactory = new OGLTextureTargetFactory;
     }
 }
 
