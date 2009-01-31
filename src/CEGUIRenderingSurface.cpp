@@ -203,4 +203,13 @@ const RenderTarget& RenderingSurface::getRenderTarget() const
     return d_target;
 }
 
+//----------------------------------------------------------------------------//
+RenderTarget& RenderingSurface::getRenderTarget()
+{
+    return const_cast<RenderTarget&>(
+        static_cast<const RenderingSurface*>(this)->getRenderTarget());
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of  CEGUI namespace section

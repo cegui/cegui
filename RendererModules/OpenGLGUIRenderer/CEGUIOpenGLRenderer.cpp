@@ -331,9 +331,7 @@ void OpenGLRenderer::beginRendering()
     glDisable(GL_CULL_FACE);
 
     glDepthFunc(GL_ALWAYS);
-    // TODO: This will be made much more selective, but is enabled here now
-    // TODO: for testing purposes (though it does cost us some frames).
-    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
 
     glEnable(GL_SCISSOR_TEST);
 

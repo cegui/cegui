@@ -105,6 +105,25 @@ void RenderingWindow::setRotation(const Vector3& rotation)
 {
     d_rotation = rotation;
     d_geometry->setRotation(d_rotation);
+
+    if ((rotation.d_z != 0.0f) ||
+        (rotation.d_x != 0.0f) ||
+        (rotation.d_y != 0.0f))
+    {
+        // NB: I think it might be valuable to be able to "opt out" of this
+        // auto-enabling occurring, if for example you know you will not need
+        // hit-testing for rotated content.  Though it could also cause a lot of
+        // headaches and misunderstandings, hence the note rather than the
+        // implementation ;)
+        //
+        // Note also we do not ever worry about disabling this.  Doing
+        // this is again a headache since other windows attached to our owner
+        // might need it to remain enabled, and also, keep flicking this off and
+        // on could be a performance issue (depending on how the renderer is
+        // implemented)
+
+        d_owner->getRenderTarget().setDepthBufferEnabled(true);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -308,7 +327,13 @@ void RenderingWindow::unprojectPoint(const Vector2& p_in, Vector2& p_out)
         return;
     }
 
-    d_owner->getRenderTarget().unprojectPoint(*d_geometry, p_in, p_out);
+    Vector2 in(p_in);
+
+    // localise point for cases where owner is also a RenderingWindow
+    if (d_owner->isRenderingWindow())
+        in -= static_cast<RenderingWindow*>(d_owner)->getPosition();
+
+    d_owner->getRenderTarget().unprojectPoint(*d_geometry, in, p_out);
     p_out.d_x += d_position.d_x;
     p_out.d_y += d_position.d_y;
 }

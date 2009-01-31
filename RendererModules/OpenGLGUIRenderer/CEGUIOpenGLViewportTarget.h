@@ -62,6 +62,7 @@ public:
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;
+    void setDepthBufferEnabled(const bool setting);
 };
 
 } // End of  CEGUI namespace section

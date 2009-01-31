@@ -320,6 +320,7 @@ public:
         output.
     */
     const RenderTarget& getRenderTarget() const;
+    RenderTarget& getRenderTarget();
 
 protected:
     //! draw a rendering queue, firing events before and after.

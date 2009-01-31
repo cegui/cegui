@@ -56,6 +56,7 @@ public:
     void deactivate();
     // implementation of RenderTarget interface
     bool isImageryCache() const;
+    void setDepthBufferEnabled(const bool setting);
     // implementation of TextureTarget interface
     void clear();
     Texture& getTexture() const;
@@ -67,8 +68,13 @@ protected:
 
     //! allocate and set up the texture used with the FBO.
     void initialiseRenderTexture();
+    //! set up a depth buffer to the bound FBO
+    void initialiseDepthBuffer();
     //! resize the texture
     void resizeRenderTexture();
+
+    // overridden from OpenGLRenderTarget
+    float readZValue(const float x, const float y) const;
 
     //! Frame buffer object.
     GLuint d_frameBuffer;

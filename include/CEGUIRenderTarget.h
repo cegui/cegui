@@ -143,6 +143,27 @@ public:
     */
     virtual void unprojectPoint(const GeometryBuffer& buff,
                                 const Vector2& p_in, Vector2& p_out) const = 0;
+
+    /*!
+    \brief
+        Set whether depth buffer should be enabled and used for this target.
+
+    \exception InvalidRequestException
+        Thrown if it was not possible to create or otherwise initialise the
+        depth buffer and/or any related mechanisms for use by CEGUI.
+
+    \note
+        It's entirely possible to ignore enable requests, so long as the rest of
+        the implementation is able to perform it's functions correctly without
+        needing the depth buffer.
+    */
+    virtual void setDepthBufferEnabled(const bool setting) = 0;
+
+    /*!
+    \brief
+        Return whether the depth buffer is enabled for this target.
+    */
+    virtual bool isDepthBufferEnabled() = 0;
 };
 
 } // End of  CEGUI namespace section

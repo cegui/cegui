@@ -40,7 +40,8 @@ const double OpenGLRenderTarget::d_yfov_tan = 0.267949192431123;
 OpenGLRenderTarget::OpenGLRenderTarget(OpenGLRenderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_depthEnabled(false)
 {
 }
 
@@ -77,6 +78,10 @@ void OpenGLRenderTarget::activate()
                static_cast<GLsizei>(d_area.getWidth()),
                static_cast<GLsizei>(d_area.getHeight()));
 
+    // activate depth if needed
+    if (d_depthEnabled)
+        glEnable(GL_DEPTH_TEST);
+
     if (!d_matrixValid)
         updateMatrix();
 
@@ -87,12 +92,22 @@ void OpenGLRenderTarget::activate()
 //----------------------------------------------------------------------------//
 void OpenGLRenderTarget::deactivate()
 {
+    // reset depth buffer state setting
+    if (d_depthEnabled)
+        glDisable(GL_DEPTH_TEST);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const Vector2& p_in, Vector2& p_out) const
 {
+    // With no depth values, you get no unprojected points...
+    if (!d_depthEnabled)
+    {
+        p_out = p_in;
+        return;
+    }
+
     if (!d_matrixValid)
         updateMatrix();
 
@@ -143,6 +158,12 @@ void OpenGLRenderTarget::updateMatrix() const
     glPopMatrix();
 
     d_matrixValid = true;
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGLRenderTarget::isDepthBufferEnabled()
+{
+    return d_depthEnabled;
 }
 
 //----------------------------------------------------------------------------//
