@@ -138,6 +138,13 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
+void OpenGLTexture::saveToMemory(void* buffer)
+{
+    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+}
+
+//----------------------------------------------------------------------------//
 void OpenGLTexture::setTextureSize(const Size& sz)
 {
     Size size(sz);

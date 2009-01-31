@@ -137,6 +137,18 @@ public:
 
     /*!
     \brief
+        Save / dump the content of the texture to a memory buffer.  The dumped
+        pixel format is always RGBA (4 bytes per pixel).
+
+    \param buffer
+        Pointer to the buffer that is to receive the image data.  You must make
+        sure that this buffer is large enough to hold the dumped texture data,
+        the required pixel dimensions can be established by calling getSize.
+    */
+    virtual void saveToMemory(void* buffer) = 0;
+
+    /*!
+    \brief
         Return a pointer to the Renderer object that created and owns this
         Texture.
 
