@@ -119,6 +119,7 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 //----------------------------------------------------------------------------//
 OpenGLRenderer::OpenGLRenderer(ImageCodec* codec) :
     d_displayDPI(96, 96),
+    d_initExtraStates(false),
     d_imageCodec(codec),
     d_imageCodecModule(0)
 {
@@ -145,6 +146,7 @@ OpenGLRenderer::OpenGLRenderer(ImageCodec* codec) :
 OpenGLRenderer::OpenGLRenderer(const Size& display_size, ImageCodec* codec) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
+    d_initExtraStates(false),
     d_imageCodec(codec),
     d_imageCodecModule(0)
 {
@@ -313,42 +315,28 @@ void OpenGLRenderer::beginRendering()
     glPushMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glMatrixMode(GL_TEXTURE);
-    glPushMatrix();
 
-    CEGUI_activeTexture(GL_TEXTURE0);
-    CEGUI_clientActiveTexture(GL_TEXTURE0);
-
-    glPolygonMode(GL_FRONT, GL_FILL);
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_FOG);
-    glDisable(GL_TEXTURE_GEN_S);
-    glDisable(GL_TEXTURE_GEN_T);
-    glDisable(GL_TEXTURE_GEN_R);
-
-    glFrontFace(GL_CCW);
-    glDisable(GL_CULL_FACE);
-
-    glDepthFunc(GL_ALWAYS);
-    glDisable(GL_DEPTH_TEST);
-
+    // do required set-up.  yes, it really is this minimal ;)
     glEnable(GL_SCISSOR_TEST);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthFunc(GL_ALWAYS);
+
+    // if enabled, restores a subset of the GL state back to default values.
+    if (d_initExtraStates)
+        setupExtraStates();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLRenderer::endRendering()
 {
+    if (d_initExtraStates)
+        cleanupExtraStates();
+
     // restore former matrices
     // FIXME: If the push ops failed, the following could mess things up!
-    glMatrixMode(GL_TEXTURE);
-    glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
@@ -402,6 +390,44 @@ void OpenGLRenderer::setDisplaySize(const Size& sz)
         fireEvent(EventDisplaySizeChanged, args, EventNamespace);
     }
 
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::enableExtraStateSettings(bool setting)
+{
+    d_initExtraStates = setting;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::setupExtraStates()
+{
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glLoadIdentity();
+
+    CEGUI_activeTexture(GL_TEXTURE0);
+    CEGUI_clientActiveTexture(GL_TEXTURE0);
+
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glPolygonMode(GL_BACK, GL_FILL);
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+
+    glDisable(GL_TEXTURE_GEN_S);
+    glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
+
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::cleanupExtraStates()
+{
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
 }
 
 //----------------------------------------------------------------------------//

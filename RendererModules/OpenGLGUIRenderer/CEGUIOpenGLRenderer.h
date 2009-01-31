@@ -159,6 +159,19 @@ public:
 
     /*!
     \brief
+        Tells the renderer to initialise some extra states beyond what it
+        directly needs itself for CEGUI.
+
+        This option is useful in cases where you've made changes to the default
+        OpenGL state and do not want to save/restore those between CEGUI
+        rendering calls.  Note that this option will not deal with every
+        possible state or extension - if you want a state added here, make a
+        request and we'll consider it ;)
+    */
+    void enableExtraStateSettings(bool setting);
+
+    /*!
+    \brief
         Grabs all the loaded textures from Texture RAM and stores them in a
         local data buffer.  This function invalidates all textures, and
         restoreTextures must be called before any CEGUI rendering is done for
@@ -239,6 +252,12 @@ private:
     */
     virtual ~OpenGLRenderer();
 
+    //! init the extra GL states enabled via enableExtraStateSettings
+    void setupExtraStates();
+
+    //! cleanup the extra GL states enabled via enableExtraStateSettings
+    void cleanupExtraStates();
+
     //! setup image codec 
     void setupImageCodec(const String& codecName);
 
@@ -269,6 +288,8 @@ private:
     TextureList d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
+    //! option of whether to initialise extra states that may not be at default
+    bool d_initExtraStates;
     //! Holds a pointer to the image codec to use.
     ImageCodec* d_imageCodec;
     /** Holds a pointer to the image codec module. If d_imageCodecModule is 0 we
