@@ -106,6 +106,10 @@ public:
     \par
     The event EventRenderQueueStarted is fired before each queue is rendered and
     the event EventRenderQueueEnded is fired after each queue is rendered.
+    \note
+    For performance reasons, events are only fired for queues that are in use;
+    these are queues that have had some interaction - such as clearing or adding
+    geometry.
 */
 class CEGUIEXPORT RenderingSurface : public EventSet
 {
