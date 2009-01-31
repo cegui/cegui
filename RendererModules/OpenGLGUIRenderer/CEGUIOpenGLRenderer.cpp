@@ -386,6 +386,11 @@ void OpenGLRenderer::setDisplaySize(const Size& sz)
     {
         d_displaySize = sz;
 
+        // update the default target's area
+        Rect area(d_defaultTarget->getArea());
+        area.setSize(sz);
+        d_defaultTarget->setArea(area);
+
         EventArgs args;
         fireEvent(EventDisplaySizeChanged, args, EventNamespace);
     }

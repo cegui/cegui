@@ -300,8 +300,10 @@ System::System(Renderer* renderer,
     // success - we are created!  Log it for prosperity :)
     outputLogHeader();
 
-    // subscribe to hear about display mode changes
-    d_rendererCon = d_renderer->subscribeEvent(Renderer::EventDisplaySizeChanged, Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
+    // subscribe (as group 1) to hear about display mode changes
+    d_rendererCon = d_renderer->
+        subscribeEvent(Renderer::EventDisplaySizeChanged, 1,
+            Event::Subscriber(&CEGUI::System::handleDisplaySizeChange, this));
 
     // load base scheme
     if (!configSchemeName.empty())

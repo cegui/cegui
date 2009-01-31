@@ -319,6 +319,8 @@ private:
 	*/
 	void	constrainPosition(void);
 
+    //! handler to reset clipping area for the mouse geometry
+    bool handleDisplaySizeChange(const EventArgs& args);
 
 	/*************************************************************************
 		Implementation Data
