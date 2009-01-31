@@ -10,7 +10,8 @@ pkgincludedir=$(prefix)/include/CEGUI/RendererModules/OpenGLGUIRenderer
 pkginclude_HEADERS = CEGUIOpenGLRenderer.h CEGUIOpenGLTexture.h \
 	CEGUIOpenGLGeometryBatch.h CEGUIOpenGLGeometryBuffer.h \
 	CEGUIOpenGLRenderTarget.h CEGUIOpenGLViewportTarget.h \
-	CEGUIOpenGLFBOTextureTarget.h CEGUIOpenGL.h
+	CEGUIOpenGLFBOTextureTarget.h CEGUIOpenGLGLXPBTextureTarget.h \
+	CEGUIOpenGL.h
 
 libCEGUIOpenGLRenderer_la_LDFLAGS =
 
@@ -32,7 +33,8 @@ lib_LTLIBRARIES=libCEGUIOpenGLRenderer.la
 libCEGUIOpenGLRenderer_la_SOURCES = CEGUIOpenGLRenderer.cpp \
     CEGUIOpenGLTexture.cpp CEGUIOpenGLGeometryBatch.cpp \
     CEGUIOpenGLGeometryBuffer.cpp CEGUIOpenGLRenderTarget.cpp \
-    CEGUIOpenGLViewportTarget.cpp CEGUIOpenGLFBOTextureTarget.cpp
+    CEGUIOpenGLViewportTarget.cpp CEGUIOpenGLFBOTextureTarget.cpp \
+    CEGUIOpenGLGLXPBTextureTarget.cpp
 
 if BUILD_USING_INTERNAL_GLEW
 libCEGUIOpenGLRenderer_la_SOURCES += GLEW/src/glew.c
