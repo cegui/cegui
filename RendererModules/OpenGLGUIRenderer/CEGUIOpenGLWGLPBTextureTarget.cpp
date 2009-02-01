@@ -68,7 +68,7 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRenderer& owner) :
     d_texture(0)
 {
     if (!WGLEW_ARB_pbuffer)
-        throw RendererException("WGLEW_ARB_pbuffer extension is needed to use "
+        throw RendererException("WGL_ARB_pbuffer extension is needed to use "
             "OpenGLWGLPBTextureTarget!");
 
     // this essentially creates a 'null' CEGUI::Texture
