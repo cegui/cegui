@@ -12,11 +12,13 @@ package.files =
     matchfiles(pkgdir.."GLEW/GL/*.h"),
 }
 
--- Windows does not have GLX
+-- Windows does not have GLX, and is not an Apple ;)
 package.excludes =
 {
     pkgdir.."CEGUIOpenGLGLXPBTextureTarget.cpp",
     pkgdir.."CEGUIOpenGLGLXPBTextureTarget.h",
+    pkgdir.."CEGUIOpenGLApplePBTextureTarget.cpp",
+    pkgdir.."CEGUIOpenGLApplePBTextureTarget.h",
 }
 
 include(pkgdir)

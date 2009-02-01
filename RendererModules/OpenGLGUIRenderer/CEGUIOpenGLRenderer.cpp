@@ -50,7 +50,7 @@
 #elif defined(_WIN32) || defined(__WIN32__)
 #   include "CEGUIOpenGLWGLPBTextureTarget.h"
 #elif defined(__APPLE__)
-// TODO: apple version!
+#   include "CEGUIOpenGLApplePBTextureTarget.h"
 #endif
 
 
@@ -526,7 +526,13 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
     }
 #elif defined(__APPLE__)
     // on Apple Mac, we can try for Apple's pbuffer support
-    // TODO:
+    else if (GLEW_APPLE_pixel_buffer)
+    {
+        d_rendererID += "  TextureTarget support enabled via "
+                        "GL_APPLE_pixel_buffer.";
+        d_textureTargetFactory =
+            new OGLTemplateTargetFactory<OpenGLApplePBTextureTarget>;
+    }
 #endif
     // Nothing suitable available, try to carry on without TextureTargets
     else

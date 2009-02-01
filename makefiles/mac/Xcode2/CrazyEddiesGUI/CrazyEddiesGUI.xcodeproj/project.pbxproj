@@ -735,6 +735,8 @@
 		DA58C6CE0E05982C00C8294E /* corona.framework in Resources */ = {isa = PBXBuildFile; fileRef = DA58C4BD0E057BED00C8294E /* corona.framework */; };
 		DA58C6DB0E05987500C8294E /* FreeImage.framework in Resources */ = {isa = PBXBuildFile; fileRef = 5B55D2850AC24F4C006A2F76 /* FreeImage.framework */; };
 		DA7F1FCD0F2A627200CAF5AF /* CEGUIOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = DA7F1FCC0F2A627200CAF5AF /* CEGUIOpenGL.h */; };
+		DA9EB2330F35F03B00721929 /* CEGUIOpenGLApplePBTextureTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9EB2320F35F03B00721929 /* CEGUIOpenGLApplePBTextureTarget.h */; };
+		DA9EB2390F35F16500721929 /* CEGUIOpenGLApplePBTextureTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA9EB2380F35F16500721929 /* CEGUIOpenGLApplePBTextureTarget.cpp */; };
 		DAE4EE170F29FBD30013D387 /* CEGUIGeometryBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4EE0D0F29FBD30013D387 /* CEGUIGeometryBuffer.h */; };
 		DAE4EE180F29FBD30013D387 /* CEGUIRenderEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4EE0E0F29FBD30013D387 /* CEGUIRenderEffect.h */; };
 		DAE4EE190F29FBD30013D387 /* CEGUIRenderingContext.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE4EE0F0F29FBD30013D387 /* CEGUIRenderingContext.h */; };
@@ -1944,6 +1946,12 @@
 		DA58C4AD0E057B5B00C8294E /* CEGUICoronaImageCodec-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CEGUICoronaImageCodec-Info.plist"; sourceTree = "<group>"; };
 		DA58C4BD0E057BED00C8294E /* corona.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = corona.framework; path = dependencies/corona.framework; sourceTree = "<group>"; };
 		DA7F1FCC0F2A627200CAF5AF /* CEGUIOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOpenGL.h; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGL.h; sourceTree = SOURCE_ROOT; };
+		DA9EB22D0F35EF8100721929 /* CEGUIOpenGLGLXPBTextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOpenGLGLXPBTextureTarget.cpp; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGLGLXPBTextureTarget.cpp; sourceTree = SOURCE_ROOT; };
+		DA9EB22E0F35EF8100721929 /* CEGUIOpenGLGLXPBTextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOpenGLGLXPBTextureTarget.h; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGLGLXPBTextureTarget.h; sourceTree = SOURCE_ROOT; };
+		DA9EB22F0F35EF8100721929 /* CEGUIOpenGLWGLPBTextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOpenGLWGLPBTextureTarget.cpp; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGLWGLPBTextureTarget.cpp; sourceTree = SOURCE_ROOT; };
+		DA9EB2300F35EF8100721929 /* CEGUIOpenGLWGLPBTextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOpenGLWGLPBTextureTarget.h; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGLWGLPBTextureTarget.h; sourceTree = SOURCE_ROOT; };
+		DA9EB2320F35F03B00721929 /* CEGUIOpenGLApplePBTextureTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIOpenGLApplePBTextureTarget.h; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGLApplePBTextureTarget.h; sourceTree = SOURCE_ROOT; };
+		DA9EB2380F35F16500721929 /* CEGUIOpenGLApplePBTextureTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEGUIOpenGLApplePBTextureTarget.cpp; path = ../../../../RendererModules/OpenGLGUIRenderer/CEGUIOpenGLApplePBTextureTarget.cpp; sourceTree = SOURCE_ROOT; };
 		DAE4EE0D0F29FBD30013D387 /* CEGUIGeometryBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIGeometryBuffer.h; path = ../../../../include/CEGUIGeometryBuffer.h; sourceTree = SOURCE_ROOT; };
 		DAE4EE0E0F29FBD30013D387 /* CEGUIRenderEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderEffect.h; path = ../../../../include/CEGUIRenderEffect.h; sourceTree = SOURCE_ROOT; };
 		DAE4EE0F0F29FBD30013D387 /* CEGUIRenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEGUIRenderingContext.h; path = ../../../../include/CEGUIRenderingContext.h; sourceTree = SOURCE_ROOT; };
@@ -2906,13 +2914,16 @@
 		5B69B80708C40F8F0086C816 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				DA9EB2380F35F16500721929 /* CEGUIOpenGLApplePBTextureTarget.cpp */,
 				DAE4EE290F29FD280013D387 /* CEGUIOpenGLFBOTextureTarget.cpp */,
 				DAE4EE2B0F29FD280013D387 /* CEGUIOpenGLGeometryBatch.cpp */,
 				DAE4EE2D0F29FD280013D387 /* CEGUIOpenGLGeometryBuffer.cpp */,
+				DA9EB22D0F35EF8100721929 /* CEGUIOpenGLGLXPBTextureTarget.cpp */,
 				DAE4EE2F0F29FD280013D387 /* CEGUIOpenGLRenderer.cpp */,
 				DAE4EE310F29FD280013D387 /* CEGUIOpenGLRenderTarget.cpp */,
 				DAE4EE330F29FD280013D387 /* CEGUIOpenGLTexture.cpp */,
 				DAE4EE350F29FD280013D387 /* CEGUIOpenGLViewportTarget.cpp */,
+				DA9EB22F0F35EF8100721929 /* CEGUIOpenGLWGLPBTextureTarget.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -2920,14 +2931,17 @@
 		5B69B80A08C40F920086C816 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				DA7F1FCC0F2A627200CAF5AF /* CEGUIOpenGL.h */,
+				DA9EB2320F35F03B00721929 /* CEGUIOpenGLApplePBTextureTarget.h */,
 				DAE4EE2A0F29FD280013D387 /* CEGUIOpenGLFBOTextureTarget.h */,
 				DAE4EE2C0F29FD280013D387 /* CEGUIOpenGLGeometryBatch.h */,
 				DAE4EE2E0F29FD280013D387 /* CEGUIOpenGLGeometryBuffer.h */,
+				DA9EB22E0F35EF8100721929 /* CEGUIOpenGLGLXPBTextureTarget.h */,
+				DA7F1FCC0F2A627200CAF5AF /* CEGUIOpenGL.h */,
 				DAE4EE300F29FD280013D387 /* CEGUIOpenGLRenderer.h */,
 				DAE4EE320F29FD280013D387 /* CEGUIOpenGLRenderTarget.h */,
 				DAE4EE340F29FD280013D387 /* CEGUIOpenGLTexture.h */,
 				DAE4EE360F29FD280013D387 /* CEGUIOpenGLViewportTarget.h */,
+				DA9EB2300F35EF8100721929 /* CEGUIOpenGLWGLPBTextureTarget.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -4138,6 +4152,7 @@
 				DAE4EE420F29FD280013D387 /* CEGUIOpenGLTexture.h in Headers */,
 				DAE4EE440F29FD280013D387 /* CEGUIOpenGLViewportTarget.h in Headers */,
 				DA7F1FCD0F2A627200CAF5AF /* CEGUIOpenGL.h in Headers */,
+				DA9EB2330F35F03B00721929 /* CEGUIOpenGLApplePBTextureTarget.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5750,6 +5765,7 @@
 				DAE4EE3F0F29FD280013D387 /* CEGUIOpenGLRenderTarget.cpp in Sources */,
 				DAE4EE410F29FD280013D387 /* CEGUIOpenGLTexture.cpp in Sources */,
 				DAE4EE430F29FD280013D387 /* CEGUIOpenGLViewportTarget.cpp in Sources */,
+				DA9EB2390F35F16500721929 /* CEGUIOpenGLApplePBTextureTarget.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
