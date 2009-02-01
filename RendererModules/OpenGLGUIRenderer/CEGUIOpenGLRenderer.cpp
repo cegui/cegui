@@ -47,6 +47,10 @@
 
 #if defined(__linux__)
 #   include "CEGUIOpenGLGLXPBTextureTarget.h"
+#elif defined(_WIN32) || defined(__WIN32__)
+#   include "CEGUIOpenGLWGLPBTextureTarget.h"
+#elif defined(__APPLE__)
+// TODO: apple version!
 #endif
 
 
@@ -512,6 +516,17 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
         d_textureTargetFactory =
             new OGLTemplateTargetFactory<OpenGLGLXPBTextureTarget>;
     }
+#elif defined(_WIN32) || defined(__WIN32__)
+    // on Windows, we can try for WGL based pbuffer support
+    else if (WGLEW_ARB_pbuffer)
+    {
+        d_rendererID += "  TextureTarget support enabled via WGL_ARB_pbuffer.";
+        d_textureTargetFactory =
+            new OGLTemplateTargetFactory<OpenGLWGLPBTextureTarget>;
+    }
+#elif defined(__APPLE__)
+    // on Apple Mac, we can try for Apple's pbuffer support
+    // TODO:
 #endif
     // Nothing suitable available, try to carry on without TextureTargets
     else
