@@ -44,4 +44,8 @@ noinst_HEADERS= GLEW/GL/glew.h \
                 GLEW/GL/glxew.h \
                 GLEW/GL/wglew.h
 
-EXTRA_DIST = GLEW/GLEW-LICENSE
+EXTRA_DIST = GLEW/GLEW-LICENSE \
+			 CEGUIOpenGLApplePBTextureTarget.cpp \
+			 CEGUIOpenGLApplePBTextureTarget.h \
+			 CEGUIOpenGLWGLPBTextureTarget.cpp \
+			 CEGUIOpenGLWGLPBTextureTarget.h
