@@ -1409,6 +1409,13 @@ void Window::render(RenderingContext ctx)
 *************************************************************************/
 void Window::drawSelf(const RenderingContext& ctx)
 {
+    bufferGeometry(ctx);
+    queueGeometry(ctx);
+}
+
+//----------------------------------------------------------------------------//
+void Window::bufferGeometry(const RenderingContext& ctx)
+{
     if (d_needsRedraw)
     {
         // dispose of already cached geometry.
@@ -1431,7 +1438,11 @@ void Window::drawSelf(const RenderingContext& ctx)
         // mark ourselves as no longer needed a redraw.
         d_needsRedraw = false;
     }
+}
 
+//----------------------------------------------------------------------------//
+void Window::queueGeometry(const RenderingContext& ctx)
+{
     // position of the geometry is the offset of the window on the dest surface.
     const Rect ucrect(getUnclippedPixelRect());
     d_geometry->setTranslation(Vector3(ucrect.d_left - ctx.offset.d_x,
@@ -1442,6 +1453,9 @@ void Window::drawSelf(const RenderingContext& ctx)
     // add geometry so that it gets drawn to the target surface.
     ctx.surface->addGeometryBuffer(RQ_BASE, *d_geometry);
 }
+
+//----------------------------------------------------------------------------//
+
 
 /*************************************************************************
     Set the parent window for this window object.

@@ -3333,14 +3333,38 @@ protected:
     \brief
         Perform the actual rendering for this Window.
 
-    \param z
-        float value specifying the base Z co-ordinate that should be used when
-        rendering
+    \param ctx
+        RenderingContext holding the details of the RenderingSurface to be
+        used for the Window rendering operations.
 
     \return
         Nothing
     */
     virtual void drawSelf(const RenderingContext& ctx);
+
+    /*!
+    \brief
+        Perform drawing operations concerned with generating and buffering
+        window geometry.
+
+    \note
+        This function is a sub-function of drawSelf; it is provided to make it
+        easier to override drawSelf without needing to duplicate large sections
+        of the code from the default implementation.
+    */
+    void bufferGeometry(const RenderingContext& ctx);
+
+    /*!
+    \brief
+        Perform drawing operations concerned with positioning, clipping and
+        queueing of window geometry to RenderingSurfaces.
+
+    \note
+        This function is a sub-function of drawSelf and is provided to make it
+        easier to override drawSelf without needing to duplicate large sections
+        of the code from the default implementation.
+    */
+    void queueGeometry(const RenderingContext& ctx);
 
     /*!
     \brief
