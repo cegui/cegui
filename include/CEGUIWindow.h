@@ -3370,10 +3370,9 @@ protected:
     \brief
         Update the rendering cache.
 
-        Populates the Window's RenderCache with imagery to be sent to the
-        renderer.
+        Populates the Window's GeometryBuffer ready for rendering.
     */
-    virtual void populateRenderCache()  {}
+    virtual void populateGeometryBuffer()  {}
 
     /*!
     \brief

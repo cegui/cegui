@@ -1429,7 +1429,7 @@ void Window::bufferGeometry(const RenderingContext& ctx)
         if (d_windowRenderer)
             d_windowRenderer->render();
         else
-            populateRenderCache();
+            populateGeometryBuffer();
 
         // signal rendering ended
         args.handled = false;

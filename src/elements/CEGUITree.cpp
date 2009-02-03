@@ -606,7 +606,7 @@ void Tree::handleUpdatedItemData(void)
 /*************************************************************************
     Perform the actual rendering for this Window.
 *************************************************************************/
-void Tree::populateRenderCache()
+void Tree::populateGeometryBuffer()
 {
     // get the derived class to render general stuff before we handle the items
     cacheTreeBaseImagery();
@@ -1085,7 +1085,7 @@ void Tree::onSized(WindowEventArgs& e)
 void Tree::onMouseButtonDown(MouseEventArgs& e)
 {
     // base class processing
-    // populateRenderCache();
+    // populateGeometryBuffer();
     Window::onMouseButtonDown(e);
 
     if (e.button == LeftButton)
@@ -1102,7 +1102,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
             modified = true;
             TreeEventArgs args(this);
             args.treeItem = item;
-            populateRenderCache();
+            populateGeometryBuffer();
             Rect buttonLocation = item->getButtonLocation();
             if ((localPos.d_x >= buttonLocation.d_left) && (localPos.d_x <= buttonLocation.d_right) &&
                 (localPos.d_y >= buttonLocation.d_top) && (localPos.d_y <= buttonLocation.d_bottom))
@@ -1121,7 +1121,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
                 }
 
                 // Update the item screen locations, needed to update the scrollbars.
-                //	populateRenderCache();
+                //	populateGeometryBuffer();
 
                 // Opened or closed a tree branch, so must update scrollbars.
                 configureScrollbars();
