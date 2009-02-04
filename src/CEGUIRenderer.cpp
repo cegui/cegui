@@ -39,23 +39,8 @@ const String Renderer::EventNamespace("Renderer");
 const String Renderer::EventDisplaySizeChanged("DisplayModeChanged");
 
 //----------------------------------------------------------------------------//
-Renderer::Renderer(void)
-        : d_resourceProvider(0)
-{
-}
-
-//----------------------------------------------------------------------------//
 Renderer::~Renderer(void)
 {
-    delete d_resourceProvider;
-    d_resourceProvider = 0;
-}
-
-//----------------------------------------------------------------------------//
-ResourceProvider* Renderer::createResourceProvider(void)
-{
-    d_resourceProvider = new DefaultResourceProvider();
-    return d_resourceProvider;
 }
 
 //----------------------------------------------------------------------------//

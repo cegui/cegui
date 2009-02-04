@@ -1007,7 +1007,8 @@ private:
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
-	Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
+	bool d_ourResourceProvider;
+    Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
 
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.

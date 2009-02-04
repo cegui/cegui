@@ -56,6 +56,7 @@
 #include "CEGUIRenderingRoot.h"
 #include "CEGUIRenderingWindow.h"
 #include "CEGUIRenderingContext.h"
+#include "CEGUIDefaultResourceProvider.h"
 #include <ctime>
 #include <clocale>
 
@@ -179,7 +180,8 @@ System::System(Renderer* renderer,
                const String& logFile)
 
 : d_renderer(renderer),
-  d_resourceProvider(resourceProvider ? resourceProvider : d_renderer->createResourceProvider()),
+  d_resourceProvider(resourceProvider),
+  d_ourResourceProvider(false),
   d_defaultFont(0),
   d_wndWithMouse(0),
   d_activeSheet(0),
@@ -218,6 +220,13 @@ System::System(Renderer* renderer,
     {
         new DefaultLogger();
         userCreatedLogger = false;
+    }
+
+    // create default resource provider, unless one was already provided
+    if (!d_resourceProvider)
+    {
+        d_resourceProvider = new DefaultResourceProvider;
+        d_ourResourceProvider = true;
     }
 
     // Set CEGUI version
@@ -397,6 +406,10 @@ System::~System(void)
 
     // cleanup singletons
     destroySingletons();
+
+    // cleanup resource provider if we own it
+    if (d_ourResourceProvider)
+        delete d_resourceProvider;
 
     char addr_buff[32];
     sprintf(addr_buff, "(%p)", static_cast<void*>(this));

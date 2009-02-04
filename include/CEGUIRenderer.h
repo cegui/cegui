@@ -275,28 +275,8 @@ public:
     */
     virtual const String& getIdentifierString() const = 0;
 
-    /*!
-    \brief
-        Return a ResourceProvider object.
-
-    \return
-        ResourceProvider object.
-
-    \deprecated
-        Having a resource loading facility created via the graphical interface
-        object is really poor.  As such this will be removed and other
-        facilities provided in a more appropriate place.
-    */
-    virtual ResourceProvider* createResourceProvider();
-
-protected:
-    //! Default constructor.
-    Renderer();
-
     //! Destructor.
     virtual ~Renderer();
-
-    ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object.
 };
 
 } // End of  CEGUI namespace section
