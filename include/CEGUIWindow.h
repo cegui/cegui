@@ -3883,6 +3883,9 @@ protected:
     */
     void updateGeometryRenderSettings();
 
+    //! transfer RenderingSurfaces to be owned by our target RenderingSurface.
+    void transferChildSurfaces();
+
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;

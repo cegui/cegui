@@ -3477,8 +3477,17 @@ void Window::setRenderingSurface(RenderingSurface* surface)
 {
     if (d_surface != surface)
     {
-        setUsingAutoRenderingSurface(false);
+        if (d_autoRenderingWindow)
+            setUsingAutoRenderingSurface(false);
+
         d_surface = surface;
+
+        // transfer child surfaces to this new surface
+        if (d_surface)
+        {
+            transferChildSurfaces();
+            notifyScreenAreaChanged();
+        }
     }
 }
 
@@ -3550,6 +3559,7 @@ void Window::allocateRenderingWindow()
         }
 
         d_surface = &getTargetRenderingSurface().createRenderingWindow(*t);
+        transferChildSurfaces();
 
         // set size and position of RenderingWindow
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
@@ -3565,15 +3575,33 @@ void Window::releaseRenderingWindow()
 {
     if (d_autoRenderingWindow && d_surface)
     {
-        static_cast<RenderingWindow*>(d_surface)->getOwner().
-            destroyRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
-
-        System::getSingleton().getRenderer()->destroyTextureTarget(
-            &static_cast<RenderingWindow&>(*d_surface).getTextureTarget());
-
-        d_surface = 0;
+        RenderingWindow* old_surface = static_cast<RenderingWindow*>(d_surface);
         d_autoRenderingWindow = false;
+        d_surface = 0;
+        // detach child surfaces prior to destroying the owning surface
+        transferChildSurfaces();
+        // destroy surface and texture target it used
+        TextureTarget* tt = &old_surface->getTextureTarget();
+        old_surface->getOwner().destroyRenderingWindow(*old_surface);
+        System::getSingleton().getRenderer()->destroyTextureTarget(tt);
+
         System::getSingleton().signalRedraw();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Window::transferChildSurfaces()
+{
+    RenderingSurface& s = getTargetRenderingSurface();
+
+    const size_t child_count = getChildCount();
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        const Window* const c = d_children[i];
+
+        if (c->d_surface && c->d_surface->isRenderingWindow())
+            s.transferRenderingWindow(
+                *static_cast<RenderingWindow*>(c->d_surface));
     }
 }
 
