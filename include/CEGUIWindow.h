@@ -2675,9 +2675,15 @@ public:
 
     /*!
     \brief
-        Recursively inform all children that the screen area has changed, and needs to be re-cached
+        Inform the window, and optionally all children, that screen area
+        rectangles have changed.
+
+    \param recursive
+        - true to recursively call notifyScreenAreaChanged on attached child
+          Window objects.
+        - false to just process \e this Window.
     */
-    void notifyScreenAreaChanged(void);
+    void notifyScreenAreaChanged(bool recursive = true);
 
     /*!
     \brief
@@ -3865,6 +3871,13 @@ protected:
           sibling windows with the same 'always on top' setting.
     */
     bool isTopOfZOrder() const;
+
+    /*!
+    \brief
+        Update position and clip region on this Windows geometry / rendering
+        surface.
+    */
+    void updateGeometryRenderSettings();
 
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;

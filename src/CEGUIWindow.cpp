@@ -1443,13 +1443,6 @@ void Window::bufferGeometry(const RenderingContext& ctx)
 //----------------------------------------------------------------------------//
 void Window::queueGeometry(const RenderingContext& ctx)
 {
-    // position of the geometry is the offset of the window on the dest surface.
-    const Rect ucrect(getUnclippedPixelRect());
-    d_geometry->setTranslation(Vector3(ucrect.d_left - ctx.offset.d_x,
-                                       ucrect.d_top - ctx.offset.d_y, 0.0f));
-
-    initialiseClippers(ctx);
-
     // add geometry so that it gets drawn to the target surface.
     ctx.surface->addGeometryBuffer(RQ_BASE, *d_geometry);
 }
@@ -2705,6 +2698,11 @@ void Window::onSized(WindowEventArgs& e)
     if (d_surface && d_surface->isRenderingWindow())
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
 
+    // screen area changes when we're resized.
+    // NB: Called non-recursive since the onParentSized notifications will deal
+    // more selectively with child Window cases.
+    notifyScreenAreaChanged(false);
+
     // inform children their parent has been re-sized
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
@@ -2723,11 +2721,6 @@ void Window::onSized(WindowEventArgs& e)
 void Window::onMoved(WindowEventArgs& e)
 {
     notifyScreenAreaChanged();
-
-    // move the underlying RenderingWindow if we're using such a thing
-    if (d_surface && d_surface->isRenderingWindow())
-        static_cast<RenderingWindow*>(d_surface)->
-            setPosition(getUnclippedPixelRect().getPosition());
 
     // handle invalidation of surfaces and trigger needed redraws
     if (d_parent)
@@ -3289,10 +3282,6 @@ void Window::notifyClippingChanged(void)
 {
     d_screenRectValid = false;
     d_screenInnerRectValid = false;
-    // make sure everything gets redrawn now that clipping has changed.
-    // NB: this way may not be not ideal, but invalidating the clipped rects
-    // only did not have the desired effect.
-    d_screenUnclippedInnerRectValid = false;
 
     // inform children that their clipped screen areas must be updated
     const size_t num = d_children.size();
@@ -3305,32 +3294,49 @@ void Window::notifyClippingChanged(void)
     }
 }
 
-void Window::notifyScreenAreaChanged()
+void Window::notifyScreenAreaChanged(bool recursive /* = true */)
 {
     d_screenUnclippedRectValid = false;
     d_screenUnclippedInnerRectValid = false;
     d_screenRectValid = false;
     d_screenInnerRectValid = false;
 
-    // if we're not texture backed, update geometry & clip positioning
-    if (!d_surface || !d_surface->isRenderingWindow())
-    {
-        RenderingContext ctx;
-        getRenderingContext(ctx);
+    updateGeometryRenderSettings();
 
+    // inform children that their screen area must be updated
+    if (recursive)
+    {
+        const size_t child_count = getChildCount();
+        for (size_t i = 0; i < child_count; ++i)
+            d_children[i]->notifyScreenAreaChanged();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Window::updateGeometryRenderSettings()
+{
+    RenderingContext ctx;
+    getRenderingContext(ctx);
+
+    // move the underlying RenderingWindow if we're using such a thing
+    if (d_surface && d_surface->isRenderingWindow())
+    {
+        static_cast<RenderingWindow*>(d_surface)->
+            setPosition(getUnclippedPixelRect().getPosition());
+    }
+    // if we're not texture backed, update geometry position.
+    else
+    {
         // position is the offset of the window on the dest surface.
         const Rect ucrect(getUnclippedPixelRect());
         d_geometry->setTranslation(Vector3(ucrect.d_left - ctx.offset.d_x,
                                         ucrect.d_top - ctx.offset.d_y, 0.0f));
-
-        initialiseClippers(ctx);
     }
 
-    // inform children that their screen area must be updated
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
-        d_children[i]->notifyScreenAreaChanged();
+    initialiseClippers(ctx);
 }
+
+//----------------------------------------------------------------------------//
 
 EventSet::Iterator Window::getEventIterator() const
 {
@@ -3513,6 +3519,10 @@ void Window::setUsingAutoRenderingSurface(bool setting)
         allocateRenderingWindow();
     else
         releaseRenderingWindow();
+
+    // while the actal area on screen may not have changed, the arrangement of
+    // surfaces and geometry did...
+    notifyScreenAreaChanged();
 }
 
 //----------------------------------------------------------------------------//
