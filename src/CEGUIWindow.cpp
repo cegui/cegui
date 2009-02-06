@@ -1371,26 +1371,29 @@ void Window::invalidate(void)
 /*************************************************************************
     Causes the Window object to render itself.
 *************************************************************************/
-void Window::render(RenderingContext ctx)
+void Window::render(const RenderingContext* ctx)
 {
     // don't do anything if window is not visible
     if (!isVisible())
         return;
 
+
     // update context if needed
-    if (d_surface && ctx.owner != this)
+    RenderingContext new_context;
+    if (d_surface && ctx->owner != this)
     {
-        ctx.surface = d_surface;
-        ctx.owner = this;
-        ctx.offset = getPixelRect().getPosition();
-        ctx.surface->clearGeometry();
+        d_surface->clearGeometry();
+        new_context.surface = d_surface;
+        new_context.owner = this;
+        new_context.offset = getPixelRect().getPosition();
+        ctx = &new_context;
     }
 
     // redraw if no surface set, or if surface is invalidated
     if (!d_surface || d_surface->isInvalidated())
     {
         // perform drawing for 'this' Window
-        drawSelf(ctx);
+        drawSelf(*ctx);
 
         // render any child windows
         const size_t child_count = getChildCount();
@@ -1399,8 +1402,8 @@ void Window::render(RenderingContext ctx)
     }
 
     // do final rendering for surface if it's ours
-    if (ctx.owner == this)
-        ctx.surface->draw();
+    if (ctx->owner == this)
+        d_surface->draw();
 }
 
 

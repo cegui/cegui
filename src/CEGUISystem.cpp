@@ -436,7 +436,7 @@ void System::renderGUI(void)
             RenderingContext ctx;
             d_activeSheet->getRenderingContext(ctx);
             ctx.surface->clearGeometry();
-            d_activeSheet->render(ctx);
+            d_activeSheet->render(&ctx);
 
             if (ctx.surface->isRenderingWindow())
                 static_cast<RenderingWindow*>(ctx.surface)->

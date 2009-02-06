@@ -2565,10 +2565,14 @@ public:
         Causes the Window object to render itself and all of it's attached
         children
 
+    \param ctx
+        The base RenderingContext coming from our parent (which may or may not
+        be used, depending on whether we have our own RenderingSurface).
+
     \return
         Nothing
     */
-    void render(RenderingContext ctx);
+    void render(const RenderingContext* ctx);
 
     /*!
     \brief
