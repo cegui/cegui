@@ -1307,6 +1307,9 @@ public:
     */
     void getRenderingContext(RenderingContext& ctx) const;
 
+    //! implementation of the default getRenderingContext logic.
+    virtual void getRenderingContext_impl(RenderingContext& ctx) const;
+
     /*!
     \brief
         return the RenderingSurface currently set for this window.  May return
@@ -2565,14 +2568,10 @@ public:
         Causes the Window object to render itself and all of it's attached
         children
 
-    \param ctx
-        The base RenderingContext coming from our parent (which may or may not
-        be used, depending on whether we have our own RenderingSurface).
-
     \return
         Nothing
     */
-    void render(const RenderingContext* ctx);
+    void render();
 
     /*!
     \brief

@@ -433,14 +433,12 @@ void System::renderGUI(void)
     {
         if (d_activeSheet)
         {
-            RenderingContext ctx;
-            d_activeSheet->getRenderingContext(ctx);
-            ctx.surface->clearGeometry();
-            d_activeSheet->render(&ctx);
+            RenderingSurface& rs = d_activeSheet->getTargetRenderingSurface();
+            rs.clearGeometry();
+            d_activeSheet->render();
 
-            if (ctx.surface->isRenderingWindow())
-                static_cast<RenderingWindow*>(ctx.surface)->
-                    getOwner().clearGeometry();
+            if (rs.isRenderingWindow())
+                static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
         }
 
         d_gui_redraw = false;

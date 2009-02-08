@@ -28,12 +28,11 @@
 #ifndef _CEGUIRenderingContext_h_
 #define _CEGUIRenderingContext_h_
 
-#include "CEGUIVector.h"
+#include "CEGUIRenderingSurface.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderingSurface;
 class Window;
 
 /*!
@@ -42,9 +41,14 @@ class Window;
 */
 struct RenderingContext
 {
+    //! RenderingSurface to be used for drawing
     RenderingSurface* surface;
+    //! The Window object that owns the RenederingSurface (0 for default root)
     const Window* owner;
+    //! The offset of the owning window on the root RenderingSurface.
     Vector2 offset;
+    //! The queue that rendering should be added to.
+    RenderQueueID queue;
 };
 
 } // End of  CEGUI namespace section

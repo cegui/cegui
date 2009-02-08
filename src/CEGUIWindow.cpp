@@ -1371,39 +1371,35 @@ void Window::invalidate(void)
 /*************************************************************************
     Causes the Window object to render itself.
 *************************************************************************/
-void Window::render(const RenderingContext* ctx)
+void Window::render()
 {
     // don't do anything if window is not visible
     if (!isVisible())
         return;
 
+    // get rendering context
+    RenderingContext ctx;
+    getRenderingContext(ctx);
 
-    // update context if needed
-    RenderingContext new_context;
-    if (d_surface && ctx->owner != this)
-    {
-        d_surface->clearGeometry();
-        new_context.surface = d_surface;
-        new_context.owner = this;
-        new_context.offset = getPixelRect().getPosition();
-        ctx = &new_context;
-    }
+    // clear geometry from surface if it's ours
+    if (ctx.owner == this)
+        ctx.surface->clearGeometry();
 
     // redraw if no surface set, or if surface is invalidated
     if (!d_surface || d_surface->isInvalidated())
     {
         // perform drawing for 'this' Window
-        drawSelf(*ctx);
+        drawSelf(ctx);
 
         // render any child windows
         const size_t child_count = getChildCount();
         for (size_t i = 0; i < child_count; ++i)
-            d_drawList[i]->render(ctx);
+            d_drawList[i]->render();
     }
 
     // do final rendering for surface if it's ours
-    if (ctx->owner == this)
-        d_surface->draw();
+    if (ctx.owner == this)
+        ctx.surface->draw();
 }
 
 
@@ -1447,7 +1443,7 @@ void Window::bufferGeometry(const RenderingContext& ctx)
 void Window::queueGeometry(const RenderingContext& ctx)
 {
     // add geometry so that it gets drawn to the target surface.
-    ctx.surface->addGeometryBuffer(RQ_BASE, *d_geometry);
+    ctx.surface->addGeometryBuffer(ctx.queue, *d_geometry);
 }
 
 //----------------------------------------------------------------------------//
@@ -3322,9 +3318,9 @@ void Window::updateGeometryRenderSettings()
     getRenderingContext(ctx);
 
     // move the underlying RenderingWindow if we're using such a thing
-    if (d_surface && d_surface->isRenderingWindow())
+    if (ctx.owner == this && ctx.surface->isRenderingWindow())
     {
-        static_cast<RenderingWindow*>(d_surface)->
+        static_cast<RenderingWindow*>(ctx.surface)->
             setPosition(getUnclippedPixelRect().getPosition());
     }
     // if we're not texture backed, update geometry position.
@@ -3335,7 +3331,6 @@ void Window::updateGeometryRenderSettings()
         d_geometry->setTranslation(Vector3(ucrect.d_left - ctx.offset.d_x,
                                         ucrect.d_top - ctx.offset.d_y, 0.0f));
     }
-
     initialiseClippers(ctx);
 }
 
@@ -3436,11 +3431,21 @@ GeometryBuffer& Window::getGeometryBuffer()
 //----------------------------------------------------------------------------//
 void Window::getRenderingContext(RenderingContext& ctx) const
 {
+    if (d_windowRenderer)
+        d_windowRenderer->getRenderingContext(ctx);
+    else
+        getRenderingContext_impl(ctx);
+}
+
+//----------------------------------------------------------------------------//
+void Window::getRenderingContext_impl(RenderingContext& ctx) const
+{
     if (d_surface)
     {
         ctx.surface = d_surface;
         ctx.owner = this;
         ctx.offset = getUnclippedPixelRect().getPosition();
+        ctx.queue = RQ_BASE;
     }
     else if (d_parent)
     {
@@ -3452,6 +3457,7 @@ void Window::getRenderingContext(RenderingContext& ctx) const
             &System::getSingleton().getRenderer()->getDefaultRenderingRoot();
         ctx.owner = 0;
         ctx.offset = Vector2(0, 0);
+        ctx.queue = RQ_BASE;
     }
 }
 
