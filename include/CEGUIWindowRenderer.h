@@ -45,7 +45,7 @@ namespace CEGUI
 {
 
 class WidgetLookFeel;
-class RenderingContext;
+struct RenderingContext;
 
 /*!
 \brief
