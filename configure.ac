@@ -63,6 +63,7 @@ AC_SUBST(pcre_CFLAGS)
 AC_SUBST(pcre_LIBS)
 
 CEGUI_CHECK_XML_PARSERS
+CEGUI_CHECK_IMAGE_CODECS
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -215,8 +216,7 @@ echo "*             Using external GLEW library:              ${cegui_found_glew
 echo "*         Building Irrlicht Renderer:                   ${cegui_enable_irrlicht-no}"
 echo "*         Building DirectFB Renderer:                   ${cegui_enable_directfb-no}"
 echo "*"
-if test x"$cegui_enable_opengl" = x"yes"; then
-echo "* Image Loading Codec Modules (currently for OpenGL Renderer only):"
+echo "* Image Loading Codec Modules:"
 echo "*         Building Corona Image Codec:                  ${cegui_with_corona-no}"
 echo "*         Building DevIL Image Codec:                   ${cegui_with_devil-no}"
 echo "*         Building FreeImage Image Codec:               ${cegui_with_freeimage-no}"
@@ -224,8 +224,22 @@ echo "*         Building SILLY Image Codec:                   ${cegui_with_silly
 echo "*         Building TGA Image Codec:                     ${cegui_with_tga-no}"
 echo "*"
 echo "*         Default Image Codec will be:                  ${cegui_default_image_codec}"
+if test x"$cegui_default_image_codec" != x"DevILImageCodec" &&
+   test x"$cegui_default_image_codec" != x"FreeImageImageCodec" &&
+   test x"$cegui_default_image_codec" != x"SILLYImageCodec" &&
+   test x"$cegui_default_image_codec" != x"CoronaImageCodec" &&
+   test x"$cegui_default_image_codec" != x"TGAImageCodec"; then
 echo "*"
+echo "*         WARNING!  Default codec is not set to one of the pre-made codecs:"
+echo "*         WARNING!      DevILImageCodec, FreeImageImageCodec, SILLYImageCodec,"
+echo "*         WARNING!      CoronaImageCodec, or TGAImageCodec."
+echo "*         WARNING!"
+echo "*         WARNING!  This is fine if you meant to do this and are using a custom"
+echo "*         WARNING!  codec as the 'hard-coded' default, else you should go back"
+echo "*         WARNING!  and check the config values specified for building codecs"
+echo "*         WARNING!  and setting the default codec (--with-default-image-codec)."
 fi
+echo "*"
 echo "* XML Parser Modules:"
 echo "*         Building TinyXMLParser:                       ${cegui_with_tinyxml-no}"
 if test x$cegui_with_tinyxml = xyes; then
