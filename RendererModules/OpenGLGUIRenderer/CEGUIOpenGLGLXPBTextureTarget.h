@@ -34,11 +34,6 @@
 #include "CEGUITextureTarget.h"
 #include "CEGUIRect.h"
 
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4250)
-#endif
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
