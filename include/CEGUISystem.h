@@ -49,6 +49,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class ImageCodec;
 //! Implementation struct that tracks and controls multiclick for mouse buttons.
 struct MouseClickTrackerImpl;
 
@@ -102,6 +103,10 @@ public:
         Pointer to a valid XMLParser object to be used when parsing XML files,
         or NULL to use a default parser.
 
+    \param imageCodec
+        Pointer to a valid ImageCodec object to be used when loading image
+        files, or NULL to use a default image codec.
+
     \param scriptModule
         Pointer to a ScriptModule object.  may be NULL for none.
 
@@ -111,7 +116,13 @@ public:
     \param logFile
         String object containing the name to use for the log file.
     */
-    System(Renderer* renderer, ResourceProvider* resourceProvider = 0, XMLParser* xmlParser = 0, ScriptModule* scriptModule = 0, const String& configFile = "", const String& logFile = "CEGUI.log");
+    System(Renderer* renderer,
+           ResourceProvider* resourceProvider = 0,
+           XMLParser* xmlParser = 0,
+           ImageCodec* imageCodec = 0,
+           ScriptModule* scriptModule = 0,
+           const String& configFile = "",
+           const String& logFile = "CEGUI.log");
 
 	/*!
 	\brief
@@ -695,6 +706,42 @@ public:
     */
     bool updateWindowContainingMouse();
 
+    /*!
+    \brief
+        Retrieve the image codec to be used by the system.
+    */
+    ImageCodec& getImageCodec() const;
+
+    /*!
+    \brief
+        Set the image codec to be used by the system.
+    */
+    void setImageCodec(const String& codecName);
+
+    /*!
+    \brief
+        Set the image codec to use from an existing image codec.
+
+        In this case the renderer does not take the ownership of the image codec
+        object.
+
+    \param codec
+        The ImageCodec object to be used.
+    */
+    void setImageCodec(ImageCodec& codec);
+
+    /*!
+    \brief
+        Set the name of the default image codec to be used.
+    */
+    static void setDefaultImageCodecName(const String& codecName);
+
+    /*!
+    \brief
+        Get the name of the default image codec.
+    */
+    static const String& getDefaultImageCodecName();
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/
@@ -948,6 +995,12 @@ private:
     //! common function used for injection of mouse positions and movements
     bool mouseMoveInjection_impl(MouseEventArgs& ma);
 
+    //! setup image codec 
+    void setupImageCodec(const String& codecName);
+
+    //! cleanup image codec 
+    void cleanupImageCodec();
+
 	/*************************************************************************
 		Handlers for System events
 	*************************************************************************/
@@ -1051,6 +1104,15 @@ private:
     Event::Connection d_rendererCon;
 
     static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
+
+    //! Holds a pointer to the image codec to use.
+    ImageCodec* d_imageCodec;
+    /** Holds a pointer to the image codec module. If d_imageCodecModule is 0 we
+     *  are not owner of the image codec object
+     */
+    DynamicModule* d_imageCodecModule;
+    //! Holds the name of the default codec to use.
+    static String d_defaultImageCodecName;
 };
 
 } // End of  CEGUI namespace section

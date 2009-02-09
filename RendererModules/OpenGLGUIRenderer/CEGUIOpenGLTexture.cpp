@@ -89,13 +89,21 @@ void OpenGLTexture::loadFromFile(const String& filename,
     // implemented and that knowledge is relied upon in an unhealthy way; this
     // should be addressed at some stage.
 
-    OpenGLRenderer* renderer =  static_cast<OpenGLRenderer*>(getRenderer());
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     // load file to memory via resource provider
     RawDataContainer texFile;
     System::getSingleton().getResourceProvider()->
         loadRawDataContainer(filename, texFile, resourceGroup);
-    Texture* res = renderer->getImageCodec().load(texFile, this);
+
+    // get and check existence of CEGUI::System (needed to access ImageCodec)
+    System* sys = System::getSingletonPtr();
+    if (!sys)
+        throw RendererException("OpenGLTexture::loadFromFile - "
+                                "CEGUI::System object has not been created: "
+                                "unable to access ImageCodec.");
+
+    Texture* res = sys->getImageCodec().load(texFile, this);
+
     // unload file data buffer
     System::getSingleton().getResourceProvider()->
         unloadRawDataContainer(texFile);
@@ -103,7 +111,7 @@ void OpenGLTexture::loadFromFile(const String& filename,
     if (!res)
         // It's an error
         throw RendererException("OpenGLTexture::loadFromFile - " +
-                                renderer->getImageCodec().getIdentifierString()+
+                                sys->getImageCodec().getIdentifierString()+
                                 " failed to load image '" + filename + "'.");
 }
 

@@ -54,9 +54,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class ImageCodec;
-class DynamicModule;
-
 class OpenGLTexture;
 class RenderTarget;
 class RenderingRoot;
@@ -74,13 +71,8 @@ public:
     /*!
     \brief
         Create an OpenGLRenderer object.
-
-    \param codec
-        A pointer to a user provided image codec. The renderer does not take
-        ownership of the codec object.
     */
-
-    static OpenGLRenderer& create(ImageCodec* codec = 0);
+    static OpenGLRenderer& create();
 
     /*!
     \brief
@@ -88,13 +80,8 @@ public:
 
     \param display_size
         Size object describing the initial display resolution.
-
-    \param codec
-        A pointer to a user provided image codec. The renderer does not take
-        ownership of the codec object.
     */
-    static OpenGLRenderer& create(const Size& display_size,
-                                  ImageCodec* codec = 0);
+    static OpenGLRenderer& create(const Size& display_size);
 
     /*!
     \brief
@@ -187,52 +174,12 @@ public:
     */
     void restoreTextures();
 
-    /*!
-    \brief
-        Retrieve the image codec used internaly
-    */
-    ImageCodec& getImageCodec();
-
-    /*!
-    \brief
-        Set the image codec to use for loading textures
-    */
-    void setImageCodec(const String& codecName);
-
-    /*!
-    \brief
-        Set the image codec to use from an existing image codec.
-
-        In this case the renderer does not take the ownership of the image codec
-        object.
-
-    \param codec
-        a pointer to an image codec object 
-    */
-    void setImageCodec(ImageCodec* codec);
-
-    /*!
-    \brief
-        Set the name of the default image codec to be used.
-    */
-    static void setDefaultImageCodecName(const String& codecName);
-
-    /*!
-    \brief
-        Get the name of the default image codec.
-    */
-    static const String& getDefaultImageCodecName();
-
 private:
     /*!
     \brief
         Constructor for OpenGL Renderer objects
-
-    \param codec
-        A pointer to a user provided image codec. The renderer does not take
-        ownership of the codec object.
     */
-    OpenGLRenderer(ImageCodec* codec);
+    OpenGLRenderer();
 
     /*!
     \brief
@@ -240,12 +187,8 @@ private:
 
     \param display_size
         Size object describing the initial display resolution.
-
-    \param codec
-        A pointer to a user provided image codec. The renderer does not take
-        ownership of the codec object.
     */
-    OpenGLRenderer(const Size& display_size, ImageCodec* codec);
+    OpenGLRenderer(const Size& display_size);
 
     /*!
     \brief
@@ -261,12 +204,6 @@ private:
 
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
-
-    //! setup image codec 
-    void setupImageCodec(const String& codecName);
-
-    //! cleanup image codec 
-    void cleanupImageCodec();
 
     //! String holding the renderer identification text.
     static String d_rendererID;
@@ -296,14 +233,6 @@ private:
     bool d_initExtraStates;
     //! pointer to a helper that creates TextureTargets supported by the system.
     OGLTextureTargetFactory* d_textureTargetFactory;
-    //! Holds a pointer to the image codec to use.
-    ImageCodec* d_imageCodec;
-    /** Holds a pointer to the image codec module. If d_imageCodecModule is 0 we
-     *  are not owner of the image codec object
-     */
-    DynamicModule* d_imageCodecModule;
-    //! Holds the name of the default codec to use.
-    static String d_defaultImageCodecName;
   };
 
 } // End of  CEGUI namespace section

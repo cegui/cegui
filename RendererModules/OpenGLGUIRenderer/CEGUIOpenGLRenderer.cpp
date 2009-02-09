@@ -53,29 +53,6 @@
 #   include "CEGUIOpenGLApplePBTextureTarget.h"
 #endif
 
-
-//Include the default codec for static builds
-#if defined(CEGUI_STATIC)
-#	if defined(CEGUI_CODEC_SILLY)
-#		include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_TGA)
-#		include "../../ImageCodecModules/TGAImageCodec/CEGUITGAImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_CORONA)
-#		include "../../ImageCodecModules/CoronaImageCodec/CEGUICoronaImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_DEVIL)
-#		include "../../ImageCodecModules/DevILImageCodec/CEGUIDevILImageCodecModule.h"
-#	elif defined(CEGUI_CODEC_FREEIMAGE)
-#		include "../../ImageCodecModules/FreeImageImageCodec/CEGUIFreeImageImageCodecModule.h"
-#	else //Make Silly the default
-#		include "../../ImageCodecModules/SILLYImageCodec/CEGUISILLYImageCodecModule.h"
-#	endif
-#endif
-
-
-#define S_(X) #X
-#define STRINGIZE(X) S_(X)
-
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -128,23 +105,19 @@ class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 };
 
 //----------------------------------------------------------------------------//
-String OpenGLRenderer::d_defaultImageCodecName(STRINGIZE(CEGUI_DEFAULT_IMAGE_CODEC));
-
-//----------------------------------------------------------------------------//
 String OpenGLRenderer::d_rendererID(
 "CEGUI::OpenGLRenderer - Official OpenGL based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::create(ImageCodec* codec)
+OpenGLRenderer& OpenGLRenderer::create()
 {
-    return *new OpenGLRenderer(codec);
+    return *new OpenGLRenderer();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::create(const Size& display_size,
-    ImageCodec* codec)
+OpenGLRenderer& OpenGLRenderer::create(const Size& display_size)
 {
-    return *new OpenGLRenderer(display_size, codec);
+    return *new OpenGLRenderer(display_size);
 }
 
 //----------------------------------------------------------------------------//
@@ -154,11 +127,9 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(ImageCodec* codec) :
+OpenGLRenderer::OpenGLRenderer() :
     d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_imageCodec(codec),
-    d_imageCodecModule(0)
+    d_initExtraStates(false)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -170,9 +141,6 @@ OpenGLRenderer::OpenGLRenderer(ImageCodec* codec) :
     glGetIntegerv(GL_VIEWPORT, vp);
     d_displaySize = Size(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
 
-    if (!d_imageCodec)
-        setupImageCodec("");
-
     initialiseGLExtensions();
     initialiseTextureTargetFactory();
 
@@ -181,20 +149,15 @@ OpenGLRenderer::OpenGLRenderer(ImageCodec* codec) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(const Size& display_size, ImageCodec* codec) :
+OpenGLRenderer::OpenGLRenderer(const Size& display_size) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_imageCodec(codec),
-    d_imageCodecModule(0)
+    d_initExtraStates(false)
 {
     // get rough max texture size
     GLint max_tex_size;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
     d_maxTextureSize = max_tex_size;
-
-    if (!d_imageCodec)
-        setupImageCodec("");
 
     initialiseGLExtensions();
     initialiseTextureTargetFactory();
@@ -208,7 +171,6 @@ OpenGLRenderer::~OpenGLRenderer()
 {
     destroyAllGeometryBuffers();
     destroyAllTextures();
-    cleanupImageCodec();
 
     delete d_defaultRoot;
     delete d_defaultTarget;
@@ -540,100 +502,6 @@ void OpenGLRenderer::initialiseTextureTargetFactory()
         d_rendererID += "  TextureTarget support is not available :(";
         d_textureTargetFactory = new OGLTextureTargetFactory;
     }
-}
-
-//----------------------------------------------------------------------------//
-ImageCodec& OpenGLRenderer::getImageCodec()
-{
-    return *d_imageCodec;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::setImageCodec(const String& codecName)
-{
-    setupImageCodec(codecName);
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::setImageCodec(ImageCodec* codec)
-{
-    if (codec)
-    {
-        cleanupImageCodec();
-        d_imageCodec = codec;
-        d_imageCodecModule = 0;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::setupImageCodec(const String& codecName)
-{
-
-    // Cleanup the old image codec
-    if (d_imageCodec)
-        cleanupImageCodec();
-
-    // Test whether we should use the default codec or not
-    if (codecName.empty())
-        //If we are statically linking the default codec will already be in the system
-#if defined(CEGUI_STATIC)
-        d_imageCodecModule = 0;
-#else
-        d_imageCodecModule = new DynamicModule(String("CEGUI") + d_defaultImageCodecName);
-#endif
-    else
-        d_imageCodecModule = new DynamicModule(String("CEGUI") + codecName);
-
-    //Check to make sure we have a module...
-    if (d_imageCodecModule)
-    {
-        // Create the codec object itself
-        ImageCodec*(*createFunc)(void) =
-            (ImageCodec * (*)(void))d_imageCodecModule->getSymbolAddress("createImageCodec");
-        d_imageCodec = createFunc();
-    } // if(d_imageCodecModule)
-    else
-    {
-#if defined(CEGUI_STATIC)
-        d_imageCodec = createImageCodec();
-#else
-        throw InvalidRequestException("Unable to load codec " + codecName);
-#endif
-    }
-
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::cleanupImageCodec()
-{
-    if (d_imageCodec && d_imageCodecModule)
-    {
-        void(*deleteFunc)(ImageCodec*) =
-            (void(*)(ImageCodec*))d_imageCodecModule->getSymbolAddress("destroyImageCodec");
-        deleteFunc(d_imageCodec);
-        d_imageCodec = 0;
-        delete d_imageCodecModule;
-        d_imageCodecModule = 0;
-    } // if (d_imageCodec && d_imageCodecModule)
-    else
-    {
-#if defined(CEGUI_STATIC)
-        destroyImageCodec(d_imageCodec);
-#endif
-    }
-
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::setDefaultImageCodecName(const String& codecName)
-{
-    d_defaultImageCodecName = codecName;
-}
-
-//----------------------------------------------------------------------------//
-const String& OpenGLRenderer::getDefaultImageCodecName()
-{
-    return d_defaultImageCodecName;
 }
 
 //----------------------------------------------------------------------------//
